@@ -29,7 +29,7 @@
 @property (nonatomic, strong, nullable) NSURL *downloadURL;
 @property (nonatomic, strong, nullable) NSURL *faviconURL;
 @property (nonatomic, strong, nullable) NSData *faviconData;
-@property (nonatomic, strong, nullable) NSString *tag;
+@property (nonatomic, strong, nullable) NSString *flavor;
 
 // assigned attributes
 @property (nonatomic, assign) BOOL hasDetails;

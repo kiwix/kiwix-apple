@@ -68,6 +68,7 @@ class Database {
                     zimFile.faviconURL = metadata.faviconURL
                     zimFile.fileDescription = metadata.fileDescription
                     zimFile.fileID = metadata.fileID
+                    zimFile.flavor = metadata.flavor
                     zimFile.hasDetails = metadata.hasDetails
                     zimFile.hasPictures = metadata.hasPictures
                     zimFile.hasVideos = metadata.hasVideos
@@ -76,7 +77,6 @@ class Database {
                     zimFile.name = metadata.title
                     zimFile.persistentID = metadata.groupIdentifier
                     zimFile.size = metadata.size.int64Value
-                    zimFile.tag = metadata.tag
                     
                     return false
                 })
@@ -115,6 +115,7 @@ class ZimFile: NSManagedObject, Identifiable {
     @NSManaged var fileDescription: String
     @NSManaged var fileID: UUID
     @NSManaged var fileURLBookmark: Data?
+    @NSManaged var flavor: String?
     @NSManaged var hasDetails: Bool
     @NSManaged var hasPictures: Bool
     @NSManaged var hasVideos: Bool
@@ -124,7 +125,6 @@ class ZimFile: NSManagedObject, Identifiable {
     @NSManaged var name: String
     @NSManaged var persistentID: String
     @NSManaged var size: Int64
-    @NSManaged var tag: String?
     
     class func fetchRequest(
         predicate: NSPredicate? = nil,

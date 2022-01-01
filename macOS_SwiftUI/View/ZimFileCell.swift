@@ -52,8 +52,8 @@ struct ZimFileCell: View {
                 }
                 Spacer()
                 VStack(alignment: .trailing) {
-                    if let tag = zimFile.tag {
-                        ZimFileTag(string: tag)
+                    if let flavor = zimFile.flavor {
+                        ZimFileFlavor(string: flavor)
                     }
                     Spacer()
                     Image(systemName: "arrow.down.to.line.circle")
@@ -91,12 +91,13 @@ struct ZimFileCell_Previews: PreviewProvider {
         zimFile.category = "wikipedia"
         zimFile.created = Date()
         zimFile.fileID = UUID()
+        zimFile.flavor = "max"
         zimFile.languageCode = "en"
         zimFile.mediaCount = 100
         zimFile.name = "Wikipedia Zim File Name"
         zimFile.persistentID = ""
         zimFile.size = 1000000000
-        zimFile.tag = "max"
+        
         return zimFile
     }()
     

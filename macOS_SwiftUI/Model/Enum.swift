@@ -52,6 +52,10 @@ enum Category: String, CaseIterable, Identifiable {
     }
 }
 
+enum Flavor {
+    
+}
+
 enum SidebarDisplayMode: String {
     case search, bookmark, tableOfContent, library
 }

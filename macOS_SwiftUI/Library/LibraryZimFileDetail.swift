@@ -24,6 +24,7 @@ struct LibraryZimFileDetail: View {
                     Attribute(title: "Language",
                               detail: Locale.current.localizedString(forIdentifier: zimFile.languageCode) ?? "Unknown")
                     Attribute(title: "Category", detail: (Category(rawValue: zimFile.category) ?? .other).description)
+                    Attribute(title: "Flavor", detail: zimFile.flavor ?? "Unknown")
                     Attribute(title: "Size", detail: zimFile.size.formatted(.byteCount(style: .file)))
                     Attribute(title: "Date", detail: zimFile.created.formatted(date: .abbreviated, time: .omitted))
                     Attribute(title: "Pictures", detail: zimFile.hasPictures ? "Yes" : "No")
@@ -31,7 +32,7 @@ struct LibraryZimFileDetail: View {
                     Attribute(title: "Details", detail: zimFile.hasDetails ? "Yes" : "No")
                     Attribute(title: "Article", detail: zimFile.articleCount.formatted(.number.notation(.compactName)))
                     Attribute(title: "Media", detail: zimFile.mediaCount.formatted(.number.notation(.compactName)))
-                    Attribute(title: "ID", detail: String(zimFile.fileID.uuidString.prefix(8)))
+//                    Attribute(title: "ID", detail: String(zimFile.fileID.uuidString.prefix(8)))
                 }
             }.listStyle(.automatic)
         } else {
@@ -68,6 +69,7 @@ struct LibraryZimFileDetail_Previews: PreviewProvider {
         zimFile.created = Date()
         zimFile.fileID = UUID()
         zimFile.fileDescription = "A very long description"
+        zimFile.flavor = "max"
         zimFile.hasDetails = true
         zimFile.hasPictures = false
         zimFile.hasVideos = true
@@ -76,7 +78,6 @@ struct LibraryZimFileDetail_Previews: PreviewProvider {
         zimFile.name = "Wikipedia Zim File Name"
         zimFile.persistentID = ""
         zimFile.size = 1000000000
-        zimFile.tag = "max"
         return zimFile
     }()
     

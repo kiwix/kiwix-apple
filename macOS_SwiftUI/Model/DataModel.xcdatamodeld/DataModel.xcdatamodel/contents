@@ -21,6 +21,7 @@
         <attribute name="fileDescription" attributeType="String"/>
         <attribute name="fileID" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="fileURLBookmark" optional="YES" attributeType="Binary"/>
+        <attribute name="flavor" optional="YES" attributeType="String"/>
         <attribute name="hasDetails" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
         <attribute name="hasPictures" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
         <attribute name="hasVideos" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
@@ -30,7 +31,6 @@
         <attribute name="name" attributeType="String"/>
         <attribute name="persistentID" attributeType="String"/>
         <attribute name="size" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
-        <attribute name="tag" optional="YES" attributeType="String"/>
         <fetchIndex name="category">
             <fetchIndexElement property="category" type="Binary" order="ascending"/>
         </fetchIndex>
@@ -45,6 +45,6 @@
     </entity>
     <elements>
         <element name="Bookmark" positionX="-63" positionY="-18" width="128" height="104"/>
-        <element name="ZimFile" positionX="-63" positionY="18" width="128" height="14"/>
+        <element name="ZimFile" positionX="-63" positionY="18" width="128" height="299"/>
     </elements>
 </model>

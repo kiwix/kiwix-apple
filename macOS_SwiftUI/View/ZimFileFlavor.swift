@@ -1,5 +1,5 @@
 //
-//  ZimFileTag.swift
+//  ZimFileFlavor.swift
 //  Kiwix for macOS
 //
 //  Created by Chris Li on 12/31/21.
@@ -8,7 +8,7 @@
 
 import SwiftUI
 
-struct ZimFileTag: View {
+struct ZimFileFlavor: View {
     let string: String
     
     var body: some View {
@@ -58,9 +58,9 @@ struct ZimFileTag: View {
 
 struct Tag_Previews: PreviewProvider {
     static var previews: some View {
-        ZimFileTag(string: "max").padding()
-        ZimFileTag(string: "nopic").padding()
-        ZimFileTag(string: "mini").padding()
-        ZimFileTag(string: "other").padding()
+        ZimFileFlavor(string: "max").padding()
+        ZimFileFlavor(string: "nopic").padding()
+        ZimFileFlavor(string: "mini").padding()
+        ZimFileFlavor(string: "other").padding()
     }
 }
