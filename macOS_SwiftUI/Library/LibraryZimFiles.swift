@@ -19,12 +19,16 @@ struct LibraryZimFiles: View {
     var body: some View {
         ScrollView {
             LazyVGrid(
-                columns: [GridItem(.adaptive(minimum: 200, maximum: 300), spacing: 12)],
-                alignment: HorizontalAlignment.leading,
+                columns: (
+                    isFlattened ?
+                    [GridItem(.adaptive(minimum: 300, maximum: 500), spacing: 12)] :
+                    [GridItem(.adaptive(minimum: 200, maximum: 300), spacing: 12)]
+                ),
+                alignment: isFlattened ? .center : .leading,
                 spacing: 12,
                 pinnedViews: [.sectionHeaders]
             ) {
-                if case let .category(category) = displayMode, category == .ted || category == .stackExchange {
+                if isFlattened {
                     flattened
                 } else {
                     sectioned
@@ -38,13 +42,18 @@ struct LibraryZimFiles: View {
         }
     }
     
-    var flattened: some View {
+    private var isFlattened: Bool {
+        guard case let .category(category) = displayMode else { return false }
+        return category == .ted || category == .stackExchange
+    }
+    
+    private var flattened: some View {
         ForEach(zimFiles.flatMap { $0 }) { zimFile in
             ZimFileCell(zimFile, prominent: .title)
         }
     }
     
-    var sectioned: some View {
+    private var sectioned: some View {
         ForEach(zimFiles) { section in
             if zimFiles.count <= 1 {
                 ForEach(section) { zimFile in
