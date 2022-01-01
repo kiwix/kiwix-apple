@@ -24,22 +24,10 @@ struct LibraryZimFiles: View {
                 spacing: 12,
                 pinnedViews: [.sectionHeaders]
             ) {
-                ForEach(zimFiles) { section in
-                    if zimFiles.count <= 1 {
-                        ForEach(section) { zimFile in
-                            ZimFileCell(zimFile: zimFile)
-                        }
-                    } else {
-                        Section {
-                            ForEach(section) { zimFile in
-                                ZimFileCell(zimFile: zimFile)
-                            }
-                        } header: {
-                            LibrarySectionHeader(title: section.id)
-                                .padding(.top, section.id == zimFiles.first?.id ? 0 : 12)
-                                .padding(.bottom, -2)
-                        }
-                    }
+                if case let .category(category) = displayMode, category == .ted || category == .stackExchange {
+                    flattened
+                } else {
+                    sectioned
                 }
             }.padding()
         }
@@ -47,6 +35,32 @@ struct LibraryZimFiles: View {
         .onChange(of: displayMode) { displayMode in
             guard let displayMode = displayMode else { return }
             zimFiles.nsPredicate = generatePredicate(displayMode: displayMode)
+        }
+    }
+    
+    var flattened: some View {
+        ForEach(zimFiles.flatMap { $0 }) { zimFile in
+            ZimFileCell(zimFile: zimFile)
+        }
+    }
+    
+    var sectioned: some View {
+        ForEach(zimFiles) { section in
+            if zimFiles.count <= 1 {
+                ForEach(section) { zimFile in
+                    ZimFileCell(zimFile: zimFile)
+                }
+            } else {
+                Section {
+                    ForEach(section) { zimFile in
+                        ZimFileCell(zimFile: zimFile)
+                    }
+                } header: {
+                    LibrarySectionHeader(title: section.id)
+                        .padding(.top, section.id == zimFiles.first?.id ? 0 : 12)
+                        .padding(.bottom, -2)
+                }
+            }
         }
     }
     
