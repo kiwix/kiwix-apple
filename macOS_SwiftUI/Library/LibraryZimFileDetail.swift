@@ -18,7 +18,7 @@ struct LibraryZimFileDetail: View {
                     Text(zimFile.name).font(.callout)
                 }
                 Section("Description") {
-                    Text("To be, or not to be: that is the question: whether 'tis nobler in the mind to suffer the slings and arrows of outrageous fortune, or to take arms against a sea of troubles, and by opposing end them?").lineLimit(nil).font(.callout)
+                    Text(zimFile.fileDescription).lineLimit(nil).font(.callout)
                 }
                 Section("Attributes") {
                     Attribute(title: "Language",
@@ -26,9 +26,12 @@ struct LibraryZimFileDetail: View {
                     Attribute(title: "Category", detail: (Category(rawValue: zimFile.category) ?? .other).description)
                     Attribute(title: "Size", detail: zimFile.size.formatted(.byteCount(style: .file)))
                     Attribute(title: "Date", detail: zimFile.created.formatted(date: .abbreviated, time: .omitted))
+                    Attribute(title: "Pictures", detail: zimFile.hasPictures ? "Yes" : "No")
+                    Attribute(title: "Videos", detail: zimFile.hasVideos ? "Yes" : "No")
+                    Attribute(title: "Details", detail: zimFile.hasDetails ? "Yes" : "No")
                     Attribute(title: "Article", detail: zimFile.articleCount.formatted(.number.notation(.compactName)))
                     Attribute(title: "Media", detail: zimFile.mediaCount.formatted(.number.notation(.compactName)))
-                    Attribute(title: "ID", detail: zimFile.fileID.uuidString)
+                    Attribute(title: "ID", detail: String(zimFile.fileID.uuidString.prefix(8)))
                 }
             }.listStyle(.automatic)
         } else {
@@ -64,6 +67,10 @@ struct LibraryZimFileDetail_Previews: PreviewProvider {
         zimFile.category = "wikipedia"
         zimFile.created = Date()
         zimFile.fileID = UUID()
+        zimFile.fileDescription = "A very long description"
+        zimFile.hasDetails = true
+        zimFile.hasPictures = false
+        zimFile.hasVideos = true
         zimFile.languageCode = "en"
         zimFile.mediaCount = 100
         zimFile.name = "Wikipedia Zim File Name"
@@ -74,7 +81,7 @@ struct LibraryZimFileDetail_Previews: PreviewProvider {
     }()
     
     static var previews: some View {
-        LibraryZimFileDetail(zimFile: .constant(nil)).frame(width: 250)
+        LibraryZimFileDetail(zimFile: .constant(nil)).padding().frame(width: 250)
         LibraryZimFileDetail(zimFile: .constant(zimFile)).frame(width: 250, height: 500)
     }
 }
