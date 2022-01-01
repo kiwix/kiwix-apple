@@ -39,13 +39,20 @@ struct LibraryZimFiles: View {
         .task { try? await Database.shared.refreshOnlineZimFileCatalog() }
         .onChange(of: displayMode) { displayMode in
             guard let displayMode = displayMode else { return }
+            zimFiles.sortDescriptors = generateSortDescriptors(displayMode: displayMode)
             zimFiles.nsPredicate = generatePredicate(displayMode: displayMode)
         }
     }
     
     private var isFlattened: Bool {
-        guard case let .category(category) = displayMode else { return false }
-        return category == .ted || category == .stackExchange
+        switch displayMode {
+        case .opened, .new:
+            return true
+        case .category(let category):
+            return category == .ted || category == .stackExchange
+        default:
+            return false
+        }
     }
     
     private var flattened: some View {
@@ -74,10 +81,25 @@ struct LibraryZimFiles: View {
         }
     }
     
-    private func generatePredicate(displayMode: Library.DisplayMode) -> NSPredicate {
+    private func generateSortDescriptors(displayMode: Library.DisplayMode) -> [SortDescriptor<ZimFile>] {
+        switch displayMode {
+        case .new:
+            return [SortDescriptor(\.created, order: .reverse)]
+        default:
+            return [SortDescriptor(\.name), SortDescriptor(\.size, order: .reverse)]
+        }
+    }
+    
+    private func generatePredicate(displayMode: Library.DisplayMode) -> NSPredicate? {
         switch displayMode {
         case .opened:
             return NSPredicate(format: "fileURLBookmark != nil")
+        case .new:
+            guard let aWeekAgo = Calendar.current.date(byAdding: .day, value: -7, to: Date()) else { return nil }
+            return NSCompoundPredicate(andPredicateWithSubpredicates: [
+                NSPredicate(format: "languageCode == %@", "en"),
+                NSPredicate(format: "created > %@", aWeekAgo as CVarArg)
+            ])
         case .category(let category):
             switch category {
             case .ted, .stackExchange:
