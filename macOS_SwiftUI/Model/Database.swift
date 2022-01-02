@@ -10,8 +10,23 @@ import CoreData
 
 class Database {
     static let shared = Database()
+    private var notificationToken: NSObjectProtocol?
+    private var lastToken: NSPersistentHistoryToken?
     
-    private init() {}
+    private init() {
+        notificationToken = NotificationCenter.default.addObserver(
+            forName: .NSPersistentStoreRemoteChange, object: nil, queue: nil) { notification in
+                Task {
+                    try? await self.mergeChanges()
+                }
+        }
+    }
+    
+    deinit {
+        if let token = notificationToken {
+            NotificationCenter.default.removeObserver(token)
+        }
+    }
     
     /// A persistent container to set up the Core Data stack.
     lazy var container: NSPersistentContainer = {
@@ -22,8 +37,7 @@ class Database {
             fatalError("Failed to retrieve a persistent store description.")
         }
 
-        // Enable persistent history tracking
-        /// - Tag: persistentHistoryTracking
+        description.setOption(true as NSNumber, forKey: NSPersistentStoreRemoteChangeNotificationPostOptionKey)
         description.setOption(true as NSNumber, forKey: NSPersistentHistoryTrackingKey)
 
         container.loadPersistentStores { storeDescription, error in
@@ -86,6 +100,23 @@ class Database {
             }
         } catch {
             throw OPDSRefreshError.process
+        }
+    }
+    
+    func mergeChanges() async throws {
+        let context = container.newBackgroundContext()
+        context.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
+        context.undoManager = nil
+        try await context.perform {
+            let request = NSPersistentHistoryChangeRequest.fetchHistory(after: self.lastToken)
+            guard let result = try context.execute(request) as? NSPersistentHistoryResult,
+                  let transactions = result.result as? [NSPersistentHistoryTransaction] else { return }
+            self.container.viewContext.perform {
+                transactions.forEach { transaction in
+                    self.container.viewContext.mergeChanges(fromContextDidSave: transaction.objectIDNotification())
+                    self.lastToken = transaction.token
+                }
+            }
         }
     }
 }
