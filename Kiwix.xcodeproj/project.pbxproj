@@ -536,6 +536,7 @@
 			isa = PBXGroup;
 			children = (
 				973A2FD1277FC32D00BD4320 /* Library.swift */,
+				973A2FCF277FB99000BD4320 /* LibrarySectionHeader.swift */,
 				973A2FD5277FD8F300BD4320 /* LibrarySidebar.swift */,
 				973A2FC9277F673800BD4320 /* LibraryZimFilesGrid.swift */,
 				97B073732780A000007C7DF3 /* LibraryZimFileDetail.swift */,
@@ -810,7 +811,6 @@
 			isa = PBXGroup;
 			children = (
 				9735D0BD2777531400C7D495 /* BookmarkButton.swift */,
-				973A2FCF277FB99000BD4320 /* LibrarySectionHeader.swift */,
 				97DED67E275278FF008D2C56 /* SearchField.swift */,
 				973A2FD72780024600BD4320 /* ZimFileCell.swift */,
 				973A2FCD277FB03F00BD4320 /* ZimFileFlavor.swift */,
