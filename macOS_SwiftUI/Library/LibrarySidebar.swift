@@ -29,6 +29,13 @@ struct LibrarySidebar: View {
 
 struct LibrarySidebar_Previews: PreviewProvider {
     static var previews: some View {
-        LibrarySidebar(displayMode: .constant(.new)).frame(width: 250)
+        LibrarySidebar(displayMode: .constant(.new))
+            .listStyle(.sidebar)
+            .preferredColorScheme(.light)
+            .frame(width: 250)
+        LibrarySidebar(displayMode: .constant(.new))
+            .listStyle(.sidebar)
+            .preferredColorScheme(.dark)
+            .frame(width: 250)
     }
 }
