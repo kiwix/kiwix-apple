@@ -21,7 +21,7 @@ struct Library: View {
                         Button { Kiwix.toggleSidebar() } label: { Image(systemName: "sidebar.leading") }
                     }
                 }
-            LibraryZimFiles(displayMode: $displayMode, zimFile: $zimFile)
+            LibraryZimFilesGrid(displayMode: $displayMode, zimFile: $zimFile)
                 .frame(minWidth: 500, idealWidth: .infinity)
             LibraryZimFileDetail(zimFile: $zimFile).frame(minWidth: 200, idealWidth: 300)
         }.navigationSubtitle(displayMode?.description ?? "Unknown")

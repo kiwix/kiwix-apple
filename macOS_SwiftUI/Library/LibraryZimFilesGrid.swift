@@ -1,5 +1,5 @@
 //
-//  LibraryZimFiles.swift
+//  LibraryZimFilesGrid.swift
 //  Kiwix for macOS
 //
 //  Created by Chris Li on 12/31/21.
@@ -8,7 +8,7 @@
 
 import SwiftUI
 
-struct LibraryZimFiles: View {
+struct LibraryZimFilesGrid: View {
     @Binding var displayMode: Library.DisplayMode?
     @Binding var zimFile: ZimFile?
     @State var searchText: String = ""
