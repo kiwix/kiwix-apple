@@ -113,8 +113,7 @@ struct LibraryZimFiles: View {
                 ])
             }
         default:
-            break
+            return NSPredicate(format: "languageCode == %@", "en")
         }
-        return NSPredicate(format: "languageCode == %@", "en")
     }
 }

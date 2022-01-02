@@ -16,9 +16,7 @@ class Database {
     private init() {
         notificationToken = NotificationCenter.default.addObserver(
             forName: .NSPersistentStoreRemoteChange, object: nil, queue: nil) { notification in
-                Task {
-                    try? await self.mergeChanges()
-                }
+                Task { try? await self.mergeChanges() }
         }
     }
     
@@ -66,33 +64,35 @@ class Database {
         try parser.parse(data: data)
         
         do {
-            var allZimFileIDs = Set(parser.zimFileIDs)
+            var zimFileIDs = Set(parser.zimFileIDs)
             let context = container.newBackgroundContext()
             context.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
             context.undoManager = nil  // Set to nil to reduce resource usage, nil by default on iOS/iPadOS
             try await context.perform {
                 let request = NSBatchInsertRequest(entity: ZimFile.entity(), managedObjectHandler: { zimFile in
-                    guard let zimFile = zimFile as? ZimFile,
-                          let id = allZimFileIDs.popFirst(),
-                          let metadata = parser.getZimFileMetaData(id: id) else { return true }
-                    zimFile.articleCount = metadata.articleCount.int64Value
-                    zimFile.category = metadata.category
-                    zimFile.created = metadata.creationDate
-                    zimFile.faviconData = metadata.faviconData
-                    zimFile.faviconURL = metadata.faviconURL
-                    zimFile.fileDescription = metadata.fileDescription
-                    zimFile.fileID = metadata.fileID
-                    zimFile.flavor = metadata.flavor
-                    zimFile.hasDetails = metadata.hasDetails
-                    zimFile.hasPictures = metadata.hasPictures
-                    zimFile.hasVideos = metadata.hasVideos
-                    zimFile.languageCode = metadata.languageCode
-                    zimFile.mediaCount = metadata.mediaCount.int64Value
-                    zimFile.name = metadata.title
-                    zimFile.persistentID = metadata.groupIdentifier
-                    zimFile.size = metadata.size.int64Value
-                    
-                    return false
+                    guard let zimFile = zimFile as? ZimFile else { return  true }
+                    while !zimFileIDs.isEmpty {
+                        guard let id = zimFileIDs.popFirst(),
+                              let metadata = parser.getZimFileMetaData(id: id) else { continue }
+                        zimFile.articleCount = metadata.articleCount.int64Value
+                        zimFile.category = metadata.category
+                        zimFile.created = metadata.creationDate
+                        zimFile.faviconData = metadata.faviconData
+                        zimFile.faviconURL = metadata.faviconURL
+                        zimFile.fileDescription = metadata.fileDescription
+                        zimFile.fileID = metadata.fileID
+                        zimFile.flavor = metadata.flavor
+                        zimFile.hasDetails = metadata.hasDetails
+                        zimFile.hasPictures = metadata.hasPictures
+                        zimFile.hasVideos = metadata.hasVideos
+                        zimFile.languageCode = metadata.languageCode
+                        zimFile.mediaCount = metadata.mediaCount.int64Value
+                        zimFile.name = metadata.title
+                        zimFile.persistentID = metadata.groupIdentifier
+                        zimFile.size = metadata.size.int64Value
+                        return false
+                    }
+                    return true
                 })
                 guard let result = try context.execute(request) as? NSBatchInsertResult,
                       let success = result.result as? Bool,
@@ -103,6 +103,7 @@ class Database {
         }
     }
     
+    /// Merge changes performed on batch requests to view context
     func mergeChanges() async throws {
         let context = container.newBackgroundContext()
         context.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump

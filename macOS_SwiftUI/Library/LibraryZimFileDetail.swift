@@ -30,7 +30,6 @@ struct LibraryZimFileDetail: View {
                             title: "Category", detail: (Category(rawValue: zimFile.category) ?? .other).description
                         )
                         Attribute(title: "Flavor", detail: Flavor(rawValue: zimFile.flavor)?.description ?? "Unknown")
-                        Attribute(title: "Flavor Raw", detail: zimFile.flavor ?? "")
                         Attribute(title: "Size", detail: zimFile.size.formatted(.byteCount(style: .file)))
                         Attribute(title: "Date", detail: zimFile.created.formatted(date: .abbreviated, time: .omitted))
                     }
