@@ -78,9 +78,14 @@ struct LibraryZimFilesGrid: View {
                         ZimFileCell(zimFile).onTapGesture { self.zimFile = zimFile }
                     }
                 } header: {
-                    LibrarySectionHeader(title: section.id)
-                        .padding(.top, section.id == zimFiles.first?.id ? 0 : 12)
-                        .padding(.bottom, -2)
+                    LibrarySectionHeader(
+                        title: section.id,
+                        category: Category(rawValue: section.first?.category) ?? .other,
+                        imageData: section.first?.faviconData,
+                        imageURL: section.first?.faviconURL
+                    )
+                    .padding(.top, section.id == zimFiles.first?.id ? 0 : 12)
+                    .padding(.bottom, -2)
                 }
             }
         }

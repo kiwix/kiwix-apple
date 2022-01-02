@@ -103,6 +103,23 @@ class Database {
         }
     }
     
+    func saveImageData(url: URL) async throws {
+        let (data, response) = try await URLSession.shared.data(from: url)
+        guard let response = response as? HTTPURLResponse,
+              let mimeType = response.mimeType,
+              response.statusCode == 200,
+              mimeType.contains("image") else { return }
+        
+        let context = container.newBackgroundContext()
+        try await context.perform {
+            let predicate = NSPredicate(format: "faviconURL == %@", url as CVarArg)
+            let request = ZimFile.fetchRequest(predicate: predicate)
+            guard let zimFile = try context.fetch(request).first else { return }
+            zimFile.faviconData = data
+            try context.save()
+        }
+    }
+    
     /// Merge changes performed on batch requests to view context
     func mergeChanges() async throws {
         let context = container.newBackgroundContext()

@@ -22,6 +22,10 @@ enum Category: String, CaseIterable, Identifiable {
     case stackExchange = "stack_exchange"
     case other
     
+    init?(rawValue: String?) {
+        self.init(rawValue: rawValue ?? "")
+    }
+    
     var description: String {
         switch self {
         case .wikipedia:
