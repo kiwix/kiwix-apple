@@ -10,7 +10,7 @@ import SwiftUI
 
 struct LibrarySidebar: View {
     @Binding var displayMode: Library.DisplayMode?
-    private let displayModes: [Library.DisplayMode] = [.opened, .featured, .new, .downloads]
+    private let displayModes: [Library.DisplayMode] = [.opened, .new, .downloads]
     private let categories: [Library.DisplayMode] = Category.allCases.map {.category($0)}
     
     var body: some View {
@@ -29,6 +29,6 @@ struct LibrarySidebar: View {
 
 struct LibrarySidebar_Previews: PreviewProvider {
     static var previews: some View {
-        LibrarySidebar(displayMode: .constant(.featured)).frame(width: 250)
+        LibrarySidebar(displayMode: .constant(.new)).frame(width: 250)
     }
 }

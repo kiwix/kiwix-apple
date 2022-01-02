@@ -22,21 +22,19 @@ struct Library: View {
                     }
                 }
             LibraryZimFilesGrid(displayMode: $displayMode, zimFile: $zimFile)
-                .frame(minWidth: 500, idealWidth: .infinity)
+                .frame(minWidth: 500, idealWidth: .infinity, minHeight: 400, idealHeight: 550)
             LibraryZimFileDetail(zimFile: $zimFile).frame(minWidth: 200, idealWidth: 300)
         }.navigationSubtitle(displayMode?.description ?? "Unknown")
     }
     
     enum DisplayMode: CustomStringConvertible, Hashable {
-        case opened, featured, new, downloads
+        case opened, new, downloads
         case category(Category)
         
         var description: String {
             switch self {
             case .opened:
                 return "Opened"
-            case .featured:
-                return "Featured"
             case .new:
                 return "New"
             case .downloads:
@@ -50,8 +48,6 @@ struct Library: View {
             switch self {
             case .opened:
                 return "laptopcomputer"
-            case .featured:
-                return "lightbulb"
             case .new:
                 return "newspaper"
             case .downloads:

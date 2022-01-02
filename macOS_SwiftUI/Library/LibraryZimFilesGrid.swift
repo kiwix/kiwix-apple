@@ -42,7 +42,10 @@ struct LibraryZimFilesGrid: View {
         .onChange(of: displayMode) { displayMode in
             guard let displayMode = displayMode else { return }
             zimFiles.sortDescriptors = generateSortDescriptors(displayMode: displayMode)
-            zimFiles.nsPredicate = generatePredicate(displayMode: displayMode)
+            zimFiles.nsPredicate = generatePredicate()
+        }
+        .onChange(of: searchText) { _ in
+            zimFiles.nsPredicate = generatePredicate()
         }
     }
     
@@ -92,28 +95,36 @@ struct LibraryZimFilesGrid: View {
         }
     }
     
-    private func generatePredicate(displayMode: Library.DisplayMode) -> NSPredicate? {
+    private func generatePredicate() -> NSPredicate? {
+        var predicates = [NSPredicate]()
+        if !searchText.isEmpty {
+            predicates.append(NSPredicate(format: "name CONTAINS[cd] %@", searchText))
+        }
+        
         switch displayMode {
         case .opened:
-            return NSPredicate(format: "fileURLBookmark != nil")
+            predicates.append(NSPredicate(format: "fileURLBookmark != nil"))
         case .new:
-            guard let aWeekAgo = Calendar.current.date(byAdding: .day, value: -7, to: Date()) else { return nil }
-            return NSCompoundPredicate(andPredicateWithSubpredicates: [
+            guard let twoWeeksAgo = Calendar.current.date(byAdding: .day, value: -14, to: Date()) else { return nil }
+            predicates.append(contentsOf: [
                 NSPredicate(format: "languageCode == %@", "en"),
-                NSPredicate(format: "created > %@", aWeekAgo as CVarArg)
+                NSPredicate(format: "created > %@", twoWeeksAgo as CVarArg)
             ])
+        case .downloads:
+            predicates.append(NSPredicate(format: "category == %@", "placeholder"))
         case .category(let category):
             switch category {
             case .ted, .stackExchange:
-                return NSPredicate(format: "category == %@", category.rawValue)
+                predicates.append(NSPredicate(format: "category == %@", category.rawValue))
             default:
-                return NSCompoundPredicate(andPredicateWithSubpredicates: [
+                predicates.append(contentsOf: [
                     NSPredicate(format: "languageCode == %@", "en"),
                     NSPredicate(format: "category == %@", category.rawValue)
                 ])
             }
-        default:
-            return NSPredicate(format: "languageCode == %@", "en")
+        case .none:
+            break
         }
+        return NSCompoundPredicate(andPredicateWithSubpredicates: predicates)
     }
 }
