@@ -21,42 +21,41 @@ struct ZimFileCell: View {
     }
     
     var body: some View {
-        VStack {
-            HStack {
-                switch prominent {
-                case .size:
+        VStack(alignment: .leading, spacing: 8) {
+            switch prominent {
+            case .size:
+                HStack(alignment: .top) {
+                    Text(zimFile.size.formatted(.byteCount(style: .file)))
+                        .font(.title2)
+                        .fontWeight(.semibold)
+                    Spacer()
+                    if let flavor = Flavor(rawValue: zimFile.flavor) {
+                        ZimFileFlavor(flavor)
+                    }
+                }
+                HStack(alignment: .bottom) {
                     VStack(alignment: .leading) {
-                        Text(zimFile.size.formatted(.byteCount(style: .file)))
-                            .font(.title2)
-                            .fontWeight(.semibold)
                         Text("\(zimFile.articleCount.formatted(.number.notation(.compactName))) articles")
                             .font(.caption)
                         Text(zimFile.created.formatted(date: .abbreviated, time: .omitted))
                             .font(.caption)
                     }
-                case .title:
+                    Spacer()
+                }
+            case .title:
+                Text(
+                    zimFile.category == Category.stackExchange.rawValue ?
+                    zimFile.name.replacingOccurrences(of: "Stack Exchange", with: "") :
+                    zimFile.name
+                ).font(.title2).fontWeight(.semibold).lineLimit(1)
+                HStack(alignment: .bottom) {
                     VStack(alignment: .leading) {
-                        Text(
-                            zimFile.category == Category.stackExchange.rawValue ?
-                            zimFile.name.replacingOccurrences(of: "Stack Exchange", with: "") :
-                            zimFile.name
-                        )
-                            .font(.title2)
-                            .fontWeight(.semibold)
-                            .lineLimit(1)
                         Text(zimFile.size.formatted(.byteCount(style: .file)))
                             .font(.caption)
                         Text(zimFile.created.formatted(date: .abbreviated, time: .omitted))
                             .font(.caption)
                     }
-                }
-                Spacer()
-                VStack(alignment: .trailing) {
-                    if let flavor = Flavor(rawValue: zimFile.flavor) {
-                        ZimFileFlavor(flavor)
-                    }
                     Spacer()
-                    Image(systemName: "arrow.down.to.line.circle")
                 }
             }
         }
@@ -68,11 +67,11 @@ struct ZimFileCell: View {
     private var backgroundColor: Color {
         switch (colorScheme, isHovering) {
         case (.dark, true):
-            return Color.gray.opacity(0.1)
+            return Color.gray.opacity(0.15)
         case (.dark, false):
             return Color.gray.opacity(0.2)
         case (.light, true):
-            return Color.white.opacity(0.4)
+            return Color.white.opacity(0.75)
         default:
             return Color.white
         }
