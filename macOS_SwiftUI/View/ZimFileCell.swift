@@ -21,7 +21,7 @@ struct ZimFileCell: View {
     }
     
     var body: some View {
-        VStack(alignment: .leading, spacing: 8) {
+        VStack(spacing: 8) {
             switch prominent {
             case .size:
                 HStack(alignment: .top) {
@@ -43,11 +43,19 @@ struct ZimFileCell: View {
                     Spacer()
                 }
             case .title:
-                Text(
-                    zimFile.category == Category.stackExchange.rawValue ?
-                    zimFile.name.replacingOccurrences(of: "Stack Exchange", with: "") :
-                    zimFile.name
-                ).font(.title2).fontWeight(.semibold).lineLimit(1)
+                HStack {
+                    Text(
+                        zimFile.category == Category.stackExchange.rawValue ?
+                        zimFile.name.replacingOccurrences(of: "Stack Exchange", with: "") :
+                        zimFile.name
+                    ).font(.title2).fontWeight(.semibold).lineLimit(1)
+                    Spacer()
+                    Favicon(
+                        category: Category(rawValue: zimFile.category) ?? .other,
+                        imageData: zimFile.faviconData,
+                        imageURL: zimFile.faviconURL
+                    ).frame(height: 20)
+                }
                 HStack(alignment: .bottom) {
                     VStack(alignment: .leading) {
                         Text(zimFile.size.formatted(.byteCount(style: .file)))

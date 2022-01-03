@@ -19,7 +19,6 @@ struct Favicon: View {
             .cornerRadius(2)
             .padding(1)
             .background(.white, in: RoundedRectangle(cornerRadius: 3, style: .continuous))
-            .frame(width: 16)
             .task {
                 guard let imageURL = imageURL else { return }
                 try? await Database.shared.saveImageData(url: imageURL)

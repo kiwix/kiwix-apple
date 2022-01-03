@@ -18,7 +18,7 @@ struct LibrarySectionHeader: View {
         Label {
             Text(title).fontWeight(.medium)
         } icon: {
-            Favicon(category: category, imageData: imageData, imageURL: imageURL)
+            Favicon(category: category, imageData: imageData, imageURL: imageURL).frame(height: 18)
         }
         .padding(.horizontal, 8)
         .padding(.vertical, 5)
