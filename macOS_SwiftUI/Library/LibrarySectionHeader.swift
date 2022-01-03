@@ -24,10 +24,10 @@ struct LibrarySectionHeader: View {
         .padding(.vertical, 5)
         .overlay(
             RoundedRectangle(cornerRadius: 6, style: .continuous)
-                .stroke(.tertiary, lineWidth: 1)
+                .stroke(.quaternary, lineWidth: 1)
         )
         .background(
-            .ultraThinMaterial,
+            .thickMaterial,
             in: RoundedRectangle(cornerRadius: 6, style: .continuous)
         )
     }
