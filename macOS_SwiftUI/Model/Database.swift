@@ -20,7 +20,7 @@ class Database {
                 Task { try? await self.mergeChanges() }
         }
         token = {
-            guard let data = try? Data(contentsOf: tokenURL) else { return nil }
+            guard let data = UserDefaults.standard.data(forKey: "PersistentHistoryToken") else { return nil }
             return try? NSKeyedUnarchiver.unarchivedObject(ofClass: NSPersistentHistoryToken.self, from: data)
         }()
     }
@@ -153,7 +153,7 @@ class Database {
     }
     
     /// Merge changes performed on batch requests to view context
-    func mergeChanges() async throws {
+    private func mergeChanges() async throws {
         let context = container.newBackgroundContext()
         context.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
         context.undoManager = nil
@@ -168,9 +168,8 @@ class Database {
                 }
             }
             guard let token = transactions.last?.token else { return }
-            let url = NSPersistentContainer.defaultDirectoryURL().appendingPathComponent("PersistentHistoryToken.data")
             let data = try NSKeyedArchiver.archivedData(withRootObject: token, requiringSecureCoding: true)
-            try data.write(to: url)
+            UserDefaults.standard.set(data, forKey: "PersistentHistoryToken")
         }
     }
 }
