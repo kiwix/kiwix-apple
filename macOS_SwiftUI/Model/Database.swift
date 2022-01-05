@@ -11,13 +11,18 @@ import CoreData
 class Database {
     static let shared = Database()
     private var notificationToken: NSObjectProtocol?
-    private var lastToken: NSPersistentHistoryToken?
+    private var token: NSPersistentHistoryToken?
+    private var tokenURL = NSPersistentContainer.defaultDirectoryURL().appendingPathComponent("token.data")
     
     private init() {
         notificationToken = NotificationCenter.default.addObserver(
             forName: .NSPersistentStoreRemoteChange, object: nil, queue: nil) { notification in
                 Task { try? await self.mergeChanges() }
         }
+        token = {
+            guard let data = try? Data(contentsOf: tokenURL) else { return nil }
+            return try? NSKeyedUnarchiver.unarchivedObject(ofClass: NSPersistentHistoryToken.self, from: data)
+        }()
     }
     
     deinit {
@@ -63,44 +68,71 @@ class Database {
         let parser = OPDSStreamParser()
         try parser.parse(data: data)
         
+        // create context
+        let context = container.newBackgroundContext()
+        context.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
+        context.undoManager = nil  // Set to nil to reduce resource usage, nil by default on iOS/iPadOS
+        
+        // insert new zim files
         do {
             var zimFileIDs = Set(parser.zimFileIDs)
-            let context = container.newBackgroundContext()
-            context.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
-            context.undoManager = nil  // Set to nil to reduce resource usage, nil by default on iOS/iPadOS
             try await context.perform {
-                let request = NSBatchInsertRequest(entity: ZimFile.entity(), managedObjectHandler: { zimFile in
-                    guard let zimFile = zimFile as? ZimFile else { return  true }
+                zimFileIDs.subtract(try context.fetch(ZimFile.fetchRequest()).map { $0.fileID.uuidString.lowercased() })
+                let insertRequest = NSBatchInsertRequest(entity: ZimFile.entity(), managedObjectHandler: { zimFile in
+                    guard let zimFile = zimFile as? ZimFile else { return true }
                     while !zimFileIDs.isEmpty {
                         guard let id = zimFileIDs.popFirst(),
                               let metadata = parser.getZimFileMetaData(id: id) else { continue }
-                        zimFile.articleCount = metadata.articleCount.int64Value
-                        zimFile.category = metadata.category
-                        zimFile.created = metadata.creationDate
-                        zimFile.faviconData = metadata.faviconData
-                        zimFile.faviconURL = metadata.faviconURL
-                        zimFile.fileDescription = metadata.fileDescription
-                        zimFile.fileID = metadata.fileID
-                        zimFile.flavor = metadata.flavor
-                        zimFile.hasDetails = metadata.hasDetails
-                        zimFile.hasPictures = metadata.hasPictures
-                        zimFile.hasVideos = metadata.hasVideos
-                        zimFile.languageCode = metadata.languageCode
-                        zimFile.mediaCount = metadata.mediaCount.int64Value
-                        zimFile.name = metadata.title
-                        zimFile.persistentID = metadata.groupIdentifier
-                        zimFile.size = metadata.size.int64Value
+                        self.configureZimFile(zimFile, metadata: metadata)
                         return false
                     }
                     return true
                 })
-                guard let result = try context.execute(request) as? NSBatchInsertResult,
-                      let success = result.result as? Bool,
-                      success else { throw OPDSRefreshError.process }
+                insertRequest.resultType = .count
+                guard let result = try context.execute(insertRequest) as? NSBatchInsertResult,
+                      let count = result.result as? Int else { throw OPDSRefreshError.process }
+                print("Added \(count) zim files entities.")
             }
         } catch {
             throw OPDSRefreshError.process
         }
+        
+        // delete old zim files
+        do {
+            let fetchRequest: NSFetchRequest<NSFetchRequestResult> = ZimFile.fetchRequest()
+            fetchRequest.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
+                NSPredicate(format: "fileURLBookmark == nil"),
+                NSPredicate(format: "NOT fileID IN %@", parser.zimFileIDs.compactMap { UUID(uuidString: $0) })
+            ])
+            let deleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
+            deleteRequest.resultType = .resultTypeCount
+            try await context.perform {
+                guard let result = try context.execute(deleteRequest) as? NSBatchDeleteResult,
+                      let count = result.result as? Int else { throw OPDSRefreshError.process }
+                print("Deleted \(count) zim files entities.")
+            }
+        } catch {
+            throw OPDSRefreshError.process
+        }
+    }
+    
+    private func configureZimFile(_ zimFile: ZimFile, metadata: ZimFileMetaData) {
+        zimFile.articleCount = metadata.articleCount.int64Value
+        zimFile.category = metadata.category
+        zimFile.created = metadata.creationDate
+        zimFile.faviconData = metadata.faviconData
+        zimFile.faviconURL = metadata.faviconURL
+        zimFile.fileDescription = metadata.fileDescription
+        zimFile.fileID = metadata.fileID
+        zimFile.flavor = metadata.flavor
+        zimFile.hasDetails = metadata.hasDetails
+        zimFile.hasPictures = metadata.hasPictures
+        zimFile.hasVideos = metadata.hasVideos
+        zimFile.languageCode = metadata.languageCode
+        zimFile.mediaCount = metadata.mediaCount.int64Value
+        zimFile.name = metadata.title
+        zimFile.persistentID = metadata.groupIdentifier
+        zimFile.size = metadata.size.int64Value
     }
     
     func saveImageData(url: URL) async throws {
@@ -126,15 +158,19 @@ class Database {
         context.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
         context.undoManager = nil
         try await context.perform {
-            let request = NSPersistentHistoryChangeRequest.fetchHistory(after: self.lastToken)
+            let request = NSPersistentHistoryChangeRequest.fetchHistory(after: self.token)
             guard let result = try context.execute(request) as? NSPersistentHistoryResult,
                   let transactions = result.result as? [NSPersistentHistoryTransaction] else { return }
             self.container.viewContext.perform {
                 transactions.forEach { transaction in
                     self.container.viewContext.mergeChanges(fromContextDidSave: transaction.objectIDNotification())
-                    self.lastToken = transaction.token
+                    self.token = transaction.token
                 }
             }
+            guard let token = transactions.last?.token else { return }
+            let url = NSPersistentContainer.defaultDirectoryURL().appendingPathComponent("PersistentHistoryToken.data")
+            let data = try NSKeyedArchiver.archivedData(withRootObject: token, requiringSecureCoding: true)
+            try data.write(to: url)
         }
     }
 }
