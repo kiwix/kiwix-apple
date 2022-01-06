@@ -158,8 +158,9 @@ class Database {
         context.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
         context.undoManager = nil
         try await context.perform {
-            let request = NSPersistentHistoryChangeRequest.fetchHistory(after: self.token)
-            guard let result = try context.execute(request) as? NSPersistentHistoryResult,
+            // fetch and merge changes
+            let fetchRequest = NSPersistentHistoryChangeRequest.fetchHistory(after: self.token)
+            guard let result = try context.execute(fetchRequest) as? NSPersistentHistoryResult,
                   let transactions = result.result as? [NSPersistentHistoryTransaction] else { return }
             self.container.viewContext.perform {
                 transactions.forEach { transaction in
@@ -167,9 +168,16 @@ class Database {
                     self.token = transaction.token
                 }
             }
+            
+            // update token
             guard let token = transactions.last?.token else { return }
             let data = try NSKeyedArchiver.archivedData(withRootObject: token, requiringSecureCoding: true)
             UserDefaults.standard.set(data, forKey: "PersistentHistoryToken")
+            
+            // purge history
+            let sevenDaysAgo = Date(timeIntervalSinceNow: -3600 * 24 * 7)
+            let purgeRequest = NSPersistentHistoryChangeRequest.deleteHistory(before: sevenDaysAgo)
+            try context.execute(purgeRequest)
         }
     }
 }
