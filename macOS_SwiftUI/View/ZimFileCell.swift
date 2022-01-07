@@ -75,11 +75,11 @@ struct ZimFileCell: View {
     private var backgroundColor: Color {
         switch (colorScheme, isHovering) {
         case (.dark, true):
-            return Color.gray.opacity(0.15)
+            return Color.black.opacity(0.2)
         case (.dark, false):
             return Color.gray.opacity(0.2)
         case (.light, true):
-            return Color.white.opacity(0.75)
+            return Color.gray.opacity(0.2)
         default:
             return Color.white
         }
