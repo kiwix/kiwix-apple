@@ -21,8 +21,13 @@ struct Library: View {
                         Button { Kiwix.toggleSidebar() } label: { Image(systemName: "sidebar.leading") }
                     }
                 }
-            LibraryZimFilesGrid(displayMode: $displayMode, zimFile: $zimFile)
-                .frame(minWidth: 500, idealWidth: .infinity, minHeight: 400, idealHeight: 550)
+            switch displayMode {
+            case .opened, .new, .downloads:
+                LibraryZimFilesList(displayMode: $displayMode, selectedZimFile: $zimFile)
+            default:
+                LibraryZimFilesGrid(displayMode: $displayMode, zimFile: $zimFile)
+                    .frame(minWidth: 500, idealWidth: .infinity, minHeight: 400, idealHeight: 550)
+            }
             LibraryZimFileDetail(zimFile: $zimFile).frame(minWidth: 200, idealWidth: 300)
         }.navigationSubtitle(displayMode?.description ?? "Unknown")
     }
