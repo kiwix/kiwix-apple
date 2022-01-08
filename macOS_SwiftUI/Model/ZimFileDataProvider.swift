@@ -12,15 +12,21 @@ class ZimFileDataProvider {
     class func open(url: URL) {
         guard let metadata = ZimFileService.getMetaData(url: url) else { return }
         ZimFileService.shared.open(url: url)
-        
-        let context = Database.shared.container.viewContext
-        let zimFile = ZimFile(context: context)
-        zimFile.fileID = UUID(uuidString: metadata.identifier)!
-        zimFile.name = metadata.title
-        zimFile.size = metadata.size.int64Value
-        zimFile.faviconData = metadata.faviconData
-        zimFile.fileURLBookmark = ZimFileService.shared.getFileURLBookmark(zimFileID: metadata.identifier)
-        try? context.save()
+        Task {
+            let data = ZimFileService.shared.getFileURLBookmark(zimFileID: metadata.identifier)
+            try? await Database.shared.addZimFile(metadata: metadata, fileURLBookmark: data)
+        }
+//        
+//        
+//        
+//        let context = Database.shared.container.viewContext
+//        let zimFile = ZimFile(context: context)
+//        zimFile.fileID = UUID(uuidString: metadata.identifier)!
+//        zimFile.name = metadata.title
+//        zimFile.size = metadata.size.int64Value
+//        zimFile.faviconData = metadata.faviconData
+//        zimFile.fileURLBookmark = ZimFileService.shared.getFileURLBookmark(zimFileID: metadata.identifier)
+//        try? context.save()
     }
     
     class func reopen() {

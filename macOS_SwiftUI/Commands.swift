@@ -7,12 +7,26 @@
 //
 
 import SwiftUI
+import UniformTypeIdentifiers
 
-struct FileImportButton: View {
-    @FocusedBinding(\.fileImporter) var isPresented: Bool?
+struct ImportCommands: Commands {
+    @State private var isShowing: Bool = false
     
-    var body: some View {
-        Button("Open...") { isPresented = true }.keyboardShortcut("o")
+    var body: some Commands {
+        CommandGroup(replacing: .importExport) {
+            Section {
+                Button("Open...") {
+                    isShowing = true
+                }.fileImporter(
+                    isPresented: $isShowing,
+                    allowedContentTypes: [UTType(exportedAs: "org.openzim.zim")],
+                    allowsMultipleSelection: true) { result in
+//                        if case let .success(url) = result {
+//                            ZimFileDataProvider.open(url: url)
+//                        }
+                }.keyboardShortcut("o")
+            }
+        }
     }
 }
 
@@ -46,10 +60,6 @@ struct NavigationCommandButtons: View {
     }
 }
 
-struct FileImporterKey: FocusedValueKey {
-    typealias Value = Binding<Bool>
-}
-
 struct SidebarDisplayModeKey: FocusedValueKey {
     typealias Value = Binding<SidebarDisplayMode>
 }
@@ -59,11 +69,6 @@ struct SceneViewModelKey: FocusedValueKey {
 }
 
 extension FocusedValues {
-    var fileImporter: FileImporterKey.Value? {
-        get { self[FileImporterKey.self] }
-        set { self[FileImporterKey.self] = newValue }
-    }
-    
     var sidebarDisplayMode: SidebarDisplayModeKey.Value? {
         get { self[SidebarDisplayModeKey.self] }
         set { self[SidebarDisplayModeKey.self] = newValue }

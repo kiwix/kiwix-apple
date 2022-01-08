@@ -14,7 +14,6 @@ import WebKit
 struct ContentView: View {
     @StateObject var viewModel = SceneViewModel()
     @State var url: URL?
-    @State var isPresentingFileImporter: Bool = false
     @Environment(\.managedObjectContext) var managedObjectContext
     @FetchRequest(sortDescriptors: []) private var onDeviceZimFiles: FetchedResults<ZimFile>
     
@@ -68,15 +67,9 @@ struct ContentView: View {
                 }
         }
         .environmentObject(viewModel)
-        .focusedSceneValue(\.fileImporter, $isPresentingFileImporter)
         .focusedSceneValue(\.sceneViewModel, viewModel)
         .navigationTitle(viewModel.articleTitle)
         .navigationSubtitle(viewModel.zimFileTitle)
-        .fileImporter(isPresented: $isPresentingFileImporter, allowedContentTypes: [UTType(exportedAs: "org.openzim.zim")]) { result in
-            if case let .success(url) = result {
-                ZimFileDataProvider.open(url: url)
-            }
-        }
     }
 }
 

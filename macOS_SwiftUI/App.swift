@@ -19,10 +19,10 @@ struct Kiwix: SwiftUI.App {
             ContentView().environment(\.managedObjectContext, Database.shared.container.viewContext)
         }.commands {
             SidebarCommands()
+            ImportCommands()
             CommandGroup(replacing: .newItem) {
                 Button("New Tab") { newTab() }.keyboardShortcut("t")
                 Divider()
-                FileImportButton()
             }
             CommandGroup(before: .sidebar) {
                 SidebarDisplayModeCommandButtons()
@@ -41,6 +41,9 @@ struct Kiwix: SwiftUI.App {
         }.handlesExternalEvents(matching: [WindowGroupTitle.reading.rawValue])
         WindowGroup(WindowGroupTitle.library.rawValue) {
             Library().environment(\.managedObjectContext, Database.shared.container.viewContext)
+        }.commands {
+            SidebarCommands()
+            ImportCommands()
         }.handlesExternalEvents(matching: [WindowGroupTitle.library.rawValue])
     }
     

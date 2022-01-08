@@ -60,6 +60,14 @@ class Database {
         return container
     }()
     
+    func addZimFile(metadata: ZimFileMetaData, fileURLBookmark: Data?) async throws {
+        let context = container.newBackgroundContext()
+        let zimFile = ZimFile(context: context)
+        configureZimFile(zimFile, metadata: metadata)
+        zimFile.fileURLBookmark = fileURLBookmark
+        if context.hasChanges { try context.save() }
+    }
+    
     /// Update the local zim file catalog with what's available online.
     func refreshZimFileCatalog() async throws {
         guard let url = URL(string: "https://library.kiwix.org/catalog/root.xml") else { return }
