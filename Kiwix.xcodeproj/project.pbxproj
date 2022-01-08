@@ -139,7 +139,6 @@
 		97B0737827889F1C007C7DF3 /* LibraryZimFilesList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97B0737727889F1C007C7DF3 /* LibraryZimFilesList.swift */; };
 		97B304882778B45B00E82DE0 /* Search.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97D07A08273719720002B9EB /* Search.swift */; };
 		97B3048927796C9000E82DE0 /* SearchOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97B3998F2467626A00BC6F5B /* SearchOperation.swift */; };
-		97B3048B277B633600E82DE0 /* ZimFileDataProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97B3048A277B633600E82DE0 /* ZimFileDataProvider.swift */; };
 		97B3048D277D4EF400E82DE0 /* LibraryList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97B3048C277D4EF400E82DE0 /* LibraryList.swift */; };
 		97B3998A24673FE000BC6F5B /* SearchOperation.mm in Sources */ = {isa = PBXBuildFile; fileRef = 97B3998924673FE000BC6F5B /* SearchOperation.mm */; };
 		97B3998E246759E400BC6F5B /* SearchResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 97B3998C2467561900BC6F5B /* SearchResult.m */; };
@@ -359,7 +358,6 @@
 		97B073732780A000007C7DF3 /* LibraryZimFileDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryZimFileDetail.swift; sourceTree = "<group>"; };
 		97B0737527825E3D007C7DF3 /* Favicon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Favicon.swift; sourceTree = "<group>"; };
 		97B0737727889F1C007C7DF3 /* LibraryZimFilesList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryZimFilesList.swift; sourceTree = "<group>"; };
-		97B3048A277B633600E82DE0 /* ZimFileDataProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZimFileDataProvider.swift; sourceTree = "<group>"; };
 		97B3048C277D4EF400E82DE0 /* LibraryList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryList.swift; sourceTree = "<group>"; };
 		97B3998824673FE000BC6F5B /* SearchOperation.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SearchOperation.h; sourceTree = "<group>"; };
 		97B3998924673FE000BC6F5B /* SearchOperation.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SearchOperation.mm; sourceTree = "<group>"; };
@@ -531,7 +529,6 @@
 				9735D0B82775363900C7D495 /* DataModel.xcdatamodeld */,
 				9735D0BB2775594700C7D495 /* Database.swift */,
 				9735D0BF27777E3300C7D495 /* Enum.swift */,
-				97B3048A277B633600E82DE0 /* ZimFileDataProvider.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -1342,7 +1339,6 @@
 				97B3048D277D4EF400E82DE0 /* LibraryList.swift in Sources */,
 				97E94B2F271EF630005B0295 /* ZimFileService.mm in Sources */,
 				973A2FD2277FC32D00BD4320 /* Library.swift in Sources */,
-				97B3048B277B633600E82DE0 /* ZimFileDataProvider.swift in Sources */,
 				97242BA22735E6A800C87F85 /* Settings.swift in Sources */,
 				97B3BACC2736CDCE00A23F49 /* URLContent.swift in Sources */,
 				97242B8A2735E67500C87F85 /* SearchOperation.mm in Sources */,
