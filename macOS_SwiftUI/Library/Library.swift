@@ -24,7 +24,7 @@ struct Library: View {
                 }
             switch displayMode {
             case .category(let category) where category != .ted && category != .stackExchange:
-                LibraryZimFilesGrid(displayMode: $displayMode, zimFile: $zimFile, searchText: $searchText)
+                LibraryZimFilesGrid(displayMode: $displayMode, selectedZimFile: $zimFile, searchText: $searchText)
             default:
                 LibraryZimFilesList(displayMode: $displayMode, selectedZimFile: $zimFile, searchText: $searchText)
                     .frame(minWidth: 500, idealWidth: .infinity, minHeight: 400, idealHeight: 550)

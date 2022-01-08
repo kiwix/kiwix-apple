@@ -10,7 +10,7 @@ import SwiftUI
 
 struct LibraryZimFilesGrid: View {
     @Binding var displayMode: Library.DisplayMode?
-    @Binding var zimFile: ZimFile?
+    @Binding var selectedZimFile: ZimFile?
     @Binding var searchText: String
     @SectionedFetchRequest(
         sectionIdentifier: \.name,
@@ -29,12 +29,12 @@ struct LibraryZimFilesGrid: View {
                 ForEach(zimFiles) { section in
                     if zimFiles.count <= 1 {
                         ForEach(section) { zimFile in
-                            ZimFileCell(zimFile).onTapGesture { self.zimFile = zimFile }
+                            ZimFileCell(zimFile).onTapGesture { self.selectedZimFile = zimFile }
                         }
                     } else {
                         Section {
                             ForEach(section) { zimFile in
-                                ZimFileCell(zimFile).onTapGesture { self.zimFile = zimFile }
+                                ZimFileCell(zimFile).onTapGesture { self.selectedZimFile = zimFile }
                             }
                         } header: {
                             LibrarySectionHeader(
