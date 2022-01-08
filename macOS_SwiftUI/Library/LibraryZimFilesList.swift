@@ -30,7 +30,6 @@ struct LibraryZimFilesList: View {
                 }
             }.padding()
         }
-        .searchable(text: $searchText)
         .onAppear {
             zimFiles.sortDescriptors = generateSortDescriptors()
             zimFiles.nsPredicate = generatePredicate()

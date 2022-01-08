@@ -12,6 +12,7 @@ struct Library: View {
     @State private var displayMode: DisplayMode? = .opened
     @State private var zimFile: ZimFile?
     @State var searchText: String = ""
+//    @State var selectedLanguage: String = ""
 
     var body: some View {
         NavigationView {
@@ -22,17 +23,24 @@ struct Library: View {
                         Button { Kiwix.toggleSidebar() } label: { Image(systemName: "sidebar.leading") }
                     }
                 }
-            switch displayMode {
-            case .category(let category) where category != .ted && category != .stackExchange:
-                LibraryZimFilesGrid(displayMode: $displayMode, selectedZimFile: $zimFile, searchText: $searchText)
-            default:
-                LibraryZimFilesList(displayMode: $displayMode, selectedZimFile: $zimFile, searchText: $searchText)
-                    .frame(minWidth: 500, idealWidth: .infinity, minHeight: 400, idealHeight: 550)
-            }
+            zimFiles
+                .frame(minWidth: 500, idealWidth: .infinity, minHeight: 400, idealHeight: 550)
+                .searchable(text: $searchText)
+
             LibraryZimFileDetail(zimFile: $zimFile).frame(minWidth: 200, idealWidth: 300)
         }
         .navigationSubtitle(displayMode?.description ?? "Unknown")
         .task { try? await Database.shared.refreshOnlineZimFileCatalog() }
+    }
+    
+    @ViewBuilder
+    var zimFiles: some View {
+        switch displayMode {
+        case .category(let category) where category != .ted && category != .stackExchange:
+            LibraryZimFilesGrid(displayMode: $displayMode, selectedZimFile: $zimFile, searchText: $searchText)
+        default:
+            LibraryZimFilesList(displayMode: $displayMode, selectedZimFile: $zimFile, searchText: $searchText)
+        }
     }
     
     enum DisplayMode: CustomStringConvertible, Hashable {

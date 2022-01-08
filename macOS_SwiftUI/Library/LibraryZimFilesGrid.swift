@@ -50,7 +50,6 @@ struct LibraryZimFilesGrid: View {
                 }
             }.padding()
         }
-        .searchable(text: $searchText)
         .onAppear {
             zimFiles.nsPredicate = generatePredicate()
         }
