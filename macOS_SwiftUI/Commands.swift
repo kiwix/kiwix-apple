@@ -20,10 +20,17 @@ struct ImportCommands: Commands {
                 }.fileImporter(
                     isPresented: $isShowing,
                     allowedContentTypes: [UTType(exportedAs: "org.openzim.zim")],
-                    allowsMultipleSelection: true) { result in
-//                        if case let .success(url) = result {
-//                            ZimFileDataProvider.open(url: url)
-//                        }
+                    allowsMultipleSelection: true
+                ) { result in
+                    guard case let .success(urls) = result else { return }
+                    urls.forEach { url in
+                        guard let metadata = ZimFileService.getMetaData(url: url) else { return }
+                        ZimFileService.shared.open(url: url)
+                        Task {
+                            let data = ZimFileService.shared.getFileURLBookmark(zimFileID: metadata.identifier)
+                            try? await Database.shared.addZimFile(metadata: metadata, fileURLBookmark: data)
+                        }
+                    }
                 }.keyboardShortcut("o")
             }
         }

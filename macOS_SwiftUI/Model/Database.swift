@@ -62,10 +62,14 @@ class Database {
     
     func addZimFile(metadata: ZimFileMetaData, fileURLBookmark: Data?) async throws {
         let context = container.newBackgroundContext()
-        let zimFile = ZimFile(context: context)
-        configureZimFile(zimFile, metadata: metadata)
-        zimFile.fileURLBookmark = fileURLBookmark
-        if context.hasChanges { try context.save() }
+        context.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
+        context.undoManager = nil
+        try await context.perform {
+            let zimFile = ZimFile(context: context)
+            self.configureZimFile(zimFile, metadata: metadata)
+            zimFile.fileURLBookmark = fileURLBookmark
+            if context.hasChanges { try context.save() }
+        }
     }
     
     /// Update the local zim file catalog with what's available online.
@@ -82,7 +86,7 @@ class Database {
         // create context
         let context = container.newBackgroundContext()
         context.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
-        context.undoManager = nil  // Set to nil to reduce resource usage, nil by default on iOS/iPadOS
+        context.undoManager = nil
         
         // insert new zim files
         do {
