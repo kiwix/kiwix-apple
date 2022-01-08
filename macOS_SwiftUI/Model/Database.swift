@@ -76,7 +76,7 @@ class Database {
     func refreshZimFileCatalog() async throws {
         guard let url = URL(string: "https://library.kiwix.org/catalog/root.xml") else { return }
         let (data, response) = try await URLSession.shared.data(from: url)
-        guard let response = response as? HTTPURLResponse, response.statusCode != 200 else {
+        guard let response = response as? HTTPURLResponse, response.statusCode == 200 else {
             throw OPDSRefreshError.retrieve(description: "Error retrieving online catalog.")
         }
         
