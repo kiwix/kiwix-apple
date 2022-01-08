@@ -60,12 +60,14 @@ class Database {
         return container
     }()
     
-    func addZimFile(metadata: ZimFileMetaData, fileURLBookmark: Data?) async throws {
+    func upsertZimFile(metadata: ZimFileMetaData, fileURLBookmark: Data?) async throws {
         let context = container.newBackgroundContext()
         context.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
         context.undoManager = nil
         try await context.perform {
-            let zimFile = ZimFile(context: context)
+            let predicate = NSPredicate(format: "fileID == %@", metadata.fileID as CVarArg)
+            let fetchRequest = ZimFile.fetchRequest(predicate: predicate)
+            let zimFile = try context.fetch(fetchRequest).first ?? ZimFile(context: context)
             self.configureZimFile(zimFile, metadata: metadata)
             zimFile.fileURLBookmark = fileURLBookmark
             if context.hasChanges { try context.save() }
@@ -135,8 +137,6 @@ class Database {
         zimFile.articleCount = metadata.articleCount.int64Value
         zimFile.category = metadata.category
         zimFile.created = metadata.creationDate
-        zimFile.faviconData = metadata.faviconData
-        zimFile.faviconURL = metadata.faviconURL
         zimFile.fileDescription = metadata.fileDescription
         zimFile.fileID = metadata.fileID
         zimFile.flavor = metadata.flavor
@@ -148,6 +148,10 @@ class Database {
         zimFile.name = metadata.title
         zimFile.persistentID = metadata.groupIdentifier
         zimFile.size = metadata.size.int64Value
+        
+        // Only overwrite favicon data and url if there is a new value
+        if let data = metadata.faviconData { zimFile.faviconData = data }
+        if let url = metadata.faviconURL { zimFile.faviconURL = url }
     }
     
     func saveImageData(url: URL) async throws {

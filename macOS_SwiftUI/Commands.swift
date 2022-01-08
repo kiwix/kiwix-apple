@@ -28,7 +28,7 @@ struct ImportCommands: Commands {
                         ZimFileService.shared.open(url: url)
                         Task {
                             let data = ZimFileService.shared.getFileURLBookmark(zimFileID: metadata.identifier)
-                            try? await Database.shared.addZimFile(metadata: metadata, fileURLBookmark: data)
+                            try? await Database.shared.upsertZimFile(metadata: metadata, fileURLBookmark: data)
                         }
                     }
                 }.keyboardShortcut("o")
