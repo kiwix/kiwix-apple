@@ -11,6 +11,7 @@ import SwiftUI
 struct Library: View {
     @State private var displayMode: DisplayMode? = .opened
     @State private var zimFile: ZimFile?
+    @State var searchText: String = ""
 
     var body: some View {
         NavigationView {
@@ -22,14 +23,16 @@ struct Library: View {
                     }
                 }
             switch displayMode {
-            case .opened, .new, .downloads:
-                LibraryZimFilesList(displayMode: $displayMode, selectedZimFile: $zimFile)
+            case .category(let category) where category != .ted && category != .stackExchange:
+                LibraryZimFilesGrid(displayMode: $displayMode, zimFile: $zimFile, searchText: $searchText)
             default:
-                LibraryZimFilesGrid(displayMode: $displayMode, zimFile: $zimFile)
+                LibraryZimFilesList(displayMode: $displayMode, selectedZimFile: $zimFile, searchText: $searchText)
                     .frame(minWidth: 500, idealWidth: .infinity, minHeight: 400, idealHeight: 550)
             }
             LibraryZimFileDetail(zimFile: $zimFile).frame(minWidth: 200, idealWidth: 300)
-        }.navigationSubtitle(displayMode?.description ?? "Unknown")
+        }
+        .navigationSubtitle(displayMode?.description ?? "Unknown")
+        .task { try? await Database.shared.refreshOnlineZimFileCatalog() }
     }
     
     enum DisplayMode: CustomStringConvertible, Hashable {

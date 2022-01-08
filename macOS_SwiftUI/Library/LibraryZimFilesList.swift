@@ -11,7 +11,7 @@ import SwiftUI
 struct LibraryZimFilesList: View {
     @Binding var displayMode: Library.DisplayMode?
     @Binding var selectedZimFile: ZimFile?
-    @State var searchText: String = ""
+    @Binding var searchText: String
     @FetchRequest(
         sortDescriptors: [],
         predicate: NSPredicate(format: "category == %@", "does_not_exist")
