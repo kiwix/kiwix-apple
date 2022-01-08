@@ -61,9 +61,12 @@ class Database {
     }()
     
     /// Update the local zim file catalog with what's available online.
-    func refreshOnlineZimFileCatalog() async throws {
+    func refreshZimFileCatalog() async throws {
         guard let url = URL(string: "https://library.kiwix.org/catalog/root.xml") else { return }
-        let (data, _) = try await URLSession.shared.data(from: url)
+        let (data, response) = try await URLSession.shared.data(from: url)
+        guard let response = response as? HTTPURLResponse, response.statusCode != 200 else {
+            throw OPDSRefreshError.retrieve(description: "Error retrieving online catalog.")
+        }
         
         let parser = OPDSStreamParser()
         try parser.parse(data: data)
