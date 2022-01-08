@@ -60,6 +60,7 @@ class Database {
         return container
     }()
     
+    /// Create or update a single zim file entry in the local database.
     func upsertZimFile(metadata: ZimFileMetaData, fileURLBookmark: Data?) async throws {
         let context = container.newBackgroundContext()
         context.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
@@ -74,7 +75,7 @@ class Database {
         }
     }
     
-    /// Update the local zim file catalog with what's available online.
+    /// Batch update the local zim file database with what's available online.
     func refreshZimFileCatalog() async throws {
         guard let url = URL(string: "https://library.kiwix.org/catalog/root.xml") else { return }
         let (data, response) = try await URLSession.shared.data(from: url)
