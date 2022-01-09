@@ -813,10 +813,11 @@
 			isa = PBXGroup;
 			children = (
 				9735D0BD2777531400C7D495 /* BookmarkButton.swift */,
+				97B0737527825E3D007C7DF3 /* Favicon.swift */,
 				97DED67E275278FF008D2C56 /* SearchField.swift */,
+				97255D8B273608C3002B995B /* WebView.swift */,
 				973A2FD72780024600BD4320 /* ZimFileCell.swift */,
 				973A2FCD277FB03F00BD4320 /* ZimFileFlavor.swift */,
-				97B0737527825E3D007C7DF3 /* Favicon.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -831,7 +832,6 @@
 				97E94B19271EF24D005B0295 /* App.swift */,
 				973BC75627587A29008D4114 /* Commands.swift */,
 				97E94B1B271EF24D005B0295 /* ContentView.swift */,
-				97255D8B273608C3002B995B /* WebView.swift */,
 				97E94B26271EF359005B0295 /* Support */,
 				97E94B1F271EF250005B0295 /* Preview Content */,
 			);
