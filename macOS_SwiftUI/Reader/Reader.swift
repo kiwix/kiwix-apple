@@ -1,5 +1,5 @@
 //
-//  ContentView.swift
+//  Reader.swift
 //  Kiwix
 //
 //  Created by Chris Li on 10/19/21.
@@ -11,16 +11,14 @@ import SwiftUI
 import UniformTypeIdentifiers
 import WebKit
 
-struct ContentView: View {
-    @StateObject var viewModel = SceneViewModel()
+struct Reader: View {
+    @StateObject var viewModel = ReaderViewModel()
     @State var url: URL?
-    @Environment(\.managedObjectContext) var managedObjectContext
     @FetchRequest(sortDescriptors: []) private var onDeviceZimFiles: FetchedResults<ZimFile>
     
     var body: some View {
         NavigationView {
             Sidebar(url: $url)
-                .environmentObject(viewModel)
                 .frame(minWidth: 250)
                 .toolbar {
                     ToolbarItem(placement: .primaryAction) {
@@ -73,7 +71,7 @@ struct ContentView: View {
     }
 }
 
-class SceneViewModel: NSObject, ObservableObject, WKNavigationDelegate {
+class ReaderViewModel: NSObject, ObservableObject, WKNavigationDelegate {
     @Published var canGoBack: Bool = false
     @Published var canGoForward: Bool = false
     @Published var articleTitle: String = ""

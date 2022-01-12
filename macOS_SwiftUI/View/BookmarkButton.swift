@@ -11,7 +11,7 @@ import SwiftUI
 
 struct BookmarkButton: View {
     @FetchRequest private var bookmarks: FetchedResults<Bookmark>
-    @EnvironmentObject var viewModel: SceneViewModel
+    @EnvironmentObject var viewModel: ReaderViewModel
     @Binding var url: URL?
     
     init(url: Binding<URL?>) {

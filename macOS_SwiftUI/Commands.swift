@@ -57,7 +57,7 @@ struct SidebarDisplayModeCommandButtons: View {
 }
 
 struct NavigationCommandButtons: View {
-    @FocusedValue(\.sceneViewModel) var sceneViewModel: SceneViewModel?
+    @FocusedValue(\.sceneViewModel) var sceneViewModel: ReaderViewModel?
     
     var body: some View {
         Button("Go Back") { sceneViewModel?.webView.goBack() }
@@ -72,7 +72,7 @@ struct SidebarDisplayModeKey: FocusedValueKey {
 }
 
 struct SceneViewModelKey: FocusedValueKey {
-    typealias Value = SceneViewModel
+    typealias Value = ReaderViewModel
 }
 
 extension FocusedValues {

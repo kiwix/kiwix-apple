@@ -16,7 +16,7 @@ struct Kiwix: SwiftUI.App {
     
     var body: some Scene {
         WindowGroup {
-            ContentView().environment(\.managedObjectContext, Database.shared.container.viewContext)
+            Reader().environment(\.managedObjectContext, Database.shared.container.viewContext)
         }.commands {
             SidebarCommands()
             ImportCommands()
