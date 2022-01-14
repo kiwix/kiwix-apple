@@ -25,14 +25,8 @@ struct Reader: View {
                         Button { Kiwix.toggleSidebar() } label: { Image(systemName: "sidebar.leading") }
                     }
                 }
-            Group {
-                if url == nil {
-                    EmptyView()
-                } else {
-                    WebView(url: $url, webView: viewModel.webView)
-                        .ignoresSafeArea(.container, edges: .vertical)
-                }
-            }
+            WebView(url: $url, webView: viewModel.webView)
+                .ignoresSafeArea(.container, edges: .vertical)
                 .frame(minWidth: 400, idealWidth: 800, minHeight: 400, idealHeight: 550)
                 .toolbar {
                     ToolbarItemGroup(placement: .navigation) {
@@ -64,8 +58,7 @@ struct Reader: View {
                     }
                 }
         }
-        .environmentObject(viewModel)
-        .focusedSceneValue(\.sceneViewModel, viewModel)
+        .focusedSceneValue(\.readerViewModel, viewModel)
         .navigationTitle(viewModel.articleTitle)
         .navigationSubtitle(viewModel.zimFileTitle)
     }

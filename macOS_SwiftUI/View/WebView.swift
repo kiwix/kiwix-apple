@@ -20,9 +20,7 @@ struct WebView: NSViewRepresentable {
         nsView.load(URLRequest(url: url))
     }
     
-    func makeCoordinator() -> Coordinator {
-        Coordinator(view: self)
-    }
+    func makeCoordinator() -> Coordinator { Coordinator(view: self) }
     
     class Coordinator {
         private let urlObserver: NSKeyValueObservation

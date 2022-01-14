@@ -57,12 +57,12 @@ struct SidebarDisplayModeCommandButtons: View {
 }
 
 struct NavigationCommandButtons: View {
-    @FocusedValue(\.sceneViewModel) var sceneViewModel: ReaderViewModel?
+    @FocusedValue(\.readerViewModel) var readerViewModel: ReaderViewModel?
     
     var body: some View {
-        Button("Go Back") { sceneViewModel?.webView.goBack() }
+        Button("Go Back") { readerViewModel?.webView.goBack() }
             .keyboardShortcut("[")
-        Button("Go Forward") { sceneViewModel?.webView.goForward() }
+        Button("Go Forward") { readerViewModel?.webView.goForward() }
             .keyboardShortcut("]")
     }
 }
@@ -71,7 +71,7 @@ struct SidebarDisplayModeKey: FocusedValueKey {
     typealias Value = Binding<SidebarDisplayMode>
 }
 
-struct SceneViewModelKey: FocusedValueKey {
+struct ReaderViewModelKey: FocusedValueKey {
     typealias Value = ReaderViewModel
 }
 
@@ -81,8 +81,8 @@ extension FocusedValues {
         set { self[SidebarDisplayModeKey.self] = newValue }
     }
     
-    var sceneViewModel: SceneViewModelKey.Value? {
-        get { self[SceneViewModelKey.self] }
-        set { self[SceneViewModelKey.self] = newValue }
+    var readerViewModel: ReaderViewModelKey.Value? {
+        get { self[ReaderViewModelKey.self] }
+        set { self[ReaderViewModelKey.self] = newValue }
     }
 }
