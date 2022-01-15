@@ -60,15 +60,15 @@ struct Reader: View {
         }
         .focusedSceneValue(\.readerViewModel, viewModel)
         .navigationTitle(viewModel.articleTitle)
-        .navigationSubtitle(viewModel.zimFileTitle)
+        .navigationSubtitle(viewModel.zimFileName)
     }
 }
 
 class ReaderViewModel: NSObject, ObservableObject, WKNavigationDelegate {
-    @Published var canGoBack: Bool = false
-    @Published var canGoForward: Bool = false
-    @Published var articleTitle: String = ""
-    @Published var zimFileTitle: String = ""
+    @Published private(set) var canGoBack: Bool = false
+    @Published private(set) var canGoForward: Bool = false
+    @Published private(set) var articleTitle: String = ""
+    @Published private(set) var zimFileName: String = ""
     
     let webView: WKWebView = {
         let config = WKWebViewConfiguration()
@@ -102,13 +102,15 @@ class ReaderViewModel: NSObject, ObservableObject, WKNavigationDelegate {
         canGoForwardObserver = webView.observe(\.canGoForward) { [unowned self] webView, _ in
             self.canGoForward = webView.canGoForward
         }
-//        titleObserver = webView.observe(\.title) { [unowned self] webView, _ in
-//            guard let title = webView.title, !title.isEmpty,
-//                  let zimFileID = webView.url?.host,
-//                  let zimFile = (try? Realm())?.object(ofType: ZimFile.self, forPrimaryKey: zimFileID) else { return }
-//            self.articleTitle = title
-//            self.zimFileTitle = zimFile.title
-//        }
+        titleObserver = webView.observe(\.title) { [unowned self] webView, _ in
+            guard let title = webView.title, !title.isEmpty,
+                  let zimFileID = webView.url?.host,
+                  let zimFile = try? Database.shared.container.viewContext.fetch(
+                    ZimFile.fetchRequest(predicate: NSPredicate(format: "fileID == %@", zimFileID))
+                  ).first else { return }
+            self.articleTitle = title
+            self.zimFileName = zimFile.name
+        }
     }
     
     func loadMainPage(zimFileID: UUID? = nil) {
