@@ -128,32 +128,30 @@ class ReaderViewModel: NSObject, ObservableObject, WKNavigationDelegate {
     // MARK: - WKNavigationDelegate
     
     func webView(_ webView: WKWebView,
-                 decidePolicyFor navigationAction: WKNavigationAction,
-                 decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
-        guard let url = navigationAction.request.url else { decisionHandler(.cancel); return }
+                 decidePolicyFor navigationAction: WKNavigationAction) async -> WKNavigationActionPolicy {
+        guard let url = navigationAction.request.url else { return .cancel }
         if url.isKiwixURL, let redirectedURL = ZimFileService.shared.getRedirectedURL(url: url) {
-            decisionHandler(.cancel)
-            webView.load(URLRequest(url: redirectedURL))
+            DispatchQueue.main.async { webView.load(URLRequest(url: redirectedURL)) }
+            return .cancel
         } else if url.isKiwixURL {
-            decisionHandler(.allow)
+            return .allow
         } else if url.scheme == "http" || url.scheme == "https" {
-            decisionHandler(.cancel)
-            NSWorkspace.shared.open(url)
+            DispatchQueue.main.async { NSWorkspace.shared.open(url) }
+            return .cancel
         } else if url.scheme == "geo" {
-            decisionHandler(.cancel)
             let coordinate = url.absoluteString.replacingOccurrences(of: "geo:", with: "")
             if let url = URL(string: "http://maps.apple.com/?ll=\(coordinate)") {
-                NSWorkspace.shared.open(url)
+                DispatchQueue.main.async { NSWorkspace.shared.open(url) }
             }
+            return .cancel
         } else {
-            decisionHandler(.cancel)
+            return .cancel
         }
     }
     
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
         webView.evaluateJavaScript(
-            "document.querySelectorAll(\"details\").forEach((detail) => {detail.setAttribute(\"open\", true)});",
-            completionHandler: nil
+            "document.querySelectorAll(\"details\").forEach((detail) => {detail.setAttribute(\"open\", true)});"
         )
     }
 }
