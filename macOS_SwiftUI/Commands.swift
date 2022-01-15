@@ -7,12 +7,33 @@
 //
 
 import SwiftUI
+import UniformTypeIdentifiers
 
-struct FileImportButton: View {
-    @FocusedBinding(\.fileImporter) var isPresented: Bool?
+struct ImportCommands: Commands {
+    @State private var isShowing: Bool = false
     
-    var body: some View {
-        Button("Open...") { isPresented = true }.keyboardShortcut("o")
+    var body: some Commands {
+        CommandGroup(replacing: .importExport) {
+            Section {
+                Button("Open...") {
+                    isShowing = true
+                }.fileImporter(
+                    isPresented: $isShowing,
+                    allowedContentTypes: [UTType(exportedAs: "org.openzim.zim")],
+                    allowsMultipleSelection: true
+                ) { result in
+                    guard case let .success(urls) = result else { return }
+                    urls.forEach { url in
+                        guard let metadata = ZimFileService.getMetaData(url: url) else { return }
+                        ZimFileService.shared.open(url: url)
+                        Task {
+                            let data = ZimFileService.shared.getFileURLBookmark(zimFileID: metadata.identifier)
+                            try? await Database.shared.upsertZimFile(metadata: metadata, fileURLBookmark: data)
+                        }
+                    }
+                }.keyboardShortcut("o")
+            }
+        }
     }
 }
 
@@ -36,41 +57,32 @@ struct SidebarDisplayModeCommandButtons: View {
 }
 
 struct NavigationCommandButtons: View {
-    @FocusedValue(\.sceneViewModel) var sceneViewModel: SceneViewModel?
+    @FocusedValue(\.readerViewModel) var readerViewModel: ReaderViewModel?
     
     var body: some View {
-        Button("Go Back") { sceneViewModel?.webView.goBack() }
+        Button("Go Back") { readerViewModel?.webView.goBack() }
             .keyboardShortcut("[")
-        Button("Go Forward") { sceneViewModel?.webView.goForward() }
+        Button("Go Forward") { readerViewModel?.webView.goForward() }
             .keyboardShortcut("]")
     }
-}
-
-struct FileImporterKey: FocusedValueKey {
-    typealias Value = Binding<Bool>
 }
 
 struct SidebarDisplayModeKey: FocusedValueKey {
     typealias Value = Binding<SidebarDisplayMode>
 }
 
-struct SceneViewModelKey: FocusedValueKey {
-    typealias Value = SceneViewModel
+struct ReaderViewModelKey: FocusedValueKey {
+    typealias Value = ReaderViewModel
 }
 
 extension FocusedValues {
-    var fileImporter: FileImporterKey.Value? {
-        get { self[FileImporterKey.self] }
-        set { self[FileImporterKey.self] = newValue }
-    }
-    
     var sidebarDisplayMode: SidebarDisplayModeKey.Value? {
         get { self[SidebarDisplayModeKey.self] }
         set { self[SidebarDisplayModeKey.self] = newValue }
     }
     
-    var sceneViewModel: SceneViewModelKey.Value? {
-        get { self[SceneViewModelKey.self] }
-        set { self[SceneViewModelKey.self] = newValue }
+    var readerViewModel: ReaderViewModelKey.Value? {
+        get { self[ReaderViewModelKey.self] }
+        set { self[ReaderViewModelKey.self] = newValue }
     }
 }

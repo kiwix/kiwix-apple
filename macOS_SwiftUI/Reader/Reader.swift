@@ -1,5 +1,5 @@
 //
-//  ContentView.swift
+//  Reader.swift
 //  Kiwix
 //
 //  Created by Chris Li on 10/19/21.
@@ -11,30 +11,21 @@ import SwiftUI
 import UniformTypeIdentifiers
 import WebKit
 
-struct ContentView: View {
-    @StateObject var viewModel = SceneViewModel()
+struct Reader: View {
+    @StateObject var viewModel = ReaderViewModel()
     @State var url: URL?
-    @State var isPresentingFileImporter: Bool = false
-    @Environment(\.managedObjectContext) var managedObjectContext
     @FetchRequest(sortDescriptors: []) private var onDeviceZimFiles: FetchedResults<ZimFile>
     
     var body: some View {
         NavigationView {
             Sidebar(url: $url)
-                .environmentObject(viewModel)
                 .frame(minWidth: 250)
                 .toolbar {
                     ToolbarItem(placement: .primaryAction) {
-                        Button { toggleSidebar() } label: { Image(systemName: "sidebar.leading") }
+                        Button { Kiwix.toggleSidebar() } label: { Image(systemName: "sidebar.leading") }
                     }
                 }
-            Group {
-                if url == nil {
-                    EmptyView()
-                } else {
-                    WebView(url: $url, webView: viewModel.webView)
-                }
-            }
+            WebView(url: $url, webView: viewModel.webView)
                 .ignoresSafeArea(.container, edges: .vertical)
                 .frame(minWidth: 400, idealWidth: 800, minHeight: 400, idealHeight: 550)
                 .toolbar {
@@ -56,46 +47,28 @@ struct ContentView: View {
                         .disabled(onDeviceZimFiles.isEmpty)
                         Menu {
                             ForEach(onDeviceZimFiles) { zimFile in
-                                Button(zimFile.name) { viewModel.loadRandomPage(zimFileID: zimFile.id.uuidString) }
+                                Button(zimFile.name) { viewModel.loadRandomPage(zimFileID: zimFile.id) }
                             }
                         } label: {
                             Label("Random Page", systemImage: "die.face.5")
                         } primaryAction: {
                             guard let zimFile = onDeviceZimFiles.first else { return }
-                            viewModel.loadRandomPage(zimFileID: zimFile.fileID.uuidString)
+                            viewModel.loadRandomPage(zimFileID: zimFile.fileID)
                         }.disabled(onDeviceZimFiles.isEmpty)
                     }
                 }
         }
-        .environmentObject(viewModel)
-        .focusedSceneValue(\.fileImporter, $isPresentingFileImporter)
-        .focusedSceneValue(\.sceneViewModel, viewModel)
+        .focusedSceneValue(\.readerViewModel, viewModel)
         .navigationTitle(viewModel.articleTitle)
-        .navigationSubtitle(viewModel.zimFileTitle)
-        .fileImporter(isPresented: $isPresentingFileImporter, allowedContentTypes: [UTType(exportedAs: "org.openzim.zim")]) { result in
-            if case let .success(url) = result {
-                guard let metadata = ZimFileService.getMetaData(url: url) else { return }
-                ZimFileService.shared.open(url: url)
-                let zimFile = ZimFile(context: managedObjectContext)
-                zimFile.fileID = UUID(uuidString: metadata.identifier)!
-                zimFile.name = metadata.title
-                zimFile.mainPage = ZimFileService.shared.getMainPageURL(zimFileID: metadata.identifier)!
-                zimFile.fileURLBookmark = ZimFileService.shared.getFileURLBookmark(zimFileID: metadata.identifier)
-                try? managedObjectContext.save()
-            }
-        }
-    }
-    
-    private func toggleSidebar() {
-        NSApp.keyWindow?.firstResponder?.tryToPerform(#selector(NSSplitViewController.toggleSidebar(_:)), with: nil)
+        .navigationSubtitle(viewModel.zimFileName)
     }
 }
 
-class SceneViewModel: NSObject, ObservableObject, WKNavigationDelegate {
-    @Published var canGoBack: Bool = false
-    @Published var canGoForward: Bool = false
-    @Published var articleTitle: String = ""
-    @Published var zimFileTitle: String = ""
+class ReaderViewModel: NSObject, ObservableObject, WKNavigationDelegate {
+    @Published private(set) var canGoBack: Bool = false
+    @Published private(set) var canGoForward: Bool = false
+    @Published private(set) var articleTitle: String = ""
+    @Published private(set) var zimFileName: String = ""
     
     let webView: WKWebView = {
         let config = WKWebViewConfiguration()
@@ -129,23 +102,25 @@ class SceneViewModel: NSObject, ObservableObject, WKNavigationDelegate {
         canGoForwardObserver = webView.observe(\.canGoForward) { [unowned self] webView, _ in
             self.canGoForward = webView.canGoForward
         }
-//        titleObserver = webView.observe(\.title) { [unowned self] webView, _ in
-//            guard let title = webView.title, !title.isEmpty,
-//                  let zimFileID = webView.url?.host,
-//                  let zimFile = (try? Realm())?.object(ofType: ZimFile.self, forPrimaryKey: zimFileID) else { return }
-//            self.articleTitle = title
-//            self.zimFileTitle = zimFile.title
-//        }
+        titleObserver = webView.observe(\.title) { [unowned self] webView, _ in
+            guard let title = webView.title, !title.isEmpty,
+                  let zimFileID = webView.url?.host,
+                  let zimFile = try? Database.shared.container.viewContext.fetch(
+                    ZimFile.fetchRequest(predicate: NSPredicate(format: "fileID == %@", zimFileID))
+                  ).first else { return }
+            self.articleTitle = title
+            self.zimFileName = zimFile.name
+        }
     }
     
-    func loadMainPage(zimFileID: String? = nil) {
-        let zimFileID = zimFileID ?? webView.url?.host ?? ""
+    func loadMainPage(zimFileID: UUID? = nil) {
+        let zimFileID = zimFileID?.uuidString ?? webView.url?.host ?? ""
         guard let url = ZimFileService.shared.getMainPageURL(zimFileID: zimFileID) else { return }
         webView.load(URLRequest(url: url))
     }
     
-    func loadRandomPage(zimFileID: String? = nil) {
-        let zimFileID = zimFileID ?? webView.url?.host ?? ""
+    func loadRandomPage(zimFileID: UUID? = nil) {
+        let zimFileID = zimFileID?.uuidString ?? webView.url?.host ?? ""
         guard let url = ZimFileService.shared.getRandomPageURL(zimFileID: zimFileID) else { return }
         webView.load(URLRequest(url: url))
     }
@@ -153,32 +128,30 @@ class SceneViewModel: NSObject, ObservableObject, WKNavigationDelegate {
     // MARK: - WKNavigationDelegate
     
     func webView(_ webView: WKWebView,
-                 decidePolicyFor navigationAction: WKNavigationAction,
-                 decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
-        guard let url = navigationAction.request.url else { decisionHandler(.cancel); return }
+                 decidePolicyFor navigationAction: WKNavigationAction) async -> WKNavigationActionPolicy {
+        guard let url = navigationAction.request.url else { return .cancel }
         if url.isKiwixURL, let redirectedURL = ZimFileService.shared.getRedirectedURL(url: url) {
-            decisionHandler(.cancel)
-            webView.load(URLRequest(url: redirectedURL))
+            DispatchQueue.main.async { webView.load(URLRequest(url: redirectedURL)) }
+            return .cancel
         } else if url.isKiwixURL {
-            decisionHandler(.allow)
+            return .allow
         } else if url.scheme == "http" || url.scheme == "https" {
-            decisionHandler(.cancel)
-            NSWorkspace.shared.open(url)
+            DispatchQueue.main.async { NSWorkspace.shared.open(url) }
+            return .cancel
         } else if url.scheme == "geo" {
-            decisionHandler(.cancel)
             let coordinate = url.absoluteString.replacingOccurrences(of: "geo:", with: "")
             if let url = URL(string: "http://maps.apple.com/?ll=\(coordinate)") {
-                NSWorkspace.shared.open(url)
+                DispatchQueue.main.async { NSWorkspace.shared.open(url) }
             }
+            return .cancel
         } else {
-            decisionHandler(.cancel)
+            return .cancel
         }
     }
     
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
         webView.evaluateJavaScript(
-            "document.querySelectorAll(\"details\").forEach((detail) => {detail.setAttribute(\"open\", true)});",
-            completionHandler: nil
+            "document.querySelectorAll(\"details\").forEach((detail) => {detail.setAttribute(\"open\", true)});"
         )
     }
 }

@@ -25,6 +25,7 @@
         
         try {
             self.identifier = [NSString stringWithUTF8String:_book->getId().c_str()];
+            self.fileID = [[NSUUID alloc] initWithUUIDString:self.identifier];
             self.title = [NSString stringWithUTF8String:_book->getTitle().c_str()];
             self.groupIdentifier = [NSString stringWithUTF8String:_book->getName().c_str()];
             self.fileDescription = [NSString stringWithUTF8String:_book->getDescription().c_str()];
@@ -41,6 +42,7 @@
         }
         
         // fail if required property is nil
+        if (self.fileID == nil) { return nil; }
         if (self.creationDate == nil) { return nil; }
         if (self.size == nil) { return nil; }
         if (self.articleCount == nil) { return nil; }
@@ -51,6 +53,7 @@
         SAFE_READ(self.downloadURL, [self getURL:_book->getUrl()]);
         SAFE_READ(self.faviconURL, [self getURL:_book->getFaviconUrl()]);
         SAFE_READ(self.faviconData, [self getFaviconData:_book]);
+        SAFE_READ(self.flavor, [self getFlavorFromBook:_book]);
         
         SAFE_READ_BOOL(self.hasDetails, _book->getTagBool("details"));
         SAFE_READ_BOOL(self.hasPictures, _book->getTagBool("pictures"));
@@ -88,6 +91,11 @@
     if (self.faviconURL != nil) { return nil; }
     std::string favicon = book->getFavicon();
     return [NSData dataWithBytes:favicon.c_str() length:favicon.length()];
+}
+
+- (NSString *)getFlavorFromBook:(kiwix::Book *)book {
+    NSString *flavor = [NSString stringWithUTF8String:book->getFlavour().c_str()];
+    return [flavor stringByReplacingOccurrencesOfString:@"_" withString:@""];
 }
 
 @end

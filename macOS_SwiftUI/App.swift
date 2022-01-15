@@ -11,27 +11,40 @@ import SwiftUI
 @main
 struct Kiwix: SwiftUI.App {
     init() {
-//        Realm.Configuration.defaultConfiguration = Realm.defaultConfig
-//        LibraryOperationQueue.shared.addOperation(LibraryScanOperation())
+        self.reopen()
     }
     
     var body: some Scene {
         WindowGroup {
-            ContentView()
-                .environment(\.managedObjectContext, Database.shared.persistentContainer.viewContext)
+            Reader().environment(\.managedObjectContext, Database.shared.container.viewContext)
         }.commands {
             SidebarCommands()
+            ImportCommands()
             CommandGroup(replacing: .newItem) {
                 Button("New Tab") { newTab() }.keyboardShortcut("t")
                 Divider()
-                FileImportButton()
             }
             CommandGroup(before: .sidebar) {
                 SidebarDisplayModeCommandButtons()
                 Divider()
             }
             CommandMenu("Navigation") { NavigationCommandButtons() }
-        }
+            CommandGroup(after: .windowSize) {
+                Divider()
+                ForEach(WindowGroupTitle.allCases) { windowGroup in
+                    Button(windowGroup.rawValue) {
+                        guard let url = URL(string: "kiwix://\(windowGroup.rawValue)") else { return }
+                        NSWorkspace.shared.open(url)
+                    }
+                }
+            }
+        }.handlesExternalEvents(matching: [WindowGroupTitle.reading.rawValue])
+        WindowGroup(WindowGroupTitle.library.rawValue) {
+            Library().environment(\.managedObjectContext, Database.shared.container.viewContext)
+        }.commands {
+            SidebarCommands()
+            ImportCommands()
+        }.handlesExternalEvents(matching: [WindowGroupTitle.library.rawValue])
     }
     
     private func newTab() {
@@ -39,5 +52,31 @@ struct Kiwix: SwiftUI.App {
         windowController.newWindowForTab(nil)
         guard let newWindow = NSApp.keyWindow, currentWindow != newWindow else { return }
         currentWindow.addTabbedWindow(newWindow, ordered: .above)
+    }
+    
+    private func reopen() {
+        let context = Database.shared.container.viewContext
+        let request = ZimFile.fetchRequest(predicate: NSPredicate(format: "fileURLBookmark != nil"))
+        guard let zimFiles = try? context.fetch(request) else { return }
+        zimFiles.forEach { zimFile in
+            guard let data = zimFile.fileURLBookmark else { return }
+            if let data = ZimFileService.shared.open(bookmark: data) {
+                zimFile.fileURLBookmark = data
+            }
+        }
+        if context.hasChanges {
+            try? context.save()
+        }
+    }
+    
+    static func toggleSidebar() {
+        NSApp.keyWindow?.firstResponder?.tryToPerform(#selector(NSSplitViewController.toggleSidebar(_:)), with: nil)
+    }
+    
+    private enum WindowGroupTitle: String, CaseIterable, Identifiable {
+        var id: String { rawValue }
+        
+        case reading = "Reading"
+        case library = "Library"
     }
 }

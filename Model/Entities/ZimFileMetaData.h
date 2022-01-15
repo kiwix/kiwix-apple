@@ -12,6 +12,7 @@
 
 // nonnull attributes
 @property (nonatomic, strong, nonnull) NSString *identifier;
+@property (nonatomic, strong, nonnull) NSUUID *fileID;
 @property (nonatomic, strong, nonnull) NSString *groupIdentifier;
 @property (nonatomic, strong, nonnull) NSString *title;
 @property (nonatomic, strong, nonnull) NSString *fileDescription;
@@ -28,6 +29,7 @@
 @property (nonatomic, strong, nullable) NSURL *downloadURL;
 @property (nonatomic, strong, nullable) NSURL *faviconURL;
 @property (nonatomic, strong, nullable) NSData *faviconData;
+@property (nonatomic, strong, nullable) NSString *flavor;
 
 // assigned attributes
 @property (nonatomic, assign) BOOL hasDetails;

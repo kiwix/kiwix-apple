@@ -20,7 +20,7 @@ struct Search: View {
     @Default(.recentSearchTexts) private var recentSearchTexts: [String]
     @Environment(\.managedObjectContext) var managedObjectContext
     @FetchRequest(
-        sortDescriptors: [],
+        sortDescriptors: [SortDescriptor(\.size, order: .reverse)],
         predicate: NSPredicate(format: "fileURLBookmark != nil")
     ) private var zimFiles: FetchedResults<ZimFile>
     
@@ -47,34 +47,41 @@ struct Search: View {
         }
     }
     
+    @ViewBuilder
     var searchFilter: some View {
-        VStack(spacing: 0) {
-            Divider()
-            HStack {
-                Text("Include in Search").fontWeight(.medium)
-                Spacer()
-                if zimFiles.map {$0.includedInSearch }.reduce(true) { $0 && $1 } {
-                    Button { selectNoZimFiles() } label: {
-                        Text("None").font(.caption).fontWeight(.medium)
-                    }
-                } else {
-                    Button { selectAllZimFiles() } label: {
-                        Text("All").font(.caption).fontWeight(.medium)
-                    }
+        Divider()
+        HStack {
+            Text("Include in Search").fontWeight(.medium)
+            Spacer()
+            if zimFiles.map {$0.includedInSearch }.reduce(true) { $0 && $1 } {
+                Button { selectNoZimFiles() } label: {
+                    Text("None").font(.caption).fontWeight(.medium)
                 }
-            }.padding(.vertical, 5).padding(.leading, 16).padding(.trailing, 10).background(.regularMaterial)
-            Divider()
-            List {
-                ForEach(zimFiles, id: \.fileID) { zimFile in
-                    Toggle(zimFile.name, isOn: Binding<Bool>(get: {
-                        zimFile.includedInSearch
-                    }, set: {
-                        zimFile.includedInSearch = $0
-                        try? managedObjectContext.save()
-                    }))
+            } else {
+                Button { selectAllZimFiles() } label: {
+                    Text("All").font(.caption).fontWeight(.medium)
                 }
             }
-        }.frame(height: 180)
+        }.padding(.vertical, 5).padding(.leading, 16).padding(.trailing, 10).background(.regularMaterial)
+        Divider()
+        List(zimFiles) { zimFile in
+            Toggle(zimFile.name, isOn: Binding<Bool>(get: {
+                zimFile.includedInSearch
+            }, set: {
+                zimFile.includedInSearch = $0
+                try? managedObjectContext.save()
+            })).contextMenu {
+                Button("Open Main Page") {
+                    let zimFileID = zimFile.fileID.uuidString.lowercased()
+                    url = ZimFileService.shared.getMainPageURL(zimFileID: zimFileID)
+                }
+                Button("Unlink") {
+                    ZimFileService.shared.close(id: zimFile.fileID)
+                    managedObjectContext.delete(zimFile)
+                    try? managedObjectContext.save()
+                }
+            }
+        }.frame(height: 150)
     }
     
     private func updateCurrentSearchText(_ searchText: String?) {
@@ -111,10 +118,10 @@ struct Search: View {
 }
 
 private class ViewModel: NSObject, ObservableObject, NSFetchedResultsControllerDelegate {
-    @Published var searchText: String = ""
-    @Published var zimFileIDs: [UUID] = []
-    @Published var inProgress = false
-    @Published var results = [SearchResult]()
+    @Published var searchText: String = ""  // text in the search field
+    @Published private var zimFileIDs: [UUID]  // ID of zim files that are included in search
+    @Published private(set) var inProgress = false
+    @Published private(set) var results = [SearchResult]()
     
     private let fetchedResultsController: NSFetchedResultsController<ZimFile>
     private var searchSubscriber: AnyCancellable?
@@ -122,37 +129,43 @@ private class ViewModel: NSObject, ObservableObject, NSFetchedResultsControllerD
     private let queue = OperationQueue()
     
     override init() {
-        queue.maxConcurrentOperationCount = 1
-        
+        // initilize fetched results controller
         let predicate = NSPredicate(format: "includedInSearch == true AND fileURLBookmark != nil")
         fetchedResultsController = NSFetchedResultsController(
             fetchRequest: ZimFile.fetchRequest(predicate: predicate),
-            managedObjectContext: Database.shared.persistentContainer.viewContext,
+            managedObjectContext: Database.shared.container.viewContext,
             sectionNameKeyPath: nil,
             cacheName: nil
         )
+        
+        // initilze zim file IDs
         try? fetchedResultsController.performFetch()
         zimFileIDs = fetchedResultsController.fetchedObjects?.map { $0.fileID } ?? []
         
         super.init()
         
+        // additional configurations
+        queue.maxConcurrentOperationCount = 1
         fetchedResultsController.delegate = self
+        
+        // subscribers
         searchSubscriber = Publishers.CombineLatest($zimFileIDs, $searchText)
             .debounce(for: 0.2, scheduler: queue, options: nil)
             .receive(on: DispatchQueue.main, options: nil)
             .sink { zimFileIDs, searchText in
-                self.updateSearchResults(searchText, Set(zimFileIDs.map { $0.uuidString }))
+                self.updateSearchResults(searchText, Set(zimFileIDs))
             }
-//        searchTextSubscriber = $searchText.sink { searchText in self.inProgress = !searchText.isEmpty }
+        searchTextSubscriber = $searchText.sink { searchText in self.inProgress = true }
     }
     
-    private func updateSearchResults(_ searchText: String, _ zimFileIDs: Set<String>) {
+    private func updateSearchResults(_ searchText: String, _ zimFileIDs: Set<UUID>) {
         queue.cancelAllOperations()
+        let zimFileIDs = Set(zimFileIDs.map { $0.uuidString.lowercased() })
         let operation = SearchOperation(searchText: searchText, zimFileIDs: zimFileIDs)
         operation.completionBlock = { [unowned self] in
             guard !operation.isCancelled else { return }
             DispatchQueue.main.sync {
-//                self.results = operation.results
+                self.results = operation.results
                 self.inProgress = false
             }
         }
