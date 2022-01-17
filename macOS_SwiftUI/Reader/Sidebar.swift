@@ -9,7 +9,7 @@
 import SwiftUI
 
 struct Sidebar: View {
-    @SceneStorage("sidebarDisplayMode") var displayMode: DisplayMode = .search
+    @SceneStorage("sidebarDisplayMode") private var displayMode: DisplayMode = .search
     @Binding var url: URL?
     
     var body: some View {

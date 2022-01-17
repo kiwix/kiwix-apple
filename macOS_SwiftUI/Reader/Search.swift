@@ -18,7 +18,7 @@ struct Search: View {
     @State private var selectedSearchText: String?
     @StateObject private var viewModel = ViewModel()
     @Default(.recentSearchTexts) private var recentSearchTexts: [String]
-    @Environment(\.managedObjectContext) var managedObjectContext
+    @Environment(\.managedObjectContext) private var managedObjectContext
     @FetchRequest(
         sortDescriptors: [SortDescriptor(\.size, order: .reverse)],
         predicate: NSPredicate(format: "fileURLBookmark != nil")
@@ -27,6 +27,7 @@ struct Search: View {
     var body: some View {
         SearchField(searchText: $viewModel.searchText).padding(.horizontal, 10).padding(.vertical, 6)
         searchResults
+        Divider()
         searchFilter
     }
     
@@ -49,7 +50,6 @@ struct Search: View {
     
     @ViewBuilder
     var searchFilter: some View {
-        Divider()
         HStack {
             Text("Include in Search").fontWeight(.medium)
             Spacer()
@@ -174,5 +174,14 @@ private class ViewModel: NSObject, ObservableObject, NSFetchedResultsControllerD
     
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
         zimFileIDs = fetchedResultsController.fetchedObjects?.map { $0.fileID } ?? []
+    }
+}
+
+struct Search_Previews: PreviewProvider {
+    static var previews: some View {
+        VStack(spacing: 0) {
+            Search(url: .constant(nil))
+        }.frame(width: 250, height: 550)
+            .listStyle(.sidebar)
     }
 }
