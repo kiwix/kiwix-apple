@@ -76,7 +76,3 @@ enum Flavor: String, CustomStringConvertible {
         }
     }
 }
-
-enum SidebarDisplayMode: String {
-    case search, bookmark, tableOfContent, library
-}

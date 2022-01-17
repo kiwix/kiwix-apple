@@ -38,7 +38,7 @@ struct ImportCommands: Commands {
 }
 
 struct SidebarDisplayModeCommandButtons: View {
-    @FocusedBinding(\.sidebarDisplayMode) var displayMode: SidebarDisplayMode?
+    @FocusedBinding(\.sidebarDisplayMode) var displayMode: Sidebar.DisplayMode?
     
     var body: some View {
         Button("Show Search") { displayMode = .search }
@@ -68,7 +68,7 @@ struct NavigationCommandButtons: View {
 }
 
 struct SidebarDisplayModeKey: FocusedValueKey {
-    typealias Value = Binding<SidebarDisplayMode>
+    typealias Value = Binding<Sidebar.DisplayMode>
 }
 
 struct ReaderViewModelKey: FocusedValueKey {

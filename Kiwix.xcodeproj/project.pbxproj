@@ -42,7 +42,6 @@
 		9735D0BC2775594700C7D495 /* Database.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9735D0BB2775594700C7D495 /* Database.swift */; };
 		9735D0BE2777531400C7D495 /* BookmarkButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9735D0BD2777531400C7D495 /* BookmarkButton.swift */; };
 		9735D0C027777E3300C7D495 /* Enum.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9735D0BF27777E3300C7D495 /* Enum.swift */; };
-		9735D0C227777E5900C7D495 /* DisplayModeSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9735D0C127777E5900C7D495 /* DisplayModeSelector.swift */; };
 		973A2FC3277EA9F300BD4320 /* OPDSStreamParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9779A5A32456793500F6F6FF /* OPDSStreamParser.swift */; };
 		973A2FC5277EAA2500BD4320 /* OPDSRefreshError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 973A2FC4277EAA2500BD4320 /* OPDSRefreshError.swift */; };
 		973A2FC6277EAA2700BD4320 /* OPDSRefreshError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 973A2FC4277EAA2500BD4320 /* OPDSRefreshError.swift */; };
@@ -123,6 +122,7 @@
 		9789C26824F960F500072090 /* WebKitHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9779A73A2456796B00F6F6FF /* WebKitHandler.swift */; };
 		9789C26924F9611300072090 /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9779A7E224567A5A00F6F6FF /* Log.swift */; };
 		978B688924F8080E003CCA8C /* BarButtons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 978B688824F8080E003CCA8C /* BarButtons.swift */; };
+		978CB19B2793BC6B0086BFCE /* libkiwix.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97EC18AF26E8555E008309ED /* libkiwix.xcframework */; };
 		97952EF3264F557B00FC9237 /* SearchResultsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97952EF2264F557B00FC9237 /* SearchResultsView.swift */; };
 		9797434A257BF2B000D30F03 /* OutlineItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97974349257BF2B000D30F03 /* OutlineItem.swift */; };
 		9797435C257BF33600D30F03 /* WebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9797435B257BF33600D30F03 /* WebViewController.swift */; };
@@ -164,6 +164,7 @@
 		97B5D3E92596398400D12FEE /* SidebarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97B5D3E82596398400D12FEE /* SidebarController.swift */; };
 		97B794201F4E23F300F3EBE8 /* WelcomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97B7941F1F4E23F300F3EBE8 /* WelcomeView.swift */; };
 		97C14E232707F98400EF4CF2 /* OutlineViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97C14E222707F98400EF4CF2 /* OutlineViewController.swift */; };
+		97C278DB2794744500666E07 /* libkiwix.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97EC18AF26E8555E008309ED /* libkiwix.xcframework */; };
 		97C5763D202CD9C000E37502 /* NotificationCenter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97C575F3202CB0E800E37502 /* NotificationCenter.framework */; platformFilter = ios; };
 		97CE4242249322E300B334E9 /* SearchResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 97B3998C2467561900BC6F5B /* SearchResult.m */; };
 		97CE42432493234D00B334E9 /* SearchOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97B3998F2467626A00BC6F5B /* SearchOperation.swift */; };
@@ -189,14 +190,12 @@
 		97EC18B726E8555E008309ED /* RealmSwift.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97EC18B026E8555E008309ED /* RealmSwift.xcframework */; };
 		97EC18B926E8555E008309ED /* Realm.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97EC18B126E8555E008309ED /* Realm.xcframework */; };
 		97EC18BA26E8555E008309ED /* Realm.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97EC18B126E8555E008309ED /* Realm.xcframework */; };
-		97EC18BB26E85C28008309ED /* libkiwix.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97EC18AF26E8555E008309ED /* libkiwix.xcframework */; };
 		97EFF05E235CAEFC00FBB7A4 /* ContentTabController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97EFF05D235CAEFC00FBB7A4 /* ContentTabController.swift */; };
 		97F4210E22EE5590001E41F9 /* FileImportController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97F4210D22EE5590001E41F9 /* FileImportController.swift */; };
 		97F425C227151A0D00D0F738 /* QuickLook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97F425C127151A0D00D0F738 /* QuickLook.framework */; };
 		97F425C527151A0D00D0F738 /* PreviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97F425C427151A0D00D0F738 /* PreviewViewController.swift */; };
 		97F425CA27151A0D00D0F738 /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97F425C827151A0D00D0F738 /* MainInterface.storyboard */; };
 		97F425CE27151A0D00D0F738 /* QuickLookPreview.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 97F425C027151A0D00D0F738 /* QuickLookPreview.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
-		97F425D227151D9600D0F738 /* libkiwix.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97EC18AF26E8555E008309ED /* libkiwix.xcframework */; };
 		97F425D327151E9C00D0F738 /* ZimFileService.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9779A5A92456793500F6F6FF /* ZimFileService.mm */; };
 		97F425D427151E9C00D0F738 /* ZimFileService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9779A5AA2456793500F6F6FF /* ZimFileService.swift */; };
 		97F425D527151EF800D0F738 /* ZimFileMetaData.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9779A5AC2456793600F6F6FF /* ZimFileMetaData.mm */; };
@@ -432,8 +431,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				97C5763D202CD9C000E37502 /* NotificationCenter.framework in Frameworks */,
-				97EC18BB26E85C28008309ED /* libkiwix.xcframework in Frameworks */,
 				9744658026F7981500072DC2 /* Fuzi in Frameworks */,
+				978CB19B2793BC6B0086BFCE /* libkiwix.xcframework in Frameworks */,
 				97A36C351F8C21210079B452 /* WebKit.framework in Frameworks */,
 				97654726273214530070163D /* Defaults in Frameworks */,
 				977BD600276EA929004D2C32 /* Realm.xcframework in Frameworks */,
@@ -462,7 +461,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				97F425D227151D9600D0F738 /* libkiwix.xcframework in Frameworks */,
+				97C278DB2794744500666E07 /* libkiwix.xcframework in Frameworks */,
 				97F425C227151A0D00D0F738 /* QuickLook.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1324,7 +1323,6 @@
 				97242B892735E66E00C87F85 /* SearchResult.swift in Sources */,
 				97242BA02735E6A800C87F85 /* FeatureFlags.swift in Sources */,
 				97242B9A2735E6A800C87F85 /* WebKitHandler.swift in Sources */,
-				9735D0C227777E5900C7D495 /* DisplayModeSelector.swift in Sources */,
 				977BD6072772350B004D2C32 /* BookmarksList.swift in Sources */,
 				97E94B1C271EF24D005B0295 /* Reader.swift in Sources */,
 				97B3BAD02736CE3500A23F49 /* URL.swift in Sources */,
@@ -1587,6 +1585,7 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
+				EXCLUDED_ARCHS = "";
 				GCC_C_LANGUAGE_STANDARD = c11;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -1647,6 +1646,7 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				EXCLUDED_ARCHS = "";
 				GCC_C_LANGUAGE_STANDARD = c11;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -1679,7 +1679,7 @@
 				CODE_SIGN_ENTITLEMENTS = iOS/Support/Kiwix.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 86;
+				CURRENT_PROJECT_VERSION = 88;
 				DEVELOPMENT_TEAM = L7HWM3SP3L;
 				ENABLE_BITCODE = YES;
 				INFOPLIST_FILE = iOS/Support/Info.plist;
@@ -1715,7 +1715,7 @@
 				CODE_SIGN_ENTITLEMENTS = iOS/Support/Kiwix.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 86;
+				CURRENT_PROJECT_VERSION = 88;
 				DEVELOPMENT_TEAM = L7HWM3SP3L;
 				ENABLE_BITCODE = YES;
 				INFOPLIST_FILE = iOS/Support/Info.plist;
@@ -1883,7 +1883,7 @@
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 86;
+				CURRENT_PROJECT_VERSION = 88;
 				DEVELOPMENT_TEAM = L7HWM3SP3L;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = iOS/QuickLookPreview/Info.plist;
@@ -1918,7 +1918,7 @@
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 86;
+				CURRENT_PROJECT_VERSION = 88;
 				DEVELOPMENT_TEAM = L7HWM3SP3L;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = iOS/QuickLookPreview/Info.plist;
