@@ -22,9 +22,7 @@ struct Sidebar: View {
             case .bookmark:
                 BookmarksList(url: $url)
             case .tableOfContent:
-                List {
-                    Text("table of contents")
-                }
+                Outline(url: $url)
             case .library:
                 LibraryList(url: $url)
             }

@@ -165,6 +165,7 @@
 		97B794201F4E23F300F3EBE8 /* WelcomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97B7941F1F4E23F300F3EBE8 /* WelcomeView.swift */; };
 		97C14E232707F98400EF4CF2 /* OutlineViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97C14E222707F98400EF4CF2 /* OutlineViewController.swift */; };
 		97C278DB2794744500666E07 /* libkiwix.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97EC18AF26E8555E008309ED /* libkiwix.xcframework */; };
+		97C278DF2796249900666E07 /* Outline.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97C278DE2796249900666E07 /* Outline.swift */; };
 		97C5763D202CD9C000E37502 /* NotificationCenter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97C575F3202CB0E800E37502 /* NotificationCenter.framework */; platformFilter = ios; };
 		97CE4242249322E300B334E9 /* SearchResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 97B3998C2467561900BC6F5B /* SearchResult.m */; };
 		97CE42432493234D00B334E9 /* SearchOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97B3998F2467626A00BC6F5B /* SearchOperation.swift */; };
@@ -376,6 +377,7 @@
 		97B5D3E82596398400D12FEE /* SidebarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SidebarController.swift; sourceTree = "<group>"; };
 		97B7941F1F4E23F300F3EBE8 /* WelcomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeView.swift; sourceTree = "<group>"; };
 		97C14E222707F98400EF4CF2 /* OutlineViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutlineViewController.swift; sourceTree = "<group>"; };
+		97C278DE2796249900666E07 /* Outline.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Outline.swift; sourceTree = "<group>"; };
 		97C575F3202CB0E800E37502 /* NotificationCenter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NotificationCenter.framework; path = System/Library/Frameworks/NotificationCenter.framework; sourceTree = SDKROOT; };
 		97C57604202CB42100E37502 /* Kiwix.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = Kiwix.entitlements; sourceTree = "<group>"; };
 		97D07A08273719720002B9EB /* Search.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Search.swift; sourceTree = "<group>"; };
@@ -694,6 +696,7 @@
 				97242B7C2732E52300C87F85 /* Sidebar.swift */,
 				97D07A08273719720002B9EB /* Search.swift */,
 				977BD6062772350B004D2C32 /* BookmarksList.swift */,
+				97C278DE2796249900666E07 /* Outline.swift */,
 				97B3048C277D4EF400E82DE0 /* LibraryList.swift */,
 				9735D0C127777E5900C7D495 /* DisplayModeSelector.swift */,
 			);
@@ -1359,6 +1362,7 @@
 				97B073742780A000007C7DF3 /* LibraryZimFileDetail.swift in Sources */,
 				9735D0BC2775594700C7D495 /* Database.swift in Sources */,
 				97242B9D2735E6A800C87F85 /* Log.swift in Sources */,
+				97C278DF2796249900666E07 /* Outline.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
