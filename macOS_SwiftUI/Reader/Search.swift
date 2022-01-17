@@ -23,23 +23,30 @@ struct Search: View {
         sortDescriptors: [SortDescriptor(\.size, order: .reverse)],
         predicate: NSPredicate(format: "fileURLBookmark != nil")
     ) private var zimFiles: FetchedResults<ZimFile>
+    @State private var showingPopover = false
     
     var body: some View {
-        VSplitView {
-            VStack(spacing: 0) {
-                SearchField(searchText: $viewModel.searchText)
-                    .padding(.horizontal, 10)
-                    .padding(.top, 6)
-                searchResults
+        HStack {
+            SearchField(searchText: $viewModel.searchText)
+            Spacer()
+            Button {
+                showingPopover = true
+            } label: {
+                if allIncluded {
+                    Image(systemName: "line.3.horizontal.decrease.circle")
+                } else {
+                    Image(systemName: "line.3.horizontal.decrease.circle.fill")
+                }
             }
-            VStack(spacing: 0) {
-                searchFilter
+            .buttonStyle(.borderless)
+            .foregroundColor(.blue)
+            .popover(isPresented: $showingPopover) {
+                searchFilter.frame(width: 250, height: 200)
             }
-        }.listStyle(.sidebar)
-    }
-    
-    @ViewBuilder
-    var searchResults: some View {
+        }
+        .padding(.horizontal, 10)
+        .padding(.vertical, 6)
+        
         if viewModel.searchText.isEmpty, !recentSearchTexts.isEmpty {
             List(recentSearchTexts, id: \.self, selection: $selectedSearchText) { searchText in
                 Text(searchText)
@@ -55,40 +62,38 @@ struct Search: View {
         }
     }
     
-    @ViewBuilder
     var searchFilter: some View {
-        HStack {
-            Text("Include in Search").fontWeight(.medium)
-            Spacer()
-            if zimFiles.map { $0.includedInSearch }.reduce(true) { $0 && $1 } {
-                Button { selectNoZimFiles() } label: {
-                    Text("None").font(.caption).fontWeight(.medium)
-                }
-            } else {
-                Button { selectAllZimFiles() } label: {
-                    Text("All").font(.caption).fontWeight(.medium)
-                }
-            }
-        }.padding(.vertical, 5).padding(.leading, 16).padding(.trailing, 10).background(.regularMaterial)
-        Divider()
         List(zimFiles) { zimFile in
             Toggle(zimFile.name, isOn: Binding<Bool>(get: {
                 zimFile.includedInSearch
             }, set: {
                 zimFile.includedInSearch = $0
                 try? managedObjectContext.save()
-            })).contextMenu {
-                Button("Open Main Page") {
-                    let zimFileID = zimFile.fileID.uuidString.lowercased()
-                    url = ZimFileService.shared.getMainPageURL(zimFileID: zimFileID)
-                }
-                Button("Unlink") {
-                    ZimFileService.shared.close(id: zimFile.fileID)
-                    managedObjectContext.delete(zimFile)
-                    try? managedObjectContext.save()
+            }))
+        }
+        .safeAreaInset(edge: .top) {
+            HStack {
+                Text("Include in Search").fontWeight(.medium)
+                Spacer()
+                if allIncluded {
+                    Button { selectNoZimFiles() } label: {
+                        Text("None").font(.caption).fontWeight(.medium)
+                    }
+                } else {
+                    Button { selectAllZimFiles() } label: {
+                        Text("All").font(.caption).fontWeight(.medium)
+                    }
                 }
             }
+            .padding(.vertical, 5)
+            .padding(.leading, 16)
+            .padding(.trailing, 10)
+            .background(.ultraThinMaterial)
         }
+    }
+    
+    var allIncluded: Bool {
+        zimFiles.map { $0.includedInSearch }.reduce(true) { $0 && $1 }
     }
     
     private func updateCurrentSearchText(_ searchText: String?) {
@@ -108,17 +113,15 @@ struct Search: View {
     }
     
     private func selectAllZimFiles() {
-        let request = ZimFile.fetchRequest()
-        try? managedObjectContext.fetch(request).forEach { zimFile in
-            zimFile.includedInSearch = true
+        managedObjectContext.perform {
+            zimFiles.forEach { $0.includedInSearch = true }
         }
         try? managedObjectContext.save()
     }
     
     private func selectNoZimFiles() {
-        let request = ZimFile.fetchRequest()
-        try? managedObjectContext.fetch(request).forEach { zimFile in
-            zimFile.includedInSearch = false
+        managedObjectContext.perform {
+            zimFiles.forEach { $0.includedInSearch = false }
         }
         try? managedObjectContext.save()
     }
@@ -188,7 +191,6 @@ struct Search_Previews: PreviewProvider {
     static var previews: some View {
         VStack(spacing: 0) {
             Search(url: .constant(nil))
-        }.frame(width: 250, height: 550)
-            .listStyle(.sidebar)
+        }.frame(width: 250, height: 550).listStyle(.sidebar)
     }
 }
