@@ -25,10 +25,17 @@ struct Search: View {
     ) private var zimFiles: FetchedResults<ZimFile>
     
     var body: some View {
-        SearchField(searchText: $viewModel.searchText).padding(.horizontal, 10).padding(.vertical, 6)
-        searchResults
-        Divider()
-        searchFilter
+        VSplitView {
+            VStack(spacing: 0) {
+                SearchField(searchText: $viewModel.searchText)
+                    .padding(.horizontal, 10)
+                    .padding(.top, 6)
+                searchResults
+            }
+            VStack(spacing: 0) {
+                searchFilter
+            }
+        }.listStyle(.sidebar)
     }
     
     @ViewBuilder
@@ -53,7 +60,7 @@ struct Search: View {
         HStack {
             Text("Include in Search").fontWeight(.medium)
             Spacer()
-            if zimFiles.map {$0.includedInSearch }.reduce(true) { $0 && $1 } {
+            if zimFiles.map { $0.includedInSearch }.reduce(true) { $0 && $1 } {
                 Button { selectNoZimFiles() } label: {
                     Text("None").font(.caption).fontWeight(.medium)
                 }
@@ -81,7 +88,7 @@ struct Search: View {
                     try? managedObjectContext.save()
                 }
             }
-        }.frame(height: 150)
+        }
     }
     
     private func updateCurrentSearchText(_ searchText: String?) {
