@@ -19,11 +19,11 @@ struct Outline: View {
                 Text(item.text)
             }
         }
-        .onAppear { self.loadTableOfContents() }
-        .onChange(of: url) { _ in self.loadTableOfContents() }
+        .onAppear { self.load() }
+        .onChange(of: url) { _ in self.load() }
     }
     
-    private func loadTableOfContents() {
+    private func load() {
         guard let url = url,
               let parser = try? Parser(url: url) else { items = []; return }
         self.items = parser.getHierarchicalOutlineItems()
