@@ -58,6 +58,7 @@ struct Reader: View {
                     }
                 }
         }
+        .environmentObject(viewModel)
         .focusedSceneValue(\.readerViewModel, viewModel)
         .navigationTitle(viewModel.articleTitle)
         .navigationSubtitle(viewModel.zimFileName)
@@ -123,6 +124,11 @@ class ReaderViewModel: NSObject, ObservableObject, WKNavigationDelegate {
         let zimFileID = zimFileID?.uuidString ?? webView.url?.host ?? ""
         guard let url = ZimFileService.shared.getRandomPageURL(zimFileID: zimFileID) else { return }
         webView.load(URLRequest(url: url))
+    }
+    
+    func navigate(outlineItemIndex: Int) {
+        let javascript = "document.querySelectorAll(\"h1, h2, h3, h4, h5, h6\")[\(outlineItemIndex)].scrollIntoView()"
+        webView.evaluateJavaScript(javascript)
     }
     
     // MARK: - WKNavigationDelegate
