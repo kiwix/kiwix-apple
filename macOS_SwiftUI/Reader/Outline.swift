@@ -10,27 +10,22 @@ import SwiftUI
 
 struct Outline: View {
     @Binding var url: URL?
+    @State var items = [OutlineItem]()
+    @State var selected: Int?
     
     var body: some View {
-        List {
-            Text("Hello, World!")
-        }.task {
-            await loadTableOfContents()
+        List(selection: $selected) {
+            OutlineGroup(items, children: \.children) { item in
+                Text(item.text)
+            }
         }
+        .onAppear { self.loadTableOfContents() }
+        .onChange(of: url) { _ in self.loadTableOfContents() }
     }
     
-    private func loadTableOfContents() async {
-        do {
-            guard let url = url else { return }
-            let parser = try Parser(url: url)
-            let items = parser.getOutlineItems()
-            print(items)
-        } catch {}
-    }
-}
-
-struct TableOfContents_Previews: PreviewProvider {
-    static var previews: some View {
-        Outline(url: .constant(nil))
+    private func loadTableOfContents() {
+        guard let url = url,
+              let parser = try? Parser(url: url) else { items = []; return }
+        self.items = parser.getHierarchicalOutlineItems()
     }
 }
