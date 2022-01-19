@@ -65,7 +65,7 @@ struct Reader: View {
     }
 }
 
-class ReaderViewModel: NSObject, ObservableObject, WKNavigationDelegate {
+class ReaderViewModel: NSObject, ObservableObject, WKNavigationDelegate, WKScriptMessageHandler {
     @Published private(set) var canGoBack: Bool = false
     @Published private(set) var canGoForward: Bool = false
     @Published private(set) var articleTitle: String = ""
@@ -112,6 +112,8 @@ class ReaderViewModel: NSObject, ObservableObject, WKNavigationDelegate {
             self.articleTitle = title
             self.zimFileName = zimFile.name
         }
+        
+        webView.configuration.userContentController.add(self, name: "headingVisible")
     }
     
     func loadMainPage(zimFileID: UUID? = nil) {
@@ -156,8 +158,39 @@ class ReaderViewModel: NSObject, ObservableObject, WKNavigationDelegate {
     }
     
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
-        webView.evaluateJavaScript(
-            "document.querySelectorAll(\"details\").forEach((detail) => {detail.setAttribute(\"open\", true)});"
-        )
+        let javascript = """
+        // expand all detail tags
+        document.querySelectorAll('details').forEach( detail => {
+            detail.setAttribute('open', true)
+        })
+
+        // generate id for all heading if there isn't one already
+        var headings = document.querySelectorAll('h1, h2, h3, h4, h5, h6')
+        headings.forEach( (heading, index) => {
+            if (!heading.id) {
+                let parts = heading.textContent.trim().split(' ').concat([index])
+                heading.id = parts.join('_')
+            }
+        })
+
+        // retrieve all heading elements as objects
+        Array.from(headings).map( heading => {
+            return {
+                id: heading.id,
+                text: heading.textContent.trim(),
+                tag: heading.tagName,
+            }
+        })
+        """
+        webView.evaluateJavaScript(javascript) { result, error in
+            guard let result = result as? [[String: String]] else { return }
+            print(result)
+        }
+    }
+    
+    // MARK: - WKScriptMessageHandler
+    
+    func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
+        print(message.body as? [String: String] ?? [:])
     }
 }
