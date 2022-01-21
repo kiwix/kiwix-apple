@@ -115,6 +115,7 @@ class ReaderViewModel: NSObject, ObservableObject, WKNavigationDelegate, WKScrip
             self.zimFileName = zimFile.name
         }
         
+        webView.configuration.userContentController.add(self, name: "headings")
         webView.configuration.userContentController.add(self, name: "headingVisible")
     }
     
@@ -162,18 +163,27 @@ class ReaderViewModel: NSObject, ObservableObject, WKNavigationDelegate, WKScrip
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
         let javascript = """
         // expand all detail tags
-        document.querySelectorAll('details').forEach( detail => {
-            detail.setAttribute('open', true)
-        })
+        document.querySelectorAll('details').forEach( detail => detail.setAttribute('open', true) )
 
-        // generate id for all heading if there isn't one already
-        var headings = document.querySelectorAll('h1, h2, h3, h4, h5, h6')
+        // generate id for all headings if there isn't one already
+        let headings = Array.from(document.querySelectorAll('h1, h2, h3, h4, h5, h6'))
         headings.forEach( (heading, index) => {
             if (!heading.id) {
                 let parts = heading.textContent.trim().split(' ').concat([index])
                 heading.id = parts.join('_')
             }
         })
+
+        // convert all headings into objects and send it to app side
+        window.webkit.messageHandlers.headings.postMessage(
+            headings.map( heading => {
+                return {
+                    id: heading.id,
+                    text: heading.textContent.trim(),
+                    tag: heading.tagName,
+                }
+            })
+        )
 
         // create observer and register headings
         let observer = new IntersectionObserver(function(entries) {
@@ -187,37 +197,27 @@ class ReaderViewModel: NSObject, ObservableObject, WKNavigationDelegate, WKScrip
                     entry.isIntersecting === false &&
                     entry.boundingClientRect.bottom > entry.rootBounds.bottom
                 ) {
-                    let hs = Array.from(headings)
-                    let index = hs.findIndex(element => element.id == entry.target.id )
-                    let heading = hs[index - 1]
-                    window.webkit.messageHandlers.headingVisible.postMessage({id: heading.id})
+                    let index = headings.findIndex(element => element.id == entry.target.id )
+                    let previousHeading = headings[index - 1]
+                    window.webkit.messageHandlers.headingVisible.postMessage({id: previousHeading.id})
                     return
                 }
             }
-        }, { rootMargin: '-50px 0 -100px 0', threshold: 1.0 });
+        }, { rootMargin: '-50px 0 -200px 0', threshold: 1.0 });
         headings.forEach( heading => { observer.observe(heading) });
-
-        // retrieve all heading elements as objects
-        Array.from(headings).map( heading => {
-            return {
-                id: heading.id,
-                text: heading.textContent.trim(),
-                tag: heading.tagName,
-            }
-        })
         """
         
-        webView.evaluateJavaScript(javascript) { headings, _ in
-            guard let headings = headings as? [[String: String]] else { return }
-            DispatchQueue.global().async {
-                self.generateOutlineTree(headings: headings)
-            }
-        }
+        webView.evaluateJavaScript(javascript)
     }
     
     // MARK: - WKScriptMessageHandler
     
     func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
+        if message.name == "headings", let headings = message.body as? [[String: String]] {
+            self.generateOutlineTree(headings: headings)
+        } else {
+        }
+        
         let data = message.body as? [String: String] ?? [:]
         print(data)
         selectedOutlineItemID = data["id"]
