@@ -70,6 +70,8 @@ class ReaderViewModel: NSObject, ObservableObject, WKNavigationDelegate, WKScrip
     @Published private(set) var canGoForward: Bool = false
     @Published private(set) var articleTitle: String = ""
     @Published private(set) var zimFileName: String = ""
+    @Published private(set) var outlineItems = [OutlineItem]()
+    @Published var selectedOutlineItemID: String?
     
     let webView: WKWebView = {
         let config = WKWebViewConfiguration()
@@ -173,6 +175,24 @@ class ReaderViewModel: NSObject, ObservableObject, WKNavigationDelegate, WKScrip
             }
         })
 
+        // create observer and register headings
+        let observer = new IntersectionObserver(function(entries) {
+            for (index in entries) {
+                let entry = entries[index]
+                console.log(entry)
+                if (entry.isIntersecting === false && entry.boundingClientRect.top <= entry.rootBounds.top) {
+                    // console.log(entry)
+                    window.webkit.messageHandlers.headingVisible.postMessage({id: entry.target.id})
+                } else if (entry.isIntersecting === false && entry.boundingClientRect.bottom > entry.rootBounds.bottom) {
+                    let hs = Array.from(headings)
+                    let index = hs.findIndex(element => element.id == entry.target.id )
+                    let heading = hs[index - 1]
+                    window.webkit.messageHandlers.headingVisible.postMessage({id: heading.id})
+                }
+            }
+        }, { rootMargin: '-50px 0 -100px 0', threshold: 1.0 });
+        headings.forEach( heading => { observer.observe(heading) });
+
         // retrieve all heading elements as objects
         Array.from(headings).map( heading => {
             return {
@@ -182,15 +202,60 @@ class ReaderViewModel: NSObject, ObservableObject, WKNavigationDelegate, WKScrip
             }
         })
         """
-        webView.evaluateJavaScript(javascript) { result, error in
-            guard let result = result as? [[String: String]] else { return }
-            print(result)
+        
+        webView.evaluateJavaScript(javascript) { headings, _ in
+            guard let headings = headings as? [[String: String]] else { return }
+            DispatchQueue.global().async {
+                self.generateOutlineTree(headings: headings)
+            }
         }
     }
     
     // MARK: - WKScriptMessageHandler
     
     func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
-        print(message.body as? [String: String] ?? [:])
+        let data = message.body as? [String: String] ?? [:]
+        print(data)
+        selectedOutlineItemID = data["id"]
+    }
+    
+    // MARK: - Outlines
+    
+    private func generateOutlineTree(headings: [[String: String]]) {
+        let root = OutlineItem(index: -1, text: "", level: 0)
+        var stack: [OutlineItem] = [root]
+        
+        headings.enumerated().forEach { index, heading in
+            guard let id = heading["id"],
+                  let text = heading["text"],
+                  let tag = heading["tag"], let level = Int(tag.suffix(1)) else { return }
+            let item = OutlineItem(id: id, index: index, text: text, level: level)
+            
+            // get last item in stack
+            // if last item is child of item's sibling, unwind stack until a sibling is found
+            guard var lastItem = stack.last else { return }
+            while lastItem.level > item.level {
+                stack.removeLast()
+                lastItem = stack[stack.count - 1]
+            }
+            
+            // if item is last item's sibling, add item to parent and replace last item with itself in stack
+            // if item is last item's child, add item to parent and add item to stack
+            if lastItem.level == item.level {
+                stack[stack.count - 2].addChild(item)
+                stack[stack.count - 1] = item
+            } else if lastItem.level < item.level {
+                stack[stack.count - 1].addChild(item)
+                stack.append(item)
+            }
+        }
+        
+        // if there is only one h1, flatten one level
+        if let rootChildren = root.children, rootChildren.count == 1, let rootFirstChild = rootChildren.first {
+            let children = rootFirstChild.removeAllChildren()
+            DispatchQueue.main.async { self.outlineItems = [rootFirstChild] + children }
+        } else {
+            DispatchQueue.main.async { self.outlineItems = root.children ?? [] }
+        }
     }
 }
