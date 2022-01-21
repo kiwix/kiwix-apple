@@ -181,13 +181,17 @@ class ReaderViewModel: NSObject, ObservableObject, WKNavigationDelegate, WKScrip
                 let entry = entries[index]
                 console.log(entry)
                 if (entry.isIntersecting === false && entry.boundingClientRect.top <= entry.rootBounds.top) {
-                    // console.log(entry)
                     window.webkit.messageHandlers.headingVisible.postMessage({id: entry.target.id})
-                } else if (entry.isIntersecting === false && entry.boundingClientRect.bottom > entry.rootBounds.bottom) {
+                    return
+                } else if (
+                    entry.isIntersecting === false &&
+                    entry.boundingClientRect.bottom > entry.rootBounds.bottom
+                ) {
                     let hs = Array.from(headings)
                     let index = hs.findIndex(element => element.id == entry.target.id )
                     let heading = hs[index - 1]
                     window.webkit.messageHandlers.headingVisible.postMessage({id: heading.id})
+                    return
                 }
             }
         }, { rootMargin: '-50px 0 -100px 0', threshold: 1.0 });
