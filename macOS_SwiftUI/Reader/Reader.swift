@@ -203,8 +203,14 @@ class ReaderViewModel: NSObject, ObservableObject, WKNavigationDelegate, WKScrip
                     return
                 }
             }
-        }, { rootMargin: '-50px 0 -200px 0', threshold: 1.0 });
+        }, { rootMargin: '-50px 0 -35% 0', threshold: 1.0 });
         headings.forEach( heading => { observer.observe(heading) });
+        
+        window.onscroll = function() {
+            if (document.documentElement.scrollTop <= 0) {
+                window.webkit.messageHandlers.headingVisible.postMessage({id: headings[0].id})
+            }
+        }
         """
         
         webView.evaluateJavaScript(javascript)
