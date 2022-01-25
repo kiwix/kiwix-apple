@@ -42,7 +42,7 @@ struct Sidebar: View {
                     }.help(displayMode.help)
                 }
             }.padding(.vertical, 6).buttonStyle(.borderless).frame(maxWidth: .infinity)
-        }.background(.regularMaterial)
+        }.background(.ultraThinMaterial)
     }
     
     enum DisplayMode: String, CaseIterable, Identifiable {
