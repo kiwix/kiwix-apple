@@ -136,10 +136,10 @@ class ReaderViewModel: NSObject, ObservableObject, WKNavigationDelegate, WKScrip
         webView.load(URLRequest(url: url))
     }
     
-    func navigate(outlineItemIndex: Int) {
-        let javascript = "document.querySelectorAll(\"h1, h2, h3, h4, h5, h6\")[\(outlineItemIndex)].scrollIntoView()"
-        webView.evaluateJavaScript(javascript)
-    }
+//    func navigate(outlineItemIndex: Int) {
+//        let javascript = "document.querySelectorAll(\"h1, h2, h3, h4, h5, h6\")[\(outlineItemIndex)].scrollIntoView()"
+//        webView.evaluateJavaScript(javascript)
+//    }
     
     // MARK: - WKNavigationDelegate
     
@@ -165,17 +165,18 @@ class ReaderViewModel: NSObject, ObservableObject, WKNavigationDelegate, WKScrip
         }
     }
     
+    func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
+        webView.evaluateJavaScript("expandAllDetailTags(); getOutlineItem()")
+    }
+    
     // MARK: - WKScriptMessageHandler
     
     func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
         if message.name == "headings", let headings = message.body as? [[String: String]] {
-            self.generateOutlineTree(headings: headings)
-        } else {
+            generateOutlineTree(headings: headings)
+        } else if message.name == "headingVisible", let data = message.body as? [String: String] {
+            selectedOutlineItemID = data["id"]
         }
-        
-        let data = message.body as? [String: String] ?? [:]
-        print(data)
-        selectedOutlineItemID = data["id"]
     }
     
     // MARK: - Outlines

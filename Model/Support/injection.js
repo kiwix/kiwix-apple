@@ -1,5 +1,7 @@
 // expand all detail tags
-document.querySelectorAll('details').forEach( detail => detail.setAttribute('open', true) )
+function expandAllDetailTags() {
+	document.querySelectorAll('details').forEach( detail => detail.setAttribute('open', true) )	
+}
 
 // generate id for all headings if there isn't one already
 let headings = Array.from(document.querySelectorAll('h1, h2, h3, h4, h5, h6'))
