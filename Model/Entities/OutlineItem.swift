@@ -7,16 +7,21 @@
 //
 
 class OutlineItem: Identifiable {
-    var id: Int { index }
+    let id: String
     let index: Int
     let text: String
     let level: Int
     private(set) var children: [OutlineItem]?
     
-    init(index: Int, text: String, level: Int) {
+    init(id: String, index: Int, text: String, level: Int) {
+        self.id = id
         self.index = index
         self.text = text
         self.level = level
+    }
+    
+    convenience init(index: Int, text: String, level: Int) {
+        self.init(id: String(index), index: index, text: text, level: level)
     }
     
     func addChild(_ item: OutlineItem) {
@@ -25,5 +30,11 @@ class OutlineItem: Identifiable {
         } else {
             children = [item]
         }
+    }
+    
+    @discardableResult
+    func removeAllChildren() -> [OutlineItem] {
+        defer { children = nil }
+        return children ?? []
     }
 }
