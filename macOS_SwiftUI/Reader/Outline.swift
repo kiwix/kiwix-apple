@@ -11,16 +11,17 @@ import SwiftUI
 struct Outline: View {
     @EnvironmentObject var viewModel: ReaderViewModel
     @Binding var url: URL?
+    @State var selectedID: String?
     
     var body: some View {
-        ScrollViewReader { proxy in
-            List(selection: $viewModel.selectedOutlineItemID) {
-                ForEach(viewModel.outlineItems) { item in
-                    OutlineNode(item: item)
-                }
-            }.onChange(of: viewModel.selectedOutlineItemID) { selectedID in
-                proxy.scrollTo(selectedID)
+        List(selection: $selectedID) {
+            ForEach(viewModel.outlineItems) { item in
+                OutlineNode(item: item)
             }
+        }.onChange(of: selectedID) { selectedID in
+            guard let selectedID = selectedID else { return }
+            viewModel.scrollTo(outlineItemID: selectedID)
+            self.selectedID = nil
         }
     }
 }

@@ -9,7 +9,6 @@
 import Combine
 import CoreData
 import SwiftUI
-import UniformTypeIdentifiers
 import WebKit
 
 struct Reader: View {
@@ -72,9 +71,6 @@ class ReaderViewModel: NSObject, ObservableObject, WKNavigationDelegate, WKScrip
     @Published private(set) var articleTitle: String = ""
     @Published private(set) var zimFileName: String = ""
     @Published private(set) var outlineItems = [OutlineItem]()
-    @Published var selectedOutlineItemID: String?
-    
-    private var allOutlineItems = [String: OutlineItem]()
     
     let webView: WKWebView = {
         let config = WKWebViewConfiguration()
@@ -103,7 +99,6 @@ class ReaderViewModel: NSObject, ObservableObject, WKNavigationDelegate, WKScrip
     private var canGoBackObserver: NSKeyValueObservation?
     private var canGoForwardObserver: NSKeyValueObservation?
     private var titleObserver: NSKeyValueObservation?
-    private var selectedOutlineItemObserver: AnyCancellable?
     
     override init() {
         super.init()
@@ -122,10 +117,6 @@ class ReaderViewModel: NSObject, ObservableObject, WKNavigationDelegate, WKScrip
                   ).first else { return }
             self.articleTitle = title
             self.zimFileName = zimFile.name
-        }
-        selectedOutlineItemObserver = $selectedOutlineItemID.sink { [unowned self] selectedID in
-            guard let selectedID = selectedID else { return }
-            self.scrollTo(outlineItemID: selectedID)
         }
         
         webView.configuration.userContentController.add(self, name: "headings")
@@ -169,7 +160,7 @@ class ReaderViewModel: NSObject, ObservableObject, WKNavigationDelegate, WKScrip
     }
     
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
-        webView.evaluateJavaScript("expandAllDetailTags(); getOutlineItem()")
+        webView.evaluateJavaScript("expandAllDetailTags(); getOutlineItems();")
     }
     
     // MARK: - WKScriptMessageHandler
@@ -179,20 +170,15 @@ class ReaderViewModel: NSObject, ObservableObject, WKNavigationDelegate, WKScrip
             DispatchQueue.global(qos: .userInitiated).async {
                 self.generateOutlineTree(headings: headings)
             }
-        } else if message.name == "headingVisible", let data = message.body as? [String: String] {
-            selectedOutlineItemID = data["id"]
-            allOutlineItems[data["id"]!]?.isExpanded = true
         }
     }
     
     // MARK: - Outlines
     
-    private func scrollTo(outlineItemID: String) {
-        let javascript = """
-        element = document.getElementById('\(outlineItemID)')
-        element.scrollIntoView({block: 'start', inline: 'start', behavior: 'smooth'})
-        """
-        webView.evaluateJavaScript(javascript)
+    /// Scroll to a outline item
+    /// - Parameter outlineItemID: ID of the outline item to scroll to
+    func scrollTo(outlineItemID: String) {
+        webView.evaluateJavaScript("scrollToHeading('\(outlineItemID)')")
     }
     
     /// Convert flattened heading element data to a tree of OutlineItems.
@@ -233,12 +219,10 @@ class ReaderViewModel: NSObject, ObservableObject, WKNavigationDelegate, WKScrip
             let children = rootFirstChild.removeAllChildren()
             DispatchQueue.main.async {
                 self.outlineItems = [rootFirstChild] + children
-                self.allOutlineItems = all
             }
         } else {
             DispatchQueue.main.async {
                 self.outlineItems = root.children ?? []
-                self.allOutlineItems = [:]
             }
         }
     }
