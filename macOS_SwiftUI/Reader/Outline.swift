@@ -13,9 +13,13 @@ struct Outline: View {
     @Binding var url: URL?
     
     var body: some View {
-        List(selection: $viewModel.selectedOutlineItemID) {
-            ForEach(viewModel.outlineItems) { item in
-                OutlineNode(outlineItem: item)
+        ScrollViewReader { proxy in
+            List(selection: $viewModel.selectedOutlineItemID) {
+                ForEach(viewModel.outlineItems) { item in
+                    OutlineNode(item: item)
+                }
+            }.onChange(of: viewModel.selectedOutlineItemID) { selectedID in
+                proxy.scrollTo(selectedID)
             }
         }
     }
@@ -23,17 +27,17 @@ struct Outline: View {
 
 struct OutlineNode: View {
     @EnvironmentObject var viewModel: ReaderViewModel
-    @State var outlineItem: OutlineItem
+    @State var item: OutlineItem
     
     var body: some View {
-        if let children = outlineItem.children {
-            DisclosureGroup(outlineItem.text, isExpanded: $outlineItem.isExpanded) {
+        if let children = item.children {
+            DisclosureGroup(item.text, isExpanded: $item.isExpanded) {
                 ForEach(children) { child in
-                    OutlineNode(outlineItem: child)
+                    OutlineNode(item: child)
                 }
-            }
+            }.id(item.id)
         } else {
-            Text(outlineItem.text)
+            Text(item.text).id(item.id)
         }
     }
 }
