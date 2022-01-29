@@ -26,39 +26,39 @@ struct Search: View {
     @State private var showingPopover = false
     
     var body: some View {
-        HStack {
-            SearchField(searchText: $viewModel.searchText)
-            Spacer()
-            Button {
-                showingPopover = true
-            } label: {
-                if allIncluded {
-                    Image(systemName: "line.3.horizontal.decrease.circle")
-                } else {
-                    Image(systemName: "line.3.horizontal.decrease.circle.fill")
+        VStack(spacing: 0) {
+            HStack {
+                SearchField(searchText: $viewModel.searchText)
+                Spacer()
+                Button {
+                    showingPopover = true
+                } label: {
+                    if allIncluded {
+                        Image(systemName: "line.3.horizontal.decrease.circle")
+                    } else {
+                        Image(systemName: "line.3.horizontal.decrease.circle.fill")
+                    }
+                }
+                .buttonStyle(.borderless)
+                .foregroundColor(.blue)
+                .popover(isPresented: $showingPopover) {
+                    searchFilter.frame(width: 250, height: 200)
                 }
             }
-            .buttonStyle(.borderless)
-            .foregroundColor(.blue)
-            .popover(isPresented: $showingPopover) {
-                searchFilter.frame(width: 250, height: 200)
+            .padding(.horizontal, 10)
+            if viewModel.searchText.isEmpty, !recentSearchTexts.isEmpty {
+                List(recentSearchTexts, id: \.self, selection: $selectedSearchText) { searchText in
+                    Text(searchText)
+                }.onChange(of: selectedSearchText) { self.updateCurrentSearchText($0) }
+            } else if !viewModel.searchText.isEmpty, !viewModel.results.isEmpty {
+                List(viewModel.results, id: \.url, selection: $url) { searchResult in
+                    Text(searchResult.title)
+                }.onChange(of: url) { _ in self.updateRecentSearchTexts(viewModel.searchText) }
+            } else if !viewModel.searchText.isEmpty, viewModel.results.isEmpty, !viewModel.inProgress {
+                List { Text("No Result") }
+            } else {
+                List { }
             }
-        }
-        .padding(.horizontal, 10)
-        .padding(.vertical, 6)
-        
-        if viewModel.searchText.isEmpty, !recentSearchTexts.isEmpty {
-            List(recentSearchTexts, id: \.self, selection: $selectedSearchText) { searchText in
-                Text(searchText)
-            }.onChange(of: selectedSearchText) { self.updateCurrentSearchText($0) }
-        } else if !viewModel.searchText.isEmpty, !viewModel.results.isEmpty {
-            List(viewModel.results, id: \.url, selection: $url) { searchResult in
-                Text(searchResult.title)
-            }.onChange(of: url) { _ in self.updateRecentSearchTexts(viewModel.searchText) }
-        } else if !viewModel.searchText.isEmpty, viewModel.results.isEmpty, !viewModel.inProgress {
-            List { Text("No Result") }
-        } else {
-            List { }
         }
     }
     

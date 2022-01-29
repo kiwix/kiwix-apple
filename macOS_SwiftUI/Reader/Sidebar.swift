@@ -6,57 +6,64 @@
 //  Copyright © 2021 Chris Li. All rights reserved.
 //
 
+import Combine
 import SwiftUI
 
+import Defaults
+
 struct Sidebar: View {
-    @SceneStorage("sidebarDisplayMode") private var displayMode: DisplayMode = .search
+    @SceneStorage("Reader.SidebarDisplayMode") private var displayMode: DisplayMode = .tableOfContent
     @Binding var url: URL?
-    
+
     var body: some View {
-        VStack(spacing: 0) {
-            displayModeSelector
-            Divider()
-            switch displayMode {
-            case .search:
-                Search(url: $url)
-            case .bookmark:
-                BookmarksList(url: $url)
-            case .tableOfContent:
-                Outline(url: $url)
-            case .library:
-                LibraryList(url: $url)
-            }
-        }.focusedSceneValue(\.sidebarDisplayMode, $displayMode)
-    }
-    
-    var displayModeSelector: some View {
-        VStack(spacing: 0) {
-            Divider()
-            HStack(spacing: 20) {
-                ForEach(DisplayMode.allCases) { displayMode in
-                    Button {
-                        self.displayMode = displayMode
-                    } label: {
-                        Image(systemName: displayMode.imageName)
-                            .foregroundColor(self.displayMode == displayMode ? .blue : nil)
-                    }.help(displayMode.help)
+        VSplitView {
+            Search(url: $url).frame(minHeight: 200)
+            VStack(spacing: 0) {
+                HStack(spacing: 20) {
+                    ForEach(DisplayMode.allCases) { displayMode in
+                        Button {
+                            self.displayMode = displayMode
+                        } label: {
+                            Image(systemName: displayMode.imageName)
+                                .foregroundColor(self.displayMode == displayMode ? .blue : nil)
+                        }.help(displayMode.help)
+                    }
                 }
-            }.padding(.vertical, 6).buttonStyle(.borderless).frame(maxWidth: .infinity)
-        }.background(.ultraThinMaterial)
+                .padding(.vertical, 6)
+                .buttonStyle(.borderless)
+                .frame(maxWidth: .infinity)
+                .background(.ultraThinMaterial)
+                Divider()
+                switch displayMode {
+                case .tableOfContent:
+                    Outline(url: $url)
+                case .bookmark:
+                    BookmarksList(url: $url)
+                case .recent:
+                    List(1..<10) { index in
+                        Text("item \(index)")
+                    }
+                case .library:
+                    LibraryList(url: $url)
+                }
+            }.frame(minHeight: 100)
+        }
+        .listStyle(.sidebar)
+        .focusedSceneValue(\.sidebarDisplayMode, $displayMode)
     }
     
     enum DisplayMode: String, CaseIterable, Identifiable {
         var id: String { rawValue }
-        case search, bookmark, tableOfContent, library
+        case tableOfContent, bookmark, recent, library
         
         var imageName: String {
             switch self {
-            case .search:
-                return "magnifyingglass"
-            case .bookmark:
-                return "star"
             case .tableOfContent:
                 return "list.bullet"
+            case .bookmark:
+                return "star"
+            case .recent:
+                return "clock"
             case .library:
                 return "folder"
             }
@@ -64,12 +71,12 @@ struct Sidebar: View {
         
         var help: String {
             switch self {
-            case .search:
-                return "Search for articles"
-            case .bookmark:
-                return "Show bookmarked articles"
             case .tableOfContent:
                 return "Show table of content of current article"
+            case .bookmark:
+                return "Show bookmarked articles"
+            case .recent:
+                return "Show recently viewed articles"
             case .library:
                 return "Show library of zim files"
             }

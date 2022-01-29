@@ -41,13 +41,13 @@ struct SidebarDisplayModeCommandButtons: View {
     @FocusedBinding(\.sidebarDisplayMode) var displayMode: Sidebar.DisplayMode?
     
     var body: some View {
-        Button("Show Search") { displayMode = .search }
+        Button("Show Table of Contrnt") { displayMode = .tableOfContent }
             .keyboardShortcut("1")
             .disabled(displayMode == nil)
         Button("Show Bookmark") { displayMode = .bookmark }
             .keyboardShortcut("2")
             .disabled(displayMode == nil)
-        Button("Show Table of Contrnt") { displayMode = .tableOfContent }
+        Button("Show Recent") { displayMode = .recent }
             .keyboardShortcut("3")
             .disabled(displayMode == nil)
         Button("Show Library") { displayMode = .library }
