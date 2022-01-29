@@ -6,6 +6,7 @@
 //  Copyright © 2021 Chris Li. All rights reserved.
 //
 
+import Combine
 import CoreData
 import SwiftUI
 import UniformTypeIdentifiers
@@ -102,6 +103,7 @@ class ReaderViewModel: NSObject, ObservableObject, WKNavigationDelegate, WKScrip
     private var canGoBackObserver: NSKeyValueObservation?
     private var canGoForwardObserver: NSKeyValueObservation?
     private var titleObserver: NSKeyValueObservation?
+    private var selectedOutlineItemObserver: AnyCancellable?
     
     override init() {
         super.init()
@@ -121,6 +123,10 @@ class ReaderViewModel: NSObject, ObservableObject, WKNavigationDelegate, WKScrip
             self.articleTitle = title
             self.zimFileName = zimFile.name
         }
+        selectedOutlineItemObserver = $selectedOutlineItemID.sink { [unowned self] selectedID in
+            guard let selectedID = selectedID else { return }
+            self.scrollTo(outlineItemID: selectedID)
+        }
         
         webView.configuration.userContentController.add(self, name: "headings")
         webView.configuration.userContentController.add(self, name: "headingVisible")
@@ -137,11 +143,6 @@ class ReaderViewModel: NSObject, ObservableObject, WKNavigationDelegate, WKScrip
         guard let url = ZimFileService.shared.getRandomPageURL(zimFileID: zimFileID) else { return }
         webView.load(URLRequest(url: url))
     }
-    
-//    func navigate(outlineItemIndex: Int) {
-//        let javascript = "document.querySelectorAll(\"h1, h2, h3, h4, h5, h6\")[\(outlineItemIndex)].scrollIntoView()"
-//        webView.evaluateJavaScript(javascript)
-//    }
     
     // MARK: - WKNavigationDelegate
     
@@ -175,7 +176,9 @@ class ReaderViewModel: NSObject, ObservableObject, WKNavigationDelegate, WKScrip
     
     func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
         if message.name == "headings", let headings = message.body as? [[String: String]] {
-            generateOutlineTree(headings: headings)
+            DispatchQueue.global(qos: .userInitiated).async {
+                self.generateOutlineTree(headings: headings)
+            }
         } else if message.name == "headingVisible", let data = message.body as? [String: String] {
             selectedOutlineItemID = data["id"]
             allOutlineItems[data["id"]!]?.isExpanded = true
@@ -184,6 +187,16 @@ class ReaderViewModel: NSObject, ObservableObject, WKNavigationDelegate, WKScrip
     
     // MARK: - Outlines
     
+    private func scrollTo(outlineItemID: String) {
+        let javascript = """
+        element = document.getElementById('\(outlineItemID)')
+        element.scrollIntoView({block: 'start', inline: 'start', behavior: 'smooth'})
+        """
+        webView.evaluateJavaScript(javascript)
+    }
+    
+    /// Convert flattened heading element data to a tree of OutlineItems.
+    /// - Parameter headings: list of heading element data retrieved from webview
     private func generateOutlineTree(headings: [[String: String]]) {
         let root = OutlineItem(index: -1, text: "", level: 0)
         var stack: [OutlineItem] = [root]
