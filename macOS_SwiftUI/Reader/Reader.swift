@@ -73,6 +73,8 @@ class ReaderViewModel: NSObject, ObservableObject, WKNavigationDelegate, WKScrip
     @Published private(set) var outlineItems = [OutlineItem]()
     @Published var selectedOutlineItemID: String?
     
+    private var allOutlineItems = [String: OutlineItem]()
+    
     let webView: WKWebView = {
         let config = WKWebViewConfiguration()
         config.setURLSchemeHandler(KiwixURLSchemeHandler(), forURLScheme: "kiwix")
@@ -176,6 +178,7 @@ class ReaderViewModel: NSObject, ObservableObject, WKNavigationDelegate, WKScrip
             generateOutlineTree(headings: headings)
         } else if message.name == "headingVisible", let data = message.body as? [String: String] {
             selectedOutlineItemID = data["id"]
+            allOutlineItems[data["id"]!]?.isExpanded = true
         }
     }
     
@@ -184,12 +187,14 @@ class ReaderViewModel: NSObject, ObservableObject, WKNavigationDelegate, WKScrip
     private func generateOutlineTree(headings: [[String: String]]) {
         let root = OutlineItem(index: -1, text: "", level: 0)
         var stack: [OutlineItem] = [root]
+        var all = [String: OutlineItem]()
         
         headings.enumerated().forEach { index, heading in
             guard let id = heading["id"],
                   let text = heading["text"],
                   let tag = heading["tag"], let level = Int(tag.suffix(1)) else { return }
             let item = OutlineItem(id: id, index: index, text: text, level: level)
+            all[item.id] = item
             
             // get last item in stack
             // if last item is child of item's sibling, unwind stack until a sibling is found
@@ -213,9 +218,15 @@ class ReaderViewModel: NSObject, ObservableObject, WKNavigationDelegate, WKScrip
         // if there is only one h1, flatten one level
         if let rootChildren = root.children, rootChildren.count == 1, let rootFirstChild = rootChildren.first {
             let children = rootFirstChild.removeAllChildren()
-            DispatchQueue.main.async { self.outlineItems = [rootFirstChild] + children }
+            DispatchQueue.main.async {
+                self.outlineItems = [rootFirstChild] + children
+                self.allOutlineItems = all
+            }
         } else {
-            DispatchQueue.main.async { self.outlineItems = root.children ?? [] }
+            DispatchQueue.main.async {
+                self.outlineItems = root.children ?? []
+                self.allOutlineItems = [:]
+            }
         }
     }
 }

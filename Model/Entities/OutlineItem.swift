@@ -6,12 +6,16 @@
 //  Copyright © 2020 Chris Li. All rights reserved.
 //
 
+import Combine
+
 class OutlineItem: Identifiable {
     let id: String
     let index: Int
     let text: String
     let level: Int
     private(set) var children: [OutlineItem]?
+    
+    @Published var isExpanded = false
     
     init(id: String, index: Int, text: String, level: Int) {
         self.id = id

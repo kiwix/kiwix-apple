@@ -14,9 +14,26 @@ struct Outline: View {
     
     var body: some View {
         List(selection: $viewModel.selectedOutlineItemID) {
-            OutlineGroup(viewModel.outlineItems, children: \.children) { item in
-                Text(item.text)
+            ForEach(viewModel.outlineItems) { item in
+                OutlineNode(outlineItem: item)
             }
+        }
+    }
+}
+
+struct OutlineNode: View {
+    @EnvironmentObject var viewModel: ReaderViewModel
+    @State var outlineItem: OutlineItem
+    
+    var body: some View {
+        if let children = outlineItem.children {
+            DisclosureGroup(outlineItem.text, isExpanded: $outlineItem.isExpanded) {
+                ForEach(children) { child in
+                    OutlineNode(outlineItem: child)
+                }
+            }
+        } else {
+            Text(outlineItem.text)
         }
     }
 }

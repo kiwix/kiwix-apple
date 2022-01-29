@@ -29,7 +29,6 @@ function getOutlineItem() {
 let observer = new IntersectionObserver(function(entries) {
 	for (index in entries) {
 		let entry = entries[index]
-		console.log(entry)
 		if (entry.isIntersecting === false && entry.boundingClientRect.top <= entry.rootBounds.top) {
 			window.webkit.messageHandlers.headingVisible.postMessage({id: entry.target.id})
 			return
