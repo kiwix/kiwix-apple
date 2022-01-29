@@ -46,7 +46,7 @@ struct Sidebar: View {
                 case .library:
                     LibraryList(url: $url)
                 }
-            }.frame(minHeight: 100)
+            }.frame(minHeight: 125)
         }
         .listStyle(.sidebar)
         .focusedSceneValue(\.sidebarDisplayMode, $displayMode)
