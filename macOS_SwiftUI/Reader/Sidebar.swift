@@ -17,7 +17,7 @@ struct Sidebar: View {
 
     var body: some View {
         VStack(spacing: 0) {
-            sidebarDisplayModeSelector
+            displayModeSelector.background(.regularMaterial)
             VSplitView {
                 VStack(spacing: 0) {
                     switch displayMode {
@@ -36,7 +36,7 @@ struct Sidebar: View {
         .focusedSceneValue(\.sidebarDisplayMode, $displayMode)
     }
     
-    var sidebarDisplayModeSelector: some View {
+    var displayModeSelector: some View {
         VStack(spacing: 0) {
             Divider()
             HStack(spacing: 20) {
@@ -53,7 +53,7 @@ struct Sidebar: View {
             .buttonStyle(.borderless)
             .frame(maxWidth: .infinity)
             Divider()
-        }.background(.regularMaterial)
+        }
     }
     
     enum DisplayMode: String, CaseIterable, Identifiable {

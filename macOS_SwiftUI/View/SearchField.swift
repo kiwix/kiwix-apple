@@ -44,13 +44,3 @@ struct SearchField: NSViewRepresentable {
         }
     }
 }
-
-//struct SearchField_Previews: PreviewProvider {
-//    @State var searchText = "some text"
-//    @State var isFocused = false
-//
-//
-//    static var previews: some View {
-//        SearchField(searchText: $searchText, isFocused: $isFocused)
-//    }
-//}
