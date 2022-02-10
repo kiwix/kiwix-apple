@@ -41,17 +41,14 @@ struct SidebarDisplayModeCommandButtons: View {
     @FocusedBinding(\.sidebarDisplayMode) var displayMode: Sidebar.DisplayMode?
     
     var body: some View {
-        Button("Show Table of Contrnt") { displayMode = .tableOfContent }
+        Button("Search Articles") { displayMode = .search }
             .keyboardShortcut("1")
             .disabled(displayMode == nil)
         Button("Show Bookmark") { displayMode = .bookmark }
             .keyboardShortcut("2")
             .disabled(displayMode == nil)
-        Button("Show Recent") { displayMode = .recent }
-            .keyboardShortcut("3")
-            .disabled(displayMode == nil)
         Button("Show Library") { displayMode = .library }
-            .keyboardShortcut("4")
+            .keyboardShortcut("3")
             .disabled(displayMode == nil)
     }
 }
@@ -61,9 +58,9 @@ struct NavigationCommandButtons: View {
     
     var body: some View {
         Button("Go Back") { readerViewModel?.webView.goBack() }
-            .keyboardShortcut("[")
+            .keyboardShortcut("[").disabled(!(readerViewModel?.canGoBack ?? false))
         Button("Go Forward") { readerViewModel?.webView.goForward() }
-            .keyboardShortcut("]")
+            .keyboardShortcut("]").disabled(!(readerViewModel?.canGoForward ?? false))
     }
 }
 

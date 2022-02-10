@@ -12,39 +12,19 @@ import SwiftUI
 import Defaults
 
 struct Sidebar: View {
-    @SceneStorage("Reader.SidebarDisplayMode") private var displayMode: DisplayMode = .tableOfContent
+    @SceneStorage("Reader.SidebarDisplayMode") private var displayMode: DisplayMode = .search
     @Binding var url: URL?
 
     var body: some View {
         VStack(spacing: 0) {
-            VStack(spacing: 0) {
-                Divider()
-                HStack(spacing: 20) {
-                    ForEach(DisplayMode.allCases) { displayMode in
-                        Button {
-                            self.displayMode = displayMode
-                        } label: {
-                            Image(systemName: displayMode.imageName)
-                                .foregroundColor(self.displayMode == displayMode ? .blue : nil)
-                        }.help(displayMode.help)
-                    }
-                }
-                .padding(.vertical, 6)
-                .buttonStyle(.borderless)
-                .frame(maxWidth: .infinity)
-                Divider()
-            }.background(.regularMaterial)
+            sidebarDisplayModeSelector
             VSplitView {
                 VStack(spacing: 0) {
                     switch displayMode {
-                    case .tableOfContent:
+                    case .search:
                         Search(url: $url)
                     case .bookmark:
                         BookmarksList(url: $url)
-                    case .recent:
-                        List(1..<10) { index in
-                            Text("item \(index)")
-                        }
                     case .library:
                         LibraryList(url: $url)
                     }
@@ -56,18 +36,36 @@ struct Sidebar: View {
         .focusedSceneValue(\.sidebarDisplayMode, $displayMode)
     }
     
+    var sidebarDisplayModeSelector: some View {
+        VStack(spacing: 0) {
+            Divider()
+            HStack(spacing: 20) {
+                ForEach(DisplayMode.allCases) { displayMode in
+                    Button {
+                        self.displayMode = displayMode
+                    } label: {
+                        Image(systemName: displayMode.imageName)
+                            .foregroundColor(self.displayMode == displayMode ? .blue : nil)
+                    }.help(displayMode.help)
+                }
+            }
+            .padding(.vertical, 6)
+            .buttonStyle(.borderless)
+            .frame(maxWidth: .infinity)
+            Divider()
+        }.background(.regularMaterial)
+    }
+    
     enum DisplayMode: String, CaseIterable, Identifiable {
         var id: String { rawValue }
-        case tableOfContent, bookmark, recent, library
+        case search, bookmark, library
         
         var imageName: String {
             switch self {
-            case .tableOfContent:
-                return "list.bullet"
+            case .search:
+                return "magnifyingglass"
             case .bookmark:
                 return "star"
-            case .recent:
-                return "clock"
             case .library:
                 return "folder"
             }
@@ -75,12 +73,10 @@ struct Sidebar: View {
         
         var help: String {
             switch self {
-            case .tableOfContent:
-                return "Show table of content of current article"
+            case .search:
+                return "Search for articles"
             case .bookmark:
                 return "Show bookmarked articles"
-            case .recent:
-                return "Show recently viewed articles"
             case .library:
                 return "Show library of zim files"
             }
