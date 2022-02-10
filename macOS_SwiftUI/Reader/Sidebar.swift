@@ -16,9 +16,9 @@ struct Sidebar: View {
     @Binding var url: URL?
 
     var body: some View {
-        VSplitView {
-            Search(url: $url).frame(minHeight: 200)
+        VStack(spacing: 0) {
             VStack(spacing: 0) {
+                Divider()
                 HStack(spacing: 20) {
                     ForEach(DisplayMode.allCases) { displayMode in
                         Button {
@@ -32,23 +32,27 @@ struct Sidebar: View {
                 .padding(.vertical, 6)
                 .buttonStyle(.borderless)
                 .frame(maxWidth: .infinity)
-                .background(.ultraThinMaterial)
                 Divider()
-                switch displayMode {
-                case .tableOfContent:
-                    Outline(url: $url)
-                case .bookmark:
-                    BookmarksList(url: $url)
-                case .recent:
-                    List(1..<10) { index in
-                        Text("item \(index)")
+            }.background(.regularMaterial)
+            VSplitView {
+                VStack(spacing: 0) {
+                    switch displayMode {
+                    case .tableOfContent:
+                        Search(url: $url)
+                    case .bookmark:
+                        BookmarksList(url: $url)
+                    case .recent:
+                        List(1..<10) { index in
+                            Text("item \(index)")
+                        }
+                    case .library:
+                        LibraryList(url: $url)
                     }
-                case .library:
-                    LibraryList(url: $url)
-                }
-            }.frame(minHeight: 125)
+                }.frame(minHeight: 200)
+                Outline(url: $url).frame(minHeight: 125).background(.regularMaterial)
+            }
+            .listStyle(.sidebar)
         }
-        .listStyle(.sidebar)
         .focusedSceneValue(\.sidebarDisplayMode, $displayMode)
     }
     

@@ -46,6 +46,7 @@ struct Search: View {
                 }
             }
             .padding(.horizontal, 10)
+            .padding(.top, 6)
             if viewModel.searchText.isEmpty, !recentSearchTexts.isEmpty {
                 List(recentSearchTexts, id: \.self, selection: $selectedSearchText) { searchText in
                     Text(searchText)
