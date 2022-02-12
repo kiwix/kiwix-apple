@@ -29,7 +29,13 @@ struct Sidebar: View {
                         LibraryList(url: $url)
                     }
                 }.frame(minHeight: 200)
-                Outline(url: $url).frame(minHeight: 125).background(.regularMaterial)
+                Group {
+                    if url != nil {
+                        Outline(url: $url)
+                    } else {
+                        Message(text: "No Article Selected")
+                    }
+                }.frame(minHeight: 125).background(.regularMaterial)
             }
             .listStyle(.sidebar)
         }
