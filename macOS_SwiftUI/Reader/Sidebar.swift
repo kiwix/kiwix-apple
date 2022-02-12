@@ -14,6 +14,7 @@ import Defaults
 struct Sidebar: View {
     @SceneStorage("Reader.SidebarDisplayMode") private var displayMode: DisplayMode = .search
     @Binding var url: URL?
+    @StateObject private var searchViewModel = SearchViewModel()
 
     var body: some View {
         VStack(spacing: 0) {
@@ -22,7 +23,7 @@ struct Sidebar: View {
                 VStack(spacing: 0) {
                     switch displayMode {
                     case .search:
-                        Search(url: $url)
+                        Search(url: $url, viewModel: searchViewModel)
                     case .bookmark:
                         BookmarksList(url: $url)
                     case .library:

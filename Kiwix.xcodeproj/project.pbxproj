@@ -206,6 +206,7 @@
 		97F4D10C20ADFE370038FC87 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 97F4D10B20ADFE370038FC87 /* Assets.xcassets */; };
 		97FB4B0927B816C80055F86E /* SearchFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97FB4B0827B816C80055F86E /* SearchFilter.swift */; };
 		97FB4B0B27B819A90055F86E /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97FB4B0A27B819A90055F86E /* Message.swift */; };
+		97FB4B0E27B81B680055F86E /* SearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97FB4B0D27B81B680055F86E /* SearchViewModel.swift */; };
 		97FD2F5F251EA07B0034927C /* FeatureFlags.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97FD2F5E251EA07B0034927C /* FeatureFlags.swift */; };
 /* End PBXBuildFile section */
 
@@ -410,6 +411,7 @@
 		97F6CC5020BD960F005CDBD2 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		97FB4B0827B816C80055F86E /* SearchFilter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchFilter.swift; sourceTree = "<group>"; };
 		97FB4B0A27B819A90055F86E /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
+		97FB4B0D27B81B680055F86E /* SearchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewModel.swift; sourceTree = "<group>"; };
 		97FD2F5E251EA07B0034927C /* FeatureFlags.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeatureFlags.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -838,6 +840,7 @@
 			isa = PBXGroup;
 			children = (
 				9735D0B72775362000C7D495 /* Model */,
+				97FB4B0C27B81B530055F86E /* ViewModels */,
 				97DED67D275278EB008D2C56 /* View */,
 				977BD5F8276C295C004D2C32 /* Reader */,
 				973A2FC8277F672700BD4320 /* Library */,
@@ -894,6 +897,14 @@
 				97F425CB27151A0D00D0F738 /* Info.plist */,
 			);
 			path = QuickLookPreview;
+			sourceTree = "<group>";
+		};
+		97FB4B0C27B81B530055F86E /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				97FB4B0D27B81B680055F86E /* SearchViewModel.swift */,
+			);
+			path = ViewModels;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1346,6 +1357,7 @@
 				97242B882735E66E00C87F85 /* OutlineItem.swift in Sources */,
 				97242B9F2735E6A800C87F85 /* Enums.swift in Sources */,
 				973A2FC7277F656B00BD4320 /* OPDSStreamParser.mm in Sources */,
+				97FB4B0E27B81B680055F86E /* SearchViewModel.swift in Sources */,
 				97E94B30271EF639005B0295 /* ZimFileMetaData.mm in Sources */,
 				97B3048D277D4EF400E82DE0 /* LibraryList.swift in Sources */,
 				97E94B2F271EF630005B0295 /* ZimFileService.mm in Sources */,
