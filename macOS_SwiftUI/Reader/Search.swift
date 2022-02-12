@@ -18,7 +18,6 @@ struct Search: View {
     @State private var selectedSearchText: String?
     @StateObject private var viewModel = ViewModel()
     @Default(.recentSearchTexts) private var recentSearchTexts: [String]
-    @Environment(\.managedObjectContext) private var managedObjectContext
     @FetchRequest(
         sortDescriptors: [SortDescriptor(\.size, order: .reverse)],
         predicate: NSPredicate(format: "fileURLBookmark != nil")
@@ -40,16 +39,22 @@ struct Search: View {
                     }
                 }
                 .buttonStyle(.borderless)
-                .foregroundColor(.blue)
+                .disabled(zimFiles.count == 0)
+                .help("Filter search results by zim files")
+                .foregroundColor(zimFiles.count > 0 ? .blue : .gray)
                 .popover(isPresented: $showingPopover) {
-                    searchFilter.frame(width: 250, height: 200)
+                    SearchFilter().frame(width: 250, height: 200)
                 }
             }
             .padding(.horizontal, 10)
             .padding(.top, 6)
             if viewModel.searchText.isEmpty, !recentSearchTexts.isEmpty {
-                List(recentSearchTexts, id: \.self, selection: $selectedSearchText) { searchText in
-                    Text(searchText)
+                List(selection: $selectedSearchText) {
+                    Section("Recent Search") {
+                        ForEach(recentSearchTexts, id: \.self) { searchText in
+                            Text(searchText)
+                        }
+                    }
                 }.onChange(of: selectedSearchText) { self.updateCurrentSearchText($0) }
             } else if !viewModel.searchText.isEmpty, !viewModel.results.isEmpty {
                 List(viewModel.results, id: \.url, selection: $url) { searchResult in
@@ -60,36 +65,6 @@ struct Search: View {
             } else {
                 List { }
             }
-        }
-    }
-    
-    var searchFilter: some View {
-        List(zimFiles) { zimFile in
-            Toggle(zimFile.name, isOn: Binding<Bool>(get: {
-                zimFile.includedInSearch
-            }, set: {
-                zimFile.includedInSearch = $0
-                try? managedObjectContext.save()
-            }))
-        }
-        .safeAreaInset(edge: .top) {
-            HStack {
-                Text("Include in Search").fontWeight(.medium)
-                Spacer()
-                if allIncluded {
-                    Button { selectNoZimFiles() } label: {
-                        Text("None").font(.caption).fontWeight(.medium)
-                    }
-                } else {
-                    Button { selectAllZimFiles() } label: {
-                        Text("All").font(.caption).fontWeight(.medium)
-                    }
-                }
-            }
-            .padding(.vertical, 5)
-            .padding(.leading, 16)
-            .padding(.trailing, 10)
-            .background(.ultraThinMaterial)
         }
     }
     
@@ -111,20 +86,6 @@ struct Search: View {
         recentSearchTexts.removeAll { $0 == searchText }
         recentSearchTexts.insert(searchText, at: 0)
         self.recentSearchTexts = recentSearchTexts
-    }
-    
-    private func selectAllZimFiles() {
-        managedObjectContext.perform {
-            zimFiles.forEach { $0.includedInSearch = true }
-        }
-        try? managedObjectContext.save()
-    }
-    
-    private func selectNoZimFiles() {
-        managedObjectContext.perform {
-            zimFiles.forEach { $0.includedInSearch = false }
-        }
-        try? managedObjectContext.save()
     }
 }
 

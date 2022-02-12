@@ -204,6 +204,7 @@
 		97F425D62715213A00D0F738 /* WebKitHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9779A73A2456796B00F6F6FF /* WebKitHandler.swift */; };
 		97F425D7271521DA00D0F738 /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9779A7E224567A5A00F6F6FF /* Log.swift */; };
 		97F4D10C20ADFE370038FC87 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 97F4D10B20ADFE370038FC87 /* Assets.xcassets */; };
+		97FB4B0927B816C80055F86E /* SearchFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97FB4B0827B816C80055F86E /* SearchFilter.swift */; };
 		97FD2F5F251EA07B0034927C /* FeatureFlags.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97FD2F5E251EA07B0034927C /* FeatureFlags.swift */; };
 /* End PBXBuildFile section */
 
@@ -406,6 +407,7 @@
 		97F425CB27151A0D00D0F738 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		97F4D10B20ADFE370038FC87 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		97F6CC5020BD960F005CDBD2 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
+		97FB4B0827B816C80055F86E /* SearchFilter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchFilter.swift; sourceTree = "<group>"; };
 		97FD2F5E251EA07B0034927C /* FeatureFlags.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeatureFlags.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -697,6 +699,7 @@
 				97E94B1B271EF24D005B0295 /* Reader.swift */,
 				97242B7C2732E52300C87F85 /* Sidebar.swift */,
 				97D07A08273719720002B9EB /* Search.swift */,
+				97FB4B0827B816C80055F86E /* SearchFilter.swift */,
 				977BD6062772350B004D2C32 /* BookmarksList.swift */,
 				97C278DE2796249900666E07 /* Outline.swift */,
 				97B3048C277D4EF400E82DE0 /* LibraryList.swift */,
@@ -1361,6 +1364,7 @@
 				97242B992735E6A800C87F85 /* SearchQueue.swift in Sources */,
 				9735D0BA2775363900C7D495 /* DataModel.xcdatamodeld in Sources */,
 				97B0737627825E3D007C7DF3 /* Favicon.swift in Sources */,
+				97FB4B0927B816C80055F86E /* SearchFilter.swift in Sources */,
 				973A2FC6277EAA2700BD4320 /* OPDSRefreshError.swift in Sources */,
 				973A2FC3277EA9F300BD4320 /* OPDSStreamParser.swift in Sources */,
 				97B073742780A000007C7DF3 /* LibraryZimFileDetail.swift in Sources */,
