@@ -1,5 +1,5 @@
 //
-//  MainPageButton.swift
+//  MainArticleButton.swift
 //  Kiwix for macOS
 //
 //  Created by Chris Li on 2/13/22.
@@ -8,7 +8,7 @@
 
 import SwiftUI
 
-struct MainPageButton: View {
+struct MainArticleButton: View {
     @EnvironmentObject var viewModel: ReaderViewModel
     @FetchRequest(
         sortDescriptors: [SortDescriptor(\.size, order: .reverse)],

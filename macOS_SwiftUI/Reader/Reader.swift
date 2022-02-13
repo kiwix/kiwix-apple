@@ -35,7 +35,7 @@ struct Reader: View {
                     }
                     ToolbarItemGroup {
                         BookmarkButton(url: $url)
-                        MainPageButton()
+                        MainArticleButton()
                         Menu {
                             ForEach(onDeviceZimFiles) { zimFile in
                                 Button(zimFile.name) { viewModel.loadRandomPage(zimFileID: zimFile.id) }
