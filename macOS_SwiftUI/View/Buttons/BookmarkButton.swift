@@ -1,6 +1,6 @@
 //
 //  BookmarkButton.swift
-//  macOS_SwiftUI
+//  Kiwix for macOS
 //
 //  Created by Chris Li on 12/25/21.
 //  Copyright © 2021 Chris Li. All rights reserved.
@@ -34,7 +34,9 @@ struct BookmarkButton: View {
             }
         } label: {
             Image(systemName: bookmarks.isEmpty ? "star" : "star.fill")
-        }.disabled(url == nil)
+        }
+        .disabled(url == nil)
+        .foregroundColor(bookmarks.isEmpty ? nil : .yellow)
     }
     
     private func createBookmark() {
