@@ -30,12 +30,8 @@ struct Reader: View {
                 .frame(minWidth: 400, idealWidth: 800, minHeight: 500, idealHeight: 550)
                 .toolbar {
                     ToolbarItemGroup(placement: .navigation) {
-                        Button { viewModel.webView.goBack() } label: {
-                            Image(systemName: "chevron.backward")
-                        }.disabled(!viewModel.canGoBack)
-                        Button { viewModel.webView.goForward() } label: {
-                            Image(systemName: "chevron.forward")
-                        }.disabled(!viewModel.canGoForward)
+                        NavigateBackButton()
+                        NavigateForwardButton()
                     }
                     ToolbarItemGroup {
                         BookmarkButton(url: $url)
