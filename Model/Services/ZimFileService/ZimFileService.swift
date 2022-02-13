@@ -42,7 +42,11 @@ extension ZimFileService {
     }
     
     func getFileURLBookmark(zimFileID: String) -> Data? {
-        try? getFileURL(zimFileID: zimFileID)?.bookmarkData()
+        try? getFileURL(zimFileID: zimFileID)?.bookmarkData(
+            options: [.withSecurityScope, .securityScopeAllowOnlyReadAccess],
+            includingResourceValuesForKeys: [],
+            relativeTo: nil
+        )
     }
     
     func getRedirectedURL(url: URL) -> URL? {
