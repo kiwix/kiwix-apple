@@ -35,12 +35,7 @@ struct Reader: View {
                     }
                     ToolbarItemGroup {
                         BookmarkButton(url: $url)
-                        Button {
-                            viewModel.loadMainPage()
-                        } label: {
-                            Image(systemName: "house")
-                        }
-                        .disabled(onDeviceZimFiles.isEmpty)
+                        MainPageButton()
                         Menu {
                             ForEach(onDeviceZimFiles) { zimFile in
                                 Button(zimFile.name) { viewModel.loadRandomPage(zimFileID: zimFile.id) }

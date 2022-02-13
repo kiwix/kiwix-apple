@@ -125,6 +125,7 @@
 		978A731027B99F25008101B4 /* ReaderViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 978A730F27B99F25008101B4 /* ReaderViewModel.swift */; };
 		978A731227B9A0E0008101B4 /* NavigationButtons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 978A731127B9A0E0008101B4 /* NavigationButtons.swift */; };
 		978A731527B9A245008101B4 /* SidebarButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 978A731427B9A245008101B4 /* SidebarButton.swift */; };
+		978A731727B9A4F1008101B4 /* MainPageButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 978A731627B9A4F1008101B4 /* MainPageButton.swift */; };
 		978B688924F8080E003CCA8C /* BarButtons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 978B688824F8080E003CCA8C /* BarButtons.swift */; };
 		978CB19B2793BC6B0086BFCE /* libkiwix.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97EC18AF26E8555E008309ED /* libkiwix.xcframework */; };
 		97952EF3264F557B00FC9237 /* SearchResultsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97952EF2264F557B00FC9237 /* SearchResultsView.swift */; };
@@ -354,6 +355,7 @@
 		978A730F27B99F25008101B4 /* ReaderViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderViewModel.swift; sourceTree = "<group>"; };
 		978A731127B9A0E0008101B4 /* NavigationButtons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationButtons.swift; sourceTree = "<group>"; };
 		978A731427B9A245008101B4 /* SidebarButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SidebarButton.swift; sourceTree = "<group>"; };
+		978A731627B9A4F1008101B4 /* MainPageButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainPageButton.swift; sourceTree = "<group>"; };
 		978B688824F8080E003CCA8C /* BarButtons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarButtons.swift; sourceTree = "<group>"; };
 		978FA76725851B4D00666E1B /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		979315811E5127930093D3BA /* Kiwix.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Kiwix.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -734,6 +736,7 @@
 			isa = PBXGroup;
 			children = (
 				9735D0BD2777531400C7D495 /* BookmarkButton.swift */,
+				978A731627B9A4F1008101B4 /* MainPageButton.swift */,
 				978A731127B9A0E0008101B4 /* NavigationButtons.swift */,
 				978A731427B9A245008101B4 /* SidebarButton.swift */,
 			);
@@ -1369,6 +1372,7 @@
 				97B3BAD02736CE3500A23F49 /* URL.swift in Sources */,
 				97255D8C273608C3002B995B /* WebView.swift in Sources */,
 				9735D0BE2777531400C7D495 /* BookmarkButton.swift in Sources */,
+				978A731727B9A4F1008101B4 /* MainPageButton.swift in Sources */,
 				97B0737827889F1C007C7DF3 /* LibraryZimFilesList.swift in Sources */,
 				97E94B1A271EF24D005B0295 /* App.swift in Sources */,
 				97242B882735E66E00C87F85 /* OutlineItem.swift in Sources */,
