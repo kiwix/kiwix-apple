@@ -17,9 +17,17 @@ extension ZimFileService {
     @discardableResult
     func open(bookmark: Data) -> Data? {
         var isStale: Bool = false
+        #if os(macOS)
+        guard let url = try? URL(
+            resolvingBookmarkData: bookmark,
+            options: [.withSecurityScope],
+            bookmarkDataIsStale: &isStale
+        ) else { return nil }
+        #else
         guard let url = try? URL(resolvingBookmarkData: bookmark, bookmarkDataIsStale: &isStale) else { return nil }
+        #endif
         open(url: url)
-        return isStale ? try? url.bookmarkData() : nil
+        return isStale ? ZimFileService.getBookmarkData(url: url) : nil
     }
     
     func close(id: String) { __close(id) }
@@ -37,16 +45,24 @@ extension ZimFileService {
     
     // MARK: - URL
     
+    static func getBookmarkData(url: URL) -> Data? {
+        #if os(macOS)
+        try? url.bookmarkData(
+            options: [.withSecurityScope, .securityScopeAllowOnlyReadAccess],
+            includingResourceValuesForKeys: nil,
+            relativeTo: nil
+        )
+        #else
+        try? url.bookmarkData()
+        #endif
+    }
+    
     func getFileURL(zimFileID: String) -> URL? {
         __getFileURL(zimFileID)
     }
     
     func getFileURLBookmark(zimFileID: String) -> Data? {
-        try? getFileURL(zimFileID: zimFileID)?.bookmarkData(
-            options: [.withSecurityScope, .securityScopeAllowOnlyReadAccess],
-            includingResourceValuesForKeys: [],
-            relativeTo: nil
-        )
+        try? getFileURL(zimFileID: zimFileID)?.bookmarkData()
     }
     
     func getRedirectedURL(url: URL) -> URL? {

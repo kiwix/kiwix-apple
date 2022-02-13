@@ -24,10 +24,10 @@ struct ImportCommands: Commands {
                 ) { result in
                     guard case let .success(urls) = result else { return }
                     urls.forEach { url in
-                        guard let metadata = ZimFileService.getMetaData(url: url) else { return }
-                        ZimFileService.shared.open(url: url)
+                        guard let metadata = ZimFileService.getMetaData(url: url),
+                              let data = ZimFileService.getBookmarkData(url: url) else { return }
+                        ZimFileService.shared.open(bookmark: data)
                         Task {
-                            let data = ZimFileService.shared.getFileURLBookmark(zimFileID: metadata.identifier)
                             try? await Database.shared.upsertZimFile(metadata: metadata, fileURLBookmark: data)
                         }
                     }
