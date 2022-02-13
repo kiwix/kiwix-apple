@@ -36,16 +36,7 @@ struct Reader: View {
                     ToolbarItemGroup {
                         BookmarkButton(url: $url)
                         MainArticleButton()
-                        Menu {
-                            ForEach(onDeviceZimFiles) { zimFile in
-                                Button(zimFile.name) { viewModel.loadRandomPage(zimFileID: zimFile.id) }
-                            }
-                        } label: {
-                            Label("Random Page", systemImage: "die.face.5")
-                        } primaryAction: {
-                            guard let zimFile = onDeviceZimFiles.first else { return }
-                            viewModel.loadRandomPage(zimFileID: zimFile.fileID)
-                        }.disabled(onDeviceZimFiles.isEmpty)
+                        RandomArticleButton()
                     }
                 }
         }

@@ -9,7 +9,24 @@
 import SwiftUI
 
 struct RandomArticleButton: View {
+    @EnvironmentObject var viewModel: ReaderViewModel
+        @FetchRequest(
+            sortDescriptors: [SortDescriptor(\.size, order: .reverse)],
+            predicate: NSPredicate(format: "fileURLBookmark != nil")
+        ) private var zimFiles: FetchedResults<ZimFile>
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        Menu {
+            ForEach(zimFiles) { zimFile in
+                Button(zimFile.name) { viewModel.loadRandomPage(zimFileID: zimFile.id) }
+            }
+        } label: {
+            Label("Random Page", systemImage: "die.face.5")
+        } primaryAction: {
+            guard let zimFile = zimFiles.first else { return }
+            viewModel.loadRandomPage(zimFileID: zimFile.fileID)
+        }
+        .disabled(zimFiles.isEmpty)
+        .help("Show random article")
     }
 }

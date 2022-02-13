@@ -22,6 +22,6 @@ struct MainArticleButton: View {
             Image(systemName: "house")
         }
         .disabled(zimFiles.isEmpty)
-        .help("Show main page")
+        .help("Show main article")
     }
 }
