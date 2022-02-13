@@ -22,7 +22,7 @@ struct Reader: View {
                 .frame(minWidth: 250)
                 .toolbar {
                     ToolbarItem(placement: .primaryAction) {
-                        Button { Kiwix.toggleSidebar() } label: { Image(systemName: "sidebar.leading") }
+                        SidebarButton()
                     }
                 }
             WebView(url: $url, webView: viewModel.webView)
