@@ -24,10 +24,10 @@ struct ImportCommands: Commands {
                 ) { result in
                     guard case let .success(urls) = result else { return }
                     urls.forEach { url in
-                        guard let metadata = ZimFileService.getMetaData(url: url) else { return }
-                        ZimFileService.shared.open(url: url)
+                        guard let metadata = ZimFileService.getMetaData(url: url),
+                              let data = ZimFileService.getBookmarkData(url: url) else { return }
+                        ZimFileService.shared.open(bookmark: data)
                         Task {
-                            let data = ZimFileService.shared.getFileURLBookmark(zimFileID: metadata.identifier)
                             try? await Database.shared.upsertZimFile(metadata: metadata, fileURLBookmark: data)
                         }
                     }
@@ -38,20 +38,17 @@ struct ImportCommands: Commands {
 }
 
 struct SidebarDisplayModeCommandButtons: View {
-    @FocusedBinding(\.sidebarDisplayMode) var displayMode: SidebarDisplayMode?
+    @FocusedBinding(\.sidebarDisplayMode) var displayMode: Sidebar.DisplayMode?
     
     var body: some View {
-        Button("Show Search") { displayMode = .search }
+        Button("Search Articles") { displayMode = .search }
             .keyboardShortcut("1")
             .disabled(displayMode == nil)
         Button("Show Bookmark") { displayMode = .bookmark }
             .keyboardShortcut("2")
             .disabled(displayMode == nil)
-        Button("Show Table of Contrnt") { displayMode = .tableOfContent }
-            .keyboardShortcut("3")
-            .disabled(displayMode == nil)
         Button("Show Library") { displayMode = .library }
-            .keyboardShortcut("4")
+            .keyboardShortcut("3")
             .disabled(displayMode == nil)
     }
 }
@@ -61,14 +58,14 @@ struct NavigationCommandButtons: View {
     
     var body: some View {
         Button("Go Back") { readerViewModel?.webView.goBack() }
-            .keyboardShortcut("[")
+            .keyboardShortcut("[").disabled(!(readerViewModel?.canGoBack ?? false))
         Button("Go Forward") { readerViewModel?.webView.goForward() }
-            .keyboardShortcut("]")
+            .keyboardShortcut("]").disabled(!(readerViewModel?.canGoForward ?? false))
     }
 }
 
 struct SidebarDisplayModeKey: FocusedValueKey {
-    typealias Value = Binding<SidebarDisplayMode>
+    typealias Value = Binding<Sidebar.DisplayMode>
 }
 
 struct ReaderViewModelKey: FocusedValueKey {

@@ -83,7 +83,9 @@ struct SharedReaders {
         // store file URL
         NSString *identifierObjC = [NSString stringWithCString:identifier.c_str() encoding:NSUTF8StringEncoding];
         self.fileURLs[identifierObjC] = url;
-    } catch (std::exception e) { }
+    } catch (std::exception e) {
+        NSLog(@"Error opening zim file.");
+    }
 }
 
 - (void)close:(NSString *)zimFileID {

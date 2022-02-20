@@ -84,6 +84,43 @@ class Parser {
         }
     }
     
+    func getHierarchicalOutlineItems() -> [OutlineItem] {
+        let root = OutlineItem(index: -1, text: "", level: 0)
+        var stack: [OutlineItem] = [root]
+        
+        document.css("h1, h2, h3, h4, h5, h6").enumerated().forEach { index, element in
+            guard let tag = element.tag, let level = Int(tag.suffix(1)) else { return }
+            let text = element.stringValue.trimmingCharacters(in: .whitespacesAndNewlines)
+            let item = OutlineItem(index: index, text: text, level: level)
+            
+            // get last item in stack
+            // if last item is child of item's sibling, unwind stack until a sibling is found
+            guard var lastItem = stack.last else { return }
+            while lastItem.level > item.level {
+                stack.removeLast()
+                lastItem = stack[stack.count - 1]
+            }
+            
+            // if item is last item's sibling, add item to parent and replace last item with itself in stack
+            // if item is last item's child, add item to parent and add item to stack
+            if lastItem.level == item.level {
+                stack[stack.count - 2].addChild(item)
+                stack[stack.count - 1] = item
+            } else if lastItem.level < item.level {
+                stack[stack.count - 1].addChild(item)
+                stack.append(item)
+            }
+        }
+        
+        // if there is only one h1, flatten one level
+        if let rootChildren = root.children, rootChildren.count == 1, let rootFirstChild = rootChildren.first {
+            let firstItem = OutlineItem(index: rootFirstChild.index, text: rootFirstChild.text, level: rootFirstChild.level)
+            return [firstItem] + (rootFirstChild.children ?? [])
+        } else {
+            return root.children ?? []
+        }
+    }
+    
 //    func getGeoCoordinate() -> CLLocationCoordinate2D? {
 //        do {
 //            let elements = try document.select("head > meta[name='geo.position']")

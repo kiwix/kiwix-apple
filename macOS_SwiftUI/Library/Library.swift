@@ -19,7 +19,7 @@ struct Library: View {
                 .frame(minWidth: 200)
                 .toolbar {
                     ToolbarItem(placement: .primaryAction) {
-                        Button { Kiwix.toggleSidebar() } label: { Image(systemName: "sidebar.leading") }
+                        SidebarButton()
                     }
                 }
             zimFiles
