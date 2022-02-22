@@ -28,7 +28,7 @@
 // nullable attributes
 @property (nonatomic, strong, nullable) NSURL *downloadURL;
 @property (nonatomic, strong, nullable) NSURL *faviconURL;
-@property (nonatomic, strong, nullable) NSData *faviconData;
+@property (nonatomic, strong, nullable) NSData *faviconData DEPRECATED_ATTRIBUTE;
 @property (nonatomic, strong, nullable) NSString *flavor;
 
 // assigned attributes
