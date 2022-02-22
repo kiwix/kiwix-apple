@@ -28,6 +28,7 @@ struct SharedReaders {
 @interface ZimFileService ()
 
 @property (assign) std::unordered_map<std::string, std::shared_ptr<kiwix::Reader>> *readers;
+@property (assign) std::unordered_map<std::string, std::shared_ptr<zim::Archive>> *archives;
 @property (strong) NSMutableDictionary *fileURLs; // [ID: FileURL]
 
 @end
@@ -77,8 +78,10 @@ struct SharedReaders {
         // add the reader
         [url startAccessingSecurityScopedResource];
         std::shared_ptr<kiwix::Reader> reader = std::make_shared<kiwix::Reader>([url fileSystemRepresentation]);
+        std::shared_ptr<zim::Archive> archive = std::make_shared<zim::Archive>([url fileSystemRepresentation]);
         std::string identifier = reader->getId();
         self.readers->insert(std::make_pair(identifier, reader));
+        self.archives->insert(std::make_pair(identifier, archive));
         
         // store file URL
         NSString *identifierObjC = [NSString stringWithCString:identifier.c_str() encoding:NSUTF8StringEncoding];
@@ -102,12 +105,15 @@ struct SharedReaders {
 - (struct SharedReaders)getSharedReaders:(nonnull NSSet *)identifiers {
     NSMutableArray *readerIDs = [[NSMutableArray alloc] initWithCapacity:[identifiers count]];
     auto readers = std::vector<std::shared_ptr<kiwix::Reader>>();
+    auto archives = std::vector<std::shared_ptr<zim::Archive>>();
     
     for (NSString *identifier in identifiers) {
         try {
             auto reader = self.readers->at([identifier cStringUsingEncoding:NSUTF8StringEncoding]);
+            auto archive = self.archives->at([identifier cStringUsingEncoding:NSUTF8StringEncoding]);
             [readerIDs addObject:identifier];
             readers.push_back(reader);
+            archives.push_back(archive);
         } catch (std::out_of_range) { }
     }
     
