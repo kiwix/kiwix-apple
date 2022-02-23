@@ -10,6 +10,7 @@
 #pragma clang diagnostic ignored "-Wdocumentation"
 #import "kiwix/reader.h"
 #import "kiwix/searcher.h"
+#import "zim/suggestion.h"
 #pragma clang diagnostic pop
 
 #import "SearchOperation.h"
@@ -19,6 +20,7 @@
 struct SharedReaders {
     NSArray *readerIDs;
     std::vector<std::shared_ptr<kiwix::Reader>> readers;
+    std::vector<zim::Archive> archives;
 };
 
 @interface SearchOperation ()
@@ -34,7 +36,7 @@ struct SharedReaders {
     if (self) {
         self.searchText = searchText;
         self.identifiers = identifiers;
-        self.results = @[];
+        self.results = [[NSMutableSet alloc] initWithCapacity:35];
         self.qualityOfService = NSQualityOfServiceUserInitiated;
     }
     return self;
@@ -48,7 +50,7 @@ struct SharedReaders {
     NSUInteger readerCount = sharedReaders.readers.size();
     if (readerCount > 0) {
         NSUInteger count = max((35 - [fullTextResults count]) / readerCount, (NSUInteger)3);
-        NSArray *titleResults = [self getTitleSearchResults:sharedReaders.readers count:count];
+        NSArray *titleResults = [self getTitleSearchResults:sharedReaders.archives count:count];
         [results addObjectsFromArray:titleResults];
     }
     [results addObjectsFromArray:fullTextResults];
@@ -61,70 +63,53 @@ struct SharedReaders {
     
     // initialize full text search
     if (self.isCancelled) { return results; }
-    kiwix::Searcher searcher;
-    for (auto iter: sharedReaders.readers) {
-        searcher.add_reader(iter.get());
-    }
+    zim::Searcher searcher = zim::Searcher(sharedReaders.archives);
     
     // start full text search
     if (self.isCancelled) { return results; }
-    searcher.search([self.searchText cStringUsingEncoding:NSUTF8StringEncoding], 0, 25);
+    zim::Query query = zim::Query([self.searchText cStringUsingEncoding:NSUTF8StringEncoding]);
+    zim::SearchResultSet resultSet = searcher.search(query).getResults(0, 25);
     
     // retrieve full text search results
-    kiwix::Result *result = searcher.getNextResult();
-    while (result != NULL) {
-        std::shared_ptr<kiwix::Reader> reader = sharedReaders.readers[result->get_readerIndex()];
-        kiwix::Entry entry = reader->getEntryFromPath(result->get_url());
-        entry = entry.getFinalEntry();
-        
-        NSString *zimFileID = sharedReaders.readerIDs[result->get_readerIndex()];
+    for (auto result = resultSet.begin(); result != resultSet.end(); result++) {
+        zim::Entry entry = (*result).getRedirectEntry();
+        NSUUID *zimFileID = [[NSUUID alloc] initWithUUIDBytes:(unsigned char *)result.getZimId().data];
         NSString *path = [NSString stringWithCString:entry.getPath().c_str() encoding:NSUTF8StringEncoding];
-        NSString *title = [NSString stringWithCString:result->get_title().c_str() encoding:NSUTF8StringEncoding];
+        NSString *title = [NSString stringWithCString:entry.getTitle().c_str() encoding:NSUTF8StringEncoding];
         
-        SearchResult *searchResult = [[SearchResult alloc] initWithZimFileID:zimFileID path:path title:title];
-        searchResult.probability = [[NSNumber alloc] initWithDouble:(double)result->get_score() / double(100)];
+        SearchResult *searchResult = [[SearchResult alloc] initWithZimFileID:[zimFileID UUIDString] path:path title:title];
+        searchResult.probability = [[NSNumber alloc] initWithFloat:result.getScore() / 100];
         
         // optionally, add snippet
-        if (withFullTextSnippet) {
-            NSString *html = [NSString stringWithCString:result->get_snippet().c_str() encoding:NSUTF8StringEncoding];
+        if (self.includeSnippet) {
+            NSString *html = [NSString stringWithCString:result.getSnippet().c_str() encoding:NSUTF8StringEncoding];
             searchResult.htmlSnippet = html;
         }
         
         if (searchResult != nil) { [results addObject:searchResult]; }
-        delete result;
         if (self.isCancelled) { break; }
-        result = searcher.getNextResult();
     }
-    
     return results;
 }
 
-- (NSArray *)getTitleSearchResults:(std::vector<std::shared_ptr<kiwix::Reader>>)readers count:(NSUInteger)count {
-    NSMutableArray *results = [[NSMutableArray alloc] init];
+/// Add search results based on matching article titles with search text
+/// @param archives archives to retrieve search results from
+/// @param count number of articles to retrieve for each archive
+- (NSArray *)addTitleSearchResults:(std::vector<zim::Archive>)archives count:(int)count {
     std::string searchTermC = [self.searchText cStringUsingEncoding:NSUTF8StringEncoding];
-    
-    for (auto reader: readers) {
-        auto suggestions = std::make_shared<kiwix::SuggestionsList_t>();
-        reader->searchSuggestionsSmart(searchTermC, 3, *suggestions);
-        
-        NSString *zimFileID = [NSString stringWithCString:reader->getId().c_str() encoding:NSUTF8StringEncoding];
-        for (auto &suggestion : *suggestions) {
-            try {
-                kiwix::Entry entry = reader->getEntryFromPath(suggestion.at(1));
-                entry = entry.getFinalEntry();
-                
-                NSString *title = [NSString stringWithCString:suggestion.at(0).c_str() encoding:NSUTF8StringEncoding];
-                NSString *path = [NSString stringWithCString:entry.getPath().c_str() encoding:NSUTF8StringEncoding];
-                SearchResult *searchResult = [[SearchResult alloc] initWithZimFileID:zimFileID path:path title:title];
-                if (searchResult != nil) { [results addObject:searchResult]; }
-                if (self.isCancelled) { break; }
-            } catch (std::out_of_range) {
-                continue;
-            }
-        }
+    for (zim::Archive archive: archives) {
         if (self.isCancelled) { break; }
+        NSUUID *zimFileID = [[NSUUID alloc] initWithUUIDBytes:(unsigned char *)archive.getUuid().data];
+        auto results = zim::SuggestionSearcher(archive).suggest(searchTermC).getResults(0, count);
+        for (auto result = results.begin(); result != results.end(); result++) {
+            if (self.isCancelled) { break; }
+            zim::Item item = result.getEntry().getRedirect();
+            NSString *path = [NSString stringWithCString:item.getPath().c_str() encoding:NSUTF8StringEncoding];
+            NSString *title = [NSString stringWithCString:item.getTitle().c_str() encoding:NSUTF8StringEncoding];
+            SearchResult *searchResult = [[SearchResult alloc] initWithZimFileID:[zimFileID UUIDString] path:path title:title];
+            if (searchResult != nil) { [self.results addObject:searchResult]; }
+        }
     }
-    return results;
 }
 
 @end
