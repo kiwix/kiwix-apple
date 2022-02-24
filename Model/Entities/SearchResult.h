@@ -16,6 +16,7 @@
 @property (nonatomic, strong, nullable) NSString *htmlSnippet;
 @property (nonatomic, strong, nullable) NSAttributedString *snippet;
 @property (nonatomic, strong, nullable) NSNumber *probability;
+@property (nonatomic, strong, nullable) NSNumber *score;
 
 - (nullable instancetype)initWithZimFileID:(nonnull NSString *)zimFileId
                                       path:(nonnull NSString *)path
