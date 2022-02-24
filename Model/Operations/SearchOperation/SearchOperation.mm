@@ -36,7 +36,8 @@ struct SharedReaders {
     if (self) {
         self.searchText = searchText;
         self.identifiers = identifiers;
-        self.results = [[NSMutableSet alloc] initWithCapacity:35];
+        self.snippetMode = @"disabled";
+        self.results = [[NSMutableOrderedSet alloc] initWithCapacity:35];
         self.qualityOfService = NSQualityOfServiceUserInitiated;
     }
     return self;
@@ -67,7 +68,7 @@ struct SharedReaders {
     for (auto result = resultSet.begin(); result != resultSet.end(); result++) {
         if (self.isCancelled) { break; }
         
-        zim::Item item = (*result).getRedirect();
+        zim::Item item = result->getRedirect();
         NSUUID *zimFileID = [[NSUUID alloc] initWithUUIDBytes:(unsigned char *)result.getZimId().data];
         NSString *path = [NSString stringWithCString:item.getPath().c_str() encoding:NSUTF8StringEncoding];
         NSString *title = [NSString stringWithCString:item.getTitle().c_str() encoding:NSUTF8StringEncoding];
@@ -75,7 +76,7 @@ struct SharedReaders {
         searchResult.probability = [[NSNumber alloc] initWithFloat:result.getScore() / 100];
         
         // optionally, add snippet
-        if (self.includeSnippet) {
+        if ([self.snippetMode isEqual: @"matches"]) {
             NSString *html = [NSString stringWithCString:result.getSnippet().c_str() encoding:NSUTF8StringEncoding];
             searchResult.htmlSnippet = html;
         }

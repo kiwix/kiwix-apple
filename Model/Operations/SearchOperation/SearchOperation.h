@@ -13,9 +13,9 @@ NS_ASSUME_NONNULL_BEGIN
 @interface SearchOperation : NSOperation
 
 @property (nonatomic, strong) NSString *searchText;
-@property (nonatomic, assign) BOOL includeSnippet;
+@property (nonatomic, strong) NSString *snippetMode;
 
-@property (nonatomic, strong) NSMutableSet *results NS_REFINED_FOR_SWIFT;
+@property (nonatomic, strong) NSMutableOrderedSet *results NS_REFINED_FOR_SWIFT;
 
 - (id)initWithSearchText:(NSString *)searchText zimFileIDs:(NSSet *)identifiers;
 - (void)performSearch;
