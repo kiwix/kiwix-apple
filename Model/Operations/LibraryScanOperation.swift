@@ -78,7 +78,7 @@ class LibraryScanOperation: Operation {
     
     /// Close readers for all zim files that are no longer on disk.
     private func closeReadersForDeletedZimFiles() {
-        ZimFileService.shared.zimFileIDs.forEach { zimFileID in
+        ZimFileService.shared.fileIDs.forEach { zimFileID in
             guard let fileURL = ZimFileService.shared.getFileURL(zimFileID: zimFileID.uuidString),
                   !FileManager.default.fileExists(atPath: fileURL.path) else { return }
             ZimFileService.shared.close(fileID: zimFileID)
@@ -88,7 +88,7 @@ class LibraryScanOperation: Operation {
     /// Update on device zim files in the database.
     private func updateDatabase() {
         do {
-            let zimFileIDs = ZimFileService.shared.zimFileIDs
+            let zimFileIDs = ZimFileService.shared.fileIDs
             let database = try Realm()
             
             try database.write {

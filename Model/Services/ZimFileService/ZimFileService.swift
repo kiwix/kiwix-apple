@@ -6,23 +6,22 @@
 //  Copyright © 2017-2022 Chris Li. All rights reserved.
 //
 
-/// A service to interact with zim files.
+/// A service to interact with zim files
 extension ZimFileService {
     /// Shared ZimFileService instance
     static let shared = ZimFileService.__sharedInstance()
     
     /// IDs of currently opened zim files
-    var zimFileIDs: [UUID] { get { return __getReaderIdentifiers().compactMap({ $0 as? UUID }) } }
+    var fileIDs: [UUID] { get { return __getReaderIdentifiers().compactMap({ $0 as? UUID }) } }
     
     // MARK: - Reader Management
     
     /// Open a zim file from URL
-    /// - Parameter url: file url of the zim file
+    /// - Parameter url: file url of the zim file to open
     func open(url: URL) { __open(url) }
     
-    
     /// Open a zim file from bookmark data
-    /// - Parameter bookmark: url bookmark data of the zim file
+    /// - Parameter bookmark: url bookmark data of the zim file to open
     /// - Returns: new url bookmark data if the one used to open the zim file is stale
     @discardableResult
     func open(bookmark: Data) -> Data? {
