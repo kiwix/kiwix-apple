@@ -58,7 +58,8 @@ extension ZimFileService {
     }
     
     func getFileURL(zimFileID: String) -> URL? {
-        __getFileURL(zimFileID)
+        guard let zimFileID = UUID(uuidString: zimFileID) else { return nil }
+        return __getFileURL(zimFileID)
     }
     
     func getFileURLBookmark(zimFileID: String) -> Data? {
@@ -67,18 +68,19 @@ extension ZimFileService {
     
     func getRedirectedURL(url: URL) -> URL? {
         guard let zimFileID = url.host,
+              let zimFileID = UUID(uuidString: zimFileID),
               let redirectedPath = __getRedirectedPath(zimFileID, contentPath: url.path) else { return nil }
-        return URL(zimFileID: zimFileID, contentPath: redirectedPath)
+        return URL(zimFileID: zimFileID.uuidString, contentPath: redirectedPath)
     }
     
     func getMainPageURL(zimFileID: String) -> URL? {
-        guard let path = __getMainPagePath(zimFileID) else { return nil }
-        return URL(zimFileID: zimFileID, contentPath: path)
+        guard let zimFileID = UUID(uuidString: zimFileID), let path = __getMainPagePath(zimFileID) else { return nil }
+        return URL(zimFileID: zimFileID.uuidString, contentPath: path)
     }
     
     func getRandomPageURL(zimFileID: String) -> URL? {
-        guard let path = __getRandomPagePath(zimFileID) else { return nil }
-        return URL(zimFileID: zimFileID, contentPath: path)
+        guard let zimFileID = UUID(uuidString: zimFileID), let path = __getRandomPagePath(zimFileID) else { return nil }
+        return URL(zimFileID: zimFileID.uuidString, contentPath: path)
     }
     
     // MARK: - URL Response
@@ -89,7 +91,8 @@ extension ZimFileService {
     }
     
     func getURLContent(zimFileID: String, contentPath: String) -> URLContent? {
-        guard let content = __getURLContent(zimFileID, contentPath: contentPath),
+        guard let zimFileID = UUID(uuidString: zimFileID),
+              let content = __getContent(zimFileID, contentPath: contentPath),
               let data = content["data"] as? Data,
               let mime = content["mime"] as? String,
               let length = content["length"] as? Int else { return nil }

@@ -16,6 +16,8 @@
 #include "kiwix/reader.h"
 #include "kiwix/searcher.h"
 #include "zim/archive.h"
+#include "zim/entry.h"
+#include "zim/error.h"
 #pragma clang diagnostic pop
 
 #import "ZimFileService.h"
@@ -29,7 +31,7 @@ struct SharedReaders {
 
 @interface ZimFileService ()
 
-@property (assign) std::unordered_map<std::string, std::shared_ptr<kiwix::Reader>> *readers;
+//@property (assign) std::unordered_map<std::string, std::shared_ptr<kiwix::Reader>> *readers;
 @property (assign) std::unordered_map<std::string, std::shared_ptr<zim::Archive>> *archives;
 @property (strong) NSMutableDictionary *fileURLs; // [NSUUID: URL]
 
@@ -42,7 +44,7 @@ struct SharedReaders {
 - (instancetype)init {
     self = [super init];
     if (self) {
-        self.readers = new std::unordered_map<std::string, std::shared_ptr<kiwix::Reader>>();
+//        self.readers = new std::unordered_map<std::string, std::shared_ptr<kiwix::Reader>>();
         self.archives = new std::unordered_map<std::string, std::shared_ptr<zim::Archive>>();
         self.fileURLs = [[NSMutableDictionary alloc] init];
     }
@@ -59,7 +61,10 @@ struct SharedReaders {
 }
 
 - (void)dealloc {
-    delete self.readers;
+    delete self.archives;
+    for (NSUUID *zimFileID in self.fileURLs) {
+        [self.fileURLs[zimFileID] stopAccessingSecurityScopedResource];
+    }
 }
 
 #pragma mark - Reader Management
@@ -77,7 +82,7 @@ struct SharedReaders {
             return;
         }
 
-        // add the reader
+        // add the archive
         [url startAccessingSecurityScopedResource];
         std::shared_ptr<zim::Archive> archive = std::make_shared<zim::Archive>([url fileSystemRepresentation]);
         self.archives->insert(std::make_pair(std::string(archive->getUuid()), archive));
@@ -91,7 +96,7 @@ struct SharedReaders {
 }
 
 - (void)close:(NSUUID *)zimFileID {
-    self.readers->erase([[zimFileID UUIDString] cStringUsingEncoding:NSUTF8StringEncoding]);
+    self.archives->erase([[zimFileID UUIDString] cStringUsingEncoding:NSUTF8StringEncoding]);
     [self.fileURLs[zimFileID] stopAccessingSecurityScopedResource];
     [self.fileURLs removeObjectForKey:zimFileID];
 }
@@ -145,86 +150,76 @@ struct SharedReaders {
 
 # pragma mark - URL Handling
 
-- (NSURL *)getFileURL:(NSString *)identifier {
-    return self.fileURLs[identifier];
+/// Get URL of a zim file on disk.
+/// @param zimFileID ID of the zim file to retrieve file URL
+- (NSURL *)getFileURL:(NSUUID *)zimFileID {
+    return self.fileURLs[zimFileID];
 }
 
-- (NSString *_Nullable)getRedirectedPath:(NSString *_Nonnull)zimFileID contentPath:(NSString *_Nonnull)contentPath {
-    auto found = self.readers->find([zimFileID cStringUsingEncoding:NSUTF8StringEncoding]);
-    if (found == self.readers->end()) {
+/// Get redirected path given a path, nil if there isn't a redirection
+/// @param zimFileID ID of the zim file to retrieve redirected path
+/// @param contentPath path to check for redirection
+- (NSString *_Nullable)getRedirectedPath:(NSUUID *_Nonnull)zimFileID contentPath:(NSString *_Nonnull)contentPath {
+    auto found = self.archives->find([[zimFileID UUIDString] cStringUsingEncoding:NSUTF8StringEncoding]);
+    if (found == self.archives->end()) {
         return nil;
-    } else {
-        std::shared_ptr<kiwix::Reader> reader = found->second;
+    }
+    try {
         std::string contentPathC = [contentPath cStringUsingEncoding:NSUTF8StringEncoding];
-        
-        try {
-            kiwix::Entry entry = reader->getEntryFromPath(contentPathC);
-            entry = entry.getFinalEntry();
-            
-            std::string redirectedContentPathC = entry.getPath();
-            if (redirectedContentPathC.substr(0, 1) != "/") {
-                redirectedContentPathC = "/" + redirectedContentPathC;
-            }
-            
-            if (contentPathC == redirectedContentPathC) {
-                return nil;
-            } else {
-                return [NSString stringWithUTF8String:redirectedContentPathC.c_str()];
-            }
-        } catch (kiwix::NoEntry) {
-            return nil;
-        }
+        zim::Item item = found->second->getEntryByPath(contentPathC).getRedirect();
+        return [NSString stringWithUTF8String:item.getPath().c_str()];
+    } catch (std::exception) {
+        return nil;
     }
 }
 
-- (NSString *)getMainPagePath:(NSString *)zimFileID {
-    auto found = self.readers->find([zimFileID cStringUsingEncoding:NSUTF8StringEncoding]);
-    if (found == self.readers->end()) {
+/// Get path of the main page in a zim file.
+/// @param zimFileID ID of the zim file to retrieve main page path
+- (NSString *)getMainPagePath:(NSUUID *)zimFileID {
+    auto found = self.archives->find([[zimFileID UUIDString] cStringUsingEncoding:NSUTF8StringEncoding]);
+    if (found == self.archives->end()) {
         return nil;
-    } else {
-        std::shared_ptr<kiwix::Reader> reader = found->second;
-        kiwix::Entry mainPageEntry = reader->getMainPage();
-        std::string mainPagePath = mainPageEntry.getPath();
-        return [NSString stringWithCString:mainPagePath.c_str() encoding:NSUTF8StringEncoding];
+    }
+    try {
+        zim::Entry entry = found->second->getMainEntry();
+        return [NSString stringWithCString:entry.getPath().c_str() encoding:NSUTF8StringEncoding];
+    } catch (std::exception) {
+        return nil;
     }
 }
 
-- (NSString *)getRandomPagePath:(NSString *)zimFileID {
-    auto found = self.readers->find([zimFileID cStringUsingEncoding:NSUTF8StringEncoding]);
-    if (found == self.readers->end()) {
+/// Get path of a random page in a zim file.
+/// @param zimFileID ID of the zim file to retrieve random page path
+- (NSString *)getRandomPagePath:(NSUUID *)zimFileID {
+    auto found = self.archives->find([[zimFileID UUIDString] cStringUsingEncoding:NSUTF8StringEncoding]);
+    if (found == self.archives->end()) {
         return nil;
-    } else {
-        try {
-            std::shared_ptr<kiwix::Reader> reader = found->second;
-            kiwix::Entry entry = reader->getRandomPage();
-            std::string path = entry.getPath();
-            return [NSString stringWithCString:path.c_str() encoding:NSUTF8StringEncoding];
-        } catch (std::exception) {
-            return nil;
-        }
+    }
+    try {
+        zim::Entry entry = found->second->getRandomEntry();
+        return [NSString stringWithCString:entry.getPath().c_str() encoding:NSUTF8StringEncoding];
+    } catch (std::exception) {
+        return nil;
     }
 }
 
-# pragma mark - URL Response
-
-- (NSDictionary *)getURLContent:(NSString *)zimFileID contentPath:(NSString *)contentPath {
-    auto found = self.readers->find([zimFileID cStringUsingEncoding:NSUTF8StringEncoding]);
-    if (found == self.readers->end()) {
+/// Retrieve content of a path or its redirected path inside a zim file.
+/// @param zimFileID ID of the zim file to retrieve data
+/// @param contentPath path of the content to retrieve
+- (NSDictionary *)getContent:(NSUUID *)zimFileID contentPath:(NSString *)contentPath {
+    auto found = self.archives->find([[zimFileID UUIDString] cStringUsingEncoding:NSUTF8StringEncoding]);
+    if (found == self.archives->end()) {
         return nil;
-    } else {
-        std::shared_ptr<kiwix::Reader> reader = found->second;
-
-        try {
-            kiwix::Entry entry = reader->getEntryFromPath([contentPath cStringUsingEncoding:NSUTF8StringEncoding]);
-            NSNumber *length = [NSNumber numberWithUnsignedLongLong:entry.getSize()];
-            NSData *data = [NSData dataWithBytes:entry.getContent().data() length:length.unsignedLongLongValue];
-            NSString *mime = [NSString stringWithUTF8String:entry.getMimetype().c_str()];
-            return @{@"data": data, @"mime": mime, @"length": length};
-        } catch (kiwix::NoEntry) {
-            return nil;
-        } catch (std::exception) {
-            return nil;
-        }
+    }
+    try {
+        zim::Entry entry = found->second->getEntryByPath([contentPath cStringUsingEncoding:NSUTF8StringEncoding]);
+        zim::Item item = entry.getItem(entry.isRedirect());
+        NSNumber *length = [NSNumber numberWithUnsignedLongLong:item.getSize()];
+        NSData *data = [NSData dataWithBytes:item.getData().data() length:length.unsignedLongLongValue];
+        NSString *mime = [NSString stringWithUTF8String:item.getMimetype().c_str()];
+        return @{@"data": data, @"mime": mime, @"length": length};
+    } catch (std::exception) {
+        return nil;
     }
 }
 

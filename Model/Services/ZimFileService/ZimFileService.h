@@ -30,13 +30,10 @@ struct SharedReaders;
 
 # pragma mark - URL Handling
 
-- (NSURL *_Nullable)getFileURL:(NSString *_Nonnull)identifier NS_REFINED_FOR_SWIFT;
-- (NSString *_Nullable)getRedirectedPath:(NSString *_Nonnull)zimFileID contentPath:(NSString *_Nonnull)contentPath NS_REFINED_FOR_SWIFT;
-- (NSString *_Nullable)getMainPagePath:(NSString *_Nonnull)zimFileID NS_REFINED_FOR_SWIFT;
-- (NSString *_Nullable)getRandomPagePath:(NSString *_Nonnull)zimFileID NS_REFINED_FOR_SWIFT;
-
-# pragma mark - URL Response
-
-- (NSDictionary *_Nullable)getURLContent:(NSString *_Nonnull)zimFileID contentPath:(NSString *_Nonnull)contentPath NS_REFINED_FOR_SWIFT;
+- (NSURL *_Nullable)getFileURL:(NSUUID *_Nonnull)zimFileID NS_REFINED_FOR_SWIFT;
+- (NSString *_Nullable)getRedirectedPath:(NSUUID *_Nonnull)zimFileID contentPath:(NSString *_Nonnull)contentPath NS_REFINED_FOR_SWIFT;
+- (NSString *_Nullable)getMainPagePath:(NSUUID *_Nonnull)zimFileID NS_REFINED_FOR_SWIFT;
+- (NSString *_Nullable)getRandomPagePath:(NSUUID *_Nonnull)zimFileID NS_REFINED_FOR_SWIFT;
+- (NSDictionary *_Nullable)getContent:(NSUUID *_Nonnull)zimFileID contentPath:(NSString *_Nonnull)contentPath NS_REFINED_FOR_SWIFT;
 
 @end
