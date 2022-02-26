@@ -3,17 +3,27 @@
 //  Kiwix
 //
 //  Created by Chris Li on 8/21/17.
-//  Copyright © 2017 Chris Li. All rights reserved.
+//  Copyright © 2017-2022 Chris Li. All rights reserved.
 //
 
+/// A service to interact with zim files.
 extension ZimFileService {
+    /// Shared ZimFileService instance
     static let shared = ZimFileService.__sharedInstance()
+    
+    /// IDs of currently opened zim files
     var zimFileIDs: [UUID] { get { return __getReaderIdentifiers().compactMap({ $0 as? UUID }) } }
     
     // MARK: - Reader Management
     
+    /// Open a zim file from URL
+    /// - Parameter url: file url of the zim file
     func open(url: URL) { __open(url) }
     
+    
+    /// Open a zim file from bookmark data
+    /// - Parameter bookmark: url bookmark data of the zim file
+    /// - Returns: new url bookmark data if the one used to open the zim file is stale
     @discardableResult
     func open(bookmark: Data) -> Data? {
         var isStale: Bool = false
@@ -30,8 +40,9 @@ extension ZimFileService {
         return isStale ? ZimFileService.getBookmarkData(url: url) : nil
     }
     
-    func close(id: String) { if let fileID = UUID(uuidString: id) { __close(fileID) } }
-    func close(id: UUID) { __close(id) }
+    /// Close a zim file
+    /// - Parameter fileID: ID of the zim file to close
+    func close(fileID: UUID) { __close(fileID) }
     
     // MARK: - Metadata
     

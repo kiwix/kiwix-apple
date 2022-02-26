@@ -31,7 +31,6 @@ struct SharedReaders {
 
 @interface ZimFileService ()
 
-//@property (assign) std::unordered_map<std::string, std::shared_ptr<kiwix::Reader>> *readers;
 @property (assign) std::unordered_map<std::string, std::shared_ptr<zim::Archive>> *archives;
 @property (strong) NSMutableDictionary *fileURLs; // [NSUUID: URL]
 
@@ -44,7 +43,6 @@ struct SharedReaders {
 - (instancetype)init {
     self = [super init];
     if (self) {
-//        self.readers = new std::unordered_map<std::string, std::shared_ptr<kiwix::Reader>>();
         self.archives = new std::unordered_map<std::string, std::shared_ptr<zim::Archive>>();
         self.fileURLs = [[NSMutableDictionary alloc] init];
     }

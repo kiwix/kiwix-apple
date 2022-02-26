@@ -79,9 +79,9 @@ class LibraryScanOperation: Operation {
     /// Close readers for all zim files that are no longer on disk.
     private func closeReadersForDeletedZimFiles() {
         ZimFileService.shared.zimFileIDs.forEach { zimFileID in
-            guard let fileURL = ZimFileService.shared.getFileURL(zimFileID: zimFileID),
+            guard let fileURL = ZimFileService.shared.getFileURL(zimFileID: zimFileID.uuidString),
                   !FileManager.default.fileExists(atPath: fileURL.path) else { return }
-            ZimFileService.shared.close(id: zimFileID)
+            ZimFileService.shared.close(fileID: zimFileID)
         }
     }
     
@@ -113,10 +113,10 @@ class LibraryScanOperation: Operation {
                         "hasVideos": metadatum.hasVideos,
                         "stateRaw": ZimFile.State.onDevice.rawValue,
                         "openInPlaceURLBookmark": {
-                            guard let fileURL = ZimFileService.shared.getFileURL(zimFileID: zimFileID),
+                            guard let fileURL = ZimFileService.shared.getFileURL(zimFileID: zimFileID.uuidString),
                                   let documentDirectory = try? FileManager.default.url(for: .documentDirectory,in: .userDomainMask, appropriateFor: nil, create: false),
                                   !FileManager.default.fileExists(atPath: documentDirectory.appendingPathComponent(fileURL.lastPathComponent).path) else { return nil }
-                            return ZimFileService.shared.getFileURLBookmark(zimFileID: zimFileID)
+                            return ZimFileService.shared.getFileURLBookmark(zimFileID: zimFileID.uuidString)
                         }()
                     ]
                     database.create(ZimFile.self, value: value, update: .modified)

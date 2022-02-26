@@ -58,7 +58,8 @@ class LibraryService {
         }
         
         // Close the file reader
-        ZimFileService.shared.close(id: fileID)
+        guard let fileID = UUID(uuidString: fileID) else { return }
+        ZimFileService.shared.close(fileID: fileID)
     }
     
     // MARK: - Settings
