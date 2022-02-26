@@ -8,7 +8,7 @@
 
 extension ZimFileService {
     static let shared = ZimFileService.__sharedInstance()
-    var zimFileIDs: [String] { get { return __getReaderIdentifiers().compactMap({ $0 as? String }) } }
+    var zimFileIDs: [UUID] { get { return __getReaderIdentifiers().compactMap({ $0 as? UUID }) } }
     
     // MARK: - Reader Management
     
@@ -30,12 +30,12 @@ extension ZimFileService {
         return isStale ? ZimFileService.getBookmarkData(url: url) : nil
     }
     
-    func close(id: String) { __close(id) }
-    func close(id: UUID) { __close(id.uuidString.lowercased()) }
+    func close(id: String) { if let fileID = UUID(uuidString: id) { __close(fileID) } }
+    func close(id: UUID) { __close(id) }
     
     // MARK: - Metadata
     
-    func getMetaData(id: String) -> ZimFileMetaData? {
+    func getMetaData(id: UUID) -> ZimFileMetaData? {
         __getMetaData(id)
     }
     

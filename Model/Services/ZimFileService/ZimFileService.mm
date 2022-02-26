@@ -15,6 +15,7 @@
 #include "kiwix/entry.h"
 #include "kiwix/reader.h"
 #include "kiwix/searcher.h"
+#include "zim/archive.h"
 #pragma clang diagnostic pop
 
 #import "ZimFileService.h"
@@ -23,13 +24,14 @@
 struct SharedReaders {
     NSArray *readerIDs;
     std::vector<std::shared_ptr<kiwix::Reader>> readers;
+    std::vector<zim::Archive> archives;
 };
 
 @interface ZimFileService ()
 
 @property (assign) std::unordered_map<std::string, std::shared_ptr<kiwix::Reader>> *readers;
 @property (assign) std::unordered_map<std::string, std::shared_ptr<zim::Archive>> *archives;
-@property (strong) NSMutableDictionary *fileURLs; // [ID: FileURL]
+@property (strong) NSMutableDictionary *fileURLs; // [NSUUID: URL]
 
 @end
 
@@ -41,8 +43,8 @@ struct SharedReaders {
     self = [super init];
     if (self) {
         self.readers = new std::unordered_map<std::string, std::shared_ptr<kiwix::Reader>>();
-        self.readers->reserve(10);
-        self.fileURLs = [[NSMutableDictionary alloc] initWithCapacity:10];
+        self.archives = new std::unordered_map<std::string, std::shared_ptr<zim::Archive>>();
+        self.fileURLs = [[NSMutableDictionary alloc] init];
     }
     return self;
 }
@@ -77,23 +79,19 @@ struct SharedReaders {
 
         // add the reader
         [url startAccessingSecurityScopedResource];
-        std::shared_ptr<kiwix::Reader> reader = std::make_shared<kiwix::Reader>([url fileSystemRepresentation]);
         std::shared_ptr<zim::Archive> archive = std::make_shared<zim::Archive>([url fileSystemRepresentation]);
-        std::string identifier = reader->getId();
-        self.readers->insert(std::make_pair(identifier, reader));
-        self.archives->insert(std::make_pair(identifier, archive));
+        self.archives->insert(std::make_pair(std::string(archive->getUuid()), archive));
         
         // store file URL
-        NSString *identifierObjC = [NSString stringWithCString:identifier.c_str() encoding:NSUTF8StringEncoding];
-        self.fileURLs[identifierObjC] = url;
+        NSUUID *zimFileID = [[NSUUID alloc] initWithUUIDBytes:(unsigned char *)archive->getUuid().data];
+        self.fileURLs[zimFileID] = url;
     } catch (std::exception e) {
         NSLog(@"Error opening zim file.");
     }
 }
 
-- (void)close:(NSString *)zimFileID {
-    std::string identifier = [zimFileID cStringUsingEncoding:NSUTF8StringEncoding];
-    self.readers->erase(identifier);
+- (void)close:(NSUUID *)zimFileID {
+    self.readers->erase([[zimFileID UUIDString] cStringUsingEncoding:NSUTF8StringEncoding]);
     [self.fileURLs[zimFileID] stopAccessingSecurityScopedResource];
     [self.fileURLs removeObjectForKey:zimFileID];
 }
@@ -104,30 +102,27 @@ struct SharedReaders {
 
 - (struct SharedReaders)getSharedReaders:(nonnull NSSet *)identifiers {
     NSMutableArray *readerIDs = [[NSMutableArray alloc] initWithCapacity:[identifiers count]];
-    auto readers = std::vector<std::shared_ptr<kiwix::Reader>>();
-    auto archives = std::vector<std::shared_ptr<zim::Archive>>();
+    auto archives = std::vector<zim::Archive>();
     
     for (NSString *identifier in identifiers) {
         try {
-            auto reader = self.readers->at([identifier cStringUsingEncoding:NSUTF8StringEncoding]);
             auto archive = self.archives->at([identifier cStringUsingEncoding:NSUTF8StringEncoding]);
             [readerIDs addObject:identifier];
-            readers.push_back(reader);
-            archives.push_back(archive);
+            archives.push_back(*archive);
         } catch (std::out_of_range) { }
     }
     
     struct SharedReaders sharedReaders;
     sharedReaders.readerIDs = readerIDs;
-    sharedReaders.readers = readers;
+    sharedReaders.archives = archives;
     return sharedReaders;
 }
 
 # pragma mark - Metadata
 
-- (ZimFileMetaData *)getMetaData:(NSString *)identifier {
-    auto found = self.readers->find([identifier cStringUsingEncoding:NSUTF8StringEncoding]);
-    if (found == self.readers->end()) {
+- (ZimFileMetaData *)getMetaData:(NSUUID *)identifier {
+    auto found = self.archives->find([[identifier UUIDString] cStringUsingEncoding:NSUTF8StringEncoding]);
+    if (found == self.archives->end()) {
         return nil;
     } else {
         kiwix::Book book = kiwix::Book();
@@ -140,9 +135,8 @@ struct SharedReaders {
     ZimFileMetaData *metaData = nil;
     [url startAccessingSecurityScopedResource];
     try {
-        kiwix::Reader reader = kiwix::Reader([url fileSystemRepresentation]);
         kiwix::Book book = kiwix::Book();
-        book.update(reader);
+        book.update(zim::Archive([url fileSystemRepresentation]));
         metaData = [[ZimFileMetaData alloc] initWithBook: &book];
     } catch (std::exception e) { }
     [url stopAccessingSecurityScopedResource];
