@@ -26,7 +26,8 @@ class PreviewViewController: UIViewController, QLPreviewingController, WKNavigat
     func preparePreviewOfFile(at url: URL, completionHandler handler: @escaping (Error?) -> Void) {
         ZimFileService.shared.open(url: url)
         if let metadata = ZimFileService.getMetaData(url: url),
-           let url = ZimFileService.shared.getMainPageURL(zimFileID: metadata.identifier) {
+           let zimFileID = UUID(uuidString: metadata.identifier),
+           let url = ZimFileService.shared.getMainPageURL(zimFileID: zimFileID) {
             webView.load(URLRequest(url: url))
             preparePreviewCompletionHandler = handler
         } else {

@@ -23,7 +23,7 @@ struct LibraryList: View {
                 Text(ByteCountFormatter().string(fromByteCount: zimFile.size))
             }
         }.onChange(of: selectedID) { zimFileID in
-            guard let zimFileID = zimFileID?.uuidString.lowercased() else { return }
+            guard let zimFileID = zimFileID else { return }
             url = ZimFileService.shared.getMainPageURL(zimFileID: zimFileID)
             selectedID = nil
         }

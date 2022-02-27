@@ -67,13 +67,13 @@ class ReaderViewModel: NSObject, ObservableObject, WKNavigationDelegate, WKScrip
     }
     
     func loadMainPage(zimFileID: UUID? = nil) {
-        let zimFileID = zimFileID?.uuidString ?? webView.url?.host ?? ""
+        let zimFileID = zimFileID ?? UUID(uuidString: webView.url?.host ?? "")!
         guard let url = ZimFileService.shared.getMainPageURL(zimFileID: zimFileID) else { return }
         webView.load(URLRequest(url: url))
     }
     
     func loadRandomPage(zimFileID: UUID? = nil) {
-        let zimFileID = zimFileID?.uuidString ?? webView.url?.host ?? ""
+        let zimFileID = zimFileID ?? UUID(uuidString: webView.url?.host ?? "")!
         guard let url = ZimFileService.shared.getRandomPageURL(zimFileID: zimFileID) else { return }
         webView.load(URLRequest(url: url))
     }

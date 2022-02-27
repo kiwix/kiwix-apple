@@ -85,13 +85,13 @@ extension ZimFileService {
         return URL(zimFileID: zimFileID.uuidString, contentPath: redirectedPath)
     }
     
-    func getMainPageURL(zimFileID: String) -> URL? {
-        guard let zimFileID = UUID(uuidString: zimFileID), let path = __getMainPagePath(zimFileID) else { return nil }
+    func getMainPageURL(zimFileID: UUID) -> URL? {
+        guard let path = __getMainPagePath(zimFileID) else { return nil }
         return URL(zimFileID: zimFileID.uuidString, contentPath: path)
     }
     
-    func getRandomPageURL(zimFileID: String) -> URL? {
-        guard let zimFileID = UUID(uuidString: zimFileID), let path = __getRandomPagePath(zimFileID) else { return nil }
+    func getRandomPageURL(zimFileID: UUID) -> URL? {
+        guard let path = __getRandomPagePath(zimFileID) else { return nil }
         return URL(zimFileID: zimFileID.uuidString, contentPath: path)
     }
     
