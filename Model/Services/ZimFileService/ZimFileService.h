@@ -9,8 +9,6 @@
 #import <Foundation/Foundation.h>
 #import "ZimFileMetaData.h"
 
-struct SharedReaders;
-
 @interface ZimFileService : NSObject
 
 - (instancetype _Nonnull)init NS_REFINED_FOR_SWIFT;
@@ -21,8 +19,7 @@ struct SharedReaders;
 - (void)open:(NSURL *_Nonnull)url NS_REFINED_FOR_SWIFT;
 - (void)close:(NSUUID *_Nonnull)zimFileID NS_REFINED_FOR_SWIFT;
 - (NSArray *_Nonnull)getReaderIdentifiers NS_REFINED_FOR_SWIFT;
-- (struct SharedReaders)getSharedReaders:(nonnull NSSet *)identifiers NS_REFINED_FOR_SWIFT;
-
+- (nonnull void *) getArchives;
 # pragma mark - Metadata
 
 - (nullable ZimFileMetaData *)getMetaData:(nonnull NSUUID *)identifier NS_REFINED_FOR_SWIFT;

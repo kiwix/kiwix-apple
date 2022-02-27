@@ -6,7 +6,6 @@
 //  Copyright © 2017-2022 Chris Li. All rights reserved.
 //
 
-#include <set>
 #include <unordered_map>
 
 #pragma clang diagnostic push
@@ -20,12 +19,6 @@
 
 #import "ZimFileService.h"
 #import "ZimFileMetaData.h"
-
-struct SharedReaders {
-    NSArray *readerIDs;
-    std::vector<std::shared_ptr<kiwix::Reader>> readers;
-    std::vector<zim::Archive> archives;
-};
 
 @interface ZimFileService ()
 
@@ -101,22 +94,8 @@ struct SharedReaders {
     return [self.fileURLs allKeys];
 }
 
-- (struct SharedReaders)getSharedReaders:(nonnull NSSet *)identifiers {
-    NSMutableArray *readerIDs = [[NSMutableArray alloc] initWithCapacity:[identifiers count]];
-    auto archives = std::vector<zim::Archive>();
-    
-    for (NSString *identifier in identifiers) {
-        try {
-            auto archive = self.archives->at([identifier cStringUsingEncoding:NSUTF8StringEncoding]);
-            [readerIDs addObject:identifier];
-            archives.push_back(*archive);
-        } catch (std::out_of_range) { }
-    }
-    
-    struct SharedReaders sharedReaders;
-    sharedReaders.readerIDs = readerIDs;
-    sharedReaders.archives = archives;
-    return sharedReaders;
+- (nonnull void *) getArchives {
+    return self.archives;
 }
 
 # pragma mark - Metadata

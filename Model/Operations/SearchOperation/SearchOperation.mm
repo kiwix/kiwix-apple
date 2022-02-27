@@ -6,6 +6,8 @@
 //  Copyright © 2020-2022 Chris Li. All rights reserved.
 //
 
+#include <unordered_map>
+
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wdocumentation"
 #import "kiwix/reader.h"
@@ -16,12 +18,6 @@
 #import "SearchOperation.h"
 #import "SearchResult.h"
 #import "ZimFileService.h"
-
-struct SharedReaders {
-    NSArray *readerIDs;
-    std::vector<std::shared_ptr<kiwix::Reader>> readers;
-    std::vector<zim::Archive> archives;
-};
 
 @interface SearchOperation ()
 
@@ -45,13 +41,17 @@ struct SharedReaders {
 
 /// Perform index and title based searches.
 - (void)performSearch {
-    struct SharedReaders sharedReaders = [[ZimFileService sharedInstance] getSharedReaders:self.identifiers];
-    [self addIndexSearchResults:sharedReaders.archives];
-    
-    int archivesCount = (int)sharedReaders.archives.size();
-    if (archivesCount > 0) {
-        int count = std::max((35 - (int)[self.results count]) / archivesCount, 5);
-        [self addTitleSearchResults:sharedReaders.archives count:(int)count];
+    auto *allArchives = static_cast<std::unordered_map<std::string, std::shared_ptr<zim::Archive>> *>([[ZimFileService sharedInstance] getArchives]);
+    std::vector<zim::Archive> archives = std::vector<zim::Archive>();
+    for (NSUUID *zimFileID in self.identifiers) {
+        try {
+            auto archive = allArchives->at([[[zimFileID UUIDString] lowercaseString] cStringUsingEncoding:NSUTF8StringEncoding]);
+            archives.push_back(*archive);
+        } catch (std::out_of_range) { }
+    }
+    if (archives.size() > 0) {
+        int count = std::max((35 - (int)[self.results count]) / (int)archives.size(), 5);
+        [self addTitleSearchResults:archives count:(int)count];
     }
 }
 
