@@ -25,7 +25,8 @@ class LibraryService {
     }
     
     func isFileInDocumentDirectory(zimFileID: String) -> Bool {
-        if let fileName = ZimFileService.shared.getFileURL(zimFileID: zimFileID)?.lastPathComponent,
+        if let zimFileID = UUID(uuidString: zimFileID),
+           let fileName = ZimFileService.shared.getFileURL(zimFileID: zimFileID)?.lastPathComponent,
             let documentDirectoryURL = try? FileManager.default.url(
                 for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false) {
             let fileURL = documentDirectoryURL.appendingPathComponent(fileName)
@@ -51,7 +52,8 @@ class LibraryService {
         } catch {}
         
         // Remove file if file is in app's document directory
-        if let fileURL = ZimFileService.shared.getFileURL(zimFileID: fileID),
+        if let zimFileID = UUID(uuidString: fileID),
+           let fileURL = ZimFileService.shared.getFileURL(zimFileID: zimFileID),
            let documentDirectoryURL = try? FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false),
            FileManager.default.fileExists(atPath: documentDirectoryURL.appendingPathComponent(fileURL.lastPathComponent).path) {
             try? FileManager.default.removeItem(at: fileURL)

@@ -68,8 +68,9 @@ class LibraryScanOperation: Operation {
                 ZimFileService.shared.open(url: fileURL)
                 if isStale {
                     try database.write {
-                        let bookmarkData = ZimFileService.shared.getFileURLBookmark(zimFileID: zimFile.fileID)
-                        zimFile.openInPlaceURLBookmark = bookmarkData
+                        guard let zimFileID = UUID(uuidString: zimFile.fileID) else { return }
+                        let url = ZimFileService.shared.getFileURL(zimFileID: zimFileID)
+                        zimFile.openInPlaceURLBookmark = try url?.bookmarkData()
                     }
                 }
             }
@@ -79,7 +80,7 @@ class LibraryScanOperation: Operation {
     /// Close readers for all zim files that are no longer on disk.
     private func closeReadersForDeletedZimFiles() {
         ZimFileService.shared.fileIDs.forEach { zimFileID in
-            guard let fileURL = ZimFileService.shared.getFileURL(zimFileID: zimFileID.uuidString),
+            guard let fileURL = ZimFileService.shared.getFileURL(zimFileID: zimFileID),
                   !FileManager.default.fileExists(atPath: fileURL.path) else { return }
             ZimFileService.shared.close(fileID: zimFileID)
         }
@@ -113,10 +114,10 @@ class LibraryScanOperation: Operation {
                         "hasVideos": metadatum.hasVideos,
                         "stateRaw": ZimFile.State.onDevice.rawValue,
                         "openInPlaceURLBookmark": {
-                            guard let fileURL = ZimFileService.shared.getFileURL(zimFileID: zimFileID.uuidString),
+                            guard let fileURL = ZimFileService.shared.getFileURL(zimFileID: zimFileID),
                                   let documentDirectory = try? FileManager.default.url(for: .documentDirectory,in: .userDomainMask, appropriateFor: nil, create: false),
                                   !FileManager.default.fileExists(atPath: documentDirectory.appendingPathComponent(fileURL.lastPathComponent).path) else { return nil }
-                            return ZimFileService.shared.getFileURLBookmark(zimFileID: zimFileID.uuidString)
+                            return try? fileURL.bookmarkData()
                         }()
                     ]
                     database.create(ZimFile.self, value: value, update: .modified)

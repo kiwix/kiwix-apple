@@ -67,14 +67,13 @@ extension ZimFileService {
         #endif
     }
     
-    func getFileURLBookmark(zimFileID: String) -> Data? {
-        try? getFileURL(zimFileID: zimFileID)?.bookmarkData()
-    }
+//    func getFileURLBookmark(zimFileID: String) -> Data? {
+//        try? getFileURL(zimFileID: zimFileID)?.bookmarkData()
+//    }
     
     // MARK: - URL Retrieve
     
-    func getFileURL(zimFileID: String) -> URL? {
-        guard let zimFileID = UUID(uuidString: zimFileID) else { return nil }
+    func getFileURL(zimFileID: UUID) -> URL? {
         return __getFileURL(zimFileID)
     }
     
