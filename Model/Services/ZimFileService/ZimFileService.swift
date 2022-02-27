@@ -53,7 +53,7 @@ extension ZimFileService {
         __getMetaData(withFileURL: url)
     }
     
-    // MARK: - URL
+    // MARK: - URL Bookmark
     
     static func getBookmarkData(url: URL) -> Data? {
         #if os(macOS)
@@ -67,13 +67,15 @@ extension ZimFileService {
         #endif
     }
     
+    func getFileURLBookmark(zimFileID: String) -> Data? {
+        try? getFileURL(zimFileID: zimFileID)?.bookmarkData()
+    }
+    
+    // MARK: - URL Retrieve
+    
     func getFileURL(zimFileID: String) -> URL? {
         guard let zimFileID = UUID(uuidString: zimFileID) else { return nil }
         return __getFileURL(zimFileID)
-    }
-    
-    func getFileURLBookmark(zimFileID: String) -> Data? {
-        try? getFileURL(zimFileID: zimFileID)?.bookmarkData()
     }
     
     func getRedirectedURL(url: URL) -> URL? {

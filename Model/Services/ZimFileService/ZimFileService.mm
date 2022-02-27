@@ -12,12 +12,10 @@
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wdocumentation"
 #include "kiwix/book.h"
-#include "kiwix/entry.h"
-#include "kiwix/reader.h"
-#include "kiwix/searcher.h"
 #include "zim/archive.h"
 #include "zim/entry.h"
 #include "zim/error.h"
+#include "zim/item.h"
 #pragma clang diagnostic pop
 
 #import "ZimFileService.h"
@@ -88,7 +86,7 @@ struct SharedReaders {
         // store file URL
         NSUUID *zimFileID = [[NSUUID alloc] initWithUUIDBytes:(unsigned char *)archive->getUuid().data];
         self.fileURLs[zimFileID] = url;
-    } catch (std::exception e) {
+    } catch (std::exception) {
         NSLog(@"Error opening zim file.");
     }
 }
@@ -148,15 +146,10 @@ struct SharedReaders {
 
 # pragma mark - URL Handling
 
-/// Get URL of a zim file on disk.
-/// @param zimFileID ID of the zim file to retrieve file URL
 - (NSURL *)getFileURL:(NSUUID *)zimFileID {
     return self.fileURLs[zimFileID];
 }
 
-/// Get redirected path given a path, nil if there isn't a redirection
-/// @param zimFileID ID of the zim file to retrieve redirected path
-/// @param contentPath path to check for redirection
 - (NSString *_Nullable)getRedirectedPath:(NSUUID *_Nonnull)zimFileID contentPath:(NSString *_Nonnull)contentPath {
     auto found = self.archives->find([[zimFileID UUIDString] cStringUsingEncoding:NSUTF8StringEncoding]);
     if (found == self.archives->end()) {
@@ -171,8 +164,6 @@ struct SharedReaders {
     }
 }
 
-/// Get path of the main page in a zim file.
-/// @param zimFileID ID of the zim file to retrieve main page path
 - (NSString *)getMainPagePath:(NSUUID *)zimFileID {
     auto found = self.archives->find([[zimFileID UUIDString] cStringUsingEncoding:NSUTF8StringEncoding]);
     if (found == self.archives->end()) {
@@ -186,8 +177,6 @@ struct SharedReaders {
     }
 }
 
-/// Get path of a random page in a zim file.
-/// @param zimFileID ID of the zim file to retrieve random page path
 - (NSString *)getRandomPagePath:(NSUUID *)zimFileID {
     auto found = self.archives->find([[zimFileID UUIDString] cStringUsingEncoding:NSUTF8StringEncoding]);
     if (found == self.archives->end()) {
@@ -201,9 +190,6 @@ struct SharedReaders {
     }
 }
 
-/// Retrieve content of a path or its redirected path inside a zim file.
-/// @param zimFileID ID of the zim file to retrieve data
-/// @param contentPath path of the content to retrieve
 - (NSDictionary *)getContent:(NSUUID *)zimFileID contentPath:(NSString *)contentPath {
     auto found = self.archives->find([[zimFileID UUIDString] cStringUsingEncoding:NSUTF8StringEncoding]);
     if (found == self.archives->end()) {
