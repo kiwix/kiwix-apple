@@ -67,10 +67,6 @@ extension ZimFileService {
         #endif
     }
     
-//    func getFileURLBookmark(zimFileID: String) -> Data? {
-//        try? getFileURL(zimFileID: zimFileID)?.bookmarkData()
-//    }
-    
     // MARK: - URL Retrieve
     
     func getFileURL(zimFileID: UUID) -> URL? {
