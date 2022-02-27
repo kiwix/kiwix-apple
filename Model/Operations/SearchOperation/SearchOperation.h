@@ -3,7 +3,7 @@
 //  Kiwix
 //
 //  Created by Chris Li on 5/9/20.
-//  Copyright © 2020 Chris Li. All rights reserved.
+//  Copyright © 2020-2022 Chris Li. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>

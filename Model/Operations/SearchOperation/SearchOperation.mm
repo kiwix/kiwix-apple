@@ -3,7 +3,7 @@
 //  Kiwix
 //
 //  Created by Chris Li on 5/9/20.
-//  Copyright © 2020 Chris Li. All rights reserved.
+//  Copyright © 2020-2022 Chris Li. All rights reserved.
 //
 
 #pragma clang diagnostic push
@@ -68,7 +68,7 @@ struct SharedReaders {
     for (auto result = resultSet.begin(); result != resultSet.end(); result++) {
         if (self.isCancelled) { break; }
         
-        zim::Item item = result->getRedirect();
+        zim::Item item = result->getItem(result->isRedirect());
         NSUUID *zimFileID = [[NSUUID alloc] initWithUUIDBytes:(unsigned char *)result.getZimId().data];
         NSString *path = [NSString stringWithCString:item.getPath().c_str() encoding:NSUTF8StringEncoding];
         NSString *title = [NSString stringWithCString:item.getTitle().c_str() encoding:NSUTF8StringEncoding];
@@ -99,7 +99,8 @@ struct SharedReaders {
         for (auto result = results.begin(); result != results.end(); result++) {
             if (self.isCancelled) { break; }
             
-            zim::Item item = result.getEntry().getRedirect();
+            zim::Entry entry = result.getEntry();
+            zim::Item item = entry.getItem(entry.isRedirect());
             NSString *path = [NSString stringWithCString:item.getPath().c_str() encoding:NSUTF8StringEncoding];
             NSString *title = [NSString stringWithCString:item.getTitle().c_str() encoding:NSUTF8StringEncoding];
             SearchResult *searchResult = [[SearchResult alloc] initWithZimFileID:[zimFileID UUIDString] path:path title:title];
