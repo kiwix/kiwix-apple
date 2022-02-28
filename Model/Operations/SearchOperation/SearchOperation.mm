@@ -41,14 +41,15 @@
 
 /// Perform index and title based searches.
 - (void)performSearch {
-    auto *allArchives = static_cast<std::unordered_map<std::string, std::shared_ptr<zim::Archive>> *>([[ZimFileService sharedInstance] getArchives]);
+    auto *allArchives = static_cast<std::unordered_map<std::string, zim::Archive> *>([[ZimFileService sharedInstance] getArchives]);
     std::vector<zim::Archive> archives = std::vector<zim::Archive>();
     for (NSUUID *zimFileID in self.identifiers) {
         try {
             auto archive = allArchives->at([[[zimFileID UUIDString] lowercaseString] cStringUsingEncoding:NSUTF8StringEncoding]);
-            archives.push_back(*archive);
+            archives.push_back(archive);
         } catch (std::out_of_range) { }
     }
+    [self addIndexSearchResults:archives];
     if (archives.size() > 0) {
         int count = std::max((35 - (int)[self.results count]) / (int)archives.size(), 5);
         [self addTitleSearchResults:archives count:(int)count];
