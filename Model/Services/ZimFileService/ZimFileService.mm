@@ -100,8 +100,9 @@
 
 # pragma mark - Metadata
 
-- (ZimFileMetaData *)getMetaData:(NSUUID *)identifier {
-    auto found = self.archives->find([[[identifier UUIDString] lowercaseString] cStringUsingEncoding:NSUTF8StringEncoding]);
+- (ZimFileMetaData *)getMetaData:(NSUUID *)zimFileID {
+    std::string zimFileID_C = [[[zimFileID UUIDString] lowercaseString] cStringUsingEncoding:NSUTF8StringEncoding];
+    auto found = self.archives->find(zimFileID_C);
     if (found == self.archives->end()) {
         return nil;
     } else {
@@ -130,7 +131,8 @@
 }
 
 - (NSString *_Nullable)getRedirectedPath:(NSUUID *_Nonnull)zimFileID contentPath:(NSString *_Nonnull)contentPath {
-    auto found = self.archives->find([[[zimFileID UUIDString] lowercaseString] cStringUsingEncoding:NSUTF8StringEncoding]);
+    std::string zimFileID_C = [[[zimFileID UUIDString] lowercaseString] cStringUsingEncoding:NSUTF8StringEncoding];
+    auto found = self.archives->find(zimFileID_C);
     if (found == self.archives->end()) {
         return nil;
     }
@@ -144,7 +146,8 @@
 }
 
 - (NSString *)getMainPagePath:(NSUUID *)zimFileID {
-    auto found = self.archives->find([[[zimFileID UUIDString] lowercaseString] cStringUsingEncoding:NSUTF8StringEncoding]);
+    std::string zimFileID_C = [[[zimFileID UUIDString] lowercaseString] cStringUsingEncoding:NSUTF8StringEncoding];
+    auto found = self.archives->find(zimFileID_C);
     if (found == self.archives->end()) {
         return nil;
     }
@@ -157,7 +160,8 @@
 }
 
 - (NSString *)getRandomPagePath:(NSUUID *)zimFileID {
-    auto found = self.archives->find([[[zimFileID UUIDString] lowercaseString] cStringUsingEncoding:NSUTF8StringEncoding]);
+    std::string zimFileID_C = [[[zimFileID UUIDString] lowercaseString] cStringUsingEncoding:NSUTF8StringEncoding];
+    auto found = self.archives->find(zimFileID_C);
     if (found == self.archives->end()) {
         return nil;
     }
@@ -170,7 +174,8 @@
 }
 
 - (NSDictionary *)getContent:(NSUUID *)zimFileID contentPath:(NSString *)contentPath {
-    auto found = self.archives->find([[[zimFileID UUIDString] lowercaseString] cStringUsingEncoding:NSUTF8StringEncoding]);
+    std::string zimFileID_C = [[[zimFileID UUIDString] lowercaseString] cStringUsingEncoding:NSUTF8StringEncoding];
+    auto found = self.archives->find(zimFileID_C);
     if (found == self.archives->end()) {
         return nil;
     }
