@@ -16,6 +16,9 @@
         self.zimFileID = zimFileID;
         self.title = title;
         
+        // HACK: assuming path is always absolute, which is required to construct a url using NSURLComponents
+        if (![path hasPrefix:@"/"]) { path = [@"/" stringByAppendingString:path]; }
+        
         NSURLComponents *components = [[NSURLComponents alloc] init];
         components.scheme = @"kiwix";
         components.host = [zimFileID UUIDString];
