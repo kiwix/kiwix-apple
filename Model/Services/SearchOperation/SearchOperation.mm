@@ -10,8 +10,8 @@
 
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wdocumentation"
-#import "kiwix/reader.h"
-#import "kiwix/searcher.h"
+#import "zim/item.h"
+#import "zim/search.h"
 #import "zim/suggestion.h"
 #pragma clang diagnostic pop
 
