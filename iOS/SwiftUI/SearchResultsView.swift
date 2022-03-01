@@ -320,7 +320,7 @@ private struct ResultsListView: View {
                     viewModel.updateRecentSearchTexts()
                 } label: {
                     HStack(alignment: result.snippet == nil ? .center : .top) {
-                        Favicon(data: viewModel.onDeviceZimFiles[result.zimFileID]?.faviconData)
+                        Favicon(data: viewModel.onDeviceZimFiles[result.zimFileID.uuidString]?.faviconData)
                         VStack(alignment: .leading) {
                             Text(result.title).fontWeight(.medium).lineLimit(1)
                             if #available(iOS 15.0, *), let snippet = result.snippet {
