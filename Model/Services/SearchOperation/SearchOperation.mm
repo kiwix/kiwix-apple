@@ -21,17 +21,19 @@
 
 @interface SearchOperation ()
 
-@property (nonatomic, strong) NSSet *identifiers;
+@property (assign) std::string searchText_C;
+@property (nonatomic, strong) NSSet *zimFileIDs;
 
 @end
 
 @implementation SearchOperation
 
-- (id)initWithSearchText:(NSString *)searchText zimFileIDs:(NSSet *)identifiers {
+- (id)initWithSearchText:(NSString *)searchText zimFileIDs:(NSSet *)zimFileIDs {
     self = [super init];
     if (self) {
         self.searchText = searchText;
-        self.identifiers = identifiers;
+        self.searchText_C = [searchText cStringUsingEncoding:NSUTF8StringEncoding];
+        self.zimFileIDs = zimFileIDs;
         self.snippetMode = @"disabled";
         self.results = [[NSMutableOrderedSet alloc] initWithCapacity:35];
         self.qualityOfService = NSQualityOfServiceUserInitiated;
@@ -41,14 +43,19 @@
 
 /// Perform index and title based searches.
 - (void)performSearch {
-    auto *allArchives = static_cast<std::unordered_map<std::string, zim::Archive> *>([[ZimFileService sharedInstance] getArchives]);
+    // get a list of archives that are included in search
+    typedef std::unordered_map<std::string, zim::Archive> archives_map;
+    auto *allArchives = static_cast<archives_map *>([[ZimFileService sharedInstance] getArchives]);
     std::vector<zim::Archive> archives = std::vector<zim::Archive>();
-    for (NSUUID *zimFileID in self.identifiers) {
+    for (NSUUID *zimFileID in self.zimFileIDs) {
+        std::string zimFileID_C = [[[zimFileID UUIDString] lowercaseString] cStringUsingEncoding:NSUTF8StringEncoding];
         try {
-            auto archive = allArchives->at([[[zimFileID UUIDString] lowercaseString] cStringUsingEncoding:NSUTF8StringEncoding]);
+            auto archive = allArchives->at(zimFileID_C);
             archives.push_back(archive);
         } catch (std::out_of_range) { }
     }
+    
+    // perform index and title search
     [self addIndexSearchResults:archives];
     if (archives.size() > 0) {
         int count = std::max((35 - (int)[self.results count]) / (int)archives.size(), 5);
@@ -62,8 +69,7 @@
     // initialize and start full text search
     if (self.isCancelled) { return; }
     zim::Searcher searcher = zim::Searcher(archives);
-    zim::Query query = zim::Query([self.searchText cStringUsingEncoding:NSUTF8StringEncoding]);
-    zim::SearchResultSet resultSet = searcher.search(query).getResults(0, 25);
+    zim::SearchResultSet resultSet = searcher.search(zim::Query(self.searchText_C)).getResults(0, 25);
     
     // retrieve full text search results
     for (auto result = resultSet.begin(); result != resultSet.end(); result++) {
@@ -73,7 +79,7 @@
         NSUUID *zimFileID = [[NSUUID alloc] initWithUUIDBytes:(unsigned char *)result.getZimId().data];
         NSString *path = [NSString stringWithCString:item.getPath().c_str() encoding:NSUTF8StringEncoding];
         NSString *title = [NSString stringWithCString:item.getTitle().c_str() encoding:NSUTF8StringEncoding];
-        SearchResult *searchResult = [[SearchResult alloc] initWithZimFileID:[zimFileID UUIDString] path:path title:title];
+        SearchResult *searchResult = [[SearchResult alloc] initWithZimFileID:zimFileID path:path title:title];
         searchResult.probability = [[NSNumber alloc] initWithFloat:result.getScore() / 100];
         
         // optionally, add snippet
@@ -90,13 +96,11 @@
 /// @param archives archives to retrieve search results from
 /// @param count number of articles to retrieve for each archive
 - (void)addTitleSearchResults:(std::vector<zim::Archive>)archives count:(int)count {
-    std::string searchTextC = [self.searchText cStringUsingEncoding:NSUTF8StringEncoding];
-    
     for (zim::Archive archive: archives) {
         if (self.isCancelled) { break; }
         
         NSUUID *zimFileID = [[NSUUID alloc] initWithUUIDBytes:(unsigned char *)archive.getUuid().data];
-        auto results = zim::SuggestionSearcher(archive).suggest(searchTextC).getResults(0, count);
+        auto results = zim::SuggestionSearcher(archive).suggest(self.searchText_C).getResults(0, count);
         for (auto result = results.begin(); result != results.end(); result++) {
             if (self.isCancelled) { break; }
             
@@ -104,7 +108,7 @@
             zim::Item item = entry.getItem(entry.isRedirect());
             NSString *path = [NSString stringWithCString:item.getPath().c_str() encoding:NSUTF8StringEncoding];
             NSString *title = [NSString stringWithCString:item.getTitle().c_str() encoding:NSUTF8StringEncoding];
-            SearchResult *searchResult = [[SearchResult alloc] initWithZimFileID:[zimFileID UUIDString] path:path title:title];
+            SearchResult *searchResult = [[SearchResult alloc] initWithZimFileID:zimFileID path:path title:title];
             if (searchResult != nil) { [self.results addObject:searchResult]; }
         }
     }
