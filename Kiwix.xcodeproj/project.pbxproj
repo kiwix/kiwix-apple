@@ -685,11 +685,9 @@
 		9779A5AB2456793600F6F6FF /* Entities */ = {
 			isa = PBXGroup;
 			children = (
+				97BF1F8E27CE5EEF00A94E06 /* SearchResult */,
 				973A2FC4277EAA2500BD4320 /* OPDSRefreshError.swift */,
 				97974349257BF2B000D30F03 /* OutlineItem.swift */,
-				97B3998B2467561900BC6F5B /* SearchResult.h */,
-				97B3998C2467561900BC6F5B /* SearchResult.m */,
-				976A65B22659489F009A97C6 /* SearchResult.swift */,
 				97B3BAC92736CDCE00A23F49 /* URLContent.swift */,
 				9779A5AD2456793600F6F6FF /* ZimFileMetaData.h */,
 				9779A5AC2456793600F6F6FF /* ZimFileMetaData.mm */,
@@ -842,6 +840,16 @@
 				97974367257BF37E00D30F03 /* Alerts.swift */,
 			);
 			path = Utilities;
+			sourceTree = "<group>";
+		};
+		97BF1F8E27CE5EEF00A94E06 /* SearchResult */ = {
+			isa = PBXGroup;
+			children = (
+				97B3998B2467561900BC6F5B /* SearchResult.h */,
+				97B3998C2467561900BC6F5B /* SearchResult.m */,
+				976A65B22659489F009A97C6 /* SearchResult.swift */,
+			);
+			name = SearchResult;
 			sourceTree = "<group>";
 		};
 		97DED67D275278EB008D2C56 /* View */ = {

@@ -9,7 +9,7 @@
 import SwiftUI
 
 @main
-struct Kiwix: SwiftUI.App {
+struct Kiwix: App {
     init() {
         self.reopen()
     }
