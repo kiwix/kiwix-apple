@@ -127,7 +127,7 @@ class LibraryScanOperation: Operation {
                 // set the object's state to remote or delete the object depending on if it can be re-downloaded.
                 let predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
                     NSPredicate(format: "stateRaw = %@", ZimFile.State.onDevice.rawValue),
-                    NSPredicate(format: "NOT fileID IN %@", Set(zimFileIDs)),
+                    NSPredicate(format: "NOT fileID IN %@", Set(zimFileIDs.map { $0.uuidString.lowercased() })),
                 ])
                 for zimFile in database.objects(ZimFile.self).filter(predicate) {
                     if let _ = zimFile.downloadURL {
