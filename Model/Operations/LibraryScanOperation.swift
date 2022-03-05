@@ -105,7 +105,7 @@ class LibraryScanOperation: Operation {
                         "creator": metadatum.creator,
                         "publisher": metadatum.publisher,
                         "creationDate": metadatum.creationDate,
-                        "faviconData": metadatum.faviconData,
+                        "faviconData": ZimFileService.shared.getFavicon(id: metadatum.fileID),
                         "size": metadatum.size.int64Value,
                         "articleCount": metadatum.articleCount.int64Value,
                         "mediaCount": metadatum.mediaCount.int64Value,

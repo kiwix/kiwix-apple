@@ -112,6 +112,21 @@
     }
 }
 
+- (NSData *)getFavicon:(NSUUID *)zimFileID {
+    std::string zimFileID_C = [[[zimFileID UUIDString] lowercaseString] cStringUsingEncoding:NSUTF8StringEncoding];
+        auto found = self.archives->find(zimFileID_C);
+        if (found == self.archives->end()) {
+            return nil;
+        } else {
+            try {
+                zim::Blob blob = found->second.getIllustrationItem().getData();
+                return [NSData dataWithBytes:blob.data() length:blob.size()];
+            } catch (std::exception) {
+                return nil;
+            }
+        }
+}
+
 + (ZimFileMetaData *)getMetaDataWithFileURL:(NSURL *)url {
     ZimFileMetaData *metaData = nil;
     [url startAccessingSecurityScopedResource];

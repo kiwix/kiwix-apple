@@ -49,6 +49,10 @@ extension ZimFileService {
         __getMetaData(id)
     }
     
+    func getFavicon(id: UUID) -> Data? {
+        __getFavicon(id)
+    }
+
     static func getMetaData(url: URL) -> ZimFileMetaData? {
         __getMetaData(withFileURL: url)
     }
