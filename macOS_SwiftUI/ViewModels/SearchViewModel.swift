@@ -52,8 +52,7 @@ class SearchViewModel: NSObject, ObservableObject, NSFetchedResultsControllerDel
     
     private func updateSearchResults(_ searchText: String, _ zimFileIDs: Set<UUID>) {
         queue.cancelAllOperations()
-        let zimFileIDs = Set(zimFileIDs.map { $0.uuidString.lowercased() })
-        let operation = SearchOperation(searchText: searchText, zimFileIDs: zimFileIDs)
+        let operation = SearchOperation(searchText: searchText, zimFileIDs: Set(zimFileIDs))
         operation.completionBlock = { [unowned self] in
             guard !operation.isCancelled else { return }
             DispatchQueue.main.sync {

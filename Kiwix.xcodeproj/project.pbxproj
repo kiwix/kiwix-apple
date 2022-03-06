@@ -641,6 +641,7 @@
 		9779A59B2456793500F6F6FF /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				97B3998724673FCA00BC6F5B /* SearchOperation */,
 				9779A5A62456793500F6F6FF /* ZimFileService */,
 				9779A5D52456796A00F6F6FF /* DownloadService.swift */,
 				977959BF26D494C500D48E4A /* FaviconDownloadService.swift */,
@@ -653,7 +654,6 @@
 		9779A59E2456793500F6F6FF /* Operations */ = {
 			isa = PBXGroup;
 			children = (
-				97B3998724673FCA00BC6F5B /* SearchOperation */,
 				9779A5A22456793500F6F6FF /* OPDSRefreshOperation */,
 				9779A59F2456793500F6F6FF /* LibraryScanOperation.swift */,
 				9779A5A02456793500F6F6FF /* LibraryOperationBase.swift */,
@@ -685,11 +685,9 @@
 		9779A5AB2456793600F6F6FF /* Entities */ = {
 			isa = PBXGroup;
 			children = (
+				97BF1F8E27CE5EEF00A94E06 /* SearchResult */,
 				973A2FC4277EAA2500BD4320 /* OPDSRefreshError.swift */,
 				97974349257BF2B000D30F03 /* OutlineItem.swift */,
-				97B3998B2467561900BC6F5B /* SearchResult.h */,
-				97B3998C2467561900BC6F5B /* SearchResult.m */,
-				976A65B22659489F009A97C6 /* SearchResult.swift */,
 				97B3BAC92736CDCE00A23F49 /* URLContent.swift */,
 				9779A5AD2456793600F6F6FF /* ZimFileMetaData.h */,
 				9779A5AC2456793600F6F6FF /* ZimFileMetaData.mm */,
@@ -842,6 +840,16 @@
 				97974367257BF37E00D30F03 /* Alerts.swift */,
 			);
 			path = Utilities;
+			sourceTree = "<group>";
+		};
+		97BF1F8E27CE5EEF00A94E06 /* SearchResult */ = {
+			isa = PBXGroup;
+			children = (
+				97B3998B2467561900BC6F5B /* SearchResult.h */,
+				97B3998C2467561900BC6F5B /* SearchResult.m */,
+				976A65B22659489F009A97C6 /* SearchResult.swift */,
+			);
+			name = SearchResult;
 			sourceTree = "<group>";
 		};
 		97DED67D275278EB008D2C56 /* View */ = {
@@ -1735,7 +1743,7 @@
 				CODE_SIGN_ENTITLEMENTS = iOS/Support/Kiwix.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 88;
+				CURRENT_PROJECT_VERSION = 89;
 				DEVELOPMENT_TEAM = L7HWM3SP3L;
 				ENABLE_BITCODE = YES;
 				INFOPLIST_FILE = iOS/Support/Info.plist;
@@ -1744,7 +1752,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.15.4;
+				MARKETING_VERSION = 1.15.5;
 				OTHER_LDFLAGS = (
 					"-weak_framework",
 					SwiftUI,
@@ -1771,7 +1779,7 @@
 				CODE_SIGN_ENTITLEMENTS = iOS/Support/Kiwix.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 88;
+				CURRENT_PROJECT_VERSION = 89;
 				DEVELOPMENT_TEAM = L7HWM3SP3L;
 				ENABLE_BITCODE = YES;
 				INFOPLIST_FILE = iOS/Support/Info.plist;
@@ -1780,7 +1788,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.15.4;
+				MARKETING_VERSION = 1.15.5;
 				OTHER_LDFLAGS = (
 					"-weak_framework",
 					SwiftUI,
@@ -1939,7 +1947,7 @@
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 88;
+				CURRENT_PROJECT_VERSION = 89;
 				DEVELOPMENT_TEAM = L7HWM3SP3L;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = iOS/QuickLookPreview/Info.plist;
@@ -1951,7 +1959,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.15.4;
+				MARKETING_VERSION = 1.15.5;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = self.Kiwix.QuickLook;
@@ -1974,7 +1982,7 @@
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 88;
+				CURRENT_PROJECT_VERSION = 89;
 				DEVELOPMENT_TEAM = L7HWM3SP3L;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = iOS/QuickLookPreview/Info.plist;
@@ -1986,7 +1994,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.15.4;
+				MARKETING_VERSION = 1.15.5;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = self.Kiwix.QuickLook;
 				PRODUCT_NAME = "$(TARGET_NAME)";

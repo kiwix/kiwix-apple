@@ -115,12 +115,14 @@ class RootViewController: UIViewController, UISearchControllerDelegate, UISplitV
     }
     
     func openMainPage(zimFileID: String) {
-        guard let url = ZimFileService.shared.getMainPageURL(zimFileID: zimFileID) else { return }
+        guard let zimFileID = UUID(uuidString: zimFileID),
+              let url = ZimFileService.shared.getMainPageURL(zimFileID: zimFileID) else { return }
         openURL(url)
     }
     
     func openRandomPage(zimFileID: String? = nil) {
         if let zimFileID = zimFileID ?? onDeviceZimFiles?.map({ $0.fileID }).randomElement(),
+           let zimFileID = UUID(uuidString: zimFileID),
            let url = ZimFileService.shared.getRandomPageURL(zimFileID: zimFileID) {
             openURL(url)
         } else {

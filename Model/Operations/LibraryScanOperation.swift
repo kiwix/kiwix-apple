@@ -68,8 +68,9 @@ class LibraryScanOperation: Operation {
                 ZimFileService.shared.open(url: fileURL)
                 if isStale {
                     try database.write {
-                        let bookmarkData = ZimFileService.shared.getFileURLBookmark(zimFileID: zimFile.fileID)
-                        zimFile.openInPlaceURLBookmark = bookmarkData
+                        guard let zimFileID = UUID(uuidString: zimFile.fileID) else { return }
+                        let url = ZimFileService.shared.getFileURL(zimFileID: zimFileID)
+                        zimFile.openInPlaceURLBookmark = try url?.bookmarkData()
                     }
                 }
             }
@@ -78,17 +79,17 @@ class LibraryScanOperation: Operation {
     
     /// Close readers for all zim files that are no longer on disk.
     private func closeReadersForDeletedZimFiles() {
-        ZimFileService.shared.zimFileIDs.forEach { zimFileID in
+        ZimFileService.shared.fileIDs.forEach { zimFileID in
             guard let fileURL = ZimFileService.shared.getFileURL(zimFileID: zimFileID),
                   !FileManager.default.fileExists(atPath: fileURL.path) else { return }
-            ZimFileService.shared.close(id: zimFileID)
+            ZimFileService.shared.close(fileID: zimFileID)
         }
     }
     
     /// Update on device zim files in the database.
     private func updateDatabase() {
         do {
-            let zimFileIDs = ZimFileService.shared.zimFileIDs
+            let zimFileIDs = ZimFileService.shared.fileIDs
             let database = try Realm()
             
             try database.write {
@@ -104,7 +105,7 @@ class LibraryScanOperation: Operation {
                         "creator": metadatum.creator,
                         "publisher": metadatum.publisher,
                         "creationDate": metadatum.creationDate,
-                        "faviconData": metadatum.faviconData,
+                        "faviconData": ZimFileService.shared.getFavicon(id: metadatum.fileID),
                         "size": metadatum.size.int64Value,
                         "articleCount": metadatum.articleCount.int64Value,
                         "mediaCount": metadatum.mediaCount.int64Value,
@@ -116,7 +117,7 @@ class LibraryScanOperation: Operation {
                             guard let fileURL = ZimFileService.shared.getFileURL(zimFileID: zimFileID),
                                   let documentDirectory = try? FileManager.default.url(for: .documentDirectory,in: .userDomainMask, appropriateFor: nil, create: false),
                                   !FileManager.default.fileExists(atPath: documentDirectory.appendingPathComponent(fileURL.lastPathComponent).path) else { return nil }
-                            return ZimFileService.shared.getFileURLBookmark(zimFileID: zimFileID)
+                            return try? fileURL.bookmarkData()
                         }()
                     ]
                     database.create(ZimFile.self, value: value, update: .modified)
@@ -126,7 +127,7 @@ class LibraryScanOperation: Operation {
                 // set the object's state to remote or delete the object depending on if it can be re-downloaded.
                 let predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
                     NSPredicate(format: "stateRaw = %@", ZimFile.State.onDevice.rawValue),
-                    NSPredicate(format: "NOT fileID IN %@", Set(zimFileIDs)),
+                    NSPredicate(format: "NOT fileID IN %@", Set(zimFileIDs.map { $0.uuidString.lowercased() })),
                 ])
                 for zimFile in database.objects(ZimFile.self).filter(predicate) {
                     if let _ = zimFile.downloadURL {

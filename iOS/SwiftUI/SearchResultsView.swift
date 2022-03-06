@@ -138,7 +138,8 @@ private class ViewModel: ObservableObject {
         inProgress = true
         
         queue.cancelAllOperations()
-        let operation = SearchOperation(searchText: searchText, zimFileIDs: zimFileIDs)
+        let operation = SearchOperation(searchText: searchText, zimFileIDs: Set(zimFileIDs.compactMap { UUID(uuidString: $0) }))
+        operation.snippetMode = Defaults[.searchResultSnippetMode].rawValue
         operation.completionBlock = { [unowned self] in
             guard !operation.isCancelled else { return }
             DispatchQueue.main.sync {
@@ -320,7 +321,7 @@ private struct ResultsListView: View {
                     viewModel.updateRecentSearchTexts()
                 } label: {
                     HStack(alignment: result.snippet == nil ? .center : .top) {
-                        Favicon(data: viewModel.onDeviceZimFiles[result.zimFileID]?.faviconData)
+                        Favicon(data: viewModel.onDeviceZimFiles[result.zimFileID.uuidString.lowercased()]?.faviconData)
                         VStack(alignment: .leading) {
                             Text(result.title).fontWeight(.medium).lineLimit(1)
                             if #available(iOS 15.0, *), let snippet = result.snippet {

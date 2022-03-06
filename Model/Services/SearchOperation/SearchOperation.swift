@@ -3,30 +3,23 @@
 //  Kiwix
 //
 //  Created by Chris Li on 5/9/20.
-//  Copyright © 2020 Chris Li. All rights reserved.
+//  Copyright © 2020-2022 Chris Li. All rights reserved.
 //
 
-//import RealmSwift
-import Defaults
-
 extension SearchOperation {
-    var results: [SearchResult] { get { __results as? [SearchResult] ?? [] } }
-    var snippetMode: SearchResultSnippetMode {
-        #if os(iOS)
-        return Defaults[.searchResultSnippetMode]
-        #else
-        return .disabled
-        #endif
-    }
-    
+    var results: [SearchResult] { get { __results.array as? [SearchResult] ?? [] } }
+
     open override func main() {
-        guard !searchText.isEmpty else { return }
-        performSearch(snippetMode == .matches)
-        if snippetMode != .disabled { extractSnippet(snippetMode) }
+        guard !searchText.isEmpty, let snippetMode = SearchResultSnippetMode(rawValue: self.snippetMode) else { return }
+        performSearch()
+        extractSnippet(snippetMode)
         sortResults()
     }
     
+    /// Extract search result snippet for each search result.
+    /// - Parameter mode: describes if and how should the search result be extracted
     private func extractSnippet(_ mode: SearchResultSnippetMode) {
+        guard !isCancelled, mode != .disabled else { return }
         let dispatchGroup = DispatchGroup()
         for result in results {
             dispatchGroup.enter()
@@ -42,13 +35,6 @@ extension SearchOperation {
                 case .firstSentence:
                     guard let parser = try? Parser(url: url) else { return }
                     result.snippet = parser.getFirstSentence(languageCode: nil )
-//                    if #available(iOS 12.0,  macOS 10.14, *) {
-//                        let database = try? Realm()
-//                        let zimFile = database?.object(ofType: ZimFile.self, forPrimaryKey: result.zimFileID)
-//                        result.snippet = parser.getFirstSentence(languageCode: zimFile?.languageCode)
-//                    } else {
-//                        result.snippet = nil
-//                    }
                 case .matches:
                     guard let html = result.htmlSnippet else { return }
                     result.snippet = Parser.parseBodyFragment(html)
@@ -60,17 +46,38 @@ extension SearchOperation {
         dispatchGroup.wait()
     }
     
+    /// Sort the search results.
     private func sortResults() {
-        guard !isCancelled else {return}
+        guard !isCancelled else { return }
         let searchText = self.searchText.lowercased()
         let levenshtein = Levenshtein()
-        __results = results.map { result -> (result: SearchResult, score: Double) in
-            var distance = Double(levenshtein.calculateDistance(a: result.title.lowercased()[...], b: searchText[...]))
+        
+        // calculate score for all search results
+        for result in results {
+            let distance = levenshtein.calculateDistance(a: result.title.lowercased()[...], b: searchText[...])
             if let probability = result.probability?.doubleValue {
-                distance = distance * Foundation.log(7.5576 - 6.4524 * probability)
+                result.score = NSNumber(floatLiteral: Double(distance) * Foundation.log(7.5576 - 6.4524 * probability))
+            } else {
+                result.score = NSNumber(integerLiteral: distance)
             }
-            return (result, distance)
-        }.sorted { $0.score < $1.score }.map { $0.result }
+        }
+        
+        // sort search results by score
+        __results.sort { lhs, rhs in
+            guard let lhs = lhs as? SearchResult,
+                  let rhs = rhs as? SearchResult,
+                  let lhsScore = lhs.score?.doubleValue,
+                  let rhsScore = rhs.score?.doubleValue
+            else { return .orderedSame }
+            
+            if lhsScore < rhsScore {
+                return .orderedAscending
+            } else if lhsScore > rhsScore {
+                return .orderedDescending
+            } else {
+                return .orderedSame
+            }
+        }
     }
 }
 

@@ -51,8 +51,7 @@
         if (self.publisher == nil) { return nil; }
         
         SAFE_READ(self.downloadURL, [self getURL:_book->getUrl()]);
-        SAFE_READ(self.faviconURL, [self getURL:_book->getFaviconUrl()]);
-        SAFE_READ(self.faviconData, [self getFaviconData:_book]);
+        SAFE_READ(self.faviconURL, [self getFaviconURLFromBook:_book]);
         SAFE_READ(self.flavor, [self getFlavorFromBook:_book]);
         
         SAFE_READ_BOOL(self.hasDetails, _book->getTagBool("details"));
@@ -87,10 +86,13 @@
     return [NSURL URLWithString:[NSString stringWithUTF8String:urlString.c_str()]];
 }
 
-- (NSData *)getFaviconData:(kiwix::Book *)book {
-    if (self.faviconURL != nil) { return nil; }
-    std::string favicon = book->getFavicon();
-    return [NSData dataWithBytes:favicon.c_str() length:favicon.length()];
+- (NSURL *)getFaviconURLFromBook:(kiwix::Book *)book {
+    try {
+        std::string url = book->getIllustrations().at(0)->url;
+        return [self getURL:url];
+    } catch (std::exception) {
+        return nil;
+    }
 }
 
 - (NSString *)getFlavorFromBook:(kiwix::Book *)book {
