@@ -19,7 +19,7 @@ class BookmarkService {
     }
     
     func get(url: URL) -> Bookmark? {
-        guard let zimFileID = url.host else { return nil }
+        guard let zimFileID = url.host?.lowercased() else { return nil }
         return get(zimFileID: zimFileID, path: url.path)
     }
     
@@ -35,7 +35,7 @@ class BookmarkService {
         DispatchQueue.global(qos: .userInitiated).async {
             do {
                 let database = try Realm()
-                guard let zimFileID = url.host,
+                guard let zimFileID = url.host?.lowercased(),
                       let zimFile = database.object(ofType: ZimFile.self, forPrimaryKey: zimFileID)
                 else { return }
                 
