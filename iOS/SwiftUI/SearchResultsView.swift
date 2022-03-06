@@ -138,7 +138,8 @@ private class ViewModel: ObservableObject {
         inProgress = true
         
         queue.cancelAllOperations()
-        let operation = SearchOperation(searchText: searchText, zimFileIDs: zimFileIDs)
+        let operation = SearchOperation(searchText: searchText, zimFileIDs: Set(zimFileIDs.compactMap { UUID(uuidString: $0) }))
+        operation.snippetMode = Defaults[.searchResultSnippetMode].rawValue
         operation.completionBlock = { [unowned self] in
             guard !operation.isCancelled else { return }
             DispatchQueue.main.sync {
