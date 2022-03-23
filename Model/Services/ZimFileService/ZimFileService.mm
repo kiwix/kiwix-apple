@@ -168,7 +168,8 @@
     }
     try {
         zim::Entry entry = found->second.getMainEntry();
-        return [NSString stringWithCString:entry.getPath().c_str() encoding:NSUTF8StringEncoding];
+        zim::Item item = entry.getItem(entry.isRedirect());
+        return [NSString stringWithCString:item.getPath().c_str() encoding:NSUTF8StringEncoding];
     } catch (std::exception) {
         return nil;
     }
@@ -182,13 +183,18 @@
     }
     try {
         zim::Entry entry = found->second.getRandomEntry();
-        return [NSString stringWithCString:entry.getPath().c_str() encoding:NSUTF8StringEncoding];
+        zim::Item item = entry.getItem(entry.isRedirect());
+        return [NSString stringWithCString:item.getPath().c_str() encoding:NSUTF8StringEncoding];
     } catch (std::exception) {
         return nil;
     }
 }
 
 - (NSDictionary *)getContent:(NSUUID *)zimFileID contentPath:(NSString *)contentPath {
+    if ([contentPath hasPrefix:@"/"]) {
+        contentPath = [contentPath substringFromIndex:1];
+    }
+    
     std::string zimFileID_C = [[[zimFileID UUIDString] lowercaseString] cStringUsingEncoding:NSUTF8StringEncoding];
     auto found = self.archives->find(zimFileID_C);
     if (found == self.archives->end()) {

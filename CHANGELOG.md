@@ -1,3 +1,11 @@
+## 1.15.5
+
+- libkiwix 10 & libzim 7 compatibility
+
+## 1.15.4
+
+- Attempt to address some crash reports
+
 ## 1.15.3
 
 - Revert libkiwix and libzim to the last known stable release (9.4.1 and 6.3.2 respectively)
