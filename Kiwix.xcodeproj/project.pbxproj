@@ -37,6 +37,7 @@
 		97255D8C273608C3002B995B /* WebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97255D8B273608C3002B995B /* WebView.swift */; };
 		972B6662200808D6003F5365 /* WelcomeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 972B6661200808D6003F5365 /* WelcomeController.swift */; };
 		972C978026F042E40070987F /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 972C977F26F042E40070987F /* SettingsViewController.swift */; };
+		972DE4732814A116004FD9B9 /* Entities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 972DE4722814A116004FD9B9 /* Entities.swift */; };
 		972E6F641FA11A6100F5C927 /* RoundedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 972E6F631FA11A6100F5C927 /* RoundedButton.swift */; };
 		9735B88C279D9A74005F0D1A /* injection.js in Resources */ = {isa = PBXBuildFile; fileRef = 9735B88B279D9A74005F0D1A /* injection.js */; };
 		9735D0BA2775363900C7D495 /* DataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 9735D0B82775363900C7D495 /* DataModel.xcdatamodeld */; };
@@ -288,6 +289,7 @@
 		97255D8B273608C3002B995B /* WebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebView.swift; sourceTree = "<group>"; };
 		972B6661200808D6003F5365 /* WelcomeController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeController.swift; sourceTree = "<group>"; };
 		972C977F26F042E40070987F /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
+		972DE4722814A116004FD9B9 /* Entities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Entities.swift; sourceTree = "<group>"; };
 		972E6F631FA11A6100F5C927 /* RoundedButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedButton.swift; sourceTree = "<group>"; };
 		9735B88B279D9A74005F0D1A /* injection.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = injection.js; sourceTree = "<group>"; };
 		9735D0B92775363900C7D495 /* DataModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = DataModel.xcdatamodel; sourceTree = "<group>"; };
@@ -547,6 +549,7 @@
 			children = (
 				9735D0B82775363900C7D495 /* DataModel.xcdatamodeld */,
 				9735D0BB2775594700C7D495 /* Database.swift */,
+				972DE4722814A116004FD9B9 /* Entities.swift */,
 				9735D0BF27777E3300C7D495 /* Enum.swift */,
 			);
 			path = Model;
@@ -1394,6 +1397,7 @@
 				97B3048D277D4EF400E82DE0 /* LibraryList.swift in Sources */,
 				97E94B2F271EF630005B0295 /* ZimFileService.mm in Sources */,
 				973A2FD2277FC32D00BD4320 /* Library.swift in Sources */,
+				972DE4732814A116004FD9B9 /* Entities.swift in Sources */,
 				97242BA22735E6A800C87F85 /* Settings.swift in Sources */,
 				978A731027B99F25008101B4 /* ReaderViewModel.swift in Sources */,
 				97B3BACC2736CDCE00A23F49 /* URLContent.swift in Sources */,

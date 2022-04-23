@@ -3,7 +3,7 @@
 //  Kiwix
 //
 //  Created by Chris Li on 12/23/21.
-//  Copyright © 2021 Chris Li. All rights reserved.
+//  Copyright © 2022 Chris Li. All rights reserved.
 //
 
 import CoreData
@@ -134,6 +134,25 @@ class Database {
         }
     }
     
+    /// Save image data to zim files.
+    func saveImageData(url: URL) async throws {
+        let (data, response) = try await URLSession.shared.data(from: url)
+        guard let response = response as? HTTPURLResponse,
+              let mimeType = response.mimeType,
+              response.statusCode == 200,
+              mimeType.contains("image") else { return }
+        
+        let context = container.newBackgroundContext()
+        try await context.perform {
+            let predicate = NSPredicate(format: "faviconURL == %@", url as CVarArg)
+            let request = ZimFile.fetchRequest(predicate: predicate)
+            guard let zimFile = try context.fetch(request).first else { return }
+            zimFile.faviconData = data
+            try context.save()
+        }
+    }
+    
+    /// Configure a zim file object based on its metadata.
     private func configureZimFile(_ zimFile: ZimFile, metadata: ZimFileMetaData) {
         zimFile.articleCount = metadata.articleCount.int64Value
         zimFile.category = metadata.category
@@ -155,24 +174,7 @@ class Database {
         if let url = metadata.faviconURL { zimFile.faviconURL = url }
     }
     
-    func saveImageData(url: URL) async throws {
-        let (data, response) = try await URLSession.shared.data(from: url)
-        guard let response = response as? HTTPURLResponse,
-              let mimeType = response.mimeType,
-              response.statusCode == 200,
-              mimeType.contains("image") else { return }
-        
-        let context = container.newBackgroundContext()
-        try await context.perform {
-            let predicate = NSPredicate(format: "faviconURL == %@", url as CVarArg)
-            let request = ZimFile.fetchRequest(predicate: predicate)
-            guard let zimFile = try context.fetch(request).first else { return }
-            zimFile.faviconData = data
-            try context.save()
-        }
-    }
-    
-    /// Merge changes performed on batch requests to view context
+    /// Merge changes performed on batch requests to view context.
     private func mergeChanges() async throws {
         let context = container.newBackgroundContext()
         context.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
@@ -199,52 +201,5 @@ class Database {
             let purgeRequest = NSPersistentHistoryChangeRequest.deleteHistory(before: sevenDaysAgo)
             try context.execute(purgeRequest)
         }
-    }
-}
-
-class Bookmark: NSManagedObject, Identifiable {
-    var id: URL { articleURL }
-    
-    @NSManaged var articleURL: URL
-    @NSManaged var thumbImageURL: URL?
-    @NSManaged var title: String
-    @NSManaged var snippet: String?
-    @NSManaged var created: Date
-    
-    class func fetchRequest() -> NSFetchRequest<Bookmark> {
-        super.fetchRequest() as! NSFetchRequest<Bookmark>
-    }
-}
-
-class ZimFile: NSManagedObject, Identifiable {
-    var id: UUID { fileID }
-    
-    @NSManaged var articleCount: Int64
-    @NSManaged var category: String
-    @NSManaged var created: Date
-    @NSManaged var faviconData: Data?
-    @NSManaged var faviconURL: URL?
-    @NSManaged var fileDescription: String
-    @NSManaged var fileID: UUID
-    @NSManaged var fileURLBookmark: Data?
-    @NSManaged var flavor: String?
-    @NSManaged var hasDetails: Bool
-    @NSManaged var hasPictures: Bool
-    @NSManaged var hasVideos: Bool
-    @NSManaged var includedInSearch: Bool
-    @NSManaged var languageCode: String
-    @NSManaged var mediaCount: Int64
-    @NSManaged var name: String
-    @NSManaged var persistentID: String
-    @NSManaged var size: Int64
-    
-    class func fetchRequest(
-        predicate: NSPredicate? = nil,
-        sortDescriptors: [NSSortDescriptor] = []
-    ) -> NSFetchRequest<ZimFile> {
-        let request = super.fetchRequest() as! NSFetchRequest<ZimFile>
-        request.predicate = predicate
-        request.sortDescriptors = sortDescriptors
-        return request
     }
 }
