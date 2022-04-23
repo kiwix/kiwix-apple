@@ -777,7 +777,7 @@
 				970EC39E23BCE7F5008DCA27 /* Model */,
 				975FDAD81F6082DA00A10E8C /* iOS */,
 				979315821E5127930093D3BA /* macOS */,
-				97E94B18271EF24D005B0295 /* macOS_SwiftUI */,
+				97E94B18271EF24D005B0295 /* SwiftUI */,
 				97B44895210FBC2C0004B056 /* WikiMed */,
 				970EC3F223BE8E20008DCA27 /* ModelTests */,
 				3B93EAF9B5C5AA23046BDEAC /* Frameworks */,
@@ -869,7 +869,7 @@
 			path = View;
 			sourceTree = "<group>";
 		};
-		97E94B18271EF24D005B0295 /* macOS_SwiftUI */ = {
+		97E94B18271EF24D005B0295 /* SwiftUI */ = {
 			isa = PBXGroup;
 			children = (
 				9735D0B72775362000C7D495 /* Model */,
@@ -882,7 +882,7 @@
 				97E94B26271EF359005B0295 /* Support */,
 				97E94B1F271EF250005B0295 /* Preview Content */,
 			);
-			path = macOS_SwiftUI;
+			path = SwiftUI;
 			sourceTree = "<group>";
 		};
 		97E94B1F271EF250005B0295 /* Preview Content */ = {
