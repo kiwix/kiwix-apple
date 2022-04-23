@@ -38,6 +38,19 @@
 		972B6662200808D6003F5365 /* WelcomeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 972B6661200808D6003F5365 /* WelcomeController.swift */; };
 		972C978026F042E40070987F /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 972C977F26F042E40070987F /* SettingsViewController.swift */; };
 		972DE4732814A116004FD9B9 /* Entities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 972DE4722814A116004FD9B9 /* Entities.swift */; };
+		972DE4A92814A3D8004FD9B9 /* iOS_SwiftUIApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 972DE4A82814A3D8004FD9B9 /* iOS_SwiftUIApp.swift */; };
+		972DE4AB2814A3D8004FD9B9 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 972DE4AA2814A3D8004FD9B9 /* ContentView.swift */; };
+		972DE4AD2814A3D9004FD9B9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 972DE4AC2814A3D9004FD9B9 /* Assets.xcassets */; };
+		972DE4B02814A3D9004FD9B9 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 972DE4AF2814A3D9004FD9B9 /* Preview Assets.xcassets */; };
+		972DE4B42814A4F6004FD9B9 /* DataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 9735D0B82775363900C7D495 /* DataModel.xcdatamodeld */; };
+		972DE4B52814A502004FD9B9 /* Entities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 972DE4722814A116004FD9B9 /* Entities.swift */; };
+		972DE4B62814A502004FD9B9 /* Enum.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9735D0BF27777E3300C7D495 /* Enum.swift */; };
+		972DE4B82814A51C004FD9B9 /* libkiwix.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97EC18AF26E8555E008309ED /* libkiwix.xcframework */; };
+		972DE4B92814A56A004FD9B9 /* Database.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9735D0BB2775594700C7D495 /* Database.swift */; };
+		972DE4BA2814A590004FD9B9 /* ZimFileMetaData.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9779A5AC2456793600F6F6FF /* ZimFileMetaData.mm */; };
+		972DE4BB2814A5A4004FD9B9 /* OPDSRefreshError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 973A2FC4277EAA2500BD4320 /* OPDSRefreshError.swift */; };
+		972DE4BC2814A5BE004FD9B9 /* OPDSStreamParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9779A5A32456793500F6F6FF /* OPDSStreamParser.swift */; };
+		972DE4BD2814A5BE004FD9B9 /* OPDSStreamParser.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9779A5A52456793500F6F6FF /* OPDSStreamParser.mm */; };
 		972E6F641FA11A6100F5C927 /* RoundedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 972E6F631FA11A6100F5C927 /* RoundedButton.swift */; };
 		9735B88C279D9A74005F0D1A /* injection.js in Resources */ = {isa = PBXBuildFile; fileRef = 9735B88B279D9A74005F0D1A /* injection.js */; };
 		9735D0BA2775363900C7D495 /* DataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 9735D0B82775363900C7D495 /* DataModel.xcdatamodeld */; };
@@ -290,6 +303,11 @@
 		972B6661200808D6003F5365 /* WelcomeController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeController.swift; sourceTree = "<group>"; };
 		972C977F26F042E40070987F /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		972DE4722814A116004FD9B9 /* Entities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Entities.swift; sourceTree = "<group>"; };
+		972DE4A62814A3D8004FD9B9 /* iOS_SwiftUI.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iOS_SwiftUI.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		972DE4A82814A3D8004FD9B9 /* iOS_SwiftUIApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iOS_SwiftUIApp.swift; sourceTree = "<group>"; };
+		972DE4AA2814A3D8004FD9B9 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		972DE4AC2814A3D9004FD9B9 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		972DE4AF2814A3D9004FD9B9 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		972E6F631FA11A6100F5C927 /* RoundedButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedButton.swift; sourceTree = "<group>"; };
 		9735B88B279D9A74005F0D1A /* injection.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = injection.js; sourceTree = "<group>"; };
 		9735D0B92775363900C7D495 /* DataModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = DataModel.xcdatamodel; sourceTree = "<group>"; };
@@ -438,6 +456,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		972DE4A32814A3D8004FD9B9 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				972DE4B82814A51C004FD9B9 /* libkiwix.xcframework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		9793157E1E5127930093D3BA /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -527,6 +553,7 @@
 			children = (
 				9779A5AB2456793600F6F6FF /* Entities */,
 				9779A59E2456793500F6F6FF /* Operations */,
+				972DE4BF2814A5E3004FD9B9 /* OPDSStreamParser */,
 				9779A5AE2456793600F6F6FF /* Realm */,
 				9779A59B2456793500F6F6FF /* Services */,
 				97B3BAD42736D2A400A23F49 /* Support */,
@@ -542,6 +569,35 @@
 				970EC3F523BE8E20008DCA27 /* Info.plist */,
 			);
 			path = ModelTests;
+			sourceTree = "<group>";
+		};
+		972DE4A72814A3D8004FD9B9 /* iOS_SwiftUI */ = {
+			isa = PBXGroup;
+			children = (
+				972DE4A82814A3D8004FD9B9 /* iOS_SwiftUIApp.swift */,
+				972DE4AA2814A3D8004FD9B9 /* ContentView.swift */,
+				972DE4AC2814A3D9004FD9B9 /* Assets.xcassets */,
+				972DE4AE2814A3D9004FD9B9 /* Preview Content */,
+			);
+			path = iOS_SwiftUI;
+			sourceTree = "<group>";
+		};
+		972DE4AE2814A3D9004FD9B9 /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				972DE4AF2814A3D9004FD9B9 /* Preview Assets.xcassets */,
+			);
+			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		972DE4BF2814A5E3004FD9B9 /* OPDSStreamParser */ = {
+			isa = PBXGroup;
+			children = (
+				9779A5A42456793500F6F6FF /* OPDSStreamParser.h */,
+				9779A5A52456793500F6F6FF /* OPDSStreamParser.mm */,
+				9779A5A32456793500F6F6FF /* OPDSStreamParser.swift */,
+			);
+			path = OPDSStreamParser;
 			sourceTree = "<group>";
 		};
 		9735D0B72775362000C7D495 /* Model */ = {
@@ -657,22 +713,11 @@
 		9779A59E2456793500F6F6FF /* Operations */ = {
 			isa = PBXGroup;
 			children = (
-				9779A5A22456793500F6F6FF /* OPDSRefreshOperation */,
+				9779A5A12456793500F6F6FF /* OPDSRefreshOperation.swift */,
 				9779A59F2456793500F6F6FF /* LibraryScanOperation.swift */,
 				9779A5A02456793500F6F6FF /* LibraryOperationBase.swift */,
 			);
 			path = Operations;
-			sourceTree = "<group>";
-		};
-		9779A5A22456793500F6F6FF /* OPDSRefreshOperation */ = {
-			isa = PBXGroup;
-			children = (
-				9779A5A12456793500F6F6FF /* OPDSRefreshOperation.swift */,
-				9779A5A32456793500F6F6FF /* OPDSStreamParser.swift */,
-				9779A5A42456793500F6F6FF /* OPDSStreamParser.h */,
-				9779A5A52456793500F6F6FF /* OPDSStreamParser.mm */,
-			);
-			path = OPDSRefreshOperation;
 			sourceTree = "<group>";
 		};
 		9779A5A62456793500F6F6FF /* ZimFileService */ = {
@@ -780,12 +825,14 @@
 				97E94B18271EF24D005B0295 /* SwiftUI */,
 				97B44895210FBC2C0004B056 /* WikiMed */,
 				970EC3F223BE8E20008DCA27 /* ModelTests */,
+				972DE4A72814A3D8004FD9B9 /* iOS_SwiftUI */,
 				3B93EAF9B5C5AA23046BDEAC /* Frameworks */,
 				97A36C4E1F8C21210079B452 /* Kiwix.app */,
 				970EC3F123BE8E20008DCA27 /* ModelTests.xctest */,
 				970EC3FD23BE9987008DCA27 /* WikiMed.app */,
 				97F425C027151A0D00D0F738 /* QuickLookPreview.appex */,
 				97E94B17271EF24D005B0295 /* Kiwix.app */,
+				972DE4A62814A3D8004FD9B9 /* iOS_SwiftUI.app */,
 			);
 			sourceTree = "<group>";
 			wrapsLines = 0;
@@ -962,6 +1009,23 @@
 			productReference = 970EC3F123BE8E20008DCA27 /* ModelTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
+		972DE4A52814A3D8004FD9B9 /* iOS_SwiftUI */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 972DE4B32814A3D9004FD9B9 /* Build configuration list for PBXNativeTarget "iOS_SwiftUI" */;
+			buildPhases = (
+				972DE4A22814A3D8004FD9B9 /* Sources */,
+				972DE4A32814A3D8004FD9B9 /* Frameworks */,
+				972DE4A42814A3D8004FD9B9 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = iOS_SwiftUI;
+			productName = iOS_SwiftUI;
+			productReference = 972DE4A62814A3D8004FD9B9 /* iOS_SwiftUI.app */;
+			productType = "com.apple.product-type.application";
+		};
 		979315801E5127930093D3BA /* macOS */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 979315A31E5127940093D3BA /* Build configuration list for PBXNativeTarget "macOS" */;
@@ -1068,13 +1132,16 @@
 		97A2AB801C1B80FF00052E74 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 1310;
+				LastSwiftUpdateCheck = 1330;
 				LastUpgradeCheck = 1310;
 				ORGANIZATIONNAME = "Chris Li";
 				TargetAttributes = {
 					970EC3F023BE8E20008DCA27 = {
 						CreatedOnToolsVersion = 11.3;
 						TestTargetID = 97A36C241F8C21210079B452;
+					};
+					972DE4A52814A3D8004FD9B9 = {
+						CreatedOnToolsVersion = 13.3;
 					};
 					979315801E5127930093D3BA = {
 						CreatedOnToolsVersion = 8.2.1;
@@ -1146,6 +1213,7 @@
 				97B44893210FBC2C0004B056 /* WikiMed */,
 				97F425BF27151A0D00D0F738 /* QuickLookPreview */,
 				970EC3F023BE8E20008DCA27 /* ModelTests */,
+				972DE4A52814A3D8004FD9B9 /* iOS_SwiftUI */,
 			);
 		};
 /* End PBXProject section */
@@ -1155,6 +1223,15 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		972DE4A42814A3D8004FD9B9 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				972DE4B02814A3D9004FD9B9 /* Preview Assets.xcassets in Resources */,
+				972DE4AD2814A3D9004FD9B9 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1244,6 +1321,23 @@
 				970EC3FB23BE8E25008DCA27 /* ParserTests.swift in Sources */,
 				9789C26624F9601700072090 /* ZimFileService.swift in Sources */,
 				9789C26524F9601400072090 /* ZimFileService.mm in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		972DE4A22814A3D8004FD9B9 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				972DE4BB2814A5A4004FD9B9 /* OPDSRefreshError.swift in Sources */,
+				972DE4BC2814A5BE004FD9B9 /* OPDSStreamParser.swift in Sources */,
+				972DE4B92814A56A004FD9B9 /* Database.swift in Sources */,
+				972DE4BA2814A590004FD9B9 /* ZimFileMetaData.mm in Sources */,
+				972DE4B42814A4F6004FD9B9 /* DataModel.xcdatamodeld in Sources */,
+				972DE4AB2814A3D8004FD9B9 /* ContentView.swift in Sources */,
+				972DE4BD2814A5BE004FD9B9 /* OPDSStreamParser.mm in Sources */,
+				972DE4B52814A502004FD9B9 /* Entities.swift in Sources */,
+				972DE4B62814A502004FD9B9 /* Enum.swift in Sources */,
+				972DE4A92814A3D8004FD9B9 /* iOS_SwiftUIApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1553,6 +1647,80 @@
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Kiwix.app/Kiwix";
+			};
+			name = Release;
+		};
+		972DE4B12814A3D9004FD9B9 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"iOS_SwiftUI/Preview Content\"";
+				DEVELOPMENT_TEAM = L7HWM3SP3L;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.4;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "org.kiwix.iOS-SwiftUI";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		972DE4B22814A3D9004FD9B9 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"iOS_SwiftUI/Preview Content\"";
+				DEVELOPMENT_TEAM = L7HWM3SP3L;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.4;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "org.kiwix.iOS-SwiftUI";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
 		};
@@ -1872,17 +2040,17 @@
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CODE_SIGN_ENTITLEMENTS = macOS_SwiftUI/Support/Kiwix.entitlements;
+				CODE_SIGN_ENTITLEMENTS = SwiftUI/Support/Kiwix.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"macOS_SwiftUI/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"SwiftUI/Preview Content\"";
 				DEVELOPMENT_TEAM = L7HWM3SP3L;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = macOS_SwiftUI/Support/Info.plist;
+				INFOPLIST_FILE = SwiftUI/Support/Info.plist;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.reference";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2021 Chris Li. All rights reserved.";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1913,17 +2081,17 @@
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CODE_SIGN_ENTITLEMENTS = macOS_SwiftUI/Support/Kiwix.entitlements;
+				CODE_SIGN_ENTITLEMENTS = SwiftUI/Support/Kiwix.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"macOS_SwiftUI/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"SwiftUI/Preview Content\"";
 				DEVELOPMENT_TEAM = L7HWM3SP3L;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = macOS_SwiftUI/Support/Info.plist;
+				INFOPLIST_FILE = SwiftUI/Support/Info.plist;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.reference";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2021 Chris Li. All rights reserved.";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -2017,6 +2185,15 @@
 			buildConfigurations = (
 				970EC3F923BE8E20008DCA27 /* Debug */,
 				970EC3FA23BE8E20008DCA27 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		972DE4B32814A3D9004FD9B9 /* Build configuration list for PBXNativeTarget "iOS_SwiftUI" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				972DE4B12814A3D9004FD9B9 /* Debug */,
+				972DE4B22814A3D9004FD9B9 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
