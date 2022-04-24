@@ -28,7 +28,6 @@ struct ZimFileCell: View {
             case .size:
                 HStack(alignment: .top) {
                     Text(zimFile.size.formatted(.byteCount(style: .file)))
-                        .font(.title2)
                         .fontWeight(.semibold)
                     Spacer()
                     if let flavor = Flavor(rawValue: zimFile.flavor) {
@@ -73,6 +72,7 @@ struct ZimFileCell: View {
             }
         }
         .padding(12)
+        .foregroundColor(.primary)
         .background(backgroundColor, in: RoundedRectangle(cornerRadius: 12, style: .continuous))
         .onHover { self.isHovering = $0 }
     }

@@ -17,20 +17,10 @@ struct SectionHeader: View {
     
     var body: some View {
         Label {
-            Text(title).fontWeight(.medium)
+            Text(title).font(.title3).fontWeight(.semibold)
         } icon: {
-            Favicon(category: category, imageData: imageData, imageURL: imageURL).frame(height: 18)
+            Favicon(category: category, imageData: imageData, imageURL: imageURL).frame(height: 20)
         }
-        .padding(.horizontal, 8)
-        .padding(.vertical, 5)
-        .overlay(
-            RoundedRectangle(cornerRadius: 6, style: .continuous)
-                .stroke(.quaternary, lineWidth: 1)
-        )
-        .background(
-            .thickMaterial,
-            in: RoundedRectangle(cornerRadius: 6, style: .continuous)
-        )
     }
 }
 
@@ -42,12 +32,12 @@ struct SectionHeader_Previews: PreviewProvider {
             category: .wikipedia,
             imageData: nil,
             imageURL: nil
-        ).preferredColorScheme(.light).padding()
+        ).padding().previewLayout(.sizeThatFits).preferredColorScheme(.light)
         SectionHeader(
             title: "Best of Wikipedia",
             category: .wikipedia,
             imageData: nil,
             imageURL: nil
-        ).preferredColorScheme(.dark).padding()
+        ).padding().previewLayout(.sizeThatFits).preferredColorScheme(.dark)
     }
 }

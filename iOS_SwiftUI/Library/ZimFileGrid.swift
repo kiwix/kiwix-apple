@@ -26,20 +26,27 @@ struct ZimFileGrid: View {
     var body: some View {
         ScrollView {
             LazyVGrid(
-                columns: ([GridItem(.adaptive(minimum: 250, maximum: 400), spacing: 12)]),
+                columns: ([GridItem(.adaptive(minimum: 200, maximum: 400), spacing: 12)]),
                 alignment: .leading,
-                spacing: 12,
-                pinnedViews: [.sectionHeaders]
+                spacing: 12
             ) {
                 ForEach(sections) { section in
                     if sections.count <= 1 {
                         ForEach(section) { zimFile in
-                            ZimFileCell(zimFile)
+                            NavigationLink {
+                                Text("Detail about zim file: \(zimFile.name)")
+                            } label: {
+                                ZimFileCell(zimFile)
+                            }
                         }
                     } else {
                         Section {
                             ForEach(section) { zimFile in
-                                ZimFileCell(zimFile)
+                                NavigationLink {
+                                    Text("Detail about zim file: \(zimFile.name)")
+                                } label: {
+                                    ZimFileCell(zimFile)
+                                }
                             }
                         } header: {
                             SectionHeader(
@@ -47,7 +54,7 @@ struct ZimFileGrid: View {
                                 category: Category(rawValue: section.first?.category) ?? .other,
                                 imageData: section.first?.faviconData,
                                 imageURL: section.first?.faviconURL
-                            )
+                            ).padding(EdgeInsets(top: 10, leading: 12, bottom: -8, trailing: 0))
                         }
                     }
                 }
