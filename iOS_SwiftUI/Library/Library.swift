@@ -8,14 +8,34 @@
 
 import SwiftUI
 
+#if os(macOS)
 struct Library: View {
-    @State var selectedTopic: Topic? = .opened
+    @State var selectedTopic: Library.Topic? = .opened
+    
+    var body: some View {
+        NavigationView {
+            List(selection: $selectedTopic) {
+                ForEach([Library.Topic.opened, Library.Topic.downloads, Library.Topic.new], id: \.self) { topic in
+                    Label(topic.name, systemImage: topic.iconName)
+                }
+                Section("Category") {
+                    ForEach(Category.allCases.map{ Library.Topic.category($0) }, id: \.self) { topic in
+                        Text(topic.name)
+                    }
+                }.collapsible(false)
+            }.navigationTitle("Library")
+            Text("content")
+        }
+    }
+}
+#elseif os(iOS)
+struct Library: View {
+    @SceneStorage("library.selectedTopic") var selectedTopic: Library.Topic = .opened
     @Environment(\.presentationMode) var presentationMode
     
     var body: some View {
-        #if os(iOS)
         TabView(selection: $selectedTopic) {
-            ForEach([Topic.opened, Topic.categories, Topic.downloads, Topic.new]) { topic in
+            ForEach([Library.Topic.opened, Library.Topic.categories, Library.Topic.downloads, Library.Topic.new]) { topic in
                 NavigationView {
                     LibraryContent(topic: topic)
                         .navigationTitle(topic.name)
@@ -28,6 +48,7 @@ struct Library: View {
                         }
                 }
                 .navigationViewStyle(.stack)
+                .tag(topic)
                 .tabItem {
                     Image(systemName: topic.iconName)
                     Text(topic.name)
@@ -38,23 +59,11 @@ struct Library: View {
                 try? await Database.shared.refreshZimFileCatalog()
             }
         }
-        #elseif os(macOS)
-        NavigationView {
-            List(selection: $selectedTopic) {
-                ForEach([Topic.opened, Topic.downloads, Topic.new], id: \.self) { topic in
-                    Label(topic.name, systemImage: topic.iconName)
-                }
-                Section("Category") {
-                    ForEach(Category.allCases.map{ Topic.category($0) }, id: \.self) { topic in
-                        Text(topic.name)
-                    }
-                }.collapsible(false)
-            }.navigationTitle("Library")
-            Text("content")
-        }
-        #endif
     }
-    
+}
+#endif
+
+extension Library {
     static let dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.dateStyle = .short
@@ -68,11 +77,40 @@ struct Library: View {
         return formatter
     }()
     
-    enum Topic: Hashable, Identifiable {
+    enum Topic: Hashable, Identifiable, RawRepresentable {
         case opened, new, downloads, categories
         case category(Category)
         
-        var id: String { name }
+        init?(rawValue: String) {
+            let parts = rawValue.split(separator: ".")
+            switch parts.first {
+            case "new":
+                self = .new
+            case "downloads":
+                self = .downloads
+            case "categories":
+                self = .categories
+            default:
+                self = .opened
+            }
+        }
+        
+        var rawValue: String {
+            switch self {
+            case .opened:
+                return "opened"
+            case .new:
+                return "new"
+            case .downloads:
+                return "downloads"
+            case .categories:
+                return "categories"
+            case .category(let category):
+                return "category.\(category.rawValue)"
+            }
+        }
+        
+        var id: String { rawValue }
         
         var name: String {
             switch self {
@@ -139,3 +177,28 @@ struct Library_Previews: PreviewProvider {
         }
     }
 }
+
+#if os(macOS)
+enum UserInterfaceSizeClass {
+    case compact
+    case regular
+}
+
+struct HorizontalSizeClassEnvironmentKey: EnvironmentKey {
+    static let defaultValue: UserInterfaceSizeClass = .regular
+}
+struct VerticalSizeClassEnvironmentKey: EnvironmentKey {
+    static let defaultValue: UserInterfaceSizeClass = .regular
+}
+
+extension EnvironmentValues {
+    var horizontalSizeClass: UserInterfaceSizeClass {
+        get { return self[HorizontalSizeClassEnvironmentKey] }
+        set { self[HorizontalSizeClassEnvironmentKey] = newValue }
+    }
+    var verticalSizeClass: UserInterfaceSizeClass {
+        get { return self[VerticalSizeClassEnvironmentKey] }
+        set { self[VerticalSizeClassEnvironmentKey] = newValue }
+    }
+}
+#endif
