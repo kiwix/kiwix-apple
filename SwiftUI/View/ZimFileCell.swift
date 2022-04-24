@@ -6,8 +6,10 @@
 //  Copyright © 2021 Chris Li. All rights reserved.
 //
 
+import CoreData
 import SwiftUI
 
+@available(iOS 15.0, *)
 struct ZimFileCell: View {
     @Environment(\.colorScheme) var colorScheme: ColorScheme
     @State var isHovering: Bool = false
@@ -30,7 +32,7 @@ struct ZimFileCell: View {
                         .fontWeight(.semibold)
                     Spacer()
                     if let flavor = Flavor(rawValue: zimFile.flavor) {
-                        ZimFileFlavor(flavor)
+                        FlavorTag(flavor)
                     }
                 }
                 HStack(alignment: .bottom) {
@@ -50,11 +52,11 @@ struct ZimFileCell: View {
                         zimFile.name
                     ).font(.title2).fontWeight(.semibold).lineLimit(1)
                     Spacer()
-                    Favicon(
-                        category: Category(rawValue: zimFile.category) ?? .other,
-                        imageData: zimFile.faviconData,
-                        imageURL: zimFile.faviconURL
-                    ).frame(height: 20)
+//                    Favicon(
+//                        category: Category(rawValue: zimFile.category) ?? .other,
+//                        imageData: zimFile.faviconData,
+//                        imageURL: zimFile.faviconURL
+//                    ).frame(height: 20)
                 }
                 HStack(alignment: .bottom) {
                     VStack(alignment: .leading) {
@@ -64,6 +66,9 @@ struct ZimFileCell: View {
                             .font(.caption)
                     }
                     Spacer()
+                    if let flavor = Flavor(rawValue: zimFile.flavor) {
+                        FlavorTag(flavor)
+                    }
                 }
             }
         }
@@ -90,6 +95,7 @@ struct ZimFileCell: View {
     }
 }
 
+@available(iOS 15.0, *)
 struct ZimFileCell_Previews: PreviewProvider {
     static let context = NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType)
     static let zimFile: ZimFile = {
