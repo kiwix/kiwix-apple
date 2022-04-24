@@ -115,6 +115,12 @@ struct Library: View {
         var predicate: NSPredicate {
             var predicates = [NSPredicate(format: "languageCode == %@", "en")]
             switch self {
+            case .new:
+                guard let twoWeeksAgo = Calendar.current.date(byAdding: .day, value: -7, to: Date()) else { break }
+                predicates.append(contentsOf: [
+                    NSPredicate(format: "languageCode == %@", "en"),
+                    NSPredicate(format: "created > %@", twoWeeksAgo as CVarArg)
+                ])
             case .category(let category):
                 predicates.append(NSPredicate(format: "category == %@", category.rawValue))
             default:

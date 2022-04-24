@@ -16,7 +16,11 @@ struct LibraryContent: View {
         case .opened:
             Text("Show opened zim files")
         case .new:
-            Text("Show newly added zim files")
+            if #available(iOS 15.0, *) {
+                ZimFileGrid(topic: topic)
+            } else {
+                ZimFileList(topic: topic)
+            }
         case .downloads:
             Text("Show zim files being downloaded")
         case .categories:
