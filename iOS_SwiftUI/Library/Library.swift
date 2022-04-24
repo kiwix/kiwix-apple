@@ -33,6 +33,10 @@ struct Library: View {
                     Text(topic.name)
                 }
             }
+        }.onAppear {
+            Task {
+                try? await Database.shared.refreshZimFileCatalog()
+            }
         }
         #elseif os(macOS)
         NavigationView {
