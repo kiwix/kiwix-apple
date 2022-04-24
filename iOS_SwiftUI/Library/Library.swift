@@ -35,6 +35,8 @@ struct Library: View {
             if let selectedTopic = selectedTopic {
                 LibraryContent(topic: selectedTopic)
             }
+        }.task {
+            try? await Database.shared.refreshZimFileCatalog()
         }
     }
 }
@@ -167,7 +169,7 @@ enum LibraryTopic: Hashable, Identifiable, RawRepresentable {
         var predicates = [NSPredicate(format: "languageCode == %@", "en")]
         switch self {
         case .new:
-            guard let twoWeeksAgo = Calendar.current.date(byAdding: .day, value: -7, to: Date()) else { break }
+            guard let twoWeeksAgo = Calendar.current.date(byAdding: .day, value: -14, to: Date()) else { break }
             predicates.append(contentsOf: [
                 NSPredicate(format: "languageCode == %@", "en"),
                 NSPredicate(format: "created > %@", twoWeeksAgo as CVarArg)
