@@ -11,9 +11,9 @@ import SwiftUI
 struct ZimFileList: View {
     @FetchRequest private var zimFiles: FetchedResults<ZimFile>
     
-    let topic: Library.Topic
+    let topic: LibraryTopic
     
-    init(topic: Library.Topic) {
+    init(topic: LibraryTopic) {
         self.topic = topic
         self._zimFiles = {
             let request = ZimFile.fetchRequest()

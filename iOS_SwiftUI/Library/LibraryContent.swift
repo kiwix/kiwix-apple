@@ -9,7 +9,7 @@
 import SwiftUI
 
 struct LibraryContent: View {
-    let topic: Library.Topic
+    let topic: LibraryTopic
     
     var body: some View {
         switch topic {
@@ -25,7 +25,7 @@ struct LibraryContent: View {
             Text("Show zim files being downloaded")
         case .categories:
             List {
-                ForEach(Category.allCases.map{ Library.Topic.category($0) }) { topic in
+                ForEach(Category.allCases.map{ LibraryTopic.category($0) }) { topic in
                     NavigationLink {
                         LibraryContent(topic: topic)
                     } label: {

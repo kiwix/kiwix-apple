@@ -10,16 +10,18 @@ import SwiftUI
 
 #if os(macOS)
 struct Library: View {
-    @State var selectedTopic: Library.Topic? = .opened
+    @State var selectedTopic: LibraryTopic? = .opened
+    
+    let topics: [LibraryTopic] = [.opened, .downloads, .new]
     
     var body: some View {
         NavigationView {
             List(selection: $selectedTopic) {
-                ForEach([Library.Topic.opened, Library.Topic.downloads, Library.Topic.new], id: \.self) { topic in
+                ForEach(topics, id: \.self) { topic in
                     Label(topic.name, systemImage: topic.iconName)
                 }
                 Section("Category") {
-                    ForEach(Category.allCases.map{ Library.Topic.category($0) }, id: \.self) { topic in
+                    ForEach(Category.allCases.map{ LibraryTopic.category($0) }, id: \.self) { topic in
                         Text(topic.name)
                     }
                 }.collapsible(false)
@@ -30,12 +32,14 @@ struct Library: View {
 }
 #elseif os(iOS)
 struct Library: View {
-    @SceneStorage("library.selectedTopic") var selectedTopic: Library.Topic = .opened
     @Environment(\.presentationMode) var presentationMode
+    @SceneStorage("library.selectedTopic") var selectedTopic: LibraryTopic = .opened
+    
+    let topics: [LibraryTopic] = [.opened, .categories, .downloads, .new]
     
     var body: some View {
         TabView(selection: $selectedTopic) {
-            ForEach([Library.Topic.opened, Library.Topic.categories, Library.Topic.downloads, Library.Topic.new]) { topic in
+            ForEach(topics) { topic in
                 NavigationView {
                     LibraryContent(topic: topic)
                         .navigationTitle(topic.name)
@@ -56,7 +60,7 @@ struct Library: View {
             }
         }.onAppear {
             Task {
-                try? await Database.shared.refreshZimFileCatalog()
+//                try? await Database.shared.refreshZimFileCatalog()
             }
         }
     }
@@ -76,96 +80,96 @@ extension Library {
         formatter.countStyle = .file
         return formatter
     }()
+}
+
+enum LibraryTopic: Hashable, Identifiable, RawRepresentable {
+    case opened, new, downloads, categories
+    case category(Category)
     
-    enum Topic: Hashable, Identifiable, RawRepresentable {
-        case opened, new, downloads, categories
-        case category(Category)
-        
-        init?(rawValue: String) {
-            let parts = rawValue.split(separator: ".")
-            switch parts.first {
-            case "new":
-                self = .new
-            case "downloads":
-                self = .downloads
-            case "categories":
-                self = .categories
-            default:
-                self = .opened
-            }
+    init?(rawValue: String) {
+        let parts = rawValue.split(separator: ".")
+        switch parts.first {
+        case "new":
+            self = .new
+        case "downloads":
+            self = .downloads
+        case "categories":
+            self = .categories
+        default:
+            self = .opened
         }
-        
-        var rawValue: String {
-            switch self {
-            case .opened:
-                return "opened"
-            case .new:
-                return "new"
-            case .downloads:
-                return "downloads"
-            case .categories:
-                return "categories"
-            case .category(let category):
-                return "category.\(category.rawValue)"
-            }
+    }
+    
+    var rawValue: String {
+        switch self {
+        case .opened:
+            return "opened"
+        case .new:
+            return "new"
+        case .downloads:
+            return "downloads"
+        case .categories:
+            return "categories"
+        case .category(let category):
+            return "category.\(category.rawValue)"
         }
-        
-        var id: String { rawValue }
-        
-        var name: String {
-            switch self {
-            case .opened:
-                return "Opened"
-            case .new:
-                return "New"
-            case .downloads:
-                return "Downloads"
-            case .categories:
-                return "Categories"
-            case .category(let category):
-                return category.description
-            }
+    }
+    
+    var id: String { rawValue }
+    
+    var name: String {
+        switch self {
+        case .opened:
+            return "Opened"
+        case .new:
+            return "New"
+        case .downloads:
+            return "Downloads"
+        case .categories:
+            return "Categories"
+        case .category(let category):
+            return category.description
         }
-        
-        var iconName: String {
-            switch self {
-            case .opened:
-                #if os(iOS)
-                if UIDevice.current.userInterfaceIdiom == .phone {
-                    return "iphone"
-                } else {
-                    return "ipad"
-                }
-                #elseif os(macOS)
-                return "laptopcomputer"
-                #endif
-            case .new:
-                return "newspaper"
-            case .downloads:
-                return "tray.and.arrow.down"
-            case .categories:
-                return "books.vertical"
-            case .category(_):
-                return "book"
+    }
+    
+    var iconName: String {
+        switch self {
+        case .opened:
+            #if os(iOS)
+            if UIDevice.current.userInterfaceIdiom == .phone {
+                return "iphone"
+            } else {
+                return "ipad"
             }
+            #elseif os(macOS)
+            return "laptopcomputer"
+            #endif
+        case .new:
+            return "newspaper"
+        case .downloads:
+            return "tray.and.arrow.down"
+        case .categories:
+            return "books.vertical"
+        case .category(_):
+            return "book"
         }
-        
-        var predicate: NSPredicate {
-            var predicates = [NSPredicate(format: "languageCode == %@", "en")]
-            switch self {
-            case .new:
-                guard let twoWeeksAgo = Calendar.current.date(byAdding: .day, value: -7, to: Date()) else { break }
-                predicates.append(contentsOf: [
-                    NSPredicate(format: "languageCode == %@", "en"),
-                    NSPredicate(format: "created > %@", twoWeeksAgo as CVarArg)
-                ])
-            case .category(let category):
-                predicates.append(NSPredicate(format: "category == %@", category.rawValue))
-            default:
-                break
-            }
-            return NSCompoundPredicate(andPredicateWithSubpredicates: predicates)
+    }
+    
+    var predicate: NSPredicate {
+        var predicates = [NSPredicate(format: "languageCode == %@", "en")]
+        switch self {
+        case .new:
+            guard let twoWeeksAgo = Calendar.current.date(byAdding: .day, value: -7, to: Date()) else { break }
+            predicates.append(contentsOf: [
+                NSPredicate(format: "languageCode == %@", "en"),
+                NSPredicate(format: "created > %@", twoWeeksAgo as CVarArg)
+            ])
+        case .category(let category):
+            predicates.append(NSPredicate(format: "category == %@", category.rawValue))
+        default:
+            break
         }
+        return NSCompoundPredicate(andPredicateWithSubpredicates: predicates)
     }
 }
 
@@ -183,22 +187,10 @@ enum UserInterfaceSizeClass {
     case compact
     case regular
 }
-
 struct HorizontalSizeClassEnvironmentKey: EnvironmentKey {
     static let defaultValue: UserInterfaceSizeClass = .regular
 }
-struct VerticalSizeClassEnvironmentKey: EnvironmentKey {
-    static let defaultValue: UserInterfaceSizeClass = .regular
-}
-
 extension EnvironmentValues {
-    var horizontalSizeClass: UserInterfaceSizeClass {
-        get { return self[HorizontalSizeClassEnvironmentKey] }
-        set { self[HorizontalSizeClassEnvironmentKey] = newValue }
-    }
-    var verticalSizeClass: UserInterfaceSizeClass {
-        get { return self[VerticalSizeClassEnvironmentKey] }
-        set { self[VerticalSizeClassEnvironmentKey] = newValue }
-    }
+    var horizontalSizeClass: UserInterfaceSizeClass { .regular }
 }
 #endif

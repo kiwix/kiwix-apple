@@ -13,9 +13,9 @@ struct ZimFileGrid: View {
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     @SectionedFetchRequest private var sections: SectionedFetchResults<String, ZimFile>
     
-    let topic: Library.Topic
+    let topic: LibraryTopic
     
-    init(topic: Library.Topic) {
+    init(topic: LibraryTopic) {
         self.topic = topic
         self._sections = SectionedFetchRequest<String, ZimFile>(
             sectionIdentifier: \.name,
