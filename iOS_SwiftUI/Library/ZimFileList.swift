@@ -28,16 +28,16 @@ struct ZimFileList: View {
             NavigationLink {
                 Text("Detail about zim file: \(zimFile.name)")
             } label: {
-                Text(zimFile.name)
+                VStack(alignment: .leading, spacing: 2) {
+                    Text(zimFile.name)
+                    Text([
+                        Library.dateFormatter.string(from: zimFile.created),
+                        Library.sizeFormatter.string(fromByteCount: zimFile.size)
+                    ].joined(separator: ", ")).font(.caption)
+                }
             }
         }
         .navigationTitle(topic.name)
         .listStyle(.plain)
     }
 }
-
-//struct ZimFileList_Previews: PreviewProvider {
-//    static var previews: some View {
-//        ZimFileList(zimFiles: .constant(FetchedResults<ZimFile>))
-//    }
-//}

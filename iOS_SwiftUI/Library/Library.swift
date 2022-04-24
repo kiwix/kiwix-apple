@@ -55,6 +55,19 @@ struct Library: View {
         #endif
     }
     
+    static let dateFormatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateStyle = .short
+        formatter.timeStyle = .none
+        return formatter
+    }()
+    
+    static let sizeFormatter: ByteCountFormatter = {
+        let formatter = ByteCountFormatter()
+        formatter.countStyle = .file
+        return formatter
+    }()
+    
     enum Topic: Hashable, Identifiable {
         case opened, new, downloads, categories
         case category(Category)
@@ -100,7 +113,7 @@ struct Library: View {
         }
         
         var predicate: NSPredicate {
-            var predicates = [NSPredicate]()
+            var predicates = [NSPredicate(format: "languageCode == %@", "en")]
             switch self {
             case .category(let category):
                 predicates.append(NSPredicate(format: "category == %@", category.rawValue))
