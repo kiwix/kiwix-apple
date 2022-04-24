@@ -86,7 +86,11 @@ struct ZimFileCell: View {
         case (.light, true):
             return Color.gray.opacity(0.2)
         default:
+            #if os(macOS)
             return Color.white
+            #elseif os(iOS)
+            return Color.gray.opacity(0.1)
+            #endif
         }
     }
     
