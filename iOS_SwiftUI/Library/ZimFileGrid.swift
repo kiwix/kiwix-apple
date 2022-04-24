@@ -10,39 +10,41 @@ import SwiftUI
 
 @available(iOS 15.0, *)
 struct ZimFileGrid: View {
-    @FetchRequest private var zimFiles: FetchedResults<ZimFile>
+    @SectionedFetchRequest private var sections: SectionedFetchResults<String, ZimFile>
 
     let topic: Library.Topic
     
     init(topic: Library.Topic) {
         self.topic = topic
-        self._zimFiles = {
-            let request = ZimFile.fetchRequest()
-            request.sortDescriptors = [NSSortDescriptor(keyPath: \ZimFile.name, ascending: true)]
-            request.predicate = {
-                var predicates = [NSPredicate]()
-                switch topic {
-                case .category(let category):
-                    predicates.append(NSPredicate(format: "category == %@", category.rawValue))
-                default:
-                    break
-                }
-                return NSCompoundPredicate(andPredicateWithSubpredicates: predicates)
-            }()
-            return FetchRequest<ZimFile>(fetchRequest: request)
-        }()
+        self._sections = SectionedFetchRequest<String, ZimFile>(
+            sectionIdentifier: \.name,
+            sortDescriptors: [SortDescriptor(\ZimFile.name), SortDescriptor(\.size, order: .reverse)],
+            predicate: topic.predicate
+        )
     }
     
     var body: some View {
         ScrollView {
             LazyVGrid(
-                columns: ([GridItem(.adaptive(minimum: 250, maximum: 350), spacing: 12)]),
+                columns: ([GridItem(.adaptive(minimum: 250, maximum: 400), spacing: 12)]),
                 alignment: .leading,
                 spacing: 12,
                 pinnedViews: [.sectionHeaders]
             ) {
-                ForEach(zimFiles) { zimFile in
-                    ZimFileCell(zimFile, prominent: .title)
+                ForEach(sections) { section in
+                    if sections.count <= 1 {
+                        ForEach(section) { zimFile in
+                            ZimFileCell(zimFile)
+                        }
+                    } else {
+                        Section {
+                            ForEach(section) { zimFile in
+                                ZimFileCell(zimFile)
+                            }
+                        } header: {
+                            Text(section.id)
+                        }
+                    }
                 }
             }.padding()
         }

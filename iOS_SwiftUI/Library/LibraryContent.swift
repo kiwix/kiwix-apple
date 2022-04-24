@@ -30,11 +30,15 @@ struct LibraryContent: View {
                 }
             }
         case .category(let category):
-            switch category {
-            case .ted, .stackExchange:
+            if #available(iOS 15.0, *) {
+                switch category {
+                case .ted, .stackExchange:
+                    ZimFileList(topic: topic)
+                default:
+                    ZimFileGrid(topic: topic)
+                }
+            } else {
                 ZimFileList(topic: topic)
-            default:
-                Text("Show a specific category: \(category.description)")
             }
         }
     }
