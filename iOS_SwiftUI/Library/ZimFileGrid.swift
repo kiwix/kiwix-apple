@@ -10,8 +10,9 @@ import SwiftUI
 
 @available(iOS 15.0, *)
 struct ZimFileGrid: View {
+    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     @SectionedFetchRequest private var sections: SectionedFetchResults<String, ZimFile>
-
+    
     let topic: Library.Topic
     
     init(topic: Library.Topic) {
@@ -26,7 +27,7 @@ struct ZimFileGrid: View {
     var body: some View {
         ScrollView {
             LazyVGrid(
-                columns: ([GridItem(.adaptive(minimum: 200, maximum: 400), spacing: 12)]),
+                columns: ([GridItem(.adaptive(minimum: horizontalSizeClass == .compact ? 150 : 250, maximum: 400), spacing: 12)]),
                 alignment: .leading,
                 spacing: 12
             ) {

@@ -32,7 +32,7 @@ struct LibraryContent: View {
                         Text(topic.name)
                     }
                 }
-            }
+            }.listStyle(.plain)
         case .category(let category):
             if #available(iOS 15.0, *) {
                 switch category {
