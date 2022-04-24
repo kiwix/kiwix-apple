@@ -90,6 +90,7 @@
 		976D90DF281589EA00CC7D29 /* ZimFileList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 976D90DD281589EA00CC7D29 /* ZimFileList.swift */; };
 		976D90E128158A3C00CC7D29 /* LibraryContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 976D90E028158A3C00CC7D29 /* LibraryContent.swift */; };
 		976D90E228158A3C00CC7D29 /* LibraryContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 976D90E028158A3C00CC7D29 /* LibraryContent.swift */; };
+		976D90E428159BFA00CC7D29 /* Favicon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97B0737527825E3D007C7DF3 /* Favicon.swift */; };
 		977959C026D494C500D48E4A /* FaviconDownloadService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 977959BF26D494C500D48E4A /* FaviconDownloadService.swift */; };
 		9779A5B22456793600F6F6FF /* LibraryService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9779A59C2456793500F6F6FF /* LibraryService.swift */; };
 		9779A5B42456793600F6F6FF /* BookmarkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9779A59D2456793500F6F6FF /* BookmarkService.swift */; };
@@ -1355,6 +1356,7 @@
 				976D90DC281586B400CC7D29 /* ZimFileCell.swift in Sources */,
 				972DE4BA2814A590004FD9B9 /* ZimFileMetaData.mm in Sources */,
 				972DE4B42814A4F6004FD9B9 /* DataModel.xcdatamodeld in Sources */,
+				976D90E428159BFA00CC7D29 /* Favicon.swift in Sources */,
 				976D90DB281584BF00CC7D29 /* FlavorTag.swift in Sources */,
 				972DE4AB2814A3D8004FD9B9 /* ContentView.swift in Sources */,
 				972DE4BD2814A5BE004FD9B9 /* OPDSStreamParser.mm in Sources */,

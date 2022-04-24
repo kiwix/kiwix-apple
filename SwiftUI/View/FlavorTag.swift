@@ -1,5 +1,5 @@
 //
-//  ZimFileFlavor.swift
+//  FlavorTag.swift
 //  Kiwix
 //
 //  Created by Chris Li on 12/31/21.

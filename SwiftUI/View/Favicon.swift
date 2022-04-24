@@ -1,6 +1,6 @@
 //
 //  Favicon.swift
-//  Kiwix for macOS
+//  Kiwix
 //
 //  Created by Chris Li on 1/2/22.
 //  Copyright © 2022 Chris Li. All rights reserved.
@@ -8,6 +8,7 @@
 
 import SwiftUI
 
+@available(iOS 15.0, *)
 struct Favicon: View {
     let category: Category
     let imageData: Data?
@@ -27,7 +28,8 @@ struct Favicon: View {
     
     @ViewBuilder
     var image: some View {
-        if let data = imageData, #available(macOS 12, *), let image = NSImage(data: data) {
+        #if os(macOS)
+        if let data = imageData, let image = NSImage(data: data) {
             Image(nsImage: image).resizable()
         } else {
             AsyncImage(url: imageURL) { image in
@@ -36,9 +38,21 @@ struct Favicon: View {
                 Image("Wikipedia").resizable()
             }
         }
+        #elseif os(iOS)
+        if let data = imageData, let image = UIImage(data: data) {
+            Image(uiImage: image).resizable()
+        } else {
+            AsyncImage(url: imageURL) { image in
+                image.resizable()
+            } placeholder: {
+                Image("Wikipedia").resizable()
+            }
+        }
+        #endif
     }
 }
 
+@available(iOS 15.0, *)
 struct Favicon_Previews: PreviewProvider {
     static var previews: some View {
         Favicon(
