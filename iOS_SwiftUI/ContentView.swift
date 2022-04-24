@@ -15,7 +15,7 @@ struct ContentView: View {
         Button("Show Library") {
             isShowingLibrary = true
         }.sheet(isPresented: $isShowingLibrary) {
-            Library()
+            Library().environment(\.managedObjectContext, Database.shared.container.viewContext)
         }
     }
 }

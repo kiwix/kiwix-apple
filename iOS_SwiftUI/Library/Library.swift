@@ -110,11 +110,11 @@ struct Library: View {
                 Text("Show zim files being downloaded")
             case .categories:
                 List {
-                    ForEach(Category.allCases) { category in
+                    ForEach(Category.allCases.map{ Topic.category($0) }) { topic in
                         NavigationLink {
-                            Text("Show a specific category: \(category.description)")
+                            ZimFileGrid(topic: topic)
                         } label: {
-                            Text(category.description)
+                            Text(topic.name)
                         }
                     }
                 }
