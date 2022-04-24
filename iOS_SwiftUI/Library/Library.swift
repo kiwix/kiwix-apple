@@ -8,70 +8,47 @@
 
 import SwiftUI
 
-#if os(macOS)
-enum UserInterfaceSizeClass {
-    case compact
-    case regular
-}
-
-struct HorizontalSizeClassEnvironmentKey: EnvironmentKey {
-    static let defaultValue: UserInterfaceSizeClass = .regular
-}
-struct VerticalSizeClassEnvironmentKey: EnvironmentKey {
-    static let defaultValue: UserInterfaceSizeClass = .regular
-}
-
-extension EnvironmentValues {
-    var horizontalSizeClass: UserInterfaceSizeClass {
-        get { .regular }
-    }
-    var verticalSizeClass: UserInterfaceSizeClass {
-        get { .regular }
-    }
-}
-#endif
-
 struct Library: View {
-    @Environment(\.horizontalSizeClass) var horizontalSizeClass
+    @State var selectedTopic: Topic? = .opened
+    @Environment(\.presentationMode) var presentationMode
     
     var body: some View {
-        if horizontalSizeClass == .compact {
-            TabView {
-                List {
-                                        
-                }.tabItem {
-                    Image(systemName: Topic.opened.iconName)
-                    Text(Topic.opened.name)
+        #if os(iOS)
+        TabView(selection: $selectedTopic) {
+            ForEach([Topic.opened, Topic.categories, Topic.downloads, Topic.new]) { topic in
+                NavigationView {
+                    topic.view
+                        .navigationTitle(topic.name)
+                        .toolbar {
+                            ToolbarItem(placement: .navigationBarLeading) {
+                                Button("Done") {
+                                    presentationMode.wrappedValue.dismiss()
+                                }
+                            }
+                        }
                 }
-                List {
-                                                        
-                }.tabItem {
-                    Image(systemName: Topic.categories.iconName)
-                    Text(Topic.categories.name)
+                .navigationViewStyle(.stack)
+                .tabItem {
+                    Image(systemName: topic.iconName)
+                    Text(topic.name)
                 }
-                List {
-                                                        
-                }.tabItem {
-                    Image(systemName: Topic.downloads.iconName)
-                    Text(Topic.downloads.name)
-                }
-                List {
-                                                        
-                }.tabItem {
-                    Image(systemName: Topic.new.iconName)
-                    Text(Topic.new.name)
-                }
-            }
-        } else {
-            NavigationView {
-                List {
-                    ForEach([Topic.opened, Topic.downloads, Topic.new]) { topic in
-                        Label(topic.name, systemImage: topic.iconName)
-                    }
-                }.navigationTitle("Library")
-                Text("content")
             }
         }
+        #elseif os(macOS)
+        NavigationView {
+            List(selection: $selectedTopic) {
+                ForEach([Topic.opened, Topic.downloads, Topic.new], id: \.self) { topic in
+                    Label(topic.name, systemImage: topic.iconName)
+                }
+                Section("Category") {
+                    ForEach(Category.allCases.map{ Topic.category($0) }, id: \.self) { topic in
+                        Text(topic.name)
+                    }
+                }.collapsible(false)
+            }.navigationTitle("Library")
+            Text("content")
+        }
+        #endif
     }
     
     enum Topic: Hashable, Identifiable {
@@ -115,6 +92,30 @@ struct Library: View {
                 return "books.vertical"
             case .category(_):
                 return "book"
+            }
+        }
+        
+        @ViewBuilder
+        var view: some View {
+            switch self {
+            case .opened:
+                Text("Show opened zim files")
+            case .new:
+                Text("Show newly added zim files")
+            case .downloads:
+                Text("Show zim files being downloaded")
+            case .categories:
+                List {
+                    ForEach(Category.allCases) { category in
+                        NavigationLink {
+                            Text("Show a specific category: \(category.description)")
+                        } label: {
+                            Text(category.description)
+                        }
+                    }
+                }
+            case .category(let category):
+                Text("Show a specific category: \(category.description)")
             }
         }
     }

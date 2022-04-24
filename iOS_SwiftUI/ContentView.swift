@@ -9,8 +9,14 @@
 import SwiftUI
 
 struct ContentView: View {
+    @State var isShowingLibrary = false
+    
     var body: some View {
-        Library()
+        Button("Show Library") {
+            isShowingLibrary = true
+        }.sheet(isPresented: $isShowingLibrary) {
+            Library()
+        }
     }
 }
 
