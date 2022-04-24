@@ -112,7 +112,11 @@ struct Library: View {
                 List {
                     ForEach(Category.allCases.map{ Topic.category($0) }) { topic in
                         NavigationLink {
-                            ZimFileGrid(topic: topic)
+                            if #available(iOS 15.0, *) {
+                                ZimFileGrid(topic: topic)
+                            } else {
+                                Text(topic.name)
+                            }
                         } label: {
                             Text(topic.name)
                         }
