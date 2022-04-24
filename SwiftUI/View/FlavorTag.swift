@@ -8,6 +8,7 @@
 
 import SwiftUI
 
+@available(iOS 15.0, *)
 struct FlavorTag: View {
     let flavor: Flavor
     
@@ -56,6 +57,7 @@ struct FlavorTag: View {
     }
 }
 
+@available(iOS 15.0, *)
 struct Tag_Previews: PreviewProvider {
     static var previews: some View {
         FlavorTag(Flavor(rawValue: "maxi")!).padding().previewLayout(.sizeThatFits)
