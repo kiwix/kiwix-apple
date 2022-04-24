@@ -25,7 +25,7 @@ struct FlavorTag: View {
             .padding(.vertical, 2)
             .overlay(
                 RoundedRectangle(cornerRadius: .infinity, style: .continuous)
-                    .stroke(.tertiary, lineWidth: 1)
+                    .stroke(.quaternary, lineWidth: 1)
             )
             .background(
                 backgroundColor.opacity(0.75),
