@@ -1,6 +1,6 @@
 //
 //  ZimFileFlavor.swift
-//  Kiwix for macOS
+//  Kiwix
 //
 //  Created by Chris Li on 12/31/21.
 //  Copyright © 2021 Chris Li. All rights reserved.
@@ -8,7 +8,7 @@
 
 import SwiftUI
 
-struct ZimFileFlavor: View {
+struct FlavorTag: View {
     let flavor: Flavor
     
     init(_ flavor: Flavor) {
@@ -58,8 +58,8 @@ struct ZimFileFlavor: View {
 
 struct Tag_Previews: PreviewProvider {
     static var previews: some View {
-        ZimFileFlavor(Flavor(rawValue: "maxi")!).padding()
-        ZimFileFlavor(Flavor(rawValue: "nopic")!).padding()
-        ZimFileFlavor(Flavor(rawValue: "mini")!).padding()
+        FlavorTag(Flavor(rawValue: "maxi")!).padding().previewLayout(.sizeThatFits)
+        FlavorTag(Flavor(rawValue: "nopic")!).padding().previewLayout(.sizeThatFits)
+        FlavorTag(Flavor(rawValue: "mini")!).padding().previewLayout(.sizeThatFits)
     }
 }
