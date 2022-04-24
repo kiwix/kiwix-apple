@@ -17,7 +17,7 @@ struct Library: View {
         TabView(selection: $selectedTopic) {
             ForEach([Topic.opened, Topic.categories, Topic.downloads, Topic.new]) { topic in
                 NavigationView {
-                    topic.view
+                    LibraryContent(topic: topic)
                         .navigationTitle(topic.name)
                         .toolbar {
                             ToolbarItem(placement: .navigationBarLeading) {
@@ -99,32 +99,15 @@ struct Library: View {
             }
         }
         
-        @ViewBuilder
-        var view: some View {
+        var predicate: NSPredicate {
+            var predicates = [NSPredicate]()
             switch self {
-            case .opened:
-                Text("Show opened zim files")
-            case .new:
-                Text("Show newly added zim files")
-            case .downloads:
-                Text("Show zim files being downloaded")
-            case .categories:
-                List {
-                    ForEach(Category.allCases.map{ Topic.category($0) }) { topic in
-                        NavigationLink {
-                            if #available(iOS 15.0, *) {
-                                ZimFileGrid(topic: topic)
-                            } else {
-                                Text(topic.name)
-                            }
-                        } label: {
-                            Text(topic.name)
-                        }
-                    }
-                }
             case .category(let category):
-                Text("Show a specific category: \(category.description)")
+                predicates.append(NSPredicate(format: "category == %@", category.rawValue))
+            default:
+                break
             }
+            return NSCompoundPredicate(andPredicateWithSubpredicates: predicates)
         }
     }
 }
