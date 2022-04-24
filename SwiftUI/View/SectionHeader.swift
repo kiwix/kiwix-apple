@@ -1,6 +1,6 @@
 //
-//  LibrarySectionHeader.swift
-//  Kiwix for macOS
+//  SectionHeader.swift
+//  Kiwix
 //
 //  Created by Chris Li on 12/31/21.
 //  Copyright © 2021 Chris Li. All rights reserved.
@@ -8,7 +8,8 @@
 
 import SwiftUI
 
-struct LibrarySectionHeader: View {
+@available(iOS 15.0, *)
+struct SectionHeader: View {
     let title: String
     let category: Category
     let imageData: Data?
@@ -33,15 +34,16 @@ struct LibrarySectionHeader: View {
     }
 }
 
-struct LibrarySectionHeader_Previews: PreviewProvider {
+@available(iOS 15.0, *)
+struct SectionHeader_Previews: PreviewProvider {
     static var previews: some View {
-        LibrarySectionHeader(
+        SectionHeader(
             title: "Best of Wikipedia",
             category: .wikipedia,
             imageData: nil,
             imageURL: nil
         ).preferredColorScheme(.light).padding()
-        LibrarySectionHeader(
+        SectionHeader(
             title: "Best of Wikipedia",
             category: .wikipedia,
             imageData: nil,

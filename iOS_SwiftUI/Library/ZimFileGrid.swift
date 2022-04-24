@@ -42,7 +42,12 @@ struct ZimFileGrid: View {
                                 ZimFileCell(zimFile)
                             }
                         } header: {
-                            Text(section.id)
+                            SectionHeader(
+                                title: section.id,
+                                category: Category(rawValue: section.first?.category) ?? .other,
+                                imageData: section.first?.faviconData,
+                                imageURL: section.first?.faviconURL
+                            )
                         }
                     }
                 }
