@@ -82,8 +82,8 @@
 		9768C23B1F4B7F6300FD499B /* Preference.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9768C23A1F4B7F6300FD499B /* Preference.swift */; };
 		976A65B32659489F009A97C6 /* SearchResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 976A65B22659489F009A97C6 /* SearchResult.swift */; };
 		976A65B42659489F009A97C6 /* SearchResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 976A65B22659489F009A97C6 /* SearchResult.swift */; };
-		976D90D22814F2FA00CC7D29 /* ZimFileGrid.swift in Sources */ = {isa = PBXBuildFile; fileRef = 976D90D12814F2FA00CC7D29 /* ZimFileGrid.swift */; };
-		976D90D32814F2FA00CC7D29 /* ZimFileGrid.swift in Sources */ = {isa = PBXBuildFile; fileRef = 976D90D12814F2FA00CC7D29 /* ZimFileGrid.swift */; };
+		976D90D22814F2FA00CC7D29 /* ZimFileSectionedGrid.swift in Sources */ = {isa = PBXBuildFile; fileRef = 976D90D12814F2FA00CC7D29 /* ZimFileSectionedGrid.swift */; };
+		976D90D32814F2FA00CC7D29 /* ZimFileSectionedGrid.swift in Sources */ = {isa = PBXBuildFile; fileRef = 976D90D12814F2FA00CC7D29 /* ZimFileSectionedGrid.swift */; };
 		976D90DB281584BF00CC7D29 /* FlavorTag.swift in Sources */ = {isa = PBXBuildFile; fileRef = 973A2FCD277FB03F00BD4320 /* FlavorTag.swift */; };
 		976D90DC281586B400CC7D29 /* ZimFileCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 973A2FD72780024600BD4320 /* ZimFileCell.swift */; };
 		976D90DE281589EA00CC7D29 /* ZimFileList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 976D90DD281589EA00CC7D29 /* ZimFileList.swift */; };
@@ -93,6 +93,8 @@
 		976D90E428159BFA00CC7D29 /* Favicon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97B0737527825E3D007C7DF3 /* Favicon.swift */; };
 		976D90E528159FE700CC7D29 /* SectionHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 973A2FCF277FB99000BD4320 /* SectionHeader.swift */; };
 		976D90E62815A95500CC7D29 /* SectionHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 973A2FCF277FB99000BD4320 /* SectionHeader.swift */; };
+		976D90E82815D63A00CC7D29 /* ZimFileGrid.swift in Sources */ = {isa = PBXBuildFile; fileRef = 976D90E72815D63A00CC7D29 /* ZimFileGrid.swift */; };
+		976D90E92815D63A00CC7D29 /* ZimFileGrid.swift in Sources */ = {isa = PBXBuildFile; fileRef = 976D90E72815D63A00CC7D29 /* ZimFileGrid.swift */; };
 		977959C026D494C500D48E4A /* FaviconDownloadService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 977959BF26D494C500D48E4A /* FaviconDownloadService.swift */; };
 		9779A5B22456793600F6F6FF /* LibraryService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9779A59C2456793500F6F6FF /* LibraryService.swift */; };
 		9779A5B42456793600F6F6FF /* BookmarkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9779A59D2456793500F6F6FF /* BookmarkService.swift */; };
@@ -350,9 +352,10 @@
 		9768C2341F4B7BAC00FD499B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		9768C23A1F4B7F6300FD499B /* Preference.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Preference.swift; sourceTree = "<group>"; };
 		976A65B22659489F009A97C6 /* SearchResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResult.swift; sourceTree = "<group>"; };
-		976D90D12814F2FA00CC7D29 /* ZimFileGrid.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZimFileGrid.swift; sourceTree = "<group>"; };
+		976D90D12814F2FA00CC7D29 /* ZimFileSectionedGrid.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZimFileSectionedGrid.swift; sourceTree = "<group>"; };
 		976D90DD281589EA00CC7D29 /* ZimFileList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZimFileList.swift; sourceTree = "<group>"; };
 		976D90E028158A3C00CC7D29 /* LibraryContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryContent.swift; sourceTree = "<group>"; };
+		976D90E72815D63A00CC7D29 /* ZimFileGrid.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZimFileGrid.swift; sourceTree = "<group>"; };
 		977959BF26D494C500D48E4A /* FaviconDownloadService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FaviconDownloadService.swift; sourceTree = "<group>"; };
 		9779A59C2456793500F6F6FF /* LibraryService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LibraryService.swift; sourceTree = "<group>"; };
 		9779A59D2456793500F6F6FF /* BookmarkService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BookmarkService.swift; sourceTree = "<group>"; };
@@ -617,7 +620,8 @@
 			children = (
 				972DE4C12814A961004FD9B9 /* Library.swift */,
 				976D90E028158A3C00CC7D29 /* LibraryContent.swift */,
-				976D90D12814F2FA00CC7D29 /* ZimFileGrid.swift */,
+				976D90D12814F2FA00CC7D29 /* ZimFileSectionedGrid.swift */,
+				976D90E72815D63A00CC7D29 /* ZimFileGrid.swift */,
 				976D90DD281589EA00CC7D29 /* ZimFileList.swift */,
 			);
 			path = Library;
@@ -1353,7 +1357,8 @@
 			files = (
 				972DE4BB2814A5A4004FD9B9 /* OPDSRefreshError.swift in Sources */,
 				972DE4BC2814A5BE004FD9B9 /* OPDSStreamParser.swift in Sources */,
-				976D90D32814F2FA00CC7D29 /* ZimFileGrid.swift in Sources */,
+				976D90E92815D63A00CC7D29 /* ZimFileGrid.swift in Sources */,
+				976D90D32814F2FA00CC7D29 /* ZimFileSectionedGrid.swift in Sources */,
 				972DE4B92814A56A004FD9B9 /* Database.swift in Sources */,
 				976D90E528159FE700CC7D29 /* SectionHeader.swift in Sources */,
 				976D90DC281586B400CC7D29 /* ZimFileCell.swift in Sources */,
@@ -1508,10 +1513,11 @@
 				977BD6072772350B004D2C32 /* BookmarksList.swift in Sources */,
 				97E94B1C271EF24D005B0295 /* Reader.swift in Sources */,
 				97B3BAD02736CE3500A23F49 /* URL.swift in Sources */,
-				976D90D22814F2FA00CC7D29 /* ZimFileGrid.swift in Sources */,
+				976D90D22814F2FA00CC7D29 /* ZimFileSectionedGrid.swift in Sources */,
 				97255D8C273608C3002B995B /* WebView.swift in Sources */,
 				9735D0BE2777531400C7D495 /* BookmarkButton.swift in Sources */,
 				978A731727B9A4F1008101B4 /* MainArticleButton.swift in Sources */,
+				976D90E82815D63A00CC7D29 /* ZimFileGrid.swift in Sources */,
 				97E94B1A271EF24D005B0295 /* App.swift in Sources */,
 				97242B882735E66E00C87F85 /* OutlineItem.swift in Sources */,
 				97242B9F2735E6A800C87F85 /* Enums.swift in Sources */,

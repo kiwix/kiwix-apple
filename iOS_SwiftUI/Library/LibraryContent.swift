@@ -39,17 +39,11 @@ struct LibraryContent: View {
                 case .ted, .stackExchange:
                     ZimFileList(topic: topic)
                 default:
-                    ZimFileGrid(topic: topic)
+                    ZimFileSectionedGrid(topic: topic)
                 }
             } else {
                 ZimFileList(topic: topic)
             }
         }
-    }
-}
-
-struct LibraryContent_Previews: PreviewProvider {
-    static var previews: some View {
-        LibraryContent(topic: .new)
     }
 }

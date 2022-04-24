@@ -25,8 +25,16 @@ struct Library: View {
                         Text(topic.name)
                     }
                 }.collapsible(false)
-            }.navigationTitle("Library")
-            Text("content")
+            }
+            .frame(minWidth: 200)
+            .toolbar {
+                ToolbarItem(placement: .primaryAction) {
+                    SidebarButton()
+                }
+            }
+            if let selectedTopic = selectedTopic {
+                LibraryContent(topic: selectedTopic)
+            }
         }
     }
 }

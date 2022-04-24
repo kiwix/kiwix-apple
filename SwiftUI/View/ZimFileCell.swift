@@ -49,13 +49,13 @@ struct ZimFileCell: View {
                         zimFile.category == Category.stackExchange.rawValue ?
                         zimFile.name.replacingOccurrences(of: "Stack Exchange", with: "") :
                         zimFile.name
-                    ).font(.title2).fontWeight(.semibold).lineLimit(1)
+                    ).fontWeight(.semibold).lineLimit(1)
                     Spacer()
-//                    Favicon(
-//                        category: Category(rawValue: zimFile.category) ?? .other,
-//                        imageData: zimFile.faviconData,
-//                        imageURL: zimFile.faviconURL
-//                    ).frame(height: 20)
+                    Favicon(
+                        category: Category(rawValue: zimFile.category) ?? .other,
+                        imageData: zimFile.faviconData,
+                        imageURL: zimFile.faviconURL
+                    ).frame(height: 20)
                 }
                 HStack(alignment: .bottom) {
                     VStack(alignment: .leading) {
