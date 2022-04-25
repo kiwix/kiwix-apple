@@ -43,7 +43,7 @@ struct ZimFilesNew: View {
                     }
                     #endif
                 }
-            }.padding()
+            }.padding([.horizontal, .bottom])
         }
         .navigationTitle(LibraryTopic.new.name)
         .searchable(text: $searchText)
