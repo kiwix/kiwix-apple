@@ -18,7 +18,7 @@ struct ZimFilesNew: View {
         self._zimFiles = FetchRequest<ZimFile>(
             sortDescriptors: [
                 SortDescriptor(\.created, order: .reverse),
-                SortDescriptor(\ZimFile.name),
+                SortDescriptor(\.name),
                 SortDescriptor(\.size, order: .reverse)
             ],
             predicate: LibraryTopic.new.predicate
@@ -34,20 +34,12 @@ struct ZimFilesNew: View {
             ) {
                 ForEach(zimFiles) { zimFile in
                     #if os(macOS)
-                    ZimFileCell(zimFile, prominent: .title).contextMenu {
-                        Button("Show Info") {
-                            selectedZimFile = zimFile
-                        }
-                    }
+                    ZimFileCell(zimFile, prominent: .title)
                     #elseif os(iOS)
                     NavigationLink(tag: zimFile, selection: $selectedZimFile) {
                         Text("Detail about zim file: \(zimFile.name)")
                     } label: {
                         ZimFileCell(zimFile, prominent: .title)
-                    }.contextMenu {
-                        Button("Show Info") {
-                            selectedZimFile = zimFile
-                        }
                     }
                     #endif
                 }

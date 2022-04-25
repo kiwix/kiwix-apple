@@ -27,7 +27,7 @@ struct ZimFileSectionedGrid: View {
     var body: some View {
         ScrollView {
             LazyVGrid(
-                columns: ([GridItem(.adaptive(minimum: horizontalSizeClass == .compact ? 200 : 250, maximum: 400), spacing: 12)]),
+                columns: ([GridItem(.adaptive(minimum: horizontalSizeClass == .compact ? 150 : 250, maximum: 400), spacing: 12)]),
                 alignment: .leading,
                 spacing: 12
             ) {

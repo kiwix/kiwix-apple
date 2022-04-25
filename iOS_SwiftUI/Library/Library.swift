@@ -70,7 +70,7 @@ struct Library: View {
             }
         }.onAppear {
             Task {
-//                try? await Database.shared.refreshZimFileCatalog()
+                try? await Database.shared.refreshZimFileCatalog()
             }
         }
     }
