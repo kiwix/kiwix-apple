@@ -170,7 +170,7 @@ class Database {
                     return
                 }
                 continuation.resume(returning: data)
-            }
+            }.resume()
         }
         
         try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Void, Error>) -> Void in
