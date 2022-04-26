@@ -1,6 +1,6 @@
 //
 //  ZimFileCell.swift
-//  Kiwix for macOS
+//  Kiwix
 //
 //  Created by Chris Li on 12/31/21.
 //  Copyright © 2021 Chris Li. All rights reserved.
@@ -9,7 +9,6 @@
 import CoreData
 import SwiftUI
 
-@available(iOS 15.0, *)
 struct ZimFileCell: View {
     @Environment(\.colorScheme) var colorScheme: ColorScheme
     @State var isHovering: Bool = false
@@ -23,24 +22,35 @@ struct ZimFileCell: View {
     }
     
     var body: some View {
+        if #available(iOS 15.0, *) {
+            content.background(backgroundColor, in: RoundedRectangle(cornerRadius: 12, style: .continuous))
+        } else {
+            content.background(backgroundColor).cornerRadius(12)
+        }
+    }
+    
+    var content: some View {
         VStack(spacing: 8) {
             switch prominent {
             case .size:
                 HStack(alignment: .top) {
-                    Text(zimFile.size.formatted(.byteCount(style: .file)))
+                    Text(ZimFileCell.sizeFormatter.string(fromByteCount: zimFile.size))
                         .fontWeight(.semibold)
+                        .foregroundColor(.primary)
                     Spacer()
-                    if let flavor = Flavor(rawValue: zimFile.flavor) {
+                    if #available(iOS 15.0, *), let flavor = Flavor(rawValue: zimFile.flavor) {
                         FlavorTag(flavor)
                     }
                 }
                 HStack(alignment: .bottom) {
                     VStack(alignment: .leading) {
-                        Text("\(zimFile.articleCount.formatted(.number.notation(.compactName))) articles")
+                        if #available(iOS 15.0, *) {
+                            Text("\(zimFile.articleCount.formatted(.number.notation(.compactName))) articles")
+                                .font(.caption)
+                        }
+                        Text(ZimFileCell.dateFormatter.string(from: zimFile.created))
                             .font(.caption)
-                        Text(zimFile.created.formatted(date: .abbreviated, time: .omitted))
-                            .font(.caption)
-                    }
+                    }.foregroundColor(.secondary)
                     Spacer()
                 }
             case .title:
@@ -49,31 +59,31 @@ struct ZimFileCell: View {
                         zimFile.category == Category.stackExchange.rawValue ?
                         zimFile.name.replacingOccurrences(of: "Stack Exchange", with: "") :
                         zimFile.name
-                    ).fontWeight(.semibold).lineLimit(1)
+                    ).fontWeight(.semibold).foregroundColor(.primary).lineLimit(1)
                     Spacer()
-                    Favicon(
-                        category: Category(rawValue: zimFile.category) ?? .other,
-                        imageData: zimFile.faviconData,
-                        imageURL: zimFile.faviconURL
-                    ).frame(height: 20)
+                    if #available(iOS 15.0, *) {
+                        Favicon(
+                            category: Category(rawValue: zimFile.category) ?? .other,
+                            imageData: zimFile.faviconData,
+                            imageURL: zimFile.faviconURL
+                        ).frame(height: 20)
+                    }
                 }
                 HStack(alignment: .bottom) {
                     VStack(alignment: .leading) {
-                        Text(zimFile.size.formatted(.byteCount(style: .file)))
+                        Text(ZimFileCell.sizeFormatter.string(fromByteCount: zimFile.size))
                             .font(.caption)
-                        Text(zimFile.created.formatted(date: .abbreviated, time: .omitted))
+                        Text(ZimFileCell.dateFormatter.string(from: zimFile.created))
                             .font(.caption)
-                    }
+                    }.foregroundColor(.secondary)
                     Spacer()
-                    if let flavor = Flavor(rawValue: zimFile.flavor) {
+                    if #available(iOS 15.0, *), let flavor = Flavor(rawValue: zimFile.flavor) {
                         FlavorTag(flavor)
                     }
                 }
             }
         }
         .padding(12)
-        .foregroundColor(.primary)
-        .background(backgroundColor, in: RoundedRectangle(cornerRadius: 12, style: .continuous))
         .onHover { self.isHovering = $0 }
     }
     
@@ -94,12 +104,24 @@ struct ZimFileCell: View {
         }
     }
     
+    static let dateFormatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateStyle = .medium
+        formatter.timeStyle = .none
+        return formatter
+    }()
+    
+    static let sizeFormatter: ByteCountFormatter = {
+        let formatter = ByteCountFormatter()
+        formatter.countStyle = .file
+        return formatter
+    }()
+    
     enum Prominent {
         case size, title
     }
 }
 
-@available(iOS 15.0, *)
 struct ZimFileCell_Previews: PreviewProvider {
     static let context = NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType)
     static let zimFile: ZimFile = {
