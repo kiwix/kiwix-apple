@@ -26,30 +26,30 @@ struct ZimFilesNew: View {
     }
     
     var body: some View {
-        ScrollView {
-            LazyVGrid(
-                columns: ([GridItem(.adaptive(minimum: 250, maximum: 400), spacing: 12)]),
-                alignment: .leading,
-                spacing: 12
-            ) {
-                ForEach(zimFiles) { zimFile in
-                    #if os(macOS)
-                    ZimFileCell(zimFile, prominent: .title)
-                    #elseif os(iOS)
-                    NavigationLink(tag: zimFile, selection: $selectedZimFile) {
-                        Text("Detail about zim file: \(zimFile.name)")
-                    } label: {
+        GeometryReader { proxy in
+            ScrollView {
+                LazyVGrid(
+                    columns: ([GridItem(.adaptive(minimum: 250, maximum: 400), spacing: 12)]),
+                    alignment: .leading,
+                    spacing: 12
+                ) {
+                    ForEach(zimFiles) { zimFile in
+                        #if os(macOS)
                         ZimFileCell(zimFile, prominent: .title)
+                        #elseif os(iOS)
+                        NavigationLink(tag: zimFile, selection: $selectedZimFile) {
+                            Text("Detail about zim file: \(zimFile.name)")
+                        } label: {
+                            ZimFileCell(zimFile, prominent: .title)
+                        }
+                        #endif
                     }
-                    #endif
-                }
-            }.padding([.horizontal, .bottom])
+                }.modifier(LibraryGridPadding(width: proxy.size.width))
+            }
         }
         .navigationTitle(LibraryTopic.new.name)
         .searchable(text: $searchText)
-        .onChange(of: searchText) { _ in
-            updatePredicate()
-        }
+        .onChange(of: searchText) { _ in updatePredicate() }
     }
     
     private func updatePredicate() {

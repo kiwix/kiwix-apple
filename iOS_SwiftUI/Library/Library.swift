@@ -204,3 +204,15 @@ extension EnvironmentValues {
     var horizontalSizeClass: UserInterfaceSizeClass { .regular }
 }
 #endif
+
+struct LibraryGridPadding: ViewModifier {
+    let width: CGFloat
+    
+    func body(content: Content) -> some View {
+        #if os(macOS)
+        content.padding(.all)
+        #elseif os(iOS)
+        content.padding([.horizontal, .bottom], width > 375 ? 20 : 16)
+        #endif
+    }
+}
