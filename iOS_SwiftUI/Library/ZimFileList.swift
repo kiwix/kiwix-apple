@@ -42,7 +42,14 @@ struct ZimFileList: View {
                         Text(zimFile.name).lineLimit(1)
                         Text([
                             Library.dateFormatter.string(from: zimFile.created),
-                            Library.sizeFormatter.string(fromByteCount: zimFile.size)
+                            Library.sizeFormatter.string(fromByteCount: zimFile.size),
+                            {
+                                if #available(iOS 15.0, *) {
+                                    return "\(zimFile.articleCount.formatted(.number.notation(.compactName))) articles"
+                                } else {
+                                    return Library.formattedLargeNumber(from: zimFile.articleCount)
+                                }
+                            }()
                         ].joined(separator: ", ")).font(.caption)
                     }
                 }

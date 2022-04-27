@@ -90,6 +90,16 @@ extension Library {
         formatter.countStyle = .file
         return formatter
     }()
+    
+    static func formattedLargeNumber(from value: Int64) -> String {
+        let sign = ((value < 0) ? "-" : "" )
+        let abs = Swift.abs(value)
+        guard abs >= 1000 else {return "\(sign)\(abs)"}
+        let exp = Int(log10(Double(abs)) / log10(1000))
+        let units = ["K", "M", "G", "T", "P", "E"]
+        let rounded = round(10 * Double(abs) / pow(1000.0,Double(exp))) / 10;
+        return "\(sign)\(rounded)\(units[exp-1])"
+    }
 }
 
 enum LibraryTopic: Hashable, Identifiable, RawRepresentable {
