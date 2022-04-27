@@ -17,16 +17,15 @@ struct ZimFileList: View {
     
     init(category: Category) {
         self.category = category
-        self._zimFiles = {
-            let request = ZimFile.fetchRequest()
-            request.sortDescriptors = [
+        self._zimFiles = FetchRequest<ZimFile>(
+            sortDescriptors: [
                 NSSortDescriptor(
                     key: "name", ascending: true, selector: #selector(NSString.localizedCaseInsensitiveCompare)
                 )
-            ]
-            request.predicate = ZimFileList.buildPredicate(category: category, searchText: "")
-            return FetchRequest<ZimFile>(fetchRequest: request)
-        }()
+            ],
+            predicate: ZimFileList.buildPredicate(category: category, searchText: ""),
+            animation: .easeInOut
+        )
     }
     
     var body: some View {

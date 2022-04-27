@@ -20,7 +20,8 @@ struct ZimFilesNew: View {
                 NSSortDescriptor(keyPath: \ZimFile.name, ascending: true),
                 NSSortDescriptor(keyPath: \ZimFile.size, ascending: false)
             ],
-            predicate: ZimFilesNew.buildPredicate(searchText: "")
+            predicate: ZimFilesNew.buildPredicate(searchText: ""),
+            animation: .easeInOut
         )
     }
     
