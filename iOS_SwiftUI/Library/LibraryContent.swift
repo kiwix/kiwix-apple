@@ -16,11 +16,7 @@ struct LibraryContent: View {
         case .opened:
             Text("Show opened zim files")
         case .new:
-            if #available(iOS 15.0, *) {
-                ZimFilesNew()
-            } else {
-                ZimFileList(topic: topic)
-            }
+            ZimFilesNew()
         case .downloads:
             Text("Show zim files being downloaded")
         case .categories:
@@ -36,7 +32,7 @@ struct LibraryContent: View {
         case .category(let category):
             if #available(iOS 15.0, *) {
                 switch category {
-                case .ted, .stackExchange:
+                case .ted, .stackExchange, .other:
                     ZimFileList(topic: topic)
                 default:
                     ZimFileSectionedGrid(topic: topic)

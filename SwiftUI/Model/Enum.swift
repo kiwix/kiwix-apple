@@ -17,8 +17,8 @@ enum Category: String, CaseIterable, Identifiable {
     case wikiversity
     case wikivoyage
     case wiktionary
-    case ted
     case vikidia
+    case ted
     case stackExchange = "stack_exchange"
     case other
     
