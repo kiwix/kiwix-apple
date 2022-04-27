@@ -16,9 +16,9 @@ struct ZimFilesNew: View {
     init() {
         self._zimFiles = FetchRequest<ZimFile>(
             sortDescriptors: [
-                NSSortDescriptor(key: "created", ascending: false),
-                NSSortDescriptor(key: "name", ascending: true),
-                NSSortDescriptor(key: "size", ascending: false)
+                NSSortDescriptor(keyPath: \ZimFile.created, ascending: false),
+                NSSortDescriptor(keyPath: \ZimFile.name, ascending: true),
+                NSSortDescriptor(keyPath: \ZimFile.size, ascending: false)
             ],
             predicate: ZimFilesNew.generatePredicate(searchText: "")
         )
