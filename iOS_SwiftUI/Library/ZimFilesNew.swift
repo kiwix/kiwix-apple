@@ -17,11 +17,18 @@ struct ZimFilesNew: View {
     init() {
         self._zimFiles = FetchRequest<ZimFile>(
             sortDescriptors: [
-                SortDescriptor(\.created, order: .reverse),
-                SortDescriptor(\.name),
-                SortDescriptor(\.size, order: .reverse)
+                NSSortDescriptor(key: "created", ascending: false),
+                NSSortDescriptor(key: "name", ascending: true),
+                NSSortDescriptor(key: "size", ascending: false)
             ],
-            predicate: LibraryTopic.new.predicate
+            predicate: {
+                let twoWeeksAgo = Calendar.current.date(byAdding: .day, value: -14, to: Date())
+                    ?? Date(timeIntervalSinceNow: TimeInterval(-14 * 24 * 3600))
+                return NSCompoundPredicate(andPredicateWithSubpredicates: [
+                    NSPredicate(format: "languageCode == %@", "en"),
+                    NSPredicate(format: "created > %@", twoWeeksAgo as CVarArg)
+                ])
+            }()
         )
     }
     
