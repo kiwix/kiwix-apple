@@ -19,7 +19,11 @@ struct ZimFileList: View {
         self.category = category
         self._zimFiles = {
             let request = ZimFile.fetchRequest()
-            request.sortDescriptors = [NSSortDescriptor(keyPath: \ZimFile.name, ascending: true)]
+            request.sortDescriptors = [
+                NSSortDescriptor(
+                    key: "name", ascending: true, selector: #selector(NSString.localizedCaseInsensitiveCompare)
+                )
+            ]
             request.predicate = ZimFileList.generatePredicate(category: category, searchText: "")
             return FetchRequest<ZimFile>(fetchRequest: request)
         }()
@@ -30,12 +34,18 @@ struct ZimFileList: View {
             NavigationLink {
                 Text("Detail about zim file: \(zimFile.name)")
             } label: {
-                VStack(alignment: .leading, spacing: 2) {
-                    Text(zimFile.name).lineLimit(1)
-                    Text([
-                        Library.dateFormatter.string(from: zimFile.created),
-                        Library.sizeFormatter.string(fromByteCount: zimFile.size)
-                    ].joined(separator: ", ")).font(.caption)
+                HStack {
+                    if #available(iOS 15.0, *) {
+                        Favicon(category: category, imageData: zimFile.faviconData, imageURL: zimFile.faviconURL)
+                            .frame(height: 26)
+                    }
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text(zimFile.name).lineLimit(1)
+                        Text([
+                            Library.dateFormatter.string(from: zimFile.created),
+                            Library.sizeFormatter.string(fromByteCount: zimFile.size)
+                        ].joined(separator: ", ")).font(.caption)
+                    }
                 }
             }
         }
