@@ -33,12 +33,12 @@ struct LibraryContent: View {
             if #available(iOS 15.0, *) {
                 switch category {
                 case .ted, .stackExchange, .other:
-                    ZimFileList(topic: topic)
+                    ZimFileList(category: category)
                 default:
                     ZimFileSectionedGrid(topic: topic)
                 }
             } else {
-                ZimFileList(topic: topic)
+                ZimFileList(category: category)
             }
         }
     }
