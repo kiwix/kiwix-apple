@@ -227,3 +227,22 @@ struct Searchable: ViewModifier {
         }
     }
 }
+
+struct ZimFileDetailPanel: ViewModifier {
+    @Binding var zimFile: ZimFile?
+    
+    func body(content: Content) -> some View {
+        #if os(macOS)
+        content.safeAreaInset(edge: .trailing, spacing: 0) {
+            List {
+                Text(zimFile?.name ?? "nothing selected")
+                Text("item1")
+                Text("item2")
+                Text("item3")
+            }.frame(width: 300)
+        }
+        #elseif os(iOS)
+        content
+        #endif
+    }
+}

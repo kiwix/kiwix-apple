@@ -20,7 +20,7 @@ struct ZimFilesNew: View {
                 NSSortDescriptor(keyPath: \ZimFile.name, ascending: true),
                 NSSortDescriptor(keyPath: \ZimFile.size, ascending: false)
             ],
-            predicate: ZimFilesNew.generatePredicate(searchText: "")
+            predicate: ZimFilesNew.buildPredicate(searchText: "")
         )
     }
     
@@ -34,7 +34,9 @@ struct ZimFilesNew: View {
                 ) {
                     ForEach(zimFiles) { zimFile in
                         #if os(macOS)
-                        ZimFileCell(zimFile, prominent: .title)
+                        ZimFileCell(zimFile, prominent: .title).onTapGesture {
+                            selectedZimFile = zimFile
+                        }
                         #elseif os(iOS)
                         NavigationLink(tag: zimFile, selection: $selectedZimFile) {
                             Text("Detail about zim file: \(zimFile.name)")
@@ -48,14 +50,15 @@ struct ZimFilesNew: View {
         }
         .navigationTitle(LibraryTopic.new.name)
         .modifier(Searchable(searchText: $searchText))
+        .modifier(ZimFileDetailPanel(zimFile: $selectedZimFile))
         .onChange(of: searchText) { _ in
             if #available(iOS 15.0, *) {
-                zimFiles.nsPredicate = ZimFilesNew.generatePredicate(searchText: searchText)
+                zimFiles.nsPredicate = ZimFilesNew.buildPredicate(searchText: searchText)
             }
         }
     }
     
-    private static func generatePredicate(searchText: String) -> NSPredicate {
+    private static func buildPredicate(searchText: String) -> NSPredicate {
         var predicates = [NSPredicate(format: "languageCode == %@", "en")]
         if let twoWeeksAgo = Calendar.current.date(byAdding: .day, value: -14, to: Date()) {
             predicates.append(NSPredicate(format: "created > %@", twoWeeksAgo as CVarArg))

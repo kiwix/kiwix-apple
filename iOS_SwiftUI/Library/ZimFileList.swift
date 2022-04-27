@@ -24,7 +24,7 @@ struct ZimFileList: View {
                     key: "name", ascending: true, selector: #selector(NSString.localizedCaseInsensitiveCompare)
                 )
             ]
-            request.predicate = ZimFileList.generatePredicate(category: category, searchText: "")
+            request.predicate = ZimFileList.buildPredicate(category: category, searchText: "")
             return FetchRequest<ZimFile>(fetchRequest: request)
         }()
     }
@@ -54,12 +54,12 @@ struct ZimFileList: View {
         .modifier(Searchable(searchText: $searchText))
         .onChange(of: searchText) { _ in
             if #available(iOS 15.0, *) {
-                zimFiles.nsPredicate = ZimFileList.generatePredicate(category: category, searchText: searchText)
+                zimFiles.nsPredicate = ZimFileList.buildPredicate(category: category, searchText: searchText)
             }
         }
     }
     
-    private static func generatePredicate(category: Category, searchText: String) -> NSPredicate {
+    private static func buildPredicate(category: Category, searchText: String) -> NSPredicate {
         var predicates = [
             NSPredicate(format: "languageCode == %@", "en"),
             NSPredicate(format: "category == %@", category.rawValue)
