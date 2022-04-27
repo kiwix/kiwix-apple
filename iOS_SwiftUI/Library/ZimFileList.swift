@@ -21,7 +21,8 @@ struct ZimFileList: View {
             sortDescriptors: [
                 NSSortDescriptor(
                     key: "name", ascending: true, selector: #selector(NSString.localizedCaseInsensitiveCompare)
-                )
+                ),
+                NSSortDescriptor(keyPath: \ZimFile.size, ascending: false)
             ],
             predicate: ZimFileList.buildPredicate(category: category, searchText: ""),
             animation: .easeInOut
