@@ -8,7 +8,6 @@
 
 import SwiftUI
 
-@available(iOS 15.0, *)
 struct ZimFilesNew: View {
     @FetchRequest private var zimFiles: FetchedResults<ZimFile>
     @State private var searchText = ""
@@ -21,14 +20,7 @@ struct ZimFilesNew: View {
                 NSSortDescriptor(key: "name", ascending: true),
                 NSSortDescriptor(key: "size", ascending: false)
             ],
-            predicate: {
-                let twoWeeksAgo = Calendar.current.date(byAdding: .day, value: -14, to: Date())
-                    ?? Date(timeIntervalSinceNow: TimeInterval(-14 * 24 * 3600))
-                return NSCompoundPredicate(andPredicateWithSubpredicates: [
-                    NSPredicate(format: "languageCode == %@", "en"),
-                    NSPredicate(format: "created > %@", twoWeeksAgo as CVarArg)
-                ])
-            }()
+            predicate: ZimFilesNew.generatePredicate(searchText: "")
         )
     }
     
@@ -55,11 +47,15 @@ struct ZimFilesNew: View {
             }
         }
         .navigationTitle(LibraryTopic.new.name)
-        .searchable(text: $searchText)
-        .onChange(of: searchText) { _ in updatePredicate() }
+        .modifier(Searchable(searchText: $searchText))
+        .onChange(of: searchText) { _ in
+            if #available(iOS 15.0, *) {
+                zimFiles.nsPredicate = ZimFilesNew.generatePredicate(searchText: searchText)
+            }
+        }
     }
     
-    private func updatePredicate() {
+    private static func generatePredicate(searchText: String) -> NSPredicate {
         var predicates = [NSPredicate(format: "languageCode == %@", "en")]
         if let twoWeeksAgo = Calendar.current.date(byAdding: .day, value: -14, to: Date()) {
             predicates.append(NSPredicate(format: "created > %@", twoWeeksAgo as CVarArg))
@@ -67,6 +63,6 @@ struct ZimFilesNew: View {
         if !searchText.isEmpty {
             predicates.append(NSPredicate(format: "name CONTAINS[cd] %@", searchText))
         }
-        zimFiles.nsPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: predicates)
+        return NSCompoundPredicate(andPredicateWithSubpredicates: predicates)
     }
 }

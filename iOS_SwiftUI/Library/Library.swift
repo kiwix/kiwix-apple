@@ -216,3 +216,14 @@ struct LibraryGridPadding: ViewModifier {
         #endif
     }
 }
+struct Searchable: ViewModifier {
+    @Binding var searchText: String
+    
+    func body(content: Content) -> some View {
+        if #available(iOS 15.0, *) {
+            content.searchable(text: $searchText)
+        } else {
+            content
+        }
+    }
+}
