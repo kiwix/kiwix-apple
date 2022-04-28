@@ -29,7 +29,9 @@ struct ZimFileGrid: View {
         GeometryReader { proxy in
             ScrollView {
                 LazyVGrid(
-                    columns: ([GridItem(.adaptive(minimum: horizontalSizeClass == .compact ? 150 : 250, maximum: 400), spacing: 12)]),
+                    columns: ([
+                        GridItem(.adaptive(minimum: proxy.size.width > 300 ? 150 : 250, maximum: 400), spacing: 12)
+                    ]),
                     alignment: .leading,
                     spacing: 12
                 ) {

@@ -215,6 +215,7 @@ extension EnvironmentValues {
 }
 #endif
 
+/// Add padding around LazyVGrid, which contains all zim file cells. The padding is adjusted so that the cells align with the search bar.
 struct LibraryGridPadding: ViewModifier {
     let width: CGFloat
     
@@ -268,7 +269,7 @@ struct ZimFileDetailPanel: ViewModifier {
                 Text("item1")
                 Text("item2")
                 Text("item3")
-            }.frame(width: 300)
+            }.frame(width: 275)
         }
         #elseif os(iOS)
         content
