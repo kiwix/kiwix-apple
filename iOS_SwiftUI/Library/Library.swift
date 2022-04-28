@@ -226,7 +226,7 @@ struct LibraryGridPadding: ViewModifier {
         #endif
     }
 }
-struct LibraryAdaptiveZimFileCell: ViewModifier {
+struct AdaptiveZimFileCell: ViewModifier {
     @Binding var selected: ZimFile?
     
     let zimFile: ZimFile
