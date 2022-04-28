@@ -1,5 +1,5 @@
 //
-//  ZimFileSectionedGrid.swift
+//  ZimFileGrid.swift
 //  Kiwix
 //
 //  Created by Chris Li on 4/23/22.
@@ -9,7 +9,7 @@
 import SwiftUI
 
 @available(iOS 15.0, *)
-struct ZimFileSectionedGrid: View {
+struct ZimFileGrid: View {
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     @SectionedFetchRequest private var sections: SectionedFetchResults<String, ZimFile>
     

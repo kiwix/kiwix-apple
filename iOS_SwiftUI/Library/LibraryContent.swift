@@ -35,7 +35,7 @@ struct LibraryContent: View {
                 case .ted, .stackExchange, .other:
                     ZimFileList(category: category)
                 default:
-                    ZimFileSectionedGrid(topic: topic)
+                    ZimFileGrid(topic: topic)
                 }
             } else {
                 ZimFileList(category: category)
