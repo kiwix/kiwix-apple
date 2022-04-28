@@ -226,6 +226,25 @@ struct LibraryGridPadding: ViewModifier {
         #endif
     }
 }
+struct LibraryAdaptiveZimFileCell: ViewModifier {
+    @Binding var selected: ZimFile?
+    
+    let zimFile: ZimFile
+    
+    func body(content: Content) -> some View {
+        #if os(macOS)
+        content.onTapGesture {
+            selected = zimFile
+        }
+        #elseif os(iOS)
+        NavigationLink(tag: zimFile, selection: $selected) {
+            Text("Detail about zim file: \(zimFile.name)")
+        } label: {
+            content
+        }
+        #endif
+    }
+}
 struct Searchable: ViewModifier {
     @Binding var searchText: String
     

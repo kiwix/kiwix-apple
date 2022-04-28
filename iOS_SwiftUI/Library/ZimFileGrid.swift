@@ -35,32 +35,14 @@ struct ZimFileGrid: View {
                 ForEach(sections) { section in
                     if sections.count <= 1 {
                         ForEach(section) { zimFile in
-                            #if os(macOS)
-                            ZimFileCell(zimFile, prominent: .size).onTapGesture {
-                                selectedZimFile = zimFile
-                            }
-                            #elseif os(iOS)
-                            NavigationLink(tag: zimFile, selection: $selectedZimFile) {
-                                Text("Detail about zim file: \(zimFile.name)")
-                            } label: {
-                                ZimFileCell(zimFile, prominent: .size)
-                            }
-                            #endif
+                            ZimFileCell(zimFile, prominent: .size)
+                                .modifier(LibraryAdaptiveZimFileCell(selected: $selectedZimFile, zimFile: zimFile))
                         }
                     } else {
                         Section {
                             ForEach(section) { zimFile in
-                                #if os(macOS)
-                                ZimFileCell(zimFile, prominent: .size).onTapGesture {
-                                    selectedZimFile = zimFile
-                                }
-                                #elseif os(iOS)
-                                NavigationLink(tag: zimFile, selection: $selectedZimFile) {
-                                    Text("Detail about zim file: \(zimFile.name)")
-                                } label: {
-                                    ZimFileCell(zimFile, prominent: .size)
-                                }
-                                #endif
+                                ZimFileCell(zimFile, prominent: .size)
+                                    .modifier(LibraryAdaptiveZimFileCell(selected: $selectedZimFile, zimFile: zimFile))
                             }
                         } header: {
                             SectionHeader(
@@ -75,5 +57,6 @@ struct ZimFileGrid: View {
             }.padding()
         }
         .navigationTitle(topic.name)
+        .modifier(ZimFileDetailPanel(zimFile: $selectedZimFile))
     }
 }
