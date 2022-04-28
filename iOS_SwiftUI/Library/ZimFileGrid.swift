@@ -12,6 +12,7 @@ import SwiftUI
 struct ZimFileGrid: View {
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     @SectionedFetchRequest private var sections: SectionedFetchResults<String, ZimFile>
+    @State private var selectedZimFile: ZimFile?
     
     let topic: LibraryTopic
     
@@ -34,20 +35,32 @@ struct ZimFileGrid: View {
                 ForEach(sections) { section in
                     if sections.count <= 1 {
                         ForEach(section) { zimFile in
-                            NavigationLink {
+                            #if os(macOS)
+                            ZimFileCell(zimFile, prominent: .size).onTapGesture {
+                                selectedZimFile = zimFile
+                            }
+                            #elseif os(iOS)
+                            NavigationLink(tag: zimFile, selection: $selectedZimFile) {
                                 Text("Detail about zim file: \(zimFile.name)")
                             } label: {
-                                ZimFileCell(zimFile)
+                                ZimFileCell(zimFile, prominent: .size)
                             }
+                            #endif
                         }
                     } else {
                         Section {
                             ForEach(section) { zimFile in
-                                NavigationLink {
+                                #if os(macOS)
+                                ZimFileCell(zimFile, prominent: .size).onTapGesture {
+                                    selectedZimFile = zimFile
+                                }
+                                #elseif os(iOS)
+                                NavigationLink(tag: zimFile, selection: $selectedZimFile) {
                                     Text("Detail about zim file: \(zimFile.name)")
                                 } label: {
-                                    ZimFileCell(zimFile)
+                                    ZimFileCell(zimFile, prominent: .size)
                                 }
+                                #endif
                             }
                         } header: {
                             SectionHeader(

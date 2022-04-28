@@ -30,16 +30,15 @@ struct LibraryContent: View {
                 }
             }.listStyle(.plain)
         case .category(let category):
-            if #available(iOS 15.0, *) {
-                switch category {
-                case .ted, .stackExchange, .other:
-                    ZimFileList(category: category)
-                default:
-                    ZimFileGrid(topic: topic)
-                }
+            #if os(macOS)
+            ZimFileGrid(topic: topic)
+            #elseif os(iOS)
+            if #available(iOS 15.0, *), (category != .ted || category != .stackExchange || category != .other) {
+                ZimFileGrid(topic: topic)
             } else {
                 ZimFileList(category: category)
             }
+            #endif
         }
     }
 }
