@@ -34,17 +34,8 @@ struct ZimFilesNew: View {
                     spacing: 12
                 ) {
                     ForEach(zimFiles) { zimFile in
-                        #if os(macOS)
-                        ZimFileCell(zimFile, prominent: .title).onTapGesture {
-                            selectedZimFile = zimFile
-                        }
-                        #elseif os(iOS)
-                        NavigationLink(tag: zimFile, selection: $selectedZimFile) {
-                            Text("Detail about zim file: \(zimFile.name)")
-                        } label: {
-                            ZimFileCell(zimFile, prominent: .title)
-                        }
-                        #endif
+                        ZimFileCell(zimFile, prominent: .title)
+                            .modifier(AdaptiveZimFileCell(selected: $selectedZimFile, zimFile: zimFile))
                     }
                 }.modifier(LibraryGridPadding(width: proxy.size.width))
             }
