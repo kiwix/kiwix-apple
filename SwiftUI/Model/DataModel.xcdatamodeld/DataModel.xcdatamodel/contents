@@ -29,6 +29,7 @@
         <attribute name="articleCount" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="category" optional="YES" attributeType="String"/>
         <attribute name="created" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="downloadURL" optional="YES" attributeType="URI"/>
         <attribute name="faviconData" optional="YES" attributeType="Binary"/>
         <attribute name="faviconURL" optional="YES" attributeType="URI"/>
         <attribute name="fileDescription" attributeType="String"/>
@@ -59,7 +60,7 @@
     </entity>
     <elements>
         <element name="Bookmark" positionX="-63" positionY="-18" width="128" height="104"/>
-        <element name="ZimFile" positionX="-63" positionY="18" width="128" height="314"/>
+        <element name="ZimFile" positionX="-63" positionY="18" width="128" height="329"/>
         <element name="DownloadTask" positionX="-63" positionY="135" width="128" height="119"/>
     </elements>
 </model>

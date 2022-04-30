@@ -46,6 +46,7 @@ class ZimFile: NSManagedObject, Identifiable {
     @NSManaged var articleCount: Int64
     @NSManaged var category: String
     @NSManaged var created: Date
+    @NSManaged var downloadURL: URL?
     @NSManaged var faviconData: Data?
     @NSManaged var faviconURL: URL?
     @NSManaged var fileDescription: String

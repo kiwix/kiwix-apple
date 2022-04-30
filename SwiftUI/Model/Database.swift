@@ -208,7 +208,7 @@ class Database {
         zimFile.size = metadata.size.int64Value
         
         // Only overwrite favicon data and url if there is a new value
-        if let data = metadata.faviconData { zimFile.faviconData = data }
+        if let url = metadata.downloadURL { zimFile.downloadURL = url }
         if let url = metadata.faviconURL { zimFile.faviconURL = url }
     }
     
