@@ -42,7 +42,7 @@ struct ZimFilesNew: View {
         }
         .navigationTitle(LibraryTopic.new.name)
         .modifier(Searchable(searchText: $searchText))
-        .modifier(ZimFileDetailPanel(zimFile: $selectedZimFile))
+        .modifier(MacAdaptableContent(zimFile: $selectedZimFile))
         .onChange(of: searchText) { _ in
             if #available(iOS 15.0, *) {
                 zimFiles.nsPredicate = ZimFilesNew.buildPredicate(searchText: searchText)

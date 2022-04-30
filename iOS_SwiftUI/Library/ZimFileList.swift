@@ -55,7 +55,7 @@ struct ZimFileList: View {
         .listStyle(.plain)
         .navigationTitle(category.description)
         .modifier(Searchable(searchText: $searchText))
-        .modifier(ZimFileDetailPanel(zimFile: $selectedZimFile))
+        .modifier(MacAdaptableContent(zimFile: $selectedZimFile))
         .onChange(of: searchText) { _ in
             if #available(iOS 15.0, *) {
                 zimFiles.nsPredicate = ZimFileList.buildPredicate(category: category, searchText: searchText)

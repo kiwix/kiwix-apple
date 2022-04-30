@@ -182,11 +182,11 @@ class Database {
                     guard let zimFile = try context.fetch(request).first else { return }
                     zimFile.faviconData = data
                     try context.save()
+                    continuation.resume()
                 } catch {
                     continuation.resume(throwing: error)
                 }
             }
-            continuation.resume()
         }
     }
     

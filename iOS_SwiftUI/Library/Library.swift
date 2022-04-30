@@ -258,22 +258,24 @@ struct Searchable: ViewModifier {
     }
 }
 
-struct ZimFileDetailPanel: ViewModifier {
+struct MacAdaptableContent: ViewModifier {
     @Binding var zimFile: ZimFile?
     
     func body(content: Content) -> some View {
         #if os(macOS)
-        content.safeAreaInset(edge: .trailing, spacing: 0) {
-            HStack(spacing: 0) {
-                Divider()
-                List {
-                    Text(zimFile?.name ?? "nothing selected")
-                    Text("item1")
-                    Text("item2")
-                    Text("item3")
-                }
+        VStack(spacing: 0) {
+            Divider()
+            content.safeAreaInset(edge: .trailing, spacing: 0) {
+                HStack(spacing: 0) {
+                    Divider()
+                    List {
+                        Text(zimFile?.name ?? "nothing selected")
+                        Text("item1")
+                        Text("item2")
+                        Text("item3")
+                    }
+                }.frame(width: 275)
             }
-            .frame(width: 275)
         }
         #elseif os(iOS)
         content

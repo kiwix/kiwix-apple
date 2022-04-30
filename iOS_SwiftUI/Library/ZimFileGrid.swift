@@ -61,6 +61,6 @@ struct ZimFileGrid: View {
             }
         }
         .navigationTitle(topic.name)
-        .modifier(ZimFileDetailPanel(zimFile: $selectedZimFile))
+        .modifier(MacAdaptableContent(zimFile: $selectedZimFile))
     }
 }
