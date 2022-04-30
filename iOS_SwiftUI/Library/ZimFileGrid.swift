@@ -29,9 +29,7 @@ struct ZimFileGrid: View {
         GeometryReader { proxy in
             ScrollView {
                 LazyVGrid(
-                    columns: ([
-                        GridItem(.adaptive(minimum: proxy.size.width > 300 ? 150 : 250, maximum: 400), spacing: 12)
-                    ]),
+                    columns: ([buildGridItem(gridWidth: proxy.size.width)]),
                     alignment: .leading,
                     spacing: 12
                 ) {
@@ -53,7 +51,14 @@ struct ZimFileGrid: View {
                                     category: Category(rawValue: section.first?.category) ?? .other,
                                     imageData: section.first?.faviconData,
                                     imageURL: section.first?.faviconURL
-                                ).padding(EdgeInsets(top: 10, leading: 12, bottom: -8, trailing: 0))
+                                ).padding(
+                                    EdgeInsets(
+                                        top: section.id == sections.first?.id ? 0 : 10,
+                                        leading: 12,
+                                        bottom: -6,
+                                        trailing: 0
+                                    )
+                                )
                             }
                         }
                     }
@@ -62,5 +67,13 @@ struct ZimFileGrid: View {
         }
         .navigationTitle(topic.name)
         .modifier(MacAdaptableContent(zimFile: $selectedZimFile))
+    }
+    
+    private func buildGridItem(gridWidth: CGFloat) -> GridItem {
+        #if os(macOS)
+        GridItem(.adaptive(minimum: 150, maximum: 400), spacing: 12)
+        #elseif os(iOS)
+        GridItem(.adaptive(minimum: gridWidth > 375 ? 200 : 150, maximum: 400), spacing: 12)
+        #endif
     }
 }
