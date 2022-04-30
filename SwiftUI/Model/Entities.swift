@@ -74,4 +74,10 @@ class ZimFile: NSManagedObject, Identifiable {
         request.sortDescriptors = sortDescriptors
         return request
     }
+    
+    class func fetchRequest(fileID: UUID) -> NSFetchRequest<ZimFile> {
+        let request = super.fetchRequest() as! NSFetchRequest<ZimFile>
+        request.predicate = NSPredicate(format: "fileID == %@", fileID as CVarArg)
+        return request
+    }
 }

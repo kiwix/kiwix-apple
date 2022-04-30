@@ -63,6 +63,7 @@
 		973A0DE4281D80E300B41E71 /* ZimFileDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 973A0DE2281D80E300B41E71 /* ZimFileDetail.swift */; };
 		973A0DE6281DC8F400B41E71 /* Downloads.swift in Sources */ = {isa = PBXBuildFile; fileRef = 973A0DE5281DC8F400B41E71 /* Downloads.swift */; };
 		973A0DE7281DC8F400B41E71 /* Downloads.swift in Sources */ = {isa = PBXBuildFile; fileRef = 973A0DE5281DC8F400B41E71 /* Downloads.swift */; };
+		973A0DE8281DD7EB00B41E71 /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9779A7E224567A5A00F6F6FF /* Log.swift */; };
 		973A2FC3277EA9F300BD4320 /* OPDSStreamParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9779A5A32456793500F6F6FF /* OPDSStreamParser.swift */; };
 		973A2FC5277EAA2500BD4320 /* OPDSRefreshError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 973A2FC4277EAA2500BD4320 /* OPDSRefreshError.swift */; };
 		973A2FC6277EAA2700BD4320 /* OPDSRefreshError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 973A2FC4277EAA2500BD4320 /* OPDSRefreshError.swift */; };
@@ -1347,6 +1348,7 @@
 			files = (
 				972DE4BB2814A5A4004FD9B9 /* OPDSRefreshError.swift in Sources */,
 				973A0DE4281D80E300B41E71 /* ZimFileDetail.swift in Sources */,
+				973A0DE8281DD7EB00B41E71 /* Log.swift in Sources */,
 				972DE4BC2814A5BE004FD9B9 /* OPDSStreamParser.swift in Sources */,
 				976D90E92815D63A00CC7D29 /* ZimFilesNew.swift in Sources */,
 				976D90D32814F2FA00CC7D29 /* ZimFileGrid.swift in Sources */,

@@ -65,7 +65,11 @@ struct ZimFileDetail: View {
                     Text(zimFile.fileDescription)
                 }
                 Section {
-                    ZimFileAction(title: "Download")
+                    if zimFile.downloadURL != nil {
+                        ZimFileAction(title: "Download") {
+                            Downloads.shared.start(zimFileID: zimFile.id, allowsCellularAccess: false)
+                        }
+                    }
                 }
                 Section {
                     ZimFileAttribute(

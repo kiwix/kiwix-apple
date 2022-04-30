@@ -78,8 +78,24 @@ class Downloads: NSObject, URLSessionDelegate, URLSessionTaskDelegate, URLSessio
     /// - Parameters:
     ///   - zimFile: the zim file to download
     ///   - allowsCellularAccess: if using cellular data is allowed
-    func start(zimFile: ZimFile, allowsCellularAccess: Bool) {
-
+    func start(zimFileID: UUID, allowsCellularAccess: Bool) {
+        let context = Database.shared.container.newBackgroundContext()
+        context.perform {
+            let request = ZimFile.fetchRequest(fileID: zimFileID)
+            guard let zimFile = try? context.fetch(request).first,
+                  var url = zimFile.downloadURL else { return }
+            let downloadTask = DownloadTask(context: context)
+            downloadTask.created = Date()
+            downloadTask.fileID = zimFileID
+            downloadTask.totalBytes = zimFile.size
+            downloadTask.zimFile = zimFile
+            try? context.save()
+            
+            if url.lastPathComponent.hasSuffix(".meta4") {
+                url = url.deletingPathExtension()
+            }
+            print(url)
+        }        
     }
     
     func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask, didFinishDownloadingTo location: URL) {
