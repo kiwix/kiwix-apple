@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="19574" systemVersion="21C52" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="20086" systemVersion="21E258" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="Bookmark" representedClassName=".Bookmark" syncable="YES">
         <attribute name="articleURL" attributeType="URI"/>
         <attribute name="created" attributeType="Date" usesScalarValueType="NO"/>
@@ -9,6 +9,19 @@
         <uniquenessConstraints>
             <uniquenessConstraint>
                 <constraint value="articleURL"/>
+            </uniquenessConstraint>
+        </uniquenessConstraints>
+    </entity>
+    <entity name="DownloadTask" representedClassName=".DownloadTask" syncable="YES">
+        <attribute name="created" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="downloadedBytes" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="fileID" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="resumeData" optional="YES" attributeType="Binary"/>
+        <attribute name="totalBytes" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <relationship name="zimFile" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ZimFile" inverseName="downloadTask" inverseEntity="ZimFile"/>
+        <uniquenessConstraints>
+            <uniquenessConstraint>
+                <constraint value="fileID"/>
             </uniquenessConstraint>
         </uniquenessConstraints>
     </entity>
@@ -31,6 +44,7 @@
         <attribute name="name" attributeType="String"/>
         <attribute name="persistentID" attributeType="String"/>
         <attribute name="size" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <relationship name="downloadTask" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="DownloadTask" inverseName="zimFile" inverseEntity="DownloadTask"/>
         <fetchIndex name="category">
             <fetchIndexElement property="category" type="Binary" order="ascending"/>
         </fetchIndex>
@@ -45,6 +59,7 @@
     </entity>
     <elements>
         <element name="Bookmark" positionX="-63" positionY="-18" width="128" height="104"/>
-        <element name="ZimFile" positionX="-63" positionY="18" width="128" height="299"/>
+        <element name="ZimFile" positionX="-63" positionY="18" width="128" height="314"/>
+        <element name="DownloadTask" positionX="-63" positionY="135" width="128" height="119"/>
     </elements>
 </model>

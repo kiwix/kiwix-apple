@@ -22,6 +22,18 @@ class Bookmark: NSManagedObject, Identifiable {
     }
 }
 
+class DownloadTask: NSManagedObject, Identifiable {
+    var id: UUID { fileID }
+
+    @NSManaged var created: Date
+    @NSManaged var downloadedBytes: Int64
+    @NSManaged var fileID: UUID
+    @NSManaged var resumeData: Data?
+    @NSManaged var totalBytes: Int64
+    
+    @NSManaged var zimFile: ZimFile?
+}
+
 class ZimFile: NSManagedObject, Identifiable {
     var id: UUID { fileID }
     
@@ -43,6 +55,8 @@ class ZimFile: NSManagedObject, Identifiable {
     @NSManaged var name: String
     @NSManaged var persistentID: String
     @NSManaged var size: Int64
+    
+    @NSManaged var downloadTask: DownloadTask?
     
     class func fetchRequest(
         predicate: NSPredicate? = nil,
