@@ -50,7 +50,7 @@ struct ZimFileList: View {
                         }()
                     ].joined(separator: ", ")).font(.caption)
                 }
-            }.modifier(AdaptiveZimFileCell(selected: $selectedZimFile, zimFile: zimFile))
+            }.modifier(ZimFileCellSelection(selected: $selectedZimFile, zimFile: zimFile))
         }
         .listStyle(.plain)
         .navigationTitle(category.description)
