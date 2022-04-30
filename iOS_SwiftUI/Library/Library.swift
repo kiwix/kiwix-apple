@@ -85,9 +85,22 @@ extension Library {
         return formatter
     }()
     
+    static let dateFormatterMedium: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateStyle = .medium
+        formatter.timeStyle = .none
+        return formatter
+    }()
+    
     static let sizeFormatter: ByteCountFormatter = {
         let formatter = ByteCountFormatter()
         formatter.countStyle = .file
+        return formatter
+    }()
+    
+    static let numberFormatter: NumberFormatter = {
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .decimal
         return formatter
     }()
     
@@ -239,7 +252,7 @@ struct ZimFileCellSelection: ViewModifier {
         }
         #elseif os(iOS)
         NavigationLink(tag: zimFile, selection: $selected) {
-            Text("Detail about zim file: \(zimFile.name)")
+            ZimFileDetail(zimFile: $selected)
         } label: {
             content
         }
@@ -268,12 +281,7 @@ struct MacAdaptableContent: ViewModifier {
             content.safeAreaInset(edge: .trailing, spacing: 0) {
                 HStack(spacing: 0) {
                     Divider()
-                    List {
-                        Text(zimFile?.name ?? "nothing selected")
-                        Text("item1")
-                        Text("item2")
-                        Text("item3")
-                    }
+                    ZimFileDetail(zimFile: $zimFile)
                 }.frame(width: 275)
             }
         }
