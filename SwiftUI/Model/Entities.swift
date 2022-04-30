@@ -32,6 +32,12 @@ class DownloadTask: NSManagedObject, Identifiable {
     @NSManaged var totalBytes: Int64
     
     @NSManaged var zimFile: ZimFile?
+    
+    class func fetchRequest(predicate: NSPredicate? = nil) -> NSFetchRequest<DownloadTask> {
+        let request = super.fetchRequest() as! NSFetchRequest<DownloadTask>
+        request.predicate = predicate
+        return request
+    }
 }
 
 class ZimFile: NSManagedObject, Identifiable {

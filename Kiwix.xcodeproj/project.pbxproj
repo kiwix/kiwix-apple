@@ -61,6 +61,8 @@
 		9735D0C027777E3300C7D495 /* Enum.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9735D0BF27777E3300C7D495 /* Enum.swift */; };
 		973A0DE3281D80E300B41E71 /* ZimFileDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 973A0DE2281D80E300B41E71 /* ZimFileDetail.swift */; };
 		973A0DE4281D80E300B41E71 /* ZimFileDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 973A0DE2281D80E300B41E71 /* ZimFileDetail.swift */; };
+		973A0DE6281DC8F400B41E71 /* Downloads.swift in Sources */ = {isa = PBXBuildFile; fileRef = 973A0DE5281DC8F400B41E71 /* Downloads.swift */; };
+		973A0DE7281DC8F400B41E71 /* Downloads.swift in Sources */ = {isa = PBXBuildFile; fileRef = 973A0DE5281DC8F400B41E71 /* Downloads.swift */; };
 		973A2FC3277EA9F300BD4320 /* OPDSStreamParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9779A5A32456793500F6F6FF /* OPDSStreamParser.swift */; };
 		973A2FC5277EAA2500BD4320 /* OPDSRefreshError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 973A2FC4277EAA2500BD4320 /* OPDSRefreshError.swift */; };
 		973A2FC6277EAA2700BD4320 /* OPDSRefreshError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 973A2FC4277EAA2500BD4320 /* OPDSRefreshError.swift */; };
@@ -329,6 +331,7 @@
 		9735D0C127777E5900C7D495 /* DisplayModeSelector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayModeSelector.swift; sourceTree = "<group>"; };
 		9735D0C327778B2A00C7D495 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Info.plist; path = macOS_SwiftUI/Support/Info.plist; sourceTree = SOURCE_ROOT; };
 		973A0DE2281D80E300B41E71 /* ZimFileDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZimFileDetail.swift; sourceTree = "<group>"; };
+		973A0DE5281DC8F400B41E71 /* Downloads.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Downloads.swift; sourceTree = "<group>"; };
 		973A2FC4277EAA2500BD4320 /* OPDSRefreshError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OPDSRefreshError.swift; sourceTree = "<group>"; };
 		973A2FCD277FB03F00BD4320 /* FlavorTag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlavorTag.swift; sourceTree = "<group>"; };
 		973A2FCF277FB99000BD4320 /* SectionHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionHeader.swift; sourceTree = "<group>"; };
@@ -630,6 +633,7 @@
 			children = (
 				9735D0B82775363900C7D495 /* DataModel.xcdatamodeld */,
 				9735D0BB2775594700C7D495 /* Database.swift */,
+				973A0DE5281DC8F400B41E71 /* Downloads.swift */,
 				972DE4722814A116004FD9B9 /* Entities.swift */,
 				9735D0BF27777E3300C7D495 /* Enum.swift */,
 			);
@@ -1360,6 +1364,7 @@
 				972DE4B62814A502004FD9B9 /* Enum.swift in Sources */,
 				972DE4C42814AAAE004FD9B9 /* Library.swift in Sources */,
 				972DE4A92814A3D8004FD9B9 /* iOS_SwiftUIApp.swift in Sources */,
+				973A0DE7281DC8F400B41E71 /* Downloads.swift in Sources */,
 				976D90E228158A3C00CC7D29 /* LibraryContent.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1495,6 +1500,7 @@
 				97242B9E2735E6A800C87F85 /* Platform.swift in Sources */,
 				973BC75727587A29008D4114 /* Commands.swift in Sources */,
 				97242B872735E66B00C87F85 /* SearchResult.m in Sources */,
+				973A0DE6281DC8F400B41E71 /* Downloads.swift in Sources */,
 				97242B892735E66E00C87F85 /* SearchResult.swift in Sources */,
 				97242BA02735E6A800C87F85 /* FeatureFlags.swift in Sources */,
 				97242B9A2735E6A800C87F85 /* WebKitHandler.swift in Sources */,
