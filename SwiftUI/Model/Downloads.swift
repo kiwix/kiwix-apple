@@ -49,6 +49,7 @@ class Downloads: NSObject, URLSessionDelegate, URLSessionTaskDelegate, URLSessio
             self.heartbeat = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in
                 let context = Database.shared.container.newBackgroundContext()
                 context.perform {
+                    print(self.totalBytesWritten)
                     for (zimFileID, downloadedBytes) in self.totalBytesWritten {
                         let predicate = NSPredicate(format: "fileID == %@", zimFileID as CVarArg)
                         let request = DownloadTask.fetchRequest(predicate: predicate)
@@ -81,8 +82,8 @@ class Downloads: NSObject, URLSessionDelegate, URLSessionTaskDelegate, URLSessio
     func start(zimFileID: UUID, allowsCellularAccess: Bool) {
         let context = Database.shared.container.newBackgroundContext()
         context.perform {
-            let request = ZimFile.fetchRequest(fileID: zimFileID)
-            guard let zimFile = try? context.fetch(request).first,
+            let fetchRequest = ZimFile.fetchRequest(fileID: zimFileID)
+            guard let zimFile = try? context.fetch(fetchRequest).first,
                   var url = zimFile.downloadURL else { return }
             let downloadTask = DownloadTask(context: context)
             downloadTask.created = Date()
@@ -94,10 +95,58 @@ class Downloads: NSObject, URLSessionDelegate, URLSessionTaskDelegate, URLSessio
             if url.lastPathComponent.hasSuffix(".meta4") {
                 url = url.deletingPathExtension()
             }
-            print(url)
-        }        
+            var urlRequest = URLRequest(url: url)
+            urlRequest.allowsCellularAccess = allowsCellularAccess
+            let task = self.session.downloadTask(with: urlRequest)
+            task.taskDescription = zimFileID.uuidString
+            task.resume()
+        }
+        startHeartbeat()
     }
     
-    func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask, didFinishDownloadingTo location: URL) {
+    /// Cancel a zim file download task
+    /// - Parameter zimFileID: identifier of the zim file
+    func cancel(zimFileID: UUID) {
+        session.getTasksWithCompletionHandler { _, _, downloadTasks in
+            if let task = downloadTasks.filter({ UUID(uuidString: $0.taskDescription ?? "") == zimFileID }).first {
+                task.cancel()
+            }
+            
+            let context = Database.shared.container.newBackgroundContext()
+            context.perform {
+                let request = DownloadTask.fetchRequest(fileID: zimFileID)
+                guard let downloadTask = try? context.fetch(request).first else { return }
+                context.delete(downloadTask)
+                try? context.save()
+            }
+        }
+    }
+    
+    // MARK: - URLSessionTaskDelegate
+    
+    func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?) {
+        guard let taskDescription = task.taskDescription,
+              let zimFileID = UUID(uuidString: taskDescription) else { return }
+        totalBytesWritten[zimFileID] = nil
+        if totalBytesWritten.count == 0 {
+            stopHeartbeat()
+        }
+    }
+    
+    // MARK: - URLSessionDownloadDelegate
+    
+    func urlSession(_ session: URLSession,
+                    downloadTask: URLSessionDownloadTask,
+                    didWriteData bytesWritten: Int64,
+                    totalBytesWritten: Int64,
+                    totalBytesExpectedToWrite: Int64) {
+        guard let taskDescription = downloadTask.taskDescription,
+              let zimFileID = UUID(uuidString: taskDescription) else { return }
+        self.totalBytesWritten[zimFileID] = totalBytesWritten
+    }
+    
+    func urlSession(_ session: URLSession,
+                    downloadTask: URLSessionDownloadTask,
+                    didFinishDownloadingTo location: URL) {
     }
 }

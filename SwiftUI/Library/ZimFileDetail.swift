@@ -65,7 +65,11 @@ struct ZimFileDetail: View {
                     Text(zimFile.fileDescription)
                 }
                 Section {
-                    if zimFile.downloadURL != nil {
+                    if let downloadTask = zimFile.downloadTask {
+                        ZimFileAction(title: "Cancel") {
+                            Downloads.shared.cancel(zimFileID: zimFile.id)
+                        }
+                    } else if zimFile.downloadURL != nil {
                         ZimFileAction(title: "Download") {
                             Downloads.shared.start(zimFileID: zimFile.id, allowsCellularAccess: false)
                         }

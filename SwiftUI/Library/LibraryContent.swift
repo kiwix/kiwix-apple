@@ -18,7 +18,7 @@ struct LibraryContent: View {
         case .new:
             ZimFilesNew()
         case .downloads:
-            Text("Show zim files being downloaded")
+            ZimFilesDownloads()
         case .categories:
             List {
                 ForEach(Category.allCases.map{ LibraryTopic.category($0) }) { topic in

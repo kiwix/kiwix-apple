@@ -38,6 +38,12 @@ class DownloadTask: NSManagedObject, Identifiable {
         request.predicate = predicate
         return request
     }
+    
+    class func fetchRequest(fileID: UUID) -> NSFetchRequest<DownloadTask> {
+        let request = super.fetchRequest() as! NSFetchRequest<DownloadTask>
+        request.predicate = NSPredicate(format: "fileID == %@", fileID as CVarArg)
+        return request
+    }
 }
 
 class ZimFile: NSManagedObject, Identifiable {
