@@ -34,28 +34,28 @@ struct ZimFileDetail: View {
                     Text(zimFile.fileDescription)
                 }
                 Section("Info") {
-                    ZimFileDetailRow(
+                    ZimFileAttribute(
                         title: "Language",
                         detail: Locale.current.localizedString(forLanguageCode: zimFile.languageCode)
                     )
-                    ZimFileDetailRow(
+                    ZimFileAttribute(
                         title: "Category",
                         detail: Category(rawValue: zimFile.category)?.description
                     )
-                    ZimFileDetailRow(
+                    ZimFileAttribute(
                         title: "Size",
                         detail: Library.sizeFormatter.string(fromByteCount: zimFile.size)
                     )
-                    ZimFileDetailRow(
+                    ZimFileAttribute(
                         title: "Created",
                         detail: Library.dateFormatterMedium.string(from: zimFile.created)
                     )
-                    ZimFileDetailRowBool(title: "Has Pictures", detail: zimFile.hasPictures)
-                    ZimFileDetailRowBool(title: "Has Videos", detail: zimFile.hasVideos)
-                    ZimFileDetailRowBool(title: "Has Details", detail: zimFile.hasDetails)
-                    ZimFileDetailRow(title: "Article Count", detail: zimFile.articleCount.formatted())
-                    ZimFileDetailRow(title: "Media Count", detail: zimFile.mediaCount.formatted())
-                    ZimFileDetailRow(title: "ID", detail: String(zimFile.fileID.uuidString.prefix(8)))
+                    ZimFileAttributeBool(title: "Has Pictures", detail: zimFile.hasPictures)
+                    ZimFileAttributeBool(title: "Has Videos", detail: zimFile.hasVideos)
+                    ZimFileAttributeBool(title: "Has Details", detail: zimFile.hasDetails)
+                    ZimFileAttribute(title: "Article Count", detail: zimFile.articleCount.formatted())
+                    ZimFileAttribute(title: "Media Count", detail: zimFile.mediaCount.formatted())
+                    ZimFileAttribute(title: "ID", detail: String(zimFile.fileID.uuidString.prefix(8)))
                 }
             }
             #elseif os(iOS)
@@ -86,9 +86,9 @@ struct ZimFileDetail: View {
                     )
                 }
                 Section {
-                    ZimFileDetailRowBool(title: "Has Pictures", detail: zimFile.hasPictures)
-                    ZimFileDetailRowBool(title: "Has Videos", detail: zimFile.hasVideos)
-                    ZimFileDetailRowBool(title: "Has Details", detail: zimFile.hasDetails)
+                    ZimFileAttributeBool(title: "Has Pictures", detail: zimFile.hasPictures)
+                    ZimFileAttributeBool(title: "Has Videos", detail: zimFile.hasVideos)
+                    ZimFileAttributeBool(title: "Has Details", detail: zimFile.hasDetails)
                 }
                 Section {
                     ZimFileAttribute(
@@ -125,6 +125,27 @@ private struct ZimFileAttribute: View {
     }
 }
 
+private struct ZimFileAttributeBool: View {
+    let title: String
+    let detail: Bool
+    
+    var body: some View {
+        HStack {
+            Text(title)
+            Spacer()
+            #if os(macOS)
+            Text(detail ? "Yes" : "No").foregroundColor(.secondary)
+            #elseif os(iOS)
+            if detail {
+                Image(systemName: "checkmark.circle.fill").foregroundColor(.green)
+            } else {
+                Image(systemName: "multiply.circle.fill").foregroundColor(.secondary)
+            }
+            #endif
+        }
+    }
+}
+
 private struct ZimFileAction: View {
     let title: String
     let isDestructive: Bool
@@ -152,27 +173,6 @@ private struct ZimFileAction: View {
                 if alignment != .trailing { Spacer() }
             }
         })
-    }
-}
-
-private struct ZimFileDetailRowBool: View {
-    let title: String
-    let detail: Bool
-    
-    var body: some View {
-        HStack {
-            Text(title)
-            Spacer()
-            #if os(macOS)
-            Text(detail ? "Yes" : "No").foregroundColor(.secondary)
-            #elseif os(iOS)
-            if detail {
-                Image(systemName: "checkmark.circle.fill").foregroundColor(.green)
-            } else {
-                Image(systemName: "multiply.circle.fill").foregroundColor(.secondary)
-            }
-            #endif
-        }
     }
 }
 
