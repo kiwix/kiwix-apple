@@ -330,11 +330,8 @@
 		9735D0C327778B2A00C7D495 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Info.plist; path = macOS_SwiftUI/Support/Info.plist; sourceTree = SOURCE_ROOT; };
 		973A0DE2281D80E300B41E71 /* ZimFileDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZimFileDetail.swift; sourceTree = "<group>"; };
 		973A2FC4277EAA2500BD4320 /* OPDSRefreshError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OPDSRefreshError.swift; sourceTree = "<group>"; };
-		973A2FC9277F673800BD4320 /* LibraryZimFilesGrid.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryZimFilesGrid.swift; sourceTree = "<group>"; };
 		973A2FCD277FB03F00BD4320 /* FlavorTag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlavorTag.swift; sourceTree = "<group>"; };
 		973A2FCF277FB99000BD4320 /* SectionHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionHeader.swift; sourceTree = "<group>"; };
-		973A2FD1277FC32D00BD4320 /* Library.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Library.swift; sourceTree = "<group>"; };
-		973A2FD5277FD8F300BD4320 /* LibrarySidebar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibrarySidebar.swift; sourceTree = "<group>"; };
 		973A2FD72780024600BD4320 /* ZimFileCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZimFileCell.swift; sourceTree = "<group>"; };
 		973B2A5C254609FD00093661 /* Modifiers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Modifiers.swift; sourceTree = "<group>"; };
 		973B8011239066D0008CC8CE /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -407,9 +404,7 @@
 		97A2AE2125866D9200DEF81D /* ButtonProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonProvider.swift; sourceTree = "<group>"; };
 		97A36C4E1F8C21210079B452 /* Kiwix.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Kiwix.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		97A963C3259D38D900496214 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
-		97B073732780A000007C7DF3 /* LibraryZimFileDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryZimFileDetail.swift; sourceTree = "<group>"; };
 		97B0737527825E3D007C7DF3 /* Favicon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Favicon.swift; sourceTree = "<group>"; };
-		97B0737727889F1C007C7DF3 /* LibraryZimFilesList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryZimFilesList.swift; sourceTree = "<group>"; };
 		97B3048C277D4EF400E82DE0 /* LibraryList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryList.swift; sourceTree = "<group>"; };
 		97B3998824673FE000BC6F5B /* SearchOperation.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SearchOperation.h; sourceTree = "<group>"; };
 		97B3998924673FE000BC6F5B /* SearchOperation.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SearchOperation.mm; sourceTree = "<group>"; };
@@ -591,7 +586,6 @@
 		972DE4A72814A3D8004FD9B9 /* iOS_SwiftUI */ = {
 			isa = PBXGroup;
 			children = (
-				972DE4C02814A950004FD9B9 /* Library */,
 				972DE4A82814A3D8004FD9B9 /* iOS_SwiftUIApp.swift */,
 				972DE4AA2814A3D8004FD9B9 /* ContentView.swift */,
 				972DE4AC2814A3D9004FD9B9 /* Assets.xcassets */,
@@ -640,18 +634,6 @@
 				9735D0BF27777E3300C7D495 /* Enum.swift */,
 			);
 			path = Model;
-			sourceTree = "<group>";
-		};
-		973A2FC8277F672700BD4320 /* Library */ = {
-			isa = PBXGroup;
-			children = (
-				973A2FD1277FC32D00BD4320 /* Library.swift */,
-				973A2FD5277FD8F300BD4320 /* LibrarySidebar.swift */,
-				973A2FC9277F673800BD4320 /* LibraryZimFilesGrid.swift */,
-				97B0737727889F1C007C7DF3 /* LibraryZimFilesList.swift */,
-				97B073732780A000007C7DF3 /* LibraryZimFileDetail.swift */,
-			);
-			path = Library;
 			sourceTree = "<group>";
 		};
 		975FDAD81F6082DA00A10E8C /* iOS */ = {
@@ -954,7 +936,7 @@
 				97FB4B0C27B81B530055F86E /* ViewModels */,
 				97DED67D275278EB008D2C56 /* View */,
 				977BD5F8276C295C004D2C32 /* Reader */,
-				973A2FC8277F672700BD4320 /* Library */,
+				972DE4C02814A950004FD9B9 /* Library */,
 				97E94B19271EF24D005B0295 /* App.swift */,
 				973BC75627587A29008D4114 /* Commands.swift */,
 				97E94B26271EF359005B0295 /* Support */,
