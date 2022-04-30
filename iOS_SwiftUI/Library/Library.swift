@@ -264,12 +264,16 @@ struct ZimFileDetailPanel: ViewModifier {
     func body(content: Content) -> some View {
         #if os(macOS)
         content.safeAreaInset(edge: .trailing, spacing: 0) {
-            List {
-                Text(zimFile?.name ?? "nothing selected")
-                Text("item1")
-                Text("item2")
-                Text("item3")
-            }.frame(width: 275)
+            HStack(spacing: 0) {
+                Divider()
+                List {
+                    Text(zimFile?.name ?? "nothing selected")
+                    Text("item1")
+                    Text("item2")
+                    Text("item3")
+                }
+            }
+            .frame(width: 275)
         }
         #elseif os(iOS)
         content

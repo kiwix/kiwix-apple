@@ -31,34 +31,31 @@ struct ZimFileList: View {
     
     var body: some View {
         List(zimFiles) { zimFile in
-            NavigationLink {
-                Text("Detail about zim file: \(zimFile.name)")
-            } label: {
-                HStack {
-                    if #available(iOS 15.0, *) {
-                        Favicon(category: category, imageData: zimFile.faviconData, imageURL: zimFile.faviconURL)
-                            .frame(height: 26)
-                    }
-                    VStack(alignment: .leading, spacing: 2) {
-                        Text(zimFile.name).lineLimit(1)
-                        Text([
-                            Library.dateFormatter.string(from: zimFile.created),
-                            Library.sizeFormatter.string(fromByteCount: zimFile.size),
-                            {
-                                if #available(iOS 15.0, *) {
-                                    return "\(zimFile.articleCount.formatted(.number.notation(.compactName))) articles"
-                                } else {
-                                    return Library.formattedLargeNumber(from: zimFile.articleCount)
-                                }
-                            }()
-                        ].joined(separator: ", ")).font(.caption)
-                    }
+            HStack {
+                if #available(iOS 15.0, *) {
+                    Favicon(category: category, imageData: zimFile.faviconData, imageURL: zimFile.faviconURL)
+                        .frame(height: 26)
                 }
-            }
+                VStack(alignment: .leading, spacing: 2) {
+                    Text(zimFile.name).lineLimit(1)
+                    Text([
+                        Library.dateFormatter.string(from: zimFile.created),
+                        Library.sizeFormatter.string(fromByteCount: zimFile.size),
+                        {
+                            if #available(iOS 15.0, *) {
+                                return "\(zimFile.articleCount.formatted(.number.notation(.compactName))) articles"
+                            } else {
+                                return Library.formattedLargeNumber(from: zimFile.articleCount)
+                            }
+                        }()
+                    ].joined(separator: ", ")).font(.caption)
+                }
+            }.modifier(AdaptiveZimFileCell(selected: $selectedZimFile, zimFile: zimFile))
         }
         .listStyle(.plain)
         .navigationTitle(category.description)
         .modifier(Searchable(searchText: $searchText))
+        .modifier(ZimFileDetailPanel(zimFile: $selectedZimFile))
         .onChange(of: searchText) { _ in
             if #available(iOS 15.0, *) {
                 zimFiles.nsPredicate = ZimFileList.buildPredicate(category: category, searchText: searchText)
