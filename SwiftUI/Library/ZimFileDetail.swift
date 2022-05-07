@@ -9,114 +9,111 @@
 import CoreData
 import SwiftUI
 
+
 struct ZimFileDetail: View {
-    @Binding var zimFile: ZimFile?
+    @ObservedObject var zimFile: ZimFile
     
     var body: some View {
-        if let zimFile = zimFile {
-            #if os(macOS)
-            List {
-                HStack {
-                    if #available(iOS 15.0, *) {
-                        Favicon(
-                            category: Category(rawValue: zimFile.category) ?? .other,
-                            imageData: zimFile.faviconData,
-                            imageURL: zimFile.faviconURL
-                        ).frame(height: 26)
-                    }
-                    Spacer()
-                    Button("Download") {
-                        
-                    }
+        #if os(macOS)
+        List {
+            HStack {
+                if #available(iOS 15.0, *) {
+                    Favicon(
+                        category: Category(rawValue: zimFile.category) ?? .other,
+                        imageData: zimFile.faviconData,
+                        imageURL: zimFile.faviconURL
+                    ).frame(height: 26)
                 }
-                Section("Name & Description") {
-                    Text(zimFile.name)
-                    Text(zimFile.fileDescription)
-                }
-                Section("Info") {
-                    ZimFileAttribute(
-                        title: "Language",
-                        detail: Locale.current.localizedString(forLanguageCode: zimFile.languageCode)
-                    )
-                    ZimFileAttribute(
-                        title: "Category",
-                        detail: Category(rawValue: zimFile.category)?.description
-                    )
-                    ZimFileAttribute(
-                        title: "Size",
-                        detail: Library.sizeFormatter.string(fromByteCount: zimFile.size)
-                    )
-                    ZimFileAttribute(
-                        title: "Created",
-                        detail: Library.dateFormatterMedium.string(from: zimFile.created)
-                    )
-                    ZimFileAttributeBool(title: "Has Pictures", detail: zimFile.hasPictures)
-                    ZimFileAttributeBool(title: "Has Videos", detail: zimFile.hasVideos)
-                    ZimFileAttributeBool(title: "Has Details", detail: zimFile.hasDetails)
-                    ZimFileAttribute(title: "Article Count", detail: zimFile.articleCount.formatted())
-                    ZimFileAttribute(title: "Media Count", detail: zimFile.mediaCount.formatted())
-                    ZimFileAttribute(title: "ID", detail: String(zimFile.fileID.uuidString.prefix(8)))
+                Spacer()
+                Button("Download") {
+                    
                 }
             }
-            #elseif os(iOS)
-            List {
-                Section {
-                    Text(zimFile.name)
-                    Text(zimFile.fileDescription)
-                }
-                Section {
-                    if let downloadTask = zimFile.downloadTask {
-                        ZimFileAction(title: "Cancel") {
-                            Downloads.shared.cancel(zimFileID: zimFile.id)
-                        }
-                    } else if zimFile.downloadURL != nil {
-                        ZimFileAction(title: "Download") {
-                            Downloads.shared.start(zimFileID: zimFile.id, allowsCellularAccess: false)
-                        }
-                    }
-                }
-                Section {
-                    ZimFileAttribute(
-                        title: "Language",
-                        detail: Locale.current.localizedString(forLanguageCode: zimFile.languageCode)
-                    )
-                    ZimFileAttribute(
-                        title: "Category",
-                        detail: Category(rawValue: zimFile.category)?.description
-                    )
-                    ZimFileAttribute(
-                        title: "Size",
-                        detail: Library.sizeFormatter.string(fromByteCount: zimFile.size)
-                    )
-                    ZimFileAttribute(
-                        title: "Created",
-                        detail: Library.dateFormatterMedium.string(from: zimFile.created)
-                    )
-                }
-                Section {
-                    ZimFileAttributeBool(title: "Has Pictures", detail: zimFile.hasPictures)
-                    ZimFileAttributeBool(title: "Has Videos", detail: zimFile.hasVideos)
-                    ZimFileAttributeBool(title: "Has Details", detail: zimFile.hasDetails)
-                }
-                Section {
-                    ZimFileAttribute(
-                        title: "Article Count",
-                        detail: Library.numberFormatter.string(from: NSNumber(value: zimFile.articleCount))
-                    )
-                    ZimFileAttribute(
-                        title: "Media Count",
-                        detail: Library.numberFormatter.string(from: NSNumber(value: zimFile.mediaCount))
-                    )
-                }
+            Section("Name & Description") {
+                Text(zimFile.name)
+                Text(zimFile.fileDescription)
+            }
+            Section("Info") {
+                ZimFileAttribute(
+                    title: "Language",
+                    detail: Locale.current.localizedString(forLanguageCode: zimFile.languageCode)
+                )
+                ZimFileAttribute(
+                    title: "Category",
+                    detail: Category(rawValue: zimFile.category)?.description
+                )
+                ZimFileAttribute(
+                    title: "Size",
+                    detail: Library.sizeFormatter.string(fromByteCount: zimFile.size)
+                )
+                ZimFileAttribute(
+                    title: "Created",
+                    detail: Library.dateFormatterMedium.string(from: zimFile.created)
+                )
+                ZimFileAttributeBool(title: "Has Pictures", detail: zimFile.hasPictures)
+                ZimFileAttributeBool(title: "Has Videos", detail: zimFile.hasVideos)
+                ZimFileAttributeBool(title: "Has Details", detail: zimFile.hasDetails)
+                ZimFileAttribute(title: "Article Count", detail: zimFile.articleCount.formatted())
+                ZimFileAttribute(title: "Media Count", detail: zimFile.mediaCount.formatted())
                 ZimFileAttribute(title: "ID", detail: String(zimFile.fileID.uuidString.prefix(8)))
             }
-            .listStyle(.insetGrouped)
-            .navigationTitle(zimFile.name)
-            .navigationBarTitleDisplayMode(.inline)
-            #endif
-        } else {
-            Text("Select a zim file to view details")
         }
+        #elseif os(iOS)
+        List {
+            Section {
+                Text(zimFile.name)
+                Text(zimFile.fileDescription)
+            }
+            Section {
+                if let downloadTask = zimFile.downloadTask {
+                    ZimFileAction(title: "Cancel") {
+                        Downloads.shared.cancel(zimFileID: zimFile.id)
+                    }
+                } else if zimFile.downloadURL != nil {
+                    ZimFileAction(title: "Download") {
+                        Downloads.shared.start(zimFileID: zimFile.id, allowsCellularAccess: false)
+                    }
+                }
+            }
+            Section {
+                ZimFileAttribute(
+                    title: "Language",
+                    detail: Locale.current.localizedString(forLanguageCode: zimFile.languageCode)
+                )
+                ZimFileAttribute(
+                    title: "Category",
+                    detail: Category(rawValue: zimFile.category)?.description
+                )
+                ZimFileAttribute(
+                    title: "Size",
+                    detail: Library.sizeFormatter.string(fromByteCount: zimFile.size)
+                )
+                ZimFileAttribute(
+                    title: "Created",
+                    detail: Library.dateFormatterMedium.string(from: zimFile.created)
+                )
+            }
+            Section {
+                ZimFileAttributeBool(title: "Has Pictures", detail: zimFile.hasPictures)
+                ZimFileAttributeBool(title: "Has Videos", detail: zimFile.hasVideos)
+                ZimFileAttributeBool(title: "Has Details", detail: zimFile.hasDetails)
+            }
+            Section {
+                ZimFileAttribute(
+                    title: "Article Count",
+                    detail: Library.numberFormatter.string(from: NSNumber(value: zimFile.articleCount))
+                )
+                ZimFileAttribute(
+                    title: "Media Count",
+                    detail: Library.numberFormatter.string(from: NSNumber(value: zimFile.mediaCount))
+                )
+            }
+            ZimFileAttribute(title: "ID", detail: String(zimFile.fileID.uuidString.prefix(8)))
+        }
+        .listStyle(.insetGrouped)
+        .navigationTitle(zimFile.name)
+        .navigationBarTitleDisplayMode(.inline)
+        #endif
     }
 }
 
@@ -206,7 +203,6 @@ struct ZimFileDetail_Previews: PreviewProvider {
     }()
     
     static var previews: some View {
-        ZimFileDetail(zimFile: .constant(nil)).padding().previewLayout(.sizeThatFits)
-        ZimFileDetail(zimFile: .constant(zimFile)).frame(width: 300).previewLayout(.sizeThatFits)
+        ZimFileDetail(zimFile: zimFile).frame(width: 300).previewLayout(.sizeThatFits)
     }
 }
