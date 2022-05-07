@@ -34,22 +34,7 @@ struct ZimFileDetail: View {
                 Text(zimFile.fileDescription)
             }
             Section("Info") {
-                ZimFileAttribute(
-                    title: "Language",
-                    detail: Locale.current.localizedString(forLanguageCode: zimFile.languageCode)
-                )
-                ZimFileAttribute(
-                    title: "Category",
-                    detail: Category(rawValue: zimFile.category)?.description
-                )
-                ZimFileAttribute(
-                    title: "Size",
-                    detail: Library.sizeFormatter.string(fromByteCount: zimFile.size)
-                )
-                ZimFileAttribute(
-                    title: "Created",
-                    detail: Library.dateFormatterMedium.string(from: zimFile.created)
-                )
+                basicInfo
                 ZimFileAttributeBool(title: "Has Pictures", detail: zimFile.hasPictures)
                 ZimFileAttributeBool(title: "Has Videos", detail: zimFile.hasVideos)
                 ZimFileAttributeBool(title: "Has Details", detail: zimFile.hasDetails)
@@ -69,6 +54,7 @@ struct ZimFileDetail: View {
                     ZimFileAction(title: "Cancel") {
                         Downloads.shared.cancel(zimFileID: zimFile.id)
                     }
+                    Text("\(downloadTask.downloadedBytes)")
                 } else if zimFile.downloadURL != nil {
                     ZimFileAction(title: "Download") {
                         Downloads.shared.start(zimFileID: zimFile.id, allowsCellularAccess: false)
@@ -76,22 +62,7 @@ struct ZimFileDetail: View {
                 }
             }
             Section {
-                ZimFileAttribute(
-                    title: "Language",
-                    detail: Locale.current.localizedString(forLanguageCode: zimFile.languageCode)
-                )
-                ZimFileAttribute(
-                    title: "Category",
-                    detail: Category(rawValue: zimFile.category)?.description
-                )
-                ZimFileAttribute(
-                    title: "Size",
-                    detail: Library.sizeFormatter.string(fromByteCount: zimFile.size)
-                )
-                ZimFileAttribute(
-                    title: "Created",
-                    detail: Library.dateFormatterMedium.string(from: zimFile.created)
-                )
+                basicInfo
             }
             Section {
                 ZimFileAttributeBool(title: "Has Pictures", detail: zimFile.hasPictures)
@@ -114,6 +85,26 @@ struct ZimFileDetail: View {
         .navigationTitle(zimFile.name)
         .navigationBarTitleDisplayMode(.inline)
         #endif
+    }
+    
+    @ViewBuilder
+    var basicInfo: some View {
+        ZimFileAttribute(
+            title: "Language",
+            detail: Locale.current.localizedString(forLanguageCode: zimFile.languageCode)
+        )
+        ZimFileAttribute(
+            title: "Category",
+            detail: Category(rawValue: zimFile.category)?.description
+        )
+        ZimFileAttribute(
+            title: "Size",
+            detail: Library.sizeFormatter.string(fromByteCount: zimFile.size)
+        )
+        ZimFileAttribute(
+            title: "Created",
+            detail: Library.dateFormatterMedium.string(from: zimFile.created)
+        )
     }
 }
 
