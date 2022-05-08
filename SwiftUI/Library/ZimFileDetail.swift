@@ -53,7 +53,7 @@ struct ZimFileDetail: View {
                 if let downloadTask = zimFile.downloadTask {
                     DownloadTaskDetail(downloadTask: downloadTask)
                 } else if zimFile.downloadURL != nil {
-                    ZimFileAction(title: "Download") {
+                    Action(title: "Download") {
                         Downloads.shared.start(zimFileID: zimFile.id, allowsCellularAccess: false)
                     }
                 }
@@ -98,16 +98,16 @@ private struct DownloadTaskDetail: View {
     @ObservedObject var downloadTask: DownloadTask
     
     var body: some View {
-        ZimFileAction(title: "Cancel") {
+        Action(title: "Cancel") {
             Downloads.shared.cancel(zimFileID: downloadTask.fileID)
         }
         if downloadTask.resumeData == nil {
-            ZimFileAction(title: "Pause") {
+            Action(title: "Pause") {
                 Downloads.shared.pause(zimFileID: downloadTask.fileID)
             }
             Attribute(title: "Downloading...", detail: detail)
         } else {
-            ZimFileAction(title: "Resume") {
+            Action(title: "Resume") {
                 Downloads.shared.resume(zimFileID: downloadTask.fileID)
             }
             Attribute(title: "Paused", detail: detail)
@@ -170,7 +170,7 @@ private struct AttributeBool: View {
     }
 }
 
-private struct ZimFileAction: View {
+private struct Action: View {
     let title: String
     let isDestructive: Bool
     let alignment: HorizontalAlignment
