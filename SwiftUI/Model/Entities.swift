@@ -27,6 +27,7 @@ class DownloadTask: NSManagedObject, Identifiable {
 
     @NSManaged var created: Date
     @NSManaged var downloadedBytes: Int64
+    @NSManaged var error: String?
     @NSManaged var fileID: UUID
     @NSManaged var resumeData: Data?
     @NSManaged var totalBytes: Int64

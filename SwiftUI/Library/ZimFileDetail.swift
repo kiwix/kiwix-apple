@@ -112,6 +112,9 @@ private struct DownloadTaskDetail: View {
             }
             Attribute(title: "Paused", detail: detail)
         }
+        if let error = downloadTask.error {
+            Text(error)
+        }
     }
     
     var detail: String {

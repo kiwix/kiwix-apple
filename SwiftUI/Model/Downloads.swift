@@ -27,10 +27,8 @@ class Downloads: NSObject, URLSessionDelegate, URLSessionTaskDelegate, URLSessio
     
     // MARK: - management
     
-    private override init() {}
-    
-    /// When app is launched, restore heartbeat & total bytes written if there are download task
-    func restorePreviousState() {
+    private override init() {
+        super.init()
         session.getTasksWithCompletionHandler { _, _, downloadTasks in
             guard downloadTasks.count > 0 else { return }
             for task in downloadTasks {
@@ -151,6 +149,7 @@ class Downloads: NSObject, URLSessionDelegate, URLSessionTaskDelegate, URLSessio
             task.taskDescription = zimFileID.uuidString
             task.resume()
             
+            downloadTask.error = nil
             downloadTask.resumeData = nil
             try? context.save()
             
@@ -167,6 +166,37 @@ class Downloads: NSObject, URLSessionDelegate, URLSessionTaskDelegate, URLSessio
         if totalBytesWritten.count == 0 {
             stopHeartbeat()
         }
+        
+        // download finished successfully if there's no error
+        guard let error = error as NSError? else {
+            os_log(
+                "Download finished successfully. File ID: %s.",
+                log: Log.DownloadService,
+                type: .info,
+                zimFileID.uuidString
+            )
+            return
+        }
+        
+        // save the error description and resume data if possible
+        guard error.code != URLError.cancelled.rawValue else { return }
+        let context = Database.shared.container.newBackgroundContext()
+        context.perform {
+            let request = DownloadTask.fetchRequest(fileID: zimFileID)
+            guard let downloadTask = try? context.fetch(request).first else { return }
+            downloadTask.error = error.localizedDescription
+            if let resumeData = error.userInfo[NSURLSessionDownloadTaskResumeData] as? Data {
+                downloadTask.resumeData = resumeData
+            }
+            try? context.save()
+        }
+        os_log(
+            "Download errored. File ID: %s. Error",
+            log: Log.DownloadService,
+            type: .error,
+            zimFileID.uuidString,
+            error.localizedDescription
+        )
     }
     
     // MARK: - URLSessionDownloadDelegate
