@@ -6,8 +6,8 @@
 //  Copyright © 2022 Chris Li. All rights reserved.
 //
 
-import os
 import CoreData
+import os
 
 class Downloads: NSObject, URLSessionDelegate, URLSessionTaskDelegate, URLSessionDownloadDelegate {
     static let shared = Downloads()
