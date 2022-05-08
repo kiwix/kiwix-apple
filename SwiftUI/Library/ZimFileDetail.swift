@@ -16,33 +16,29 @@ struct ZimFileDetail: View {
     var body: some View {
         #if os(macOS)
         List {
-            HStack {
-                if #available(iOS 15.0, *) {
-                    Favicon(
-                        category: Category(rawValue: zimFile.category) ?? .other,
-                        imageData: zimFile.faviconData,
-                        imageURL: zimFile.faviconURL
-                    ).frame(height: 26)
-                }
-                Spacer()
-                Button("Download") {
-                    
-                }
-            }
-            Section("Name & Description") {
+            Section("Name") {
                 Text(zimFile.name)
-                Text(zimFile.fileDescription)
-            }
+            }.collapsible(false)
+            Section("Description") {
+                Text(zimFile.fileDescription).lineLimit(nil)
+            }.collapsible(false)
+            Section("Download") {
+                if let downloadTask = zimFile.downloadTask {
+                    DownloadTaskDetail(downloadTask: downloadTask)
+                } else if zimFile.downloadURL != nil {
+                    Action(title: "Download") {
+                        Downloads.shared.start(zimFileID: zimFile.id, allowsCellularAccess: false)
+                    }
+                }
+            }.collapsible(false)
             Section("Info") {
                 basicInfo
-                ZimFileAttributeBool(title: "Has Pictures", detail: zimFile.hasPictures)
-                ZimFileAttributeBool(title: "Has Videos", detail: zimFile.hasVideos)
-                ZimFileAttributeBool(title: "Has Details", detail: zimFile.hasDetails)
-                ZimFileAttribute(title: "Article Count", detail: zimFile.articleCount.formatted())
-                ZimFileAttribute(title: "Media Count", detail: zimFile.mediaCount.formatted())
-                ZimFileAttribute(title: "ID", detail: String(zimFile.fileID.uuidString.prefix(8)))
-            }
+                boolInfo
+                counts
+                Attribute(title: "ID", detail: String(zimFile.fileID.uuidString.prefix(8)))
+            }.collapsible(false)
         }
+        .listStyle(.sidebar)
         #elseif os(iOS)
         List {
             Section {
@@ -59,11 +55,7 @@ struct ZimFileDetail: View {
                 }
             }
             Section { basicInfo }
-            Section {
-                AttributeBool(title: "Pictures", detail: zimFile.hasPictures)
-                AttributeBool(title: "Videos", detail: zimFile.hasVideos)
-                AttributeBool(title: "Details", detail: zimFile.hasDetails)
-            }
+            Section { boolInfo }
             Section { counts }
             Attribute(title: "ID", detail: String(zimFile.fileID.uuidString.prefix(8)))
         }
@@ -79,6 +71,13 @@ struct ZimFileDetail: View {
         Attribute(title: "Category", detail: Category(rawValue: zimFile.category)?.description)
         Attribute(title: "Size", detail: Library.sizeFormatter.string(fromByteCount: zimFile.size))
         Attribute(title: "Created", detail: Library.dateFormatterMedium.string(from: zimFile.created))
+    }
+    
+    @ViewBuilder
+    var boolInfo: some View {
+        AttributeBool(title: "Pictures", detail: zimFile.hasPictures)
+        AttributeBool(title: "Videos", detail: zimFile.hasVideos)
+        AttributeBool(title: "Details", detail: zimFile.hasDetails)
     }
     
     @ViewBuilder
@@ -207,6 +206,7 @@ struct ZimFileDetail_Previews: PreviewProvider {
         zimFile.articleCount = 1000000
         zimFile.category = "wikipedia"
         zimFile.created = Date()
+        zimFile.downloadURL = URL(string: "https://www.example.com")
         zimFile.fileID = UUID()
         zimFile.fileDescription = "A very long description"
         zimFile.flavor = "max"

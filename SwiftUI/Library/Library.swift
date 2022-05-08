@@ -289,7 +289,15 @@ struct MacAdaptableContent: ViewModifier {
             content.safeAreaInset(edge: .trailing, spacing: 0) {
                 HStack(spacing: 0) {
                     Divider()
-                    ZimFileDetail(zimFile: $zimFile)
+                    if let zimFile = zimFile {
+                        ZimFileDetail(zimFile: zimFile)
+                    } else {
+                        HStack {
+                            Spacer()
+                            Text("select a zim file")
+                            Spacer()
+                        }
+                    }
                 }.frame(width: 275)
             }
         }
