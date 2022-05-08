@@ -54,7 +54,7 @@ struct ZimFileDetail: View {
                     ZimFileAction(title: "Cancel") {
                         Downloads.shared.cancel(zimFileID: zimFile.id)
                     }
-                    Text("\(downloadTask.downloadedBytes)")
+                    DownloadProgress(downloadTask: downloadTask)
                 } else if zimFile.downloadURL != nil {
                     ZimFileAction(title: "Download") {
                         Downloads.shared.start(zimFileID: zimFile.id, allowsCellularAccess: false)
@@ -105,6 +105,32 @@ struct ZimFileDetail: View {
             title: "Created",
             detail: Library.dateFormatterMedium.string(from: zimFile.created)
         )
+    }
+}
+
+private struct DownloadProgress: View {
+    @ObservedObject var downloadTask: DownloadTask
+    
+    var body: some View {
+        ZimFileAttribute(title: "Downloading...", detail: detail)
+    }
+    
+    var detail: String {
+        if let percent = percent {
+            return "\(size) - \(percent)"
+        } else {
+            return size
+        }
+    }
+    
+    var size: String {
+        Library.sizeFormatter.string(fromByteCount: downloadTask.downloadedBytes)
+    }
+    
+    var percent: String? {
+        guard downloadTask.totalBytes > 0 else { return nil }
+        let fractionCompleted = NSNumber(value: Double(downloadTask.downloadedBytes) / Double(downloadTask.totalBytes))
+        return Library.percentFormatter.string(from: fractionCompleted)
     }
 }
 

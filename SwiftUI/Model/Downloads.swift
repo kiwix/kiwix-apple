@@ -55,8 +55,6 @@ class Downloads: NSObject, URLSessionDelegate, URLSessionTaskDelegate, URLSessio
                         let request = DownloadTask.fetchRequest(predicate: predicate)
                         guard let downloadTask = try? context.fetch(request).first else { return }
                         downloadTask.downloadedBytes = downloadedBytes
-                        guard let zimFile = try? context.fetch(ZimFile.fetchRequest(fileID: zimFileID)).first else { return }
-                        zimFile.mediaCount = downloadedBytes
                     }
                     try? context.save()
                 }

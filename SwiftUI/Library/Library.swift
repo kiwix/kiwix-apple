@@ -104,6 +104,12 @@ extension Library {
         return formatter
     }()
     
+    static let percentFormatter: NumberFormatter = {
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .percent
+        return formatter
+    }()
+    
     static func formattedLargeNumber(from value: Int64) -> String {
         let sign = ((value < 0) ? "-" : "" )
         let abs = Swift.abs(value)
