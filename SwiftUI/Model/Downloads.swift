@@ -49,7 +49,6 @@ class Downloads: NSObject, URLSessionDelegate, URLSessionTaskDelegate, URLSessio
             self.heartbeat = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in
                 let context = Database.shared.container.newBackgroundContext()
                 context.perform {
-                    print(self.totalBytesWritten)
                     for (zimFileID, downloadedBytes) in self.totalBytesWritten {
                         let predicate = NSPredicate(format: "fileID == %@", zimFileID as CVarArg)
                         let request = DownloadTask.fetchRequest(predicate: predicate)
@@ -185,5 +184,13 @@ class Downloads: NSObject, URLSessionDelegate, URLSessionTaskDelegate, URLSessio
     func urlSession(_ session: URLSession,
                     downloadTask: URLSessionDownloadTask,
                     didFinishDownloadingTo location: URL) {
+        guard let documentDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first,
+            let zimFileID = downloadTask.taskDescription else {return}
+        
+        let fileName = downloadTask.response?.suggestedFilename
+            ?? downloadTask.originalRequest?.url?.lastPathComponent
+            ?? zimFileID + ".zim"
+        let destination = documentDirectory.appendingPathComponent(fileName)
+        try? FileManager.default.moveItem(at: location, to: destination)
     }
 }
