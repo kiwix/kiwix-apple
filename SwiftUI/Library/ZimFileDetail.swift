@@ -51,10 +51,7 @@ struct ZimFileDetail: View {
             }
             Section {
                 if let downloadTask = zimFile.downloadTask {
-                    ZimFileAction(title: "Cancel") {
-                        Downloads.shared.cancel(zimFileID: zimFile.id)
-                    }
-                    DownloadProgress(downloadTask: downloadTask)
+                    DownloadTaskDetail(downloadTask: downloadTask)
                 } else if zimFile.downloadURL != nil {
                     ZimFileAction(title: "Download") {
                         Downloads.shared.start(zimFileID: zimFile.id, allowsCellularAccess: false)
@@ -97,11 +94,24 @@ struct ZimFileDetail: View {
     }
 }
 
-private struct DownloadProgress: View {
+private struct DownloadTaskDetail: View {
     @ObservedObject var downloadTask: DownloadTask
     
     var body: some View {
-        Attribute(title: "Downloading...", detail: detail)
+        ZimFileAction(title: "Cancel") {
+            Downloads.shared.cancel(zimFileID: downloadTask.fileID)
+        }
+        if downloadTask.resumeData == nil {
+            ZimFileAction(title: "Pause") {
+                Downloads.shared.pause(zimFileID: downloadTask.fileID)
+            }
+            Attribute(title: "Downloading...", detail: detail)
+        } else {
+            ZimFileAction(title: "Resume") {
+                Downloads.shared.resume(zimFileID: downloadTask.fileID)
+            }
+            Attribute(title: "Paused", detail: detail)
+        }
     }
     
     var detail: String {

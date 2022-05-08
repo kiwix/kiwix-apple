@@ -108,7 +108,7 @@ class Downloads: NSObject, URLSessionDelegate, URLSessionTaskDelegate, URLSessio
     /// - Parameter zimFileID: identifier of the zim file
     func cancel(zimFileID: UUID) {
         session.getTasksWithCompletionHandler { _, _, downloadTasks in
-            if let task = downloadTasks.filter({ UUID(uuidString: $0.taskDescription ?? "") == zimFileID }).first {
+            if let task = downloadTasks.filter({ $0.taskDescription == zimFileID.uuidString }).first {
                 task.cancel()
             }
             
@@ -119,6 +119,43 @@ class Downloads: NSObject, URLSessionDelegate, URLSessionTaskDelegate, URLSessio
                 context.delete(downloadTask)
                 try? context.save()
             }
+        }
+    }
+    
+    /// Pause a zim file download task
+    /// - Parameter zimFileID: identifier of the zim file
+    func pause(zimFileID: UUID) {
+        session.getTasksWithCompletionHandler { _, _, downloadTasks in
+            guard let task = downloadTasks.filter({ $0.taskDescription == zimFileID.uuidString }).first else { return }
+            task.cancel { resumeData in
+                let context = Database.shared.container.newBackgroundContext()
+                context.perform {
+                    let request = DownloadTask.fetchRequest(fileID: zimFileID)
+                    guard let downloadTask = try? context.fetch(request).first else { return }
+                    downloadTask.resumeData = resumeData
+                    try? context.save()
+                }
+            }
+        }
+    }
+    
+    /// Resume a zim file download task and start heartbeat
+    /// - Parameter zimFileID: identifier of the zim file
+    func resume(zimFileID: UUID) {
+        let context = Database.shared.container.newBackgroundContext()
+        context.perform {
+            let request = DownloadTask.fetchRequest(fileID: zimFileID)
+            guard let downloadTask = try? context.fetch(request).first,
+                  let resumeData = downloadTask.resumeData else { return }
+            
+            let task = self.session.downloadTask(withResumeData: resumeData)
+            task.taskDescription = zimFileID.uuidString
+            task.resume()
+            
+            downloadTask.resumeData = nil
+            try? context.save()
+            
+            self.startHeartbeat()
         }
     }
     
