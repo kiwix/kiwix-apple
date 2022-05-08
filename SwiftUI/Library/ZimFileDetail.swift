@@ -61,25 +61,14 @@ struct ZimFileDetail: View {
                     }
                 }
             }
+            Section { basicInfo }
             Section {
-                basicInfo
+                AttributeBool(title: "Pictures", detail: zimFile.hasPictures)
+                AttributeBool(title: "Videos", detail: zimFile.hasVideos)
+                AttributeBool(title: "Details", detail: zimFile.hasDetails)
             }
-            Section {
-                ZimFileAttributeBool(title: "Pictures", detail: zimFile.hasPictures)
-                ZimFileAttributeBool(title: "Videos", detail: zimFile.hasVideos)
-                ZimFileAttributeBool(title: "Details", detail: zimFile.hasDetails)
-            }
-            Section {
-                ZimFileAttribute(
-                    title: "Article Count",
-                    detail: Library.numberFormatter.string(from: NSNumber(value: zimFile.articleCount))
-                )
-                ZimFileAttribute(
-                    title: "Media Count",
-                    detail: Library.numberFormatter.string(from: NSNumber(value: zimFile.mediaCount))
-                )
-            }
-            ZimFileAttribute(title: "ID", detail: String(zimFile.fileID.uuidString.prefix(8)))
+            Section { counts }
+            Attribute(title: "ID", detail: String(zimFile.fileID.uuidString.prefix(8)))
         }
         .listStyle(.insetGrouped)
         .navigationTitle(zimFile.name)
@@ -89,21 +78,21 @@ struct ZimFileDetail: View {
     
     @ViewBuilder
     var basicInfo: some View {
-        ZimFileAttribute(
-            title: "Language",
-            detail: Locale.current.localizedString(forLanguageCode: zimFile.languageCode)
+        Attribute(title: "Language", detail: Locale.current.localizedString(forLanguageCode: zimFile.languageCode))
+        Attribute(title: "Category", detail: Category(rawValue: zimFile.category)?.description)
+        Attribute(title: "Size", detail: Library.sizeFormatter.string(fromByteCount: zimFile.size))
+        Attribute(title: "Created", detail: Library.dateFormatterMedium.string(from: zimFile.created))
+    }
+    
+    @ViewBuilder
+    var counts: some View {
+        Attribute(
+            title: "Article Count",
+            detail: Library.numberFormatter.string(from: NSNumber(value: zimFile.articleCount))
         )
-        ZimFileAttribute(
-            title: "Category",
-            detail: Category(rawValue: zimFile.category)?.description
-        )
-        ZimFileAttribute(
-            title: "Size",
-            detail: Library.sizeFormatter.string(fromByteCount: zimFile.size)
-        )
-        ZimFileAttribute(
-            title: "Created",
-            detail: Library.dateFormatterMedium.string(from: zimFile.created)
+        Attribute(
+            title: "Media Count",
+            detail: Library.numberFormatter.string(from: NSNumber(value: zimFile.mediaCount))
         )
     }
 }
@@ -112,7 +101,7 @@ private struct DownloadProgress: View {
     @ObservedObject var downloadTask: DownloadTask
     
     var body: some View {
-        ZimFileAttribute(title: "Downloading...", detail: detail)
+        Attribute(title: "Downloading...", detail: detail)
     }
     
     var detail: String {
@@ -134,7 +123,7 @@ private struct DownloadProgress: View {
     }
 }
 
-private struct ZimFileAttribute: View {
+private struct Attribute: View {
     let title: String
     let detail: String?
     
@@ -147,7 +136,7 @@ private struct ZimFileAttribute: View {
     }
 }
 
-private struct ZimFileAttributeBool: View {
+private struct AttributeBool: View {
     let title: String
     let detail: Bool
     
