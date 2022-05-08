@@ -65,9 +65,9 @@ struct ZimFileDetail: View {
                 basicInfo
             }
             Section {
-                ZimFileAttributeBool(title: "Has Pictures", detail: zimFile.hasPictures)
-                ZimFileAttributeBool(title: "Has Videos", detail: zimFile.hasVideos)
-                ZimFileAttributeBool(title: "Has Details", detail: zimFile.hasDetails)
+                ZimFileAttributeBool(title: "Pictures", detail: zimFile.hasPictures)
+                ZimFileAttributeBool(title: "Videos", detail: zimFile.hasVideos)
+                ZimFileAttributeBool(title: "Details", detail: zimFile.hasDetails)
             }
             Section {
                 ZimFileAttribute(
