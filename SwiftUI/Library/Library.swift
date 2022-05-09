@@ -257,7 +257,7 @@ struct ZimFileCellSelection: ViewModifier {
             selected = zimFile
         }
         #elseif os(iOS)
-        NavigationLink(tag: zimFile, selection: $selected) {
+        NavigationLink {
             if let zimFile = zimFile {
                 ZimFileDetail(zimFile: zimFile)
             }
