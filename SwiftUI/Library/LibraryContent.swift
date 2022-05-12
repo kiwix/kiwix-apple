@@ -15,10 +15,10 @@ struct LibraryContent: View {
         switch topic {
         case .opened:
             Text("Show opened zim files")
-        case .new:
-            ZimFilesNew()
         case .downloads:
             ZimFilesDownloads()
+        case .new:
+            ZimFilesNew()
         case .categories:
             List {
                 ForEach(Category.allCases.map{ LibraryTopic.category($0) }) { topic in

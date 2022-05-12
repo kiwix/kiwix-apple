@@ -9,21 +9,17 @@
 import SwiftUI
 
 struct ZimFilesNew: View {
-    @FetchRequest private var zimFiles: FetchedResults<ZimFile>
+    @FetchRequest(
+        sortDescriptors: [
+            NSSortDescriptor(keyPath: \ZimFile.created, ascending: false),
+            NSSortDescriptor(keyPath: \ZimFile.name, ascending: true),
+            NSSortDescriptor(keyPath: \ZimFile.size, ascending: false)
+        ],
+        predicate: ZimFilesNew.buildPredicate(searchText: ""),
+        animation: .easeInOut
+    ) private var zimFiles: FetchedResults<ZimFile>
     @State private var searchText = ""
     @State private var selectedZimFile: ZimFile?
-    
-    init() {
-        self._zimFiles = FetchRequest<ZimFile>(
-            sortDescriptors: [
-                NSSortDescriptor(keyPath: \ZimFile.created, ascending: false),
-                NSSortDescriptor(keyPath: \ZimFile.name, ascending: true),
-                NSSortDescriptor(keyPath: \ZimFile.size, ascending: false)
-            ],
-            predicate: ZimFilesNew.buildPredicate(searchText: ""),
-            animation: .easeInOut
-        )
-    }
     
     var body: some View {
         GeometryReader { proxy in
