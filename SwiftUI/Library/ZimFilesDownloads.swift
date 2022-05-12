@@ -23,7 +23,7 @@ struct ZimFilesDownloads: View {
     var body: some View {
         List(downloadTasks) { downloadTask in
             if #available(iOS 15.0, *) {
-                Text(downloadTask.zimFile?.name ?? "Unknown").swipeActions {
+                Text(downloadTask.zimFile?.name ?? "Unknown").contextMenu {
                     Button("Cancel") {
                         Downloads.shared.cancel(zimFileID: downloadTask.fileID)
                     }
