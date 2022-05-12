@@ -27,11 +27,7 @@ struct Library: View {
                 }.collapsible(false)
             }
             .frame(minWidth: 200)
-            .toolbar {
-                ToolbarItem(placement: .primaryAction) {
-                    SidebarButton()
-                }
-            }
+            .toolbar { SidebarButton() }
             if let selectedTopic = selectedTopic {
                 LibraryContent(topic: selectedTopic)
             }
@@ -63,10 +59,7 @@ struct Library: View {
                 }
                 .navigationViewStyle(.stack)
                 .tag(topic)
-                .tabItem {
-                    Image(systemName: topic.iconName)
-                    Text(topic.name)
-                }
+                .tabItem { Label(topic.name, image: topic.iconName) }
             }
         }.onAppear {
             Task {
