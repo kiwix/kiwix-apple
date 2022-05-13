@@ -11,7 +11,6 @@ import SwiftUI
 struct ZimFileList: View {
     @FetchRequest private var zimFiles: FetchedResults<ZimFile>
     @State private var searchText = ""
-    @State private var hovering: ZimFile?
     @State private var selected: ZimFile?
     
     let category: Category
@@ -32,26 +31,7 @@ struct ZimFileList: View {
     
     var body: some View {
         List(zimFiles, id: \.self, selection: $selected) { zimFile in
-            HStack {
-                if #available(iOS 15.0, *) {
-                    Favicon(category: category, imageData: zimFile.faviconData, imageURL: zimFile.faviconURL)
-                        .frame(height: 26)
-                }
-                VStack(alignment: .leading, spacing: 2) {
-                    Text(zimFile.name).lineLimit(1)
-                    Text([
-                        Library.dateFormatter.string(from: zimFile.created),
-                        Library.sizeFormatter.string(fromByteCount: zimFile.size),
-                        {
-                            if #available(iOS 15.0, *) {
-                                return "\(zimFile.articleCount.formatted(.number.notation(.compactName))) articles"
-                            } else {
-                                return Library.formattedLargeNumber(from: zimFile.articleCount)
-                            }
-                        }()
-                    ].joined(separator: ", ")).font(.caption)
-                }
-            }
+            ZimFileRow(zimFile)
         }
         .navigationTitle(category.description)
         .modifier(ZimFileListStyle())
@@ -61,6 +41,10 @@ struct ZimFileList: View {
             if #available(iOS 15.0, *) {
                 zimFiles.nsPredicate = ZimFileList.buildPredicate(category: category, searchText: searchText)
             }
+        }
+        .onChange(of: category) { _ in
+            searchText = ""
+            selected = nil
         }
     }
     
