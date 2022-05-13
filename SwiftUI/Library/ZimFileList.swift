@@ -11,6 +11,7 @@ import SwiftUI
 struct ZimFileList: View {
     @FetchRequest private var zimFiles: FetchedResults<ZimFile>
     @State private var searchText = ""
+    @State private var hovering: ZimFile?
     @State private var selected: ZimFile?
     
     let category: Category
@@ -30,7 +31,7 @@ struct ZimFileList: View {
     }
     
     var body: some View {
-        List(zimFiles) { zimFile in
+        List(zimFiles, id: \.self, selection: $selected) { zimFile in
             HStack {
                 if #available(iOS 15.0, *) {
                     Favicon(category: category, imageData: zimFile.faviconData, imageURL: zimFile.faviconURL)
@@ -51,7 +52,6 @@ struct ZimFileList: View {
                     ].joined(separator: ", ")).font(.caption)
                 }
             }
-            .modifier(ZimFileSelection(selected: $selected, zimFile: zimFile))
         }
         .listStyle(.inset)
         .navigationTitle(category.description)
