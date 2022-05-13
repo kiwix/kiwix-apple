@@ -41,7 +41,7 @@ struct ZimFilesNew: View {
         .navigationTitle(LibraryTopic.new.name)
         .modifier(ZimFileDetailPanel(zimFile: selected))
         .searchable(text: $searchText)
-        .onChange(of: searchText) { _ in
+        .onChange(of: searchText) { searchText in
             zimFiles.nsPredicate = ZimFilesNew.buildPredicate(searchText: searchText)
         }
     }

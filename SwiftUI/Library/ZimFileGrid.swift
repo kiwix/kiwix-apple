@@ -12,16 +12,19 @@ import SwiftUI
 struct ZimFileGrid: View {
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     @SectionedFetchRequest private var sections: SectionedFetchResults<String, ZimFile>
-    @State private var selectedZimFile: ZimFile?
+    @State private var selected: ZimFile?
     
-    let topic: LibraryTopic
+    let category: Category
     
-    init(topic: LibraryTopic) {
-        self.topic = topic
+    init(category: Category) {
+        self.category = category
         self._sections = SectionedFetchRequest<String, ZimFile>(
             sectionIdentifier: \.name,
             sortDescriptors: [SortDescriptor(\ZimFile.name), SortDescriptor(\.size, order: .reverse)],
-            predicate: topic.predicate
+            predicate: NSCompoundPredicate(andPredicateWithSubpredicates: [
+                NSPredicate(format: "languageCode == %@", "en"),
+                NSPredicate(format: "category == %@", category.rawValue)
+            ])
         )
     }
     
@@ -37,13 +40,13 @@ struct ZimFileGrid: View {
                         if sections.count <= 1 {
                             ForEach(section) { zimFile in
                                 ZimFileCell(zimFile, prominent: .size)
-                                    .modifier(ZimFileCellSelection(selected: $selectedZimFile, zimFile: zimFile))
+                                    .modifier(ZimFileSelection(selected: $selected, zimFile: zimFile))
                             }
                         } else {
                             Section {
                                 ForEach(section) { zimFile in
                                     ZimFileCell(zimFile, prominent: .size)
-                                        .modifier(ZimFileCellSelection(selected: $selectedZimFile, zimFile: zimFile))
+                                        .modifier(ZimFileSelection(selected: $selected, zimFile: zimFile))
                                 }
                             } header: {
                                 SectionHeader(
@@ -65,8 +68,8 @@ struct ZimFileGrid: View {
                 }.modifier(LibraryGridPadding(width: proxy.size.width))
             }
         }
-        .navigationTitle(topic.name)
-        .modifier(MacAdaptableContent(zimFile: $selectedZimFile))
+        .navigationTitle(category.description)
+        .modifier(ZimFileDetailPanel(zimFile: selected))
     }
     
     private func buildGridItem(gridWidth: CGFloat) -> GridItem {
