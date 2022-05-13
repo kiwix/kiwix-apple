@@ -32,6 +32,7 @@ struct ZimFileList: View {
     var body: some View {
         List(zimFiles, id: \.self, selection: $selected) { zimFile in
             ZimFileRow(zimFile)
+                .modifier(ZimFileRowSelection(zimFile: zimFile))
         }
         .navigationTitle(category.description)
         .modifier(ZimFileListStyle())

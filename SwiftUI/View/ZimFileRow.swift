@@ -6,6 +6,7 @@
 //  Copyright © 2022 Chris Li. All rights reserved.
 //
 
+import CoreData
 import SwiftUI
 
 struct ZimFileRow: View {

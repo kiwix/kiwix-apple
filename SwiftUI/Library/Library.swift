@@ -59,7 +59,7 @@ struct Library: View {
                 }
                 .navigationViewStyle(.stack)
                 .tag(topic)
-                .tabItem { Label(topic.name, image: topic.iconName) }
+                .tabItem { Label(topic.name, systemImage: topic.iconName) }
             }
         }.onAppear {
             Task {
@@ -309,6 +309,22 @@ struct ZimFileSelection: ViewModifier {
         content.onTapGesture {
             selected = zimFile
         }
+        #elseif os(iOS)
+        NavigationLink {
+            ZimFileDetail(zimFile: zimFile)
+        } label: {
+            content
+        }
+        #endif
+    }
+}
+
+struct ZimFileRowSelection: ViewModifier {
+    let zimFile: ZimFile
+    
+    func body(content: Content) -> some View {
+        #if os(macOS)
+        content
         #elseif os(iOS)
         NavigationLink {
             ZimFileDetail(zimFile: zimFile)
