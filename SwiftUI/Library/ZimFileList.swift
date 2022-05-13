@@ -53,8 +53,8 @@ struct ZimFileList: View {
                 }
             }
         }
-        .listStyle(.inset)
         .navigationTitle(category.description)
+        .modifier(ZimFileListStyle())
         .modifier(ZimFileDetailPanel(zimFile: selected))
         .modifier(Searchable(searchText: $searchText))
         .onChange(of: searchText) { _ in
@@ -73,5 +73,15 @@ struct ZimFileList: View {
             predicates.append(NSPredicate(format: "name CONTAINS[cd] %@", searchText))
         }
         return NSCompoundPredicate(andPredicateWithSubpredicates: predicates)
+    }
+}
+
+private struct ZimFileListStyle: ViewModifier {
+    func body(content: Content) -> some View {
+        #if os(macOS)
+        content.listStyle(.inset)
+        #elseif os(iOS)
+        content.listStyle(.plain)
+        #endif
     }
 }
