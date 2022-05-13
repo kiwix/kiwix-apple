@@ -18,7 +18,11 @@ struct LibraryContent: View {
         case .downloads:
             ZimFilesDownloads()
         case .new:
-            ZimFilesNew()
+            if #available(iOS 15.0, *) {
+                ZimFilesNew()
+            } else {
+                EmptyView()
+            }
         case .categories:
             List {
                 ForEach(Category.allCases.map{ LibraryTopic.category($0) }) { topic in

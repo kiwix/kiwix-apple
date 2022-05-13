@@ -299,3 +299,50 @@ struct MacAdaptableContent: ViewModifier {
         #endif
     }
 }
+
+struct ZimFileSelection: ViewModifier {
+    @Binding var selected: ZimFile?
+    let zimFile: ZimFile
+    
+    func body(content: Content) -> some View {
+        #if os(macOS)
+        content.onTapGesture {
+            selected = zimFile
+        }
+        #elseif os(iOS)
+        NavigationLink {
+            ZimFileDetail(zimFile: zimFile)
+        } label: {
+            content
+        }
+        #endif
+    }
+}
+
+struct ZimFileDetailPanel: ViewModifier {
+    let zimFile: ZimFile?
+    
+    func body(content: Content) -> some View {
+        #if os(macOS)
+        VStack(spacing: 0) {
+            Divider()
+            content.safeAreaInset(edge: .trailing, spacing: 0) {
+                HStack(spacing: 0) {
+                    Divider()
+                    if let zimFile = zimFile {
+                        ZimFileDetail(zimFile: zimFile)
+                    } else {
+                        HStack {
+                            Spacer()
+                            Text("select a zim file")
+                            Spacer()
+                        }
+                    }
+                }.frame(width: 275)
+            }
+        }
+        #elseif os(iOS)
+        content
+        #endif
+    }
+}

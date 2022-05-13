@@ -8,6 +8,8 @@
 
 import SwiftUI
 
+/// Show zim files that are created in the last two weeks.
+@available(iOS 15.0, macOS 12.0, *)
 struct ZimFilesNew: View {
     @FetchRequest(
         sortDescriptors: [
@@ -18,8 +20,8 @@ struct ZimFilesNew: View {
         predicate: ZimFilesNew.buildPredicate(searchText: ""),
         animation: .easeInOut
     ) private var zimFiles: FetchedResults<ZimFile>
+    @State private var selected: ZimFile?
     @State private var searchText = ""
-    @State private var selectedZimFile: ZimFile?
     
     var body: some View {
         GeometryReader { proxy in
@@ -31,18 +33,16 @@ struct ZimFilesNew: View {
                 ) {
                     ForEach(zimFiles) { zimFile in
                         ZimFileCell(zimFile, prominent: .title)
-                            .modifier(ZimFileCellSelection(selected: $selectedZimFile, zimFile: zimFile))
+                            .modifier(ZimFileSelection(selected: $selected, zimFile: zimFile))
                     }
                 }.modifier(LibraryGridPadding(width: proxy.size.width))
             }
         }
         .navigationTitle(LibraryTopic.new.name)
-        .modifier(Searchable(searchText: $searchText))
-        .modifier(MacAdaptableContent(zimFile: $selectedZimFile))
+        .searchable(text: $searchText)
+        .modifier(ZimFileDetailPanel(zimFile: selected))
         .onChange(of: searchText) { _ in
-            if #available(iOS 15.0, *) {
-                zimFiles.nsPredicate = ZimFilesNew.buildPredicate(searchText: searchText)
-            }
+            zimFiles.nsPredicate = ZimFilesNew.buildPredicate(searchText: searchText)
         }
     }
     
