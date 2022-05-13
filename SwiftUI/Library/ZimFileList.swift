@@ -11,7 +11,7 @@ import SwiftUI
 struct ZimFileList: View {
     @FetchRequest private var zimFiles: FetchedResults<ZimFile>
     @State private var searchText = ""
-    @State private var selectedZimFile: ZimFile?
+    @State private var selected: ZimFile?
     
     let category: Category
     
@@ -50,12 +50,13 @@ struct ZimFileList: View {
                         }()
                     ].joined(separator: ", ")).font(.caption)
                 }
-            }.modifier(ZimFileCellSelection(selected: $selectedZimFile, zimFile: zimFile))
+            }
+            .modifier(ZimFileSelection(selected: $selected, zimFile: zimFile))
         }
-        .listStyle(.plain)
+        .listStyle(.inset)
         .navigationTitle(category.description)
+        .modifier(ZimFileDetailPanel(zimFile: selected))
         .modifier(Searchable(searchText: $searchText))
-        .modifier(MacAdaptableContent(zimFile: $selectedZimFile))
         .onChange(of: searchText) { _ in
             if #available(iOS 15.0, *) {
                 zimFiles.nsPredicate = ZimFileList.buildPredicate(category: category, searchText: searchText)

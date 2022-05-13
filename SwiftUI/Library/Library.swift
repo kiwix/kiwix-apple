@@ -336,9 +336,10 @@ struct ZimFileDetailPanel: ViewModifier {
                             Spacer()
                             Text("select a zim file")
                             Spacer()
-                        }
+                        }.frame(maxHeight: .infinity)
+                        .background(.regularMaterial)
                     }
-                }.frame(width: 275)
+                }.frame(width: 275).background(.ultraThinMaterial)
             }
         }
         #elseif os(iOS)

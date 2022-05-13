@@ -24,7 +24,8 @@ struct ZimFileGrid: View {
             predicate: NSCompoundPredicate(andPredicateWithSubpredicates: [
                 NSPredicate(format: "languageCode == %@", "en"),
                 NSPredicate(format: "category == %@", category.rawValue)
-            ])
+            ]),
+            animation: .easeInOut
         )
     }
     
