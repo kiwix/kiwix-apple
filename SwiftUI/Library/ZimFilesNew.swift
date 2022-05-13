@@ -13,9 +13,9 @@ import SwiftUI
 struct ZimFilesNew: View {
     @FetchRequest(
         sortDescriptors: [
-            NSSortDescriptor(keyPath: \ZimFile.created, ascending: false),
-            NSSortDescriptor(keyPath: \ZimFile.name, ascending: true),
-            NSSortDescriptor(keyPath: \ZimFile.size, ascending: false)
+            SortDescriptor(\ZimFile.created, order: .reverse),
+            SortDescriptor(\ZimFile.name, order: .forward),
+            SortDescriptor(\ZimFile.size, order: .reverse)
         ],
         predicate: ZimFilesNew.buildPredicate(searchText: ""),
         animation: .easeInOut
