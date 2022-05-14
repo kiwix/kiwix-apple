@@ -33,7 +33,7 @@ struct ZimFilesNew: View {
                 ) {
                     ForEach(zimFiles) { zimFile in
                         ZimFileCell(zimFile, prominent: .title)
-                            .modifier(ZimFileSelection(selected: $selected, zimFile: zimFile))
+                            .modifier(ZimFileCellSelection(selected: $selected, zimFile: zimFile))
                     }
                 }.modifier(LibraryGridPadding(width: proxy.size.width))
             }

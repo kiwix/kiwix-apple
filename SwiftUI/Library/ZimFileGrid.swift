@@ -41,13 +41,13 @@ struct ZimFileGrid: View {
                         if sections.count <= 1 {
                             ForEach(section) { zimFile in
                                 ZimFileCell(zimFile, prominent: .size)
-                                    .modifier(ZimFileSelection(selected: $selected, zimFile: zimFile))
+                                    .modifier(ZimFileCellSelection(selected: $selected, zimFile: zimFile))
                             }
                         } else {
                             Section {
                                 ForEach(section) { zimFile in
                                     ZimFileCell(zimFile, prominent: .size)
-                                        .modifier(ZimFileSelection(selected: $selected, zimFile: zimFile))
+                                        .modifier(ZimFileCellSelection(selected: $selected, zimFile: zimFile))
                                 }
                             } header: {
                                 SectionHeader(
