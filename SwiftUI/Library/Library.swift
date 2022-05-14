@@ -240,41 +240,6 @@ struct LibraryGridPadding: ViewModifier {
     }
 }
 
-struct ZimFileCellSelection: ViewModifier {
-    @Binding var selected: ZimFile?
-    let zimFile: ZimFile
-    
-    func body(content: Content) -> some View {
-        #if os(macOS)
-        content.onTapGesture {
-            selected = zimFile
-        }
-        #elseif os(iOS)
-        NavigationLink {
-            ZimFileDetail(zimFile: zimFile)
-        } label: {
-            content
-        }
-        #endif
-    }
-}
-
-struct ZimFileRowSelection: ViewModifier {
-    let zimFile: ZimFile
-    
-    func body(content: Content) -> some View {
-        #if os(macOS)
-        content
-        #elseif os(iOS)
-        NavigationLink {
-            ZimFileDetail(zimFile: zimFile)
-        } label: {
-            content
-        }
-        #endif
-    }
-}
-
 struct ZimFileDetailPanel: ViewModifier {
     let zimFile: ZimFile?
     

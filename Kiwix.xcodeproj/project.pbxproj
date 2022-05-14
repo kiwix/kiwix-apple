@@ -68,6 +68,8 @@
 		973A0DEB281DDBB600B41E71 /* ZimFilesDownloads.swift in Sources */ = {isa = PBXBuildFile; fileRef = 973A0DE9281DDBB600B41E71 /* ZimFilesDownloads.swift */; };
 		973A0DF0282E981200B41E71 /* ZimFileRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 973A0DEF282E981200B41E71 /* ZimFileRow.swift */; };
 		973A0DF1282E981200B41E71 /* ZimFileRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 973A0DEF282E981200B41E71 /* ZimFileRow.swift */; };
+		973A0DF4282FEDA500B41E71 /* ZimFileViewModifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 973A0DF3282FEDA500B41E71 /* ZimFileViewModifiers.swift */; };
+		973A0DF5282FEDA500B41E71 /* ZimFileViewModifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 973A0DF3282FEDA500B41E71 /* ZimFileViewModifiers.swift */; };
 		973A2FC3277EA9F300BD4320 /* OPDSStreamParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9779A5A32456793500F6F6FF /* OPDSStreamParser.swift */; };
 		973A2FC5277EAA2500BD4320 /* OPDSRefreshError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 973A2FC4277EAA2500BD4320 /* OPDSRefreshError.swift */; };
 		973A2FC6277EAA2700BD4320 /* OPDSRefreshError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 973A2FC4277EAA2500BD4320 /* OPDSRefreshError.swift */; };
@@ -339,6 +341,7 @@
 		973A0DE5281DC8F400B41E71 /* Downloads.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Downloads.swift; sourceTree = "<group>"; };
 		973A0DE9281DDBB600B41E71 /* ZimFilesDownloads.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZimFilesDownloads.swift; sourceTree = "<group>"; };
 		973A0DEF282E981200B41E71 /* ZimFileRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZimFileRow.swift; sourceTree = "<group>"; };
+		973A0DF3282FEDA500B41E71 /* ZimFileViewModifiers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZimFileViewModifiers.swift; sourceTree = "<group>"; };
 		973A2FC4277EAA2500BD4320 /* OPDSRefreshError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OPDSRefreshError.swift; sourceTree = "<group>"; };
 		973A2FCD277FB03F00BD4320 /* FlavorTag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlavorTag.swift; sourceTree = "<group>"; };
 		973A2FCF277FB99000BD4320 /* SectionHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionHeader.swift; sourceTree = "<group>"; };
@@ -648,6 +651,14 @@
 			path = Model;
 			sourceTree = "<group>";
 		};
+		973A0DF2282FED6F00B41E71 /* ViewModifier */ = {
+			isa = PBXGroup;
+			children = (
+				973A0DF3282FEDA500B41E71 /* ZimFileViewModifiers.swift */,
+			);
+			path = ViewModifier;
+			sourceTree = "<group>";
+		};
 		975FDAD81F6082DA00A10E8C /* iOS */ = {
 			isa = PBXGroup;
 			children = (
@@ -930,6 +941,7 @@
 			isa = PBXGroup;
 			children = (
 				978A731327B9A1F5008101B4 /* Buttons */,
+				973A0DF2282FED6F00B41E71 /* ViewModifier */,
 				97B0737527825E3D007C7DF3 /* Favicon.swift */,
 				973A2FCD277FB03F00BD4320 /* FlavorTag.swift */,
 				97FB4B0A27B819A90055F86E /* Message.swift */,
@@ -1364,6 +1376,7 @@
 				972DE4B92814A56A004FD9B9 /* Database.swift in Sources */,
 				976D90E528159FE700CC7D29 /* SectionHeader.swift in Sources */,
 				976D90DC281586B400CC7D29 /* ZimFileCell.swift in Sources */,
+				973A0DF5282FEDA500B41E71 /* ZimFileViewModifiers.swift in Sources */,
 				972DE4BA2814A590004FD9B9 /* ZimFileMetaData.mm in Sources */,
 				972DE4B42814A4F6004FD9B9 /* DataModel.xcdatamodeld in Sources */,
 				976D90E428159BFA00CC7D29 /* Favicon.swift in Sources */,
@@ -1548,6 +1561,7 @@
 				973A2FD82780024600BD4320 /* ZimFileCell.swift in Sources */,
 				9735D0C027777E3300C7D495 /* Enum.swift in Sources */,
 				978A731527B9A245008101B4 /* SidebarButton.swift in Sources */,
+				973A0DF4282FEDA500B41E71 /* ZimFileViewModifiers.swift in Sources */,
 				97DED67F275278FF008D2C56 /* SearchField.swift in Sources */,
 				97E94B2E271EF630005B0295 /* ZimFileService.swift in Sources */,
 				972DE4C32814A969004FD9B9 /* Library.swift in Sources */,
