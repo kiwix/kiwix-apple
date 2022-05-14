@@ -38,8 +38,7 @@
 		972B6662200808D6003F5365 /* WelcomeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 972B6661200808D6003F5365 /* WelcomeController.swift */; };
 		972C978026F042E40070987F /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 972C977F26F042E40070987F /* SettingsViewController.swift */; };
 		972DE4732814A116004FD9B9 /* Entities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 972DE4722814A116004FD9B9 /* Entities.swift */; };
-		972DE4A92814A3D8004FD9B9 /* iOS_SwiftUIApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 972DE4A82814A3D8004FD9B9 /* iOS_SwiftUIApp.swift */; };
-		972DE4AB2814A3D8004FD9B9 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 972DE4AA2814A3D8004FD9B9 /* ContentView.swift */; };
+		972DE4A92814A3D8004FD9B9 /* App.swift in Sources */ = {isa = PBXBuildFile; fileRef = 972DE4A82814A3D8004FD9B9 /* App.swift */; };
 		972DE4AD2814A3D9004FD9B9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 972DE4AC2814A3D9004FD9B9 /* Assets.xcassets */; };
 		972DE4B02814A3D9004FD9B9 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 972DE4AF2814A3D9004FD9B9 /* Preview Assets.xcassets */; };
 		972DE4B42814A4F6004FD9B9 /* DataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 9735D0B82775363900C7D495 /* DataModel.xcdatamodeld */; };
@@ -324,8 +323,7 @@
 		972C977F26F042E40070987F /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		972DE4722814A116004FD9B9 /* Entities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Entities.swift; sourceTree = "<group>"; };
 		972DE4A62814A3D8004FD9B9 /* iOS_SwiftUI.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iOS_SwiftUI.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		972DE4A82814A3D8004FD9B9 /* iOS_SwiftUIApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iOS_SwiftUIApp.swift; sourceTree = "<group>"; };
-		972DE4AA2814A3D8004FD9B9 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		972DE4A82814A3D8004FD9B9 /* App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = App.swift; sourceTree = "<group>"; };
 		972DE4AC2814A3D9004FD9B9 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		972DE4AF2814A3D9004FD9B9 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		972DE4C12814A961004FD9B9 /* Library.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Library.swift; sourceTree = "<group>"; };
@@ -599,8 +597,7 @@
 		972DE4A72814A3D8004FD9B9 /* iOS_SwiftUI */ = {
 			isa = PBXGroup;
 			children = (
-				972DE4A82814A3D8004FD9B9 /* iOS_SwiftUIApp.swift */,
-				972DE4AA2814A3D8004FD9B9 /* ContentView.swift */,
+				972DE4A82814A3D8004FD9B9 /* App.swift */,
 				972DE4AC2814A3D9004FD9B9 /* Assets.xcassets */,
 				972DE4AE2814A3D9004FD9B9 /* Preview Content */,
 			);
@@ -1381,14 +1378,13 @@
 				972DE4B42814A4F6004FD9B9 /* DataModel.xcdatamodeld in Sources */,
 				976D90E428159BFA00CC7D29 /* Favicon.swift in Sources */,
 				976D90DB281584BF00CC7D29 /* FlavorTag.swift in Sources */,
-				972DE4AB2814A3D8004FD9B9 /* ContentView.swift in Sources */,
 				972DE4BD2814A5BE004FD9B9 /* OPDSStreamParser.mm in Sources */,
 				976D90DF281589EA00CC7D29 /* ZimFileList.swift in Sources */,
 				972DE4B52814A502004FD9B9 /* Entities.swift in Sources */,
 				972DE4B62814A502004FD9B9 /* Enum.swift in Sources */,
 				973A0DF1282E981200B41E71 /* ZimFileRow.swift in Sources */,
 				972DE4C42814AAAE004FD9B9 /* Library.swift in Sources */,
-				972DE4A92814A3D8004FD9B9 /* iOS_SwiftUIApp.swift in Sources */,
+				972DE4A92814A3D8004FD9B9 /* App.swift in Sources */,
 				973A0DE7281DC8F400B41E71 /* Downloads.swift in Sources */,
 				976D90E228158A3C00CC7D29 /* LibraryContent.swift in Sources */,
 			);

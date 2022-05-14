@@ -1,5 +1,5 @@
 //
-//  ContentView.swift
+//  iOS_SwiftUIApp.swift
 //  iOS_SwiftUI
 //
 //  Created by Chris Li on 4/23/22.
@@ -7,6 +7,15 @@
 //
 
 import SwiftUI
+
+@main
+struct Kiwix: App {
+    var body: some Scene {
+        WindowGroup {
+            ContentView()
+        }
+    }
+}
 
 struct ContentView: View {
     @State var isShowingLibrary = false
@@ -17,11 +26,5 @@ struct ContentView: View {
         }.sheet(isPresented: $isShowingLibrary) {
             Library().environment(\.managedObjectContext, Database.shared.container.viewContext)
         }
-    }
-}
-
-struct ContentView_Previews: PreviewProvider {
-    static var previews: some View {
-        Library()
     }
 }
