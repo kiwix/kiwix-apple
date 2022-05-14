@@ -25,7 +25,7 @@ class Downloads: NSObject, URLSessionDelegate, URLSessionTaskDelegate, URLSessio
         return URLSession(configuration: configuration, delegate: self, delegateQueue: operationQueue)
     }()
     
-    // MARK: - management
+    // MARK: - Init & Heartbeat
     
     private override init() {
         super.init()
@@ -70,7 +70,7 @@ class Downloads: NSObject, URLSessionDelegate, URLSessionTaskDelegate, URLSessio
         }
     }
     
-    // MARK: - download actions
+    // MARK: - Download Actions
     
     /// Start a zim file download task
     /// - Parameters:
@@ -108,14 +108,7 @@ class Downloads: NSObject, URLSessionDelegate, URLSessionTaskDelegate, URLSessio
             if let task = downloadTasks.filter({ $0.taskDescription == zimFileID.uuidString }).first {
                 task.cancel()
             }
-            
-            let context = Database.shared.container.newBackgroundContext()
-            context.perform {
-                let request = DownloadTask.fetchRequest(fileID: zimFileID)
-                guard let downloadTask = try? context.fetch(request).first else { return }
-                context.delete(downloadTask)
-                try? context.save()
-            }
+            self.deleteDownloadTask(zimFileID: zimFileID)
         }
     }
     
@@ -157,6 +150,18 @@ class Downloads: NSObject, URLSessionDelegate, URLSessionTaskDelegate, URLSessio
         }
     }
     
+    // MARK: - Database
+    
+    private func deleteDownloadTask(zimFileID: UUID) {
+        let context = Database.shared.container.newBackgroundContext()
+        context.perform {
+            let request = DownloadTask.fetchRequest(fileID: zimFileID)
+            guard let downloadTask = try? context.fetch(request).first else { return }
+            context.delete(downloadTask)
+            try? context.save()
+        }
+    }
+    
     // MARK: - URLSessionTaskDelegate
     
     func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?) {
@@ -169,6 +174,7 @@ class Downloads: NSObject, URLSessionDelegate, URLSessionTaskDelegate, URLSessio
         
         // download finished successfully if there's no error
         guard let error = error as NSError? else {
+            self.deleteDownloadTask(zimFileID: zimFileID)
             os_log(
                 "Download finished successfully. File ID: %s.",
                 log: Log.DownloadService,
@@ -214,13 +220,22 @@ class Downloads: NSObject, URLSessionDelegate, URLSessionTaskDelegate, URLSessio
     func urlSession(_ session: URLSession,
                     downloadTask: URLSessionDownloadTask,
                     didFinishDownloadingTo location: URL) {
-        guard let documentDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first,
-            let zimFileID = downloadTask.taskDescription else {return}
+        // determine which directory should the file be moved to
+        #if os(macOS)
+        let searchPath = FileManager.SearchPathDirectory.downloadsDirectory
+        #elseif os(iOS)
+        let searchPath = FileManager.SearchPathDirectory.documentDirectory
+        #endif
         
+        // move file
+        guard let directory = FileManager.default.urls(for: searchPath, in: .userDomainMask).first,
+            let zimFileID = downloadTask.taskDescription else {return}
         let fileName = downloadTask.response?.suggestedFilename
             ?? downloadTask.originalRequest?.url?.lastPathComponent
             ?? zimFileID + ".zim"
-        let destination = documentDirectory.appendingPathComponent(fileName)
+        let destination = directory.appendingPathComponent(fileName)
         try? FileManager.default.moveItem(at: location, to: destination)
+        
+        // open the file
     }
 }
