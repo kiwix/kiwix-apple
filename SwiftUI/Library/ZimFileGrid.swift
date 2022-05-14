@@ -8,7 +8,7 @@
 
 import SwiftUI
 
-@available(iOS 15.0, *)
+@available(iOS 15.0, macOS 12.0, *)
 struct ZimFileGrid: View {
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     @SectionedFetchRequest private var sections: SectionedFetchResults<String, ZimFile>
