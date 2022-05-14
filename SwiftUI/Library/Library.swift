@@ -240,46 +240,6 @@ struct LibraryGridPadding: ViewModifier {
     }
 }
 
-struct Searchable: ViewModifier {
-    @Binding var searchText: String
-    
-    func body(content: Content) -> some View {
-        if #available(iOS 15.0, *) {
-            content.searchable(text: $searchText)
-        } else {
-            content
-        }
-    }
-}
-
-struct MacAdaptableContent: ViewModifier {
-    @Binding var zimFile: ZimFile?
-    
-    func body(content: Content) -> some View {
-        #if os(macOS)
-        VStack(spacing: 0) {
-            Divider()
-            content.safeAreaInset(edge: .trailing, spacing: 0) {
-                HStack(spacing: 0) {
-                    Divider()
-                    if let zimFile = zimFile {
-                        ZimFileDetail(zimFile: zimFile)
-                    } else {
-                        HStack {
-                            Spacer()
-                            Text("select a zim file")
-                            Spacer()
-                        }
-                    }
-                }.frame(width: 275)
-            }
-        }
-        #elseif os(iOS)
-        content
-        #endif
-    }
-}
-
 struct ZimFileCellSelection: ViewModifier {
     @Binding var selected: ZimFile?
     let zimFile: ZimFile
