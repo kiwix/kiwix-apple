@@ -40,14 +40,18 @@ struct ZimFileGrid: View {
                     ForEach(sections) { section in
                         if sections.count <= 1 {
                             ForEach(section) { zimFile in
-                                ZimFileCell(zimFile, prominent: .size)
-                                    .modifier(ZimFileCellSelection(selected: $selected, zimFile: zimFile))
+                                Button { selected = zimFile } label: { ZimFileCell(zimFile, prominent: .size) }
+                                    .buttonStyle(.plain)
+                                    .modifier(ZimFileContextMenu(selected: $selected, zimFile: zimFile))
+                                    .modifier(ZimFileSelection(selected: $selected, zimFile: zimFile))
                             }
                         } else {
                             Section {
                                 ForEach(section) { zimFile in
-                                    ZimFileCell(zimFile, prominent: .size)
-                                        .modifier(ZimFileCellSelection(selected: $selected, zimFile: zimFile))
+                                    Button { selected = zimFile } label: { ZimFileCell(zimFile, prominent: .size) }
+                                        .buttonStyle(.plain)
+                                        .modifier(ZimFileContextMenu(selected: $selected, zimFile: zimFile))
+                                        .modifier(ZimFileSelection(selected: $selected, zimFile: zimFile))
                                 }
                             } header: {
                                 SectionHeader(

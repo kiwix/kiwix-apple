@@ -32,8 +32,10 @@ struct ZimFilesNew: View {
                     spacing: 12
                 ) {
                     ForEach(zimFiles) { zimFile in
-                        ZimFileCell(zimFile, prominent: .title)
-                            .modifier(ZimFileCellSelection(selected: $selected, zimFile: zimFile))
+                        Button { selected = zimFile } label: { ZimFileCell(zimFile, prominent: .title) }
+                            .buttonStyle(.plain)
+                            .modifier(ZimFileContextMenu(selected: $selected, zimFile: zimFile))
+                            .modifier(ZimFileSelection(selected: $selected, zimFile: zimFile))
                     }
                 }.modifier(LibraryGridPadding(width: proxy.size.width))
             }

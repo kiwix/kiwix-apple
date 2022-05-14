@@ -33,7 +33,7 @@ struct ZimFileList: View {
         List(zimFiles, id: \.self, selection: $selected) { zimFile in
             ZimFileRow(zimFile)
                 .modifier(ZimFileContextMenu(selected: $selected, zimFile: zimFile))
-                .modifier(ZimFileRowSelection(selected: $selected, zimFile: zimFile))
+                .modifier(ZimFileSelection(selected: $selected, zimFile: zimFile))
         }
         .navigationTitle(category.description)
         .modifier(ZimFileListStyle())
