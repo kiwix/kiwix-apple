@@ -9,7 +9,6 @@
 import CoreData
 import SwiftUI
 
-
 struct ZimFileDetail: View {
     @ObservedObject var zimFile: ZimFile
     
@@ -22,20 +21,12 @@ struct ZimFileDetail: View {
             Section("Description") {
                 Text(zimFile.fileDescription).lineLimit(nil)
             }.collapsible(false)
-            Section("Download") {
-                if let downloadTask = zimFile.downloadTask {
-                    DownloadTaskDetail(downloadTask: downloadTask)
-                } else if zimFile.downloadURL != nil {
-                    Action(title: "Download") {
-                        Downloads.shared.start(zimFileID: zimFile.id, allowsCellularAccess: false)
-                    }
-                }
-            }.collapsible(false)
+            Section("Download") { download }.collapsible(false)
             Section("Info") {
                 basicInfo
                 boolInfo
                 counts
-                Attribute(title: "ID", detail: String(zimFile.fileID.uuidString.prefix(8)))
+                id
             }.collapsible(false)
         }
         .listStyle(.sidebar)
@@ -43,26 +34,29 @@ struct ZimFileDetail: View {
         List {
             Section {
                 Text(zimFile.name)
-                Text(zimFile.fileDescription)
+                Text(zimFile.fileDescription).lineLimit(nil)
             }
-            Section {
-                if let downloadTask = zimFile.downloadTask {
-                    DownloadTaskDetail(downloadTask: downloadTask)
-                } else if zimFile.downloadURL != nil {
-                    Action(title: "Download") {
-                        Downloads.shared.start(zimFileID: zimFile.id, allowsCellularAccess: false)
-                    }
-                }
-            }
+            Section { download }
             Section { basicInfo }
             Section { boolInfo }
             Section { counts }
-            Attribute(title: "ID", detail: String(zimFile.fileID.uuidString.prefix(8)))
+            Section { id }
         }
         .listStyle(.insetGrouped)
         .navigationTitle(zimFile.name)
         .navigationBarTitleDisplayMode(.inline)
         #endif
+    }
+    
+    @ViewBuilder
+    var download: some View {
+        if let downloadTask = zimFile.downloadTask {
+            DownloadTaskDetail(downloadTask: downloadTask)
+        } else if zimFile.downloadURL != nil {
+            Action(title: "Download") {
+                Downloads.shared.start(zimFileID: zimFile.id, allowsCellularAccess: false)
+            }
+        }
     }
     
     @ViewBuilder
@@ -91,13 +85,18 @@ struct ZimFileDetail: View {
             detail: Library.numberFormatter.string(from: NSNumber(value: zimFile.mediaCount))
         )
     }
+    
+    @ViewBuilder
+    var id: some View {
+        Attribute(title: "ID", detail: String(zimFile.fileID.uuidString.prefix(8)))
+    }
 }
 
 private struct DownloadTaskDetail: View {
     @ObservedObject var downloadTask: DownloadTask
     
     var body: some View {
-        Action(title: "Cancel") {
+        Action(title: "Cancel", isDestructive: true) {
             Downloads.shared.cancel(zimFileID: downloadTask.fileID)
         }
         if downloadTask.resumeData == nil {
