@@ -75,6 +75,9 @@ struct ZimFileGrid: View {
         }
         .navigationTitle(category.description)
         .modifier(ZimFileDetailPanel(zimFile: selected))
+        .onChange(of: category) { _ in
+            selected = nil
+        }
     }
     
     private func buildGridItem(gridWidth: CGFloat) -> GridItem {
