@@ -9,10 +9,16 @@
 import SwiftUI
 
 struct ZimFilesOpened: View {
+    @State private var isShowingFileImporter: Bool = false
+    
     var body: some View {
         Text("Hello, World!").toolbar {
-            FileImportButton()
-        }
+            Button {
+                isShowingFileImporter = true
+            } label: {
+                Image(systemName: "plus")
+            }
+        }.modifier(FileImportModifier(isShowing: $isShowingFileImporter))
     }
 }
 

@@ -69,10 +69,12 @@
 		973A0DF4282FEDA500B41E71 /* ZimFileViewModifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 973A0DF3282FEDA500B41E71 /* ZimFileViewModifiers.swift */; };
 		973A0DF5282FEDA500B41E71 /* ZimFileViewModifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 973A0DF3282FEDA500B41E71 /* ZimFileViewModifiers.swift */; };
 		973A0DF72830929C00B41E71 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 97E94B1D271EF250005B0295 /* Assets.xcassets */; };
-		973A0DF92830FF8100B41E71 /* FileImportButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 973A0DF82830FF8100B41E71 /* FileImportButton.swift */; };
-		973A0DFA2830FF8100B41E71 /* FileImportButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 973A0DF82830FF8100B41E71 /* FileImportButton.swift */; };
 		973A0DFC283100C300B41E71 /* ZimFilesOpened.swift in Sources */ = {isa = PBXBuildFile; fileRef = 973A0DFB283100C300B41E71 /* ZimFilesOpened.swift */; };
 		973A0DFD283100C300B41E71 /* ZimFilesOpened.swift in Sources */ = {isa = PBXBuildFile; fileRef = 973A0DFB283100C300B41E71 /* ZimFilesOpened.swift */; };
+		973A0E002831053B00B41E71 /* ZimFileService.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9779A5A92456793500F6F6FF /* ZimFileService.mm */; };
+		973A0E012831053B00B41E71 /* ZimFileService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9779A5AA2456793500F6F6FF /* ZimFileService.swift */; };
+		973A0E022831055600B41E71 /* URLContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97B3BAC92736CDCE00A23F49 /* URLContent.swift */; };
+		973A0E032831057200B41E71 /* URL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97B3BACD2736CE3500A23F49 /* URL.swift */; };
 		973A2FC3277EA9F300BD4320 /* OPDSStreamParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9779A5A32456793500F6F6FF /* OPDSStreamParser.swift */; };
 		973A2FC5277EAA2500BD4320 /* OPDSRefreshError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 973A2FC4277EAA2500BD4320 /* OPDSRefreshError.swift */; };
 		973A2FC6277EAA2700BD4320 /* OPDSRefreshError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 973A2FC4277EAA2500BD4320 /* OPDSRefreshError.swift */; };
@@ -245,6 +247,8 @@
 		97F425D527151EF800D0F738 /* ZimFileMetaData.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9779A5AC2456793600F6F6FF /* ZimFileMetaData.mm */; };
 		97F425D62715213A00D0F738 /* WebKitHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9779A73A2456796B00F6F6FF /* WebKitHandler.swift */; };
 		97F425D7271521DA00D0F738 /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9779A7E224567A5A00F6F6FF /* Log.swift */; };
+		97F43AFD283108330076F8E0 /* FileImportModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97F43AFC283108330076F8E0 /* FileImportModifier.swift */; };
+		97F43AFE283108330076F8E0 /* FileImportModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97F43AFC283108330076F8E0 /* FileImportModifier.swift */; };
 		97F4D10C20ADFE370038FC87 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 97F4D10B20ADFE370038FC87 /* Assets.xcassets */; };
 		97FB4B0927B816C80055F86E /* SearchFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97FB4B0827B816C80055F86E /* SearchFilter.swift */; };
 		97FB4B0B27B819A90055F86E /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97FB4B0A27B819A90055F86E /* Message.swift */; };
@@ -343,8 +347,8 @@
 		973A0DE9281DDBB600B41E71 /* ZimFilesDownloads.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZimFilesDownloads.swift; sourceTree = "<group>"; };
 		973A0DEF282E981200B41E71 /* ZimFileRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZimFileRow.swift; sourceTree = "<group>"; };
 		973A0DF3282FEDA500B41E71 /* ZimFileViewModifiers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZimFileViewModifiers.swift; sourceTree = "<group>"; };
-		973A0DF82830FF8100B41E71 /* FileImportButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileImportButton.swift; sourceTree = "<group>"; };
 		973A0DFB283100C300B41E71 /* ZimFilesOpened.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZimFilesOpened.swift; sourceTree = "<group>"; };
+		973A0E04283105EA00B41E71 /* iOS-SwiftUI-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "iOS-SwiftUI-Info.plist"; sourceTree = SOURCE_ROOT; };
 		973A2FC4277EAA2500BD4320 /* OPDSRefreshError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OPDSRefreshError.swift; sourceTree = "<group>"; };
 		973A2FCD277FB03F00BD4320 /* FlavorTag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlavorTag.swift; sourceTree = "<group>"; };
 		973A2FCF277FB99000BD4320 /* SectionHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionHeader.swift; sourceTree = "<group>"; };
@@ -465,6 +469,7 @@
 		97F425C427151A0D00D0F738 /* PreviewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewViewController.swift; sourceTree = "<group>"; };
 		97F425C927151A0D00D0F738 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
 		97F425CB27151A0D00D0F738 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		97F43AFC283108330076F8E0 /* FileImportModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileImportModifier.swift; sourceTree = "<group>"; };
 		97F4D10B20ADFE370038FC87 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		97F6CC5020BD960F005CDBD2 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		97FB4B0827B816C80055F86E /* SearchFilter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchFilter.swift; sourceTree = "<group>"; };
@@ -602,6 +607,7 @@
 		972DE4A72814A3D8004FD9B9 /* iOS_SwiftUI */ = {
 			isa = PBXGroup;
 			children = (
+				973A0E04283105EA00B41E71 /* iOS-SwiftUI-Info.plist */,
 				972DE4A82814A3D8004FD9B9 /* App.swift */,
 				972DE4AE2814A3D9004FD9B9 /* Preview Content */,
 			);
@@ -656,6 +662,7 @@
 		973A0DF2282FED6F00B41E71 /* ViewModifier */ = {
 			isa = PBXGroup;
 			children = (
+				97F43AFC283108330076F8E0 /* FileImportModifier.swift */,
 				973A0DF3282FEDA500B41E71 /* ZimFileViewModifiers.swift */,
 			);
 			path = ViewModifier;
@@ -821,7 +828,6 @@
 			isa = PBXGroup;
 			children = (
 				9735D0BD2777531400C7D495 /* BookmarkButton.swift */,
-				973A0DF82830FF8100B41E71 /* FileImportButton.swift */,
 				978A731627B9A4F1008101B4 /* MainArticleButton.swift */,
 				978A731827B9A765008101B4 /* RandomArticleButton.swift */,
 				978A731127B9A0E0008101B4 /* NavigationButtons.swift */,
@@ -1370,9 +1376,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				972DE4BB2814A5A4004FD9B9 /* OPDSRefreshError.swift in Sources */,
+				973A0E002831053B00B41E71 /* ZimFileService.mm in Sources */,
 				973A0DE4281D80E300B41E71 /* ZimFileDetail.swift in Sources */,
-				973A0DFA2830FF8100B41E71 /* FileImportButton.swift in Sources */,
 				973A0DEB281DDBB600B41E71 /* ZimFilesDownloads.swift in Sources */,
+				973A0E032831057200B41E71 /* URL.swift in Sources */,
 				973A0DE8281DD7EB00B41E71 /* Log.swift in Sources */,
 				972DE4BC2814A5BE004FD9B9 /* OPDSStreamParser.swift in Sources */,
 				976D90E92815D63A00CC7D29 /* ZimFilesNew.swift in Sources */,
@@ -1381,6 +1388,7 @@
 				976D90E528159FE700CC7D29 /* SectionHeader.swift in Sources */,
 				976D90DC281586B400CC7D29 /* ZimFileCell.swift in Sources */,
 				973A0DF5282FEDA500B41E71 /* ZimFileViewModifiers.swift in Sources */,
+				97F43AFE283108330076F8E0 /* FileImportModifier.swift in Sources */,
 				972DE4BA2814A590004FD9B9 /* ZimFileMetaData.mm in Sources */,
 				972DE4B42814A4F6004FD9B9 /* DataModel.xcdatamodeld in Sources */,
 				976D90E428159BFA00CC7D29 /* Favicon.swift in Sources */,
@@ -1388,9 +1396,11 @@
 				972DE4BD2814A5BE004FD9B9 /* OPDSStreamParser.mm in Sources */,
 				976D90DF281589EA00CC7D29 /* ZimFileList.swift in Sources */,
 				972DE4B52814A502004FD9B9 /* Entities.swift in Sources */,
+				973A0E012831053B00B41E71 /* ZimFileService.swift in Sources */,
 				973A0DFD283100C300B41E71 /* ZimFilesOpened.swift in Sources */,
 				972DE4B62814A502004FD9B9 /* Enum.swift in Sources */,
 				973A0DF1282E981200B41E71 /* ZimFileRow.swift in Sources */,
+				973A0E022831055600B41E71 /* URLContent.swift in Sources */,
 				972DE4C42814AAAE004FD9B9 /* Library.swift in Sources */,
 				972DE4A92814A3D8004FD9B9 /* App.swift in Sources */,
 				973A0DE7281DC8F400B41E71 /* Downloads.swift in Sources */,
@@ -1536,7 +1546,6 @@
 				977BD6072772350B004D2C32 /* BookmarksList.swift in Sources */,
 				97E94B1C271EF24D005B0295 /* Reader.swift in Sources */,
 				97B3BAD02736CE3500A23F49 /* URL.swift in Sources */,
-				973A0DF92830FF8100B41E71 /* FileImportButton.swift in Sources */,
 				976D90D22814F2FA00CC7D29 /* ZimFileGrid.swift in Sources */,
 				97255D8C273608C3002B995B /* WebView.swift in Sources */,
 				9735D0BE2777531400C7D495 /* BookmarkButton.swift in Sources */,
@@ -1569,6 +1578,7 @@
 				978A731527B9A245008101B4 /* SidebarButton.swift in Sources */,
 				973A0DF4282FEDA500B41E71 /* ZimFileViewModifiers.swift in Sources */,
 				97DED67F275278FF008D2C56 /* SearchField.swift in Sources */,
+				97F43AFD283108330076F8E0 /* FileImportModifier.swift in Sources */,
 				97E94B2E271EF630005B0295 /* ZimFileService.swift in Sources */,
 				972DE4C32814A969004FD9B9 /* Library.swift in Sources */,
 				973A2FCE277FB03F00BD4320 /* FlavorTag.swift in Sources */,
@@ -1729,6 +1739,7 @@
 				DEVELOPMENT_TEAM = L7HWM3SP3L;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "iOS-SwiftUI-Info.plist";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -1766,6 +1777,7 @@
 				DEVELOPMENT_TEAM = L7HWM3SP3L;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "iOS-SwiftUI-Info.plist";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;

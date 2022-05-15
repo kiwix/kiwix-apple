@@ -1,5 +1,5 @@
 //
-//  FileImportButton.swift
+//  FileImportModifier.swift
 //  Kiwix
 //
 //  Created by Chris Li on 5/15/22.
@@ -9,15 +9,11 @@
 import SwiftUI
 import UniformTypeIdentifiers
 
-struct FileImportButton: View {
-    @State private var isShowing: Bool = false
+struct FileImportModifier: ViewModifier {
+    @Binding var isShowing: Bool
     
-    var body: some View {
-        Button {
-            isShowing = true
-        } label: {
-            Label("Open...", systemImage: "plus")
-        }.fileImporter(
+    func body(content: Content) -> some View {
+        content.fileImporter(
             isPresented: $isShowing,
             allowedContentTypes: [UTType(exportedAs: "org.openzim.zim")],
             allowsMultipleSelection: false

@@ -9,10 +9,16 @@
 import SwiftUI
 
 struct ImportCommands: Commands {
+    @State private var isShowing: Bool = false
+    
     var body: some Commands {
         CommandGroup(replacing: .importExport) {
             Section {
-                FileImportButton()
+                Button {
+                    isShowing = true
+                } label: {
+                    Image(systemName: "plus")
+                }.modifier(FileImportModifier(isShowing: $isShowing))
             }
         }
     }
