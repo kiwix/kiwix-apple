@@ -7,31 +7,12 @@
 //
 
 import SwiftUI
-import UniformTypeIdentifiers
 
 struct ImportCommands: Commands {
-    @State private var isShowing: Bool = false
-    
     var body: some Commands {
         CommandGroup(replacing: .importExport) {
             Section {
-                Button("Open...") {
-                    isShowing = true
-                }.fileImporter(
-                    isPresented: $isShowing,
-                    allowedContentTypes: [UTType(exportedAs: "org.openzim.zim")],
-                    allowsMultipleSelection: true
-                ) { result in
-                    guard case let .success(urls) = result else { return }
-                    urls.forEach { url in
-                        guard let metadata = ZimFileService.getMetaData(url: url),
-                              let data = ZimFileService.getBookmarkData(url: url) else { return }
-                        ZimFileService.shared.open(bookmark: data)
-                        Task {
-                            try? await Database.shared.upsertZimFile(metadata: metadata, fileURLBookmark: data)
-                        }
-                    }
-                }.keyboardShortcut("o")
+                FileImportButton()
             }
         }
     }

@@ -14,7 +14,7 @@ struct LibraryContent: View {
     var body: some View {
         switch topic {
         case .opened:
-            Text("Show opened zim files")
+            ZimFilesOpened()
         case .downloads:
             ZimFilesDownloads()
         case .new:
