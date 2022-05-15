@@ -24,12 +24,15 @@ struct LibraryContent: View {
                 EmptyView()
             }
         case .categories:
-            List {
-                ForEach(Category.allCases.map{ LibraryTopic.category($0) }) { topic in
-                    NavigationLink {
-                        LibraryContent(topic: topic)
-                    } label: {
-                        Text(topic.name)
+            List(Category.allCases) { category in
+                NavigationLink {
+                    LibraryContent(topic: LibraryTopic.category(category))
+                } label: {
+                    HStack {
+                        if #available(iOS 15.0, *) {
+                            Favicon(category: category, imageData: nil, imageURL: nil).frame(height: 26)
+                        }
+                        Text(category.name)
                     }
                 }
             }.listStyle(.plain)

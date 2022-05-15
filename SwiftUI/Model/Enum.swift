@@ -54,6 +54,10 @@ enum Category: String, CaseIterable, Identifiable {
             return "Other"
         }
     }
+    
+    var name: String {
+        description
+    }
 }
 
 enum Flavor: String, CustomStringConvertible {

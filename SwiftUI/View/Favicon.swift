@@ -35,7 +35,7 @@ struct Favicon: View {
             AsyncImage(url: imageURL) { image in
                 image.resizable()
             } placeholder: {
-                Image("Wikipedia").resizable()
+                Image(category.name).resizable()
             }
         }
         #elseif os(iOS)
@@ -45,7 +45,7 @@ struct Favicon: View {
             AsyncImage(url: imageURL) { image in
                 image.resizable()
             } placeholder: {
-                Image("Wikipedia").resizable()
+                Image(category.name).resizable()
             }
         }
         #endif
