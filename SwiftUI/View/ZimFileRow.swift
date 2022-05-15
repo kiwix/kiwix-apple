@@ -18,13 +18,11 @@ struct ZimFileRow: View {
     
     var body: some View {
         HStack {
-            if #available(iOS 15.0, *) {
-                Favicon(
-                    category: Category(rawValue: zimFile.category) ?? .other,
-                    imageData: zimFile.faviconData,
-                    imageURL: zimFile.faviconURL
-                ).frame(height: 26)
-            }
+            Favicon(
+                category: Category(rawValue: zimFile.category) ?? .other,
+                imageData: zimFile.faviconData,
+                imageURL: zimFile.faviconURL
+            ).frame(height: 26)
             VStack(alignment: .leading, spacing: 2) {
                 Text(zimFile.name).lineLimit(1)
                 Text([

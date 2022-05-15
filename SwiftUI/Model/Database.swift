@@ -157,37 +157,23 @@ class Database {
     }
     
     /// Save image data to zim files.
-    func saveImageData(url: URL) async throws {
-        let data: Data = try await withCheckedThrowingContinuation { continuation in
-            URLSession.shared.dataTask(with: url) { data, response, error in
-                guard let response = response as? HTTPURLResponse,
-                      response.statusCode == 200,
-                      let mimeType = response.mimeType,
-                      mimeType.contains("image"),
-                      let data = data else {
-                    let error = OPDSRefreshError.retrieve(description: "Error retrieving online catalog.")
-                    continuation.resume(throwing: error)
-                    return
-                }
-                continuation.resume(returning: data)
-            }.resume()
-        }
-        
-        try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Void, Error>) -> Void in
-            let context = container.newBackgroundContext()
-            context.performAndWait {
-                do {
-                    let predicate = NSPredicate(format: "faviconURL == %@", url as CVarArg)
-                    let request = ZimFile.fetchRequest(predicate: predicate)
-                    guard let zimFile = try context.fetch(request).first else { return }
-                    zimFile.faviconData = data
-                    try context.save()
-                    continuation.resume()
-                } catch {
-                    continuation.resume(throwing: error)
-                }
+    func saveImageData(url: URL, completion: @escaping (Data) -> Void) {
+        URLSession.shared.dataTask(with: url) { data, response, error in
+            guard let response = response as? HTTPURLResponse,
+                  response.statusCode == 200,
+                  let mimeType = response.mimeType,
+                  mimeType.contains("image"),
+                  let data = data else { return }
+            let context = self.container.newBackgroundContext()
+            context.perform {
+                let predicate = NSPredicate(format: "faviconURL == %@", url as CVarArg)
+                let request = ZimFile.fetchRequest(predicate: predicate)
+                guard let zimFile = try? context.fetch(request).first else { return }
+                zimFile.faviconData = data
+                try? context.save()
             }
-        }
+            completion(data)
+        }.resume()
     }
     
     /// Configure a zim file object based on its metadata.

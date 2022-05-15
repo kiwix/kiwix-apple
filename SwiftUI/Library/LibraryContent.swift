@@ -29,9 +29,7 @@ struct LibraryContent: View {
                     LibraryContent(topic: LibraryTopic.category(category))
                 } label: {
                     HStack {
-                        if #available(iOS 15.0, *) {
-                            Favicon(category: category, imageData: nil, imageURL: nil).frame(height: 26)
-                        }
+                        Favicon(category: category).frame(height: 26)
                         Text(category.name)
                     }
                 }
