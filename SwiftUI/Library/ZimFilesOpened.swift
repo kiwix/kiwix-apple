@@ -19,16 +19,33 @@ struct ZimFilesOpened: View {
         animation: .easeInOut
     ) private var zimFiles: FetchedResults<ZimFile>
     @State private var isShowingFileImporter: Bool = false
+    @State private var selected: ZimFile?
     
     var body: some View {
-        List(zimFiles) { zimFile in
-            Text(zimFile.name)
-        }.toolbar {
+        GeometryReader { proxy in
+            ScrollView {
+                LazyVGrid(
+                    columns: ([GridItem(.adaptive(minimum: 250, maximum: 400), spacing: 12)]),
+                    alignment: .leading,
+                    spacing: 12
+                ) {
+                    ForEach(zimFiles) { zimFile in
+                        Button { selected = zimFile } label: { ZimFileCell(zimFile, prominent: .title) }
+                            .buttonStyle(.plain)
+                            .modifier(ZimFileContextMenu(selected: $selected, zimFile: zimFile))
+                            .modifier(ZimFileSelection(selected: $selected, zimFile: zimFile))
+                    }
+                }.modifier(LibraryGridPadding(width: proxy.size.width))
+            }
+        }
+        .navigationTitle(LibraryTopic.new.name)
+        .modifier(ZimFileDetailPanel(zimFile: selected))
+        .toolbar {
             Button {
                 isShowingFileImporter = true
             } label: {
                 Image(systemName: "plus")
-            }
-        }.modifier(FileImporter(isShowing: $isShowingFileImporter))
+            }.modifier(FileImporter(isShowing: $isShowingFileImporter))
+        }
     }
 }
