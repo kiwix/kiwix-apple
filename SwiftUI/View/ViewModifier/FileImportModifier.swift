@@ -23,9 +23,7 @@ struct FileImportModifier: ViewModifier {
                   let metadata = ZimFileService.getMetaData(url: url),
                   let data = ZimFileService.getBookmarkData(url: url) else { return }
             ZimFileService.shared.open(bookmark: data)
-            Task {
-                try? await Database.shared.upsertZimFile(metadata: metadata, fileURLBookmark: data)
-            }
+            Database.shared.upsertZimFile(metadata: metadata, fileURLBookmark: data)
         }
         .keyboardShortcut("o")
     }

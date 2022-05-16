@@ -61,24 +61,17 @@ class Database {
     }()
     
     /// Create or update a single zim file entry in the local database.
-    func upsertZimFile(metadata: ZimFileMetaData, fileURLBookmark: Data?) async throws {
+    func upsertZimFile(metadata: ZimFileMetaData, fileURLBookmark: Data?) {
         let context = container.newBackgroundContext()
         context.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
         context.undoManager = nil
-        try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Void, Error>) -> Void in
-            context.performAndWait {
-                do {
-                    let predicate = NSPredicate(format: "fileID == %@", metadata.fileID as CVarArg)
-                    let fetchRequest = ZimFile.fetchRequest(predicate: predicate)
-                    let zimFile = try context.fetch(fetchRequest).first ?? ZimFile(context: context)
-                    self.configureZimFile(zimFile, metadata: metadata)
-                    zimFile.fileURLBookmark = fileURLBookmark
-                    if context.hasChanges { try context.save() }
-                } catch {
-                    continuation.resume(throwing: error)
-                }
-            }
-            continuation.resume()
+        context.perform {
+            let predicate = NSPredicate(format: "fileID == %@", metadata.fileID as CVarArg)
+            let fetchRequest = ZimFile.fetchRequest(predicate: predicate)
+            guard let zimFile = try? context.fetch(fetchRequest).first ?? ZimFile(context: context) else { return }
+            self.configureZimFile(zimFile, metadata: metadata)
+            zimFile.fileURLBookmark = fileURLBookmark
+            if context.hasChanges { try? context.save() }
         }
     }
     
