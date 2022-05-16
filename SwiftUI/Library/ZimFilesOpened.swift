@@ -8,22 +8,27 @@
 
 import SwiftUI
 
+@available(iOS 15.0, macOS 12.0, *)
 struct ZimFilesOpened: View {
+    @FetchRequest(
+        sortDescriptors: [SortDescriptor(\ZimFile.size, order: .reverse)],
+        predicate: NSCompoundPredicate(andPredicateWithSubpredicates: [
+            NSPredicate(format: "languageCode == %@", "en"),
+            NSPredicate(format: "fileURLBookmark != nil")
+        ]),
+        animation: .easeInOut
+    ) private var zimFiles: FetchedResults<ZimFile>
     @State private var isShowingFileImporter: Bool = false
     
     var body: some View {
-        Text("Hello, World!").toolbar {
+        List(zimFiles) { zimFile in
+            Text(zimFile.name)
+        }.toolbar {
             Button {
                 isShowingFileImporter = true
             } label: {
                 Image(systemName: "plus")
             }
         }.modifier(FileImporter(isShowing: $isShowingFileImporter))
-    }
-}
-
-struct ZimFilesOpened_Previews: PreviewProvider {
-    static var previews: some View {
-        ZimFilesOpened()
     }
 }

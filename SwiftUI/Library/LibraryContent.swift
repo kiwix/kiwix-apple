@@ -14,7 +14,11 @@ struct LibraryContent: View {
     var body: some View {
         switch topic {
         case .opened:
-            ZimFilesOpened()
+            if #available(iOS 15.0, *) {
+                ZimFilesOpened()
+            } else {
+                EmptyView()
+            }
         case .downloads:
             ZimFilesDownloads()
         case .new:
