@@ -9,7 +9,7 @@
 import SwiftUI
 import UniformTypeIdentifiers
 
-struct FileImportModifier: ViewModifier {
+struct FileImporter: ViewModifier {
     @Binding var isShowing: Bool
     
     func body(content: Content) -> some View {

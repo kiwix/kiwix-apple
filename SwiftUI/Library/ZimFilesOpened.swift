@@ -18,7 +18,7 @@ struct ZimFilesOpened: View {
             } label: {
                 Image(systemName: "plus")
             }
-        }.modifier(FileImportModifier(isShowing: $isShowingFileImporter))
+        }.modifier(FileImporter(isShowing: $isShowingFileImporter))
     }
 }
 

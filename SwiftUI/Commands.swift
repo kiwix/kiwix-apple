@@ -18,7 +18,7 @@ struct ImportCommands: Commands {
                     isShowing = true
                 } label: {
                     Image(systemName: "plus")
-                }.modifier(FileImportModifier(isShowing: $isShowing))
+                }.modifier(FileImporter(isShowing: $isShowing))
             }
         }
     }
