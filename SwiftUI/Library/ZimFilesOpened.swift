@@ -45,7 +45,9 @@ struct ZimFilesOpened: View {
                 isShowingFileImporter = true
             } label: {
                 Image(systemName: "plus")
-            }.modifier(FileImporter(isShowing: $isShowingFileImporter))
+            }
+            .help("Open a zim file")
+            .modifier(FileImporter(isShowing: $isShowingFileImporter))
         }
     }
 }
