@@ -15,13 +15,13 @@ struct ZimFileDetail: View {
     var body: some View {
         #if os(macOS)
         List {
-            Section("Name") {
-                Text(zimFile.name)
-            }.collapsible(false)
-            Section("Description") {
-                Text(zimFile.fileDescription).lineLimit(nil)
-            }.collapsible(false)
-            Section("Download") { download }.collapsible(false)
+            Section("Name") { Text(zimFile.name) }.collapsible(false)
+            Section("Description") { Text(zimFile.fileDescription).lineLimit(nil) }.collapsible(false)
+            if zimFile.fileURLBookmark == nil {
+                Section("Download") { download }.collapsible(false)
+            } else {
+                Section("Actions") { actions }.collapsible(false)
+            }
             Section("Info") {
                 basicInfo
                 boolInfo
@@ -56,6 +56,24 @@ struct ZimFileDetail: View {
             Action(title: "Download") {
                 Downloads.shared.start(zimFileID: zimFile.id, allowsCellularAccess: false)
             }
+        }
+    }
+    
+    @ViewBuilder
+    var actions: some View {
+        #if os(macOS)
+        Action(title: "Reveal in Finder") {
+            guard let url = ZimFileService.shared.getFileURL(zimFileID: zimFile.id) else { return }
+            NSWorkspace.shared.activateFileViewerSelecting([url])
+        }
+        #elseif os(iOS)
+        Action(title: "Reveal in Files") {
+//            let url = ZimFileService.shared.getFileURL(zimFileID: zimFile.id)!
+//            NSWorkspace.shared.activateFileViewerSelecting([url])
+        }
+        #endif
+        Action(title: "Unlink", isDestructive: true) {
+            
         }
     }
     
