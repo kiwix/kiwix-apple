@@ -11,16 +11,21 @@ import SwiftUI
 
 struct ZimFileDetail: View {
     @ObservedObject var zimFile: ZimFile
+    @State var isShowingUnlinkAlert = false
     
     var body: some View {
         #if os(macOS)
         List {
             Section("Name") { Text(zimFile.name) }.collapsible(false)
             Section("Description") { Text(zimFile.fileDescription).lineLimit(nil) }.collapsible(false)
-            if zimFile.fileURLBookmark == nil {
-                Section("Download") { download }.collapsible(false)
-            } else {
+            if let downloadTask = zimFile.downloadTask {
+                Section("Download") { DownloadTaskDetail(downloadTask: downloadTask) }.collapsible(false)
+            } else if zimFile.fileURLBookmark != nil {
                 Section("Actions") { actions }.collapsible(false)
+            } else if zimFile.downloadURL != nil {
+                Action(title: "Download") {
+                    Downloads.shared.start(zimFileID: zimFile.id, allowsCellularAccess: false)
+                }
             }
             Section("Info") {
                 basicInfo
@@ -30,13 +35,31 @@ struct ZimFileDetail: View {
             }.collapsible(false)
         }
         .listStyle(.sidebar)
+        .alert("Unlink \(zimFile.name)", isPresented: $isShowingUnlinkAlert) {
+            Button("Cancel", role: .cancel) {
+                
+            }
+            Button("Unlink", role: .destructive) {
+                
+            }
+        } message: {
+            Text("Unlink zim file from app will delete all bookmarked articles, but the original file will remain in place.")
+        }
         #elseif os(iOS)
         List {
             Section {
                 Text(zimFile.name)
                 Text(zimFile.fileDescription).lineLimit(nil)
             }
-            Section { download }
+            if let downloadTask = zimFile.downloadTask {
+                Section { DownloadTaskDetail(downloadTask: downloadTask) } header: { Text("Download") }
+            } else if zimFile.fileURLBookmark != nil {
+                Section { actions } header: { Text("Actions") }
+            } else if zimFile.downloadURL != nil {
+                Action(title: "Download") {
+                    Downloads.shared.start(zimFileID: zimFile.id, allowsCellularAccess: false)
+                }
+            }
             Section { basicInfo }
             Section { boolInfo }
             Section { counts }
@@ -49,18 +72,10 @@ struct ZimFileDetail: View {
     }
     
     @ViewBuilder
-    var download: some View {
-        if let downloadTask = zimFile.downloadTask {
-            DownloadTaskDetail(downloadTask: downloadTask)
-        } else if zimFile.downloadURL != nil {
-            Action(title: "Download") {
-                Downloads.shared.start(zimFileID: zimFile.id, allowsCellularAccess: false)
-            }
-        }
-    }
-    
-    @ViewBuilder
     var actions: some View {
+        Action(title: "Open Main Page") {
+            
+        }
         #if os(macOS)
         Action(title: "Reveal in Finder") {
             guard let url = ZimFileService.shared.getFileURL(zimFileID: zimFile.id) else { return }
@@ -68,12 +83,11 @@ struct ZimFileDetail: View {
         }
         #elseif os(iOS)
         Action(title: "Reveal in Files") {
-//            let url = ZimFileService.shared.getFileURL(zimFileID: zimFile.id)!
-//            NSWorkspace.shared.activateFileViewerSelecting([url])
+            
         }
         #endif
         Action(title: "Unlink", isDestructive: true) {
-            
+            isShowingUnlinkAlert = true
         }
     }
     
