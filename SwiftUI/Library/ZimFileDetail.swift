@@ -11,7 +11,8 @@ import SwiftUI
 
 struct ZimFileDetail: View {
     @ObservedObject var zimFile: ZimFile
-    @State var isShowingUnlinkAlert = false
+    @State var isUnlinkAlertPresented = false
+    @State var isDeleteAlertPresented = false
     
     var body: some View {
         #if os(macOS)
@@ -37,16 +38,7 @@ struct ZimFileDetail: View {
             }.collapsible(false)
         }
         .listStyle(.sidebar)
-        .alert("Unlink \(zimFile.name)", isPresented: $isShowingUnlinkAlert) {
-            Button("Cancel", role: .cancel) {
-                
-            }
-            Button("Unlink", role: .destructive) {
-                
-            }
-        } message: {
-            Text("Unlink zim file from app will delete all bookmarked articles, but the original file will remain in place.")
-        }
+        .modifier(ZimFileUnlinkAlert(isPresented: $isUnlinkAlertPresented, zimFile: zimFile))
         #elseif os(iOS)
         List {
             Section {
@@ -72,6 +64,8 @@ struct ZimFileDetail: View {
         .listStyle(.insetGrouped)
         .navigationTitle(zimFile.name)
         .navigationBarTitleDisplayMode(.inline)
+        .modifier(ZimFileDeleteAlert(isPresented: $isDeleteAlertPresented, zimFile: zimFile))
+        .modifier(ZimFileUnlinkAlert(isPresented: $isUnlinkAlertPresented, zimFile: zimFile))
         #endif
     }
     
@@ -91,7 +85,7 @@ struct ZimFileDetail: View {
         }
         #endif
         Action(title: "Unlink", isDestructive: true) {
-            isShowingUnlinkAlert = true
+            isUnlinkAlertPresented = true
         }
     }
     

@@ -62,3 +62,44 @@ struct ZimFileSelection: ViewModifier {
         #endif
     }
 }
+
+struct ZimFileDeleteAlert: ViewModifier {
+    @Binding var isPresented: Bool
+    
+    let zimFile: ZimFile
+    
+    func body(content: Content) -> some View {
+        content.alert(isPresented: $isPresented) {
+            Alert(
+                title: Text("Delete \(zimFile.name)"),
+                message: Text("The zim file and all bookmarked articles linked to this zim file will be deleted."),
+                primaryButton: .destructive(Text("Delete"), action: {
+                    
+                }),
+                secondaryButton: .cancel()
+            )
+        }
+    }
+}
+
+struct ZimFileUnlinkAlert: ViewModifier {
+    @Binding var isPresented: Bool
+    
+    let zimFile: ZimFile
+    
+    func body(content: Content) -> some View {
+        content.alert(isPresented: $isPresented) {
+            Alert(
+                title: Text("Unlink \(zimFile.name)"),
+                message: Text("""
+                All bookmarked articles linked to this zim file will be deleted, \
+                but the original file will remain in place.
+                """),
+                primaryButton: .destructive(Text("Unlink"), action: {
+                    
+                }),
+                secondaryButton: .cancel()
+            )
+        }
+    }
+}
