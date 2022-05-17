@@ -9,16 +9,14 @@
 import SwiftUI
 
 struct ImportCommands: Commands {
-    @State private var isShowing: Bool = false
+    @State private var isPresented: Bool = false
     
     var body: some Commands {
         CommandGroup(replacing: .importExport) {
             Section {
-                Button {
-                    isShowing = true
-                } label: {
-                    Image(systemName: "plus")
-                }.modifier(FileImporter(isShowing: $isShowing))
+                Button("Open...") { isPresented = true}
+                    .modifier(FileImporter(isPresented: $isPresented))
+                    .keyboardShortcut("o")
             }
         }
     }

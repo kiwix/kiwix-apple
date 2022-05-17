@@ -10,11 +10,11 @@ import SwiftUI
 import UniformTypeIdentifiers
 
 struct FileImporter: ViewModifier {
-    @Binding var isShowing: Bool
+    @Binding var isPresented: Bool
     
     func body(content: Content) -> some View {
         content.fileImporter(
-            isPresented: $isShowing,
+            isPresented: $isPresented,
             allowedContentTypes: [UTType(exportedAs: "org.openzim.zim")],
             allowsMultipleSelection: false
         ) { result in
@@ -25,6 +25,5 @@ struct FileImporter: ViewModifier {
             ZimFileService.shared.open(bookmark: data)
             Database.shared.upsertZimFile(metadata: metadata, fileURLBookmark: data)
         }
-        .keyboardShortcut("o")
     }
 }

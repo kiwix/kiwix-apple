@@ -18,7 +18,7 @@ struct ZimFilesOpened: View {
         ]),
         animation: .easeInOut
     ) private var zimFiles: FetchedResults<ZimFile>
-    @State private var isShowingFileImporter: Bool = false
+    @State private var isFileImporterPresented: Bool = false
     @State private var selected: ZimFile?
     
     var body: some View {
@@ -40,14 +40,14 @@ struct ZimFilesOpened: View {
         }
         .navigationTitle(LibraryTopic.new.name)
         .modifier(ZimFileDetailPanel(zimFile: selected))
+        .modifier(FileImporter(isPresented: $isFileImporterPresented))
         .toolbar {
             Button {
-                isShowingFileImporter = true
+                isFileImporterPresented = true
             } label: {
                 Image(systemName: "plus")
             }
             .help("Open a zim file")
-            .modifier(FileImporter(isShowing: $isShowingFileImporter))
         }
     }
 }
