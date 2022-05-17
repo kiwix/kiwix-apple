@@ -54,15 +54,15 @@ struct ZimFileDetail: View {
                 Text(zimFile.fileDescription).lineLimit(nil)
             }
             if let downloadTask = zimFile.downloadTask {
-                Section { DownloadTaskDetail(downloadTask: downloadTask) } header: { Text("Download") }
+                Section { DownloadTaskDetail(downloadTask: downloadTask) }
             } else if zimFile.fileURLBookmark != nil {
-                Section { actions } header: { Text("Actions") }
+                Section { actions }
             } else if zimFile.downloadURL != nil {
                 Section {
                     Action(title: "Download") {
                         Downloads.shared.start(zimFileID: zimFile.id, allowsCellularAccess: false)
                     }
-                } header: { Text("Download") }
+                }
             }
             Section { basicInfo }
             Section { boolInfo }
