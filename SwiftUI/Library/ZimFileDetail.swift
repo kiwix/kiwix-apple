@@ -23,8 +23,10 @@ struct ZimFileDetail: View {
             } else if zimFile.fileURLBookmark != nil {
                 Section("Actions") { actions }.collapsible(false)
             } else if zimFile.downloadURL != nil {
-                Action(title: "Download") {
-                    Downloads.shared.start(zimFileID: zimFile.id, allowsCellularAccess: false)
+                Section("Download") {
+                    Action(title: "Download") {
+                        Downloads.shared.start(zimFileID: zimFile.id, allowsCellularAccess: false)
+                    }
                 }
             }
             Section("Info") {
@@ -56,9 +58,11 @@ struct ZimFileDetail: View {
             } else if zimFile.fileURLBookmark != nil {
                 Section { actions } header: { Text("Actions") }
             } else if zimFile.downloadURL != nil {
-                Action(title: "Download") {
-                    Downloads.shared.start(zimFileID: zimFile.id, allowsCellularAccess: false)
-                }
+                Section {
+                    Action(title: "Download") {
+                        Downloads.shared.start(zimFileID: zimFile.id, allowsCellularAccess: false)
+                    }
+                } header: { Text("Download") }
             }
             Section { basicInfo }
             Section { boolInfo }
