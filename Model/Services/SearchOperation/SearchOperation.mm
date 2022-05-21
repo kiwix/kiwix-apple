@@ -46,20 +46,25 @@
     // get a list of archives that are included in search
     typedef std::unordered_map<std::string, zim::Archive> archives_map;
     auto *allArchives = static_cast<archives_map *>([[ZimFileService sharedInstance] getArchives]);
-    std::vector<zim::Archive> archives = std::vector<zim::Archive>();
+    
+    std::vector<zim::Archive> indexSearchArchives = std::vector<zim::Archive>();
+    std::vector<zim::Archive> titleSearchArchives = std::vector<zim::Archive>();
     for (NSUUID *zimFileID in self.zimFileIDs) {
         std::string zimFileID_C = [[[zimFileID UUIDString] lowercaseString] cStringUsingEncoding:NSUTF8StringEncoding];
         try {
             auto archive = allArchives->at(zimFileID_C);
-            archives.push_back(archive);
+            if (archive.hasFulltextIndex()) {
+                indexSearchArchives.push_back(archive);
+            }
+            titleSearchArchives.push_back(archive);
         } catch (std::out_of_range) { }
     }
     
     // perform index and title search
-    [self addIndexSearchResults:archives];
-    if (archives.size() > 0) {
-        int count = std::max((35 - (int)[self.results count]) / (int)archives.size(), 5);
-        [self addTitleSearchResults:archives count:(int)count];
+    [self addIndexSearchResults:indexSearchArchives];
+    if (titleSearchArchives.size() > 0) {
+        int count = std::max((35 - (int)[self.results count]) / (int)titleSearchArchives.size(), 5);
+        [self addTitleSearchResults:titleSearchArchives count:(int)count];
     }
 }
 
@@ -68,6 +73,7 @@
 - (void)addIndexSearchResults:(std::vector<zim::Archive>)archives {
     // initialize and start full text search
     if (self.isCancelled) { return; }
+    if (archives.empty()) { return; }
     zim::Searcher searcher = zim::Searcher(archives);
     zim::SearchResultSet resultSet = searcher.search(zim::Query(self.searchText_C)).getResults(0, 25);
     
