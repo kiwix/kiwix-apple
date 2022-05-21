@@ -79,10 +79,6 @@ struct ZimFileDetail: View {
             guard let url = ZimFileService.shared.getFileURL(zimFileID: zimFile.id) else { return }
             NSWorkspace.shared.activateFileViewerSelecting([url])
         }
-        #elseif os(iOS)
-        Action(title: "Reveal in Files") {
-            
-        }
         #endif
         Action(title: "Unlink", isDestructive: true) {
             isUnlinkAlertPresented = true
