@@ -66,6 +66,7 @@ struct Reader: View {
     @Environment(\.horizontalSizeClass) var horizontalSizeClass
     @ObservedObject var viewModel = ReaderViewModel()
     @State var isPresentingLibrary = false
+    @State var url: URL?
     
     var body: some View {
         if viewModel.isSearchActive {
@@ -119,14 +120,20 @@ struct Reader: View {
     }
     
     var content: some View {
-        Text("Hello!").sheet(isPresented: $isPresentingLibrary) {
+        Group {
+            if url == nil {
+                List {
+                    Text("Welcome!")
+                    Text("Zim File 1")
+                    Text("Zim File 2")
+                    Text("Zim File 3")
+                }
+            } else {
+                WebView(url: $url)
+            }
+        }
+        .sheet(isPresented: $isPresentingLibrary) {
             Library().environment(\.managedObjectContext, Database.shared.container.viewContext)
         }
     }
-}
-
-class ReaderViewModel: ObservableObject {
-    @Published var isSearchActive: Bool = false
-    
-    var cancelSearch: (() -> Void)?
 }

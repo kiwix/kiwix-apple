@@ -1,6 +1,6 @@
 //
 //  ReaderViewModel.swift
-//  Kiwix for macOS
+//  Kiwix
 //
 //  Created by Chris Li on 2/13/22.
 //  Copyright © 2022 Chris Li. All rights reserved.
@@ -14,6 +14,9 @@ class ReaderViewModel: NSObject, ObservableObject, WKNavigationDelegate, WKScrip
     @Published private(set) var articleTitle: String = ""
     @Published private(set) var zimFileName: String = ""
     @Published private(set) var outlineItems = [OutlineItem]()
+    @Published var isSearchActive: Bool = false
+    
+    var cancelSearch: (() -> Void)?
     
     let webView: WKWebView = {
         let config = WKWebViewConfiguration()
@@ -89,12 +92,12 @@ class ReaderViewModel: NSObject, ObservableObject, WKNavigationDelegate, WKScrip
         } else if url.isKiwixURL {
             return .allow
         } else if url.scheme == "http" || url.scheme == "https" {
-            DispatchQueue.main.async { NSWorkspace.shared.open(url) }
+//            DispatchQueue.main.async { NSWorkspace.shared.open(url) }
             return .cancel
         } else if url.scheme == "geo" {
             let coordinate = url.absoluteString.replacingOccurrences(of: "geo:", with: "")
             if let url = URL(string: "http://maps.apple.com/?ll=\(coordinate)") {
-                DispatchQueue.main.async { NSWorkspace.shared.open(url) }
+//                DispatchQueue.main.async { NSWorkspace.shared.open(url) }
             }
             return .cancel
         } else {
