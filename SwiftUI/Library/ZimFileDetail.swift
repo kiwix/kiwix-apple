@@ -11,8 +11,8 @@ import SwiftUI
 
 struct ZimFileDetail: View {
     @ObservedObject var zimFile: ZimFile
-    @State var isUnlinkAlertPresented = false
-    @State var isDeleteAlertPresented = false
+    @State private var isPresentingUnlinkAlert = false
+    @State private var isPresentingDeleteAlert = false
     
     var body: some View {
         #if os(macOS)
@@ -38,7 +38,7 @@ struct ZimFileDetail: View {
             }.collapsible(false)
         }
         .listStyle(.sidebar)
-        .modifier(ZimFileUnlinkAlert(isPresented: $isUnlinkAlertPresented, zimFile: zimFile))
+        .modifier(ZimFileUnlinkAlert(isPresented: $isPresentingUnlinkAlert, zimFile: zimFile))
         #elseif os(iOS)
         List {
             Section {
@@ -64,8 +64,8 @@ struct ZimFileDetail: View {
         .listStyle(.insetGrouped)
         .navigationTitle(zimFile.name)
         .navigationBarTitleDisplayMode(.inline)
-        .modifier(ZimFileDeleteAlert(isPresented: $isDeleteAlertPresented, zimFile: zimFile))
-        .modifier(ZimFileUnlinkAlert(isPresented: $isUnlinkAlertPresented, zimFile: zimFile))
+        .modifier(ZimFileDeleteAlert(isPresented: $isPresentingDeleteAlert, zimFile: zimFile))
+        .modifier(ZimFileUnlinkAlert(isPresented: $isPresentingUnlinkAlert, zimFile: zimFile))
         #endif
     }
     
@@ -85,7 +85,7 @@ struct ZimFileDetail: View {
         }
         #endif
         Action(title: "Unlink", isDestructive: true) {
-            isUnlinkAlertPresented = true
+            isPresentingUnlinkAlert = true
         }
     }
     
