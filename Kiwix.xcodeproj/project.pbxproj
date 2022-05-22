@@ -38,7 +38,6 @@
 		972B6662200808D6003F5365 /* WelcomeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 972B6661200808D6003F5365 /* WelcomeController.swift */; };
 		972C978026F042E40070987F /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 972C977F26F042E40070987F /* SettingsViewController.swift */; };
 		972DE4732814A116004FD9B9 /* Entities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 972DE4722814A116004FD9B9 /* Entities.swift */; };
-		972DE4B02814A3D9004FD9B9 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 972DE4AF2814A3D9004FD9B9 /* Preview Assets.xcassets */; };
 		972DE4B42814A4F6004FD9B9 /* DataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 9735D0B82775363900C7D495 /* DataModel.xcdatamodeld */; };
 		972DE4B52814A502004FD9B9 /* Entities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 972DE4722814A116004FD9B9 /* Entities.swift */; };
 		972DE4B62814A502004FD9B9 /* Enum.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9735D0BF27777E3300C7D495 /* Enum.swift */; };
@@ -331,7 +330,6 @@
 		972C977F26F042E40070987F /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		972DE4722814A116004FD9B9 /* Entities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Entities.swift; sourceTree = "<group>"; };
 		972DE4A62814A3D8004FD9B9 /* iOS_SwiftUI.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iOS_SwiftUI.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		972DE4AF2814A3D9004FD9B9 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		972DE4C12814A961004FD9B9 /* Library.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Library.swift; sourceTree = "<group>"; };
 		972E6F631FA11A6100F5C927 /* RoundedButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedButton.swift; sourceTree = "<group>"; };
 		9735B88B279D9A74005F0D1A /* injection.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = injection.js; sourceTree = "<group>"; };
@@ -608,17 +606,8 @@
 			isa = PBXGroup;
 			children = (
 				973A0E04283105EA00B41E71 /* iOS-SwiftUI-Info.plist */,
-				972DE4AE2814A3D9004FD9B9 /* Preview Content */,
 			);
 			path = iOS_SwiftUI;
-			sourceTree = "<group>";
-		};
-		972DE4AE2814A3D9004FD9B9 /* Preview Content */ = {
-			isa = PBXGroup;
-			children = (
-				972DE4AF2814A3D9004FD9B9 /* Preview Assets.xcassets */,
-			);
-			path = "Preview Content";
 			sourceTree = "<group>";
 		};
 		972DE4BF2814A5E3004FD9B9 /* OPDSStreamParser */ = {
@@ -1277,7 +1266,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				972DE4B02814A3D9004FD9B9 /* Preview Assets.xcassets in Resources */,
 				973A0DF72830929C00B41E71 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1735,7 +1723,7 @@
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"iOS_SwiftUI/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"SwiftUI/Preview Content\"";
 				DEVELOPMENT_TEAM = L7HWM3SP3L;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -1773,7 +1761,7 @@
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"iOS_SwiftUI/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"SwiftUI/Preview Content\"";
 				DEVELOPMENT_TEAM = L7HWM3SP3L;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
