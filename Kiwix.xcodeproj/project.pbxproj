@@ -235,8 +235,6 @@
 		97EC18B726E8555E008309ED /* RealmSwift.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97EC18B026E8555E008309ED /* RealmSwift.xcframework */; };
 		97EC18B926E8555E008309ED /* Realm.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97EC18B126E8555E008309ED /* Realm.xcframework */; };
 		97EC18BA26E8555E008309ED /* Realm.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97EC18B126E8555E008309ED /* Realm.xcframework */; };
-		97EEFF332839CA0600BDD6E2 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97EEFF1E28398E9A00BDD6E2 /* SceneDelegate.swift */; };
-		97EEFF342839CA0600BDD6E2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97EEFF1C28398E9A00BDD6E2 /* AppDelegate.swift */; };
 		97EEFF352839CA0600BDD6E2 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97EEFF2028398E9A00BDD6E2 /* ViewController.swift */; };
 		97EFF05E235CAEFC00FBB7A4 /* ContentTabController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97EFF05D235CAEFC00FBB7A4 /* ContentTabController.swift */; };
 		97F4210E22EE5590001E41F9 /* FileImportController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97F4210D22EE5590001E41F9 /* FileImportController.swift */; };
@@ -463,8 +461,6 @@
 		97EC18AF26E8555E008309ED /* libkiwix.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = libkiwix.xcframework; sourceTree = "<group>"; };
 		97EC18B026E8555E008309ED /* RealmSwift.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = RealmSwift.xcframework; sourceTree = "<group>"; };
 		97EC18B126E8555E008309ED /* Realm.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = Realm.xcframework; sourceTree = "<group>"; };
-		97EEFF1C28398E9A00BDD6E2 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		97EEFF1E28398E9A00BDD6E2 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		97EEFF2028398E9A00BDD6E2 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		97EFF05D235CAEFC00FBB7A4 /* ContentTabController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentTabController.swift; sourceTree = "<group>"; };
 		97F4210D22EE5590001E41F9 /* FileImportController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileImportController.swift; sourceTree = "<group>"; };
@@ -611,8 +607,6 @@
 		972DE4A72814A3D8004FD9B9 /* iOS_SwiftUI */ = {
 			isa = PBXGroup;
 			children = (
-				97EEFF1C28398E9A00BDD6E2 /* AppDelegate.swift */,
-				97EEFF1E28398E9A00BDD6E2 /* SceneDelegate.swift */,
 				97EEFF2028398E9A00BDD6E2 /* ViewController.swift */,
 				973A0E04283105EA00B41E71 /* iOS-SwiftUI-Info.plist */,
 				972DE4AE2814A3D9004FD9B9 /* Preview Content */,
@@ -1383,13 +1377,11 @@
 			files = (
 				972DE4BB2814A5A4004FD9B9 /* OPDSRefreshError.swift in Sources */,
 				973A0E002831053B00B41E71 /* ZimFileService.mm in Sources */,
-				97EEFF332839CA0600BDD6E2 /* SceneDelegate.swift in Sources */,
 				973A0DE4281D80E300B41E71 /* ZimFileDetail.swift in Sources */,
 				973A0DEB281DDBB600B41E71 /* ZimFilesDownloads.swift in Sources */,
 				973A0E032831057200B41E71 /* URL.swift in Sources */,
 				973A0DE8281DD7EB00B41E71 /* Log.swift in Sources */,
 				972DE4BC2814A5BE004FD9B9 /* OPDSStreamParser.swift in Sources */,
-				97EEFF342839CA0600BDD6E2 /* AppDelegate.swift in Sources */,
 				976D90E92815D63A00CC7D29 /* ZimFilesNew.swift in Sources */,
 				976D90D32814F2FA00CC7D29 /* ZimFileGrid.swift in Sources */,
 				972DE4B92814A56A004FD9B9 /* Database.swift in Sources */,
