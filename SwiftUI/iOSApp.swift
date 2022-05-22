@@ -156,6 +156,12 @@ struct Reader: View {
                 WebView(url: $url)
             }
         }
+        .onOpenURL { url in
+            self.url = url
+            withAnimation {
+                isPresentingLibrary = false
+            }
+        }
         .sheet(isPresented: $isPresentingLibrary) {
             Library().environment(\.managedObjectContext, Database.shared.container.viewContext)
         }

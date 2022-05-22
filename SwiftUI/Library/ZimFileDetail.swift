@@ -73,7 +73,10 @@ struct ZimFileDetail: View {
     var actions: some View {
         Action(title: "Open Main Page") {
             guard let url = ZimFileService.shared.getMainPageURL(zimFileID: zimFile.fileID) else { return }
-            print(url)
+            #if os(macOS)
+            #elseif os(iOS)
+            UIApplication.shared.open(url)
+            #endif
         }
         #if os(macOS)
         Action(title: "Reveal in Finder") {
