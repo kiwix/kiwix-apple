@@ -50,16 +50,17 @@ class ViewController: UIHostingController<Reader>, UISearchControllerDelegate {
 struct Reader: View {
     @Environment(\.horizontalSizeClass) var horizontalSizeClass
     @ObservedObject var viewModel = ReaderViewModel()
+    @State var isPresentingLibrary = false
     
     var body: some View {
         if viewModel.isSearchActive {
-            Text("Hello!").toolbar {
+            content.toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button("Cancel") { viewModel.cancelSearch?()}
                 }
             }
         } else if horizontalSizeClass == .regular {
-            Text("Hello!").toolbar {
+            content.toolbar {
                 ToolbarItemGroup(placement: .navigationBarLeading) {
                     Button { } label: { Image(systemName: "chevron.left") }
                     Button { } label: { Image(systemName: "chevron.right") }
@@ -69,12 +70,12 @@ struct Reader: View {
                 ToolbarItemGroup(placement: .navigationBarTrailing) {
                     Button { } label: { Image(systemName: "die.face.5") }
                     Button { } label: { Image(systemName: "house") }
-                    Button { } label: { Image(systemName: "folder") }
+                    Button { isPresentingLibrary = true } label: { Image(systemName: "folder") }
                     Button { } label: { Image(systemName: "gear") }
                 }
             }
         } else {
-            Text("Hello!").toolbar {
+            content.toolbar {
                 ToolbarItemGroup(placement: .bottomBar) {
                     Group {
                         Button { } label: { Image(systemName: "chevron.left") }
@@ -92,13 +93,19 @@ struct Reader: View {
                     Spacer()
                     Menu {
                         Button { } label: { Label("Main Page", systemImage: "house") }
-                        Button { } label: { Label("Library", systemImage: "folder") }
+                        Button { isPresentingLibrary = true } label: { Label("Library", systemImage: "folder") }
                         Button { } label: { Label("Settings", systemImage: "gear") }
                     } label: {
                         Image(systemName: "ellipsis.circle")
                     }
                 }
             }
+        }
+    }
+    
+    var content: some View {
+        Text("Hello!").sheet(isPresented: $isPresentingLibrary) {
+            Library().environment(\.managedObjectContext, Database.shared.container.viewContext)
         }
     }
 }
