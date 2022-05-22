@@ -153,7 +153,8 @@ struct Reader: View {
                     Text("Zim File 3")
                 }
             } else {
-                WebView(url: $url)
+                WebView(url: $url, webView: viewModel.webView)
+                    .edgesIgnoringSafeArea(.all)
             }
         }
         .onOpenURL { url in

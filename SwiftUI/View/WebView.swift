@@ -34,13 +34,23 @@ struct WebView: NSViewRepresentable {
 #elseif os(iOS)
 struct WebView: UIViewRepresentable {
     @Binding var url: URL?
+    let webView: WKWebView
     
-    func makeUIView(context: Context) -> WKWebView {
-        WKWebView()
-    }
+    func makeUIView(context: Context) -> WKWebView { webView }
     
     func updateUIView(_ uiView: WKWebView, context: Context) {
+        guard let url = url, uiView.url != url else { return }
+        uiView.load(URLRequest(url: url))
+    }
+    
+    func makeCoordinator() -> Coordinator { Coordinator(view: self) }
+    
+    class Coordinator {
+        private let urlObserver: NSKeyValueObservation
         
+        init(view: WebView) {
+            urlObserver = view.webView.observe(\.url) { webview, _ in view.url = webview.url }
+        }
     }
 }
 #endif
