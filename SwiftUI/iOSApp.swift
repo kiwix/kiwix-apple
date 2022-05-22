@@ -9,22 +9,27 @@
 import UIKit
 import SwiftUI
 
-@main
-class AppDelegate: UIResponder, UIApplicationDelegate { }
 
-class SceneDelegate: UIResponder, UIWindowSceneDelegate {
-    var window: UIWindow?
-    func scene(_ scene: UIScene,
-               willConnectTo session: UISceneSession,
-               options connectionOptions: UIScene.ConnectionOptions) {
-        guard let windowScene = scene as? UIWindowScene else { return }
-        window = UIWindow(windowScene: windowScene)
-        window?.rootViewController = UINavigationController(rootViewController: ReaderViewController())
-        window?.makeKeyAndVisible()
+@main
+struct Kiwix: App {
+    var body: some Scene {
+        WindowGroup {
+            RootView()
+                .edgesIgnoringSafeArea(.all)
+                .environment(\.managedObjectContext, Database.shared.container.viewContext)
+        }
     }
 }
 
-class ReaderViewController: UIHostingController<Reader>, UISearchControllerDelegate {
+private struct RootView: UIViewControllerRepresentable {
+    func makeUIViewController(context: Context) -> UINavigationController {
+        UINavigationController(rootViewController: RootViewController())
+    }
+    
+    func updateUIViewController(_ uiViewController: UINavigationController, context: Context) { }
+}
+
+private class RootViewController: UIHostingController<Reader>, UISearchControllerDelegate {
     let searchController = UISearchController()
     
     convenience init() {
