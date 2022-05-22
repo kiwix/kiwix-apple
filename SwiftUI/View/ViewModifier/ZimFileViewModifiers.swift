@@ -74,7 +74,7 @@ struct ZimFileDeleteAlert: ViewModifier {
                 title: Text("Delete \(zimFile.name)"),
                 message: Text("The zim file and all bookmarked articles linked to this zim file will be deleted."),
                 primaryButton: .destructive(Text("Delete"), action: {
-                    
+                    LibraryViewModel.delete(zimFileID: zimFile.fileID)
                 }),
                 secondaryButton: .cancel()
             )
@@ -96,7 +96,7 @@ struct ZimFileUnlinkAlert: ViewModifier {
                 but the original file will remain in place.
                 """),
                 primaryButton: .destructive(Text("Unlink"), action: {
-                    
+                    LibraryViewModel.unlink(zimFileID: zimFile.fileID)
                 }),
                 secondaryButton: .cancel()
             )

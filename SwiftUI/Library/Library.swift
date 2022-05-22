@@ -38,8 +38,9 @@ struct Library: View {
 }
 #elseif os(iOS)
 struct Library: View {
-    @Environment(\.presentationMode) var presentationMode
-    @SceneStorage("library.selectedTopic") var selectedTopic: LibraryTopic = .opened
+    @Environment(\.presentationMode) private var presentationMode
+    @SceneStorage("library.selectedTopic") private var selectedTopic: LibraryTopic = .opened
+    @StateObject private var viewModel = LibraryViewModel()
     
     let topics: [LibraryTopic] = [.opened, .categories, .downloads, .new]
     
@@ -61,7 +62,9 @@ struct Library: View {
                 .tag(topic)
                 .tabItem { Label(topic.name, systemImage: topic.iconName) }
             }
-        }.onAppear {
+        }
+        .environmentObject(viewModel)
+        .onAppear {
             Task {
                 try? await Database.shared.refreshZimFileCatalog()
             }
