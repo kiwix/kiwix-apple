@@ -93,6 +93,39 @@ struct Reader: View {
     @State var url: URL?
     
     var body: some View {
+        Group {
+            if url == nil {
+                List {
+                    Text("Welcome!")
+                    Text("Zim File 1")
+                    Text("Zim File 2")
+                    Text("Zim File 3")
+                }
+            } else {
+                WebView(url: $url, webView: viewModel.webView)
+                    .edgesIgnoringSafeArea(.all)
+            }
+        }
+        .modifier(ToolbarButtons(isPresentingLibrary: $isPresentingLibrary))
+        .environmentObject(viewModel)
+        .onOpenURL { url in
+            self.url = url
+            withAnimation {
+                isPresentingLibrary = false
+            }
+        }
+        .sheet(isPresented: $isPresentingLibrary) {
+            Library().environment(\.managedObjectContext, Database.shared.container.viewContext)
+        }
+    }
+}
+
+private struct ToolbarButtons: ViewModifier {
+    @Binding var isPresentingLibrary: Bool
+    @Environment(\.horizontalSizeClass) var horizontalSizeClass
+    @EnvironmentObject var viewModel: ReaderViewModel
+    
+    func body(content: Content) -> some View {
         if viewModel.isSearchActive {
             content.toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
@@ -102,8 +135,8 @@ struct Reader: View {
         } else if horizontalSizeClass == .regular {
             content.toolbar {
                 ToolbarItemGroup(placement: .navigationBarLeading) {
-                    Button { } label: { Image(systemName: "chevron.left") }
-                    Button { } label: { Image(systemName: "chevron.right") }
+                    NavigateBackButton()
+                    NavigateForwardButton()
                     Button { } label: { Image(systemName: "list.bullet") }
                     Button { } label: { Image(systemName: "star") }
                 }
@@ -118,9 +151,9 @@ struct Reader: View {
             content.toolbar {
                 ToolbarItemGroup(placement: .bottomBar) {
                     Group {
-                        Button { } label: { Image(systemName: "chevron.left") }
+                        NavigateBackButton()
                         Spacer()
-                        Button { } label: { Image(systemName: "chevron.right") }
+                        NavigateForwardButton()
                     }
                     Spacer()
                     Group {
@@ -140,31 +173,6 @@ struct Reader: View {
                     }
                 }
             }
-        }
-    }
-    
-    var content: some View {
-        Group {
-            if url == nil {
-                List {
-                    Text("Welcome!")
-                    Text("Zim File 1")
-                    Text("Zim File 2")
-                    Text("Zim File 3")
-                }
-            } else {
-                WebView(url: $url, webView: viewModel.webView)
-                    .edgesIgnoringSafeArea(.all)
-            }
-        }
-        .onOpenURL { url in
-            self.url = url
-            withAnimation {
-                isPresentingLibrary = false
-            }
-        }
-        .sheet(isPresented: $isPresentingLibrary) {
-            Library().environment(\.managedObjectContext, Database.shared.container.viewContext)
         }
     }
 }
