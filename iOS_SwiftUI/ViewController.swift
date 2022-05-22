@@ -1,6 +1,6 @@
 //
 //  ViewController.swift
-//  iOS14+
+//  Kiwix for iOS
 //
 //  Created by Chris Li on 5/21/22.
 //  Copyright © 2022 Chris Li. All rights reserved.
@@ -9,7 +9,22 @@
 import UIKit
 import SwiftUI
 
-class ViewController: UIHostingController<Reader>, UISearchControllerDelegate {
+@main
+class AppDelegate: UIResponder, UIApplicationDelegate { }
+
+class SceneDelegate: UIResponder, UIWindowSceneDelegate {
+    var window: UIWindow?
+    func scene(_ scene: UIScene,
+               willConnectTo session: UISceneSession,
+               options connectionOptions: UIScene.ConnectionOptions) {
+        guard let windowScene = scene as? UIWindowScene else { return }
+        window = UIWindow(windowScene: windowScene)
+        window?.rootViewController = UINavigationController(rootViewController: ReaderViewController())
+        window?.makeKeyAndVisible()
+    }
+}
+
+class ReaderViewController: UIHostingController<Reader>, UISearchControllerDelegate {
     let searchController = UISearchController()
     
     convenience init() {
