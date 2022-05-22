@@ -12,11 +12,30 @@ import SwiftUI
 
 @main
 struct Kiwix: App {
+    init() {
+        reopen()
+    }
+    
     var body: some Scene {
         WindowGroup {
             RootView()
                 .edgesIgnoringSafeArea(.all)
                 .environment(\.managedObjectContext, Database.shared.container.viewContext)
+        }
+    }
+    
+    private func reopen() {
+        let context = Database.shared.container.viewContext
+        let request = ZimFile.fetchRequest(predicate: NSPredicate(format: "fileURLBookmark != nil"))
+        guard let zimFiles = try? context.fetch(request) else { return }
+        zimFiles.forEach { zimFile in
+            guard let data = zimFile.fileURLBookmark else { return }
+            if let data = ZimFileService.shared.open(bookmark: data) {
+                zimFile.fileURLBookmark = data
+            }
+        }
+        if context.hasChanges {
+            try? context.save()
         }
     }
 }
