@@ -218,7 +218,6 @@
 		97CE424A24957C3500B334E9 /* LibraryService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9779A59C2456793500F6F6FF /* LibraryService.swift */; };
 		97D19F072546FF3700910CAE /* BuildingBlocks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97D19F062546FF3700910CAE /* BuildingBlocks.swift */; };
 		97DE2B952839CF2200C63D9B /* iOSApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97EEFF2028398E9A00BDD6E2 /* iOSApp.swift */; };
-		97DE2B962839CF8D00C63D9B /* iOS-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 973A0E04283105EA00B41E71 /* iOS-Info.plist */; };
 		97DED67F275278FF008D2C56 /* SearchField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97DED67E275278FF008D2C56 /* SearchField.swift */; };
 		97E173D425733D11002CAD17 /* RootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97E173D325733D10002CAD17 /* RootViewController.swift */; };
 		97E94B1A271EF24D005B0295 /* App.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97E94B19271EF24D005B0295 /* App.swift */; };
@@ -339,7 +338,6 @@
 		9735D0BD2777531400C7D495 /* BookmarkButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarkButton.swift; sourceTree = "<group>"; };
 		9735D0BF27777E3300C7D495 /* Enum.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Enum.swift; sourceTree = "<group>"; };
 		9735D0C127777E5900C7D495 /* DisplayModeSelector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayModeSelector.swift; sourceTree = "<group>"; };
-		9735D0C327778B2A00C7D495 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Info.plist; path = macOS_SwiftUI/Support/Info.plist; sourceTree = SOURCE_ROOT; };
 		973A0DE2281D80E300B41E71 /* ZimFileDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZimFileDetail.swift; sourceTree = "<group>"; };
 		973A0DE5281DC8F400B41E71 /* Downloads.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Downloads.swift; sourceTree = "<group>"; };
 		973A0DE9281DDBB600B41E71 /* ZimFilesDownloads.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZimFilesDownloads.swift; sourceTree = "<group>"; };
@@ -447,6 +445,7 @@
 		97C57604202CB42100E37502 /* Kiwix.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = Kiwix.entitlements; sourceTree = "<group>"; };
 		97D07A08273719720002B9EB /* Search.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Search.swift; sourceTree = "<group>"; };
 		97D19F062546FF3700910CAE /* BuildingBlocks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BuildingBlocks.swift; sourceTree = "<group>"; };
+		97DE2B982839D01B00C63D9B /* macOS-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "macOS-Info.plist"; sourceTree = "<group>"; };
 		97DED67E275278FF008D2C56 /* SearchField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchField.swift; sourceTree = "<group>"; };
 		97E173D325733D10002CAD17 /* RootViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootViewController.swift; sourceTree = "<group>"; };
 		97E94B17271EF24D005B0295 /* Kiwix.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Kiwix.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -979,7 +978,7 @@
 		97E94B26271EF359005B0295 /* Support */ = {
 			isa = PBXGroup;
 			children = (
-				9735D0C327778B2A00C7D495 /* Info.plist */,
+				97DE2B982839D01B00C63D9B /* macOS-Info.plist */,
 				973A0E04283105EA00B41E71 /* iOS-Info.plist */,
 				97E94B1D271EF250005B0295 /* Assets.xcassets */,
 				97E94B22271EF250005B0295 /* Kiwix.entitlements */,
@@ -1267,7 +1266,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				97DE2B962839CF8D00C63D9B /* iOS-Info.plist in Resources */,
 				973A0DF72830929C00B41E71 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2113,7 +2111,7 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = SwiftUI/Support/Info.plist;
+				INFOPLIST_FILE = "SwiftUI/Support/macOS-Info.plist";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.reference";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2021 Chris Li. All rights reserved.";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -2153,7 +2151,7 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = SwiftUI/Support/Info.plist;
+				INFOPLIST_FILE = "SwiftUI/Support/macOS-Info.plist";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.reference";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2021 Chris Li. All rights reserved.";
 				LD_RUNPATH_SEARCH_PATHS = (
