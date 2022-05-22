@@ -9,6 +9,7 @@
 import SwiftUI
 import UniformTypeIdentifiers
 
+/// Context menu for a zim file.
 struct ZimFileContextMenu: ViewModifier {
     @Binding var selected: ZimFile?
     let zimFile: ZimFile
@@ -46,6 +47,7 @@ struct ZimFileContextMenu: ViewModifier {
     }
 }
 
+/// On iOS, converts the modified view to a NavigationLink that goes to the zim file detail.
 struct ZimFileSelection: ViewModifier {
     @Binding var selected: ZimFile?
     let zimFile: ZimFile
@@ -63,6 +65,7 @@ struct ZimFileSelection: ViewModifier {
     }
 }
 
+/// Alert to confirm deleting zim file.
 struct ZimFileDeleteAlert: ViewModifier {
     @Binding var isPresented: Bool
     
@@ -82,6 +85,7 @@ struct ZimFileDeleteAlert: ViewModifier {
     }
 }
 
+/// Alert to confirm unlinking zim file.
 struct ZimFileUnlinkAlert: ViewModifier {
     @Binding var isPresented: Bool
     
