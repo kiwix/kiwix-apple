@@ -962,17 +962,8 @@
 				97EEFF2028398E9A00BDD6E2 /* iOSApp.swift */,
 				973BC75627587A29008D4114 /* Commands.swift */,
 				97E94B26271EF359005B0295 /* Support */,
-				97E94B1F271EF250005B0295 /* Preview Content */,
 			);
 			path = SwiftUI;
-			sourceTree = "<group>";
-		};
-		97E94B1F271EF250005B0295 /* Preview Content */ = {
-			isa = PBXGroup;
-			children = (
-				97E94B20271EF250005B0295 /* Preview Assets.xcassets */,
-			);
-			path = "Preview Content";
 			sourceTree = "<group>";
 		};
 		97E94B26271EF359005B0295 /* Support */ = {
@@ -982,6 +973,7 @@
 				973A0E04283105EA00B41E71 /* iOS-Info.plist */,
 				97E94B1D271EF250005B0295 /* Assets.xcassets */,
 				97E94B22271EF250005B0295 /* Kiwix.entitlements */,
+				97E94B20271EF250005B0295 /* Preview Assets.xcassets */,
 			);
 			path = Support;
 			sourceTree = "<group>";
@@ -1723,7 +1715,7 @@
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"SwiftUI/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"SwiftUI/Support\"";
 				DEVELOPMENT_TEAM = L7HWM3SP3L;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -1761,7 +1753,7 @@
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"SwiftUI/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"SwiftUI/Support\"";
 				DEVELOPMENT_TEAM = L7HWM3SP3L;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -2106,7 +2098,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"SwiftUI/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"SwiftUI/Support\"";
 				DEVELOPMENT_TEAM = L7HWM3SP3L;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
@@ -2146,7 +2138,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"SwiftUI/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"SwiftUI/Support\"";
 				DEVELOPMENT_TEAM = L7HWM3SP3L;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
