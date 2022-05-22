@@ -65,6 +65,36 @@ struct ZimFileSelection: ViewModifier {
     }
 }
 
+/// On macOS, adds a panel to the right of the modified view to show zim file detail.
+struct ZimFileDetailPanel: ViewModifier {
+    let zimFile: ZimFile?
+    
+    func body(content: Content) -> some View {
+        #if os(macOS)
+        VStack(spacing: 0) {
+            Divider()
+            content.safeAreaInset(edge: .trailing, spacing: 0) {
+                HStack(spacing: 0) {
+                    Divider()
+                    if let zimFile = zimFile {
+                        ZimFileDetail(zimFile: zimFile)
+                    } else {
+                        HStack {
+                            Spacer()
+                            Text("select a zim file")
+                            Spacer()
+                        }.frame(maxHeight: .infinity)
+                        .background(.regularMaterial)
+                    }
+                }.frame(width: 275).background(.ultraThinMaterial)
+            }
+        }
+        #elseif os(iOS)
+        content
+        #endif
+    }
+}
+
 /// Alert to confirm deleting zim file.
 struct ZimFileDeleteAlert: ViewModifier {
     @Binding var isPresented: Bool

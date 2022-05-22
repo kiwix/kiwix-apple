@@ -80,3 +80,77 @@ enum Flavor: String, CustomStringConvertible {
         }
     }
 }
+
+enum LibraryTopic: Hashable, Identifiable, RawRepresentable {
+    case opened, new, downloads, categories
+    case category(Category)
+    
+    init?(rawValue: String) {
+        let parts = rawValue.split(separator: ".")
+        switch parts.first {
+        case "new":
+            self = .new
+        case "downloads":
+            self = .downloads
+        case "categories":
+            self = .categories
+        default:
+            self = .opened
+        }
+    }
+    
+    var rawValue: String {
+        switch self {
+        case .opened:
+            return "opened"
+        case .new:
+            return "new"
+        case .downloads:
+            return "downloads"
+        case .categories:
+            return "categories"
+        case .category(let category):
+            return "category.\(category.rawValue)"
+        }
+    }
+    
+    var id: String { rawValue }
+    
+    var name: String {
+        switch self {
+        case .opened:
+            return "Opened"
+        case .new:
+            return "New"
+        case .downloads:
+            return "Downloads"
+        case .categories:
+            return "Categories"
+        case .category(let category):
+            return category.description
+        }
+    }
+    
+    var iconName: String {
+        switch self {
+        case .opened:
+            #if os(iOS)
+            if UIDevice.current.userInterfaceIdiom == .phone {
+                return "iphone"
+            } else {
+                return "ipad"
+            }
+            #elseif os(macOS)
+            return "laptopcomputer"
+            #endif
+        case .new:
+            return "newspaper"
+        case .downloads:
+            return "tray.and.arrow.down"
+        case .categories:
+            return "books.vertical"
+        case .category(_):
+            return "book"
+        }
+    }
+}
