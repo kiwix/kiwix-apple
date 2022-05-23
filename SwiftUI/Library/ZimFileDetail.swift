@@ -106,8 +106,8 @@ struct ZimFileDetail: View {
     var basicInfo: some View {
         Attribute(title: "Language", detail: Locale.current.localizedString(forLanguageCode: zimFile.languageCode))
         Attribute(title: "Category", detail: Category(rawValue: zimFile.category)?.description)
-        Attribute(title: "Size", detail: Library.sizeFormatter.string(fromByteCount: zimFile.size))
-        Attribute(title: "Created", detail: Library.dateFormatterMedium.string(from: zimFile.created))
+        Attribute(title: "Size", detail: LibraryViewModel.sizeFormatter.string(fromByteCount: zimFile.size))
+        Attribute(title: "Created", detail: LibraryViewModel.dateFormatterMedium.string(from: zimFile.created))
     }
     
     @ViewBuilder
@@ -121,11 +121,11 @@ struct ZimFileDetail: View {
     var counts: some View {
         Attribute(
             title: "Article Count",
-            detail: Library.numberFormatter.string(from: NSNumber(value: zimFile.articleCount))
+            detail: LibraryViewModel.numberFormatter.string(from: NSNumber(value: zimFile.articleCount))
         )
         Attribute(
             title: "Media Count",
-            detail: Library.numberFormatter.string(from: NSNumber(value: zimFile.mediaCount))
+            detail: LibraryViewModel.numberFormatter.string(from: NSNumber(value: zimFile.mediaCount))
         )
     }
     
@@ -167,13 +167,13 @@ private struct DownloadTaskDetail: View {
     }
     
     var size: String {
-        Library.sizeFormatter.string(fromByteCount: downloadTask.downloadedBytes)
+        LibraryViewModel.sizeFormatter.string(fromByteCount: downloadTask.downloadedBytes)
     }
     
     var percent: String? {
         guard downloadTask.totalBytes > 0 else { return nil }
         let fractionCompleted = NSNumber(value: Double(downloadTask.downloadedBytes) / Double(downloadTask.totalBytes))
-        return Library.percentFormatter.string(from: fractionCompleted)
+        return LibraryViewModel.percentFormatter.string(from: fractionCompleted)
     }
 }
 
