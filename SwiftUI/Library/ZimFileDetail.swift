@@ -22,7 +22,7 @@ struct ZimFileDetail: View {
             if let downloadTask = zimFile.downloadTask {
                 Section("Download") { DownloadTaskDetail(downloadTask: downloadTask) }.collapsible(false)
             } else if zimFile.fileURLBookmark != nil {
-                Section("Actions") { actions }.collapsible(false)
+                Section("Actions") { openedActions }.collapsible(false)
             } else if zimFile.downloadURL != nil {
                 Section("Download") {
                     Action(title: "Download") {
@@ -48,7 +48,7 @@ struct ZimFileDetail: View {
             if let downloadTask = zimFile.downloadTask {
                 Section { DownloadTaskDetail(downloadTask: downloadTask) }
             } else if zimFile.fileURLBookmark != nil {
-                Section { actions }
+                Section { openedActions }
             } else if zimFile.downloadURL != nil {
                 Section {
                     Action(title: "Download") {
@@ -70,23 +70,36 @@ struct ZimFileDetail: View {
     }
     
     @ViewBuilder
-    var actions: some View {
+    var openedActions: some View {
+        #if os(macOS)
         Action(title: "Open Main Page") {
             guard let url = ZimFileService.shared.getMainPageURL(zimFileID: zimFile.fileID) else { return }
-            #if os(macOS)
-            #elseif os(iOS)
-            UIApplication.shared.open(url)
-            #endif
+            NSWorkspace.shared.open(url)
         }
-        #if os(macOS)
         Action(title: "Reveal in Finder") {
             guard let url = ZimFileService.shared.getFileURL(zimFileID: zimFile.id) else { return }
             NSWorkspace.shared.activateFileViewerSelecting([url])
         }
-        #endif
         Action(title: "Unlink", isDestructive: true) {
             isPresentingUnlinkAlert = true
         }
+        #elseif os(iOS)
+        Action(title: "Open Main Page") {
+            guard let url = ZimFileService.shared.getMainPageURL(zimFileID: zimFile.fileID) else { return }
+            UIApplication.shared.open(url)
+        }
+        if let zimFileName = ZimFileService.shared.getFileURL(zimFileID: zimFile.fileID)?.lastPathComponent,
+           let documentDirectoryURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first,
+           FileManager.default.fileExists(atPath: documentDirectoryURL.appendingPathComponent(zimFileName).path) {
+            Action(title: "Delete", isDestructive: true) {
+                isPresentingDeleteAlert = true
+            }
+        } else {
+            Action(title: "Unlink", isDestructive: true) {
+                isPresentingUnlinkAlert = true
+            }
+        }
+        #endif
     }
     
     @ViewBuilder
