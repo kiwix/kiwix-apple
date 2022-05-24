@@ -9,6 +9,7 @@
 import WebKit
 
 class ReaderViewModel: NSObject, ObservableObject, WKNavigationDelegate, WKScriptMessageHandler {
+    @Published private(set) var url: URL?
     @Published private(set) var canGoBack: Bool = false
     @Published private(set) var canGoForward: Bool = false
     @Published private(set) var articleTitle: String = ""
@@ -42,6 +43,7 @@ class ReaderViewModel: NSObject, ObservableObject, WKNavigationDelegate, WKScrip
         }()
         return WKWebView(frame: .zero, configuration: config)
     }()
+    private var urlObserver: NSKeyValueObservation?
     private var canGoBackObserver: NSKeyValueObservation?
     private var canGoForwardObserver: NSKeyValueObservation?
     private var titleObserver: NSKeyValueObservation?
@@ -49,6 +51,7 @@ class ReaderViewModel: NSObject, ObservableObject, WKNavigationDelegate, WKScrip
     override init() {
         super.init()
         webView.navigationDelegate = self
+        urlObserver = webView.observe(\.url) { [unowned self] webview, _ in self.url = webview.url }
         canGoBackObserver = webView.observe(\.canGoBack) { [unowned self] webView, _ in
             self.canGoBack = webView.canGoBack
         }
@@ -69,16 +72,26 @@ class ReaderViewModel: NSObject, ObservableObject, WKNavigationDelegate, WKScrip
         webView.configuration.userContentController.add(self, name: "headingVisible")
     }
     
-    func loadMainPage(zimFileID: UUID? = nil) {
-        let zimFileID = zimFileID ?? UUID(uuidString: webView.url?.host ?? "")!
-        guard let url = ZimFileService.shared.getMainPageURL(zimFileID: zimFileID) else { return }
+    func load(_ url: URL) {
         webView.load(URLRequest(url: url))
     }
     
+    func loadMainPage(zimFileID: UUID? = nil) {
+        let zimFileID = try? zimFileID ??
+            UUID(uuidString: webView.url?.host ?? "") ??
+            Database.shared.container.viewContext.fetch(ZimFile.opened()).first?.fileID
+        guard let zimFileID = zimFileID,
+              let url = ZimFileService.shared.getMainPageURL(zimFileID: zimFileID) else { return }
+        load(url)
+    }
+    
     func loadRandomPage(zimFileID: UUID? = nil) {
-        let zimFileID = zimFileID ?? UUID(uuidString: webView.url?.host ?? "")!
-        guard let url = ZimFileService.shared.getRandomPageURL(zimFileID: zimFileID) else { return }
-        webView.load(URLRequest(url: url))
+        let zimFileID = try? zimFileID ??
+            UUID(uuidString: webView.url?.host ?? "") ??
+            Database.shared.container.viewContext.fetch(ZimFile.opened()).first?.fileID
+        guard let zimFileID = zimFileID,
+              let url = ZimFileService.shared.getRandomPageURL(zimFileID: zimFileID) else { return }
+        load(url)
     }
     
     // MARK: - WKNavigationDelegate

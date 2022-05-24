@@ -49,11 +49,10 @@ struct Reader: View {
     @Environment(\.horizontalSizeClass) var horizontalSizeClass
     @ObservedObject var viewModel = ReaderViewModel()
     @State var isPresentingLibrary = false
-    @State var url: URL?
     
     var body: some View {
         Group {
-            if url == nil {
+            if viewModel.url == nil {
                 List {
                     Text("Welcome!")
                     Text("Zim File 1")
@@ -61,20 +60,20 @@ struct Reader: View {
                     Text("Zim File 3")
                 }
             } else {
-                WebView(url: $url, webView: viewModel.webView)
+                WebView(webView: viewModel.webView)
                     .edgesIgnoringSafeArea(.all)
             }
         }
         .modifier(ToolbarButtons(isPresentingLibrary: $isPresentingLibrary))
         .environmentObject(viewModel)
         .onOpenURL { url in
-            self.url = url
+            viewModel.load(url)
             withAnimation {
                 isPresentingLibrary = false
             }
         }
         .sheet(isPresented: $isPresentingLibrary) {
-            Library().environment(\.managedObjectContext, Database.shared.container.viewContext)
+            Library()
         }
     }
 }
@@ -101,7 +100,7 @@ private struct ToolbarButtons: ViewModifier {
                 }
                 ToolbarItemGroup(placement: .navigationBarTrailing) {
                     Button { } label: { Image(systemName: "die.face.5") }
-                    Button { } label: { Image(systemName: "house") }
+                    MainArticleButton()
                     Button { isPresentingLibrary = true } label: { Image(systemName: "folder") }
                     Button { } label: { Image(systemName: "gear") }
                 }

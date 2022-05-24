@@ -87,4 +87,11 @@ class ZimFile: NSManagedObject, Identifiable {
         request.predicate = NSPredicate(format: "fileID == %@", fileID as CVarArg)
         return request
     }
+    
+    class func opened(sortDescriptors: [NSSortDescriptor] = []) -> NSFetchRequest<ZimFile> {
+        let request = super.fetchRequest() as! NSFetchRequest<ZimFile>
+        request.predicate = NSPredicate(format: "fileURLBookmark != nil")
+        request.sortDescriptors = sortDescriptors
+        return request
+    }
 }
