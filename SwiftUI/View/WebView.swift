@@ -11,33 +11,14 @@ import WebKit
 
 #if os(macOS)
 struct WebView: NSViewRepresentable {
-    @Binding var url: URL?
     let webView: WKWebView
-    
     func makeNSView(context: Context) -> WKWebView { webView }
-    
-    func updateNSView(_ nsView: WKWebView, context: Context) {
-        guard let url = url, nsView.url != url else { return }
-        nsView.load(URLRequest(url: url))
-    }
-    
-    func makeCoordinator() -> Coordinator { Coordinator(view: self) }
-    
-    class Coordinator {
-        private let urlObserver: NSKeyValueObservation
-        
-        init(view: WebView) {
-            urlObserver = view.webView.observe(\.url) { webview, _ in view.url = webview.url }
-        }
-    }
+    func updateNSView(_ uiView: WKWebView, context: Context) { }
 }
 #elseif os(iOS)
 struct WebView: UIViewRepresentable {
     let webView: WKWebView
-    
     func makeUIView(context: Context) -> WKWebView { webView }
-    
-    func updateUIView(_ uiView: WKWebView, context: Context) {
-    }
+    func updateUIView(_ uiView: WKWebView, context: Context) { }
 }
 #endif

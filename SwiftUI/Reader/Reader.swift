@@ -11,20 +11,17 @@ import SwiftUI
 #if os(macOS)
 struct Reader: View {
     @StateObject var viewModel = ReaderViewModel()
-    @State var url: URL?
-    @FetchRequest(sortDescriptors: []) private var onDeviceZimFiles: FetchedResults<ZimFile>
     
     var body: some View {
         NavigationView {
-            Sidebar(url: $url)
-                .frame(minWidth: 250)
-                .toolbar {
-                    ToolbarItem(placement: .primaryAction) {
-                        SidebarButton()
-                    }
-                }
-            WebView(url: $url, webView: viewModel.webView)
-                .ignoresSafeArea(.container, edges: .vertical)
+            List {
+                Text("sidebar 1")
+                Text("sidebar 2")
+                Text("sidebar 3")
+            }
+            .frame(minWidth: 250)
+            .toolbar { SidebarButton() }
+            ReaderContent()
                 .frame(minWidth: 400, idealWidth: 800, minHeight: 500, idealHeight: 550)
                 .toolbar {
                     ToolbarItemGroup(placement: .navigation) {
@@ -32,7 +29,7 @@ struct Reader: View {
                         NavigateForwardButton()
                     }
                     ToolbarItemGroup {
-                        BookmarkButton(url: $url)
+//                        BookmarkButton(url: $url)
                         MainArticleButton()
                         RandomArticleButton()
                     }
@@ -46,35 +43,20 @@ struct Reader: View {
 }
 #elseif os(iOS)
 struct Reader: View {
-    @Environment(\.horizontalSizeClass) var horizontalSizeClass
     @ObservedObject var viewModel = ReaderViewModel()
     @State var isPresentingLibrary = false
     
     var body: some View {
-        Group {
-            if viewModel.url == nil {
-                List {
-                    Text("Welcome!")
-                    Text("Zim File 1")
-                    Text("Zim File 2")
-                    Text("Zim File 3")
+        ReaderContent()
+            .onOpenURL { url in
+                viewModel.load(url)
+                withAnimation {
+                    isPresentingLibrary = false
                 }
-            } else {
-                WebView(webView: viewModel.webView)
-                    .edgesIgnoringSafeArea(.all)
             }
-        }
-        .modifier(ToolbarButtons(isPresentingLibrary: $isPresentingLibrary))
-        .environmentObject(viewModel)
-        .onOpenURL { url in
-            viewModel.load(url)
-            withAnimation {
-                isPresentingLibrary = false
-            }
-        }
-        .sheet(isPresented: $isPresentingLibrary) {
-            Library()
-        }
+            .modifier(ToolbarButtons(isPresentingLibrary: $isPresentingLibrary))
+            .environmentObject(viewModel)
+            .sheet(isPresented: $isPresentingLibrary) { Library() }
     }
 }
 
@@ -134,5 +116,24 @@ private struct ToolbarButtons: ViewModifier {
         }
     }
 }
-
 #endif
+
+private struct ReaderContent: View {
+    @EnvironmentObject var viewModel: ReaderViewModel
+    
+    var body: some View {
+        Group {
+            if viewModel.url == nil {
+                List {
+                    Text("Welcome!")
+                    Text("Zim File 1")
+                    Text("Zim File 2")
+                    Text("Zim File 3")
+                }
+            } else {
+                WebView(webView: viewModel.webView)
+                    .ignoresSafeArea(.container, edges: .vertical)
+            }
+        }
+    }
+}
