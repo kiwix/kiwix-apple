@@ -78,7 +78,7 @@ private struct ToolbarButtons: ViewModifier {
                     NavigateBackButton()
                     NavigateForwardButton()
                     Button { } label: { Image(systemName: "list.bullet") }
-                    Button { } label: { Image(systemName: "star") }
+                    BookmarkButton(url: viewModel.url)
                 }
                 ToolbarItemGroup(placement: .navigationBarTrailing) {
                     RandomArticleButton()
@@ -99,7 +99,7 @@ private struct ToolbarButtons: ViewModifier {
                     Group {
                         Button { } label: { Image(systemName: "list.bullet") }
                         Spacer()
-                        Button { } label: { Image(systemName: "star") }
+                        BookmarkButton(url: viewModel.url)
                         Spacer()
                         RandomArticleButton()
                     }
