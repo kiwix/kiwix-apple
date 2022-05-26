@@ -101,7 +101,7 @@ private struct ToolbarButtons: ViewModifier {
                         Spacer()
                         Button { } label: { Image(systemName: "star") }
                         Spacer()
-                        Button { } label: { Image(systemName: "die.face.5") }
+                        RandomArticleButton()
                     }
                     Spacer()
                     Menu {
@@ -131,7 +131,7 @@ private struct ReaderContent: View {
             }
         } else {
             WebView(webView: viewModel.webView)
-                .ignoresSafeArea(.container, edges: .vertical)
+                .ignoresSafeArea(.container, edges: .all)
         }
     }
 }

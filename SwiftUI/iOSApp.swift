@@ -59,6 +59,19 @@ private class RootViewController: UIHostingController<Reader>, UISearchControlle
         super.viewDidLoad()
         
         configureSearch()
+        
+        if #available(iOS 15.0, *) {
+            navigationItem.scrollEdgeAppearance = {
+                let apperance = UINavigationBarAppearance()
+                apperance.configureWithDefaultBackground()
+                return apperance
+            }()
+            navigationController?.toolbar.scrollEdgeAppearance = {
+                let apperance = UIToolbarAppearance()
+                apperance.configureWithDefaultBackground()
+                return apperance
+            }()
+        }
     }
     
     private func configureSearch() {
