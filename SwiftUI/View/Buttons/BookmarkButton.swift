@@ -10,14 +10,12 @@ import CoreData
 import SwiftUI
 
 struct BookmarkButton: View {
-    @FetchRequest private var bookmarks: FetchedResults<Bookmark>
     @EnvironmentObject var viewModel: ReaderViewModel
-    @Binding var url: URL?
+    @FetchRequest private var bookmarks: FetchedResults<Bookmark>
     
-    init(url: Binding<URL?>) {
-        self._url = url
+    init(url: URL?) {
         self._bookmarks = FetchRequest<Bookmark>(sortDescriptors: [], predicate: {
-            if let url = url.wrappedValue {
+            if let url = url {
                 return NSPredicate(format: "articleURL == %@", url as CVarArg)
             } else {
                 return NSPredicate(format: "articleURL == nil")
@@ -35,9 +33,16 @@ struct BookmarkButton: View {
         } label: {
             Image(systemName: bookmarks.isEmpty ? "star" : "star.fill")
         }
-        .disabled(url == nil)
+        .disabled(viewModel.url == nil)
         .foregroundColor(isBookmarked ? .yellow : nil)
         .help(isBookmarked ? "Remove bookmark" : "Bookmark the current article")
+        .onChange(of: viewModel.url) { url in
+            if let url = url {
+                bookmarks.nsPredicate = NSPredicate(format: "articleURL == %@", url as CVarArg)
+            } else {
+                bookmarks.nsPredicate = NSPredicate(format: "articleURL == nil")
+            }
+        }
     }
     
     var isBookmarked: Bool {
