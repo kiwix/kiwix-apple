@@ -32,7 +32,19 @@ struct MainArticleButton: View {
             .disabled(zimFiles.isEmpty)
             .help("Show main article")
         } else {
-            button
+            if zimFiles.count == 1 {
+                button
+            } else {
+                Menu {
+                    ForEach(zimFiles) { zimFile in
+                        Button(zimFile.name) { viewModel.loadMainPage(zimFileID: zimFile.id) }
+                    }
+                } label: {
+                    Label("Main Page", systemImage: "house")
+                }
+                .disabled(zimFiles.isEmpty)
+                .help("Show main article")
+            }
         }
         #endif
     }

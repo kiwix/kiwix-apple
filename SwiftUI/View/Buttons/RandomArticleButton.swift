@@ -16,7 +16,7 @@ struct RandomArticleButton: View {
     ) private var zimFiles: FetchedResults<ZimFile>
     
     var body: some View {
-        if #available(iOS 15.0, *) {
+        if #available(iOS 15.0, macOS 12.0, *) {
             Menu {
                 ForEach(zimFiles) { zimFile in
                     Button(zimFile.name) { viewModel.loadRandomPage(zimFileID: zimFile.id) }
@@ -29,13 +29,25 @@ struct RandomArticleButton: View {
             .disabled(zimFiles.isEmpty)
             .help("Show random article")
         } else {
-            Button {
-                viewModel.loadRandomPage()
-            } label: {
-                Label("Random Page", systemImage: "die.face.5")
+            if zimFiles.count == 1 {
+                Button {
+                    viewModel.loadRandomPage()
+                } label: {
+                    Label("Random Page", systemImage: "die.face.5")
+                }
+                .disabled(zimFiles.isEmpty)
+                .help("Show random article")
+            } else {
+                Menu {
+                    ForEach(zimFiles) { zimFile in
+                        Button(zimFile.name) { viewModel.loadRandomPage(zimFileID: zimFile.id) }
+                    }
+                } label: {
+                    Label("Random Page", systemImage: "die.face.5")
+                }
+                .disabled(zimFiles.isEmpty)
+                .help("Show random article")
             }
-            .disabled(zimFiles.isEmpty)
-            .help("Show random article")
         }
     }
 }
