@@ -1,6 +1,6 @@
 //
 //  NavigationButtons.swift
-//  Kiwix for macOS
+//  Kiwix
 //
 //  Created by Chris Li on 2/13/22.
 //  Copyright © 2022 Chris Li. All rights reserved.

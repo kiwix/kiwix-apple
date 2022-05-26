@@ -81,7 +81,7 @@ private struct ToolbarButtons: ViewModifier {
                     Button { } label: { Image(systemName: "star") }
                 }
                 ToolbarItemGroup(placement: .navigationBarTrailing) {
-                    Button { } label: { Image(systemName: "die.face.5") }
+                    RandomArticleButton()
                     MainArticleButton()
                     Button { isPresentingLibrary = true } label: { Image(systemName: "folder") }
                     Button { } label: { Image(systemName: "gear") }
@@ -122,18 +122,16 @@ private struct ReaderContent: View {
     @EnvironmentObject var viewModel: ReaderViewModel
     
     var body: some View {
-        Group {
-            if viewModel.url == nil {
-                List {
-                    Text("Welcome!")
-                    Text("Zim File 1")
-                    Text("Zim File 2")
-                    Text("Zim File 3")
-                }
-            } else {
-                WebView(webView: viewModel.webView)
-                    .ignoresSafeArea(.container, edges: .vertical)
+        if viewModel.url == nil {
+            List {
+                Text("Welcome!")
+                Text("Zim File 1")
+                Text("Zim File 2")
+                Text("Zim File 3")
             }
+        } else {
+            WebView(webView: viewModel.webView)
+                .ignoresSafeArea(.container, edges: .vertical)
         }
     }
 }

@@ -16,5 +16,6 @@ struct SidebarButton: View {
         } label: {
             Image(systemName: "sidebar.leading")
         }
+        .help("Show sidebar")
     }
 }

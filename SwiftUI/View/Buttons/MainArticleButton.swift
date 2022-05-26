@@ -16,10 +16,32 @@ struct MainArticleButton: View {
     ) private var zimFiles: FetchedResults<ZimFile>
     
     var body: some View {
+        #if os(macOS)
+        button
+        #elseif os(iOS)
+        if #available(iOS 15.0, *) {
+            Menu {
+                ForEach(zimFiles) { zimFile in
+                    Button(zimFile.name) { viewModel.loadMainPage(zimFileID: zimFile.id) }
+                }
+            } label: {
+                Label("Main Page", systemImage: "house")
+            } primaryAction: {
+                viewModel.loadMainPage()
+            }
+            .disabled(zimFiles.isEmpty)
+            .help("Show main article")
+        } else {
+            button
+        }
+        #endif
+    }
+    
+    var button: some View {
         Button {
             viewModel.loadMainPage()
         } label: {
-            Image(systemName: "house")
+            Label("Main Page", systemImage: "house")
         }
         .disabled(zimFiles.isEmpty)
         .help("Show main article")
