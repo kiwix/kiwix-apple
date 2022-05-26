@@ -17,8 +17,13 @@ class Bookmark: NSManagedObject, Identifiable {
     @NSManaged var snippet: String?
     @NSManaged var created: Date
     
-    class func fetchRequest() -> NSFetchRequest<Bookmark> {
-        super.fetchRequest() as! NSFetchRequest<Bookmark>
+    class func fetchRequest(
+        predicate: NSPredicate? = nil, sortDescriptors: [NSSortDescriptor] = []
+    ) -> NSFetchRequest<Bookmark> {
+        let request = super.fetchRequest() as! NSFetchRequest<Bookmark>
+        request.predicate = predicate
+        request.sortDescriptors = sortDescriptors
+        return request
     }
 }
 
@@ -73,8 +78,7 @@ class ZimFile: NSManagedObject, Identifiable {
     @NSManaged var downloadTask: DownloadTask?
     
     class func fetchRequest(
-        predicate: NSPredicate? = nil,
-        sortDescriptors: [NSSortDescriptor] = []
+        predicate: NSPredicate? = nil, sortDescriptors: [NSSortDescriptor] = []
     ) -> NSFetchRequest<ZimFile> {
         let request = super.fetchRequest() as! NSFetchRequest<ZimFile>
         request.predicate = predicate

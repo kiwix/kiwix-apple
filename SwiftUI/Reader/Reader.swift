@@ -29,7 +29,7 @@ struct Reader: View {
                         NavigateForwardButton()
                     }
                     ToolbarItemGroup {
-//                        BookmarkButton(url: $url)
+                        BookmarkButton(url: viewModel.url)
                         MainArticleButton()
                         RandomArticleButton()
                     }

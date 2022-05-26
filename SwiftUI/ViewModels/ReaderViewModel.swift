@@ -132,6 +132,31 @@ class ReaderViewModel: NSObject, ObservableObject, WKNavigationDelegate, WKScrip
         }
     }
     
+    // MARK: - Bookmark
+    
+    func createBookmark() {
+        guard let url = url else { return }
+        let context = Database.shared.container.newBackgroundContext()
+        context.perform {
+            let bookmark = Bookmark(context: context)
+            bookmark.articleURL = url
+            bookmark.title = self.articleTitle
+            bookmark.created = Date()
+            try? context.save()
+        }
+    }
+    
+    func deleteBookmark() {
+        guard let url = url else { return }
+        let context = Database.shared.container.newBackgroundContext()
+        context.perform {
+            let request = Bookmark.fetchRequest(predicate: NSPredicate(format: "articleURL == %@", url as CVarArg))
+            guard let bookmark = try? context.fetch(request).first else { return }
+            context.delete(bookmark)
+            try? context.save()
+        }
+    }
+    
     // MARK: - Outlines
     
     /// Scroll to a outline item
