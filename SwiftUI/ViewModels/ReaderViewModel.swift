@@ -72,6 +72,8 @@ class ReaderViewModel: NSObject, ObservableObject, WKNavigationDelegate, WKScrip
         webView.configuration.userContentController.add(self, name: "headingVisible")
     }
     
+    // MARK: - Article Loading
+    
     func load(_ url: URL) {
         webView.load(URLRequest(url: url))
     }
