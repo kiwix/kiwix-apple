@@ -97,24 +97,33 @@ class ReaderViewModel: NSObject, ObservableObject, WKNavigationDelegate, WKScrip
     // MARK: - WKNavigationDelegate
     
     func webView(_ webView: WKWebView,
-                 decidePolicyFor navigationAction: WKNavigationAction) async -> WKNavigationActionPolicy {
-        guard let url = navigationAction.request.url else { return .cancel }
+                 decidePolicyFor navigationAction: WKNavigationAction,
+                 decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
+        guard let url = navigationAction.request.url else { decisionHandler(.cancel); return }
         if url.isKiwixURL, let redirectedURL = ZimFileService.shared.getRedirectedURL(url: url) {
             DispatchQueue.main.async { webView.load(URLRequest(url: redirectedURL)) }
-            return .cancel
+            decisionHandler(.cancel)
         } else if url.isKiwixURL {
-            return .allow
+            decisionHandler(.allow)
         } else if url.scheme == "http" || url.scheme == "https" {
-//            DispatchQueue.main.async { NSWorkspace.shared.open(url) }
-            return .cancel
+            #if os(macOS)
+            NSWorkspace.shared.open(url)
+            #elseif os(iOS)
+            // show external article load alert
+            #endif
+            decisionHandler(.cancel)
         } else if url.scheme == "geo" {
             let coordinate = url.absoluteString.replacingOccurrences(of: "geo:", with: "")
             if let url = URL(string: "http://maps.apple.com/?ll=\(coordinate)") {
-//                DispatchQueue.main.async { NSWorkspace.shared.open(url) }
+                #if os(macOS)
+                NSWorkspace.shared.open(url)
+                #elseif os(iOS)
+                UIApplication.shared.open(url)
+                #endif
             }
-            return .cancel
+            decisionHandler(.cancel)
         } else {
-            return .cancel
+            decisionHandler(.cancel)
         }
     }
     
