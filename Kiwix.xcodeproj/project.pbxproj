@@ -179,6 +179,7 @@
 		979D3A772841100B00E396B8 /* Focus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 979D3A762841100B00E396B8 /* Focus.swift */; };
 		979D3A782841100B00E396B8 /* Focus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 979D3A762841100B00E396B8 /* Focus.swift */; };
 		979D3A7A2841135A00E396B8 /* SidebarZimFilesOpened.swift in Sources */ = {isa = PBXBuildFile; fileRef = 979D3A792841135A00E396B8 /* SidebarZimFilesOpened.swift */; };
+		979D3A7C284159BF00E396B8 /* injection.js in Resources */ = {isa = PBXBuildFile; fileRef = 9735B88B279D9A74005F0D1A /* injection.js */; };
 		97A2AE2225866D9200DEF81D /* ButtonProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97A2AE2125866D9200DEF81D /* ButtonProvider.swift */; };
 		97A36C321F8C21210079B452 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 975FDAD91F6082DA00A10E8C /* AppDelegate.swift */; };
 		97A36C351F8C21210079B452 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 975FDB061F608F4100A10E8C /* WebKit.framework */; };
@@ -1281,6 +1282,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				973A0DF72830929C00B41E71 /* Assets.xcassets in Resources */,
+				979D3A7C284159BF00E396B8 /* injection.js in Resources */,
 				97DE2BAD283B133700C63D9B /* wikipedia_dark.css in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
