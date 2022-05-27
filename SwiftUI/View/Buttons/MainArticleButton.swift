@@ -19,7 +19,7 @@ struct MainArticleButton: View {
     var body: some View {
         #if os(macOS)
         Button {
-            loadMainPage()
+            loadMainArticle()
         } label: {
             Label("Main Page", systemImage: "house")
         }

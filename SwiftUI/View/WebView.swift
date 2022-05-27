@@ -23,7 +23,7 @@ struct WebView: NSViewRepresentable {
     }
     func updateNSView(_ webView: WKWebView, context: Context) {
         guard let url = url, webView.url?.absoluteString != url.absoluteString else { return }
-        viewModel.load(url)
+        webView.load(URLRequest(url: url))
     }
     func makeCoordinator() -> Coordinator { Coordinator() }
     class Coordinator { var urlObserver: NSKeyValueObservation? }
@@ -42,7 +42,7 @@ struct WebView: UIViewRepresentable {
     }
     func updateUIView(_ webView: WKWebView, context: Context) {
         guard let url = url, webView.url?.absoluteString != url.absoluteString else { return }
-        viewModel.load(url)
+        webView.load(URLRequest(url: url))
     }
     func makeCoordinator() -> Coordinator { Coordinator() }
     class Coordinator { var urlObserver: NSKeyValueObservation? }

@@ -9,6 +9,7 @@
 import SwiftUI
 
 struct RandomArticleButton: View {
+    @Binding var url: URL?
     @EnvironmentObject var viewModel: ReaderViewModel
     @FetchRequest(
         sortDescriptors: [NSSortDescriptor(keyPath: \ZimFile.size, ascending: false)],
@@ -19,19 +20,19 @@ struct RandomArticleButton: View {
         if #available(iOS 15.0, macOS 12.0, *) {
             Menu {
                 ForEach(zimFiles) { zimFile in
-                    Button(zimFile.name) { viewModel.loadRandomPage(zimFileID: zimFile.id) }
+                    Button(zimFile.name) { loadRandomArticle(zimFileID: zimFile.fileID) }
                 }
             } label: {
                 Label("Random Page", systemImage: "die.face.5")
             } primaryAction: {
-                viewModel.loadRandomPage()
+                loadRandomArticle()
             }
             .disabled(zimFiles.isEmpty)
             .help("Show random article")
         } else {
             if zimFiles.count == 1 {
                 Button {
-                    viewModel.loadRandomPage()
+                    loadRandomArticle()
                 } label: {
                     Label("Random Page", systemImage: "die.face.5")
                 }
@@ -40,7 +41,7 @@ struct RandomArticleButton: View {
             } else {
                 Menu {
                     ForEach(zimFiles) { zimFile in
-                        Button(zimFile.name) { viewModel.loadRandomPage(zimFileID: zimFile.id) }
+                        Button(zimFile.name) { loadRandomArticle(zimFileID: zimFile.fileID) }
                     }
                 } label: {
                     Label("Random Page", systemImage: "die.face.5")
@@ -49,5 +50,11 @@ struct RandomArticleButton: View {
                 .help("Show random article")
             }
         }
+    }
+    
+    private func loadRandomArticle(zimFileID: UUID? = nil) {
+        guard let zimFileID = zimFileID ?? UUID(uuidString: url?.host ?? "") ?? zimFiles.first?.fileID,
+              let url = ZimFileService.shared.getRandomPageURL(zimFileID: zimFileID) else { return }
+        self.url = url
     }
 }

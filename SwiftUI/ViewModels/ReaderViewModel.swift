@@ -69,21 +69,6 @@ class ReaderViewModel: NSObject, ObservableObject, WKNavigationDelegate, WKScrip
         webView.configuration.userContentController.add(self, name: "headingVisible")
     }
     
-    // MARK: - Article Loading
-    
-    func load(_ url: URL) {
-        webView.load(URLRequest(url: url))
-    }
-    
-    func loadRandomPage(zimFileID: UUID? = nil) {
-        let zimFileID = try? zimFileID ??
-            UUID(uuidString: webView.url?.host ?? "") ??
-            Database.shared.container.viewContext.fetch(ZimFile.opened()).first?.fileID
-        guard let zimFileID = zimFileID,
-              let url = ZimFileService.shared.getRandomPageURL(zimFileID: zimFileID) else { return }
-        load(url)
-    }
-    
     // MARK: - WKNavigationDelegate
     
     func webView(_ webView: WKWebView,
