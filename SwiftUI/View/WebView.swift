@@ -11,8 +11,9 @@ import WebKit
 
 #if os(macOS)
 struct WebView: NSViewRepresentable {
-    let webView: WKWebView
-    func makeNSView(context: Context) -> WKWebView { webView }
+    @EnvironmentObject var viewModel: ReaderViewModel
+    
+    func makeNSView(context: Context) -> WKWebView { viewModel.webView }
     func updateNSView(_ uiView: WKWebView, context: Context) { }
 }
 #elseif os(iOS)

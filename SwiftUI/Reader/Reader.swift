@@ -21,19 +21,27 @@ struct Reader: View {
             }
             .frame(minWidth: 250)
             .toolbar { SidebarButton() }
-            ReaderContent()
-                .frame(minWidth: 400, idealWidth: 800, minHeight: 500, idealHeight: 550)
-                .toolbar {
-                    ToolbarItemGroup(placement: .navigation) {
-                        NavigateBackButton()
-                        NavigateForwardButton()
+            Group {
+                if viewModel.url == nil {
+                    Button("load main page") {
+                        viewModel.loadMainPage()
                     }
-                    ToolbarItemGroup {
-                        BookmarkButton(url: viewModel.url)
-                        MainArticleButton()
-                        RandomArticleButton()
-                    }
+                } else {
+                    WebView().ignoresSafeArea(.container, edges: .all)
                 }
+            }
+            .frame(minWidth: 400, idealWidth: 800, minHeight: 500, idealHeight: 550)
+            .toolbar {
+                ToolbarItemGroup(placement: .navigation) {
+                    NavigateBackButton()
+                    NavigateForwardButton()
+                }
+                ToolbarItemGroup {
+                    BookmarkButton(url: viewModel.url)
+                    MainArticleButton()
+                    RandomArticleButton()
+                }
+            }
         }
         .environmentObject(viewModel)
         .focusedSceneValue(\.readerViewModel, viewModel)
@@ -55,8 +63,7 @@ struct Reader: View {
                     viewModel.loadMainPage()
                 }
             } else {
-                WebView()
-                    .ignoresSafeArea(.container, edges: .all)
+                WebView().ignoresSafeArea(.container, edges: .all)
             }
         }
         .toolbar {
@@ -105,21 +112,3 @@ struct Reader: View {
     }
 }
 #endif
-
-//private struct ReaderContent: View {
-//    @EnvironmentObject var viewModel: ReaderViewModel
-//
-//    var body: some View {
-//        if viewModel.url == nil {
-//            List {
-//                Text("Welcome!")
-//                Text("Zim File 1")
-//                Text("Zim File 2")
-//                Text("Zim File 3")
-//            }
-//        } else {
-//            WebView(webView: viewModel.webView)
-//                .ignoresSafeArea(.container, edges: .all)
-//        }
-//    }
-//}
