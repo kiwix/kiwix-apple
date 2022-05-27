@@ -17,7 +17,13 @@ struct MainArticleButton: View {
     
     var body: some View {
         #if os(macOS)
-        button
+        Button {
+            viewModel.loadMainPage()
+        } label: {
+            Label("Main Page", systemImage: "house")
+        }
+        .disabled(zimFiles.isEmpty)
+        .help("Show main article")
         #elseif os(iOS)
         if #available(iOS 15.0, *) {
             Menu {
@@ -33,7 +39,13 @@ struct MainArticleButton: View {
             .help("Show main article")
         } else {
             if zimFiles.count == 1 {
-                button
+                Button {
+                    viewModel.loadMainPage()
+                } label: {
+                    Label("Main Page", systemImage: "house")
+                }
+                .disabled(zimFiles.isEmpty)
+                .help("Show main article")
             } else {
                 Menu {
                     ForEach(zimFiles) { zimFile in
@@ -47,15 +59,5 @@ struct MainArticleButton: View {
             }
         }
         #endif
-    }
-    
-    var button: some View {
-        Button {
-            viewModel.loadMainPage()
-        } label: {
-            Label("Main Page", systemImage: "house")
-        }
-        .disabled(zimFiles.isEmpty)
-        .help("Show main article")
     }
 }
