@@ -13,6 +13,8 @@ struct BookmarkButton: View {
     @EnvironmentObject var viewModel: ReaderViewModel
     @FetchRequest private var bookmarks: FetchedResults<Bookmark>
     
+    private let url: URL?
+    
     init(url: URL?) {
         self._bookmarks = FetchRequest<Bookmark>(sortDescriptors: [], predicate: {
             if let url = url {
@@ -21,6 +23,7 @@ struct BookmarkButton: View {
                 return NSPredicate(format: "articleURL == nil")
             }
         }())
+        self.url = url
     }
     
     var body: some View {
@@ -33,7 +36,7 @@ struct BookmarkButton: View {
         } label: {
             Image(systemName: isBookmarked ? "star.fill" : "star")
         }
-        .disabled(viewModel.url == nil)
+        .disabled(url == nil)
         .foregroundColor(isBookmarked ? .yellow : nil)
         .help(isBookmarked ? "Remove bookmark" : "Bookmark the current article")
     }

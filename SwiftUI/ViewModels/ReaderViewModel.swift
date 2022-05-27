@@ -9,7 +9,6 @@
 import WebKit
 
 class ReaderViewModel: NSObject, ObservableObject, WKNavigationDelegate, WKScriptMessageHandler {
-    @Published private(set) var url: URL?
     @Published private(set) var canGoBack: Bool = false
     @Published private(set) var canGoForward: Bool = false
     @Published private(set) var articleTitle: String = ""
@@ -43,7 +42,6 @@ class ReaderViewModel: NSObject, ObservableObject, WKNavigationDelegate, WKScrip
         }()
         return WKWebView(frame: .zero, configuration: config)
     }()
-    private var urlObserver: NSKeyValueObservation?
     private var canGoBackObserver: NSKeyValueObservation?
     private var canGoForwardObserver: NSKeyValueObservation?
     private var titleObserver: NSKeyValueObservation?
@@ -51,7 +49,6 @@ class ReaderViewModel: NSObject, ObservableObject, WKNavigationDelegate, WKScrip
     override init() {
         super.init()
         webView.navigationDelegate = self
-        urlObserver = webView.observe(\.url) { [unowned self] webview, _ in self.url = webview.url }
         canGoBackObserver = webView.observe(\.canGoBack) { [unowned self] webView, _ in
             self.canGoBack = webView.canGoBack
         }
@@ -146,7 +143,7 @@ class ReaderViewModel: NSObject, ObservableObject, WKNavigationDelegate, WKScrip
     // MARK: - Bookmark
     
     func createBookmark() {
-        guard let url = url else { return }
+        guard let url = webView.url else { return }
         let context = Database.shared.container.newBackgroundContext()
         context.perform {
             let bookmark = Bookmark(context: context)
@@ -158,7 +155,7 @@ class ReaderViewModel: NSObject, ObservableObject, WKNavigationDelegate, WKScrip
     }
     
     func deleteBookmark() {
-        guard let url = url else { return }
+        guard let url = webView.url else { return }
         let context = Database.shared.container.newBackgroundContext()
         context.perform {
             let request = Bookmark.fetchRequest(predicate: NSPredicate(format: "articleURL == %@", url as CVarArg))

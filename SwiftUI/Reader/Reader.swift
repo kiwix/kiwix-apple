@@ -13,6 +13,7 @@ struct Reader: View {
     @SceneStorage("Reader.SidebarDisplayMode") private var sidebarDisplayMode: SidebarDisplayMode = .search
     @StateObject var viewModel = ReaderViewModel()
     @State var searchText = ""
+    @State var url: URL?
     
     var body: some View {
         NavigationView {
@@ -53,18 +54,18 @@ struct Reader: View {
                 case .outline:
                     Text("outline")
                 case .library:
-                    SidebarZimFilesOpened()
+                    SidebarZimFilesOpened(url: $url)
                 }
             }
             .frame(minWidth: 250)
             .toolbar { SidebarButton() }
             Group {
-                if viewModel.url == nil {
+                if url == nil {
                     Button("load main page") {
                         viewModel.loadMainPage()
                     }
                 } else {
-                    WebView().ignoresSafeArea(.container, edges: .all)
+                    WebView(url: $url).ignoresSafeArea(.container, edges: .all)
                 }
             }
             .frame(minWidth: 400, idealWidth: 800, minHeight: 500, idealHeight: 550)
@@ -74,7 +75,7 @@ struct Reader: View {
                     NavigateForwardButton()
                 }
                 ToolbarItemGroup {
-                    BookmarkButton(url: viewModel.url)
+                    BookmarkButton(url: url)
                     MainArticleButton()
                     RandomArticleButton()
                 }
