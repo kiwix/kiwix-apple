@@ -15,21 +15,17 @@ struct SidebarZimFilesOpened: View {
         predicate: NSPredicate(format: "fileURLBookmark != nil"),
         animation: .easeInOut
     ) private var zimFiles: FetchedResults<ZimFile>
+    @State var selected: UUID?
     
     var body: some View {
-        List(zimFiles.compactMap({ Item($0) }), selection: $url) { item in
-            ZimFileRow(item.zimFile)
+        List(zimFiles, id: \.fileID, selection: $selected) { zimFile in
+            ZimFileRow(zimFile)
         }
-    }
-    
-    struct Item: Hashable, Identifiable {
-        let id: URL
-        let zimFile: ZimFile
-        
-        init?(_ zimFile: ZimFile) {
-            guard let url = ZimFileService.shared.getMainPageURL(zimFileID: zimFile.fileID) else { return nil }
-            self.id = url
-            self.zimFile = zimFile
+        .onChange(of: selected) { zimFileID in
+            guard let zimFileID = zimFileID,
+                  let url = ZimFileService.shared.getMainPageURL(zimFileID: zimFileID) else { return }
+            self.url = url
+            selected = nil
         }
     }
 }
