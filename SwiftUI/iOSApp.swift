@@ -83,7 +83,7 @@ private class RootViewController: UIHostingController<Reader>, UISearchControlle
 //        searchController.searchResultsUpdater = searchResultsController
         searchController.automaticallyShowsCancelButton = false
         searchController.showsSearchResultsController = true
-        rootView.viewModel.cancelSearch = {[unowned self] in self.searchController.isActive = false }
+//        rootView.viewModel.cancelSearch = {[unowned self] in self.searchController.isActive = false }
         definesPresentationContext = true
         navigationItem.titleView = searchController.searchBar
     }
