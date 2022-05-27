@@ -178,6 +178,8 @@
 		979D3A752841070600E396B8 /* Sidebar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97242B7C2732E52300C87F85 /* Sidebar.swift */; };
 		979D3A772841100B00E396B8 /* Focus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 979D3A762841100B00E396B8 /* Focus.swift */; };
 		979D3A782841100B00E396B8 /* Focus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 979D3A762841100B00E396B8 /* Focus.swift */; };
+		979D3A7A2841135A00E396B8 /* SidebarZimFilesOpened.swift in Sources */ = {isa = PBXBuildFile; fileRef = 979D3A792841135A00E396B8 /* SidebarZimFilesOpened.swift */; };
+		979D3A7B2841135A00E396B8 /* SidebarZimFilesOpened.swift in Sources */ = {isa = PBXBuildFile; fileRef = 979D3A792841135A00E396B8 /* SidebarZimFilesOpened.swift */; };
 		97A2AE2225866D9200DEF81D /* ButtonProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97A2AE2125866D9200DEF81D /* ButtonProvider.swift */; };
 		97A36C321F8C21210079B452 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 975FDAD91F6082DA00A10E8C /* AppDelegate.swift */; };
 		97A36C351F8C21210079B452 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 975FDB061F608F4100A10E8C /* WebKit.framework */; };
@@ -438,6 +440,7 @@
 		979AAF3F257167C60078492F /* ZimFileDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZimFileDetailView.swift; sourceTree = "<group>"; };
 		979D3A72284067C800E396B8 /* MoreButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MoreButton.swift; sourceTree = "<group>"; };
 		979D3A762841100B00E396B8 /* Focus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Focus.swift; sourceTree = "<group>"; };
+		979D3A792841135A00E396B8 /* SidebarZimFilesOpened.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SidebarZimFilesOpened.swift; sourceTree = "<group>"; };
 		97A2AE2125866D9200DEF81D /* ButtonProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonProvider.swift; sourceTree = "<group>"; };
 		97A36C4E1F8C21210079B452 /* Kiwix.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Kiwix.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		97A963C3259D38D900496214 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
@@ -625,13 +628,6 @@
 			path = ModelTests;
 			sourceTree = "<group>";
 		};
-		972DE4A72814A3D8004FD9B9 /* iOS_SwiftUI */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = iOS_SwiftUI;
-			sourceTree = "<group>";
-		};
 		972DE4BF2814A5E3004FD9B9 /* OPDSStreamParser */ = {
 			isa = PBXGroup;
 			children = (
@@ -812,6 +808,7 @@
 			isa = PBXGroup;
 			children = (
 				97E94B1B271EF24D005B0295 /* Reader.swift */,
+				979D3A792841135A00E396B8 /* SidebarZimFilesOpened.swift */,
 				97242B7C2732E52300C87F85 /* Sidebar.swift */,
 				97D07A08273719720002B9EB /* Search.swift */,
 				97FB4B0827B816C80055F86E /* SearchFilter.swift */,
@@ -881,7 +878,6 @@
 				97E94B18271EF24D005B0295 /* SwiftUI */,
 				97B44895210FBC2C0004B056 /* WikiMed */,
 				970EC3F223BE8E20008DCA27 /* ModelTests */,
-				972DE4A72814A3D8004FD9B9 /* iOS_SwiftUI */,
 				3B93EAF9B5C5AA23046BDEAC /* Frameworks */,
 				97A36C4E1F8C21210079B452 /* Kiwix.app */,
 				970EC3F123BE8E20008DCA27 /* ModelTests.xctest */,
@@ -1390,6 +1386,7 @@
 				973A0DE4281D80E300B41E71 /* ZimFileDetail.swift in Sources */,
 				97DE2B9C2839D39100C63D9B /* WebView.swift in Sources */,
 				973A0DEB281DDBB600B41E71 /* ZimFilesDownloads.swift in Sources */,
+				979D3A7B2841135A00E396B8 /* SidebarZimFilesOpened.swift in Sources */,
 				97DE2BAF283C665400C63D9B /* MainArticleButton.swift in Sources */,
 				973A0E032831057200B41E71 /* URL.swift in Sources */,
 				973A0DE8281DD7EB00B41E71 /* Log.swift in Sources */,
@@ -1557,6 +1554,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				97B304882778B45B00E82DE0 /* Search.swift in Sources */,
+				979D3A7A2841135A00E396B8 /* SidebarZimFilesOpened.swift in Sources */,
 				973A0DE3281D80E300B41E71 /* ZimFileDetail.swift in Sources */,
 				97242B9E2735E6A800C87F85 /* Platform.swift in Sources */,
 				973BC75727587A29008D4114 /* Commands.swift in Sources */,

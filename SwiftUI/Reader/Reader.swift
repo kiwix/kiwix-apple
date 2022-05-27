@@ -16,7 +16,7 @@ struct Reader: View {
     
     var body: some View {
         NavigationView {
-            VStack(spacing: 0) {
+            VStack {
                 VStack(spacing: 6) {
                     Divider()
                     HStack(spacing: 20) {
@@ -32,22 +32,29 @@ struct Reader: View {
                         }
                     }
                     Divider()
+                }.background(.thinMaterial)
+                switch sidebarDisplayMode {
+                case .search:
+                    ZStack {
+                        List {}
+                            .searchable(text: $searchText, placement: .sidebar, prompt: Text("Search")) {
+                                Text("result 1")
+                                Text("result 2")
+                                Text("result 3")
+                            }
+                        List {
+                            Text("sidebar 1")
+                            Text("sidebar 2")
+                            Text("sidebar 3")
+                        }.padding(.top, 34)
+                    }.listStyle(.sidebar)
+                case .bookmark:
+                    Text("bookmark")
+                case .outline:
+                    Text("outline")
+                case .library:
+                    OpenedZimFiles()
                 }
-                .background(.thinMaterial)
-                ZStack {
-                    List {}
-                        .padding(.top, 6)
-                        .searchable(text: $searchText, placement: .sidebar, prompt: Text("Search")) {
-                            Text("result 1")
-                            Text("result 2")
-                            Text("result 3")
-                        }
-                    List {
-                        Text("sidebar 1")
-                        Text("sidebar 2")
-                        Text("sidebar 3")
-                    }.padding(.top, 36)
-                }.listStyle(.sidebar)
             }
             .frame(minWidth: 250)
             .toolbar { SidebarButton() }
