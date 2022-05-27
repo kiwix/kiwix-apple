@@ -155,3 +155,30 @@ enum LibraryTopic: Hashable, Identifiable, RawRepresentable {
         }
     }
 }
+
+enum SidebarDisplayMode: String, CaseIterable, Identifiable {
+    var id: String { rawValue }
+    case search, bookmark, library
+    
+    var imageName: String {
+        switch self {
+        case .search:
+            return "magnifyingglass"
+        case .bookmark:
+            return "star"
+        case .library:
+            return "folder"
+        }
+    }
+    
+    var help: String {
+        switch self {
+        case .search:
+            return "Search for articles"
+        case .bookmark:
+            return "Show bookmarked articles"
+        case .library:
+            return "Show library of zim files"
+        }
+    }
+}

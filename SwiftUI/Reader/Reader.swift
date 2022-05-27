@@ -10,14 +10,40 @@ import SwiftUI
 
 #if os(macOS)
 struct Reader: View {
+    @SceneStorage("Reader.SidebarDisplayMode") private var sidebarDisplayMode: SidebarDisplayMode = .search
     @StateObject var viewModel = ReaderViewModel()
     
     var body: some View {
         NavigationView {
-            List {
-                Text("sidebar 1")
-                Text("sidebar 2")
-                Text("sidebar 3")
+            VStack(spacing: 0) {
+                VStack(spacing: 6) {
+                    Divider()
+                    HStack(spacing: 20) {
+                        ForEach(SidebarDisplayMode.allCases) { displayMode in
+                            Button {
+                                self.sidebarDisplayMode = displayMode
+                            } label: {
+                                Image(systemName: displayMode.imageName)
+                                    .foregroundColor(self.sidebarDisplayMode == displayMode ? .blue : nil)
+                            }
+                            .buttonStyle(.borderless)
+                            .help(displayMode.help)
+                        }
+                    }
+                    Divider()
+                }.background(.thinMaterial)
+                VSplitView {
+                    List {
+                        Text("sidebar 1")
+                        Text("sidebar 2")
+                        Text("sidebar 3")
+                    }
+                    List {
+                        Text("outline 1")
+                        Text("outline 2")
+                        Text("outline 3")
+                    }
+                }.listStyle(.sidebar)
             }
             .frame(minWidth: 250)
             .toolbar { SidebarButton() }
