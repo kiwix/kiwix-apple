@@ -103,7 +103,7 @@ private struct ToolbarButtons: ViewModifier {
                         RandomArticleButton()
                     }
                     Spacer()
-                    MoreButton()
+                    MoreButton(isPresentingLibrary: $isPresentingLibrary)
                 }
             }
         }
