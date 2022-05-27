@@ -61,9 +61,7 @@ struct Reader: View {
             .toolbar { SidebarButton() }
             Group {
                 if url == nil {
-                    Button("load main page") {
-                        viewModel.loadMainPage()
-                    }
+                    Button("load main page") { }
                 } else {
                     WebView(url: $url).ignoresSafeArea(.container, edges: .all)
                 }
@@ -137,7 +135,7 @@ struct Reader: View {
                         RandomArticleButton()
                     }
                     Spacer()
-                    MoreButton(isPresentingLibrary: $isPresentingLibrary, isPresentingSettings: $isPresentingSettings)
+                    MoreButton(url: $url, isPresentingLibrary: $isPresentingLibrary, isPresentingSettings: $isPresentingSettings)
                 }
             }
         }

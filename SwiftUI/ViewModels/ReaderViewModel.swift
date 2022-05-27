@@ -75,15 +75,6 @@ class ReaderViewModel: NSObject, ObservableObject, WKNavigationDelegate, WKScrip
         webView.load(URLRequest(url: url))
     }
     
-    func loadMainPage(zimFileID: UUID? = nil) {
-        let zimFileID = try? zimFileID ??
-            UUID(uuidString: webView.url?.host ?? "") ??
-            Database.shared.container.viewContext.fetch(ZimFile.opened()).first?.fileID
-        guard let zimFileID = zimFileID,
-              let url = ZimFileService.shared.getMainPageURL(zimFileID: zimFileID) else { return }
-        load(url)
-    }
-    
     func loadRandomPage(zimFileID: UUID? = nil) {
         let zimFileID = try? zimFileID ??
             UUID(uuidString: webView.url?.host ?? "") ??
@@ -91,14 +82,6 @@ class ReaderViewModel: NSObject, ObservableObject, WKNavigationDelegate, WKScrip
         guard let zimFileID = zimFileID,
               let url = ZimFileService.shared.getRandomPageURL(zimFileID: zimFileID) else { return }
         load(url)
-    }
-    
-    func getMainPageURL(zimFileID: UUID? = nil) -> URL? {
-        let zimFileID = try? zimFileID ??
-            UUID(uuidString: webView.url?.host ?? "") ??
-            Database.shared.container.viewContext.fetch(ZimFile.opened()).first?.fileID
-        guard let zimFileID = zimFileID else { return nil }
-        return ZimFileService.shared.getMainPageURL(zimFileID: zimFileID)
     }
     
     // MARK: - WKNavigationDelegate

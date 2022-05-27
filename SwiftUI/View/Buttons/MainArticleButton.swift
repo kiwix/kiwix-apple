@@ -19,7 +19,7 @@ struct MainArticleButton: View {
     var body: some View {
         #if os(macOS)
         Button {
-            url = viewModel.getMainPageURL()
+            loadMainPage()
         } label: {
             Label("Main Page", systemImage: "house")
         }
@@ -29,19 +29,19 @@ struct MainArticleButton: View {
         if #available(iOS 15.0, *) {
             Menu {
                 ForEach(zimFiles) { zimFile in
-                    Button(zimFile.name) { url = viewModel.getMainPageURL(zimFileID: zimFile.id) }
+                    Button(zimFile.name) { loadMainArticle(zimFileID: zimFile.fileID) }
                 }
             } label: {
                 Label("Main Page", systemImage: "house")
             } primaryAction: {
-                url = viewModel.getMainPageURL()
+                loadMainArticle()
             }
             .disabled(zimFiles.isEmpty)
             .help("Show main article")
         } else {
             if zimFiles.count == 1 {
                 Button {
-                    url = viewModel.getMainPageURL()
+                    loadMainArticle()
                 } label: {
                     Label("Main Page", systemImage: "house")
                 }
@@ -50,7 +50,7 @@ struct MainArticleButton: View {
             } else {
                 Menu {
                     ForEach(zimFiles) { zimFile in
-                        Button(zimFile.name) { url = viewModel.getMainPageURL(zimFileID: zimFile.id) }
+                        Button(zimFile.name) { loadMainArticle(zimFileID: zimFile.fileID) }
                     }
                 } label: {
                     Label("Main Page", systemImage: "house")
@@ -60,5 +60,11 @@ struct MainArticleButton: View {
             }
         }
         #endif
+    }
+    
+    private func loadMainArticle(zimFileID: UUID? = nil) {
+        guard let zimFileID = zimFileID ?? UUID(uuidString: url?.host ?? "") ?? zimFiles.first?.fileID,
+              let url = ZimFileService.shared.getMainPageURL(zimFileID: zimFileID) else { return }
+        self.url = url
     }
 }

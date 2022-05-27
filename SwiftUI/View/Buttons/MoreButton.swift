@@ -9,6 +9,7 @@
 import SwiftUI
 
 struct MoreButton: View {
+    @Binding var url: URL?
     @Binding var isPresentingLibrary: Bool
     @Binding var isPresentingSettings: Bool
     @EnvironmentObject var viewModel: ReaderViewModel
@@ -22,7 +23,7 @@ struct MoreButton: View {
             Section {
                 ForEach(zimFiles) { zimFile in
                     Button {
-                        viewModel.loadMainPage(zimFileID: zimFile.id)
+                        url = ZimFileService.shared.getMainPageURL(zimFileID: zimFile.fileID)
                     } label: {
                         Label(zimFile.name, systemImage: "house")
                     }
