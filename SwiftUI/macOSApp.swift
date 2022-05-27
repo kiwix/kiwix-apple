@@ -18,14 +18,10 @@ struct Kiwix: App {
         WindowGroup {
             Reader().environment(\.managedObjectContext, Database.shared.container.viewContext)
         }.commands {
-            SidebarCommands()
             ImportCommands()
+            SidebarDisplayModeCommands()
             CommandGroup(replacing: .newItem) {
                 Button("New Tab") { newTab() }.keyboardShortcut("t")
-                Divider()
-            }
-            CommandGroup(before: .sidebar) {
-                SidebarDisplayModeCommandButtons()
                 Divider()
             }
             CommandMenu("Navigation") { NavigationCommandButtons() }

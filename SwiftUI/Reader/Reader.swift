@@ -32,7 +32,8 @@ struct Reader: View {
                         }
                     }
                     Divider()
-                }.background(.thinMaterial)
+                }
+                .background(.thinMaterial)
                 ZStack {
                     List {}
                         .padding(.top, 6)
@@ -74,6 +75,7 @@ struct Reader: View {
         }
         .environmentObject(viewModel)
         .focusedSceneValue(\.readerViewModel, viewModel)
+        .focusedSceneValue(\.sidebarDisplayMode, $sidebarDisplayMode)
         .navigationTitle(viewModel.articleTitle)
         .navigationSubtitle(viewModel.zimFileName)
     }

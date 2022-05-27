@@ -40,7 +40,6 @@ struct Sidebar: View {
             }
             .listStyle(.sidebar)
         }
-        .focusedSceneValue(\.sidebarDisplayMode, $displayMode)
     }
     
     var displayModeSelector: some View {

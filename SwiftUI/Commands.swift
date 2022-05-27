@@ -22,19 +22,24 @@ struct ImportCommands: Commands {
     }
 }
 
-struct SidebarDisplayModeCommandButtons: View {
-    @FocusedBinding(\.sidebarDisplayMode) var displayMode: Sidebar.DisplayMode?
+struct SidebarDisplayModeCommands: Commands {
+    @FocusedBinding(\.sidebarDisplayMode) var displayMode: SidebarDisplayMode?
     
-    var body: some View {
-        Button("Search Articles") { displayMode = .search }
-            .keyboardShortcut("1")
-            .disabled(displayMode == nil)
-        Button("Show Bookmark") { displayMode = .bookmark }
-            .keyboardShortcut("2")
-            .disabled(displayMode == nil)
-        Button("Show Library") { displayMode = .library }
-            .keyboardShortcut("3")
-            .disabled(displayMode == nil)
+    var body: some Commands {
+        CommandGroup(after: .toolbar) {
+            Button("Search Articles") { displayMode = .search }
+                .keyboardShortcut("1")
+                .disabled(displayMode == nil)
+            Button("Show Bookmark") { displayMode = .bookmark }
+                .keyboardShortcut("2")
+                .disabled(displayMode == nil)
+            Button("Show Outline") { displayMode = .outline }
+                .keyboardShortcut("3")
+                .disabled(displayMode == nil)
+            Button("Show Library") { displayMode = .library }
+                .keyboardShortcut("4")
+                .disabled(displayMode == nil)
+        }
     }
 }
 
@@ -49,20 +54,11 @@ struct NavigationCommandButtons: View {
     }
 }
 
-struct SidebarDisplayModeKey: FocusedValueKey {
-    typealias Value = Binding<Sidebar.DisplayMode>
-}
-
 struct ReaderViewModelKey: FocusedValueKey {
     typealias Value = ReaderViewModel
 }
 
 extension FocusedValues {
-    var sidebarDisplayMode: SidebarDisplayModeKey.Value? {
-        get { self[SidebarDisplayModeKey.self] }
-        set { self[SidebarDisplayModeKey.self] = newValue }
-    }
-    
     var readerViewModel: ReaderViewModelKey.Value? {
         get { self[ReaderViewModelKey.self] }
         set { self[ReaderViewModelKey.self] = newValue }
