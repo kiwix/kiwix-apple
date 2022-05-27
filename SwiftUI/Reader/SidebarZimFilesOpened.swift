@@ -1,5 +1,5 @@
 //
-//  OpenedZimFiles.swift
+//  SidebarZimFilesOpened.swift
 //  Kiwix
 //
 //  Created by Chris Li on 5/27/22.
@@ -8,7 +8,7 @@
 
 import SwiftUI
 
-struct OpenedZimFiles: View {
+struct SidebarZimFilesOpened: View {
     @FetchRequest(
         sortDescriptors: [SortDescriptor(\ZimFile.size, order: .reverse)],
         predicate: NSPredicate(format: "fileURLBookmark != nil"),
@@ -19,8 +19,6 @@ struct OpenedZimFiles: View {
     var body: some View {
         List(zimFiles, id: \.self, selection: $selected) { zimFile in
             ZimFileRow(zimFile)
-                .modifier(ZimFileContextMenu(selected: $selected, zimFile: zimFile))
-                .modifier(ZimFileSelection(selected: $selected, zimFile: zimFile))
         }
     }
 }

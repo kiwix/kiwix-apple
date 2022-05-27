@@ -53,7 +53,7 @@ struct Reader: View {
                 case .outline:
                     Text("outline")
                 case .library:
-                    OpenedZimFiles()
+                    SidebarZimFilesOpened()
                 }
             }
             .frame(minWidth: 250)
