@@ -43,54 +43,41 @@ struct Reader: View {
 }
 #elseif os(iOS)
 struct Reader: View {
+    @Environment(\.horizontalSizeClass) var horizontalSizeClass
     @StateObject var viewModel = ReaderViewModel()
     @State var isPresentingLibrary = false
+    @State var isPresentingSettings = false
     
     var body: some View {
-        WebView(webView: viewModel.webView)
-            .ignoresSafeArea(.container, edges: .all)
-            .onOpenURL { url in
-                viewModel.load(url)
-                withAnimation {
-                    isPresentingLibrary = false
+        Group {
+            if viewModel.url == nil {
+                Button("load main page") {
+                    viewModel.loadMainPage()
                 }
+            } else {
+                WebView()
+                    .ignoresSafeArea(.container, edges: .all)
             }
-            .modifier(ToolbarButtons(isPresentingLibrary: $isPresentingLibrary))
-            .environmentObject(viewModel)
-            .sheet(isPresented: $isPresentingLibrary) { Library() }
-    }
-}
-
-private struct ToolbarButtons: ViewModifier {
-    @Binding var isPresentingLibrary: Bool
-    @Environment(\.horizontalSizeClass) var horizontalSizeClass
-    @EnvironmentObject var viewModel: ReaderViewModel
-    
-    func body(content: Content) -> some View {
-        if viewModel.isSearchActive {
-            content.toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Button("Cancel") { viewModel.cancelSearch?()}
-                }
-            }
-        } else if horizontalSizeClass == .regular {
-            content.toolbar {
-                ToolbarItemGroup(placement: .navigationBarLeading) {
+        }
+        .toolbar {
+            ToolbarItemGroup(placement: .navigationBarLeading) {
+                if horizontalSizeClass == .regular {
                     NavigateBackButton()
                     NavigateForwardButton()
                     Button { } label: { Image(systemName: "list.bullet") }
                     BookmarkButton(url: viewModel.url)
                 }
-                ToolbarItemGroup(placement: .navigationBarTrailing) {
+            }
+            ToolbarItemGroup(placement: .navigationBarTrailing) {
+                if horizontalSizeClass == .regular {
                     RandomArticleButton()
                     MainArticleButton()
                     Button { isPresentingLibrary = true } label: { Image(systemName: "folder") }
-                    Button { } label: { Image(systemName: "gear") }
+                    Button { isPresentingSettings = true } label: { Image(systemName: "gear") }
                 }
             }
-        } else {
-            content.toolbar {
-                ToolbarItemGroup(placement: .bottomBar) {
+            ToolbarItemGroup(placement: .bottomBar) {
+                if horizontalSizeClass == .compact {
                     Group {
                         NavigateBackButton()
                         Spacer()
@@ -103,28 +90,36 @@ private struct ToolbarButtons: ViewModifier {
                         RandomArticleButton()
                     }
                     Spacer()
-                    MoreButton(isPresentingLibrary: $isPresentingLibrary)
+                    MoreButton(isPresentingLibrary: $isPresentingLibrary, isPresentingSettings: $isPresentingSettings)
                 }
+            }
+        }
+        .environmentObject(viewModel)
+        .sheet(isPresented: $isPresentingLibrary) { Library() }
+        .onOpenURL { url in
+            viewModel.load(url)
+            withAnimation {
+                isPresentingLibrary = false
             }
         }
     }
 }
 #endif
 
-private struct ReaderContent: View {
-    @EnvironmentObject var viewModel: ReaderViewModel
-    
-    var body: some View {
-        if viewModel.url == nil {
-            List {
-                Text("Welcome!")
-                Text("Zim File 1")
-                Text("Zim File 2")
-                Text("Zim File 3")
-            }
-        } else {
-            WebView(webView: viewModel.webView)
-                .ignoresSafeArea(.container, edges: .all)
-        }
-    }
-}
+//private struct ReaderContent: View {
+//    @EnvironmentObject var viewModel: ReaderViewModel
+//
+//    var body: some View {
+//        if viewModel.url == nil {
+//            List {
+//                Text("Welcome!")
+//                Text("Zim File 1")
+//                Text("Zim File 2")
+//                Text("Zim File 3")
+//            }
+//        } else {
+//            WebView(webView: viewModel.webView)
+//                .ignoresSafeArea(.container, edges: .all)
+//        }
+//    }
+//}
