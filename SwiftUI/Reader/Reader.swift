@@ -94,15 +94,16 @@ struct Reader: View {
     @StateObject var viewModel = ReaderViewModel()
     @State var isPresentingLibrary = false
     @State var isPresentingSettings = false
+    @State var url: URL?
     
     var body: some View {
         Group {
-            if viewModel.url == nil {
+            if url == nil {
                 Button("load main page") {
-                    viewModel.loadMainPage()
+                    self.url = url
                 }
             } else {
-                WebView().ignoresSafeArea(.container, edges: .all)
+                WebView(url: $url).ignoresSafeArea(.container, edges: .all)
             }
         }
         .toolbar {
@@ -111,7 +112,7 @@ struct Reader: View {
                     NavigateBackButton()
                     NavigateForwardButton()
                     Button { } label: { Image(systemName: "list.bullet") }
-                    BookmarkButton(url: viewModel.url)
+                    BookmarkButton(url: url)
                 }
             }
             ToolbarItemGroup(placement: .navigationBarTrailing) {
@@ -131,7 +132,7 @@ struct Reader: View {
                         Spacer()
                         Button { } label: { Image(systemName: "list.bullet") }
                         Spacer()
-                        BookmarkButton(url: viewModel.url)
+                        BookmarkButton(url: url)
                         Spacer()
                         RandomArticleButton()
                     }
@@ -143,7 +144,7 @@ struct Reader: View {
         .environmentObject(viewModel)
         .sheet(isPresented: $isPresentingLibrary) { Library() }
         .onOpenURL { url in
-            viewModel.load(url)
+            self.url = url
             withAnimation {
                 isPresentingLibrary = false
             }

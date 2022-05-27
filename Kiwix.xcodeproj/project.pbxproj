@@ -179,7 +179,6 @@
 		979D3A772841100B00E396B8 /* Focus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 979D3A762841100B00E396B8 /* Focus.swift */; };
 		979D3A782841100B00E396B8 /* Focus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 979D3A762841100B00E396B8 /* Focus.swift */; };
 		979D3A7A2841135A00E396B8 /* SidebarZimFilesOpened.swift in Sources */ = {isa = PBXBuildFile; fileRef = 979D3A792841135A00E396B8 /* SidebarZimFilesOpened.swift */; };
-		979D3A7B2841135A00E396B8 /* SidebarZimFilesOpened.swift in Sources */ = {isa = PBXBuildFile; fileRef = 979D3A792841135A00E396B8 /* SidebarZimFilesOpened.swift */; };
 		97A2AE2225866D9200DEF81D /* ButtonProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97A2AE2125866D9200DEF81D /* ButtonProvider.swift */; };
 		97A36C321F8C21210079B452 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 975FDAD91F6082DA00A10E8C /* AppDelegate.swift */; };
 		97A36C351F8C21210079B452 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 975FDB061F608F4100A10E8C /* WebKit.framework */; };
@@ -1386,7 +1385,6 @@
 				973A0DE4281D80E300B41E71 /* ZimFileDetail.swift in Sources */,
 				97DE2B9C2839D39100C63D9B /* WebView.swift in Sources */,
 				973A0DEB281DDBB600B41E71 /* ZimFilesDownloads.swift in Sources */,
-				979D3A7B2841135A00E396B8 /* SidebarZimFilesOpened.swift in Sources */,
 				97DE2BAF283C665400C63D9B /* MainArticleButton.swift in Sources */,
 				973A0E032831057200B41E71 /* URL.swift in Sources */,
 				973A0DE8281DD7EB00B41E71 /* Log.swift in Sources */,
