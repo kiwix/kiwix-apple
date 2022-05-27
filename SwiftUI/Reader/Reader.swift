@@ -76,7 +76,7 @@ struct Reader: View {
                 }
                 ToolbarItemGroup {
                     BookmarkButton(url: url)
-                    MainArticleButton()
+                    MainArticleButton(url: $url)
                     RandomArticleButton()
                 }
             }
@@ -118,7 +118,7 @@ struct Reader: View {
             ToolbarItemGroup(placement: .navigationBarTrailing) {
                 if horizontalSizeClass == .regular {
                     RandomArticleButton()
-                    MainArticleButton()
+                    MainArticleButton(url: $url)
                     Button { isPresentingLibrary = true } label: { Image(systemName: "folder") }
                     Button { isPresentingSettings = true } label: { Image(systemName: "gear") }
                 }

@@ -93,6 +93,14 @@ class ReaderViewModel: NSObject, ObservableObject, WKNavigationDelegate, WKScrip
         load(url)
     }
     
+    func getMainPageURL(zimFileID: UUID? = nil) -> URL? {
+        let zimFileID = try? zimFileID ??
+            UUID(uuidString: webView.url?.host ?? "") ??
+            Database.shared.container.viewContext.fetch(ZimFile.opened()).first?.fileID
+        guard let zimFileID = zimFileID else { return nil }
+        return ZimFileService.shared.getMainPageURL(zimFileID: zimFileID)
+    }
+    
     // MARK: - WKNavigationDelegate
     
     func webView(_ webView: WKWebView,

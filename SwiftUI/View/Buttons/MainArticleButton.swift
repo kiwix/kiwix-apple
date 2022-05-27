@@ -9,6 +9,7 @@
 import SwiftUI
 
 struct MainArticleButton: View {
+    @Binding var url: URL?
     @EnvironmentObject var viewModel: ReaderViewModel
     @FetchRequest(
         sortDescriptors: [NSSortDescriptor(keyPath: \ZimFile.size, ascending: false)],
@@ -18,7 +19,7 @@ struct MainArticleButton: View {
     var body: some View {
         #if os(macOS)
         Button {
-            viewModel.loadMainPage()
+            url = viewModel.getMainPageURL()
         } label: {
             Label("Main Page", systemImage: "house")
         }
@@ -28,19 +29,19 @@ struct MainArticleButton: View {
         if #available(iOS 15.0, *) {
             Menu {
                 ForEach(zimFiles) { zimFile in
-                    Button(zimFile.name) { viewModel.loadMainPage(zimFileID: zimFile.id) }
+                    Button(zimFile.name) { url = viewModel.getMainPageURL(zimFileID: zimFile.id) }
                 }
             } label: {
                 Label("Main Page", systemImage: "house")
             } primaryAction: {
-                viewModel.loadMainPage()
+                url = viewModel.getMainPageURL()
             }
             .disabled(zimFiles.isEmpty)
             .help("Show main article")
         } else {
             if zimFiles.count == 1 {
                 Button {
-                    viewModel.loadMainPage()
+                    url = viewModel.getMainPageURL()
                 } label: {
                     Label("Main Page", systemImage: "house")
                 }
@@ -49,7 +50,7 @@ struct MainArticleButton: View {
             } else {
                 Menu {
                     ForEach(zimFiles) { zimFile in
-                        Button(zimFile.name) { viewModel.loadMainPage(zimFileID: zimFile.id) }
+                        Button(zimFile.name) { url = viewModel.getMainPageURL(zimFileID: zimFile.id) }
                     }
                 } label: {
                     Label("Main Page", systemImage: "house")
