@@ -52,7 +52,7 @@ struct Reader: View {
                 case .bookmark:
                     Text("bookmark")
                 case .outline:
-                    Text("outline")
+                    Outline(url: $url)
                 case .library:
                     SidebarZimFilesOpened(url: $url)
                 }

@@ -1,6 +1,6 @@
 //
-//  Outlines.swift
-//  Kiwix for macOS
+//  Outline.swift
+//  Kiwix
 //
 //  Created by Chris Li on 1/17/22.
 //  Copyright © 2022 Chris Li. All rights reserved.
@@ -9,9 +9,9 @@
 import SwiftUI
 
 struct Outline: View {
-    @EnvironmentObject var viewModel: ReaderViewModel
     @Binding var url: URL?
-    @State var selectedID: String?
+    @EnvironmentObject var viewModel: ReaderViewModel
+    @State private var selectedID: String?
     
     var body: some View {
         List(selection: $selectedID) {
