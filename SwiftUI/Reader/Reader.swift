@@ -54,7 +54,7 @@ struct Reader: View {
                 case .outline:
                     Outline(url: $url)
                 case .library:
-                    SidebarZimFilesOpened(url: $url)
+                    ZimFilesOpened(url: $url)
                 }
             }
             .frame(minWidth: 250)
@@ -84,6 +84,28 @@ struct Reader: View {
         .focusedSceneValue(\.sidebarDisplayMode, $sidebarDisplayMode)
         .navigationTitle(viewModel.articleTitle)
         .navigationSubtitle(viewModel.zimFileName)
+    }
+    
+    struct ZimFilesOpened: View {
+        @Binding var url: URL?
+        @FetchRequest(
+            sortDescriptors: [SortDescriptor(\ZimFile.size, order: .reverse)],
+            predicate: NSPredicate(format: "fileURLBookmark != nil"),
+            animation: .easeInOut
+        ) private var zimFiles: FetchedResults<ZimFile>
+        @State var selected: UUID?
+        
+        var body: some View {
+            List(zimFiles, id: \.fileID, selection: $selected) { zimFile in
+                ZimFileRow(zimFile)
+            }
+            .onChange(of: selected) { zimFileID in
+                guard let zimFileID = zimFileID,
+                      let url = ZimFileService.shared.getMainPageURL(zimFileID: zimFileID) else { return }
+                self.url = url
+                selected = nil
+            }
+        }
     }
 }
 #elseif os(iOS)
