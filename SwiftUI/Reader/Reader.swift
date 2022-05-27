@@ -43,11 +43,12 @@ struct Reader: View {
 }
 #elseif os(iOS)
 struct Reader: View {
-    @ObservedObject var viewModel = ReaderViewModel()
+    @StateObject var viewModel = ReaderViewModel()
     @State var isPresentingLibrary = false
     
     var body: some View {
-        ReaderContent()
+        WebView(webView: viewModel.webView)
+            .ignoresSafeArea(.container, edges: .all)
             .onOpenURL { url in
                 viewModel.load(url)
                 withAnimation {
@@ -94,9 +95,7 @@ private struct ToolbarButtons: ViewModifier {
                         NavigateBackButton()
                         Spacer()
                         NavigateForwardButton()
-                    }
-                    Spacer()
-                    Group {
+                        Spacer()
                         Button { } label: { Image(systemName: "list.bullet") }
                         Spacer()
                         BookmarkButton(url: viewModel.url)
@@ -104,13 +103,7 @@ private struct ToolbarButtons: ViewModifier {
                         RandomArticleButton()
                     }
                     Spacer()
-                    Menu {
-                        Button { } label: { Label("Main Page", systemImage: "house") }
-                        Button { isPresentingLibrary = true } label: { Label("Library", systemImage: "folder") }
-                        Button { } label: { Label("Settings", systemImage: "gear") }
-                    } label: {
-                        Image(systemName: "ellipsis.circle")
-                    }
+                    MoreButton()
                 }
             }
         }
