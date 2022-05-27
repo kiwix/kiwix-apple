@@ -17,8 +17,9 @@ struct WebView: NSViewRepresentable {
 }
 #elseif os(iOS)
 struct WebView: UIViewRepresentable {
-    let webView: WKWebView
-    func makeUIView(context: Context) -> WKWebView { webView }
+    @EnvironmentObject var viewModel: ReaderViewModel
+    
+    func makeUIView(context: Context) -> WKWebView { viewModel.webView }
     func updateUIView(_ uiView: WKWebView, context: Context) { }
 }
 #endif
