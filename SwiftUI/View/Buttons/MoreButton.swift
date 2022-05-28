@@ -10,8 +10,7 @@ import SwiftUI
 
 struct MoreButton: View {
     @Binding var url: URL?
-    @Binding var isPresentingLibrary: Bool
-    @Binding var isPresentingSettings: Bool
+    @Binding var sheetDisplayMode: SheetDisplayMode?
     @EnvironmentObject var viewModel: ReaderViewModel
     @FetchRequest(
         sortDescriptors: [NSSortDescriptor(keyPath: \ZimFile.size, ascending: false)],
@@ -29,8 +28,8 @@ struct MoreButton: View {
                     }
                 }
             }
-            Button { isPresentingLibrary = true } label: { Label("Library", systemImage: "folder") }
-            Button { isPresentingSettings = true } label: { Label("Settings", systemImage: "gear") }
+            Button { sheetDisplayMode = .library } label: { Label("Library", systemImage: "folder") }
+            Button { sheetDisplayMode = .settings } label: { Label("Settings", systemImage: "gear") }
         } label: {
             Image(systemName: "ellipsis.circle")
         }

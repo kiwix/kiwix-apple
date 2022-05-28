@@ -28,3 +28,24 @@ struct Outline: View {
         }
     }
 }
+
+struct OutlineSheet: View {
+    @Environment(\.presentationMode) private var presentationMode
+    @EnvironmentObject var viewModel: ReaderViewModel
+    
+    var body: some View {
+        NavigationView {
+            Outline()
+                .listStyle(.plain)
+                .navigationTitle(viewModel.articleTitle)
+                .navigationBarTitleDisplayMode(.inline)
+                .toolbar {
+                    ToolbarItem(placement: .navigationBarLeading) {
+                        Button("Done") {
+                            presentationMode.wrappedValue.dismiss()
+                        }
+                    }
+                }
+        }
+    }
+}

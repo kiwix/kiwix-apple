@@ -112,9 +112,10 @@ struct Reader: View {
 struct Reader: View {
     @Environment(\.horizontalSizeClass) var horizontalSizeClass
     @StateObject var viewModel = ReaderViewModel()
-    @State var isPresentingOutline = false
-    @State var isPresentingLibrary = false
-    @State var isPresentingSettings = false
+//    @State var isPresentingOutline = false
+//    @State var isPresentingLibrary = false
+//    @State var isPresentingSettings = false
+    @State private var sheetDisplayMode: SheetDisplayMode?
     @State private var sidebarDisplayMode: SidebarDisplayMode?
     @State var url: URL?
     
@@ -148,8 +149,8 @@ struct Reader: View {
                 if horizontalSizeClass == .regular {
                     RandomArticleButton(url: $url)
                     MainArticleButton(url: $url)
-                    Button { isPresentingLibrary = true } label: { Image(systemName: "folder") }
-                    Button { isPresentingSettings = true } label: { Image(systemName: "gear") }
+                    Button { sheetDisplayMode = .library } label: { Image(systemName: "folder") }
+                    Button { sheetDisplayMode = .settings } label: { Image(systemName: "gear") }
                 }
             }
             ToolbarItemGroup(placement: .bottomBar) {
@@ -159,26 +160,37 @@ struct Reader: View {
                         Spacer()
                         NavigateForwardButton()
                         Spacer()
-                        Button { isPresentingOutline.toggle() } label: { Image(systemName: "list.bullet") }
+                        Button { sheetDisplayMode = .outline } label: { Image(systemName: "list.bullet") }
                         Spacer()
                         BookmarkButton(url: url)
                         Spacer()
                         RandomArticleButton(url: $url)
                     }
                     Spacer()
-                    MoreButton(url: $url, isPresentingLibrary: $isPresentingLibrary, isPresentingSettings: $isPresentingSettings)
+                    MoreButton(url: $url, sheetDisplayMode: $sheetDisplayMode)
                 }
             }
         }
+        .sheet(item: $sheetDisplayMode) { displayMode in
+            switch displayMode {
+            case .outline:
+                OutlineSheet()
+            case .library:
+                Library()
+            default:
+                EmptyView()
+            }
+        }
         .environmentObject(viewModel)
-        .sheet(isPresented: $isPresentingLibrary) { Library() }
-        .popover(isPresented: $isPresentingOutline, content: {
-            Outline()
-        })
+        .onChange(of: horizontalSizeClass) { _ in
+            if sheetDisplayMode == .outline || sheetDisplayMode == .bookmark {
+                sheetDisplayMode = nil
+            }
+        }
         .onOpenURL { url in
             self.url = url
             withAnimation {
-                isPresentingLibrary = false
+                sheetDisplayMode = nil
             }
         }
     }

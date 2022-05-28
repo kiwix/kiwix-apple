@@ -156,6 +156,11 @@ enum LibraryTopic: Hashable, Identifiable, RawRepresentable {
     }
 }
 
+enum SheetDisplayMode: String, Identifiable {
+    var id: String { rawValue }
+    case outline, bookmark, library, settings
+}
+
 enum SidebarDisplayMode: String, CaseIterable, Identifiable {
     var id: String { rawValue }
     case search, bookmark, outline, library
