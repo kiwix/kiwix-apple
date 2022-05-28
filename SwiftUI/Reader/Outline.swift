@@ -10,6 +10,7 @@ import SwiftUI
 
 struct Outline: View {
     @EnvironmentObject var viewModel: ReaderViewModel
+    @Environment(\.presentationMode) private var presentationMode
     @State private var selectedID: String?
     
     var body: some View {
@@ -18,7 +19,10 @@ struct Outline: View {
                 #if os(macOS)
                 Text(item.text).id(item.id)
                 #elseif os(iOS)
-                Button(item.text) { viewModel.scrollTo(outlineItemID: item.id) }
+                Button(item.text) {
+                    viewModel.scrollTo(outlineItemID: item.id)
+                    presentationMode.wrappedValue.dismiss()
+                }
                 #endif
             }
         }.onChange(of: selectedID) { selectedID in
@@ -30,8 +34,8 @@ struct Outline: View {
 }
 
 struct OutlineSheet: View {
-    @Environment(\.presentationMode) private var presentationMode
     @EnvironmentObject var viewModel: ReaderViewModel
+    @Environment(\.presentationMode) private var presentationMode
     
     var body: some View {
         NavigationView {
