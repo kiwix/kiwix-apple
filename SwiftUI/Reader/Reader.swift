@@ -112,9 +112,6 @@ struct Reader: View {
 struct Reader: View {
     @Environment(\.horizontalSizeClass) var horizontalSizeClass
     @StateObject var viewModel = ReaderViewModel()
-//    @State var isPresentingOutline = false
-//    @State var isPresentingLibrary = false
-//    @State var isPresentingSettings = false
     @State private var sheetDisplayMode: SheetDisplayMode?
     @State private var sidebarDisplayMode: SidebarDisplayMode?
     @State var url: URL?
@@ -141,7 +138,7 @@ struct Reader: View {
                 if horizontalSizeClass == .regular {
                     NavigateBackButton()
                     NavigateForwardButton()
-                    OutlintButton(sidebarDisplayMode: $sidebarDisplayMode)
+                    OutlineButton(sheetDisplayMode: $sheetDisplayMode, sidebarDisplayMode: $sidebarDisplayMode)
                     BookmarkButton(url: url)
                 }
             }
@@ -160,7 +157,7 @@ struct Reader: View {
                         Spacer()
                         NavigateForwardButton()
                         Spacer()
-                        Button { sheetDisplayMode = .outline } label: { Image(systemName: "list.bullet") }
+                        OutlineButton(sheetDisplayMode: $sheetDisplayMode, sidebarDisplayMode: $sidebarDisplayMode)
                         Spacer()
                         BookmarkButton(url: url)
                         Spacer()
