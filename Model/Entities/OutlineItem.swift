@@ -8,12 +8,14 @@
 
 import Combine
 
-class OutlineItem: Identifiable {
+class OutlineItem: ObservableObject, Identifiable {
     let id: String
     let index: Int
     let text: String
     let level: Int
     private(set) var children: [OutlineItem]?
+    
+    @Published var isExpanded = true
     
     init(id: String, index: Int, text: String, level: Int) {
         self.id = id
