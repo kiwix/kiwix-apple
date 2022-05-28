@@ -82,7 +82,7 @@ struct BookmarkButton: View {
                 sheetDisplayMode = .bookmark
             }
         })
-        .simultaneousGesture(LongPressGesture().onEnded { _ in 
+        .simultaneousGesture(LongPressGesture().onEnded { _ in
             if isBookmarked {
                 viewModel.deleteBookmark()
             } else {
