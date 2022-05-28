@@ -121,20 +121,22 @@ struct Reader: View {
     @State var url: URL?
     
     var body: some View {
-        HStack(spacing: 0) {
-            if horizontalSizeClass == .regular, sidebarDisplayMode == .outline {
-                Outline().listStyle(.plain).frame(width: 300)
-                Divider().ignoresSafeArea(.all, edges: .bottom)
-            }
-            if url == nil {
-                List {
-                    Text("Welcome!")
-                    Text("Item 1")
-                    Text("Item 2")
-                    Text("Item 3")
+        GeometryReader { proxy in
+            HStack(spacing: 0) {
+                if horizontalSizeClass == .regular, sidebarDisplayMode == .outline {
+                    Outline().listStyle(.plain).frame(width: min(300, proxy.size.width * 0.35))
+                    Divider().ignoresSafeArea(.all, edges: .bottom)
                 }
-            } else {
-                WebView(url: $url).ignoresSafeArea(.container, edges: .all)
+                if url == nil {
+                    List {
+                        Text("Welcome!")
+                        Text("Item 1")
+                        Text("Item 2")
+                        Text("Item 3")
+                    }
+                } else {
+                    WebView(url: $url).ignoresSafeArea(.container, edges: .all)
+                }
             }
         }
         .toolbar {
