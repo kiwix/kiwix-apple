@@ -15,8 +15,6 @@ class OutlineItem: Identifiable {
     let level: Int
     private(set) var children: [OutlineItem]?
     
-    @Published var isExpanded = true
-    
     init(id: String, index: Int, text: String, level: Int) {
         self.id = id
         self.index = index

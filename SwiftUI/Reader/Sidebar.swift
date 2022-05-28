@@ -32,7 +32,7 @@ struct Sidebar: View {
                 }.frame(minHeight: 200)
                 Group {
                     if url != nil {
-                        Outline(url: $url)
+                        Outline()
                     } else {
                         Message(text: "No Article Selected")
                     }

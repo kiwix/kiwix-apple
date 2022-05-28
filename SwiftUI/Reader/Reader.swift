@@ -52,7 +52,7 @@ struct Reader: View {
                 case .bookmark:
                     Text("bookmark")
                 case .outline:
-                    Outline(url: $url)
+                    Outline()
                 case .library:
                     ZimFilesOpened(url: $url)
                 }
@@ -112,15 +112,24 @@ struct Reader: View {
 struct Reader: View {
     @Environment(\.horizontalSizeClass) var horizontalSizeClass
     @StateObject var viewModel = ReaderViewModel()
+    @State var isPresentingOutline = false
     @State var isPresentingLibrary = false
     @State var isPresentingSettings = false
+    @State private var sidebarDisplayMode: SidebarDisplayMode?
     @State var url: URL?
     
     var body: some View {
-        Group {
+        HStack(spacing: 0) {
+            if horizontalSizeClass == .regular, sidebarDisplayMode == .outline {
+                Outline().listStyle(.plain).frame(width: 300)
+                Divider().ignoresSafeArea(.all, edges: .bottom)
+            }
             if url == nil {
-                Button("load main page") {
-                    self.url = url
+                List {
+                    Text("Welcome!")
+                    Text("Item 1")
+                    Text("Item 2")
+                    Text("Item 3")
                 }
             } else {
                 WebView(url: $url).ignoresSafeArea(.container, edges: .all)
@@ -131,7 +140,7 @@ struct Reader: View {
                 if horizontalSizeClass == .regular {
                     NavigateBackButton()
                     NavigateForwardButton()
-                    Button { } label: { Image(systemName: "list.bullet") }
+                    OutlintButton(sidebarDisplayMode: $sidebarDisplayMode)
                     BookmarkButton(url: url)
                 }
             }
@@ -150,7 +159,7 @@ struct Reader: View {
                         Spacer()
                         NavigateForwardButton()
                         Spacer()
-                        Button { } label: { Image(systemName: "list.bullet") }
+                        Button { isPresentingOutline.toggle() } label: { Image(systemName: "list.bullet") }
                         Spacer()
                         BookmarkButton(url: url)
                         Spacer()
@@ -163,6 +172,9 @@ struct Reader: View {
         }
         .environmentObject(viewModel)
         .sheet(isPresented: $isPresentingLibrary) { Library() }
+        .popover(isPresented: $isPresentingOutline, content: {
+            Outline()
+        })
         .onOpenURL { url in
             self.url = url
             withAnimation {
