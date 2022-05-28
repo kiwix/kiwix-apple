@@ -49,7 +49,7 @@ struct Reader: View {
                             Text("sidebar 3")
                         }.padding(.top, 34)
                     }.listStyle(.sidebar)
-                case .bookmark:
+                case .bookmarks:
                     Text("bookmark")
                 case .outline:
                     Outline()
@@ -127,6 +127,10 @@ struct Reader: View {
                     Outline().listStyle(.plain).frame(width: min(300, proxy.size.width * 0.35))
                     Divider().ignoresSafeArea(.all, edges: .bottom)
                 }
+                if horizontalSizeClass == .regular, sidebarDisplayMode == .bookmarks {
+                    Bookmarks().listStyle(.plain).frame(width: min(300, proxy.size.width * 0.35))
+                    Divider().ignoresSafeArea(.all, edges: .bottom)
+                }
                 if url == nil {
                     List {
                         Text("Welcome!")
@@ -182,6 +186,8 @@ struct Reader: View {
             switch displayMode {
             case .outline:
                 OutlineSheet()
+            case .bookmarks:
+                BookmarksSheet()
             case .library:
                 Library()
             default:
@@ -190,7 +196,7 @@ struct Reader: View {
         }
         .environmentObject(viewModel)
         .onChange(of: horizontalSizeClass) { _ in
-            if sheetDisplayMode == .outline || sheetDisplayMode == .bookmark {
+            if sheetDisplayMode == .outline || sheetDisplayMode == .bookmarks {
                 sheetDisplayMode = nil
             }
         }

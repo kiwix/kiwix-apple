@@ -76,10 +76,10 @@ struct BookmarkButton: View {
         .simultaneousGesture(TapGesture().onEnded {
             if horizontalSizeClass == .regular {
                 withAnimation(sidebarDisplayMode == nil ?  .easeOut(duration: 0.18) : .easeIn(duration: 0.18)) {
-                    sidebarDisplayMode = sidebarDisplayMode != .bookmark ? .bookmark : nil
+                    sidebarDisplayMode = sidebarDisplayMode != .bookmarks ? .bookmarks : nil
                 }
             } else {
-                sheetDisplayMode = .bookmark
+                sheetDisplayMode = .bookmarks
             }
         })
         .simultaneousGesture(LongPressGesture().onEnded { _ in

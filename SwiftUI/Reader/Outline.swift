@@ -10,7 +10,6 @@ import SwiftUI
 
 struct Outline: View {
     @EnvironmentObject var viewModel: ReaderViewModel
-    @Environment(\.presentationMode) private var presentationMode
     @State private var selectedID: String?
     
     var body: some View {

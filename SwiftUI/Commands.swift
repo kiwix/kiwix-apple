@@ -30,7 +30,7 @@ struct SidebarDisplayModeCommands: Commands {
             Button("Search Articles") { displayMode = .search }
                 .keyboardShortcut("1")
                 .disabled(displayMode == nil)
-            Button("Show Bookmark") { displayMode = .bookmark }
+            Button("Show Bookmark") { displayMode = .bookmarks }
                 .keyboardShortcut("2")
                 .disabled(displayMode == nil)
             Button("Show Outline") { displayMode = .outline }

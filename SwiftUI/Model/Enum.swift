@@ -158,18 +158,18 @@ enum LibraryTopic: Hashable, Identifiable, RawRepresentable {
 
 enum SheetDisplayMode: String, Identifiable {
     var id: String { rawValue }
-    case outline, bookmark, library, settings
+    case outline, bookmarks, library, settings
 }
 
 enum SidebarDisplayMode: String, CaseIterable, Identifiable {
     var id: String { rawValue }
-    case search, bookmark, outline, library
+    case search, bookmarks, outline, library
     
     var imageName: String {
         switch self {
         case .search:
             return "magnifyingglass"
-        case .bookmark:
+        case .bookmarks:
             return "star"
         case .outline:
             return "list.bullet"
@@ -182,7 +182,7 @@ enum SidebarDisplayMode: String, CaseIterable, Identifiable {
         switch self {
         case .search:
             return "Search for articles"
-        case .bookmark:
+        case .bookmarks:
             return "Show bookmarked articles"
         case .outline:
             return "Show article outline"
