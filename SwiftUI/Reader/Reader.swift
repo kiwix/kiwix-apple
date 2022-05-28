@@ -50,7 +50,7 @@ struct Reader: View {
                         }.padding(.top, 34)
                     }.listStyle(.sidebar)
                 case .bookmarks:
-                    Bookmarks()
+                    Bookmarks(url: $url)
                 case .outline:
                     Outline()
                 case .library:
@@ -128,7 +128,7 @@ struct Reader: View {
                     Divider().ignoresSafeArea(.all, edges: .bottom)
                 }
                 if horizontalSizeClass == .regular, sidebarDisplayMode == .bookmarks {
-                    Bookmarks().listStyle(.plain).frame(width: min(300, proxy.size.width * 0.35))
+                    Bookmarks(url: $url).listStyle(.plain).frame(width: min(300, proxy.size.width * 0.35))
                     Divider().ignoresSafeArea(.all, edges: .bottom)
                 }
                 if url == nil {
@@ -187,7 +187,7 @@ struct Reader: View {
             case .outline:
                 OutlineSheet()
             case .bookmarks:
-                BookmarksSheet()
+                BookmarksSheet(url: $url)
             case .library:
                 Library()
             default:
