@@ -14,25 +14,30 @@ struct Outline: View {
     @State private var selectedID: String?
     
     var body: some View {
-        List(selection: $selectedID) {
-            OutlineGroup(viewModel.outlineItems, children: \.children) { item in
-                #if os(macOS)
-                Text(item.text).id(item.id)
-                #elseif os(iOS)
-                Button(item.text) {
-                    viewModel.scrollTo(outlineItemID: item.id)
-                    presentationMode.wrappedValue.dismiss()
+        if viewModel.outlineItems.isEmpty {
+            Message(text: "No outline available")
+        } else {
+            List(selection: $selectedID) {
+                OutlineGroup(viewModel.outlineItems, children: \.children) { item in
+                    #if os(macOS)
+                    Text(item.text).id(item.id)
+                    #elseif os(iOS)
+                    Button(item.text) {
+                        viewModel.scrollTo(outlineItemID: item.id)
+                        presentationMode.wrappedValue.dismiss()
+                    }
+                    #endif
                 }
-                #endif
+            }.onChange(of: selectedID) { selectedID in
+                guard let selectedID = selectedID else { return }
+                viewModel.scrollTo(outlineItemID: selectedID)
+                self.selectedID = nil
             }
-        }.onChange(of: selectedID) { selectedID in
-            guard let selectedID = selectedID else { return }
-            viewModel.scrollTo(outlineItemID: selectedID)
-            self.selectedID = nil
         }
     }
 }
 
+#if os(iOS)
 struct OutlineSheet: View {
     @EnvironmentObject var viewModel: ReaderViewModel
     @Environment(\.presentationMode) private var presentationMode
@@ -53,3 +58,4 @@ struct OutlineSheet: View {
         }
     }
 }
+#endif

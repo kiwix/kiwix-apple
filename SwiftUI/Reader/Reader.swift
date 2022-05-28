@@ -96,14 +96,18 @@ struct Reader: View {
         @State var selected: UUID?
         
         var body: some View {
-            List(zimFiles, id: \.fileID, selection: $selected) { zimFile in
-                ZimFileRow(zimFile)
-            }
-            .onChange(of: selected) { zimFileID in
-                guard let zimFileID = zimFileID,
-                      let url = ZimFileService.shared.getMainPageURL(zimFileID: zimFileID) else { return }
-                self.url = url
-                selected = nil
+            if zimFiles.isEmpty {
+                List(zimFiles, id: \.fileID, selection: $selected) { zimFile in
+                    ZimFileRow(zimFile)
+                }
+                .onChange(of: selected) { zimFileID in
+                    guard let zimFileID = zimFileID,
+                          let url = ZimFileService.shared.getMainPageURL(zimFileID: zimFileID) else { return }
+                    self.url = url
+                    selected = nil
+                }
+            } else {
+                Message(text: "No opened zim files")
             }
         }
     }
