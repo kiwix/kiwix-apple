@@ -9,6 +9,7 @@
 import CoreData
 import SwiftUI
 
+#if os(macOS)
 struct BookmarkButton: View {
     @EnvironmentObject var viewModel: ReaderViewModel
     @FetchRequest private var bookmarks: FetchedResults<Bookmark>
@@ -45,3 +46,55 @@ struct BookmarkButton: View {
         !bookmarks.isEmpty
     }
 }
+#elseif os(iOS)
+struct BookmarkButton: View {
+    @EnvironmentObject var viewModel: ReaderViewModel
+    @Environment(\.horizontalSizeClass) var horizontalSizeClass
+    @FetchRequest private var bookmarks: FetchedResults<Bookmark>
+    @Binding var sheetDisplayMode: SheetDisplayMode?
+    @Binding var sidebarDisplayMode: SidebarDisplayMode?
+    
+    private let url: URL?
+    
+    init(url: URL?, sheetDisplayMode: Binding<SheetDisplayMode?>, sidebarDisplayMode: Binding<SidebarDisplayMode?>) {
+        self._bookmarks = FetchRequest<Bookmark>(sortDescriptors: [], predicate: {
+            if let url = url {
+                return NSPredicate(format: "articleURL == %@", url as CVarArg)
+            } else {
+                return NSPredicate(format: "articleURL == nil")
+            }
+        }())
+        self.url = url
+        self._sheetDisplayMode = sheetDisplayMode
+        self._sidebarDisplayMode = sidebarDisplayMode
+    }
+    
+    var body: some View {
+        Button { } label: {
+            Image(systemName: isBookmarked ? "star.fill" : "star")
+        }
+        .simultaneousGesture(TapGesture().onEnded {
+            if horizontalSizeClass == .regular {
+                withAnimation(sidebarDisplayMode == nil ?  .easeOut(duration: 0.18) : .easeIn(duration: 0.18)) {
+                    sidebarDisplayMode = sidebarDisplayMode != .bookmark ? .bookmark : nil
+                }
+            } else {
+                sheetDisplayMode = .bookmark
+            }
+        })
+        .simultaneousGesture(LongPressGesture().onEnded { _ in 
+            if isBookmarked {
+                viewModel.deleteBookmark()
+            } else {
+                viewModel.createBookmark()
+            }
+        })
+        .foregroundColor(isBookmarked ? .yellow : nil)
+        .help("Show bookmarks. Long press to bookmark or unbookmark the current article.")
+    }
+    
+    private var isBookmarked: Bool {
+        !bookmarks.isEmpty
+    }
+}
+#endif

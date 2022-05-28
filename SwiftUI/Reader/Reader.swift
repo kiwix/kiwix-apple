@@ -145,7 +145,9 @@ struct Reader: View {
                     NavigateBackButton()
                     NavigateForwardButton()
                     OutlineButton(sheetDisplayMode: $sheetDisplayMode, sidebarDisplayMode: $sidebarDisplayMode)
-                    BookmarkButton(url: url)
+                    BookmarkButton(
+                        url: url, sheetDisplayMode: $sheetDisplayMode, sidebarDisplayMode: $sidebarDisplayMode
+                    )
                 }
             }
             ToolbarItemGroup(placement: .navigationBarTrailing) {
@@ -165,7 +167,9 @@ struct Reader: View {
                         Spacer()
                         OutlineButton(sheetDisplayMode: $sheetDisplayMode, sidebarDisplayMode: $sidebarDisplayMode)
                         Spacer()
-                        BookmarkButton(url: url)
+                        BookmarkButton(
+                            url: url, sheetDisplayMode: $sheetDisplayMode, sidebarDisplayMode: $sidebarDisplayMode
+                        )
                         Spacer()
                         RandomArticleButton(url: $url)
                     }
