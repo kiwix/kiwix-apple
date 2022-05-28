@@ -50,7 +50,7 @@ struct Reader: View {
                         }.padding(.top, 34)
                     }.listStyle(.sidebar)
                 case .bookmarks:
-                    Text("bookmark")
+                    Bookmarks()
                 case .outline:
                     Outline()
                 case .library:
@@ -97,6 +97,8 @@ struct Reader: View {
         
         var body: some View {
             if zimFiles.isEmpty {
+                Message(text: "No opened zim files")
+            } else {
                 List(zimFiles, id: \.fileID, selection: $selected) { zimFile in
                     ZimFileRow(zimFile)
                 }
@@ -106,8 +108,6 @@ struct Reader: View {
                     self.url = url
                     selected = nil
                 }
-            } else {
-                Message(text: "No opened zim files")
             }
         }
     }

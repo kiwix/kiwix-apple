@@ -10,6 +10,7 @@ import SwiftUI
 
 struct Outline: View {
     @EnvironmentObject var viewModel: ReaderViewModel
+    @Environment(\.presentationMode) private var presentationMode
     @State private var selectedID: String?
     
     var body: some View {
@@ -18,7 +19,10 @@ struct Outline: View {
         } else {
             List(selection: $selectedID) {
                 ForEach(viewModel.outlineItems) { item in
-                    OutlineNode(item: item)
+                    OutlineNode(item: item) { item in
+                        viewModel.scrollTo(outlineItemID: item.id)
+                        presentationMode.wrappedValue.dismiss()
+                    }
                 }
             }.onChange(of: selectedID) { selectedID in
                 guard let selectedID = selectedID else { return }
@@ -31,33 +35,28 @@ struct Outline: View {
 
 struct OutlineNode: View {
     @EnvironmentObject var viewModel: ReaderViewModel
-    @Environment(\.presentationMode) private var presentationMode
     @ObservedObject var item: OutlineItem
+    
+    let action: ((OutlineItem) -> Void)?
     
     var body: some View {
         if let children = item.children {
             DisclosureGroup(isExpanded: $item.isExpanded) {
                 ForEach(children) { child in
-                    OutlineNode(item: child)
+                    OutlineNode(item: child, action: action)
                 }
             } label: {
                 #if os(macOS)
                 Text(item.text)
                 #elseif os(iOS)
-                Button(item.text) {
-                    viewModel.scrollTo(outlineItemID: item.id)
-                    presentationMode.wrappedValue.dismiss()
-                }
+                Button(item.text) { action?(item) }
                 #endif
             }.id(item.id)
         } else {
             #if os(macOS)
             Text(item.text).id(item.id)
             #elseif os(iOS)
-            Button(item.text) {
-                viewModel.scrollTo(outlineItemID: item.id)
-                presentationMode.wrappedValue.dismiss()
-            }.id(item.id)
+            Button(item.text) { action?(item) }.id(item.id)
             #endif
         }
     }
