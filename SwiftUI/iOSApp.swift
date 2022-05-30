@@ -56,6 +56,7 @@ private struct RootView: UIViewControllerRepresentable {
 //        searchController.searchResultsUpdater = searchResultsController
         context.coordinator.searchController.automaticallyShowsCancelButton = false
         context.coordinator.searchController.showsSearchResultsController = true
+        context.coordinator.searchController.obscuresBackgroundDuringPresentation = true
         
         // configure navigation item
         controller.navigationItem.titleView = context.coordinator.searchController.searchBar
@@ -87,15 +88,28 @@ private struct RootView: UIViewControllerRepresentable {
     
     class Coordinator: NSObject, UISearchControllerDelegate {
         let rootView: RootView
-        let searchController = UISearchController(searchResultsController: UIHostingController(rootView: Search()))
+        let searchController: UISearchController
         
         init(_ rootView: RootView) {
             self.rootView = rootView
+            self.searchController = UISearchController(searchResultsController: UIHostingController(rootView: Search()))
+            super.init()
+            
+            searchController.searchResultsController?.view.backgroundColor = .clear
+            let dismissSearch = UITapGestureRecognizer(target: self, action: #selector(handleTap(sender:)))
+            searchController.searchResultsController?.view.addGestureRecognizer(dismissSearch)
         }
         
         func willPresentSearchController(_ searchController: UISearchController) {
             withAnimation {
                 rootView.isSearchActive = true
+            }
+        }
+        
+        @objc func handleTap(sender: UITapGestureRecognizer) {
+            guard sender.state == .ended else { return }
+            withAnimation {
+                rootView.isSearchActive = false
             }
         }
     }
