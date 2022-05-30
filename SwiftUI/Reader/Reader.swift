@@ -146,7 +146,7 @@ struct Reader: View {
         }
         .toolbar {
             ToolbarItemGroup(placement: .navigationBarLeading) {
-                if horizontalSizeClass == .regular {
+                if horizontalSizeClass == .regular, !isSearchActive {
                     NavigateBackButton()
                     NavigateForwardButton()
                     OutlineButton(sheetDisplayMode: $sheetDisplayMode, sidebarDisplayMode: $sidebarDisplayMode)
@@ -156,17 +156,17 @@ struct Reader: View {
                 }
             }
             ToolbarItemGroup(placement: .navigationBarTrailing) {
-                if horizontalSizeClass == .regular {
-                    RandomArticleButton(url: $url)
-                    MainArticleButton(url: $url)
-                    Button { sheetDisplayMode = .library } label: { Image(systemName: "folder") }
-                    Button { sheetDisplayMode = .settings } label: { Image(systemName: "gear") }
-                } else if horizontalSizeClass == .compact, isSearchActive {
+                if isSearchActive {
                     Button("Cancel") {
                         withAnimation {
                             isSearchActive = false
                         }
                     }
+                } else if horizontalSizeClass == .regular {
+                    RandomArticleButton(url: $url)
+                    MainArticleButton(url: $url)
+                    Button { sheetDisplayMode = .library } label: { Image(systemName: "folder") }
+                    Button { sheetDisplayMode = .settings } label: { Image(systemName: "gear") }
                 }
             }
             ToolbarItemGroup(placement: .bottomBar) {

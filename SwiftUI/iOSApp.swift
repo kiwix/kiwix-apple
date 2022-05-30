@@ -94,22 +94,11 @@ private struct RootView: UIViewControllerRepresentable {
             self.rootView = rootView
             self.searchController = UISearchController(searchResultsController: UIHostingController(rootView: Search()))
             super.init()
-            
-            searchController.searchResultsController?.view.backgroundColor = .clear
-            let dismissSearch = UITapGestureRecognizer(target: self, action: #selector(handleTap(sender:)))
-            searchController.searchResultsController?.view.addGestureRecognizer(dismissSearch)
         }
         
         func willPresentSearchController(_ searchController: UISearchController) {
             withAnimation {
                 rootView.isSearchActive = true
-            }
-        }
-        
-        @objc func handleTap(sender: UITapGestureRecognizer) {
-            guard sender.state == .ended else { return }
-            withAnimation {
-                rootView.isSearchActive = false
             }
         }
     }
