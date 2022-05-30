@@ -214,6 +214,8 @@
 		97B794201F4E23F300F3EBE8 /* WelcomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97B7941F1F4E23F300F3EBE8 /* WelcomeView.swift */; };
 		97C1377C2844FCF500386C04 /* Search.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97C1377B2844FCF500386C04 /* Search.swift */; };
 		97C1377D2844FCF500386C04 /* Search.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97C1377B2844FCF500386C04 /* Search.swift */; };
+		97C1378028454A1B00386C04 /* SearchFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97C1377F28454A1B00386C04 /* SearchFilter.swift */; };
+		97C1378128454A1B00386C04 /* SearchFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97C1377F28454A1B00386C04 /* SearchFilter.swift */; };
 		97C14E232707F98400EF4CF2 /* OutlineViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97C14E222707F98400EF4CF2 /* OutlineViewController.swift */; };
 		97C278DB2794744500666E07 /* libkiwix.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97EC18AF26E8555E008309ED /* libkiwix.xcframework */; };
 		97C278DF2796249900666E07 /* Outline.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97C278DE2796249900666E07 /* Outline.swift */; };
@@ -463,6 +465,7 @@
 		97B5D3E82596398400D12FEE /* SidebarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SidebarController.swift; sourceTree = "<group>"; };
 		97B7941F1F4E23F300F3EBE8 /* WelcomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeView.swift; sourceTree = "<group>"; };
 		97C1377B2844FCF500386C04 /* Search.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Search.swift; sourceTree = "<group>"; };
+		97C1377F28454A1B00386C04 /* SearchFilter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchFilter.swift; sourceTree = "<group>"; };
 		97C14E222707F98400EF4CF2 /* OutlineViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutlineViewController.swift; sourceTree = "<group>"; };
 		97C278DE2796249900666E07 /* Outline.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Outline.swift; sourceTree = "<group>"; };
 		97C575F3202CB0E800E37502 /* NotificationCenter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NotificationCenter.framework; path = System/Library/Frameworks/NotificationCenter.framework; sourceTree = SDKROOT; };
@@ -956,6 +959,7 @@
 			isa = PBXGroup;
 			children = (
 				97C1377B2844FCF500386C04 /* Search.swift */,
+				97C1377F28454A1B00386C04 /* SearchFilter.swift */,
 			);
 			path = Search;
 			sourceTree = "<group>";
@@ -1392,6 +1396,7 @@
 				97DE2BA7283AB6DC00C63D9B /* NavigationButtons.swift in Sources */,
 				973A0E002831053B00B41E71 /* ZimFileService.mm in Sources */,
 				973A0DE4281D80E300B41E71 /* ZimFileDetail.swift in Sources */,
+				97C1378128454A1B00386C04 /* SearchFilter.swift in Sources */,
 				97DE2B9C2839D39100C63D9B /* WebView.swift in Sources */,
 				973A0DEB281DDBB600B41E71 /* ZimFilesDownloads.swift in Sources */,
 				97DE2BAF283C665400C63D9B /* MainArticleButton.swift in Sources */,
@@ -1605,6 +1610,7 @@
 				976D90DE281589EA00CC7D29 /* ZimFileList.swift in Sources */,
 				97B3048927796C9000E82DE0 /* SearchOperation.swift in Sources */,
 				973A2FD82780024600BD4320 /* ZimFileCell.swift in Sources */,
+				97C1378028454A1B00386C04 /* SearchFilter.swift in Sources */,
 				9735D0C027777E3300C7D495 /* Enum.swift in Sources */,
 				978A731527B9A245008101B4 /* SidebarButton.swift in Sources */,
 				973A0DF4282FEDA500B41E71 /* ZimFileViewModifiers.swift in Sources */,

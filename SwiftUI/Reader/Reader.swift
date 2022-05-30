@@ -43,11 +43,7 @@ struct Reader: View {
                                 Text("result 2")
                                 Text("result 3")
                             }
-                        List {
-                            Text("sidebar 1")
-                            Text("sidebar 2")
-                            Text("sidebar 3")
-                        }.padding(.top, 34)
+                        Search().padding(.top, 34)
                     }.listStyle(.sidebar)
                 case .bookmarks:
                     Bookmarks(url: $url)
