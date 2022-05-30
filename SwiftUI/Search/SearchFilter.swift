@@ -21,17 +21,20 @@ struct SearchFilter: View {
             Message(text: "No opened zim files")
         } else {
             #if os(macOS)
-            List(zimFiles) { zimFile in
-                Toggle(zimFile.name, isOn: Binding<Bool>(get: {
-                    zimFile.includedInSearch
-                }, set: {
-                    zimFile.includedInSearch = $0
-                    try? managedObjectContext.save()
-                }))
-            }.safeAreaInset(edge: .top) {
+            VStack(spacing: 0) {
+                Divider()
                 filterHeader
                     .padding(EdgeInsets(top: 5, leading: 16, bottom: 5, trailing: 10))
                     .background(.ultraThinMaterial)
+                Divider()
+                List(zimFiles) { zimFile in
+                    Toggle(zimFile.name, isOn: Binding<Bool>(get: {
+                        zimFile.includedInSearch
+                    }, set: {
+                        zimFile.includedInSearch = $0
+                        try? managedObjectContext.save()
+                    }))
+                }
             }
             #elseif os(iOS)
             List {

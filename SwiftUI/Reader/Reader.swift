@@ -12,7 +12,6 @@ import SwiftUI
 struct Reader: View {
     @SceneStorage("Reader.SidebarDisplayMode") private var sidebarDisplayMode: SidebarDisplayMode = .search
     @StateObject var viewModel = ReaderViewModel()
-    @State var searchText = ""
     @State var url: URL?
     
     var body: some View {
@@ -36,15 +35,7 @@ struct Reader: View {
                 }.background(.thinMaterial)
                 switch sidebarDisplayMode {
                 case .search:
-                    ZStack {
-                        List {}
-                            .searchable(text: $searchText, placement: .sidebar, prompt: Text("Search")) {
-                                Text("result 1")
-                                Text("result 2")
-                                Text("result 3")
-                            }
-                        Search().padding(.top, 34)
-                    }.listStyle(.sidebar)
+                    Search()
                 case .bookmarks:
                     Bookmarks(url: $url)
                 case .outline:

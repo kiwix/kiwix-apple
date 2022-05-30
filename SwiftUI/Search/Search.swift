@@ -10,11 +10,25 @@ import SwiftUI
 
 #if os(macOS)
 struct Search: View {
+    @State var searchText = ""
+    
     var body: some View {
-        List {
-            Text("result 1")
-            Text("result 2")
-            Text("result 3")
+        ZStack {
+            List {}.searchable(text: $searchText, placement: .sidebar, prompt: Text("Search")) {
+                Text("result 1")
+                Text("result 2")
+                Text("result 3")
+            }
+            List {
+                Text("result 1")
+                Text("result 2")
+                Text("result 3")
+            }
+            .padding(.top, 34)
+        }
+        .listStyle(.sidebar)
+        .safeAreaInset(edge: .bottom) {
+            SearchFilter().frame(height: 200)
         }
     }
 }
@@ -35,11 +49,7 @@ struct Search: View {
                 .listStyle(.plain)
             }
         } else {
-            List {
-                Text("zim file 1")
-                Text("zim file 2")
-                Text("zim file 3")
-            }
+            SearchFilter()
         }
     }
 }
