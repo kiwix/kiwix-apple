@@ -115,7 +115,7 @@ struct Reader: View {
 #elseif os(iOS)
 struct Reader: View {
     @Environment(\.horizontalSizeClass) var horizontalSizeClass
-    @StateObject var viewModel = ReaderViewModel()
+    @EnvironmentObject var viewModel: ReaderViewModel
     @State private var sheetDisplayMode: SheetDisplayMode?
     @State private var sidebarDisplayMode: SidebarDisplayMode?
     @State var url: URL?
@@ -145,7 +145,7 @@ struct Reader: View {
         }
         .toolbar {
             ToolbarItemGroup(placement: .navigationBarLeading) {
-                if horizontalSizeClass == .regular {
+                if horizontalSizeClass == .regular, !viewModel.isSearchActive {
                     NavigateBackButton()
                     NavigateForwardButton()
                     OutlineButton(sheetDisplayMode: $sheetDisplayMode, sidebarDisplayMode: $sidebarDisplayMode)
@@ -155,7 +155,9 @@ struct Reader: View {
                 }
             }
             ToolbarItemGroup(placement: .navigationBarTrailing) {
-                if horizontalSizeClass == .regular {
+                if viewModel.isSearchActive {
+                    Button("Cancel") { viewModel.cancelSearch?() }
+                } else if horizontalSizeClass == .regular {
                     RandomArticleButton(url: $url)
                     MainArticleButton(url: $url)
                     Button { sheetDisplayMode = .library } label: { Image(systemName: "folder") }
@@ -163,7 +165,7 @@ struct Reader: View {
                 }
             }
             ToolbarItemGroup(placement: .bottomBar) {
-                if horizontalSizeClass == .compact {
+                if horizontalSizeClass == .compact, !viewModel.isSearchActive {
                     Group {
                         NavigateBackButton()
                         Spacer()

@@ -1,6 +1,6 @@
 //
 //  SearchViewModel.swift
-//  Kiwix for macOS
+//  Kiwix
 //
 //  Created by Chris Li on 2/12/22.
 //  Copyright © 2022 Chris Li. All rights reserved.
@@ -56,8 +56,8 @@ class SearchViewModel: NSObject, ObservableObject, NSFetchedResultsControllerDel
         operation.completionBlock = { [unowned self] in
             guard !operation.isCancelled else { return }
             DispatchQueue.main.sync {
-                self.results = operation.results
-                self.inProgress = false
+//                self.results = operation.results
+//                self.inProgress = false
             }
         }
         queue.addOperation(operation)

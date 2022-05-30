@@ -9,7 +9,6 @@
 import UIKit
 import SwiftUI
 
-
 @main
 struct Kiwix: App {
     init() {
@@ -48,18 +47,37 @@ private struct RootView: UIViewControllerRepresentable {
     func updateUIViewController(_ uiViewController: UINavigationController, context: Context) { }
 }
 
-private class RootViewController: UIHostingController<Reader>, UISearchControllerDelegate {
-    let searchController = UISearchController()
+private class RootViewController: UIHostingController<AnyView>, UISearchControllerDelegate {
+    private let searchController = UISearchController(searchResultsController: UIHostingController(rootView: Search()))
+    private let readerViewModel = ReaderViewModel()
     
-    convenience init() {
-        self.init(rootView: Reader())
+    init() {
+        super.init(rootView: AnyView(Reader().environmentObject(readerViewModel)))
+    }
+    
+    required dynamic init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        configureSearch()
+        // configure search
+        searchController.delegate = self
+        searchController.searchBar.autocorrectionType = .no
+        searchController.searchBar.autocapitalizationType = .none
+        searchController.searchBar.searchBarStyle = .minimal
+        searchController.hidesNavigationBarDuringPresentation = false
+//        searchController.searchResultsUpdater = searchResultsController
+        searchController.automaticallyShowsCancelButton = false
+        searchController.showsSearchResultsController = true
+        definesPresentationContext = true
+        navigationItem.titleView = searchController.searchBar
+        readerViewModel.cancelSearch = { [unowned self] in
+            self.searchController.isActive = false
+        }
         
+        // configure navigation bar appearance
         if #available(iOS 15.0, *) {
             navigationItem.scrollEdgeAppearance = {
                 let apperance = UINavigationBarAppearance()
@@ -74,27 +92,13 @@ private class RootViewController: UIHostingController<Reader>, UISearchControlle
         }
     }
     
-    private func configureSearch() {
-        searchController.delegate = self
-        searchController.searchBar.autocorrectionType = .no
-        searchController.searchBar.autocapitalizationType = .none
-        searchController.searchBar.searchBarStyle = .minimal
-        searchController.hidesNavigationBarDuringPresentation = false
-//        searchController.searchResultsUpdater = searchResultsController
-        searchController.automaticallyShowsCancelButton = false
-        searchController.showsSearchResultsController = true
-//        rootView.viewModel.cancelSearch = {[unowned self] in self.searchController.isActive = false }
-        definesPresentationContext = true
-        navigationItem.titleView = searchController.searchBar
-    }
-    
     // MARK: - UISearchControllerDelegate
     
     func willPresentSearchController(_ searchController: UISearchController) {
-        rootView.viewModel.isSearchActive = true
+        readerViewModel.isSearchActive = true
     }
 
     func willDismissSearchController(_ searchController: UISearchController) {
-        rootView.viewModel.isSearchActive = false
+        readerViewModel.isSearchActive = false
     }
 }

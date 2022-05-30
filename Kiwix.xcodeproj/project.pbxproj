@@ -155,7 +155,6 @@
 		977BD601276EA929004D2C32 /* Realm.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 97EC18B126E8555E008309ED /* Realm.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		977BD602276EA929004D2C32 /* RealmSwift.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97EC18B026E8555E008309ED /* RealmSwift.xcframework */; };
 		977BD603276EA929004D2C32 /* RealmSwift.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 97EC18B026E8555E008309ED /* RealmSwift.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		977BD6072772350B004D2C32 /* BookmarksList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 977BD6062772350B004D2C32 /* BookmarksList.swift */; };
 		977D50632621E47D005345D1 /* LibraryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 977D50622621E47D005345D1 /* LibraryViewController.swift */; };
 		977D506D2621EAD1005345D1 /* LibraryPrimaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 977D506C2621EAD1005345D1 /* LibraryPrimaryView.swift */; };
 		977D50772623580D005345D1 /* LibrarySettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 977D50762623580D005345D1 /* LibrarySettingsView.swift */; };
@@ -189,7 +188,6 @@
 		97A36C441F8C21210079B452 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 975FDAE21F6082DA00A10E8C /* LaunchScreen.storyboard */; };
 		97A963C4259D38D900496214 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97A963C3259D38D900496214 /* SettingsView.swift */; };
 		97B0737627825E3D007C7DF3 /* Favicon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97B0737527825E3D007C7DF3 /* Favicon.swift */; };
-		97B304882778B45B00E82DE0 /* Search.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97D07A08273719720002B9EB /* Search.swift */; };
 		97B3048927796C9000E82DE0 /* SearchOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97B3998F2467626A00BC6F5B /* SearchOperation.swift */; };
 		97B3998A24673FE000BC6F5B /* SearchOperation.mm in Sources */ = {isa = PBXBuildFile; fileRef = 97B3998924673FE000BC6F5B /* SearchOperation.mm */; };
 		97B3998E246759E400BC6F5B /* SearchResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 97B3998C2467561900BC6F5B /* SearchResult.m */; };
@@ -214,6 +212,8 @@
 		97B448A1210FBC2E0004B056 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97B4489F210FBC2E0004B056 /* LaunchScreen.storyboard */; };
 		97B5D3E92596398400D12FEE /* SidebarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97B5D3E82596398400D12FEE /* SidebarController.swift */; };
 		97B794201F4E23F300F3EBE8 /* WelcomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97B7941F1F4E23F300F3EBE8 /* WelcomeView.swift */; };
+		97C1377C2844FCF500386C04 /* Search.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97C1377B2844FCF500386C04 /* Search.swift */; };
+		97C1377D2844FCF500386C04 /* Search.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97C1377B2844FCF500386C04 /* Search.swift */; };
 		97C14E232707F98400EF4CF2 /* OutlineViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97C14E222707F98400EF4CF2 /* OutlineViewController.swift */; };
 		97C278DB2794744500666E07 /* libkiwix.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97EC18AF26E8555E008309ED /* libkiwix.xcframework */; };
 		97C278DF2796249900666E07 /* Outline.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97C278DE2796249900666E07 /* Outline.swift */; };
@@ -272,7 +272,6 @@
 		97F43AFD283108330076F8E0 /* FileImportModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97F43AFC283108330076F8E0 /* FileImportModifier.swift */; };
 		97F43AFE283108330076F8E0 /* FileImportModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97F43AFC283108330076F8E0 /* FileImportModifier.swift */; };
 		97F4D10C20ADFE370038FC87 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 97F4D10B20ADFE370038FC87 /* Assets.xcassets */; };
-		97FB4B0927B816C80055F86E /* SearchFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97FB4B0827B816C80055F86E /* SearchFilter.swift */; };
 		97FB4B0B27B819A90055F86E /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97FB4B0A27B819A90055F86E /* Message.swift */; };
 		97FB4B0E27B81B680055F86E /* SearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97FB4B0D27B81B680055F86E /* SearchViewModel.swift */; };
 		97FD2F5F251EA07B0034927C /* FeatureFlags.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97FD2F5E251EA07B0034927C /* FeatureFlags.swift */; };
@@ -463,6 +462,7 @@
 		97B448A2210FBC2E0004B056 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		97B5D3E82596398400D12FEE /* SidebarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SidebarController.swift; sourceTree = "<group>"; };
 		97B7941F1F4E23F300F3EBE8 /* WelcomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeView.swift; sourceTree = "<group>"; };
+		97C1377B2844FCF500386C04 /* Search.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Search.swift; sourceTree = "<group>"; };
 		97C14E222707F98400EF4CF2 /* OutlineViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutlineViewController.swift; sourceTree = "<group>"; };
 		97C278DE2796249900666E07 /* Outline.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Outline.swift; sourceTree = "<group>"; };
 		97C575F3202CB0E800E37502 /* NotificationCenter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NotificationCenter.framework; path = System/Library/Frameworks/NotificationCenter.framework; sourceTree = SDKROOT; };
@@ -952,6 +952,14 @@
 			name = SearchResult;
 			sourceTree = "<group>";
 		};
+		97C1377A2844FCD600386C04 /* Search */ = {
+			isa = PBXGroup;
+			children = (
+				97C1377B2844FCF500386C04 /* Search.swift */,
+			);
+			path = Search;
+			sourceTree = "<group>";
+		};
 		97DED67D275278EB008D2C56 /* View */ = {
 			isa = PBXGroup;
 			children = (
@@ -976,12 +984,13 @@
 				97FB4B0C27B81B530055F86E /* ViewModels */,
 				97DED67D275278EB008D2C56 /* View */,
 				977BD5F8276C295C004D2C32 /* Reader */,
+				97C1377A2844FCD600386C04 /* Search */,
 				972DE4C02814A950004FD9B9 /* Library */,
+				97E94B26271EF359005B0295 /* Support */,
 				97E94B19271EF24D005B0295 /* macOSApp.swift */,
 				97EEFF2028398E9A00BDD6E2 /* iOSApp.swift */,
 				973BC75627587A29008D4114 /* Commands.swift */,
 				979D3A762841100B00E396B8 /* Focus.swift */,
-				97E94B26271EF359005B0295 /* Support */,
 			);
 			path = SwiftUI;
 			sourceTree = "<group>";
@@ -1030,8 +1039,8 @@
 		97FB4B0C27B81B530055F86E /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
-				97DE2BA1283A8E5C00C63D9B /* LibraryViewModel.swift */,
 				978A730F27B99F25008101B4 /* ReaderViewModel.swift */,
+				97DE2BA1283A8E5C00C63D9B /* LibraryViewModel.swift */,
 				97FB4B0D27B81B680055F86E /* SearchViewModel.swift */,
 			);
 			path = ViewModels;
@@ -1419,6 +1428,7 @@
 				973A0DF1282E981200B41E71 /* ZimFileRow.swift in Sources */,
 				97DE2BA6283A944100C63D9B /* LibraryGridPadding.swift in Sources */,
 				973A0E022831055600B41E71 /* URLContent.swift in Sources */,
+				97C1377D2844FCF500386C04 /* Search.swift in Sources */,
 				979D3A782841100B00E396B8 /* Focus.swift in Sources */,
 				972DE4C42814AAAE004FD9B9 /* Library.swift in Sources */,
 				973A0DE7281DC8F400B41E71 /* Downloads.swift in Sources */,
@@ -1555,7 +1565,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				97B304882778B45B00E82DE0 /* Search.swift in Sources */,
 				973A0DE3281D80E300B41E71 /* ZimFileDetail.swift in Sources */,
 				97242B9E2735E6A800C87F85 /* Platform.swift in Sources */,
 				973BC75727587A29008D4114 /* Commands.swift in Sources */,
@@ -1565,13 +1574,13 @@
 				97242B892735E66E00C87F85 /* SearchResult.swift in Sources */,
 				97242BA02735E6A800C87F85 /* FeatureFlags.swift in Sources */,
 				97242B9A2735E6A800C87F85 /* WebKitHandler.swift in Sources */,
-				977BD6072772350B004D2C32 /* BookmarksList.swift in Sources */,
 				97E94B1C271EF24D005B0295 /* Reader.swift in Sources */,
 				97B3BAD02736CE3500A23F49 /* URL.swift in Sources */,
 				976D90D22814F2FA00CC7D29 /* ZimFileGrid.swift in Sources */,
 				97255D8C273608C3002B995B /* WebView.swift in Sources */,
 				9735D0BE2777531400C7D495 /* BookmarkButton.swift in Sources */,
 				978A731727B9A4F1008101B4 /* MainArticleButton.swift in Sources */,
+				97C1377C2844FCF500386C04 /* Search.swift in Sources */,
 				976D90E82815D63A00CC7D29 /* ZimFilesNew.swift in Sources */,
 				97E94B1A271EF24D005B0295 /* macOSApp.swift in Sources */,
 				9721BBBA28427A93005C910D /* Bookmarks.swift in Sources */,
@@ -1609,7 +1618,6 @@
 				97242B992735E6A800C87F85 /* SearchQueue.swift in Sources */,
 				9735D0BA2775363900C7D495 /* DataModel.xcdatamodeld in Sources */,
 				97B0737627825E3D007C7DF3 /* Favicon.swift in Sources */,
-				97FB4B0927B816C80055F86E /* SearchFilter.swift in Sources */,
 				973A2FC6277EAA2700BD4320 /* OPDSRefreshError.swift in Sources */,
 				973A2FC3277EA9F300BD4320 /* OPDSStreamParser.swift in Sources */,
 				9735D0BC2775594700C7D495 /* Database.swift in Sources */,
