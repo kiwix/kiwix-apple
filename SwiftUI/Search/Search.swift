@@ -15,9 +15,9 @@ struct Search: View {
     var body: some View {
         ZStack {
             List {}.searchable(text: $searchText, placement: .sidebar, prompt: Text("Search")) {
-                Text("result 1")
-                Text("result 2")
-                Text("result 3")
+                Text("recent 1").searchCompletion("recent 1")
+                Text("result 2").searchCompletion("recent 2")
+                Text("result 3").searchCompletion("recent 3")
             }
             List {
                 Text("result 1")
