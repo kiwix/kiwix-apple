@@ -216,6 +216,7 @@
 		97C1377D2844FCF500386C04 /* Search.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97C1377B2844FCF500386C04 /* Search.swift */; };
 		97C1378028454A1B00386C04 /* SearchFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97C1377F28454A1B00386C04 /* SearchFilter.swift */; };
 		97C1378128454A1B00386C04 /* SearchFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97C1377F28454A1B00386C04 /* SearchFilter.swift */; };
+		97C13788284572AC00386C04 /* SearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97C13787284572AC00386C04 /* SearchViewModel.swift */; };
 		97C14E232707F98400EF4CF2 /* OutlineViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97C14E222707F98400EF4CF2 /* OutlineViewController.swift */; };
 		97C278DB2794744500666E07 /* libkiwix.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97EC18AF26E8555E008309ED /* libkiwix.xcframework */; };
 		97C278DF2796249900666E07 /* Outline.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97C278DE2796249900666E07 /* Outline.swift */; };
@@ -275,7 +276,6 @@
 		97F43AFE283108330076F8E0 /* FileImportModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97F43AFC283108330076F8E0 /* FileImportModifier.swift */; };
 		97F4D10C20ADFE370038FC87 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 97F4D10B20ADFE370038FC87 /* Assets.xcassets */; };
 		97FB4B0B27B819A90055F86E /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97FB4B0A27B819A90055F86E /* Message.swift */; };
-		97FB4B0E27B81B680055F86E /* SearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97FB4B0D27B81B680055F86E /* SearchViewModel.swift */; };
 		97FD2F5F251EA07B0034927C /* FeatureFlags.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97FD2F5E251EA07B0034927C /* FeatureFlags.swift */; };
 /* End PBXBuildFile section */
 
@@ -466,6 +466,7 @@
 		97B7941F1F4E23F300F3EBE8 /* WelcomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeView.swift; sourceTree = "<group>"; };
 		97C1377B2844FCF500386C04 /* Search.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Search.swift; sourceTree = "<group>"; };
 		97C1377F28454A1B00386C04 /* SearchFilter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchFilter.swift; sourceTree = "<group>"; };
+		97C13787284572AC00386C04 /* SearchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewModel.swift; sourceTree = "<group>"; };
 		97C14E222707F98400EF4CF2 /* OutlineViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutlineViewController.swift; sourceTree = "<group>"; };
 		97C278DE2796249900666E07 /* Outline.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Outline.swift; sourceTree = "<group>"; };
 		97C575F3202CB0E800E37502 /* NotificationCenter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NotificationCenter.framework; path = System/Library/Frameworks/NotificationCenter.framework; sourceTree = SDKROOT; };
@@ -501,7 +502,7 @@
 		97F6CC5020BD960F005CDBD2 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		97FB4B0827B816C80055F86E /* SearchFilter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchFilter.swift; sourceTree = "<group>"; };
 		97FB4B0A27B819A90055F86E /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
-		97FB4B0D27B81B680055F86E /* SearchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewModel.swift; sourceTree = "<group>"; };
+		97FB4B0D27B81B680055F86E /* SearchViewModel_old.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewModel_old.swift; sourceTree = "<group>"; };
 		97FD2F5E251EA07B0034927C /* FeatureFlags.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeatureFlags.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -1045,7 +1046,8 @@
 			children = (
 				978A730F27B99F25008101B4 /* ReaderViewModel.swift */,
 				97DE2BA1283A8E5C00C63D9B /* LibraryViewModel.swift */,
-				97FB4B0D27B81B680055F86E /* SearchViewModel.swift */,
+				97FB4B0D27B81B680055F86E /* SearchViewModel_old.swift */,
+				97C13787284572AC00386C04 /* SearchViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -1585,6 +1587,7 @@
 				97255D8C273608C3002B995B /* WebView.swift in Sources */,
 				9735D0BE2777531400C7D495 /* BookmarkButton.swift in Sources */,
 				978A731727B9A4F1008101B4 /* MainArticleButton.swift in Sources */,
+				97C13788284572AC00386C04 /* SearchViewModel.swift in Sources */,
 				97C1377C2844FCF500386C04 /* Search.swift in Sources */,
 				976D90E82815D63A00CC7D29 /* ZimFilesNew.swift in Sources */,
 				97E94B1A271EF24D005B0295 /* macOSApp.swift in Sources */,
@@ -1595,7 +1598,6 @@
 				97242B9F2735E6A800C87F85 /* Enums.swift in Sources */,
 				976D90E62815A95500CC7D29 /* SectionHeader.swift in Sources */,
 				973A2FC7277F656B00BD4320 /* OPDSStreamParser.mm in Sources */,
-				97FB4B0E27B81B680055F86E /* SearchViewModel.swift in Sources */,
 				97E94B30271EF639005B0295 /* ZimFileMetaData.mm in Sources */,
 				97E94B2F271EF630005B0295 /* ZimFileService.mm in Sources */,
 				972DE4732814A116004FD9B9 /* Entities.swift in Sources */,

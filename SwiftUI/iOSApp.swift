@@ -41,6 +41,7 @@ struct Kiwix: App {
 
 private struct RootView: UIViewControllerRepresentable {
     @State private var isSearchActive = false
+    @State private var searchText = ""
     
     func makeUIViewController(context: Context) -> UINavigationController {
         let controller = UIHostingController(rootView: Reader(isSearchActive: $isSearchActive))
@@ -53,7 +54,7 @@ private struct RootView: UIViewControllerRepresentable {
         context.coordinator.searchController.searchBar.autocapitalizationType = .none
         context.coordinator.searchController.searchBar.searchBarStyle = .minimal
         context.coordinator.searchController.hidesNavigationBarDuringPresentation = false
-//        searchController.searchResultsUpdater = searchResultsController
+        context.coordinator.searchController.searchResultsUpdater = context.coordinator
         context.coordinator.searchController.automaticallyShowsCancelButton = false
         context.coordinator.searchController.showsSearchResultsController = true
         context.coordinator.searchController.obscuresBackgroundDuringPresentation = true
@@ -86,13 +87,14 @@ private struct RootView: UIViewControllerRepresentable {
     
     func makeCoordinator() -> Coordinator { Coordinator(self) }
     
-    class Coordinator: NSObject, UISearchControllerDelegate {
+    class Coordinator: NSObject, UISearchControllerDelegate, UISearchResultsUpdating {
         let rootView: RootView
         let searchController: UISearchController
         
         init(_ rootView: RootView) {
             self.rootView = rootView
-            self.searchController = UISearchController(searchResultsController: UIHostingController(rootView: Search()))
+            let searchResultsController = UIHostingController(rootView: Search(searchText: rootView.$searchText))
+            self.searchController = UISearchController(searchResultsController: searchResultsController)
             super.init()
         }
         
@@ -100,6 +102,10 @@ private struct RootView: UIViewControllerRepresentable {
             withAnimation {
                 rootView.isSearchActive = true
             }
+        }
+        
+        func updateSearchResults(for searchController: UISearchController) {
+            rootView.searchText = searchController.searchBar.text ?? ""
         }
     }
 }

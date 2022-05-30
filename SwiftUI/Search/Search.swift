@@ -34,6 +34,7 @@ struct Search: View {
 }
 #elseif os(iOS)
 struct Search: View {
+    @Binding var searchText: String
     @Environment(\.horizontalSizeClass) var horizontalSizeClass
     
     var body: some View {
@@ -48,8 +49,14 @@ struct Search: View {
                 }
                 .listStyle(.plain)
             }
-        } else {
+        } else if searchText.isEmpty {
             SearchFilter()
+        } else {
+            List {
+                Text("result 1")
+                Text("result 2")
+                Text("result 3")
+            }
         }
     }
 }
