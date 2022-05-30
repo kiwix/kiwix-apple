@@ -40,65 +40,63 @@ struct Kiwix: App {
 }
 
 private struct RootView: UIViewControllerRepresentable {
+    @State private var isSearchActive = false
+    
     func makeUIViewController(context: Context) -> UINavigationController {
-        UINavigationController(rootViewController: RootViewController())
-    }
-    
-    func updateUIViewController(_ uiViewController: UINavigationController, context: Context) { }
-}
-
-private class RootViewController: UIHostingController<AnyView>, UISearchControllerDelegate {
-    private let searchController = UISearchController(searchResultsController: UIHostingController(rootView: Search()))
-    private let readerViewModel = ReaderViewModel()
-    
-    init() {
-        super.init(rootView: AnyView(Reader().environmentObject(readerViewModel)))
-    }
-    
-    required dynamic init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
+        let controller = UIHostingController(rootView: Reader(isSearchActive: $isSearchActive))
+        let navigationController = UINavigationController(rootViewController: controller)
+        controller.definesPresentationContext = true
         
         // configure search
-        searchController.delegate = self
-        searchController.searchBar.autocorrectionType = .no
-        searchController.searchBar.autocapitalizationType = .none
-        searchController.searchBar.searchBarStyle = .minimal
-        searchController.hidesNavigationBarDuringPresentation = false
+        context.coordinator.searchController.delegate = context.coordinator
+        context.coordinator.searchController.searchBar.autocorrectionType = .no
+        context.coordinator.searchController.searchBar.autocapitalizationType = .none
+        context.coordinator.searchController.searchBar.searchBarStyle = .minimal
+        context.coordinator.searchController.hidesNavigationBarDuringPresentation = false
 //        searchController.searchResultsUpdater = searchResultsController
-        searchController.automaticallyShowsCancelButton = false
-        searchController.showsSearchResultsController = true
-        definesPresentationContext = true
-        navigationItem.titleView = searchController.searchBar
-        readerViewModel.cancelSearch = { [unowned self] in
-            self.searchController.isActive = false
-        }
+        context.coordinator.searchController.automaticallyShowsCancelButton = false
+        context.coordinator.searchController.showsSearchResultsController = true
         
-        // configure navigation bar appearance
+        // configure navigation item
+        controller.navigationItem.titleView = context.coordinator.searchController.searchBar
         if #available(iOS 15.0, *) {
-            navigationItem.scrollEdgeAppearance = {
+            controller.navigationItem.scrollEdgeAppearance = {
                 let apperance = UINavigationBarAppearance()
                 apperance.configureWithDefaultBackground()
                 return apperance
             }()
-            navigationController?.toolbar.scrollEdgeAppearance = {
+            navigationController.toolbar.scrollEdgeAppearance = {
                 let apperance = UIToolbarAppearance()
                 apperance.configureWithDefaultBackground()
                 return apperance
             }()
         }
+        
+        return navigationController
     }
     
-    // MARK: - UISearchControllerDelegate
-    
-    func willPresentSearchController(_ searchController: UISearchController) {
-        readerViewModel.isSearchActive = true
+    func updateUIViewController(_ uiViewController: UINavigationController, context: Context) {
+        if !isSearchActive {
+            DispatchQueue.main.async {
+                context.coordinator.searchController.isActive = false
+            }
+        }
     }
-
-    func willDismissSearchController(_ searchController: UISearchController) {
-        readerViewModel.isSearchActive = false
+    
+    func makeCoordinator() -> Coordinator { Coordinator(self) }
+    
+    class Coordinator: NSObject, UISearchControllerDelegate {
+        let rootView: RootView
+        let searchController = UISearchController(searchResultsController: UIHostingController(rootView: Search()))
+        
+        init(_ rootView: RootView) {
+            self.rootView = rootView
+        }
+        
+        func willPresentSearchController(_ searchController: UISearchController) {
+            withAnimation {
+                rootView.isSearchActive = true
+            }
+        }
     }
 }

@@ -14,9 +14,6 @@ class ReaderViewModel: NSObject, ObservableObject, WKNavigationDelegate, WKScrip
     @Published private(set) var articleTitle: String = ""
     @Published private(set) var zimFileName: String = ""
     @Published private(set) var outlineItems = [OutlineItem]()
-    @Published var isSearchActive: Bool = false
-    
-    var cancelSearch: (() -> Void)?
     
     let webView: WKWebView = {
         let config = WKWebViewConfiguration()

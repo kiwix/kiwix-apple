@@ -114,11 +114,12 @@ struct Reader: View {
 }
 #elseif os(iOS)
 struct Reader: View {
+    @Binding var isSearchActive: Bool
     @Environment(\.horizontalSizeClass) var horizontalSizeClass
-    @EnvironmentObject var viewModel: ReaderViewModel
+    @StateObject var viewModel = ReaderViewModel()
     @State private var sheetDisplayMode: SheetDisplayMode?
     @State private var sidebarDisplayMode: SidebarDisplayMode?
-    @State var url: URL?
+    @State private var url: URL?
     
     var body: some View {
         GeometryReader { proxy in
@@ -145,7 +146,7 @@ struct Reader: View {
         }
         .toolbar {
             ToolbarItemGroup(placement: .navigationBarLeading) {
-                if horizontalSizeClass == .regular, !viewModel.isSearchActive {
+                if horizontalSizeClass == .regular, !isSearchActive {
                     NavigateBackButton()
                     NavigateForwardButton()
                     OutlineButton(sheetDisplayMode: $sheetDisplayMode, sidebarDisplayMode: $sidebarDisplayMode)
@@ -155,8 +156,12 @@ struct Reader: View {
                 }
             }
             ToolbarItemGroup(placement: .navigationBarTrailing) {
-                if viewModel.isSearchActive {
-                    Button("Cancel") { viewModel.cancelSearch?() }
+                if isSearchActive {
+                    Button("Cancel") {
+                        withAnimation {
+                            isSearchActive = false
+                        }
+                    }
                 } else if horizontalSizeClass == .regular {
                     RandomArticleButton(url: $url)
                     MainArticleButton(url: $url)
@@ -165,7 +170,7 @@ struct Reader: View {
                 }
             }
             ToolbarItemGroup(placement: .bottomBar) {
-                if horizontalSizeClass == .compact, !viewModel.isSearchActive {
+                if horizontalSizeClass == .compact, !isSearchActive {
                     Group {
                         NavigateBackButton()
                         Spacer()
