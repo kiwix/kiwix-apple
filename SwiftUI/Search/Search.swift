@@ -10,11 +10,11 @@ import SwiftUI
 
 #if os(macOS)
 struct Search: View {
-    @State var searchText = ""
+    @StateObject var viewModel = SearchViewModel()
     
     var body: some View {
         ZStack {
-            List {}.searchable(text: $searchText, placement: .sidebar, prompt: Text("Search")) {
+            List {}.searchable(text: $viewModel.searchText, placement: .sidebar, prompt: Text("Search")) {
                 Text("recent 1").searchCompletion("recent 1")
                 Text("result 2").searchCompletion("recent 2")
                 Text("result 3").searchCompletion("recent 3")

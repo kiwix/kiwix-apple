@@ -16,6 +16,7 @@ class SearchViewModel: NSObject, ObservableObject, NSFetchedResultsControllerDel
     @Published private(set) var results = [SearchResult]()
     
     private let fetchedResultsController: NSFetchedResultsController<ZimFile>
+    private var searchSubscriber: AnyCancellable?
     
     override init() {
         // initilize fetched results controller
@@ -32,9 +33,28 @@ class SearchViewModel: NSObject, ObservableObject, NSFetchedResultsControllerDel
         zimFileIDs = fetchedResultsController.fetchedObjects?.map { $0.fileID } ?? []
         
         super.init()
+        
+        fetchedResultsController.delegate = self
+        
+        // subscribers
+        searchSubscriber = Publishers.CombineLatest($zimFileIDs, $searchText)
+            .map { zimFileIDs, searchText in
+                self.inProgress = true
+                return (zimFileIDs, searchText)
+            }
+            .debounce(for: 0.2, scheduler: DispatchQueue.global())
+            .receive(on: DispatchQueue.main, options: nil)
+            .sink { zimFileIDs, searchText in
+                self.updateSearchResults(searchText, zimFileIDs)
+            }
     }
     
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
         zimFileIDs = fetchedResultsController.fetchedObjects?.map { $0.fileID } ?? []
+    }
+    
+    private func updateSearchResults(_ searchText: String, _ zimFileIDs: [UUID]) {
+        print("updateSearchResults: \(searchText), \(zimFileIDs.count)")
+        self.inProgress = false
     }
 }
