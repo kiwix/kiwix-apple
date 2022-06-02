@@ -50,6 +50,7 @@ extension SearchOperation {
         
         // calculate score for all results
         for result in results {
+            guard !isCancelled else { break }
             let distance = levenshtein.calculate(result.title.lowercased()[...], searchText[...])
             if let probability = result.probability?.doubleValue {
                 result.score = NSNumber(floatLiteral: Double(distance) * Foundation.log(7.5576 - 6.4524 * probability))
@@ -58,6 +59,7 @@ extension SearchOperation {
             }
         }
         
+        guard !isCancelled else { return }
         __results.sort { lhs, rhs in
             guard let lhs = (lhs as? SearchResult)?.score?.doubleValue,
                   let rhs = (rhs as? SearchResult)?.score?.doubleValue else { return .orderedSame }
