@@ -10,16 +10,14 @@ extension SearchOperation {
     var results: [SearchResult] { get { __results.array as? [SearchResult] ?? [] } }
 
     open override func main() {
-        guard !searchText.isEmpty, let snippetMode = SearchResultSnippetMode(rawValue: self.snippetMode) else { return }
+        // perform index and title search
+        guard !searchText.isEmpty else { return }
         performSearch()
-        extractSnippet(snippetMode)
-        sortResults()
-    }
-    
-    /// Extract search result snippet for each search result.
-    /// - Parameter mode: describes if and how should the search result be extracted
-    private func extractSnippet(_ mode: SearchResultSnippetMode) {
-        guard !isCancelled, mode != .disabled else { return }
+        
+        // parse and extract search result snippet
+        #if os(iOS)
+        guard !isCancelled else { return }
+        let snippetMode = SearchResultSnippetMode(rawValue: self.snippetMode) ?? .disabled
         let dispatchGroup = DispatchGroup()
         for result in results {
             dispatchGroup.enter()
@@ -27,32 +25,30 @@ extension SearchOperation {
                 defer { dispatchGroup.leave() }
                 guard !self.isCancelled else { return }
                 
-                let url = ZimFileService.shared.getRedirectedURL(url: result.url) ?? result.url
-                switch mode {
+                switch snippetMode {
                 case .firstParagraph:
-                    guard let parser = try? Parser(url: url) else { return }
+                    guard let parser = try? Parser(url: result.url) else { return }
                     result.snippet = parser.getFirstParagraph()
                 case .firstSentence:
-                    guard let parser = try? Parser(url: url) else { return }
-                    result.snippet = parser.getFirstSentence(languageCode: nil )
+                    guard let parser = try? Parser(url: result.url) else { return }
+                    result.snippet = parser.getFirstSentence(languageCode: nil)
                 case .matches:
                     guard let html = result.htmlSnippet else { return }
                     result.snippet = Parser.parseBodyFragment(html)
-                default:
+                case .disabled:
                     break
                 }
             }
         }
         dispatchGroup.wait()
-    }
-    
-    /// Sort the search results.
-    private func sortResults() {
+        #endif
+        
+        // start sorting search results
         guard !isCancelled else { return }
         let searchText = self.searchText.lowercased()
         let levenshtein = Levenshtein()
         
-        // calculate score for all search results
+        // calculate score for all results
         for result in results {
             let distance = levenshtein.calculate(result.title.lowercased()[...], searchText[...])
             if let probability = result.probability?.doubleValue {
@@ -62,17 +58,12 @@ extension SearchOperation {
             }
         }
         
-        // sort search results by score
         __results.sort { lhs, rhs in
-            guard let lhs = lhs as? SearchResult,
-                  let rhs = rhs as? SearchResult,
-                  let lhsScore = lhs.score?.doubleValue,
-                  let rhsScore = rhs.score?.doubleValue
-            else { return .orderedSame }
-            
-            if lhsScore < rhsScore {
+            guard let lhs = (lhs as? SearchResult)?.score?.doubleValue,
+                  let rhs = (rhs as? SearchResult)?.score?.doubleValue else { return .orderedSame }
+            if lhs < rhs {
                 return .orderedAscending
-            } else if lhsScore > rhsScore {
+            } else if lhs > rhs {
                 return .orderedDescending
             } else {
                 return .orderedSame

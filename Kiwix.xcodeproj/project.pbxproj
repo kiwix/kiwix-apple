@@ -30,9 +30,7 @@
 		97242B9E2735E6A800C87F85 /* Platform.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97B399912468502500BC6F5B /* Platform.swift */; };
 		97242B9F2735E6A800C87F85 /* Enums.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97B399952468CF3B00BC6F5B /* Enums.swift */; };
 		97242BA02735E6A800C87F85 /* FeatureFlags.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97FD2F5E251EA07B0034927C /* FeatureFlags.swift */; };
-		97242BA12735E6A800C87F85 /* Parser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 970EC3A023BCEC84008DCA27 /* Parser.swift */; };
 		97242BA22735E6A800C87F85 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9779A7392456796B00F6F6FF /* Settings.swift */; };
-		97242BA42735E6D700C87F85 /* Fuzi in Frameworks */ = {isa = PBXBuildFile; productRef = 97242BA32735E6D700C87F85 /* Fuzi */; };
 		97242BAB2735E70F00C87F85 /* Defaults in Frameworks */ = {isa = PBXBuildFile; productRef = 97242BAA2735E70F00C87F85 /* Defaults */; };
 		97246C821FC4D12A0056AE5D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9717A2521FB2592D00837492 /* Main.storyboard */; };
 		972521012009616B00B60A80 /* EmptyContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 972521002009616B00B60A80 /* EmptyContentView.swift */; };
@@ -560,7 +558,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				97242BA42735E6D700C87F85 /* Fuzi in Frameworks */,
 				97E94B2D271EF603005B0295 /* libkiwix.xcframework in Frameworks */,
 				97242BAB2735E70F00C87F85 /* Defaults in Frameworks */,
 			);
@@ -1166,7 +1163,6 @@
 			);
 			name = macOS_SwiftUI;
 			packageProductDependencies = (
-				97242BA32735E6D700C87F85 /* Fuzi */,
 				97242BAA2735E70F00C87F85 /* Defaults */,
 			);
 			productName = Kiwix;
@@ -1607,7 +1603,6 @@
 				97FB4B0B27B819A90055F86E /* Message.swift in Sources */,
 				973A0DF0282E981200B41E71 /* ZimFileRow.swift in Sources */,
 				97242B8A2735E67500C87F85 /* SearchOperation.mm in Sources */,
-				97242BA12735E6A800C87F85 /* Parser.swift in Sources */,
 				978A731227B9A0E0008101B4 /* NavigationButtons.swift in Sources */,
 				976D90DE281589EA00CC7D29 /* ZimFileList.swift in Sources */,
 				97B3048927796C9000E82DE0 /* SearchOperation.swift in Sources */,
@@ -2386,11 +2381,6 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		97242BA32735E6D700C87F85 /* Fuzi */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 9744657E26F7981500072DC2 /* XCRemoteSwiftPackageReference "Fuzi" */;
-			productName = Fuzi;
-		};
 		97242BAA2735E70F00C87F85 /* Defaults */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 97654724273214530070163D /* XCRemoteSwiftPackageReference "Defaults" */;
