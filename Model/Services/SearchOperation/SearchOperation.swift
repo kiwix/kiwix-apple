@@ -54,7 +54,7 @@ extension SearchOperation {
         
         // calculate score for all search results
         for result in results {
-            let distance = levenshtein.calculateDistance(a: result.title.lowercased()[...], b: searchText[...])
+            let distance = levenshtein.calculate(result.title.lowercased()[...], searchText[...])
             if let probability = result.probability?.doubleValue {
                 result.score = NSNumber(floatLiteral: Double(distance) * Foundation.log(7.5576 - 6.4524 * probability))
             } else {
@@ -82,10 +82,10 @@ extension SearchOperation {
 }
 
 private class Levenshtein {
-    private(set) var cache = [Set<String.SubSequence>: Int]()
+    private(set) var cache = [Set<String>: Int]()
     
-    func calculateDistance(a: String.SubSequence, b: String.SubSequence) -> Int {
-        let key = Set([a, b])
+    func calculate(_ a: String.SubSequence, _ b: String.SubSequence) -> Int {
+        let key = Set([String(a), String(b)])
         if let distance = cache[key] {
             return distance
         } else {
@@ -93,11 +93,11 @@ private class Levenshtein {
                 if a.count == 0 || b.count == 0 {
                     return abs(a.count - b.count)
                 } else if a.first == b.first {
-                    return calculateDistance(a: a[a.index(after: a.startIndex)...], b: b[b.index(after: b.startIndex)...])
+                    return calculate(a[a.index(after: a.startIndex)...], b[b.index(after: b.startIndex)...])
                 } else {
-                    let add = calculateDistance(a: a, b: b[b.index(after: b.startIndex)...])
-                    let replace = calculateDistance(a: a[a.index(after: a.startIndex)...], b: b[b.index(after: b.startIndex)...])
-                    let delete = calculateDistance(a: a[a.index(after: a.startIndex)...], b: b)
+                    let add = calculate(a, b[b.index(after: b.startIndex)...])
+                    let replace = calculate(a[a.index(after: a.startIndex)...], b[b.index(after: b.startIndex)...])
+                    let delete = calculate(a[a.index(after: a.startIndex)...], b)
                     return min(add, replace, delete) + 1
                 }
             }()
