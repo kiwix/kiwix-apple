@@ -28,10 +28,7 @@
 		97242B9B2735E6A800C87F85 /* DirectoryMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9779A5CF2456796A00F6F6FF /* DirectoryMonitor.swift */; };
 		97242B9D2735E6A800C87F85 /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9779A7E224567A5A00F6F6FF /* Log.swift */; };
 		97242B9E2735E6A800C87F85 /* Platform.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97B399912468502500BC6F5B /* Platform.swift */; };
-		97242B9F2735E6A800C87F85 /* Enums.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97B399952468CF3B00BC6F5B /* Enums.swift */; };
 		97242BA02735E6A800C87F85 /* FeatureFlags.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97FD2F5E251EA07B0034927C /* FeatureFlags.swift */; };
-		97242BA22735E6A800C87F85 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9779A7392456796B00F6F6FF /* Settings.swift */; };
-		97242BAB2735E70F00C87F85 /* Defaults in Frameworks */ = {isa = PBXBuildFile; productRef = 97242BAA2735E70F00C87F85 /* Defaults */; };
 		97246C821FC4D12A0056AE5D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9717A2521FB2592D00837492 /* Main.storyboard */; };
 		972521012009616B00B60A80 /* EmptyContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 972521002009616B00B60A80 /* EmptyContentView.swift */; };
 		97252103200D3C4B00B60A80 /* HUDController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97252102200D3C4B00B60A80 /* HUDController.swift */; };
@@ -558,7 +555,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				97E94B2D271EF603005B0295 /* libkiwix.xcframework in Frameworks */,
-				97242BAB2735E70F00C87F85 /* Defaults in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1161,7 +1157,6 @@
 			);
 			name = macOS_SwiftUI;
 			packageProductDependencies = (
-				97242BAA2735E70F00C87F85 /* Defaults */,
 			);
 			productName = Kiwix;
 			productReference = 97E94B17271EF24D005B0295 /* Kiwix.app */;
@@ -1589,13 +1584,11 @@
 				973A0DFC283100C300B41E71 /* ZimFilesOpened.swift in Sources */,
 				979D3A772841100B00E396B8 /* Focus.swift in Sources */,
 				97242B882735E66E00C87F85 /* OutlineItem.swift in Sources */,
-				97242B9F2735E6A800C87F85 /* Enums.swift in Sources */,
 				976D90E62815A95500CC7D29 /* SectionHeader.swift in Sources */,
 				973A2FC7277F656B00BD4320 /* OPDSStreamParser.mm in Sources */,
 				97E94B30271EF639005B0295 /* ZimFileMetaData.mm in Sources */,
 				97E94B2F271EF630005B0295 /* ZimFileService.mm in Sources */,
 				972DE4732814A116004FD9B9 /* Entities.swift in Sources */,
-				97242BA22735E6A800C87F85 /* Settings.swift in Sources */,
 				978A731027B99F25008101B4 /* ReaderViewModel.swift in Sources */,
 				97B3BACC2736CDCE00A23F49 /* URLContent.swift in Sources */,
 				97FB4B0B27B819A90055F86E /* Message.swift in Sources */,
@@ -2379,11 +2372,6 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		97242BAA2735E70F00C87F85 /* Defaults */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 97654724273214530070163D /* XCRemoteSwiftPackageReference "Defaults" */;
-			productName = Defaults;
-		};
 		9744657F26F7981500072DC2 /* Fuzi */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 9744657E26F7981500072DC2 /* XCRemoteSwiftPackageReference "Fuzi" */;
