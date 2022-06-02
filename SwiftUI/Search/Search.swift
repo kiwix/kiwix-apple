@@ -10,16 +10,21 @@ import SwiftUI
 
 #if os(macOS)
 struct Search: View {
+    @Binding var url: URL?
     @StateObject var viewModel = SearchViewModel()
     
     var body: some View {
-        ZStack {
+        ZStack(alignment: .top) {
             List {}.searchable(text: $viewModel.searchText, placement: .sidebar, prompt: Text("Search"))
-            if !viewModel.results.isEmpty {
-                List(viewModel.results) { result in
-                    Text(result.title)
-                }.padding(.top, 34)
-            }
+            Group {
+                if viewModel.results.isEmpty, !viewModel.searchText.isEmpty, !viewModel.inProgress {
+                    Message(text: "No results")
+                } else {
+                    List(viewModel.results, id: \.url, selection: $url) { result in
+                        Text(result.title)
+                    }
+                }
+            }.padding(.top, 34)
         }
         .listStyle(.sidebar)
         .safeAreaInset(edge: .bottom) {

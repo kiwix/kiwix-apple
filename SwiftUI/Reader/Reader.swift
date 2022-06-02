@@ -35,7 +35,7 @@ struct Reader: View {
                 }.background(.thinMaterial)
                 switch sidebarDisplayMode {
                 case .search:
-                    Search()
+                    Search(url: $url)
                 case .bookmarks:
                     Bookmarks(url: $url)
                 case .outline:
