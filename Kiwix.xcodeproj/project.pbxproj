@@ -96,6 +96,10 @@
 		976A65B32659489F009A97C6 /* SearchResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 976A65B22659489F009A97C6 /* SearchResult.swift */; };
 		976A65B42659489F009A97C6 /* SearchResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 976A65B22659489F009A97C6 /* SearchResult.swift */; };
 		976BAEB42847BD020049404F /* SearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97C13787284572AC00386C04 /* SearchViewModel.swift */; };
+		976BAEB5284903A80049404F /* SearchResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 976A65B22659489F009A97C6 /* SearchResult.swift */; };
+		976BAEB6284903A80049404F /* SearchResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 97B3998C2467561900BC6F5B /* SearchResult.m */; };
+		976BAEBA284903EA0049404F /* Fuzi in Frameworks */ = {isa = PBXBuildFile; productRef = 976BAEB9284903EA0049404F /* Fuzi */; };
+		976BAEBB2849048D0049404F /* Parser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 970EC3A023BCEC84008DCA27 /* Parser.swift */; };
 		976D90D22814F2FA00CC7D29 /* ZimFileGrid.swift in Sources */ = {isa = PBXBuildFile; fileRef = 976D90D12814F2FA00CC7D29 /* ZimFileGrid.swift */; };
 		976D90D32814F2FA00CC7D29 /* ZimFileGrid.swift in Sources */ = {isa = PBXBuildFile; fileRef = 976D90D12814F2FA00CC7D29 /* ZimFileGrid.swift */; };
 		976D90DB281584BF00CC7D29 /* FlavorTag.swift in Sources */ = {isa = PBXBuildFile; fileRef = 973A2FCD277FB03F00BD4320 /* FlavorTag.swift */; };
@@ -515,6 +519,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				976BAEBA284903EA0049404F /* Fuzi in Frameworks */,
 				972DE4B82814A51C004FD9B9 /* libkiwix.xcframework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1077,6 +1082,9 @@
 			dependencies = (
 			);
 			name = iOS_SwiftUI;
+			packageProductDependencies = (
+				976BAEB9284903EA0049404F /* Fuzi */,
+			);
 			productName = iOS_SwiftUI;
 			productReference = 972DE4A62814A3D8004FD9B9 /* iOS_SwiftUI.app */;
 			productType = "com.apple.product-type.application";
@@ -1398,6 +1406,8 @@
 				976D90E92815D63A00CC7D29 /* ZimFilesNew.swift in Sources */,
 				976D90D32814F2FA00CC7D29 /* ZimFileGrid.swift in Sources */,
 				972DE4B92814A56A004FD9B9 /* Database.swift in Sources */,
+				976BAEB5284903A80049404F /* SearchResult.swift in Sources */,
+				976BAEBB2849048D0049404F /* Parser.swift in Sources */,
 				976D90E528159FE700CC7D29 /* SectionHeader.swift in Sources */,
 				976D90DC281586B400CC7D29 /* ZimFileCell.swift in Sources */,
 				973A0DF5282FEDA500B41E71 /* ZimFileViewModifiers.swift in Sources */,
@@ -1407,6 +1417,7 @@
 				97F43AFE283108330076F8E0 /* FileImportModifier.swift in Sources */,
 				979D3A74284067C800E396B8 /* MoreButton.swift in Sources */,
 				97DE2BB0283C67F100C63D9B /* RandomArticleButton.swift in Sources */,
+				976BAEB6284903A80049404F /* SearchResult.m in Sources */,
 				972DE4BA2814A590004FD9B9 /* ZimFileMetaData.mm in Sources */,
 				972DE4B42814A4F6004FD9B9 /* DataModel.xcdatamodeld in Sources */,
 				976D90E428159BFA00CC7D29 /* Favicon.swift in Sources */,
@@ -2381,6 +2392,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 97654724273214530070163D /* XCRemoteSwiftPackageReference "Defaults" */;
 			productName = Defaults;
+		};
+		976BAEB9284903EA0049404F /* Fuzi */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 9744657E26F7981500072DC2 /* XCRemoteSwiftPackageReference "Fuzi" */;
+			productName = Fuzi;
 		};
 /* End XCSwiftPackageProductDependency section */
 

@@ -156,14 +156,35 @@ enum LibraryTopic: Hashable, Identifiable, RawRepresentable {
     }
 }
 
-enum SheetDisplayMode: String, Identifiable {
+enum SearchResultSnippetMode: String, CaseIterable, Identifiable  {
+    case disabled, firstParagraph, firstSentence, matches
+    
     var id: String { rawValue }
+    
+    var name: String {
+        switch self {
+        case .disabled:
+            return "Disabled"
+        case .firstParagraph:
+            return "First Paragraph"
+        case .firstSentence:
+            return "First Sentence"
+        case .matches:
+            return "Matches"
+        }
+    }
+}
+
+enum SheetDisplayMode: String, Identifiable {
     case outline, bookmarks, library, settings
+    
+    var id: String { rawValue }
 }
 
 enum SidebarDisplayMode: String, CaseIterable, Identifiable {
-    var id: String { rawValue }
     case search, bookmarks, outline, library
+    
+    var id: String { rawValue }
     
     var imageName: String {
         switch self {
