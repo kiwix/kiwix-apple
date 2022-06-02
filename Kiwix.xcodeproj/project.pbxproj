@@ -660,6 +660,7 @@
 		9735D0B72775362000C7D495 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				97B3998724673FCA00BC6F5B /* SearchOperation */,
 				9735D0B82775363900C7D495 /* DataModel.xcdatamodeld */,
 				9735D0BB2775594700C7D495 /* Database.swift */,
 				973A0DE5281DC8F400B41E71 /* Downloads.swift */,
@@ -755,7 +756,6 @@
 		9779A59B2456793500F6F6FF /* Services */ = {
 			isa = PBXGroup;
 			children = (
-				97B3998724673FCA00BC6F5B /* SearchOperation */,
 				9779A5A62456793500F6F6FF /* ZimFileService */,
 				9779A5D52456796A00F6F6FF /* DownloadService.swift */,
 				977959BF26D494C500D48E4A /* FaviconDownloadService.swift */,
