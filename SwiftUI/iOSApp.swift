@@ -105,6 +105,7 @@ private struct RootView: UIViewControllerRepresentable {
         }
         
         func updateSearchResults(for searchController: UISearchController) {
+            guard rootView.isSearchActive else { return }
             rootView.searchText = searchController.searchBar.text ?? ""
         }
     }
