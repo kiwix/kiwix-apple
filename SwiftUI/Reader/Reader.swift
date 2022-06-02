@@ -197,6 +197,7 @@ struct Reader: View {
         .onOpenURL { url in
             self.url = url
             withAnimation {
+                isSearchActive = false
                 sheetDisplayMode = nil
             }
         }

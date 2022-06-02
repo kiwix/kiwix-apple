@@ -45,7 +45,8 @@ struct Search: View {
             } else {
                 stackView
             }
-        }.onChange(of: searchText) { searchText in
+        }
+        .onChange(of: searchText) { searchText in
             viewModel.searchText = searchText
         }
     }
@@ -69,7 +70,7 @@ struct Search: View {
             } else if !viewModel.results.isEmpty {
                 List(viewModel.results) { result in
                     Button {
-                        
+                        UIApplication.shared.open(result.url)
                     } label: {
                         Text(result.title)
                     }
@@ -89,7 +90,7 @@ struct Search: View {
         } else if !viewModel.results.isEmpty {
             List(viewModel.results) { result in
                 Button {
-                    
+                    UIApplication.shared.open(result.url)
                 } label: {
                     Text(result.title)
                 }
