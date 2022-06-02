@@ -36,27 +36,66 @@ struct Search: View {
 struct Search: View {
     @Binding var searchText: String
     @Environment(\.horizontalSizeClass) var horizontalSizeClass
+    @StateObject var viewModel = SearchViewModel()
     
     var body: some View {
-        if horizontalSizeClass == .regular {
-            HStack(spacing: 0) {
-                SearchFilter().listStyle(.grouped).frame(width: 320)
-                Divider().ignoresSafeArea(.container, edges: .bottom)
-                List {
-                    Text("result 1")
-                    Text("result 2")
-                    Text("result 3")
+        Group {
+            if horizontalSizeClass == .regular {
+                splitView
+            } else {
+                stackView
+            }
+        }.onChange(of: searchText) { searchText in
+            viewModel.searchText = searchText
+        }
+    }
+    
+    var splitView: some View {
+        HStack(spacing: 0) {
+            SearchFilter().frame(width: 320)
+            Divider().ignoresSafeArea(.container, edges: .bottom)
+            if searchText.isEmpty {
+                Message(text: "Enter some text to search for articles")
+            } else if viewModel.inProgress {
+                HStack {
+                    Spacer()
+                    VStack {
+                        Spacer()
+                        ProgressView("Searching…")
+                        Spacer()
+                    }
+                    Spacer()
                 }
-                .listStyle(.plain)
+            } else if !viewModel.results.isEmpty {
+                List(viewModel.results) { result in
+                    Button {
+                        
+                    } label: {
+                        Text(result.title)
+                    }
+                }.listStyle(.plain)
+            } else {
+                Message(text: "No results")
             }
-        } else if searchText.isEmpty {
+        }
+    }
+    
+    @ViewBuilder
+    var stackView: some View {
+        if searchText.isEmpty {
             SearchFilter()
+        } else if viewModel.inProgress {
+            ProgressView("Searching…")
+        } else if !viewModel.results.isEmpty {
+            List(viewModel.results) { result in
+                Button {
+                    
+                } label: {
+                    Text(result.title)
+                }
+            }.listStyle(.plain)
         } else {
-            List {
-                Text("result 1")
-                Text("result 2")
-                Text("result 3")
-            }
+            Message(text: "No results")
         }
     }
 }
