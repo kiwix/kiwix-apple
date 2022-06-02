@@ -105,7 +105,7 @@ struct Reader: View {
     @Environment(\.horizontalSizeClass) var horizontalSizeClass
     @StateObject var viewModel = ReaderViewModel()
     @State private var sheetDisplayMode: SheetDisplayMode?
-    @State private var sidebarDisplayMode: SidebarDisplayMode?
+    @State private var sidebarDisplayMode: SidebarDisplayMode? = .bookmarks
     @State private var url: URL?
     
     var body: some View {
