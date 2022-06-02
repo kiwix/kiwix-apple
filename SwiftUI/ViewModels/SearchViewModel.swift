@@ -17,6 +17,7 @@ class SearchViewModel: NSObject, ObservableObject, NSFetchedResultsControllerDel
     
     private let fetchedResultsController: NSFetchedResultsController<ZimFile>
     private var searchSubscriber: AnyCancellable?
+    private let queue = OperationQueue()
     
     override init() {
         // initilize fetched results controller
@@ -54,7 +55,15 @@ class SearchViewModel: NSObject, ObservableObject, NSFetchedResultsControllerDel
     }
     
     private func updateSearchResults(_ searchText: String, _ zimFileIDs: [UUID]) {
-        print("updateSearchResults: \(searchText), \(zimFileIDs.count)")
-        self.inProgress = false
+        queue.cancelAllOperations()
+        let operation = SearchOperation(searchText: searchText, zimFileIDs: Set(zimFileIDs))
+        operation.completionBlock = { [unowned self] in
+            guard !operation.isCancelled else { return }
+            DispatchQueue.main.sync {
+                self.results = operation.results
+                self.inProgress = false
+            }
+        }
+        queue.addOperation(operation)
     }
 }

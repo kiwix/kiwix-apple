@@ -14,17 +14,12 @@ struct Search: View {
     
     var body: some View {
         ZStack {
-            List {}.searchable(text: $viewModel.searchText, placement: .sidebar, prompt: Text("Search")) {
-                Text("recent 1").searchCompletion("recent 1")
-                Text("result 2").searchCompletion("recent 2")
-                Text("result 3").searchCompletion("recent 3")
+            List {}.searchable(text: $viewModel.searchText, placement: .sidebar, prompt: Text("Search"))
+            if !viewModel.results.isEmpty {
+                List(viewModel.results) { result in
+                    Text(result.title)
+                }.padding(.top, 34)
             }
-            List {
-                Text("result 1")
-                Text("result 2")
-                Text("result 3")
-            }
-            .padding(.top, 34)
         }
         .listStyle(.sidebar)
         .safeAreaInset(edge: .bottom) {
