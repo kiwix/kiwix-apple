@@ -20,7 +20,7 @@ class SearchViewModel: NSObject, ObservableObject, NSFetchedResultsControllerDel
     private let queue = OperationQueue()
     
     override init() {
-        // initilize fetched results controller
+        // initialize fetched results controller
         let predicate = NSPredicate(format: "includedInSearch == true AND fileURLBookmark != nil")
         fetchedResultsController = NSFetchedResultsController(
             fetchRequest: ZimFile.fetchRequest(predicate: predicate),
@@ -35,6 +35,8 @@ class SearchViewModel: NSObject, ObservableObject, NSFetchedResultsControllerDel
         
         super.init()
         
+        // additional configurations
+        queue.maxConcurrentOperationCount = 1
         fetchedResultsController.delegate = self
         
         // subscribers

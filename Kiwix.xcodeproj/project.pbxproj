@@ -500,7 +500,6 @@
 		97F6CC5020BD960F005CDBD2 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		97FB4B0827B816C80055F86E /* SearchFilter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchFilter.swift; sourceTree = "<group>"; };
 		97FB4B0A27B819A90055F86E /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
-		97FB4B0D27B81B680055F86E /* SearchViewModel_old.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewModel_old.swift; sourceTree = "<group>"; };
 		97FD2F5E251EA07B0034927C /* FeatureFlags.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeatureFlags.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -1043,7 +1042,6 @@
 			children = (
 				978A730F27B99F25008101B4 /* ReaderViewModel.swift */,
 				97DE2BA1283A8E5C00C63D9B /* LibraryViewModel.swift */,
-				97FB4B0D27B81B680055F86E /* SearchViewModel_old.swift */,
 				97C13787284572AC00386C04 /* SearchViewModel.swift */,
 			);
 			path = ViewModels;
