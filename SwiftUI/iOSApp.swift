@@ -18,7 +18,7 @@ struct Kiwix: App {
     var body: some Scene {
         WindowGroup {
             RootView()
-                .edgesIgnoringSafeArea(.all)
+                .ignoresSafeArea(.container)
                 .environment(\.managedObjectContext, Database.shared.container.viewContext)
         }
     }
