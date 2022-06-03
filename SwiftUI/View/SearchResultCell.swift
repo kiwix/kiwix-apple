@@ -16,11 +16,13 @@ struct SearchResultCell: View {
             VStack(alignment: .leading) {
                 Text(result.title).fontWeight(.medium)
                 if let snippet = result.snippet {
-                    if #available(iOS 15, *) {
-                        Text(AttributedString(snippet)).font(.caption)
-                    } else {
-                        Text(snippet.string).font(.caption)
-                    }
+                    Group {
+                        if #available(iOS 15, *) {
+                            Text(AttributedString(snippet))
+                        } else {
+                            Text(snippet.string)
+                        }
+                    }.font(.caption).multilineTextAlignment(.leading)
                 }
             }
             Spacer()
@@ -44,13 +46,19 @@ struct CellBackground: ViewModifier {
 
 struct SearchResultCell_Previews: PreviewProvider {
     static let result: SearchResult = {
-        let result = SearchResult(zimFileID: UUID(), path: "", title: "test")!
-        result.snippet = NSAttributedString(string: "Snippet")
+        let result = SearchResult(zimFileID: UUID(), path: "", title: "Article Title")!
+        result.snippet = NSAttributedString(string:
+            """
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, \
+            sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+            """
+        )
         return result
     }()
     
     static var previews: some View {
         SearchResultCell(result: SearchResultCell_Previews.result)
+            .frame(width: 500)
             .padding()
             .previewLayout(.sizeThatFits)
     }
