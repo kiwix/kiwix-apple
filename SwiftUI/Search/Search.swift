@@ -52,31 +52,33 @@ struct Search: View {
     }
     
     var splitView: some View {
-        HStack(spacing: 0) {
-            SearchFilter().frame(width: 320)
-            Divider().ignoresSafeArea(.container, edges: .bottom)
-            if searchText.isEmpty {
-                Message(text: "Enter some text to search for articles")
-            } else if viewModel.inProgress {
-                HStack {
-                    Spacer()
-                    VStack {
+        GeometryReader { proxy in
+            HStack(spacing: 0) {
+                SearchFilter().frame(width: min(320, proxy.size.width * 0.35))
+                Divider().ignoresSafeArea(.container, edges: .bottom)
+                if searchText.isEmpty {
+                    Message(text: "Enter some text to search for articles")
+                } else if viewModel.inProgress {
+                    HStack {
                         Spacer()
-                        ProgressView("Searching…")
+                        VStack {
+                            Spacer()
+                            ProgressView("Searching…")
+                            Spacer()
+                        }
                         Spacer()
                     }
-                    Spacer()
+                } else if !viewModel.results.isEmpty {
+                    List(viewModel.results) { result in
+                        Button {
+                            UIApplication.shared.open(result.url)
+                        } label: {
+                            Text(result.title)
+                        }
+                    }.listStyle(.plain)
+                } else {
+                    Message(text: "No results")
                 }
-            } else if !viewModel.results.isEmpty {
-                List(viewModel.results) { result in
-                    Button {
-                        UIApplication.shared.open(result.url)
-                    } label: {
-                        Text(result.title)
-                    }
-                }.listStyle(.plain)
-            } else {
-                Message(text: "No results")
             }
         }
     }
