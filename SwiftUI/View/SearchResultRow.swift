@@ -22,7 +22,7 @@ struct SearchResultRow: View {
                         } else {
                             Text(snippet.string)
                         }
-                    }.font(.caption).multilineTextAlignment(.leading)
+                    }.font(.caption).lineLimit(4).multilineTextAlignment(.leading)
                 }
             }
             Spacer()
