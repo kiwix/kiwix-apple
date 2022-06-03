@@ -70,27 +70,43 @@ struct BookmarkButton: View {
     }
     
     var body: some View {
-        Button { } label: {
-            Image(systemName: isBookmarked ? "star.fill" : "star")
-        }
-        .simultaneousGesture(TapGesture().onEnded {
+        Menu {
             if horizontalSizeClass == .regular {
-                withAnimation(sidebarDisplayMode == nil ?  .easeOut(duration: 0.18) : .easeIn(duration: 0.18)) {
-                    sidebarDisplayMode = sidebarDisplayMode != .bookmarks ? .bookmarks : nil
-                }
+                Button {
+                    withAnimation(sidebarDisplayMode == nil ?  .easeOut(duration: 0.18) : .easeIn(duration: 0.18)) {
+                        sidebarDisplayMode = sidebarDisplayMode != .bookmarks ? .bookmarks : nil
+                    }
+                } label: {
+                    Label(
+                        sidebarDisplayMode != .bookmarks ? "Show Bookmarks" : "Hide Bookmarks", systemImage: "list.star"
+                    )
+                }.help(sidebarDisplayMode != .bookmarks ? "Show bookmarks." : "Hide bookmarks.")
             } else {
-                sheetDisplayMode = .bookmarks
+                Button {
+                    sheetDisplayMode = .bookmarks
+                } label: {
+                    Label("Show Bookmarks", systemImage: "list.star")
+                }.help("Show bookmarks.")
             }
-        })
-        .simultaneousGesture(LongPressGesture().onEnded { _ in
             if isBookmarked {
-                viewModel.deleteBookmark()
+                Button {
+                    viewModel.deleteBookmark()
+                } label: {
+                    Label("Remove Bookmark", systemImage: "star.slash.fill")
+                }.help("Un-bookmark the current article.")
             } else {
-                viewModel.createBookmark()
+                Button {
+                    viewModel.createBookmark()
+                } label: {
+                    Label("Add Bookmark", systemImage: "star")
+                }
+                .disabled(url == nil)
+                .help("Bookmark the current article.")
             }
-        })
-        .foregroundColor(isBookmarked ? .yellow : nil)
-        .help("Show bookmarks. Long press to bookmark or unbookmark the current article.")
+        } label: {
+            Image(systemName: isBookmarked ? "star.fill" : "star")
+                .foregroundColor(isBookmarked ? .yellow : nil)
+        }
     }
     
     private var isBookmarked: Bool {

@@ -57,7 +57,7 @@ struct Search: View {
                 SearchFilter().frame(width: min(320, proxy.size.width * 0.35))
                 Divider().ignoresSafeArea(.container, edges: .bottom)
                 if searchText.isEmpty {
-                    Message(text: "Enter some text to search for articles")
+                    Message(text: "Enter some text to start searching")
                 } else if viewModel.inProgress {
                     HStack {
                         Spacer()
