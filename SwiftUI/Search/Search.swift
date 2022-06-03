@@ -86,7 +86,7 @@ struct Search: View {
                             Button {
                                 UIApplication.shared.open(result.url)
                             } label: {
-                                SearchResultRow(result: result)
+                                SearchResultRow(result: result, zimFile: viewModel.zimFiles[result.zimFileID])
                             }
                         }.listStyle(.plain)
                     }
@@ -108,7 +108,7 @@ struct Search: View {
                 Button {
                     UIApplication.shared.open(result.url)
                 } label: {
-                    SearchResultRow(result: result)
+                    SearchResultRow(result: result, zimFile: viewModel.zimFiles[result.zimFileID])
                 }
             }.listStyle(.plain)
         } else {
