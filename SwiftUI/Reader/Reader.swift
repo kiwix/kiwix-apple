@@ -112,11 +112,11 @@ struct Reader: View {
         GeometryReader { proxy in
             HStack(spacing: 0) {
                 if horizontalSizeClass == .regular, sidebarDisplayMode == .outline {
-                    Outline().listStyle(.plain).frame(width: min(300, proxy.size.width * 0.35))
+                    Outline().frame(width: min(300, proxy.size.width * 0.35))
                     Divider().ignoresSafeArea(.all, edges: .bottom)
                 }
                 if horizontalSizeClass == .regular, sidebarDisplayMode == .bookmarks {
-                    Bookmarks(url: $url).listStyle(.plain).frame(width: min(300, proxy.size.width * 0.35))
+                    Bookmarks(url: $url).frame(width: min(300, proxy.size.width * 0.35))
                     Divider().ignoresSafeArea(.all, edges: .bottom)
                 }
                 if url == nil {

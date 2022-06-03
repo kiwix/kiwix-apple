@@ -28,7 +28,7 @@ struct Outline: View {
                 guard let selectedID = selectedID else { return }
                 viewModel.scrollTo(outlineItemID: selectedID)
                 self.selectedID = nil
-            }
+            }.listStyle(.plain)
         }
     }
 }
@@ -70,7 +70,6 @@ struct OutlineSheet: View {
     var body: some View {
         NavigationView {
             Outline()
-                .listStyle(.plain)
                 .navigationTitle(viewModel.articleTitle)
                 .navigationBarTitleDisplayMode(.inline)
                 .toolbar {
