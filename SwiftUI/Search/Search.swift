@@ -69,13 +69,27 @@ struct Search: View {
                         Spacer()
                     }
                 } else if !viewModel.results.isEmpty {
-                    List(viewModel.results) { result in
-                        Button {
-                            UIApplication.shared.open(result.url)
-                        } label: {
-                            Text(result.title)
-                        }
-                    }.listStyle(.plain)
+                    if proxy.size.width > 1000 {
+                        ScrollView {
+                            LazyVGrid(columns: [GridItem(.flexible(minimum: 300, maximum: 700), alignment: .center)]) {
+                                ForEach(viewModel.results) { result in
+                                    Button {
+                                        UIApplication.shared.open(result.url)
+                                    } label: {
+                                        SearchResultCell(result: result)
+                                    }
+                                }
+                            }.padding()
+                        }.frame(maxWidth: .infinity)
+                    } else {
+                        List(viewModel.results) { result in
+                            Button {
+                                UIApplication.shared.open(result.url)
+                            } label: {
+                                Text(result.title)
+                            }
+                        }.listStyle(.plain)
+                    }
                 } else {
                     Message(text: "No results")
                 }

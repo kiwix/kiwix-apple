@@ -1,0 +1,57 @@
+//
+//  SearchResultCell.swift
+//  Kiwix for iOS
+//
+//  Created by Chris Li on 6/3/22.
+//  Copyright © 2022 Chris Li. All rights reserved.
+//
+
+import SwiftUI
+
+struct SearchResultCell: View {
+    let result: SearchResult
+    
+    var body: some View {
+        HStack {
+            VStack(alignment: .leading) {
+                Text(result.title).fontWeight(.medium)
+                if let snippet = result.snippet {
+                    if #available(iOS 15, *) {
+                        Text(AttributedString(snippet)).font(.caption)
+                    } else {
+                        Text(snippet.string).font(.caption)
+                    }
+                }
+            }
+            Spacer()
+        }
+        .foregroundColor(.primary)
+        .padding()
+        .modifier(CellBackground())
+        .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
+    }
+}
+
+struct CellBackground: ViewModifier {
+    func body(content: Content) -> some View {
+        if #available(iOS 15.0, *) {
+            content.background(Material.thick)
+        } else {
+            content.background(Color.secondary.opacity(0.1))
+        }
+    }
+}
+
+struct SearchResultCell_Previews: PreviewProvider {
+    static let result: SearchResult = {
+        let result = SearchResult(zimFileID: UUID(), path: "", title: "test")!
+        result.snippet = NSAttributedString(string: "Snippet")
+        return result
+    }()
+    
+    static var previews: some View {
+        SearchResultCell(result: SearchResultCell_Previews.result)
+            .padding()
+            .previewLayout(.sizeThatFits)
+    }
+}
