@@ -76,7 +76,7 @@ struct Search: View {
                                     Button {
                                         UIApplication.shared.open(result.url)
                                     } label: {
-                                        SearchResultCell(result: result)
+                                        SearchResultCell(result: result, zimFile: viewModel.zimFiles[result.zimFileID])
                                     }
                                 }
                             }.padding()

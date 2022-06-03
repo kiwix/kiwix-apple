@@ -11,7 +11,7 @@ import CoreData
 
 class SearchViewModel: NSObject, ObservableObject, NSFetchedResultsControllerDelegate {
     @Published var searchText: String = ""  // text in the search field
-    @Published private(set) var zimFileIDs: [UUID]  // ID of zim files that are included in search
+    @Published private(set) var zimFiles: [UUID: ZimFile]  // ID of zim files that are included in search
     @Published private(set) var inProgress = false
     @Published private(set) var results = [SearchResult]()
     
@@ -31,7 +31,9 @@ class SearchViewModel: NSObject, ObservableObject, NSFetchedResultsControllerDel
         
         // initilze zim file IDs
         try? fetchedResultsController.performFetch()
-        zimFileIDs = fetchedResultsController.fetchedObjects?.map { $0.fileID } ?? []
+        zimFiles = fetchedResultsController.fetchedObjects?.reduce(into: [:]) { result, zimFile in
+            result?[zimFile.fileID] = zimFile
+        } ?? [:]
         
         super.init()
         
@@ -40,10 +42,10 @@ class SearchViewModel: NSObject, ObservableObject, NSFetchedResultsControllerDel
         fetchedResultsController.delegate = self
         
         // subscribers
-        searchSubscriber = Publishers.CombineLatest($zimFileIDs, $searchText)
-            .map { zimFileIDs, searchText in
+        searchSubscriber = Publishers.CombineLatest($zimFiles, $searchText)
+            .map { zimFiles, searchText in
                 self.inProgress = true
-                return (zimFileIDs, searchText)
+                return (Array(zimFiles.keys), searchText)
             }
             .debounce(for: 0.2, scheduler: DispatchQueue.global())
             .receive(on: DispatchQueue.main, options: nil)
@@ -53,7 +55,9 @@ class SearchViewModel: NSObject, ObservableObject, NSFetchedResultsControllerDel
     }
     
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-        zimFileIDs = fetchedResultsController.fetchedObjects?.map { $0.fileID } ?? []
+        zimFiles = fetchedResultsController.fetchedObjects?.reduce(into: [:]) { result, zimFile in
+            result?[zimFile.fileID] = zimFile
+        } ?? [:]
     }
     
     private func updateSearchResults(_ searchText: String, _ zimFileIDs: [UUID]) {

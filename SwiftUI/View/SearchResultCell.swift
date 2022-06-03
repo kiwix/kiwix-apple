@@ -10,9 +10,10 @@ import SwiftUI
 
 struct SearchResultCell: View {
     let result: SearchResult
+    let zimFile: ZimFile?
     
     var body: some View {
-        HStack {
+        HStack(alignment: .top) {
             VStack(alignment: .leading) {
                 Text(result.title).fontWeight(.medium)
                 if let snippet = result.snippet {
@@ -26,6 +27,10 @@ struct SearchResultCell: View {
                 }
             }
             Spacer()
+            if let zimFile = zimFile, let category = Category(rawValue: zimFile.category) {
+                Favicon(category: category, imageData: zimFile.faviconData, imageURL: zimFile.faviconURL)
+                    .frame(height: 20)
+            }
         }
         .foregroundColor(.primary)
         .padding()
@@ -57,7 +62,7 @@ struct SearchResultCell_Previews: PreviewProvider {
     }()
     
     static var previews: some View {
-        SearchResultCell(result: SearchResultCell_Previews.result)
+        SearchResultCell(result: SearchResultCell_Previews.result, zimFile: nil)
             .frame(width: 500)
             .padding()
             .previewLayout(.sizeThatFits)
