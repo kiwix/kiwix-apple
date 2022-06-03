@@ -86,7 +86,7 @@ struct Search: View {
                             Button {
                                 UIApplication.shared.open(result.url)
                             } label: {
-                                Text(result.title)
+                                SearchResultRow(result: result)
                             }
                         }.listStyle(.plain)
                     }
@@ -108,7 +108,7 @@ struct Search: View {
                 Button {
                     UIApplication.shared.open(result.url)
                 } label: {
-                    Text(result.title)
+                    SearchResultRow(result: result)
                 }
             }.listStyle(.plain)
         } else {
