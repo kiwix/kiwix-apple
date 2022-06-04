@@ -9,6 +9,8 @@
 import SwiftUI
 
 struct SearchResultCell: View {
+    @State var isHovering: Bool = false
+    
     let result: SearchResult
     let zimFile: ZimFile?
     
@@ -33,19 +35,9 @@ struct SearchResultCell: View {
             }
         }
         .foregroundColor(.primary)
-        .padding()
-        .modifier(CellBackground())
-        .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
-    }
-}
-
-struct CellBackground: ViewModifier {
-    func body(content: Content) -> some View {
-        if #available(iOS 15.0, *) {
-            content.background(Material.thick)
-        } else {
-            content.background(Color.secondary.opacity(0.1))
-        }
+        .padding(12)
+        .modifier(CellBackground(isHovering: isHovering))
+        .onHover { self.isHovering = $0 }
     }
 }
 

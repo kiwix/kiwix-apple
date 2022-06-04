@@ -10,7 +10,6 @@ import CoreData
 import SwiftUI
 
 struct ZimFileCell: View {
-    @Environment(\.colorScheme) var colorScheme: ColorScheme
     @State var isHovering: Bool = false
     
     let zimFile: ZimFile
@@ -22,14 +21,6 @@ struct ZimFileCell: View {
     }
     
     var body: some View {
-        if #available(iOS 15.0, *) {
-            content.background(backgroundColor, in: RoundedRectangle(cornerRadius: 12, style: .continuous))
-        } else {
-            content.background(backgroundColor).cornerRadius(12)
-        }
-    }
-    
-    var content: some View {
         VStack(spacing: 8) {
             switch prominent {
             case .size:
@@ -83,25 +74,9 @@ struct ZimFileCell: View {
                 }
             }
         }
-        .padding(12)
+        .padding()
+        .modifier(CellBackground(isHovering: isHovering))
         .onHover { self.isHovering = $0 }
-    }
-    
-    private var backgroundColor: Color {
-        switch (colorScheme, isHovering) {
-        case (.dark, true):
-            return Color.black.opacity(0.2)
-        case (.dark, false):
-            return Color.gray.opacity(0.2)
-        case (.light, true):
-            return Color.gray.opacity(0.2)
-        default:
-            #if os(macOS)
-            return Color.white
-            #elseif os(iOS)
-            return Color.gray.opacity(0.1)
-            #endif
-        }
     }
     
     static let dateFormatter: DateFormatter = {
@@ -145,23 +120,23 @@ struct ZimFileCell_Previews: PreviewProvider {
             ZimFileCell(ZimFileCell_Previews.zimFile)
                 .preferredColorScheme(.light)
                 .padding()
-                .background(Color(.sRGB, red: 239, green: 240, blue: 243, opacity: 0))
                 .frame(width: 300, height: 100)
+                .previewLayout(.sizeThatFits)
             ZimFileCell(ZimFileCell_Previews.zimFile)
                 .preferredColorScheme(.dark)
                 .padding()
-                .background(Color(.sRGB, red: 37, green: 41, blue: 48, opacity: 0))
                 .frame(width: 300, height: 100)
+                .previewLayout(.sizeThatFits)
             ZimFileCell(ZimFileCell_Previews.zimFile, prominent: .title)
                 .preferredColorScheme(.light)
                 .padding()
-                .background(Color(.sRGB, red: 239, green: 240, blue: 243, opacity: 0))
                 .frame(width: 300, height: 100)
+                .previewLayout(.sizeThatFits)
             ZimFileCell(ZimFileCell_Previews.zimFile, prominent: .title)
                 .preferredColorScheme(.dark)
                 .padding()
-                .background(Color(.sRGB, red: 37, green: 41, blue: 48, opacity: 0))
                 .frame(width: 300, height: 100)
+                .previewLayout(.sizeThatFits)
         }
     }
 }

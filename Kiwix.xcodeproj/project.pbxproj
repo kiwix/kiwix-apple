@@ -84,6 +84,8 @@
 		9744658026F7981500072DC2 /* Fuzi in Frameworks */ = {isa = PBXBuildFile; productRef = 9744657F26F7981500072DC2 /* Fuzi */; };
 		97486D06284A36790096E4DD /* SearchResultCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97486D05284A36790096E4DD /* SearchResultCell.swift */; };
 		97486D08284A42B90096E4DD /* SearchResultRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97486D07284A42B90096E4DD /* SearchResultRow.swift */; };
+		97486D0A284B96690096E4DD /* CellBackground.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97486D09284B96690096E4DD /* CellBackground.swift */; };
+		97486D0B284B96690096E4DD /* CellBackground.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97486D09284B96690096E4DD /* CellBackground.swift */; };
 		974FD5CF23405C3700FFDEEC /* WindowControllers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 974FD5CE23405C3700FFDEEC /* WindowControllers.swift */; };
 		974FFE5B2352704600F6BF28 /* ZimFileManagerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 974FFE5A2352704600F6BF28 /* ZimFileManagerController.swift */; };
 		974FFE612352744800F6BF28 /* WebKitWebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 974FFE602352744800F6BF28 /* WebKitWebViewController.swift */; };
@@ -382,6 +384,7 @@
 		973BC75627587A29008D4114 /* Commands.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Commands.swift; sourceTree = "<group>"; };
 		97486D05284A36790096E4DD /* SearchResultCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultCell.swift; sourceTree = "<group>"; };
 		97486D07284A42B90096E4DD /* SearchResultRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultRow.swift; sourceTree = "<group>"; };
+		97486D09284B96690096E4DD /* CellBackground.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellBackground.swift; sourceTree = "<group>"; };
 		974FD5CE23405C3700FFDEEC /* WindowControllers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindowControllers.swift; sourceTree = "<group>"; };
 		974FFE5A2352704600F6BF28 /* ZimFileManagerController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZimFileManagerController.swift; sourceTree = "<group>"; };
 		974FFE602352744800F6BF28 /* WebKitWebViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebKitWebViewController.swift; sourceTree = "<group>"; };
@@ -677,6 +680,7 @@
 		973A0DF2282FED6F00B41E71 /* ViewModifier */ = {
 			isa = PBXGroup;
 			children = (
+				97486D09284B96690096E4DD /* CellBackground.swift */,
 				97F43AFC283108330076F8E0 /* FileImportModifier.swift */,
 				97DE2BA4283A944100C63D9B /* LibraryGridPadding.swift */,
 				973A0DF3282FEDA500B41E71 /* ZimFileViewModifiers.swift */,
@@ -1431,6 +1435,7 @@
 				97DE2BB0283C67F100C63D9B /* RandomArticleButton.swift in Sources */,
 				976BAEB6284903A80049404F /* SearchResult.m in Sources */,
 				972DE4BA2814A590004FD9B9 /* ZimFileMetaData.mm in Sources */,
+				97486D0B284B96690096E4DD /* CellBackground.swift in Sources */,
 				972DE4B42814A4F6004FD9B9 /* DataModel.xcdatamodeld in Sources */,
 				976BAEBD2849056B0049404F /* SearchOperation.swift in Sources */,
 				976D90E428159BFA00CC7D29 /* Favicon.swift in Sources */,
@@ -1614,6 +1619,7 @@
 				97E94B30271EF639005B0295 /* ZimFileMetaData.mm in Sources */,
 				97E94B2F271EF630005B0295 /* ZimFileService.mm in Sources */,
 				972DE4732814A116004FD9B9 /* Entities.swift in Sources */,
+				97486D0A284B96690096E4DD /* CellBackground.swift in Sources */,
 				978A731027B99F25008101B4 /* ReaderViewModel.swift in Sources */,
 				97B3BACC2736CDCE00A23F49 /* URLContent.swift in Sources */,
 				97FB4B0B27B819A90055F86E /* Message.swift in Sources */,
