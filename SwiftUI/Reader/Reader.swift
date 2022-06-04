@@ -122,12 +122,7 @@ struct Reader: View {
                     Divider().ignoresSafeArea(.all, edges: .bottom)
                 }
                 if url == nil {
-                    List {
-                        Text("Welcome!")
-                        Text("Item 1")
-                        Text("Item 2")
-                        Text("Item 3")
-                    }
+                    Welcome()
                 } else {
                     WebView(url: $url).ignoresSafeArea(.container, edges: [.horizontal, .bottom])
                 }
