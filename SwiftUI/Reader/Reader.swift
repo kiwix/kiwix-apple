@@ -114,7 +114,7 @@ struct Reader: View {
         GeometryReader { proxy in
             HStack(spacing: 0) {
                 if horizontalSizeClass == .regular, sidebarDisplayMode == .outline {
-                    Outline().frame(width: min(320, proxy.size.width * 0.35))
+                    Outline().listStyle(.plain).frame(width: min(320, proxy.size.width * 0.35))
                     Divider().ignoresSafeArea(.all, edges: .bottom)
                 }
                 if horizontalSizeClass == .regular, sidebarDisplayMode == .bookmarks {

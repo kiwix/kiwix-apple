@@ -431,7 +431,6 @@
 		9779A73A2456796B00F6F6FF /* WebKitHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebKitHandler.swift; sourceTree = "<group>"; };
 		9779A7E224567A5A00F6F6FF /* Log.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Log.swift; sourceTree = "<group>"; };
 		9779E7A12379230F0058DC98 /* SearchController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchController.swift; sourceTree = "<group>"; };
-		977BD6062772350B004D2C32 /* BookmarksList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarksList.swift; sourceTree = "<group>"; };
 		977D50622621E47D005345D1 /* LibraryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryViewController.swift; sourceTree = "<group>"; };
 		977D506C2621EAD1005345D1 /* LibraryPrimaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryPrimaryView.swift; sourceTree = "<group>"; };
 		977D50762623580D005345D1 /* LibrarySettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibrarySettingsView.swift; sourceTree = "<group>"; };
@@ -480,7 +479,6 @@
 		97C278DE2796249900666E07 /* Outline.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Outline.swift; sourceTree = "<group>"; };
 		97C575F3202CB0E800E37502 /* NotificationCenter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NotificationCenter.framework; path = System/Library/Frameworks/NotificationCenter.framework; sourceTree = SDKROOT; };
 		97C57604202CB42100E37502 /* Kiwix.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = Kiwix.entitlements; sourceTree = "<group>"; };
-		97D07A08273719720002B9EB /* Search.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Search.swift; sourceTree = "<group>"; };
 		97D19F062546FF3700910CAE /* BuildingBlocks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BuildingBlocks.swift; sourceTree = "<group>"; };
 		97DE2B982839D01B00C63D9B /* macOS-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "macOS-Info.plist"; sourceTree = "<group>"; };
 		97DE2BA1283A8E5C00C63D9B /* LibraryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryViewModel.swift; sourceTree = "<group>"; };
@@ -509,7 +507,6 @@
 		97F43AFC283108330076F8E0 /* FileImportModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileImportModifier.swift; sourceTree = "<group>"; };
 		97F4D10B20ADFE370038FC87 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		97F6CC5020BD960F005CDBD2 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
-		97FB4B0827B816C80055F86E /* SearchFilter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchFilter.swift; sourceTree = "<group>"; };
 		97FB4B0A27B819A90055F86E /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
 		97FD2F5E251EA07B0034927C /* FeatureFlags.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeatureFlags.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -822,9 +819,6 @@
 				97E94B1B271EF24D005B0295 /* Reader.swift */,
 				97C278DE2796249900666E07 /* Outline.swift */,
 				9721BBB928427A93005C910D /* Bookmarks.swift */,
-				97D07A08273719720002B9EB /* Search.swift */,
-				97FB4B0827B816C80055F86E /* SearchFilter.swift */,
-				977BD6062772350B004D2C32 /* BookmarksList.swift */,
 			);
 			path = Reader;
 			sourceTree = "<group>";
