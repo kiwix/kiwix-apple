@@ -45,6 +45,7 @@ class ReaderViewModel: NSObject, ObservableObject, WKNavigationDelegate, WKScrip
     
     override init() {
         super.init()
+        webView.allowsBackForwardNavigationGestures = true
         webView.navigationDelegate = self
         canGoBackObserver = webView.observe(\.canGoBack) { [unowned self] webView, _ in
             self.canGoBack = webView.canGoBack

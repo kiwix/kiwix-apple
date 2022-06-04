@@ -127,7 +127,7 @@ struct Reader: View {
                         Text("Item 3")
                     }
                 } else {
-                    WebView(url: $url).ignoresSafeArea(.container, edges: .all)
+                    WebView(url: $url).ignoresSafeArea(.container, edges: [.horizontal, .bottom])
                 }
             }
         }
