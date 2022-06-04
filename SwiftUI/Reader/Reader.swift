@@ -56,8 +56,10 @@ struct Reader: View {
             .frame(minWidth: 400, idealWidth: 800, minHeight: 500, idealHeight: 550)
             .toolbar {
                 ToolbarItemGroup(placement: .navigation) {
-                    NavigateBackButton()
-                    NavigateForwardButton()
+                    ControlGroup {
+                        NavigateBackButton()
+                        NavigateForwardButton()
+                    }
                 }
                 ToolbarItemGroup {
                     BookmarkButton(url: url)
