@@ -14,17 +14,11 @@ struct Search: View {
     @StateObject var viewModel = SearchViewModel()
     
     var body: some View {
-        ZStack(alignment: .top) {
-            List {}.searchable(text: $viewModel.searchText, placement: .sidebar, prompt: Text("Search"))
-            Group {
-                if viewModel.results.isEmpty, !viewModel.searchText.isEmpty, !viewModel.inProgress {
-                    Message(text: "No results")
-                } else {
-                    List(viewModel.results, id: \.url, selection: $url) { result in
-                        Text(result.title)
-                    }
-                }
-            }.padding(.top, 34)
+        VStack {
+            SearchField(searchText: $viewModel.searchText).padding(.horizontal, 8)
+            List(viewModel.results, id: \.url, selection: $url) { result in
+                Text(result.title)
+            }
         }
         .listStyle(.sidebar)
         .safeAreaInset(edge: .bottom) {
