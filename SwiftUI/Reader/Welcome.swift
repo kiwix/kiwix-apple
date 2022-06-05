@@ -23,7 +23,7 @@ struct Welcome: View {
             GeometryReader { proxy in
                 ScrollView {
                     LazyVGrid(
-                        columns: ([GridItem(.adaptive(minimum: 250, maximum: 400), spacing: 12)]),
+                        columns: ([GridItem(.adaptive(minimum: 300, maximum: 400), spacing: 12)]),
                         alignment: .leading,
                         spacing: 12
                     ) {
