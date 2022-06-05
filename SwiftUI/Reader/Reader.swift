@@ -213,13 +213,14 @@ struct SplitView: UIViewControllerRepresentable {
             let primary: UIViewController = {
                 switch sidebarDisplayMode {
                 case .outline:
-                    return UIHostingController(rootView: Outline())
+                    return UIHostingController(rootView: Outline().listStyle(.plain))
                 case .bookmarks:
-                    return UIHostingController(rootView: Bookmarks(url: $url))
+                    return UIHostingController(rootView: Bookmarks(url: $url).listStyle(.plain))
                 default:
                     return UIViewController()
                 }
             }()
+            primary.title = sidebarDisplayMode.rawValue
             let primaryNavigationController = UINavigationController(rootViewController: primary)
             primaryNavigationController.navigationBar.isHidden = true
             splitViewController.setViewController(primaryNavigationController, for: .primary)
@@ -240,9 +241,9 @@ struct SplitView: UIViewControllerRepresentable {
         
         func splitViewController(_ svc: UISplitViewController, willShow column: UISplitViewController.Column) {
             guard let navigationController = svc.viewController(for: column) as? UINavigationController else { return }
-            if navigationController.topViewController is UIHostingController<Outline> {
+            if navigationController.topViewController?.title == SidebarDisplayMode.outline.rawValue {
                 splitView.sidebarDisplayMode = .outline
-            } else if navigationController.topViewController is UIHostingController<Bookmarks> {
+            } else if navigationController.topViewController?.title == SidebarDisplayMode.bookmarks.rawValue {
                 splitView.sidebarDisplayMode = .bookmarks
             }
         }
