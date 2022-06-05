@@ -107,27 +107,15 @@ struct Reader: View {
     @Environment(\.horizontalSizeClass) var horizontalSizeClass
     @StateObject var viewModel = ReaderViewModel()
     @State private var sheetDisplayMode: SheetDisplayMode?
-    @State private var sidebarDisplayMode: SidebarDisplayMode? = .bookmarks
+    @State private var sidebarDisplayMode: SidebarDisplayMode?
     @State private var url: URL?
     
     var body: some View {
-        GeometryReader { proxy in
-            HStack(spacing: 0) {
-                if horizontalSizeClass == .regular, sidebarDisplayMode == .outline {
-                    Outline()
-                        .listStyle(.sidebar)
-                        .frame(width: min(320, proxy.size.width * 0.35))
-                    Divider().ignoresSafeArea(.all, edges: .bottom)
-                }
-                if horizontalSizeClass == .regular, sidebarDisplayMode == .bookmarks {
-                    Bookmarks(url: $url).listStyle(.insetGrouped).frame(width: min(320, proxy.size.width * 0.35))
-                    Divider().ignoresSafeArea(.all, edges: .bottom)
-                }
-                if url == nil {
-                    Welcome()
-                } else {
-                    WebView(url: $url).ignoresSafeArea(.container, edges: [.horizontal, .bottom])
-                }
+        Group {
+            if horizontalSizeClass == .regular {
+                SplitView(url: $url, sidebarDisplayMode: $sidebarDisplayMode).ignoresSafeArea(.container, edges: .all)
+            } else {
+                Welcome()
             }
         }
         .toolbar {
@@ -199,6 +187,68 @@ struct Reader: View {
                 isSearchActive = false
                 sheetDisplayMode = nil
             }
+        }
+    }
+}
+
+struct SplitView: UIViewControllerRepresentable {
+    @Binding var url: URL?
+    @Binding var sidebarDisplayMode: SidebarDisplayMode?
+    
+    func makeUIViewController(context: Context) -> UISplitViewController {
+        let splitViewController = UISplitViewController(style: .doubleColumn)
+        splitViewController.delegate = context.coordinator
+        return splitViewController
+    }
+    
+    func updateUIViewController(_ splitViewController: UISplitViewController, context: Context) {
+        let secondary = url == nil ?
+            UIHostingController(rootView: Welcome()) :
+            UIHostingController(rootView: WebView(url: $url))
+        let secondaryNavigationController = UINavigationController(rootViewController: secondary)
+        secondaryNavigationController.navigationBar.isHidden = true
+        splitViewController.setViewController(secondaryNavigationController, for: .secondary)
+        
+        if let sidebarDisplayMode = sidebarDisplayMode {
+            let primary: UIViewController = {
+                switch sidebarDisplayMode {
+                case .outline:
+                    return UIHostingController(rootView: Outline())
+                case .bookmarks:
+                    return UIHostingController(rootView: Bookmarks(url: $url))
+                default:
+                    return UIViewController()
+                }
+            }()
+            let primaryNavigationController = UINavigationController(rootViewController: primary)
+            primaryNavigationController.navigationBar.isHidden = true
+            splitViewController.setViewController(primaryNavigationController, for: .primary)
+            splitViewController.show(.primary)
+        } else {
+            splitViewController.hide(.primary)
+        }
+    }
+    
+    func makeCoordinator() -> Coordinator { Coordinator(self) }
+    
+    class Coordinator: UISplitViewControllerDelegate {
+        let splitView: SplitView
+        
+        init (_ splitView: SplitView) {
+            self.splitView = splitView
+        }
+        
+        func splitViewController(_ svc: UISplitViewController, willShow column: UISplitViewController.Column) {
+            guard let navigationController = svc.viewController(for: column) as? UINavigationController else { return }
+            if navigationController.topViewController is UIHostingController<Outline> {
+                splitView.sidebarDisplayMode = .outline
+            } else if navigationController.topViewController is UIHostingController<Bookmarks> {
+                splitView.sidebarDisplayMode = .bookmarks
+            }
+        }
+        
+        func splitViewController(_ svc: UISplitViewController, willHide column: UISplitViewController.Column) {
+            splitView.sidebarDisplayMode = nil
         }
     }
 }
