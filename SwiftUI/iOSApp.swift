@@ -1,11 +1,12 @@
 //
-//  ViewController.swift
+//  iOSApp.swift
 //  Kiwix for iOS
 //
 //  Created by Chris Li on 5/21/22.
 //  Copyright © 2022 Chris Li. All rights reserved.
 //
 
+import Combine
 import UIKit
 import SwiftUI
 
@@ -74,6 +75,25 @@ private struct RootView: UIViewControllerRepresentable {
             }()
         }
         
+        // observe bookmark toggle notification
+        context.coordinator.bookmarkToggleObserver = NotificationCenter.default.addObserver(
+            forName: ReaderViewModel.bookmarkNotificationName, object: nil, queue: nil) { notification in
+            let isBookmarked = notification.object != nil
+            let hudController = HUDController()
+            hudController.modalPresentationStyle = .custom
+            hudController.transitioningDelegate = hudController
+            hudController.direction = isBookmarked ? .down : .up
+            hudController.imageView.image = isBookmarked ? #imageLiteral(resourceName: "StarAdd") : #imageLiteral(resourceName: "StarRemove")
+            hudController.label.text = isBookmarked ?
+                NSLocalizedString("Added", comment: "Bookmark HUD") :
+                NSLocalizedString("Removed", comment: "Bookmark HUD")
+            controller.present(hudController, animated: true) {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                    hudController.dismiss(animated: true, completion: nil)
+                }
+            }
+        }
+        
         return navigationController
     }
     
@@ -90,6 +110,7 @@ private struct RootView: UIViewControllerRepresentable {
     class Coordinator: NSObject, UISearchControllerDelegate, UISearchResultsUpdating {
         let rootView: RootView
         let searchController: UISearchController
+        var bookmarkToggleObserver: NSObjectProtocol?
         
         init(_ rootView: RootView) {
             self.rootView = rootView

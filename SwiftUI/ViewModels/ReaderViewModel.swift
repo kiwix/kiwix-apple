@@ -15,6 +15,8 @@ class ReaderViewModel: NSObject, ObservableObject, WKNavigationDelegate, WKScrip
     @Published private(set) var zimFileName: String = ""
     @Published private(set) var outlineItems = [OutlineItem]()
     
+    static let bookmarkNotificationName = NSNotification.Name(rawValue: "Bookmark.toggle")
+    
     let webView: WKWebView = {
         let config = WKWebViewConfiguration()
         config.setURLSchemeHandler(KiwixURLSchemeHandler(), forURLScheme: "kiwix")
@@ -126,6 +128,7 @@ class ReaderViewModel: NSObject, ObservableObject, WKNavigationDelegate, WKScrip
             bookmark.created = Date()
             try? context.save()
         }
+        NotificationCenter.default.post(name: ReaderViewModel.bookmarkNotificationName, object: url)
     }
     
     func deleteBookmark() {
@@ -137,6 +140,7 @@ class ReaderViewModel: NSObject, ObservableObject, WKNavigationDelegate, WKScrip
             context.delete(bookmark)
             try? context.save()
         }
+        NotificationCenter.default.post(name: ReaderViewModel.bookmarkNotificationName, object: nil)
     }
     
     // MARK: - Outlines
