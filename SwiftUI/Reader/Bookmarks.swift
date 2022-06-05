@@ -36,7 +36,7 @@ struct Bookmarks: View {
                     }
                 }
                 #endif
-            }.listStyle(.plain)
+            }
         }
     }
 }
