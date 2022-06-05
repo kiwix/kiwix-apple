@@ -70,43 +70,25 @@ struct BookmarkButton: View {
     }
     
     var body: some View {
-        Menu {
-            if horizontalSizeClass == .regular {
-                Button {
-                    withAnimation(sidebarDisplayMode == nil ?  .easeOut(duration: 0.18) : .easeIn(duration: 0.18)) {
-                        sidebarDisplayMode = sidebarDisplayMode != .bookmarks ? .bookmarks : nil
-                    }
-                } label: {
-                    Label(
-                        sidebarDisplayMode != .bookmarks ? "Show Bookmarks" : "Hide Bookmarks", systemImage: "list.star"
-                    )
-                }.help(sidebarDisplayMode != .bookmarks ? "Show bookmarks." : "Hide bookmarks.")
-            } else {
-                Button {
-                    sheetDisplayMode = .bookmarks
-                } label: {
-                    Label("Show Bookmarks", systemImage: "list.star")
-                }.help("Show bookmarks.")
-            }
-            if isBookmarked {
-                Button {
-                    viewModel.deleteBookmark()
-                } label: {
-                    Label("Remove Bookmark", systemImage: "star.slash.fill")
-                }.help("Un-bookmark the current article.")
-            } else {
-                Button {
-                    viewModel.createBookmark()
-                } label: {
-                    Label("Add Bookmark", systemImage: "star")
-                }
-                .disabled(url == nil)
-                .help("Bookmark the current article.")
-            }
-        } label: {
+        Button { } label: {
             Image(systemName: isBookmarked ? "star.fill" : "star")
-                .foregroundColor(isBookmarked ? .yellow : nil)
         }
+        .simultaneousGesture(TapGesture().onEnded {
+            if horizontalSizeClass == .regular {
+                sidebarDisplayMode = sidebarDisplayMode != .bookmarks ? .bookmarks : nil
+            } else {
+                sheetDisplayMode = .bookmarks
+            }
+        })
+        .simultaneousGesture(LongPressGesture().onEnded { _ in
+            if isBookmarked {
+                viewModel.deleteBookmark()
+            } else {
+                viewModel.createBookmark()
+            }
+        })
+        .foregroundColor(isBookmarked ? .yellow : nil)
+        .help("Show bookmarks. Long press to bookmark or unbookmark the current article.")
     }
     
     private var isBookmarked: Bool {

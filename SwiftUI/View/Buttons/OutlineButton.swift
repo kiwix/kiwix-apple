@@ -16,9 +16,7 @@ struct OutlineButton: View {
     var body: some View {
         Button {
             if horizontalSizeClass == .regular {
-                withAnimation(sidebarDisplayMode == nil ?  .easeOut(duration: 0.18) : .easeIn(duration: 0.18)) {
-                    sidebarDisplayMode = sidebarDisplayMode != .outline ? .outline : nil
-                }
+                sidebarDisplayMode = sidebarDisplayMode != .outline ? .outline : nil
             } else {
                 sheetDisplayMode = .outline
             }
