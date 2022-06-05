@@ -9,6 +9,7 @@
 import SwiftUI
 
 struct Welcome: View {
+    @Binding var url: URL?
     @FetchRequest(
         sortDescriptors: [NSSortDescriptor(keyPath: \ZimFile.size, ascending: false)],
         predicate: NSPredicate(format: "fileURLBookmark != nil"),
@@ -29,8 +30,7 @@ struct Welcome: View {
                         Section {
                             ForEach(zimFiles) { zimFile in
                                 Button {
-                                    guard let url = ZimFileService.shared.getMainPageURL(zimFileID: zimFile.fileID) else { return }
-                                    UIApplication.shared.open(url)
+                                    url = ZimFileService.shared.getMainPageURL(zimFileID: zimFile.fileID)
                                 } label: {
                                     ZimFileCell(zimFile, prominent: .title)
                                 }
@@ -47,6 +47,6 @@ struct Welcome: View {
 
 struct Welcome_Previews: PreviewProvider {
     static var previews: some View {
-        Welcome()
+        Welcome(url: .constant(nil))
     }
 }

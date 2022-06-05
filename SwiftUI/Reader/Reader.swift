@@ -48,7 +48,7 @@ struct Reader: View {
             .toolbar { SidebarButton() }
             Group {
                 if url == nil {
-                    Button("load main page") { }
+                    Welcome(url: $url)
                 } else {
                     WebView(url: $url).ignoresSafeArea(.container, edges: .all)
                 }
@@ -113,9 +113,11 @@ struct Reader: View {
     var body: some View {
         Group {
             if horizontalSizeClass == .regular {
-                SplitView(url: $url, sidebarDisplayMode: $sidebarDisplayMode).ignoresSafeArea(.container, edges: .all)
+                SplitView(url: $url, sidebarDisplayMode: $sidebarDisplayMode).ignoresSafeArea(.container)
+            } else if url == nil {
+                Welcome(url: $url)
             } else {
-                Welcome()
+                WebView(url: $url)
             }
         }
         .toolbar {
@@ -203,8 +205,8 @@ struct SplitView: UIViewControllerRepresentable {
     
     func updateUIViewController(_ splitViewController: UISplitViewController, context: Context) {
         let secondary = url == nil ?
-            UIHostingController(rootView: Welcome()) :
-            UIHostingController(rootView: WebView(url: $url))
+            UIHostingController(rootView: Welcome(url: $url)) :
+        UIHostingController(rootView: WebView(url: $url).ignoresSafeArea(.container, edges: [.horizontal, .bottom]))
         let secondaryNavigationController = UINavigationController(rootViewController: secondary)
         secondaryNavigationController.navigationBar.isHidden = true
         splitViewController.setViewController(secondaryNavigationController, for: .secondary)
