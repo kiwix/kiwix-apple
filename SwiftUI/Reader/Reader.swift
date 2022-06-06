@@ -113,23 +113,35 @@ struct Reader: View {
     var body: some View {
         GeometryReader { proxy in
             HStack(spacing: 0) {
-                if horizontalSizeClass == .regular, sidebarDisplayMode == .outline {
-                    Outline()
-                        .listStyle(.plain)
-                        .frame(width: min(320, proxy.size.width * 0.35))
-                    Divider().ignoresSafeArea(.all, edges: .bottom)
+                Group {
+                    if horizontalSizeClass == .regular, sidebarDisplayMode == .outline {
+                        HStack(spacing: 0) {
+                            Outline()
+                                .listStyle(.plain)
+                                .frame(width: min(320, proxy.size.width * 0.35))
+                            Divider()
+                        }
+                    }
+                    if horizontalSizeClass == .regular, sidebarDisplayMode == .bookmarks {
+                        HStack(spacing: 0) {
+                            Bookmarks(url: $url)
+                                .listStyle(.plain)
+                                .frame(width: min(320, proxy.size.width * 0.35))
+                            Divider()
+                        }
+                    }
                 }
-                if horizontalSizeClass == .regular, sidebarDisplayMode == .bookmarks {
-                    Bookmarks(url: $url)
-                        .listStyle(.plain)
-                        .frame(width: min(320, proxy.size.width * 0.35))
-                    Divider().ignoresSafeArea(.all, edges: .bottom)
+                .transition(.move(edge: .leading))
+                .opacity(sidebarDisplayMode == nil ? 0 : 1)
+                .animation(Animation.easeInOut, value: sidebarDisplayMode)
+                Group {
+                    if url == nil {
+                        Welcome(url: $url)
+                    } else {
+                        WebView(url: $url).ignoresSafeArea(.container, edges: [.horizontal, .bottom])
+                    }
                 }
-                if url == nil {
-                    Welcome(url: $url)
-                } else {
-                    WebView(url: $url).ignoresSafeArea(.container, edges: [.horizontal, .bottom])
-                }
+                .animation(Animation.easeInOut, value: sidebarDisplayMode)
             }
         }
         .toolbar {
