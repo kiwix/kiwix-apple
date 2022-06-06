@@ -113,26 +113,16 @@ struct Reader: View {
     var body: some View {
         GeometryReader { proxy in
             HStack(spacing: 0) {
-                Group {
-                    if horizontalSizeClass == .regular, sidebarDisplayMode == .outline {
-                        HStack(spacing: 0) {
-                            Outline()
-                                .listStyle(.plain)
-                                .frame(width: min(320, proxy.size.width * 0.35))
-                            Divider()
-                        }
-                    }
-                    if horizontalSizeClass == .regular, sidebarDisplayMode == .bookmarks {
-                        HStack(spacing: 0) {
-                            Bookmarks(url: $url)
-                                .listStyle(.plain)
-                                .frame(width: min(320, proxy.size.width * 0.35))
-                            Divider()
-                        }
+                HStack(spacing: 0) {
+                    if sidebarDisplayMode == .outline {
+                        Outline().listStyle(.plain).frame(width: min(320, proxy.size.width * 0.35))
+                        Divider()
+                    } else if sidebarDisplayMode == .bookmarks {
+                        Bookmarks(url: $url).listStyle(.plain).frame(width: min(320, proxy.size.width * 0.35))
+                        Divider()
                     }
                 }
-                .transition(.move(edge: .leading))
-                .opacity(sidebarDisplayMode == nil ? 0 : 1)
+                .transition(.opacity)
                 .animation(Animation.easeInOut, value: sidebarDisplayMode)
                 Group {
                     if url == nil {
