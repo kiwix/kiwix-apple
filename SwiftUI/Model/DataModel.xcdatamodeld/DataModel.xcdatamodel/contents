@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="20086" systemVersion="21E258" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="Bookmark" representedClassName=".Bookmark" syncable="YES">
+        <attribute name="articleURL" attributeType="URI"/>
+        <attribute name="created" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="snippet" optional="YES" attributeType="String" spotlightIndexingEnabled="YES"/>
+        <attribute name="thumbImageURL" optional="YES" attributeType="URI"/>
+        <attribute name="title" attributeType="String" spotlightIndexingEnabled="YES"/>
+        <uniquenessConstraints>
+            <uniquenessConstraint>
+                <constraint value="articleURL"/>
+            </uniquenessConstraint>
+        </uniquenessConstraints>
+    </entity>
+    <entity name="DownloadTask" representedClassName=".DownloadTask" syncable="YES">
+        <attribute name="created" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="downloadedBytes" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="error" optional="YES" attributeType="String"/>
+        <attribute name="fileID" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="resumeData" optional="YES" attributeType="Binary"/>
+        <attribute name="totalBytes" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <relationship name="zimFile" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ZimFile" inverseName="downloadTask" inverseEntity="ZimFile"/>
+        <uniquenessConstraints>
+            <uniquenessConstraint>
+                <constraint value="fileID"/>
+            </uniquenessConstraint>
+        </uniquenessConstraints>
+    </entity>
+    <entity name="ZimFile" representedClassName=".ZimFile" syncable="YES">
+        <attribute name="articleCount" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="category" optional="YES" attributeType="String"/>
+        <attribute name="created" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="downloadURL" optional="YES" attributeType="URI"/>
+        <attribute name="faviconData" optional="YES" attributeType="Binary"/>
+        <attribute name="faviconURL" optional="YES" attributeType="URI"/>
+        <attribute name="fileDescription" attributeType="String"/>
+        <attribute name="fileID" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="fileURLBookmark" optional="YES" attributeType="Binary"/>
+        <attribute name="flavor" optional="YES" attributeType="String"/>
+        <attribute name="hasDetails" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
+        <attribute name="hasPictures" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
+        <attribute name="hasVideos" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
+        <attribute name="includedInSearch" attributeType="Boolean" defaultValueString="YES" usesScalarValueType="YES"/>
+        <attribute name="languageCode" attributeType="String"/>
+        <attribute name="mediaCount" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="name" attributeType="String"/>
+        <attribute name="persistentID" attributeType="String"/>
+        <attribute name="size" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <relationship name="downloadTask" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="DownloadTask" inverseName="zimFile" inverseEntity="DownloadTask"/>
+        <fetchIndex name="category">
+            <fetchIndexElement property="category" type="Binary" order="ascending"/>
+        </fetchIndex>
+        <fetchIndex name="name">
+            <fetchIndexElement property="name" type="Binary" order="ascending"/>
+        </fetchIndex>
+        <uniquenessConstraints>
+            <uniquenessConstraint>
+                <constraint value="fileID"/>
+            </uniquenessConstraint>
+        </uniquenessConstraints>
+    </entity>
+    <elements>
+        <element name="Bookmark" positionX="-63" positionY="-18" width="128" height="104"/>
+        <element name="DownloadTask" positionX="-63" positionY="135" width="128" height="134"/>
+        <element name="ZimFile" positionX="-63" positionY="18" width="128" height="329"/>
+    </elements>
+</model>

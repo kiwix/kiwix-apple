@@ -60,14 +60,16 @@ extension ZimFileService {
     // MARK: - URL Bookmark
     
     static func getBookmarkData(url: URL) -> Data? {
+        _ = url.startAccessingSecurityScopedResource()
+        defer { url.stopAccessingSecurityScopedResource() }
         #if os(macOS)
-        try? url.bookmarkData(
+        return try? url.bookmarkData(
             options: [.withSecurityScope, .securityScopeAllowOnlyReadAccess],
             includingResourceValuesForKeys: nil,
             relativeTo: nil
         )
         #else
-        try? url.bookmarkData()
+        return try? url.bookmarkData(options: .minimalBookmark)
         #endif
     }
     

@@ -7,15 +7,15 @@
 //
 
 import CoreLocation
-#if canImport(NaturalLanguage)
-    import NaturalLanguage
-#endif
+import NaturalLanguage
+import UIKit
+
 import Fuzi
 
 class Parser {
     private let document: HTMLDocument
     
-    static private let boldFont = NSUIFont.systemFont(ofSize: 12.0, weight: .medium)
+    static private let boldFont = UIFont.systemFont(ofSize: 12.0, weight: .medium)
     
     init(document: HTMLDocument) {
         self.document = document
