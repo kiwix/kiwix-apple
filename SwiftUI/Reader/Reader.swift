@@ -114,10 +114,10 @@ struct Reader: View {
         GeometryReader { proxy in
             HStack(spacing: 0) {
                 HStack(spacing: 0) {
-                    if sidebarDisplayMode == .outline {
+                    if sidebarDisplayMode == .outline, horizontalSizeClass == .regular {
                         Outline().listStyle(.plain).frame(width: min(320, proxy.size.width * 0.35))
                         Divider()
-                    } else if sidebarDisplayMode == .bookmarks {
+                    } else if sidebarDisplayMode == .bookmarks, horizontalSizeClass == .regular {
                         Bookmarks(url: $url).listStyle(.plain).frame(width: min(320, proxy.size.width * 0.35))
                         Divider()
                     }
@@ -128,7 +128,7 @@ struct Reader: View {
                     if url == nil {
                         Welcome(url: $url)
                     } else {
-                        WebView(url: $url).ignoresSafeArea(.container, edges: [.horizontal, .bottom])
+                        WebView(url: $url).ignoresSafeArea(.container, edges: .all)
                     }
                 }
                 .animation(Animation.easeInOut, value: sidebarDisplayMode)
