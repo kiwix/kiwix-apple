@@ -33,7 +33,7 @@ struct Welcome: View {
                                     url = ZimFileService.shared.getMainPageURL(zimFileID: zimFile.fileID)
                                 } label: {
                                     ZimFileCell(zimFile, prominent: .title)
-                                }
+                                }.buttonStyle(.plain)
                             }
                         } header: {
                             Text("Main Page").font(.title3).fontWeight(.semibold)
@@ -42,11 +42,5 @@ struct Welcome: View {
                 }
             }
         }
-    }
-}
-
-struct Welcome_Previews: PreviewProvider {
-    static var previews: some View {
-        Welcome(url: .constant(nil))
     }
 }
