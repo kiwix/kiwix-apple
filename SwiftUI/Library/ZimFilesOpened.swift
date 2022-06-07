@@ -38,7 +38,7 @@ struct ZimFilesOpened: View {
                 }.modifier(LibraryGridPadding(width: proxy.size.width))
             }
         }
-        .navigationTitle(LibraryTopic.new.name)
+        .navigationTitle(LibraryTopic.opened.name)
         .modifier(ZimFileDetailPanel(zimFile: selected))
         .modifier(FileImporter(isPresented: $isFileImporterPresented))
         .toolbar {
