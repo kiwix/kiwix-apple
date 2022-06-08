@@ -24,23 +24,20 @@ struct ZimFilesNew: View {
     @State private var searchText = ""
     
     var body: some View {
-        GeometryReader { proxy in
-            ScrollView {
-                LazyVGrid(
-                    columns: ([GridItem(.adaptive(minimum: 250, maximum: 400), spacing: 12)]),
-                    alignment: .leading,
-                    spacing: 12
-                ) {
-                    ForEach(zimFiles) { zimFile in
-                        Button { selected = zimFile } label: { ZimFileCell(zimFile, prominent: .title) }
-                            .buttonStyle(.plain)
-                            .modifier(ZimFileContextMenu(selected: $selected, zimFile: zimFile))
-                            .modifier(ZimFileSelection(selected: $selected, zimFile: zimFile))
-                    }
-                }.modifier(LibraryGridPadding(width: proxy.size.width))
+        LazyVGrid(
+            columns: ([GridItem(.adaptive(minimum: 250, maximum: 400), spacing: 12)]),
+            alignment: .leading,
+            spacing: 12
+        ) {
+            ForEach(zimFiles) { zimFile in
+                Button { selected = zimFile } label: { ZimFileCell(zimFile, prominent: .title) }
+                    .buttonStyle(.plain)
+                    .modifier(ZimFileContextMenu(selected: $selected, zimFile: zimFile))
+                    .modifier(ZimFileSelection(selected: $selected, zimFile: zimFile))
             }
         }
         .navigationTitle(LibraryTopic.new.name)
+        .modifier(GridBasics())
         .modifier(ZimFileDetailPanel(zimFile: selected))
         .searchable(text: $searchText)
         .onChange(of: searchText) { searchText in

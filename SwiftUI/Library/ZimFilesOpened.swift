@@ -23,22 +23,18 @@ struct ZimFilesOpened: View {
             if zimFiles.isEmpty {
                 Message(text: "No zim file opened")
             } else {
-                GeometryReader { proxy in
-                    ScrollView {
-                        LazyVGrid(
-                            columns: ([GridItem(.adaptive(minimum: 250, maximum: 400), spacing: 12)]),
-                            alignment: .leading,
-                            spacing: 12
-                        ) {
-                            ForEach(zimFiles) { zimFile in
-                                Button { selected = zimFile } label: { ZimFileCell(zimFile, prominent: .title) }
-                                    .buttonStyle(.plain)
-                                    .modifier(ZimFileContextMenu(selected: $selected, zimFile: zimFile))
-                                    .modifier(ZimFileSelection(selected: $selected, zimFile: zimFile))
-                            }
-                        }.modifier(LibraryGridPadding(width: proxy.size.width))
+                LazyVGrid(
+                    columns: ([GridItem(.adaptive(minimum: 250, maximum: 400), spacing: 12)]),
+                    alignment: .leading,
+                    spacing: 12
+                ) {
+                    ForEach(zimFiles) { zimFile in
+                        Button { selected = zimFile } label: { ZimFileCell(zimFile, prominent: .title) }
+                            .buttonStyle(.plain)
+                            .modifier(ZimFileContextMenu(selected: $selected, zimFile: zimFile))
+                            .modifier(ZimFileSelection(selected: $selected, zimFile: zimFile))
                     }
-                }
+                }.modifier(GridBasics())
             }
         }
         .navigationTitle(LibraryTopic.opened.name)

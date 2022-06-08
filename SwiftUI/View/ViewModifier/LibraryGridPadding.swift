@@ -20,3 +20,20 @@ struct LibraryGridPadding: ViewModifier {
         #endif
     }
 }
+
+struct GridBasics: ViewModifier {
+    func body(content: Content) -> some View {
+        #if os(macOS)
+        ScrollView {
+            content.padding(.all)
+        }
+        #elseif os(iOS)
+        GeometryReader { proxy in
+            ScrollView {
+                content.padding([.horizontal, .bottom], proxy.size.width > 375 ? 20 : 16)
+            }
+        }
+        #endif
+    }
+}
+
