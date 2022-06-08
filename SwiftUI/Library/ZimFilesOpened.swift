@@ -34,7 +34,7 @@ struct ZimFilesOpened: View {
                             .modifier(ZimFileContextMenu(selected: $selected, zimFile: zimFile))
                             .modifier(ZimFileSelection(selected: $selected, zimFile: zimFile))
                     }
-                }.modifier(GridBasics())
+                }.modifier(GridCommon())
             }
         }
         .navigationTitle(LibraryTopic.opened.name)
