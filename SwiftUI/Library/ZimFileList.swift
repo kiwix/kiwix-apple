@@ -62,18 +62,6 @@ struct ZimFileList: View {
     }
 }
 
-private struct Searchable: ViewModifier {
-    @Binding var searchText: String
-    
-    func body(content: Content) -> some View {
-        if #available(iOS 15.0, macOS 12.0, *) {
-            content.searchable(text: $searchText)
-        } else {
-            content
-        }
-    }
-}
-
 private struct ZimFileListStyle: ViewModifier {
     func body(content: Content) -> some View {
         #if os(macOS)

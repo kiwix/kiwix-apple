@@ -18,11 +18,7 @@ struct LibraryContent: View {
         case .downloads:
             ZimFilesDownloads()
         case .new:
-            if #available(iOS 15.0, *) {
-                ZimFilesNew()
-            } else {
-                EmptyView()
-            }
+            ZimFilesNew()
         case .categories:
             List(Category.allCases) { category in
                 NavigationLink {

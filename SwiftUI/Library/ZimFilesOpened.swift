@@ -21,7 +21,7 @@ struct ZimFilesOpened: View {
     var body: some View {
         Group {
             if zimFiles.isEmpty {
-                Message(text: "No zim file opened")
+                Message(text: "No opened zim file")
             } else {
                 LazyVGrid(
                     columns: ([GridItem(.adaptive(minimum: 250, maximum: 400), spacing: 12)]),
