@@ -8,34 +8,37 @@
 
 import SwiftUI
 
-@available(iOS 15.0, macOS 12.0, *)
+/// Show a grid of zim files that are opened in the app.
 struct ZimFilesOpened: View {
     @FetchRequest(
-        sortDescriptors: [SortDescriptor(\ZimFile.size, order: .reverse)],
-        predicate: NSCompoundPredicate(andPredicateWithSubpredicates: [
-            NSPredicate(format: "languageCode == %@", "en"),
-            NSPredicate(format: "fileURLBookmark != nil")
-        ]),
+        sortDescriptors: [NSSortDescriptor(keyPath: \ZimFile.size, ascending: false)],
+        predicate: ZimFile.openedPredicate,
         animation: .easeInOut
     ) private var zimFiles: FetchedResults<ZimFile>
     @State private var isFileImporterPresented: Bool = false
     @State private var selected: ZimFile?
     
     var body: some View {
-        GeometryReader { proxy in
-            ScrollView {
-                LazyVGrid(
-                    columns: ([GridItem(.adaptive(minimum: 250, maximum: 400), spacing: 12)]),
-                    alignment: .leading,
-                    spacing: 12
-                ) {
-                    ForEach(zimFiles) { zimFile in
-                        Button { selected = zimFile } label: { ZimFileCell(zimFile, prominent: .title) }
-                            .buttonStyle(.plain)
-                            .modifier(ZimFileContextMenu(selected: $selected, zimFile: zimFile))
-                            .modifier(ZimFileSelection(selected: $selected, zimFile: zimFile))
+        Group {
+            if zimFiles.isEmpty {
+                Message(text: "No zim file opened")
+            } else {
+                GeometryReader { proxy in
+                    ScrollView {
+                        LazyVGrid(
+                            columns: ([GridItem(.adaptive(minimum: 250, maximum: 400), spacing: 12)]),
+                            alignment: .leading,
+                            spacing: 12
+                        ) {
+                            ForEach(zimFiles) { zimFile in
+                                Button { selected = zimFile } label: { ZimFileCell(zimFile, prominent: .title) }
+                                    .buttonStyle(.plain)
+                                    .modifier(ZimFileContextMenu(selected: $selected, zimFile: zimFile))
+                                    .modifier(ZimFileSelection(selected: $selected, zimFile: zimFile))
+                            }
+                        }.modifier(LibraryGridPadding(width: proxy.size.width))
                     }
-                }.modifier(LibraryGridPadding(width: proxy.size.width))
+                }
             }
         }
         .navigationTitle(LibraryTopic.opened.name)
@@ -49,5 +52,11 @@ struct ZimFilesOpened: View {
             }
             .help("Open a zim file")
         }
+    }
+}
+
+struct ZimFilesOpened_Previews: PreviewProvider {
+    static var previews: some View {
+        ZimFilesOpened()
     }
 }

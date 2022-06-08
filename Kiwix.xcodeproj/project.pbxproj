@@ -1014,8 +1014,8 @@
 			children = (
 				97DE2B982839D01B00C63D9B /* macOS-Info.plist */,
 				973A0E04283105EA00B41E71 /* iOS-Info.plist */,
-				97E94B1D271EF250005B0295 /* Assets.xcassets */,
 				97E94B22271EF250005B0295 /* Kiwix.entitlements */,
+				97E94B1D271EF250005B0295 /* Assets.xcassets */,
 				97E94B20271EF250005B0295 /* Preview Assets.xcassets */,
 			);
 			path = Support;
