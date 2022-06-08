@@ -8,30 +8,30 @@
 
 import SwiftUI
 
+/// Show zim file download tasks.
 struct ZimFilesDownloads: View {
-    @FetchRequest private var downloadTasks: FetchedResults<DownloadTask>
-    @State private var searchText = ""
-    @State private var selectedZimFile: ZimFile?
-    
-    init() {
-        self._downloadTasks = FetchRequest<DownloadTask>(
-            sortDescriptors: [NSSortDescriptor(keyPath: \DownloadTask.created, ascending: false)],
-            animation: .easeInOut
-        )
-    }
+    @FetchRequest(
+        sortDescriptors: [NSSortDescriptor(keyPath: \DownloadTask.created, ascending: false)],
+        animation: .easeInOut
+    ) private var downloadTasks: FetchedResults<DownloadTask>
+    @State private var selected: ZimFile?
     
     var body: some View {
-        List(downloadTasks) { downloadTask in
-            if #available(iOS 15.0, *) {
-                Text(downloadTask.zimFile?.name ?? "Unknown").contextMenu {
-                    Button("Cancel") {
-                        Downloads.shared.cancel(zimFileID: downloadTask.fileID)
+        Group {
+            if downloadTasks.isEmpty {
+                Message(text: "Download tasks")
+            } else {
+                List(downloadTasks) { downloadTask in
+                    Text(downloadTask.zimFile?.name ?? "Unknown").contextMenu {
+                        Button("Cancel") {
+                            Downloads.shared.cancel(zimFileID: downloadTask.fileID)
+                        }
                     }
                 }
-            } else {
-                Text(downloadTask.zimFile?.name ?? "Unknown")
             }
         }
+        .navigationTitle(LibraryTopic.downloads.name)
+        .modifier(ZimFileDetailPanel(zimFile: selected))
     }
 }
 
