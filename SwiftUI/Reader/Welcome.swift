@@ -32,7 +32,7 @@ struct Welcome: View {
                                 Button {
                                     url = ZimFileService.shared.getMainPageURL(zimFileID: zimFile.fileID)
                                 } label: {
-                                    ZimFileCell(zimFile, prominent: .title)
+                                    ZimFileCell(zimFile, prominent: .name)
                                 }.buttonStyle(.plain)
                             }
                         } header: {

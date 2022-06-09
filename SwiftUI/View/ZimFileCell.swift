@@ -23,28 +23,7 @@ struct ZimFileCell: View {
     var body: some View {
         VStack(spacing: 8) {
             switch prominent {
-            case .size:
-                HStack(alignment: .top) {
-                    Text(ZimFileCell.sizeFormatter.string(fromByteCount: zimFile.size))
-                        .fontWeight(.semibold)
-                        .foregroundColor(.primary)
-                    Spacer()
-                    if #available(iOS 15.0, *), let flavor = Flavor(rawValue: zimFile.flavor) {
-                        FlavorTag(flavor)
-                    }
-                }
-                HStack(alignment: .bottom) {
-                    VStack(alignment: .leading) {
-                        if #available(iOS 15.0, *) {
-                            Text("\(zimFile.articleCount.formatted(.number.notation(.compactName))) articles")
-                                .font(.caption)
-                        }
-                        Text(ZimFileCell.dateFormatter.string(from: zimFile.created))
-                            .font(.caption)
-                    }.foregroundColor(.secondary)
-                    Spacer()
-                }
-            case .title:
+            case .name:
                 HStack {
                     Text(
                         zimFile.category == Category.stackExchange.rawValue ?
@@ -72,6 +51,27 @@ struct ZimFileCell: View {
                         FlavorTag(flavor)
                     }
                 }
+            case .size:
+                HStack(alignment: .top) {
+                    Text(ZimFileCell.sizeFormatter.string(fromByteCount: zimFile.size))
+                        .fontWeight(.semibold)
+                        .foregroundColor(.primary)
+                    Spacer()
+                    if #available(iOS 15.0, *), let flavor = Flavor(rawValue: zimFile.flavor) {
+                        FlavorTag(flavor)
+                    }
+                }
+                HStack(alignment: .bottom) {
+                    VStack(alignment: .leading) {
+                        if #available(iOS 15.0, *) {
+                            Text("\(zimFile.articleCount.formatted(.number.notation(.compactName))) articles")
+                                .font(.caption)
+                        }
+                        Text(ZimFileCell.dateFormatter.string(from: zimFile.created))
+                            .font(.caption)
+                    }.foregroundColor(.secondary)
+                    Spacer()
+                }
             }
         }
         .padding()
@@ -93,7 +93,7 @@ struct ZimFileCell: View {
     }()
     
     enum Prominent {
-        case size, title
+        case name, size
     }
 }
 
@@ -111,28 +111,27 @@ struct ZimFileCell_Previews: PreviewProvider {
         zimFile.name = "Wikipedia Zim File Name"
         zimFile.persistentID = ""
         zimFile.size = 1000000000
-        
         return zimFile
     }()
     
     static var previews: some View {
         Group {
-            ZimFileCell(ZimFileCell_Previews.zimFile)
+            ZimFileCell(ZimFileCell_Previews.zimFile, prominent: .name)
                 .preferredColorScheme(.light)
                 .padding()
                 .frame(width: 300, height: 100)
                 .previewLayout(.sizeThatFits)
-            ZimFileCell(ZimFileCell_Previews.zimFile)
+            ZimFileCell(ZimFileCell_Previews.zimFile, prominent: .name)
                 .preferredColorScheme(.dark)
                 .padding()
                 .frame(width: 300, height: 100)
                 .previewLayout(.sizeThatFits)
-            ZimFileCell(ZimFileCell_Previews.zimFile, prominent: .title)
+            ZimFileCell(ZimFileCell_Previews.zimFile)
                 .preferredColorScheme(.light)
                 .padding()
                 .frame(width: 300, height: 100)
                 .previewLayout(.sizeThatFits)
-            ZimFileCell(ZimFileCell_Previews.zimFile, prominent: .title)
+            ZimFileCell(ZimFileCell_Previews.zimFile)
                 .preferredColorScheme(.dark)
                 .padding()
                 .frame(width: 300, height: 100)

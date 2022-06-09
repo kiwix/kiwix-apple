@@ -28,12 +28,12 @@ struct ZimFilesNew: View {
                 Message(text: "No new zim file")
             } else {
                 LazyVGrid(
-                    columns: ([GridItem(.adaptive(minimum: 250, maximum: 400), spacing: 12)]),
+                    columns: ([GridItem(.adaptive(minimum: 250, maximum: 500), spacing: 12)]),
                     alignment: .leading,
                     spacing: 12
                 ) {
                     ForEach(zimFiles) { zimFile in
-                        Button { selected = zimFile } label: { ZimFileCell(zimFile, prominent: .title) }
+                        Button { selected = zimFile } label: { ZimFileCell(zimFile, prominent: .name) }
                             .buttonStyle(.plain)
                             .modifier(ZimFileContextMenu(selected: $selected, zimFile: zimFile))
                             .modifier(ZimFileSelection(selected: $selected, zimFile: zimFile))

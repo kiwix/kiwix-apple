@@ -29,7 +29,7 @@ struct ZimFilesOpened: View {
                     spacing: 12
                 ) {
                     ForEach(zimFiles) { zimFile in
-                        Button { selected = zimFile } label: { ZimFileCell(zimFile, prominent: .title) }
+                        Button { selected = zimFile } label: { ZimFileCell(zimFile, prominent: .name) }
                             .buttonStyle(.plain)
                             .modifier(ZimFileContextMenu(selected: $selected, zimFile: zimFile))
                             .modifier(ZimFileSelection(selected: $selected, zimFile: zimFile))

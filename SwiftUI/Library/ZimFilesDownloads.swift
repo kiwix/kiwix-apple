@@ -6,6 +6,7 @@
 //  Copyright © 2022 Chris Li. All rights reserved.
 //
 
+import CoreData
 import SwiftUI
 
 /// Show zim file download tasks.
@@ -21,13 +22,24 @@ struct ZimFilesDownloads: View {
             if downloadTasks.isEmpty {
                 Message(text: "Download tasks")
             } else {
-                List(downloadTasks) { downloadTask in
-                    Text(downloadTask.zimFile?.name ?? "Unknown").contextMenu {
-                        Button("Cancel") {
-                            Downloads.shared.cancel(zimFileID: downloadTask.fileID)
+                LazyVGrid(
+                    columns: ([GridItem(.adaptive(minimum: 250, maximum: 500), spacing: 12)]),
+                    alignment: .leading,
+                    spacing: 12
+                ) {
+                    ForEach(downloadTasks) { downloadTask in
+                        HStack {
+                            if let zimFile = downloadTask.zimFile {
+                                Text(zimFile.name)
+                            }
+                            ProgressView(
+                                value: Float(downloadTask.downloadedBytes),
+                                total: Float(downloadTask.totalBytes)
+                            )
                         }
+                        
                     }
-                }
+                }.modifier(GridCommon())
             }
         }
         .navigationTitle(LibraryTopic.downloads.name)
