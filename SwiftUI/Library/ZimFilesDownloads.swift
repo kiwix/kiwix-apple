@@ -28,16 +28,7 @@ struct ZimFilesDownloads: View {
                     spacing: 12
                 ) {
                     ForEach(downloadTasks) { downloadTask in
-                        HStack {
-                            if let zimFile = downloadTask.zimFile {
-                                Text(zimFile.name)
-                            }
-                            ProgressView(
-                                value: Float(downloadTask.downloadedBytes),
-                                total: Float(downloadTask.totalBytes)
-                            )
-                        }
-                        
+                        DownloadTaskCell(downloadTask)
                     }
                 }.modifier(GridCommon())
             }

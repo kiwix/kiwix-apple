@@ -106,7 +106,7 @@ struct ZimFileCell_Previews: PreviewProvider {
         zimFile.flavor = "mini"
         zimFile.languageCode = "en"
         zimFile.mediaCount = 100
-        zimFile.name = "Wikipedia Zim File Name"
+        zimFile.name = "Wikipedia"
         zimFile.persistentID = ""
         zimFile.size = 1000000000
         return zimFile
