@@ -28,7 +28,12 @@ struct ZimFilesDownloads: View {
                     spacing: 12
                 ) {
                     ForEach(downloadTasks) { downloadTask in
-                        DownloadTaskCell(downloadTask)
+                        if let zimFile = downloadTask.zimFile {
+                            Button { selected = zimFile } label: { DownloadTaskCell(downloadTask) }
+                                .buttonStyle(.plain)
+                                .modifier(ZimFileContextMenu(selected: $selected, zimFile: zimFile))
+                                .modifier(ZimFileSelection(selected: $selected, zimFile: zimFile))
+                        }
                     }
                 }.modifier(GridCommon())
             }
