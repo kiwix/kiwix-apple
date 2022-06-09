@@ -10,6 +10,7 @@ import SwiftUI
 
 struct CellBackground: ViewModifier {
     @Environment(\.colorScheme) var colorScheme: ColorScheme
+    
     let isHovering: Bool
     
     func body(content: Content) -> some View {
@@ -21,16 +22,20 @@ struct CellBackground: ViewModifier {
     private var backgroundColor: Color {
         switch (colorScheme, isHovering) {
         case (.dark, true):
-            return Color.black.opacity(0.2)
+            return Color(white: 0.25)
         case (.dark, false):
-            return Color.gray.opacity(0.2)
+            #if os(macOS)
+            return Color(white: 0.125)
+            #elseif os(iOS)
+            return Color(white: 0.175)
+            #endif
         case (.light, true):
-            return Color.gray.opacity(0.2)
+            return Color(white: 0.9)
         case (.light, false), (_, _):
             #if os(macOS)
             return Color.white
             #elseif os(iOS)
-            return Color.gray.opacity(0.1)
+            return Color(white: 0.96)
             #endif
         }
     }
