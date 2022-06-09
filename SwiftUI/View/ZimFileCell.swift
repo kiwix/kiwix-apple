@@ -15,7 +15,7 @@ struct ZimFileCell: View {
     let zimFile: ZimFile
     let prominent: Prominent
     
-    init(_ zimFile: ZimFile, prominent: Prominent = .size) {
+    init(_ zimFile: ZimFile, prominent: Prominent) {
         self.zimFile = zimFile
         self.prominent = prominent
     }
@@ -31,13 +31,11 @@ struct ZimFileCell: View {
                         zimFile.name
                     ).fontWeight(.semibold).foregroundColor(.primary).lineLimit(1)
                     Spacer()
-                    if #available(iOS 15.0, *) {
-                        Favicon(
-                            category: Category(rawValue: zimFile.category) ?? .other,
-                            imageData: zimFile.faviconData,
-                            imageURL: zimFile.faviconURL
-                        ).frame(height: 20)
-                    }
+                    Favicon(
+                        category: Category(rawValue: zimFile.category) ?? .other,
+                        imageData: zimFile.faviconData,
+                        imageURL: zimFile.faviconURL
+                    ).frame(height: 20)
                 }
                 HStack(alignment: .bottom) {
                     VStack(alignment: .leading) {
@@ -126,12 +124,12 @@ struct ZimFileCell_Previews: PreviewProvider {
                 .padding()
                 .frame(width: 300, height: 100)
                 .previewLayout(.sizeThatFits)
-            ZimFileCell(ZimFileCell_Previews.zimFile)
+            ZimFileCell(ZimFileCell_Previews.zimFile, prominent: .size)
                 .preferredColorScheme(.light)
                 .padding()
                 .frame(width: 300, height: 100)
                 .previewLayout(.sizeThatFits)
-            ZimFileCell(ZimFileCell_Previews.zimFile)
+            ZimFileCell(ZimFileCell_Previews.zimFile, prominent: .size)
                 .preferredColorScheme(.dark)
                 .padding()
                 .frame(width: 300, height: 100)
