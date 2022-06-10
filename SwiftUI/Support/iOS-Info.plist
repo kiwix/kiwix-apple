@@ -26,6 +26,8 @@
 			</array>
 		</dict>
 	</array>
+	<key>UIFileSharingEnabled</key>
+	<true/>
 	<key>UTExportedTypeDeclarations</key>
 	<array>
 		<dict>
