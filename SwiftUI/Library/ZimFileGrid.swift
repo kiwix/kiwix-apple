@@ -8,6 +8,7 @@
 
 import SwiftUI
 
+// A grid of zim files of the same category broken down into sections by title.
 @available(iOS 15.0, macOS 12.0, *)
 struct ZimFileGrid: View {
     @SectionedFetchRequest private var sections: SectionedFetchResults<String, ZimFile>
@@ -29,10 +30,12 @@ struct ZimFileGrid: View {
     }
     
     var body: some View {
-        GeometryReader { proxy in
-            ScrollView {
+        Group {
+            if sections.isEmpty {
+                Message(text: "No zim files under this category.")
+            } else {
                 LazyVGrid(
-                    columns: ([buildGridItem(gridWidth: proxy.size.width)]),
+                    columns: ([gridItem]),
                     alignment: .leading,
                     spacing: 12
                 ) {
@@ -69,21 +72,51 @@ struct ZimFileGrid: View {
                             }
                         }
                     }
-                }.modifier(LibraryGridPadding(width: proxy.size.width))
+                }.modifier(GridCommon())
             }
         }
         .navigationTitle(category.description)
         .modifier(ZimFileDetailPanel(zimFile: selected))
-        .onChange(of: category) { _ in
-            selected = nil
-        }
+        .onChange(of: category) { _ in selected = nil }
     }
     
-    private func buildGridItem(gridWidth: CGFloat) -> GridItem {
+    var gridItem: GridItem {
         #if os(macOS)
         GridItem(.adaptive(minimum: 200, maximum: 400), spacing: 12)
         #elseif os(iOS)
         GridItem(.adaptive(minimum: 150, maximum: 400), spacing: 12)
         #endif
+    }
+}
+
+private struct SectionHeader: View {
+    let title: String
+    let category: Category
+    let imageData: Data?
+    let imageURL: URL?
+    
+    var body: some View {
+        Label {
+            Text(title).font(.title3).fontWeight(.semibold)
+        } icon: {
+            Favicon(category: category, imageData: imageData, imageURL: imageURL).frame(height: 20)
+        }
+    }
+}
+
+struct SectionHeader_Previews: PreviewProvider {
+    static var previews: some View {
+        SectionHeader(
+            title: "Best of Wikipedia",
+            category: .wikipedia,
+            imageData: nil,
+            imageURL: nil
+        ).padding().previewLayout(.sizeThatFits).preferredColorScheme(.light)
+        SectionHeader(
+            title: "Best of Wikipedia",
+            category: .wikipedia,
+            imageData: nil,
+            imageURL: nil
+        ).padding().previewLayout(.sizeThatFits).preferredColorScheme(.dark)
     }
 }
