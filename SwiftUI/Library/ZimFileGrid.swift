@@ -81,9 +81,9 @@ struct ZimFileGrid: View {
     
     private func buildGridItem(gridWidth: CGFloat) -> GridItem {
         #if os(macOS)
-        GridItem(.adaptive(minimum: 150, maximum: 400), spacing: 12)
+        GridItem(.adaptive(minimum: 200, maximum: 400), spacing: 12)
         #elseif os(iOS)
-        GridItem(.adaptive(minimum: gridWidth > 375 ? 200 : 150, maximum: 400), spacing: 12)
+        GridItem(.adaptive(minimum: 150, maximum: 400), spacing: 12)
         #endif
     }
 }
