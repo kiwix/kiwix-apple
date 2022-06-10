@@ -134,16 +134,7 @@ enum LibraryTopic: Hashable, Identifiable, RawRepresentable {
     var iconName: String {
         switch self {
         case .opened:
-            #if os(iOS)
-//            if UIDevice.current.userInterfaceIdiom == .phone {
-//                return "iphone"
-//            } else {
-//                return "ipad"
-//            }
-            return "ipad"
-            #elseif os(macOS)
-            return "laptopcomputer"
-            #endif
+            return "folder"
         case .new:
             return "newspaper"
         case .downloads:
