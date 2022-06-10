@@ -20,7 +20,7 @@ struct ZimFilesDownloads: View {
     var body: some View {
         Group {
             if downloadTasks.isEmpty {
-                Message(text: "Download tasks")
+                Message(text: "No download tasks")
             } else {
                 LazyVGrid(
                     columns: ([GridItem(.adaptive(minimum: 250, maximum: 500), spacing: 12)]),
