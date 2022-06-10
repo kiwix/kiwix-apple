@@ -45,7 +45,7 @@ struct ZimFileCell: View {
                             .font(.caption)
                     }.foregroundColor(.secondary)
                     Spacer()
-                    if #available(iOS 15.0, *), let flavor = Flavor(rawValue: zimFile.flavor) {
+                    if let flavor = Flavor(rawValue: zimFile.flavor) {
                         FlavorTag(flavor)
                     }
                 }
@@ -55,7 +55,7 @@ struct ZimFileCell: View {
                         .fontWeight(.semibold)
                         .foregroundColor(.primary)
                     Spacer()
-                    if #available(iOS 15.0, *), let flavor = Flavor(rawValue: zimFile.flavor) {
+                    if let flavor = Flavor(rawValue: zimFile.flavor) {
                         FlavorTag(flavor)
                     }
                 }

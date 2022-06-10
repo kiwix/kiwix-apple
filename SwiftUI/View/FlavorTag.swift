@@ -8,7 +8,6 @@
 
 import SwiftUI
 
-@available(iOS 15.0, *)
 struct FlavorTag: View {
     let flavor: Flavor
     
@@ -21,15 +20,12 @@ struct FlavorTag: View {
             .fontWeight(.medium)
             .font(.caption)
             .foregroundColor(.white)
-            .padding(.horizontal, 6)
-            .padding(.vertical, 2)
+            .padding(EdgeInsets(top: 2, leading: 6, bottom: 2, trailing: 6))
+            .background(backgroundColor)
+            .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
             .overlay(
-                RoundedRectangle(cornerRadius: .infinity, style: .continuous)
-                    .stroke(.quaternary, lineWidth: 1)
-            )
-            .background(
-                backgroundColor.opacity(0.75),
-                in: RoundedRectangle(cornerRadius: .infinity, style: .continuous)
+                RoundedRectangle(cornerRadius: 8, style: .continuous)
+                    .stroke(Color.secondary, lineWidth: 0.5)
             )
             .help(help)
     }
@@ -57,11 +53,23 @@ struct FlavorTag: View {
     }
 }
 
-@available(iOS 15.0, *)
 struct Tag_Previews: PreviewProvider {
     static var previews: some View {
-        FlavorTag(Flavor(rawValue: "maxi")!).padding().previewLayout(.sizeThatFits)
-        FlavorTag(Flavor(rawValue: "nopic")!).padding().previewLayout(.sizeThatFits)
-        FlavorTag(Flavor(rawValue: "mini")!).padding().previewLayout(.sizeThatFits)
+        HStack(spacing: 20) {
+            FlavorTag(Flavor(rawValue: "maxi")!)
+            FlavorTag(Flavor(rawValue: "nopic")!)
+            FlavorTag(Flavor(rawValue: "mini")!)
+        }
+        .preferredColorScheme(.light)
+        .padding()
+        .previewLayout(.sizeThatFits)
+        HStack(spacing: 20) {
+            FlavorTag(Flavor(rawValue: "maxi")!)
+            FlavorTag(Flavor(rawValue: "nopic")!)
+            FlavorTag(Flavor(rawValue: "mini")!)
+        }
+        .preferredColorScheme(.dark)
+        .padding()
+        .previewLayout(.sizeThatFits)
     }
 }
