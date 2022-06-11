@@ -93,6 +93,9 @@
 		97486D0D284C0EBC0096E4DD /* Welcome.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97486D0C284C0EBC0096E4DD /* Welcome.swift */; };
 		97486D0E284C0EBC0096E4DD /* Welcome.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97486D0C284C0EBC0096E4DD /* Welcome.swift */; };
 		97486D0F284D44C20096E4DD /* HUDController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97252102200D3C4B00B60A80 /* HUDController.swift */; };
+		974C339F2853D4AC00DF6F4C /* About.swift in Sources */ = {isa = PBXBuildFile; fileRef = 974C339E2853D4AC00DF6F4C /* About.swift */; };
+		974C33A02853D4AC00DF6F4C /* About.swift in Sources */ = {isa = PBXBuildFile; fileRef = 974C339E2853D4AC00DF6F4C /* About.swift */; };
+		974C33A32853DDEE00DF6F4C /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 974C33A12853DDEE00DF6F4C /* Settings.swift */; };
 		974FD5CF23405C3700FFDEEC /* WindowControllers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 974FD5CE23405C3700FFDEEC /* WindowControllers.swift */; };
 		974FFE5B2352704600F6BF28 /* ZimFileManagerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 974FFE5A2352704600F6BF28 /* ZimFileManagerController.swift */; };
 		974FFE612352744800F6BF28 /* WebKitWebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 974FFE602352744800F6BF28 /* WebKitWebViewController.swift */; };
@@ -392,6 +395,8 @@
 		97486D07284A42B90096E4DD /* SearchResultRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultRow.swift; sourceTree = "<group>"; };
 		97486D09284B96690096E4DD /* CellBackground.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellBackground.swift; sourceTree = "<group>"; };
 		97486D0C284C0EBC0096E4DD /* Welcome.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Welcome.swift; sourceTree = "<group>"; };
+		974C339E2853D4AC00DF6F4C /* About.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = About.swift; sourceTree = "<group>"; };
+		974C33A12853DDEE00DF6F4C /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
 		974FD5CE23405C3700FFDEEC /* WindowControllers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindowControllers.swift; sourceTree = "<group>"; };
 		974FFE5A2352704600F6BF28 /* ZimFileManagerController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZimFileManagerController.swift; sourceTree = "<group>"; };
 		974FFE602352744800F6BF28 /* WebKitWebViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebKitWebViewController.swift; sourceTree = "<group>"; };
@@ -691,6 +696,15 @@
 				973A0DF3282FEDA500B41E71 /* ZimFileViewModifiers.swift */,
 			);
 			path = ViewModifier;
+			sourceTree = "<group>";
+		};
+		974C339D2853D49C00DF6F4C /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				974C33A12853DDEE00DF6F4C /* Settings.swift */,
+				974C339E2853D4AC00DF6F4C /* About.swift */,
+			);
+			path = Settings;
 			sourceTree = "<group>";
 		};
 		975FDAD81F6082DA00A10E8C /* iOS */ = {
@@ -1004,6 +1018,7 @@
 				977BD5F8276C295C004D2C32 /* Reader */,
 				97C1377A2844FCD600386C04 /* Search */,
 				972DE4C02814A950004FD9B9 /* Library */,
+				974C339D2853D49C00DF6F4C /* Settings */,
 				97E94B26271EF359005B0295 /* Support */,
 				97E94B19271EF24D005B0295 /* macOSApp.swift */,
 				97EEFF2028398E9A00BDD6E2 /* iOSApp.swift */,
@@ -1422,6 +1437,7 @@
 				973A0E032831057200B41E71 /* URL.swift in Sources */,
 				973A0DE8281DD7EB00B41E71 /* Log.swift in Sources */,
 				972DE4BC2814A5BE004FD9B9 /* OPDSStreamParser.swift in Sources */,
+				974C33A02853D4AC00DF6F4C /* About.swift in Sources */,
 				97DE2B9F2839D7A200C63D9B /* WebKitHandler.swift in Sources */,
 				97486D0E284C0EBC0096E4DD /* Welcome.swift in Sources */,
 				976D90E92815D63A00CC7D29 /* ZimFilesNew.swift in Sources */,
@@ -1463,6 +1479,7 @@
 				972DE4C42814AAAE004FD9B9 /* Library.swift in Sources */,
 				976BAEBE284905760049404F /* SearchViewModel.swift in Sources */,
 				97486D0F284D44C20096E4DD /* HUDController.swift in Sources */,
+				974C33A32853DDEE00DF6F4C /* Settings.swift in Sources */,
 				973A0DE7281DC8F400B41E71 /* Downloads.swift in Sources */,
 				976D90E228158A3C00CC7D29 /* LibraryContent.swift in Sources */,
 				9721BBB72841C16D005C910D /* Message.swift in Sources */,
@@ -1630,6 +1647,7 @@
 				97FB4B0B27B819A90055F86E /* Message.swift in Sources */,
 				973A0DF0282E981200B41E71 /* ZimFileRow.swift in Sources */,
 				97242B8A2735E67500C87F85 /* SearchOperation.mm in Sources */,
+				974C339F2853D4AC00DF6F4C /* About.swift in Sources */,
 				978A731227B9A0E0008101B4 /* NavigationButtons.swift in Sources */,
 				976D90DE281589EA00CC7D29 /* ZimFileList.swift in Sources */,
 				97B3048927796C9000E82DE0 /* SearchOperation.swift in Sources */,
