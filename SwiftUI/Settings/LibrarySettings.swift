@@ -70,6 +70,7 @@ struct LibrarySettings: View {
         }
         .navigationTitle("Library")
         .navigationBarTitleDisplayMode(.inline)
+        .onChange(of: backupDocumentDirectory) { _ in Kiwix.applyZimFileBackupSetting() }
         #endif
     }
 }
