@@ -16,33 +16,64 @@ struct ZimFileContextMenu: ViewModifier {
     
     func body(content: Content) -> some View {
         content.contextMenu {
-            Button {
-                selected = zimFile
-            } label: {
-                Label("Show Detail", systemImage: "info.circle")
-            }
-            if let downloadURL = zimFile.downloadURL {
-                Button {
-                    #if os(macOS)
-                    NSPasteboard.general.clearContents()
-                    NSPasteboard.general.setString(downloadURL.absoluteString, forType: .URL)
-                    #elseif os(iOS)
-                    UIPasteboard.general.setValue(downloadURL.absoluteString, forPasteboardType: UTType.url.identifier)
-                    #endif
-                } label: {
-                    Label("Copy URL", systemImage: "doc.on.doc")
+            if zimFile.fileURLBookmark != nil {
+                Section {
+                    Button {
+                        guard let url = ZimFileService.shared.getMainPageURL(zimFileID: zimFile.fileID) else { return }
+                        #if os(macOS)
+                        NSWorkspace.shared.open(url)
+                        #elseif os(iOS)
+                        UIApplication.shared.open(url)
+                        #endif
+                    } label: {
+                        Label("Main Page", systemImage: "house")
+                    }
+                    Button {
+                        guard let url = ZimFileService.shared.getRandomPageURL(zimFileID: zimFile.fileID) else { return }
+                        #if os(macOS)
+                        NSWorkspace.shared.open(url)
+                        #elseif os(iOS)
+                        UIApplication.shared.open(url)
+                        #endif
+                    } label: {
+                        Label("Random Page", systemImage: "die.face.5")
+                    }
                 }
             }
+            Section {
+                supplementary
+            }
+        }
+    }
+    
+    @ViewBuilder
+    var supplementary: some View {
+        Button {
+            selected = zimFile
+        } label: {
+            Label("Show Detail", systemImage: "info.circle")
+        }
+        if let downloadURL = zimFile.downloadURL {
             Button {
                 #if os(macOS)
                 NSPasteboard.general.clearContents()
-                NSPasteboard.general.setString(zimFile.fileID.uuidString, forType: .string)
+                NSPasteboard.general.setString(downloadURL.absoluteString, forType: .URL)
                 #elseif os(iOS)
-                UIPasteboard.general.setValue(zimFile.fileID.uuidString, forPasteboardType: UTType.plainText.identifier)
+                UIPasteboard.general.setValue(downloadURL.absoluteString, forPasteboardType: UTType.url.identifier)
                 #endif
             } label: {
-                Label("Copy ID", systemImage: "barcode.viewfinder")
+                Label("Copy URL", systemImage: "doc.on.doc")
             }
+        }
+        Button {
+            #if os(macOS)
+            NSPasteboard.general.clearContents()
+            NSPasteboard.general.setString(zimFile.fileID.uuidString, forType: .string)
+            #elseif os(iOS)
+            UIPasteboard.general.setValue(zimFile.fileID.uuidString, forPasteboardType: UTType.plainText.identifier)
+            #endif
+        } label: {
+            Label("Copy ID", systemImage: "barcode.viewfinder")
         }
     }
 }

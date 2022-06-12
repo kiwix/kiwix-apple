@@ -15,30 +15,36 @@ struct Welcome: View {
         predicate: NSPredicate(format: "fileURLBookmark != nil"),
         animation: .easeInOut
     ) private var zimFiles: FetchedResults<ZimFile>
+    @State private var selectedZimFile: ZimFile?
     
     var body: some View {
         if zimFiles.isEmpty {
             
         } else {
-            GeometryReader { proxy in
-                ScrollView {
-                    LazyVGrid(
-                        columns: ([GridItem(.adaptive(minimum: 300, maximum: 400), spacing: 12)]),
-                        alignment: .leading,
-                        spacing: 12
-                    ) {
-                        Section {
-                            ForEach(zimFiles) { zimFile in
-                                Button {
-                                    url = ZimFileService.shared.getMainPageURL(zimFileID: zimFile.fileID)
-                                } label: {
-                                    ZimFileCell(zimFile, prominent: .name)
-                                }.buttonStyle(.plain)
+            ScrollView {
+                LazyVGrid(
+                    columns: ([GridItem(.adaptive(minimum: 250, maximum: 500), spacing: 12)]),
+                    alignment: .leading,
+                    spacing: 12
+                ) {
+                    Section {
+                        ForEach(zimFiles) { zimFile in
+                            Button {
+                                url = ZimFileService.shared.getMainPageURL(zimFileID: zimFile.fileID)
+                            } label: {
+                                ZimFileCell(zimFile, prominent: .name)
                             }
-                        } header: {
-                            Text("Main Page").font(.title3).fontWeight(.semibold)
+                            .buttonStyle(.plain)
+                            .modifier(ZimFileContextMenu(selected: $selectedZimFile, zimFile: zimFile))
                         }
-                    }.padding()
+                    } header: {
+                        Text("Main Page").font(.title3).fontWeight(.semibold)
+                    }
+                }.padding()
+            }
+            .sheet(item: $selectedZimFile) { zimFile in
+                NavigationView {
+                    ZimFileDetail(zimFile: zimFile)
                 }
             }
         }
