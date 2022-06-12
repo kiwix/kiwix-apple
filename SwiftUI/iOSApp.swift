@@ -61,7 +61,7 @@ struct Kiwix: App {
             }
             print(
                 """
-                Applying zim file backup setting(\(backupDocumentDirectory ? "backing up" : "not backing up")) \
+                Applying zim file backup setting (\(backupDocumentDirectory ? "backing up" : "not backing up")) \
                 on \(urls.count) zim file(s)
                 """
             )
