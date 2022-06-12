@@ -22,11 +22,8 @@ struct FlavorTag: View {
             .foregroundColor(.white)
             .padding(EdgeInsets(top: 2, leading: 6, bottom: 2, trailing: 6))
             .background(backgroundColor)
-            .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
-            .overlay(
-                RoundedRectangle(cornerRadius: 8, style: .continuous)
-                    .stroke(Color.secondary, lineWidth: 0.5)
-            )
+            .clipShape(Capsule(style: .continuous))
+            .overlay(Capsule(style: .continuous).stroke(Color.gray, lineWidth: 0.5))
             .help(help)
     }
     
