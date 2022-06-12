@@ -15,6 +15,9 @@ struct Settings: View {
         NavigationView {
             List {
                 Section {
+                    NavigationLink("Library") { LibrarySettings() }
+                }
+                Section {
                     NavigationLink("About") { About() }
                 }
             }
