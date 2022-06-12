@@ -43,7 +43,7 @@ struct Kiwix: App {
         }.handlesExternalEvents(matching: [WindowGroupTitle.library.rawValue])
         Settings {
             TabView {
-                Message(text: "Library").tabItem { Label("Library", systemImage: "folder.badge.gearshape") }
+                LibrarySettings()
                 Message(text: "Language").tabItem { Label("Language", systemImage: "globe") }
                 About()
             }.frame(width: 480)

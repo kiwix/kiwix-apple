@@ -187,8 +187,8 @@ struct Reader: View {
                 BookmarksSheet(url: $url)
             case .library:
                 Library()
-            default:
-                EmptyView()
+            case .settings:
+                Settings()
             }
         }
         .environmentObject(viewModel)
