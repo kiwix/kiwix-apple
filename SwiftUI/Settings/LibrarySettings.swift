@@ -68,6 +68,8 @@ struct LibrarySettings: View {
                 Text("Does not apply to files opened in place.")
             }
         }
+        .navigationTitle("Library")
+        .navigationBarTitleDisplayMode(.inline)
         #endif
     }
 }
