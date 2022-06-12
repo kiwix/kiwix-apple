@@ -24,27 +24,21 @@ struct About: View {
                 .lineLimit(nil)
                 .minimumScaleFactor(0.5) // to avoid unnecessary truncation (three dots)
                 Button("Our Website") { externalLinkURL = URL(string: "https://www.kiwix.org") }
-            } header: {
-                Text("About")
-            }
+            } header: { Text("About") }
             Section {
                 Text("This app is released under the terms of the GNU General Public License version 3.")
                 Button("Source") { externalLinkURL = URL(string: "https://github.com/kiwix/apple") }
                 Button("GNU General Public License v3") {
                     externalLinkURL = URL(string: "https://www.gnu.org/licenses/gpl-3.0.en.html")
                 }
-            } header: {
-                Text("Release")
-            }
+            } header: { Text("Release") }
             Section {
                 Dependency(name: "libkiwix", license: "GPLv3", version: "9.4.1")
                 Dependency(name: "libzim", license: "GPLv2", version: "6.3.2")
                 Dependency(name: "Xapian", license: "GPLv2")
                 Dependency(name: "ICU", license: "ICU")
                 Dependency(name: "Fuzi", license: "MIT")
-            } header: {
-                Text("Dependencies")
-            }
+            } header: { Text("Dependencies") }
         }
         .modifier(ExternalLinkHandler(url: $externalLinkURL))
         .modifier(PlatformDifferenceHandler())
@@ -84,7 +78,7 @@ private struct ExternalLinkHandler: ViewModifier {
             NSWorkspace.shared.open(url)
         }
         #elseif os(iOS)
-        content.sheet(item: $url) { SafariView(url: $0) }
+        content.sheet(item: $url) { SafariView(url: $0).ignoresSafeArea(.container, edges: .all) }
         #endif
     }
 }
