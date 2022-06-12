@@ -46,10 +46,6 @@ struct Kiwix: App {
                 Message(text: "Library").tabItem { Label("Library", systemImage: "folder.badge.gearshape") }
                 Message(text: "Language").tabItem { Label("Language", systemImage: "globe") }
                 About()
-                    .listStyle(.sidebar)
-                    .cornerRadius(6)
-                    .padding()
-                    .tabItem { Label("About", systemImage: "info.circle") }
             }.frame(width: 480)
         }
     }

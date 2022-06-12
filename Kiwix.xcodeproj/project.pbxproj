@@ -96,6 +96,9 @@
 		974C339F2853D4AC00DF6F4C /* About.swift in Sources */ = {isa = PBXBuildFile; fileRef = 974C339E2853D4AC00DF6F4C /* About.swift */; };
 		974C33A02853D4AC00DF6F4C /* About.swift in Sources */ = {isa = PBXBuildFile; fileRef = 974C339E2853D4AC00DF6F4C /* About.swift */; };
 		974C33A32853DDEE00DF6F4C /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 974C33A12853DDEE00DF6F4C /* Settings.swift */; };
+		974C33A62855884C00DF6F4C /* SafariView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 974C33A42855884C00DF6F4C /* SafariView.swift */; };
+		974C33A8285589E900DF6F4C /* Patches.swift in Sources */ = {isa = PBXBuildFile; fileRef = 974C33A7285589E900DF6F4C /* Patches.swift */; };
+		974C33A9285589E900DF6F4C /* Patches.swift in Sources */ = {isa = PBXBuildFile; fileRef = 974C33A7285589E900DF6F4C /* Patches.swift */; };
 		974FD5CF23405C3700FFDEEC /* WindowControllers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 974FD5CE23405C3700FFDEEC /* WindowControllers.swift */; };
 		974FFE5B2352704600F6BF28 /* ZimFileManagerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 974FFE5A2352704600F6BF28 /* ZimFileManagerController.swift */; };
 		974FFE612352744800F6BF28 /* WebKitWebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 974FFE602352744800F6BF28 /* WebKitWebViewController.swift */; };
@@ -397,6 +400,8 @@
 		97486D0C284C0EBC0096E4DD /* Welcome.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Welcome.swift; sourceTree = "<group>"; };
 		974C339E2853D4AC00DF6F4C /* About.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = About.swift; sourceTree = "<group>"; };
 		974C33A12853DDEE00DF6F4C /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
+		974C33A42855884C00DF6F4C /* SafariView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SafariView.swift; sourceTree = "<group>"; };
+		974C33A7285589E900DF6F4C /* Patches.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Patches.swift; sourceTree = "<group>"; };
 		974FD5CE23405C3700FFDEEC /* WindowControllers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindowControllers.swift; sourceTree = "<group>"; };
 		974FFE5A2352704600F6BF28 /* ZimFileManagerController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZimFileManagerController.swift; sourceTree = "<group>"; };
 		974FFE602352744800F6BF28 /* WebKitWebViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebKitWebViewController.swift; sourceTree = "<group>"; };
@@ -1001,6 +1006,7 @@
 				97FB4B0A27B819A90055F86E /* Message.swift */,
 				97DED67E275278FF008D2C56 /* SearchField.swift */,
 				97255D8B273608C3002B995B /* WebView.swift */,
+				974C33A42855884C00DF6F4C /* SafariView.swift */,
 				97486D05284A36790096E4DD /* SearchResultCell.swift */,
 				97486D07284A42B90096E4DD /* SearchResultRow.swift */,
 				973A2FD72780024600BD4320 /* ZimFileCell.swift */,
@@ -1036,6 +1042,7 @@
 				97E94B22271EF250005B0295 /* Kiwix.entitlements */,
 				97E94B1D271EF250005B0295 /* Assets.xcassets */,
 				97E94B20271EF250005B0295 /* Preview Assets.xcassets */,
+				974C33A7285589E900DF6F4C /* Patches.swift */,
 			);
 			path = Support;
 			sourceTree = "<group>";
@@ -1471,10 +1478,12 @@
 				9721BBBB28427A93005C910D /* Bookmarks.swift in Sources */,
 				973A0DFD283100C300B41E71 /* ZimFilesOpened.swift in Sources */,
 				972DE4B62814A502004FD9B9 /* Enum.swift in Sources */,
+				974C33A9285589E900DF6F4C /* Patches.swift in Sources */,
 				973A0DF1282E981200B41E71 /* ZimFileRow.swift in Sources */,
 				97DE2BA6283A944100C63D9B /* LibraryGridPadding.swift in Sources */,
 				973A0E022831055600B41E71 /* URLContent.swift in Sources */,
 				97C1377D2844FCF500386C04 /* Search.swift in Sources */,
+				974C33A62855884C00DF6F4C /* SafariView.swift in Sources */,
 				979D3A782841100B00E396B8 /* Focus.swift in Sources */,
 				972DE4C42814AAAE004FD9B9 /* Library.swift in Sources */,
 				976BAEBE284905760049404F /* SearchViewModel.swift in Sources */,
@@ -1666,6 +1675,7 @@
 				97242B9B2735E6A800C87F85 /* DirectoryMonitor.swift in Sources */,
 				97242B992735E6A800C87F85 /* SearchQueue.swift in Sources */,
 				9735D0BA2775363900C7D495 /* DataModel.xcdatamodeld in Sources */,
+				974C33A8285589E900DF6F4C /* Patches.swift in Sources */,
 				97B0737627825E3D007C7DF3 /* Favicon.swift in Sources */,
 				973A2FC6277EAA2700BD4320 /* OPDSRefreshError.swift in Sources */,
 				973A2FC3277EA9F300BD4320 /* OPDSStreamParser.swift in Sources */,

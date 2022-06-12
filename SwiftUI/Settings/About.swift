@@ -25,7 +25,7 @@ struct About: View {
                 .minimumScaleFactor(0.5) // to avoid unnecessary truncation (three dots)
                 Button("Our Website") { externalLinkURL = URL(string: "https://www.kiwix.org") }
             } header: {
-                Text("About Us")
+                Text("About")
             }
             Section {
                 Text("This app is released under the terms of the GNU General Public License version 3.")
@@ -41,17 +41,13 @@ struct About: View {
                 Dependency(name: "libzim", license: "GPLv2", version: "6.3.2")
                 Dependency(name: "Xapian", license: "GPLv2")
                 Dependency(name: "ICU", license: "ICU")
-                Dependency(name: "Realm", license: "Apachev2")
                 Dependency(name: "Fuzi", license: "MIT")
-                Dependency(name: "Defaults", license: "MIT")
             } header: {
                 Text("Dependencies")
             }
         }
-//        .listStyle(.inset)
-//        .insetGroupedListStyle()
-//        .navigationBarTitle("About")
-//        .sheet(item: $externalLinkURL) { SafariView(url: $0) }
+        .modifier(ExternalLinkHandler(url: $externalLinkURL))
+        .modifier(PlatformDifferenceHandler())
     }
     
     struct Dependency: View {
@@ -76,20 +72,45 @@ struct About: View {
             }
         }
     }
+}
+
+private struct ExternalLinkHandler: ViewModifier {
+    @Binding var url: URL?
     
-//    struct SafariView: UIViewControllerRepresentable {
-//        let url: URL
-//
-//        func makeUIViewController(context: UIViewControllerRepresentableContext<SafariView>) -> SFSafariViewController {
-//            SFSafariViewController(url: url)
-//        }
-//
-//        func updateUIViewController(_ uiViewController: SFSafariViewController, context: Context) { }
-//    }
+    func body(content: Content) -> some View {
+        #if os(macOS)
+        content.onChange(of: url) { url in
+            guard let url = url else { return }
+            NSWorkspace.shared.open(url)
+        }
+        #elseif os(iOS)
+        content.sheet(item: $url) { SafariView(url: $0) }
+        #endif
+    }
+}
+
+private struct PlatformDifferenceHandler: ViewModifier {
+    func body(content: Content) -> some View {
+        #if os(macOS)
+        content
+            .listStyle(.sidebar)
+            .cornerRadius(6)
+            .shadow(radius: 1)
+            .padding()
+            .tabItem { Label("About", systemImage: "info.circle") }
+        #elseif os(iOS)
+        content.navigationTitle("About")
+        #endif
+    }
 }
 
 struct About_Previews: PreviewProvider {
     static var previews: some View {
-        About()
+        #if os(macOS)
+        TabView { About() }.preferredColorScheme(.light)
+        TabView { About() }.preferredColorScheme(.dark)
+        #elseif os(iOS)
+        NavigationView { About() }
+        #endif
     }
 }
