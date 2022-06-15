@@ -6,6 +6,7 @@
 //  Copyright © 2022 Chris Li. All rights reserved.
 //
 
+import BackgroundTasks
 import Combine
 import UIKit
 import SwiftUI
@@ -17,6 +18,7 @@ struct Kiwix: App {
     init() {
         reopen()
         Kiwix.applyZimFileBackupSetting()
+        Kiwix.registerBackgroundRefreshTask()
     }
     
     var body: some Scene {
@@ -66,6 +68,24 @@ struct Kiwix: App {
                 """
             )
         } catch {}
+    }
+    
+    static func registerBackgroundRefreshTask() {
+        BGTaskScheduler.shared.register(
+            forTaskWithIdentifier: LibraryViewModel.backgroundTaskIdentifier, using: nil
+        ) { backgroundTask in
+            let task = Task {
+                do {
+                    try await LibraryViewModel().refresh()
+                    backgroundTask.setTaskCompleted(success: true)
+                } catch is CancellationError {
+                    backgroundTask.setTaskCompleted(success: true)
+                } catch {
+                    backgroundTask.setTaskCompleted(success: false)
+                }
+            }
+            backgroundTask.expirationHandler = task.cancel
+        }
     }
 }
 

@@ -11,16 +11,24 @@ import SwiftUI
 struct LibrarySettings: View {
     @AppStorage("backupDocumentDirectory") var backupDocumentDirectory = false
     @AppStorage("libraryAutoRefresh") var libraryAutoRefresh = false
+    @StateObject var viewModel = LibraryViewModel()
     @State var selectedLanguages = Set<String>()
     
     var body: some View {
         #if os(macOS)
         VStack(spacing: 16) {
             HStack(alignment :.top) {
-                Text("Updates:").frame(width: 80, alignment: .trailing)
+                Text("Catalog:").frame(width: 80, alignment: .trailing)
                 VStack(alignment: .leading, spacing: 16) {
-                    Button("Update Now") {
-                        
+                    HStack(spacing: 10) {
+                        Button("Update Now") {
+                            Task {
+                                try? await viewModel.refresh()
+                            }
+                        }.disabled(viewModel.isRefreshing)
+                        if viewModel.isRefreshing {
+                            ProgressView().progressViewStyle(.circular).scaleEffect(0.5).frame(height: 1)
+                        }
                     }
                     VStack(alignment: .leading) {
                         Toggle("Auto update", isOn: $libraryAutoRefresh)
@@ -51,12 +59,22 @@ struct LibrarySettings: View {
                     Spacer()
                     Text("Never").foregroundColor(.secondary)
                 }
-                Button("Update Now") {
-                    
+                if viewModel.isRefreshing {
+                    HStack {
+                        Text("Updating...").foregroundColor(.secondary)
+                        Spacer()
+                        ProgressView().progressViewStyle(.circular)
+                    }
+                } else {
+                    Button("Update Now") {
+                        Task {
+                            try? await viewModel.refresh()
+                        }
+                    }
                 }
                 Toggle("Auto update", isOn: $libraryAutoRefresh)
             } header: {
-                Text("Updates")
+                Text("Catalog")
             } footer: {
                 Text("When enabled, the library catalog will be updated automatically when outdated.")
             }
