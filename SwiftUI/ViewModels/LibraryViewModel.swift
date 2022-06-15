@@ -36,6 +36,8 @@ class LibraryViewModel: ObservableObject {
         }
     }
     
+    // MARK: - Refresh
+    
     func refresh() async throws {
         DispatchQueue.main.async { self.isRefreshing = true }
         defer { DispatchQueue.main.async { self.isRefreshing = false } }

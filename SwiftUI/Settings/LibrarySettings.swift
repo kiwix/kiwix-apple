@@ -6,6 +6,9 @@
 //  Copyright © 2022 Chris Li. All rights reserved.
 //
 
+#if canImport(BackgroundTasks)
+import BackgroundTasks
+#endif
 import SwiftUI
 
 struct LibrarySettings: View {
@@ -88,6 +91,14 @@ struct LibrarySettings: View {
         }
         .navigationTitle("Library")
         .navigationBarTitleDisplayMode(.inline)
+        .onChange(of: libraryAutoRefresh) { isEnable in
+            if isEnable {
+                let request = BGAppRefreshTaskRequest(identifier: LibraryViewModel.backgroundTaskIdentifier)
+                try? BGTaskScheduler.shared.submit(request)
+            } else {
+                BGTaskScheduler.shared.cancel(taskRequestWithIdentifier: LibraryViewModel.backgroundTaskIdentifier)
+            }
+        }
         .onChange(of: backupDocumentDirectory) { _ in Kiwix.applyZimFileBackupSetting() }
         #endif
     }
