@@ -11,9 +11,12 @@ import BackgroundTasks
 #endif
 import SwiftUI
 
+import Defaults
+
 struct LibrarySettings: View {
-    @AppStorage("backupDocumentDirectory") var backupDocumentDirectory = false
-    @AppStorage("libraryAutoRefresh") var libraryAutoRefresh = false
+    @Default(.backupDocumentDirectory) var backupDocumentDirectory
+    @Default(.libraryAutoRefresh) var autoRefresh
+    @Default(.libraryLastRefresh) var lastRefresh
     @StateObject var viewModel = LibraryViewModel()
     @State var selectedLanguages = Set<String>()
     
@@ -25,16 +28,17 @@ struct LibrarySettings: View {
                 VStack(alignment: .leading, spacing: 16) {
                     HStack(spacing: 10) {
                         Button("Update Now") {
-                            Task {
-                                try? await viewModel.refresh()
-                            }
+                            Task { try? await viewModel.refresh(isUserInitiated: true) }
                         }.disabled(viewModel.isRefreshing)
                         if viewModel.isRefreshing {
                             ProgressView().progressViewStyle(.circular).scaleEffect(0.5).frame(height: 1)
                         }
+                        Spacer()
+                        Text("Last update:").foregroundColor(.secondary)
+                        lastUpdateTime.foregroundColor(.secondary)
                     }
                     VStack(alignment: .leading) {
-                        Toggle("Auto update", isOn: $libraryAutoRefresh)
+                        Toggle("Auto update", isOn: $autoRefresh)
                         Text("When enabled, the library catalog will be updated automatically when outdated.")
                             .foregroundColor(.secondary)
                     }
@@ -60,7 +64,7 @@ struct LibrarySettings: View {
                 HStack {
                     Text("Last update")
                     Spacer()
-                    Text("Never").foregroundColor(.secondary)
+                    lastUpdateTime.foregroundColor(.secondary)
                 }
                 if viewModel.isRefreshing {
                     HStack {
@@ -70,12 +74,10 @@ struct LibrarySettings: View {
                     }
                 } else {
                     Button("Update Now") {
-                        Task {
-                            try? await viewModel.refresh()
-                        }
+                        Task { try? await viewModel.refresh(isUserInitiated: true) }
                     }
                 }
-                Toggle("Auto update", isOn: $libraryAutoRefresh)
+                Toggle("Auto update", isOn: $autoRefresh)
             } header: {
                 Text("Catalog")
             } footer: {
@@ -91,7 +93,7 @@ struct LibrarySettings: View {
         }
         .navigationTitle("Library")
         .navigationBarTitleDisplayMode(.inline)
-        .onChange(of: libraryAutoRefresh) { isEnable in
+        .onChange(of: autoRefresh) { isEnable in
             if isEnable {
                 let request = BGAppRefreshTaskRequest(identifier: LibraryViewModel.backgroundTaskIdentifier)
                 try? BGTaskScheduler.shared.submit(request)
@@ -101,6 +103,19 @@ struct LibrarySettings: View {
         }
         .onChange(of: backupDocumentDirectory) { _ in Kiwix.applyZimFileBackupSetting() }
         #endif
+    }
+    
+    @ViewBuilder
+    var lastUpdateTime: some View {
+        if let lastRefresh = lastRefresh {
+            if Date().timeIntervalSince(lastRefresh) < 120 {
+                Text("Just Now")
+            } else {
+                Text(RelativeDateTimeFormatter().localizedString(for: lastRefresh, relativeTo: Date()))
+            }
+        } else {
+            Text("Never")
+        }
     }
 }
 

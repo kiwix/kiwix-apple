@@ -8,6 +8,8 @@
 
 import CoreData
 
+import Defaults
+
 class LibraryViewModel: ObservableObject {
     @Published private(set) var isRefreshing = false
     
@@ -38,9 +40,14 @@ class LibraryViewModel: ObservableObject {
     
     // MARK: - Refresh
     
-    func refresh() async throws {
+    func refresh(isUserInitiated: Bool) async throws {
         DispatchQueue.main.async { self.isRefreshing = true }
         defer { DispatchQueue.main.async { self.isRefreshing = false } }
+        
+        // decide if update should proceed
+        guard isUserInitiated ||
+            (Defaults[.libraryAutoRefresh] && (Defaults[.libraryLastRefresh]?.timeIntervalSinceNow ?? -3600) <= 3600)
+        else { return }
         
         // download data
         guard let url = URL(string: "https://library.kiwix.org/catalog/root.xml") else { return }
@@ -105,6 +112,12 @@ class LibraryViewModel: ObservableObject {
                 }
                 continuation.resume()
             }
+        }
+        
+        // Update user defaults
+        Defaults[.libraryLastRefresh] = Date()
+        if Defaults[.libraryLanguageCodes].isEmpty, let currentLanguageCode = Locale.current.languageCode {
+            Defaults[.libraryLanguageCodes] = [currentLanguageCode]
         }
     }
     

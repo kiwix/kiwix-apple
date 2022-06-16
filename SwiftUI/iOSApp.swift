@@ -76,7 +76,7 @@ struct Kiwix: App {
         ) { backgroundTask in
             let task = Task {
                 do {
-                    try await LibraryViewModel().refresh()
+                    try await LibraryViewModel().refresh(isUserInitiated: false)
                     backgroundTask.setTaskCompleted(success: true)
                 } catch is CancellationError {
                     backgroundTask.setTaskCompleted(success: true)
