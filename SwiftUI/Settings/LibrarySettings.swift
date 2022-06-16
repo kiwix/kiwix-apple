@@ -18,7 +18,6 @@ struct LibrarySettings: View {
     @Default(.libraryAutoRefresh) var autoRefresh
     @Default(.libraryLastRefresh) var lastRefresh
     @StateObject var viewModel = LibraryViewModel()
-    @State var selectedLanguages = Set<String>()
     
     var body: some View {
         #if os(macOS)
@@ -48,18 +47,20 @@ struct LibrarySettings: View {
             Divider()
             HStack(alignment :.top) {
                 Text("Languages:").frame(width: 80, alignment: .trailing)
-                List(selection: $selectedLanguages) {
-                    Text("lang 1")
-                    Text("lang 2")
-                    Text("lang 3")
-                    Text("this could be a table")
-                }.cornerRadius(6)
+                LanguageSelector().cornerRadius(6)
             }
         }
         .padding()
         .tabItem { Label("Library", systemImage: "folder.badge.gearshape") }
         #elseif os(iOS)
         List {
+            if lastRefresh != nil {
+                Section {
+                    NavigationLink("Languages") {
+                        LanguageSelector().navigationTitle("Languages")
+                    }
+                }
+            }
             Section {
                 HStack {
                     Text("Last refresh")
@@ -116,6 +117,26 @@ struct LibrarySettings: View {
         } else {
             Text("Never")
         }
+    }
+}
+
+private struct LanguageSelector: View {
+    var body: some View {
+        #if os(macOS)
+        List() {
+            Text("lang 1")
+            Text("lang 2")
+            Text("lang 3")
+            Text("this could be a table")
+        }
+        #elseif os(iOS)
+        List() {
+            Text("lang 1")
+            Text("lang 2")
+            Text("lang 3")
+            Text("this could be a table")
+        }
+        #endif
     }
 }
 
