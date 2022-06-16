@@ -26,20 +26,20 @@ struct LibrarySettings: View {
             HStack(alignment :.top) {
                 Text("Catalog:").frame(width: 80, alignment: .trailing)
                 VStack(alignment: .leading, spacing: 16) {
-                    HStack(spacing: 10) {
-                        Button("Update Now") {
+                    HStack(spacing: 6) {
+                        Button("Refresh Now") {
                             Task { try? await viewModel.refresh(isUserInitiated: true) }
                         }.disabled(viewModel.isRefreshing)
                         if viewModel.isRefreshing {
                             ProgressView().progressViewStyle(.circular).scaleEffect(0.5).frame(height: 1)
                         }
                         Spacer()
-                        Text("Last update:").foregroundColor(.secondary)
-                        lastUpdateTime.foregroundColor(.secondary)
+                        Text("Last refresh:").foregroundColor(.secondary)
+                        lastRefreshTime.foregroundColor(.secondary)
                     }
                     VStack(alignment: .leading) {
-                        Toggle("Auto update", isOn: $autoRefresh)
-                        Text("When enabled, the library catalog will be updated automatically when outdated.")
+                        Toggle("Auto refresh", isOn: $autoRefresh)
+                        Text("When enabled, the library catalog will be refreshed automatically when outdated.")
                             .foregroundColor(.secondary)
                     }
                 }
@@ -62,26 +62,26 @@ struct LibrarySettings: View {
         List {
             Section {
                 HStack {
-                    Text("Last update")
+                    Text("Last refresh")
                     Spacer()
-                    lastUpdateTime.foregroundColor(.secondary)
+                    lastRefreshTime.foregroundColor(.secondary)
                 }
                 if viewModel.isRefreshing {
                     HStack {
-                        Text("Updating...").foregroundColor(.secondary)
+                        Text("Refreshing...").foregroundColor(.secondary)
                         Spacer()
                         ProgressView().progressViewStyle(.circular)
                     }
                 } else {
-                    Button("Update Now") {
+                    Button("Refresh Now") {
                         Task { try? await viewModel.refresh(isUserInitiated: true) }
                     }
                 }
-                Toggle("Auto update", isOn: $autoRefresh)
+                Toggle("Auto refresh", isOn: $autoRefresh)
             } header: {
                 Text("Catalog")
             } footer: {
-                Text("When enabled, the library catalog will be updated automatically when outdated.")
+                Text("When enabled, the library catalog will be refreshed automatically when outdated.")
             }
             Section {
                 Toggle("Include zim files in backup", isOn: $backupDocumentDirectory)
@@ -106,7 +106,7 @@ struct LibrarySettings: View {
     }
     
     @ViewBuilder
-    var lastUpdateTime: some View {
+    var lastRefreshTime: some View {
         if let lastRefresh = lastRefresh {
             if Date().timeIntervalSince(lastRefresh) < 120 {
                 Text("Just Now")
