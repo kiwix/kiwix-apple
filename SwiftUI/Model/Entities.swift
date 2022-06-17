@@ -94,3 +94,28 @@ class ZimFile: NSManagedObject, Identifiable {
         return request
     }
 }
+
+struct Language: Identifiable, Comparable {
+    var id: String { code }
+    let code: String
+    let name: String
+    let count: Int
+    
+    init?(code: String, count: Int) {
+        guard let name = Locale.current.localizedString(forLanguageCode: code) else { return nil }
+        self.code = code
+        self.name = name
+        self.count = count
+    }
+    
+    static func < (lhs: Language, rhs: Language) -> Bool {
+        switch lhs.name.caseInsensitiveCompare(rhs.name) {
+        case .orderedAscending:
+            return true
+        case .orderedDescending:
+            return false
+        case .orderedSame:
+            return lhs.count > rhs.count
+        }
+    }
+}
