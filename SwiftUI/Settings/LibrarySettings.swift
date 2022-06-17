@@ -47,7 +47,7 @@ struct LibrarySettings: View {
             Divider()
             HStack(alignment :.top) {
                 Text("Languages:").frame(width: 80, alignment: .trailing)
-                LanguageSelector().cornerRadius(6)
+                LanguageSelector().environmentObject(viewModel)
             }
         }
         .padding()
@@ -57,7 +57,7 @@ struct LibrarySettings: View {
             if lastRefresh != nil {
                 Section {
                     NavigationLink("Languages") {
-                        LanguageSelector().navigationTitle("Languages")
+                        LanguageSelector().navigationTitle("Languages").environmentObject(viewModel)
                     }
                 }
             }
@@ -121,13 +121,30 @@ struct LibrarySettings: View {
 }
 
 private struct LanguageSelector: View {
+    @Default(.libraryLanguageCodes) var selected
+    @EnvironmentObject var viewModel: LibraryViewModel
+    @State private var languages = [Language]()
+    
     var body: some View {
         #if os(macOS)
-        List() {
-            Text("lang 1")
-            Text("lang 2")
-            Text("lang 3")
-            Text("this could be a table")
+        Table(languages) {
+            TableColumn("") { language in
+                Toggle("", isOn: Binding {
+                    selected.contains(language.code)
+                } set: { isSelected in
+                    if isSelected {
+                        selected.insert(language.code)
+                    } else {
+                        selected.remove(language.code)
+                    }
+                })
+            }.width(14)
+            TableColumn("Name", value: \.name)
+            TableColumn("Count") { language in Text("\(language.count)") }
+        }
+        .tableStyle(.bordered(alternatesRowBackgrounds: true))
+        .task {
+            languages = await viewModel.fetchLanguages()
         }
         #elseif os(iOS)
         List() {

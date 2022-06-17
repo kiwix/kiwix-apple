@@ -38,6 +38,33 @@ class LibraryViewModel: ObservableObject {
         }
     }
     
+    // MARK: - Language
+    
+    /// Retrieve a list of languages.
+    /// - Returns: languages with count of zim files in each language
+    func fetchLanguages() async -> [Language] {
+        let count = NSExpressionDescription()
+        count.name = "count"
+        count.expression = NSExpression(forFunction: "count:", arguments: [NSExpression(forKeyPath: "languageCode")])
+        count.expressionResultType = .integer16AttributeType
+        
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "ZimFile")
+        fetchRequest.propertiesToFetch = ["languageCode", count]
+        fetchRequest.propertiesToGroupBy = ["languageCode"]
+        fetchRequest.resultType = .dictionaryResultType
+        
+        let context = Database.shared.container.newBackgroundContext()
+        let languages: [Language]? = try? await context.perform {
+            return (try context.fetch(fetchRequest)).compactMap { result in
+                guard let result = result as? NSDictionary,
+                      let languageCode = result["languageCode"] as? String,
+                      let count = result["count"] as? Int else { return nil }
+                return Language(code: languageCode, count: count)
+            }
+        }
+        return languages ?? []
+    }
+    
     // MARK: - Refresh
     
     func refresh(isUserInitiated: Bool) async throws {

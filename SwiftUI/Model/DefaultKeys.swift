@@ -25,7 +25,7 @@ extension Defaults.Keys {
 //    )
     
     // library
-    static let libraryLanguageCodes = Key<[String]>("libraryLanguageCodes", default: [])
+    static let libraryLanguageCodes = Key<Set<String>>("libraryLanguageCodes", default: Set())
     static let libraryShownLanguageFilterAlert = Key<Bool>("libraryHasShownLanguageFilterAlert", default: false)
 //    static let libraryLanguageSortingMode = Key<LibraryLanguageSortingMode>(
 //        "libraryLanguageSortingMode", default: LibraryLanguageSortingMode.alphabetically
