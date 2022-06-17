@@ -92,6 +92,7 @@ struct LibrarySettings: View {
                 Text("Does not apply to files opened in place.")
             }
         }
+        .listStyle(.insetGrouped)
         .navigationTitle("Library")
         .navigationBarTitleDisplayMode(.inline)
         .onChange(of: autoRefresh) { isEnable in
@@ -120,6 +121,7 @@ struct LibrarySettings: View {
     }
 }
 
+#if os(macOS)
 private struct LanguageSelector: View {
     @Default(.libraryLanguageCodes) var selected
     @EnvironmentObject var viewModel: LibraryViewModel
@@ -127,7 +129,6 @@ private struct LanguageSelector: View {
     @State private var sortOrder = [KeyPathComparator(\Language.count, order: .reverse)]
     
     var body: some View {
-        #if os(macOS)
         Table(languages, sortOrder: $sortOrder) {
             TableColumn("") { language in
                 Toggle("", isOn: Binding {
@@ -149,16 +150,76 @@ private struct LanguageSelector: View {
             languages = await viewModel.fetchLanguages()
             languages.sort(using: sortOrder)
         }
-        #elseif os(iOS)
-        List() {
-            Text("lang 1")
-            Text("lang 2")
-            Text("lang 3")
-            Text("this could be a table")
-        }
-        #endif
     }
 }
+#elseif os(iOS)
+private struct LanguageSelector: View {
+    @EnvironmentObject var viewModel: LibraryViewModel
+    @State private var showing = [Language]()
+    @State private var hiding = [Language]()
+    
+    var body: some View {
+        List() {
+            Section {
+                if showing.isEmpty {
+                    Text("No language").foregroundColor(.secondary)
+                } else {
+                    ForEach(showing) { language in
+                        Button { hide(language) } label: { LanguageLabel(language: language) }
+                    }
+                }
+            } header: { Text("Showing") }
+            Section {
+                ForEach(hiding) { language in
+                    Button { show(language) } label: { LanguageLabel(language: language) }
+                }
+            } header: { Text("Hiding") }
+        }
+        .listStyle(.insetGrouped)
+        .onAppear {
+            Task {
+                var languages = await viewModel.fetchLanguages()
+                languages.sort { lhs, rhs in
+                    lhs.count > rhs.count
+                }
+                hiding = languages
+            }
+        }
+    }
+    
+    private func show(_ language: Language) {
+        withAnimation {
+            hiding.removeAll { $0.code == language.code }
+            showing.append(language)
+            showing.sort(by: compare(lhs:rhs:))
+        }
+    }
+    
+    private func hide(_ language: Language) {
+        withAnimation {
+            showing.removeAll { $0.code == language.code }
+            hiding.append(language)
+            hiding.sort(by: compare(lhs:rhs:))
+        }
+    }
+    
+    private func compare(lhs: Language, rhs: Language) -> Bool {
+        return lhs.count > rhs.count
+    }
+}
+
+struct LanguageLabel: View {
+    let language: Language
+    
+    var body: some View {
+        HStack {
+            Text(language.name).foregroundColor(.primary)
+            Spacer()
+            Text("\(language.count)").foregroundColor(.secondary)
+        }
+    }
+}
+#endif
 
 struct LibrarySettings_Previews: PreviewProvider {
     static var previews: some View {
@@ -167,6 +228,7 @@ struct LibrarySettings_Previews: PreviewProvider {
         TabView { LibrarySettings() }.frame(width: 480).preferredColorScheme(.dark)
         #elseif os(iOS)
         NavigationView { LibrarySettings() }
+        NavigationView { LanguageSelector() }
         #endif
     }
 }
