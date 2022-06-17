@@ -53,16 +53,23 @@ class LibraryViewModel: ObservableObject {
         fetchRequest.propertiesToGroupBy = ["languageCode"]
         fetchRequest.resultType = .dictionaryResultType
         
-        let context = Database.shared.container.newBackgroundContext()
-        let languages: [Language]? = try? await context.perform {
-            return (try context.fetch(fetchRequest)).compactMap { result in
-                guard let result = result as? NSDictionary,
-                      let languageCode = result["languageCode"] as? String,
-                      let count = result["count"] as? Int else { return nil }
-                return Language(code: languageCode, count: count)
+        let languages: [Language] = await withCheckedContinuation { continuation in
+            let context = Database.shared.container.newBackgroundContext()
+            context.perform {
+                guard let results = try? context.fetch(fetchRequest) else {
+                    continuation.resume(returning: [])
+                    return
+                }
+                let language: [Language] = results.compactMap { result in
+                    guard let result = result as? NSDictionary,
+                          let languageCode = result["languageCode"] as? String,
+                          let count = result["count"] as? Int else { return nil }
+                    return Language(code: languageCode, count: count)
+                }
+                continuation.resume(returning: language)
             }
         }
-        return languages ?? []
+        return languages
     }
     
     // MARK: - Refresh
