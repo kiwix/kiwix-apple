@@ -44,7 +44,6 @@ struct Kiwix: App {
         Settings {
             TabView {
                 LibrarySettings()
-                Message(text: "Language").tabItem { Label("Language", systemImage: "globe") }
                 About()
             }.frame(width: 480)
         }

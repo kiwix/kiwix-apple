@@ -124,10 +124,11 @@ private struct LanguageSelector: View {
     @Default(.libraryLanguageCodes) var selected
     @EnvironmentObject var viewModel: LibraryViewModel
     @State private var languages = [Language]()
+    @State private var sortOrder = [KeyPathComparator(\Language.count, order: .reverse)]
     
     var body: some View {
         #if os(macOS)
-        Table(languages) {
+        Table(languages, sortOrder: $sortOrder) {
             TableColumn("") { language in
                 Toggle("", isOn: Binding {
                     selected.contains(language.code)
@@ -140,11 +141,13 @@ private struct LanguageSelector: View {
                 })
             }.width(14)
             TableColumn("Name", value: \.name)
-            TableColumn("Count") { language in Text("\(language.count)") }
+            TableColumn("Count", value: \.count) { language in Text(language.count.formatted()) }
         }
         .tableStyle(.bordered(alternatesRowBackgrounds: true))
+        .onChange(of: sortOrder) { languages.sort(using: $0) }
         .task {
             languages = await viewModel.fetchLanguages()
+            languages.sort(using: sortOrder)
         }
         #elseif os(iOS)
         List() {
