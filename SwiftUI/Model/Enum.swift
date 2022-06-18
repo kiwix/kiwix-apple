@@ -6,6 +6,8 @@
 //  Copyright © 2021 Chris Li. All rights reserved.
 //
 
+import Defaults
+
 enum Category: String, CaseIterable, Identifiable {
     var id: String { rawValue }
     
@@ -77,6 +79,21 @@ enum Flavor: String, CustomStringConvertible {
             return "no pic"
         case .mini:
             return "mini"
+        }
+    }
+}
+
+enum LibraryLanguageSortingMode: String, CaseIterable, Identifiable, Defaults.Serializable {
+    case alphabetically, byCounts
+    
+    var id: String { self.rawValue }
+    
+    var name: String {
+        switch self {
+        case .alphabetically:
+            return "A-Z"
+        case .byCounts:
+            return "By Count"
         }
     }
 }

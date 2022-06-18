@@ -154,6 +154,7 @@ private struct LanguageSelector: View {
 }
 #elseif os(iOS)
 private struct LanguageSelector: View {
+    @Default(.libraryLanguageSortingMode) var sortingMode
     @EnvironmentObject var viewModel: LibraryViewModel
     @State private var showing = [Language]()
     @State private var hiding = [Language]()
@@ -176,18 +177,38 @@ private struct LanguageSelector: View {
             } header: { Text("Hiding") }
         }
         .listStyle(.insetGrouped)
+        .toolbar {
+            Picker(selection: $sortingMode) {
+                ForEach(LibraryLanguageSortingMode.allCases) { sortingMode in
+                    Text(sortingMode.name).tag(sortingMode)
+                }
+            } label: {
+                Label("Sorting", systemImage: "arrow.up.arrow.down")
+            }.pickerStyle(.menu)
+        }
         .onAppear {
             Task {
                 var languages = await viewModel.fetchLanguages()
                 languages.sort { lhs, rhs in
-                    lhs.count > rhs.count
+                    switch sortingMode {
+                    case .alphabetically:
+                        return lhs.name.caseInsensitiveCompare(rhs.name) == .orderedAscending
+                    case .byCounts:
+                        return lhs.count > rhs.count
+                    }
                 }
-                hiding = languages
+                showing = languages.filter { Defaults[.libraryLanguageCodes].contains($0.code) }
+                hiding = languages.filter { !Defaults[.libraryLanguageCodes].contains($0.code) }
             }
+        }
+        .onChange(of: sortingMode) { sortingMode in
+            showing.sort(by: compare(lhs:rhs:))
+            hiding.sort(by: compare(lhs:rhs:))
         }
     }
     
     private func show(_ language: Language) {
+        Defaults[.libraryLanguageCodes].insert(language.code)
         withAnimation {
             hiding.removeAll { $0.code == language.code }
             showing.append(language)
@@ -196,6 +217,7 @@ private struct LanguageSelector: View {
     }
     
     private func hide(_ language: Language) {
+        Defaults[.libraryLanguageCodes].remove(language.code)
         withAnimation {
             showing.removeAll { $0.code == language.code }
             hiding.append(language)
@@ -204,7 +226,12 @@ private struct LanguageSelector: View {
     }
     
     private func compare(lhs: Language, rhs: Language) -> Bool {
-        return lhs.count > rhs.count
+        switch sortingMode {
+        case .alphabetically:
+            return lhs.name.caseInsensitiveCompare(rhs.name) == .orderedAscending
+        case .byCounts:
+            return lhs.count > rhs.count
+        }
     }
 }
 
