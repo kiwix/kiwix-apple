@@ -123,8 +123,8 @@ struct LibrarySettings: View {
 
 #if os(macOS)
 private struct LanguageSelector: View {
-    @Default(.libraryLanguageCodes) var selected
-    @EnvironmentObject var viewModel: LibraryViewModel
+    @Default(.libraryLanguageCodes) private var selected
+    @EnvironmentObject private var viewModel: LibraryViewModel
     @State private var languages = [Language]()
     @State private var sortOrder = [KeyPathComparator(\Language.count, order: .reverse)]
     
@@ -154,8 +154,8 @@ private struct LanguageSelector: View {
 }
 #elseif os(iOS)
 private struct LanguageSelector: View {
-    @Default(.libraryLanguageSortingMode) var sortingMode
-    @EnvironmentObject var viewModel: LibraryViewModel
+    @Default(.libraryLanguageSortingMode) private var sortingMode
+    @EnvironmentObject private var viewModel: LibraryViewModel
     @State private var showing = [Language]()
     @State private var hiding = [Language]()
     
@@ -189,21 +189,14 @@ private struct LanguageSelector: View {
         .onAppear {
             Task {
                 var languages = await viewModel.fetchLanguages()
-                languages.sort { lhs, rhs in
-                    switch sortingMode {
-                    case .alphabetically:
-                        return lhs.name.caseInsensitiveCompare(rhs.name) == .orderedAscending
-                    case .byCounts:
-                        return lhs.count > rhs.count
-                    }
-                }
+                languages.sort(by: LibraryViewModel.compareLanguage(lhs:rhs:))
                 showing = languages.filter { Defaults[.libraryLanguageCodes].contains($0.code) }
                 hiding = languages.filter { !Defaults[.libraryLanguageCodes].contains($0.code) }
             }
         }
         .onChange(of: sortingMode) { sortingMode in
-            showing.sort(by: compare(lhs:rhs:))
-            hiding.sort(by: compare(lhs:rhs:))
+            showing.sort(by: LibraryViewModel.compareLanguage(lhs:rhs:))
+            hiding.sort(by: LibraryViewModel.compareLanguage(lhs:rhs:))
         }
     }
     
@@ -212,7 +205,7 @@ private struct LanguageSelector: View {
         withAnimation {
             hiding.removeAll { $0.code == language.code }
             showing.append(language)
-            showing.sort(by: compare(lhs:rhs:))
+            showing.sort(by: LibraryViewModel.compareLanguage(lhs:rhs:))
         }
     }
     
@@ -221,16 +214,7 @@ private struct LanguageSelector: View {
         withAnimation {
             showing.removeAll { $0.code == language.code }
             hiding.append(language)
-            hiding.sort(by: compare(lhs:rhs:))
-        }
-    }
-    
-    private func compare(lhs: Language, rhs: Language) -> Bool {
-        switch sortingMode {
-        case .alphabetically:
-            return lhs.name.caseInsensitiveCompare(rhs.name) == .orderedAscending
-        case .byCounts:
-            return lhs.count > rhs.count
+            hiding.sort(by: LibraryViewModel.compareLanguage(lhs:rhs:))
         }
     }
 }

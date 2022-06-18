@@ -72,6 +72,21 @@ class LibraryViewModel: ObservableObject {
         return languages
     }
     
+    /// Compare two languages based on library language sorting order.
+    /// Can be removed once support for iOS 14 drops.
+    /// - Parameters:
+    ///   - lhs: one language to compare
+    ///   - rhs: another language to compare
+    /// - Returns: if one language should appear before or after another
+    static func compareLanguage(lhs: Language, rhs: Language) -> Bool {
+        switch Defaults[.libraryLanguageSortingMode] {
+        case .alphabetically:
+            return lhs.name.caseInsensitiveCompare(rhs.name) == .orderedAscending
+        case .byCounts:
+            return lhs.count > rhs.count
+        }
+    }
+    
     // MARK: - Refresh
     
     func refresh(isUserInitiated: Bool) async throws {
