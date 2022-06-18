@@ -8,8 +8,11 @@
 
 import SwiftUI
 
+import Defaults
+
 /// Show zim files that are created in the last two weeks.
 struct ZimFilesNew: View {
+    @Default(.libraryLanguageCodes) private var languageCodes
     @FetchRequest(
         sortDescriptors: [
             NSSortDescriptor(keyPath: \ZimFile.created, ascending: false),
@@ -44,6 +47,11 @@ struct ZimFilesNew: View {
         .navigationTitle(LibraryTopic.new.name)
         .modifier(ZimFileDetailPanel(zimFile: selected))
         .modifier(Searchable(searchText: $searchText))
+        .onChange(of: languageCodes) { _ in
+            if #available(iOS 15.0, *) {
+                zimFiles.nsPredicate = ZimFilesNew.buildPredicate(searchText: searchText)
+            }
+        }
         .onChange(of: searchText) { searchText in
             if #available(iOS 15.0, *) {
                 zimFiles.nsPredicate = ZimFilesNew.buildPredicate(searchText: searchText)
@@ -52,7 +60,7 @@ struct ZimFilesNew: View {
     }
     
     private static func buildPredicate(searchText: String) -> NSPredicate {
-        var predicates = [NSPredicate(format: "languageCode == %@", "en")]
+        var predicates = [NSPredicate(format: "languageCode IN %@", Defaults[.libraryLanguageCodes])]
         if let twoWeeksAgo = Calendar.current.date(byAdding: .day, value: -14, to: Date()) {
             predicates.append(NSPredicate(format: "created > %@", twoWeeksAgo as CVarArg))
         }

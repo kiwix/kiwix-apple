@@ -14,10 +14,10 @@ import SwiftUI
 import Defaults
 
 struct LibrarySettings: View {
-    @Default(.backupDocumentDirectory) var backupDocumentDirectory
-    @Default(.libraryAutoRefresh) var autoRefresh
-    @Default(.libraryLastRefresh) var lastRefresh
-    @StateObject var viewModel = LibraryViewModel()
+    @Default(.backupDocumentDirectory) private var backupDocumentDirectory
+    @Default(.libraryAutoRefresh) private var autoRefresh
+    @Default(.libraryLastRefresh) private var lastRefresh
+    @StateObject private var viewModel = LibraryViewModel()
     
     var body: some View {
         #if os(macOS)

@@ -45,8 +45,7 @@ struct ZimFilesOpened: View {
                 isFileImporterPresented = true
             } label: {
                 Image(systemName: "plus")
-            }
-            .help("Open a zim file")
+            }.help("Open a zim file")
         }
     }
 }
