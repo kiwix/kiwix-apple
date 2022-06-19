@@ -20,7 +20,7 @@ struct SettingSection<Content: View>: View {
     
     var body: some View {
         HStack(alignment :.top) {
-            Text("\(name):").frame(width: 80, alignment: .trailing)
+            Text("\(name):").frame(width: 100, alignment: .trailing)
             VStack(alignment: .leading, spacing: 16, content: content)
             Spacer()
         }

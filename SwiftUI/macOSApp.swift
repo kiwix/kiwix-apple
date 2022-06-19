@@ -45,7 +45,7 @@ struct Kiwix: App {
             TabView {
                 LibrarySettings()
                 About()
-            }.frame(width: 480)
+            }.frame(width: 550, height: 400)
         }
     }
     
