@@ -22,31 +22,25 @@ struct LibrarySettings: View {
     var body: some View {
         #if os(macOS)
         VStack(spacing: 16) {
-            HStack(alignment :.top) {
-                Text("Catalog:").frame(width: 80, alignment: .trailing)
-                VStack(alignment: .leading, spacing: 16) {
-                    HStack(spacing: 6) {
-                        Button("Refresh Now") {
-                            Task { try? await viewModel.refresh(isUserInitiated: true) }
-                        }.disabled(viewModel.isRefreshing)
-                        if viewModel.isRefreshing {
-                            ProgressView().progressViewStyle(.circular).scaleEffect(0.5).frame(height: 1)
-                        }
-                        Spacer()
-                        Text("Last refresh:").foregroundColor(.secondary)
-                        lastRefreshTime.foregroundColor(.secondary)
+            SettingSection(name: "Catalog") {
+                HStack(spacing: 6) {
+                    Button("Refresh Now") {
+                        Task { try? await viewModel.refresh(isUserInitiated: true) }
+                    }.disabled(viewModel.isRefreshing)
+                    if viewModel.isRefreshing {
+                        ProgressView().progressViewStyle(.circular).scaleEffect(0.5).frame(height: 1)
                     }
-                    VStack(alignment: .leading) {
-                        Toggle("Auto refresh", isOn: $autoRefresh)
-                        Text("When enabled, the library catalog will be refreshed automatically when outdated.")
-                            .foregroundColor(.secondary)
-                    }
+                    Spacer()
+                    Text("Last refresh:").foregroundColor(.secondary)
+                    lastRefreshTime.foregroundColor(.secondary)
                 }
-                Spacer()
+                VStack(alignment: .leading) {
+                    Toggle("Auto refresh", isOn: $autoRefresh)
+                    Text("When enabled, the library catalog will be refreshed automatically when outdated.")
+                        .foregroundColor(.secondary)
+                }
             }
-            Divider()
-            HStack(alignment :.top) {
-                Text("Languages:").frame(width: 80, alignment: .trailing)
+            SettingSection(name: "Languages") {
                 LanguageSelector().environmentObject(viewModel)
             }
         }

@@ -8,6 +8,25 @@
 
 import SwiftUI
 
+#if os(macOS)
+struct SettingSection<Content: View>: View {
+    let name: String
+    var content: () -> Content
+    
+    init(name: String, @ViewBuilder content: @escaping () -> Content) {
+        self.name = name
+        self.content = content
+    }
+    
+    var body: some View {
+        HStack(alignment :.top) {
+            Text("\(name):").frame(width: 80, alignment: .trailing)
+            VStack(alignment: .leading, spacing: 16, content: content)
+            Spacer()
+        }
+    }
+}
+#elseif os(iOS)
 struct Settings: View {
     @Environment(\.presentationMode) private var presentationMode
     
@@ -38,3 +57,4 @@ struct Settings_Previews: PreviewProvider {
         Settings()
     }
 }
+#endif
