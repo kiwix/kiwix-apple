@@ -73,7 +73,8 @@ struct About: View {
             } header: { Text("Dependencies") }
         }
         .navigationTitle("About")
-        .sheet(item: $externalLinkURL) { SafariView(url: $0).ignoresSafeArea(.container, edges: .all) }
+//        .navigationBarTitleDisplayMode(.inline)
+        .sheet(item: $externalLinkURL) { SafariView(url: $0) }
         #endif
     }
     

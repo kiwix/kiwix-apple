@@ -51,7 +51,7 @@ struct LibrarySettings: View {
             if lastRefresh != nil {
                 Section {
                     NavigationLink("Languages") {
-                        LanguageSelector().navigationTitle("Languages").environmentObject(viewModel)
+                        LanguageSelector().environmentObject(viewModel)
                     }
                 }
             }
@@ -88,7 +88,6 @@ struct LibrarySettings: View {
         }
         .listStyle(.insetGrouped)
         .navigationTitle("Library")
-        .navigationBarTitleDisplayMode(.inline)
         .onChange(of: autoRefresh) { isEnable in
             if isEnable {
                 let request = BGAppRefreshTaskRequest(identifier: LibraryViewModel.backgroundTaskIdentifier)
@@ -171,6 +170,8 @@ private struct LanguageSelector: View {
             } header: { Text("Hiding") }
         }
         .listStyle(.insetGrouped)
+        .navigationTitle("Languages")
+        .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             Picker(selection: $sortingMode) {
                 ForEach(LibraryLanguageSortingMode.allCases) { sortingMode in
