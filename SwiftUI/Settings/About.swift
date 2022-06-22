@@ -39,7 +39,7 @@ struct About: View {
                     TableColumn("Name", value: \.name)
                     TableColumn("License", value: \.license)
                     TableColumn("Version") { dependency in Text(dependency.version ?? "") }
-                }
+                }.tableStyle(.bordered(alternatesRowBackgrounds: true))
             }
         }
         .padding()
@@ -73,7 +73,6 @@ struct About: View {
             } header: { Text("Dependencies") }
         }
         .navigationTitle("About")
-//        .navigationBarTitleDisplayMode(.inline)
         .sheet(item: $externalLinkURL) { SafariView(url: $0) }
         #endif
     }
