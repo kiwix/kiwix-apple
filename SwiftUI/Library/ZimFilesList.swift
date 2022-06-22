@@ -33,10 +33,16 @@ struct ZimFilesList: View {
     }
     
     var body: some View {
-        List(zimFiles, id: \.self, selection: $selected) { zimFile in
-            ZimFileRow(zimFile)
-                .modifier(ZimFileContextMenu(selected: $selected, zimFile: zimFile))
-                .modifier(ZimFileSelection(selected: $selected, zimFile: zimFile))
+        Group {
+            if zimFiles.isEmpty {
+                Message(text: "No zim file under this category.")
+            } else {
+                List(zimFiles, id: \.self, selection: $selected) { zimFile in
+                    ZimFileRow(zimFile)
+                        .modifier(ZimFileContextMenu(selected: $selected, zimFile: zimFile))
+                        .modifier(ZimFileSelection(selected: $selected, zimFile: zimFile))
+                }
+            }
         }
         .navigationTitle(category.description)
         .modifier(ZimFileListStyle())

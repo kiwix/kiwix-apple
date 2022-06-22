@@ -32,7 +32,7 @@ struct ZimFilesGrid: View {
     var body: some View {
         Group {
             if sections.isEmpty {
-                Message(text: "No zim files under this category.")
+                Message(text: "No zim file under this category.")
             } else {
                 LazyVGrid(
                     columns: ([gridItem]),
