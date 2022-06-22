@@ -17,19 +17,9 @@ struct ZimFileDetail: View {
     var body: some View {
         #if os(macOS)
         List {
-            Section("Name") { Text(zimFile.name) }.collapsible(false)
+            Section("Name") { Text(zimFile.name).lineLimit(nil) }.collapsible(false)
             Section("Description") { Text(zimFile.fileDescription).lineLimit(nil) }.collapsible(false)
-            if let downloadTask = zimFile.downloadTask {
-                Section("Download") { DownloadTaskDetail(downloadTask: downloadTask) }.collapsible(false)
-            } else if zimFile.fileURLBookmark != nil {
-                Section("Actions") { openedActions }.collapsible(false)
-            } else if zimFile.downloadURL != nil {
-                Section("Download") {
-                    Action(title: "Download") {
-                        Downloads.shared.start(zimFileID: zimFile.id, allowsCellularAccess: false)
-                    }
-                }
-            }
+            Section("Actions") { actions }.collapsible(false)
             Section("Info") {
                 basicInfo
                 boolInfo
@@ -42,20 +32,10 @@ struct ZimFileDetail: View {
         #elseif os(iOS)
         List {
             Section {
-                Text(zimFile.name)
+                Text(zimFile.name).lineLimit(nil)
                 Text(zimFile.fileDescription).lineLimit(nil)
             }
-            if let downloadTask = zimFile.downloadTask {
-                Section { DownloadTaskDetail(downloadTask: downloadTask) }
-            } else if zimFile.fileURLBookmark != nil {
-                Section { openedActions }
-            } else if zimFile.downloadURL != nil {
-                Section {
-                    Action(title: "Download") {
-                        Downloads.shared.start(zimFileID: zimFile.id, allowsCellularAccess: false)
-                    }
-                }
-            }
+            Section { actions }
             Section { basicInfo }
             Section { boolInfo }
             Section { counts }
@@ -100,6 +80,23 @@ struct ZimFileDetail: View {
             }
         }
         #endif
+    }
+    
+    var downloadAction: some View {
+        Action(title: "Download") {
+            Downloads.shared.start(zimFileID: zimFile.id, allowsCellularAccess: false)
+        }
+    }
+    
+    @ViewBuilder
+    var actions: some View {
+        if let downloadTask = zimFile.downloadTask {
+            DownloadTaskDetail(downloadTask: downloadTask)
+        } else if zimFile.fileURLBookmark != nil {
+            openedActions
+        } else if zimFile.downloadURL != nil {
+            downloadAction
+        }
     }
     
     @ViewBuilder
