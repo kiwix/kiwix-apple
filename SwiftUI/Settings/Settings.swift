@@ -1,6 +1,6 @@
 //
 //  Settings.swift
-//  Kiwix
+//  Kiwix for iOS
 //
 //  Created by Chris Li on 6/10/22.
 //  Copyright © 2022 Chris Li. All rights reserved.
@@ -10,30 +10,13 @@ import SwiftUI
 
 import Defaults
 
-#if os(macOS)
-struct SettingSection<Content: View>: View {
-    let name: String
-    var content: () -> Content
-    
-    init(name: String, @ViewBuilder content: @escaping () -> Content) {
-        self.name = name
-        self.content = content
-    }
-    
-    var body: some View {
-        HStack(alignment :.top) {
-            Text("\(name):").frame(width: 100, alignment: .trailing)
-            VStack(alignment: .leading, spacing: 16, content: content)
-            Spacer()
-        }
-    }
-}
-#elseif os(iOS)
 struct Settings: View {
     @Default(.webViewPageZoom) var webViewPageZoom
     @Default(.externalLinkLoadingPolicy) var externalLinkLoadingPolicy
     @Default(.searchResultSnippetMode) var searchResultSnippetMode
+    @Default(.backupDocumentDirectory) private var backupDocumentDirectory
     @Environment(\.presentationMode) private var presentationMode
+    @StateObject private var viewModel = LibraryViewModel()
     
     var body: some View {
         NavigationView {
@@ -53,8 +36,13 @@ struct Settings: View {
                         }
                     }
                 } header: { Text("Reading") }
+                LibrarySettings()
                 Section {
-                    NavigationLink("Library") { LibrarySettings() }
+                    Toggle("Include zim files in backup", isOn: $backupDocumentDirectory)
+                } header: {
+                    Text("Backup")
+                } footer: {
+                    Text("Does not apply to files opened in place.")
                 }
                 Section {
                     NavigationLink("About") { About() }
@@ -83,4 +71,3 @@ struct Settings_Previews: PreviewProvider {
         Settings()
     }
 }
-#endif

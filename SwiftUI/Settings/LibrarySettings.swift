@@ -47,47 +47,34 @@ struct LibrarySettings: View {
         .padding()
         .tabItem { Label("Library", systemImage: "folder.badge.gearshape") }
         #elseif os(iOS)
-        List {
+        Section {
             if lastRefresh != nil {
-                Section {
-                    NavigationLink("Languages") {
-                        LanguageSelector().environmentObject(viewModel)
-                    }
+                NavigationLink("Languages") {
+                    LanguageSelector().environmentObject(viewModel)
                 }
             }
-            Section {
+            HStack {
+                Text("Last refresh")
+                Spacer()
+                lastRefreshTime.foregroundColor(.secondary)
+            }
+            if viewModel.isRefreshing {
                 HStack {
-                    Text("Last refresh")
+                    Text("Refreshing...").foregroundColor(.secondary)
                     Spacer()
-                    lastRefreshTime.foregroundColor(.secondary)
+                    ProgressView().progressViewStyle(.circular)
                 }
-                if viewModel.isRefreshing {
-                    HStack {
-                        Text("Refreshing...").foregroundColor(.secondary)
-                        Spacer()
-                        ProgressView().progressViewStyle(.circular)
-                    }
-                } else {
-                    Button("Refresh Now") {
-                        Task { try? await viewModel.refresh(isUserInitiated: true) }
-                    }
+            } else {
+                Button("Refresh Now") {
+                    Task { try? await viewModel.refresh(isUserInitiated: true) }
                 }
-                Toggle("Auto refresh", isOn: $autoRefresh)
-            } header: {
-                Text("Catalog")
-            } footer: {
-                Text("When enabled, the library catalog will be refreshed automatically when outdated.")
             }
-            Section {
-                Toggle("Include zim files in backup", isOn: $backupDocumentDirectory)
-            } header: {
-                Text("Backup")
-            } footer: {
-                Text("Does not apply to files opened in place.")
-            }
+            Toggle("Auto refresh", isOn: $autoRefresh)
+        } header: {
+            Text("Library")
+        } footer: {
+            Text("When enabled, the library catalog will be refreshed automatically when outdated.")
         }
-        .listStyle(.insetGrouped)
-        .navigationTitle("Library")
         .onChange(of: autoRefresh) { isEnable in
             if isEnable {
                 let request = BGAppRefreshTaskRequest(identifier: LibraryViewModel.backgroundTaskIdentifier)

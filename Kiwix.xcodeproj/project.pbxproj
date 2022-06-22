@@ -34,6 +34,7 @@
 		97252103200D3C4B00B60A80 /* HUDController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97252102200D3C4B00B60A80 /* HUDController.swift */; };
 		97252105200E908000B60A80 /* TableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97252104200E908000B60A80 /* TableViewCell.swift */; };
 		97255D8C273608C3002B995B /* WebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97255D8B273608C3002B995B /* WebView.swift */; };
+		9729E12D2862BA90003D19B1 /* SettingSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9729E12C2862BA90003D19B1 /* SettingSection.swift */; };
 		972B6662200808D6003F5365 /* WelcomeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 972B6661200808D6003F5365 /* WelcomeController.swift */; };
 		972C978026F042E40070987F /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 972C977F26F042E40070987F /* SettingsViewController.swift */; };
 		972DE4732814A116004FD9B9 /* Entities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 972DE4722814A116004FD9B9 /* Entities.swift */; };
@@ -109,7 +110,6 @@
 		9753D949285B55F100A626CC /* DefaultKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9753D947285B55F100A626CC /* DefaultKeys.swift */; };
 		9753D94B285B56C900A626CC /* Defaults in Frameworks */ = {isa = PBXBuildFile; productRef = 9753D94A285B56C900A626CC /* Defaults */; };
 		9753D94D285B5B7E00A626CC /* Defaults in Frameworks */ = {isa = PBXBuildFile; productRef = 9753D94C285B5B7E00A626CC /* Defaults */; };
-		97543369285F6E5200A799FA /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 974C33A12853DDEE00DF6F4C /* Settings.swift */; };
 		97566A562728F58000DE7165 /* BookmarksViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97566A552728F58000DE7165 /* BookmarksViewController.swift */; };
 		975AEBD32597EACF00392988 /* Kiwix_logo_v3_320px.png in Resources */ = {isa = PBXBuildFile; fileRef = 975AEBD22597EACF00392988 /* Kiwix_logo_v3_320px.png */; };
 		9763EDCB201FCC3A00F3A6D5 /* About.html in Resources */ = {isa = PBXBuildFile; fileRef = 9763EDCA201FCC3900F3A6D5 /* About.html */; };
@@ -375,6 +375,7 @@
 		97252102200D3C4B00B60A80 /* HUDController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HUDController.swift; sourceTree = "<group>"; };
 		97252104200E908000B60A80 /* TableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewCell.swift; sourceTree = "<group>"; };
 		97255D8B273608C3002B995B /* WebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebView.swift; sourceTree = "<group>"; };
+		9729E12C2862BA90003D19B1 /* SettingSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingSection.swift; sourceTree = "<group>"; };
 		972B6661200808D6003F5365 /* WelcomeController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeController.swift; sourceTree = "<group>"; };
 		972C977F26F042E40070987F /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		972DE4722814A116004FD9B9 /* Entities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Entities.swift; sourceTree = "<group>"; };
@@ -719,6 +720,7 @@
 			isa = PBXGroup;
 			children = (
 				974C33A12853DDEE00DF6F4C /* Settings.swift */,
+				9729E12C2862BA90003D19B1 /* SettingSection.swift */,
 				974C33AA28558D2900DF6F4C /* LibrarySettings.swift */,
 				974C339E2853D4AC00DF6F4C /* About.swift */,
 			);
@@ -1672,6 +1674,7 @@
 				97B3BACC2736CDCE00A23F49 /* URLContent.swift in Sources */,
 				97FB4B0B27B819A90055F86E /* Message.swift in Sources */,
 				973A0DF0282E981200B41E71 /* ZimFileRow.swift in Sources */,
+				9729E12D2862BA90003D19B1 /* SettingSection.swift in Sources */,
 				97242B8A2735E67500C87F85 /* SearchOperation.mm in Sources */,
 				974C339F2853D4AC00DF6F4C /* About.swift in Sources */,
 				978A731227B9A0E0008101B4 /* NavigationButtons.swift in Sources */,
@@ -1694,7 +1697,6 @@
 				97242B9B2735E6A800C87F85 /* DirectoryMonitor.swift in Sources */,
 				97242B992735E6A800C87F85 /* SearchQueue.swift in Sources */,
 				9735D0BA2775363900C7D495 /* DataModel.xcdatamodeld in Sources */,
-				97543369285F6E5200A799FA /* Settings.swift in Sources */,
 				974C33A8285589E900DF6F4C /* Patches.swift in Sources */,
 				97B0737627825E3D007C7DF3 /* Favicon.swift in Sources */,
 				973A2FC6277EAA2700BD4320 /* OPDSRefreshError.swift in Sources */,
