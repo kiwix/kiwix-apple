@@ -79,9 +79,7 @@ struct ZimFilesGrid: View {
         .modifier(ZimFileDetailPanel(zimFile: selected))
         .onChange(of: category) { _ in selected = nil }
         .onChange(of: languageCodes) { _ in
-            if #available(iOS 15.0, *) {
-                sections.nsPredicate = ZimFilesGrid.buildPredicate(category: category)
-            }
+            sections.nsPredicate = ZimFilesGrid.buildPredicate(category: category)
         }
     }
     
