@@ -8,7 +8,10 @@
 
 import SwiftUI
 
+import Defaults
+
 struct ZimFileList: View {
+    @Default(.libraryLanguageCodes) private var languageCodes
     @FetchRequest private var zimFiles: FetchedResults<ZimFile>
     @State private var searchText = ""
     @State private var selected: ZimFile?
@@ -48,11 +51,16 @@ struct ZimFileList: View {
             searchText = ""
             selected = nil
         }
+        .onChange(of: languageCodes) { _ in
+            if #available(iOS 15.0, *) {
+                zimFiles.nsPredicate = ZimFileList.buildPredicate(category: category, searchText: "")
+            }
+        }
     }
     
     private static func buildPredicate(category: Category, searchText: String) -> NSPredicate {
         var predicates = [
-            NSPredicate(format: "languageCode == %@", "en"),
+            NSPredicate(format: "languageCode IN %@", Defaults[.libraryLanguageCodes]),
             NSPredicate(format: "category == %@", category.rawValue)
         ]
         if !searchText.isEmpty {

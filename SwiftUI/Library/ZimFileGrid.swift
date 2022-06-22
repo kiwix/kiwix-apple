@@ -8,9 +8,12 @@
 
 import SwiftUI
 
+import Defaults
+
 // A grid of zim files of the same category broken down into sections by title.
 @available(iOS 15.0, macOS 12.0, *)
 struct ZimFileGrid: View {
+    @Default(.libraryLanguageCodes) private var languageCodes
     @SectionedFetchRequest private var sections: SectionedFetchResults<String, ZimFile>
     @State private var selected: ZimFile?
     
@@ -21,10 +24,7 @@ struct ZimFileGrid: View {
         self._sections = SectionedFetchRequest<String, ZimFile>(
             sectionIdentifier: \.name,
             sortDescriptors: [SortDescriptor(\ZimFile.name), SortDescriptor(\.size, order: .reverse)],
-            predicate: NSCompoundPredicate(andPredicateWithSubpredicates: [
-                NSPredicate(format: "languageCode == %@", "en"),
-                NSPredicate(format: "category == %@", category.rawValue)
-            ]),
+            predicate:  ZimFileGrid.buildPredicate(category: category),
             animation: .easeInOut
         )
     }
@@ -78,14 +78,26 @@ struct ZimFileGrid: View {
         .navigationTitle(category.description)
         .modifier(ZimFileDetailPanel(zimFile: selected))
         .onChange(of: category) { _ in selected = nil }
+        .onChange(of: languageCodes) { _ in
+            if #available(iOS 15.0, *) {
+                sections.nsPredicate = ZimFileGrid.buildPredicate(category: category)
+            }
+        }
     }
     
-    var gridItem: GridItem {
+    private var gridItem: GridItem {
         #if os(macOS)
         GridItem(.adaptive(minimum: 200, maximum: 400), spacing: 12)
         #elseif os(iOS)
         GridItem(.adaptive(minimum: 150, maximum: 400), spacing: 12)
         #endif
+    }
+    
+    private static func buildPredicate(category: Category) -> NSPredicate {
+        return NSCompoundPredicate(andPredicateWithSubpredicates: [
+            NSPredicate(format: "languageCode IN %@", Defaults[.libraryLanguageCodes]),
+            NSPredicate(format: "category == %@", category.rawValue)
+        ])
     }
 }
 
