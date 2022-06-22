@@ -11,6 +11,7 @@
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wdocumentation"
 #include "kiwix/book.h"
+#include "kiwix/kiwix_config.h"
 #include "zim/archive.h"
 #include "zim/entry.h"
 #include "zim/error.h"
@@ -36,6 +37,8 @@
     if (self) {
         self.archives = new std::unordered_map<std::string, zim::Archive>();
         self.fileURLs = [[NSMutableDictionary alloc] init];
+        self.libzimVersion = [[NSString alloc] initWithUTF8String:LIBZIM_VERSION];
+        self.libkiwixVersion = [[NSString alloc] initWithUTF8String:LIBKIWIX_VERSION];
     }
     return self;
 }

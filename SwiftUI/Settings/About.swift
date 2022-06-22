@@ -12,8 +12,8 @@ struct About: View {
     @State private var externalLinkURL: URL?
     
     private let dependencies = [
-        Dependency(name: "libkiwix", license: "GPLv3", version: "9.4.1"),
-        Dependency(name: "libzim", license: "GPLv2", version: "6.3.2"),
+        Dependency(name: "libkiwix", license: "GPLv3", version: ZimFileService.shared.libkiwixVersion),
+        Dependency(name: "libzim", license: "GPLv2", version: ZimFileService.shared.libzimVersion),
         Dependency(name: "Xapian", license: "GPLv2", version: nil),
         Dependency(name: "ICU", license: "ICU", version: nil),
         Dependency(name: "Defaults", license: "MIT", version: "6.3.0"),

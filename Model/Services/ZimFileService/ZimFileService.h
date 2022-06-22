@@ -11,6 +11,9 @@
 
 @interface ZimFileService : NSObject
 
+@property (nonatomic, strong) NSString *_Nonnull libkiwixVersion;
+@property (nonatomic, strong) NSString *_Nonnull libzimVersion;
+
 - (instancetype _Nonnull)init NS_REFINED_FOR_SWIFT;
 + (nonnull ZimFileService *)sharedInstance NS_REFINED_FOR_SWIFT;
 
@@ -20,12 +23,12 @@
 - (void)close:(NSUUID *_Nonnull)zimFileID NS_REFINED_FOR_SWIFT;
 - (NSArray *_Nonnull)getReaderIdentifiers NS_REFINED_FOR_SWIFT;
 - (nonnull void *) getArchives;
+
 # pragma mark - Metadata
 
 - (nullable ZimFileMetaData *)getMetaData:(nonnull NSUUID *)zimFileID NS_REFINED_FOR_SWIFT;
 - (nullable NSData *)getFavicon:(nonnull NSUUID *)zimFileID NS_REFINED_FOR_SWIFT;
 + (nullable ZimFileMetaData *)getMetaDataWithFileURL:(nonnull NSURL *)url NS_REFINED_FOR_SWIFT;
-
 
 # pragma mark - URL Handling
 
