@@ -16,7 +16,9 @@ struct Kiwix: App {
     
     var body: some Scene {
         WindowGroup {
-            Reader().environment(\.managedObjectContext, Database.shared.container.viewContext)
+            Reader()
+                .environment(\.managedObjectContext, Database.shared.container.viewContext)
+                .frame(minWidth: 950, idealWidth: 1250, minHeight: 550, idealHeight: 750)
         }.commands {
             ImportCommands()
             SidebarDisplayModeCommands()
@@ -36,7 +38,9 @@ struct Kiwix: App {
             }
         }.handlesExternalEvents(matching: [WindowGroupTitle.reading.rawValue])
         WindowGroup(WindowGroupTitle.library.rawValue) {
-            Library().environment(\.managedObjectContext, Database.shared.container.viewContext)
+            Library()
+                .environment(\.managedObjectContext, Database.shared.container.viewContext)
+                .frame(minWidth: 950, idealWidth: 1250, minHeight: 550, idealHeight: 750)
         }.commands {
             SidebarCommands()
             ImportCommands()
