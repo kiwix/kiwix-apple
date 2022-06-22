@@ -62,6 +62,23 @@ enum Category: String, CaseIterable, Identifiable {
     }
 }
 
+enum ExternalLinkLoadingPolicy: String, CaseIterable, Identifiable, Defaults.Serializable {
+    case alwaysAsk, alwaysLoad, neverLoad
+    
+    var id: String { self.rawValue }
+    
+    var name: String {
+        switch self {
+        case .alwaysAsk:
+            return "Always ask"
+        case .alwaysLoad:
+            return "Always load"
+        case .neverLoad:
+            return "Never load"
+        }
+    }
+}
+
 enum Flavor: String, CustomStringConvertible {
     case max = "maxi"
     case noPic = "nopic"
@@ -164,7 +181,7 @@ enum LibraryTopic: Hashable, Identifiable, RawRepresentable {
     }
 }
 
-enum SearchResultSnippetMode: String, CaseIterable, Identifiable  {
+enum SearchResultSnippetMode: String, CaseIterable, Identifiable, Defaults.Serializable  {
     case disabled, firstParagraph, firstSentence, matches
     
     var id: String { rawValue }

@@ -8,6 +8,8 @@
 
 import SwiftUI
 
+import Defaults
+
 #if os(macOS)
 struct SettingSection<Content: View>: View {
     let name: String
@@ -28,11 +30,29 @@ struct SettingSection<Content: View>: View {
 }
 #elseif os(iOS)
 struct Settings: View {
+    @Default(.webViewPageZoom) var webViewPageZoom
+    @Default(.externalLinkLoadingPolicy) var externalLinkLoadingPolicy
+    @Default(.searchResultSnippetMode) var searchResultSnippetMode
     @Environment(\.presentationMode) private var presentationMode
     
     var body: some View {
         NavigationView {
-            List {
+            Form {
+                Section {
+                    Stepper(value: $webViewPageZoom, in: 0...2, step: 0.1) {
+                        Text("Page zoom: \(webViewPageZoom)")
+                    }
+                    Picker("External link", selection: $externalLinkLoadingPolicy) {
+                        ForEach(ExternalLinkLoadingPolicy.allCases) { loadingPolicy in
+                            Text(loadingPolicy.name).tag(loadingPolicy)
+                        }
+                    }
+                    Picker("Search snippet", selection: $searchResultSnippetMode) {
+                        ForEach(SearchResultSnippetMode.allCases) { snippetMode in
+                            Text(snippetMode.name).tag(snippetMode)
+                        }
+                    }
+                } header: { Text("Reading") }
                 Section {
                     NavigationLink("Library") { LibrarySettings() }
                 }
