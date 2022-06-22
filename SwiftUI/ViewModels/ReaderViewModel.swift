@@ -8,6 +8,8 @@
 
 import WebKit
 
+import Defaults
+
 class ReaderViewModel: NSObject, ObservableObject, WKNavigationDelegate, WKScriptMessageHandler {
     @Published private(set) var canGoBack: Bool = false
     @Published private(set) var canGoForward: Bool = false
@@ -44,6 +46,7 @@ class ReaderViewModel: NSObject, ObservableObject, WKNavigationDelegate, WKScrip
     private var canGoBackObserver: NSKeyValueObservation?
     private var canGoForwardObserver: NSKeyValueObservation?
     private var titleObserver: NSKeyValueObservation?
+    private var pageZoomObserver: Defaults.Observation?
     
     override init() {
         super.init()
@@ -64,6 +67,10 @@ class ReaderViewModel: NSObject, ObservableObject, WKNavigationDelegate, WKScrip
             self.articleTitle = title
             self.zimFileName = zimFile.name
         }
+        pageZoomObserver = Defaults.observe(.webViewPageZoom) { change in
+            self.webView.pageZoom = change.newValue
+        }
+        
         
         webView.configuration.userContentController.add(self, name: "headings")
         webView.configuration.userContentController.add(self, name: "headingVisible")

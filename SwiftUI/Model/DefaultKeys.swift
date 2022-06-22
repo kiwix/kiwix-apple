@@ -10,19 +10,21 @@ import Defaults
 
 extension Defaults.Keys {
 //    // reading
-//    static let externalLinkLoadingPolicy = Key<ExternalLinkLoadingPolicy>(
-//        "externalLinkLoadingPolicy", default: .alwaysAsk
-//    )
-//    static let webViewTextSizeAdjustFactor = Key<Double>("webViewZoomScale", default: 1)
+    static let webViewTextSizeAdjustFactor = Key<Double>("webViewZoomScale", default: 1)
+    static let webViewPageZoom = Key<Double>("webViewPageZoom", default: 1)
+    static let externalLinkLoadingPolicy = Key<ExternalLinkLoadingPolicy>(
+        "externalLinkLoadingPolicy", default: .alwaysAsk
+    )
+    static let searchResultSnippetMode = Key<SearchResultSnippetMode>(
+        "searchResultSnippetMode", default: .firstSentence
+    )
 //
 //    // UI
 //    static let sideBarDisplayMode = Key<SideBarDisplayMode>("sideBarDisplayMode", default: .automatic)
 //
 //    // search
 //    static let recentSearchTexts = Key<[String]>("recentSearchTexts", default: [])
-//    static let searchResultSnippetMode = Key<SearchResultSnippetMode>(
-//        "searchResultSnippetMode", default: .firstSentence
-//    )
+    
     
     // library
     static let libraryLanguageCodes = Key<Set<String>>("libraryLanguageCodes", default: Set())
