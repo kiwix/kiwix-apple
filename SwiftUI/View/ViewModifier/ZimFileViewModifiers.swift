@@ -110,12 +110,7 @@ struct ZimFileDetailPanel: ViewModifier {
                     if let zimFile = zimFile {
                         ZimFileDetail(zimFile: zimFile)
                     } else {
-                        HStack {
-                            Spacer()
-                            Text("select a zim file")
-                            Spacer()
-                        }.frame(maxHeight: .infinity)
-                        .background(.regularMaterial)
+                        Message(text: "Select a zim file to see detail").background(.thickMaterial)
                     }
                 }.frame(width: 275).background(.ultraThinMaterial)
             }
