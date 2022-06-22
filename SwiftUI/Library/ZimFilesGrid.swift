@@ -1,5 +1,5 @@
 //
-//  ZimFileGrid.swift
+//  ZimFilesGrid.swift
 //  Kiwix
 //
 //  Created by Chris Li on 4/23/22.
@@ -12,7 +12,7 @@ import Defaults
 
 // A grid of zim files of the same category broken down into sections by title.
 @available(iOS 15.0, macOS 12.0, *)
-struct ZimFileGrid: View {
+struct ZimFilesGrid: View {
     @Default(.libraryLanguageCodes) private var languageCodes
     @SectionedFetchRequest private var sections: SectionedFetchResults<String, ZimFile>
     @State private var selected: ZimFile?
@@ -24,7 +24,7 @@ struct ZimFileGrid: View {
         self._sections = SectionedFetchRequest<String, ZimFile>(
             sectionIdentifier: \.name,
             sortDescriptors: [SortDescriptor(\ZimFile.name), SortDescriptor(\.size, order: .reverse)],
-            predicate:  ZimFileGrid.buildPredicate(category: category),
+            predicate:  ZimFilesGrid.buildPredicate(category: category),
             animation: .easeInOut
         )
     }
@@ -80,7 +80,7 @@ struct ZimFileGrid: View {
         .onChange(of: category) { _ in selected = nil }
         .onChange(of: languageCodes) { _ in
             if #available(iOS 15.0, *) {
-                sections.nsPredicate = ZimFileGrid.buildPredicate(category: category)
+                sections.nsPredicate = ZimFilesGrid.buildPredicate(category: category)
             }
         }
     }

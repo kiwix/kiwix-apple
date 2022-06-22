@@ -1,5 +1,5 @@
 //
-//  ZimFileList.swift
+//  ZimFilesList.swift
 //  Kiwix
 //
 //  Created by Chris Li on 4/24/22.
@@ -10,7 +10,7 @@ import SwiftUI
 
 import Defaults
 
-struct ZimFileList: View {
+struct ZimFilesList: View {
     @Default(.libraryLanguageCodes) private var languageCodes
     @FetchRequest private var zimFiles: FetchedResults<ZimFile>
     @State private var searchText = ""
@@ -27,7 +27,7 @@ struct ZimFileList: View {
                 ),
                 NSSortDescriptor(keyPath: \ZimFile.size, ascending: false)
             ],
-            predicate: ZimFileList.buildPredicate(category: category, searchText: ""),
+            predicate: ZimFilesList.buildPredicate(category: category, searchText: ""),
             animation: .easeInOut
         )
     }
@@ -44,7 +44,7 @@ struct ZimFileList: View {
         .modifier(Searchable(searchText: $searchText))
         .onChange(of: searchText) { _ in
             if #available(iOS 15.0, *) {
-                zimFiles.nsPredicate = ZimFileList.buildPredicate(category: category, searchText: searchText)
+                zimFiles.nsPredicate = ZimFilesList.buildPredicate(category: category, searchText: searchText)
             }
         }
         .onChange(of: category) { _ in
@@ -53,7 +53,7 @@ struct ZimFileList: View {
         }
         .onChange(of: languageCodes) { _ in
             if #available(iOS 15.0, *) {
-                zimFiles.nsPredicate = ZimFileList.buildPredicate(category: category, searchText: "")
+                zimFiles.nsPredicate = ZimFilesList.buildPredicate(category: category, searchText: "")
             }
         }
     }

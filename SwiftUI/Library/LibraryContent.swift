@@ -32,9 +32,9 @@ struct LibraryContent: View {
             }.listStyle(.plain)
         case .category(let category):
             if #available(iOS 15.0, *), category != .ted, category != .stackExchange, category != .other {
-                ZimFileGrid(category: category)
+                ZimFilesGrid(category: category)
             } else {
-                ZimFileList(category: category)
+                ZimFilesList(category: category)
             }
         }
     }
