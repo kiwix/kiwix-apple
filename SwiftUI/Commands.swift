@@ -25,6 +25,7 @@ struct ImportCommands: Commands {
 }
 
 struct AdditionalViewCommands: Commands {
+    @Default(.webViewPageZoom) var webViewPageZoom
     @FocusedBinding(\.sidebarDisplayMode) var displayMode: SidebarDisplayMode?
     
     var body: some Commands {
@@ -42,12 +43,12 @@ struct AdditionalViewCommands: Commands {
                 .keyboardShortcut("4")
                 .disabled(displayMode == nil)
             Divider()
-            Button("Actual Size") { Defaults[.webViewPageZoom] = 1 }
+            Button("Actual Size") { webViewPageZoom = 1 }
                 .keyboardShortcut("0")
-                .disabled(Defaults[.webViewPageZoom] == 1)
-            Button("Zoom In") { Defaults[.webViewPageZoom] += 0.1 }
+                .disabled(webViewPageZoom == 1)
+            Button("Zoom In") { webViewPageZoom += 0.1 }
                 .keyboardShortcut("+")
-            Button("Zoom Out") { Defaults[.webViewPageZoom] -= 0.1 }
+            Button("Zoom Out") { webViewPageZoom -= 0.1 }
                 .keyboardShortcut("-")
         }
     }

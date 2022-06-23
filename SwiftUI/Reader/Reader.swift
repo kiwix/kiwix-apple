@@ -50,7 +50,7 @@ struct Reader: View {
                 if url == nil {
                     Welcome(url: $url)
                 } else {
-                    WebView(url: $url).ignoresSafeArea(.container, edges: .all)
+                    WebView(url: $url).ignoresSafeArea(edges: .all)
                 }
             }
             .frame(minWidth: 400, idealWidth: 800, minHeight: 500, idealHeight: 550)
