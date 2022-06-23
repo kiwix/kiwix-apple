@@ -95,7 +95,7 @@ class LibraryViewModel: ObservableObject {
         
         // decide if update should proceed
         guard isUserInitiated ||
-            (Defaults[.libraryAutoRefresh] && (Defaults[.libraryLastRefresh]?.timeIntervalSinceNow ?? -3600) <= 3600)
+            (Defaults[.libraryAutoRefresh] && (Defaults[.libraryLastRefresh]?.timeIntervalSinceNow ?? -3600) <= -3600)
         else { return }
         
         // download data
@@ -113,8 +113,17 @@ class LibraryViewModel: ObservableObject {
         
         // parse data
         try Task.checkCancellation()
-        let parser = OPDSStreamParser()
-        try parser.parse(data: data)
+        let parser: OPDSStreamParser = try await withCheckedThrowingContinuation { continuation in
+            DispatchQueue.global().async {
+                do {
+                    let parser = OPDSStreamParser()
+                    try parser.parse(data: data)
+                    continuation.resume(returning: parser)
+                } catch {
+                    continuation.resume(throwing: OPDSRefreshError.process)
+                }
+            }
+        }
         
         // create context
         let context = Database.shared.container.newBackgroundContext()
