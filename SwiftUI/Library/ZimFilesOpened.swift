@@ -24,7 +24,7 @@ struct ZimFilesOpened: View {
                 Message(text: "No opened zim file")
             } else {
                 LazyVGrid(
-                    columns: ([GridItem(.adaptive(minimum: 250, maximum: 400), spacing: 12)]),
+                    columns: ([GridItem(.adaptive(minimum: 250, maximum: 500), spacing: 12)]),
                     alignment: .leading,
                     spacing: 12
                 ) {

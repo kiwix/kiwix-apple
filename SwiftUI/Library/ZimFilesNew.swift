@@ -61,8 +61,8 @@ struct ZimFilesNew: View {
     
     private static func buildPredicate(searchText: String) -> NSPredicate {
         var predicates = [NSPredicate(format: "languageCode IN %@", Defaults[.libraryLanguageCodes])]
-        if let twoWeeksAgo = Calendar.current.date(byAdding: .day, value: -14, to: Date()) {
-            predicates.append(NSPredicate(format: "created > %@", twoWeeksAgo as CVarArg))
+        if let aMonthAgo = Calendar.current.date(byAdding: .month, value: -1, to: Date()) {
+            predicates.append(NSPredicate(format: "created > %@", aMonthAgo as CVarArg))
         }
         if !searchText.isEmpty {
             predicates.append(NSPredicate(format: "name CONTAINS[cd] %@", searchText))
