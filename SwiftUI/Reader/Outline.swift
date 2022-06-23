@@ -33,7 +33,7 @@ struct Outline: View {
     }
 }
 
-struct OutlineNode: View {
+private struct OutlineNode: View {
     @EnvironmentObject var viewModel: ReaderViewModel
     @ObservedObject var item: OutlineItem
     
