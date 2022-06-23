@@ -85,18 +85,35 @@ struct Reader: View {
         @State var selected: UUID?
         
         var body: some View {
-            if zimFiles.isEmpty {
-                Message(text: "No opened zim files")
-            } else {
-                List(zimFiles, id: \.fileID, selection: $selected) { zimFile in
-                    ZimFileRow(zimFile)
+            Group {
+                if zimFiles.isEmpty {
+                    Message(text: "No opened zim files").ignoresSafeArea(edges: .vertical)
+                } else {
+                    List(zimFiles, id: \.fileID, selection: $selected) { zimFile in
+                        ZimFileRow(zimFile)
+                    }
+                    .onChange(of: selected) { zimFileID in
+                        guard let zimFileID = zimFileID,
+                              let url = ZimFileService.shared.getMainPageURL(zimFileID: zimFileID) else { return }
+                        self.url = url
+                        selected = nil
+                    }
                 }
-                .onChange(of: selected) { zimFileID in
-                    guard let zimFileID = zimFileID,
-                          let url = ZimFileService.shared.getMainPageURL(zimFileID: zimFileID) else { return }
-                    self.url = url
-                    selected = nil
-                }
+            }.safeAreaInset(edge: .bottom) {
+                VStack(spacing: 0) {
+                    Divider()
+                    HStack {
+                        Button {
+                            
+                        } label: { Image(systemName: "plus") }
+                        Spacer()
+                        Button {
+                            
+                        } label: { Image(systemName: "folder") }
+                    }
+                    .buttonStyle(.borderless)
+                    .padding(EdgeInsets(top: 8, leading: 12, bottom: 8, trailing: 12))
+                }.background(.thinMaterial)
             }
         }
     }
