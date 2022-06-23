@@ -11,6 +11,7 @@ import SwiftUI
 #if os(macOS)
 struct Library: View {
     @State var selectedTopic: LibraryTopic? = .opened
+    @StateObject private var viewModel = LibraryViewModel()
     
     let topics: [LibraryTopic] = [.opened, .downloads, .new]
     
@@ -32,7 +33,7 @@ struct Library: View {
                 LibraryContent(topic: selectedTopic)
             }
         }.task {
-            try? await Database.shared.refreshZimFileCatalog()
+            try? await viewModel.refresh(isUserInitiated: false)
         }
     }
 }
@@ -66,7 +67,7 @@ struct Library: View {
         .environmentObject(viewModel)
         .onAppear {
             Task {
-                try? await Database.shared.refreshZimFileCatalog()
+                try? await viewModel.refresh(isUserInitiated: false)
             }
         }
     }

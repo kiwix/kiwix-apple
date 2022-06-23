@@ -89,6 +89,7 @@ class LibraryViewModel: ObservableObject {
     
     // MARK: - Refresh
     
+    /// Batch update the local zim file database with what's available online.
     func refresh(isUserInitiated: Bool) async throws {
         DispatchQueue.main.async { self.isRefreshing = true }
         defer { DispatchQueue.main.async { self.isRefreshing = false } }

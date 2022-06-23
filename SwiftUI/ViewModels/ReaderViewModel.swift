@@ -71,7 +71,6 @@ class ReaderViewModel: NSObject, ObservableObject, WKNavigationDelegate, WKScrip
             self.webView.pageZoom = change.newValue
         }
         
-        
         webView.configuration.userContentController.add(self, name: "headings")
         webView.configuration.userContentController.add(self, name: "headingVisible")
     }
