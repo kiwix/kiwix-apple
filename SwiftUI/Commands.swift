@@ -8,6 +8,8 @@
 
 import SwiftUI
 
+import Defaults
+
 struct ImportCommands: Commands {
     @State private var isPresented: Bool = false
     
@@ -22,7 +24,7 @@ struct ImportCommands: Commands {
     }
 }
 
-struct SidebarDisplayModeCommands: Commands {
+struct AdditionalViewCommands: Commands {
     @FocusedBinding(\.sidebarDisplayMode) var displayMode: SidebarDisplayMode?
     
     var body: some Commands {
@@ -39,6 +41,14 @@ struct SidebarDisplayModeCommands: Commands {
             Button("Show Library") { displayMode = .library }
                 .keyboardShortcut("4")
                 .disabled(displayMode == nil)
+            Divider()
+            Button("Actual Size") { Defaults[.webViewPageZoom] = 1 }
+                .keyboardShortcut("0")
+                .disabled(Defaults[.webViewPageZoom] == 1)
+            Button("Zoom In") { Defaults[.webViewPageZoom] += 0.1 }
+                .keyboardShortcut("+")
+            Button("Zoom Out") { Defaults[.webViewPageZoom] -= 0.1 }
+                .keyboardShortcut("-")
         }
     }
 }

@@ -21,7 +21,7 @@ struct Kiwix: App {
                 .frame(minWidth: 950, idealWidth: 1250, minHeight: 550, idealHeight: 750)
         }.commands {
             ImportCommands()
-            SidebarDisplayModeCommands()
+            AdditionalViewCommands()
             CommandGroup(replacing: .newItem) {
                 Button("New Tab") { newTab() }.keyboardShortcut("t")
                 Divider()
