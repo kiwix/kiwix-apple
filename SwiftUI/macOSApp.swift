@@ -21,12 +21,14 @@ struct Kiwix: App {
                 .frame(minWidth: 950, idealWidth: 1250, minHeight: 550, idealHeight: 750)
         }.commands {
             ImportCommands()
-            AdditionalViewCommands()
-            CommandGroup(replacing: .newItem) {
-                Button("New Tab") { newTab() }.keyboardShortcut("t")
+            NewTabCommands()
+            CommandGroup(after: .toolbar) {
+                SidebarDisplayModeCommandButtons()
                 Divider()
+                NavigationCommandButtons()
+                Divider()
+                PageZoomCommandButtons()
             }
-            CommandMenu("Navigation") { NavigationCommandButtons() }
             CommandGroup(after: .windowSize) {
                 Divider()
                 ForEach(WindowGroupTitle.allCases) { windowGroup in
@@ -51,13 +53,6 @@ struct Kiwix: App {
                 About()
             }.frame(width: 550, height: 400)
         }
-    }
-    
-    private func newTab() {
-        guard let currentWindow = NSApp.keyWindow, let windowController = currentWindow.windowController else { return }
-        windowController.newWindowForTab(nil)
-        guard let newWindow = NSApp.keyWindow, currentWindow != newWindow else { return }
-        currentWindow.addTabbedWindow(newWindow, ordered: .above)
     }
     
     private func reopen() {

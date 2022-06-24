@@ -108,8 +108,9 @@ private struct ZimFilesInLibrary: View {
                     } label: { Image(systemName: "plus") }
                     Spacer()
                     Button {
-                        
-                    } label: { Image(systemName: "folder") }
+                        guard let url = URL(string: "kiwix://Library") else { return }
+                        NSWorkspace.shared.open(url)
+                    } label: { Image(systemName: "books.vertical") }
                 }
                 .buttonStyle(.borderless)
                 .padding(EdgeInsets(top: 8, leading: 12, bottom: 8, trailing: 12))

@@ -24,33 +24,38 @@ struct ImportCommands: Commands {
     }
 }
 
-struct AdditionalViewCommands: Commands {
-    @Default(.webViewPageZoom) var webViewPageZoom
+struct NewTabCommands: Commands {
+    var body: some Commands {
+        CommandGroup(replacing: .newItem) {
+            Button("New Tab") { newTab() }.keyboardShortcut("t")
+            Divider()
+        }
+    }
+    
+    private func newTab() {
+        guard let currentWindow = NSApp.keyWindow, let windowController = currentWindow.windowController else { return }
+        windowController.newWindowForTab(nil)
+        guard let newWindow = NSApp.keyWindow, currentWindow != newWindow else { return }
+        currentWindow.addTabbedWindow(newWindow, ordered: .above)
+    }
+}
+
+struct SidebarDisplayModeCommandButtons: View {
     @FocusedBinding(\.sidebarDisplayMode) var displayMode: SidebarDisplayMode?
     
-    var body: some Commands {
-        CommandGroup(after: .toolbar) {
-            Button("Search Articles") { displayMode = .search }
-                .keyboardShortcut("1")
-                .disabled(displayMode == nil)
-            Button("Show Bookmark") { displayMode = .bookmarks }
-                .keyboardShortcut("2")
-                .disabled(displayMode == nil)
-            Button("Show Outline") { displayMode = .outline }
-                .keyboardShortcut("3")
-                .disabled(displayMode == nil)
-            Button("Show Library") { displayMode = .library }
-                .keyboardShortcut("4")
-                .disabled(displayMode == nil)
-            Divider()
-            Button("Actual Size") { webViewPageZoom = 1 }
-                .keyboardShortcut("0")
-                .disabled(webViewPageZoom == 1)
-            Button("Zoom In") { webViewPageZoom += 0.1 }
-                .keyboardShortcut("+")
-            Button("Zoom Out") { webViewPageZoom -= 0.1 }
-                .keyboardShortcut("-")
-        }
+    var body: some View {
+        Button("Search Articles") { displayMode = .search }
+            .keyboardShortcut("1")
+            .disabled(displayMode == nil)
+        Button("Show Bookmark") { displayMode = .bookmarks }
+            .keyboardShortcut("2")
+            .disabled(displayMode == nil)
+        Button("Show Outline") { displayMode = .outline }
+            .keyboardShortcut("3")
+            .disabled(displayMode == nil)
+        Button("Show Library") { displayMode = .library }
+            .keyboardShortcut("4")
+            .disabled(displayMode == nil)
     }
 }
 
@@ -59,19 +64,24 @@ struct NavigationCommandButtons: View {
     
     var body: some View {
         Button("Go Back") { readerViewModel?.webView.goBack() }
-            .keyboardShortcut("[").disabled(!(readerViewModel?.canGoBack ?? false))
+            .keyboardShortcut("[")
+            .disabled(!(readerViewModel?.canGoBack ?? false))
         Button("Go Forward") { readerViewModel?.webView.goForward() }
-            .keyboardShortcut("]").disabled(!(readerViewModel?.canGoForward ?? false))
+            .keyboardShortcut("]")
+            .disabled(!(readerViewModel?.canGoForward ?? false))
     }
 }
 
-struct ReaderViewModelKey: FocusedValueKey {
-    typealias Value = ReaderViewModel
-}
-
-extension FocusedValues {
-    var readerViewModel: ReaderViewModelKey.Value? {
-        get { self[ReaderViewModelKey.self] }
-        set { self[ReaderViewModelKey.self] = newValue }
+struct PageZoomCommandButtons: View {
+    @Default(.webViewPageZoom) var webViewPageZoom
+    
+    var body: some View {
+        Button("Actual Size") { webViewPageZoom = 1 }
+            .keyboardShortcut("0")
+            .disabled(webViewPageZoom == 1)
+        Button("Zoom In") { webViewPageZoom += 0.1 }
+            .keyboardShortcut("+")
+        Button("Zoom Out") { webViewPageZoom -= 0.1 }
+            .keyboardShortcut("-")
     }
 }
