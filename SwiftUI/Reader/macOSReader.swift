@@ -68,8 +68,11 @@ struct Reader: View {
             }
         }
         .environmentObject(viewModel)
+        .focusedSceneValue(\.canGoBack, viewModel.canGoBack)
+        .focusedSceneValue(\.canGoForward, viewModel.canGoForward)
         .focusedSceneValue(\.readerViewModel, viewModel)
         .focusedSceneValue(\.sidebarDisplayMode, $sidebarDisplayMode)
+        .focusedSceneValue(\.url, url)
         .navigationTitle(viewModel.articleTitle)
         .navigationSubtitle(viewModel.zimFileName)
     }

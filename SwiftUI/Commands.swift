@@ -60,20 +60,23 @@ struct SidebarDisplayModeCommandButtons: View {
 }
 
 struct NavigationCommandButtons: View {
+    @FocusedValue(\.canGoBack) var canGoBack: Bool?
+    @FocusedValue(\.canGoForward) var canGoForward: Bool?
     @FocusedValue(\.readerViewModel) var readerViewModel: ReaderViewModel?
     
     var body: some View {
         Button("Go Back") { readerViewModel?.webView.goBack() }
             .keyboardShortcut("[")
-            .disabled(!(readerViewModel?.canGoBack ?? false))
+            .disabled(!(canGoBack ?? false))
         Button("Go Forward") { readerViewModel?.webView.goForward() }
             .keyboardShortcut("]")
-            .disabled(!(readerViewModel?.canGoForward ?? false))
+            .disabled(!(canGoForward ?? false))
     }
 }
 
 struct PageZoomCommandButtons: View {
     @Default(.webViewPageZoom) var webViewPageZoom
+    @FocusedValue(\.url) var url: URL??
     
     var body: some View {
         Button("Actual Size") { webViewPageZoom = 1 }
@@ -81,7 +84,9 @@ struct PageZoomCommandButtons: View {
             .disabled(webViewPageZoom == 1)
         Button("Zoom In") { webViewPageZoom += 0.1 }
             .keyboardShortcut("+")
+            .disabled((url ?? nil) == nil)
         Button("Zoom Out") { webViewPageZoom -= 0.1 }
             .keyboardShortcut("-")
+            .disabled((url ?? nil) == nil)
     }
 }
