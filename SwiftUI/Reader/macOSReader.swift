@@ -52,7 +52,7 @@ struct Reader: View {
                     WebView(url: $url).ignoresSafeArea(edges: .all)
                 }
             }
-            .frame(minWidth: 400, idealWidth: 800, minHeight: 500, idealHeight: 550)
+            .frame(minWidth: 400, idealWidth: 1000, minHeight: 500, idealHeight: 750)
             .toolbar {
                 ToolbarItemGroup(placement: .navigation) {
                     ControlGroup {

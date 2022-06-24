@@ -16,9 +16,7 @@ struct Kiwix: App {
     
     var body: some Scene {
         WindowGroup {
-            Reader()
-                .environment(\.managedObjectContext, Database.shared.container.viewContext)
-                .frame(minWidth: 950, idealWidth: 1250, minHeight: 550, idealHeight: 750)
+            Reader().environment(\.managedObjectContext, Database.shared.container.viewContext)
         }.commands {
             ImportCommands()
             NewTabCommands()
