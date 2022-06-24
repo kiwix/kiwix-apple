@@ -85,7 +85,8 @@ private struct ZimFilesInLibrary: View {
         predicate: NSPredicate(format: "fileURLBookmark != nil"),
         animation: .easeInOut
     ) private var zimFiles: FetchedResults<ZimFile>
-    @State var selected: UUID?
+    @State private var isFileImporterPresented: Bool = false
+    @State private var selected: UUID?
     
     var body: some View {
         Group {
@@ -107,7 +108,7 @@ private struct ZimFilesInLibrary: View {
                 Divider()
                 HStack {
                     Button {
-                        
+                        isFileImporterPresented = true
                     } label: { Image(systemName: "plus") }
                     Spacer()
                     Button {
@@ -118,6 +119,6 @@ private struct ZimFilesInLibrary: View {
                 .buttonStyle(.borderless)
                 .padding(EdgeInsets(top: 8, leading: 12, bottom: 8, trailing: 12))
             }.background(.thinMaterial)
-        }
+        }.modifier(FileImporter(isPresented: $isFileImporterPresented))
     }
 }
