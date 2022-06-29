@@ -201,40 +201,42 @@ class LibraryViewModel: ObservableObject {
         if let url = metadata.downloadURL { zimFile.downloadURL = url }
         if let url = metadata.faviconURL { zimFile.faviconURL = url }
     }
-    
-    static let dateFormatterShort: DateFormatter = {
+}
+
+class Formatter {
+    static let dateShort: DateFormatter = {
         let formatter = DateFormatter()
         formatter.dateStyle = .short
         formatter.timeStyle = .none
         return formatter
     }()
     
-    static let dateFormatterMedium: DateFormatter = {
+    static let dateMedium: DateFormatter = {
         let formatter = DateFormatter()
         formatter.dateStyle = .medium
         formatter.timeStyle = .none
         return formatter
     }()
     
-    static let sizeFormatter: ByteCountFormatter = {
+    static let size: ByteCountFormatter = {
         let formatter = ByteCountFormatter()
         formatter.countStyle = .file
         return formatter
     }()
     
-    static let numberFormatter: NumberFormatter = {
+    static let number: NumberFormatter = {
         let formatter = NumberFormatter()
         formatter.numberStyle = .decimal
         return formatter
     }()
     
-    static let percentFormatter: NumberFormatter = {
+    static let percent: NumberFormatter = {
         let formatter = NumberFormatter()
         formatter.numberStyle = .percent
         return formatter
     }()
     
-    static func formattedLargeNumber(from value: Int64) -> String {
+    static func largeNumber(_ value: Int64) -> String {
         let sign = ((value < 0) ? "-" : "" )
         let abs = Swift.abs(value)
         guard abs >= 1000 else {return "\(sign)\(abs)"}

@@ -23,7 +23,7 @@ struct Settings: View {
             Form {
                 Section {
                     Stepper(value: $webViewPageZoom, in: 0.5...1.5, step: 0.05) {
-                        Text("Page zoom: \(formattedPageZoom)")
+                        Text("Page zoom: \(Formatter.percent.string(from: NSNumber(value: webViewPageZoom)) ?? "")")
                     }
                     Picker("External link", selection: $externalLinkLoadingPolicy) {
                         ForEach(ExternalLinkLoadingPolicy.allCases) { loadingPolicy in
@@ -57,12 +57,6 @@ struct Settings: View {
                 }
             }
         }
-    }
-    
-    private var formattedPageZoom: String {
-        let formatter = NumberFormatter()
-        formatter.numberStyle = .percent
-        return formatter.string(from: NSNumber(value: webViewPageZoom)) ?? ""
     }
 }
 

@@ -26,13 +26,13 @@ struct ZimFileRow: View {
             VStack(alignment: .leading, spacing: 2) {
                 Text(zimFile.name).lineLimit(1)
                 Text([
-                    LibraryViewModel.dateFormatterShort.string(from: zimFile.created),
-                    LibraryViewModel.sizeFormatter.string(fromByteCount: zimFile.size),
+                    Formatter.dateShort.string(from: zimFile.created),
+                    Formatter.size.string(fromByteCount: zimFile.size),
                     {
                         if #available(iOS 15.0, *) {
                             return "\(zimFile.articleCount.formatted(.number.notation(.compactName))) articles"
                         } else {
-                            return LibraryViewModel.formattedLargeNumber(from: zimFile.articleCount)
+                            return Formatter.largeNumber(zimFile.articleCount)
                         }
                     }()
                 ].joined(separator: ", ")).font(.caption)
