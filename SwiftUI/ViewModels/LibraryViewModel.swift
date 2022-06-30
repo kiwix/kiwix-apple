@@ -38,55 +38,6 @@ class LibraryViewModel: ObservableObject {
         }
     }
     
-    // MARK: - Language
-    
-    /// Retrieve a list of languages.
-    /// - Returns: languages with count of zim files in each language
-    func fetchLanguages() async -> [Language] {
-        let count = NSExpressionDescription()
-        count.name = "count"
-        count.expression = NSExpression(forFunction: "count:", arguments: [NSExpression(forKeyPath: "languageCode")])
-        count.expressionResultType = .integer16AttributeType
-        
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "ZimFile")
-        fetchRequest.propertiesToFetch = ["languageCode", count]
-        fetchRequest.propertiesToGroupBy = ["languageCode"]
-        fetchRequest.resultType = .dictionaryResultType
-        
-        let languages: [Language] = await withCheckedContinuation { continuation in
-            let context = Database.shared.container.newBackgroundContext()
-            context.perform {
-                guard let results = try? context.fetch(fetchRequest) else {
-                    continuation.resume(returning: [])
-                    return
-                }
-                let language: [Language] = results.compactMap { result in
-                    guard let result = result as? NSDictionary,
-                          let languageCode = result["languageCode"] as? String,
-                          let count = result["count"] as? Int else { return nil }
-                    return Language(code: languageCode, count: count)
-                }
-                continuation.resume(returning: language)
-            }
-        }
-        return languages
-    }
-    
-    /// Compare two languages based on library language sorting order.
-    /// Can be removed once support for iOS 14 drops.
-    /// - Parameters:
-    ///   - lhs: one language to compare
-    ///   - rhs: another language to compare
-    /// - Returns: if one language should appear before or after another
-    static func compareLanguage(lhs: Language, rhs: Language) -> Bool {
-        switch Defaults[.libraryLanguageSortingMode] {
-        case .alphabetically:
-            return lhs.name.caseInsensitiveCompare(rhs.name) == .orderedAscending
-        case .byCounts:
-            return lhs.count > rhs.count
-        }
-    }
-    
     // MARK: - Refresh
     
     /// Batch update the local zim file database with what's available online.
