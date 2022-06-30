@@ -42,7 +42,7 @@ struct LibrarySettings: View {
                 }
             }
             SettingSection(name: "Languages") {
-                LanguageSelector().environmentObject(viewModel)
+                LanguageSelector()
             }
         }
         .padding()
@@ -51,7 +51,7 @@ struct LibrarySettings: View {
         Section {
             if lastRefresh != nil {
                 NavigationLink("Languages") {
-                    LanguageSelector().environmentObject(viewModel)
+                    LanguageSelector()
                 }
             }
             HStack {
@@ -154,7 +154,6 @@ private class Languages {
 #if os(macOS)
 private struct LanguageSelector: View {
     @Default(.libraryLanguageCodes) private var selected
-    @EnvironmentObject private var viewModel: LibraryViewModel
     @State private var languages = [Language]()
     @State private var sortOrder = [KeyPathComparator(\Language.count, order: .reverse)]
     
@@ -185,7 +184,6 @@ private struct LanguageSelector: View {
 #elseif os(iOS)
 private struct LanguageSelector: View {
     @Default(.libraryLanguageSortingMode) private var sortingMode
-    @EnvironmentObject private var viewModel: LibraryViewModel
     @State private var showing = [Language]()
     @State private var hiding = [Language]()
     
