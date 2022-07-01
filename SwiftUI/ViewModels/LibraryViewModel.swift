@@ -15,29 +15,6 @@ class LibraryViewModel: ObservableObject {
     
     static let backgroundTaskIdentifier = "org.kiwix.library_refresh"
     
-    /// Unlink a zim file from library, and delete the file.
-    /// - Parameter zimFile: the zim file to delete
-    static func delete(zimFileID: UUID) {
-        LibraryViewModel.unlink(zimFileID: zimFileID)
-    }
-    
-    /// Unlink a zim file from library, but don't delete the file.
-    /// - Parameter zimFile: the zim file to unlink
-    static func unlink(zimFileID: UUID) {
-        ZimFileService.shared.close(fileID: zimFileID)
-        
-        let context = Database.shared.container.newBackgroundContext()
-        context.perform {
-            guard let zimFile = try? ZimFile.fetchRequest(fileID: zimFileID).execute().first else { return }
-            if zimFile.downloadURL == nil {
-                context.delete(zimFile)
-            } else {
-                zimFile.fileURLBookmark = nil
-            }
-            try? context.save()
-        }
-    }
-    
     // MARK: - Refresh
     
     /// Batch update the local zim file database with what's available online.
@@ -97,7 +74,7 @@ class LibraryViewModel: ObservableObject {
                             while !zimFileIDs.isEmpty {
                                 guard let id = zimFileIDs.popFirst(),
                                       let metadata = parser.getZimFileMetaData(id: id) else { continue }
-                                self.configureZimFile(zimFile, metadata: metadata)
+                                LibraryViewModel.configureZimFile(zimFile, metadata: metadata)
                                 return false
                             }
                             return true
@@ -131,8 +108,10 @@ class LibraryViewModel: ObservableObject {
         }
     }
     
+    // MARK: - Management
+    
     /// Configure a zim file object based on its metadata.
-    private func configureZimFile(_ zimFile: ZimFile, metadata: ZimFileMetaData) {
+    private static func configureZimFile(_ zimFile: ZimFile, metadata: ZimFileMetaData) {
         zimFile.articleCount = metadata.articleCount.int64Value
         zimFile.category = metadata.category
         zimFile.created = metadata.creationDate
@@ -151,5 +130,50 @@ class LibraryViewModel: ObservableObject {
         // Only overwrite favicon data and url if there is a new value
         if let url = metadata.downloadURL { zimFile.downloadURL = url }
         if let url = metadata.faviconURL { zimFile.faviconURL = url }
+    }
+    
+    /// Open a zim file with file url.
+    /// - Parameter url: url of the zim file on disk
+    static func open(url: URL) {
+        guard let metadata = ZimFileService.getMetaData(url: url),
+              let fileURLBookmark = ZimFileService.getBookmarkData(url: url) else { return }
+        // open the file
+        ZimFileService.shared.open(bookmark: fileURLBookmark)
+        
+        // upsert zim file in the database
+        let context = Database.shared.container.newBackgroundContext()
+        context.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
+        context.undoManager = nil
+        context.perform {
+            let predicate = NSPredicate(format: "fileID == %@", metadata.fileID as CVarArg)
+            let fetchRequest = ZimFile.fetchRequest(predicate: predicate)
+            guard let zimFile = try? context.fetch(fetchRequest).first ?? ZimFile(context: context) else { return }
+            LibraryViewModel.configureZimFile(zimFile, metadata: metadata)
+            zimFile.fileURLBookmark = fileURLBookmark
+            if context.hasChanges { try? context.save() }
+        }
+    }
+    
+    /// Unlink a zim file from library, and delete the file.
+    /// - Parameter zimFile: the zim file to delete
+    static func delete(zimFileID: UUID) {
+        LibraryViewModel.unlink(zimFileID: zimFileID)
+    }
+    
+    /// Unlink a zim file from library, but don't delete the file.
+    /// - Parameter zimFile: the zim file to unlink
+    static func unlink(zimFileID: UUID) {
+        ZimFileService.shared.close(fileID: zimFileID)
+        
+        let context = Database.shared.container.newBackgroundContext()
+        context.perform {
+            guard let zimFile = try? ZimFile.fetchRequest(fileID: zimFileID).execute().first else { return }
+            if zimFile.downloadURL == nil {
+                context.delete(zimFile)
+            } else {
+                zimFile.fileURLBookmark = nil
+            }
+            try? context.save()
+        }
     }
 }

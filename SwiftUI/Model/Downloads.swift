@@ -237,5 +237,6 @@ class Downloads: NSObject, URLSessionDelegate, URLSessionTaskDelegate, URLSessio
         try? FileManager.default.moveItem(at: location, to: destination)
         
         // open the file
+        LibraryViewModel.open(url: destination)
     }
 }

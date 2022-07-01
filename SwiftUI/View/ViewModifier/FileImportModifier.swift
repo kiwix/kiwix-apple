@@ -18,12 +18,8 @@ struct FileImporter: ViewModifier {
             allowedContentTypes: [UTType(exportedAs: "org.openzim.zim")],
             allowsMultipleSelection: false
         ) { result in
-            guard case let .success(urls) = result,
-                  let url = urls.first,
-                  let metadata = ZimFileService.getMetaData(url: url),
-                  let data = ZimFileService.getBookmarkData(url: url) else { return }
-            ZimFileService.shared.open(bookmark: data)
-            Database.shared.upsertZimFile(metadata: metadata, fileURLBookmark: data)
+            guard case let .success(urls) = result, let url = urls.first else { return }
+            LibraryViewModel.open(url: url)
         }
     }
 }
