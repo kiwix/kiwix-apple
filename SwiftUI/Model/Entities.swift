@@ -73,6 +73,7 @@ class ZimFile: NSManagedObject, Identifiable {
     @NSManaged var mediaCount: Int64
     @NSManaged var name: String
     @NSManaged var persistentID: String
+    @NSManaged var requiresServiceWorkers: Bool
     @NSManaged var size: Int64
     
     @NSManaged var downloadTask: DownloadTask?

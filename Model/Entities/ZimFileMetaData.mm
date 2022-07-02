@@ -57,7 +57,7 @@
         SAFE_READ_BOOL(self.hasDetails, _book->getTagBool("details"));
         SAFE_READ_BOOL(self.hasPictures, _book->getTagBool("pictures"));
         SAFE_READ_BOOL(self.hasVideos, _book->getTagBool("videos"));
-        SAFE_READ_BOOL(self.requiresServiceWorker, _book->getTagBool("sw"));
+        SAFE_READ_BOOL(self.requiresServiceWorkers, _book->getTagBool("sw"));
     }
     return self;
 }

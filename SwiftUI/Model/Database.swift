@@ -60,21 +60,6 @@ class Database {
         return container
     }()
     
-    /// Create or update a single zim file entry in the local database.
-    func upsertZimFile(metadata: ZimFileMetaData, fileURLBookmark: Data?) {
-        let context = container.newBackgroundContext()
-        context.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
-        context.undoManager = nil
-        context.perform {
-            let predicate = NSPredicate(format: "fileID == %@", metadata.fileID as CVarArg)
-            let fetchRequest = ZimFile.fetchRequest(predicate: predicate)
-            guard let zimFile = try? context.fetch(fetchRequest).first ?? ZimFile(context: context) else { return }
-            self.configureZimFile(zimFile, metadata: metadata)
-            zimFile.fileURLBookmark = fileURLBookmark
-            if context.hasChanges { try? context.save() }
-        }
-    }
-    
     /// Save image data to zim files.
     func saveImageData(url: URL, completion: @escaping (Data) -> Void) {
         URLSession.shared.dataTask(with: url) { data, response, error in
@@ -93,28 +78,6 @@ class Database {
             }
             completion(data)
         }.resume()
-    }
-    
-    /// Configure a zim file object based on its metadata.
-    private func configureZimFile(_ zimFile: ZimFile, metadata: ZimFileMetaData) {
-        zimFile.articleCount = metadata.articleCount.int64Value
-        zimFile.category = metadata.category
-        zimFile.created = metadata.creationDate
-        zimFile.fileDescription = metadata.fileDescription
-        zimFile.fileID = metadata.fileID
-        zimFile.flavor = metadata.flavor
-        zimFile.hasDetails = metadata.hasDetails
-        zimFile.hasPictures = metadata.hasPictures
-        zimFile.hasVideos = metadata.hasVideos
-        zimFile.languageCode = metadata.languageCode
-        zimFile.mediaCount = metadata.mediaCount.int64Value
-        zimFile.name = metadata.title
-        zimFile.persistentID = metadata.groupIdentifier
-        zimFile.size = metadata.size.int64Value
-        
-        // Only overwrite favicon data and url if there is a new value
-        if let url = metadata.downloadURL { zimFile.downloadURL = url }
-        if let url = metadata.faviconURL { zimFile.faviconURL = url }
     }
     
     /// Merge changes performed on batch requests to view context.

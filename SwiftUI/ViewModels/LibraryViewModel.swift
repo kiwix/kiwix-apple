@@ -125,6 +125,7 @@ class LibraryViewModel: ObservableObject {
         zimFile.mediaCount = metadata.mediaCount.int64Value
         zimFile.name = metadata.title
         zimFile.persistentID = metadata.groupIdentifier
+        zimFile.requiresServiceWorkers = metadata.requiresServiceWorkers
         zimFile.size = metadata.size.int64Value
         
         // Only overwrite favicon data and url if there is a new value

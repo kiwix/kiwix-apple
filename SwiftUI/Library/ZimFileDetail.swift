@@ -112,6 +112,9 @@ struct ZimFileDetail: View {
         AttributeBool(title: "Pictures", detail: zimFile.hasPictures)
         AttributeBool(title: "Videos", detail: zimFile.hasVideos)
         AttributeBool(title: "Details", detail: zimFile.hasDetails)
+        if zimFile.requiresServiceWorkers {
+            AttributeBool(title: "Requires Service Workers", detail: zimFile.requiresServiceWorkers)
+        }
     }
     
     @ViewBuilder
