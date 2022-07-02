@@ -153,12 +153,21 @@ class Downloads: NSObject, URLSessionDelegate, URLSessionTaskDelegate, URLSessio
     // MARK: - Database
     
     private func deleteDownloadTask(zimFileID: UUID) {
-        let context = Database.shared.container.newBackgroundContext()
-        context.perform {
-            let request = DownloadTask.fetchRequest(fileID: zimFileID)
-            guard let downloadTask = try? context.fetch(request).first else { return }
-            context.delete(downloadTask)
-            try? context.save()
+        Database.shared.container.performBackgroundTask { context in
+            context.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
+            do {
+                let request = DownloadTask.fetchRequest(fileID: zimFileID)
+                guard let downloadTask = try context.fetch(request).first else { return }
+                context.delete(downloadTask)
+                try context.save()
+            } catch {
+                os_log(
+                    "Error deleting download task. Error: %s",
+                    log: Log.DownloadService,
+                    type: .error,
+                    error.localizedDescription
+                )
+            }
         }
     }
     
@@ -186,8 +195,8 @@ class Downloads: NSObject, URLSessionDelegate, URLSessionTaskDelegate, URLSessio
         
         // save the error description and resume data if possible
         guard error.code != URLError.cancelled.rawValue else { return }
-        let context = Database.shared.container.newBackgroundContext()
-        context.perform {
+        Database.shared.container.performBackgroundTask { context in
+            context.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
             let request = DownloadTask.fetchRequest(fileID: zimFileID)
             guard let downloadTask = try? context.fetch(request).first else { return }
             downloadTask.error = error.localizedDescription
