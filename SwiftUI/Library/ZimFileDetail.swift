@@ -27,6 +27,14 @@ struct ZimFileDetail: View {
                 id
             }.collapsible(false)
         }
+        .safeAreaInset(edge: .top) {
+            if zimFile.requiresServiceWorkers {
+                VStack(spacing: 0) {
+                    ServiceWorkerWarning().padding(6)
+                    Divider()
+                }.background(.regularMaterial)
+            }
+        }
         .listStyle(.sidebar)
         .modifier(ZimFileUnlinkAlert(isPresented: $isPresentingUnlinkAlert, zimFile: zimFile))
         #elseif os(iOS)
@@ -37,7 +45,13 @@ struct ZimFileDetail: View {
             }
             Section { actions }
             Section { basicInfo }
-            Section { boolInfo }
+            Section {
+                boolInfo
+            } footer: {
+                if zimFile.requiresServiceWorkers {
+                    ServiceWorkerWarning()
+                }
+            }
             Section { counts }
             Section { id }
         }
@@ -238,6 +252,16 @@ private struct Action: View {
                 if alignment != .trailing { Spacer() }
             }
         })
+    }
+}
+
+struct ServiceWorkerWarning: View {
+    var body: some View {
+        Label {
+            Text("Zim files that require service workers are not supported.")
+        } icon: {
+            Image(systemName: "exclamationmark.triangle.fill").renderingMode(.original)
+        }
     }
 }
 
