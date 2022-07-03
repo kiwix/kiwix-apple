@@ -92,9 +92,10 @@ struct ZimFilesGrid: View {
     }
     
     private static func buildPredicate(category: Category) -> NSPredicate {
-        return NSCompoundPredicate(andPredicateWithSubpredicates: [
+        NSCompoundPredicate(andPredicateWithSubpredicates: [
+            NSPredicate(format: "category == %@", category.rawValue),
             NSPredicate(format: "languageCode IN %@", Defaults[.libraryLanguageCodes]),
-            NSPredicate(format: "category == %@", category.rawValue)
+            NSPredicate(format: "requiresServiceWorkers == false")
         ])
     }
 }

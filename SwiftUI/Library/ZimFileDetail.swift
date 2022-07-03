@@ -258,7 +258,7 @@ private struct Action: View {
 struct ServiceWorkerWarning: View {
     var body: some View {
         Label {
-            Text("Zim files that require service workers are not supported.")
+            Text("Zim files requiring service workers are not supported.")
         } icon: {
             Image(systemName: "exclamationmark.triangle.fill").renderingMode(.original)
         }

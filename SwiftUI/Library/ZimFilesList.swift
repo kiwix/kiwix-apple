@@ -66,8 +66,9 @@ struct ZimFilesList: View {
     
     private static func buildPredicate(category: Category, searchText: String) -> NSPredicate {
         var predicates = [
+            NSPredicate(format: "category == %@", category.rawValue),
             NSPredicate(format: "languageCode IN %@", Defaults[.libraryLanguageCodes]),
-            NSPredicate(format: "category == %@", category.rawValue)
+            NSPredicate(format: "requiresServiceWorkers == false")
         ]
         if !searchText.isEmpty {
             predicates.append(NSPredicate(format: "name CONTAINS[cd] %@", searchText))
