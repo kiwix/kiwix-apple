@@ -17,16 +17,16 @@ struct SearchFilter: View {
     ) private var zimFiles: FetchedResults<ZimFile>
     
     var body: some View {
-        if zimFiles.isEmpty {
-            Message(text: "No opened zim files")
-        } else {
-            #if os(macOS)
-            VStack(spacing: 0) {
-                Divider()
-                filterHeader
-                    .padding(EdgeInsets(top: 5, leading: 16, bottom: 5, trailing: 10))
-                    .background(.ultraThinMaterial)
-                Divider()
+        #if os(macOS)
+        VStack(spacing: 0) {
+            Divider()
+            filterHeader
+                .padding(EdgeInsets(top: 5, leading: 16, bottom: 5, trailing: 10))
+                .background(.thinMaterial)
+            Divider()
+            if zimFiles.isEmpty {
+                Message(text: "No opened zim files")
+            } else {
                 List(zimFiles) { zimFile in
                     Toggle(zimFile.name, isOn: Binding<Bool>(get: {
                         zimFile.includedInSearch
@@ -36,7 +36,11 @@ struct SearchFilter: View {
                     }))
                 }
             }
-            #elseif os(iOS)
+        }
+        #elseif os(iOS)
+        if zimFiles.isEmpty {
+            Message(text: "No opened zim files")
+        } else {
             List {
                 Section {
                     ForEach(zimFiles) { zimFile in
@@ -55,8 +59,8 @@ struct SearchFilter: View {
                     }
                 } header: { filterHeader }
             }
-            #endif
         }
+        #endif
     }
     
     var filterHeader: some View {
