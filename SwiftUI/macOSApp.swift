@@ -19,7 +19,12 @@ struct Kiwix: App {
             Reader().environment(\.managedObjectContext, Database.shared.container.viewContext)
         }.commands {
             ImportCommands()
-            NewTabCommands()
+            CommandGroup(replacing: .newItem) {
+                Button("New Reader Window") { NSWorkspace.shared.open(Window.reader.url) }.keyboardShortcut("n")
+                Button("New Tab") { newTab() }.keyboardShortcut("t")
+                Button("Open Library") { NSWorkspace.shared.open(Window.library.url) }.keyboardShortcut("l")
+                Divider()
+            }
             CommandGroup(after: .toolbar) {
                 SidebarDisplayModeCommandButtons()
                 Divider()
@@ -27,30 +32,28 @@ struct Kiwix: App {
                 Divider()
                 PageZoomCommandButtons()
             }
-            CommandGroup(after: .windowSize) {
-                Divider()
-                ForEach(WindowGroupTitle.allCases) { windowGroup in
-                    Button(windowGroup.rawValue) {
-                        guard let url = URL(string: "kiwix://\(windowGroup.rawValue)") else { return }
-                        NSWorkspace.shared.open(url)
-                    }
-                }
-            }
-        }.handlesExternalEvents(matching: [WindowGroupTitle.reading.rawValue])
-        WindowGroup(WindowGroupTitle.library.rawValue) {
+        }.handlesExternalEvents(matching: [Window.reader.url.absoluteString, "kiwix://", "file:///"])
+        WindowGroup(Window.library.name) {
             Library()
                 .environment(\.managedObjectContext, Database.shared.container.viewContext)
                 .frame(minWidth: 950, idealWidth: 1250, minHeight: 550, idealHeight: 750)
         }.commands {
             SidebarCommands()
             ImportCommands()
-        }.handlesExternalEvents(matching: [WindowGroupTitle.library.rawValue])
+        }.handlesExternalEvents(matching: [Window.library.url.absoluteString])
         Settings {
             TabView {
                 LibrarySettings()
                 About()
             }.frame(width: 550, height: 400)
         }
+    }
+    
+    private func newTab() {
+        guard let currentWindow = NSApp.keyWindow, let controller = currentWindow.windowController else { return }
+        controller.newWindowForTab(nil)
+        guard let newWindow = NSApp.keyWindow, currentWindow != newWindow else { return }
+        currentWindow.addTabbedWindow(newWindow, ordered: .above)
     }
     
     private func reopen() {
@@ -68,10 +71,27 @@ struct Kiwix: App {
         }
     }
     
-    private enum WindowGroupTitle: String, CaseIterable, Identifiable {
+    private enum Window: String, CaseIterable, Identifiable {
         var id: String { rawValue }
         
-        case reading = "Reading"
-        case library = "Library"
+        case reader, library
+        
+        var name: String {
+            switch self {
+            case .reader:
+                return "Reader"
+            case .library:
+                return "Library"
+            }
+        }
+        
+        var url: URL {
+            switch self {
+            case .reader:
+                return URL(string: "kiwix-ui://reader")!
+            case .library:
+                return URL(string: "kiwix-ui://library")!
+            }
+        }
     }
 }

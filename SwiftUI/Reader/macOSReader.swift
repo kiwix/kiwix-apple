@@ -75,6 +75,13 @@ struct Reader: View {
         .focusedSceneValue(\.url, url)
         .navigationTitle(viewModel.articleTitle)
         .navigationSubtitle(viewModel.zimFileName)
+        .onOpenURL { url in
+            if url.isFileURL {
+                LibraryViewModel.open(url: url)
+            } else if url.scheme == "kiwix" {
+                self.url = url
+            }
+        }
     }
 }
 

@@ -24,22 +24,6 @@ struct ImportCommands: Commands {
     }
 }
 
-struct NewTabCommands: Commands {
-    var body: some Commands {
-        CommandGroup(replacing: .newItem) {
-            Button("New Tab") { newTab() }.keyboardShortcut("t")
-            Divider()
-        }
-    }
-    
-    private func newTab() {
-        guard let currentWindow = NSApp.keyWindow, let windowController = currentWindow.windowController else { return }
-        windowController.newWindowForTab(nil)
-        guard let newWindow = NSApp.keyWindow, currentWindow != newWindow else { return }
-        currentWindow.addTabbedWindow(newWindow, ordered: .above)
-    }
-}
-
 struct SidebarDisplayModeCommandButtons: View {
     @FocusedBinding(\.sidebarDisplayMode) var displayMode: SidebarDisplayMode?
     
