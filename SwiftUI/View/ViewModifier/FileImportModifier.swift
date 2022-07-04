@@ -16,10 +16,12 @@ struct FileImporter: ViewModifier {
         content.fileImporter(
             isPresented: $isPresented,
             allowedContentTypes: [UTType(exportedAs: "org.openzim.zim")],
-            allowsMultipleSelection: false
+            allowsMultipleSelection: true
         ) { result in
-            guard case let .success(urls) = result, let url = urls.first else { return }
-            LibraryViewModel.open(url: url)
+            guard case let .success(urls) = result else { return }
+            for url in urls {
+                LibraryViewModel.open(url: url)
+            }
         }
     }
 }
