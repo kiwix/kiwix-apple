@@ -28,7 +28,7 @@ struct SidebarDisplayModeCommandButtons: View {
     @FocusedBinding(\.sidebarDisplayMode) var displayMode: SidebarDisplayMode?
     
     var body: some View {
-        Button("Search Articles") { displayMode = .search }
+        Button("Show Search") { displayMode = .search }
             .keyboardShortcut("1")
             .disabled(displayMode == nil)
         Button("Show Bookmark") { displayMode = .bookmarks }
@@ -40,6 +40,20 @@ struct SidebarDisplayModeCommandButtons: View {
         Button("Show Library") { displayMode = .library }
             .keyboardShortcut("4")
             .disabled(displayMode == nil)
+    }
+}
+
+struct SearchCommandButton: View {
+    @FocusedValue(\.searchFieldFocusAction) var focusAction: (() -> Void)?
+    @FocusedBinding(\.sidebarDisplayMode) var displayMode: SidebarDisplayMode?
+    
+    var body: some View {
+        Button("Search") {
+            displayMode = .search
+            focusAction?()
+        }
+        .keyboardShortcut("s")
+        .disabled(displayMode == nil)
     }
 }
 

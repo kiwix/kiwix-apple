@@ -12,7 +12,7 @@ import SwiftUI
 struct Search: View {
     @Binding var url: URL?
     @StateObject var viewModel = SearchViewModel()
-    @FocusState var focused: Focusable?
+    @FocusState var focused: SearchFocusState?
     
     var body: some View {
         VStack {
@@ -29,17 +29,13 @@ struct Search: View {
                 Text(result.title)
             }.focused($focused, equals: .content)
         }
-        .onAppear {
-            focused = .searchField
-        }
-        .safeAreaInset(edge: .bottom, spacing: 0) {
-            SearchFilter().frame(height: 200)
-        }
+        .safeAreaInset(edge: .bottom, spacing: 0) { SearchFilter().frame(height: 200) }
+        .focusedSceneValue(\.searchFieldFocusAction) { focused = .searchField }
+        .onAppear { focused = .searchField }
     }
     
-    enum Focusable: Hashable {
-      case searchField
-      case content
+    enum SearchFocusState: Hashable {
+      case searchField, content
     }
 }
 #elseif os(iOS)

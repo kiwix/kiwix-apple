@@ -20,6 +20,10 @@ struct ReaderViewModelKey: FocusedValueKey {
     typealias Value = ReaderViewModel
 }
 
+struct SearchFieldFocusActionKey: FocusedValueKey {
+    typealias Value = () -> Void
+}
+
 struct SidebarDisplayModeKey: FocusedValueKey {
     typealias Value = Binding<SidebarDisplayMode>
 }
@@ -37,6 +41,11 @@ extension FocusedValues {
     var canGoForward: CanGoForwardKey.Value? {
         get { self[CanGoForwardKey.self] }
         set { self[CanGoForwardKey.self] = newValue }
+    }
+    
+    var searchFieldFocusAction: SearchFieldFocusActionKey.Value? {
+        get { self[SearchFieldFocusActionKey.self] }
+        set { self[SearchFieldFocusActionKey.self] = newValue }
     }
     
     var sidebarDisplayMode: SidebarDisplayModeKey.Value? {

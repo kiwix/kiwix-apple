@@ -28,6 +28,8 @@ struct Kiwix: App {
             CommandGroup(after: .toolbar) {
                 SidebarDisplayModeCommandButtons()
                 Divider()
+                SearchCommandButton()
+                Divider()
                 NavigationCommandButtons()
                 Divider()
                 PageZoomCommandButtons()
