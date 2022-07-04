@@ -73,7 +73,7 @@ struct Reader: View {
         .focusedSceneValue(\.readerViewModel, viewModel)
         .focusedSceneValue(\.sidebarDisplayMode, $sidebarDisplayMode)
         .focusedSceneValue(\.url, url)
-        .navigationTitle(viewModel.articleTitle)
+        .navigationTitle(viewModel.articleTitle.isEmpty ? "Reader" : viewModel.articleTitle)
         .navigationSubtitle(viewModel.zimFileName)
         .onOpenURL { url in
             if url.isFileURL {
