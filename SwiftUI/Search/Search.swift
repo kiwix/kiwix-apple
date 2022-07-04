@@ -15,13 +15,15 @@ struct Search: View {
     
     var body: some View {
         VStack {
-            SearchField(searchText: $viewModel.searchText).padding(.horizontal, 8)
+            TextField("Search", text: $viewModel.searchText)
+                .textFieldStyle(.roundedBorder)
+                .padding(.horizontal, 8)
             List(viewModel.results, id: \.url, selection: $url) { result in
                 Text(result.title)
             }
         }
         .listStyle(.sidebar)
-        .safeAreaInset(edge: .bottom) {
+        .safeAreaInset(edge: .bottom, spacing: 0) {
             SearchFilter().frame(height: 200)
         }
     }
