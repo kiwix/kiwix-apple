@@ -12,20 +12,34 @@ import SwiftUI
 struct Search: View {
     @Binding var url: URL?
     @StateObject var viewModel = SearchViewModel()
+    @FocusState var focused: Focusable?
     
     var body: some View {
         VStack {
             TextField("Search", text: $viewModel.searchText)
+                .onSubmit {
+                    focused = .content
+                    url = viewModel.results.first?.url
+                }
                 .textFieldStyle(.roundedBorder)
                 .padding(.horizontal, 8)
+                .focused($focused, equals: .searchField)
+                
             List(viewModel.results, id: \.url, selection: $url) { result in
                 Text(result.title)
-            }
+            }.focused($focused, equals: .content)
         }
-        .listStyle(.sidebar)
+        .onAppear {
+            focused = .searchField
+        }
         .safeAreaInset(edge: .bottom, spacing: 0) {
             SearchFilter().frame(height: 200)
         }
+    }
+    
+    enum Focusable: Hashable {
+      case searchField
+      case content
     }
 }
 #elseif os(iOS)
