@@ -155,6 +155,21 @@ class LibraryViewModel: ObservableObject {
         }
     }
     
+    static func reopen() {
+        let context = Database.shared.container.viewContext
+        let request = ZimFile.fetchRequest(predicate: NSPredicate(format: "fileURLBookmark != nil"))
+        guard let zimFiles = try? context.fetch(request) else { return }
+        zimFiles.forEach { zimFile in
+            guard let data = zimFile.fileURLBookmark else { return }
+            if let data = ZimFileService.shared.open(bookmark: data) {
+                zimFile.fileURLBookmark = data
+            }
+        }
+        if context.hasChanges {
+            try? context.save()
+        }
+    }
+    
     /// Unlink a zim file from library, and delete the file.
     /// - Parameter zimFile: the zim file to delete
     static func delete(zimFileID: UUID) {

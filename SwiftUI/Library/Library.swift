@@ -64,7 +64,6 @@ struct Library: View {
                 .tabItem { Label(topic.name, systemImage: topic.iconName) }
             }
         }
-        .environmentObject(viewModel)
         .onAppear {
             Task {
                 try? await viewModel.refresh(isUserInitiated: false)
