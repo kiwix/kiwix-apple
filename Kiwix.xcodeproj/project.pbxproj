@@ -108,6 +108,8 @@
 		974FFE612352744800F6BF28 /* WebKitWebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 974FFE602352744800F6BF28 /* WebKitWebViewController.swift */; };
 		974FFE6A23533E8D00F6BF28 /* NavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 974FFE6823533E8D00F6BF28 /* NavigationController.swift */; };
 		975088B328763B6900273181 /* SheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 975088B228763B6900273181 /* SheetView.swift */; };
+		975088B528763DFF00273181 /* Search.swift in Sources */ = {isa = PBXBuildFile; fileRef = 975088B428763DFF00273181 /* Search.swift */; };
+		975088B828763E5400273181 /* Search.swift in Sources */ = {isa = PBXBuildFile; fileRef = 975088B628763E2500273181 /* Search.swift */; };
 		9753D948285B55F100A626CC /* DefaultKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9753D947285B55F100A626CC /* DefaultKeys.swift */; };
 		9753D949285B55F100A626CC /* DefaultKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9753D947285B55F100A626CC /* DefaultKeys.swift */; };
 		9753D94B285B56C900A626CC /* Defaults in Frameworks */ = {isa = PBXBuildFile; productRef = 9753D94A285B56C900A626CC /* Defaults */; };
@@ -241,8 +243,6 @@
 		97B448A1210FBC2E0004B056 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97B4489F210FBC2E0004B056 /* LaunchScreen.storyboard */; };
 		97B5D3E92596398400D12FEE /* SidebarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97B5D3E82596398400D12FEE /* SidebarController.swift */; };
 		97B794201F4E23F300F3EBE8 /* WelcomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97B7941F1F4E23F300F3EBE8 /* WelcomeView.swift */; };
-		97C1377C2844FCF500386C04 /* Search.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97C1377B2844FCF500386C04 /* Search.swift */; };
-		97C1377D2844FCF500386C04 /* Search.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97C1377B2844FCF500386C04 /* Search.swift */; };
 		97C1378028454A1B00386C04 /* SearchFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97C1377F28454A1B00386C04 /* SearchFilter.swift */; };
 		97C1378128454A1B00386C04 /* SearchFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97C1377F28454A1B00386C04 /* SearchFilter.swift */; };
 		97C14E232707F98400EF4CF2 /* OutlineViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97C14E222707F98400EF4CF2 /* OutlineViewController.swift */; };
@@ -419,6 +419,8 @@
 		974FFE602352744800F6BF28 /* WebKitWebViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebKitWebViewController.swift; sourceTree = "<group>"; };
 		974FFE6823533E8D00F6BF28 /* NavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationController.swift; sourceTree = "<group>"; };
 		975088B228763B6900273181 /* SheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SheetView.swift; sourceTree = "<group>"; };
+		975088B428763DFF00273181 /* Search.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Search.swift; sourceTree = "<group>"; };
+		975088B628763E2500273181 /* Search.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Search.swift; sourceTree = "<group>"; };
 		9753D947285B55F100A626CC /* DefaultKeys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultKeys.swift; sourceTree = "<group>"; };
 		97566A552728F58000DE7165 /* BookmarksViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarksViewController.swift; sourceTree = "<group>"; };
 		9759D4211F4F278800705779 /* Kiwix.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Kiwix.entitlements; sourceTree = "<group>"; };
@@ -504,7 +506,6 @@
 		97B448A2210FBC2E0004B056 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		97B5D3E82596398400D12FEE /* SidebarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SidebarController.swift; sourceTree = "<group>"; };
 		97B7941F1F4E23F300F3EBE8 /* WelcomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeView.swift; sourceTree = "<group>"; };
-		97C1377B2844FCF500386C04 /* Search.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Search.swift; sourceTree = "<group>"; };
 		97C1377F28454A1B00386C04 /* SearchFilter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchFilter.swift; sourceTree = "<group>"; };
 		97C13787284572AC00386C04 /* SearchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewModel.swift; sourceTree = "<group>"; };
 		97C14E222707F98400EF4CF2 /* OutlineViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutlineViewController.swift; sourceTree = "<group>"; };
@@ -736,6 +737,7 @@
 			isa = PBXGroup;
 			children = (
 				9729E12E2864C2AD003D19B1 /* Reader.swift */,
+				975088B628763E2500273181 /* Search.swift */,
 				975088B228763B6900273181 /* SheetView.swift */,
 			);
 			path = iOS;
@@ -745,6 +747,7 @@
 			isa = PBXGroup;
 			children = (
 				97E94B1B271EF24D005B0295 /* Reader.swift */,
+				975088B428763DFF00273181 /* Search.swift */,
 			);
 			path = macOS;
 			sourceTree = "<group>";
@@ -1012,15 +1015,6 @@
 			name = SearchResult;
 			sourceTree = "<group>";
 		};
-		97C1377A2844FCD600386C04 /* Search */ = {
-			isa = PBXGroup;
-			children = (
-				97C1377B2844FCF500386C04 /* Search.swift */,
-				97C1377F28454A1B00386C04 /* SearchFilter.swift */,
-			);
-			path = Search;
-			sourceTree = "<group>";
-		};
 		97DED67D275278EB008D2C56 /* View */ = {
 			isa = PBXGroup;
 			children = (
@@ -1034,6 +1028,7 @@
 				97C278DE2796249900666E07 /* Outline.swift */,
 				97255D8B273608C3002B995B /* WebView.swift */,
 				974C33A42855884C00DF6F4C /* SafariView.swift */,
+				97C1377F28454A1B00386C04 /* SearchFilter.swift */,
 				97486D05284A36790096E4DD /* SearchResultCell.swift */,
 				97486D07284A42B90096E4DD /* SearchResultRow.swift */,
 				97486D0C284C0EBC0096E4DD /* Welcome.swift */,
@@ -1051,7 +1046,6 @@
 				97DED67D275278EB008D2C56 /* View */,
 				975088B128763A9500273181 /* macOS */,
 				975088B028763A8D00273181 /* iOS */,
-				97C1377A2844FCD600386C04 /* Search */,
 				972DE4C02814A950004FD9B9 /* Library */,
 				974C339D2853D49C00DF6F4C /* Settings */,
 				97E94B26271EF359005B0295 /* Support */,
@@ -1486,6 +1480,7 @@
 				972DE4B92814A56A004FD9B9 /* Database.swift in Sources */,
 				976BAEB5284903A80049404F /* SearchResult.swift in Sources */,
 				976BAEBB2849048D0049404F /* Parser.swift in Sources */,
+				975088B828763E5400273181 /* Search.swift in Sources */,
 				97341C6E2852248500BC273E /* DownloadTaskCell.swift in Sources */,
 				976D90DC281586B400CC7D29 /* ZimFileCell.swift in Sources */,
 				973A0DF5282FEDA500B41E71 /* ZimFileViewModifiers.swift in Sources */,
@@ -1516,7 +1511,6 @@
 				973A0DF1282E981200B41E71 /* ZimFileRow.swift in Sources */,
 				97DE2BA6283A944100C63D9B /* LibraryGridPadding.swift in Sources */,
 				973A0E022831055600B41E71 /* URLContent.swift in Sources */,
-				97C1377D2844FCF500386C04 /* Search.swift in Sources */,
 				974C33A62855884C00DF6F4C /* SafariView.swift in Sources */,
 				979D3A782841100B00E396B8 /* Focus.swift in Sources */,
 				972DE4C42814AAAE004FD9B9 /* Library.swift in Sources */,
@@ -1673,9 +1667,9 @@
 				976D90D22814F2FA00CC7D29 /* ZimFilesGrid.swift in Sources */,
 				97255D8C273608C3002B995B /* WebView.swift in Sources */,
 				9735D0BE2777531400C7D495 /* BookmarkButton.swift in Sources */,
+				975088B528763DFF00273181 /* Search.swift in Sources */,
 				978A731727B9A4F1008101B4 /* MainArticleButton.swift in Sources */,
 				976BAEB42847BD020049404F /* SearchViewModel.swift in Sources */,
-				97C1377C2844FCF500386C04 /* Search.swift in Sources */,
 				976D90E82815D63A00CC7D29 /* ZimFilesNew.swift in Sources */,
 				97E94B1A271EF24D005B0295 /* macOSApp.swift in Sources */,
 				9721BBBA28427A93005C910D /* Bookmarks.swift in Sources */,
