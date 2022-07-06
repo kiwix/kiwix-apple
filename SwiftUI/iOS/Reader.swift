@@ -89,23 +89,13 @@ struct Reader: View {
         .sheet(item: $sheetDisplayMode) { displayMode in
             switch displayMode {
             case .outline:
-                SheetView {
-                    Outline()
-                        .listStyle(.plain)
-                        .navigationTitle(viewModel.articleTitle)
-                        .navigationBarTitleDisplayMode(.inline)
-                }
+                SheetView { Outline().listStyle(.plain).navigationBarTitleDisplayMode(.inline) }
             case .bookmarks:
-                SheetView {
-                    Bookmarks(url: $url)
-                        .listStyle(.plain)
-                        .navigationTitle("Bookmarks")
-                        .navigationBarTitleDisplayMode(.inline)
-                }
+                SheetView { Bookmarks(url: $url).listStyle(.plain).navigationBarTitleDisplayMode(.inline) }
             case .library:
                 Library()
             case .settings:
-                Settings()
+                SheetView { Settings() }
             }
         }
         .environmentObject(viewModel)

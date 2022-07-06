@@ -24,7 +24,9 @@ struct Outline: View {
                         presentationMode.wrappedValue.dismiss()
                     }
                 }
-            }.onChange(of: selectedID) { selectedID in
+            }
+            .navigationTitle(viewModel.articleTitle)
+            .onChange(of: selectedID) { selectedID in
                 guard let selectedID = selectedID else { return }
                 viewModel.scrollTo(outlineItemID: selectedID)
                 self.selectedID = nil

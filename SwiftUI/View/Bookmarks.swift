@@ -37,6 +37,7 @@ struct Bookmarks: View {
                 }
                 #endif
             }
+            .navigationTitle("Bookmarks")
         }
     }
 }
