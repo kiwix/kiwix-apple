@@ -40,26 +40,3 @@ struct Bookmarks: View {
         }
     }
 }
-
-#if os(iOS)
-struct BookmarksSheet: View {
-    @Binding var url: URL?
-    @Environment(\.presentationMode) private var presentationMode
-    
-    var body: some View {
-        NavigationView {
-            Bookmarks(url: $url)
-                .listStyle(.plain)
-                .navigationTitle("Bookmarks")
-                .navigationBarTitleDisplayMode(.inline)
-                .toolbar {
-                    ToolbarItem(placement: .navigationBarLeading) {
-                        Button("Done") {
-                            presentationMode.wrappedValue.dismiss()
-                        }
-                    }
-                }
-        }
-    }
-}
-#endif

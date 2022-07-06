@@ -1,5 +1,5 @@
 //
-//  macOSReader.swift
+//  Reader.swift
 //  Kiwix for macOS
 //
 //  Created by Chris Li on 10/19/21.

@@ -1,5 +1,5 @@
 //
-//  iOSReader.swift
+//  Reader.swift
 //  Kiwix for iOS
 //
 //  Created by Chris Li on 6/23/22.
@@ -89,9 +89,19 @@ struct Reader: View {
         .sheet(item: $sheetDisplayMode) { displayMode in
             switch displayMode {
             case .outline:
-                OutlineSheet()
+                SheetView {
+                    Outline()
+                        .listStyle(.plain)
+                        .navigationTitle(viewModel.articleTitle)
+                        .navigationBarTitleDisplayMode(.inline)
+                }
             case .bookmarks:
-                BookmarksSheet(url: $url)
+                SheetView {
+                    Bookmarks(url: $url)
+                        .listStyle(.plain)
+                        .navigationTitle("Bookmarks")
+                        .navigationBarTitleDisplayMode(.inline)
+                }
             case .library:
                 Library()
             case .settings:

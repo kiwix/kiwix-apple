@@ -61,26 +61,3 @@ private struct OutlineNode: View {
         }
     }
 }
-
-#if os(iOS)
-struct OutlineSheet: View {
-    @EnvironmentObject var viewModel: ReaderViewModel
-    @Environment(\.presentationMode) private var presentationMode
-    
-    var body: some View {
-        NavigationView {
-            Outline()
-                .listStyle(.plain)
-                .navigationTitle(viewModel.articleTitle)
-                .navigationBarTitleDisplayMode(.inline)
-                .toolbar {
-                    ToolbarItem(placement: .navigationBarLeading) {
-                        Button("Done") {
-                            presentationMode.wrappedValue.dismiss()
-                        }
-                    }
-                }
-        }
-    }
-}
-#endif
