@@ -19,25 +19,26 @@ struct Reader: View {
     var body: some View {
         GeometryReader { proxy in
             HStack(spacing: 0) {
-                HStack(spacing: 0) {
-                    if sidebarDisplayMode == .outline, horizontalSizeClass == .regular {
-                        Outline().listStyle(.plain).frame(width: min(320, proxy.size.width * 0.35))
-                        Divider()
-                    } else if sidebarDisplayMode == .bookmarks, horizontalSizeClass == .regular {
-                        Bookmarks(url: $url).listStyle(.plain).frame(width: min(320, proxy.size.width * 0.35))
-                        Divider()
+                if sidebarDisplayMode != nil, horizontalSizeClass == .regular {
+                    HStack(spacing: 0) {
+                        if sidebarDisplayMode == .outline {
+                            Outline()
+                        } else if sidebarDisplayMode == .bookmarks {
+                            Bookmarks(url: $url)
+                        }
+                        Divider().ignoresSafeArea(.container, edges: .bottom)
                     }
+                    .listStyle(.plain)
+                    .frame(width: min(320, proxy.size.width * 0.35))
+                    .transition(.move(edge: Edge.leading).combined(with: .opacity))
                 }
-                .transition(.opacity)
-                .animation(Animation.easeInOut, value: sidebarDisplayMode)
                 Group {
                     if url == nil {
                         Welcome(url: $url)
                     } else {
                         WebView(url: $url).ignoresSafeArea(.container, edges: .all)
                     }
-                }
-                .animation(Animation.easeInOut, value: sidebarDisplayMode)
+                }.animation(.linear(duration: 0.1), value: sidebarDisplayMode)
             }
         }
         .toolbar {
