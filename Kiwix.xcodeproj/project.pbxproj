@@ -722,23 +722,13 @@
 			path = ViewModifier;
 			sourceTree = "<group>";
 		};
-		974C339D2853D49C00DF6F4C /* Settings */ = {
-			isa = PBXGroup;
-			children = (
-				974C33A12853DDEE00DF6F4C /* Settings.swift */,
-				9729E12C2862BA90003D19B1 /* SettingSection.swift */,
-				974C33AA28558D2900DF6F4C /* LibrarySettings.swift */,
-				974C339E2853D4AC00DF6F4C /* About.swift */,
-			);
-			path = Settings;
-			sourceTree = "<group>";
-		};
 		975088B028763A8D00273181 /* iOS */ = {
 			isa = PBXGroup;
 			children = (
 				9729E12E2864C2AD003D19B1 /* Reader.swift */,
 				975088B628763E2500273181 /* Search.swift */,
 				975088B228763B6900273181 /* SheetView.swift */,
+				974C33A12853DDEE00DF6F4C /* Settings.swift */,
 			);
 			path = iOS;
 			sourceTree = "<group>";
@@ -748,6 +738,7 @@
 			children = (
 				97E94B1B271EF24D005B0295 /* Reader.swift */,
 				975088B428763DFF00273181 /* Search.swift */,
+				9729E12C2862BA90003D19B1 /* SettingSection.swift */,
 			);
 			path = macOS;
 			sourceTree = "<group>";
@@ -1020,10 +1011,12 @@
 			children = (
 				978A731327B9A1F5008101B4 /* Buttons */,
 				973A0DF2282FED6F00B41E71 /* ViewModifier */,
+				974C339E2853D4AC00DF6F4C /* About.swift */,
 				9721BBB928427A93005C910D /* Bookmarks.swift */,
 				97341C6C2852248500BC273E /* DownloadTaskCell.swift */,
 				97B0737527825E3D007C7DF3 /* Favicon.swift */,
 				973A2FCD277FB03F00BD4320 /* FlavorTag.swift */,
+				974C33AA28558D2900DF6F4C /* LibrarySettings.swift */,
 				97FB4B0A27B819A90055F86E /* Message.swift */,
 				97C278DE2796249900666E07 /* Outline.swift */,
 				97255D8B273608C3002B995B /* WebView.swift */,
@@ -1044,10 +1037,9 @@
 				9735D0B72775362000C7D495 /* Model */,
 				97FB4B0C27B81B530055F86E /* ViewModels */,
 				97DED67D275278EB008D2C56 /* View */,
+				972DE4C02814A950004FD9B9 /* Library */,
 				975088B128763A9500273181 /* macOS */,
 				975088B028763A8D00273181 /* iOS */,
-				972DE4C02814A950004FD9B9 /* Library */,
-				974C339D2853D49C00DF6F4C /* Settings */,
 				97E94B26271EF359005B0295 /* Support */,
 				97E94B19271EF24D005B0295 /* macOSApp.swift */,
 				97EEFF2028398E9A00BDD6E2 /* iOSApp.swift */,
