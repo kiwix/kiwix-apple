@@ -48,14 +48,14 @@ struct ZimFilesList: View {
         .modifier(ZimFileListStyle())
         .modifier(ZimFileDetailPanel(zimFile: selected))
         .modifier(Searchable(searchText: $searchText))
+        .onChange(of: category) { _ in
+            searchText = ""
+            selected = nil
+        }
         .onChange(of: searchText) { _ in
             if #available(iOS 15.0, *) {
                 zimFiles.nsPredicate = ZimFilesList.buildPredicate(category: category, searchText: searchText)
             }
-        }
-        .onChange(of: category) { _ in
-            searchText = ""
-            selected = nil
         }
         .onChange(of: languageCodes) { _ in
             if #available(iOS 15.0, *) {
