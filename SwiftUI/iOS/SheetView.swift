@@ -26,6 +26,6 @@ struct SheetView<Content: View>: View {
                     }
                 }
             }
-        }
+        }.navigationViewStyle(.stack)
     }
 }
