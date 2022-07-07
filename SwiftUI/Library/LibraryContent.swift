@@ -29,7 +29,9 @@ struct LibraryContent: View {
                         Text(category.name)
                     }
                 }
-            }.listStyle(.plain)
+            }
+            .listStyle(.plain)
+            .navigationTitle(LibraryTopic.categories.name)
         case .category(let category):
             if #available(iOS 15.0, *), category != .ted, category != .stackExchange, category != .other {
                 ZimFilesGrid(category: category)

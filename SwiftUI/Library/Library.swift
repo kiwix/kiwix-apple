@@ -39,7 +39,6 @@ struct Library: View {
 }
 #elseif os(iOS)
 struct Library: View {
-    @Environment(\.presentationMode) private var presentationMode
     @SceneStorage("library.selectedTopic") private var selectedTopic: LibraryTopic = .opened
     @StateObject private var viewModel = LibraryViewModel()
     
@@ -48,18 +47,9 @@ struct Library: View {
     var body: some View {
         TabView(selection: $selectedTopic) {
             ForEach(topics) { topic in
-                NavigationView {
+                SheetView {
                     LibraryContent(topic: topic)
-                        .navigationTitle(topic.name)
-                        .toolbar {
-                            ToolbarItem(placement: .navigationBarLeading) {
-                                Button("Done") {
-                                    presentationMode.wrappedValue.dismiss()
-                                }
-                            }
-                        }
                 }
-                .navigationViewStyle(.stack)
                 .tag(topic)
                 .tabItem { Label(topic.name, systemImage: topic.iconName) }
             }
