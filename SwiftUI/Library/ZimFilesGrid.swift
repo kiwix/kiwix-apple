@@ -87,7 +87,7 @@ struct ZimFilesGrid: View {
         #if os(macOS)
         GridItem(.adaptive(minimum: 200, maximum: 400), spacing: 12)
         #elseif os(iOS)
-        GridItem(.adaptive(minimum: 150, maximum: 400), spacing: 12)
+        GridItem(.adaptive(minimum: 175, maximum: 400), spacing: 12)
         #endif
     }
     
