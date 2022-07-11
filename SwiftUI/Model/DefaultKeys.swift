@@ -34,7 +34,8 @@ extension Defaults.Keys {
     static let libraryAutoRefresh = Key<Bool>("libraryAutoRefresh", default: true)
     static let libraryLastRefresh = Key<Date?>("libraryLastRefresh")
     static let libraryLastRefreshTime = Key<Date?>("libraryLastRefreshTime")
-    static let libraryDownloadUsingCellular = Key<Bool>("libraryDownloadUsingCellular", default: false)
+    
+    static let downloadUsingCellular = Key<Bool>("downloadUsingCellular", default: false)
     static let backupDocumentDirectory = Key<Bool>("backupDocumentDirectory", default: false)
 }
 

@@ -11,10 +11,12 @@ import SwiftUI
 import Defaults
 
 struct Settings: View {
-    @Default(.webViewPageZoom) var webViewPageZoom
-    @Default(.externalLinkLoadingPolicy) var externalLinkLoadingPolicy
-    @Default(.searchResultSnippetMode) var searchResultSnippetMode
     @Default(.backupDocumentDirectory) private var backupDocumentDirectory
+    @Default(.downloadUsingCellular) private var downloadUsingCellular
+    @Default(.externalLinkLoadingPolicy) private var externalLinkLoadingPolicy
+    @Default(.libraryLanguageCodes) private var libraryLanguageCodes
+    @Default(.searchResultSnippetMode) private var searchResultSnippetMode
+    @Default(.webViewPageZoom) private var webViewPageZoom
     @StateObject private var viewModel = LibraryViewModel()
     
     var body: some View {
@@ -34,6 +36,26 @@ struct Settings: View {
                     }
                 }
             } header: { Text("Reading") }
+            Section {
+                NavigationLink {
+                    LanguageSelector()
+                } label: {
+                    HStack {
+                        Text("Languages")
+                        Spacer()
+                        if libraryLanguageCodes.count == 1,
+                           let languageCode = libraryLanguageCodes.first,
+                            let languageName = Locale.current.localizedString(forLanguageCode: languageCode) {
+                            Text(languageName).foregroundColor(.secondary)
+                        } else if libraryLanguageCodes.count > 1 {
+                            Text("\(libraryLanguageCodes.count)").foregroundColor(.secondary)
+                        }
+                    }
+                }
+                Toggle("Download using cellular", isOn: $downloadUsingCellular)
+            } header: {
+                Text("Library")
+            }
             LibrarySettings()
             Section {
                 Toggle("Include zim files in backup", isOn: $backupDocumentDirectory)
@@ -42,9 +64,7 @@ struct Settings: View {
             } footer: {
                 Text("Does not apply to files opened in place.")
             }
-            Section {
-                NavigationLink("About") { About() }
-            }
+            NavigationLink("About") { About() }
         }
         .navigationTitle("Settings")
     }
