@@ -17,8 +17,9 @@ struct Kiwix: App {
     
     init() {
         LibraryViewModel.reopen()
-        Kiwix.applyZimFileBackupSetting()
-        Kiwix.registerBackgroundRefreshTask()
+        Settings.applyFileBackupSetting()
+        Settings.applyLibraryAutoRefreshSetting()
+        self.registerBackgroundRefreshTask()
     }
     
     var body: some Scene {
@@ -29,33 +30,7 @@ struct Kiwix: App {
         }
     }
     
-    static func applyZimFileBackupSetting() {
-        do {
-            let directory = try FileManager.default.url(
-                for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false
-            )
-            let urls = try FileManager.default.contentsOfDirectory(
-                at: directory,
-                includingPropertiesForKeys: [.isExcludedFromBackupKey],
-                options: [.skipsHiddenFiles, .skipsPackageDescendants, .skipsSubdirectoryDescendants]
-            ).filter({ $0.pathExtension.contains("zim") })
-            let backupDocumentDirectory = UserDefaults.standard.bool(forKey: "backupDocumentDirectory")
-            try urls.forEach { url in
-                var resourceValues = URLResourceValues()
-                resourceValues.isExcludedFromBackup = !backupDocumentDirectory
-                var url = url
-                try url.setResourceValues(resourceValues)
-            }
-            print(
-                """
-                Applying zim file backup setting (\(backupDocumentDirectory ? "backing up" : "not backing up")) \
-                on \(urls.count) zim file(s)
-                """
-            )
-        } catch {}
-    }
-    
-    static func registerBackgroundRefreshTask() {
+    private func registerBackgroundRefreshTask() {
         BGTaskScheduler.shared.register(
             forTaskWithIdentifier: LibraryViewModel.backgroundTaskIdentifier, using: nil
         ) { backgroundTask in
