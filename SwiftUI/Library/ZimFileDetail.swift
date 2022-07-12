@@ -9,10 +9,10 @@
 import CoreData
 import SwiftUI
 
+/// Detail about one single zim file.
 struct ZimFileDetail: View {
     @ObservedObject var zimFile: ZimFile
-    @State private var isPresentingUnlinkAlert = false
-    @State private var isPresentingDeleteAlert = false
+    @State private var isPresentingAlert = false
     
     var body: some View {
         #if os(macOS)
@@ -36,7 +36,7 @@ struct ZimFileDetail: View {
             }
         }
         .listStyle(.sidebar)
-        .modifier(ZimFileUnlinkAlert(isPresented: $isPresentingUnlinkAlert, zimFile: zimFile))
+        .alert(isPresented: $isPresentingAlert) { alert }
         #elseif os(iOS)
         List {
             Section {
@@ -58,8 +58,7 @@ struct ZimFileDetail: View {
         .listStyle(.insetGrouped)
         .navigationTitle(zimFile.name)
         .navigationBarTitleDisplayMode(.inline)
-        .modifier(ZimFileDeleteAlert(isPresented: $isPresentingDeleteAlert, zimFile: zimFile))
-        .modifier(ZimFileUnlinkAlert(isPresented: $isPresentingUnlinkAlert, zimFile: zimFile))
+        .alert(isPresented: $isPresentingAlert) { alert }
         #endif
     }
     
@@ -74,24 +73,16 @@ struct ZimFileDetail: View {
             guard let url = ZimFileService.shared.getFileURL(zimFileID: zimFile.id) else { return }
             NSWorkspace.shared.activateFileViewerSelecting([url])
         }
-        Action(title: "Unlink", isDestructive: true) {
-            isPresentingUnlinkAlert = true
-        }
+        Action(title: "Unlink", isDestructive: true) { isPresentingAlert = true }
         #elseif os(iOS)
         Action(title: "Open Main Page") {
             guard let url = ZimFileService.shared.getMainPageURL(zimFileID: zimFile.fileID) else { return }
             UIApplication.shared.open(url)
         }
-        if let zimFileName = ZimFileService.shared.getFileURL(zimFileID: zimFile.fileID)?.lastPathComponent,
-           let documentDirectoryURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first,
-           FileManager.default.fileExists(atPath: documentDirectoryURL.appendingPathComponent(zimFileName).path) {
-            Action(title: "Delete", isDestructive: true) {
-                isPresentingDeleteAlert = true
-            }
+        if isFileInDocumentDirectory {
+            Action(title: "Delete", isDestructive: true) { isPresentingAlert = true }
         } else {
-            Action(title: "Unlink", isDestructive: true) {
-                isPresentingUnlinkAlert = true
-            }
+            Action(title: "Unlink", isDestructive: true) { isPresentingAlert = true }
         }
         #endif
     }
@@ -146,6 +137,41 @@ struct ZimFileDetail: View {
     @ViewBuilder
     var id: some View {
         Attribute(title: "ID", detail: String(zimFile.fileID.uuidString.prefix(8)))
+    }
+    
+    var isFileInDocumentDirectory: Bool {
+        if let zimFileName = ZimFileService.shared.getFileURL(zimFileID: zimFile.fileID)?.lastPathComponent,
+           let documentDirectoryURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first,
+           FileManager.default.fileExists(atPath: documentDirectoryURL.appendingPathComponent(zimFileName).path) {
+            return true
+        } else {
+            return false
+        }
+    }
+    
+    var alert: Alert {
+        if isFileInDocumentDirectory {
+            return Alert(
+                title: Text("Delete \(zimFile.name)"),
+                message: Text("The zim file and all bookmarked articles linked to this zim file will be deleted."),
+                primaryButton: .destructive(Text("Delete"), action: {
+                    LibraryViewModel.delete(zimFileID: zimFile.fileID)
+                }),
+                secondaryButton: .cancel()
+            )
+        } else {
+            return Alert(
+                title: Text("Unlink \(zimFile.name)"),
+                message: Text("""
+                All bookmarked articles linked to this zim file will be deleted, \
+                but the original file will remain in place.
+                """),
+                primaryButton: .destructive(Text("Unlink"), action: {
+                    LibraryViewModel.unlink(zimFileID: zimFile.fileID)
+                }),
+                secondaryButton: .cancel()
+            )
+        }
     }
 }
 
@@ -255,7 +281,7 @@ private struct Action: View {
     }
 }
 
-struct ServiceWorkerWarning: View {
+private struct ServiceWorkerWarning: View {
     var body: some View {
         Label {
             Text("Zim files requiring service workers are not supported.")
