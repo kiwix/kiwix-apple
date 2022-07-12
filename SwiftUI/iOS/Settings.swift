@@ -93,11 +93,11 @@ struct Settings: View {
             NavigationLink("About") { About() }
         }
         .navigationTitle("Settings")
-        .onChange(of: libraryAutoRefresh) { Settings.applyLibraryAutoRefreshSetting($0) }
-        .onChange(of: backupDocumentDirectory) { Settings.applyFileBackupSetting($0) }
+        .onChange(of: libraryAutoRefresh) { Settings.applyLibraryAutoRefreshSetting(isEnabled: $0) }
+        .onChange(of: backupDocumentDirectory) { Settings.applyFileBackupSetting(isEnabled: $0) }
     }
     
-    static func applyLibraryAutoRefreshSetting(_ isEnabled: Bool? = nil) {
+    static func applyLibraryAutoRefreshSetting(isEnabled: Bool? = nil) {
         if isEnabled ?? Defaults[.libraryAutoRefresh] {
             let request = BGAppRefreshTaskRequest(identifier: LibraryViewModel.backgroundTaskIdentifier)
             try? BGTaskScheduler.shared.submit(request)
@@ -106,7 +106,7 @@ struct Settings: View {
         }
     }
     
-    static func applyFileBackupSetting(_ isEnabled: Bool? = nil) {
+    static func applyFileBackupSetting(isEnabled: Bool? = nil) {
         do {
             let directory = try FileManager.default.url(
                 for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false
