@@ -13,13 +13,11 @@ import SwiftUI
 
 @main
 struct Kiwix: App {
-    @AppStorage("backupDocumentDirectory") private var backupDocumentDirectory = false
-    
     init() {
+        self.registerBackgroundRefreshTask()
         LibraryViewModel.reopen()
         Settings.applyFileBackupSetting()
         Settings.applyLibraryAutoRefreshSetting()
-        self.registerBackgroundRefreshTask()
     }
     
     var body: some Scene {
