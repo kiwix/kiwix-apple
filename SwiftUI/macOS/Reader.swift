@@ -77,7 +77,9 @@ struct Reader: View {
         .navigationSubtitle(viewModel.zimFileName)
         .onOpenURL { url in
             if url.isFileURL {
+                guard let metadata = ZimFileService.getMetaData(url: url) else { return }
                 LibraryViewModel.open(url: url)
+                self.url = ZimFileService.shared.getMainPageURL(zimFileID: metadata.fileID)
             } else if url.scheme == "kiwix" {
                 self.url = url
             }
