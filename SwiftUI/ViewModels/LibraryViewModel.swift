@@ -27,22 +27,43 @@ class LibraryViewModel: ObservableObject {
             (Defaults[.libraryAutoRefresh] && (Defaults[.libraryLastRefresh]?.timeIntervalSinceNow ?? -3600) <= -3600)
         else { return }
         
-        // download data
-        guard let url = URL(string: "https://library.kiwix.org/catalog/root.xml") else { return }
-        let data: Data = try await withCheckedThrowingContinuation { continuation in
-            URLSession.shared.dataTask(with: url) { data, response, error in
-                guard let response = response as? HTTPURLResponse, response.statusCode == 200, let data = data else {
-                    let error = OPDSRefreshError.retrieve(description: "Error retrieving online catalog.")
-                    continuation.resume(throwing: error)
-                    return
-                }
-                continuation.resume(returning: data)
-            }.resume()
+        // perform the update
+        do {
+            let data = try await fetchData()
+            try Task.checkCancellation()
+            let parser = try await parseData(data)
+            try Task.checkCancellation()
+            try await processData(parser)
+        } catch {
+            
         }
         
-        // parse data
-        try Task.checkCancellation()
-        let parser: OPDSStreamParser = try await withCheckedThrowingContinuation { continuation in
+        // Update user defaults
+        Defaults[.libraryLastRefresh] = Date()
+        if Defaults[.libraryLanguageCodes].isEmpty, let currentLanguageCode = Locale.current.languageCode {
+            Defaults[.libraryLanguageCodes] = [currentLanguageCode]
+        }
+    }
+    
+    private func fetchData() async throws -> Data {
+        guard let url = URL(string: "https://library.kiwix.org/catalog/root.xml") else {
+            throw OPDSRefreshError.retrieve()
+        }
+        return try await withCheckedThrowingContinuation { continuation in
+            URLSession.shared.dataTask(with: url) { data, response, error in
+                if let response = response as? HTTPURLResponse, response.statusCode == 200, let data = data {
+                    continuation.resume(returning: data)
+                } else if let error = error {
+                    continuation.resume(throwing: OPDSRefreshError.retrieve(description: error.localizedDescription))
+                } else {
+                    continuation.resume(throwing: OPDSRefreshError.retrieve())
+                }
+            }.resume()
+        }
+    }
+    
+    private func parseData(_ data: Data) async throws -> OPDSStreamParser {
+        try await withCheckedThrowingContinuation { continuation in
             DispatchQueue.global().async {
                 do {
                     let parser = OPDSStreamParser()
@@ -53,16 +74,13 @@ class LibraryViewModel: ObservableObject {
                 }
             }
         }
-        
-        // create context
-        let context = Database.shared.container.newBackgroundContext()
-        context.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
-        context.undoManager = nil
-        
-        // process data
-        try Task.checkCancellation()
-        try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Void, Error>) -> Void in
-            context.perform {
+    }
+    
+    private func processData(_ parser: OPDSStreamParser) async throws {
+        try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Void, Error>) in
+            Database.shared.container.performBackgroundTask { context in
+                context.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
+                context.undoManager = nil
                 do {
                     // insert new zim files
                     let existing = try context.fetch(ZimFile.fetchRequest()).map { $0.fileID.uuidString.lowercased() }
@@ -99,12 +117,6 @@ class LibraryViewModel: ObservableObject {
                 }
                 continuation.resume()
             }
-        }
-        
-        // Update user defaults
-        Defaults[.libraryLastRefresh] = Date()
-        if Defaults[.libraryLanguageCodes].isEmpty, let currentLanguageCode = Locale.current.languageCode {
-            Defaults[.libraryLanguageCodes] = [currentLanguageCode]
         }
     }
     
