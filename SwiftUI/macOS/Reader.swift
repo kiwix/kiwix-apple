@@ -121,7 +121,7 @@ private struct ZimFilesInLibrary: View {
                     } label: { Image(systemName: "plus") }
                     Spacer()
                     Button {
-                        guard let url = URL(string: "kiwix://Library") else { return }
+                        guard let url = URL(string: "kiwix-ui://library") else { return }
                         NSWorkspace.shared.open(url)
                     } label: { Image(systemName: "books.vertical") }
                 }

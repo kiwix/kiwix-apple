@@ -10,9 +10,9 @@ import CoreData
 import SwiftUI
 
 struct ZimFileCell: View {
+    @ObservedObject var zimFile: ZimFile
     @State var isHovering: Bool = false
     
-    let zimFile: ZimFile
     let prominent: Prominent
     
     init(_ zimFile: ZimFile, prominent: Prominent) {

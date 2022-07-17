@@ -10,7 +10,7 @@ import CoreData
 import SwiftUI
 
 struct ZimFileRow: View {
-    let zimFile: ZimFile
+    @ObservedObject var zimFile: ZimFile
     
     init(_ zimFile: ZimFile) {
         self.zimFile = zimFile

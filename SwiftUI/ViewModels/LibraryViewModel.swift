@@ -160,6 +160,7 @@ class LibraryViewModel: ObservableObject {
         
         // upsert zim file in the database
         Database.shared.container.performBackgroundTask { context in
+            context.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
             let predicate = NSPredicate(format: "fileID == %@", metadata.fileID as CVarArg)
             let fetchRequest = ZimFile.fetchRequest(predicate: predicate)
             guard let zimFile = try? context.fetch(fetchRequest).first ?? ZimFile(context: context) else { return }
@@ -206,15 +207,16 @@ class LibraryViewModel: ObservableObject {
     static func unlink(zimFileID: UUID) {
         ZimFileService.shared.close(fileID: zimFileID)
         
-        let context = Database.shared.container.newBackgroundContext()
-        context.perform {
+        Database.shared.container.performBackgroundTask { context in
+            context.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
             guard let zimFile = try? ZimFile.fetchRequest(fileID: zimFileID).execute().first else { return }
             if zimFile.downloadURL == nil {
                 context.delete(zimFile)
             } else {
                 zimFile.fileURLBookmark = nil
+                zimFile.isMissing = false
             }
-            try? context.save()
+            if context.hasChanges { try? context.save() }
         }
     }
 }
