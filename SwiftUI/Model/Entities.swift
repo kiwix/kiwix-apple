@@ -69,6 +69,7 @@ class ZimFile: NSManagedObject, Identifiable {
     @NSManaged var hasPictures: Bool
     @NSManaged var hasVideos: Bool
     @NSManaged var includedInSearch: Bool
+    @NSManaged var isMissing: Bool
     @NSManaged var languageCode: String
     @NSManaged var mediaCount: Int64
     @NSManaged var name: String

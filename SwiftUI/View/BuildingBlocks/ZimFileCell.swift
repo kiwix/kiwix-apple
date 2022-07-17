@@ -45,6 +45,11 @@ struct ZimFileCell: View {
                             .font(.caption)
                     }.foregroundColor(.secondary)
                     Spacer()
+                    if zimFile.isMissing {
+                        Image(systemName: "exclamationmark.triangle.fill")
+                            .renderingMode(.original)
+                            .help("Zim file is missing.")
+                    }
                     if let flavor = Flavor(rawValue: zimFile.flavor) {
                         FlavorTag(flavor)
                     }

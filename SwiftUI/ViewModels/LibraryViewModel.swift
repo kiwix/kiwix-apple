@@ -151,18 +151,20 @@ class LibraryViewModel: ObservableObject {
         guard let metadata = ZimFileService.getMetaData(url: url),
               let fileURLBookmark = ZimFileService.getBookmarkData(url: url) else { return }
         // open the file
-        try? ZimFileService.shared.open(bookmark: fileURLBookmark)
+        do {
+            try ZimFileService.shared.open(bookmark: fileURLBookmark)
+        } catch {
+            return
+        }
         
         // upsert zim file in the database
-        let context = Database.shared.container.newBackgroundContext()
-        context.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
-        context.undoManager = nil
-        context.perform {
+        Database.shared.container.performBackgroundTask { context in
             let predicate = NSPredicate(format: "fileID == %@", metadata.fileID as CVarArg)
             let fetchRequest = ZimFile.fetchRequest(predicate: predicate)
             guard let zimFile = try? context.fetch(fetchRequest).first ?? ZimFile(context: context) else { return }
             LibraryViewModel.configureZimFile(zimFile, metadata: metadata)
             zimFile.fileURLBookmark = fileURLBookmark
+            zimFile.isMissing = false
             if context.hasChanges { try? context.save() }
         }
     }
@@ -179,10 +181,12 @@ class LibraryViewModel: ObservableObject {
                 if let data = try ZimFileService.shared.open(bookmark: data) {
                     zimFile.fileURLBookmark = data
                 }
+                zimFile.isMissing = false
             } catch ZimFileOpenError.missing {
-                print(zimFile.name)
+                zimFile.isMissing = true
             } catch {
                 zimFile.fileURLBookmark = nil
+                zimFile.isMissing = false
             }
         }
         if context.hasChanges {
