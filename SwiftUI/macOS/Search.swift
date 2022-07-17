@@ -23,11 +23,11 @@ struct Search: View {
                 .textFieldStyle(.roundedBorder)
                 .padding(.horizontal, 8)
                 .focused($focused, equals: .searchField)
-                
             List(viewModel.results, id: \.url, selection: $url) { result in
                 Text(result.title)
             }.focused($focused, equals: .content)
         }
+        .padding(.top, 6)
         .safeAreaInset(edge: .bottom, spacing: 0) { SearchFilter().frame(height: 200) }
         .focusedSceneValue(\.searchFieldFocusAction) { focused = .searchField }
         .onAppear { focused = .searchField }

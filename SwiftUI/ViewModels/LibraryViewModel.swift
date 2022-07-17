@@ -151,7 +151,7 @@ class LibraryViewModel: ObservableObject {
         guard let metadata = ZimFileService.getMetaData(url: url),
               let fileURLBookmark = ZimFileService.getBookmarkData(url: url) else { return }
         // open the file
-        ZimFileService.shared.open(bookmark: fileURLBookmark)
+        try? ZimFileService.shared.open(bookmark: fileURLBookmark)
         
         // upsert zim file in the database
         let context = Database.shared.container.newBackgroundContext()
@@ -167,14 +167,22 @@ class LibraryViewModel: ObservableObject {
         }
     }
     
+    
+    /// Reopen zim files from url bookmark data.
     static func reopen() {
         let context = Database.shared.container.viewContext
-        let request = ZimFile.fetchRequest(predicate: NSPredicate(format: "fileURLBookmark != nil"))
+        let request = ZimFile.fetchRequest(predicate: ZimFile.openedPredicate)
         guard let zimFiles = try? context.fetch(request) else { return }
         zimFiles.forEach { zimFile in
             guard let data = zimFile.fileURLBookmark else { return }
-            if let data = ZimFileService.shared.open(bookmark: data) {
-                zimFile.fileURLBookmark = data
+            do {
+                if let data = try ZimFileService.shared.open(bookmark: data) {
+                    zimFile.fileURLBookmark = data
+                }
+            } catch ZimFileOpenError.missing {
+                print(zimFile.name)
+            } catch {
+                zimFile.fileURLBookmark = nil
             }
         }
         if context.hasChanges {

@@ -15,7 +15,7 @@ struct Reader: View {
     
     var body: some View {
         NavigationView {
-            VStack {
+            VStack(spacing:0) {
                 VStack(spacing: 6) {
                     Divider()
                     HStack(spacing: 20) {
