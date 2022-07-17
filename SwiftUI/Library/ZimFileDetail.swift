@@ -11,6 +11,7 @@ import SwiftUI
 
 /// Detail about one single zim file.
 struct ZimFileDetail: View {
+    @EnvironmentObject var viewModel: LibraryViewModel
     @ObservedObject var zimFile: ZimFile
     @State private var isPresentingAlert = false
     
@@ -63,6 +64,12 @@ struct ZimFileDetail: View {
     }
     
     @ViewBuilder
+    var missingActions: some View {
+        Action(title: "Locate") { viewModel.isFileImporterPresented = true }
+        Action(title: "Unlink", isDestructive: true) { isPresentingAlert = true }
+    }
+    
+    @ViewBuilder
     var openedActions: some View {
         #if os(macOS)
         Action(title: "Open Main Page") {
@@ -97,6 +104,8 @@ struct ZimFileDetail: View {
     var actions: some View {
         if let downloadTask = zimFile.downloadTask {
             DownloadTaskDetail(downloadTask: downloadTask)
+        } else if zimFile.isMissing {
+            missingActions
         } else if zimFile.fileURLBookmark != nil {
             openedActions
         } else if zimFile.downloadURL != nil {

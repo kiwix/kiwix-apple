@@ -10,12 +10,12 @@ import SwiftUI
 
 /// Show a grid of zim files that are opened in the app.
 struct ZimFilesOpened: View {
+    @EnvironmentObject var viewModel: LibraryViewModel
     @FetchRequest(
         sortDescriptors: [NSSortDescriptor(keyPath: \ZimFile.size, ascending: false)],
         predicate: ZimFile.openedPredicate,
         animation: .easeInOut
     ) private var zimFiles: FetchedResults<ZimFile>
-    @State private var isFileImporterPresented: Bool = false
     @State private var selected: ZimFile?
     
     var body: some View {
@@ -39,10 +39,9 @@ struct ZimFilesOpened: View {
         }
         .navigationTitle(LibraryTopic.opened.name)
         .modifier(ZimFileDetailPanel(zimFile: selected))
-        .modifier(FileImporter(isPresented: $isFileImporterPresented))
         .toolbar {
             Button {
-                isFileImporterPresented = true
+                viewModel.isFileImporterPresented = true
             } label: {
                 Image(systemName: "plus")
             }.help("Open a zim file")

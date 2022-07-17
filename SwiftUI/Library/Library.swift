@@ -32,7 +32,10 @@ struct Library: View {
             if let selectedTopic = selectedTopic {
                 LibraryContent(topic: selectedTopic)
             }
-        }.task {
+        }
+        .environmentObject(viewModel)
+        .modifier(FileImporter(isPresented: $viewModel.isFileImporterPresented))
+        .task {
             try? await viewModel.refresh(isUserInitiated: false)
         }
     }

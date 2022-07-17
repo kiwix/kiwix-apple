@@ -11,6 +11,7 @@ import CoreData
 import Defaults
 
 class LibraryViewModel: ObservableObject {
+    @Published var isFileImporterPresented: Bool = false
     @Published private(set) var isRefreshing = false
     
     static let backgroundTaskIdentifier = "org.kiwix.library_refresh"
