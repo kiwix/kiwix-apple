@@ -12,6 +12,8 @@
 		970EC3A123BCEC84008DCA27 /* Parser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 970EC3A023BCEC84008DCA27 /* Parser.swift */; };
 		970EC3FB23BE8E25008DCA27 /* ParserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 970EC3AB23BCF31F008DCA27 /* ParserTests.swift */; };
 		970EC3FC23BE8E31008DCA27 /* Parser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 970EC3A023BCEC84008DCA27 /* Parser.swift */; };
+		97121EBD28849F0000371AEB /* ZimFileMissingIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97121EBC28849F0000371AEB /* ZimFileMissingIndicator.swift */; };
+		97121EBE28849F0000371AEB /* ZimFileMissingIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97121EBC28849F0000371AEB /* ZimFileMissingIndicator.swift */; };
 		9721BBB3284167C8005C910D /* Outline.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97C278DE2796249900666E07 /* Outline.swift */; };
 		9721BBB62841A870005C910D /* OutlineButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9721BBB42841A870005C910D /* OutlineButton.swift */; };
 		9721BBB72841C16D005C910D /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97FB4B0A27B819A90055F86E /* Message.swift */; };
@@ -373,6 +375,7 @@
 		970EC3F123BE8E20008DCA27 /* ModelTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ModelTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		970EC3F523BE8E20008DCA27 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		970EC3FD23BE9987008DCA27 /* WikiMed.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WikiMed.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		97121EBC28849F0000371AEB /* ZimFileMissingIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZimFileMissingIndicator.swift; sourceTree = "<group>"; };
 		9717A2521FB2592D00837492 /* Main.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		9721BBB42841A870005C910D /* OutlineButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutlineButton.swift; sourceTree = "<group>"; };
 		9721BBB928427A93005C910D /* Bookmarks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bookmarks.swift; sourceTree = "<group>"; };
@@ -762,6 +765,7 @@
 				97486D05284A36790096E4DD /* SearchResultCell.swift */,
 				97486D07284A42B90096E4DD /* SearchResultRow.swift */,
 				973A2FD72780024600BD4320 /* ZimFileCell.swift */,
+				97121EBC28849F0000371AEB /* ZimFileMissingIndicator.swift */,
 				973A0DEF282E981200B41E71 /* ZimFileRow.swift */,
 			);
 			path = BuildingBlocks;
@@ -1493,6 +1497,7 @@
 				97341C6E2852248500BC273E /* DownloadTaskCell.swift in Sources */,
 				976D90DC281586B400CC7D29 /* ZimFileCell.swift in Sources */,
 				973A0DF5282FEDA500B41E71 /* ZimFileViewModifiers.swift in Sources */,
+				97121EBE28849F0000371AEB /* ZimFileMissingIndicator.swift in Sources */,
 				975088BB287BBDFE00273181 /* LanguageSelector.swift in Sources */,
 				97DE2B952839CF2200C63D9B /* iOSApp.swift in Sources */,
 				97DE2B9D2839D77100C63D9B /* ReaderViewModel.swift in Sources */,
@@ -1710,6 +1715,7 @@
 				9735D0C027777E3300C7D495 /* Enum.swift in Sources */,
 				9753D948285B55F100A626CC /* DefaultKeys.swift in Sources */,
 				97341C6A2851165B00BC273E /* Searchable.swift in Sources */,
+				97121EBD28849F0000371AEB /* ZimFileMissingIndicator.swift in Sources */,
 				978A731527B9A245008101B4 /* SidebarButton.swift in Sources */,
 				973A0DF4282FEDA500B41E71 /* ZimFileViewModifiers.swift in Sources */,
 				975088BD287DA10800273181 /* LibraryLastRefreshTime.swift in Sources */,

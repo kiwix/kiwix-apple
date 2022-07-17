@@ -37,6 +37,8 @@ struct ZimFileRow: View {
                     }()
                 ].joined(separator: ", ")).font(.caption)
             }
+            Spacer()
+            if zimFile.isMissing { ZimFileMissingIndicator() }
         }
     }
 }
