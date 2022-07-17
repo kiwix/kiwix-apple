@@ -13,7 +13,7 @@ struct ZimFilesOpened: View {
     @EnvironmentObject var viewModel: LibraryViewModel
     @FetchRequest(
         sortDescriptors: [NSSortDescriptor(keyPath: \ZimFile.size, ascending: false)],
-        predicate: ZimFile.openedPredicate,
+        predicate: ZimFile.withFileURLBookmarkPredicate,
         animation: .easeInOut
     ) private var zimFiles: FetchedResults<ZimFile>
     @State private var selected: ZimFile?

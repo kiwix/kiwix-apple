@@ -12,7 +12,7 @@ struct Welcome: View {
     @Binding var url: URL?
     @FetchRequest(
         sortDescriptors: [NSSortDescriptor(keyPath: \ZimFile.size, ascending: false)],
-        predicate: NSPredicate(format: "fileURLBookmark != nil"),
+        predicate: ZimFile.openedPredicate,
         animation: .easeInOut
     ) private var zimFiles: FetchedResults<ZimFile>
     @State private var selectedZimFile: ZimFile?

@@ -91,7 +91,7 @@ private struct ZimFilesInLibrary: View {
     @Binding var url: URL?
     @FetchRequest(
         sortDescriptors: [SortDescriptor(\ZimFile.size, order: .reverse)],
-        predicate: NSPredicate(format: "fileURLBookmark != nil"),
+        predicate: ZimFile.openedPredicate,
         animation: .easeInOut
     ) private var zimFiles: FetchedResults<ZimFile>
     @State private var isFileImporterPresented: Bool = false

@@ -174,7 +174,7 @@ class LibraryViewModel: ObservableObject {
     /// Reopen zim files from url bookmark data.
     static func reopen() {
         let context = Database.shared.container.viewContext
-        let request = ZimFile.fetchRequest(predicate: ZimFile.openedPredicate)
+        let request = ZimFile.fetchRequest(predicate: ZimFile.withFileURLBookmarkPredicate)
         guard let zimFiles = try? context.fetch(request) else { return }
         zimFiles.forEach { zimFile in
             guard let data = zimFile.fileURLBookmark else { return }

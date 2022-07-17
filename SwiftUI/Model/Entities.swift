@@ -79,7 +79,11 @@ class ZimFile: NSManagedObject, Identifiable {
     
     @NSManaged var downloadTask: DownloadTask?
     
-    static var openedPredicate = NSPredicate(format: "fileURLBookmark != nil")
+    static var openedPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
+        NSPredicate(format: "fileURLBookmark != nil"),
+        NSPredicate(format: "isMissing == false")
+    ])
+    static var withFileURLBookmarkPredicate = NSPredicate(format: "fileURLBookmark != nil")
     
     class func fetchRequest(
         predicate: NSPredicate? = nil, sortDescriptors: [NSSortDescriptor] = []
