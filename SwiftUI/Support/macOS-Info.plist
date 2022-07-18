@@ -19,6 +19,8 @@
 			</array>
 		</dict>
 	</array>
+	<key>CFBundleIconName</key>
+	<string>AppIcon_macOS</string>
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>

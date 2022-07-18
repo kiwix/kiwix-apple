@@ -250,6 +250,7 @@
 		97B448A1210FBC2E0004B056 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97B4489F210FBC2E0004B056 /* LaunchScreen.storyboard */; };
 		97B5D3E92596398400D12FEE /* SidebarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97B5D3E82596398400D12FEE /* SidebarController.swift */; };
 		97B794201F4E23F300F3EBE8 /* WelcomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97B7941F1F4E23F300F3EBE8 /* WelcomeView.swift */; };
+		97BD6C982884C86D004A8532 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 97E94B1D271EF250005B0295 /* Assets.xcassets */; };
 		97C1378028454A1B00386C04 /* SearchFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97C1377F28454A1B00386C04 /* SearchFilter.swift */; };
 		97C1378128454A1B00386C04 /* SearchFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97C1377F28454A1B00386C04 /* SearchFilter.swift */; };
 		97C14E232707F98400EF4CF2 /* OutlineViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97C14E222707F98400EF4CF2 /* OutlineViewController.swift */; };
@@ -281,7 +282,6 @@
 		97E173D425733D11002CAD17 /* RootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97E173D325733D10002CAD17 /* RootViewController.swift */; };
 		97E94B1A271EF24D005B0295 /* macOSApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97E94B19271EF24D005B0295 /* macOSApp.swift */; };
 		97E94B1C271EF24D005B0295 /* Reader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97E94B1B271EF24D005B0295 /* Reader.swift */; };
-		97E94B1E271EF250005B0295 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 97E94B1D271EF250005B0295 /* Assets.xcassets */; };
 		97E94B21271EF250005B0295 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 97E94B20271EF250005B0295 /* Preview Assets.xcassets */; };
 		97E94B2D271EF603005B0295 /* libkiwix.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97EC18AF26E8555E008309ED /* libkiwix.xcframework */; };
 		97E94B2E271EF630005B0295 /* ZimFileService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9779A5AA2456793500F6F6FF /* ZimFileService.swift */; };
@@ -1066,6 +1066,7 @@
 				97EEFF2028398E9A00BDD6E2 /* iOSApp.swift */,
 				973BC75627587A29008D4114 /* Commands.swift */,
 				979D3A762841100B00E396B8 /* Focus.swift */,
+				97E94B1D271EF250005B0295 /* Assets.xcassets */,
 			);
 			path = SwiftUI;
 			sourceTree = "<group>";
@@ -1076,7 +1077,6 @@
 				97DE2B982839D01B00C63D9B /* macOS-Info.plist */,
 				973A0E04283105EA00B41E71 /* iOS-Info.plist */,
 				97E94B22271EF250005B0295 /* Kiwix.entitlements */,
-				97E94B1D271EF250005B0295 /* Assets.xcassets */,
 				97E94B20271EF250005B0295 /* Preview Assets.xcassets */,
 				974C33A7285589E900DF6F4C /* Patches.swift */,
 			);
@@ -1409,10 +1409,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				97BD6C982884C86D004A8532 /* Assets.xcassets in Resources */,
 				97E94B21271EF250005B0295 /* Preview Assets.xcassets in Resources */,
 				97B3BAD52736D53C00A23F49 /* wikipedia_dark.css in Resources */,
 				9735B88C279D9A74005F0D1A /* injection.js in Resources */,
-				97E94B1E271EF250005B0295 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
