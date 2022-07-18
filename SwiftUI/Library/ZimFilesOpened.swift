@@ -8,7 +8,7 @@
 
 import SwiftUI
 
-/// Show a grid of zim files that are opened in the app.
+/// Show a grid of zim files that are opened, or was open but is now missing.
 struct ZimFilesOpened: View {
     @EnvironmentObject var viewModel: LibraryViewModel
     @FetchRequest(
@@ -41,7 +41,7 @@ struct ZimFilesOpened: View {
         .modifier(ZimFileDetailPanel(zimFile: selected))
         .toolbar {
             Button {
-                viewModel.isFileImporterPresented = true
+                viewModel.isFileImporterPresented.toggle()
             } label: {
                 Image(systemName: "plus")
             }.help("Open a zim file")

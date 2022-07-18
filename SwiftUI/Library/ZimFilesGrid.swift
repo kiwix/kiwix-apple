@@ -10,7 +10,7 @@ import SwiftUI
 
 import Defaults
 
-// A grid of zim files of the same category broken down into sections by title.
+/// A grid of zim files of the same category broken down into sections by title.
 @available(iOS 15.0, macOS 12.0, *)
 struct ZimFilesGrid: View {
     @Default(.libraryLanguageCodes) private var languageCodes

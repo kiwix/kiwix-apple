@@ -8,14 +8,30 @@
 
 import SwiftUI
 
-#if os(macOS)
 struct Library: View {
+    #if os(macOS)
     @State var selectedTopic: LibraryTopic? = .opened
+    let topics: [LibraryTopic] = [.opened, .downloads, .new]
+    #elseif os(iOS)
+    @SceneStorage("library.selectedTopic") private var selectedTopic: LibraryTopic = .opened
+    let topics: [LibraryTopic] = [.opened, .categories, .downloads, .new]
+    #endif
+    
     @StateObject private var viewModel = LibraryViewModel()
     
-    let topics: [LibraryTopic] = [.opened, .downloads, .new]
-    
     var body: some View {
+        content
+            .environmentObject(viewModel)
+            .modifier(FileImporter(isPresented: $viewModel.isFileImporterPresented))
+            .onAppear {
+                Task {
+                    try? await viewModel.refresh(isUserInitiated: false)
+                }
+            }
+    }
+    
+    var content: some View {
+        #if os(macOS)
         NavigationView {
             List(selection: $selectedTopic) {
                 ForEach(topics, id: \.self) { topic in
@@ -33,21 +49,7 @@ struct Library: View {
                 LibraryContent(topic: selectedTopic)
             }
         }
-        .environmentObject(viewModel)
-        .modifier(FileImporter(isPresented: $viewModel.isFileImporterPresented))
-        .task {
-            try? await viewModel.refresh(isUserInitiated: false)
-        }
-    }
-}
-#elseif os(iOS)
-struct Library: View {
-    @SceneStorage("library.selectedTopic") private var selectedTopic: LibraryTopic = .opened
-    @StateObject private var viewModel = LibraryViewModel()
-    
-    let topics: [LibraryTopic] = [.opened, .categories, .downloads, .new]
-    
-    var body: some View {
+        #elseif os(iOS)
         TabView(selection: $selectedTopic) {
             ForEach(topics) { topic in
                 SheetView {
@@ -57,11 +59,40 @@ struct Library: View {
                 .tabItem { Label(topic.name, systemImage: topic.iconName) }
             }
         }
-        .onAppear {
-            Task {
-                try? await viewModel.refresh(isUserInitiated: false)
+        #endif
+    }
+}
+
+private struct LibraryContent: View {
+    let topic: LibraryTopic
+    
+    var body: some View {
+        switch topic {
+        case .opened:
+            ZimFilesOpened()
+        case .downloads:
+            ZimFilesDownloads()
+        case .new:
+            ZimFilesNew()
+        case .categories:
+            List(Category.allCases) { category in
+                NavigationLink {
+                    LibraryContent(topic: LibraryTopic.category(category))
+                } label: {
+                    HStack {
+                        Favicon(category: category).frame(height: 26)
+                        Text(category.name)
+                    }
+                }
+            }
+            .listStyle(.plain)
+            .navigationTitle(LibraryTopic.categories.name)
+        case .category(let category):
+            if #available(iOS 15.0, *), category != .ted, category != .stackExchange, category != .other {
+                ZimFilesGrid(category: category)
+            } else {
+                ZimFilesList(category: category)
             }
         }
     }
 }
-#endif

@@ -10,6 +10,7 @@ import SwiftUI
 
 import Defaults
 
+/// A list of zim files of the same category.
 struct ZimFilesList: View {
     @Default(.libraryLanguageCodes) private var languageCodes
     @FetchRequest private var zimFiles: FetchedResults<ZimFile>

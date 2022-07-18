@@ -10,7 +10,7 @@ import SwiftUI
 
 import Defaults
 
-/// Show zim files that are created in the last two weeks.
+/// Show zim files that are created in the last month.
 struct ZimFilesNew: View {
     @Default(.libraryLanguageCodes) private var languageCodes
     @FetchRequest(
