@@ -16,33 +16,38 @@ struct ZimFileContextMenu: ViewModifier {
     
     func body(content: Content) -> some View {
         content.contextMenu {
-            if zimFile.fileURLBookmark != nil {
-                Section {
-                    Button {
-                        guard let url = ZimFileService.shared.getMainPageURL(zimFileID: zimFile.fileID) else { return }
-                        #if os(macOS)
-                        NSWorkspace.shared.open(url)
-                        #elseif os(iOS)
-                        UIApplication.shared.open(url)
-                        #endif
-                    } label: {
-                        Label("Main Page", systemImage: "house")
-                    }
-                    Button {
-                        guard let url = ZimFileService.shared.getRandomPageURL(zimFileID: zimFile.fileID) else { return }
-                        #if os(macOS)
-                        NSWorkspace.shared.open(url)
-                        #elseif os(iOS)
-                        UIApplication.shared.open(url)
-                        #endif
-                    } label: {
-                        Label("Random Page", systemImage: "die.face.5")
-                    }
+            Section {
+                if zimFile.fileURLBookmark != nil, !zimFile.isMissing {
+                    opened
                 }
             }
             Section {
                 supplementary
             }
+        }
+    }
+    
+    @ViewBuilder
+    var opened: some View {
+        Button {
+            guard let url = ZimFileService.shared.getMainPageURL(zimFileID: zimFile.fileID) else { return }
+            #if os(macOS)
+            NSWorkspace.shared.open(url)
+            #elseif os(iOS)
+            UIApplication.shared.open(url)
+            #endif
+        } label: {
+            Label("Main Page", systemImage: "house")
+        }
+        Button {
+            guard let url = ZimFileService.shared.getRandomPageURL(zimFileID: zimFile.fileID) else { return }
+            #if os(macOS)
+            NSWorkspace.shared.open(url)
+            #elseif os(iOS)
+            UIApplication.shared.open(url)
+            #endif
+        } label: {
+            Label("Random Page", systemImage: "die.face.5")
         }
     }
     
