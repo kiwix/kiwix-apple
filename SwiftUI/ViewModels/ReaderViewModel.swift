@@ -126,8 +126,7 @@ class ReaderViewModel: NSObject, ObservableObject, WKNavigationDelegate, WKScrip
     
     func createBookmark() {
         guard let url = webView.url else { return }
-        let context = Database.shared.container.newBackgroundContext()
-        context.perform {
+        Database.shared.container.performBackgroundTask { context in
             let bookmark = Bookmark(context: context)
             bookmark.articleURL = url
             bookmark.title = self.articleTitle
@@ -139,8 +138,7 @@ class ReaderViewModel: NSObject, ObservableObject, WKNavigationDelegate, WKScrip
     
     func deleteBookmark() {
         guard let url = webView.url else { return }
-        let context = Database.shared.container.newBackgroundContext()
-        context.perform {
+        Database.shared.container.performBackgroundTask { context in
             let request = Bookmark.fetchRequest(predicate: NSPredicate(format: "articleURL == %@", url as CVarArg))
             guard let bookmark = try? context.fetch(request).first else { return }
             context.delete(bookmark)
