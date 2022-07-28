@@ -134,7 +134,6 @@
 		976BAEB5284903A80049404F /* SearchResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 976A65B22659489F009A97C6 /* SearchResult.swift */; };
 		976BAEB6284903A80049404F /* SearchResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 97B3998C2467561900BC6F5B /* SearchResult.m */; };
 		976BAEBA284903EA0049404F /* Fuzi in Frameworks */ = {isa = PBXBuildFile; productRef = 976BAEB9284903EA0049404F /* Fuzi */; };
-		976BAEBB2849048D0049404F /* Parser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 970EC3A023BCEC84008DCA27 /* Parser.swift */; };
 		976BAEBC2849056B0049404F /* SearchOperation.mm in Sources */ = {isa = PBXBuildFile; fileRef = 97B3998924673FE000BC6F5B /* SearchOperation.mm */; };
 		976BAEBD2849056B0049404F /* SearchOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97B3998F2467626A00BC6F5B /* SearchOperation.swift */; };
 		976BAEBE284905760049404F /* SearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97C13787284572AC00386C04 /* SearchViewModel.swift */; };
@@ -249,6 +248,9 @@
 		97B5D3E92596398400D12FEE /* SidebarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97B5D3E82596398400D12FEE /* SidebarController.swift */; };
 		97B794201F4E23F300F3EBE8 /* WelcomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97B7941F1F4E23F300F3EBE8 /* WelcomeView.swift */; };
 		97BD6C982884C86D004A8532 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 97E94B1D271EF250005B0295 /* Assets.xcassets */; };
+		97BD6C9A2886DD71004A8532 /* Fuzi in Frameworks */ = {isa = PBXBuildFile; productRef = 97BD6C992886DD71004A8532 /* Fuzi */; };
+		97BD6C9C2886E06B004A8532 /* HTMLParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97BD6C9B2886E06B004A8532 /* HTMLParser.swift */; };
+		97BD6C9D2886E06B004A8532 /* HTMLParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97BD6C9B2886E06B004A8532 /* HTMLParser.swift */; };
 		97C1378028454A1B00386C04 /* SearchFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97C1377F28454A1B00386C04 /* SearchFilter.swift */; };
 		97C1378128454A1B00386C04 /* SearchFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97C1377F28454A1B00386C04 /* SearchFilter.swift */; };
 		97C14E232707F98400EF4CF2 /* OutlineViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97C14E222707F98400EF4CF2 /* OutlineViewController.swift */; };
@@ -513,6 +515,7 @@
 		97B448A2210FBC2E0004B056 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		97B5D3E82596398400D12FEE /* SidebarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SidebarController.swift; sourceTree = "<group>"; };
 		97B7941F1F4E23F300F3EBE8 /* WelcomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeView.swift; sourceTree = "<group>"; };
+		97BD6C9B2886E06B004A8532 /* HTMLParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HTMLParser.swift; sourceTree = "<group>"; };
 		97C1377F28454A1B00386C04 /* SearchFilter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchFilter.swift; sourceTree = "<group>"; };
 		97C13787284572AC00386C04 /* SearchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewModel.swift; sourceTree = "<group>"; };
 		97C14E222707F98400EF4CF2 /* OutlineViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutlineViewController.swift; sourceTree = "<group>"; };
@@ -606,6 +609,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				97BD6C9A2886DD71004A8532 /* Fuzi in Frameworks */,
 				9753D94D285B5B7E00A626CC /* Defaults in Frameworks */,
 				97E94B2D271EF603005B0295 /* libkiwix.xcframework in Frameworks */,
 			);
@@ -712,6 +716,7 @@
 				972DE4722814A116004FD9B9 /* Entities.swift */,
 				9735D0BF27777E3300C7D495 /* Enum.swift */,
 				9790926E286BF0BB002B7AA5 /* Formatter.swift */,
+				97BD6C9B2886E06B004A8532 /* HTMLParser.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -1237,6 +1242,7 @@
 			name = macOS_SwiftUI;
 			packageProductDependencies = (
 				9753D94C285B5B7E00A626CC /* Defaults */,
+				97BD6C992886DD71004A8532 /* Fuzi */,
 			);
 			productName = Kiwix;
 			productReference = 97E94B17271EF24D005B0295 /* Kiwix.app */;
@@ -1488,7 +1494,6 @@
 				976D90D32814F2FA00CC7D29 /* ZimFilesGrid.swift in Sources */,
 				972DE4B92814A56A004FD9B9 /* Database.swift in Sources */,
 				976BAEB5284903A80049404F /* SearchResult.swift in Sources */,
-				976BAEBB2849048D0049404F /* Parser.swift in Sources */,
 				975088B828763E5400273181 /* Search.swift in Sources */,
 				97341C6E2852248500BC273E /* DownloadTaskCell.swift in Sources */,
 				976D90DC281586B400CC7D29 /* ZimFileCell.swift in Sources */,
@@ -1530,6 +1535,7 @@
 				974C33A32853DDEE00DF6F4C /* Settings.swift in Sources */,
 				973A0DE7281DC8F400B41E71 /* Downloads.swift in Sources */,
 				9721BBB72841C16D005C910D /* Message.swift in Sources */,
+				97BD6C9D2886E06B004A8532 /* HTMLParser.swift in Sources */,
 				97DE2BA3283A8E5C00C63D9B /* LibraryViewModel.swift in Sources */,
 				97DE2BA02839D7AA00C63D9B /* FeatureFlags.swift in Sources */,
 				9729E12F2864C2AD003D19B1 /* Reader.swift in Sources */,
@@ -1708,6 +1714,7 @@
 				973A2FD82780024600BD4320 /* ZimFileCell.swift in Sources */,
 				97C1378028454A1B00386C04 /* SearchFilter.swift in Sources */,
 				9735D0C027777E3300C7D495 /* Enum.swift in Sources */,
+				97BD6C9C2886E06B004A8532 /* HTMLParser.swift in Sources */,
 				9753D948285B55F100A626CC /* DefaultKeys.swift in Sources */,
 				97341C6A2851165B00BC273E /* Searchable.swift in Sources */,
 				97121EBD28849F0000371AEB /* ZimFileMissingIndicator.swift in Sources */,
@@ -2508,6 +2515,11 @@
 			productName = Defaults;
 		};
 		976BAEB9284903EA0049404F /* Fuzi */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 9744657E26F7981500072DC2 /* XCRemoteSwiftPackageReference "Fuzi" */;
+			productName = Fuzi;
+		};
+		97BD6C992886DD71004A8532 /* Fuzi */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 9744657E26F7981500072DC2 /* XCRemoteSwiftPackageReference "Fuzi" */;
 			productName = Fuzi;

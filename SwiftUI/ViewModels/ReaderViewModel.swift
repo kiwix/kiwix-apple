@@ -131,6 +131,12 @@ class ReaderViewModel: NSObject, ObservableObject, WKNavigationDelegate, WKScrip
             bookmark.articleURL = url
             bookmark.title = self.articleTitle
             bookmark.created = Date()
+            if let parser = try? HTMLParser(url: url) {
+                bookmark.snippet = parser.getFirstSentence(languageCode: nil)?.string
+                if let zimFileID = url.host, let imagePath = parser.getFirstImagePath() {
+                    bookmark.thumbImageURL = URL(zimFileID: zimFileID, contentPath: imagePath)
+                }
+            }
             try? context.save()
         }
         NotificationCenter.default.post(name: ReaderViewModel.bookmarkNotificationName, object: url)
