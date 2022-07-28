@@ -27,14 +27,14 @@ extension SearchOperation {
                 
                 switch snippetMode {
                 case .firstParagraph:
-                    guard let parser = try? Parser(url: result.url) else { return }
+                    guard let parser = try? HTMLParser(url: result.url) else { return }
                     result.snippet = parser.getFirstParagraph()
                 case .firstSentence:
-                    guard let parser = try? Parser(url: result.url) else { return }
+                    guard let parser = try? HTMLParser(url: result.url) else { return }
                     result.snippet = parser.getFirstSentence(languageCode: nil)
                 case .matches:
                     guard let html = result.htmlSnippet else { return }
-                    result.snippet = Parser.parseBodyFragment(html)
+                    result.snippet = HTMLParser.parseBodyFragment(html)
                 case .disabled:
                     break
                 }

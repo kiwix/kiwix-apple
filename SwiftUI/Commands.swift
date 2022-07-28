@@ -8,6 +8,8 @@
 
 import SwiftUI
 
+import Defaults
+
 struct ImportCommands: Commands {
     @State private var isPresented: Bool = false
     
@@ -22,45 +24,67 @@ struct ImportCommands: Commands {
     }
 }
 
-struct SidebarDisplayModeCommands: Commands {
+struct SidebarDisplayModeCommandButtons: View {
     @FocusedBinding(\.sidebarDisplayMode) var displayMode: SidebarDisplayMode?
     
-    var body: some Commands {
-        CommandGroup(after: .toolbar) {
-            Button("Search Articles") { displayMode = .search }
-                .keyboardShortcut("1")
-                .disabled(displayMode == nil)
-            Button("Show Bookmark") { displayMode = .bookmarks }
-                .keyboardShortcut("2")
-                .disabled(displayMode == nil)
-            Button("Show Outline") { displayMode = .outline }
-                .keyboardShortcut("3")
-                .disabled(displayMode == nil)
-            Button("Show Library") { displayMode = .library }
-                .keyboardShortcut("4")
-                .disabled(displayMode == nil)
+    var body: some View {
+        Button("Show Search") { displayMode = .search }
+            .keyboardShortcut("1")
+            .disabled(displayMode == nil)
+        Button("Show Bookmark") { displayMode = .bookmarks }
+            .keyboardShortcut("2")
+            .disabled(displayMode == nil)
+        Button("Show Outline") { displayMode = .outline }
+            .keyboardShortcut("3")
+            .disabled(displayMode == nil)
+        Button("Show Library") { displayMode = .library }
+            .keyboardShortcut("4")
+            .disabled(displayMode == nil)
+    }
+}
+
+struct SearchCommandButton: View {
+    @FocusedValue(\.searchFieldFocusAction) var focusAction: (() -> Void)?
+    @FocusedBinding(\.sidebarDisplayMode) var displayMode: SidebarDisplayMode?
+    
+    var body: some View {
+        Button("Search") {
+            displayMode = .search
+            focusAction?()
         }
+        .keyboardShortcut("s")
+        .disabled(displayMode == nil)
     }
 }
 
 struct NavigationCommandButtons: View {
+    @FocusedValue(\.canGoBack) var canGoBack: Bool?
+    @FocusedValue(\.canGoForward) var canGoForward: Bool?
     @FocusedValue(\.readerViewModel) var readerViewModel: ReaderViewModel?
     
     var body: some View {
         Button("Go Back") { readerViewModel?.webView.goBack() }
-            .keyboardShortcut("[").disabled(!(readerViewModel?.canGoBack ?? false))
+            .keyboardShortcut("[")
+            .disabled(!(canGoBack ?? false))
         Button("Go Forward") { readerViewModel?.webView.goForward() }
-            .keyboardShortcut("]").disabled(!(readerViewModel?.canGoForward ?? false))
+            .keyboardShortcut("]")
+            .disabled(!(canGoForward ?? false))
     }
 }
 
-struct ReaderViewModelKey: FocusedValueKey {
-    typealias Value = ReaderViewModel
-}
-
-extension FocusedValues {
-    var readerViewModel: ReaderViewModelKey.Value? {
-        get { self[ReaderViewModelKey.self] }
-        set { self[ReaderViewModelKey.self] = newValue }
+struct PageZoomCommandButtons: View {
+    @Default(.webViewPageZoom) var webViewPageZoom
+    @FocusedValue(\.url) var url: URL??
+    
+    var body: some View {
+        Button("Actual Size") { webViewPageZoom = 1 }
+            .keyboardShortcut("0")
+            .disabled(webViewPageZoom == 1)
+        Button("Zoom In") { webViewPageZoom += 0.1 }
+            .keyboardShortcut("+")
+            .disabled((url ?? nil) == nil)
+        Button("Zoom Out") { webViewPageZoom -= 0.1 }
+            .keyboardShortcut("-")
+            .disabled((url ?? nil) == nil)
     }
 }

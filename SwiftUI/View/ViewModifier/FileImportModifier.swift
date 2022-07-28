@@ -16,14 +16,12 @@ struct FileImporter: ViewModifier {
         content.fileImporter(
             isPresented: $isPresented,
             allowedContentTypes: [UTType(exportedAs: "org.openzim.zim")],
-            allowsMultipleSelection: false
+            allowsMultipleSelection: true
         ) { result in
-            guard case let .success(urls) = result,
-                  let url = urls.first,
-                  let metadata = ZimFileService.getMetaData(url: url),
-                  let data = ZimFileService.getBookmarkData(url: url) else { return }
-            ZimFileService.shared.open(bookmark: data)
-            Database.shared.upsertZimFile(metadata: metadata, fileURLBookmark: data)
+            guard case let .success(urls) = result else { return }
+            for url in urls {
+                LibraryViewModel.open(url: url)
+            }
         }
     }
 }

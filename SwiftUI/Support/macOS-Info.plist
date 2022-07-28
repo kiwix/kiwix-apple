@@ -19,6 +19,8 @@
 			</array>
 		</dict>
 	</array>
+	<key>CFBundleIconName</key>
+	<string>AppIcon_macOS</string>
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
@@ -27,6 +29,14 @@
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<string>kiwix</string>
+			</array>
+		</dict>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Viewer</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>kiwix-ui</string>
 			</array>
 		</dict>
 	</array>

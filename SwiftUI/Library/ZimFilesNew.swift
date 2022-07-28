@@ -8,14 +8,16 @@
 
 import SwiftUI
 
-/// Show zim files that are created in the last two weeks.
-@available(iOS 15.0, macOS 12.0, *)
+import Defaults
+
+/// Show zim files that are created in the last month.
 struct ZimFilesNew: View {
+    @Default(.libraryLanguageCodes) private var languageCodes
     @FetchRequest(
         sortDescriptors: [
-            SortDescriptor(\ZimFile.created, order: .reverse),
-            SortDescriptor(\ZimFile.name, order: .forward),
-            SortDescriptor(\ZimFile.size, order: .reverse)
+            NSSortDescriptor(keyPath: \ZimFile.created, ascending: false),
+            NSSortDescriptor(keyPath: \ZimFile.name, ascending: true),
+            NSSortDescriptor(keyPath: \ZimFile.size, ascending: false)
         ],
         predicate: ZimFilesNew.buildPredicate(searchText: ""),
         animation: .easeInOut
@@ -24,34 +26,46 @@ struct ZimFilesNew: View {
     @State private var searchText = ""
     
     var body: some View {
-        GeometryReader { proxy in
-            ScrollView {
+        Group {
+            if zimFiles.isEmpty {
+                Message(text: "No new zim file")
+            } else {
                 LazyVGrid(
-                    columns: ([GridItem(.adaptive(minimum: 250, maximum: 400), spacing: 12)]),
+                    columns: ([GridItem(.adaptive(minimum: 250, maximum: 500), spacing: 12)]),
                     alignment: .leading,
                     spacing: 12
                 ) {
                     ForEach(zimFiles) { zimFile in
-                        Button { selected = zimFile } label: { ZimFileCell(zimFile, prominent: .title) }
+                        Button { selected = zimFile } label: { ZimFileCell(zimFile, prominent: .name) }
                             .buttonStyle(.plain)
                             .modifier(ZimFileContextMenu(selected: $selected, zimFile: zimFile))
                             .modifier(ZimFileSelection(selected: $selected, zimFile: zimFile))
                     }
-                }.modifier(LibraryGridPadding(width: proxy.size.width))
+                }.modifier(GridCommon())
             }
         }
         .navigationTitle(LibraryTopic.new.name)
         .modifier(ZimFileDetailPanel(zimFile: selected))
-        .searchable(text: $searchText)
+        .modifier(Searchable(searchText: $searchText))
+        .onChange(of: languageCodes) { _ in
+            if #available(iOS 15.0, *) {
+                zimFiles.nsPredicate = ZimFilesNew.buildPredicate(searchText: searchText)
+            }
+        }
         .onChange(of: searchText) { searchText in
-            zimFiles.nsPredicate = ZimFilesNew.buildPredicate(searchText: searchText)
+            if #available(iOS 15.0, *) {
+                zimFiles.nsPredicate = ZimFilesNew.buildPredicate(searchText: searchText)
+            }
         }
     }
     
     private static func buildPredicate(searchText: String) -> NSPredicate {
-        var predicates = [NSPredicate(format: "languageCode == %@", "en")]
-        if let twoWeeksAgo = Calendar.current.date(byAdding: .day, value: -14, to: Date()) {
-            predicates.append(NSPredicate(format: "created > %@", twoWeeksAgo as CVarArg))
+        var predicates = [
+            NSPredicate(format: "languageCode IN %@", Defaults[.libraryLanguageCodes]),
+            NSPredicate(format: "requiresServiceWorkers == false")
+        ]
+        if let aMonthAgo = Calendar.current.date(byAdding: .month, value: -1, to: Date()) {
+            predicates.append(NSPredicate(format: "created > %@", aMonthAgo as CVarArg))
         }
         if !searchText.isEmpty {
             predicates.append(NSPredicate(format: "name CONTAINS[cd] %@", searchText))

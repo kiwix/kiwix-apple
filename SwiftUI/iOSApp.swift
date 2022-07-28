@@ -6,6 +6,7 @@
 //  Copyright © 2022 Chris Li. All rights reserved.
 //
 
+import BackgroundTasks
 import Combine
 import UIKit
 import SwiftUI
@@ -13,7 +14,10 @@ import SwiftUI
 @main
 struct Kiwix: App {
     init() {
-        reopen()
+        self.registerBackgroundRefreshTask()
+        LibraryViewModel.reopen()
+        Settings.applyFileBackupSetting()
+        Settings.applyLibraryAutoRefreshSetting()
     }
     
     var body: some Scene {
@@ -24,18 +28,21 @@ struct Kiwix: App {
         }
     }
     
-    private func reopen() {
-        let context = Database.shared.container.viewContext
-        let request = ZimFile.fetchRequest(predicate: NSPredicate(format: "fileURLBookmark != nil"))
-        guard let zimFiles = try? context.fetch(request) else { return }
-        zimFiles.forEach { zimFile in
-            guard let data = zimFile.fileURLBookmark else { return }
-            if let data = ZimFileService.shared.open(bookmark: data) {
-                zimFile.fileURLBookmark = data
+    private func registerBackgroundRefreshTask() {
+        BGTaskScheduler.shared.register(
+            forTaskWithIdentifier: LibraryViewModel.backgroundTaskIdentifier, using: nil
+        ) { backgroundTask in
+            let task = Task {
+                do {
+                    try await LibraryViewModel().refresh(isUserInitiated: false)
+                    backgroundTask.setTaskCompleted(success: true)
+                } catch is CancellationError {
+                    backgroundTask.setTaskCompleted(success: true)
+                } catch {
+                    backgroundTask.setTaskCompleted(success: false)
+                }
             }
-        }
-        if context.hasChanges {
-            try? context.save()
+            backgroundTask.expirationHandler = task.cancel
         }
     }
 }

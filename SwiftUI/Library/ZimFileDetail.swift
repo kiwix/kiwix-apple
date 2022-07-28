@@ -9,27 +9,18 @@
 import CoreData
 import SwiftUI
 
+/// Detail about one single zim file.
 struct ZimFileDetail: View {
+    @EnvironmentObject var viewModel: LibraryViewModel
     @ObservedObject var zimFile: ZimFile
-    @State private var isPresentingUnlinkAlert = false
-    @State private var isPresentingDeleteAlert = false
+    @State private var isPresentingAlert = false
     
     var body: some View {
         #if os(macOS)
         List {
-            Section("Name") { Text(zimFile.name) }.collapsible(false)
+            Section("Name") { Text(zimFile.name).lineLimit(nil) }.collapsible(false)
             Section("Description") { Text(zimFile.fileDescription).lineLimit(nil) }.collapsible(false)
-            if let downloadTask = zimFile.downloadTask {
-                Section("Download") { DownloadTaskDetail(downloadTask: downloadTask) }.collapsible(false)
-            } else if zimFile.fileURLBookmark != nil {
-                Section("Actions") { openedActions }.collapsible(false)
-            } else if zimFile.downloadURL != nil {
-                Section("Download") {
-                    Action(title: "Download") {
-                        Downloads.shared.start(zimFileID: zimFile.id, allowsCellularAccess: false)
-                    }
-                }
-            }
+            Section("Actions") { actions }.collapsible(false)
             Section("Info") {
                 basicInfo
                 boolInfo
@@ -37,36 +28,45 @@ struct ZimFileDetail: View {
                 id
             }.collapsible(false)
         }
+        .safeAreaInset(edge: .top) {
+            if zimFile.requiresServiceWorkers {
+                VStack(spacing: 0) {
+                    ServiceWorkerWarning().padding(6)
+                    Divider()
+                }.background(.regularMaterial)
+            }
+        }
         .listStyle(.sidebar)
-        .modifier(ZimFileUnlinkAlert(isPresented: $isPresentingUnlinkAlert, zimFile: zimFile))
+        .alert(isPresented: $isPresentingAlert) { alert }
         #elseif os(iOS)
         List {
             Section {
-                Text(zimFile.name)
+                Text(zimFile.name).lineLimit(nil)
                 Text(zimFile.fileDescription).lineLimit(nil)
             }
-            if let downloadTask = zimFile.downloadTask {
-                Section { DownloadTaskDetail(downloadTask: downloadTask) }
-            } else if zimFile.fileURLBookmark != nil {
-                Section { openedActions }
-            } else if zimFile.downloadURL != nil {
-                Section {
-                    Action(title: "Download") {
-                        Downloads.shared.start(zimFileID: zimFile.id, allowsCellularAccess: false)
-                    }
+            Section { actions }
+            Section { basicInfo }
+            Section {
+                boolInfo
+            } footer: {
+                if zimFile.requiresServiceWorkers {
+                    ServiceWorkerWarning()
                 }
             }
-            Section { basicInfo }
-            Section { boolInfo }
             Section { counts }
             Section { id }
         }
         .listStyle(.insetGrouped)
         .navigationTitle(zimFile.name)
         .navigationBarTitleDisplayMode(.inline)
-        .modifier(ZimFileDeleteAlert(isPresented: $isPresentingDeleteAlert, zimFile: zimFile))
-        .modifier(ZimFileUnlinkAlert(isPresented: $isPresentingUnlinkAlert, zimFile: zimFile))
+        .alert(isPresented: $isPresentingAlert) { alert }
         #endif
+    }
+    
+    @ViewBuilder
+    var missingActions: some View {
+        Action(title: "Locate") { viewModel.isFileImporterPresented = true }
+        Action(title: "Unlink", isDestructive: true) { isPresentingAlert = true }
     }
     
     @ViewBuilder
@@ -80,34 +80,45 @@ struct ZimFileDetail: View {
             guard let url = ZimFileService.shared.getFileURL(zimFileID: zimFile.id) else { return }
             NSWorkspace.shared.activateFileViewerSelecting([url])
         }
-        Action(title: "Unlink", isDestructive: true) {
-            isPresentingUnlinkAlert = true
-        }
+        Action(title: "Unlink", isDestructive: true) { isPresentingAlert = true }
         #elseif os(iOS)
         Action(title: "Open Main Page") {
             guard let url = ZimFileService.shared.getMainPageURL(zimFileID: zimFile.fileID) else { return }
             UIApplication.shared.open(url)
         }
-        if let zimFileName = ZimFileService.shared.getFileURL(zimFileID: zimFile.fileID)?.lastPathComponent,
-           let documentDirectoryURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first,
-           FileManager.default.fileExists(atPath: documentDirectoryURL.appendingPathComponent(zimFileName).path) {
-            Action(title: "Delete", isDestructive: true) {
-                isPresentingDeleteAlert = true
-            }
+        if isFileInDocumentDirectory {
+            Action(title: "Delete", isDestructive: true) { isPresentingAlert = true }
         } else {
-            Action(title: "Unlink", isDestructive: true) {
-                isPresentingUnlinkAlert = true
-            }
+            Action(title: "Unlink", isDestructive: true) { isPresentingAlert = true }
         }
         #endif
+    }
+    
+    var downloadAction: some View {
+        Action(title: "Download") {
+            Downloads.shared.start(zimFileID: zimFile.id, allowsCellularAccess: false)
+        }
+    }
+    
+    @ViewBuilder
+    var actions: some View {
+        if let downloadTask = zimFile.downloadTask {
+            DownloadTaskDetail(downloadTask: downloadTask)
+        } else if zimFile.isMissing {
+            missingActions
+        } else if zimFile.fileURLBookmark != nil {
+            openedActions
+        } else if zimFile.downloadURL != nil {
+            downloadAction
+        }
     }
     
     @ViewBuilder
     var basicInfo: some View {
         Attribute(title: "Language", detail: Locale.current.localizedString(forLanguageCode: zimFile.languageCode))
         Attribute(title: "Category", detail: Category(rawValue: zimFile.category)?.description)
-        Attribute(title: "Size", detail: LibraryViewModel.sizeFormatter.string(fromByteCount: zimFile.size))
-        Attribute(title: "Created", detail: LibraryViewModel.dateFormatterMedium.string(from: zimFile.created))
+        Attribute(title: "Size", detail: Formatter.size.string(fromByteCount: zimFile.size))
+        Attribute(title: "Created", detail: Formatter.dateMedium.string(from: zimFile.created))
     }
     
     @ViewBuilder
@@ -115,23 +126,61 @@ struct ZimFileDetail: View {
         AttributeBool(title: "Pictures", detail: zimFile.hasPictures)
         AttributeBool(title: "Videos", detail: zimFile.hasVideos)
         AttributeBool(title: "Details", detail: zimFile.hasDetails)
+        if zimFile.requiresServiceWorkers {
+            AttributeBool(title: "Requires Service Workers", detail: zimFile.requiresServiceWorkers)
+        }
     }
     
     @ViewBuilder
     var counts: some View {
         Attribute(
             title: "Article Count",
-            detail: LibraryViewModel.numberFormatter.string(from: NSNumber(value: zimFile.articleCount))
+            detail: Formatter.number.string(from: NSNumber(value: zimFile.articleCount))
         )
         Attribute(
             title: "Media Count",
-            detail: LibraryViewModel.numberFormatter.string(from: NSNumber(value: zimFile.mediaCount))
+            detail: Formatter.number.string(from: NSNumber(value: zimFile.mediaCount))
         )
     }
     
     @ViewBuilder
     var id: some View {
         Attribute(title: "ID", detail: String(zimFile.fileID.uuidString.prefix(8)))
+    }
+    
+    var isFileInDocumentDirectory: Bool {
+        if let zimFileName = ZimFileService.shared.getFileURL(zimFileID: zimFile.fileID)?.lastPathComponent,
+           let documentDirectoryURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first,
+           FileManager.default.fileExists(atPath: documentDirectoryURL.appendingPathComponent(zimFileName).path) {
+            return true
+        } else {
+            return false
+        }
+    }
+    
+    var alert: Alert {
+        if isFileInDocumentDirectory {
+            return Alert(
+                title: Text("Delete \(zimFile.name)"),
+                message: Text("The zim file and all bookmarked articles linked to this zim file will be deleted."),
+                primaryButton: .destructive(Text("Delete"), action: {
+                    LibraryViewModel.delete(zimFileID: zimFile.fileID)
+                }),
+                secondaryButton: .cancel()
+            )
+        } else {
+            return Alert(
+                title: Text("Unlink \(zimFile.name)"),
+                message: Text("""
+                All bookmarked articles linked to this zim file will be deleted, \
+                but the original file will remain in place.
+                """),
+                primaryButton: .destructive(Text("Unlink"), action: {
+                    LibraryViewModel.unlink(zimFileID: zimFile.fileID)
+                }),
+                secondaryButton: .cancel()
+            )
+        }
     }
 }
 
@@ -167,13 +216,13 @@ private struct DownloadTaskDetail: View {
     }
     
     var size: String {
-        LibraryViewModel.sizeFormatter.string(fromByteCount: downloadTask.downloadedBytes)
+        Formatter.size.string(fromByteCount: downloadTask.downloadedBytes)
     }
     
     var percent: String? {
         guard downloadTask.totalBytes > 0 else { return nil }
         let fractionCompleted = NSNumber(value: Double(downloadTask.downloadedBytes) / Double(downloadTask.totalBytes))
-        return LibraryViewModel.percentFormatter.string(from: fractionCompleted)
+        return Formatter.percent.string(from: fractionCompleted)
     }
 }
 
@@ -238,6 +287,16 @@ private struct Action: View {
                 if alignment != .trailing { Spacer() }
             }
         })
+    }
+}
+
+private struct ServiceWorkerWarning: View {
+    var body: some View {
+        Label {
+            Text("Zim files requiring service workers are not supported.")
+        } icon: {
+            Image(systemName: "exclamationmark.triangle.fill").renderingMode(.original)
+        }
     }
 }
 

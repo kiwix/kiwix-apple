@@ -8,6 +8,8 @@
 
 import WebKit
 
+import Defaults
+
 class ReaderViewModel: NSObject, ObservableObject, WKNavigationDelegate, WKScriptMessageHandler {
     @Published private(set) var canGoBack: Bool = false
     @Published private(set) var canGoForward: Bool = false
@@ -44,6 +46,7 @@ class ReaderViewModel: NSObject, ObservableObject, WKNavigationDelegate, WKScrip
     private var canGoBackObserver: NSKeyValueObservation?
     private var canGoForwardObserver: NSKeyValueObservation?
     private var titleObserver: NSKeyValueObservation?
+    private var pageZoomObserver: Defaults.Observation?
     
     override init() {
         super.init()
@@ -63,6 +66,9 @@ class ReaderViewModel: NSObject, ObservableObject, WKNavigationDelegate, WKScrip
                   ).first else { return }
             self.articleTitle = title
             self.zimFileName = zimFile.name
+        }
+        pageZoomObserver = Defaults.observe(.webViewPageZoom) { change in
+            self.webView.pageZoom = change.newValue
         }
         
         webView.configuration.userContentController.add(self, name: "headings")
@@ -120,12 +126,17 @@ class ReaderViewModel: NSObject, ObservableObject, WKNavigationDelegate, WKScrip
     
     func createBookmark() {
         guard let url = webView.url else { return }
-        let context = Database.shared.container.newBackgroundContext()
-        context.perform {
+        Database.shared.container.performBackgroundTask { context in
             let bookmark = Bookmark(context: context)
             bookmark.articleURL = url
             bookmark.title = self.articleTitle
             bookmark.created = Date()
+            if let parser = try? HTMLParser(url: url) {
+                bookmark.snippet = parser.getFirstSentence(languageCode: nil)?.string
+                if let zimFileID = url.host, let imagePath = parser.getFirstImagePath() {
+                    bookmark.thumbImageURL = URL(zimFileID: zimFileID, contentPath: imagePath)
+                }
+            }
             try? context.save()
         }
         NotificationCenter.default.post(name: ReaderViewModel.bookmarkNotificationName, object: url)
@@ -133,8 +144,7 @@ class ReaderViewModel: NSObject, ObservableObject, WKNavigationDelegate, WKScrip
     
     func deleteBookmark() {
         guard let url = webView.url else { return }
-        let context = Database.shared.container.newBackgroundContext()
-        context.perform {
+        Database.shared.container.performBackgroundTask { context in
             let request = Bookmark.fetchRequest(predicate: NSPredicate(format: "articleURL == %@", url as CVarArg))
             guard let bookmark = try? context.fetch(request).first else { return }
             context.delete(bookmark)

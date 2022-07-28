@@ -16,33 +16,69 @@ struct ZimFileContextMenu: ViewModifier {
     
     func body(content: Content) -> some View {
         content.contextMenu {
-            Button {
-                selected = zimFile
-            } label: {
-                Label("Show Detail", systemImage: "info.circle")
-            }
-            if let downloadURL = zimFile.downloadURL {
-                Button {
-                    #if os(macOS)
-                    NSPasteboard.general.clearContents()
-                    NSPasteboard.general.setString(downloadURL.absoluteString, forType: .URL)
-                    #elseif os(iOS)
-                    UIPasteboard.general.setValue(downloadURL.absoluteString, forPasteboardType: UTType.url.identifier)
-                    #endif
-                } label: {
-                    Label("Copy URL", systemImage: "doc.on.doc")
+            Section {
+                if zimFile.fileURLBookmark != nil, !zimFile.isMissing {
+                    opened
                 }
             }
+            Section {
+                supplementary
+            }
+        }
+    }
+    
+    @ViewBuilder
+    var opened: some View {
+        Button {
+            guard let url = ZimFileService.shared.getMainPageURL(zimFileID: zimFile.fileID) else { return }
+            #if os(macOS)
+            NSWorkspace.shared.open(url)
+            #elseif os(iOS)
+            UIApplication.shared.open(url)
+            #endif
+        } label: {
+            Label("Main Page", systemImage: "house")
+        }
+        Button {
+            guard let url = ZimFileService.shared.getRandomPageURL(zimFileID: zimFile.fileID) else { return }
+            #if os(macOS)
+            NSWorkspace.shared.open(url)
+            #elseif os(iOS)
+            UIApplication.shared.open(url)
+            #endif
+        } label: {
+            Label("Random Page", systemImage: "die.face.5")
+        }
+    }
+    
+    @ViewBuilder
+    var supplementary: some View {
+        Button {
+            selected = zimFile
+        } label: {
+            Label("Show Detail", systemImage: "info.circle")
+        }
+        if let downloadURL = zimFile.downloadURL {
             Button {
                 #if os(macOS)
                 NSPasteboard.general.clearContents()
-                NSPasteboard.general.setString(zimFile.fileID.uuidString, forType: .string)
+                NSPasteboard.general.setString(downloadURL.absoluteString, forType: .URL)
                 #elseif os(iOS)
-                UIPasteboard.general.setValue(zimFile.fileID.uuidString, forPasteboardType: UTType.plainText.identifier)
+                UIPasteboard.general.setValue(downloadURL.absoluteString, forPasteboardType: UTType.url.identifier)
                 #endif
             } label: {
-                Label("Copy ID", systemImage: "barcode.viewfinder")
+                Label("Copy URL", systemImage: "doc.on.doc")
             }
+        }
+        Button {
+            #if os(macOS)
+            NSPasteboard.general.clearContents()
+            NSPasteboard.general.setString(zimFile.fileID.uuidString, forType: .string)
+            #elseif os(iOS)
+            UIPasteboard.general.setValue(zimFile.fileID.uuidString, forPasteboardType: UTType.plainText.identifier)
+            #endif
+        } label: {
+            Label("Copy ID", systemImage: "barcode.viewfinder")
         }
     }
 }
@@ -79,12 +115,7 @@ struct ZimFileDetailPanel: ViewModifier {
                     if let zimFile = zimFile {
                         ZimFileDetail(zimFile: zimFile)
                     } else {
-                        HStack {
-                            Spacer()
-                            Text("select a zim file")
-                            Spacer()
-                        }.frame(maxHeight: .infinity)
-                        .background(.regularMaterial)
+                        Message(text: "Select a zim file to see detail").background(.thickMaterial)
                     }
                 }.frame(width: 275).background(.ultraThinMaterial)
             }
@@ -92,48 +123,5 @@ struct ZimFileDetailPanel: ViewModifier {
         #elseif os(iOS)
         content
         #endif
-    }
-}
-
-/// Alert to confirm deleting zim file.
-struct ZimFileDeleteAlert: ViewModifier {
-    @Binding var isPresented: Bool
-    
-    let zimFile: ZimFile
-    
-    func body(content: Content) -> some View {
-        content.alert(isPresented: $isPresented) {
-            Alert(
-                title: Text("Delete \(zimFile.name)"),
-                message: Text("The zim file and all bookmarked articles linked to this zim file will be deleted."),
-                primaryButton: .destructive(Text("Delete"), action: {
-                    LibraryViewModel.delete(zimFileID: zimFile.fileID)
-                }),
-                secondaryButton: .cancel()
-            )
-        }
-    }
-}
-
-/// Alert to confirm unlinking zim file.
-struct ZimFileUnlinkAlert: ViewModifier {
-    @Binding var isPresented: Bool
-    
-    let zimFile: ZimFile
-    
-    func body(content: Content) -> some View {
-        content.alert(isPresented: $isPresented) {
-            Alert(
-                title: Text("Unlink \(zimFile.name)"),
-                message: Text("""
-                All bookmarked articles linked to this zim file will be deleted, \
-                but the original file will remain in place.
-                """),
-                primaryButton: .destructive(Text("Unlink"), action: {
-                    LibraryViewModel.unlink(zimFileID: zimFile.fileID)
-                }),
-                secondaryButton: .cancel()
-            )
-        }
     }
 }

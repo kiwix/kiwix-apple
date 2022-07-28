@@ -8,46 +8,49 @@
 
 import SwiftUI
 
-@available(iOS 15.0, macOS 12.0, *)
+/// Show a grid of zim files that are opened, or was open but is now missing.
 struct ZimFilesOpened: View {
+    @EnvironmentObject var viewModel: LibraryViewModel
     @FetchRequest(
-        sortDescriptors: [SortDescriptor(\ZimFile.size, order: .reverse)],
-        predicate: NSCompoundPredicate(andPredicateWithSubpredicates: [
-            NSPredicate(format: "languageCode == %@", "en"),
-            NSPredicate(format: "fileURLBookmark != nil")
-        ]),
+        sortDescriptors: [NSSortDescriptor(keyPath: \ZimFile.size, ascending: false)],
+        predicate: ZimFile.withFileURLBookmarkPredicate,
         animation: .easeInOut
     ) private var zimFiles: FetchedResults<ZimFile>
-    @State private var isFileImporterPresented: Bool = false
     @State private var selected: ZimFile?
     
     var body: some View {
-        GeometryReader { proxy in
-            ScrollView {
+        Group {
+            if zimFiles.isEmpty {
+                Message(text: "No opened zim file")
+            } else {
                 LazyVGrid(
-                    columns: ([GridItem(.adaptive(minimum: 250, maximum: 400), spacing: 12)]),
+                    columns: ([GridItem(.adaptive(minimum: 250, maximum: 500), spacing: 12)]),
                     alignment: .leading,
                     spacing: 12
                 ) {
                     ForEach(zimFiles) { zimFile in
-                        Button { selected = zimFile } label: { ZimFileCell(zimFile, prominent: .title) }
+                        Button { selected = zimFile } label: { ZimFileCell(zimFile, prominent: .name) }
                             .buttonStyle(.plain)
                             .modifier(ZimFileContextMenu(selected: $selected, zimFile: zimFile))
                             .modifier(ZimFileSelection(selected: $selected, zimFile: zimFile))
                     }
-                }.modifier(LibraryGridPadding(width: proxy.size.width))
+                }.modifier(GridCommon())
             }
         }
-        .navigationTitle(LibraryTopic.new.name)
+        .navigationTitle(LibraryTopic.opened.name)
         .modifier(ZimFileDetailPanel(zimFile: selected))
-        .modifier(FileImporter(isPresented: $isFileImporterPresented))
         .toolbar {
             Button {
-                isFileImporterPresented = true
+                viewModel.isFileImporterPresented.toggle()
             } label: {
                 Image(systemName: "plus")
-            }
-            .help("Open a zim file")
+            }.help("Open a zim file")
         }
+    }
+}
+
+struct ZimFilesOpened_Previews: PreviewProvider {
+    static var previews: some View {
+        ZimFilesOpened()
     }
 }

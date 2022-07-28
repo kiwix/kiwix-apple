@@ -45,8 +45,8 @@ class Downloads: NSObject, URLSessionDelegate, URLSessionTaskDelegate, URLSessio
         DispatchQueue.main.async {
             guard self.heartbeat == nil else { return }
             self.heartbeat = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in
-                let context = Database.shared.container.newBackgroundContext()
-                context.perform {
+                Database.shared.container.performBackgroundTask { context in
+                    context.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
                     for (zimFileID, downloadedBytes) in self.totalBytesWritten {
                         let predicate = NSPredicate(format: "fileID == %@", zimFileID as CVarArg)
                         let request = DownloadTask.fetchRequest(predicate: predicate)
@@ -77,8 +77,8 @@ class Downloads: NSObject, URLSessionDelegate, URLSessionTaskDelegate, URLSessio
     ///   - zimFile: the zim file to download
     ///   - allowsCellularAccess: if using cellular data is allowed
     func start(zimFileID: UUID, allowsCellularAccess: Bool) {
-        let context = Database.shared.container.newBackgroundContext()
-        context.perform {
+        Database.shared.container.performBackgroundTask { context in
+            context.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
             let fetchRequest = ZimFile.fetchRequest(fileID: zimFileID)
             guard let zimFile = try? context.fetch(fetchRequest).first,
                   var url = zimFile.downloadURL else { return }
@@ -118,8 +118,8 @@ class Downloads: NSObject, URLSessionDelegate, URLSessionTaskDelegate, URLSessio
         session.getTasksWithCompletionHandler { _, _, downloadTasks in
             guard let task = downloadTasks.filter({ $0.taskDescription == zimFileID.uuidString }).first else { return }
             task.cancel { resumeData in
-                let context = Database.shared.container.newBackgroundContext()
-                context.perform {
+                Database.shared.container.performBackgroundTask { context in
+                    context.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
                     let request = DownloadTask.fetchRequest(fileID: zimFileID)
                     guard let downloadTask = try? context.fetch(request).first else { return }
                     downloadTask.resumeData = resumeData
@@ -132,8 +132,9 @@ class Downloads: NSObject, URLSessionDelegate, URLSessionTaskDelegate, URLSessio
     /// Resume a zim file download task and start heartbeat
     /// - Parameter zimFileID: identifier of the zim file
     func resume(zimFileID: UUID) {
-        let context = Database.shared.container.newBackgroundContext()
-        context.perform {
+        Database.shared.container.performBackgroundTask { context in
+            context.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
+            
             let request = DownloadTask.fetchRequest(fileID: zimFileID)
             guard let downloadTask = try? context.fetch(request).first,
                   let resumeData = downloadTask.resumeData else { return }
@@ -153,12 +154,21 @@ class Downloads: NSObject, URLSessionDelegate, URLSessionTaskDelegate, URLSessio
     // MARK: - Database
     
     private func deleteDownloadTask(zimFileID: UUID) {
-        let context = Database.shared.container.newBackgroundContext()
-        context.perform {
-            let request = DownloadTask.fetchRequest(fileID: zimFileID)
-            guard let downloadTask = try? context.fetch(request).first else { return }
-            context.delete(downloadTask)
-            try? context.save()
+        Database.shared.container.performBackgroundTask { context in
+            context.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
+            do {
+                let request = DownloadTask.fetchRequest(fileID: zimFileID)
+                guard let downloadTask = try context.fetch(request).first else { return }
+                context.delete(downloadTask)
+                try context.save()
+            } catch {
+                os_log(
+                    "Error deleting download task. Error: %s",
+                    log: Log.DownloadService,
+                    type: .error,
+                    error.localizedDescription
+                )
+            }
         }
     }
     
@@ -186,8 +196,8 @@ class Downloads: NSObject, URLSessionDelegate, URLSessionTaskDelegate, URLSessio
         
         // save the error description and resume data if possible
         guard error.code != URLError.cancelled.rawValue else { return }
-        let context = Database.shared.container.newBackgroundContext()
-        context.perform {
+        Database.shared.container.performBackgroundTask { context in
+            context.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
             let request = DownloadTask.fetchRequest(fileID: zimFileID)
             guard let downloadTask = try? context.fetch(request).first else { return }
             downloadTask.error = error.localizedDescription
@@ -237,5 +247,6 @@ class Downloads: NSObject, URLSessionDelegate, URLSessionTaskDelegate, URLSessio
         try? FileManager.default.moveItem(at: location, to: destination)
         
         // open the file
+        LibraryViewModel.open(url: destination)
     }
 }

@@ -6,6 +6,8 @@
 //  Copyright © 2021 Chris Li. All rights reserved.
 //
 
+import Defaults
+
 enum Category: String, CaseIterable, Identifiable {
     var id: String { rawValue }
     
@@ -60,6 +62,23 @@ enum Category: String, CaseIterable, Identifiable {
     }
 }
 
+enum ExternalLinkLoadingPolicy: String, CaseIterable, Identifiable, Defaults.Serializable {
+    case alwaysAsk, alwaysLoad, neverLoad
+    
+    var id: String { self.rawValue }
+    
+    var name: String {
+        switch self {
+        case .alwaysAsk:
+            return "Always ask"
+        case .alwaysLoad:
+            return "Always load"
+        case .neverLoad:
+            return "Never load"
+        }
+    }
+}
+
 enum Flavor: String, CustomStringConvertible {
     case max = "maxi"
     case noPic = "nopic"
@@ -77,6 +96,21 @@ enum Flavor: String, CustomStringConvertible {
             return "no pic"
         case .mini:
             return "mini"
+        }
+    }
+}
+
+enum LibraryLanguageSortingMode: String, CaseIterable, Identifiable, Defaults.Serializable {
+    case alphabetically, byCounts
+    
+    var id: String { self.rawValue }
+    
+    var name: String {
+        switch self {
+        case .alphabetically:
+            return "A-Z"
+        case .byCounts:
+            return "By Count"
         }
     }
 }
@@ -134,16 +168,7 @@ enum LibraryTopic: Hashable, Identifiable, RawRepresentable {
     var iconName: String {
         switch self {
         case .opened:
-            #if os(iOS)
-//            if UIDevice.current.userInterfaceIdiom == .phone {
-//                return "iphone"
-//            } else {
-//                return "ipad"
-//            }
-            return "ipad"
-            #elseif os(macOS)
-            return "laptopcomputer"
-            #endif
+            return "folder"
         case .new:
             return "newspaper"
         case .downloads:
@@ -156,7 +181,7 @@ enum LibraryTopic: Hashable, Identifiable, RawRepresentable {
     }
 }
 
-enum SearchResultSnippetMode: String, CaseIterable, Identifiable  {
+enum SearchResultSnippetMode: String, CaseIterable, Identifiable, Defaults.Serializable  {
     case disabled, firstParagraph, firstSentence, matches
     
     var id: String { rawValue }

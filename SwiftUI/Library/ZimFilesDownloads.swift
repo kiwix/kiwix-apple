@@ -6,32 +6,40 @@
 //  Copyright © 2022 Chris Li. All rights reserved.
 //
 
+import CoreData
 import SwiftUI
 
+/// Show zim file download tasks.
 struct ZimFilesDownloads: View {
-    @FetchRequest private var downloadTasks: FetchedResults<DownloadTask>
-    @State private var searchText = ""
-    @State private var selectedZimFile: ZimFile?
-    
-    init() {
-        self._downloadTasks = FetchRequest<DownloadTask>(
-            sortDescriptors: [NSSortDescriptor(keyPath: \DownloadTask.created, ascending: false)],
-            animation: .easeInOut
-        )
-    }
+    @FetchRequest(
+        sortDescriptors: [NSSortDescriptor(keyPath: \DownloadTask.created, ascending: false)],
+        animation: .easeInOut
+    ) private var downloadTasks: FetchedResults<DownloadTask>
+    @State private var selected: ZimFile?
     
     var body: some View {
-        List(downloadTasks) { downloadTask in
-            if #available(iOS 15.0, *) {
-                Text(downloadTask.zimFile?.name ?? "Unknown").contextMenu {
-                    Button("Cancel") {
-                        Downloads.shared.cancel(zimFileID: downloadTask.fileID)
-                    }
-                }
+        Group {
+            if downloadTasks.isEmpty {
+                Message(text: "No download tasks")
             } else {
-                Text(downloadTask.zimFile?.name ?? "Unknown")
+                LazyVGrid(
+                    columns: ([GridItem(.adaptive(minimum: 250, maximum: 500), spacing: 12)]),
+                    alignment: .leading,
+                    spacing: 12
+                ) {
+                    ForEach(downloadTasks) { downloadTask in
+                        if let zimFile = downloadTask.zimFile {
+                            Button { selected = zimFile } label: { DownloadTaskCell(downloadTask) }
+                                .buttonStyle(.plain)
+                                .modifier(ZimFileContextMenu(selected: $selected, zimFile: zimFile))
+                                .modifier(ZimFileSelection(selected: $selected, zimFile: zimFile))
+                        }
+                    }
+                }.modifier(GridCommon())
             }
         }
+        .navigationTitle(LibraryTopic.downloads.name)
+        .modifier(ZimFileDetailPanel(zimFile: selected))
     }
 }
 

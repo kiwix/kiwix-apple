@@ -75,7 +75,9 @@ struct BookmarkButton: View {
         }
         .simultaneousGesture(TapGesture().onEnded {
             if horizontalSizeClass == .regular {
-                sidebarDisplayMode = sidebarDisplayMode != .bookmarks ? .bookmarks : nil
+                withAnimation {
+                    sidebarDisplayMode = sidebarDisplayMode != .bookmarks ? .bookmarks : nil
+                }
             } else {
                 sheetDisplayMode = .bookmarks
             }

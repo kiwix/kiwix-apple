@@ -69,13 +69,21 @@ class ZimFile: NSManagedObject, Identifiable {
     @NSManaged var hasPictures: Bool
     @NSManaged var hasVideos: Bool
     @NSManaged var includedInSearch: Bool
+    @NSManaged var isMissing: Bool
     @NSManaged var languageCode: String
     @NSManaged var mediaCount: Int64
     @NSManaged var name: String
     @NSManaged var persistentID: String
+    @NSManaged var requiresServiceWorkers: Bool
     @NSManaged var size: Int64
     
     @NSManaged var downloadTask: DownloadTask?
+    
+    static var openedPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
+        NSPredicate(format: "fileURLBookmark != nil"),
+        NSPredicate(format: "isMissing == false")
+    ])
+    static var withFileURLBookmarkPredicate = NSPredicate(format: "fileURLBookmark != nil")
     
     class func fetchRequest(
         predicate: NSPredicate? = nil, sortDescriptors: [NSSortDescriptor] = []
@@ -91,11 +99,29 @@ class ZimFile: NSManagedObject, Identifiable {
         request.predicate = NSPredicate(format: "fileID == %@", fileID as CVarArg)
         return request
     }
+}
+
+struct Language: Identifiable, Comparable {
+    var id: String { code }
+    let code: String
+    let name: String
+    let count: Int
     
-    class func opened(sortDescriptors: [NSSortDescriptor] = []) -> NSFetchRequest<ZimFile> {
-        let request = super.fetchRequest() as! NSFetchRequest<ZimFile>
-        request.predicate = NSPredicate(format: "fileURLBookmark != nil")
-        request.sortDescriptors = sortDescriptors
-        return request
+    init?(code: String, count: Int) {
+        guard let name = Locale.current.localizedString(forLanguageCode: code) else { return nil }
+        self.code = code
+        self.name = name
+        self.count = count
+    }
+    
+    static func < (lhs: Language, rhs: Language) -> Bool {
+        switch lhs.name.caseInsensitiveCompare(rhs.name) {
+        case .orderedAscending:
+            return true
+        case .orderedDescending:
+            return false
+        case .orderedSame:
+            return lhs.count > rhs.count
+        }
     }
 }
