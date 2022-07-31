@@ -22,8 +22,9 @@ struct Kiwix: App {
 }
 
 private struct RootView: View {
-    @State private var navigationItem: NavigationItem? = .reading
     @State private var isShowingOutline = false
+    @State private var navigationItem: NavigationItem? = .reading
+    @State private var url: URL?
     
     let primaryNavigationItems: [NavigationItem] = [.reading, .bookmarks, .map, .settings]
     let libraryNavigationItems: [NavigationItem] = [.opened, .categories, .new, .downloads]
@@ -47,7 +48,17 @@ private struct RootView: View {
             if let navigationItem = navigationItem {
                 Text(navigationItem.name)
             }
-        }.environment(\.managedObjectContext, Database.shared.container.viewContext)
+        }
+        .environment(\.managedObjectContext, Database.shared.container.viewContext)
+        .onOpenURL { url in
+            if url.isFileURL {
+                guard let metadata = ZimFileService.getMetaData(url: url) else { return }
+                LibraryViewModel.open(url: url)
+                self.url = ZimFileService.shared.getMainPageURL(zimFileID: metadata.fileID)
+            } else if url.scheme == "kiwix" {
+                self.url = url
+            }
+        }
     }
     
     @ViewBuilder
