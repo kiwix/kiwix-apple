@@ -184,6 +184,7 @@
 		9779A7E424567A5A00F6F6FF /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9779A7E224567A5A00F6F6FF /* Log.swift */; };
 		9779A7E524567A5A00F6F6FF /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9779A7E224567A5A00F6F6FF /* Log.swift */; };
 		9779E7A22379230F0058DC98 /* SearchController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9779E7A12379230F0058DC98 /* SearchController.swift */; };
+		977B1B5B28971D5E001D07C4 /* App.swift in Sources */ = {isa = PBXBuildFile; fileRef = 977B1B5A28971D5E001D07C4 /* App.swift */; };
 		977BD600276EA929004D2C32 /* Realm.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97EC18B126E8555E008309ED /* Realm.xcframework */; };
 		977BD601276EA929004D2C32 /* Realm.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 97EC18B126E8555E008309ED /* Realm.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		977BD602276EA929004D2C32 /* RealmSwift.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97EC18B026E8555E008309ED /* RealmSwift.xcframework */; };
@@ -280,7 +281,6 @@
 		97DE2BB0283C67F100C63D9B /* RandomArticleButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 978A731827B9A765008101B4 /* RandomArticleButton.swift */; };
 		97DE2BB4283F1D2A00C63D9B /* BookmarkButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9735D0BD2777531400C7D495 /* BookmarkButton.swift */; };
 		97E173D425733D11002CAD17 /* RootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97E173D325733D10002CAD17 /* RootViewController.swift */; };
-		97E94B1A271EF24D005B0295 /* macOSApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97E94B19271EF24D005B0295 /* macOSApp.swift */; };
 		97E94B1C271EF24D005B0295 /* Reader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97E94B1B271EF24D005B0295 /* Reader.swift */; };
 		97E94B21271EF250005B0295 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 97E94B20271EF250005B0295 /* Preview Assets.xcassets */; };
 		97E94B2D271EF603005B0295 /* libkiwix.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97EC18AF26E8555E008309ED /* libkiwix.xcframework */; };
@@ -473,6 +473,7 @@
 		9779A73A2456796B00F6F6FF /* WebKitHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebKitHandler.swift; sourceTree = "<group>"; };
 		9779A7E224567A5A00F6F6FF /* Log.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Log.swift; sourceTree = "<group>"; };
 		9779E7A12379230F0058DC98 /* SearchController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchController.swift; sourceTree = "<group>"; };
+		977B1B5A28971D5E001D07C4 /* App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = App.swift; sourceTree = "<group>"; };
 		977D50622621E47D005345D1 /* LibraryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryViewController.swift; sourceTree = "<group>"; };
 		977D506C2621EAD1005345D1 /* LibraryPrimaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryPrimaryView.swift; sourceTree = "<group>"; };
 		977D50762623580D005345D1 /* LibrarySettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibrarySettingsView.swift; sourceTree = "<group>"; };
@@ -747,6 +748,7 @@
 		975088B128763A9500273181 /* macOS */ = {
 			isa = PBXGroup;
 			children = (
+				977B1B5A28971D5E001D07C4 /* App.swift */,
 				97E94B1B271EF24D005B0295 /* Reader.swift */,
 				975088B428763DFF00273181 /* Search.swift */,
 				9729E12C2862BA90003D19B1 /* SettingSection.swift */,
@@ -1687,9 +1689,9 @@
 				9735D0BE2777531400C7D495 /* BookmarkButton.swift in Sources */,
 				975088B528763DFF00273181 /* Search.swift in Sources */,
 				978A731727B9A4F1008101B4 /* MainArticleButton.swift in Sources */,
+				977B1B5B28971D5E001D07C4 /* App.swift in Sources */,
 				976BAEB42847BD020049404F /* SearchViewModel.swift in Sources */,
 				976D90E82815D63A00CC7D29 /* ZimFilesNew.swift in Sources */,
-				97E94B1A271EF24D005B0295 /* macOSApp.swift in Sources */,
 				9721BBBA28427A93005C910D /* Bookmarks.swift in Sources */,
 				975088BA287BBDFE00273181 /* LanguageSelector.swift in Sources */,
 				973A0DFC283100C300B41E71 /* ZimFilesOpened.swift in Sources */,
