@@ -25,6 +25,9 @@ private struct RootView: View {
     @State private var isShowingOutline = false
     @State private var navigationItem: NavigationItem? = .reading
     @State private var url: URL?
+    @State private var searchText = ""
+    
+    @StateObject private var readerViewModel = ReaderViewModel()
     
     let primaryNavigationItems: [NavigationItem] = [.reading, .bookmarks, .map, .settings]
     let libraryNavigationItems: [NavigationItem] = [.opened, .categories, .new, .downloads]
@@ -37,7 +40,6 @@ private struct RootView: View {
                     ForEach(libraryNavigationItems, id: \.self) { navigationLink($0) }
                 } header: { Text("Library") }
             }
-            .navigationTitle("Kiwix")
             .toolbar {
                 Button {
                     isShowingOutline.toggle()
@@ -45,9 +47,7 @@ private struct RootView: View {
                     Image(systemName: isShowingOutline ? "list.bullet.circle.fill" : "list.bullet.circle")
                 }
             }
-            if let navigationItem = navigationItem {
-                Text(navigationItem.name)
-            }
+            EmptyView()  // required so the UI does not look broken
         }
         .environment(\.managedObjectContext, Database.shared.container.viewContext)
         .onOpenURL { url in
@@ -74,7 +74,7 @@ private struct RootView: View {
     private func destination(_ navigationItem: NavigationItem) -> some View {
         switch navigationItem {
         case .reading:
-            Text(navigationItem.name)
+            ReadingView(url: $url).searchable(text: $searchText).environmentObject(readerViewModel)
         case .bookmarks:
             Text(navigationItem.name)
         case .map:
