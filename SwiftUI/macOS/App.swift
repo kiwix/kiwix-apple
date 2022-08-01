@@ -89,7 +89,9 @@ private struct RootView: View {
         case .downloads:
             Text(navigationItem.name)
         case .settings:
-            Text(navigationItem.name)
+            #if os(iOS)
+            Settings().navigationBarTitleDisplayMode(.inline)
+            #endif
         }
     }
 }

@@ -73,6 +73,7 @@ struct About: View {
             } header: { Text("Dependencies") }
         }
         .navigationTitle("About")
+        .navigationBarTitleDisplayMode(.inline)
         .sheet(item: $externalLinkURL) { SafariView(url: $0) }
         #endif
     }
