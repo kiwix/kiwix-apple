@@ -18,13 +18,7 @@ struct ReadingView: View {
     @EnvironmentObject var viewModel: ReaderViewModel
     
     var body: some View {
-        WebView(
-            url: $url
-        )
-        .ignoresSafeArea(edges: .all)
-        .modifier(NavigationTitleSubtitle())
-        .modifier(DefaultBarAppearance_iOS())
-        .overlay(alignment: .top) {
+        Group {
             if isSearching {
                 List {
                     Text("result 1")
@@ -33,8 +27,12 @@ struct ReadingView: View {
                 }
             } else if url == nil {
                 Welcome(url: $url)
+            } else {
+                WebView(url: $url).ignoresSafeArea(edges: .all)
             }
         }
+        .modifier(NavigationTitleSubtitle())
+        .modifier(DefaultBarAppearance_iOS())
         .toolbar {
             #if os(macOS)
             ToolbarItemGroup(placement: .navigation) { ControlGroup { navigationButtons } }
@@ -109,7 +107,9 @@ private struct NavigationTitleSubtitle: ViewModifier {
 
 private struct DefaultBarAppearance_iOS: ViewModifier {
     func body(content: Content) -> some View {
-        #if os(iOS)
+        #if os(macOS)
+        content
+        #elseif os(iOS)
         content.introspectViewController{ controller in
             controller.navigationItem.scrollEdgeAppearance = {
                 let apperance = UINavigationBarAppearance()
