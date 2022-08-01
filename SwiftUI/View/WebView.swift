@@ -50,11 +50,7 @@ struct WebView: NSViewRepresentable {
             guard webView.url?.absoluteString != url?.absoluteString else { return }
             url = webView.url
         }
-        context.coordinator.titleObserver = webView.observe(\.title) { webView, _ in
-            articleTitle = webView.title ?? ""
-            canGoBack = webView.canGoBack
-            canGoForward = webView.canGoForward
-        }
+        webView.navigationDelegate = context.coordinator
         return webView
     }
     
@@ -70,11 +66,22 @@ struct WebView: NSViewRepresentable {
         }
     }
     
-    func makeCoordinator() -> Coordinator { Coordinator() }
+    func makeCoordinator() -> Coordinator { Coordinator(self) }
     
-    class Coordinator {
+    class Coordinator: NSObject, WKNavigationDelegate {
         var urlObserver: NSKeyValueObservation?
-        var titleObserver: NSKeyValueObservation?
+        let view: WebView
+        
+        init(_ view: WebView) {
+            self.view = view
+        }
+        
+        func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
+            view.articleTitle = webView.title ?? ""
+            view.canGoBack = webView.canGoBack
+            view.canGoForward = webView.canGoForward
+            webView.evaluateJavaScript("expandAllDetailTags(); getOutlineItems();")
+        }
     }
 }
 #elseif os(iOS)
