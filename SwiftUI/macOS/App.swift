@@ -79,7 +79,7 @@ private struct RootView: View {
         case .bookmarks:
             Text(navigationItem.name)
         case .map:
-            Text(navigationItem.name)
+            MapView()
         case .opened:
             ZimFilesOpened()
         case .categories:

@@ -188,6 +188,9 @@
 		977B1B5D28972C33001D07C4 /* ReadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 977B1B5C28972C33001D07C4 /* ReadingView.swift */; };
 		977B1B5E2897F9C8001D07C4 /* App.swift in Sources */ = {isa = PBXBuildFile; fileRef = 977B1B5A28971D5E001D07C4 /* App.swift */; };
 		977B1B5F2897F9CB001D07C4 /* ReadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 977B1B5C28972C33001D07C4 /* ReadingView.swift */; };
+		977B1B6228980190001D07C4 /* Introspect in Frameworks */ = {isa = PBXBuildFile; productRef = 977B1B6128980190001D07C4 /* Introspect */; };
+		977B1B64289801DE001D07C4 /* Map.swift in Sources */ = {isa = PBXBuildFile; fileRef = 977B1B63289801DE001D07C4 /* Map.swift */; };
+		977B1B65289801DE001D07C4 /* Map.swift in Sources */ = {isa = PBXBuildFile; fileRef = 977B1B63289801DE001D07C4 /* Map.swift */; };
 		977BD600276EA929004D2C32 /* Realm.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97EC18B126E8555E008309ED /* Realm.xcframework */; };
 		977BD601276EA929004D2C32 /* Realm.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 97EC18B126E8555E008309ED /* Realm.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		977BD602276EA929004D2C32 /* RealmSwift.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97EC18B026E8555E008309ED /* RealmSwift.xcframework */; };
@@ -477,6 +480,7 @@
 		9779E7A12379230F0058DC98 /* SearchController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchController.swift; sourceTree = "<group>"; };
 		977B1B5A28971D5E001D07C4 /* App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = App.swift; sourceTree = "<group>"; };
 		977B1B5C28972C33001D07C4 /* ReadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadingView.swift; sourceTree = "<group>"; };
+		977B1B63289801DE001D07C4 /* Map.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Map.swift; sourceTree = "<group>"; };
 		977D50622621E47D005345D1 /* LibraryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryViewController.swift; sourceTree = "<group>"; };
 		977D506C2621EAD1005345D1 /* LibraryPrimaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryPrimaryView.swift; sourceTree = "<group>"; };
 		977D50762623580D005345D1 /* LibrarySettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibrarySettingsView.swift; sourceTree = "<group>"; };
@@ -573,6 +577,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				9753D94B285B56C900A626CC /* Defaults in Frameworks */,
+				977B1B6228980190001D07C4 /* Introspect in Frameworks */,
 				976BAEBA284903EA0049404F /* Fuzi in Frameworks */,
 				972DE4B82814A51C004FD9B9 /* libkiwix.xcframework in Frameworks */,
 			);
@@ -753,6 +758,7 @@
 			children = (
 				977B1B5A28971D5E001D07C4 /* App.swift */,
 				977B1B5C28972C33001D07C4 /* ReadingView.swift */,
+				977B1B63289801DE001D07C4 /* Map.swift */,
 				97E94B1B271EF24D005B0295 /* Reader.swift */,
 				975088B428763DFF00273181 /* Search.swift */,
 				9729E12C2862BA90003D19B1 /* SettingSection.swift */,
@@ -1166,6 +1172,7 @@
 			packageProductDependencies = (
 				976BAEB9284903EA0049404F /* Fuzi */,
 				9753D94A285B56C900A626CC /* Defaults */,
+				977B1B6128980190001D07C4 /* Introspect */,
 			);
 			productName = iOS_SwiftUI;
 			productReference = 972DE4A62814A3D8004FD9B9 /* iOS_SwiftUI.app */;
@@ -1347,6 +1354,7 @@
 			packageReferences = (
 				9744657E26F7981500072DC2 /* XCRemoteSwiftPackageReference "Fuzi" */,
 				97654724273214530070163D /* XCRemoteSwiftPackageReference "Defaults" */,
+				977B1B6028980190001D07C4 /* XCRemoteSwiftPackageReference "SwiftUI-Introspect" */,
 			);
 			productRefGroup = 97A2AB7F1C1B80FF00052E74;
 			projectDirPath = "";
@@ -1539,6 +1547,7 @@
 				976BAEBE284905760049404F /* SearchViewModel.swift in Sources */,
 				97486D0F284D44C20096E4DD /* HUDController.swift in Sources */,
 				974C33A32853DDEE00DF6F4C /* Settings.swift in Sources */,
+				977B1B65289801DE001D07C4 /* Map.swift in Sources */,
 				977B1B5E2897F9C8001D07C4 /* App.swift in Sources */,
 				973A0DE7281DC8F400B41E71 /* Downloads.swift in Sources */,
 				9721BBB72841C16D005C910D /* Message.swift in Sources */,
@@ -1745,6 +1754,7 @@
 				979D3A73284067C800E396B8 /* MoreButton.swift in Sources */,
 				97DE2BA5283A944100C63D9B /* LibraryGridPadding.swift in Sources */,
 				978A731927B9A765008101B4 /* RandomArticleButton.swift in Sources */,
+				977B1B64289801DE001D07C4 /* Map.swift in Sources */,
 				97486D0D284C0EBC0096E4DD /* Welcome.swift in Sources */,
 				97341C6D2852248500BC273E /* DownloadTaskCell.swift in Sources */,
 				97242B9D2735E6A800C87F85 /* Log.swift in Sources */,
@@ -2499,6 +2509,14 @@
 				minimumVersion = 6.0.0;
 			};
 		};
+		977B1B6028980190001D07C4 /* XCRemoteSwiftPackageReference "SwiftUI-Introspect" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/siteline/SwiftUI-Introspect.git";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -2526,6 +2544,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 9744657E26F7981500072DC2 /* XCRemoteSwiftPackageReference "Fuzi" */;
 			productName = Fuzi;
+		};
+		977B1B6128980190001D07C4 /* Introspect */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 977B1B6028980190001D07C4 /* XCRemoteSwiftPackageReference "SwiftUI-Introspect" */;
+			productName = Introspect;
 		};
 		97BD6C992886DD71004A8532 /* Fuzi */ = {
 			isa = XCSwiftPackageProductDependency;
