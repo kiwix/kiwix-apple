@@ -12,7 +12,7 @@ import WebKit
 struct ReadingView: View {
     @Binding var url: URL?
     @Environment(\.isSearching) private var isSearching
-    @StateObject private var viewModel = ReadingViewModel()
+    @StateObject private var viewModel = ReaderViewModel()
     
     var body: some View {
         WebView(
@@ -35,10 +35,10 @@ struct ReadingView: View {
             ToolbarItemGroup(placement: .navigation) {
                 ControlGroup {
                     Button {
-                        viewModel.webView?.goBack()
+                        viewModel.webView.goBack()
                     } label: { Image(systemName: "chevron.backward") }.disabled(!viewModel.canGoBack)
                     Button {
-                        viewModel.webView?.goForward()
+                        viewModel.webView.goForward()
                     } label: { Image(systemName: "chevron.forward") }.disabled(!viewModel.canGoForward)
                 }
             }

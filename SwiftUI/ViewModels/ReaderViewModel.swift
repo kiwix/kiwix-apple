@@ -117,7 +117,8 @@ class ReaderViewModel: NSObject, ObservableObject, WKNavigationDelegate, WKScrip
     func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
         if message.name == "headings", let headings = message.body as? [[String: String]] {
             DispatchQueue.global(qos: .userInitiated).async {
-                self.generateOutlineTree(headings: headings)
+                self.generateOutlineList(headings: headings)
+//                self.generateOutlineTree(headings: headings)
             }
         }
     }
@@ -159,6 +160,21 @@ class ReaderViewModel: NSObject, ObservableObject, WKNavigationDelegate, WKScrip
     /// - Parameter outlineItemID: ID of the outline item to scroll to
     func scrollTo(outlineItemID: String) {
         webView.evaluateJavaScript("scrollToHeading('\(outlineItemID)')")
+    }
+    
+    private func generateOutlineList(headings: [[String: String]]) {
+        let allLevels = headings.compactMap { Int($0["tag"]?.suffix(1) ?? "") }
+        let offset = allLevels.filter({ $0 == 1 }).count == 1 ? 2 : allLevels.min() ?? 0
+        let outlineItems: [OutlineItem] = headings.enumerated().compactMap { index, heading in
+            guard let id = heading["id"],
+                  let text = heading["text"],
+                  let tag = heading["tag"],
+                  let level = Int(tag.suffix(1)) else { return nil }
+            return OutlineItem(id: id, index: index, text: text, level: max(level - offset, 0))
+        }
+        DispatchQueue.main.async {
+            self.outlineItems = outlineItems
+        }
     }
     
     /// Convert flattened heading element data to a tree of OutlineItems.
