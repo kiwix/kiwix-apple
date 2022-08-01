@@ -51,6 +51,11 @@ struct ReadingView: View {
                 }
             }
             ToolbarItemGroup {
+                Button {
+                    
+                } label: {
+                    Image(systemName: "star")
+                }
                 Menu {
                     ForEach(outlineItems) { item in
                         Button(String(repeating: "    ", count: item.level) + item.text) {
@@ -60,6 +65,16 @@ struct ReadingView: View {
                 } label: {
                     Image(systemName: "list.bullet")
                 }.disabled(outlineItems.isEmpty)
+                Button {
+                    
+                } label: {
+                    Image(systemName: "house")
+                }
+                Button {
+                    
+                } label: {
+                    Image(systemName: "die.face.5")
+                }
             }
         }
     }

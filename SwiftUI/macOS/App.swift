@@ -38,10 +38,8 @@ private struct RootView: View {
                 } header: { Text("Library") }
             }
             .frame(minWidth: 150)
-            .toolbar {
-                SidebarButton()
-            }
-            EmptyView()  // required so the UI does not look broken
+            .toolbar { SidebarButton() }
+            EmptyView()  // required so the UI does not look broken on macOS
         }
         .environment(\.managedObjectContext, Database.shared.container.viewContext)
         .onOpenURL { url in
