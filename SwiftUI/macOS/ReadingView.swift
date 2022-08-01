@@ -59,7 +59,7 @@ struct ReadingView: View {
                     }
                 } label: {
                     Image(systemName: "list.bullet")
-                }
+                }.disabled(outlineItems.isEmpty)
             }
         }
     }

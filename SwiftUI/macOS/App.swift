@@ -22,7 +22,6 @@ struct Kiwix: App {
 }
 
 private struct RootView: View {
-    @State private var isShowingOutline = false
     @State private var navigationItem: NavigationItem? = .reading
     @State private var url: URL?
     @State private var searchText = ""
@@ -38,12 +37,9 @@ private struct RootView: View {
                     ForEach(libraryNavigationItems, id: \.self) { navigationLink($0) }
                 } header: { Text("Library") }
             }
+            .frame(minWidth: 150)
             .toolbar {
-                Button {
-                    isShowingOutline.toggle()
-                } label: {
-                    Image(systemName: isShowingOutline ? "list.bullet.circle.fill" : "list.bullet.circle")
-                }
+                SidebarButton()
             }
             EmptyView()  // required so the UI does not look broken
         }
