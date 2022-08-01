@@ -10,78 +10,23 @@ import SwiftUI
 import WebKit
 
 #if os(macOS)
-class WebViewCoordinator: NSObject, WKNavigationDelegate {
-    var canGoBackObserver: NSKeyValueObservation?
-    var canGoForwardObserver: NSKeyValueObservation?
-    var titleObserver: NSKeyValueObservation?
-    var urlObserver: NSKeyValueObservation?
-    let view: WebView
-    
-    static func createWebView() -> WKWebView {
-        let config = WKWebViewConfiguration()
-        config.setURLSchemeHandler(KiwixURLSchemeHandler(), forURLScheme: "kiwix")
-        config.userContentController = {
-            let controller = WKUserContentController()
-            guard FeatureFlags.wikipediaDarkUserCSS,
-                  let path = Bundle.main.path(forResource: "wikipedia_dark", ofType: "css"),
-                  let css = try? String(contentsOfFile: path) else { return controller }
-            let source = """
-                var style = document.createElement('style');
-                style.innerHTML = `\(css)`;
-                document.head.appendChild(style);
-                """
-            let script = WKUserScript(source: source, injectionTime: .atDocumentEnd, forMainFrameOnly: false)
-            controller.addUserScript(script)
-            if let url = Bundle.main.url(forResource: "injection", withExtension: "js"),
-               let javascript = try? String(contentsOf: url) {
-                let script = WKUserScript(source: javascript, injectionTime: .atDocumentEnd, forMainFrameOnly: false)
-                controller.addUserScript(script)
-            }
-            return controller
-        }()
-        return WKWebView(frame: .zero, configuration: config)
-    }
-    
-    init(_ view: WebView) {
-        self.view = view
-    }
-    
-    func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
-        webView.evaluateJavaScript("expandAllDetailTags(); getOutlineItems();")
-    }
-}
-
 struct WebView: NSViewRepresentable {
     @Binding var url: URL?
-    @EnvironmentObject var viewModel: ReadingViewModel
+    @EnvironmentObject var viewModel: ReaderViewModel
     
     func makeNSView(context: Context) -> WKWebView {
-        let webView = WebViewCoordinator.createWebView()
-        webView.configuration.userContentController.add(viewModel, name: "headings")
-        webView.navigationDelegate = context.coordinator
-        viewModel.webView = webView
-        context.coordinator.canGoBackObserver = webView.observe(\.canGoBack) { webView, _ in
-            viewModel.canGoBack = webView.canGoBack
-        }
-        context.coordinator.canGoForwardObserver = webView.observe(\.canGoForward) { webView, _ in
-            viewModel.canGoForward = webView.canGoForward
-        }
-        context.coordinator.titleObserver = webView.observe(\.title) { webView, _ in
-            viewModel.articleTitle = webView.title ?? ""
-        }
-        context.coordinator.urlObserver = webView.observe(\.url) { webView, _ in
+        context.coordinator.urlObserver = viewModel.webView.observe(\.url) { webView, _ in
             guard webView.url?.absoluteString != url?.absoluteString else { return }
             url = webView.url
         }
-        return webView
+        return viewModel.webView
     }
-    
     func updateNSView(_ webView: WKWebView, context: Context) {
         guard let url = url, webView.url?.absoluteString != url.absoluteString else { return }
         webView.load(URLRequest(url: url))
     }
-    
-    func makeCoordinator() -> WebViewCoordinator { WebViewCoordinator(self) }
+    func makeCoordinator() -> Coordinator { Coordinator() }
+    class Coordinator { var urlObserver: NSKeyValueObservation? }
 }
 #elseif os(iOS)
 struct WebView: UIViewControllerRepresentable {

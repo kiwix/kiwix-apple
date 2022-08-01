@@ -12,7 +12,7 @@ import WebKit
 struct ReadingView: View {
     @Binding var url: URL?
     @Environment(\.isSearching) private var isSearching
-    @StateObject private var viewModel = ReaderViewModel()
+    @EnvironmentObject var viewModel: ReaderViewModel
     
     var body: some View {
         WebView(
@@ -69,7 +69,6 @@ struct ReadingView: View {
                 }
             }
         }
-        .environmentObject(viewModel)
     }
 }
 
