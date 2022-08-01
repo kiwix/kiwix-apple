@@ -15,6 +15,7 @@ struct ReadingView: View {
     @State private var canGoBack = false
     @State private var canGoForward = false
     @State private var navigationAction: ReadingViewNavigationAction?
+    @State private var outlineItems: [OutlineItem] = []
     
     var body: some View {
         WebView(
@@ -22,6 +23,7 @@ struct ReadingView: View {
             canGoBack: $canGoBack,
             canGoForward: $canGoForward,
             navigationAction: $navigationAction,
+            outlineItems: $outlineItems,
             url: $url
         )
         .ignoresSafeArea(edges: .all)
@@ -48,10 +50,21 @@ struct ReadingView: View {
                     } label: { Image(systemName: "chevron.forward") }.disabled(!canGoForward)
                 }
             }
+            ToolbarItemGroup {
+                Menu {
+                    ForEach(outlineItems) { item in
+                        Button(String(repeating: "    ", count: item.level) + item.text) {
+                            navigationAction = .outlineItem(id: item.id)
+                        }
+                    }
+                } label: {
+                    Image(systemName: "list.bullet")
+                }
+            }
         }
     }
 }
 
-enum ReadingViewNavigationAction {
-    case goBack, goForward
+enum ReadingViewNavigationAction: Equatable {
+    case goBack, goForward, outlineItem(id: String)
 }

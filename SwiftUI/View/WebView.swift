@@ -9,7 +9,11 @@
 import SwiftUI
 import WebKit
 
-extension WKWebView {
+#if os(macOS)
+class WebViewCoordinator: NSObject, WKNavigationDelegate, WKScriptMessageHandler {
+    var urlObserver: NSKeyValueObservation?
+    let view: WebView
+    
     static func createWebView() -> WKWebView {
         let config = WKWebViewConfiguration()
         config.setURLSchemeHandler(KiwixURLSchemeHandler(), forURLScheme: "kiwix")
@@ -34,18 +38,46 @@ extension WKWebView {
         }()
         return WKWebView(frame: .zero, configuration: config)
     }
+    
+    init(_ view: WebView) {
+        self.view = view
+    }
+    
+    func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
+        view.articleTitle = webView.title ?? ""
+        view.canGoBack = webView.canGoBack
+        view.canGoForward = webView.canGoForward
+        webView.evaluateJavaScript("expandAllDetailTags(); getOutlineItems();")
+    }
+    
+    func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
+        if message.name == "headings", let headings = message.body as? [[String: String]] {
+            DispatchQueue.global(qos: .userInitiated).async {
+                let allLevels = headings.compactMap { Int($0["tag"]?.suffix(1) ?? "") }
+                let offset = allLevels.filter({ $0 == 1 }).count == 1 ? 2 : allLevels.min() ?? 0
+                self.view.outlineItems = headings.enumerated().compactMap { index, heading in
+                    guard let id = heading["id"],
+                          let text = heading["text"],
+                          let tag = heading["tag"],
+                          let level = Int(tag.suffix(1)) else { return nil }
+                    return OutlineItem(id: id, index: index, text: text, level: max(level - offset, 0))
+                }
+            }
+        }
+    }
 }
 
-#if os(macOS)
 struct WebView: NSViewRepresentable {
     @Binding var articleTitle: String
     @Binding var canGoBack: Bool
     @Binding var canGoForward: Bool
     @Binding var navigationAction: ReadingViewNavigationAction?
+    @Binding var outlineItems: [OutlineItem]
     @Binding var url: URL?
     
     func makeNSView(context: Context) -> WKWebView {
-        let webView = WKWebView.createWebView()
+        let webView = WebViewCoordinator.createWebView()
+        webView.configuration.userContentController.add(context.coordinator, name: "headings")
         context.coordinator.urlObserver = webView.observe(\.url) { webView, _ in
             guard webView.url?.absoluteString != url?.absoluteString else { return }
             url = webView.url
@@ -61,28 +93,14 @@ struct WebView: NSViewRepresentable {
         } else if navigationAction == .goForward {
             webView.goForward()
             DispatchQueue.main.async { navigationAction = nil }
+        } else if case let .outlineItem(id) = navigationAction {
+            webView.evaluateJavaScript("scrollToHeading('\(id)')")
         } else if let url = url, webView.url?.absoluteString != url.absoluteString {
             webView.load(URLRequest(url: url))
         }
     }
     
-    func makeCoordinator() -> Coordinator { Coordinator(self) }
-    
-    class Coordinator: NSObject, WKNavigationDelegate {
-        var urlObserver: NSKeyValueObservation?
-        let view: WebView
-        
-        init(_ view: WebView) {
-            self.view = view
-        }
-        
-        func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
-            view.articleTitle = webView.title ?? ""
-            view.canGoBack = webView.canGoBack
-            view.canGoForward = webView.canGoForward
-            webView.evaluateJavaScript("expandAllDetailTags(); getOutlineItems();")
-        }
-    }
+    func makeCoordinator() -> WebViewCoordinator { WebViewCoordinator(self) }
 }
 #elseif os(iOS)
 struct WebView: UIViewControllerRepresentable {
