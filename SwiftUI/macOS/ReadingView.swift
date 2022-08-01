@@ -20,6 +20,7 @@ struct ReadingView: View {
             url: $url
         )
         .ignoresSafeArea(edges: .all)
+        .modifier(NavigationTitleSubtitle())
         .overlay(alignment: .top) {
             if isSearching {
                 List {
@@ -31,14 +32,11 @@ struct ReadingView: View {
                 Welcome(url: $url)
             }
         }
-        .navigationTitle(viewModel.articleTitle)
         .toolbar {
             #if os(macOS)
             ToolbarItemGroup(placement: .navigation) { ControlGroup { navigationButtons } }
             #elseif os(iOS)
-            ToolbarItemGroup(placement: .navigationBarLeading) {
-                navigationButtons
-            }
+            ToolbarItemGroup(placement: .navigationBarLeading) { navigationButtons }
             #endif
             ToolbarItemGroup {
                 Button {
@@ -88,5 +86,20 @@ struct ReadingView_iOS14: View {
         WebView(
             url: $url
         )
+    }
+}
+
+private struct NavigationTitleSubtitle: ViewModifier {
+    @EnvironmentObject var viewModel: ReaderViewModel
+    
+    func body(content: Content) -> some View {
+        #if os(macOS)
+        content
+            .navigationTitle(viewModel.articleTitle)
+            .navigationSubtitle(viewModel.zimFileName)
+        #elseif os(iOS)
+        content
+            .navigationBarTitleDisplayMode(.inline)
+        #endif
     }
 }
