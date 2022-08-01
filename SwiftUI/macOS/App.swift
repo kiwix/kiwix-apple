@@ -39,7 +39,11 @@ private struct RootView: View {
                 } header: { Text("Library") }
             }
             .frame(minWidth: 150)
-            .toolbar { SidebarButton() }
+            .toolbar {
+                #if os(macOS)
+                SidebarButton()
+                #endif
+            }
             EmptyView()  // required so the UI does not look broken on macOS
         }
         .environment(\.managedObjectContext, Database.shared.container.viewContext)
@@ -67,7 +71,11 @@ private struct RootView: View {
     private func destination(_ navigationItem: NavigationItem) -> some View {
         switch navigationItem {
         case .reading:
-            ReadingView(url: $url).searchable(text: $searchText).environmentObject(readerViewModel)
+            if #available(macOS 12.0, iOS 15.0, *) {
+                ReadingView(url: $url).searchable(text: $searchText).environmentObject(readerViewModel)
+            } else {
+                ReadingView_iOS14(url: $url)
+            }
         case .bookmarks:
             Text(navigationItem.name)
         case .map:

@@ -186,6 +186,8 @@
 		9779E7A22379230F0058DC98 /* SearchController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9779E7A12379230F0058DC98 /* SearchController.swift */; };
 		977B1B5B28971D5E001D07C4 /* App.swift in Sources */ = {isa = PBXBuildFile; fileRef = 977B1B5A28971D5E001D07C4 /* App.swift */; };
 		977B1B5D28972C33001D07C4 /* ReadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 977B1B5C28972C33001D07C4 /* ReadingView.swift */; };
+		977B1B5E2897F9C8001D07C4 /* App.swift in Sources */ = {isa = PBXBuildFile; fileRef = 977B1B5A28971D5E001D07C4 /* App.swift */; };
+		977B1B5F2897F9CB001D07C4 /* ReadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 977B1B5C28972C33001D07C4 /* ReadingView.swift */; };
 		977BD600276EA929004D2C32 /* Realm.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97EC18B126E8555E008309ED /* Realm.xcframework */; };
 		977BD601276EA929004D2C32 /* Realm.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 97EC18B126E8555E008309ED /* Realm.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		977BD602276EA929004D2C32 /* RealmSwift.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97EC18B026E8555E008309ED /* RealmSwift.xcframework */; };
@@ -266,7 +268,6 @@
 		97CE42482493244D00B334E9 /* Parser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 970EC3A023BCEC84008DCA27 /* Parser.swift */; };
 		97CE424A24957C3500B334E9 /* LibraryService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9779A59C2456793500F6F6FF /* LibraryService.swift */; };
 		97D19F072546FF3700910CAE /* BuildingBlocks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97D19F062546FF3700910CAE /* BuildingBlocks.swift */; };
-		97DE2B952839CF2200C63D9B /* iOSApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97EEFF2028398E9A00BDD6E2 /* iOSApp.swift */; };
 		97DE2B9C2839D39100C63D9B /* WebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97255D8B273608C3002B995B /* WebView.swift */; };
 		97DE2B9D2839D77100C63D9B /* ReaderViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 978A730F27B99F25008101B4 /* ReaderViewModel.swift */; };
 		97DE2B9E2839D79A00C63D9B /* OutlineItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97974349257BF2B000D30F03 /* OutlineItem.swift */; };
@@ -1505,8 +1506,8 @@
 				973A0DF5282FEDA500B41E71 /* ZimFileViewModifiers.swift in Sources */,
 				97121EBE28849F0000371AEB /* ZimFileMissingIndicator.swift in Sources */,
 				975088BB287BBDFE00273181 /* LanguageSelector.swift in Sources */,
-				97DE2B952839CF2200C63D9B /* iOSApp.swift in Sources */,
 				97DE2B9D2839D77100C63D9B /* ReaderViewModel.swift in Sources */,
+				977B1B5F2897F9CB001D07C4 /* ReadingView.swift in Sources */,
 				97DE2B9E2839D79A00C63D9B /* OutlineItem.swift in Sources */,
 				97F43AFE283108330076F8E0 /* FileImportModifier.swift in Sources */,
 				979D3A74284067C800E396B8 /* MoreButton.swift in Sources */,
@@ -1538,6 +1539,7 @@
 				976BAEBE284905760049404F /* SearchViewModel.swift in Sources */,
 				97486D0F284D44C20096E4DD /* HUDController.swift in Sources */,
 				974C33A32853DDEE00DF6F4C /* Settings.swift in Sources */,
+				977B1B5E2897F9C8001D07C4 /* App.swift in Sources */,
 				973A0DE7281DC8F400B41E71 /* Downloads.swift in Sources */,
 				9721BBB72841C16D005C910D /* Message.swift in Sources */,
 				97BD6C9D2886E06B004A8532 /* HTMLParser.swift in Sources */,

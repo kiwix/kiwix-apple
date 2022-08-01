@@ -9,6 +9,7 @@
 import SwiftUI
 import WebKit
 
+@available(macOS 12.0, iOS 15.0, *)
 struct ReadingView: View {
     @Binding var url: URL?
     @Environment(\.isSearching) private var isSearching
@@ -32,16 +33,13 @@ struct ReadingView: View {
         }
         .navigationTitle(viewModel.articleTitle)
         .toolbar {
-            ToolbarItemGroup(placement: .navigation) {
-                ControlGroup {
-                    Button {
-                        viewModel.webView.goBack()
-                    } label: { Image(systemName: "chevron.backward") }.disabled(!viewModel.canGoBack)
-                    Button {
-                        viewModel.webView.goForward()
-                    } label: { Image(systemName: "chevron.forward") }.disabled(!viewModel.canGoForward)
-                }
+            #if os(macOS)
+            ToolbarItemGroup(placement: .navigation) { ControlGroup { navigationButtons } }
+            #elseif os(iOS)
+            ToolbarItemGroup(placement: .navigationBarLeading) {
+                navigationButtons
             }
+            #endif
             ToolbarItemGroup {
                 Button {
                     
@@ -70,42 +68,25 @@ struct ReadingView: View {
             }
         }
     }
-}
-
-enum ReadingViewNavigationAction: Equatable {
-    case goBack, goForward, outlineItem(id: String)
-}
-
-class ReadingViewModel: NSObject, ObservableObject, WKScriptMessageHandler {
-    @Published var articleTitle = ""
-    @Published var canGoBack = false
-    @Published var canGoForward = false
-    @Published var outlineItems: [OutlineItem] = []
     
-    var webView: WKWebView?
-    
-    func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
-        if message.name == "headings", let headings = message.body as? [[String: String]] {
-            DispatchQueue.global(qos: .userInitiated).async {
-                let allLevels = headings.compactMap { Int($0["tag"]?.suffix(1) ?? "") }
-                let offset = allLevels.filter({ $0 == 1 }).count == 1 ? 2 : allLevels.min() ?? 0
-                let outlineItems: [OutlineItem] = headings.enumerated().compactMap { index, heading in
-                    guard let id = heading["id"],
-                          let text = heading["text"],
-                          let tag = heading["tag"],
-                          let level = Int(tag.suffix(1)) else { return nil }
-                    return OutlineItem(id: id, index: index, text: text, level: max(level - offset, 0))
-                }
-                DispatchQueue.main.async {
-                    self.outlineItems = outlineItems
-                }
-            }
-        }
+    @ViewBuilder
+    var navigationButtons: some View {
+        Button {
+            viewModel.webView.goBack()
+        } label: { Image(systemName: "chevron.backward") }.disabled(!viewModel.canGoBack)
+        Button {
+            viewModel.webView.goForward()
+        } label: { Image(systemName: "chevron.forward") }.disabled(!viewModel.canGoForward)
     }
+}
+
+struct ReadingView_iOS14: View {
+    @Binding var url: URL?
+    @EnvironmentObject var viewModel: ReaderViewModel
     
-    /// Scroll to a outline item
-    /// - Parameter outlineItemID: ID of the outline item to scroll to
-    func scrollTo(outlineItemID: String) {
-        webView?.evaluateJavaScript("scrollToHeading('\(outlineItemID)')")
+    var body: some View {
+        WebView(
+            url: $url
+        )
     }
 }
