@@ -27,8 +27,6 @@ private struct RootView: View {
     @State private var url: URL?
     @State private var searchText = ""
     
-    @StateObject private var readerViewModel = ReaderViewModel()
-    
     let primaryNavigationItems: [NavigationItem] = [.reading, .bookmarks, .map, .settings]
     let libraryNavigationItems: [NavigationItem] = [.opened, .categories, .new, .downloads]
         
@@ -74,7 +72,7 @@ private struct RootView: View {
     private func destination(_ navigationItem: NavigationItem) -> some View {
         switch navigationItem {
         case .reading:
-            ReadingView(url: $url).searchable(text: $searchText).environmentObject(readerViewModel)
+            ReadingView(url: $url).searchable(text: $searchText)
         case .bookmarks:
             Text(navigationItem.name)
         case .map:
