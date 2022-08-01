@@ -191,6 +191,7 @@
 		977B1B6228980190001D07C4 /* Introspect in Frameworks */ = {isa = PBXBuildFile; productRef = 977B1B6128980190001D07C4 /* Introspect */; };
 		977B1B64289801DE001D07C4 /* Map.swift in Sources */ = {isa = PBXBuildFile; fileRef = 977B1B63289801DE001D07C4 /* Map.swift */; };
 		977B1B65289801DE001D07C4 /* Map.swift in Sources */ = {isa = PBXBuildFile; fileRef = 977B1B63289801DE001D07C4 /* Map.swift */; };
+		977B1B6728980F97001D07C4 /* Introspect in Frameworks */ = {isa = PBXBuildFile; productRef = 977B1B6628980F97001D07C4 /* Introspect */; };
 		977BD600276EA929004D2C32 /* Realm.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97EC18B126E8555E008309ED /* Realm.xcframework */; };
 		977BD601276EA929004D2C32 /* Realm.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 97EC18B126E8555E008309ED /* Realm.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		977BD602276EA929004D2C32 /* RealmSwift.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97EC18B026E8555E008309ED /* RealmSwift.xcframework */; };
@@ -619,6 +620,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				97BD6C9A2886DD71004A8532 /* Fuzi in Frameworks */,
+				977B1B6728980F97001D07C4 /* Introspect in Frameworks */,
 				9753D94D285B5B7E00A626CC /* Defaults in Frameworks */,
 				97E94B2D271EF603005B0295 /* libkiwix.xcframework in Frameworks */,
 			);
@@ -1256,6 +1258,7 @@
 			packageProductDependencies = (
 				9753D94C285B5B7E00A626CC /* Defaults */,
 				97BD6C992886DD71004A8532 /* Fuzi */,
+				977B1B6628980F97001D07C4 /* Introspect */,
 			);
 			productName = Kiwix;
 			productReference = 97E94B17271EF24D005B0295 /* Kiwix.app */;
@@ -2546,6 +2549,11 @@
 			productName = Fuzi;
 		};
 		977B1B6128980190001D07C4 /* Introspect */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 977B1B6028980190001D07C4 /* XCRemoteSwiftPackageReference "SwiftUI-Introspect" */;
+			productName = Introspect;
+		};
+		977B1B6628980F97001D07C4 /* Introspect */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 977B1B6028980190001D07C4 /* XCRemoteSwiftPackageReference "SwiftUI-Introspect" */;
 			productName = Introspect;

@@ -9,6 +9,8 @@
 import SwiftUI
 import WebKit
 
+import Introspect
+
 @available(macOS 12.0, iOS 15.0, *)
 struct ReadingView: View {
     @Binding var url: URL?
@@ -21,6 +23,7 @@ struct ReadingView: View {
         )
         .ignoresSafeArea(edges: .all)
         .modifier(NavigationTitleSubtitle())
+        .modifier(DefaultBarAppearance_iOS())
         .overlay(alignment: .top) {
             if isSearching {
                 List {
@@ -100,6 +103,20 @@ private struct NavigationTitleSubtitle: ViewModifier {
         #elseif os(iOS)
         content
             .navigationBarTitleDisplayMode(.inline)
+        #endif
+    }
+}
+
+private struct DefaultBarAppearance_iOS: ViewModifier {
+    func body(content: Content) -> some View {
+        #if os(iOS)
+        content.introspectViewController{ controller in
+            controller.navigationItem.scrollEdgeAppearance = {
+                let apperance = UINavigationBarAppearance()
+                apperance.configureWithDefaultBackground()
+                return apperance
+            }()
+        }
         #endif
     }
 }
