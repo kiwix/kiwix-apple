@@ -7,23 +7,15 @@
 //
 
 import SwiftUI
+import WebKit
 
 struct ReadingView: View {
     @Binding var url: URL?
     @Environment(\.isSearching) private var isSearching
-    @State private var articleTitle = ""
-    @State private var canGoBack = false
-    @State private var canGoForward = false
-    @State private var navigationAction: ReadingViewNavigationAction?
-    @State private var outlineItems: [OutlineItem] = []
+    @StateObject private var viewModel = ReadingViewModel()
     
     var body: some View {
         WebView(
-            articleTitle: $articleTitle,
-            canGoBack: $canGoBack,
-            canGoForward: $canGoForward,
-            navigationAction: $navigationAction,
-            outlineItems: $outlineItems,
             url: $url
         )
         .ignoresSafeArea(edges: .all)
@@ -38,16 +30,16 @@ struct ReadingView: View {
                 Welcome(url: $url)
             }
         }
-        .navigationTitle(articleTitle)
+        .navigationTitle(viewModel.articleTitle)
         .toolbar {
             ToolbarItemGroup(placement: .navigation) {
                 ControlGroup {
                     Button {
-                        navigationAction = .goBack
-                    } label: { Image(systemName: "chevron.backward") }.disabled(!canGoBack)
+                        viewModel.webView?.goBack()
+                    } label: { Image(systemName: "chevron.backward") }.disabled(!viewModel.canGoBack)
                     Button {
-                        navigationAction = .goForward
-                    } label: { Image(systemName: "chevron.forward") }.disabled(!canGoForward)
+                        viewModel.webView?.goForward()
+                    } label: { Image(systemName: "chevron.forward") }.disabled(!viewModel.canGoForward)
                 }
             }
             ToolbarItemGroup {
@@ -57,14 +49,14 @@ struct ReadingView: View {
                     Image(systemName: "star")
                 }
                 Menu {
-                    ForEach(outlineItems) { item in
+                    ForEach(viewModel.outlineItems) { item in
                         Button(String(repeating: "    ", count: item.level) + item.text) {
-                            navigationAction = .outlineItem(id: item.id)
+                            viewModel.scrollTo(outlineItemID: item.id)
                         }
                     }
                 } label: {
                     Image(systemName: "list.bullet")
-                }.disabled(outlineItems.isEmpty)
+                }.disabled(viewModel.outlineItems.isEmpty)
                 Button {
                     
                 } label: {
@@ -77,9 +69,44 @@ struct ReadingView: View {
                 }
             }
         }
+        .environmentObject(viewModel)
     }
 }
 
 enum ReadingViewNavigationAction: Equatable {
     case goBack, goForward, outlineItem(id: String)
+}
+
+class ReadingViewModel: NSObject, ObservableObject, WKScriptMessageHandler {
+    @Published var articleTitle = ""
+    @Published var canGoBack = false
+    @Published var canGoForward = false
+    @Published var outlineItems: [OutlineItem] = []
+    
+    var webView: WKWebView?
+    
+    func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
+        if message.name == "headings", let headings = message.body as? [[String: String]] {
+            DispatchQueue.global(qos: .userInitiated).async {
+                let allLevels = headings.compactMap { Int($0["tag"]?.suffix(1) ?? "") }
+                let offset = allLevels.filter({ $0 == 1 }).count == 1 ? 2 : allLevels.min() ?? 0
+                let outlineItems: [OutlineItem] = headings.enumerated().compactMap { index, heading in
+                    guard let id = heading["id"],
+                          let text = heading["text"],
+                          let tag = heading["tag"],
+                          let level = Int(tag.suffix(1)) else { return nil }
+                    return OutlineItem(id: id, index: index, text: text, level: max(level - offset, 0))
+                }
+                DispatchQueue.main.async {
+                    self.outlineItems = outlineItems
+                }
+            }
+        }
+    }
+    
+    /// Scroll to a outline item
+    /// - Parameter outlineItemID: ID of the outline item to scroll to
+    func scrollTo(outlineItemID: String) {
+        webView?.evaluateJavaScript("scrollToHeading('\(outlineItemID)')")
+    }
 }

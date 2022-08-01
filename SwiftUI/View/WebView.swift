@@ -10,7 +10,10 @@ import SwiftUI
 import WebKit
 
 #if os(macOS)
-class WebViewCoordinator: NSObject, WKNavigationDelegate, WKScriptMessageHandler {
+class WebViewCoordinator: NSObject, WKNavigationDelegate {
+    var canGoBackObserver: NSKeyValueObservation?
+    var canGoForwardObserver: NSKeyValueObservation?
+    var titleObserver: NSKeyValueObservation?
     var urlObserver: NSKeyValueObservation?
     let view: WebView
     
@@ -44,60 +47,38 @@ class WebViewCoordinator: NSObject, WKNavigationDelegate, WKScriptMessageHandler
     }
     
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
-        view.articleTitle = webView.title ?? ""
-        view.canGoBack = webView.canGoBack
-        view.canGoForward = webView.canGoForward
         webView.evaluateJavaScript("expandAllDetailTags(); getOutlineItems();")
-    }
-    
-    func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
-        if message.name == "headings", let headings = message.body as? [[String: String]] {
-            DispatchQueue.global(qos: .userInitiated).async {
-                let allLevels = headings.compactMap { Int($0["tag"]?.suffix(1) ?? "") }
-                let offset = allLevels.filter({ $0 == 1 }).count == 1 ? 2 : allLevels.min() ?? 0
-                self.view.outlineItems = headings.enumerated().compactMap { index, heading in
-                    guard let id = heading["id"],
-                          let text = heading["text"],
-                          let tag = heading["tag"],
-                          let level = Int(tag.suffix(1)) else { return nil }
-                    return OutlineItem(id: id, index: index, text: text, level: max(level - offset, 0))
-                }
-            }
-        }
     }
 }
 
 struct WebView: NSViewRepresentable {
-    @Binding var articleTitle: String
-    @Binding var canGoBack: Bool
-    @Binding var canGoForward: Bool
-    @Binding var navigationAction: ReadingViewNavigationAction?
-    @Binding var outlineItems: [OutlineItem]
     @Binding var url: URL?
+    @EnvironmentObject var viewModel: ReadingViewModel
     
     func makeNSView(context: Context) -> WKWebView {
         let webView = WebViewCoordinator.createWebView()
-        webView.configuration.userContentController.add(context.coordinator, name: "headings")
+        webView.configuration.userContentController.add(viewModel, name: "headings")
+        webView.navigationDelegate = context.coordinator
+        viewModel.webView = webView
+        context.coordinator.canGoBackObserver = webView.observe(\.canGoBack) { webView, _ in
+            viewModel.canGoBack = webView.canGoBack
+        }
+        context.coordinator.canGoForwardObserver = webView.observe(\.canGoForward) { webView, _ in
+            viewModel.canGoForward = webView.canGoForward
+        }
+        context.coordinator.titleObserver = webView.observe(\.title) { webView, _ in
+            viewModel.articleTitle = webView.title ?? ""
+        }
         context.coordinator.urlObserver = webView.observe(\.url) { webView, _ in
             guard webView.url?.absoluteString != url?.absoluteString else { return }
             url = webView.url
         }
-        webView.navigationDelegate = context.coordinator
         return webView
     }
     
     func updateNSView(_ webView: WKWebView, context: Context) {
-        if navigationAction == .goBack {
-            webView.goBack()
-            DispatchQueue.main.async { navigationAction = nil }
-        } else if navigationAction == .goForward {
-            webView.goForward()
-            DispatchQueue.main.async { navigationAction = nil }
-        } else if case let .outlineItem(id) = navigationAction {
-            webView.evaluateJavaScript("scrollToHeading('\(id)')")
-        } else if let url = url, webView.url?.absoluteString != url.absoluteString {
-            webView.load(URLRequest(url: url))
-        }
+        guard let url = url, webView.url?.absoluteString != url.absoluteString else { return }
+        webView.load(URLRequest(url: url))
     }
     
     func makeCoordinator() -> WebViewCoordinator { WebViewCoordinator(self) }
