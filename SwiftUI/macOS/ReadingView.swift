@@ -48,7 +48,7 @@ struct ReadingView: View {
                 Menu {
                     ForEach(viewModel.outlineItems) { item in
                         Button(String(repeating: "    ", count: item.level) + item.text) {
-//                            viewModel.scrollTo(outlineItemID: item.id)
+                            viewModel.scrollTo(outlineItemID: item.id)
                         }
                     }
                 } label: {
