@@ -9,13 +9,10 @@
 import SwiftUI
 import WebKit
 
-import Introspect
-
-@available(macOS 12.0, iOS 15.0, *)
 struct ReadingView: View {
     @Binding var url: URL?
     @Environment(\.isSearching) private var isSearching
-    @EnvironmentObject var viewModel: ReaderingViewModel
+    @EnvironmentObject var viewModel: ReadingViewModel
     
     var body: some View {
         Group {
@@ -32,13 +29,13 @@ struct ReadingView: View {
             }
         }
         .modifier(NavigationTitleSubtitle())
-        .modifier(DefaultBarAppearance_iOS())
         .toolbar {
-            #if os(macOS)
-            ToolbarItemGroup(placement: .navigation) { ControlGroup { navigationButtons } }
-            #elseif os(iOS)
-            ToolbarItemGroup(placement: .navigationBarLeading) { navigationButtons }
-            #endif
+            ToolbarItemGroup(placement: .navigation) {
+                ControlGroup {
+                    NavigateBackButton()
+                    NavigateForwardButton()
+                }
+            }
             ToolbarItemGroup {
                 Button {
                     
@@ -81,7 +78,7 @@ struct ReadingView: View {
 
 struct ReadingView_iOS14: View {
     @Binding var url: URL?
-    @EnvironmentObject var viewModel: ReaderingViewModel
+    @EnvironmentObject var viewModel: ReadingViewModel
     
     var body: some View {
         WebView(
@@ -91,7 +88,7 @@ struct ReadingView_iOS14: View {
 }
 
 private struct NavigationTitleSubtitle: ViewModifier {
-    @EnvironmentObject var viewModel: ReaderingViewModel
+    @EnvironmentObject var viewModel: ReadingViewModel
     
     func body(content: Content) -> some View {
         #if os(macOS)
@@ -101,22 +98,6 @@ private struct NavigationTitleSubtitle: ViewModifier {
         #elseif os(iOS)
         content
             .navigationBarTitleDisplayMode(.inline)
-        #endif
-    }
-}
-
-private struct DefaultBarAppearance_iOS: ViewModifier {
-    func body(content: Content) -> some View {
-        #if os(macOS)
-        content
-        #elseif os(iOS)
-        content.introspectViewController{ controller in
-            controller.navigationItem.scrollEdgeAppearance = {
-                let apperance = UINavigationBarAppearance()
-                apperance.configureWithDefaultBackground()
-                return apperance
-            }()
-        }
         #endif
     }
 }

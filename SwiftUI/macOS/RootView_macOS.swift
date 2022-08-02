@@ -12,7 +12,7 @@ struct RootView_macOS: View {
     @State private var navigationItem: NavigationItem? = .reading
     @State private var url: URL?
     @State private var searchText = ""
-    @StateObject private var readingViewModel = ReaderingViewModel()
+    @StateObject private var readingViewModel = ReadingViewModel()
     
     private let primaryNavigationItems: [NavigationItem] = [.reading, .bookmarks, .map]
     private let libraryNavigationItems: [NavigationItem] = [.opened, .categories, .new, .downloads]

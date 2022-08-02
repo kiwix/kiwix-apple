@@ -12,7 +12,7 @@ import WebKit
 #if os(macOS)
 struct WebView: NSViewRepresentable {
     @Binding var url: URL?
-    @EnvironmentObject var viewModel: ReaderingViewModel
+    @EnvironmentObject var viewModel: ReadingViewModel
     
     func makeNSView(context: Context) -> WKWebView {
         context.coordinator.urlObserver = context.coordinator.webView.observe(\.url) { webView, _ in
@@ -36,7 +36,7 @@ struct WebView: NSViewRepresentable {
 #elseif os(iOS)
 struct WebView: UIViewControllerRepresentable {
     @Binding var url: URL?
-    @EnvironmentObject var viewModel: ReaderingViewModel
+    @EnvironmentObject var viewModel: ReadingViewModel
     
     func makeUIViewController(context: Context) -> WebViewController {
         let controller = WebViewController(webView: context.coordinator.webView)
@@ -90,7 +90,7 @@ class WebViewCoordinator {
     var titleObserver: NSKeyValueObservation?
     var urlObserver: NSKeyValueObservation?
     
-    weak var viewModel: ReaderingViewModel?
+    weak var viewModel: ReadingViewModel?
     
     let webView: WKWebView = {
         let config = WKWebViewConfiguration()
@@ -117,7 +117,7 @@ class WebViewCoordinator {
         return WKWebView(frame: .zero, configuration: config)
     }()
     
-    init(_ viewModel: ReaderingViewModel) {
+    init(_ viewModel: ReadingViewModel) {
         self.viewModel = viewModel
         viewModel.webView = webView
         

@@ -10,7 +10,7 @@ import WebKit
 
 import Defaults
 
-class ReaderingViewModel: NSObject, ObservableObject, WKNavigationDelegate, WKScriptMessageHandler {
+class ReadingViewModel: NSObject, ObservableObject, WKNavigationDelegate, WKScriptMessageHandler {
     @Published var canGoBack: Bool = false
     @Published var canGoForward: Bool = false
     @Published var articleTitle: String = ""

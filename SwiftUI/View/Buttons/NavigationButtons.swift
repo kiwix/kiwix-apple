@@ -9,11 +9,11 @@
 import SwiftUI
 
 struct NavigateBackButton: View {
-    @EnvironmentObject var viewModel: ReaderViewModel
+    @EnvironmentObject var viewModel: ReadingViewModel
     
     var body: some View {
         Button {
-            viewModel.webView.goBack()
+            viewModel.webView?.goBack()
         } label: {
             Image(systemName: "chevron.backward")
         }
@@ -23,11 +23,11 @@ struct NavigateBackButton: View {
 }
 
 struct NavigateForwardButton: View {
-    @EnvironmentObject var viewModel: ReaderViewModel
+    @EnvironmentObject var viewModel: ReadingViewModel
     
     var body: some View {
         Button {
-            viewModel.webView.goForward()
+            viewModel.webView?.goForward()
         } label: {
             Image(systemName: "chevron.forward")
         }

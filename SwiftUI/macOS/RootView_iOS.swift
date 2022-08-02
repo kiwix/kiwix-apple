@@ -105,7 +105,7 @@ private struct Content: View {
     @Binding var isSearchActive: Bool
     @Environment(\.horizontalSizeClass) var horizontalSizeClass
     @State private var url: URL?
-    @StateObject private var viewModel = ReaderingViewModel()
+    @StateObject private var viewModel = ReadingViewModel()
     
     var body: some View {
         Group {
@@ -115,19 +115,22 @@ private struct Content: View {
                 WebView(url: $url).ignoresSafeArea(.container, edges: .all)
             }
         }
-        .environment(\.managedObjectContext, Database.shared.container.viewContext)
-        .environmentObject(viewModel)
         .toolbar {
+            ToolbarItemGroup(placement: .navigationBarLeading) {
+                if horizontalSizeClass == .regular, !isSearchActive {
+                    NavigateBackButton()
+                    NavigateForwardButton()
+                }
+            }
             ToolbarItemGroup(placement: .bottomBar) {
                 if horizontalSizeClass == .compact, !isSearchActive {
-                    Button {
-                        viewModel.webView?.goBack()
-                    } label: { Image(systemName: "chevron.backward") }.disabled(!viewModel.canGoBack)
-                    Button {
-                        viewModel.webView?.goForward()
-                    } label: { Image(systemName: "chevron.forward") }.disabled(!viewModel.canGoForward)
+                    NavigateBackButton()
+                    Spacer()
+                    NavigateForwardButton()
                 }
             }
         }
+        .environment(\.managedObjectContext, Database.shared.container.viewContext)
+        .environmentObject(viewModel)
     }
 }
