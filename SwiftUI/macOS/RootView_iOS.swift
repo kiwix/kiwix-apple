@@ -129,8 +129,14 @@ private struct Content: View {
                     Spacer()
                     NavigateForwardButton()
                     Spacer()
-                    OutlineMenu()
+                    OutlineButton()
                 }
+            }
+        }
+        .sheet(item: $viewModel.activeSheet) { activeSheet in
+            switch activeSheet {
+            case.outline:
+                SheetView { OutlineTree().listStyle(.plain).navigationBarTitleDisplayMode(.inline) }
             }
         }
         .environment(\.managedObjectContext, Database.shared.container.viewContext)

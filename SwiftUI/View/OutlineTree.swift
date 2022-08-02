@@ -1,5 +1,5 @@
 //
-//  Outline.swift
+//  OutlineTree.swift
 //  Kiwix
 //
 //  Created by Chris Li on 1/17/22.
@@ -8,8 +8,8 @@
 
 import SwiftUI
 
-struct Outline: View {
-    @EnvironmentObject var viewModel: ReaderViewModel
+struct OutlineTree: View {
+    @EnvironmentObject var viewModel: ReadingViewModel
     @Environment(\.presentationMode) private var presentationMode
     @State private var selectedID: String?
     
@@ -18,7 +18,7 @@ struct Outline: View {
             Message(text: "No outline available")
         } else {
             List(selection: $selectedID) {
-                ForEach(viewModel.outlineItems) { item in
+                ForEach(viewModel.outlineItemTree) { item in
                     OutlineNode(item: item) { item in
                         viewModel.scrollTo(outlineItemID: item.id)
                         presentationMode.wrappedValue.dismiss()

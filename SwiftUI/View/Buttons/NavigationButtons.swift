@@ -36,6 +36,20 @@ struct NavigateForwardButton: View {
     }
 }
 
+struct OutlineButton: View {
+    @EnvironmentObject var viewModel: ReadingViewModel
+    
+    var body: some View {
+        Button {
+            viewModel.activeSheet = .outline
+        } label: {
+            Image(systemName: "list.bullet")
+        }
+        .disabled(viewModel.outlineItems.isEmpty)
+        .help("Show article outline")
+    }
+}
+
 struct OutlineMenu: View {
     @EnvironmentObject var viewModel: ReadingViewModel
     

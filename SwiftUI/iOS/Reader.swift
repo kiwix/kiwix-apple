@@ -22,7 +22,7 @@ struct Reader: View {
                 if sidebarDisplayMode != nil, horizontalSizeClass == .regular {
                     HStack(spacing: 0) {
                         if sidebarDisplayMode == .outline {
-                            Outline()
+                            OutlineTree()
                         } else if sidebarDisplayMode == .bookmarks {
                             Bookmarks(url: $url)
                         }
@@ -46,7 +46,7 @@ struct Reader: View {
                 if horizontalSizeClass == .regular, !isSearchActive {
                     NavigateBackButton()
                     NavigateForwardButton()
-                    OutlineButton(sheetDisplayMode: $sheetDisplayMode, sidebarDisplayMode: $sidebarDisplayMode)
+//                    OutlineButton(sheetDisplayMode: $sheetDisplayMode, sidebarDisplayMode: $sidebarDisplayMode)
                     BookmarkButton(
                         url: url, sheetDisplayMode: $sheetDisplayMode, sidebarDisplayMode: $sidebarDisplayMode
                     )
@@ -73,7 +73,7 @@ struct Reader: View {
                         Spacer()
                         NavigateForwardButton()
                         Spacer()
-                        OutlineButton(sheetDisplayMode: $sheetDisplayMode, sidebarDisplayMode: $sidebarDisplayMode)
+//                        OutlineButton(sheetDisplayMode: $sheetDisplayMode, sidebarDisplayMode: $sidebarDisplayMode)
                         Spacer()
                         BookmarkButton(
                             url: url, sheetDisplayMode: $sheetDisplayMode, sidebarDisplayMode: $sidebarDisplayMode
@@ -89,7 +89,7 @@ struct Reader: View {
         .sheet(item: $sheetDisplayMode) { displayMode in
             switch displayMode {
             case .outline:
-                SheetView { Outline().listStyle(.plain).navigationBarTitleDisplayMode(.inline) }
+                SheetView { OutlineTree().listStyle(.plain).navigationBarTitleDisplayMode(.inline) }
             case .bookmarks:
                 SheetView { Bookmarks(url: $url).listStyle(.plain).navigationBarTitleDisplayMode(.inline) }
             case .library:
