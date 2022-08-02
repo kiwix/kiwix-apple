@@ -120,6 +120,7 @@ private struct Content: View {
                 if horizontalSizeClass == .regular, !isSearchActive {
                     NavigateBackButton()
                     NavigateForwardButton()
+                    OutlineMenu()
                 }
             }
             ToolbarItemGroup(placement: .bottomBar) {
@@ -127,6 +128,8 @@ private struct Content: View {
                     NavigateBackButton()
                     Spacer()
                     NavigateForwardButton()
+                    Spacer()
+                    OutlineMenu()
                 }
             }
         }
