@@ -12,26 +12,31 @@ import WebKit
 #if os(macOS)
 struct WebView: NSViewRepresentable {
     @Binding var url: URL?
-    @EnvironmentObject var viewModel: ReaderViewModel
+    @EnvironmentObject var viewModel: ReaderingViewModel
     
     func makeNSView(context: Context) -> WKWebView {
-        context.coordinator.urlObserver = viewModel.webView.observe(\.url) { webView, _ in
+        context.coordinator.urlObserver = context.coordinator.webView.observe(\.url) { webView, _ in
             guard webView.url?.absoluteString != url?.absoluteString else { return }
             url = webView.url
         }
-        return viewModel.webView
+        return context.coordinator.webView
     }
+    
     func updateNSView(_ webView: WKWebView, context: Context) {
         guard let url = url, webView.url?.absoluteString != url.absoluteString else { return }
         webView.load(URLRequest(url: url))
     }
-    func makeCoordinator() -> Coordinator { Coordinator() }
-    class Coordinator { var urlObserver: NSKeyValueObservation? }
+    
+    static func dismantleNSView(_ nsView: WKWebView, coordinator: WebViewCoordinator) {
+        coordinator.viewModel?.webViewInteractionState = coordinator.webView.interactionState
+    }
+    
+    func makeCoordinator() -> WebViewCoordinator { WebViewCoordinator(viewModel) }
 }
 #elseif os(iOS)
 struct WebView: UIViewControllerRepresentable {
     @Binding var url: URL?
-    @EnvironmentObject var viewModel: ReaderViewModel
+    @EnvironmentObject var viewModel: ReaderingViewModel
     
     func makeUIViewController(context: Context) -> WebViewController {
         let controller = WebViewController(webView: context.coordinator.webView)
@@ -47,13 +52,13 @@ struct WebView: UIViewControllerRepresentable {
         context.coordinator.webView.load(URLRequest(url: url))
     }
     
-    static func dismantleUIViewController(_ controller: WebViewController, coordinator: WebViewCoordinator) {
-        
+    static func dismantleUIViewController(_ uiViewController: WebViewController, coordinator: WebViewCoordinator) {
+        if #available(iOS 15.0, *) {
+            coordinator.viewModel?.webViewInteractionState = coordinator.webView.interactionState
+        }
     }
     
-    func makeCoordinator() -> WebViewCoordinator {
-        WebViewCoordinator()
-    }
+    func makeCoordinator() -> WebViewCoordinator { WebViewCoordinator(viewModel) }
 }
 
 class WebViewController: UIViewController {
@@ -80,7 +85,12 @@ class WebViewController: UIViewController {
 #endif
 
 class WebViewCoordinator {
+    var canGoBackObserver: NSKeyValueObservation?
+    var canGoForwardObserver: NSKeyValueObservation?
+    var titleObserver: NSKeyValueObservation?
     var urlObserver: NSKeyValueObservation?
+    
+    weak var viewModel: ReaderingViewModel?
     
     let webView: WKWebView = {
         let config = WKWebViewConfiguration()
@@ -106,4 +116,26 @@ class WebViewCoordinator {
         }()
         return WKWebView(frame: .zero, configuration: config)
     }()
+    
+    init(_ viewModel: ReaderingViewModel) {
+        self.viewModel = viewModel
+        viewModel.webView = webView
+        
+        webView.navigationDelegate = viewModel
+        canGoBackObserver = webView.observe(\.canGoBack) { webView, _ in
+            viewModel.canGoBack = webView.canGoBack
+        }
+        canGoForwardObserver = webView.observe(\.canGoForward) { webView, _ in
+            viewModel.canGoForward = webView.canGoForward
+        }
+        titleObserver = webView.observe(\.title) { webView, _ in
+            guard let title = webView.title, !title.isEmpty,
+                  let zimFileID = webView.url?.host,
+                  let zimFile = try? Database.shared.container.viewContext.fetch(
+                    ZimFile.fetchRequest(predicate: NSPredicate(format: "fileID == %@", zimFileID))
+                  ).first else { return }
+            viewModel.articleTitle = title
+            viewModel.zimFileName = zimFile.name
+        }
+    }
 }

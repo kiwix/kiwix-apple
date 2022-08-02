@@ -22,36 +22,29 @@ struct Kiwix: App {
 }
 
 private struct RootView: View {
-    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     @State private var navigationItem: NavigationItem? = .reading
     @State private var url: URL?
     @State private var searchText = ""
-    @StateObject private var readerViewModel = ReaderViewModel()
+    @StateObject private var readingViewModel = ReaderingViewModel()
     
     let primaryNavigationItems: [NavigationItem] = [.reading, .bookmarks, .map, .settings]
     let libraryNavigationItems: [NavigationItem] = [.opened, .categories, .new, .downloads]
         
     var body: some View {
-        Group {
-            if horizontalSizeClass == .regular {
-                NavigationView {
-                    List(selection: $navigationItem) {
-                        ForEach(primaryNavigationItems, id: \.self) { navigationLink($0) }
-                        Section {
-                            ForEach(libraryNavigationItems, id: \.self) { navigationLink($0) }
-                        } header: { Text("Library") }
-                    }
-                    .frame(minWidth: 150)
-                    .toolbar {
-                        #if os(macOS)
-                        SidebarButton()
-                        #endif
-                    }
-                    EmptyView()  // required so the UI does not look broken on macOS
-                }
-            } else {
-                WebView(url: $url)
+        NavigationView {
+            List(selection: $navigationItem) {
+                ForEach(primaryNavigationItems, id: \.self) { navigationLink($0) }
+                Section {
+                    ForEach(libraryNavigationItems, id: \.self) { navigationLink($0) }
+                } header: { Text("Library") }
             }
+            .frame(minWidth: 150)
+            .toolbar {
+                #if os(macOS)
+                SidebarButton()
+                #endif
+            }
+            EmptyView()  // required so the UI does not look broken on macOS
         }
         .environment(\.managedObjectContext, Database.shared.container.viewContext)
         .onOpenURL { url in
@@ -79,7 +72,7 @@ private struct RootView: View {
         switch navigationItem {
         case .reading:
             if #available(macOS 12.0, iOS 15.0, *) {
-                ReadingView(url: $url).searchable(text: $searchText).environmentObject(readerViewModel)
+                ReadingView(url: $url).searchable(text: $searchText).environmentObject(readingViewModel)
             } else {
                 ReadingView_iOS14(url: $url)
             }

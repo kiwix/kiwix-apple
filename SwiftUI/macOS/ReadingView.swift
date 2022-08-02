@@ -15,7 +15,7 @@ import Introspect
 struct ReadingView: View {
     @Binding var url: URL?
     @Environment(\.isSearching) private var isSearching
-    @EnvironmentObject var viewModel: ReaderViewModel
+    @EnvironmentObject var viewModel: ReaderingViewModel
     
     var body: some View {
         Group {
@@ -48,7 +48,7 @@ struct ReadingView: View {
                 Menu {
                     ForEach(viewModel.outlineItems) { item in
                         Button(String(repeating: "    ", count: item.level) + item.text) {
-                            viewModel.scrollTo(outlineItemID: item.id)
+//                            viewModel.scrollTo(outlineItemID: item.id)
                         }
                     }
                 } label: {
@@ -71,17 +71,17 @@ struct ReadingView: View {
     @ViewBuilder
     var navigationButtons: some View {
         Button {
-            viewModel.webView.goBack()
+            viewModel.webView?.goBack()
         } label: { Image(systemName: "chevron.backward") }.disabled(!viewModel.canGoBack)
         Button {
-            viewModel.webView.goForward()
+            viewModel.webView?.goForward()
         } label: { Image(systemName: "chevron.forward") }.disabled(!viewModel.canGoForward)
     }
 }
 
 struct ReadingView_iOS14: View {
     @Binding var url: URL?
-    @EnvironmentObject var viewModel: ReaderViewModel
+    @EnvironmentObject var viewModel: ReaderingViewModel
     
     var body: some View {
         WebView(
@@ -91,7 +91,7 @@ struct ReadingView_iOS14: View {
 }
 
 private struct NavigationTitleSubtitle: ViewModifier {
-    @EnvironmentObject var viewModel: ReaderViewModel
+    @EnvironmentObject var viewModel: ReaderingViewModel
     
     func body(content: Content) -> some View {
         #if os(macOS)

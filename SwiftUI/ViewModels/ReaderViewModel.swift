@@ -10,12 +10,62 @@ import WebKit
 
 import Defaults
 
-class ReaderingViewModel: NSObject, ObservableObject {
+class ReaderingViewModel: NSObject, ObservableObject, WKNavigationDelegate {
     @Published var canGoBack: Bool = false
     @Published var canGoForward: Bool = false
     @Published var articleTitle: String = ""
     @Published var zimFileName: String = ""
     @Published var outlineItems = [OutlineItem]()
+    
+    weak var webView: WKWebView?{
+        didSet { restoreWebViewInteractionState() }
+    }
+    var webViewInteractionState: Any? {
+        didSet { restoreWebViewInteractionState() }
+    }
+    
+    private func restoreWebViewInteractionState() {
+        if #available(iOS 15.0, *) {
+            webView?.interactionState = webViewInteractionState
+        }
+    }
+    
+    // MARK: - WKNavigationDelegate
+    
+    func webView(_ webView: WKWebView,
+                 decidePolicyFor navigationAction: WKNavigationAction,
+                 decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
+        guard let url = navigationAction.request.url else { decisionHandler(.cancel); return }
+        if url.isKiwixURL, let redirectedURL = ZimFileService.shared.getRedirectedURL(url: url) {
+            DispatchQueue.main.async { webView.load(URLRequest(url: redirectedURL)) }
+            decisionHandler(.cancel)
+        } else if url.isKiwixURL {
+            decisionHandler(.allow)
+        } else if url.scheme == "http" || url.scheme == "https" {
+            #if os(macOS)
+            NSWorkspace.shared.open(url)
+            #elseif os(iOS)
+            // show external article load alert
+            #endif
+            decisionHandler(.cancel)
+        } else if url.scheme == "geo" {
+            let coordinate = url.absoluteString.replacingOccurrences(of: "geo:", with: "")
+            if let url = URL(string: "http://maps.apple.com/?ll=\(coordinate)") {
+                #if os(macOS)
+                NSWorkspace.shared.open(url)
+                #elseif os(iOS)
+                UIApplication.shared.open(url)
+                #endif
+            }
+            decisionHandler(.cancel)
+        } else {
+            decisionHandler(.cancel)
+        }
+    }
+    
+    func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
+        webView.evaluateJavaScript("expandAllDetailTags(); getOutlineItems();")
+    }
 }
 
 class ReaderViewModel: NSObject, ObservableObject, WKNavigationDelegate, WKScriptMessageHandler {
