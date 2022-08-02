@@ -38,7 +38,7 @@ struct Reader: View {
                 case .bookmarks:
                     Bookmarks(url: $url)
                 case .outline:
-                    Outline()
+                    OutlineTree()
                 case .library:
                     ZimFilesInLibrary(url: $url)
                 }

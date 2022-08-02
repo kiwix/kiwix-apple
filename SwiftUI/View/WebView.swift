@@ -122,6 +122,7 @@ class WebViewCoordinator {
         viewModel.webView = webView
         
         webView.navigationDelegate = viewModel
+        webView.allowsBackForwardNavigationGestures = true
         webView.configuration.userContentController.add(viewModel, name: "headings")
         canGoBackObserver = webView.observe(\.canGoBack) { webView, _ in
             viewModel.canGoBack = webView.canGoBack
