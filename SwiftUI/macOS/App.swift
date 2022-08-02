@@ -22,6 +22,7 @@ struct Kiwix: App {
 }
 
 private struct RootView: View {
+    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     @State private var navigationItem: NavigationItem? = .reading
     @State private var url: URL?
     @State private var searchText = ""
@@ -31,20 +32,26 @@ private struct RootView: View {
     let libraryNavigationItems: [NavigationItem] = [.opened, .categories, .new, .downloads]
         
     var body: some View {
-        NavigationView {
-            List(selection: $navigationItem) {
-                ForEach(primaryNavigationItems, id: \.self) { navigationLink($0) }
-                Section {
-                    ForEach(libraryNavigationItems, id: \.self) { navigationLink($0) }
-                } header: { Text("Library") }
+        Group {
+            if horizontalSizeClass == .regular {
+                NavigationView {
+                    List(selection: $navigationItem) {
+                        ForEach(primaryNavigationItems, id: \.self) { navigationLink($0) }
+                        Section {
+                            ForEach(libraryNavigationItems, id: \.self) { navigationLink($0) }
+                        } header: { Text("Library") }
+                    }
+                    .frame(minWidth: 150)
+                    .toolbar {
+                        #if os(macOS)
+                        SidebarButton()
+                        #endif
+                    }
+                    EmptyView()  // required so the UI does not look broken on macOS
+                }
+            } else {
+                WebView(url: $url)
             }
-            .frame(minWidth: 150)
-            .toolbar {
-                #if os(macOS)
-                SidebarButton()
-                #endif
-            }
-            EmptyView()  // required so the UI does not look broken on macOS
         }
         .environment(\.managedObjectContext, Database.shared.container.viewContext)
         .onOpenURL { url in

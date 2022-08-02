@@ -34,29 +34,30 @@ struct WebView: UIViewControllerRepresentable {
     @EnvironmentObject var viewModel: ReaderViewModel
     
     func makeUIViewController(context: Context) -> WebViewController {
-        context.coordinator.urlObserver = viewModel.webView.observe(\.url) { webView, _ in
+        let controller = WebViewController(webView: context.coordinator.webView)
+        context.coordinator.urlObserver = context.coordinator.webView.observe(\.url) { webView, _ in
             guard webView.url?.absoluteString != url?.absoluteString else { return }
             url = webView.url
         }
-        return WebViewController(webView: viewModel.webView)
+        return controller
     }
     
-    func updateUIViewController(_ webViewController: WebViewController, context: Context) {
-        guard let url = url, viewModel.webView.url?.absoluteString != url.absoluteString else { return }
-        viewModel.webView.load(URLRequest(url: url))
+    func updateUIViewController(_ controller: WebViewController, context: Context) {
+        guard let url = url, context.coordinator.webView.url?.absoluteString != url.absoluteString else { return }
+        context.coordinator.webView.load(URLRequest(url: url))
     }
     
-    func makeCoordinator() -> Coordinator {
-        Coordinator()
+    static func dismantleUIViewController(_ controller: WebViewController, coordinator: WebViewCoordinator) {
+        
     }
     
-    class Coordinator {
-        var urlObserver: NSKeyValueObservation?
+    func makeCoordinator() -> WebViewCoordinator {
+        WebViewCoordinator()
     }
 }
 
 class WebViewController: UIViewController {
-    let webView: WKWebView
+    private let webView: WKWebView
     
     init(webView: WKWebView) {
         self.webView = webView
@@ -77,3 +78,32 @@ class WebViewController: UIViewController {
     }
 }
 #endif
+
+class WebViewCoordinator {
+    var urlObserver: NSKeyValueObservation?
+    
+    let webView: WKWebView = {
+        let config = WKWebViewConfiguration()
+        config.setURLSchemeHandler(KiwixURLSchemeHandler(), forURLScheme: "kiwix")
+        config.userContentController = {
+            let controller = WKUserContentController()
+            guard FeatureFlags.wikipediaDarkUserCSS,
+                  let path = Bundle.main.path(forResource: "wikipedia_dark", ofType: "css"),
+                  let css = try? String(contentsOfFile: path) else { return controller }
+            let source = """
+                var style = document.createElement('style');
+                style.innerHTML = `\(css)`;
+                document.head.appendChild(style);
+                """
+            let script = WKUserScript(source: source, injectionTime: .atDocumentEnd, forMainFrameOnly: false)
+            controller.addUserScript(script)
+            if let url = Bundle.main.url(forResource: "injection", withExtension: "js"),
+               let javascript = try? String(contentsOf: url) {
+                let script = WKUserScript(source: javascript, injectionTime: .atDocumentEnd, forMainFrameOnly: false)
+                controller.addUserScript(script)
+            }
+            return controller
+        }()
+        return WKWebView(frame: .zero, configuration: config)
+    }()
+}

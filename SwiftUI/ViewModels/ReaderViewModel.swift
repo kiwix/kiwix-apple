@@ -10,6 +10,14 @@ import WebKit
 
 import Defaults
 
+class ReaderingViewModel: NSObject, ObservableObject {
+    @Published var canGoBack: Bool = false
+    @Published var canGoForward: Bool = false
+    @Published var articleTitle: String = ""
+    @Published var zimFileName: String = ""
+    @Published var outlineItems = [OutlineItem]()
+}
+
 class ReaderViewModel: NSObject, ObservableObject, WKNavigationDelegate, WKScriptMessageHandler {
     @Published private(set) var canGoBack: Bool = false
     @Published private(set) var canGoForward: Bool = false
