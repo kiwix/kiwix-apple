@@ -35,3 +35,21 @@ struct NavigateForwardButton: View {
         .help("Show the next page")
     }
 }
+
+struct OutlineMenu: View {
+    @EnvironmentObject var viewModel: ReadingViewModel
+    
+    var body: some View {
+        Menu {
+            ForEach(viewModel.outlineItems) { item in
+                Button(String(repeating: "    ", count: item.level) + item.text) {
+                    viewModel.scrollTo(outlineItemID: item.id)
+                }
+            }
+        } label: {
+            Image(systemName: "list.bullet")
+        }
+        .disabled(viewModel.outlineItems.isEmpty)
+        .help("Show article outline")
+    }
+}

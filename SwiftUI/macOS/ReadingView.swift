@@ -42,15 +42,7 @@ struct ReadingView: View {
                 } label: {
                     Image(systemName: "star")
                 }
-                Menu {
-                    ForEach(viewModel.outlineItems) { item in
-                        Button(String(repeating: "    ", count: item.level) + item.text) {
-                            viewModel.scrollTo(outlineItemID: item.id)
-                        }
-                    }
-                } label: {
-                    Image(systemName: "list.bullet")
-                }.disabled(viewModel.outlineItems.isEmpty)
+                OutlineMenu()
                 Button {
                     
                 } label: {
