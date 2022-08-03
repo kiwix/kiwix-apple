@@ -1,6 +1,6 @@
 //
-//  SearchResultCell.swift
-//  Kiwix for iOS
+//  ArticleCell.swift
+//  Kiwix
 //
 //  Created by Chris Li on 6/3/22.
 //  Copyright © 2022 Chris Li. All rights reserved.
@@ -8,17 +8,34 @@
 
 import SwiftUI
 
-struct SearchResultCell: View {
+struct ArticleCell: View {
     @State var isHovering: Bool = false
     
-    let result: SearchResult
+    let title: String
+    let snippet: NSAttributedString?
     let zimFile: ZimFile?
+    
+    init(bookmark: Bookmark) {
+        self.title = bookmark.title
+        if let snippet = bookmark.snippet {
+            self.snippet = NSAttributedString(string: snippet)
+        } else {
+            self.snippet = nil
+        }
+        self.zimFile = ZimFile()
+    }
+    
+    init(result: SearchResult, zimFile: ZimFile?) {
+        self.title = result.title
+        self.snippet = result.snippet
+        self.zimFile = zimFile
+    }
     
     var body: some View {
         HStack(alignment: .top) {
             VStack(alignment: .leading) {
-                Text(result.title).fontWeight(.medium)
-                if let snippet = result.snippet {
+                Text(title).fontWeight(.medium)
+                if let snippet = snippet {
                     Group {
                         if #available(iOS 15, *) {
                             Text(AttributedString(snippet))
@@ -41,7 +58,7 @@ struct SearchResultCell: View {
     }
 }
 
-struct SearchResultCell_Previews: PreviewProvider {
+struct ArticleCell_Previews: PreviewProvider {
     static let result: SearchResult = {
         let result = SearchResult(zimFileID: UUID(), path: "", title: "Article Title")!
         result.snippet = NSAttributedString(string:
@@ -54,7 +71,7 @@ struct SearchResultCell_Previews: PreviewProvider {
     }()
     
     static var previews: some View {
-        SearchResultCell(result: SearchResultCell_Previews.result, zimFile: nil)
+        ArticleCell(result: ArticleCell_Previews.result, zimFile: nil)
             .frame(width: 500)
             .padding()
             .previewLayout(.sizeThatFits)
