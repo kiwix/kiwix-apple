@@ -26,19 +26,15 @@ class ReadingViewModel: NSObject, ObservableObject, WKNavigationDelegate, WKScri
         didSet { restoreWebViewInteractionState() }
     }
     
+    static let bookmarkNotificationName = NSNotification.Name(rawValue: "Bookmark.toggle")
+    
     private func restoreWebViewInteractionState() {
         if #available(iOS 15.0, *) {
             webView?.interactionState = webViewInteractionState
         }
     }
     
-    /// Scroll to a outline item
-    /// - Parameter outlineItemID: ID of the outline item to scroll to
-    func scrollTo(outlineItemID: String) {
-        webView?.evaluateJavaScript("scrollToHeading('\(outlineItemID)')")
-    }
-    
-    // MARK: - WKNavigationDelegate
+    // MARK: - delegates
     
     func webView(_ webView: WKWebView,
                  decidePolicyFor navigationAction: WKNavigationAction,
@@ -75,8 +71,6 @@ class ReadingViewModel: NSObject, ObservableObject, WKNavigationDelegate, WKScri
         webView.evaluateJavaScript("expandAllDetailTags(); getOutlineItems();")
     }
     
-    // MARK: - WKScriptMessageHandler
-    
     func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
         if message.name == "headings", let headings = message.body as? [[String: String]] {
             DispatchQueue.global(qos: .userInitiated).async {
@@ -84,6 +78,49 @@ class ReadingViewModel: NSObject, ObservableObject, WKNavigationDelegate, WKScri
                 self.generateOutlineTree(headings: headings)
             }
         }
+    }
+    
+    // MARK: - bookmark
+    
+    /// Create bookmark for an article
+    /// - Parameter url: url of the article to bookmark
+    func createBookmark(_ url: URL?) {
+        guard let url = url else { return }
+        let context = Database.shared.container.viewContext
+        let bookmark = Bookmark(context: context)
+        DispatchQueue.global().sync {
+            bookmark.articleURL = url
+            bookmark.created = Date()
+            if let parser = try? HTMLParser(url: url) {
+                bookmark.title = parser.title ?? ""
+                bookmark.snippet = parser.getFirstSentence(languageCode: nil)?.string
+                if let zimFileID = url.host, let imagePath = parser.getFirstImagePath() {
+                    bookmark.thumbImageURL = URL(zimFileID: zimFileID, contentPath: imagePath)
+                }
+            }
+        }
+        try? context.save()
+        NotificationCenter.default.post(name: ReadingViewModel.bookmarkNotificationName, object: url)
+    }
+    
+    /// Delete an article bookmark
+    /// - Parameter url: url of the article to delete bookmark
+    func deleteBookmark(_ url: URL?) {
+        guard let url = url else { return }
+        let context = Database.shared.container.viewContext
+        let request = Bookmark.fetchRequest(predicate: NSPredicate(format: "articleURL == %@", url as CVarArg))
+        guard let bookmark = try? context.fetch(request).first else { return }
+        context.delete(bookmark)
+        try? context.save()
+        NotificationCenter.default.post(name: ReaderViewModel.bookmarkNotificationName, object: nil)
+    }
+    
+    // MARK: - outline
+    
+    /// Scroll to a outline item
+    /// - Parameter outlineItemID: ID of the outline item to scroll to
+    func scrollTo(outlineItemID: String) {
+        webView?.evaluateJavaScript("scrollToHeading('\(outlineItemID)')")
     }
     
     /// Convert flattened heading element data to a list of OutlineItems.
@@ -152,7 +189,7 @@ class ReadingViewModel: NSObject, ObservableObject, WKNavigationDelegate, WKScri
 
 enum ActiveSheet: String, Identifiable {
     var id: String { rawValue }
-    case outline
+    case outline, bookmarks
 }
 
 class ReaderViewModel: NSObject, ObservableObject, WKNavigationDelegate, WKScriptMessageHandler {

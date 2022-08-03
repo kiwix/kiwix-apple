@@ -37,12 +37,8 @@ struct ReadingView: View {
                 }
             }
             ToolbarItemGroup {
-                Button {
-                    
-                } label: {
-                    Image(systemName: "star")
-                }
                 OutlineMenu()
+                BookmarkToggleButton(url: url)
                 Button {
                     
                 } label: {

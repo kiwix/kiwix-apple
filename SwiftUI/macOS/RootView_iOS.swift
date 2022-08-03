@@ -130,13 +130,17 @@ private struct Content: View {
                     NavigateForwardButton()
                     Spacer()
                     OutlineButton()
+                    Spacer()
+                    BookmarkMultiButton(url: url)
                 }
             }
         }
         .sheet(item: $viewModel.activeSheet) { activeSheet in
             switch activeSheet {
-            case.outline:
+            case .outline:
                 SheetView { OutlineTree().listStyle(.plain).navigationBarTitleDisplayMode(.inline) }
+            case .bookmarks:
+                SheetView { List {} }
             }
         }
         .environment(\.managedObjectContext, Database.shared.container.viewContext)
