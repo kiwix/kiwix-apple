@@ -22,7 +22,7 @@ struct ArticleCell: View {
         } else {
             self.snippet = nil
         }
-        self.zimFile = ZimFile()
+        self.zimFile = bookmark.zimFile
     }
     
     init(result: SearchResult, zimFile: ZimFile?) {
@@ -33,17 +33,21 @@ struct ArticleCell: View {
     
     var body: some View {
         HStack(alignment: .top) {
-            VStack(alignment: .leading) {
+            VStack(alignment: .leading, spacing: 0) {
                 Text(title).fontWeight(.medium)
-                if let snippet = snippet {
-                    Group {
+                Spacer().frame(height: 2)
+                Group {
+                    if let snippet = snippet {
                         if #available(iOS 15, *) {
-                            Text(AttributedString(snippet))
+                            Text(AttributedString(snippet)).lineLimit(4)
                         } else {
-                            Text(snippet.string)
+                            Text(snippet.string).lineLimit(4)
                         }
-                    }.font(.caption).multilineTextAlignment(.leading)
-                }
+                    } else {
+                        Text("No snippet").foregroundColor(.secondary)
+                    }
+                }.font(.caption).multilineTextAlignment(.leading)
+                Spacer(minLength: 0)
             }
             Spacer()
             if let zimFile = zimFile, let category = Category(rawValue: zimFile.category) {

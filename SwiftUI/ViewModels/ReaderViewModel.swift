@@ -94,8 +94,12 @@ class ReadingViewModel: NSObject, ObservableObject, WKNavigationDelegate, WKScri
             if let parser = try? HTMLParser(url: url) {
                 bookmark.title = parser.title ?? ""
                 bookmark.snippet = parser.getFirstSentence(languageCode: nil)?.string
-                if let zimFileID = url.host, let imagePath = parser.getFirstImagePath() {
-                    bookmark.thumbImageURL = URL(zimFileID: zimFileID, contentPath: imagePath)
+                guard let zimFileID = url.host,
+                      let zimFileID = UUID(uuidString: zimFileID),
+                      let zimFile = try? context.fetch(ZimFile.fetchRequest(fileID: zimFileID)).first else { return }
+                bookmark.zimFile = zimFile
+                if let imagePath = parser.getFirstImagePath() {
+                    bookmark.thumbImageURL = URL(zimFileID: zimFileID.uuidString, contentPath: imagePath)
                 }
             }
         }

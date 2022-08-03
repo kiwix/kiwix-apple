@@ -10,6 +10,7 @@ import SwiftUI
 
 struct Bookmarks: View {
     @Binding var url: URL?
+    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     @Environment(\.presentationMode) private var presentationMode
     @FetchRequest(
         sortDescriptors: [NSSortDescriptor(keyPath: \Bookmark.created, ascending: true)],
@@ -17,27 +18,38 @@ struct Bookmarks: View {
     ) private var bookmarks: FetchedResults<Bookmark>
     
     var body: some View {
-        if bookmarks.isEmpty {
-            Message(text: "No bookmarks")
-        } else {
-            List(bookmarks, id: \.articleURL, selection: $url) { bookmark in
-                #if os(macOS)
-                Text(bookmark.title)
-                #elseif os(iOS)
-                Button {
-                    url = bookmark.articleURL
-                    presentationMode.wrappedValue.dismiss()
-                } label: {
-                    VStack {
-                        Text(bookmark.title)
-                        if let snippet = bookmark.snippet {
-                            Text(snippet).font(.caption)
-                        }
+        Group {
+            if bookmarks.isEmpty {
+                Message(text: "No bookmarks")
+            } else {
+                LazyVGrid(columns: ([gridItem]), spacing: 12) {
+                    ForEach(bookmarks) { bookmark in
+                        Button { load(bookmark) } label: {
+                            ArticleCell(bookmark: bookmark).frame(height: itemHeight)
+                        }.buttonStyle(.plain)
                     }
-                }
-                #endif
+                }.modifier(GridCommon())
             }
-            .navigationTitle("Bookmarks")
-        }
+        }.navigationTitle("Bookmarks")
+    }
+    
+    private var gridItem: GridItem {
+        #if os(macOS)
+        GridItem(.adaptive(minimum: 250, maximum: 500), spacing: 12)
+        #elseif os(iOS)
+        GridItem(.adaptive(minimum: 300, maximum: 500), spacing: 12)
+        #endif
+    }
+    
+    private var itemHeight: CGFloat? {
+        #if os(macOS)
+        80
+        #elseif os(iOS)
+        horizontalSizeClass == .regular ? 110: nil
+        #endif
+    }
+    
+    private func load(_ bookmark: Bookmark) {
+        
     }
 }

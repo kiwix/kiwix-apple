@@ -141,7 +141,7 @@ private struct Content: View {
             case .outline:
                 SheetView { OutlineTree().listStyle(.plain).navigationBarTitleDisplayMode(.inline) }
             case .bookmarks:
-                SheetView { List {} }
+                SheetView { Bookmarks(url: $url) }
             }
         }
         .environment(\.managedObjectContext, Database.shared.container.viewContext)
