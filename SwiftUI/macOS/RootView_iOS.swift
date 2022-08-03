@@ -121,6 +121,7 @@ private struct Content: View {
                     NavigateBackButton()
                     NavigateForwardButton()
                     OutlineMenu()
+                    BookmarkMultiButton(url: url)
                 }
             }
             ToolbarItemGroup(placement: .bottomBar) {
