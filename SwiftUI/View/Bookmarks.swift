@@ -14,8 +14,10 @@ struct Bookmarks: View {
     @Environment(\.presentationMode) private var presentationMode
     @FetchRequest(
         sortDescriptors: [NSSortDescriptor(keyPath: \Bookmark.created, ascending: true)],
+        predicate: Bookmarks.buildPredicate(searchText: ""),
         animation: .easeInOut
     ) private var bookmarks: FetchedResults<Bookmark>
+    @State private var searchText = ""
     
     var body: some View {
         Group {
@@ -30,7 +32,14 @@ struct Bookmarks: View {
                     }
                 }.modifier(GridCommon())
             }
-        }.navigationTitle("Bookmarks")
+        }
+        .navigationTitle("Bookmarks")
+        .modifier(Searchable(searchText: $searchText))
+        .onChange(of: searchText) { _ in
+            if #available(iOS 15.0, *) {
+                bookmarks.nsPredicate = Bookmarks.buildPredicate(searchText: searchText)
+            }
+        }
     }
     
     private var gridItem: GridItem {
@@ -47,5 +56,13 @@ struct Bookmarks: View {
         #elseif os(iOS)
         horizontalSizeClass == .regular ? 110: nil
         #endif
+    }
+    
+    private static func buildPredicate(searchText: String) -> NSPredicate? {
+        guard !searchText.isEmpty else { return nil }
+        return NSCompoundPredicate(orPredicateWithSubpredicates: [
+            NSPredicate(format: "title CONTAINS[cd] %@", searchText),
+            NSPredicate(format: "snippet CONTAINS[cd] %@", searchText)
+        ])
     }
 }
