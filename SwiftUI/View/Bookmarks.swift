@@ -24,7 +24,7 @@ struct Bookmarks: View {
             } else {
                 LazyVGrid(columns: ([gridItem]), spacing: 12) {
                     ForEach(bookmarks) { bookmark in
-                        Button { load(bookmark) } label: {
+                        Button { url = bookmark.articleURL } label: {
                             ArticleCell(bookmark: bookmark).frame(height: itemHeight)
                         }.buttonStyle(.plain)
                     }
@@ -43,13 +43,9 @@ struct Bookmarks: View {
     
     private var itemHeight: CGFloat? {
         #if os(macOS)
-        80
+        82
         #elseif os(iOS)
         horizontalSizeClass == .regular ? 110: nil
         #endif
-    }
-    
-    private func load(_ bookmark: Bookmark) {
-        
     }
 }

@@ -144,6 +144,9 @@ private struct Content: View {
                 SheetView { Bookmarks(url: $url) }
             }
         }
+        .onChange(of: url) { _ in
+            viewModel.activeSheet = nil
+        }
         .environment(\.managedObjectContext, Database.shared.container.viewContext)
         .environmentObject(viewModel)
     }

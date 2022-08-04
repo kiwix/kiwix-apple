@@ -30,6 +30,9 @@ struct RootView_macOS: View {
             EmptyView()  // required so the UI does not look broken on macOS
         }
         .environment(\.managedObjectContext, Database.shared.container.viewContext)
+        .onChange(of: url) { _ in
+            navigationItem = .reading
+        }
         .onOpenURL { url in
             if url.isFileURL {
                 guard let metadata = ZimFileService.getMetaData(url: url) else { return }
