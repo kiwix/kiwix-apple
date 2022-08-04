@@ -209,7 +209,6 @@
 		978A731227B9A0E0008101B4 /* NavigationButtons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 978A731127B9A0E0008101B4 /* NavigationButtons.swift */; };
 		978A731527B9A245008101B4 /* SidebarButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 978A731427B9A245008101B4 /* SidebarButton.swift */; };
 		978A731727B9A4F1008101B4 /* MainArticleButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 978A731627B9A4F1008101B4 /* MainArticleButton.swift */; };
-		978A731927B9A765008101B4 /* RandomArticleButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 978A731827B9A765008101B4 /* RandomArticleButton.swift */; };
 		978B688924F8080E003CCA8C /* BarButtons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 978B688824F8080E003CCA8C /* BarButtons.swift */; };
 		978CB19B2793BC6B0086BFCE /* libkiwix.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97EC18AF26E8555E008309ED /* libkiwix.xcframework */; };
 		9790926F286BF0BB002B7AA5 /* Formatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9790926E286BF0BB002B7AA5 /* Formatter.swift */; };
@@ -284,7 +283,6 @@
 		97DE2BA7283AB6DC00C63D9B /* NavigationButtons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 978A731127B9A0E0008101B4 /* NavigationButtons.swift */; };
 		97DE2BAD283B133700C63D9B /* wikipedia_dark.css in Resources */ = {isa = PBXBuildFile; fileRef = 970885D0271339A300C5795C /* wikipedia_dark.css */; };
 		97DE2BAF283C665400C63D9B /* MainArticleButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 978A731627B9A4F1008101B4 /* MainArticleButton.swift */; };
-		97DE2BB0283C67F100C63D9B /* RandomArticleButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 978A731827B9A765008101B4 /* RandomArticleButton.swift */; };
 		97DE2BB4283F1D2A00C63D9B /* BookmarkButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9735D0BD2777531400C7D495 /* BookmarkButton.swift */; };
 		97E173D425733D11002CAD17 /* RootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97E173D325733D10002CAD17 /* RootViewController.swift */; };
 		97E94B1C271EF24D005B0295 /* Reader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97E94B1B271EF24D005B0295 /* Reader.swift */; };
@@ -1526,7 +1524,6 @@
 				97DE2B9E2839D79A00C63D9B /* OutlineItem.swift in Sources */,
 				97F43AFE283108330076F8E0 /* FileImportModifier.swift in Sources */,
 				979D3A74284067C800E396B8 /* MoreButton.swift in Sources */,
-				97DE2BB0283C67F100C63D9B /* RandomArticleButton.swift in Sources */,
 				976BAEB6284903A80049404F /* SearchResult.m in Sources */,
 				972DE4BA2814A590004FD9B9 /* ZimFileMetaData.mm in Sources */,
 				97486D0B284B96690096E4DD /* CellBackground.swift in Sources */,
@@ -1760,7 +1757,6 @@
 				9735D0BC2775594700C7D495 /* Database.swift in Sources */,
 				979D3A73284067C800E396B8 /* MoreButton.swift in Sources */,
 				97DE2BA5283A944100C63D9B /* LibraryGridPadding.swift in Sources */,
-				978A731927B9A765008101B4 /* RandomArticleButton.swift in Sources */,
 				977B1B64289801DE001D07C4 /* Map.swift in Sources */,
 				97486D0D284C0EBC0096E4DD /* Welcome.swift in Sources */,
 				97341C6D2852248500BC273E /* DownloadTaskCell.swift in Sources */,

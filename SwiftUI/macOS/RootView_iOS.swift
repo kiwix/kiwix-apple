@@ -124,15 +124,32 @@ private struct Content: View {
                     BookmarkMultiButton(url: url)
                 }
             }
+            ToolbarItemGroup(placement: .navigationBarTrailing) {
+                if horizontalSizeClass == .regular, !isSearchActive {
+                    if #available(iOS 15.0, *) {
+                        RandomArticleMenu(url: $url)
+                    } else {
+                        RandomArticleButton(url: $url)
+                    }
+                }
+            }
             ToolbarItemGroup(placement: .bottomBar) {
                 if horizontalSizeClass == .compact, !isSearchActive {
-                    NavigateBackButton()
-                    Spacer()
-                    NavigateForwardButton()
+                    Group {
+                        NavigateBackButton()
+                        Spacer()
+                        NavigateForwardButton()
+                    }
                     Spacer()
                     OutlineButton()
                     Spacer()
                     BookmarkMultiButton(url: url)
+                    Spacer()
+                    if #available(iOS 15.0, *) {
+                        RandomArticleMenu(url: $url)
+                    } else {
+                        RandomArticleButton(url: $url)
+                    }
                 }
             }
         }

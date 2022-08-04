@@ -138,3 +138,40 @@ struct OutlineMenu: View {
         .help("Show article outline")
     }
 }
+
+struct RandomArticleButton: View {
+    @Binding var url: URL?
+    
+    var body: some View {
+        Button {
+            let zimFileID = UUID(uuidString: url?.host ?? "")
+            url = ZimFileService.shared.getRandomPageURL(zimFileID: zimFileID)
+        } label: {
+            Image(systemName: "die.face.5")
+        }.help("Show random article")
+    }
+}
+
+@available(iOS 15.0, *)
+struct RandomArticleMenu: View {
+    @Binding var url: URL?
+    @FetchRequest(
+        sortDescriptors: [NSSortDescriptor(keyPath: \ZimFile.size, ascending: false)],
+        predicate: ZimFile.openedPredicate
+    ) private var zimFiles: FetchedResults<ZimFile>
+    
+    var body: some View {
+        Menu {
+            ForEach(zimFiles) { zimFile in
+                Button(zimFile.name) {
+                    url = ZimFileService.shared.getRandomPageURL(zimFileID: zimFile.id)
+                }
+            }
+        } label: {
+            Image(systemName: "die.face.5")
+        } primaryAction: {
+            let zimFileID = UUID(uuidString: url?.host ?? "")
+            url = ZimFileService.shared.getRandomPageURL(zimFileID: zimFileID)
+        }.help("Show random article")
+    }
+}

@@ -39,15 +39,11 @@ struct ReadingView: View {
             ToolbarItemGroup {
                 OutlineMenu()
                 BookmarkToggleButton(url: url)
+                RandomArticleButton(url: $url)
                 Button {
                     
                 } label: {
                     Image(systemName: "house")
-                }
-                Button {
-                    
-                } label: {
-                    Image(systemName: "die.face.5")
                 }
             }
         }

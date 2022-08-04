@@ -95,8 +95,9 @@ extension ZimFileService {
         return URL(zimFileID: zimFileID.uuidString, contentPath: path)
     }
     
-    func getRandomPageURL(zimFileID: UUID) -> URL? {
-        guard let path = __getRandomPagePath(zimFileID) else { return nil }
+    func getRandomPageURL(zimFileID: UUID? = nil) -> URL? {
+        guard let zimFileID = zimFileID ?? fileIDs.randomElement(),
+              let path = __getRandomPagePath(zimFileID) else { return nil }
         return URL(zimFileID: zimFileID.uuidString, contentPath: path)
     }
     
