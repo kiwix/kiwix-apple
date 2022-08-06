@@ -17,6 +17,7 @@ struct MapView: View {
     
     var body: some View {
         Map(coordinateRegion: $coordinateRegion)
+            .navigationTitle("Map")
             .ignoresSafeArea(.all)
     }
 }

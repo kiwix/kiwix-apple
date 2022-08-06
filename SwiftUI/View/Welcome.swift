@@ -23,7 +23,7 @@ struct Welcome: View {
     @State private var selectedZimFile: ZimFile?
     
     var body: some View {
-        if !zimFiles.isEmpty {
+        if zimFiles.isEmpty {
             VStack(alignment: .leading, spacing: 10) {
                 HStack {
                     Image("Kiwix_logo_v3")
