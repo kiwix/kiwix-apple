@@ -116,6 +116,30 @@ struct MainArticleMenu: View {
     }
 }
 
+struct MoreActionMenu: View {
+    @Binding var url: URL?
+    @FetchRequest(
+        sortDescriptors: [NSSortDescriptor(keyPath: \ZimFile.size, ascending: false)],
+        predicate: ZimFile.openedPredicate
+    ) private var zimFiles: FetchedResults<ZimFile>
+    
+    var body: some View {
+        Menu {
+            Section {
+                ForEach(zimFiles) { zimFile in
+                    Button {
+                        url = ZimFileService.shared.getMainPageURL(zimFileID: zimFile.id)
+                    } label: {
+                        Label(zimFile.name, systemImage: "house")
+                    }
+                }
+            }
+        } label: {
+            Image(systemName: "ellipsis.circle")
+        }
+    }
+}
+
 struct NavigateBackButton: View {
     @EnvironmentObject var viewModel: ReadingViewModel
     

@@ -155,6 +155,8 @@ private struct Content: View {
                     } else {
                         RandomArticleButton(url: $url)
                     }
+                    Spacer()
+                    MoreActionMenu(url: $url)
                 }
             }
         }
