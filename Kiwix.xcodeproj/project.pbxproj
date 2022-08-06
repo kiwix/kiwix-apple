@@ -208,7 +208,6 @@
 		978A731027B99F25008101B4 /* ReaderViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 978A730F27B99F25008101B4 /* ReaderViewModel.swift */; };
 		978A731227B9A0E0008101B4 /* NavigationButtons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 978A731127B9A0E0008101B4 /* NavigationButtons.swift */; };
 		978A731527B9A245008101B4 /* SidebarButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 978A731427B9A245008101B4 /* SidebarButton.swift */; };
-		978A731727B9A4F1008101B4 /* MainArticleButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 978A731627B9A4F1008101B4 /* MainArticleButton.swift */; };
 		978B688924F8080E003CCA8C /* BarButtons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 978B688824F8080E003CCA8C /* BarButtons.swift */; };
 		978CB19B2793BC6B0086BFCE /* libkiwix.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97EC18AF26E8555E008309ED /* libkiwix.xcframework */; };
 		9790926F286BF0BB002B7AA5 /* Formatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9790926E286BF0BB002B7AA5 /* Formatter.swift */; };
@@ -282,7 +281,6 @@
 		97DE2BA6283A944100C63D9B /* LibraryGridPadding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97DE2BA4283A944100C63D9B /* LibraryGridPadding.swift */; };
 		97DE2BA7283AB6DC00C63D9B /* NavigationButtons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 978A731127B9A0E0008101B4 /* NavigationButtons.swift */; };
 		97DE2BAD283B133700C63D9B /* wikipedia_dark.css in Resources */ = {isa = PBXBuildFile; fileRef = 970885D0271339A300C5795C /* wikipedia_dark.css */; };
-		97DE2BAF283C665400C63D9B /* MainArticleButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 978A731627B9A4F1008101B4 /* MainArticleButton.swift */; };
 		97DE2BB4283F1D2A00C63D9B /* BookmarkButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9735D0BD2777531400C7D495 /* BookmarkButton.swift */; };
 		97E173D425733D11002CAD17 /* RootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97E173D325733D10002CAD17 /* RootViewController.swift */; };
 		97E94B1C271EF24D005B0295 /* Reader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97E94B1B271EF24D005B0295 /* Reader.swift */; };
@@ -1500,7 +1498,6 @@
 				97DE2B9C2839D39100C63D9B /* WebView.swift in Sources */,
 				97341C6B2851165B00BC273E /* Searchable.swift in Sources */,
 				973A0DEB281DDBB600B41E71 /* ZimFilesDownloads.swift in Sources */,
-				97DE2BAF283C665400C63D9B /* MainArticleButton.swift in Sources */,
 				975088BE287DA10800273181 /* LibraryLastRefreshTime.swift in Sources */,
 				97486D06284A36790096E4DD /* ArticleCell.swift in Sources */,
 				973A0E032831057200B41E71 /* URL.swift in Sources */,
@@ -1705,7 +1702,6 @@
 				97255D8C273608C3002B995B /* WebView.swift in Sources */,
 				9735D0BE2777531400C7D495 /* BookmarkButton.swift in Sources */,
 				975088B528763DFF00273181 /* Search.swift in Sources */,
-				978A731727B9A4F1008101B4 /* MainArticleButton.swift in Sources */,
 				977B1B5B28971D5E001D07C4 /* App.swift in Sources */,
 				976BAEB42847BD020049404F /* SearchViewModel.swift in Sources */,
 				976D90E82815D63A00CC7D29 /* ZimFilesNew.swift in Sources */,

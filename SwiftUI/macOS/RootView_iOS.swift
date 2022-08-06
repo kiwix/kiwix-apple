@@ -131,6 +131,11 @@ private struct Content: View {
                     } else {
                         RandomArticleButton(url: $url)
                     }
+                    if #available(iOS 15.0, *) {
+                        MainArticleMenu(url: $url)
+                    } else {
+                        MainArticleButton(url: $url)
+                    }
                 }
             }
             ToolbarItemGroup(placement: .bottomBar) {

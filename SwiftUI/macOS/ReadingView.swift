@@ -40,11 +40,7 @@ struct ReadingView: View {
                 OutlineMenu()
                 BookmarkToggleButton(url: url)
                 RandomArticleButton(url: $url)
-                Button {
-                    
-                } label: {
-                    Image(systemName: "house")
-                }
+                MainArticleButton(url: $url)
             }
         }
     }

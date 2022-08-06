@@ -79,6 +79,43 @@ struct BookmarkMultiButton: View {
     }
 }
 
+struct MainArticleButton: View {
+    @Binding var url: URL?
+    
+    var body: some View {
+        Button {
+            let zimFileID = UUID(uuidString: url?.host ?? "")
+            url = ZimFileService.shared.getMainPageURL(zimFileID: zimFileID)
+        } label: {
+            Image(systemName: "house")
+        }.help("Show main article")
+    }
+}
+
+@available(iOS 15.0, *)
+struct MainArticleMenu: View {
+    @Binding var url: URL?
+    @FetchRequest(
+        sortDescriptors: [NSSortDescriptor(keyPath: \ZimFile.size, ascending: false)],
+        predicate: ZimFile.openedPredicate
+    ) private var zimFiles: FetchedResults<ZimFile>
+    
+    var body: some View {
+        Menu {
+            ForEach(zimFiles) { zimFile in
+                Button(zimFile.name) {
+                    url = ZimFileService.shared.getMainPageURL(zimFileID: zimFile.id)
+                }
+            }
+        } label: {
+            Image(systemName: "house")
+        } primaryAction: {
+            let zimFileID = UUID(uuidString: url?.host ?? "")
+            url = ZimFileService.shared.getMainPageURL(zimFileID: zimFileID)
+        }.help("Show main article")
+    }
+}
+
 struct NavigateBackButton: View {
     @EnvironmentObject var viewModel: ReadingViewModel
     
