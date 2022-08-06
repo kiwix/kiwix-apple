@@ -10,6 +10,11 @@ import SwiftUI
 
 struct Welcome: View {
     @Binding var url: URL?
+    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
+    @FetchRequest(
+        sortDescriptors: [NSSortDescriptor(keyPath: \Bookmark.created, ascending: true)],
+        animation: .easeInOut
+    ) private var bookmarks: FetchedResults<Bookmark>
     @FetchRequest(
         sortDescriptors: [NSSortDescriptor(keyPath: \ZimFile.size, ascending: false)],
         predicate: ZimFile.openedPredicate,
@@ -40,6 +45,15 @@ struct Welcome: View {
                     } header: {
                         Text("Main Page").font(.title3).fontWeight(.semibold)
                     }
+                    Section {
+                        ForEach(bookmarks[...10]) { bookmark in
+                            Button { url = bookmark.articleURL } label: {
+                                ArticleCell(bookmark: bookmark).frame(height: itemHeight)
+                            }.buttonStyle(.plain)
+                        }
+                    } header: {
+                        Text("Bookmarks").font(.title3).fontWeight(.semibold)
+                    }
                 }.padding()
             }
             .sheet(item: $selectedZimFile) { zimFile in
@@ -48,5 +62,13 @@ struct Welcome: View {
                 }
             }
         }
+    }
+    
+    private var itemHeight: CGFloat? {
+        #if os(macOS)
+        82
+        #elseif os(iOS)
+        horizontalSizeClass == .regular ? 110: nil
+        #endif
     }
 }
