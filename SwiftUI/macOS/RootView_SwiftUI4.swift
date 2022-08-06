@@ -27,7 +27,7 @@ struct RootView_SwiftUI4: View {
                 List(selection: $navigationItem) {
                     ForEach(primaryNavigationItems, id: \.self) { navigationLink($0) }
                     Section {
-                        ForEach(primaryNavigationItems, id: \.self) { navigationLink($0) }
+                        ForEach(libraryNavigationItems, id: \.self) { navigationLink($0) }
                     } header: { Text("Library") }
                 }
             } detail: {

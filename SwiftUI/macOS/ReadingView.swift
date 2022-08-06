@@ -29,14 +29,21 @@ struct ReadingView: View {
                 WebView(url: $url).ignoresSafeArea(edges: .all)
             }
         }
-        .modifier(BarModifiers())
+        .modifier(BarSetupModifier())
         .toolbar {
+            #if os(macOS)
             ToolbarItemGroup(placement: .navigation) {
                 ControlGroup {
                     NavigateBackButton()
                     NavigateForwardButton()
                 }
             }
+            #elseif os(iOS)
+            ToolbarItemGroup(placement: .navigationBarLeading) {
+                NavigateBackButton()
+                NavigateForwardButton()
+            }
+            #endif
             ToolbarItemGroup {
                 OutlineMenu()
                 BookmarkToggleButton(url: url)
@@ -45,20 +52,10 @@ struct ReadingView: View {
             }
         }
     }
-    
-    @ViewBuilder
-    var navigationButtons: some View {
-        Button {
-            viewModel.webView?.goBack()
-        } label: { Image(systemName: "chevron.backward") }.disabled(!viewModel.canGoBack)
-        Button {
-            viewModel.webView?.goForward()
-        } label: { Image(systemName: "chevron.forward") }.disabled(!viewModel.canGoForward)
-    }
 }
 
 @available(macOS 12.0, iOS 16.0, *)
-private struct BarModifiers: ViewModifier {
+private struct BarSetupModifier: ViewModifier {
     @EnvironmentObject var viewModel: ReadingViewModel
     
     func body(content: Content) -> some View {
