@@ -181,6 +181,55 @@ enum LibraryTopic: Hashable, Identifiable, RawRepresentable {
     }
 }
 
+enum NavigationItem: String, Identifiable, CaseIterable {
+    var id: String { rawValue }
+
+    case reading, bookmarks, map, opened, categories, new, downloads, settings
+
+    var name: String {
+        switch self {
+        case .reading:
+            return "Reading"
+        case .bookmarks:
+            return "Bookmarks"
+        case .map:
+            return "Map"
+        case .settings:
+            return "Settings"
+        case .opened:
+            return "Opened"
+        case .categories:
+            return "Categories"
+        case .new:
+            return "New"
+        case .downloads:
+            return "Downloads"
+        }
+    }
+    
+    var icon: String {
+        switch self {
+        case .reading:
+            return "book"
+        case .bookmarks:
+            return "star"
+        case .map:
+            return "map"
+        case .settings:
+            return "gear"
+        case .opened:
+            return "folder"
+        case .categories:
+            return "books.vertical"
+        case .new:
+            return "newspaper"
+        case .downloads:
+            return "tray.and.arrow.down"
+        }
+    }
+}
+
+
 enum SearchResultSnippetMode: String, CaseIterable, Identifiable, Defaults.Serializable  {
     case disabled, firstParagraph, firstSentence, matches
     
