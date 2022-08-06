@@ -1,5 +1,5 @@
 //
-//  Bookmarks.swift
+//  BookmarksView.swift
 //  Kiwix
 //
 //  Created by Chris Li on 5/28/22.
@@ -8,13 +8,13 @@
 
 import SwiftUI
 
-struct Bookmarks: View {
+struct BookmarksView: View {
     @Binding var url: URL?
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     @Environment(\.presentationMode) private var presentationMode
     @FetchRequest(
         sortDescriptors: [NSSortDescriptor(keyPath: \Bookmark.created, ascending: true)],
-        predicate: Bookmarks.buildPredicate(searchText: ""),
+        predicate: BookmarksView.buildPredicate(searchText: ""),
         animation: .easeInOut
     ) private var bookmarks: FetchedResults<Bookmark>
     @State private var searchText = ""
@@ -37,7 +37,7 @@ struct Bookmarks: View {
         .modifier(Searchable(searchText: $searchText))
         .onChange(of: searchText) { _ in
             if #available(iOS 15.0, *) {
-                bookmarks.nsPredicate = Bookmarks.buildPredicate(searchText: searchText)
+                bookmarks.nsPredicate = BookmarksView.buildPredicate(searchText: searchText)
             }
         }
     }

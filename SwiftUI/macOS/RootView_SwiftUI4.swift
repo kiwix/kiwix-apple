@@ -37,7 +37,7 @@ struct RootView_SwiftUI4: View {
                             .searchable(text: $searchText)
                             .environmentObject(readingViewModel)
                     case .bookmarks:
-                        Bookmarks(url: $url)
+                        BookmarksView(url: $url)
                     case .map:
                         MapView()
                     case .opened:
