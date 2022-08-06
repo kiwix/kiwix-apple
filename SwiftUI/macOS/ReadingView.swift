@@ -9,6 +9,7 @@
 import SwiftUI
 import WebKit
 
+@available(macOS 12.0, iOS 16.0, *)
 struct ReadingView: View {
     @Binding var url: URL?
     @Environment(\.isSearching) private var isSearching
@@ -28,7 +29,7 @@ struct ReadingView: View {
                 WebView(url: $url).ignoresSafeArea(edges: .all)
             }
         }
-        .modifier(NavigationTitleSubtitle())
+        .modifier(BarModifiers())
         .toolbar {
             ToolbarItemGroup(placement: .navigation) {
                 ControlGroup {
@@ -56,18 +57,8 @@ struct ReadingView: View {
     }
 }
 
-struct ReadingView_iOS14: View {
-    @Binding var url: URL?
-    @EnvironmentObject var viewModel: ReadingViewModel
-    
-    var body: some View {
-        WebView(
-            url: $url
-        )
-    }
-}
-
-private struct NavigationTitleSubtitle: ViewModifier {
+@available(macOS 12.0, iOS 16.0, *)
+private struct BarModifiers: ViewModifier {
     @EnvironmentObject var viewModel: ReadingViewModel
     
     func body(content: Content) -> some View {
@@ -77,7 +68,10 @@ private struct NavigationTitleSubtitle: ViewModifier {
             .navigationSubtitle(viewModel.zimFileName)
         #elseif os(iOS)
         content
+            .navigationTitle(viewModel.articleTitle)
             .navigationBarTitleDisplayMode(.inline)
+            .toolbarRole(.browser)
+            .toolbarBackground(.visible, for: .navigationBar)
         #endif
     }
 }
