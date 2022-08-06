@@ -199,8 +199,6 @@
 		977D509626268AAB005345D1 /* LibrarySearchResultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 977D509526268AAB005345D1 /* LibrarySearchResultView.swift */; };
 		978938732899556200F0EAFC /* RootView_iOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 978938722899556200F0EAFC /* RootView_iOS.swift */; };
 		97893875289958F300F0EAFC /* RootView_macOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97893874289958F300F0EAFC /* RootView_macOS.swift */; };
-		97893877289E058100F0EAFC /* RootView_SwiftUI4.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97893876289E058100F0EAFC /* RootView_SwiftUI4.swift */; };
-		97893878289E058100F0EAFC /* RootView_SwiftUI4.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97893876289E058100F0EAFC /* RootView_SwiftUI4.swift */; };
 		9789C26424F9600D00072090 /* Platform.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97B399912468502500BC6F5B /* Platform.swift */; };
 		9789C26524F9601400072090 /* ZimFileService.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9779A5A92456793500F6F6FF /* ZimFileService.mm */; };
 		9789C26624F9601700072090 /* ZimFileService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9779A5AA2456793500F6F6FF /* ZimFileService.swift */; };
@@ -1554,7 +1552,6 @@
 				97BD6C9D2886E06B004A8532 /* HTMLParser.swift in Sources */,
 				97DE2BA3283A8E5C00C63D9B /* LibraryViewModel.swift in Sources */,
 				97DE2BA02839D7AA00C63D9B /* FeatureFlags.swift in Sources */,
-				97893878289E058100F0EAFC /* RootView_SwiftUI4.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1754,7 +1751,6 @@
 				97DE2BA5283A944100C63D9B /* LibraryGridPadding.swift in Sources */,
 				977B1B64289801DE001D07C4 /* MapView.swift in Sources */,
 				97486D0D284C0EBC0096E4DD /* Welcome.swift in Sources */,
-				97893877289E058100F0EAFC /* RootView_SwiftUI4.swift in Sources */,
 				97341C6D2852248500BC273E /* DownloadTaskCell.swift in Sources */,
 				97242B9D2735E6A800C87F85 /* Log.swift in Sources */,
 				97C278DF2796249900666E07 /* OutlineTree.swift in Sources */,
