@@ -8,8 +8,7 @@
 
 import SwiftUI
 
-import Introspect
-
+/// Root view for macOS 13 & iOS / iPadOS 16
 @available(macOS 13.0, iOS 16.0, *)
 struct RootView_SwiftUI4: View {
     @Environment(\.horizontalSizeClass) var horizontalSizeClass
@@ -22,39 +21,45 @@ struct RootView_SwiftUI4: View {
     private let libraryNavigationItems: [NavigationItem] = [.opened, .categories, .new, .downloads]
     
     var body: some View {
-        if horizontalSizeClass == .regular {
-            NavigationSplitView {
-                List(selection: $navigationItem) {
-                    ForEach(primaryNavigationItems, id: \.self) { navigationLink($0) }
-                    Section {
-                        ForEach(libraryNavigationItems, id: \.self) { navigationLink($0) }
-                    } header: { Text("Library") }
+        Group {
+            if horizontalSizeClass == .regular {
+                NavigationSplitView {
+                    List(selection: $navigationItem) {
+                        ForEach(primaryNavigationItems, id: \.self) { navigationLink($0) }
+                        Section {
+                            ForEach(libraryNavigationItems, id: \.self) { navigationLink($0) }
+                        } header: { Text("Library") }
+                    }.navigationTitle("Kiwix")
+                } detail: {
+                    switch navigationItem {
+                    case .reading:
+                        ReadingView(url: $url)
+                            .searchable(text: $searchText)
+                            .environmentObject(readingViewModel)
+                    case .bookmarks:
+                        Bookmarks(url: $url)
+                    case .map:
+                        MapView()
+                    case .opened:
+                        ZimFilesOpened()
+                    case .categories:
+                        Text(navigationItem?.name ?? "")
+                    case .new:
+                        Text(navigationItem?.name ?? "")
+                    case .downloads:
+                        Text(navigationItem?.name ?? "")
+                    default:
+                        EmptyView()
+                    }
                 }
-            } detail: {
-                switch navigationItem {
-                case .reading:
-                    ReadingView(url: $url)
-                        .searchable(text: $searchText)
-                        .environmentObject(readingViewModel)
-                case .bookmarks:
-                    Bookmarks(url: $url)
-                case .map:
-                    MapView()
-                case .opened:
-                    ZimFilesOpened()
-                case .categories:
-                    Text(navigationItem?.name ?? "")
-                case .new:
-                    Text(navigationItem?.name ?? "")
-                case .downloads:
-                    Text(navigationItem?.name ?? "")
-                default:
-                    EmptyView()
-                }
+                
+            } else {
+                Text("Hello, World!")
             }
-            .environment(\.managedObjectContext, Database.shared.container.viewContext)
-        } else {
-            Text("Hello, World!")
+        }
+        .environment(\.managedObjectContext, Database.shared.container.viewContext)
+        .onChange(of: url) { _ in
+            navigationItem = .reading
         }
     }
     
