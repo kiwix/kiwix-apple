@@ -167,6 +167,8 @@ private struct Content: View {
                 SheetView { OutlineTree().listStyle(.plain).navigationBarTitleDisplayMode(.inline) }
             case .bookmarks:
                 SheetView { BookmarksView(url: $url) }
+            case .library:
+                Text("library")
             }
         }
         .onChange(of: url) { _ in

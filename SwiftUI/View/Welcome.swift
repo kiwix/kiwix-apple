@@ -37,7 +37,7 @@ struct Welcome: View {
                 Text("Quick start:").font(.headline)
                 Button("Open") {
                     
-                }.buttonStyle(.borderedProminent)
+                }
                 Spacer()
             }.padding(50)
         } else {

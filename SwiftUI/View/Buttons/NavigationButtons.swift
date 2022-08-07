@@ -118,6 +118,7 @@ struct MainArticleMenu: View {
 
 struct MoreActionMenu: View {
     @Binding var url: URL?
+    @EnvironmentObject var viewModel: ReadingViewModel
     @FetchRequest(
         sortDescriptors: [NSSortDescriptor(keyPath: \ZimFile.size, ascending: false)],
         predicate: ZimFile.openedPredicate
@@ -133,6 +134,11 @@ struct MoreActionMenu: View {
                         Label(zimFile.name, systemImage: "house")
                     }
                 }
+            }
+            Button {
+                viewModel.activeSheet = .library
+            } label: {
+                Label("Library", systemImage: "folder")
             }
         } label: {
             Image(systemName: "ellipsis.circle")

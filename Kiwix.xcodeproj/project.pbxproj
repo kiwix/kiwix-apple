@@ -215,7 +215,6 @@
 		9797434A257BF2B000D30F03 /* OutlineItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97974349257BF2B000D30F03 /* OutlineItem.swift */; };
 		9797435C257BF33600D30F03 /* WebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9797435B257BF33600D30F03 /* WebViewController.swift */; };
 		97974368257BF37E00D30F03 /* Alerts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97974367257BF37E00D30F03 /* Alerts.swift */; };
-		979A3B3A289E09A8007975D5 /* ReadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 977B1B5C28972C33001D07C4 /* ReadingView.swift */; };
 		979AAF40257167C60078492F /* ZimFileDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 979AAF3F257167C60078492F /* ZimFileDetailView.swift */; };
 		979B64C5259EBDB1001C74AE /* OutlineItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97974349257BF2B000D30F03 /* OutlineItem.swift */; };
 		979D3A73284067C800E396B8 /* MoreButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 979D3A72284067C800E396B8 /* MoreButton.swift */; };
@@ -1515,7 +1514,6 @@
 				97121EBE28849F0000371AEB /* ZimFileMissingIndicator.swift in Sources */,
 				975088BB287BBDFE00273181 /* LanguageSelector.swift in Sources */,
 				97DE2B9D2839D77100C63D9B /* ReaderViewModel.swift in Sources */,
-				979A3B3A289E09A8007975D5 /* ReadingView.swift in Sources */,
 				97DE2B9E2839D79A00C63D9B /* OutlineItem.swift in Sources */,
 				97F43AFE283108330076F8E0 /* FileImportModifier.swift in Sources */,
 				979D3A74284067C800E396B8 /* MoreButton.swift in Sources */,
