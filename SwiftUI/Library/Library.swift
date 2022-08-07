@@ -9,89 +9,49 @@
 import SwiftUI
 
 struct Library: View {
-    #if os(macOS)
-    @State var selectedTopic: LibraryTopic? = .opened
-    let topics: [LibraryTopic] = [.opened, .downloads, .new]
-    #elseif os(iOS)
-    @SceneStorage("library.selectedTopic") private var selectedTopic: LibraryTopic = .opened
-    let topics: [LibraryTopic] = [.opened, .categories, .downloads, .new]
-    #endif
-    
+    @SceneStorage("library.selectedNavigationItem") private var selected: NavigationItem = .opened
+    @State private var isFileImporterPresented = false
     @StateObject private var viewModel = LibraryViewModel()
     
-    var body: some View {
-        content
-            .environmentObject(viewModel)
-            .modifier(FileImporter(isPresented: $viewModel.isFileImporterPresented))
-            .onAppear {
-                Task {
-                    try? await viewModel.refresh(isUserInitiated: false)
-                }
-            }
-    }
+    let navigationItems: [NavigationItem] = [.opened, .categories, .downloads, .new]
     
-    var content: some View {
-        #if os(macOS)
-        NavigationView {
-            List(selection: $selectedTopic) {
-                ForEach(topics, id: \.self) { topic in
-                    Label(topic.name, systemImage: topic.iconName)
-                }
-                Section("Category") {
-                    ForEach(Category.allCases.map{ LibraryTopic.category($0) }, id: \.self) { topic in
-                        Text(topic.name)
-                    }
-                }.collapsible(false)
-            }
-            .frame(minWidth: 200)
-            .toolbar { SidebarButton() }
-            if let selectedTopic = selectedTopic {
-                LibraryContent(topic: selectedTopic)
-            }
-        }
-        #elseif os(iOS)
-        TabView(selection: $selectedTopic) {
-            ForEach(topics) { topic in
+    var body: some View {
+        TabView(selection: $selected) {
+            ForEach(navigationItems) { navigationItem in
                 SheetView {
-                    LibraryContent(topic: topic)
-                }
-                .tag(topic)
-                .tabItem { Label(topic.name, systemImage: topic.iconName) }
-            }
-        }
-        #endif
-    }
-}
-
-private struct LibraryContent: View {
-    let topic: LibraryTopic
-    
-    var body: some View {
-        switch topic {
-        case .opened:
-            ZimFilesOpened(isFileImporterPresented: .constant(false))
-        case .downloads:
-            ZimFilesDownloads()
-        case .new:
-            ZimFilesNew()
-        case .categories:
-            List(Category.allCases) { category in
-                NavigationLink {
-                    LibraryContent(topic: LibraryTopic.category(category))
-                } label: {
-                    HStack {
-                        Favicon(category: category).frame(height: 26)
-                        Text(category.name)
+                    switch navigationItem {
+                    case .opened:
+                        ZimFilesOpened(isFileImporterPresented: .constant(false))
+                    case .categories:
+                        List(Category.allCases) { category in
+                            NavigationLink {
+                                
+                            } label: {
+                                HStack {
+                                    Favicon(category: category).frame(height: 26)
+                                    Text(category.name)
+                                }
+                            }
+                        }
+                        .listStyle(.plain)
+                        .navigationTitle(NavigationItem.categories.name)
+                    case .downloads:
+                        ZimFilesDownloads()
+                    case .new:
+                        ZimFilesNew()
+                    default:
+                        EmptyView()
                     }
                 }
+                .tag(navigationItem)
+                .tabItem { Label(navigationItem.name, systemImage: navigationItem.icon) }
             }
-            .listStyle(.plain)
-            .navigationTitle(LibraryTopic.categories.name)
-        case .category(let category):
-            if #available(iOS 15.0, *), category != .ted, category != .stackExchange, category != .other {
-                ZimFilesGrid(category: category)
-            } else {
-                ZimFilesList(category: category)
+        }
+        .environmentObject(viewModel)
+        .modifier(FileImporter(isPresented: $isFileImporterPresented))
+        .onAppear {
+            Task {
+                try? await viewModel.refresh(isUserInitiated: false)
             }
         }
     }

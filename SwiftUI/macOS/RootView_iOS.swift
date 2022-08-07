@@ -168,7 +168,7 @@ private struct Content: View {
             case .bookmarks:
                 SheetView { BookmarksView(url: $url) }
             case .library:
-                Text("library")
+                Library()
             }
         }
         .onChange(of: url) { _ in

@@ -48,7 +48,6 @@
 		972DE4BB2814A5A4004FD9B9 /* OPDSRefreshError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 973A2FC4277EAA2500BD4320 /* OPDSRefreshError.swift */; };
 		972DE4BC2814A5BE004FD9B9 /* OPDSStreamParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9779A5A32456793500F6F6FF /* OPDSStreamParser.swift */; };
 		972DE4BD2814A5BE004FD9B9 /* OPDSStreamParser.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9779A5A52456793500F6F6FF /* OPDSStreamParser.mm */; };
-		972DE4C32814A969004FD9B9 /* Library.swift in Sources */ = {isa = PBXBuildFile; fileRef = 972DE4C12814A961004FD9B9 /* Library.swift */; };
 		972DE4C42814AAAE004FD9B9 /* Library.swift in Sources */ = {isa = PBXBuildFile; fileRef = 972DE4C12814A961004FD9B9 /* Library.swift */; };
 		972E6F641FA11A6100F5C927 /* RoundedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 972E6F631FA11A6100F5C927 /* RoundedButton.swift */; };
 		97341C6A2851165B00BC273E /* Searchable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97341C692851165B00BC273E /* Searchable.swift */; };
@@ -1734,7 +1733,6 @@
 				975088BD287DA10800273181 /* LibraryLastRefreshTime.swift in Sources */,
 				97F43AFD283108330076F8E0 /* FileImportModifier.swift in Sources */,
 				97E94B2E271EF630005B0295 /* ZimFileService.swift in Sources */,
-				972DE4C32814A969004FD9B9 /* Library.swift in Sources */,
 				973A2FCE277FB03F00BD4320 /* FlavorTag.swift in Sources */,
 				973A0DEA281DDBB600B41E71 /* ZimFilesDownloads.swift in Sources */,
 				97242B9B2735E6A800C87F85 /* DirectoryMonitor.swift in Sources */,
