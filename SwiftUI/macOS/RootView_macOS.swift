@@ -68,7 +68,7 @@ struct RootView_macOS: View {
         case .opened:
             ZimFilesOpened(isFileImporterPresented: $isFileImporterPresented)
         case .categories:
-            Text(navigationItem.name)
+            LibraryCategories()
         case .new:
             ZimFilesNew()
         case .downloads:

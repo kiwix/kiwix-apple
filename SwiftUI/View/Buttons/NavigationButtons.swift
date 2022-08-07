@@ -79,6 +79,18 @@ struct BookmarkMultiButton: View {
     }
 }
 
+struct LibraryButton: View {
+    @EnvironmentObject var viewModel: ReadingViewModel
+    
+    var body: some View {
+        Button {
+            viewModel.activeSheet = .library
+        } label: {
+            Label("Library", systemImage: "folder")
+        }
+    }
+}
+
 struct MainArticleButton: View {
     @Binding var url: URL?
     
@@ -118,7 +130,6 @@ struct MainArticleMenu: View {
 
 struct MoreActionMenu: View {
     @Binding var url: URL?
-    @EnvironmentObject var viewModel: ReadingViewModel
     @FetchRequest(
         sortDescriptors: [NSSortDescriptor(keyPath: \ZimFile.size, ascending: false)],
         predicate: ZimFile.openedPredicate
@@ -135,11 +146,7 @@ struct MoreActionMenu: View {
                     }
                 }
             }
-            Button {
-                viewModel.activeSheet = .library
-            } label: {
-                Label("Library", systemImage: "folder")
-            }
+            LibraryButton()
         } label: {
             Image(systemName: "ellipsis.circle")
         }

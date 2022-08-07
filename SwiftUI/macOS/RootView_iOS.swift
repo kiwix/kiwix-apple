@@ -137,6 +137,7 @@ private struct Content: View {
                     } else {
                         MainArticleButton(url: $url)
                     }
+                    LibraryButton()
                 }
             }
             ToolbarItemGroup(placement: .bottomBar) {
