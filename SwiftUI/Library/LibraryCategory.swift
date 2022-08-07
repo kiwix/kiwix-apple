@@ -12,7 +12,7 @@ struct LibraryCategories: View {
     @State private var selected: Category = .wikipedia
     
     var body: some View {
-        LibraryCategory(selected: $selected)
+        LibraryCategory(selectedCategory: $selected)
             .navigationTitle(NavigationItem.categories.name)
             .toolbar {
                 Picker("Category", selection: $selected) {
@@ -24,13 +24,15 @@ struct LibraryCategories: View {
 
 
 struct LibraryCategory: View {
-    @Binding var selected: Category
+    @Binding var selectedCategory: Category
     @State private var searchText = ""
+    @State private var selectedZimFile: ZimFile?
     
     var body: some View {
         Group {
-            Text(selected.name)
+            Text(selectedCategory.name)
         }
         .modifier(Searchable(searchText: $searchText))
+        .modifier(ZimFileDetailPanel(zimFile: selectedZimFile))
     }
 }

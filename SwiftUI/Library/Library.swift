@@ -22,7 +22,7 @@ struct Library: View {
                 SheetView {
                     switch navigationItem {
                     case .opened:
-                        ZimFilesOpened(isFileImporterPresented: .constant(false))
+                        ZimFilesOpened(isFileImporterPresented: $isFileImporterPresented)
                     case .categories:
                         categories
                     case .downloads:
@@ -49,7 +49,7 @@ struct Library: View {
     var categories: some View {
         List(Category.allCases) { category in
             NavigationLink {
-                LibraryCategory(selected: .constant(category))
+                LibraryCategory(selectedCategory: .constant(category))
                     .navigationTitle(category.name)
                     .navigationBarTitleDisplayMode(.inline)
             } label: {
