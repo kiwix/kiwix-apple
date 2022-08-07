@@ -69,7 +69,7 @@ private struct LibraryContent: View {
     var body: some View {
         switch topic {
         case .opened:
-            ZimFilesOpened()
+            ZimFilesOpened(isFileImporterPresented: .constant(false))
         case .downloads:
             ZimFilesDownloads()
         case .new:

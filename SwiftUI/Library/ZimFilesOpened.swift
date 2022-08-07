@@ -10,7 +10,7 @@ import SwiftUI
 
 /// Show a grid of zim files that are opened, or was open but is now missing.
 struct ZimFilesOpened: View {
-    @EnvironmentObject var viewModel: LibraryViewModel
+    @Binding var isFileImporterPresented: Bool
     @FetchRequest(
         sortDescriptors: [NSSortDescriptor(keyPath: \ZimFile.size, ascending: false)],
         predicate: ZimFile.withFileURLBookmarkPredicate,
@@ -41,7 +41,7 @@ struct ZimFilesOpened: View {
         .modifier(ZimFileDetailPanel(zimFile: selected))
         .toolbar {
             Button {
-                viewModel.isFileImporterPresented.toggle()
+                isFileImporterPresented.toggle()
             } label: {
                 Image(systemName: "plus")
             }.help("Open a zim file")
@@ -51,6 +51,6 @@ struct ZimFilesOpened: View {
 
 struct ZimFilesOpened_Previews: PreviewProvider {
     static var previews: some View {
-        ZimFilesOpened()
+        ZimFilesOpened(isFileImporterPresented: .constant(false))
     }
 }

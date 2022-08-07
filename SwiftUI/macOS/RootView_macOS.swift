@@ -8,7 +8,9 @@
 
 import SwiftUI
 
+/// Root view for macOS 12
 struct RootView_macOS: View {
+    @State private var isFileImporterPresented = false
     @State private var navigationItem: NavigationItem? = .reading
     @State private var url: URL?
     @State private var searchText = ""
@@ -30,6 +32,7 @@ struct RootView_macOS: View {
             EmptyView()  // required so the UI does not look broken on macOS
         }
         .environment(\.managedObjectContext, Database.shared.container.viewContext)
+        .modifier(FileImporter(isPresented: $isFileImporterPresented))
         .onChange(of: url) { _ in
             navigationItem = .reading
         }
@@ -63,7 +66,7 @@ struct RootView_macOS: View {
         case .map:
             MapView()
         case .opened:
-            ZimFilesOpened()
+            ZimFilesOpened(isFileImporterPresented: $isFileImporterPresented)
         case .categories:
             Text(navigationItem.name)
         case .new:

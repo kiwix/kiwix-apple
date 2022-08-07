@@ -8,6 +8,7 @@
 
 import SwiftUI
 
+/// Root view for iOS & iPadOS
 struct RootView_iOS: UIViewControllerRepresentable {
     @State private var isSearchActive = false
     @State private var searchText = ""
