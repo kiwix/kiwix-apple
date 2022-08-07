@@ -70,9 +70,9 @@ struct RootView_macOS: View {
         case .categories:
             Text(navigationItem.name)
         case .new:
-            Text(navigationItem.name)
+            ZimFilesNew()
         case .downloads:
-            Text(navigationItem.name)
+            ZimFilesDownloads()
         default:
             EmptyView()
         }
