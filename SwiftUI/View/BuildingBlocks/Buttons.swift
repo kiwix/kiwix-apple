@@ -1,5 +1,5 @@
 //
-//  NavigationButtons.swift
+//  Buttons.swift
 //  Kiwix
 //
 //  Created by Chris Li on 2/13/22.
@@ -249,3 +249,17 @@ struct RandomArticleMenu: View {
         }.help("Show random article")
     }
 }
+
+#if os(macOS)
+struct SidebarButton: View {
+    var body: some View {
+        Button {
+            guard let responder = NSApp.keyWindow?.firstResponder else { return }
+            responder.tryToPerform(#selector(NSSplitViewController.toggleSidebar(_:)), with: nil)
+        } label: {
+            Image(systemName: "sidebar.leading")
+        }
+        .help("Show sidebar")
+    }
+}
+#endif
