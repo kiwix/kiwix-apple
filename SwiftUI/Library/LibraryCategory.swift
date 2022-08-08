@@ -30,20 +30,46 @@ struct LibraryCategory: View {
     @State private var searchText = ""
     
     var body: some View {
-        if category == .ted || category == .stackExchange || category == .other {
-            CategoryList(category: $category, searchText: $searchText)
+        if #available(iOS 15.0, *), category != .ted, category != .stackExchange, category != .other {
+            CategoryGrid(category: $category, searchText: $searchText)
         } else {
-            CategoryGrid(searchText: $searchText, category: category)
+            CategoryList(category: $category, searchText: $searchText)
         }
-//        .modifier(Searchable(searchText: $searchText))
-//        .modifier(ZimFileDetailPanel(zimFile: selectedZimFile))
+    }
+    
+    static func buildPredicate(category: Category, searchText: String) -> NSPredicate {
+        var predicates = [
+            NSPredicate(format: "category == %@", category.rawValue),
+            NSPredicate(format: "languageCode IN %@", Defaults[.libraryLanguageCodes]),
+            NSPredicate(format: "requiresServiceWorkers == false")
+        ]
+        if !searchText.isEmpty {
+            predicates.append(NSPredicate(format: "name CONTAINS[cd] %@", searchText))
+        }
+        return NSCompoundPredicate(andPredicateWithSubpredicates: predicates)
     }
 }
 
+@available(iOS 15.0, macOS 12.0, *)
 private struct CategoryGrid: View {
+    @Binding var category: Category
     @Binding var searchText: String
+    @Default(.libraryLanguageCodes) private var languageCodes
+    @SectionedFetchRequest private var sections: SectionedFetchResults<String, ZimFile>
+    @State private var selected: ZimFile?
     
-    let category: Category
+    init(category: Binding<Category>, searchText: Binding<String>) {
+        self._category = category
+        self._searchText = searchText
+        self._sections = SectionedFetchRequest<String, ZimFile>(
+            sectionIdentifier: \.name,
+            sortDescriptors: [SortDescriptor(\ZimFile.name), SortDescriptor(\.size, order: .reverse)],
+            predicate: LibraryCategory.buildPredicate(
+                category: category.wrappedValue, searchText: searchText.wrappedValue
+            ),
+            animation: .easeInOut
+        )
+    }
     
     var body: some View {
         Text(category.name)
@@ -67,7 +93,7 @@ private struct CategoryList: View {
                 ),
                 NSSortDescriptor(keyPath: \ZimFile.size, ascending: false)
             ],
-            predicate: CategoryList.buildPredicate(
+            predicate: LibraryCategory.buildPredicate(
                 category: category.wrappedValue, searchText: searchText.wrappedValue
             ),
             animation: .easeInOut
@@ -92,26 +118,14 @@ private struct CategoryList: View {
         .onChange(of: category) { _ in selected = nil }
         .onChange(of: searchText) { _ in
             if #available(iOS 15.0, *) {
-                zimFiles.nsPredicate = CategoryList.buildPredicate(category: category, searchText: searchText)
+                zimFiles.nsPredicate = LibraryCategory.buildPredicate(category: category, searchText: searchText)
             }
         }
         .onChange(of: languageCodes) { _ in
             if #available(iOS 15.0, *) {
-                zimFiles.nsPredicate = CategoryList.buildPredicate(category: category, searchText: searchText)
+                zimFiles.nsPredicate = LibraryCategory.buildPredicate(category: category, searchText: searchText)
             }
         }
-    }
-    
-    private static func buildPredicate(category: Category, searchText: String) -> NSPredicate {
-        var predicates = [
-            NSPredicate(format: "category == %@", category.rawValue),
-            NSPredicate(format: "languageCode IN %@", Defaults[.libraryLanguageCodes]),
-            NSPredicate(format: "requiresServiceWorkers == false")
-        ]
-        if !searchText.isEmpty {
-            predicates.append(NSPredicate(format: "name CONTAINS[cd] %@", searchText))
-        }
-        return NSCompoundPredicate(andPredicateWithSubpredicates: predicates)
     }
     
     struct ListStyle: ViewModifier {

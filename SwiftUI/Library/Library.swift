@@ -49,7 +49,7 @@ struct Library: View {
     var categories: some View {
         List(Category.allCases) { category in
             NavigationLink {
-                LibraryCategory(selectedCategory: .constant(category))
+                LibraryCategory(category: .constant(category))
                     .navigationTitle(category.name)
                     .navigationBarTitleDisplayMode(.inline)
             } label: {
