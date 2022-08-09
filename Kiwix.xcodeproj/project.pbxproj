@@ -10,8 +10,8 @@
 		9707B8F61F4B4F1500075D4F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9707B8F51F4B4F1500075D4F /* Assets.xcassets */; };
 		970885D1271339A300C5795C /* wikipedia_dark.css in Resources */ = {isa = PBXBuildFile; fileRef = 970885D0271339A300C5795C /* wikipedia_dark.css */; };
 		970C0BDF28A28AEA0037A47D /* ReadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 977B1B5C28972C33001D07C4 /* ReadingView.swift */; };
-		970C0BE028A28AEA0037A47D /* RootView_SwiftUI4.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97893876289E058100F0EAFC /* RootView_SwiftUI4.swift */; };
-		970C0BE128A28AEB0037A47D /* RootView_SwiftUI4.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97893876289E058100F0EAFC /* RootView_SwiftUI4.swift */; };
+		970C0BE028A28AEA0037A47D /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97893876289E058100F0EAFC /* RootView.swift */; };
+		970C0BE128A28AEB0037A47D /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97893876289E058100F0EAFC /* RootView.swift */; };
 		970EC3A123BCEC84008DCA27 /* Parser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 970EC3A023BCEC84008DCA27 /* Parser.swift */; };
 		970EC3FB23BE8E25008DCA27 /* ParserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 970EC3AB23BCF31F008DCA27 /* ParserTests.swift */; };
 		970EC3FC23BE8E31008DCA27 /* Parser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 970EC3A023BCEC84008DCA27 /* Parser.swift */; };
@@ -199,7 +199,6 @@
 		977D50772623580D005345D1 /* LibrarySettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 977D50762623580D005345D1 /* LibrarySettingsView.swift */; };
 		977D509626268AAB005345D1 /* LibrarySearchResultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 977D509526268AAB005345D1 /* LibrarySearchResultView.swift */; };
 		978938732899556200F0EAFC /* RootView_iOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 978938722899556200F0EAFC /* RootView_iOS.swift */; };
-		97893875289958F300F0EAFC /* RootView_macOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97893874289958F300F0EAFC /* RootView_macOS.swift */; };
 		9789C26424F9600D00072090 /* Platform.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97B399912468502500BC6F5B /* Platform.swift */; };
 		9789C26524F9601400072090 /* ZimFileService.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9779A5A92456793500F6F6FF /* ZimFileService.mm */; };
 		9789C26624F9601700072090 /* ZimFileService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9779A5AA2456793500F6F6FF /* ZimFileService.swift */; };
@@ -478,7 +477,7 @@
 		977D509526268AAB005345D1 /* LibrarySearchResultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibrarySearchResultView.swift; sourceTree = "<group>"; };
 		978938722899556200F0EAFC /* RootView_iOS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView_iOS.swift; sourceTree = "<group>"; };
 		97893874289958F300F0EAFC /* RootView_macOS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView_macOS.swift; sourceTree = "<group>"; };
-		97893876289E058100F0EAFC /* RootView_SwiftUI4.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView_SwiftUI4.swift; sourceTree = "<group>"; };
+		97893876289E058100F0EAFC /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
 		978A730F27B99F25008101B4 /* ReaderViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderViewModel.swift; sourceTree = "<group>"; };
 		978A731127B9A0E0008101B4 /* Buttons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Buttons.swift; sourceTree = "<group>"; };
 		978B688824F8080E003CCA8C /* BarButtons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarButtons.swift; sourceTree = "<group>"; };
@@ -749,7 +748,7 @@
 				977B1B5A28971D5E001D07C4 /* App.swift */,
 				97893874289958F300F0EAFC /* RootView_macOS.swift */,
 				978938722899556200F0EAFC /* RootView_iOS.swift */,
-				97893876289E058100F0EAFC /* RootView_SwiftUI4.swift */,
+				97893876289E058100F0EAFC /* RootView.swift */,
 				977B1B5C28972C33001D07C4 /* ReadingView.swift */,
 				9721BBB928427A93005C910D /* BookmarksView.swift */,
 				977B1B63289801DE001D07C4 /* MapView.swift */,
@@ -1513,7 +1512,7 @@
 				9721BBBB28427A93005C910D /* BookmarksView.swift in Sources */,
 				973A0DFD283100C300B41E71 /* ZimFilesOpened.swift in Sources */,
 				972DE4B62814A502004FD9B9 /* Enum.swift in Sources */,
-				970C0BE028A28AEA0037A47D /* RootView_SwiftUI4.swift in Sources */,
+				970C0BE028A28AEA0037A47D /* RootView.swift in Sources */,
 				974C33A9285589E900DF6F4C /* Patches.swift in Sources */,
 				973A0DF1282E981200B41E71 /* ZimFileRow.swift in Sources */,
 				97DE2BA6283A944100C63D9B /* LibraryGridPadding.swift in Sources */,
@@ -1690,7 +1689,6 @@
 				97E94B2F271EF630005B0295 /* ZimFileService.mm in Sources */,
 				972DE4732814A116004FD9B9 /* Entities.swift in Sources */,
 				97486D0A284B96690096E4DD /* CellBackground.swift in Sources */,
-				97893875289958F300F0EAFC /* RootView_macOS.swift in Sources */,
 				978A731027B99F25008101B4 /* ReaderViewModel.swift in Sources */,
 				9790CA5928A05EBB00D39FC6 /* LibraryCategory.swift in Sources */,
 				97B3BACC2736CDCE00A23F49 /* URLContent.swift in Sources */,
@@ -1730,7 +1728,7 @@
 				97486D0D284C0EBC0096E4DD /* Welcome.swift in Sources */,
 				97341C6D2852248500BC273E /* DownloadTaskCell.swift in Sources */,
 				97242B9D2735E6A800C87F85 /* Log.swift in Sources */,
-				970C0BE128A28AEB0037A47D /* RootView_SwiftUI4.swift in Sources */,
+				970C0BE128A28AEB0037A47D /* RootView.swift in Sources */,
 				97C278DF2796249900666E07 /* OutlineTree.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

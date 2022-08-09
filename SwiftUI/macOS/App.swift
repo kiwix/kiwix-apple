@@ -16,20 +16,7 @@ struct Kiwix: App {
     
     var body: some Scene {
         WindowGroup {
-            if #available(macOS 13.0, iOS 16.0, *) {
-                RootView_SwiftUI4()
-            } else {
-                #if os(macOS)
-                RootView_macOS()
-                #elseif os(iOS)
-                RootView_iOS().ignoresSafeArea(.all)
-                #endif
-            }
-//            #if os(macOS)
-//            RootView_macOS()
-//            #elseif os(iOS)
-//            RootView_iOS().ignoresSafeArea(.all)
-//            #endif
+            RootView()
         }
     }
 }
