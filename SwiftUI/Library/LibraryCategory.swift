@@ -72,7 +72,83 @@ private struct CategoryGrid: View {
     }
     
     var body: some View {
-        Text(category.name)
+        Group {
+            if sections.isEmpty {
+                Message(text: "No zim file under this category.")
+            } else {
+                LazyVGrid(
+                    columns: ([gridItem]),
+                    alignment: .leading,
+                    spacing: 12
+                ) {
+                    ForEach(sections) { section in
+                        if sections.count <= 1 {
+                            ForEach(section) { zimFile in
+                                Button { selected = zimFile } label: { ZimFileCell(zimFile, prominent: .size) }
+                                    .buttonStyle(.plain)
+                                    .modifier(ZimFileContextMenu(selected: $selected, zimFile: zimFile))
+                                    .modifier(ZimFileSelection(selected: $selected, zimFile: zimFile))
+                            }
+                        } else {
+                            Section {
+                                ForEach(section) { zimFile in
+                                    Button { selected = zimFile } label: { ZimFileCell(zimFile, prominent: .size) }
+                                        .buttonStyle(.plain)
+                                        .modifier(ZimFileContextMenu(selected: $selected, zimFile: zimFile))
+                                        .modifier(ZimFileSelection(selected: $selected, zimFile: zimFile))
+                                }
+                            } header: {
+                                SectionHeader(
+                                    title: section.id,
+                                    category: Category(rawValue: section.first?.category) ?? .other,
+                                    imageData: section.first?.faviconData,
+                                    imageURL: section.first?.faviconURL
+                                ).padding(
+                                    EdgeInsets(
+                                        top: section.id == sections.first?.id ? 0 : 10,
+                                        leading: 12,
+                                        bottom: -6,
+                                        trailing: 0
+                                    )
+                                )
+                            }
+                        }
+                    }
+                }.modifier(GridCommon())
+            }
+        }
+        .modifier(ZimFileDetailPanel(zimFile: selected))
+        .modifier(Searchable(searchText: $searchText))
+        .onChange(of: category) { _ in selected = nil }
+        .onChange(of: searchText) { _ in
+            sections.nsPredicate = LibraryCategory.buildPredicate(category: category, searchText: searchText)
+        }
+        .onChange(of: languageCodes) { _ in
+            sections.nsPredicate = LibraryCategory.buildPredicate(category: category, searchText: searchText)
+        }
+    }
+    
+    private var gridItem: GridItem {
+        #if os(macOS)
+        GridItem(.adaptive(minimum: 200, maximum: 400), spacing: 12)
+        #elseif os(iOS)
+        GridItem(.adaptive(minimum: 175, maximum: 400), spacing: 12)
+        #endif
+    }
+    
+    private struct SectionHeader: View {
+        let title: String
+        let category: Category
+        let imageData: Data?
+        let imageURL: URL?
+        
+        var body: some View {
+            Label {
+                Text(title).font(.title3).fontWeight(.semibold)
+            } icon: {
+                Favicon(category: category, imageData: imageData, imageURL: imageURL).frame(height: 20)
+            }
+        }
     }
 }
 
@@ -109,10 +185,9 @@ private struct CategoryList: View {
                     ZimFileRow(zimFile)
                         .modifier(ZimFileContextMenu(selected: $selected, zimFile: zimFile))
                         .modifier(ZimFileSelection(selected: $selected, zimFile: zimFile))
-                }
+                }.modifier(ListStyle())
             }
         }
-        .modifier(ListStyle())
         .modifier(ZimFileDetailPanel(zimFile: selected))
         .modifier(Searchable(searchText: $searchText))
         .onChange(of: category) { _ in selected = nil }
@@ -128,7 +203,7 @@ private struct CategoryList: View {
         }
     }
     
-    struct ListStyle: ViewModifier {
+    private struct ListStyle: ViewModifier {
         func body(content: Content) -> some View {
             #if os(macOS)
             content.listStyle(.inset)
