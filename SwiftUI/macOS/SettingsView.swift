@@ -1,5 +1,5 @@
 //
-//  Settings.swift
+//  SettingsView.swift
 //  Kiwix for iOS
 //
 //  Created by Chris Li on 6/10/22.
@@ -11,7 +11,7 @@ import SwiftUI
 
 import Defaults
 
-struct Settings: View {
+struct SettingsView: View {
     @Default(.backupDocumentDirectory) private var backupDocumentDirectory
     @Default(.downloadUsingCellular) private var downloadUsingCellular
     @Default(.externalLinkLoadingPolicy) private var externalLinkLoadingPolicy
@@ -93,8 +93,8 @@ struct Settings: View {
             NavigationLink("About") { About() }
         }
         .navigationTitle("Settings")
-        .onChange(of: libraryAutoRefresh) { Settings.applyLibraryAutoRefreshSetting(isEnabled: $0) }
-        .onChange(of: backupDocumentDirectory) { Settings.applyFileBackupSetting(isEnabled: $0) }
+        .onChange(of: libraryAutoRefresh) { SettingsView.applyLibraryAutoRefreshSetting(isEnabled: $0) }
+        .onChange(of: backupDocumentDirectory) { SettingsView.applyFileBackupSetting(isEnabled: $0) }
     }
     
     static func applyLibraryAutoRefreshSetting(isEnabled: Bool? = nil) {
@@ -133,8 +133,8 @@ struct Settings: View {
     }
 }
 
-struct Settings_Previews: PreviewProvider {
+struct SettingsView_Previews: PreviewProvider {
     static var previews: some View {
-        Settings()
+        SettingsView()
     }
 }

@@ -138,6 +138,7 @@ private struct Content: View {
                         MainArticleButton(url: $url)
                     }
                     LibraryButton()
+                    SettingsButton()
                 }
             }
             ToolbarItemGroup(placement: .bottomBar) {
@@ -170,6 +171,8 @@ private struct Content: View {
                 SheetView { BookmarksView(url: $url) }
             case .library:
                 Library()
+            case .settings:
+                SheetView { SettingsView() }
             }
         }
         .onChange(of: url) { _ in

@@ -147,6 +147,7 @@ struct MoreActionMenu: View {
                 }
             }
             LibraryButton()
+            SettingsButton()
         } label: {
             Image(systemName: "ellipsis.circle")
         }
@@ -247,6 +248,18 @@ struct RandomArticleMenu: View {
             let zimFileID = UUID(uuidString: url?.host ?? "")
             url = ZimFileService.shared.getRandomPageURL(zimFileID: zimFileID)
         }.help("Show random article")
+    }
+}
+
+struct SettingsButton: View {
+    @EnvironmentObject var viewModel: ReadingViewModel
+    
+    var body: some View {
+        Button {
+            viewModel.activeSheet = .settings
+        } label: {
+            Label("Settings", systemImage: "gear")
+        }
     }
 }
 

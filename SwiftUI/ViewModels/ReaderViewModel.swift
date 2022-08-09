@@ -193,7 +193,7 @@ class ReadingViewModel: NSObject, ObservableObject, WKNavigationDelegate, WKScri
 
 enum ActiveSheet: String, Identifiable {
     var id: String { rawValue }
-    case outline, bookmarks, library
+    case outline, bookmarks, library, settings
 }
 
 class ReaderViewModel: NSObject, ObservableObject, WKNavigationDelegate, WKScriptMessageHandler {
