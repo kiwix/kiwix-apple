@@ -12,6 +12,7 @@ import SwiftUI
 @available(macOS 13.0, iOS 16.0, *)
 struct RootView_SwiftUI4: View {
     @Environment(\.horizontalSizeClass) var horizontalSizeClass
+    @State private var isFileImporterPresented = false
     @State private var navigationItem: NavigationItem? = .reading
     @State private var url: URL?
     @State private var searchText = ""
@@ -41,20 +42,20 @@ struct RootView_SwiftUI4: View {
                     case .map:
                         MapView()
                     case .opened:
-                        ZimFilesOpened()
+                        ZimFilesOpened(isFileImporterPresented: $isFileImporterPresented)
                     case .categories:
-                        Text(navigationItem?.name ?? "")
+                        NavigationStack { LibraryCategories() }
                     case .new:
-                        Text(navigationItem?.name ?? "")
+                        ZimFilesNew()
                     case .downloads:
-                        Text(navigationItem?.name ?? "")
+                        ZimFilesDownloads()
                     default:
                         EmptyView()
                     }
                 }
                 
             } else {
-                Text("Hello, World!")
+                RootView_iOS()
             }
         }
         .environment(\.managedObjectContext, Database.shared.container.viewContext)

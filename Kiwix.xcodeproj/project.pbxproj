@@ -9,6 +9,9 @@
 /* Begin PBXBuildFile section */
 		9707B8F61F4B4F1500075D4F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9707B8F51F4B4F1500075D4F /* Assets.xcassets */; };
 		970885D1271339A300C5795C /* wikipedia_dark.css in Resources */ = {isa = PBXBuildFile; fileRef = 970885D0271339A300C5795C /* wikipedia_dark.css */; };
+		970C0BDF28A28AEA0037A47D /* ReadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 977B1B5C28972C33001D07C4 /* ReadingView.swift */; };
+		970C0BE028A28AEA0037A47D /* RootView_SwiftUI4.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97893876289E058100F0EAFC /* RootView_SwiftUI4.swift */; };
+		970C0BE128A28AEB0037A47D /* RootView_SwiftUI4.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97893876289E058100F0EAFC /* RootView_SwiftUI4.swift */; };
 		970EC3A123BCEC84008DCA27 /* Parser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 970EC3A023BCEC84008DCA27 /* Parser.swift */; };
 		970EC3FB23BE8E25008DCA27 /* ParserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 970EC3AB23BCF31F008DCA27 /* ParserTests.swift */; };
 		970EC3FC23BE8E31008DCA27 /* Parser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 970EC3A023BCEC84008DCA27 /* Parser.swift */; };
@@ -1510,6 +1513,7 @@
 				9721BBBB28427A93005C910D /* BookmarksView.swift in Sources */,
 				973A0DFD283100C300B41E71 /* ZimFilesOpened.swift in Sources */,
 				972DE4B62814A502004FD9B9 /* Enum.swift in Sources */,
+				970C0BE028A28AEA0037A47D /* RootView_SwiftUI4.swift in Sources */,
 				974C33A9285589E900DF6F4C /* Patches.swift in Sources */,
 				973A0DF1282E981200B41E71 /* ZimFileRow.swift in Sources */,
 				97DE2BA6283A944100C63D9B /* LibraryGridPadding.swift in Sources */,
@@ -1522,6 +1526,7 @@
 				974C33A32853DDEE00DF6F4C /* SettingsView.swift in Sources */,
 				977B1B65289801DE001D07C4 /* MapView.swift in Sources */,
 				977B1B5E2897F9C8001D07C4 /* App.swift in Sources */,
+				970C0BDF28A28AEA0037A47D /* ReadingView.swift in Sources */,
 				973A0DE7281DC8F400B41E71 /* Downloads.swift in Sources */,
 				9721BBB72841C16D005C910D /* Message.swift in Sources */,
 				97BD6C9D2886E06B004A8532 /* HTMLParser.swift in Sources */,
@@ -1725,6 +1730,7 @@
 				97486D0D284C0EBC0096E4DD /* Welcome.swift in Sources */,
 				97341C6D2852248500BC273E /* DownloadTaskCell.swift in Sources */,
 				97242B9D2735E6A800C87F85 /* Log.swift in Sources */,
+				970C0BE128A28AEB0037A47D /* RootView_SwiftUI4.swift in Sources */,
 				97C278DF2796249900666E07 /* OutlineTree.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
