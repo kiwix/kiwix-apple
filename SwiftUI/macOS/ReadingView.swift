@@ -29,7 +29,7 @@ struct ReadingView: View {
                 WebView(url: $url).ignoresSafeArea(edges: .all)
             }
         }
-        .modifier(BarSetupModifier())
+        .modifier(NavigationBarConfigurator())
         .toolbar {
             #if os(macOS)
             ToolbarItemGroup(placement: .navigation) {
@@ -55,7 +55,7 @@ struct ReadingView: View {
 }
 
 @available(macOS 12.0, iOS 16.0, *)
-private struct BarSetupModifier: ViewModifier {
+private struct NavigationBarConfigurator: ViewModifier {
     @EnvironmentObject var viewModel: ReadingViewModel
     
     func body(content: Content) -> some View {

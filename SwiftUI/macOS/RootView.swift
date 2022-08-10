@@ -29,7 +29,13 @@ struct RootView: View {
                 NavigationSplitView {
                     sidebar
                 } detail: {
-                    detail
+                    NavigationStack {
+                        #if os(macOS)
+                        detail
+                        #elseif os(iOS)
+                        detail.navigationBarTitleDisplayMode(.inline)
+                        #endif
+                    }
                 }
             } else {
                 #if os(macOS)
@@ -101,6 +107,10 @@ struct RootView: View {
             BookmarksView(url: $url)
         case .map:
             MapView()
+        case .settings:
+            #if os(iOS)
+            SettingsView()
+            #endif
         case .opened:
             ZimFilesOpened(isFileImporterPresented: $isFileImporterPresented)
         case .categories:
