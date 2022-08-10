@@ -22,10 +22,17 @@ struct RootView: View {
     var body: some View {
         Group {
             if horizontalSizeClass == .regular, #available(macOS 13.0, iOS 16.0, *) {
-                splitView_SwiftUI4
+                NavigationSplitView {
+                    sidebar
+                } detail: {
+                    detail
+                }
             } else {
                 #if os(macOS)
-                splitView_SwiftUI3
+                NavigationView {
+                    sidebar
+                    detail
+                }
                 #elseif os(iOS)
                 RootView_iOS()
                 #endif
@@ -37,38 +44,31 @@ struct RootView: View {
         }
     }
     
-    @available(macOS 13.0, iOS 16.0, *)
-    private var splitView_SwiftUI4: some View {
-        NavigationSplitView {
-            List(selection: $navigationItem) {
-                ForEach(primaryNavigationItems, id: \.self) { navigationLink($0) }
-                Section {
-                    ForEach(libraryNavigationItems, id: \.self) { navigationLink($0) }
-                } header: { Text("Library") }
-            }.navigationTitle("Kiwix")
-        } detail: { detail }
+    @ViewBuilder
+    private func navigationItem(_ navigationItem: NavigationItem) -> some View {
+        if #available(macOS 13.0, iOS 16.0, *) {
+            NavigationLink(value: navigationItem) {
+                Label(navigationItem.name, systemImage: navigationItem.icon)
+            }
+        } else {
+            Label(navigationItem.name, systemImage: navigationItem.icon)
+        }
     }
     
-    @available(macOS 12.0, iOS 16.0, *)
-    private var splitView_SwiftUI3: some View {
-        NavigationView {
-            List(selection: $navigationItem) {
-                ForEach(primaryNavigationItems, id: \.self) { navigationItem in
-                    Label(navigationItem.name, systemImage: navigationItem.icon)
-                }
-                Section {
-                    ForEach(libraryNavigationItems, id: \.self) { navigationItem in
-                        Label(navigationItem.name, systemImage: navigationItem.icon)
-                    }
-                } header: { Text("Library") }
-            }
-            .frame(minWidth: 150)
-            .toolbar {
-                #if os(macOS)
-                SidebarButton()
-                #endif
-            }
-            detail
+    @ViewBuilder
+    private var sidebar: some View {
+        List(selection: $navigationItem) {
+            ForEach(primaryNavigationItems, id: \.self) { navigationItem($0) }
+            Section {
+                ForEach(libraryNavigationItems, id: \.self) { navigationItem($0) }
+            } header: { Text("Library") }
+        }
+        .navigationTitle("Kiwix")
+        .frame(minWidth: 150)
+        .toolbar {
+            #if os(macOS)
+            SidebarButton()
+            #endif
         }
     }
     
@@ -92,14 +92,6 @@ struct RootView: View {
             ZimFilesDownloads()
         default:
             EmptyView()
-        }
-    }
-    
-    @ViewBuilder
-    @available(macOS 13.0, iOS 16.0, *)
-    private func navigationLink(_ navigationItem: NavigationItem) -> some View {
-        NavigationLink(value: navigationItem) {
-            Label(navigationItem.name, systemImage: navigationItem.icon)
         }
     }
 }
