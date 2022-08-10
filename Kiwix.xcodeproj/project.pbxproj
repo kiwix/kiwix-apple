@@ -386,7 +386,7 @@
 		972B6661200808D6003F5365 /* WelcomeController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeController.swift; sourceTree = "<group>"; };
 		972C977F26F042E40070987F /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		972DE4722814A116004FD9B9 /* Entities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Entities.swift; sourceTree = "<group>"; };
-		972DE4A62814A3D8004FD9B9 /* iOS_SwiftUI.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iOS_SwiftUI.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		972DE4A62814A3D8004FD9B9 /* Kiwix.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Kiwix.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		972DE4C12814A961004FD9B9 /* Library.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Library.swift; sourceTree = "<group>"; };
 		972E6F631FA11A6100F5C927 /* RoundedButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedButton.swift; sourceTree = "<group>"; };
 		97341C692851165B00BC273E /* Searchable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Searchable.swift; sourceTree = "<group>"; };
@@ -955,7 +955,7 @@
 				970EC3FD23BE9987008DCA27 /* WikiMed.app */,
 				97F425C027151A0D00D0F738 /* QuickLookPreview.appex */,
 				97E94B17271EF24D005B0295 /* Kiwix.app */,
-				972DE4A62814A3D8004FD9B9 /* iOS_SwiftUI.app */,
+				972DE4A62814A3D8004FD9B9 /* Kiwix.app */,
 			);
 			sourceTree = "<group>";
 			wrapsLines = 0;
@@ -1151,7 +1151,7 @@
 				977B1B6128980190001D07C4 /* Introspect */,
 			);
 			productName = iOS_SwiftUI;
-			productReference = 972DE4A62814A3D8004FD9B9 /* iOS_SwiftUI.app */;
+			productReference = 972DE4A62814A3D8004FD9B9 /* Kiwix.app */;
 			productType = "com.apple.product-type.application";
 		};
 		979315801E5127930093D3BA /* macOS */ = {
@@ -1888,7 +1888,7 @@
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = "org.kiwix.iOS-SwiftUI";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = Kiwix;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -1926,7 +1926,7 @@
 				MARKETING_VERSION = 1.0;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = "org.kiwix.iOS-SwiftUI";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = Kiwix;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";

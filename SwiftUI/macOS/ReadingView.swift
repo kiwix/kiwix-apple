@@ -47,8 +47,13 @@ struct ReadingView: View {
             ToolbarItemGroup {
                 OutlineMenu()
                 BookmarkToggleButton(url: url)
+                #if os(macOS)
                 RandomArticleButton(url: $url)
                 MainArticleButton(url: $url)
+                #elseif os(iOS)
+                RandomArticleMenu(url: $url)
+                MainArticleMenu(url: $url)
+                #endif
             }
         }
     }
