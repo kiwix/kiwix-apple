@@ -46,7 +46,7 @@ struct BookmarksView: View {
         #if os(macOS)
         GridItem(.adaptive(minimum: 250, maximum: 500), spacing: 12)
         #elseif os(iOS)
-        GridItem(.adaptive(minimum: 300, maximum: 500), spacing: 12)
+        GridItem(.adaptive(minimum: 250, maximum: 500), spacing: 12)
         #endif
     }
     

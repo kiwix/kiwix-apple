@@ -179,9 +179,6 @@ private struct Content: View {
                 SheetView { SettingsView() }
             }
         }
-        .onChange(of: url) { _ in
-            viewModel.activeSheet = nil
-        }
         .introspectNavigationController { $0.isToolbarHidden = horizontalSizeClass != .compact }
     }
 }

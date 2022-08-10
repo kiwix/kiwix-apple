@@ -44,7 +44,14 @@ struct RootView: View {
         }
         .environment(\.managedObjectContext, Database.shared.container.viewContext)
         .modifier(FileImporter(isPresented: $isFileImporterPresented))
-        .onChange(of: url) { _ in navigationItem = .reading }
+        .onChange(of: url) { _ in
+            navigationItem = .reading
+            readingViewModel.activeSheet = nil
+        }
+        .onChange(of: horizontalSizeClass) { _ in
+            navigationItem = .reading
+            readingViewModel.activeSheet = nil
+        }
         .onOpenURL { url in
             if url.isFileURL {
                 guard let metadata = ZimFileService.getMetaData(url: url) else { return }
