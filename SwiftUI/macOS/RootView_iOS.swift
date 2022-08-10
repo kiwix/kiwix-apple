@@ -10,11 +10,12 @@ import SwiftUI
 
 /// Root view for iOS & iPadOS
 struct RootView_iOS: UIViewControllerRepresentable {
+    @Binding var url: URL?
     @State private var isSearchActive = false
     @State private var searchText = ""
     
     func makeUIViewController(context: Context) -> UINavigationController {
-        let controller = UIHostingController(rootView: Content(isSearchActive: $isSearchActive))
+        let controller = UIHostingController(rootView: Content(isSearchActive: $isSearchActive, url: $url))
         let navigationController = UINavigationController(rootViewController: controller)
         controller.definesPresentationContext = true
         
@@ -104,8 +105,8 @@ struct RootView_iOS: UIViewControllerRepresentable {
 
 private struct Content: View {
     @Binding var isSearchActive: Bool
+    @Binding var url: URL?
     @Environment(\.horizontalSizeClass) var horizontalSizeClass
-    @State private var url: URL?
     @StateObject private var viewModel = ReadingViewModel()
     
     var body: some View {
