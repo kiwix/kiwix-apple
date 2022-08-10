@@ -182,8 +182,6 @@ private struct Content: View {
         .onChange(of: url) { _ in
             viewModel.activeSheet = nil
         }
-        .environment(\.managedObjectContext, Database.shared.container.viewContext)
-        .environmentObject(viewModel)
         .introspectNavigationController { $0.isToolbarHidden = horizontalSizeClass != .compact }
     }
 }

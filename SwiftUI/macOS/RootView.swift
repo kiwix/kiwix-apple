@@ -16,7 +16,11 @@ struct RootView: View {
     @State private var searchText = ""
     @StateObject private var readingViewModel = ReadingViewModel()
     
+    #if os(macOS)
     private let primaryNavigationItems: [NavigationItem] = [.reading, .bookmarks, .map]
+    #elseif os(iOS)
+    private let primaryNavigationItems: [NavigationItem] = [.reading, .bookmarks, .map, .settings]
+    #endif
     private let libraryNavigationItems: [NavigationItem] = [.opened, .categories, .new, .downloads]
     
     var body: some View {
@@ -39,8 +43,16 @@ struct RootView: View {
             }
         }
         .environment(\.managedObjectContext, Database.shared.container.viewContext)
-        .onChange(of: url) { _ in
-            navigationItem = .reading
+        .modifier(FileImporter(isPresented: $isFileImporterPresented))
+        .onChange(of: url) { _ in navigationItem = .reading }
+        .onOpenURL { url in
+            if url.isFileURL {
+                guard let metadata = ZimFileService.getMetaData(url: url) else { return }
+                LibraryViewModel.open(url: url)
+                self.url = ZimFileService.shared.getMainPageURL(zimFileID: metadata.fileID)
+            } else if url.scheme == "kiwix" {
+                self.url = url
+            }
         }
     }
     
