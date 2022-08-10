@@ -34,7 +34,7 @@ struct RootView: View {
                     detail
                 }
                 #elseif os(iOS)
-                RootView_iOS(url: $url).ignoresSafeArea(.all)
+                RootView_iOS(url: $url).ignoresSafeArea(.all).environmentObject(readingViewModel)
                 #endif
             }
         }

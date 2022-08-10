@@ -8,6 +8,8 @@
 
 import SwiftUI
 
+import Introspect
+
 /// Root view for iOS & iPadOS
 struct RootView_iOS: UIViewControllerRepresentable {
     @Binding var url: URL?
@@ -43,6 +45,7 @@ struct RootView_iOS: UIViewControllerRepresentable {
                 apperance.configureWithDefaultBackground()
                 return apperance
             }()
+            navigationController.toolbar.isHidden = false
         }
         
         // observe bookmark toggle notification
@@ -107,7 +110,7 @@ private struct Content: View {
     @Binding var isSearchActive: Bool
     @Binding var url: URL?
     @Environment(\.horizontalSizeClass) var horizontalSizeClass
-    @StateObject private var viewModel = ReadingViewModel()
+    @EnvironmentObject var viewModel: ReadingViewModel
     
     var body: some View {
         Group {
@@ -181,5 +184,6 @@ private struct Content: View {
         }
         .environment(\.managedObjectContext, Database.shared.container.viewContext)
         .environmentObject(viewModel)
+        .introspectNavigationController { $0.isToolbarHidden = horizontalSizeClass != .compact }
     }
 }
