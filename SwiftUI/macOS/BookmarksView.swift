@@ -13,7 +13,7 @@ struct BookmarksView: View {
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     @Environment(\.presentationMode) private var presentationMode
     @FetchRequest(
-        sortDescriptors: [NSSortDescriptor(keyPath: \Bookmark.created, ascending: true)],
+        sortDescriptors: [NSSortDescriptor(keyPath: \Bookmark.created, ascending: false)],
         predicate: BookmarksView.buildPredicate(searchText: ""),
         animation: .easeInOut
     ) private var bookmarks: FetchedResults<Bookmark>
