@@ -280,6 +280,8 @@
 		97DE2BA7283AB6DC00C63D9B /* Buttons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 978A731127B9A0E0008101B4 /* Buttons.swift */; };
 		97DE2BAD283B133700C63D9B /* wikipedia_dark.css in Resources */ = {isa = PBXBuildFile; fileRef = 970885D0271339A300C5795C /* wikipedia_dark.css */; };
 		97E173D425733D11002CAD17 /* RootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97E173D325733D10002CAD17 /* RootViewController.swift */; };
+		97E7BD6C28A47E8E005D8ADA /* Commands.swift in Sources */ = {isa = PBXBuildFile; fileRef = 973BC75627587A29008D4114 /* Commands.swift */; };
+		97E7BD6D28A47EA0005D8ADA /* SheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 975088B228763B6900273181 /* SheetView.swift */; };
 		97E94B21271EF250005B0295 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 97E94B20271EF250005B0295 /* Preview Assets.xcassets */; };
 		97E94B2D271EF603005B0295 /* libkiwix.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97EC18AF26E8555E008309ED /* libkiwix.xcframework */; };
 		97E94B2E271EF630005B0295 /* ZimFileService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9779A5AA2456793500F6F6FF /* ZimFileService.swift */; };
@@ -736,7 +738,6 @@
 			isa = PBXGroup;
 			children = (
 				975088B628763E2500273181 /* Search.swift */,
-				975088B228763B6900273181 /* SheetView.swift */,
 			);
 			path = iOS;
 			sourceTree = "<group>";
@@ -769,6 +770,7 @@
 				975088BC287DA10800273181 /* LibraryLastRefreshTime.swift */,
 				97FB4B0A27B819A90055F86E /* Message.swift */,
 				97486D07284A42B90096E4DD /* SearchResultRow.swift */,
+				975088B228763B6900273181 /* SheetView.swift */,
 				973A2FD72780024600BD4320 /* ZimFileCell.swift */,
 				97121EBC28849F0000371AEB /* ZimFileMissingIndicator.swift */,
 				973A0DEF282E981200B41E71 /* ZimFileRow.swift */,
@@ -1521,6 +1523,7 @@
 				976BAEBE284905760049404F /* SearchViewModel.swift in Sources */,
 				97486D0F284D44C20096E4DD /* HUDController.swift in Sources */,
 				974C33A32853DDEE00DF6F4C /* SettingsView.swift in Sources */,
+				97E7BD6C28A47E8E005D8ADA /* Commands.swift in Sources */,
 				977B1B65289801DE001D07C4 /* MapView.swift in Sources */,
 				977B1B5E2897F9C8001D07C4 /* App.swift in Sources */,
 				970C0BDF28A28AEA0037A47D /* ReadingView.swift in Sources */,
@@ -1663,6 +1666,7 @@
 				973BC75727587A29008D4114 /* Commands.swift in Sources */,
 				97DE2BA2283A8E5C00C63D9B /* LibraryViewModel.swift in Sources */,
 				975088C0287EEE4600273181 /* ArticleCell.swift in Sources */,
+				97E7BD6D28A47EA0005D8ADA /* SheetView.swift in Sources */,
 				975088C1287EEE4600273181 /* SearchResultRow.swift in Sources */,
 				97242B872735E66B00C87F85 /* SearchResult.m in Sources */,
 				973A0DE6281DC8F400B41E71 /* Downloads.swift in Sources */,
