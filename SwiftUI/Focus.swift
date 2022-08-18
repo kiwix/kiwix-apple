@@ -16,16 +16,16 @@ struct CanGoForwardKey: FocusedValueKey {
     typealias Value = Bool
 }
 
+struct NavigationItemKey: FocusedValueKey {
+    typealias Value = Binding<NavigationItem?>
+}
+
 struct ReaderViewModelKey: FocusedValueKey {
     typealias Value = ReaderViewModel
 }
 
 struct SearchFieldFocusActionKey: FocusedValueKey {
     typealias Value = () -> Void
-}
-
-struct SidebarDisplayModeKey: FocusedValueKey {
-    typealias Value = Binding<SidebarDisplayMode>
 }
 
 struct URLKey: FocusedValueKey {
@@ -43,19 +43,19 @@ extension FocusedValues {
         set { self[CanGoForwardKey.self] = newValue }
     }
     
-    var searchFieldFocusAction: SearchFieldFocusActionKey.Value? {
-        get { self[SearchFieldFocusActionKey.self] }
-        set { self[SearchFieldFocusActionKey.self] = newValue }
-    }
-    
-    var sidebarDisplayMode: SidebarDisplayModeKey.Value? {
-        get { self[SidebarDisplayModeKey.self] }
-        set { self[SidebarDisplayModeKey.self] = newValue }
+    var navigationItem: NavigationItemKey.Value? {
+        get { self[NavigationItemKey.self] }
+        set { self[NavigationItemKey.self] = newValue }
     }
     
     var readerViewModel: ReaderViewModelKey.Value? {
         get { self[ReaderViewModelKey.self] }
         set { self[ReaderViewModelKey.self] = newValue }
+    }
+    
+    var searchFieldFocusAction: SearchFieldFocusActionKey.Value? {
+        get { self[SearchFieldFocusActionKey.self] }
+        set { self[SearchFieldFocusActionKey.self] = newValue }
     }
     
     var url: URLKey.Value? {

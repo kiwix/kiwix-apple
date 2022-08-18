@@ -254,35 +254,3 @@ enum SheetDisplayMode: String, Identifiable {
     
     var id: String { rawValue }
 }
-
-enum SidebarDisplayMode: String, CaseIterable, Identifiable {
-    case search, bookmarks, outline, library
-    
-    var id: String { rawValue }
-    
-    var imageName: String {
-        switch self {
-        case .search:
-            return "magnifyingglass"
-        case .bookmarks:
-            return "star"
-        case .outline:
-            return "list.bullet"
-        case .library:
-            return "folder"
-        }
-    }
-    
-    var help: String {
-        switch self {
-        case .search:
-            return "Search for articles"
-        case .bookmarks:
-            return "Show bookmarked articles"
-        case .outline:
-            return "Show article outline"
-        case .library:
-            return "Show opened zim files"
-        }
-    }
-}

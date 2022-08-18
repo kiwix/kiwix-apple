@@ -24,36 +24,15 @@ struct ImportCommands: Commands {
     }
 }
 
-struct SidebarDisplayModeCommandButtons: View {
-    @FocusedBinding(\.sidebarDisplayMode) var displayMode: SidebarDisplayMode?
-    
-    var body: some View {
-        Button("Show Search") { displayMode = .search }
-            .keyboardShortcut("1")
-            .disabled(displayMode == nil)
-        Button("Show Bookmark") { displayMode = .bookmarks }
-            .keyboardShortcut("2")
-            .disabled(displayMode == nil)
-        Button("Show Outline") { displayMode = .outline }
-            .keyboardShortcut("3")
-            .disabled(displayMode == nil)
-        Button("Show Library") { displayMode = .library }
-            .keyboardShortcut("4")
-            .disabled(displayMode == nil)
-    }
-}
-
 struct SearchCommandButton: View {
     @FocusedValue(\.searchFieldFocusAction) var focusAction: (() -> Void)?
-    @FocusedBinding(\.sidebarDisplayMode) var displayMode: SidebarDisplayMode?
+//    @FocusedBinding(\.sidebarDisplayMode) var displayMode: SidebarDisplayMode?
     
     var body: some View {
         Button("Search") {
-            displayMode = .search
             focusAction?()
         }
         .keyboardShortcut("s")
-        .disabled(displayMode == nil)
     }
 }
 

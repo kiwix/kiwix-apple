@@ -21,7 +21,7 @@ struct RootView: View {
     #elseif os(iOS)
     private let primaryNavigationItems: [NavigationItem] = [.reading, .bookmarks, .map, .settings]
     #endif
-    private let libraryNavigationItems: [NavigationItem] = [.opened, .categories, .new, .downloads]
+    private let libraryNavigationItems: [NavigationItem] = [.opened, .categories, .downloads, .new]
     
     var body: some View {
         Group {
@@ -36,7 +36,7 @@ struct RootView: View {
                         detail.navigationBarTitleDisplayMode(.inline)
                         #endif
                     }
-                }
+                }.focusedSceneValue(\.navigationItem, $navigationItem)
             } else {
                 #if os(macOS)
                 NavigationView {
@@ -115,11 +115,11 @@ struct RootView: View {
             ZimFilesOpened(isFileImporterPresented: $isFileImporterPresented)
         case .categories:
             LibraryCategories()
-        case .new:
-            ZimFilesNew()
         case .downloads:
             ZimFilesDownloads()
-        default:
+        case .new:
+            ZimFilesNew()
+        case .none:
             EmptyView()
         }
     }
