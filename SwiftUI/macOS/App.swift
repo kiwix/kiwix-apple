@@ -17,6 +17,11 @@ struct Kiwix: App {
     var body: some Scene {
         WindowGroup {
             RootView()
+        }.commands {
+            CommandGroup(after: .toolbar) {
+                NavigationItemButtons()
+                Divider()
+            }
         }
     }
 }

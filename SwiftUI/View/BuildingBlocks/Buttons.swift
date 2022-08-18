@@ -182,6 +182,26 @@ struct NavigateForwardButton: View {
     }
 }
 
+struct NavigationItemButtons: View {
+    @FocusedBinding(\.navigationItem) var navigationItem: NavigationItem??
+    
+    var body: some View {
+        buildButtons([.reading, .bookmarks, .map], keyboardShortcutOffset: 1)
+        Divider()
+        buildButtons([.opened, .categories, .downloads, .new], keyboardShortcutOffset: 4)
+    }
+    
+    private func buildButtons(_ navigationItems: [NavigationItem], keyboardShortcutOffset: Int) -> some View {
+        ForEach(Array(navigationItems.enumerated()), id: \.element) { index, item in
+            Button(item.name) {
+                navigationItem = item
+            }
+            .keyboardShortcut(KeyEquivalent(Character("\(index + keyboardShortcutOffset)")))
+            .disabled(navigationItem == nil)
+        }
+    }
+}
+
 struct OutlineButton: View {
     @EnvironmentObject var viewModel: ReadingViewModel
     
