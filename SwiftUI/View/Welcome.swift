@@ -12,7 +12,7 @@ struct Welcome: View {
     @Binding var url: URL?
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     @FetchRequest(
-        sortDescriptors: [NSSortDescriptor(keyPath: \Bookmark.created, ascending: true)],
+        sortDescriptors: [NSSortDescriptor(keyPath: \Bookmark.created, ascending: false)],
         animation: .easeInOut
     ) private var bookmarks: FetchedResults<Bookmark>
     @FetchRequest(

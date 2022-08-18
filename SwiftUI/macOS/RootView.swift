@@ -25,7 +25,7 @@ struct RootView: View {
     
     var body: some View {
         Group {
-            if horizontalSizeClass == .regular, #available(macOS 13.0, iOS 16.0, *) {
+            if #available(macOS 13.0, iOS 16.0, *), horizontalSizeClass == .regular {
                 NavigationSplitView {
                     sidebar
                 } detail: {

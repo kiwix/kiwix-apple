@@ -19,8 +19,10 @@ struct Kiwix: App {
             RootView()
         }.commands {
             CommandGroup(after: .toolbar) {
+                #if os(macOS)
                 NavigationItemButtons()
                 Divider()
+                #endif
             }
         }
     }
