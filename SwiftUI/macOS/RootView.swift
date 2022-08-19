@@ -48,6 +48,7 @@ struct RootView: View {
                 #endif
             }
         }
+        .focusedSceneValue(\.url, url)
         .environment(\.managedObjectContext, Database.shared.container.viewContext)
         .modifier(FileImporter(isPresented: $isFileImporterPresented))
         .onChange(of: url) { _ in

@@ -20,6 +20,8 @@ struct Kiwix: App {
         }.commands {
             CommandGroup(after: .toolbar) {
                 #if os(macOS)
+                PageZoomButtons()
+                Divider()
                 NavigationItemButtons()
                 Divider()
                 #endif

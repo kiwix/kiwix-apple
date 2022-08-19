@@ -50,20 +50,3 @@ struct NavigationCommandButtons: View {
             .disabled(!(canGoForward ?? false))
     }
 }
-
-struct PageZoomCommandButtons: View {
-    @Default(.webViewPageZoom) var webViewPageZoom
-    @FocusedValue(\.url) var url: URL??
-    
-    var body: some View {
-        Button("Actual Size") { webViewPageZoom = 1 }
-            .keyboardShortcut("0")
-            .disabled(webViewPageZoom == 1)
-        Button("Zoom In") { webViewPageZoom += 0.1 }
-            .keyboardShortcut("+")
-            .disabled((url ?? nil) == nil)
-        Button("Zoom Out") { webViewPageZoom -= 0.1 }
-            .keyboardShortcut("-")
-            .disabled((url ?? nil) == nil)
-    }
-}
