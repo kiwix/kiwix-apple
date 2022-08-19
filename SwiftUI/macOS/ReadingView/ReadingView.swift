@@ -18,11 +18,7 @@ struct ReadingView: View {
     var body: some View {
         Group {
             if isSearching {
-                List {
-                    Text("result 1")
-                    Text("result 2")
-                    Text("result 3")
-                }
+                SearchView()
             } else if url == nil {
                 Welcome(url: $url)
             } else {
