@@ -9,6 +9,8 @@
 import SwiftUI
 import WebKit
 
+import Defaults
+
 #if os(macOS)
 struct WebView: NSViewRepresentable {
     @Binding var url: URL?
@@ -87,6 +89,7 @@ class WebViewController: UIViewController {
 class WebViewCoordinator {
     var canGoBackObserver: NSKeyValueObservation?
     var canGoForwardObserver: NSKeyValueObservation?
+    var pageZoomObserver: Defaults.Observation?
     var titleObserver: NSKeyValueObservation?
     var urlObserver: NSKeyValueObservation?
     
@@ -129,6 +132,9 @@ class WebViewCoordinator {
         }
         canGoForwardObserver = webView.observe(\.canGoForward) { webView, _ in
             viewModel.canGoForward = webView.canGoForward
+        }
+        pageZoomObserver = Defaults.observe(.webViewPageZoom) { change in
+            self.webView.pageZoom = change.newValue
         }
         titleObserver = webView.observe(\.title) { webView, _ in
             guard let title = webView.title, !title.isEmpty,
