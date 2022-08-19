@@ -31,3 +31,21 @@ extension EnvironmentValues {
     var verticalSizeClass: UserInterfaceSizeClass { .regular }
 }
 #endif
+
+struct FocusedSceneValue<T>: ViewModifier {
+    private let keyPath: WritableKeyPath<FocusedValues, T?>
+    private let value: T
+    
+    init(_ keyPath: WritableKeyPath<FocusedValues, T?>, _ value: T) {
+        self.keyPath = keyPath
+        self.value = value
+    }
+    
+    func body(content: Content) -> some View {
+        if #available(macOS 12.0, iOS 15.0, *) {
+            content.focusedSceneValue(keyPath, value)
+        } else {
+            content
+        }
+    }
+}

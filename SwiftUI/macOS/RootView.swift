@@ -48,9 +48,9 @@ struct RootView: View {
                 #endif
             }
         }
-        .focusedSceneValue(\.url, url)
         .environment(\.managedObjectContext, Database.shared.container.viewContext)
         .modifier(FileImporter(isPresented: $isFileImporterPresented))
+        .modifier(FocusedSceneValue(\.url, url))
         .onChange(of: url) { _ in
             navigationItem = .reading
             readingViewModel.activeSheet = nil

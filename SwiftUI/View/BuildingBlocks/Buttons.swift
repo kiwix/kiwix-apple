@@ -247,10 +247,10 @@ struct PageZoomButtons: View {
             .disabled(webViewPageZoom == 1)
         Button("Zoom In") { webViewPageZoom += 0.1 }
             .keyboardShortcut("+")
-            .disabled(navigationItem != NavigationItem.reading || (url ?? nil) == nil)
+            .disabled(navigationItem != .reading || (url ?? nil) == nil)
         Button("Zoom Out") { webViewPageZoom -= 0.1 }
             .keyboardShortcut("-")
-            .disabled(navigationItem != NavigationItem.reading || (url ?? nil) == nil)
+            .disabled(navigationItem != .reading || (url ?? nil) == nil)
     }
 }
 
