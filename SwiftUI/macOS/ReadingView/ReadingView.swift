@@ -17,12 +17,15 @@ struct ReadingView: View {
     
     var body: some View {
         Group {
-            if isSearching {
-                SearchView()
-            } else if url == nil {
+            if url == nil {
                 Welcome(url: $url)
             } else {
                 WebView(url: $url).ignoresSafeArea(edges: .all)
+            }
+        }
+        .overlay(alignment: .topTrailing) {
+            if isSearching {
+                SearchView()
             }
         }
         .modifier(NavigationBarConfigurator())
