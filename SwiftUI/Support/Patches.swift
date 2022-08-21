@@ -27,8 +27,14 @@ struct VerticalSizeClassEnvironmentKey: EnvironmentKey {
     static let defaultValue: UserInterfaceSizeClass = .regular
 }
 extension EnvironmentValues {
-    var horizontalSizeClass: UserInterfaceSizeClass { .regular }
-    var verticalSizeClass: UserInterfaceSizeClass { .regular }
+    var horizontalSizeClass: UserInterfaceSizeClass {
+        get { self[HorizontalSizeClassEnvironmentKey.self] }
+        set { self[HorizontalSizeClassEnvironmentKey.self] = newValue }
+    }
+    var verticalSizeClass: UserInterfaceSizeClass {
+        get { return self[VerticalSizeClassEnvironmentKey.self] }
+        set { self[VerticalSizeClassEnvironmentKey.self] = newValue }
+    }
 }
 #endif
 

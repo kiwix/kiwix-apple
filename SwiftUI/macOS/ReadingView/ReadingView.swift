@@ -67,7 +67,7 @@ private struct ReadingViewContent: View {
             searchText = ""
             dismissSearch()
         }
-        .overlay(alignment: .topTrailing) {
+        .overlay {
             if isSearching {
                 SearchView(url: $url, searchText: $searchText)
             }

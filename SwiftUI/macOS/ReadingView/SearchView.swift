@@ -18,15 +18,14 @@ struct SearchView: View {
         predicate: ZimFile.withFileURLBookmarkPredicate,
         animation: .easeInOut
     ) private var zimFiles: FetchedResults<ZimFile>
-    @State private var isShowingMoreRecentSearch = false
-    @State private var selectedRecentSearchText: String?
     
     var body: some View {
+        #if os(macOS)
         GeometryReader { proxy in
             ZStack(alignment: .topTrailing) {
                 Color.clear
                 content
-                    .modifier(RegularMaterialBackground_SwiftUI3())
+                    .background(Material.regular)
                     .cornerRadius(10)
                     .shadow(color: Color.black.opacity(0.2), radius: 3, x: 0, y: 2)
                     .overlay(
@@ -37,6 +36,9 @@ struct SearchView: View {
                     .padding(8)
             }
         }
+        #elseif os(iOS)
+        
+        #endif
     }
     
     @ViewBuilder
@@ -44,10 +46,10 @@ struct SearchView: View {
         if zimFiles.isEmpty {
             Message(text: "No opened zim files")
         } else if searchText.isEmpty {
-            List(selection: $selectedRecentSearchText) {
+            List {
                 recentSearch
                 filter
-            }.modifier(TransparentListBackground_SwiftUI4())
+            }
         } else if viewModel.inProgress {
             ProgressView().frame(maxWidth: .infinity, maxHeight: .infinity)
         } else if viewModel.results.isEmpty {
@@ -102,26 +104,6 @@ struct SearchView: View {
                 }
             }
             .padding()
-        }.background(Color.secondaryBackground)
-    }
-}
-
-private struct TransparentListBackground_SwiftUI4: ViewModifier {
-    func body(content: Content) -> some View {
-        if #available(macOS 13.0, iOS 16.0, *) {
-            content.scrollContentBackground(.hidden)
-        } else {
-            content
-        }
-    }
-}
-
-private struct RegularMaterialBackground_SwiftUI3: ViewModifier {
-    func body(content: Content) -> some View {
-        if #available(macOS 12.0, iOS 15.0, *) {
-            content.background(Material.regular)
-        } else {
-            content
-        }
+        }.background(Color.background)
     }
 }

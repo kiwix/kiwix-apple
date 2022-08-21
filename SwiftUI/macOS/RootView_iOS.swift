@@ -88,7 +88,8 @@ struct RootView_iOS: UIViewControllerRepresentable {
         
         init(_ rootView: RootView_iOS) {
             self.rootView = rootView
-            let searchResultsController = UIHostingController(rootView: Search(searchText: rootView.$searchText))
+            let searchView = SearchView(url: rootView.$url, searchText: rootView.$searchText)
+            let searchResultsController = UIHostingController(rootView: searchView)
             self.searchController = UISearchController(searchResultsController: searchResultsController)
             super.init()
         }

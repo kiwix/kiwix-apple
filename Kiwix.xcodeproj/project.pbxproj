@@ -108,8 +108,6 @@
 		974FFE612352744800F6BF28 /* WebKitWebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 974FFE602352744800F6BF28 /* WebKitWebViewController.swift */; };
 		974FFE6A23533E8D00F6BF28 /* NavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 974FFE6823533E8D00F6BF28 /* NavigationController.swift */; };
 		975088B328763B6900273181 /* SheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 975088B228763B6900273181 /* SheetView.swift */; };
-		975088B528763DFF00273181 /* Search.swift in Sources */ = {isa = PBXBuildFile; fileRef = 975088B428763DFF00273181 /* Search.swift */; };
-		975088B828763E5400273181 /* Search.swift in Sources */ = {isa = PBXBuildFile; fileRef = 975088B628763E2500273181 /* Search.swift */; };
 		975088BA287BBDFE00273181 /* LanguageSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 975088B9287BBDFE00273181 /* LanguageSelector.swift */; };
 		975088BB287BBDFE00273181 /* LanguageSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 975088B9287BBDFE00273181 /* LanguageSelector.swift */; };
 		975088BD287DA10800273181 /* LibraryLastRefreshTime.swift in Sources */ = {isa = PBXBuildFile; fileRef = 975088BC287DA10800273181 /* LibraryLastRefreshTime.swift */; };
@@ -255,8 +253,6 @@
 		97BD6C9A2886DD71004A8532 /* Fuzi in Frameworks */ = {isa = PBXBuildFile; productRef = 97BD6C992886DD71004A8532 /* Fuzi */; };
 		97BD6C9C2886E06B004A8532 /* HTMLParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97BD6C9B2886E06B004A8532 /* HTMLParser.swift */; };
 		97BD6C9D2886E06B004A8532 /* HTMLParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97BD6C9B2886E06B004A8532 /* HTMLParser.swift */; };
-		97C1378028454A1B00386C04 /* SearchFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97C1377F28454A1B00386C04 /* SearchFilter.swift */; };
-		97C1378128454A1B00386C04 /* SearchFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97C1377F28454A1B00386C04 /* SearchFilter.swift */; };
 		97C14E232707F98400EF4CF2 /* OutlineViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97C14E222707F98400EF4CF2 /* OutlineViewController.swift */; };
 		97C278DB2794744500666E07 /* libkiwix.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97EC18AF26E8555E008309ED /* libkiwix.xcframework */; };
 		97C278DF2796249900666E07 /* OutlineTree.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97C278DE2796249900666E07 /* OutlineTree.swift */; };
@@ -1481,7 +1477,6 @@
 				9753D949285B55F100A626CC /* DefaultKeys.swift in Sources */,
 				973A0DE4281D80E300B41E71 /* ZimFileDetail.swift in Sources */,
 				976BAEBC2849056B0049404F /* SearchOperation.mm in Sources */,
-				97C1378128454A1B00386C04 /* SearchFilter.swift in Sources */,
 				97909270286BF0BB002B7AA5 /* Formatter.swift in Sources */,
 				97DE2B9C2839D39100C63D9B /* WebView.swift in Sources */,
 				97341C6B2851165B00BC273E /* Searchable.swift in Sources */,
@@ -1499,7 +1494,6 @@
 				976D90D32814F2FA00CC7D29 /* ZimFilesGrid.swift in Sources */,
 				972DE4B92814A56A004FD9B9 /* Database.swift in Sources */,
 				976BAEB5284903A80049404F /* SearchResult.swift in Sources */,
-				975088B828763E5400273181 /* Search.swift in Sources */,
 				97F3333028AFC1A2007FF53C /* SearchView.swift in Sources */,
 				97341C6E2852248500BC273E /* DownloadTaskCell.swift in Sources */,
 				976D90DC281586B400CC7D29 /* ZimFileCell.swift in Sources */,
@@ -1688,7 +1682,6 @@
 				97B3BAD02736CE3500A23F49 /* URL.swift in Sources */,
 				976D90D22814F2FA00CC7D29 /* ZimFilesGrid.swift in Sources */,
 				97255D8C273608C3002B995B /* WebView.swift in Sources */,
-				975088B528763DFF00273181 /* Search.swift in Sources */,
 				977B1B5B28971D5E001D07C4 /* App.swift in Sources */,
 				976BAEB42847BD020049404F /* SearchViewModel.swift in Sources */,
 				976D90E82815D63A00CC7D29 /* ZimFilesNew.swift in Sources */,
@@ -1717,7 +1710,6 @@
 				974C33AB28558D2900DF6F4C /* LibrarySettings.swift in Sources */,
 				97B3048927796C9000E82DE0 /* SearchOperation.swift in Sources */,
 				973A2FD82780024600BD4320 /* ZimFileCell.swift in Sources */,
-				97C1378028454A1B00386C04 /* SearchFilter.swift in Sources */,
 				9735D0C027777E3300C7D495 /* Enum.swift in Sources */,
 				97BD6C9C2886E06B004A8532 /* HTMLParser.swift in Sources */,
 				9753D948285B55F100A626CC /* DefaultKeys.swift in Sources */,
