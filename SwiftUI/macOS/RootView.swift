@@ -41,7 +41,7 @@ struct RootView: View {
                 #if os(macOS)
                 NavigationView {
                     sidebar
-                    detail
+                    detail.frame(minWidth: 500)
                 }.focusedSceneValue(\.navigationItem, $navigationItem)
                 #elseif os(iOS)
                 RootView_iOS(url: $url).ignoresSafeArea(.all).environmentObject(readingViewModel)
