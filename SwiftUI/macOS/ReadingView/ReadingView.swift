@@ -63,11 +63,18 @@ private struct ReadingViewContent: View {
                 WebView(url: $url).ignoresSafeArea(edges: .all)
             }
         }
-        .onTapGesture { dismissSearch() }
+        .onTapGesture {
+            searchText = ""
+            dismissSearch()
+        }
         .overlay(alignment: .topTrailing) {
             if isSearching {
                 SearchView(url: $url, searchText: $searchText)
             }
+        }
+        .onChange(of: url) { _ in 
+            searchText = ""
+            dismissSearch()
         }
     }
 }
