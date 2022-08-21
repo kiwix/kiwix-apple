@@ -9,6 +9,7 @@
 import SwiftUI
 
 struct SearchView: View {
+    @Binding var searchText: String
     @Environment(\.managedObjectContext) private var managedObjectContext
     @FetchRequest(
         sortDescriptors: [NSSortDescriptor(keyPath: \ZimFile.size, ascending: false)],
@@ -36,11 +37,22 @@ struct SearchView: View {
         }
     }
     
+    @ViewBuilder
     var content: some View {
-        List(selection: $selectedRecentSearchText) {
-            recentSearch
-            filter
-        }.background(Color.green)
+        if zimFiles.isEmpty {
+            Message(text: "No opened zim files")
+        } else if searchText.isEmpty {
+            List(selection: $selectedRecentSearchText) {
+                recentSearch
+                filter
+            }
+        } else {
+            List {
+                Text("result 1")
+                Text("result 2")
+                Text("result 3")
+            }
+        }
     }
     
     var recentSearch: some View {
