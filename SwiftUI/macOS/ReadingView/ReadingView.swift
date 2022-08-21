@@ -72,7 +72,7 @@ private struct ReadingViewContent: View {
                 SearchView(url: $url, searchText: $searchText)
             }
         }
-        .onChange(of: url) { _ in 
+        .onChange(of: url) { _ in
             searchText = ""
             dismissSearch()
         }

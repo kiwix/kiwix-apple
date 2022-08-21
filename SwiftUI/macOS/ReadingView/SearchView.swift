@@ -26,7 +26,7 @@ struct SearchView: View {
             ZStack(alignment: .topTrailing) {
                 Color.clear
                 content
-                    .background(Material.regular)
+                    .modifier(RegularMaterialBackground_SwiftUI3())
                     .cornerRadius(10)
                     .shadow(color: Color.black.opacity(0.2), radius: 3, x: 0, y: 2)
                     .overlay(
@@ -47,7 +47,7 @@ struct SearchView: View {
             List(selection: $selectedRecentSearchText) {
                 recentSearch
                 filter
-            }
+            }.modifier(TransparentListBackground_SwiftUI4())
         } else if viewModel.inProgress {
             ProgressView().frame(maxWidth: .infinity, maxHeight: .infinity)
         } else if viewModel.results.isEmpty {
@@ -59,6 +59,7 @@ struct SearchView: View {
     
     var recentSearch: some View {
         Section {
+            #if os(macOS)
             LazyVGrid(columns: [GridItem(.adaptive(minimum: 100))]) {
                 ForEach(1..<13) { index in
                     Button("recent search item \(index)") {
@@ -66,6 +67,13 @@ struct SearchView: View {
                     }
                 }
             }
+            #elseif os(iOS)
+            ForEach(1..<6) { index in
+                Button("recent search item \(index)") {
+                    
+                }
+            }
+            #endif
         } header: { Text("Recent Search") }
     }
     
@@ -92,7 +100,28 @@ struct SearchView: View {
                         ArticleCell(result: result, zimFile: viewModel.zimFiles[result.zimFileID])
                     }.buttonStyle(.plain)
                 }
-            }.padding()
+            }
+            .padding()
+        }.background(Color.secondaryBackground)
+    }
+}
+
+private struct TransparentListBackground_SwiftUI4: ViewModifier {
+    func body(content: Content) -> some View {
+        if #available(macOS 13.0, iOS 16.0, *) {
+            content.scrollContentBackground(.hidden)
+        } else {
+            content
+        }
+    }
+}
+
+private struct RegularMaterialBackground_SwiftUI3: ViewModifier {
+    func body(content: Content) -> some View {
+        if #available(macOS 12.0, iOS 15.0, *) {
+            content.background(Material.regular)
+        } else {
+            content
         }
     }
 }
