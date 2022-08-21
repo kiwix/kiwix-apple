@@ -12,9 +12,48 @@ import WebKit
 @available(macOS 12.0, iOS 16.0, *)
 struct ReadingView: View {
     @Binding var url: URL?
+    @StateObject private var searchViewModel = SearchViewModel()
+    
+    var body: some View {
+        ReadingViewContent(url: $url, searchText: $searchViewModel.searchText)
+            .environmentObject(searchViewModel)
+            .searchable(text: $searchViewModel.searchText)
+            .modifier(NavigationBarConfigurator())
+            .toolbar {
+                #if os(macOS)
+                ToolbarItemGroup(placement: .navigation) {
+                    ControlGroup {
+                        NavigateBackButton()
+                        NavigateForwardButton()
+                    }
+                }
+                #elseif os(iOS)
+                ToolbarItemGroup(placement: .navigationBarLeading) {
+                    NavigateBackButton()
+                    NavigateForwardButton()
+                }
+                #endif
+                ToolbarItemGroup {
+                    OutlineMenu()
+                    BookmarkToggleButton(url: url)
+                    #if os(macOS)
+                    RandomArticleButton(url: $url)
+                    MainArticleButton(url: $url)
+                    #elseif os(iOS)
+                    RandomArticleMenu(url: $url)
+                    MainArticleMenu(url: $url)
+                    #endif
+                }
+            }
+    }
+}
+
+@available(macOS 12.0, iOS 16.0, *)
+private struct ReadingViewContent: View {
+    @Binding var url: URL?
+    @Binding var searchText: String
     @Environment(\.dismissSearch) private var dismissSearch
     @Environment(\.isSearching) private var isSearching
-    @EnvironmentObject var viewModel: ReadingViewModel
     
     var body: some View {
         Group {
@@ -27,34 +66,7 @@ struct ReadingView: View {
         .onTapGesture { dismissSearch() }
         .overlay(alignment: .topTrailing) {
             if isSearching {
-                SearchView()
-            }
-        }
-        .modifier(NavigationBarConfigurator())
-        .toolbar {
-            #if os(macOS)
-            ToolbarItemGroup(placement: .navigation) {
-                ControlGroup {
-                    NavigateBackButton()
-                    NavigateForwardButton()
-                }
-            }
-            #elseif os(iOS)
-            ToolbarItemGroup(placement: .navigationBarLeading) {
-                NavigateBackButton()
-                NavigateForwardButton()
-            }
-            #endif
-            ToolbarItemGroup {
-                OutlineMenu()
-                BookmarkToggleButton(url: url)
-                #if os(macOS)
-                RandomArticleButton(url: $url)
-                MainArticleButton(url: $url)
-                #elseif os(iOS)
-                RandomArticleMenu(url: $url)
-                MainArticleMenu(url: $url)
-                #endif
+                SearchView(url: $url, searchText: $searchText)
             }
         }
     }

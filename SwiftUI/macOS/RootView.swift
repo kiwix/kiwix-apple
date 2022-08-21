@@ -13,7 +13,6 @@ struct RootView: View {
     @State private var isFileImporterPresented = false
     @State private var navigationItem: NavigationItem? = .reading
     @State private var url: URL?
-    @State private var searchText = ""
     @StateObject private var readingViewModel = ReadingViewModel()
     
     #if os(macOS)
@@ -103,7 +102,7 @@ struct RootView: View {
     private var detail: some View {
         switch navigationItem {
         case .reading:
-            ReadingView(url: $url).searchable(text: $searchText).environmentObject(readingViewModel)
+            ReadingView(url: $url).environmentObject(readingViewModel)
         case .bookmarks:
             BookmarksView(url: $url)
         case .map:

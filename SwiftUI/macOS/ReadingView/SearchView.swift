@@ -9,8 +9,10 @@
 import SwiftUI
 
 struct SearchView: View {
+    @Binding var url: URL?
     @Binding var searchText: String
     @Environment(\.managedObjectContext) private var managedObjectContext
+    @EnvironmentObject var viewModel: SearchViewModel
     @FetchRequest(
         sortDescriptors: [NSSortDescriptor(keyPath: \ZimFile.size, ascending: false)],
         predicate: ZimFile.withFileURLBookmarkPredicate,
@@ -46,12 +48,12 @@ struct SearchView: View {
                 recentSearch
                 filter
             }
+        } else if viewModel.inProgress {
+            ProgressView().frame(maxWidth: .infinity, maxHeight: .infinity)
+        } else if viewModel.results.isEmpty {
+            Message(text: "No result")
         } else {
-            List {
-                Text("result 1")
-                Text("result 2")
-                Text("result 3")
-            }
+            results
         }
     }
     
@@ -79,10 +81,18 @@ struct SearchView: View {
             }
         } header: { Text("Included in Search") }
     }
-}
-
-struct SearchView_Previews: PreviewProvider {
-    static var previews: some View {
-        SearchView()
+    
+    var results: some View {
+        ScrollView {
+            LazyVGrid(columns: [GridItem(.flexible(minimum: 300, maximum: 700), alignment: .center)]) {
+                ForEach(viewModel.results) { result in
+                    Button {
+                        url = result.url
+                    } label: {
+                        ArticleCell(result: result, zimFile: viewModel.zimFiles[result.zimFileID])
+                    }.buttonStyle(.plain)
+                }
+            }.padding()
+        }
     }
 }
