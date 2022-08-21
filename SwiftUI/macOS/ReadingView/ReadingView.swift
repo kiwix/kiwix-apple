@@ -15,7 +15,7 @@ struct ReadingView: View {
     @StateObject private var searchViewModel = SearchViewModel()
     
     var body: some View {
-        ReadingViewContent(url: $url, searchText: $searchViewModel.searchText)
+        ReadingViewContent(url: $url)
             .environmentObject(searchViewModel)
             .searchable(text: $searchViewModel.searchText)
             .modifier(NavigationBarConfigurator())
@@ -51,9 +51,9 @@ struct ReadingView: View {
 @available(macOS 12.0, iOS 16.0, *)
 private struct ReadingViewContent: View {
     @Binding var url: URL?
-    @Binding var searchText: String
     @Environment(\.dismissSearch) private var dismissSearch
     @Environment(\.isSearching) private var isSearching
+    @EnvironmentObject var searchViewModel: SearchViewModel
     
     var body: some View {
         Group {
@@ -63,17 +63,17 @@ private struct ReadingViewContent: View {
                 WebView(url: $url).ignoresSafeArea(edges: .all)
             }
         }
-        .onTapGesture {
-            searchText = ""
-            dismissSearch()
-        }
         .overlay {
             if isSearching {
-                SearchView(url: $url, searchText: $searchText)
+                SearchView(url: $url)
             }
         }
+        .onTapGesture {
+            searchViewModel.searchText = ""
+            dismissSearch()
+        }
         .onChange(of: url) { _ in
-            searchText = ""
+            searchViewModel.searchText = ""
             dismissSearch()
         }
     }

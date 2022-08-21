@@ -10,7 +10,7 @@ import SwiftUI
 
 struct SearchView: View {
     @Binding var url: URL?
-    @Binding var searchText: String
+    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     @Environment(\.managedObjectContext) private var managedObjectContext
     @EnvironmentObject var viewModel: SearchViewModel
     @FetchRequest(
@@ -37,7 +37,20 @@ struct SearchView: View {
             }
         }
         #elseif os(iOS)
-        
+        Group {
+            if horizontalSizeClass == .regular {
+                HStack(spacing: 0) {
+                    List {
+                        recentSearch
+                        filter
+                    }.frame(width: 320)
+                    Divider()
+                    content.frame(maxWidth: .infinity)
+                }
+            } else {
+                content
+            }
+        }.background(Color.background).ignoresSafeArea(.container, edges: .bottom)
         #endif
     }
     
@@ -45,7 +58,7 @@ struct SearchView: View {
     var content: some View {
         if zimFiles.isEmpty {
             Message(text: "No opened zim files")
-        } else if searchText.isEmpty {
+        } else if viewModel.searchText.isEmpty, horizontalSizeClass == .compact {
             List {
                 recentSearch
                 filter

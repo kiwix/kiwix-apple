@@ -15,6 +15,7 @@ struct RootView_iOS: UIViewControllerRepresentable {
     @Binding var url: URL?
     @State private var isSearchActive = false
     @State private var searchText = ""
+    @StateObject private var searchViewModel = SearchViewModel()
     
     func makeUIViewController(context: Context) -> UINavigationController {
         let controller = UIHostingController(rootView: Content(isSearchActive: $isSearchActive, url: $url))
@@ -88,7 +89,7 @@ struct RootView_iOS: UIViewControllerRepresentable {
         
         init(_ rootView: RootView_iOS) {
             self.rootView = rootView
-            let searchView = SearchView(url: rootView.$url, searchText: rootView.$searchText)
+            let searchView = SearchView(url: rootView.$url).environmentObject(rootView.searchViewModel)
             let searchResultsController = UIHostingController(rootView: searchView)
             self.searchController = UISearchController(searchResultsController: searchResultsController)
             super.init()
