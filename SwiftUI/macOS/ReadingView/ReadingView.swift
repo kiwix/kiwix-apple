@@ -12,6 +12,7 @@ import WebKit
 @available(macOS 12.0, iOS 16.0, *)
 struct ReadingView: View {
     @Binding var url: URL?
+    @Environment(\.dismissSearch) private var dismissSearch
     @Environment(\.isSearching) private var isSearching
     @EnvironmentObject var viewModel: ReadingViewModel
     
@@ -23,6 +24,7 @@ struct ReadingView: View {
                 WebView(url: $url).ignoresSafeArea(edges: .all)
             }
         }
+        .onTapGesture { dismissSearch() }
         .overlay(alignment: .topTrailing) {
             if isSearching {
                 SearchView()
