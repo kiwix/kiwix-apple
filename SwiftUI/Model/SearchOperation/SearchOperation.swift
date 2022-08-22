@@ -15,7 +15,6 @@ extension SearchOperation {
         performSearch()
         
         // parse and extract search result snippet
-        #if os(iOS)
         guard !isCancelled else { return }
         let snippetMode = SearchResultSnippetMode(rawValue: self.snippetMode) ?? .disabled
         let dispatchGroup = DispatchGroup()
@@ -41,7 +40,6 @@ extension SearchOperation {
             }
         }
         dispatchGroup.wait()
-        #endif
         
         // start sorting search results
         guard !isCancelled else { return }

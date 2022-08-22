@@ -66,6 +66,9 @@ private struct ReadingViewContent: View {
         .overlay {
             if isSearching {
                 SearchView(url: $url)
+                #if os(macOS)
+                    .environment(\.horizontalSizeClass, .compact)
+                #endif
             }
         }
         .onTapGesture {

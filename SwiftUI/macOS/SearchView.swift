@@ -115,8 +115,7 @@ struct SearchView: View {
                         ArticleCell(result: result, zimFile: viewModel.zimFiles[result.zimFileID])
                     }.buttonStyle(.plain)
                 }
-            }
-            .padding()
+            }.padding()
         }.background(Color.background)
     }
 }
