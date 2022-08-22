@@ -14,7 +14,6 @@ import Introspect
 struct RootView_iOS: UIViewControllerRepresentable {
     @Binding var url: URL?
     @State private var isSearchActive = false
-    @State private var searchText = ""
     @StateObject private var searchViewModel = SearchViewModel()
     
     func makeUIViewController(context: Context) -> UINavigationController {
@@ -103,7 +102,7 @@ struct RootView_iOS: UIViewControllerRepresentable {
         
         func updateSearchResults(for searchController: UISearchController) {
             guard rootView.isSearchActive else { return }
-            rootView.searchText = searchController.searchBar.text ?? ""
+            rootView.searchViewModel.searchText = searchController.searchBar.text ?? ""
         }
     }
 }
@@ -122,6 +121,7 @@ private struct Content: View {
                 WebView(url: $url).ignoresSafeArea(.container, edges: .all)
             }
         }
+        .onChange(of: url) { _ in isSearchActive = false }
         .toolbar {
             ToolbarItemGroup(placement: .navigationBarLeading) {
                 if horizontalSizeClass == .regular, !isSearchActive {
@@ -145,6 +145,10 @@ private struct Content: View {
                     }
                     LibraryButton()
                     SettingsButton()
+                } else if isSearchActive {
+                    Button("Cancel") {
+                        isSearchActive = false
+                    }
                 }
             }
             ToolbarItemGroup(placement: .bottomBar) {
@@ -181,6 +185,8 @@ private struct Content: View {
                 SheetView { SettingsView() }
             }
         }
-        .introspectNavigationController { $0.isToolbarHidden = horizontalSizeClass != .compact }
+        .introspectNavigationController { controller in
+            controller.setToolbarHidden(horizontalSizeClass != .compact || isSearchActive, animated: true)
+        }
     }
 }
