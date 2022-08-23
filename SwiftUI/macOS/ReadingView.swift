@@ -52,8 +52,9 @@ struct ReadingView: View {
 private struct ReadingViewContent: View {
     @Binding var url: URL?
     @Environment(\.dismissSearch) private var dismissSearch
+    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     @Environment(\.isSearching) private var isSearching
-    @EnvironmentObject var searchViewModel: SearchViewModel
+    @EnvironmentObject private var searchViewModel: SearchViewModel
     
     var body: some View {
         Group {
@@ -84,16 +85,16 @@ private struct ReadingViewContent: View {
 
 @available(macOS 12.0, iOS 16.0, *)
 private struct NavigationBarConfigurator: ViewModifier {
-    @EnvironmentObject var viewModel: ReadingViewModel
+    @EnvironmentObject private var readingViewModel: ReadingViewModel
     
     func body(content: Content) -> some View {
         #if os(macOS)
         content
-            .navigationTitle(viewModel.articleTitle)
-            .navigationSubtitle(viewModel.zimFileName)
+            .navigationTitle(readingViewModel.articleTitle)
+            .navigationSubtitle(readingViewModel.zimFileName)
         #elseif os(iOS)
         content
-            .navigationTitle(viewModel.articleTitle)
+            .navigationTitle(readingViewModel.articleTitle)
             .navigationBarTitleDisplayMode(.inline)
             .toolbarRole(.browser)
             .toolbarBackground(.visible, for: .navigationBar)
