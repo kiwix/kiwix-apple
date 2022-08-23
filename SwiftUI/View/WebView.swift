@@ -65,10 +65,24 @@ struct WebView: UIViewControllerRepresentable {
 }
 
 class WebViewController: UIViewController {
-    let webView: WKWebView = {
-        let config = WKWebViewConfiguration()
-        config.setURLSchemeHandler(KiwixURLSchemeHandler(), forURLScheme: "kiwix")
-        config.userContentController = {
+    let webView: WKWebView = WKWebView(frame: .zero, configuration: WebViewConfiguration())
+    
+    override func loadView() {
+        view = webView
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        webView.setValue(view.safeAreaInsets, forKey: "_obscuredInsets")
+    }
+}
+#endif
+
+class WebViewConfiguration: WKWebViewConfiguration {
+    override init() {
+        super.init()
+        setURLSchemeHandler(KiwixURLSchemeHandler(), forURLScheme: "kiwix")
+        userContentController = {
             let controller = WKUserContentController()
             guard FeatureFlags.wikipediaDarkUserCSS,
                   let path = Bundle.main.path(forResource: "wikipedia_dark", ofType: "css"),
@@ -87,19 +101,12 @@ class WebViewController: UIViewController {
             }
             return controller
         }()
-        return WKWebView(frame: .zero, configuration: config)
-    }()
-    
-    override func loadView() {
-        view = webView
     }
     
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        webView.setValue(view.safeAreaInsets, forKey: "_obscuredInsets")
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
 }
-#endif
 
 class WebViewCoordinator {
     var canGoBackObserver: NSKeyValueObservation?
