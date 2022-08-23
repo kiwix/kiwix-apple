@@ -13,12 +13,13 @@ import WebKit
 struct ReadingView: View {
     @Binding var url: URL?
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
+    @State private var isSearchActive = false
     @StateObject private var searchViewModel = SearchViewModel()
     
     var body: some View {
         ReadingViewContent(url: $url)
             .modifier(NavigationBarConfigurator())
-            .modifier(SearchAdaptive())
+            .modifier(SearchAdaptive(isSearchActive: $isSearchActive))
             .environmentObject(searchViewModel)
             .toolbar {
                 #if os(macOS)
@@ -33,6 +34,13 @@ struct ReadingView: View {
                     if horizontalSizeClass == .regular {
                         NavigateBackButton()
                         NavigateForwardButton()
+                    }
+                }
+                ToolbarItemGroup(placement: .navigationBarTrailing) {
+                    if horizontalSizeClass == .compact, isSearchActive {
+                        Button("Cancel") {
+                            isSearchActive = false
+                        }
                     }
                 }
                 #endif
@@ -88,20 +96,8 @@ private struct ReadingViewContent: View {
 }
 
 @available(macOS 12.0, iOS 16.0, *)
-private struct SearchBar: UIViewRepresentable {
-    func makeUIView(context: Context) -> some UIView {
-        let searchBar = UISearchBar()
-        searchBar.placeholder = "Search"
-        return searchBar
-    }
-    
-    func updateUIView(_ uiView: UIViewType, context: Context) {
-        
-    }
-}
-
-@available(macOS 12.0, iOS 16.0, *)
 private struct SearchAdaptive: ViewModifier {
+    @Binding var isSearchActive: Bool
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     @EnvironmentObject private var searchViewModel: SearchViewModel
     
@@ -111,7 +107,7 @@ private struct SearchAdaptive: ViewModifier {
         } else {
             content.toolbar {
                 ToolbarItem(placement: .principal) {
-                    SearchBar()
+                    SearchBar(isSearchActive: $isSearchActive)
                 }
             }
         }

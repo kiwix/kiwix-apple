@@ -17,6 +17,7 @@
 		970EC3FC23BE8E31008DCA27 /* Parser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 970EC3A023BCEC84008DCA27 /* Parser.swift */; };
 		97121EBD28849F0000371AEB /* ZimFileMissingIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97121EBC28849F0000371AEB /* ZimFileMissingIndicator.swift */; };
 		97121EBE28849F0000371AEB /* ZimFileMissingIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97121EBC28849F0000371AEB /* ZimFileMissingIndicator.swift */; };
+		9713397D28B597E900F166F7 /* SearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9713397B28B597E900F166F7 /* SearchBar.swift */; };
 		9721BBB3284167C8005C910D /* OutlineTree.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97C278DE2796249900666E07 /* OutlineTree.swift */; };
 		9721BBB72841C16D005C910D /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97FB4B0A27B819A90055F86E /* Message.swift */; };
 		9721BBBA28427A93005C910D /* BookmarksView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9721BBB928427A93005C910D /* BookmarksView.swift */; };
@@ -374,6 +375,7 @@
 		970EC3F523BE8E20008DCA27 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		970EC3FD23BE9987008DCA27 /* WikiMed.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WikiMed.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		97121EBC28849F0000371AEB /* ZimFileMissingIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZimFileMissingIndicator.swift; sourceTree = "<group>"; };
+		9713397B28B597E900F166F7 /* SearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBar.swift; sourceTree = "<group>"; };
 		9717A2521FB2592D00837492 /* Main.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		9721BBB928427A93005C910D /* BookmarksView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarksView.swift; sourceTree = "<group>"; };
 		97225A972618B2A200D8CB32 /* LibraryLanguageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryLanguageView.swift; sourceTree = "<group>"; };
@@ -758,6 +760,7 @@
 				973A2FCD277FB03F00BD4320 /* FlavorTag.swift */,
 				975088BC287DA10800273181 /* LibraryLastRefreshTime.swift */,
 				97FB4B0A27B819A90055F86E /* Message.swift */,
+				9713397B28B597E900F166F7 /* SearchBar.swift */,
 				97486D07284A42B90096E4DD /* SearchResultRow.swift */,
 				975088B228763B6900273181 /* SheetView.swift */,
 				973A2FD72780024600BD4320 /* ZimFileCell.swift */,
@@ -1519,6 +1522,7 @@
 				9721BBB72841C16D005C910D /* Message.swift in Sources */,
 				97BD6C9D2886E06B004A8532 /* HTMLParser.swift in Sources */,
 				97DE2BA3283A8E5C00C63D9B /* LibraryViewModel.swift in Sources */,
+				9713397D28B597E900F166F7 /* SearchBar.swift in Sources */,
 				97DE2BA02839D7AA00C63D9B /* FeatureFlags.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
