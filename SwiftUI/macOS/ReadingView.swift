@@ -12,13 +12,14 @@ import WebKit
 @available(macOS 12.0, iOS 16.0, *)
 struct ReadingView: View {
     @Binding var url: URL?
+    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     @StateObject private var searchViewModel = SearchViewModel()
     
     var body: some View {
         ReadingViewContent(url: $url)
-            .environmentObject(searchViewModel)
-            .searchable(text: $searchViewModel.searchText)
             .modifier(NavigationBarConfigurator())
+            .modifier(SearchAdaptive())
+            .environmentObject(searchViewModel)
             .toolbar {
                 #if os(macOS)
                 ToolbarItemGroup(placement: .navigation) {
@@ -29,20 +30,24 @@ struct ReadingView: View {
                 }
                 #elseif os(iOS)
                 ToolbarItemGroup(placement: .navigationBarLeading) {
-                    NavigateBackButton()
-                    NavigateForwardButton()
+                    if horizontalSizeClass == .regular {
+                        NavigateBackButton()
+                        NavigateForwardButton()
+                    }
                 }
                 #endif
                 ToolbarItemGroup {
-                    OutlineMenu()
-                    BookmarkToggleButton(url: url)
-                    #if os(macOS)
-                    RandomArticleButton(url: $url)
-                    MainArticleButton(url: $url)
-                    #elseif os(iOS)
-                    RandomArticleMenu(url: $url)
-                    MainArticleMenu(url: $url)
-                    #endif
+                    if horizontalSizeClass == .regular {
+                        OutlineMenu()
+                        BookmarkToggleButton(url: url)
+                        #if os(macOS)
+                        RandomArticleButton(url: $url)
+                        MainArticleButton(url: $url)
+                        #elseif os(iOS)
+                        RandomArticleMenu(url: $url)
+                        MainArticleMenu(url: $url)
+                        #endif
+                    }
                 }
             }
     }
@@ -52,7 +57,6 @@ struct ReadingView: View {
 private struct ReadingViewContent: View {
     @Binding var url: URL?
     @Environment(\.dismissSearch) private var dismissSearch
-    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     @Environment(\.isSearching) private var isSearching
     @EnvironmentObject private var searchViewModel: SearchViewModel
     
@@ -84,6 +88,24 @@ private struct ReadingViewContent: View {
 }
 
 @available(macOS 12.0, iOS 16.0, *)
+private struct SearchAdaptive: ViewModifier {
+    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
+    @EnvironmentObject private var searchViewModel: SearchViewModel
+    
+    func body(content: Content) -> some View {
+        if horizontalSizeClass == .regular {
+            content.searchable(text: $searchViewModel.searchText)
+        } else {
+            content.toolbar {
+                ToolbarItem(placement: .principal) {
+                    SearchBar()
+                }
+            }
+        }
+    }
+}
+
+@available(macOS 12.0, iOS 16.0, *)
 private struct NavigationBarConfigurator: ViewModifier {
     @EnvironmentObject private var readingViewModel: ReadingViewModel
     
@@ -99,5 +121,17 @@ private struct NavigationBarConfigurator: ViewModifier {
             .toolbarRole(.browser)
             .toolbarBackground(.visible, for: .navigationBar)
         #endif
+    }
+}
+
+private struct SearchBar: UIViewRepresentable {
+    func makeUIView(context: Context) -> some UIView {
+        let searchBar = UISearchBar()
+        searchBar.placeholder = "Search"
+        return searchBar
+    }
+    
+    func updateUIView(_ uiView: UIViewType, context: Context) {
+        
     }
 }
