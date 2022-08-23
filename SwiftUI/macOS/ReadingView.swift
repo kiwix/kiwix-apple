@@ -88,6 +88,19 @@ private struct ReadingViewContent: View {
 }
 
 @available(macOS 12.0, iOS 16.0, *)
+private struct SearchBar: UIViewRepresentable {
+    func makeUIView(context: Context) -> some UIView {
+        let searchBar = UISearchBar()
+        searchBar.placeholder = "Search"
+        return searchBar
+    }
+    
+    func updateUIView(_ uiView: UIViewType, context: Context) {
+        
+    }
+}
+
+@available(macOS 12.0, iOS 16.0, *)
 private struct SearchAdaptive: ViewModifier {
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     @EnvironmentObject private var searchViewModel: SearchViewModel
@@ -121,17 +134,5 @@ private struct NavigationBarConfigurator: ViewModifier {
             .toolbarRole(.browser)
             .toolbarBackground(.visible, for: .navigationBar)
         #endif
-    }
-}
-
-private struct SearchBar: UIViewRepresentable {
-    func makeUIView(context: Context) -> some UIView {
-        let searchBar = UISearchBar()
-        searchBar.placeholder = "Search"
-        return searchBar
-    }
-    
-    func updateUIView(_ uiView: UIViewType, context: Context) {
-        
     }
 }
