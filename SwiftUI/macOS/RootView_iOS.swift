@@ -9,6 +9,7 @@
 import SwiftUI
 
 import Introspect
+import SwiftUIX
 
 /// Root view for iOS & iPadOS
 struct RootView_iOS: UIViewControllerRepresentable {
@@ -19,21 +20,17 @@ struct RootView_iOS: UIViewControllerRepresentable {
     func makeUIViewController(context: Context) -> UINavigationController {
         let controller = UIHostingController(rootView: Content(isSearchActive: $isSearchActive, url: $url))
         let navigationController = UINavigationController(rootViewController: controller)
-        controller.definesPresentationContext = true
         
-        // configure search
-        context.coordinator.searchController.delegate = context.coordinator
-        context.coordinator.searchController.searchBar.autocorrectionType = .no
-        context.coordinator.searchController.searchBar.autocapitalizationType = .none
-        context.coordinator.searchController.searchBar.searchBarStyle = .minimal
-        context.coordinator.searchController.hidesNavigationBarDuringPresentation = false
-        context.coordinator.searchController.searchResultsUpdater = context.coordinator
-        context.coordinator.searchController.automaticallyShowsCancelButton = false
-        context.coordinator.searchController.showsSearchResultsController = true
-        context.coordinator.searchController.obscuresBackgroundDuringPresentation = true
+        // configure search bar
+        let searchBar = UISearchBar()
+        searchBar.autocorrectionType = .no
+        searchBar.autocapitalizationType = .none
+        searchBar.delegate = context.coordinator
+        searchBar.placeholder = "Search"
+        searchBar.searchBarStyle = .minimal
         
         // configure navigation item
-        controller.navigationItem.titleView = context.coordinator.searchController.searchBar
+        controller.navigationItem.titleView = searchBar
         if #available(iOS 15.0, *) {
             controller.navigationItem.scrollEdgeAppearance = {
                 let apperance = UINavigationBarAppearance()
@@ -71,38 +68,27 @@ struct RootView_iOS: UIViewControllerRepresentable {
         return navigationController
     }
     
-    func updateUIViewController(_ uiViewController: UINavigationController, context: Context) {
-        if !isSearchActive {
-            DispatchQueue.main.async {
-                context.coordinator.searchController.isActive = false
-            }
-        }
+    func updateUIViewController(_ navigationController: UINavigationController, context: Context) {
+        guard let searchBar = navigationController.topViewController?.navigationItem.titleView as? UISearchBar,
+              !isSearchActive else { return }
+        searchBar.resignFirstResponder()
     }
     
     func makeCoordinator() -> Coordinator { Coordinator(self) }
     
-    class Coordinator: NSObject, UISearchControllerDelegate, UISearchResultsUpdating {
+    class Coordinator: NSObject, UISearchBarDelegate {
         let rootView: RootView_iOS
-        let searchController: UISearchController
         var bookmarkToggleObserver: NSObjectProtocol?
         
         init(_ rootView: RootView_iOS) {
             self.rootView = rootView
-            let searchView = SearchView(url: rootView.$url).environmentObject(rootView.searchViewModel)
-            let searchResultsController = UIHostingController(rootView: searchView)
-            self.searchController = UISearchController(searchResultsController: searchResultsController)
             super.init()
         }
         
-        func willPresentSearchController(_ searchController: UISearchController) {
+        func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
             withAnimation {
                 rootView.isSearchActive = true
             }
-        }
-        
-        func updateSearchResults(for searchController: UISearchController) {
-            guard rootView.isSearchActive else { return }
-            rootView.searchViewModel.searchText = searchController.searchBar.text ?? ""
         }
     }
 }
@@ -119,6 +105,13 @@ private struct Content: View {
                 Welcome(url: $url)
             } else {
                 WebView(url: $url).ignoresSafeArea(.container, edges: .all)
+            }
+        }
+        .overlay {
+            if isSearchActive {
+                List(1..<20) { index in
+                    Text("row content \(index)")
+                }
             }
         }
         .onChange(of: url) { _ in isSearchActive = false }
@@ -185,8 +178,8 @@ private struct Content: View {
                 SheetView { SettingsView() }
             }
         }
-        .introspectNavigationController { controller in
-            controller.setToolbarHidden(horizontalSizeClass != .compact || isSearchActive, animated: true)
-        }
+//        .introspectNavigationController { controller in
+//            controller.setToolbarHidden(horizontalSizeClass != .compact || isSearchActive, animated: true)
+//        }
     }
 }
