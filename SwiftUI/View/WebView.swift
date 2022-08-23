@@ -14,14 +14,16 @@ import Defaults
 #if os(macOS)
 struct WebView: NSViewRepresentable {
     @Binding var url: URL?
-    @EnvironmentObject var viewModel: ReadingViewModel
+    @EnvironmentObject var readingViewModel: ReadingViewModel
     
     func makeNSView(context: Context) -> WKWebView {
-        context.coordinator.urlObserver = context.coordinator.webView.observe(\.url) { webView, _ in
-            guard webView.url?.absoluteString != url?.absoluteString else { return }
-            url = webView.url
-        }
-        return context.coordinator.webView
+        let webView = WKWebView(frame: .zero, configuration: WebViewConfiguration())
+        webView.allowsBackForwardNavigationGestures = true
+        webView.configuration.userContentController.add(readingViewModel, name: "headings")
+        webView.navigationDelegate = readingViewModel
+        readingViewModel.webView = webView
+        context.coordinator.setupObservers(webView)
+        return webView
     }
     
     func updateNSView(_ webView: WKWebView, context: Context) {
@@ -29,11 +31,11 @@ struct WebView: NSViewRepresentable {
         webView.load(URLRequest(url: url))
     }
     
-    static func dismantleNSView(_ nsView: WKWebView, coordinator: WebViewCoordinator) {
-        coordinator.viewModel?.webViewInteractionState = coordinator.webView.interactionState
+    static func dismantleNSView(_ webView: WKWebView, coordinator: WebViewCoordinator) {
+        coordinator.view.readingViewModel.webViewInteractionState = webView.interactionState
     }
     
-    func makeCoordinator() -> WebViewCoordinator { WebViewCoordinator(viewModel) }
+    func makeCoordinator() -> WebViewCoordinator { WebViewCoordinator(self) }
 }
 #elseif os(iOS)
 struct WebView: UIViewControllerRepresentable {
@@ -55,9 +57,9 @@ struct WebView: UIViewControllerRepresentable {
         controller.webView.load(URLRequest(url: url))
     }
     
-    static func dismantleUIViewController(_ webViewController: WebViewController, coordinator: WebViewCoordinator) {
+    static func dismantleUIViewController(_ controller: WebViewController, coordinator: WebViewCoordinator) {
         if #available(iOS 15.0, *) {
-            coordinator.view.readingViewModel.webViewInteractionState = webViewController.webView.interactionState
+            coordinator.view.readingViewModel.webViewInteractionState = controller.webView.interactionState
         }
     }
     
