@@ -24,25 +24,31 @@ struct RootView: View {
     
     var body: some View {
         Group {
-            if #available(macOS 13.0, iOS 16.0, *), horizontalSizeClass == .regular {
-                NavigationSplitView {
-                    sidebar
-                } detail: {
+            if #available(macOS 13.0, iOS 16.0, *) {  // macOS 13 & iPadOS 16 & iOS 16
+                if horizontalSizeClass == .regular {
+                    NavigationSplitView {
+                        sidebar
+                    } detail: {
+                        NavigationStack {
+                            #if os(macOS)
+                            detail
+                            #elseif os(iOS)
+                            detail.navigationBarTitleDisplayMode(.inline)
+                            #endif
+                        }
+                    }.focusedSceneValue(\.navigationItem, $navigationItem)
+                } else {
                     NavigationStack {
-                        #if os(macOS)
-                        detail
-                        #elseif os(iOS)
-                        detail.navigationBarTitleDisplayMode(.inline)
-                        #endif
+                        ReadingView(url: $url).environmentObject(readingViewModel)
                     }
-                }.focusedSceneValue(\.navigationItem, $navigationItem)
+                }
             } else {
-                #if os(macOS)
+                #if os(macOS) // macOS 12
                 NavigationView {
                     sidebar
                     detail.frame(minWidth: 500)
                 }.focusedSceneValue(\.navigationItem, $navigationItem)
-                #elseif os(iOS)
+                #elseif os(iOS)  // iPadOS&iOS 14&15
                 RootView_iOS(url: $url).ignoresSafeArea(.container).environmentObject(readingViewModel)
                 #endif
             }

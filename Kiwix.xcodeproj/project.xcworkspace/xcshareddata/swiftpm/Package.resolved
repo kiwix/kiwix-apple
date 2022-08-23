@@ -26,6 +26,15 @@
         "branch" : "master",
         "revision" : "7ef0df639079491ee1aaf6b83b6fd4d08df80393"
       }
+    },
+    {
+      "identity" : "swiftuibackports",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/shaps80/SwiftUIBackports.git",
+      "state" : {
+        "revision" : "4cab730480277c5ae6ac3ea8ee02b4845dee4903",
+        "version" : "1.6.3"
+      }
     }
   ],
   "version" : 2

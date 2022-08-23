@@ -306,6 +306,7 @@
 		97F43AFE283108330076F8E0 /* FileImportModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97F43AFC283108330076F8E0 /* FileImportModifier.swift */; };
 		97F4D10C20ADFE370038FC87 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 97F4D10B20ADFE370038FC87 /* Assets.xcassets */; };
 		97FB4B0B27B819A90055F86E /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97FB4B0A27B819A90055F86E /* Message.swift */; };
+		97FB4ECE28B4E221003FB524 /* SwiftUIBackports in Frameworks */ = {isa = PBXBuildFile; productRef = 97FB4ECD28B4E221003FB524 /* SwiftUIBackports */; };
 		97FD2F5F251EA07B0034927C /* FeatureFlags.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97FD2F5E251EA07B0034927C /* FeatureFlags.swift */; };
 /* End PBXBuildFile section */
 
@@ -561,6 +562,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				97FB4ECE28B4E221003FB524 /* SwiftUIBackports in Frameworks */,
 				9753D94B285B56C900A626CC /* Defaults in Frameworks */,
 				977B1B6228980190001D07C4 /* Introspect in Frameworks */,
 				976BAEBA284903EA0049404F /* Fuzi in Frameworks */,
@@ -1136,6 +1138,7 @@
 				976BAEB9284903EA0049404F /* Fuzi */,
 				9753D94A285B56C900A626CC /* Defaults */,
 				977B1B6128980190001D07C4 /* Introspect */,
+				97FB4ECD28B4E221003FB524 /* SwiftUIBackports */,
 			);
 			productName = iOS_SwiftUI;
 			productReference = 972DE4A62814A3D8004FD9B9 /* Kiwix.app */;
@@ -1319,6 +1322,7 @@
 				9744657E26F7981500072DC2 /* XCRemoteSwiftPackageReference "Fuzi" */,
 				97654724273214530070163D /* XCRemoteSwiftPackageReference "Defaults" */,
 				977B1B6028980190001D07C4 /* XCRemoteSwiftPackageReference "SwiftUI-Introspect" */,
+				97FB4ECC28B4E221003FB524 /* XCRemoteSwiftPackageReference "SwiftUIBackports" */,
 			);
 			productRefGroup = 97A2AB7F1C1B80FF00052E74;
 			projectDirPath = "";
@@ -2472,6 +2476,14 @@
 				kind = branch;
 			};
 		};
+		97FB4ECC28B4E221003FB524 /* XCRemoteSwiftPackageReference "SwiftUIBackports" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/shaps80/SwiftUIBackports.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -2514,6 +2526,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 9744657E26F7981500072DC2 /* XCRemoteSwiftPackageReference "Fuzi" */;
 			productName = Fuzi;
+		};
+		97FB4ECD28B4E221003FB524 /* SwiftUIBackports */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 97FB4ECC28B4E221003FB524 /* XCRemoteSwiftPackageReference "SwiftUIBackports" */;
+			productName = SwiftUIBackports;
 		};
 /* End XCSwiftPackageProductDependency section */
 

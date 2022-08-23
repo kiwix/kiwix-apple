@@ -38,63 +38,33 @@ struct WebView: NSViewRepresentable {
 #elseif os(iOS)
 struct WebView: UIViewControllerRepresentable {
     @Binding var url: URL?
-    @EnvironmentObject var viewModel: ReadingViewModel
+    @EnvironmentObject var readingViewModel: ReadingViewModel
     
     func makeUIViewController(context: Context) -> WebViewController {
-        let controller = WebViewController(webView: context.coordinator.webView)
-        context.coordinator.urlObserver = context.coordinator.webView.observe(\.url) { webView, _ in
-            guard webView.url?.absoluteString != url?.absoluteString else { return }
-            url = webView.url
-        }
+        let controller = WebViewController()
+        controller.webView.allowsBackForwardNavigationGestures = true
+        controller.webView.configuration.userContentController.add(readingViewModel, name: "headings")
+        controller.webView.navigationDelegate = readingViewModel
+        readingViewModel.webView = controller.webView
+        context.coordinator.setupObservers(controller.webView)
         return controller
     }
     
     func updateUIViewController(_ controller: WebViewController, context: Context) {
-        guard let url = url, context.coordinator.webView.url?.absoluteString != url.absoluteString else { return }
-        context.coordinator.webView.load(URLRequest(url: url))
+        guard let url = url, controller.webView.url?.absoluteString != url.absoluteString else { return }
+        controller.webView.load(URLRequest(url: url))
     }
     
-    static func dismantleUIViewController(_ uiViewController: WebViewController, coordinator: WebViewCoordinator) {
+    static func dismantleUIViewController(_ webViewController: WebViewController, coordinator: WebViewCoordinator) {
         if #available(iOS 15.0, *) {
-            coordinator.viewModel?.webViewInteractionState = coordinator.webView.interactionState
+            coordinator.view.readingViewModel.webViewInteractionState = webViewController.webView.interactionState
         }
     }
     
-    func makeCoordinator() -> WebViewCoordinator { WebViewCoordinator(viewModel) }
+    func makeCoordinator() -> WebViewCoordinator { WebViewCoordinator(self) }
 }
 
 class WebViewController: UIViewController {
-    private let webView: WKWebView
-    
-    init(webView: WKWebView) {
-        self.webView = webView
-        super.init(nibName: nil, bundle: nil)
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    override func loadView() {
-        view = webView
-    }
-    
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        webView.setValue(view.safeAreaInsets, forKey: "_obscuredInsets")
-    }
-}
-#endif
-
-class WebViewCoordinator {
-    var canGoBackObserver: NSKeyValueObservation?
-    var canGoForwardObserver: NSKeyValueObservation?
-    var pageZoomObserver: Defaults.Observation?
-    var titleObserver: NSKeyValueObservation?
-    var urlObserver: NSKeyValueObservation?
-    
-    weak var viewModel: ReadingViewModel?
-    
     let webView: WKWebView = {
         let config = WKWebViewConfiguration()
         config.setURLSchemeHandler(KiwixURLSchemeHandler(), forURLScheme: "kiwix")
@@ -120,30 +90,52 @@ class WebViewCoordinator {
         return WKWebView(frame: .zero, configuration: config)
     }()
     
-    init(_ viewModel: ReadingViewModel) {
-        self.viewModel = viewModel
-        viewModel.webView = webView
-        
-        webView.navigationDelegate = viewModel
-        webView.allowsBackForwardNavigationGestures = true
-        webView.configuration.userContentController.add(viewModel, name: "headings")
-        canGoBackObserver = webView.observe(\.canGoBack) { webView, _ in
-            viewModel.canGoBack = webView.canGoBack
+    override func loadView() {
+        view = webView
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        webView.setValue(view.safeAreaInsets, forKey: "_obscuredInsets")
+    }
+}
+#endif
+
+class WebViewCoordinator {
+    var canGoBackObserver: NSKeyValueObservation?
+    var canGoForwardObserver: NSKeyValueObservation?
+    var pageZoomObserver: Defaults.Observation?
+    var titleObserver: NSKeyValueObservation?
+    var urlObserver: NSKeyValueObservation?
+    
+    let view: WebView
+    
+    init(_ view: WebView) {
+        self.view = view
+    }
+    
+    func setupObservers(_ webView: WKWebView) {
+        canGoBackObserver = webView.observe(\.canGoBack) { [unowned self] webView, _ in
+            self.view.readingViewModel.canGoBack = webView.canGoBack
         }
-        canGoForwardObserver = webView.observe(\.canGoForward) { webView, _ in
-            viewModel.canGoForward = webView.canGoForward
+        canGoForwardObserver = webView.observe(\.canGoForward) { [unowned self] webView, _ in
+            self.view.readingViewModel.canGoForward = webView.canGoForward
         }
         pageZoomObserver = Defaults.observe(.webViewPageZoom) { change in
-            self.webView.pageZoom = change.newValue
+            webView.pageZoom = change.newValue
         }
-        titleObserver = webView.observe(\.title) { webView, _ in
+        urlObserver = webView.observe(\.url) { [unowned self] webView, _ in
+            guard webView.url?.absoluteString != self.view.url?.absoluteString else { return }
+            self.view.url = webView.url
+        }
+        titleObserver = webView.observe(\.title) { [unowned self] webView, _ in
             guard let title = webView.title, !title.isEmpty,
                   let zimFileID = webView.url?.host,
                   let zimFile = try? Database.shared.container.viewContext.fetch(
                     ZimFile.fetchRequest(predicate: NSPredicate(format: "fileID == %@", zimFileID))
                   ).first else { return }
-            viewModel.articleTitle = title
-            viewModel.zimFileName = zimFile.name
+            self.view.readingViewModel.articleTitle = title
+            self.view.readingViewModel.zimFileName = zimFile.name
         }
     }
 }

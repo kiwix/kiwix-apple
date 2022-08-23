@@ -19,20 +19,16 @@ class ReadingViewModel: NSObject, ObservableObject, WKNavigationDelegate, WKScri
     @Published var outlineItemTree = [OutlineItem]()
     @Published var activeSheet: ActiveSheet?
     
+    var webViewInteractionState: Any?
     weak var webView: WKWebView?{
-        didSet { restoreWebViewInteractionState() }
-    }
-    var webViewInteractionState: Any? {
-        didSet { restoreWebViewInteractionState() }
+        didSet {
+            if #available(iOS 15.0, *) {
+                webView?.interactionState = webViewInteractionState
+            }
+        }
     }
     
     static let bookmarkNotificationName = NSNotification.Name(rawValue: "Bookmark.toggle")
-    
-    private func restoreWebViewInteractionState() {
-        if #available(iOS 15.0, *) {
-            webView?.interactionState = webViewInteractionState
-        }
-    }
     
     // MARK: - delegates
     
