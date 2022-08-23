@@ -43,7 +43,7 @@ struct RootView: View {
                     detail.frame(minWidth: 500)
                 }.focusedSceneValue(\.navigationItem, $navigationItem)
                 #elseif os(iOS)
-                RootView_iOS(url: $url).ignoresSafeArea(.all).environmentObject(readingViewModel)
+                RootView_iOS(url: $url).ignoresSafeArea(.container).environmentObject(readingViewModel)
                 #endif
             }
         }

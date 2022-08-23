@@ -9,7 +9,6 @@
 import SwiftUI
 
 import Introspect
-import SwiftUIX
 
 /// Root view for iOS & iPadOS
 struct RootView_iOS: UIViewControllerRepresentable {
@@ -18,7 +17,8 @@ struct RootView_iOS: UIViewControllerRepresentable {
     @StateObject private var searchViewModel = SearchViewModel()
     
     func makeUIViewController(context: Context) -> UINavigationController {
-        let controller = UIHostingController(rootView: Content(isSearchActive: $isSearchActive, url: $url))
+        let view = Content(isSearchActive: $isSearchActive, url: $url).environmentObject(searchViewModel)
+        let controller = UIHostingController(rootView: view)
         let navigationController = UINavigationController(rootViewController: controller)
         
         // configure search bar
@@ -85,6 +85,10 @@ struct RootView_iOS: UIViewControllerRepresentable {
             super.init()
         }
         
+        func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+            rootView.searchViewModel.searchText = searchText
+        }
+        
         func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
             withAnimation {
                 rootView.isSearchActive = true
@@ -101,17 +105,12 @@ private struct Content: View {
     
     var body: some View {
         Group {
-            if url == nil {
+            if isSearchActive {
+                SearchView(url: $url)
+            } else if url == nil {
                 Welcome(url: $url)
             } else {
                 WebView(url: $url).ignoresSafeArea(.container, edges: .all)
-            }
-        }
-        .overlay {
-            if isSearchActive {
-                List(1..<20) { index in
-                    Text("row content \(index)")
-                }
             }
         }
         .onChange(of: url) { _ in isSearchActive = false }
@@ -178,8 +177,8 @@ private struct Content: View {
                 SheetView { SettingsView() }
             }
         }
-//        .introspectNavigationController { controller in
-//            controller.setToolbarHidden(horizontalSizeClass != .compact || isSearchActive, animated: true)
-//        }
+        .introspectNavigationController { controller in
+            controller.setToolbarHidden(horizontalSizeClass != .compact || isSearchActive, animated: true)
+        }
     }
 }
