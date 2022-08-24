@@ -32,6 +32,7 @@ struct WebView: NSViewRepresentable {
     }
     
     static func dismantleNSView(_ webView: WKWebView, coordinator: WebViewCoordinator) {
+        coordinator.view.readingViewModel.webView = nil
         coordinator.view.readingViewModel.webViewInteractionState = webView.interactionState
     }
     
@@ -59,6 +60,7 @@ struct WebView: UIViewControllerRepresentable {
     
     static func dismantleUIViewController(_ controller: WebViewController, coordinator: WebViewCoordinator) {
         if #available(iOS 15.0, *) {
+            coordinator.view.readingViewModel.webView = nil
             coordinator.view.readingViewModel.webViewInteractionState = controller.webView.interactionState
         }
     }

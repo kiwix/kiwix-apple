@@ -20,7 +20,7 @@ class ReadingViewModel: NSObject, ObservableObject, WKNavigationDelegate, WKScri
     @Published var activeSheet: ActiveSheet?
     
     var webViewInteractionState: Any?
-    weak var webView: WKWebView?{
+    var webView: WKWebView?{
         didSet {
             if #available(iOS 15.0, *) {
                 webView?.interactionState = webViewInteractionState
