@@ -122,7 +122,7 @@ struct MainArticleMenu: View {
                 }
             }
         } label: {
-            Image(systemName: "house")
+            Label("Main Page", systemImage: "house")
         } primaryAction: {
             let zimFileID = UUID(uuidString: url?.host ?? "")
             url = ZimFileService.shared.getMainPageURL(zimFileID: zimFileID)
@@ -223,16 +223,24 @@ struct OutlineMenu: View {
     
     var body: some View {
         Menu {
-            ForEach(viewModel.outlineItems) { item in
-                Button(String(repeating: "    ", count: item.level) + item.text) {
-                    viewModel.scrollTo(outlineItemID: item.id)
-                }
-            }
+            OutlineMenuContent()
         } label: {
             Image(systemName: "list.bullet")
         }
         .disabled(viewModel.outlineItems.isEmpty)
         .help("Show article outline")
+    }
+}
+
+struct OutlineMenuContent: View {
+    @EnvironmentObject var viewModel: ReadingViewModel
+    
+    var body: some View {
+        ForEach(viewModel.outlineItems) { item in
+            Button(String(repeating: "    ", count: item.level) + item.text) {
+                viewModel.scrollTo(outlineItemID: item.id)
+            }
+        }
     }
 }
 
@@ -283,7 +291,7 @@ struct RandomArticleMenu: View {
                 }
             }
         } label: {
-            Image(systemName: "die.face.5")
+            Label("Random Page", systemImage: "die.face.5")
         } primaryAction: {
             let zimFileID = UUID(uuidString: url?.host ?? "")
             url = ZimFileService.shared.getRandomPageURL(zimFileID: zimFileID)

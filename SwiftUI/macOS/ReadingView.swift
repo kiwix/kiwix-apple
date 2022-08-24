@@ -55,7 +55,6 @@ struct ReadingView: View {
                         MainArticleMenu(url: $url)
                         RandomArticleMenu(url: $url)
                         BookmarkToggleButton(url: url)
-                        OutlineMenu()
                     }
                 }
                 ToolbarItemGroup(placement: .bottomBar) {
@@ -154,6 +153,7 @@ private struct NavigationBarConfigurator: ViewModifier {
             .navigationBarTitleDisplayMode(.inline)
             .toolbarRole(.browser)
             .toolbarBackground(.visible, for: .navigationBar, .bottomBar)
+            .toolbarTitleMenu { OutlineMenuContent() }
         #endif
     }
 }
