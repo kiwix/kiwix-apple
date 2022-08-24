@@ -13,6 +13,7 @@ import WebKit
 struct ReadingView: View {
     @Binding var url: URL?
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
+    @EnvironmentObject private var readingViewModel: ReadingViewModel
     @State private var isSearchActive = false
     @StateObject private var searchViewModel = SearchViewModel()
     
@@ -75,6 +76,18 @@ struct ReadingView: View {
                     }
                 }
                 #endif
+            }
+            .sheet(item: $readingViewModel.activeSheet) { activeSheet in
+                switch activeSheet {
+                case .outline:
+                    SheetView { OutlineTree().listStyle(.plain).navigationBarTitleDisplayMode(.inline) }
+                case .bookmarks:
+                    SheetView { BookmarksView(url: $url) }
+                case .library:
+                    Library()
+                case .settings:
+                    SheetView { SettingsView() }
+                }
             }
     }
 }
