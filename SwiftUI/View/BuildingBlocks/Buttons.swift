@@ -223,24 +223,16 @@ struct OutlineMenu: View {
     
     var body: some View {
         Menu {
-            OutlineMenuContent()
+            ForEach(viewModel.outlineItems) { item in
+                Button(String(repeating: "    ", count: item.level) + item.text) {
+                    viewModel.scrollTo(outlineItemID: item.id)
+                }
+            }
         } label: {
-            Image(systemName: "list.bullet")
+            Label("Outline", systemImage: "list.bullet")
         }
         .disabled(viewModel.outlineItems.isEmpty)
         .help("Show article outline")
-    }
-}
-
-struct OutlineMenuContent: View {
-    @EnvironmentObject var viewModel: ReadingViewModel
-    
-    var body: some View {
-        ForEach(viewModel.outlineItems) { item in
-            Button(String(repeating: "    ", count: item.level) + item.text) {
-                viewModel.scrollTo(outlineItemID: item.id)
-            }
-        }
     }
 }
 

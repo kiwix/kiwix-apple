@@ -13,93 +13,23 @@ import WebKit
 /// A view that show article content, along with welcome view, search view, and various controls like
 struct ReadingView: View {
     @Binding var url: URL?
-    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
-    @EnvironmentObject private var readingViewModel: ReadingViewModel
-    @State private var isSearchActive = false
     @StateObject private var searchViewModel = SearchViewModel()
     
     var body: some View {
-        ReadingViewContent(url: $url, isSearchActive: $isSearchActive)
-            .modifier(NavigationBarConfigurator())
-            .modifier(SearchAdaptive(isSearchActive: $isSearchActive))
-            .modifier(ToolbarTitleOutlineMenu())
+        ReadingViewContent(url: $url)
+            .searchable(text: $searchViewModel.searchText, placement: .toolbar)
             .environmentObject(searchViewModel)
-            .toolbar {
-                #if os(macOS)
-                ToolbarItemGroup(placement: .navigation) {
-                    ControlGroup {
-                        NavigateBackButton()
-                        NavigateForwardButton()
-                    }
-                }
-                ToolbarItemGroup {
-                    OutlineMenu()
-                    BookmarkToggleButton(url: url)
-                    RandomArticleButton(url: $url)
-                    MainArticleButton(url: $url)
-                }
-                #elseif os(iOS)
-                ToolbarItemGroup(placement: .navigationBarLeading) {
-                    if horizontalSizeClass == .regular {
-                        NavigateBackButton()
-                        NavigateForwardButton()
-                    }
-                }
-                ToolbarItemGroup(placement: .navigationBarTrailing) {
-                    if horizontalSizeClass == .compact, isSearchActive {
-                        Button("Cancel") {
-                            isSearchActive = false
-                            searchViewModel.searchText = ""
-                        }
-                    }
-                }
-                ToolbarItemGroup(placement: .primaryAction) {
-                    if horizontalSizeClass == .regular {
-                        MainArticleMenu(url: $url)
-                        RandomArticleMenu(url: $url)
-                        BookmarkToggleButton(url: url)
-                    }
-                }
-                ToolbarItemGroup(placement: .bottomBar) {
-                    if horizontalSizeClass == .compact, !isSearchActive {
-                        Group {
-                            NavigateBackButton()
-                            Spacer()
-                            NavigateForwardButton()
-                        }
-                        Spacer()
-                        OutlineButton()
-                        Spacer()
-                        BookmarkMultiButton(url: url)
-                        Spacer()
-                        RandomArticleMenu(url: $url)
-                        Spacer()
-                        MoreActionMenu(url: $url)
-                    }
-                }
-                #endif
-            }
-            .sheet(item: $readingViewModel.activeSheet) { activeSheet in
-                switch activeSheet {
-                case .outline:
-                    SheetView { OutlineTree().listStyle(.plain).navigationBarTitleDisplayMode(.inline) }
-                case .bookmarks:
-                    SheetView { BookmarksView(url: $url) }
-                case .library:
-                    Library()
-                case .settings:
-                    SheetView { SettingsView() }
-                }
-            }
+            
     }
 }
 
 @available(macOS 12.0, iOS 16.0, *)
 private struct ReadingViewContent: View {
     @Binding var url: URL?
-    @Binding var isSearchActive: Bool
     @Environment(\.dismissSearch) private var dismissSearch
+    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     @Environment(\.isSearching) private var isSearching
+    @EnvironmentObject private var readingViewModel: ReadingViewModel
     @EnvironmentObject private var searchViewModel: SearchViewModel
     
     var body: some View {
@@ -111,7 +41,7 @@ private struct ReadingViewContent: View {
             }
         }
         .overlay {
-            if isSearching || isSearchActive {
+            if isSearching {
                 SearchView(url: $url)
                 #if os(macOS)
                     .environment(\.horizontalSizeClass, .compact)
@@ -124,28 +54,66 @@ private struct ReadingViewContent: View {
         }
         .onChange(of: url) { _ in
             searchViewModel.searchText = ""
-            isSearchActive = false
             dismissSearch()
         }
-    }
-}
-
-@available(macOS 12.0, iOS 16.0, *)
-private struct SearchAdaptive: ViewModifier {
-    @Binding var isSearchActive: Bool
-    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
-    @EnvironmentObject private var searchViewModel: SearchViewModel
-    
-    func body(content: Content) -> some View {
-        if horizontalSizeClass == .regular {
-            content.searchable(text: $searchViewModel.searchText)
-        } else {
+        .modifier(NavigationBarConfigurator())
+        .modifier(NavigationTitleConfigurator())
+        .sheet(item: $readingViewModel.activeSheet) { activeSheet in
+            switch activeSheet {
+            case .outline:
+                SheetView { OutlineTree().listStyle(.plain).navigationBarTitleDisplayMode(.inline) }
+            case .bookmarks:
+                SheetView { BookmarksView(url: $url) }
+            case .library:
+                Library()
+            case .settings:
+                SheetView { SettingsView() }
+            }
+        }
+        .toolbar {
             #if os(macOS)
-            content
+            ToolbarItemGroup(placement: .navigation) {
+                ControlGroup {
+                    NavigateBackButton()
+                    NavigateForwardButton()
+                }
+            }
+            ToolbarItemGroup {
+                OutlineMenu()
+                BookmarkToggleButton(url: url)
+                RandomArticleButton(url: $url)
+                MainArticleButton(url: $url)
+            }
             #elseif os(iOS)
-            content.toolbar {
-                ToolbarItem(placement: .principal) {
-                    SearchBar(isSearchActive: $isSearchActive, searchText: $searchViewModel.searchText)
+            ToolbarItemGroup(placement: .navigationBarLeading) {
+                if horizontalSizeClass == .regular {
+                    NavigateBackButton()
+                    NavigateForwardButton()
+                }
+            }
+            ToolbarItemGroup(placement: .primaryAction) {
+                if horizontalSizeClass == .regular {
+                    MainArticleMenu(url: $url)
+                    RandomArticleMenu(url: $url)
+                    BookmarkToggleButton(url: url)
+                    OutlineMenu()
+                }
+            }
+            ToolbarItemGroup(placement: .bottomBar) {
+                if horizontalSizeClass == .compact {
+                    Group {
+                        NavigateBackButton()
+                        Spacer()
+                        NavigateForwardButton()
+                    }
+                    Spacer()
+                    OutlineButton()
+                    Spacer()
+                    BookmarkMultiButton(url: url)
+                    Spacer()
+                    RandomArticleMenu(url: $url)
+                    Spacer()
+                    MoreActionMenu(url: $url)
                 }
             }
             #endif
@@ -164,7 +132,6 @@ private struct NavigationBarConfigurator: ViewModifier {
             .navigationSubtitle(readingViewModel.zimFileName)
         #elseif os(iOS)
         content
-            .navigationTitle(readingViewModel.articleTitle)
             .navigationBarTitleDisplayMode(.inline)
             .toolbarRole(.browser)
             .toolbarBackground(.visible, for: .navigationBar, .bottomBar)
@@ -172,19 +139,25 @@ private struct NavigationBarConfigurator: ViewModifier {
     }
 }
 
-private struct ToolbarTitleOutlineMenu: ViewModifier {
+@available(macOS 12.0, iOS 15.0, *)
+private struct NavigationTitleConfigurator: ViewModifier {
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
+    @Environment(\.isSearching) private var isSearching
     @EnvironmentObject private var readingViewModel: ReadingViewModel
     
     func body(content: Content) -> some View {
-        if #available(macOS 13.0, iOS 16.0, *), horizontalSizeClass == .regular {
-            content.toolbarTitleMenu {
-                if horizontalSizeClass == .regular {
-                    OutlineMenuContent()
+        if horizontalSizeClass == .regular {
+            content.navigationTitle(readingViewModel.articleTitle)
+        } else {
+            content.toolbar {
+                ToolbarItemGroup(placement: .navigationBarLeading) {
+                    if !isSearching {
+                        Text(
+                            readingViewModel.articleTitle.isEmpty ? "Kiwix" : readingViewModel.articleTitle
+                        ).fontWeight(.semibold)
+                    }
                 }
             }
-        } else {
-            content
         }
     }
 }
