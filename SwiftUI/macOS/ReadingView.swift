@@ -10,6 +10,7 @@ import SwiftUI
 import WebKit
 
 @available(macOS 12.0, iOS 16.0, *)
+/// A view that show article content, along with welcome view, search view, and various controls like
 struct ReadingView: View {
     @Binding var url: URL?
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
@@ -21,6 +22,7 @@ struct ReadingView: View {
         ReadingViewContent(url: $url, isSearchActive: $isSearchActive)
             .modifier(NavigationBarConfigurator())
             .modifier(SearchAdaptive(isSearchActive: $isSearchActive))
+            .modifier(ToolbarTitleOutlineMenu())
             .environmentObject(searchViewModel)
             .toolbar {
                 #if os(macOS)
@@ -166,7 +168,23 @@ private struct NavigationBarConfigurator: ViewModifier {
             .navigationBarTitleDisplayMode(.inline)
             .toolbarRole(.browser)
             .toolbarBackground(.visible, for: .navigationBar, .bottomBar)
-            .toolbarTitleMenu { OutlineMenuContent() }
         #endif
+    }
+}
+
+private struct ToolbarTitleOutlineMenu: ViewModifier {
+    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
+    @EnvironmentObject private var readingViewModel: ReadingViewModel
+    
+    func body(content: Content) -> some View {
+        if #available(macOS 13.0, iOS 16.0, *), horizontalSizeClass == .regular {
+            content.toolbarTitleMenu {
+                if horizontalSizeClass == .regular {
+                    OutlineMenuContent()
+                }
+            }
+        } else {
+            content
+        }
     }
 }
