@@ -184,7 +184,7 @@ enum LibraryTopic: Hashable, Identifiable, RawRepresentable {
 enum NavigationItem: String, Identifiable, CaseIterable {
     var id: String { rawValue }
 
-    case reading, bookmarks, map, opened, categories, new, downloads, settings
+    case reading, bookmarks, map, opened, categories, new, downloads
 
     var name: String {
         switch self {
@@ -194,8 +194,6 @@ enum NavigationItem: String, Identifiable, CaseIterable {
             return "Bookmarks"
         case .map:
             return "Map"
-        case .settings:
-            return "Settings"
         case .opened:
             return "Opened"
         case .categories:
@@ -215,8 +213,6 @@ enum NavigationItem: String, Identifiable, CaseIterable {
             return "star"
         case .map:
             return "map"
-        case .settings:
-            return "gear"
         case .opened:
             return "folder"
         case .categories:

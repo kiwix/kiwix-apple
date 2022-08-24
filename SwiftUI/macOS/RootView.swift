@@ -11,15 +11,12 @@ import SwiftUI
 struct RootView: View {
     @Environment(\.horizontalSizeClass) var horizontalSizeClass
     @State private var isFileImporterPresented = false
+    @State private var isShowingSetting = false
     @State private var navigationItem: NavigationItem? = .reading
     @State private var url: URL?
     @StateObject private var readingViewModel = ReadingViewModel()
     
-    #if os(macOS)
-    private let primaryNavigationItems: [NavigationItem] = [.reading, .bookmarks, .map]
-    #elseif os(iOS)
-    private let primaryNavigationItems: [NavigationItem] = [.reading, .bookmarks, .map, .settings]
-    #endif
+    private let primaryNavigationItems: [NavigationItem] = [.reading, .bookmarks]
     private let libraryNavigationItems: [NavigationItem] = [.opened, .categories, .downloads, .new]
     
     var body: some View {
@@ -96,11 +93,20 @@ struct RootView: View {
         }
         .navigationTitle("Kiwix")
         .frame(minWidth: 150)
-        .toolbar {
-            #if os(macOS)
-            SidebarButton()
-            #endif
+#if os(macOS)
+        .toolbar { SidebarButton() }
+#elseif os(iOS)
+        .sheet(isPresented: $isShowingSetting) {
+            SheetView { SettingsView() }
         }
+        .toolbar {
+            Button {
+                isShowingSetting = true
+            } label: {
+                Image(systemName: "gear")
+            }
+        }
+#endif
     }
     
     @ViewBuilder
@@ -113,10 +119,6 @@ struct RootView: View {
             BookmarksView(url: $url)
         case .map:
             MapView()
-        case .settings:
-            #if os(iOS)
-            SettingsView()
-            #endif
         case .opened:
             ZimFilesOpened(isFileImporterPresented: $isFileImporterPresented)
         case .categories:

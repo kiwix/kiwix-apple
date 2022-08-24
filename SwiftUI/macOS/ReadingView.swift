@@ -59,16 +59,16 @@ private struct ReadingViewContent: View {
         .modifier(NavigationBarConfigurator())
         .modifier(NavigationTitleConfigurator())
         .sheet(item: $readingViewModel.activeSheet) { activeSheet in
-            switch activeSheet {
-            case .outline:
-                SheetView { OutlineTree().listStyle(.plain).navigationBarTitleDisplayMode(.inline) }
-            case .bookmarks:
-                SheetView { BookmarksView(url: $url) }
-            case .library:
-                Library()
-            case .settings:
-                SheetView { SettingsView() }
-            }
+//            switch activeSheet {
+//            case .outline:
+//                SheetView { OutlineTree().listStyle(.plain).navigationBarTitleDisplayMode(.inline) }
+//            case .bookmarks:
+//                SheetView { BookmarksView(url: $url) }
+//            case .library:
+//                Library()
+//            case .settings:
+//                SheetView { SettingsView() }
+//            }
         }
         .toolbar {
             #if os(macOS)
@@ -149,6 +149,9 @@ private struct NavigationTitleConfigurator: ViewModifier {
         if horizontalSizeClass == .regular {
             content.navigationTitle(readingViewModel.articleTitle)
         } else {
+            #if os(macOS)
+            content
+            #elseif os(iOS)
             content.toolbar {
                 ToolbarItemGroup(placement: .navigationBarLeading) {
                     if !isSearching {
@@ -158,6 +161,7 @@ private struct NavigationTitleConfigurator: ViewModifier {
                     }
                 }
             }
+            #endif
         }
     }
 }
