@@ -181,10 +181,6 @@ enum LibraryTopic: Hashable, Identifiable, RawRepresentable {
     }
 }
 
-enum NavigationAction {
-    case goBack, goForward, none
-}
-
 enum NavigationItem: String, Identifiable, CaseIterable {
     var id: String { rawValue }
 

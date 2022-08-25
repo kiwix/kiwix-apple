@@ -16,10 +16,6 @@ struct CanGoForwardKey: FocusedValueKey {
     typealias Value = Bool
 }
 
-struct NavigationActionKey: FocusedValueKey {
-    typealias Value = Binding<NavigationAction>
-}
-
 struct NavigationItemKey: FocusedValueKey {
     typealias Value = Binding<NavigationItem?>
 }
@@ -45,11 +41,6 @@ extension FocusedValues {
     var canGoForward: CanGoForwardKey.Value? {
         get { self[CanGoForwardKey.self] }
         set { self[CanGoForwardKey.self] = newValue }
-    }
-    
-    var navigationAction: NavigationActionKey.Value? {
-        get { self[NavigationActionKey.self] }
-        set { self[NavigationActionKey.self] = newValue }
     }
     
     var navigationItem: NavigationItemKey.Value? {
