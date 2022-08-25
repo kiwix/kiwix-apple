@@ -192,9 +192,9 @@ struct NavigationItemButtons: View {
     @FocusedBinding(\.navigationItem) var navigationItem: NavigationItem??
     
     var body: some View {
-        buildButtons([.reading, .bookmarks, .map], keyboardShortcutOffset: 1)
+        buildButtons([.reading, .bookmarks], keyboardShortcutOffset: 1)
         Divider()
-        buildButtons([.opened, .categories, .downloads, .new], keyboardShortcutOffset: 4)
+        buildButtons([.opened, .categories, .downloads, .new], keyboardShortcutOffset: 3)
     }
     
     private func buildButtons(_ navigationItems: [NavigationItem], keyboardShortcutOffset: Int) -> some View {

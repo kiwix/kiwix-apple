@@ -15,7 +15,7 @@ struct SearchView: View {
     @Default(.recentSearchTexts) private var recentSearchTexts
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     @Environment(\.managedObjectContext) private var managedObjectContext
-    @EnvironmentObject var viewModel: SearchViewModel
+    @EnvironmentObject private var viewModel: SearchViewModel
     @FetchRequest(
         sortDescriptors: [NSSortDescriptor(keyPath: \ZimFile.size, ascending: false)],
         predicate: ZimFile.withFileURLBookmarkPredicate,
