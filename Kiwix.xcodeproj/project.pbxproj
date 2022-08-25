@@ -87,7 +87,6 @@
 		973A2FD82780024600BD4320 /* ZimFileCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 973A2FD72780024600BD4320 /* ZimFileCell.swift */; };
 		973B2A5D254609FD00093661 /* Modifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 973B2A5C254609FD00093661 /* Modifiers.swift */; };
 		973B8012239066D0008CC8CE /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 973B8011239066D0008CC8CE /* SceneDelegate.swift */; };
-		973BC75727587A29008D4114 /* Commands.swift in Sources */ = {isa = PBXBuildFile; fileRef = 973BC75627587A29008D4114 /* Commands.swift */; };
 		9744658026F7981500072DC2 /* Fuzi in Frameworks */ = {isa = PBXBuildFile; productRef = 9744657F26F7981500072DC2 /* Fuzi */; };
 		97486D06284A36790096E4DD /* ArticleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97486D05284A36790096E4DD /* ArticleCell.swift */; };
 		97486D08284A42B90096E4DD /* SearchResultRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97486D07284A42B90096E4DD /* SearchResultRow.swift */; };
@@ -276,7 +275,6 @@
 		97DE2BA7283AB6DC00C63D9B /* Buttons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 978A731127B9A0E0008101B4 /* Buttons.swift */; };
 		97DE2BAD283B133700C63D9B /* wikipedia_dark.css in Resources */ = {isa = PBXBuildFile; fileRef = 970885D0271339A300C5795C /* wikipedia_dark.css */; };
 		97E173D425733D11002CAD17 /* RootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97E173D325733D10002CAD17 /* RootViewController.swift */; };
-		97E7BD6C28A47E8E005D8ADA /* Commands.swift in Sources */ = {isa = PBXBuildFile; fileRef = 973BC75627587A29008D4114 /* Commands.swift */; };
 		97E94B21271EF250005B0295 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 97E94B20271EF250005B0295 /* Preview Assets.xcassets */; };
 		97E94B2D271EF603005B0295 /* libkiwix.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97EC18AF26E8555E008309ED /* libkiwix.xcframework */; };
 		97E94B2E271EF630005B0295 /* ZimFileService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9779A5AA2456793500F6F6FF /* ZimFileService.swift */; };
@@ -407,7 +405,6 @@
 		973A2FD72780024600BD4320 /* ZimFileCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZimFileCell.swift; sourceTree = "<group>"; };
 		973B2A5C254609FD00093661 /* Modifiers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Modifiers.swift; sourceTree = "<group>"; };
 		973B8011239066D0008CC8CE /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		973BC75627587A29008D4114 /* Commands.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Commands.swift; sourceTree = "<group>"; };
 		97486D05284A36790096E4DD /* ArticleCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArticleCell.swift; sourceTree = "<group>"; };
 		97486D07284A42B90096E4DD /* SearchResultRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultRow.swift; sourceTree = "<group>"; };
 		97486D09284B96690096E4DD /* CellBackground.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellBackground.swift; sourceTree = "<group>"; };
@@ -1042,7 +1039,6 @@
 				97E94B26271EF359005B0295 /* Support */,
 				97E94B19271EF24D005B0295 /* macOSApp.swift */,
 				97EEFF2028398E9A00BDD6E2 /* iOSApp.swift */,
-				973BC75627587A29008D4114 /* Commands.swift */,
 				979D3A762841100B00E396B8 /* Focus.swift */,
 				97E94B1D271EF250005B0295 /* Assets.xcassets */,
 			);
@@ -1511,7 +1507,6 @@
 				976BAEBE284905760049404F /* SearchViewModel.swift in Sources */,
 				97486D0F284D44C20096E4DD /* HUDController.swift in Sources */,
 				974C33A32853DDEE00DF6F4C /* SettingsView.swift in Sources */,
-				97E7BD6C28A47E8E005D8ADA /* Commands.swift in Sources */,
 				977B1B65289801DE001D07C4 /* MapView.swift in Sources */,
 				977B1B5E2897F9C8001D07C4 /* App.swift in Sources */,
 				970C0BDF28A28AEA0037A47D /* ReadingView.swift in Sources */,
@@ -1651,7 +1646,6 @@
 			files = (
 				973A0DE3281D80E300B41E71 /* ZimFileDetail.swift in Sources */,
 				97242B9E2735E6A800C87F85 /* Platform.swift in Sources */,
-				973BC75727587A29008D4114 /* Commands.swift in Sources */,
 				97DE2BA2283A8E5C00C63D9B /* LibraryViewModel.swift in Sources */,
 				975088C0287EEE4600273181 /* ArticleCell.swift in Sources */,
 				975088C1287EEE4600273181 /* SearchResultRow.swift in Sources */,

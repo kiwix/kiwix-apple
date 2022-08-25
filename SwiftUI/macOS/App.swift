@@ -18,13 +18,30 @@ struct Kiwix: App {
         WindowGroup {
             RootView()
         }.commands {
+            ImportCommands()
             CommandGroup(after: .toolbar) {
                 #if os(macOS)
+                NavigationButtons()
+                Divider()
                 PageZoomButtons()
                 Divider()
-                NavigationItemButtons()
+                SidebarNavigationItemButtons()
                 Divider()
                 #endif
+            }
+        }
+    }
+}
+
+struct ImportCommands: Commands {
+    @State private var isPresented: Bool = false
+    
+    var body: some Commands {
+        CommandGroup(replacing: .importExport) {
+            Section {
+                Button("Open...") { isPresented = true}
+                    .modifier(FileImporter(isPresented: $isPresented))
+                    .keyboardShortcut("o")
             }
         }
     }

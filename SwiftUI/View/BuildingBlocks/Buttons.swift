@@ -188,23 +188,18 @@ struct NavigateForwardButton: View {
     }
 }
 
-struct NavigationItemButtons: View {
-    @FocusedBinding(\.navigationItem) var navigationItem: NavigationItem??
+struct NavigationButtons: View {
+    @FocusedValue(\.canGoBack) var canGoBack: Bool?
+    @FocusedValue(\.canGoForward) var canGoForward: Bool?
+    @FocusedValue(\.readerViewModel) var readerViewModel: ReaderViewModel?
     
     var body: some View {
-        buildButtons([.reading, .bookmarks], keyboardShortcutOffset: 1)
-        Divider()
-        buildButtons([.opened, .categories, .downloads, .new], keyboardShortcutOffset: 3)
-    }
-    
-    private func buildButtons(_ navigationItems: [NavigationItem], keyboardShortcutOffset: Int) -> some View {
-        ForEach(Array(navigationItems.enumerated()), id: \.element) { index, item in
-            Button(item.name) {
-                navigationItem = item
-            }
-            .keyboardShortcut(KeyEquivalent(Character("\(index + keyboardShortcutOffset)")))
-            .disabled(navigationItem == nil)
-        }
+        Button("Go Back") { readerViewModel?.webView.goBack() }
+            .keyboardShortcut("[")
+            .disabled(!(canGoBack ?? false))
+        Button("Go Forward") { readerViewModel?.webView.goForward() }
+            .keyboardShortcut("]")
+            .disabled(!(canGoForward ?? false))
     }
 }
 
@@ -320,3 +315,23 @@ struct SidebarButton: View {
     }
 }
 #endif
+
+struct SidebarNavigationItemButtons: View {
+    @FocusedBinding(\.navigationItem) var navigationItem: NavigationItem??
+    
+    var body: some View {
+        buildButtons([.reading, .bookmarks], keyboardShortcutOffset: 1)
+        Divider()
+        buildButtons([.opened, .categories, .downloads, .new], keyboardShortcutOffset: 3)
+    }
+    
+    private func buildButtons(_ navigationItems: [NavigationItem], keyboardShortcutOffset: Int) -> some View {
+        ForEach(Array(navigationItems.enumerated()), id: \.element) { index, item in
+            Button(item.name) {
+                navigationItem = item
+            }
+            .keyboardShortcut(KeyEquivalent(Character("\(index + keyboardShortcutOffset)")))
+            .disabled(navigationItem == nil)
+        }
+    }
+}
