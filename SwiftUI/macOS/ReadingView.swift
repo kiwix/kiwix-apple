@@ -127,7 +127,7 @@ private struct ReadingViewContent: View {
     }
 }
 
-@available(macOS 12.0, iOS 15.0, *)
+#if os(iOS)
 private struct NavigationTitleConfigurator: ViewModifier {
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     @Environment(\.isSearching) private var isSearching
@@ -151,3 +151,4 @@ private struct NavigationTitleConfigurator: ViewModifier {
         readingViewModel.articleTitle.isEmpty ? "Kiwix" : readingViewModel.articleTitle
     }
 }
+#endif
