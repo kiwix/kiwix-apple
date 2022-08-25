@@ -37,6 +37,11 @@ struct Kiwix: App {
                 SidebarNavigationItemButtons()
                 Divider()
             }
+            #elseif os(iOS)
+            CommandGroup(after: .toolbar) {
+                NavigationButtons()
+                Divider()
+            }
             #endif
         }
     }
