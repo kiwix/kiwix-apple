@@ -165,7 +165,7 @@ struct NavigateBackButton: View {
     
     var body: some View {
         Button {
-            viewModel.webView?.goBack()
+            viewModel.goBack()
         } label: {
             Label("Go Back", systemImage: "chevron.backward")
         }
@@ -179,7 +179,7 @@ struct NavigateForwardButton: View {
     
     var body: some View {
         Button {
-            viewModel.webView?.goForward()
+            viewModel.goForward()
         } label: {
             Label("Go Forward", systemImage: "chevron.forward")
         }

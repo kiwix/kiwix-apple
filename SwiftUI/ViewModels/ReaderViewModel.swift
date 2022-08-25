@@ -20,13 +20,7 @@ class ReadingViewModel: NSObject, ObservableObject, WKNavigationDelegate, WKScri
     @Published var activeSheet: ActiveSheet?
     
     var webViewInteractionState: Any?
-    var webView: WKWebView?{
-        didSet {
-            if #available(iOS 15.0, *) {
-                webView?.interactionState = webViewInteractionState
-            }
-        }
-    }
+    var webViews = Set<WKWebView>()
     
     static let bookmarkNotificationName = NSNotification.Name(rawValue: "Bookmark.toggle")
     
@@ -76,6 +70,16 @@ class ReadingViewModel: NSObject, ObservableObject, WKNavigationDelegate, WKScri
         }
     }
     
+    // MARK: - navigation
+    
+    func goBack() {
+        webViews.first?.goBack()
+    }
+    
+    func goForward() {
+        webViews.first?.goForward()
+    }
+    
     // MARK: - bookmark
     
     /// Create bookmark for an article
@@ -120,7 +124,7 @@ class ReadingViewModel: NSObject, ObservableObject, WKNavigationDelegate, WKScri
     /// Scroll to a outline item
     /// - Parameter outlineItemID: ID of the outline item to scroll to
     func scrollTo(outlineItemID: String) {
-        webView?.evaluateJavaScript("scrollToHeading('\(outlineItemID)')")
+        webViews.first?.evaluateJavaScript("scrollToHeading('\(outlineItemID)')")
     }
     
     /// Convert flattened heading element data to a list of OutlineItems.
