@@ -19,16 +19,25 @@ struct Kiwix: App {
             RootView()
         }.commands {
             ImportCommands()
+            #if os(macOS)
+            CommandGroup(replacing: .newItem) {
+                Button("New Tab") {
+                    guard let currentWindow = NSApp.keyWindow, let controller = currentWindow.windowController else { return }
+                    controller.newWindowForTab(nil)
+                    guard let newWindow = NSApp.keyWindow, currentWindow != newWindow else { return }
+                    currentWindow.addTabbedWindow(newWindow, ordered: .above)
+                }.keyboardShortcut("t")
+                Divider()
+            }
             CommandGroup(after: .toolbar) {
-                #if os(macOS)
                 NavigationButtons()
                 Divider()
                 PageZoomButtons()
                 Divider()
                 SidebarNavigationItemButtons()
                 Divider()
-                #endif
             }
+            #endif
         }
     }
 }
