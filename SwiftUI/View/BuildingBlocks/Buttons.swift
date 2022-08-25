@@ -36,8 +36,12 @@ struct BookmarkToggleButton: View {
                 viewModel.createBookmark(url)
             }
         } label: {
-            Image(systemName: isBookmarked ? "star.fill" : "star")
-                .renderingMode(isBookmarked ? .original : .template)
+            Label {
+                Text(isBookmarked ? "Remove Bookmark" : "Add Bookmark")
+            } icon: {
+                Image(systemName: isBookmarked ? "star.fill" : "star")
+                    .renderingMode(isBookmarked ? .original : .template)
+            }
         }
         .disabled(url == nil)
         .help(isBookmarked ? "Remove bookmark" : "Bookmark the current article")
@@ -101,7 +105,7 @@ struct MainArticleButton: View {
             let zimFileID = UUID(uuidString: url?.host ?? "")
             url = ZimFileService.shared.getMainPageURL(zimFileID: zimFileID)
         } label: {
-            Image(systemName: "house")
+            Label("Main Article", systemImage: "house")
         }.help("Show main article")
     }
 }
@@ -163,7 +167,7 @@ struct NavigateBackButton: View {
         Button {
             viewModel.webView?.goBack()
         } label: {
-            Image(systemName: "chevron.backward")
+            Label("Go Back", systemImage: "chevron.backward")
         }
         .disabled(!viewModel.canGoBack)
         .help("Show the previous page")
@@ -177,7 +181,7 @@ struct NavigateForwardButton: View {
         Button {
             viewModel.webView?.goForward()
         } label: {
-            Image(systemName: "chevron.forward")
+            Label("Go Forward", systemImage: "chevron.forward")
         }
         .disabled(!viewModel.canGoForward)
         .help("Show the next page")
@@ -262,7 +266,7 @@ struct RandomArticleButton: View {
             let zimFileID = UUID(uuidString: url?.host ?? "")
             url = ZimFileService.shared.getRandomPageURL(zimFileID: zimFileID)
         } label: {
-            Image(systemName: "die.face.5")
+            Label("Random Article", systemImage: "die.face.5")
         }.help("Show random article")
     }
 }

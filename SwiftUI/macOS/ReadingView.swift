@@ -78,7 +78,9 @@ private struct ReadingViewContent: View {
         .sheet(item: $readingViewModel.activeSheet) { activeSheet in
             switch activeSheet {
             case .outline:
-                SheetView { OutlineTree().listStyle(.plain).navigationBarTitleDisplayMode(.inline) }
+                SheetView {
+                    OutlineTree().listStyle(.plain).navigationBarTitleDisplayMode(.inline)
+                }.presentationDetents([.medium, .large])
             case .bookmarks:
                 SheetView { BookmarksView(url: $url) }
             case .library:

@@ -28,7 +28,7 @@ struct SearchView: View {
             ZStack(alignment: .topTrailing) {
                 Color.clear
                 content
-                    .background(Material.regular)
+                    .background(Material.thin)
                     .cornerRadius(10)
                     .shadow(color: Color.black.opacity(0.2), radius: 3, x: 0, y: 2)
                     .overlay(
