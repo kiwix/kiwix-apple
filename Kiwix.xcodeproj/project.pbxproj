@@ -710,6 +710,7 @@
 				973A0DE5281DC8F400B41E71 /* Downloads.swift */,
 				972DE4722814A116004FD9B9 /* Entities.swift */,
 				9735D0BF27777E3300C7D495 /* Enum.swift */,
+				979D3A762841100B00E396B8 /* Focus.swift */,
 				9790926E286BF0BB002B7AA5 /* Formatter.swift */,
 				97BD6C9B2886E06B004A8532 /* HTMLParser.swift */,
 			);
@@ -1039,7 +1040,6 @@
 				97E94B26271EF359005B0295 /* Support */,
 				97E94B19271EF24D005B0295 /* macOSApp.swift */,
 				97EEFF2028398E9A00BDD6E2 /* iOSApp.swift */,
-				979D3A762841100B00E396B8 /* Focus.swift */,
 				97E94B1D271EF250005B0295 /* Assets.xcassets */,
 			);
 			path = SwiftUI;
