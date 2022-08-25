@@ -20,8 +20,8 @@ struct NavigationItemKey: FocusedValueKey {
     typealias Value = Binding<NavigationItem?>
 }
 
-struct ReaderViewModelKey: FocusedValueKey {
-    typealias Value = ReaderViewModel
+struct ReadingViewModelKey: FocusedValueKey {
+    typealias Value = ReadingViewModel
 }
 
 struct SearchFieldFocusActionKey: FocusedValueKey {
@@ -48,9 +48,9 @@ extension FocusedValues {
         set { self[NavigationItemKey.self] = newValue }
     }
     
-    var readerViewModel: ReaderViewModelKey.Value? {
-        get { self[ReaderViewModelKey.self] }
-        set { self[ReaderViewModelKey.self] = newValue }
+    var readingViewModel: ReadingViewModelKey.Value? {
+        get { self[ReadingViewModelKey.self] }
+        set { self[ReadingViewModelKey.self] = newValue }
     }
     
     var searchFieldFocusAction: SearchFieldFocusActionKey.Value? {

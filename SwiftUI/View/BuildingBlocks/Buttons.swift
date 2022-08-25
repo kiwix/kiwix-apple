@@ -191,13 +191,13 @@ struct NavigateForwardButton: View {
 struct NavigationButtons: View {
     @FocusedValue(\.canGoBack) var canGoBack: Bool?
     @FocusedValue(\.canGoForward) var canGoForward: Bool?
-    @FocusedValue(\.readerViewModel) var readerViewModel: ReaderViewModel?
+    @FocusedValue(\.readingViewModel) var viewModel: ReadingViewModel?
     
     var body: some View {
-        Button("Go Back") { readerViewModel?.webView.goBack() }
+        Button("Go Back") { viewModel?.goBack() }
             .keyboardShortcut("[")
             .disabled(!(canGoBack ?? false))
-        Button("Go Forward") { readerViewModel?.webView.goForward() }
+        Button("Go Forward") { viewModel?.goForward() }
             .keyboardShortcut("]")
             .disabled(!(canGoForward ?? false))
     }

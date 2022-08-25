@@ -51,6 +51,9 @@ private struct ReadingViewContent: View {
             searchViewModel.searchText = ""
             dismissSearch()
         }
+        .modifier(FocusedSceneValue(\.canGoBack, readingViewModel.canGoBack))
+        .modifier(FocusedSceneValue(\.canGoForward, readingViewModel.canGoForward))
+        .modifier(FocusedSceneValue(\.readingViewModel, readingViewModel))
         #if os(macOS)
         .navigationTitle(readingViewModel.articleTitle)
         .navigationSubtitle(readingViewModel.zimFileName)
