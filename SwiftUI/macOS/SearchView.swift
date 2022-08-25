@@ -8,8 +8,11 @@
 
 import SwiftUI
 
+import Defaults
+
 struct SearchView: View {
     @Binding var url: URL?
+    @Default(.recentSearchTexts) private var recentSearchTexts
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     @Environment(\.managedObjectContext) private var managedObjectContext
     @EnvironmentObject var viewModel: SearchViewModel
@@ -41,7 +44,7 @@ struct SearchView: View {
             if horizontalSizeClass == .regular {
                 HStack(spacing: 0) {
                     List {
-                        recentSearch
+                        if !recentSearchTexts.isEmpty { recentSearch }
                         filter
                     }.frame(width: 320)
                     Divider()
@@ -60,7 +63,7 @@ struct SearchView: View {
             Message(text: "No opened zim files")
         } else if viewModel.searchText.isEmpty, horizontalSizeClass == .compact {
             List {
-                recentSearch
+                if !recentSearchTexts.isEmpty { recentSearch }
                 filter
             }
         } else if viewModel.inProgress {
@@ -76,20 +79,34 @@ struct SearchView: View {
         Section {
             #if os(macOS)
             LazyVGrid(columns: [GridItem(.adaptive(minimum: 100))]) {
-                ForEach(1..<13) { index in
-                    Button("recent search item \(index)") {
-                        
+                ForEach(recentSearchTexts.prefix(12), id: \.self) { searchText in
+                    Button(searchText) {
+                        DispatchQueue.main.async {
+                            viewModel.searchText = searchText
+                        }
                     }
                 }
             }
             #elseif os(iOS)
-            ForEach(1..<6) { index in
-                Button("recent search item \(index)") {
-                    
+            ForEach(recentSearchTexts.prefix(6), id: \.self) { searchText in
+                Button(searchText) {
+                    DispatchQueue.main.async {
+                        viewModel.searchText = searchText
+                    }
                 }
             }
             #endif
         } header: { Text("Recent Search") }
+    }
+    
+    var recentSearchContent: some View {
+        ForEach(recentSearchTexts.prefix(6), id: \.self) { searchText in
+            Button(searchText) {
+                DispatchQueue.main.async {
+                    viewModel.searchText = searchText
+                }
+            }
+        }
     }
     
     var filter: some View {
@@ -110,6 +127,12 @@ struct SearchView: View {
             LazyVGrid(columns: [GridItem(.flexible(minimum: 300, maximum: 700), alignment: .center)]) {
                 ForEach(viewModel.results) { result in
                     Button {
+                        recentSearchTexts = {
+                            var searchTexts = Defaults[.recentSearchTexts]
+                            searchTexts.removeAll(where: { $0 == viewModel.searchText })
+                            searchTexts.insert(viewModel.searchText, at: 0)
+                            return searchTexts
+                        }()
                         url = result.url
                     } label: {
                         ArticleCell(result: result, zimFile: viewModel.zimFiles[result.zimFileID])
