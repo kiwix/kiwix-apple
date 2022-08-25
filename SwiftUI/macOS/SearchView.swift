@@ -41,31 +41,27 @@ struct SearchView: View {
         }
         #elseif os(iOS)
         Group {
-            if horizontalSizeClass == .regular {
+            if zimFiles.isEmpty {
+                Message(text: "No opened zim file")
+            } else if horizontalSizeClass == .regular {
                 HStack(spacing: 0) {
-                    List {
-                        if !recentSearchTexts.isEmpty { recentSearch }
-                        filter
-                    }.frame(width: 320)
-                    Divider()
+                    noSearchText.frame(width: 320)
+                    Divider().ignoresSafeArea(.all, edges: .bottom)
                     content.frame(maxWidth: .infinity)
                 }
             } else {
                 content
             }
-        }.background(Color.background).ignoresSafeArea(.container, edges: .bottom)
+        }.background(Color.background)
         #endif
     }
     
     @ViewBuilder
     var content: some View {
         if zimFiles.isEmpty {
-            Message(text: "No opened zim files")
+            Message(text: "No opened zim file")
         } else if viewModel.searchText.isEmpty, horizontalSizeClass == .compact {
-            List {
-                if !recentSearchTexts.isEmpty { recentSearch }
-                filter
-            }
+            noSearchText
         } else if viewModel.inProgress {
             ProgressView().frame(maxWidth: .infinity, maxHeight: .infinity)
         } else if viewModel.results.isEmpty {
@@ -75,51 +71,71 @@ struct SearchView: View {
         }
     }
     
-    var recentSearch: some View {
-        Section {
-            #if os(macOS)
-            LazyVGrid(columns: [GridItem(.adaptive(minimum: 100))]) {
-                ForEach(recentSearchTexts.prefix(12), id: \.self) { searchText in
-                    Button(searchText) {
-                        DispatchQueue.main.async {
-                            viewModel.searchText = searchText
-                        }
-                    }
-                }
-            }
-            #elseif os(iOS)
-            ForEach(recentSearchTexts.prefix(6), id: \.self) { searchText in
-                Button(searchText) {
-                    DispatchQueue.main.async {
-                        viewModel.searchText = searchText
-                    }
-                }
-            }
-            #endif
-        } header: { Text("Recent Search") }
-    }
-    
-    var recentSearchContent: some View {
-        ForEach(recentSearchTexts.prefix(6), id: \.self) { searchText in
-            Button(searchText) {
-                DispatchQueue.main.async {
-                    viewModel.searchText = searchText
-                }
-            }
-        }
-    }
-    
     var filter: some View {
-        Section {
-            ForEach(zimFiles) { zimFile in
+        ForEach(zimFiles) { zimFile in
+            HStack {
                 Toggle(zimFile.name, isOn: Binding<Bool>(get: {
                     zimFile.includedInSearch
                 }, set: {
                     zimFile.includedInSearch = $0
                     try? managedObjectContext.save()
                 }))
+                Spacer()
             }
-        } header: { Text("Included in Search") }
+        }
+    }
+    
+    var noSearchText: some View {
+        #if os(macOS)
+        ScrollView {
+            LazyVGrid(columns: [GridItem(.flexible())]) {
+                if !recentSearchTexts.isEmpty {
+                    Section {
+                        ForEach(recentSearchTexts.prefix(12), id: \.self) { searchText in
+                            Button {
+                                DispatchQueue.main.async {
+                                    viewModel.searchText = searchText
+                                }
+                            } label: {
+                                RecentSearch(searchText: searchText)
+                            }.buttonStyle(.borderless)
+                        }
+                    } header: {
+                        HStack {
+                            Text("Recent Search").fontWeight(.medium)
+                            Spacer()
+                        }
+                    }
+                }
+                Spacer().frame(height: 20)
+                Section {
+                    filter
+                } header: {
+                    HStack {
+                        Text("Included in Search").fontWeight(.medium)
+                        Spacer()
+                    }
+                }
+            }.padding()
+        }
+        #elseif os(iOS)
+        List {
+            if !recentSearchTexts.isEmpty {
+                Section {
+                    ForEach(recentSearchTexts.prefix(6), id: \.self) { searchText in
+                        Button(searchText) {
+                            DispatchQueue.main.async {
+                                viewModel.searchText = searchText
+                            }
+                        }
+                    }
+                } header: { Text("Recent Search") }
+            }
+            Section {
+                filter
+            } header: { Text("Included in Search") }
+        }
+        #endif
     }
     
     var results: some View {
@@ -140,5 +156,21 @@ struct SearchView: View {
                 }
             }.padding()
         }.background(Color.background)
+    }
+}
+
+struct RecentSearch: View {
+    @State var isHovering: Bool = false
+    
+    let searchText: String
+    
+    var body: some View {
+        HStack {
+            Text(searchText).font(.headline).foregroundColor(.primary)
+            Spacer()
+        }
+        .padding(EdgeInsets(top: 8, leading: 12, bottom: 8, trailing: 12))
+        .modifier(CellBackground(isHovering: isHovering))
+        .onHover { self.isHovering = $0 }
     }
 }

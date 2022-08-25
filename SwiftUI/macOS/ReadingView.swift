@@ -19,7 +19,6 @@ struct ReadingView: View {
         ReadingViewContent(url: $url)
             .searchable(text: $searchViewModel.searchText, placement: .toolbar)
             .environmentObject(searchViewModel)
-            
     }
 }
 
@@ -128,6 +127,7 @@ private struct ReadingViewContent: View {
 }
 
 #if os(iOS)
+@available(iOS 16.0, *)
 private struct NavigationTitleConfigurator: ViewModifier {
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     @Environment(\.isSearching) private var isSearching
