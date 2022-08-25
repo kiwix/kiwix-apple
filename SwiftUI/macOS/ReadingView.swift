@@ -48,30 +48,18 @@ private struct ReadingViewContent: View {
                 #endif
             }
         }
-        .onTapGesture {
-            searchViewModel.searchText = ""
-            dismissSearch()
-        }
         .onChange(of: url) { _ in
             searchViewModel.searchText = ""
             dismissSearch()
         }
-        .modifier(NavigationBarConfigurator())
-        .modifier(NavigationTitleConfigurator())
-        .sheet(item: $readingViewModel.activeSheet) { activeSheet in
-//            switch activeSheet {
-//            case .outline:
-//                SheetView { OutlineTree().listStyle(.plain).navigationBarTitleDisplayMode(.inline) }
-//            case .bookmarks:
-//                SheetView { BookmarksView(url: $url) }
-//            case .library:
-//                Library()
-//            case .settings:
-//                SheetView { SettingsView() }
-//            }
+        #if os(macOS)
+        .navigationTitle(readingViewModel.articleTitle)
+        .navigationSubtitle(readingViewModel.zimFileName)
+        .onTapGesture {
+            searchViewModel.searchText = ""
+            dismissSearch()
         }
         .toolbar {
-            #if os(macOS)
             ToolbarItemGroup(placement: .navigation) {
                 ControlGroup {
                     NavigateBackButton()
@@ -84,19 +72,37 @@ private struct ReadingViewContent: View {
                 RandomArticleButton(url: $url)
                 MainArticleButton(url: $url)
             }
-            #elseif os(iOS)
+        }
+        #elseif os(iOS)
+        .modifier(NavigationTitleConfigurator())
+        .navigationBarTitleDisplayMode(.inline)
+        .sheet(item: $readingViewModel.activeSheet) { activeSheet in
+            switch activeSheet {
+            case .outline:
+                SheetView { OutlineTree().listStyle(.plain).navigationBarTitleDisplayMode(.inline) }
+            case .bookmarks:
+                SheetView { BookmarksView(url: $url) }
+            case .library:
+                Library()
+            case .settings:
+                SheetView { SettingsView() }
+            }
+        }
+        .toolbarRole(.browser)
+        .toolbarBackground(.visible, for: .navigationBar, .bottomBar)
+        .toolbar {
             ToolbarItemGroup(placement: .navigationBarLeading) {
                 if horizontalSizeClass == .regular {
                     NavigateBackButton()
                     NavigateForwardButton()
                 }
             }
-            ToolbarItemGroup(placement: .primaryAction) {
+            ToolbarItemGroup(placement: .secondaryAction) {
                 if horizontalSizeClass == .regular {
-                    MainArticleMenu(url: $url)
-                    RandomArticleMenu(url: $url)
-                    BookmarkToggleButton(url: url)
                     OutlineMenu()
+                    BookmarkToggleButton(url: url)
+                    RandomArticleMenu(url: $url)
+                    MainArticleMenu(url: $url)
                 }
             }
             ToolbarItemGroup(placement: .bottomBar) {
@@ -116,25 +122,7 @@ private struct ReadingViewContent: View {
                     MoreActionMenu(url: $url)
                 }
             }
-            #endif
         }
-    }
-}
-
-@available(macOS 12.0, iOS 16.0, *)
-private struct NavigationBarConfigurator: ViewModifier {
-    @EnvironmentObject private var readingViewModel: ReadingViewModel
-    
-    func body(content: Content) -> some View {
-        #if os(macOS)
-        content
-            .navigationTitle(readingViewModel.articleTitle)
-            .navigationSubtitle(readingViewModel.zimFileName)
-        #elseif os(iOS)
-        content
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbarRole(.browser)
-            .toolbarBackground(.visible, for: .navigationBar, .bottomBar)
         #endif
     }
 }
@@ -149,19 +137,17 @@ private struct NavigationTitleConfigurator: ViewModifier {
         if horizontalSizeClass == .regular {
             content.navigationTitle(readingViewModel.articleTitle)
         } else {
-            #if os(macOS)
-            content
-            #elseif os(iOS)
             content.toolbar {
                 ToolbarItemGroup(placement: .navigationBarLeading) {
                     if !isSearching {
-                        Text(
-                            readingViewModel.articleTitle.isEmpty ? "Kiwix" : readingViewModel.articleTitle
-                        ).fontWeight(.semibold)
+                        Text(compactTitle).fontWeight(.semibold)
                     }
                 }
             }
-            #endif
         }
+    }
+    
+    private var compactTitle: String {
+        readingViewModel.articleTitle.isEmpty ? "Kiwix" : readingViewModel.articleTitle
     }
 }
