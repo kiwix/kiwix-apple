@@ -51,7 +51,7 @@ struct FocusedSceneValue<T>: ViewModifier {
         if #available(macOS 12.0, iOS 15.0, *) {
             content.focusedSceneValue(keyPath, value)
         } else {
-            content
+            content.focusedValue(keyPath, value)
         }
     }
 }
