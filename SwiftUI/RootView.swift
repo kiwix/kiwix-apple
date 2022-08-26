@@ -77,7 +77,7 @@ struct RootView: View {
             case .bookmarks:
                 SheetView { BookmarksView(url: $url) }
             case .library:
-                Library()
+                LibraryView_iOS()
             case .settings:
                 SheetView { SettingsView() }
             }

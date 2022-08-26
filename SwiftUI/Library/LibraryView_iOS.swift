@@ -1,5 +1,5 @@
 //
-//  Library.swift
+//  LibraryView_iOS.swift
 //  Kiwix
 //
 //  Created by Chris Li on 4/23/22.
@@ -9,7 +9,7 @@
 import SwiftUI
 
 /// Tabbed library UI on iOS & iPadOS
-struct Library: View {
+struct LibraryView_iOS: View {
     @SceneStorage("library.selectedNavigationItem") private var selected: NavigationItem = .opened
     @State private var isFileImporterPresented = false
     @StateObject private var viewModel = LibraryViewModel()
