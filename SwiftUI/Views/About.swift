@@ -23,18 +23,18 @@ struct About: View {
     var body: some View {
         #if os(macOS)
         VStack(spacing: 16) {
-            SettingSection(name: "About") {
+            SettingSection_macOS(name: "About") {
                 about
                 ourWebsite
             }
-            SettingSection(name: "Release") {
+            SettingSection_macOS(name: "Release") {
                 release
                 HStack {
                     source
                     license
                 }
             }
-            SettingSection(name: "Dependencies") {
+            SettingSection_macOS(name: "Dependencies") {
                 Table(dependencies) {
                     TableColumn("Name", value: \.name)
                     TableColumn("License", value: \.license)

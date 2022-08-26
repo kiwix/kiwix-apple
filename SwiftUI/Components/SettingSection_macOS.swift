@@ -1,5 +1,5 @@
 //
-//  SettingSection.swift
+//  SettingSection_macOS.swift
 //  Kiwix for macOS
 //
 //  Created by Chris Li on 6/21/22.
@@ -8,7 +8,7 @@
 
 import SwiftUI
 
-struct SettingSection<Content: View>: View {
+struct SettingSection_macOS<Content: View>: View {
     let name: String
     var content: () -> Content
     

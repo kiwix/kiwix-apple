@@ -44,6 +44,14 @@ struct Kiwix: App {
             }
             #endif
         }
+        #if os(macOS)
+        Settings {
+            TabView {
+                LibrarySettings_macOS()
+                About()
+            }.frame(width: 550, height: 400)
+        }
+        #endif
     }
 }
 

@@ -1,6 +1,6 @@
 //
-//  LibrarySettings.swift
-//  Kiwix
+//  LibrarySettings_macOS.swift
+//  Kiwix for macOS
 //
 //  Created by Chris Li on 6/11/22.
 //  Copyright © 2022 Chris Li. All rights reserved.
@@ -10,13 +10,13 @@ import SwiftUI
 
 import Defaults
 
-struct LibrarySettings: View {
+struct LibrarySettings_macOS: View {
     @Default(.libraryAutoRefresh) private var autoRefresh
     @StateObject private var viewModel = LibraryViewModel()
     
     var body: some View {
         VStack(spacing: 16) {
-            SettingSection(name: "Catalog") {
+            SettingSection_macOS(name: "Catalog") {
                 HStack(spacing: 6) {
                     Button("Refresh Now") {
                         Task { try? await viewModel.refresh(isUserInitiated: true) }
@@ -34,7 +34,7 @@ struct LibrarySettings: View {
                         .foregroundColor(.secondary)
                 }
             }
-            SettingSection(name: "Languages") {
+            SettingSection_macOS(name: "Languages") {
                 LanguageSelector()
             }
         }
@@ -43,9 +43,9 @@ struct LibrarySettings: View {
     }
 }
 
-struct LibrarySettings_Previews: PreviewProvider {
+struct LibrarySettings_macOS_Previews: PreviewProvider {
     static var previews: some View {
-        TabView { LibrarySettings() }.frame(width: 480).preferredColorScheme(.light)
-        TabView { LibrarySettings() }.frame(width: 480).preferredColorScheme(.dark)
+        TabView { LibrarySettings_macOS() }.frame(width: 480).preferredColorScheme(.light)
+        TabView { LibrarySettings_macOS() }.frame(width: 480).preferredColorScheme(.dark)
     }
 }
