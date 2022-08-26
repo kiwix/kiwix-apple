@@ -70,6 +70,22 @@ struct RootView: View {
                 self.url = url
             }
         }
+#if os(iOS)
+        .sheet(item: $readingViewModel.activeSheet) { activeSheet in
+            switch activeSheet {
+            case .outline:
+                SheetView {
+                    OutlineTree().listStyle(.plain).navigationBarTitleDisplayMode(.inline)
+                }.modifier(OutlineDetents_SwiftUI4())
+            case .bookmarks:
+                SheetView { BookmarksView(url: $url) }
+            case .library:
+                Library()
+            case .settings:
+                SheetView { SettingsView() }
+            }
+        }
+#endif
     }
     
     @ViewBuilder
@@ -96,15 +112,10 @@ struct RootView: View {
 #if os(macOS)
         .toolbar { SidebarButton() }
 #elseif os(iOS)
-        .sheet(isPresented: $isShowingSetting) {
-            SheetView { SettingsView() }
-        }
         .toolbar {
             Button {
-                isShowingSetting = true
-            } label: {
-                Image(systemName: "gear")
-            }
+                readingViewModel.activeSheet = .settings
+            } label: { Image(systemName: "gear") }
         }
 #endif
     }

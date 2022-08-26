@@ -78,20 +78,6 @@ private struct ReadingViewContent: View {
         #elseif os(iOS)
         .modifier(NavigationTitleConfigurator())
         .navigationBarTitleDisplayMode(.inline)
-        .sheet(item: $readingViewModel.activeSheet) { activeSheet in
-            switch activeSheet {
-            case .outline:
-                SheetView {
-                    OutlineTree().listStyle(.plain).navigationBarTitleDisplayMode(.inline)
-                }.presentationDetents([.medium, .large])
-            case .bookmarks:
-                SheetView { BookmarksView(url: $url) }
-            case .library:
-                Library()
-            case .settings:
-                SheetView { SettingsView() }
-            }
-        }
         .toolbarRole(.browser)
         .toolbarBackground(.visible, for: .navigationBar, .bottomBar)
         .toolbar {

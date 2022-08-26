@@ -63,3 +63,13 @@ private struct OutlineNode: View {
         }
     }
 }
+
+struct OutlineDetents_SwiftUI4: ViewModifier {
+    func body(content: Content) -> some View {
+        if #available(iOS 16.0, *) {
+            content.presentationDetents([.medium, .large])
+        } else {
+            content
+        }
+    }
+}
