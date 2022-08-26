@@ -27,10 +27,9 @@ struct RootView: View {
                         sidebar
                     } detail: {
                         NavigationStack {
-                            #if os(macOS)
                             detail
-                            #elseif os(iOS)
-                            detail.navigationBarTitleDisplayMode(.inline)
+                            #if os(iOS)
+                                .navigationBarTitleDisplayMode(.inline)
                             #endif
                         }
                     }.focusedSceneValue(\.navigationItem, $navigationItem)
@@ -70,7 +69,7 @@ struct RootView: View {
                 self.url = url
             }
         }
-#if os(iOS)
+        #if os(iOS)
         .sheet(item: $readingViewModel.activeSheet) { activeSheet in
             switch activeSheet {
             case .outline:
@@ -85,7 +84,7 @@ struct RootView: View {
                 SheetView { SettingsView() }
             }
         }
-#endif
+        #endif
     }
     
     @ViewBuilder
@@ -109,15 +108,15 @@ struct RootView: View {
         }
         .navigationTitle("Kiwix")
         .frame(minWidth: 150)
-#if os(macOS)
+        #if os(macOS)
         .toolbar { SidebarButton() }
-#elseif os(iOS)
+        #elseif os(iOS)
         .toolbar {
             Button {
                 readingViewModel.activeSheet = .settings
             } label: { Image(systemName: "gear") }
         }
-#endif
+        #endif
     }
     
     @ViewBuilder
