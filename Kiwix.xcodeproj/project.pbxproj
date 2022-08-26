@@ -675,19 +675,6 @@
 			path = OPDSStreamParser;
 			sourceTree = "<group>";
 		};
-		972DE4C02814A950004FD9B9 /* Library */ = {
-			isa = PBXGroup;
-			children = (
-				972DE4C12814A961004FD9B9 /* LibraryView_iOS.swift */,
-				973A0DFB283100C300B41E71 /* ZimFilesOpened.swift */,
-				9790CA5828A05EBB00D39FC6 /* ZimFilesCategories.swift */,
-				973A0DE9281DDBB600B41E71 /* ZimFilesDownloads.swift */,
-				976D90E72815D63A00CC7D29 /* ZimFilesNew.swift */,
-				973A0DE2281D80E300B41E71 /* ZimFileDetail.swift */,
-			);
-			path = Library;
-			sourceTree = "<group>";
-		};
 		9735D0B72775362000C7D495 /* Model */ = {
 			isa = PBXGroup;
 			children = (
@@ -716,7 +703,7 @@
 			path = ViewModifiers;
 			sourceTree = "<group>";
 		};
-		975088BF287EEE2900273181 /* Components */ = {
+		975088BF287EEE2900273181 /* BuildingBlocks */ = {
 			isa = PBXGroup;
 			children = (
 				97486D05284A36790096E4DD /* ArticleCell.swift */,
@@ -733,7 +720,7 @@
 				97121EBC28849F0000371AEB /* ZimFileMissingIndicator.swift */,
 				973A0DEF282E981200B41E71 /* ZimFileRow.swift */,
 			);
-			path = Components;
+			path = BuildingBlocks;
 			sourceTree = "<group>";
 		};
 		975FDAD81F6082DA00A10E8C /* iOS */ = {
@@ -985,17 +972,28 @@
 			name = SearchResult;
 			sourceTree = "<group>";
 		};
-		97DED67D275278EB008D2C56 /* Views */ = {
+		97DED67D275278EB008D2C56 /* Components */ = {
 			isa = PBXGroup;
 			children = (
 				974C339E2853D4AC00DF6F4C /* About.swift */,
 				975088B9287BBDFE00273181 /* LanguageSelector.swift */,
+				972DE4C12814A961004FD9B9 /* LibraryView_iOS.swift */,
 				974C33AA28558D2900DF6F4C /* LibrarySettings_macOS.swift */,
 				97C278DE2796249900666E07 /* Outline.swift */,
 				97255D8B273608C3002B995B /* WebView.swift */,
 				974C33A42855884C00DF6F4C /* SafariView.swift */,
 				97F3332E28AFC1A2007FF53C /* SearchView.swift */,
 				97486D0C284C0EBC0096E4DD /* Welcome.swift */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
+		97E4E69C28B8FCC70012227D /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				973A0DF2282FED6F00B41E71 /* ViewModifiers */,
+				975088BF287EEE2900273181 /* BuildingBlocks */,
+				97DED67D275278EB008D2C56 /* Components */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -1005,18 +1003,20 @@
 			children = (
 				9735D0B72775362000C7D495 /* Model */,
 				97FB4B0C27B81B530055F86E /* ViewModels */,
-				973A0DF2282FED6F00B41E71 /* ViewModifiers */,
-				975088BF287EEE2900273181 /* Components */,
-				97DED67D275278EB008D2C56 /* Views */,
-				972DE4C02814A950004FD9B9 /* Library */,
-				97E94B26271EF359005B0295 /* Support */,
-				977B1B5A28971D5E001D07C4 /* App.swift */,
+				97E4E69C28B8FCC70012227D /* Views */,
 				97893876289E058100F0EAFC /* RootView.swift */,
 				978938722899556200F0EAFC /* RootView_iOS.swift */,
 				977B1B5C28972C33001D07C4 /* ReadingView.swift */,
 				9721BBB928427A93005C910D /* BookmarksView.swift */,
 				977B1B63289801DE001D07C4 /* MapView.swift */,
 				974C33A12853DDEE00DF6F4C /* SettingsView.swift */,
+				973A0DE2281D80E300B41E71 /* ZimFileDetail.swift */,
+				973A0DFB283100C300B41E71 /* ZimFilesOpened.swift */,
+				9790CA5828A05EBB00D39FC6 /* ZimFilesCategories.swift */,
+				973A0DE9281DDBB600B41E71 /* ZimFilesDownloads.swift */,
+				976D90E72815D63A00CC7D29 /* ZimFilesNew.swift */,
+				97E94B26271EF359005B0295 /* Support */,
+				977B1B5A28971D5E001D07C4 /* App.swift */,
 				97E94B1D271EF250005B0295 /* Assets.xcassets */,
 			);
 			path = SwiftUI;
