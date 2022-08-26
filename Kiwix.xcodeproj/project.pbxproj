@@ -275,6 +275,10 @@
 		97DE2BA7283AB6DC00C63D9B /* Buttons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 978A731127B9A0E0008101B4 /* Buttons.swift */; };
 		97DE2BAD283B133700C63D9B /* wikipedia_dark.css in Resources */ = {isa = PBXBuildFile; fileRef = 970885D0271339A300C5795C /* wikipedia_dark.css */; };
 		97E173D425733D11002CAD17 /* RootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97E173D325733D10002CAD17 /* RootViewController.swift */; };
+		97E4E69728B8EBD50012227D /* RootView_iOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 978938722899556200F0EAFC /* RootView_iOS.swift */; };
+		97E4E69828B8EBD50012227D /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 974C33A12853DDEE00DF6F4C /* SettingsView.swift */; };
+		97E4E69928B8EBD50012227D /* LibrarySettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 974C33AA28558D2900DF6F4C /* LibrarySettings.swift */; };
+		97E4E69A28B8EBD50012227D /* SettingSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9729E12C2862BA90003D19B1 /* SettingSection.swift */; };
 		97E94B21271EF250005B0295 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 97E94B20271EF250005B0295 /* Preview Assets.xcassets */; };
 		97E94B2D271EF603005B0295 /* libkiwix.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97EC18AF26E8555E008309ED /* libkiwix.xcframework */; };
 		97E94B2E271EF630005B0295 /* ZimFileService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9779A5AA2456793500F6F6FF /* ZimFileService.swift */; };
@@ -728,23 +732,6 @@
 			path = ViewModifier;
 			sourceTree = "<group>";
 		};
-		975088B128763A9500273181 /* macOS */ = {
-			isa = PBXGroup;
-			children = (
-				977B1B5A28971D5E001D07C4 /* App.swift */,
-				97893876289E058100F0EAFC /* RootView.swift */,
-				978938722899556200F0EAFC /* RootView_iOS.swift */,
-				977B1B5C28972C33001D07C4 /* ReadingView.swift */,
-				97F3332E28AFC1A2007FF53C /* SearchView.swift */,
-				9721BBB928427A93005C910D /* BookmarksView.swift */,
-				977B1B63289801DE001D07C4 /* MapView.swift */,
-				974C33A12853DDEE00DF6F4C /* SettingsView.swift */,
-				9729E12C2862BA90003D19B1 /* SettingSection.swift */,
-				974C33AA28558D2900DF6F4C /* LibrarySettings.swift */,
-			);
-			path = macOS;
-			sourceTree = "<group>";
-		};
 		975088BF287EEE2900273181 /* BuildingBlocks */ = {
 			isa = PBXGroup;
 			children = (
@@ -1035,9 +1022,17 @@
 				97FB4B0C27B81B530055F86E /* ViewModels */,
 				97DED67D275278EB008D2C56 /* View */,
 				972DE4C02814A950004FD9B9 /* Library */,
-				975088B128763A9500273181 /* macOS */,
 				97E94B26271EF359005B0295 /* Support */,
-				97EEFF2028398E9A00BDD6E2 /* iOSApp.swift */,
+				977B1B5A28971D5E001D07C4 /* App.swift */,
+				97893876289E058100F0EAFC /* RootView.swift */,
+				978938722899556200F0EAFC /* RootView_iOS.swift */,
+				977B1B5C28972C33001D07C4 /* ReadingView.swift */,
+				97F3332E28AFC1A2007FF53C /* SearchView.swift */,
+				9721BBB928427A93005C910D /* BookmarksView.swift */,
+				977B1B63289801DE001D07C4 /* MapView.swift */,
+				974C33A12853DDEE00DF6F4C /* SettingsView.swift */,
+				9729E12C2862BA90003D19B1 /* SettingSection.swift */,
+				974C33AA28558D2900DF6F4C /* LibrarySettings.swift */,
 				97E94B1D271EF250005B0295 /* Assets.xcassets */,
 			);
 			path = SwiftUI;
@@ -1050,6 +1045,7 @@
 				973A0E04283105EA00B41E71 /* iOS-Info.plist */,
 				97E94B22271EF250005B0295 /* Kiwix.entitlements */,
 				97E94B20271EF250005B0295 /* Preview Assets.xcassets */,
+				97EEFF2028398E9A00BDD6E2 /* iOSApp.swift */,
 				974C33A7285589E900DF6F4C /* Patches.swift */,
 			);
 			path = Support;
@@ -1494,6 +1490,7 @@
 				9721BBBB28427A93005C910D /* BookmarksView.swift in Sources */,
 				973A0DFD283100C300B41E71 /* ZimFilesOpened.swift in Sources */,
 				972DE4B62814A502004FD9B9 /* Enum.swift in Sources */,
+				97E4E69A28B8EBD50012227D /* SettingSection.swift in Sources */,
 				970C0BE028A28AEA0037A47D /* RootView.swift in Sources */,
 				974C33A9285589E900DF6F4C /* Patches.swift in Sources */,
 				973A0DF1282E981200B41E71 /* ZimFileRow.swift in Sources */,
@@ -1502,6 +1499,7 @@
 				974C33A62855884C00DF6F4C /* SafariView.swift in Sources */,
 				979D3A782841100B00E396B8 /* Focus.swift in Sources */,
 				972DE4C42814AAAE004FD9B9 /* Library.swift in Sources */,
+				97E4E69928B8EBD50012227D /* LibrarySettings.swift in Sources */,
 				976BAEBE284905760049404F /* SearchViewModel.swift in Sources */,
 				97486D0F284D44C20096E4DD /* HUDController.swift in Sources */,
 				974C33A32853DDEE00DF6F4C /* SettingsView.swift in Sources */,
@@ -1667,6 +1665,7 @@
 				973A2FC7277F656B00BD4320 /* OPDSStreamParser.mm in Sources */,
 				97E94B30271EF639005B0295 /* ZimFileMetaData.mm in Sources */,
 				97E94B2F271EF630005B0295 /* ZimFileService.mm in Sources */,
+				97E4E69728B8EBD50012227D /* RootView_iOS.swift in Sources */,
 				972DE4732814A116004FD9B9 /* Entities.swift in Sources */,
 				97F3332F28AFC1A2007FF53C /* SearchView.swift in Sources */,
 				97486D0A284B96690096E4DD /* CellBackground.swift in Sources */,
@@ -1676,6 +1675,7 @@
 				97FB4B0B27B819A90055F86E /* Message.swift in Sources */,
 				973A0DF0282E981200B41E71 /* ZimFileRow.swift in Sources */,
 				9729E12D2862BA90003D19B1 /* SettingSection.swift in Sources */,
+				97E4E69828B8EBD50012227D /* SettingsView.swift in Sources */,
 				97242B8A2735E67500C87F85 /* SearchOperation.mm in Sources */,
 				974C339F2853D4AC00DF6F4C /* About.swift in Sources */,
 				978A731227B9A0E0008101B4 /* Buttons.swift in Sources */,
