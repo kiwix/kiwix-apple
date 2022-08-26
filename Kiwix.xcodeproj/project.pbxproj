@@ -300,8 +300,6 @@
 		97F425D527151EF800D0F738 /* ZimFileMetaData.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9779A5AC2456793600F6F6FF /* ZimFileMetaData.mm */; };
 		97F425D62715213A00D0F738 /* WebKitHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9779A73A2456796B00F6F6FF /* WebKitHandler.swift */; };
 		97F425D7271521DA00D0F738 /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9779A7E224567A5A00F6F6FF /* Log.swift */; };
-		97F43AFD283108330076F8E0 /* FileImportModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97F43AFC283108330076F8E0 /* FileImportModifier.swift */; };
-		97F43AFE283108330076F8E0 /* FileImportModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97F43AFC283108330076F8E0 /* FileImportModifier.swift */; };
 		97F4D10C20ADFE370038FC87 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 97F4D10B20ADFE370038FC87 /* Assets.xcassets */; };
 		97FB4B0B27B819A90055F86E /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97FB4B0A27B819A90055F86E /* Message.swift */; };
 		97FB4ECE28B4E221003FB524 /* SwiftUIBackports in Frameworks */ = {isa = PBXBuildFile; productRef = 97FB4ECD28B4E221003FB524 /* SwiftUIBackports */; };
@@ -536,7 +534,6 @@
 		97F425C427151A0D00D0F738 /* PreviewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewViewController.swift; sourceTree = "<group>"; };
 		97F425C927151A0D00D0F738 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
 		97F425CB27151A0D00D0F738 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		97F43AFC283108330076F8E0 /* FileImportModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileImportModifier.swift; sourceTree = "<group>"; };
 		97F4D10B20ADFE370038FC87 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		97F6CC5020BD960F005CDBD2 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		97FB4B0A27B819A90055F86E /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
@@ -720,7 +717,6 @@
 			isa = PBXGroup;
 			children = (
 				97486D09284B96690096E4DD /* CellBackground.swift */,
-				97F43AFC283108330076F8E0 /* FileImportModifier.swift */,
 				97DE2BA4283A944100C63D9B /* LibraryGridPadding.swift */,
 				97341C692851165B00BC273E /* Searchable.swift */,
 				973A0DF3282FEDA500B41E71 /* ZimFileViewModifiers.swift */,
@@ -1470,7 +1466,6 @@
 				975088BB287BBDFE00273181 /* LanguageSelector.swift in Sources */,
 				97DE2B9D2839D77100C63D9B /* ReaderViewModel.swift in Sources */,
 				97DE2B9E2839D79A00C63D9B /* OutlineItem.swift in Sources */,
-				97F43AFE283108330076F8E0 /* FileImportModifier.swift in Sources */,
 				976BAEB6284903A80049404F /* SearchResult.m in Sources */,
 				972DE4BA2814A590004FD9B9 /* ZimFileMetaData.mm in Sources */,
 				97486D0B284B96690096E4DD /* CellBackground.swift in Sources */,
@@ -1683,7 +1678,6 @@
 				97121EBD28849F0000371AEB /* ZimFileMissingIndicator.swift in Sources */,
 				973A0DF4282FEDA500B41E71 /* ZimFileViewModifiers.swift in Sources */,
 				975088BD287DA10800273181 /* LibraryLastRefreshTime.swift in Sources */,
-				97F43AFD283108330076F8E0 /* FileImportModifier.swift in Sources */,
 				97E94B2E271EF630005B0295 /* ZimFileService.swift in Sources */,
 				973A2FCE277FB03F00BD4320 /* FlavorTag.swift in Sources */,
 				973A0DEA281DDBB600B41E71 /* ZimFilesDownloads.swift in Sources */,

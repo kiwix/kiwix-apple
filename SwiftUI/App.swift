@@ -18,7 +18,9 @@ struct Kiwix: App {
         WindowGroup {
             RootView()
         }.commands {
-            ImportCommands()
+            CommandGroup(replacing: .importExport) {
+                FileImportButton()
+            }
             #if os(macOS)
             CommandGroup(replacing: .newItem) {
                 Button("New Tab") {
@@ -52,19 +54,5 @@ struct Kiwix: App {
             }.frame(width: 550, height: 400)
         }
         #endif
-    }
-}
-
-struct ImportCommands: Commands {
-    @State private var isPresented: Bool = false
-    
-    var body: some Commands {
-        CommandGroup(replacing: .importExport) {
-            Section {
-                Button("Open...") { isPresented = true}
-                    .modifier(FileImporter(isPresented: $isPresented))
-                    .keyboardShortcut("o")
-            }
-        }
     }
 }

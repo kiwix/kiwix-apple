@@ -22,7 +22,7 @@ struct Library: View {
                 SheetView {
                     switch navigationItem {
                     case .opened:
-                        ZimFilesOpened(isFileImporterPresented: $isFileImporterPresented)
+                        ZimFilesOpened()
                     case .categories:
                         categories
                     case .downloads:
@@ -38,7 +38,6 @@ struct Library: View {
             }
         }
         .environmentObject(viewModel)
-        .modifier(FileImporter(isPresented: $isFileImporterPresented))
         .onAppear {
             Task {
                 try? await viewModel.refresh(isUserInitiated: false)

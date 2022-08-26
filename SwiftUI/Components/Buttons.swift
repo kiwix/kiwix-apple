@@ -7,6 +7,7 @@
 //
 
 import SwiftUI
+import UniformTypeIdentifiers
 
 import Defaults
 
@@ -82,6 +83,30 @@ struct BookmarkMultiButton: View {
             }
         })
         .help("Show bookmarks. Long press to bookmark or unbookmark the current article.")
+    }
+}
+
+struct FileImportButton: View {
+    @State private var isPresented: Bool = false
+    
+    var body: some View {
+        Button {
+            isPresented.toggle()
+        } label: {
+            Label("Open...", systemImage: "plus")
+        }
+        .fileImporter(
+            isPresented: $isPresented,
+            allowedContentTypes: [UTType(exportedAs: "org.openzim.zim")],
+            allowsMultipleSelection: true
+        ) { result in
+            guard case let .success(urls) = result else { return }
+            for url in urls {
+                LibraryViewModel.open(url: url)
+            }
+        }
+        .help("Open a zim file")
+        .keyboardShortcut("o")
     }
 }
 

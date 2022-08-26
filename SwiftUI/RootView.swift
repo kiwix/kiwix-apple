@@ -10,7 +10,6 @@ import SwiftUI
 
 struct RootView: View {
     @Environment(\.horizontalSizeClass) var horizontalSizeClass
-    @State private var isFileImporterPresented = false
     @State private var isShowingSetting = false
     @State private var navigationItem: NavigationItem? = .reading
     @State private var url: URL?
@@ -50,7 +49,6 @@ struct RootView: View {
             }
         }
         .environment(\.managedObjectContext, Database.shared.container.viewContext)
-        .modifier(FileImporter(isPresented: $isFileImporterPresented))
         .modifier(FocusedSceneValue(\.url, url))
         .onChange(of: url) { _ in
             navigationItem = .reading
@@ -130,7 +128,7 @@ struct RootView: View {
         case .map:
             MapView()
         case .opened:
-            ZimFilesOpened(isFileImporterPresented: $isFileImporterPresented)
+            ZimFilesOpened()
         case .categories:
             LibraryCategories()
         case .downloads:
