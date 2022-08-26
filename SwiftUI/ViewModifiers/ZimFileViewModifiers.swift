@@ -102,7 +102,7 @@ struct ZimFileSelection: ViewModifier {
 }
 
 /// On macOS, adds a panel to the right of the modified view to show zim file detail.
-struct ZimFileDetailPanel: ViewModifier {
+struct ZimFileDetailPanel_macOS: ViewModifier {
     let zimFile: ZimFile?
     
     func body(content: Content) -> some View {

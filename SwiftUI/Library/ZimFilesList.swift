@@ -47,7 +47,7 @@ struct ZimFilesList: View {
         }
         .navigationTitle(category.description)
         .modifier(ZimFileListStyle())
-        .modifier(ZimFileDetailPanel(zimFile: selected))
+        .modifier(ZimFileDetailPanel_macOS(zimFile: selected))
         .modifier(Searchable(searchText: $searchText))
         .onChange(of: category) { _ in
             searchText = ""

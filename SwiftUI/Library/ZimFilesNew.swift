@@ -45,7 +45,7 @@ struct ZimFilesNew: View {
             }
         }
         .navigationTitle(LibraryTopic.new.name)
-        .modifier(ZimFileDetailPanel(zimFile: selected))
+        .modifier(ZimFileDetailPanel_macOS(zimFile: selected))
         .modifier(Searchable(searchText: $searchText))
         .onChange(of: languageCodes) { _ in
             if #available(iOS 15.0, *) {

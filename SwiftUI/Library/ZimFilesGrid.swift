@@ -76,7 +76,7 @@ struct ZimFilesGrid: View {
             }
         }
         .navigationTitle(category.description)
-        .modifier(ZimFileDetailPanel(zimFile: selected))
+        .modifier(ZimFileDetailPanel_macOS(zimFile: selected))
         .onChange(of: category) { _ in selected = nil }
         .onChange(of: languageCodes) { _ in
             sections.nsPredicate = ZimFilesGrid.buildPredicate(category: category)

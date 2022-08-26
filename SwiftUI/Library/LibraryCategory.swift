@@ -117,7 +117,7 @@ private struct CategoryGrid: View {
                 }.modifier(GridCommon())
             }
         }
-        .modifier(ZimFileDetailPanel(zimFile: selected))
+        .modifier(ZimFileDetailPanel_macOS(zimFile: selected))
         .modifier(Searchable(searchText: $searchText))
         .onChange(of: category) { _ in selected = nil }
         .onChange(of: searchText) { _ in
@@ -188,7 +188,7 @@ private struct CategoryList: View {
                 }.modifier(ListStyle())
             }
         }
-        .modifier(ZimFileDetailPanel(zimFile: selected))
+        .modifier(ZimFileDetailPanel_macOS(zimFile: selected))
         .modifier(Searchable(searchText: $searchText))
         .onChange(of: category) { _ in selected = nil }
         .onChange(of: searchText) { _ in
