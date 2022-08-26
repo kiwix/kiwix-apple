@@ -519,7 +519,6 @@
 		97DE2BA4283A944100C63D9B /* LibraryGridPadding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryGridPadding.swift; sourceTree = "<group>"; };
 		97E173D325733D10002CAD17 /* RootViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootViewController.swift; sourceTree = "<group>"; };
 		97E94B17271EF24D005B0295 /* Kiwix.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Kiwix.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		97E94B19271EF24D005B0295 /* macOSApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = macOSApp.swift; sourceTree = "<group>"; };
 		97E94B1D271EF250005B0295 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		97E94B20271EF250005B0295 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		97E94B22271EF250005B0295 /* Kiwix.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Kiwix.entitlements; sourceTree = "<group>"; };
@@ -1038,7 +1037,6 @@
 				972DE4C02814A950004FD9B9 /* Library */,
 				975088B128763A9500273181 /* macOS */,
 				97E94B26271EF359005B0295 /* Support */,
-				97E94B19271EF24D005B0295 /* macOSApp.swift */,
 				97EEFF2028398E9A00BDD6E2 /* iOSApp.swift */,
 				97E94B1D271EF250005B0295 /* Assets.xcassets */,
 			);
