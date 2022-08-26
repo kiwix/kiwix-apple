@@ -48,7 +48,6 @@ struct RootView: View {
                 #endif
             }
         }
-        .environment(\.managedObjectContext, Database.shared.container.viewContext)
         .modifier(FocusedSceneValue(\.url, url))
         .onChange(of: url) { _ in
             navigationItem = .reading
