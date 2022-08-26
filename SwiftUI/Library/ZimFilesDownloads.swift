@@ -38,7 +38,7 @@ struct ZimFilesDownloads: View {
                 }.modifier(GridCommon())
             }
         }
-        .navigationTitle(LibraryTopic.downloads.name)
+        .navigationTitle(NavigationItem.downloads.name)
         .modifier(ZimFileDetailPanel_macOS(zimFile: selected))
     }
 }

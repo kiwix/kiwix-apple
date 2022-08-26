@@ -44,7 +44,7 @@ struct ZimFilesNew: View {
                 }.modifier(GridCommon())
             }
         }
-        .navigationTitle(LibraryTopic.new.name)
+        .navigationTitle(NavigationItem.new.name)
         .modifier(ZimFileDetailPanel_macOS(zimFile: selected))
         .modifier(Searchable(searchText: $searchText))
         .onChange(of: languageCodes) { _ in

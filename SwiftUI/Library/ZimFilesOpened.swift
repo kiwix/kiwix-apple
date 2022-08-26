@@ -36,7 +36,7 @@ struct ZimFilesOpened: View {
                 }.modifier(GridCommon())
             }
         }
-        .navigationTitle(LibraryTopic.opened.name)
+        .navigationTitle(NavigationItem.opened.name)
         .modifier(ZimFileDetailPanel_macOS(zimFile: selected))
         .toolbar { FileImportButton() }
     }
