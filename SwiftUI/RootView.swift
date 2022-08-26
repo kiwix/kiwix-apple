@@ -130,7 +130,7 @@ struct RootView: View {
         case .opened:
             ZimFilesOpened()
         case .categories:
-            LibraryCategories()
+            ZimFilesCategories()
         case .downloads:
             ZimFilesDownloads()
         case .new:

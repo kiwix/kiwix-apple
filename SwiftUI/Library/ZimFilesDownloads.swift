@@ -9,7 +9,7 @@
 import CoreData
 import SwiftUI
 
-/// Show zim file download tasks.
+/// A grid of zim files that are being downloaded.
 struct ZimFilesDownloads: View {
     @FetchRequest(
         sortDescriptors: [NSSortDescriptor(keyPath: \DownloadTask.created, ascending: false)],
@@ -40,11 +40,5 @@ struct ZimFilesDownloads: View {
         }
         .navigationTitle(LibraryTopic.downloads.name)
         .modifier(ZimFileDetailPanel_macOS(zimFile: selected))
-    }
-}
-
-struct ZimFilesDownloads_Previews: PreviewProvider {
-    static var previews: some View {
-        ZimFilesDownloads()
     }
 }

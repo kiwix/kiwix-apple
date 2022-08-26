@@ -48,7 +48,7 @@ struct Library: View {
     var categories: some View {
         List(Category.allCases) { category in
             NavigationLink {
-                LibraryCategory(category: .constant(category))
+                ZimFilesCategory(category: .constant(category))
                     .navigationTitle(category.name)
                     .navigationBarTitleDisplayMode(.inline)
             } label: {

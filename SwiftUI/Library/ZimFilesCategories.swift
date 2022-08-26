@@ -1,5 +1,5 @@
 //
-//  LibraryCategory.swift
+//  ZimFilesCategories.swift
 //  Kiwix
 //
 //  Created by Chris Li on 8/7/22.
@@ -10,11 +10,12 @@ import SwiftUI
 
 import Defaults
 
-struct LibraryCategories: View {
+/// A grid of zim files under each category.
+struct ZimFilesCategories: View {
     @State private var selected: Category = .wikipedia
     
     var body: some View {
-        LibraryCategory(category: $selected)
+        ZimFilesCategory(category: $selected)
             .navigationTitle(NavigationItem.categories.name)
             .toolbar {
                 Picker("Category", selection: $selected) {
@@ -24,8 +25,8 @@ struct LibraryCategories: View {
     }
 }
 
-
-struct LibraryCategory: View {
+/// A grid of list of zim files under a single category.
+struct ZimFilesCategory: View {
     @Binding var category: Category
     @State private var searchText = ""
     
@@ -64,7 +65,7 @@ private struct CategoryGrid: View {
         self._sections = SectionedFetchRequest<String, ZimFile>(
             sectionIdentifier: \.name,
             sortDescriptors: [SortDescriptor(\ZimFile.name), SortDescriptor(\.size, order: .reverse)],
-            predicate: LibraryCategory.buildPredicate(
+            predicate: ZimFilesCategory.buildPredicate(
                 category: category.wrappedValue, searchText: searchText.wrappedValue
             ),
             animation: .easeInOut
@@ -121,10 +122,10 @@ private struct CategoryGrid: View {
         .modifier(Searchable(searchText: $searchText))
         .onChange(of: category) { _ in selected = nil }
         .onChange(of: searchText) { _ in
-            sections.nsPredicate = LibraryCategory.buildPredicate(category: category, searchText: searchText)
+            sections.nsPredicate = ZimFilesCategory.buildPredicate(category: category, searchText: searchText)
         }
         .onChange(of: languageCodes) { _ in
-            sections.nsPredicate = LibraryCategory.buildPredicate(category: category, searchText: searchText)
+            sections.nsPredicate = ZimFilesCategory.buildPredicate(category: category, searchText: searchText)
         }
     }
     
@@ -169,7 +170,7 @@ private struct CategoryList: View {
                 ),
                 NSSortDescriptor(keyPath: \ZimFile.size, ascending: false)
             ],
-            predicate: LibraryCategory.buildPredicate(
+            predicate: ZimFilesCategory.buildPredicate(
                 category: category.wrappedValue, searchText: searchText.wrappedValue
             ),
             animation: .easeInOut
@@ -193,12 +194,12 @@ private struct CategoryList: View {
         .onChange(of: category) { _ in selected = nil }
         .onChange(of: searchText) { _ in
             if #available(iOS 15.0, *) {
-                zimFiles.nsPredicate = LibraryCategory.buildPredicate(category: category, searchText: searchText)
+                zimFiles.nsPredicate = ZimFilesCategory.buildPredicate(category: category, searchText: searchText)
             }
         }
         .onChange(of: languageCodes) { _ in
             if #available(iOS 15.0, *) {
-                zimFiles.nsPredicate = LibraryCategory.buildPredicate(category: category, searchText: searchText)
+                zimFiles.nsPredicate = ZimFilesCategory.buildPredicate(category: category, searchText: searchText)
             }
         }
     }
