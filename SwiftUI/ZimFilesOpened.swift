@@ -37,7 +37,7 @@ struct ZimFilesOpened: View {
             }
         }
         .navigationTitle(NavigationItem.opened.name)
-        .modifier(ZimFileDetailPanel_macOS(zimFile: selected))
+        .modifier(ZimFileDetailPanel_macOS(url: $url, zimFile: selected))
         .toolbar { FileImportButton() }
     }
 }

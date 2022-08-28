@@ -73,7 +73,7 @@ struct Welcome: View {
             }
             .sheet(item: $selectedZimFile) { zimFile in
                 NavigationView {
-                    ZimFileDetail(zimFile: zimFile)
+                    ZimFileDetail(url: $url, zimFile: zimFile)
                 }
             }
         }

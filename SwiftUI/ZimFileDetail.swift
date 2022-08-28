@@ -11,6 +11,7 @@ import SwiftUI
 
 /// Detail about one single zim file.
 struct ZimFileDetail: View {
+    @Binding var url: URL?
     @EnvironmentObject var viewModel: LibraryViewModel
     @ObservedObject var zimFile: ZimFile
     @State private var isPresentingAlert = false
@@ -323,6 +324,6 @@ struct ZimFileDetail_Previews: PreviewProvider {
     }()
     
     static var previews: some View {
-        ZimFileDetail(zimFile: zimFile).frame(width: 300).previewLayout(.sizeThatFits)
+        ZimFileDetail(url: .constant(nil), zimFile: zimFile).frame(width: 300).previewLayout(.sizeThatFits)
     }
 }

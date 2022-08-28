@@ -39,6 +39,6 @@ struct ZimFilesDownloads: View {
             }
         }
         .navigationTitle(NavigationItem.downloads.name)
-        .modifier(ZimFileDetailPanel_macOS(zimFile: selected))
+        .modifier(ZimFileDetailPanel_macOS(url: $url, zimFile: selected))
     }
 }

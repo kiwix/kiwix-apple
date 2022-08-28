@@ -101,7 +101,7 @@ struct ZimFileSelection: ViewModifier {
         }.buttonStyle(.plain)
         #elseif os(iOS)
         NavigationLink(tag: zimFile, selection: $selected) {
-            ZimFileDetail(zimFile: zimFile)
+            ZimFileDetail(url: $url, zimFile: zimFile)
         } label: {
             content
         }
@@ -111,6 +111,8 @@ struct ZimFileSelection: ViewModifier {
 
 /// On macOS, adds a panel to the right of the modified view to show zim file detail.
 struct ZimFileDetailPanel_macOS: ViewModifier {
+    @Binding var url: URL?
+    
     let zimFile: ZimFile?
     
     func body(content: Content) -> some View {
@@ -121,7 +123,7 @@ struct ZimFileDetailPanel_macOS: ViewModifier {
                 HStack(spacing: 0) {
                     Divider()
                     if let zimFile = zimFile {
-                        ZimFileDetail(zimFile: zimFile)
+                        ZimFileDetail(url: $url, zimFile: zimFile)
                     } else {
                         Message(text: "Select a zim file to see detail").background(.thickMaterial)
                     }
