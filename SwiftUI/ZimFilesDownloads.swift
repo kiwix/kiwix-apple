@@ -31,8 +31,8 @@ struct ZimFilesDownloads: View {
                     ForEach(downloadTasks) { downloadTask in
                         if let zimFile = downloadTask.zimFile {
                             DownloadTaskCell(downloadTask)
-                                .modifier(ZimFileContextMenu(selected: $selected, zimFile: zimFile))
-                                .modifier(ZimFileSelection(selected: $selected, zimFile: zimFile))
+                                .modifier(ZimFileContextMenu(selected: $selected, url: $url, zimFile: zimFile))
+                                .modifier(ZimFileSelection(selected: $selected, url: $url, zimFile: zimFile))
                         }
                     }
                 }.modifier(GridCommon())

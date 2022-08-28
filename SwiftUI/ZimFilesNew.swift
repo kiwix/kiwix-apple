@@ -38,8 +38,8 @@ struct ZimFilesNew: View {
                 ) {
                     ForEach(zimFiles) { zimFile in
                         ZimFileCell(zimFile, prominent: .name)
-                            .modifier(ZimFileContextMenu(selected: $selected, zimFile: zimFile))
-                            .modifier(ZimFileSelection(selected: $selected, zimFile: zimFile))
+                            .modifier(ZimFileContextMenu(selected: $selected, url: $url, zimFile: zimFile))
+                            .modifier(ZimFileSelection(selected: $selected, url: $url, zimFile: zimFile))
                     }
                 }.modifier(GridCommon())
             }

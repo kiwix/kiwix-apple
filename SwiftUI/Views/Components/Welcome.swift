@@ -55,7 +55,7 @@ struct Welcome: View {
                                 ZimFileCell(zimFile, prominent: .name)
                             }
                             .buttonStyle(.plain)
-                            .modifier(ZimFileContextMenu(selected: $selectedZimFile, zimFile: zimFile))
+                            .modifier(ZimFileContextMenu(selected: $selectedZimFile, url: $url, zimFile: zimFile))
                         }
                     } header: {
                         Text("Main Page").font(.title3).fontWeight(.semibold)

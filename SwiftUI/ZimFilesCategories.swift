@@ -34,9 +34,9 @@ struct ZimFilesCategory: View {
     
     var body: some View {
         if #available(iOS 15.0, *), category != .ted, category != .stackExchange, category != .other {
-            CategoryGrid(category: $category, searchText: $searchText)
+            CategoryGrid(category: $category, searchText: $searchText, url: $url)
         } else {
-            CategoryList(category: $category, searchText: $searchText)
+            CategoryList(category: $category, searchText: $searchText, url: $url)
         }
     }
     
@@ -57,13 +57,15 @@ struct ZimFilesCategory: View {
 private struct CategoryGrid: View {
     @Binding var category: Category
     @Binding var searchText: String
+    @Binding var url: URL?
     @Default(.libraryLanguageCodes) private var languageCodes
     @SectionedFetchRequest private var sections: SectionedFetchResults<String, ZimFile>
     @State private var selected: ZimFile?
     
-    init(category: Binding<Category>, searchText: Binding<String>) {
+    init(category: Binding<Category>, searchText: Binding<String>, url: Binding<URL?>) {
         self._category = category
         self._searchText = searchText
+        self._url = url
         self._sections = SectionedFetchRequest<String, ZimFile>(
             sectionIdentifier: \.name,
             sortDescriptors: [SortDescriptor(\ZimFile.name), SortDescriptor(\.size, order: .reverse)],
@@ -88,15 +90,15 @@ private struct CategoryGrid: View {
                         if sections.count <= 1 {
                             ForEach(section) { zimFile in
                                 ZimFileCell(zimFile, prominent: .size)
-                                    .modifier(ZimFileContextMenu(selected: $selected, zimFile: zimFile))
-                                    .modifier(ZimFileSelection(selected: $selected, zimFile: zimFile))
+                                    .modifier(ZimFileContextMenu(selected: $selected, url: $url, zimFile: zimFile))
+                                    .modifier(ZimFileSelection(selected: $selected, url: $url, zimFile: zimFile))
                             }
                         } else {
                             Section {
                                 ForEach(section) { zimFile in
                                     ZimFileCell(zimFile, prominent: .size)
-                                        .modifier(ZimFileContextMenu(selected: $selected, zimFile: zimFile))
-                                        .modifier(ZimFileSelection(selected: $selected, zimFile: zimFile))
+                                        .modifier(ZimFileContextMenu(selected: $selected, url: $url, zimFile: zimFile))
+                                        .modifier(ZimFileSelection(selected: $selected, url: $url, zimFile: zimFile))
                                 }
                             } header: {
                                 SectionHeader(
@@ -156,13 +158,15 @@ private struct CategoryGrid: View {
 private struct CategoryList: View {
     @Binding var category: Category
     @Binding var searchText: String
+    @Binding var url: URL?
     @Default(.libraryLanguageCodes) private var languageCodes
     @FetchRequest private var zimFiles: FetchedResults<ZimFile>
     @State private var selected: ZimFile?
     
-    init(category: Binding<Category>, searchText: Binding<String>) {
+    init(category: Binding<Category>, searchText: Binding<String>, url: Binding<URL?>) {
         self._category = category
         self._searchText = searchText
+        self._url = url
         self._zimFiles = FetchRequest<ZimFile>(
             sortDescriptors: [
                 NSSortDescriptor(
@@ -184,8 +188,8 @@ private struct CategoryList: View {
             } else {
                 List(zimFiles, id: \.self, selection: $selected) { zimFile in
                     ZimFileRow(zimFile)
-                        .modifier(ZimFileContextMenu(selected: $selected, zimFile: zimFile))
-                        .modifier(ZimFileSelection(selected: $selected, zimFile: zimFile))
+                        .modifier(ZimFileContextMenu(selected: $selected, url: $url, zimFile: zimFile))
+                        .modifier(ZimFileSelection(selected: $selected, url: $url, zimFile: zimFile))
                 }.modifier(ListStyle())
             }
         }
