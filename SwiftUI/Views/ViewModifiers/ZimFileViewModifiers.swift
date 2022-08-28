@@ -90,7 +90,11 @@ struct ZimFileSelection: ViewModifier {
     
     func body(content: Content) -> some View {
         #if os(macOS)
-        content
+        Button {
+            selected = zimFile
+        } label: {
+            content
+        }.buttonStyle(.plain)
         #elseif os(iOS)
         NavigationLink(tag: zimFile, selection: $selected) {
             ZimFileDetail(zimFile: zimFile)

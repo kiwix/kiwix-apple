@@ -30,8 +30,7 @@ struct ZimFilesDownloads: View {
                 ) {
                     ForEach(downloadTasks) { downloadTask in
                         if let zimFile = downloadTask.zimFile {
-                            Button { selected = zimFile } label: { DownloadTaskCell(downloadTask) }
-                                .buttonStyle(.plain)
+                            DownloadTaskCell(downloadTask)
                                 .modifier(ZimFileContextMenu(selected: $selected, zimFile: zimFile))
                                 .modifier(ZimFileSelection(selected: $selected, zimFile: zimFile))
                         }

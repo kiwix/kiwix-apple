@@ -87,16 +87,14 @@ private struct CategoryGrid: View {
                     ForEach(sections) { section in
                         if sections.count <= 1 {
                             ForEach(section) { zimFile in
-                                Button { selected = zimFile } label: { ZimFileCell(zimFile, prominent: .size) }
-                                    .buttonStyle(.plain)
+                                ZimFileCell(zimFile, prominent: .size)
                                     .modifier(ZimFileContextMenu(selected: $selected, zimFile: zimFile))
                                     .modifier(ZimFileSelection(selected: $selected, zimFile: zimFile))
                             }
                         } else {
                             Section {
                                 ForEach(section) { zimFile in
-                                    Button { selected = zimFile } label: { ZimFileCell(zimFile, prominent: .size) }
-                                        .buttonStyle(.plain)
+                                    ZimFileCell(zimFile, prominent: .size)
                                         .modifier(ZimFileContextMenu(selected: $selected, zimFile: zimFile))
                                         .modifier(ZimFileSelection(selected: $selected, zimFile: zimFile))
                                 }
