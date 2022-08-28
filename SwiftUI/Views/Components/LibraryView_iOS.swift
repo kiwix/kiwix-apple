@@ -10,6 +10,7 @@ import SwiftUI
 
 /// Tabbed library UI on iOS & iPadOS
 struct LibraryView_iOS: View {
+    @Binding var url: URL?
     @SceneStorage("library.selectedNavigationItem") private var selected: NavigationItem = .opened
     @State private var isFileImporterPresented = false
     @StateObject private var viewModel = LibraryViewModel()
@@ -22,13 +23,13 @@ struct LibraryView_iOS: View {
                 SheetView {
                     switch navigationItem {
                     case .opened:
-                        ZimFilesOpened()
+                        ZimFilesOpened(url: $url)
                     case .categories:
                         categories
                     case .downloads:
-                        ZimFilesDownloads()
+                        ZimFilesDownloads(url: $url)
                     case .new:
-                        ZimFilesNew()
+                        ZimFilesNew(url: $url)
                     default:
                         EmptyView()
                     }
@@ -48,7 +49,7 @@ struct LibraryView_iOS: View {
     var categories: some View {
         List(Category.allCases) { category in
             NavigationLink {
-                ZimFilesCategory(category: .constant(category))
+                ZimFilesCategory(category: .constant(category), url: $url)
                     .navigationTitle(category.name)
                     .navigationBarTitleDisplayMode(.inline)
             } label: {

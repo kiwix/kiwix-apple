@@ -12,10 +12,11 @@ import Defaults
 
 /// A grid of zim files under each category.
 struct ZimFilesCategories: View {
+    @Binding var url: URL?
     @State private var selected: Category = .wikipedia
     
     var body: some View {
-        ZimFilesCategory(category: $selected)
+        ZimFilesCategory(category: $selected, url: $url)
             .navigationTitle(NavigationItem.categories.name)
             .toolbar {
                 Picker("Category", selection: $selected) {
@@ -28,6 +29,7 @@ struct ZimFilesCategories: View {
 /// A grid of list of zim files under a single category.
 struct ZimFilesCategory: View {
     @Binding var category: Category
+    @Binding var url: URL?
     @State private var searchText = ""
     
     var body: some View {

@@ -12,6 +12,7 @@ import Defaults
 
 /// A grid of zim files that are newly available.
 struct ZimFilesNew: View {
+    @Binding var url: URL?
     @Default(.libraryLanguageCodes) private var languageCodes
     @FetchRequest(
         sortDescriptors: [

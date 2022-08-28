@@ -11,6 +11,7 @@ import SwiftUI
 
 /// A grid of zim files that are being downloaded.
 struct ZimFilesDownloads: View {
+    @Binding var url: URL?
     @FetchRequest(
         sortDescriptors: [NSSortDescriptor(keyPath: \DownloadTask.created, ascending: false)],
         animation: .easeInOut

@@ -76,7 +76,7 @@ struct RootView: View {
             case .bookmarks:
                 SheetView { BookmarksView(url: $url) }
             case .library:
-                LibraryView_iOS()
+                LibraryView_iOS(url: $url)
             case .settings:
                 SheetView { SettingsView() }
             }
@@ -127,13 +127,13 @@ struct RootView: View {
         case .map:
             MapView()
         case .opened:
-            ZimFilesOpened()
+            ZimFilesOpened(url: $url)
         case .categories:
-            ZimFilesCategories()
+            ZimFilesCategories(url: $url)
         case .downloads:
-            ZimFilesDownloads()
+            ZimFilesDownloads(url: $url)
         case .new:
-            ZimFilesNew()
+            ZimFilesNew(url: $url)
         case .none:
             EmptyView()
         }

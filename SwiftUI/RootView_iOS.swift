@@ -172,7 +172,7 @@ private struct Content: View {
             case .bookmarks:
                 SheetView { BookmarksView(url: $url) }
             case .library:
-                LibraryView_iOS()
+                LibraryView_iOS(url: $url)
             case .settings:
                 SheetView { SettingsView() }
             }

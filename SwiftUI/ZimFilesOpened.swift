@@ -10,6 +10,7 @@ import SwiftUI
 
 /// A grid of zim files that are opened, or was open but is now missing.
 struct ZimFilesOpened: View {
+    @Binding var url: URL?
     @FetchRequest(
         sortDescriptors: [NSSortDescriptor(keyPath: \ZimFile.size, ascending: false)],
         predicate: ZimFile.withFileURLBookmarkPredicate,
