@@ -13,6 +13,7 @@ import SwiftUI
 struct ZimFileDetail: View {
     @Binding var url: URL?
     @EnvironmentObject var viewModel: LibraryViewModel
+    @FocusedBinding(\.navigationItem) var navigationItem
     @ObservedObject var zimFile: ZimFile
     @State private var isPresentingAlert = false
     
@@ -72,21 +73,17 @@ struct ZimFileDetail: View {
     
     @ViewBuilder
     var openedActions: some View {
-        #if os(macOS)
         Action(title: "Open Main Page") {
-            guard let url = ZimFileService.shared.getMainPageURL(zimFileID: zimFile.fileID) else { return }
-            NSWorkspace.shared.open(url)
+            url = ZimFileService.shared.getMainPageURL(zimFileID: zimFile.fileID)
+            navigationItem = .reading
         }
+        #if os(macOS)
         Action(title: "Reveal in Finder") {
             guard let url = ZimFileService.shared.getFileURL(zimFileID: zimFile.id) else { return }
             NSWorkspace.shared.activateFileViewerSelecting([url])
         }
         Action(title: "Unlink", isDestructive: true) { isPresentingAlert = true }
         #elseif os(iOS)
-        Action(title: "Open Main Page") {
-            guard let url = ZimFileService.shared.getMainPageURL(zimFileID: zimFile.fileID) else { return }
-            UIApplication.shared.open(url)
-        }
         if isFileInDocumentDirectory {
             Action(title: "Delete", isDestructive: true) { isPresentingAlert = true }
         } else {

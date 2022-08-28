@@ -10,7 +10,6 @@ import SwiftUI
 
 struct RootView: View {
     @Environment(\.horizontalSizeClass) var horizontalSizeClass
-    @State private var isShowingSetting = false
     @State private var navigationItem: NavigationItem? = .reading
     @State private var url: URL?
     @StateObject private var readingViewModel = ReadingViewModel()
@@ -41,8 +40,10 @@ struct RootView: View {
                 #if os(macOS) // macOS 12
                 NavigationView {
                     sidebar
-                    detail.frame(minWidth: 500, minHeight: 500)
-                }.focusedSceneValue(\.navigationItem, $navigationItem)
+                    detail
+                        .focusedSceneValue(\.navigationItem, $navigationItem)
+                        .frame(minWidth: 500, minHeight: 500)
+                }
                 #elseif os(iOS)  // iPadOS&iOS 14&15
                 RootView_iOS(url: $url).ignoresSafeArea(.container).environmentObject(readingViewModel)
                 #endif
