@@ -19,24 +19,24 @@ struct RootView: View {
     
     var body: some View {
         Group {
-            if #available(macOS 13.0, iOS 16.0, *) {  // macOS 13 & iPadOS 16 & iOS 16
-                if horizontalSizeClass == .regular {
-                    NavigationSplitView {
-                        sidebar
-                    } detail: {
-                        NavigationStack {
-                            detail
-                            #if os(iOS)
-                                .navigationBarTitleDisplayMode(.inline)
-                            #endif
-                        }
-                    }.focusedSceneValue(\.navigationItem, $navigationItem)
-                } else {
-                    NavigationStack {
-                        ReadingView(url: $url).environmentObject(readingViewModel)
-                    }
-                }
-            } else {
+//            if #available(macOS 13.0, iOS 16.0, *) {  // macOS 13 & iPadOS 16 & iOS 16
+//                if horizontalSizeClass == .regular {
+//                    NavigationSplitView {
+//                        sidebar
+//                    } detail: {
+//                        NavigationStack {
+//                            detail
+//                            #if os(iOS)
+//                                .navigationBarTitleDisplayMode(.inline)
+//                            #endif
+//                        }
+//                    }.focusedSceneValue(\.navigationItem, $navigationItem)
+//                } else {
+//                    NavigationStack {
+//                        ReadingView(url: $url).environmentObject(readingViewModel)
+//                    }
+//                }
+//            } else {
                 #if os(macOS) // macOS 12
                 NavigationView {
                     sidebar
@@ -45,7 +45,7 @@ struct RootView: View {
                 #elseif os(iOS)  // iPadOS&iOS 14&15
                 RootView_iOS(url: $url).ignoresSafeArea(.container).environmentObject(readingViewModel)
                 #endif
-            }
+//            }
         }
         .modifier(FocusedSceneValue(\.url, url))
         .onChange(of: url) { _ in
@@ -71,7 +71,7 @@ struct RootView: View {
             case .outline:
                 SheetView {
                     OutlineTree().listStyle(.plain).navigationBarTitleDisplayMode(.inline)
-                }.modifier(OutlineDetents_SwiftUI4())
+                }
             case .bookmarks:
                 SheetView { BookmarksView(url: $url) }
             case .library:
@@ -85,13 +85,13 @@ struct RootView: View {
     
     @ViewBuilder
     private func navigationItem(_ navigationItem: NavigationItem) -> some View {
-        if #available(macOS 13.0, iOS 16.0, *) {
-            NavigationLink(value: navigationItem) {
-                Label(navigationItem.name, systemImage: navigationItem.icon)
-            }
-        } else {
+//        if #available(macOS 13.0, iOS 16.0, *) {
+//            NavigationLink(value: navigationItem) {
+//                Label(navigationItem.name, systemImage: navigationItem.icon)
+//            }
+//        } else {
             Label(navigationItem.name, systemImage: navigationItem.icon)
-        }
+//        }
     }
     
     @ViewBuilder
