@@ -55,7 +55,7 @@ private struct ReadingViewContent: View {
         .modifier(FocusedSceneValue(\.canGoForward, readingViewModel.canGoForward))
         .modifier(FocusedSceneValue(\.readingViewModel, readingViewModel))
         #if os(macOS)
-        .navigationTitle(readingViewModel.articleTitle)
+        .navigationTitle(url == nil ? "Kiwix" : readingViewModel.articleTitle)
         .navigationSubtitle(readingViewModel.zimFileName)
         .onTapGesture {
             searchViewModel.searchText = ""
