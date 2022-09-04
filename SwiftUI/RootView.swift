@@ -10,8 +10,8 @@ import SwiftUI
 
 struct RootView: View {
     @Environment(\.horizontalSizeClass) var horizontalSizeClass
-    @State private var navigationItem: NavigationItem? = .reading
     @State private var url: URL?
+    @StateObject private var viewModel = ViewModel()
     @StateObject private var readingViewModel = ReadingViewModel()
     
     private let primaryNavigationItems: [NavigationItem] = [.reading, .bookmarks]
@@ -43,18 +43,21 @@ struct RootView: View {
                     detail.frame(minWidth: 500, minHeight: 500)
                 }
                 #elseif os(iOS)  // iPadOS&iOS 14&15
-                RootView_iOS(url: $url).ignoresSafeArea(.container).environmentObject(readingViewModel)
+                RootView_iOS(url: $url).ignoresSafeArea(.container)
                 #endif
 //            }
         }
+        .environmentObject(viewModel)
+        .environmentObject(readingViewModel)
+        .modifier(FocusedSceneValue(\.navigationItem, $viewModel.navigationItem))
         .modifier(FocusedSceneValue(\.url, url))
         .onChange(of: url) { _ in
-            navigationItem = .reading
-            readingViewModel.activeSheet = nil
+            viewModel.navigationItem = .reading
+            viewModel.activeSheet = nil
         }
         .onChange(of: horizontalSizeClass) { _ in
-            navigationItem = .reading
-            readingViewModel.activeSheet = nil
+            viewModel.navigationItem = .reading
+            viewModel.activeSheet = nil
         }
         .onOpenURL { url in
             if url.isFileURL {
@@ -96,7 +99,7 @@ struct RootView: View {
     
     @ViewBuilder
     private var sidebar: some View {
-        List(selection: $navigationItem) {
+        List(selection: $viewModel.navigationItem) {
             ForEach(primaryNavigationItems, id: \.self) { navigationItem($0) }
             Section {
                 ForEach(libraryNavigationItems, id: \.self) { navigationItem($0) }
@@ -118,9 +121,9 @@ struct RootView: View {
     @ViewBuilder
     @available(macOS 12.0, iOS 16.0, *)
     private var detail: some View {
-        switch navigationItem {
+        switch viewModel.navigationItem {
         case .reading:
-            ReadingView(url: $url).environmentObject(readingViewModel)
+            ReadingView(url: $url)
         case .bookmarks:
             BookmarksView(url: $url)
         case .map:

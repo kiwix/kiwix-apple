@@ -12,6 +12,7 @@ struct BookmarksView: View {
     @Binding var url: URL?
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     @Environment(\.presentationMode) private var presentationMode
+    @EnvironmentObject private var viewModel: ViewModel
     @FetchRequest(
         sortDescriptors: [NSSortDescriptor(keyPath: \Bookmark.created, ascending: false)],
         predicate: BookmarksView.buildPredicate(searchText: ""),
@@ -26,7 +27,10 @@ struct BookmarksView: View {
             } else {
                 LazyVGrid(columns: ([gridItem]), spacing: 12) {
                     ForEach(bookmarks) { bookmark in
-                        Button { url = bookmark.articleURL } label: {
+                        Button {
+                            url = bookmark.articleURL
+                            viewModel.navigationItem = .reading
+                        } label: {
                             ArticleCell(bookmark: bookmark).frame(height: itemHeight)
                         }.buttonStyle(.plain)
                     }

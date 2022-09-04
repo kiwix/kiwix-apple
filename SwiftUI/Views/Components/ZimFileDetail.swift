@@ -12,7 +12,8 @@ import SwiftUI
 /// Detail about one single zim file.
 struct ZimFileDetail: View {
     @Binding var url: URL?
-    @EnvironmentObject var viewModel: LibraryViewModel
+    @EnvironmentObject var viewModel: ViewModel
+    @EnvironmentObject var libraryViewModel: LibraryViewModel
     @FocusedBinding(\.navigationItem) var navigationItem
     @ObservedObject var zimFile: ZimFile
     @State private var isPresentingAlert = false
@@ -67,7 +68,7 @@ struct ZimFileDetail: View {
     
     @ViewBuilder
     var missingActions: some View {
-        Action(title: "Locate") { viewModel.isFileImporterPresented = true }
+        Action(title: "Locate") { libraryViewModel.isFileImporterPresented = true }
         Action(title: "Unlink", isDestructive: true) { isPresentingAlert = true }
     }
     
@@ -75,6 +76,7 @@ struct ZimFileDetail: View {
     var openedActions: some View {
         Action(title: "Open Main Page") {
             url = ZimFileService.shared.getMainPageURL(zimFileID: zimFile.fileID)
+            viewModel.navigationItem = .reading
         }
         #if os(macOS)
         Action(title: "Reveal in Finder") {

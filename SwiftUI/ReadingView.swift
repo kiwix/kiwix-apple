@@ -9,8 +9,8 @@
 import SwiftUI
 import WebKit
 
+/// A view that show article content, along with welcome view, search view, and various article controls
 @available(macOS 12.0, iOS 16.0, *)
-/// A view that show article content, along with welcome view, search view, and various controls like
 struct ReadingView: View {
     @Binding var url: URL?
     @StateObject private var searchViewModel = SearchViewModel()

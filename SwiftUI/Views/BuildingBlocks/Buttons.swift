@@ -50,7 +50,8 @@ struct BookmarkToggleButton: View {
 }
 
 struct BookmarkMultiButton: View {
-    @EnvironmentObject var viewModel: ReadingViewModel
+    @EnvironmentObject var viewModel: ViewModel
+    @EnvironmentObject var readingViewModel: ReadingViewModel
     @FetchRequest private var bookmarks: FetchedResults<Bookmark>
     
     private let url: URL?
@@ -77,9 +78,9 @@ struct BookmarkMultiButton: View {
         })
         .simultaneousGesture(LongPressGesture().onEnded { _ in
             if isBookmarked {
-                viewModel.deleteBookmark(url)
+                readingViewModel.deleteBookmark(url)
             } else {
-                viewModel.createBookmark(url)
+                readingViewModel.createBookmark(url)
             }
         })
         .help("Show bookmarks. Long press to bookmark or unbookmark the current article.")
@@ -111,7 +112,7 @@ struct FileImportButton: View {
 }
 
 struct LibraryButton: View {
-    @EnvironmentObject var viewModel: ReadingViewModel
+    @EnvironmentObject var viewModel: ViewModel
     
     var body: some View {
         Button {
@@ -229,7 +230,8 @@ struct NavigationButtons: View {
 }
 
 struct OutlineButton: View {
-    @EnvironmentObject var viewModel: ReadingViewModel
+    @EnvironmentObject var viewModel: ViewModel
+    @EnvironmentObject var readingviewModel: ReadingViewModel
     
     var body: some View {
         Button {
@@ -237,7 +239,7 @@ struct OutlineButton: View {
         } label: {
             Image(systemName: "list.bullet")
         }
-        .disabled(viewModel.outlineItems.isEmpty)
+        .disabled(readingviewModel.outlineItems.isEmpty)
         .help("Show article outline")
     }
 }
@@ -316,7 +318,7 @@ struct RandomArticleMenu: View {
 }
 
 struct SettingsButton: View {
-    @EnvironmentObject var viewModel: ReadingViewModel
+    @EnvironmentObject var viewModel: ViewModel
     
     var body: some View {
         Button {

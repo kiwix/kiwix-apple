@@ -17,7 +17,6 @@ class ReadingViewModel: NSObject, ObservableObject, WKNavigationDelegate, WKScri
     @Published var zimFileName: String = ""
     @Published var outlineItems = [OutlineItem]()
     @Published var outlineItemTree = [OutlineItem]()
-    @Published var activeSheet: ActiveSheet?
     
     var webViewInteractionState: Any?
     var webViews = Set<WKWebView>()
