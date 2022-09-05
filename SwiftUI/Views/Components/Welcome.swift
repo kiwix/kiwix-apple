@@ -24,22 +24,7 @@ struct Welcome: View {
     
     var body: some View {
         if zimFiles.isEmpty {
-            VStack(alignment: .leading, spacing: 10) {
-                HStack {
-                    Image("Kiwix_logo_v3")
-                        .resizable()
-                        .frame(width: 35, height: 35)
-                        .padding(2)
-                        .background(RoundedRectangle(cornerRadius: 10).foregroundColor(.white))
-                    Text("Kiwix").font(.largeTitle).fontWeight(.bold)
-                }
-                Divider()
-                Text("Quick start:").font(.headline)
-                Button("Open") {
-                    
-                }
-                Spacer()
-            }.padding(50)
+            OnboardingView()
         } else {
             ScrollView {
                 LazyVGrid(
