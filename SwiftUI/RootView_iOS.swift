@@ -68,11 +68,15 @@ struct RootView_iOS: UIViewControllerRepresentable {
     }
     
     func updateUIViewController(_ navigationController: UINavigationController, context: Context) {
-        guard let searchBar = navigationController.topViewController?.navigationItem.titleView as? UISearchBar,
-              !isSearchActive else { return }
-        // Triggers "AttributeGraph: cycle detected through attribute" if not dispatched (iOS 16.0 SDK)
-        DispatchQueue.main.async {
-            searchBar.resignFirstResponder()
+        guard let searchBar = navigationController.topViewController?.navigationItem.titleView as? UISearchBar else { return }
+        
+        if isSearchActive {
+            searchBar.text = searchViewModel.searchText
+        } else {
+            // Triggers "AttributeGraph: cycle detected through attribute" if not dispatched (iOS 16.0 SDK)
+            DispatchQueue.main.async {
+                searchBar.resignFirstResponder()
+            }
         }
     }
     
@@ -95,6 +99,11 @@ struct RootView_iOS: UIViewControllerRepresentable {
             withAnimation {
                 rootView.isSearchActive = true
             }
+        }
+        
+        func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
+            searchBar.text = ""
+            rootView.searchViewModel.searchText = ""
         }
     }
 }
