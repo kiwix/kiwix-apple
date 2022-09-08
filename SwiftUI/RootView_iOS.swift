@@ -42,7 +42,6 @@ struct RootView_iOS: UIViewControllerRepresentable {
                 apperance.configureWithDefaultBackground()
                 return apperance
             }()
-            navigationController.toolbar.isHidden = false
         }
         
         // observe bookmark toggle notification
@@ -71,7 +70,10 @@ struct RootView_iOS: UIViewControllerRepresentable {
     func updateUIViewController(_ navigationController: UINavigationController, context: Context) {
         guard let searchBar = navigationController.topViewController?.navigationItem.titleView as? UISearchBar,
               !isSearchActive else { return }
-        searchBar.resignFirstResponder()
+        // Triggers "AttributeGraph: cycle detected through attribute" if not dispatched (iOS 16.0 SDK)
+        DispatchQueue.main.async {
+            searchBar.resignFirstResponder()
+        }
     }
     
     func makeCoordinator() -> Coordinator { Coordinator(self) }
@@ -165,20 +167,8 @@ private struct Content: View {
                 }
             }
         }
-        .sheet(item: $viewModel.activeSheet) { activeSheet in
-            switch activeSheet {
-            case .outline:
-                SheetView { OutlineTree().listStyle(.plain).navigationBarTitleDisplayMode(.inline) }
-            case .bookmarks:
-                SheetView { BookmarksView(url: $url) }
-            case .library:
-                LibraryView_iOS(url: $url)
-            case .settings:
-                SheetView { SettingsView() }
-            }
-        }
         .introspectNavigationController { controller in
-            controller.setToolbarHidden(horizontalSizeClass != .compact || isSearchActive, animated: true)
+            controller.setToolbarHidden(horizontalSizeClass != .compact || isSearchActive, animated: false)
         }
     }
 }

@@ -19,33 +19,26 @@ struct RootView: View {
     
     var body: some View {
         Group {
-//            if #available(macOS 13.0, iOS 16.0, *) {  // macOS 13 & iPadOS 16 & iOS 16
-//                if horizontalSizeClass == .regular {
-//                    NavigationSplitView {
-//                        sidebar
-//                    } detail: {
-//                        NavigationStack {
-//                            detail
-//                            #if os(iOS)
-//                                .navigationBarTitleDisplayMode(.inline)
-//                            #endif
-//                        }
-//                    }.focusedSceneValue(\.navigationItem, $navigationItem)
-//                } else {
-//                    NavigationStack {
-//                        ReadingView(url: $url).environmentObject(readingViewModel)
-//                    }
+// macOS 13 & iPadOS 16 & iOS 16, horizontal regular
+//            NavigationSplitView {
+//                sidebar
+//            } detail: {
+//                NavigationStack {
+//                    detail
+//                    #if os(iOS)
+//                        .navigationBarTitleDisplayMode(.inline)
+//                    #endif
 //                }
-//            } else {
-                #if os(macOS) // macOS 12
-                NavigationView {
-                    sidebar
-                    detail.frame(minWidth: 500, minHeight: 500)
-                }
-                #elseif os(iOS)  // iPadOS&iOS 14&15
-                RootView_iOS(url: $url).ignoresSafeArea(.container)
-                #endif
 //            }
+            
+            #if os(macOS)
+            NavigationView {
+                sidebar
+                detail.frame(minWidth: 500, minHeight: 500)
+            }
+            #elseif os(iOS)
+            RootView_iOS(url: $url).ignoresSafeArea(.all)
+            #endif
         }
         .environmentObject(viewModel)
         .environmentObject(readingViewModel)
@@ -69,7 +62,7 @@ struct RootView: View {
             }
         }
         #if os(iOS)
-        .sheet(item: $readingViewModel.activeSheet) { activeSheet in
+        .sheet(item: $viewModel.activeSheet) { activeSheet in
             switch activeSheet {
             case .outline:
                 SheetView {
@@ -112,7 +105,7 @@ struct RootView: View {
         #elseif os(iOS)
         .toolbar {
             Button {
-                readingViewModel.activeSheet = .settings
+                viewModel.activeSheet = .settings
             } label: { Image(systemName: "gear") }
         }
         #endif
