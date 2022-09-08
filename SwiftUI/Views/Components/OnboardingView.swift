@@ -35,9 +35,7 @@ struct OnboardingView: View {
                         Image(systemName: "doc.richtext")
                             .font(.system(size: 60, weight: .light))
                             .foregroundColor(.secondary)
-                        Button("Open...") {
-                            
-                        }
+                        FileImportButton()
                     }
                     Spacer()
                     VStack(spacing: 15) {
@@ -53,7 +51,7 @@ struct OnboardingView: View {
                 }
             }
             .padding(20)
-            .background { colorScheme == .light ? Color.tertiaryBackground : Color.black.opacity(0.25) }
+//            .background { colorScheme == .light ? Color.tertiaryBackground : Color.white.opacity(0.05) }
             .cornerRadius(10)
             .shadow(color: Color.black.opacity(0.2), radius: 3, x: 0, y: 2)
             .padding()

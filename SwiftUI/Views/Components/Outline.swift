@@ -36,7 +36,6 @@ struct OutlineTree: View {
 }
 
 private struct OutlineNode: View {
-    @EnvironmentObject var viewModel: ReaderViewModel
     @ObservedObject var item: OutlineItem
     
     let action: ((OutlineItem) -> Void)?
