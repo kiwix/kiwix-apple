@@ -115,13 +115,14 @@ private struct Content: View {
     @EnvironmentObject var viewModel: ReadingViewModel
     
     var body: some View {
-        Group {
-            if isSearchActive {
-                SearchView(url: $url)
-            } else if url == nil {
+        ZStack {
+            if url == nil {
                 Welcome(url: $url)
             } else {
                 WebView(url: $url).ignoresSafeArea(.container, edges: .all)
+            }
+            if isSearchActive {
+                SearchView(url: $url)
             }
         }
         .onChange(of: url) { _ in isSearchActive = false }
