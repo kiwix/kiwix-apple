@@ -13,6 +13,7 @@ struct RootView: View {
     @State private var url: URL?
     @StateObject private var viewModel = ViewModel()
     @StateObject private var readingViewModel = ReadingViewModel()
+    @StateObject private var libraryViewModel = LibraryViewModel()
     
     private let primaryNavigationItems: [NavigationItem] = [.reading, .bookmarks]
     private let libraryNavigationItems: [NavigationItem] = [.opened, .categories, .downloads, .new]
@@ -62,6 +63,7 @@ struct RootView: View {
         }
         .environmentObject(viewModel)
         .environmentObject(readingViewModel)
+        .environmentObject(libraryViewModel)
     }
     
     @ViewBuilder

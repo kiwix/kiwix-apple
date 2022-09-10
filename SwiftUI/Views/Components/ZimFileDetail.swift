@@ -68,7 +68,7 @@ struct ZimFileDetail: View {
     
     @ViewBuilder
     var missingActions: some View {
-        Action(title: "Locate") { libraryViewModel.isFileImporterPresented = true }
+        Action(title: "Locate") { }
         Action(title: "Unlink", isDestructive: true) { isPresentingAlert = true }
     }
     

@@ -12,17 +12,19 @@ import os
 import Defaults
 
 class LibraryViewModel: ObservableObject {
-    @Published var isFileImporterPresented: Bool = false
     @Published private(set) var isRefreshing = false
     
     private var progressObserver: NSKeyValueObservation?
     
     static let backgroundTaskIdentifier = "org.kiwix.library_refresh"
-    static let operationQueue = OperationQueue()
+    static let operationQueue: OperationQueue = {
+        let operationQueue = OperationQueue()
+        operationQueue.maxConcurrentOperationCount = 1
+        return operationQueue
+    }()
     
     init() {
         let progress = LibraryViewModel.operationQueue.progress
-        isRefreshing = progress.completedUnitCount != progress.totalUnitCount
         progressObserver = progress.observe(\.fractionCompleted, options: .new) { [unowned self] _, change in
             DispatchQueue.main.async {
                 self.isRefreshing = change.newValue != 1
@@ -30,15 +32,11 @@ class LibraryViewModel: ObservableObject {
         }
     }
     
-    deinit {
-        print("deinit LibraryViewModel")
-    }
-    
     // MARK: - Refresh
     
     func startRefresh(isUserInitiated: Bool) {
-        print("isRefreshing", isRefreshing)
         guard !isRefreshing else { return }
+        isRefreshing = true
         
         // decide if refresh should proceed
         let isStale = (Defaults[.libraryLastRefresh]?.timeIntervalSinceNow ?? -3600) <= -3600

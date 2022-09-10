@@ -11,8 +11,8 @@ import SwiftUI
 /// Tabbed library view on iOS & iPadOS
 struct LibraryView_iOS: View {
     @Binding var url: URL?
+    @EnvironmentObject private var libraryViewModel: LibraryViewModel
     @SceneStorage("SelectedLibraryNavigationItem") private var selected: NavigationItem = .opened
-    @StateObject private var viewModel = LibraryViewModel()
     
     let navigationItems: [NavigationItem] = [.opened, .categories, .downloads, .new]
     
@@ -37,9 +37,8 @@ struct LibraryView_iOS: View {
                 .tabItem { Label(navigationItem.name, systemImage: navigationItem.icon) }
             }
         }
-        .environmentObject(viewModel)
         .onAppear {
-            viewModel.startRefresh(isUserInitiated: false)
+            libraryViewModel.startRefresh(isUserInitiated: false)
         }
     }
     
