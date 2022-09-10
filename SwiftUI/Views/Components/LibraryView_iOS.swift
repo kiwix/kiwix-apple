@@ -8,11 +8,10 @@
 
 import SwiftUI
 
-/// Tabbed library UI on iOS & iPadOS
+/// Tabbed library view on iOS & iPadOS
 struct LibraryView_iOS: View {
     @Binding var url: URL?
-    @SceneStorage("library.selectedNavigationItem") private var selected: NavigationItem = .opened
-    @State private var isFileImporterPresented = false
+    @SceneStorage("SelectedLibraryNavigationItem") private var selected: NavigationItem = .opened
     @StateObject private var viewModel = LibraryViewModel()
     
     let navigationItems: [NavigationItem] = [.opened, .categories, .downloads, .new]
@@ -40,9 +39,7 @@ struct LibraryView_iOS: View {
         }
         .environmentObject(viewModel)
         .onAppear {
-            Task {
-                try? await viewModel.refresh(isUserInitiated: false)
-            }
+            viewModel.startRefresh()
         }
     }
     
