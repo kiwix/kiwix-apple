@@ -24,7 +24,20 @@ struct LibraryView_iOS: View {
                     case .opened:
                         ZimFilesOpened(url: $url)
                     case .categories:
-                        categories
+                        List(Category.allCases) { category in
+                            NavigationLink {
+                                ZimFilesCategory(category: .constant(category), url: $url)
+                                    .navigationTitle(category.name)
+                                    .navigationBarTitleDisplayMode(.inline)
+                            } label: {
+                                HStack {
+                                    Favicon(category: category).frame(height: 26)
+                                    Text(category.name)
+                                }
+                            }
+                        }
+                        .listStyle(.plain)
+                        .navigationTitle(NavigationItem.categories.name)
                     case .downloads:
                         ZimFilesDownloads(url: $url)
                     case .new:
@@ -40,22 +53,5 @@ struct LibraryView_iOS: View {
         .onAppear {
             libraryViewModel.startRefresh(isUserInitiated: false)
         }
-    }
-    
-    var categories: some View {
-        List(Category.allCases) { category in
-            NavigationLink {
-                ZimFilesCategory(category: .constant(category), url: $url)
-                    .navigationTitle(category.name)
-                    .navigationBarTitleDisplayMode(.inline)
-            } label: {
-                HStack {
-                    Favicon(category: category).frame(height: 26)
-                    Text(category.name)
-                }
-            }
-        }
-        .listStyle(.plain)
-        .navigationTitle(NavigationItem.categories.name)
     }
 }

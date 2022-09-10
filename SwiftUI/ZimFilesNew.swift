@@ -13,6 +13,7 @@ import Defaults
 /// A grid of zim files that are newly available.
 struct ZimFilesNew: View {
     @Binding var url: URL?
+    @EnvironmentObject var viewModel: LibraryViewModel
     @Default(.libraryLanguageCodes) private var languageCodes
     @FetchRequest(
         sortDescriptors: [
@@ -23,9 +24,8 @@ struct ZimFilesNew: View {
         predicate: ZimFilesNew.buildPredicate(searchText: ""),
         animation: .easeInOut
     ) private var zimFiles: FetchedResults<ZimFile>
-    @State private var selected: ZimFile?
     @State private var searchText = ""
-    @EnvironmentObject var viewModel: LibraryViewModel
+    @State private var selected: ZimFile?
     
     var body: some View {
         Group {
