@@ -25,6 +25,7 @@ struct ZimFilesNew: View {
     ) private var zimFiles: FetchedResults<ZimFile>
     @State private var selected: ZimFile?
     @State private var searchText = ""
+    @EnvironmentObject var viewModel: LibraryViewModel
     
     var body: some View {
         Group {
@@ -55,6 +56,17 @@ struct ZimFilesNew: View {
         .onChange(of: searchText) { searchText in
             if #available(iOS 15.0, *) {
                 zimFiles.nsPredicate = ZimFilesNew.buildPredicate(searchText: searchText)
+            }
+        }
+        .toolbar {
+            if viewModel.isRefreshing {
+                ProgressView()
+            } else {
+                Button {
+                    viewModel.startRefresh(isUserInitiated: true)
+                } label: {
+                    Label("Refresh", systemImage: "arrow.triangle.2.circlepath")
+                }
             }
         }
     }

@@ -39,7 +39,7 @@ struct LibraryView_iOS: View {
         }
         .environmentObject(viewModel)
         .onAppear {
-            viewModel.startRefresh()
+            viewModel.startRefresh(isUserInitiated: false)
         }
     }
     

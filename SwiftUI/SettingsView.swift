@@ -74,7 +74,7 @@ struct SettingsView: View {
                     }
                 } else {
                     Button("Refresh Now") {
-                        Task { try? await viewModel.refresh(isUserInitiated: true) }
+                        Task { viewModel.startRefresh(isUserInitiated: true) }
                     }
                 }
                 Toggle("Auto refresh", isOn: $libraryAutoRefresh)
