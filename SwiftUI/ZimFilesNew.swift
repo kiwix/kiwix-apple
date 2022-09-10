@@ -65,7 +65,7 @@ struct ZimFilesNew: View {
                 Button {
                     viewModel.startRefresh(isUserInitiated: true)
                 } label: {
-                    Label("Refresh", systemImage: "arrow.triangle.2.circlepath")
+                    Label("Refresh", systemImage: "arrow.triangle.2.circlepath.circle")
                 }
             }
         }
