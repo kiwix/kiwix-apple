@@ -25,14 +25,13 @@ class LibraryViewModel: ObservableObject {
         isRefreshing = progress.completedUnitCount != progress.totalUnitCount
         progressObserver = progress.observe(\.fractionCompleted, options: .new) { [unowned self] _, change in
             DispatchQueue.main.async {
-                print("change", change)
                 self.isRefreshing = change.newValue != 1
             }
         }
     }
     
     deinit {
-        print("deinit")
+        print("deinit LibraryViewModel")
     }
     
     // MARK: - Refresh
@@ -42,8 +41,8 @@ class LibraryViewModel: ObservableObject {
         guard !isRefreshing else { return }
         
         // decide if refresh should proceed
-//        let isStale = (Defaults[.libraryLastRefresh]?.timeIntervalSinceNow ?? -3600) <= -3600
-//        guard isUserInitiated || (Defaults[.libraryAutoRefresh] && isStale) else { return }
+        let isStale = (Defaults[.libraryLastRefresh]?.timeIntervalSinceNow ?? -3600) <= -3600
+        guard isUserInitiated || (Defaults[.libraryAutoRefresh] && isStale) else { return }
         
         // start refresh
         LibraryViewModel.operationQueue.progress.totalUnitCount += 1
