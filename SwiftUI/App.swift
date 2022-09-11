@@ -10,7 +10,13 @@ import SwiftUI
 
 @main
 struct Kiwix: App {
+    private let fileMonitor: DirectoryMonitor
+    
     init() {
+        self.fileMonitor = DirectoryMonitor(url: URL.documentDirectory) { url in 
+            print("document dir changed")
+        }
+        self.fileMonitor.start()
         LibraryViewModel.reopen()
     }
     

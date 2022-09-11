@@ -15,13 +15,15 @@ protocol DirectoryMonitorDelegate: AnyObject {
 class DirectoryMonitor {
     weak var delegate: DirectoryMonitorDelegate?
     private let url: URL
+    private let onChange: ((URL) -> Void)?
     
     private var descriptor: CInt = -1
     private var source: DispatchSourceFileSystemObject?
     private let queue = DispatchQueue(label: "org.kiwix.directorymonitor", attributes: DispatchQueue.Attributes.concurrent)
 
-    init(url: URL) {
+    init(url: URL, onChange: ((URL) -> Void)? = nil) {
         self.url = url
+        self.onChange = onChange
     }
     
     // MARK: Monitoring
@@ -91,6 +93,7 @@ class DirectoryMonitor {
     private func directoryDidReachStasis() {
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + Double(Int64(NSEC_PER_SEC/10)) / Double(NSEC_PER_SEC) , execute: { () -> Void in
             self.delegate?.directoryContentDidChange(url: self.url)
+            self.onChange?(self.url)
         })
     }
     

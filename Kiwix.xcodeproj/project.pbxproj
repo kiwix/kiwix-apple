@@ -87,6 +87,7 @@
 		973A2FD82780024600BD4320 /* ZimFileCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 973A2FD72780024600BD4320 /* ZimFileCell.swift */; };
 		973B2A5D254609FD00093661 /* Modifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 973B2A5C254609FD00093661 /* Modifiers.swift */; };
 		973B8012239066D0008CC8CE /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 973B8011239066D0008CC8CE /* SceneDelegate.swift */; };
+		9744068728CE263800916BD4 /* DirectoryMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9779A5CF2456796A00F6F6FF /* DirectoryMonitor.swift */; };
 		9744658026F7981500072DC2 /* Fuzi in Frameworks */ = {isa = PBXBuildFile; productRef = 9744657F26F7981500072DC2 /* Fuzi */; };
 		97486D06284A36790096E4DD /* ArticleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97486D05284A36790096E4DD /* ArticleCell.swift */; };
 		97486D08284A42B90096E4DD /* SearchResultRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97486D07284A42B90096E4DD /* SearchResultRow.swift */; };
@@ -164,8 +165,6 @@
 		9779A5CB2456793600F6F6FF /* Bookmark.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9779A5B02456793600F6F6FF /* Bookmark.swift */; };
 		9779A5CC2456793600F6F6FF /* ZimFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9779A5B12456793600F6F6FF /* ZimFile.swift */; };
 		9779A5CD2456793600F6F6FF /* ZimFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9779A5B12456793600F6F6FF /* ZimFile.swift */; };
-		9779A73D2456796B00F6F6FF /* DirectoryMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9779A5CF2456796A00F6F6FF /* DirectoryMonitor.swift */; };
-		9779A73E2456796B00F6F6FF /* DirectoryMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9779A5CF2456796A00F6F6FF /* DirectoryMonitor.swift */; };
 		9779A7452456796B00F6F6FF /* DownloadService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9779A5D52456796A00F6F6FF /* DownloadService.swift */; };
 		9779A7AB2456796B00F6F6FF /* SearchQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9779A7372456796B00F6F6FF /* SearchQueue.swift */; };
 		9779A7AC2456796B00F6F6FF /* SearchQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9779A7372456796B00F6F6FF /* SearchQueue.swift */; };
@@ -633,7 +632,6 @@
 		9706555A2473682C00A51319 /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
-				9779A5CF2456796A00F6F6FF /* DirectoryMonitor.swift */,
 				9779A5D42456796A00F6F6FF /* DownloadProgress.swift */,
 				97B399952468CF3B00BC6F5B /* Enums.swift */,
 				97FD2F5E251EA07B0034927C /* FeatureFlags.swift */,
@@ -688,6 +686,7 @@
 				9735D0B82775363900C7D495 /* DataModel.xcdatamodeld */,
 				9735D0BB2775594700C7D495 /* Database.swift */,
 				9753D947285B55F100A626CC /* DefaultKeys.swift */,
+				9779A5CF2456796A00F6F6FF /* DirectoryMonitor.swift */,
 				973A0DE5281DC8F400B41E71 /* Downloads.swift */,
 				972DE4722814A116004FD9B9 /* Entities.swift */,
 				9735D0BF27777E3300C7D495 /* Enum.swift */,
@@ -1481,6 +1480,7 @@
 				973A0DFD283100C300B41E71 /* ZimFilesOpened.swift in Sources */,
 				972DE4B62814A502004FD9B9 /* Enum.swift in Sources */,
 				970C0BE028A28AEA0037A47D /* RootView.swift in Sources */,
+				9744068728CE263800916BD4 /* DirectoryMonitor.swift in Sources */,
 				97EBDBF828C4FAA20067BE0F /* OnboardingView.swift in Sources */,
 				974C33A9285589E900DF6F4C /* Patches.swift in Sources */,
 				973A0DF1282E981200B41E71 /* ZimFileRow.swift in Sources */,
@@ -1531,7 +1531,6 @@
 				9779A5CB2456793600F6F6FF /* Bookmark.swift in Sources */,
 				9779A5C72456793600F6F6FF /* ZimFileMetaData.mm in Sources */,
 				9779A5B72456793600F6F6FF /* LibraryScanOperation.swift in Sources */,
-				9779A73E2456796B00F6F6FF /* DirectoryMonitor.swift in Sources */,
 				97B3BACF2736CE3500A23F49 /* URL.swift in Sources */,
 				9779A7B22456796B00F6F6FF /* WebKitHandler.swift in Sources */,
 				97EFF05E235CAEFC00FBB7A4 /* ContentTabController.swift in Sources */,
@@ -1586,7 +1585,6 @@
 				970EC3A123BCEC84008DCA27 /* Parser.swift in Sources */,
 				97974368257BF37E00D30F03 /* Alerts.swift in Sources */,
 				977D509626268AAB005345D1 /* LibrarySearchResultView.swift in Sources */,
-				9779A73D2456796B00F6F6FF /* DirectoryMonitor.swift in Sources */,
 				97A2AE2225866D9200DEF81D /* ButtonProvider.swift in Sources */,
 				9779A5B22456793600F6F6FF /* LibraryService.swift in Sources */,
 				9779A5C42456793600F6F6FF /* ZimFileService.swift in Sources */,
