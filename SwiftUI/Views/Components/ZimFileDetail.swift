@@ -10,11 +10,14 @@ import CoreData
 import SwiftUI
 import UniformTypeIdentifiers
 
+import Defaults
+
 /// Detail about one single zim file.
 struct ZimFileDetail: View {
     @Binding var url: URL?
-    @EnvironmentObject var viewModel: ViewModel
-    @EnvironmentObject var libraryViewModel: LibraryViewModel
+    @Default(.downloadUsingCellular) private var downloadUsingCellular
+    @EnvironmentObject private var viewModel: ViewModel
+    @EnvironmentObject private var libraryViewModel: LibraryViewModel
     @ObservedObject var zimFile: ZimFile
     @State private var isPresentingDeleteAlert = false
     @State private var isPresentingDownloadAlert = false
@@ -51,8 +54,8 @@ struct ZimFileDetail: View {
                 Text(zimFile.fileDescription).lineLimit(nil)
             }
             Section {
-                if #available(iOS 15.0, *) {
-                    actions.listRowSeparator(.hidden)
+                if #available(iOS 16.0, *) {
+                    actions.alignmentGuide(.listRowSeparatorLeading) { $0[.leading] }
                 } else {
                     actions
                 }
@@ -110,6 +113,7 @@ struct ZimFileDetail: View {
             }
             #endif
         } else if zimFile.downloadURL != nil {  // zim file can be downloaded
+            Toggle("Download using cellular", isOn: $downloadUsingCellular)
             downloadAction
         }
     }
@@ -152,7 +156,7 @@ struct ZimFileDetail: View {
             if let freeSpace = freeSpace, zimFile.size >= freeSpace - 10^9 {
                 isPresentingDownloadAlert = true
             } else {
-                Downloads.shared.start(zimFileID: zimFile.id, allowsCellularAccess: false)
+                Downloads.shared.start(zimFileID: zimFile.id, allowsCellularAccess: downloadUsingCellular)
             }
         }.alert(isPresented: $isPresentingDownloadAlert) {
             Alert(
