@@ -36,13 +36,13 @@ class LibraryViewModel: ObservableObject {
     
     func startRefresh(isUserInitiated: Bool) {
         guard !isRefreshing else { return }
-        isRefreshing = true
         
         // decide if refresh should proceed
         let isStale = (Defaults[.libraryLastRefresh]?.timeIntervalSinceNow ?? -3600) <= -3600
         guard isUserInitiated || (Defaults[.libraryAutoRefresh] && isStale) else { return }
         
         // start refresh
+        isRefreshing = true
         LibraryViewModel.operationQueue.progress.totalUnitCount += 1
         LibraryViewModel.operationQueue.addOperation(LibraryRefreshOperation())
     }

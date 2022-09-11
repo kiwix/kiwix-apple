@@ -61,6 +61,9 @@ struct ZimFilesNew: View {
         .toolbar {
             if viewModel.isRefreshing {
                 ProgressView()
+                #if os(macOS)
+                    .scaleEffect(0.5)
+                #endif
             } else {
                 Button {
                     viewModel.startRefresh(isUserInitiated: true)

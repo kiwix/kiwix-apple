@@ -46,7 +46,7 @@ struct ZimFileDetail: View {
             }
         }
         .listStyle(.sidebar)
-        .alert(isPresented: $isPresentingAlert) { alert }
+        .modifier(FileLocator(isPresenting: $isPresentingFileLocator))
         #elseif os(iOS)
         List {
             Section {
@@ -72,16 +72,9 @@ struct ZimFileDetail: View {
             Section { id }
         }
         .listStyle(.insetGrouped)
+        .modifier(FileLocator(isPresenting: $isPresentingFileLocator))
         .navigationTitle(zimFile.name)
         .navigationBarTitleDisplayMode(.inline)
-        .fileImporter(
-            isPresented: $isPresentingFileLocator,
-            allowedContentTypes: [UTType(exportedAs: "org.openzim.zim")],
-            allowsMultipleSelection: false
-        ) { result in
-            guard case let .success(urls) = result, let url = urls.first else { return }
-            LibraryViewModel.open(url: url)
-        }
         #endif
     }
     
@@ -113,7 +106,9 @@ struct ZimFileDetail: View {
             }
             #endif
         } else if zimFile.downloadURL != nil {  // zim file can be downloaded
+            #if os(iOS)
             Toggle("Download using cellular", isOn: $downloadUsingCellular)
+            #endif
             downloadAction
         }
     }
@@ -216,6 +211,21 @@ struct ZimFileDetail: View {
             .urls(for: .documentDirectory, in: .userDomainMask)
             .first?.resourceValues(forKeys: [.volumeAvailableCapacityForImportantUsageKey])
             .volumeAvailableCapacityForImportantUsage
+    }
+}
+
+private struct FileLocator: ViewModifier {
+    @Binding var isPresenting: Bool
+    
+    func body(content: Content) -> some View {
+        content.fileImporter(
+            isPresented: $isPresenting,
+            allowedContentTypes: [UTType(exportedAs: "org.openzim.zim")],
+            allowsMultipleSelection: false
+        ) { result in
+            guard case let .success(urls) = result, let url = urls.first else { return }
+            LibraryViewModel.open(url: url)
+        }
     }
 }
 

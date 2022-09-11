@@ -19,7 +19,7 @@ struct LibrarySettings_macOS: View {
             SettingSection_macOS(name: "Catalog") {
                 HStack(spacing: 6) {
                     Button("Refresh Now") {
-                        Task { try? await viewModel.refresh(isUserInitiated: true) }
+                        viewModel.startRefresh(isUserInitiated: true)
                     }.disabled(viewModel.isRefreshing)
                     if viewModel.isRefreshing {
                         ProgressView().progressViewStyle(.circular).scaleEffect(0.5).frame(height: 1)
