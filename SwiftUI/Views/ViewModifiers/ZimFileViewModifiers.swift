@@ -13,6 +13,7 @@ import UniformTypeIdentifiers
 struct ZimFileContextMenu: ViewModifier {
     @Binding var selected: ZimFile?
     @Binding var url: URL?
+    @EnvironmentObject private var viewModel: ViewModel
     
     let zimFile: ZimFile
     
@@ -32,22 +33,16 @@ struct ZimFileContextMenu: ViewModifier {
     @ViewBuilder
     var opened: some View {
         Button {
-            guard let url = ZimFileService.shared.getMainPageURL(zimFileID: zimFile.fileID) else { return }
-            #if os(macOS)
-            NSWorkspace.shared.open(url)
-            #elseif os(iOS)
-            UIApplication.shared.open(url)
-            #endif
+            url = ZimFileService.shared.getMainPageURL(zimFileID: zimFile.fileID)
+            viewModel.activeSheet = nil
+            viewModel.navigationItem = .reading
         } label: {
             Label("Main Page", systemImage: "house")
         }
         Button {
-            guard let url = ZimFileService.shared.getRandomPageURL(zimFileID: zimFile.fileID) else { return }
-            #if os(macOS)
-            NSWorkspace.shared.open(url)
-            #elseif os(iOS)
-            UIApplication.shared.open(url)
-            #endif
+            url = ZimFileService.shared.getRandomPageURL(zimFileID: zimFile.fileID)
+            viewModel.activeSheet = nil
+            viewModel.navigationItem = .reading
         } label: {
             Label("Random Page", systemImage: "die.face.5")
         }
