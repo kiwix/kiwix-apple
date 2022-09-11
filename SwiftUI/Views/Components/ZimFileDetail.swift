@@ -50,7 +50,13 @@ struct ZimFileDetail: View {
                 Text(zimFile.name).lineLimit(nil)
                 Text(zimFile.fileDescription).lineLimit(nil)
             }
-            Section { actions }
+            Section {
+                if #available(iOS 15.0, *) {
+                    actions.listRowSeparator(.hidden)
+                } else {
+                    actions
+                }
+            }
             Section { basicInfo }
             Section {
                 boolInfo
@@ -278,7 +284,7 @@ private struct AttributeBool: View {
             if detail {
                 Image(systemName: "checkmark.circle.fill").foregroundColor(.green)
             } else {
-                Image(systemName: "multiply.circle.fill").foregroundColor(.secondary)
+                Image(systemName: "multiply.circle.fill").foregroundColor(.orange)
             }
             #endif
         }
