@@ -103,7 +103,7 @@ struct FileImportButton: View {
         ) { result in
             guard case let .success(urls) = result else { return }
             for url in urls {
-                LibraryViewModel.open(url: url)
+                LibraryOperations.open(url: url)
             }
         }
         .help("Open a zim file")

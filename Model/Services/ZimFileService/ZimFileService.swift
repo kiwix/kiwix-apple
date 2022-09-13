@@ -16,10 +16,6 @@ extension ZimFileService {
     
     // MARK: - Reader Management
     
-    /// Open a zim file from URL
-    /// - Parameter url: file url of the zim file to open
-    func open(url: URL) { __open(url) }
-    
     /// Open a zim file from bookmark data
     /// - Parameter bookmark: url bookmark data of the zim file to open
     /// - Returns: new url bookmark data if the one used to open the zim file is stale
@@ -39,7 +35,7 @@ extension ZimFileService {
         }
         #endif
         
-        open(url: url)
+        __open(url)
         return isStale ? ZimFileService.getBookmarkData(url: url) : nil
     }
     

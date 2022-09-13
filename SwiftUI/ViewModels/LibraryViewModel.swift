@@ -72,32 +72,6 @@ class LibraryViewModel: ObservableObject {
         if let url = metadata.faviconURL { zimFile.faviconURL = url }
     }
     
-    /// Open a zim file with file url.
-    /// - Parameter url: url of the zim file on disk
-    static func open(url: URL) {
-        guard let metadata = ZimFileService.getMetaData(url: url),
-              let fileURLBookmark = ZimFileService.getBookmarkData(url: url) else { return }
-        // open the file
-        do {
-            try ZimFileService.shared.open(bookmark: fileURLBookmark)
-        } catch {
-            return
-        }
-        
-        // upsert zim file in the database
-        Database.shared.container.performBackgroundTask { context in
-            context.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
-            let predicate = NSPredicate(format: "fileID == %@", metadata.fileID as CVarArg)
-            let fetchRequest = ZimFile.fetchRequest(predicate: predicate)
-            guard let zimFile = try? context.fetch(fetchRequest).first ?? ZimFile(context: context) else { return }
-            LibraryViewModel.configureZimFile(zimFile, metadata: metadata)
-            zimFile.fileURLBookmark = fileURLBookmark
-            zimFile.isMissing = false
-            if context.hasChanges { try? context.save() }
-        }
-    }
-    
-    
     /// Reopen zim files from url bookmark data.
     static func reopen() {
         let context = Database.shared.container.viewContext

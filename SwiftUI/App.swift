@@ -13,10 +13,7 @@ struct Kiwix: App {
     private let fileMonitor: DirectoryMonitor
     
     init() {
-        self.fileMonitor = DirectoryMonitor(url: URL.documentDirectory) { url in 
-            print("document dir changed")
-        }
-        self.fileMonitor.start()
+        fileMonitor = DirectoryMonitor(url: URL.documentDirectory) { LibraryOperations.scanDirectory($0) }
         LibraryViewModel.reopen()
     }
     

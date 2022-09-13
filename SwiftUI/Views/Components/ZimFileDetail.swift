@@ -224,7 +224,7 @@ private struct FileLocator: ViewModifier {
             allowsMultipleSelection: false
         ) { result in
             guard case let .success(urls) = result, let url = urls.first else { return }
-            LibraryViewModel.open(url: url)
+            LibraryOperations.open(url: url)
         }
     }
 }
