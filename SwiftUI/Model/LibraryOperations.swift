@@ -41,8 +41,10 @@ struct LibraryOperations {
     
     /// Reopen zim files from url bookmark data.
     static func reopen() {
+        var successCount = 0
         let context = Database.shared.container.viewContext
         let request = ZimFile.fetchRequest(predicate: ZimFile.withFileURLBookmarkPredicate)
+        
         guard let zimFiles = try? context.fetch(request) else { return }
         zimFiles.forEach { zimFile in
             guard let data = zimFile.fileURLBookmark else { return }
@@ -51,6 +53,7 @@ struct LibraryOperations {
                     zimFile.fileURLBookmark = data
                 }
                 zimFile.isMissing = false
+                successCount += 1
             } catch ZimFileOpenError.missing {
                 zimFile.isMissing = true
             } catch {
@@ -61,6 +64,8 @@ struct LibraryOperations {
         if context.hasChanges {
             try? context.save()
         }
+        
+        os_log("Reopened %d out of %d zim files", log: Log.LibraryOperations, type: .info, successCount, zimFiles.count)
     }
     
     /// Scan a directory and open available zim files inside it

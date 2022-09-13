@@ -15,6 +15,7 @@ struct Kiwix: App {
     init() {
         fileMonitor = DirectoryMonitor(url: URL.documentDirectory) { LibraryOperations.scanDirectory($0) }
         LibraryOperations.reopen()
+        LibraryOperations.scanDirectory(URL.documentDirectory)
     }
     
     var body: some Scene {
