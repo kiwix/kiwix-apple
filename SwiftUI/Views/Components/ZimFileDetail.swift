@@ -124,7 +124,7 @@ struct ZimFileDetail: View {
                 but the original file will remain in place.
                 """),
                 primaryButton: .destructive(Text("Unlink")) {
-                    LibraryViewModel.unlink(zimFileID: zimFile.fileID)
+                    LibraryOperations.unlink(zimFileID: zimFile.fileID)
                 },
                 secondaryButton: .cancel()
             )
@@ -139,7 +139,7 @@ struct ZimFileDetail: View {
                 title: Text("Delete \(zimFile.name)"),
                 message: Text("The zim file and all bookmarked articles linked to this zim file will be deleted."),
                 primaryButton: .destructive(Text("Delete")) {
-                    LibraryViewModel.delete(zimFileID: zimFile.fileID)
+                    LibraryOperations.delete(zimFileID: zimFile.fileID)
                 },
                 secondaryButton: .cancel()
             )

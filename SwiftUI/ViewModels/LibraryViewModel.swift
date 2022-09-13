@@ -46,79 +46,6 @@ class LibraryViewModel: ObservableObject {
         LibraryViewModel.operationQueue.progress.totalUnitCount += 1
         LibraryViewModel.operationQueue.addOperation(LibraryRefreshOperation())
     }
-    
-    // MARK: - Management
-    
-    /// Configure a zim file object based on its metadata.
-    static func configureZimFile(_ zimFile: ZimFile, metadata: ZimFileMetaData) {
-        zimFile.articleCount = metadata.articleCount.int64Value
-        zimFile.category = metadata.category
-        zimFile.created = metadata.creationDate
-        zimFile.fileDescription = metadata.fileDescription
-        zimFile.fileID = metadata.fileID
-        zimFile.flavor = metadata.flavor
-        zimFile.hasDetails = metadata.hasDetails
-        zimFile.hasPictures = metadata.hasPictures
-        zimFile.hasVideos = metadata.hasVideos
-        zimFile.languageCode = metadata.languageCode
-        zimFile.mediaCount = metadata.mediaCount.int64Value
-        zimFile.name = metadata.title
-        zimFile.persistentID = metadata.groupIdentifier
-        zimFile.requiresServiceWorkers = metadata.requiresServiceWorkers
-        zimFile.size = metadata.size.int64Value
-        
-        // Only overwrite favicon data and url if there is a new value
-        if let url = metadata.downloadURL { zimFile.downloadURL = url }
-        if let url = metadata.faviconURL { zimFile.faviconURL = url }
-    }
-    
-    /// Reopen zim files from url bookmark data.
-    static func reopen() {
-        let context = Database.shared.container.viewContext
-        let request = ZimFile.fetchRequest(predicate: ZimFile.withFileURLBookmarkPredicate)
-        guard let zimFiles = try? context.fetch(request) else { return }
-        zimFiles.forEach { zimFile in
-            guard let data = zimFile.fileURLBookmark else { return }
-            do {
-                if let data = try ZimFileService.shared.open(bookmark: data) {
-                    zimFile.fileURLBookmark = data
-                }
-                zimFile.isMissing = false
-            } catch ZimFileOpenError.missing {
-                zimFile.isMissing = true
-            } catch {
-                zimFile.fileURLBookmark = nil
-                zimFile.isMissing = false
-            }
-        }
-        if context.hasChanges {
-            try? context.save()
-        }
-    }
-    
-    /// Unlink a zim file from library, and delete the file.
-    /// - Parameter zimFile: the zim file to delete
-    static func delete(zimFileID: UUID) {
-        LibraryViewModel.unlink(zimFileID: zimFileID)
-    }
-    
-    /// Unlink a zim file from library, but don't delete the file.
-    /// - Parameter zimFile: the zim file to unlink
-    static func unlink(zimFileID: UUID) {
-        ZimFileService.shared.close(fileID: zimFileID)
-        
-        Database.shared.container.performBackgroundTask { context in
-            context.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
-            guard let zimFile = try? ZimFile.fetchRequest(fileID: zimFileID).execute().first else { return }
-            if zimFile.downloadURL == nil {
-                context.delete(zimFile)
-            } else {
-                zimFile.fileURLBookmark = nil
-                zimFile.isMissing = false
-            }
-            if context.hasChanges { try? context.save() }
-        }
-    }
 }
 
 class LibraryRefreshOperation: Operation {
@@ -207,7 +134,7 @@ class LibraryRefreshOperation: Operation {
                     while !zimFileIDs.isEmpty {
                         guard let id = zimFileIDs.popFirst(),
                               let metadata = parser.getZimFileMetaData(id: id) else { continue }
-                        LibraryViewModel.configureZimFile(zimFile, metadata: metadata)
+                        LibraryOperations.configureZimFile(zimFile, metadata: metadata)
                         return false
                     }
                     return true
