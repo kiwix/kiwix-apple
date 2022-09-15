@@ -8,77 +8,128 @@
 
 import CoreData
 import RealmSwift
+import Realm
+
+private struct ZimFileData {
+    let articleCount: Int64
+    let category: String
+    let created: Date
+    let downloadURL: URL?
+    let faviconData: Data?
+    let faviconURL: URL?
+    let fileDescription: String
+    let fileID: UUID
+    let fileURLBookmark: Data?
+    let hasDetails: Bool
+    let hasPictures: Bool
+    let hasVideos: Bool
+    let includedInSearch: Bool
+    let languageCode: String
+    let mediaCount: Int64
+    let name: String
+    let persistentID: String
+    let size: Int64
+}
+
+private struct BookmarkData {
+    let zimFileID: UUID
+    let articleURL: URL
+    let thumbImageURL: URL?
+    let title: String
+    let snippet: String?
+    let created: Date
+}
 
 extension Realm {
-    class ZimFile: Object, ObjectKeyIdentifiable {
-        
-        // MARK: - nonnull properties
-        
-        @Persisted(primaryKey: true) var fileID: String = ""
-        @Persisted(indexed: true) var groupID: String = ""
-        @Persisted(indexed: true) var title: String = ""
-        @Persisted(indexed: true) var fileDescription: String = ""
-        @Persisted(indexed: true) var languageCode: String = ""
-        @Persisted(indexed: true) var creationDate: Date = Date()
-        @Persisted(indexed: true) var size: Int64 = 0
-        @Persisted(indexed: true) var articleCount: Int64 = 0
-        @Persisted(indexed: true) var mediaCount: Int64 = 0
-        @Persisted(indexed: true) var categoryRaw: String
-        @Persisted(indexed: true) var stateRaw: String
-        @Persisted var creator: String = ""
-        @Persisted var publisher: String = ""
-        
-        // MARK: - bool properties
-        
-        @Persisted var hasDetails = false
-        @Persisted var hasIndex = false
-        @Persisted var hasPictures = false
-        @Persisted var hasVideos = false
-        @Persisted var includedInSearch = true
-        
-        // MARK: - favicon properties
-        
-        @Persisted var faviconURL: String?
-        @Persisted var faviconData: Data?
-        
-        // MARK: - download properties
-        
-        @Persisted var downloadURL: String?
-        @Persisted var downloadTotalBytesWritten: Int64 = 0
-        @Persisted var downloadResumeData: Data?
-        @Persisted var downloadErrorDescription: String?
-        
-        // MARK: - open in place data
-        
-        @Persisted var openInPlaceURLBookmark: Data?
-    }
-    
-    class Bookmark: Object, ObjectKeyIdentifiable {
-        @Persisted var path = ""
-        @Persisted var zimFile: ZimFile?
-        
-        @Persisted var title = ""
-        @Persisted var snippet: String?
-        @Persisted var thumbImagePath: String?
-        @Persisted var date: Date?
-    }
-    
     static let defaultConfig: Realm.Configuration = {
         // Configure Migrations
         var config = Realm.Configuration(
-            schemaVersion: 6,
+            schemaVersion: 15,
             migrationBlock: { migration, oldSchemaVersion in
-                if (oldSchemaVersion < 4) {
-                    migration.renameProperty(onType: ZimFile.className(), from: "id", to: "fileID")
+                // get existing zim files
+                var existingZimFiles = [ZimFileData]()
+                migration.enumerateObjects(ofType: "ZimFile") { oldObject, newObject in
+                    guard let oldObject = oldObject,
+                          let articleCount = oldObject["articleCount"] as? Int64,
+                          let category = oldObject["categoryRaw"] as? String,
+                          let created = oldObject["creationDate"] as? Date,
+                          let fileIDString = oldObject["fileID"] as? String,
+                          let fileID = UUID(uuidString: fileIDString),
+                          let languageCode = oldObject["languageCode"] as? String,
+                          let mediaCount = oldObject["mediaCount"] as? Int64,
+                          let name = oldObject["title"] as? String,
+                          let persistentID = oldObject["groupID"] as? String,
+                          let size = oldObject["size"] as? Int64
+                    else { return }
+                    
+                    let downloadURL = URL(string: oldObject["downloadURL"] as? String ?? "")
+                    let faviconData = oldObject["faviconData"] as? Data
+                    let faviconURL = URL(string: oldObject["faviconURL"] as? String ?? "")
+                    let fileURLBookmark = oldObject["openInPlaceURLBookmark"] as? Data
+                    
+                    let zimFileData = ZimFileData(
+                        articleCount: articleCount,
+                        category: category,
+                        created: created,
+                        downloadURL: downloadURL,
+                        faviconData: faviconData,
+                        faviconURL: faviconURL,
+                        fileDescription: oldObject["fileDescription"] as? String ?? "",
+                        fileID: fileID,
+                        fileURLBookmark: fileURLBookmark,
+                        hasDetails: oldObject["hasDetails"] as? Bool ?? false,
+                        hasPictures: oldObject["hasPictures"] as? Bool ?? false,
+                        hasVideos: oldObject["hasVideos"] as? Bool ?? false,
+                        includedInSearch: oldObject["includedInSearch"] as? Bool ?? false,
+                        languageCode: languageCode,
+                        mediaCount: mediaCount,
+                        name: name,
+                        persistentID: persistentID,
+                        size: size
+                    )
+                    existingZimFiles.append(zimFileData)
                 }
-                if (oldSchemaVersion < 5) {
-                    migration.enumerateObjects(ofType: ZimFile.className()) { oldObject, newObject in
-                        newObject?["creationDate"] = oldObject?["creationDate"] ?? Date()
-                        newObject?["size"] = oldObject?["size"] ?? 0
-                        newObject?["articleCount"] = oldObject?["articleCount"] ?? 0
-                        newObject?["mediaCount"] = oldObject?["mediaCount"] ?? 0
-                        newObject?["creator"] = oldObject?["creator"] ?? ""
-                        newObject?["publisher"] = oldObject?["publisher"] ?? ""
+                
+                // migration
+                Database.shared.container.performBackgroundTask { context in
+                    context.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
+                    context.undoManager = nil
+                    
+                    do {
+                        let insertRequest = NSBatchInsertRequest(
+                            entity: ZimFile.entity(),
+                            managedObjectHandler: { zimFile in
+                                guard let zimFile = zimFile as? ZimFile else { return true }
+                                while !existingZimFiles.isEmpty {
+                                    guard let zimFileData = existingZimFiles.popLast() else { continue }
+
+                                    zimFile.articleCount = zimFileData.articleCount
+                                    zimFile.category = zimFileData.category
+                                    zimFile.created = zimFileData.created
+                                    zimFile.downloadURL = zimFileData.downloadURL
+                                    zimFile.faviconData = zimFileData.faviconData
+                                    zimFile.faviconURL = zimFileData.faviconURL
+                                    zimFile.fileDescription = zimFileData.fileDescription
+                                    zimFile.fileID = zimFileData.fileID
+                                    zimFile.fileURLBookmark = zimFileData.fileURLBookmark
+                                    zimFile.hasDetails = zimFileData.hasDetails
+                                    zimFile.hasPictures = zimFileData.hasPictures
+                                    zimFile.hasVideos = zimFileData.hasVideos
+                                    zimFile.includedInSearch = zimFileData.includedInSearch
+                                    zimFile.languageCode = zimFileData.languageCode
+                                    zimFile.mediaCount = zimFileData.mediaCount
+                                    zimFile.name = zimFileData.name
+                                    zimFile.persistentID = zimFileData.persistentID
+                                    zimFile.size = zimFileData.size
+
+                                    return false
+                                }
+                                return true
+                            }
+                        )
+                        try context.execute(insertRequest)
+                    } catch {
+                        print("ZimFile migration failure: %s", error.localizedDescription)
                     }
                 }
             }
@@ -95,84 +146,7 @@ extension Realm {
 }
 
 class DatabaseMigration {
-    static func migrate() {
-        Database.shared.container.performBackgroundTask { context in
-            context.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
-            context.undoManager = nil
-            
-            guard let realm = try? Realm() else { return }
-            var existingZimFiles = Array(realm.objects(Realm.ZimFile.self))
-            do {
-                let insertRequest = NSBatchInsertRequest(
-                    entity: ZimFile.entity(),
-                    managedObjectHandler: { zimFile in
-                        guard let zimFile = zimFile as? ZimFile else { return true }
-                        while !existingZimFiles.isEmpty {
-                            guard let zimFileRealm = existingZimFiles.popLast(),
-                                  let zimFileID = UUID(uuidString: zimFileRealm.fileID) else { continue }
-                            zimFile.articleCount = zimFileRealm.articleCount
-                            zimFile.category = zimFileRealm.categoryRaw
-                            zimFile.created = zimFileRealm.creationDate
-                            zimFile.fileDescription = zimFileRealm.fileDescription
-                            zimFile.fileID = zimFileID
-                            zimFile.hasDetails = zimFileRealm.hasDetails
-                            zimFile.hasPictures = zimFileRealm.hasPictures
-                            zimFile.hasVideos = zimFileRealm.hasVideos
-                            zimFile.languageCode = zimFileRealm.languageCode
-                            zimFile.mediaCount = zimFileRealm.mediaCount
-                            zimFile.name = zimFileRealm.title
-                            zimFile.persistentID = zimFileRealm.groupID
-                            zimFile.size = zimFileRealm.size
-                            
-                            if let data = zimFileRealm.openInPlaceURLBookmark {
-                                zimFile.fileURLBookmark = data
-                            }
-                            if let urlString = zimFileRealm.downloadURL, let url = URL(string: urlString) {
-                                zimFile.downloadURL = url
-                            }
-                            if let urlString = zimFileRealm.faviconURL, let url = URL(string: urlString) {
-                                zimFile.faviconURL = url
-                            }
-                            if let data = zimFileRealm.faviconData {
-                                zimFile.faviconData = data
-                            }
-                            return false
-                        }
-                        return true
-                    }
-                )
-                try context.execute(insertRequest)
-            } catch {
-                print("ZimFile migration failure: %s", error.localizedDescription)
-            }
-            
-            var existingBookmarks = Array(realm.objects(Realm.Bookmark.self))
-            do {
-                let insertRequest = NSBatchInsertRequest(
-                    entity: Bookmark.entity(),
-                    managedObjectHandler: { bookmark in
-                        guard let bookmark = bookmark as? Bookmark else { return true }
-                        while !existingBookmarks.isEmpty {
-                            guard let bookmarkRealm = existingBookmarks.popLast(),
-                                  let zimFileID = bookmarkRealm.zimFile?.fileID,
-                                  let articleURL = URL(zimFileID: zimFileID, contentPath: bookmarkRealm.path),
-                                  let created = bookmarkRealm.date else { continue }
-                            bookmark.articleURL = articleURL
-                            bookmark.title = bookmarkRealm.title
-                            bookmark.snippet = bookmarkRealm.snippet
-                            bookmark.created = created
-                            if let thumbImagePath = bookmarkRealm.thumbImagePath {
-                                bookmark.thumbImageURL = URL(zimFileID: zimFileID, contentPath: thumbImagePath)
-                            }
-                            return false
-                        }
-                        return true
-                    }
-                )
-                try context.execute(insertRequest)
-            } catch {
-                print("Bookmark migration failure: %s", error.localizedDescription)
-            }
-        }
+    static func start() {
+        _ = try? Realm(configuration: Realm.defaultConfig)
     }
 }

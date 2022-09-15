@@ -17,7 +17,7 @@ struct Kiwix: App {
         LibraryOperations.reopen()
         LibraryOperations.scanDirectory(URL.documentDirectory)
         #if os(iOS)
-        DatabaseMigration.migrate()
+        DatabaseMigration.start()
         #endif
     }
     
