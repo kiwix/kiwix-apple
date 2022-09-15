@@ -16,6 +16,9 @@ struct Kiwix: App {
         fileMonitor = DirectoryMonitor(url: URL.documentDirectory) { LibraryOperations.scanDirectory($0) }
         LibraryOperations.reopen()
         LibraryOperations.scanDirectory(URL.documentDirectory)
+        #if os(iOS)
+        DatabaseMigration.migrate()
+        #endif
     }
     
     var body: some Scene {
