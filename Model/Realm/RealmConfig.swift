@@ -124,6 +124,7 @@ extension Realm {
                     context.undoManager = nil
                     
                     do {
+                        // migrate zim files
                         let insertRequest = NSBatchInsertRequest(
                             entity: ZimFile.entity(),
                             managedObjectHandler: { zimFile in
@@ -158,6 +159,7 @@ extension Realm {
                         try context.execute(insertRequest)
                         try context.save()
                         
+                        // migrate bookmarks
                         for bookmarkData in existingBookmarks {
                             guard let zimFile = try context.fetch(ZimFile.fetchRequest(fileID: bookmarkData.zimFileID)).first else { return }
                             let bookmark = Bookmark(context: context)
