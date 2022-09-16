@@ -44,7 +44,7 @@ extension Realm {
     static let defaultConfig: Realm.Configuration = {
         // Configure Migrations
         var config = Realm.Configuration(
-            schemaVersion: 15,
+            schemaVersion: 6,
             migrationBlock: { migration, oldSchemaVersion in
                 // get existing zim files
                 var existingZimFiles = [ZimFileData]()
@@ -59,8 +59,7 @@ extension Realm {
                           let mediaCount = oldObject["mediaCount"] as? Int64,
                           let name = oldObject["title"] as? String,
                           let persistentID = oldObject["groupID"] as? String,
-                          let size = oldObject["size"] as? Int64
-                    else { return }
+                          let size = oldObject["size"] as? Int64 else { return }
                     
                     let downloadURL = URL(string: oldObject["downloadURL"] as? String ?? "")
                     let faviconData = oldObject["faviconData"] as? Data
@@ -88,6 +87,35 @@ extension Realm {
                         size: size
                     )
                     existingZimFiles.append(zimFileData)
+                }
+                
+                // get existing bookmarks
+                var existingBookmarks = [BookmarkData]()
+                migration.enumerateObjects(ofType: "Bookmark") { oldObject, newObject in
+                    guard let oldObject = oldObject,
+                          let path = oldObject["path"] as? String,
+                          let zimFile = oldObject["zimFile"] as? DynamicObject,
+                          let fileIDString = zimFile["fileID"] as? String,
+                          let fileID = UUID(uuidString: fileIDString),
+                          let articleURL = URL(zimFileID: fileIDString, contentPath: path),
+                          let title = oldObject["title"] as? String,
+                          let created = oldObject["date"] as? Date else { return }
+                    
+                    let bookmark = BookmarkData(
+                        zimFileID: fileID,
+                        articleURL: articleURL,
+                        thumbImageURL: {
+                            if let thumbImagePath = oldObject["thumbImagePath"] as? String, !thumbImagePath.isEmpty {
+                                return URL(zimFileID: fileIDString, contentPath: thumbImagePath)
+                            } else {
+                                return nil
+                            }
+                        }(),
+                        title: title,
+                        snippet: oldObject["snippet"] as? String,
+                        created: created
+                    )
+                    existingBookmarks.append(bookmark)
                 }
                 
                 // migration
@@ -128,6 +156,19 @@ extension Realm {
                             }
                         )
                         try context.execute(insertRequest)
+                        try context.save()
+                        
+                        for bookmarkData in existingBookmarks {
+                            guard let zimFile = try context.fetch(ZimFile.fetchRequest(fileID: bookmarkData.zimFileID)).first else { return }
+                            let bookmark = Bookmark(context: context)
+                            bookmark.articleURL = bookmarkData.articleURL
+                            bookmark.thumbImageURL = bookmarkData.thumbImageURL
+                            bookmark.title = bookmarkData.title
+                            bookmark.snippet = bookmarkData.snippet
+                            bookmark.created = bookmarkData.created
+                            bookmark.zimFile = zimFile
+                        }
+                        try context.save()
                     } catch {
                         print("ZimFile migration failure: %s", error.localizedDescription)
                     }
