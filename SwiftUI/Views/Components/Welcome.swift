@@ -74,14 +74,16 @@ struct Welcome: View {
                     } header: {
                         Text("Main Page").font(.title3).fontWeight(.semibold)
                     }
-                    Section {
-                        ForEach(bookmarks) { bookmark in
-                            Button { url = bookmark.articleURL } label: {
-                                ArticleCell(bookmark: bookmark).frame(height: bookmarkItemHeight)
-                            }.buttonStyle(.plain)
+                    if !bookmarks.isEmpty {
+                        Section {
+                            ForEach(bookmarks) { bookmark in
+                                Button { url = bookmark.articleURL } label: {
+                                    ArticleCell(bookmark: bookmark).frame(height: bookmarkItemHeight)
+                                }.buttonStyle(.plain)
+                            }
+                        } header: {
+                            Text("Bookmarks").font(.title3).fontWeight(.semibold)
                         }
-                    } header: {
-                        Text("Bookmarks").font(.title3).fontWeight(.semibold)
                     }
                 }.padding()
             }
