@@ -34,6 +34,8 @@
 		97242B9E2735E6A800C87F85 /* Platform.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97B399912468502500BC6F5B /* Platform.swift */; };
 		97242BA02735E6A800C87F85 /* FeatureFlags.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97FD2F5E251EA07B0034927C /* FeatureFlags.swift */; };
 		97246C821FC4D12A0056AE5D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9717A2521FB2592D00837492 /* Main.storyboard */; };
+		9724FC2F28D5F5BE001B7DD2 /* BookmarkContextMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9724FC2E28D5F5BE001B7DD2 /* BookmarkContextMenu.swift */; };
+		9724FC3028D5F5BE001B7DD2 /* BookmarkContextMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9724FC2E28D5F5BE001B7DD2 /* BookmarkContextMenu.swift */; };
 		972521012009616B00B60A80 /* EmptyContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 972521002009616B00B60A80 /* EmptyContentView.swift */; };
 		97252103200D3C4B00B60A80 /* HUDController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97252102200D3C4B00B60A80 /* HUDController.swift */; };
 		97252105200E908000B60A80 /* TableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97252104200E908000B60A80 /* TableViewCell.swift */; };
@@ -392,6 +394,7 @@
 		9721BBB928427A93005C910D /* BookmarksView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarksView.swift; sourceTree = "<group>"; };
 		97225A972618B2A200D8CB32 /* LibraryLanguageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryLanguageView.swift; sourceTree = "<group>"; };
 		97225AA1261A006A00D8CB32 /* LibraryCategoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryCategoryView.swift; sourceTree = "<group>"; };
+		9724FC2E28D5F5BE001B7DD2 /* BookmarkContextMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarkContextMenu.swift; sourceTree = "<group>"; };
 		972521002009616B00B60A80 /* EmptyContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyContentView.swift; sourceTree = "<group>"; };
 		97252102200D3C4B00B60A80 /* HUDController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HUDController.swift; sourceTree = "<group>"; };
 		97252104200E908000B60A80 /* TableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewCell.swift; sourceTree = "<group>"; };
@@ -723,6 +726,7 @@
 		973A0DF2282FED6F00B41E71 /* ViewModifiers */ = {
 			isa = PBXGroup;
 			children = (
+				9724FC2E28D5F5BE001B7DD2 /* BookmarkContextMenu.swift */,
 				97486D09284B96690096E4DD /* CellBackground.swift */,
 				97DE2BA4283A944100C63D9B /* GridCommon.swift */,
 				97341C692851165B00BC273E /* Searchable.swift */,
@@ -1515,6 +1519,7 @@
 				974C33A62855884C00DF6F4C /* SafariView.swift in Sources */,
 				979D3A782841100B00E396B8 /* Focus.swift in Sources */,
 				972DE4C42814AAAE004FD9B9 /* LibraryView_iOS.swift in Sources */,
+				9724FC3028D5F5BE001B7DD2 /* BookmarkContextMenu.swift in Sources */,
 				976BAEBE284905760049404F /* SearchViewModel.swift in Sources */,
 				97486D0F284D44C20096E4DD /* HUDController.swift in Sources */,
 				974C33A32853DDEE00DF6F4C /* SettingsView.swift in Sources */,
@@ -1680,6 +1685,7 @@
 				97E94B2F271EF630005B0295 /* ZimFileService.mm in Sources */,
 				972DE4732814A116004FD9B9 /* Entities.swift in Sources */,
 				97F3332F28AFC1A2007FF53C /* SearchView.swift in Sources */,
+				9724FC2F28D5F5BE001B7DD2 /* BookmarkContextMenu.swift in Sources */,
 				97486D0A284B96690096E4DD /* CellBackground.swift in Sources */,
 				978A731027B99F25008101B4 /* ReaderViewModel.swift in Sources */,
 				9790CA5928A05EBB00D39FC6 /* ZimFilesCategories.swift in Sources */,

@@ -79,7 +79,9 @@ struct Welcome: View {
                             ForEach(bookmarks) { bookmark in
                                 Button { url = bookmark.articleURL } label: {
                                     ArticleCell(bookmark: bookmark).frame(height: bookmarkItemHeight)
-                                }.buttonStyle(.plain)
+                                }
+                                .buttonStyle(.plain)
+                                .modifier(BookmarkContextMenu(url: $url, bookmark: bookmark))
                             }
                         } header: {
                             Text("Bookmarks").font(.title3).fontWeight(.semibold)
@@ -88,7 +90,7 @@ struct Welcome: View {
                 }.padding()
             }
             .sheet(item: $selectedZimFile) { zimFile in
-                NavigationView {
+                SheetView {
                     ZimFileDetail(url: $url, zimFile: zimFile)
                 }
             }

@@ -32,7 +32,9 @@ struct BookmarksView: View {
                             viewModel.navigationItem = .reading
                         } label: {
                             ArticleCell(bookmark: bookmark).frame(height: itemHeight)
-                        }.buttonStyle(.plain)
+                        }
+                        .buttonStyle(.plain)
+                        .modifier(BookmarkContextMenu(url: $url, bookmark: bookmark))
                     }
                 }.modifier(GridCommon())
             }
