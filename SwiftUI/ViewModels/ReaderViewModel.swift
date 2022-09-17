@@ -108,14 +108,16 @@ class ReadingViewModel: NSObject, ObservableObject, WKNavigationDelegate, WKScri
     
     /// Delete an article bookmark
     /// - Parameter url: url of the article to delete bookmark
-    static func deleteBookmark(_ url: URL?) {
+    static func deleteBookmark(_ url: URL?, withNotification: Bool = true) {
         guard let url = url else { return }
         let context = Database.shared.container.viewContext
         let request = Bookmark.fetchRequest(predicate: NSPredicate(format: "articleURL == %@", url as CVarArg))
         guard let bookmark = try? context.fetch(request).first else { return }
         context.delete(bookmark)
         try? context.save()
-        NotificationCenter.default.post(name: ReaderViewModel.bookmarkNotificationName, object: nil)
+        if withNotification {
+            NotificationCenter.default.post(name: ReaderViewModel.bookmarkNotificationName, object: nil)
+        }
     }
     
     // MARK: - outline
