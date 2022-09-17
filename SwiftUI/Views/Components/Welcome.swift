@@ -11,6 +11,7 @@ import SwiftUI
 struct Welcome: View {
     @Binding var url: URL?
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
+    @EnvironmentObject private var viewModel: ViewModel
     @FetchRequest(
         sortDescriptors: [NSSortDescriptor(keyPath: \Bookmark.created, ascending: false)],
         animation: .easeInOut
@@ -24,7 +25,35 @@ struct Welcome: View {
     
     var body: some View {
         if zimFiles.isEmpty {
-            OnboardingView()
+            VStack(spacing: 20) {
+                VStack(spacing: 4) {
+                    Image("Kiwix_logo_v3")
+                        .resizable()
+                        .aspectRatio(1, contentMode: .fit)
+                        .frame(width: 60, height: 60)
+                        .padding(2)
+                        .background(RoundedRectangle(cornerRadius: 10).foregroundColor(.white))
+                    Text("KIWIX").font(.largeTitle).fontWeight(.bold)
+                }
+                Divider()
+                if #available(iOS 15.0, *) {
+                    Button {
+                        viewModel.activeSheet = .library
+                    } label: {
+                        HStack {
+                            Spacer()
+                            Text("Open Library").font(.subheadline)
+                            Spacer()
+                        }.padding(6)
+                    }.buttonStyle(.borderedProminent)
+                } else {
+                    Button {
+                        viewModel.activeSheet = .library
+                    } label: {
+                        Text("Open Library")
+                    }
+                }
+            }.padding()
         } else {
             ScrollView {
                 LazyVGrid(
