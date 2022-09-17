@@ -48,6 +48,7 @@ extension Realm {
             migrationBlock: { migration, oldSchemaVersion in
                 // get existing zim files
                 var existingZimFiles = [ZimFileData]()
+                var existingZimFileBookmarks = [Data]()
                 migration.enumerateObjects(ofType: "ZimFile") { oldObject, newObject in
                     guard let oldObject = oldObject,
                           let articleCount = oldObject["articleCount"] as? Int64,
@@ -87,6 +88,10 @@ extension Realm {
                         size: size
                     )
                     existingZimFiles.append(zimFileData)
+                    
+                    if let data = fileURLBookmark {
+                        existingZimFileBookmarks.append(data)
+                    }
                 }
                 
                 // get existing bookmarks
@@ -171,6 +176,11 @@ extension Realm {
                             bookmark.zimFile = zimFile
                         }
                         try context.save()
+                        
+                        // open zim files with bookmark data
+                        for data in existingZimFileBookmarks {
+                            try ZimFileService.shared.open(bookmark: data)
+                        }
                     } catch {
                         print("ZimFile migration failure: %s", error.localizedDescription)
                     }
