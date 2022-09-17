@@ -23,13 +23,13 @@ struct BookmarkContextMenu: ViewModifier {
             }
             if #available(iOS 15.0, *) {
                 Button(role: .destructive) {
-                    
+                    ReadingViewModel.deleteBookmark(bookmark.articleURL)
                 } label: {
                     Label("Remove", systemImage: "star.slash.fill")
                 }
             } else {
                 Button {
-                    
+                    ReadingViewModel.deleteBookmark(bookmark.articleURL)
                 } label: {
                     Label("Remove", systemImage: "star.slash.fill")
                 }

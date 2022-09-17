@@ -83,7 +83,7 @@ class ReadingViewModel: NSObject, ObservableObject, WKNavigationDelegate, WKScri
     
     /// Create bookmark for an article
     /// - Parameter url: url of the article to bookmark
-    func createBookmark(_ url: URL?) {
+    static func createBookmark(_ url: URL?) {
         guard let url = url else { return }
         let context = Database.shared.container.viewContext
         let bookmark = Bookmark(context: context)
@@ -108,7 +108,7 @@ class ReadingViewModel: NSObject, ObservableObject, WKNavigationDelegate, WKScri
     
     /// Delete an article bookmark
     /// - Parameter url: url of the article to delete bookmark
-    func deleteBookmark(_ url: URL?) {
+    static func deleteBookmark(_ url: URL?) {
         guard let url = url else { return }
         let context = Database.shared.container.viewContext
         let request = Bookmark.fetchRequest(predicate: NSPredicate(format: "articleURL == %@", url as CVarArg))

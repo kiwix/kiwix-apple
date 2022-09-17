@@ -12,7 +12,6 @@ import UniformTypeIdentifiers
 import Defaults
 
 struct BookmarkToggleButton: View {
-    @EnvironmentObject var viewModel: ReadingViewModel
     @FetchRequest private var bookmarks: FetchedResults<Bookmark>
     
     private let url: URL?
@@ -32,9 +31,9 @@ struct BookmarkToggleButton: View {
     var body: some View {
         Button {
             if isBookmarked {
-                viewModel.deleteBookmark(url)
+                ReadingViewModel.deleteBookmark(url)
             } else {
-                viewModel.createBookmark(url)
+                ReadingViewModel.createBookmark(url)
             }
         } label: {
             Label {
@@ -51,7 +50,6 @@ struct BookmarkToggleButton: View {
 
 struct BookmarkMultiButton: View {
     @EnvironmentObject var viewModel: ViewModel
-    @EnvironmentObject var readingViewModel: ReadingViewModel
     @FetchRequest private var bookmarks: FetchedResults<Bookmark>
     
     private let url: URL?
@@ -78,9 +76,9 @@ struct BookmarkMultiButton: View {
         })
         .simultaneousGesture(LongPressGesture().onEnded { _ in
             if isBookmarked {
-                readingViewModel.deleteBookmark(url)
+                ReadingViewModel.deleteBookmark(url)
             } else {
-                readingViewModel.createBookmark(url)
+                ReadingViewModel.createBookmark(url)
             }
         })
         .help("Show bookmarks. Long press to bookmark or unbookmark the current article.")
