@@ -46,7 +46,7 @@ struct RootView_iOS: UIViewControllerRepresentable {
         
         // observe bookmark toggle notification
         context.coordinator.bookmarkToggleObserver = NotificationCenter.default.addObserver(
-            forName: ReaderViewModel.bookmarkNotificationName, object: nil, queue: nil
+            forName: ReadingViewModel.bookmarkNotificationName, object: nil, queue: nil
         ) { notification in
             let isBookmarked = notification.object != nil
             let hudController = HUDController()
