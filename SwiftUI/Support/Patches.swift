@@ -15,6 +15,12 @@ extension URL: Identifiable {
     }
 }
 
+extension View {
+    func modify<Content>(@ViewBuilder _ transform: (Self) -> Content) -> Content {
+        transform(self)
+    }
+}
+
 #if os(macOS)
 enum UserInterfaceSizeClass {
     case compact

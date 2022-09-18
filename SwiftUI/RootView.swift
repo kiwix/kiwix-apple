@@ -38,12 +38,35 @@ struct RootView: View {
                 detail.frame(minWidth: 500, minHeight: 500)
             }
             #elseif os(iOS)
-            RootView_iOS(url: $url).ignoresSafeArea(.all)
+            RootView_iOS(url: $url)
+                .ignoresSafeArea(.all)
+                .sheet(item: $viewModel.activeSheet) { activeSheet in
+                    switch activeSheet {
+                    case .outline:
+                        SheetView {
+                            OutlineTree().listStyle(.plain).navigationBarTitleDisplayMode(.inline)
+                        }.modify { view in
+                            if #available(iOS 16.0, *) {
+                                view.presentationDetents([.medium, .large])
+                            }
+                        }
+                    case .bookmarks:
+                        SheetView { BookmarksView(url: $url) }
+                    case .library:
+                        LibraryView_iOS(url: $url)
+                    case .settings:
+                        SheetView { SettingsView() }
+                    }
+                }
             #endif
         }
-        .modifier(ActiveSheet_iOS(url: $url))
-        .modifier(FocusedSceneValue(\.navigationItem, $viewModel.navigationItem))
-        .modifier(FocusedSceneValue(\.url, url))
+        .modify { view in
+            if #available(macOS 12.0, iOS 15.0, *) {
+                view
+                    .focusedSceneValue(\.navigationItem, $viewModel.navigationItem)
+                    .focusedSceneValue(\.url, url)
+            }
+        }
         .onChange(of: url) { _ in
             viewModel.navigationItem = .reading
             viewModel.activeSheet = nil
@@ -119,31 +142,5 @@ struct RootView: View {
         case .none:
             EmptyView()
         }
-    }
-}
-
-struct ActiveSheet_iOS: ViewModifier {
-    @Binding var url: URL?
-    @EnvironmentObject var viewModel: ViewModel
-    
-    func body(content: Content) -> some View {
-        #if os(iOS)
-        content.sheet(item: $viewModel.activeSheet) { activeSheet in
-            switch activeSheet {
-            case .outline:
-                SheetView {
-                    OutlineTree().listStyle(.plain).navigationBarTitleDisplayMode(.inline)
-                }
-            case .bookmarks:
-                SheetView { BookmarksView(url: $url) }
-            case .library:
-                LibraryView_iOS(url: $url)
-            case .settings:
-                SheetView { SettingsView() }
-            }
-        }
-        #elseif os(macOS)
-        content
-        #endif
     }
 }

@@ -89,11 +89,13 @@ struct Welcome: View {
                     }
                 }.padding()
             }
+            #if os(iOS)
             .sheet(item: $selectedZimFile) { zimFile in
                 SheetView {
                     ZimFileDetail(url: $url, zimFile: zimFile)
                 }
             }
+            #endif
         }
     }
     
