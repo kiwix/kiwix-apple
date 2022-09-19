@@ -67,7 +67,7 @@ struct RootView: View {
                     .focusedSceneValue(\.url, url)
             }
         }
-        .alert(item: $readingViewModel.activeAlert) { activeAlert in
+        .alert(item: $viewModel.activeAlert) { activeAlert in
             switch activeAlert {
             case .externalLinkAsk(let url):
                 return Alert(

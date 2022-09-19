@@ -10,14 +10,13 @@ import WebKit
 
 import Defaults
 
-class ReadingViewModel: NSObject, ObservableObject, WKNavigationDelegate, WKScriptMessageHandler {
+class ReadingViewModel: NSObject, ObservableObject, WKScriptMessageHandler {
     @Published var canGoBack: Bool = false
     @Published var canGoForward: Bool = false
     @Published var articleTitle: String = ""
     @Published var zimFileName: String = ""
     @Published var outlineItems = [OutlineItem]()
     @Published var outlineItemTree = [OutlineItem]()
-    @Published var activeAlert: ActiveAlert?
     
     var webViewInteractionState: Any?
     var webViews = Set<WKWebView>()
@@ -25,48 +24,6 @@ class ReadingViewModel: NSObject, ObservableObject, WKNavigationDelegate, WKScri
     static let bookmarkNotificationName = NSNotification.Name(rawValue: "Bookmark.toggle")
     
     // MARK: - delegates
-    
-    func webView(_ webView: WKWebView,
-                 decidePolicyFor navigationAction: WKNavigationAction,
-                 decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
-        guard let url = navigationAction.request.url else { decisionHandler(.cancel); return }
-        if url.isKiwixURL, let redirectedURL = ZimFileService.shared.getRedirectedURL(url: url) {
-            DispatchQueue.main.async { webView.load(URLRequest(url: redirectedURL)) }
-            decisionHandler(.cancel)
-        } else if url.isKiwixURL {
-            decisionHandler(.allow)
-        } else if url.scheme == "http" || url.scheme == "https" {
-            switch Defaults[.externalLinkLoadingPolicy] {
-            case .alwaysAsk:
-                activeAlert = .externalLinkAsk(url: url)
-            case .alwaysLoad:
-                #if os(macOS)
-                NSWorkspace.shared.open(url)
-                #elseif os(iOS)
-                UIApplication.shared.open(url)
-                #endif
-            case .neverLoad:
-                activeAlert = .externalLinkNotLoading
-            }
-            decisionHandler(.cancel)
-        } else if url.scheme == "geo" {
-            let coordinate = url.absoluteString.replacingOccurrences(of: "geo:", with: "")
-            if let url = URL(string: "http://maps.apple.com/?ll=\(coordinate)") {
-                #if os(macOS)
-                NSWorkspace.shared.open(url)
-                #elseif os(iOS)
-                UIApplication.shared.open(url)
-                #endif
-            }
-            decisionHandler(.cancel)
-        } else {
-            decisionHandler(.cancel)
-        }
-    }
-    
-    func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
-        webView.evaluateJavaScript("expandAllDetailTags(); getOutlineItems();")
-    }
     
     func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
         if message.name == "headings", let headings = message.body as? [[String: String]] {

@@ -14,15 +14,16 @@ import Defaults
 #if os(macOS)
 struct WebView: NSViewRepresentable {
     @Binding var url: URL?
-    @EnvironmentObject var viewModel: ReadingViewModel
+    @EnvironmentObject var viewModel: ViewModel
+    @EnvironmentObject var readingViewModel: ReadingViewModel
     
     func makeNSView(context: Context) -> WKWebView {
         let webView = WKWebView(frame: .zero, configuration: WebViewConfiguration())
         webView.allowsBackForwardNavigationGestures = true
-        webView.configuration.userContentController.add(viewModel, name: "headings")
+        webView.configuration.userContentController.add(readingViewModel, name: "headings")
         webView.navigationDelegate = viewModel
-        webView.interactionState = viewModel.webViewInteractionState
-        viewModel.webViews.insert(webView)
+        webView.interactionState = readingViewModel.webViewInteractionState
+        readingViewModel.webViews.insert(webView)
         context.coordinator.setupObservers(webView)
         return webView
     }
@@ -33,8 +34,8 @@ struct WebView: NSViewRepresentable {
     }
     
     static func dismantleNSView(_ webView: WKWebView, coordinator: WebViewCoordinator) {
-        coordinator.view.viewModel.webViews.remove(webView)
-        coordinator.view.viewModel.webViewInteractionState = webView.interactionState
+        coordinator.view.readingViewModel.webViews.remove(webView)
+        coordinator.view.readingViewModel.webViewInteractionState = webView.interactionState
     }
     
     func makeCoordinator() -> WebViewCoordinator { WebViewCoordinator(self) }
@@ -42,17 +43,18 @@ struct WebView: NSViewRepresentable {
 #elseif os(iOS)
 struct WebView: UIViewControllerRepresentable {
     @Binding var url: URL?
-    @EnvironmentObject var viewModel: ReadingViewModel
+    @EnvironmentObject var viewModel: ViewModel
+    @EnvironmentObject var readingViewModel: ReadingViewModel
     
     func makeUIViewController(context: Context) -> WebViewController {
         let controller = WebViewController()
         controller.webView.allowsBackForwardNavigationGestures = true
-        controller.webView.configuration.userContentController.add(viewModel, name: "headings")
+        controller.webView.configuration.userContentController.add(readingViewModel, name: "headings")
         controller.webView.navigationDelegate = viewModel
         if #available(iOS 15.0, *) {
-            controller.webView.interactionState = viewModel.webViewInteractionState
+            controller.webView.interactionState = readingViewModel.webViewInteractionState
         }
-        viewModel.webViews.insert(controller.webView)
+        readingViewModel.webViews.insert(controller.webView)
         context.coordinator.setupObservers(controller.webView)
         return controller
     }
@@ -64,8 +66,8 @@ struct WebView: UIViewControllerRepresentable {
     
     static func dismantleUIViewController(_ controller: WebViewController, coordinator: WebViewCoordinator) {
         if #available(iOS 15.0, *) {
-            coordinator.view.viewModel.webViews.remove(controller.webView)
-            coordinator.view.viewModel.webViewInteractionState = controller.webView.interactionState
+            coordinator.view.readingViewModel.webViews.remove(controller.webView)
+            coordinator.view.readingViewModel.webViewInteractionState = controller.webView.interactionState
         }
     }
     
@@ -131,10 +133,10 @@ class WebViewCoordinator {
     
     func setupObservers(_ webView: WKWebView) {
         canGoBackObserver = webView.observe(\.canGoBack) { [unowned self] webView, _ in
-            self.view.viewModel.canGoBack = webView.canGoBack
+            self.view.readingViewModel.canGoBack = webView.canGoBack
         }
         canGoForwardObserver = webView.observe(\.canGoForward) { [unowned self] webView, _ in
-            self.view.viewModel.canGoForward = webView.canGoForward
+            self.view.readingViewModel.canGoForward = webView.canGoForward
         }
         pageZoomObserver = Defaults.observe(.webViewPageZoom) { change in
             webView.pageZoom = change.newValue
@@ -149,8 +151,8 @@ class WebViewCoordinator {
                   let zimFile = try? Database.shared.container.viewContext.fetch(
                     ZimFile.fetchRequest(predicate: NSPredicate(format: "fileID == %@", zimFileID))
                   ).first else { return }
-            self.view.viewModel.articleTitle = title
-            self.view.viewModel.zimFileName = zimFile.name
+            self.view.readingViewModel.articleTitle = title
+            self.view.readingViewModel.zimFileName = zimFile.name
         }
     }
 }
