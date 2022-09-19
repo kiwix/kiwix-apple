@@ -56,6 +56,10 @@ struct RootView: View {
                         LibraryView_iOS(url: $url)
                     case .settings:
                         SheetView { SettingsView() }
+                    case .safari:
+                        SheetView {
+                            Text("Safari")
+                        }
                     }
                 }
             #endif
@@ -77,7 +81,7 @@ struct RootView: View {
                         #if os(macOS)
                         NSWorkspace.shared.open(url)
                         #elseif os(iOS)
-                        UIApplication.shared.open(url)
+                        viewModel.activeSheet = .safari(url: url)
                         #endif
                     },
                     secondaryButton: .cancel()

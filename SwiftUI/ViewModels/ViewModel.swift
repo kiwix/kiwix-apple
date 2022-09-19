@@ -34,7 +34,7 @@ class ViewModel: NSObject, ObservableObject, WKNavigationDelegate {
                 #if os(macOS)
                 NSWorkspace.shared.open(url)
                 #elseif os(iOS)
-                UIApplication.shared.open(url)
+                activeSheet = .safari(url: url)
                 #endif
             case .neverLoad:
                 activeAlert = .externalLinkNotLoading
