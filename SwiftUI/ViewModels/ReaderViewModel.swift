@@ -17,6 +17,7 @@ class ReadingViewModel: NSObject, ObservableObject, WKNavigationDelegate, WKScri
     @Published var zimFileName: String = ""
     @Published var outlineItems = [OutlineItem]()
     @Published var outlineItemTree = [OutlineItem]()
+    @Published var activeAlert: ActiveAlert?
     
     var webViewInteractionState: Any?
     var webViews = Set<WKWebView>()
@@ -35,11 +36,18 @@ class ReadingViewModel: NSObject, ObservableObject, WKNavigationDelegate, WKScri
         } else if url.isKiwixURL {
             decisionHandler(.allow)
         } else if url.scheme == "http" || url.scheme == "https" {
-            #if os(macOS)
-            NSWorkspace.shared.open(url)
-            #elseif os(iOS)
-            // show external article load alert
-            #endif
+            switch Defaults[.externalLinkLoadingPolicy] {
+            case .alwaysAsk:
+                activeAlert = .externalLinkAsk(url: url)
+            case .alwaysLoad:
+                #if os(macOS)
+                NSWorkspace.shared.open(url)
+                #elseif os(iOS)
+                UIApplication.shared.open(url)
+                #endif
+            case .neverLoad:
+                activeAlert = .externalLinkNotLoading
+            }
             decisionHandler(.cancel)
         } else if url.scheme == "geo" {
             let coordinate = url.absoluteString.replacingOccurrences(of: "geo:", with: "")
@@ -190,9 +198,4 @@ class ReadingViewModel: NSObject, ObservableObject, WKNavigationDelegate, WKScri
             }
         }
     }
-}
-
-enum ActiveSheet: String, Identifiable {
-    var id: String { rawValue }
-    case outline, bookmarks, library, settings
 }

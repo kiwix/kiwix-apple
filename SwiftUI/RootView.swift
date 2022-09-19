@@ -67,6 +67,30 @@ struct RootView: View {
                     .focusedSceneValue(\.url, url)
             }
         }
+        .alert(item: $readingViewModel.activeAlert) { activeAlert in
+            switch activeAlert {
+            case .externalLinkAsk(let url):
+                return Alert(
+                    title: Text("External Link"),
+                    message: Text("An external link is tapped, do you wish to load the link?"),
+                    primaryButton: .default(Text("Load the link")) {
+                        #if os(macOS)
+                        NSWorkspace.shared.open(url)
+                        #elseif os(iOS)
+                        UIApplication.shared.open(url)
+                        #endif
+                    },
+                    secondaryButton: .cancel()
+                )
+            case .externalLinkNotLoading:
+                return Alert(
+                    title: Text("External Link"),
+                    message: Text(
+                        "An external link is tapped. However, your current setting does not allow it to be loaded."
+                    )
+                )
+            }
+        }
         .onChange(of: url) { _ in
             viewModel.navigationItem = .reading
             viewModel.activeSheet = nil

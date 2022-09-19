@@ -8,6 +8,25 @@
 
 import Defaults
 
+enum ActiveAlert: Identifiable {
+    var id: String {
+        switch self {
+        case .externalLinkAsk(let url):
+            return "externalLinkAsk-\(url.absoluteString)"
+        case .externalLinkNotLoading:
+            return "externalLinkNotLoading"
+        }
+    }
+    
+    case externalLinkAsk(url: URL)
+    case externalLinkNotLoading
+}
+
+enum ActiveSheet: String, Identifiable {
+    var id: String { rawValue }
+    case outline, bookmarks, library, settings
+}
+
 enum Category: String, CaseIterable, Identifiable {
     var id: String { rawValue }
     
