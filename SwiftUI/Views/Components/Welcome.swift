@@ -53,7 +53,9 @@ struct Welcome: View {
                         Text("Open Library")
                     }
                 }
-            }.padding()
+            }
+            .padding()
+            .frame(maxWidth: 600)
         } else {
             ScrollView {
                 LazyVGrid(
