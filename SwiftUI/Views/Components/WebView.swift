@@ -81,6 +81,13 @@ class WebViewController: UIViewController {
         view = webView
     }
     
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        // required to get adjusting font size working on iPadOS
+        webView.configuration.defaultWebpagePreferences.preferredContentMode = .mobile
+    }
+    
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         webView.setValue(view.safeAreaInsets, forKey: "_obscuredInsets")
@@ -88,22 +95,34 @@ class WebViewController: UIViewController {
 }
 #endif
 
+extension WKWebView {
+    func applyTextSizeAdjustmant() {
+        #if os(iOS)
+        guard Defaults[.webViewPageZoom] != 1 else { return }
+        let template = "document.getElementsByTagName('body')[0].style.webkitTextSizeAdjust='%.0f%%'"
+        let javascript = String(format: template, Defaults[.webViewPageZoom] * 100)
+        evaluateJavaScript(javascript, completionHandler: nil)
+        #endif
+    }
+}
+
 class WebViewConfiguration: WKWebViewConfiguration {
     override init() {
         super.init()
         setURLSchemeHandler(KiwixURLSchemeHandler(), forURLScheme: "kiwix")
         userContentController = {
             let controller = WKUserContentController()
-            guard FeatureFlags.wikipediaDarkUserCSS,
-                  let path = Bundle.main.path(forResource: "wikipedia_dark", ofType: "css"),
-                  let css = try? String(contentsOfFile: path) else { return controller }
-            let source = """
-                var style = document.createElement('style');
-                style.innerHTML = `\(css)`;
-                document.head.appendChild(style);
-                """
-            let script = WKUserScript(source: source, injectionTime: .atDocumentEnd, forMainFrameOnly: false)
-            controller.addUserScript(script)
+            if FeatureFlags.wikipediaDarkUserCSS,
+               let path = Bundle.main.path(forResource: "wikipedia_dark", ofType: "css"),
+               let css = try? String(contentsOfFile: path) {
+                let source = """
+                    var style = document.createElement('style');
+                    style.innerHTML = `\(css)`;
+                    document.head.appendChild(style);
+                    """
+                let script = WKUserScript(source: source, injectionTime: .atDocumentEnd, forMainFrameOnly: false)
+                controller.addUserScript(script)
+            }
             if let url = Bundle.main.url(forResource: "injection", withExtension: "js"),
                let javascript = try? String(contentsOf: url) {
                 let script = WKUserScript(source: javascript, injectionTime: .atDocumentEnd, forMainFrameOnly: false)
@@ -139,7 +158,11 @@ class WebViewCoordinator {
             self.view.readingViewModel.canGoForward = webView.canGoForward
         }
         pageZoomObserver = Defaults.observe(.webViewPageZoom) { change in
+            #if os(macOS)
             webView.pageZoom = change.newValue
+            #elseif os(iOS)
+            webView.applyTextSizeAdjustmant()
+            #endif
         }
         urlObserver = webView.observe(\.url) { [unowned self] webView, _ in
             guard webView.url?.absoluteString != self.view.url?.absoluteString else { return }
