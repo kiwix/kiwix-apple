@@ -11,7 +11,6 @@ import SwiftUI
 struct Welcome: View {
     @Binding var url: URL?
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
-    @EnvironmentObject private var viewModel: ViewModel
     @FetchRequest(
         sortDescriptors: [NSSortDescriptor(keyPath: \Bookmark.created, ascending: false)],
         animation: .easeInOut
@@ -25,37 +24,7 @@ struct Welcome: View {
     
     var body: some View {
         if zimFiles.isEmpty {
-            VStack(spacing: 20) {
-                VStack(spacing: 4) {
-                    Image("Kiwix_logo_v3")
-                        .resizable()
-                        .aspectRatio(1, contentMode: .fit)
-                        .frame(width: 60, height: 60)
-                        .padding(2)
-                        .background(RoundedRectangle(cornerRadius: 10).foregroundColor(.white))
-                    Text("KIWIX").font(.largeTitle).fontWeight(.bold)
-                }
-                Divider()
-                if #available(iOS 15.0, *) {
-                    Button {
-                        viewModel.activeSheet = .library
-                    } label: {
-                        HStack {
-                            Spacer()
-                            Text("Open Library").font(.subheadline)
-                            Spacer()
-                        }.padding(6)
-                    }.buttonStyle(.borderedProminent)
-                } else {
-                    Button {
-                        viewModel.activeSheet = .library
-                    } label: {
-                        Text("Open Library")
-                    }
-                }
-            }
-            .padding()
-            .frame(maxWidth: 600)
+            Onboarding()
         } else {
             ScrollView {
                 LazyVGrid(
@@ -107,6 +76,75 @@ struct Welcome: View {
         #elseif os(iOS)
         horizontalSizeClass == .regular ? 110: nil
         #endif
+    }
+}
+
+private struct Onboarding: View {
+    @EnvironmentObject private var viewModel: ViewModel
+    @StateObject private var libraryViewModel = LibraryViewModel()
+    
+    var body: some View {
+        VStack(spacing: 20) {
+            VStack(spacing: 4) {
+                Image("Kiwix_logo_v3")
+                    .resizable()
+                    .aspectRatio(1, contentMode: .fit)
+                    .frame(width: 60, height: 60)
+                    .padding(2)
+                    .background(RoundedRectangle(cornerRadius: 10).foregroundColor(.white))
+                Text("KIWIX").font(.largeTitle).fontWeight(.bold)
+            }
+            Divider()
+            HStack {
+                OnboardingViewButton {
+                    viewModel.activeSheet = .library
+                } content: {
+                    Text("Open File")
+                }
+                OnboardingViewButton {
+                    libraryViewModel.startRefresh(isUserInitiated: true)
+                } content: {
+                    if libraryViewModel.isRefreshing {
+                        HStack(spacing: 6) {
+                            ProgressView()
+                            Text("Fetching...")
+                        }
+                    } else {
+                        Text("Fetch Catalog")
+                    }
+                }.disabled(libraryViewModel.isRefreshing)
+            }
+        }
+        .padding()
+        .frame(maxWidth: 600)
+    }
+}
+
+private struct OnboardingViewButton<Content: View>: View {
+    let content: Content
+    let action: () -> Void
+    
+    init(action: @escaping () -> Void, @ViewBuilder content: () -> Content) {
+        self.content = content()
+        self.action = action
+    }
+    
+    var body: some View {
+        Button {
+            action()
+        } label: {
+            HStack {
+                Spacer()
+                content
+                Spacer()
+            }.padding(6)
+        }
+        .font(.subheadline)
+        .modify { view in
+            if #available(iOS 15.0, *) {
+                view.buttonStyle(.bordered)
+            }
+        }
     }
 }
 

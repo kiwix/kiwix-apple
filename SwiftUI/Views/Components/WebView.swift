@@ -96,7 +96,7 @@ class WebViewController: UIViewController {
 #endif
 
 extension WKWebView {
-    func applyTextSizeAdjustmant() {
+    func applyTextSizeAdjustment() {
         #if os(iOS)
         guard Defaults[.webViewPageZoom] != 1 else { return }
         let template = "document.getElementsByTagName('body')[0].style.webkitTextSizeAdjust='%.0f%%'"
@@ -161,7 +161,7 @@ class WebViewCoordinator {
             #if os(macOS)
             webView.pageZoom = change.newValue
             #elseif os(iOS)
-            webView.applyTextSizeAdjustmant()
+            webView.applyTextSizeAdjustment()
             #endif
         }
         urlObserver = webView.observe(\.url) { [unowned self] webView, _ in
