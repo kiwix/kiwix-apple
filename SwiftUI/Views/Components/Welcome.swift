@@ -23,7 +23,7 @@ struct Welcome: View {
     @State private var selectedZimFile: ZimFile?
     
     var body: some View {
-        if zimFiles.isEmpty {
+        if !zimFiles.isEmpty {
             Onboarding()
         } else {
             ScrollView {
@@ -96,57 +96,41 @@ private struct Onboarding: View {
             }
             Divider()
             HStack {
-                OnboardingViewButton {
-                    viewModel.activeSheet = .library(navigationItem: .categories)
-                } content: {
-                    Text("Open File")
+                FileImportButton {
+                    HStack {
+                        Spacer()
+                        Text("Open Files")
+                        Spacer()
+                    }.padding(6)
                 }
-                OnboardingViewButton {
+                Button {
                     libraryViewModel.startRefresh(isUserInitiated: true) {
                         viewModel.activeSheet = .library(navigationItem: .categories)
                     }
-                } content: {
-                    if libraryViewModel.isRefreshing {
-                        HStack(spacing: 6) {
-                            ProgressView()
-                            Text("Fetching...")
+                } label: {
+                    HStack {
+                        Spacer()
+                        if libraryViewModel.isRefreshing {
+                            HStack(spacing: 6) {
+                                ProgressView()
+                                Text("Fetching...")
+                            }
+                        } else {
+                            Text("Fetch Catalog")
                         }
-                    } else {
-                        Text("Fetch Catalog")
-                    }
+                        Spacer()
+                    }.padding(6)
                 }.disabled(libraryViewModel.isRefreshing)
+            }
+            .font(.subheadline)
+            .modify { view in
+                if #available(iOS 15.0, *) {
+                    view.buttonStyle(.bordered)
+                }
             }
         }
         .padding()
         .frame(maxWidth: 600)
-    }
-}
-
-private struct OnboardingViewButton<Content: View>: View {
-    let content: Content
-    let action: () -> Void
-    
-    init(action: @escaping () -> Void, @ViewBuilder content: () -> Content) {
-        self.content = content()
-        self.action = action
-    }
-    
-    var body: some View {
-        Button {
-            action()
-        } label: {
-            HStack {
-                Spacer()
-                content
-                Spacer()
-            }.padding(6)
-        }
-        .font(.subheadline)
-        .modify { view in
-            if #available(iOS 15.0, *) {
-                view.buttonStyle(.bordered)
-            }
-        }
     }
 }
 

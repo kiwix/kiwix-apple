@@ -27,7 +27,7 @@ struct Kiwix: App {
                 .environment(\.managedObjectContext, Database.shared.container.viewContext)
         }.commands {
             CommandGroup(replacing: .importExport) {
-                FileImportButton()
+                FileImportButton { Text("Open...") }
             }
             #if os(macOS)
             CommandGroup(replacing: .newItem) {

@@ -287,8 +287,6 @@
 		97E983541F4DDB670021E96A /* SearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97E983531F4DDB670021E96A /* SearchView.swift */; };
 		97EBDBF428C3AAC40067BE0F /* ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97EBDBF328C3AAC40067BE0F /* ViewModel.swift */; };
 		97EBDBF528C3AAC40067BE0F /* ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97EBDBF328C3AAC40067BE0F /* ViewModel.swift */; };
-		97EBDBF728C4FAA20067BE0F /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97EBDBF628C4FAA20067BE0F /* OnboardingView.swift */; };
-		97EBDBF828C4FAA20067BE0F /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97EBDBF628C4FAA20067BE0F /* OnboardingView.swift */; };
 		97EC18B326E8555E008309ED /* libkiwix.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97EC18AF26E8555E008309ED /* libkiwix.xcframework */; };
 		97EC18B426E8555E008309ED /* libkiwix.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97EC18AF26E8555E008309ED /* libkiwix.xcframework */; };
 		97EC18B626E8555E008309ED /* RealmSwift.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97EC18B026E8555E008309ED /* RealmSwift.xcframework */; };
@@ -543,7 +541,6 @@
 		97E94B31271F1876005B0295 /* libapple_nghttp2.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libapple_nghttp2.tbd; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX12.0.sdk/usr/lib/libapple_nghttp2.tbd; sourceTree = DEVELOPER_DIR; };
 		97E983531F4DDB670021E96A /* SearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchView.swift; sourceTree = "<group>"; };
 		97EBDBF328C3AAC40067BE0F /* ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModel.swift; sourceTree = "<group>"; };
-		97EBDBF628C4FAA20067BE0F /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
 		97EC18AF26E8555E008309ED /* libkiwix.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = libkiwix.xcframework; sourceTree = "<group>"; };
 		97EC18B026E8555E008309ED /* RealmSwift.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = RealmSwift.xcframework; sourceTree = "<group>"; };
 		97EC18B126E8555E008309ED /* Realm.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = Realm.xcframework; sourceTree = "<group>"; };
@@ -1011,7 +1008,6 @@
 				975088B9287BBDFE00273181 /* LanguageSelector.swift */,
 				972DE4C12814A961004FD9B9 /* LibraryView_iOS.swift */,
 				974C33AA28558D2900DF6F4C /* LibrarySettings_macOS.swift */,
-				97EBDBF628C4FAA20067BE0F /* OnboardingView.swift */,
 				97C278DE2796249900666E07 /* Outline.swift */,
 				97255D8B273608C3002B995B /* WebView.swift */,
 				974C33A42855884C00DF6F4C /* SafariView.swift */,
@@ -1511,7 +1507,6 @@
 				972DE4B62814A502004FD9B9 /* Enum.swift in Sources */,
 				970C0BE028A28AEA0037A47D /* RootView.swift in Sources */,
 				9744068728CE263800916BD4 /* DirectoryMonitor.swift in Sources */,
-				97EBDBF828C4FAA20067BE0F /* OnboardingView.swift in Sources */,
 				974C33A9285589E900DF6F4C /* Patches.swift in Sources */,
 				973A0DF1282E981200B41E71 /* ZimFileRow.swift in Sources */,
 				97DE2BA6283A944100C63D9B /* GridCommon.swift in Sources */,
@@ -1658,7 +1653,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				97EBDBF728C4FAA20067BE0F /* OnboardingView.swift in Sources */,
 				973A0DE3281D80E300B41E71 /* ZimFileDetail.swift in Sources */,
 				97242B9E2735E6A800C87F85 /* Platform.swift in Sources */,
 				97DE2BA2283A8E5C00C63D9B /* LibraryViewModel.swift in Sources */,

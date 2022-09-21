@@ -85,14 +85,21 @@ struct BookmarkMultiButton: View {
     }
 }
 
-struct FileImportButton: View {
+struct FileImportButton<Label: View>: View {
     @State private var isPresented: Bool = false
+    
+    let label: Label
+    
+    init(@ViewBuilder label: () -> Label) {
+        self.label = label()
+    }
     
     var body: some View {
         Button {
             isPresented.toggle()
         } label: {
-            Label("Open...", systemImage: "plus")
+            label
+//            Label("Open...", systemImage: "plus")
         }
         .fileImporter(
             isPresented: $isPresented,

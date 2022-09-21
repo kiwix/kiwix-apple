@@ -38,6 +38,6 @@ struct ZimFilesOpened: View {
         }
         .navigationTitle(NavigationItem.opened.name)
         .modifier(ZimFileDetailPanel_macOS(url: $url, zimFile: selected))
-        .toolbar { FileImportButton() }
+        .toolbar { FileImportButton { Label("Open...", systemImage: "plus") } }
     }
 }
