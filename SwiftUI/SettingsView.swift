@@ -90,7 +90,16 @@ struct SettingsView: View {
             } footer: {
                 Text("Does not apply to files opened in place.")
             }
-            NavigationLink("About") { About() }
+            Section {
+                Button("Feedback") { UIApplication.shared.open(URL(string: "mailto:feedback@kiwix.org")!) }
+                Button("Rate the App") {
+                    let url = URL(string:"itms-apps://itunes.apple.com/us/app/kiwix/id997079563?action=write-review")!
+                    UIApplication.shared.open(url)
+                }
+                NavigationLink("About") { About() }
+            } header: {
+                Text("Misc")
+            }
         }
         .navigationTitle("Settings")
         .onChange(of: libraryAutoRefresh) { SettingsView.applyLibraryAutoRefreshSetting(isEnabled: $0) }
