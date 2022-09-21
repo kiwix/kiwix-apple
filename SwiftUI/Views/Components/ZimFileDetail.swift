@@ -88,6 +88,7 @@ struct ZimFileDetail: View {
         } else if zimFile.fileURLBookmark != nil {  // zim file is opened
             Action(title: "Open Main Page") {
                 url = ZimFileService.shared.getMainPageURL(zimFileID: zimFile.fileID)
+                viewModel.activeSheet = nil
                 viewModel.navigationItem = .reading
             }
             #if os(macOS)
