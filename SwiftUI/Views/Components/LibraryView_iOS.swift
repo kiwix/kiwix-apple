@@ -12,12 +12,18 @@ import SwiftUI
 struct LibraryView_iOS: View {
     @Binding var url: URL?
     @EnvironmentObject private var libraryViewModel: LibraryViewModel
-    @SceneStorage("SelectedLibraryNavigationItem") private var selected: NavigationItem = .opened
+    @SceneStorage("LibraryNavigationItem") private var navigationItem: NavigationItem = .opened
     
-    let navigationItems: [NavigationItem] = [.opened, .categories, .downloads, .new]
+    private let navigationItems: [NavigationItem] = [.opened, .categories, .downloads, .new]
+    private let defaultNavigationItem: NavigationItem?
+    
+    init(url: Binding<URL?>, navigationItem: NavigationItem? = nil) {
+        self._url = url
+        self.defaultNavigationItem = navigationItem
+    }
     
     var body: some View {
-        TabView(selection: $selected) {
+        TabView(selection: $navigationItem) {
             ForEach(navigationItems) { navigationItem in
                 SheetView {
                     switch navigationItem {
@@ -51,7 +57,9 @@ struct LibraryView_iOS: View {
             }
         }
         .onAppear {
-            libraryViewModel.startRefresh(isUserInitiated: false)
+            if let defaultNavigationItem = defaultNavigationItem {
+                navigationItem = defaultNavigationItem
+            }
         }
     }
 }

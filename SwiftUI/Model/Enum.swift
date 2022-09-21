@@ -17,7 +17,12 @@ enum ActiveAlert: Hashable, Identifiable {
 
 enum ActiveSheet: Hashable, Identifiable {
     var id: Int { hashValue }
-    case outline, bookmarks, library, settings, safari(url: URL)
+    
+    case outline
+    case bookmarks
+    case library(navigationItem: NavigationItem? = nil)
+    case settings
+    case safari(url: URL)
 }
 
 enum Category: String, CaseIterable, Identifiable {

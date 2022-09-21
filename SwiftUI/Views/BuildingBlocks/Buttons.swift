@@ -114,7 +114,7 @@ struct LibraryButton: View {
     
     var body: some View {
         Button {
-            viewModel.activeSheet = .library
+            viewModel.activeSheet = .library()
         } label: {
             Label("Library", systemImage: "folder")
         }

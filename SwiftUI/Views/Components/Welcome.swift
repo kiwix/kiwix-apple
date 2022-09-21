@@ -97,12 +97,14 @@ private struct Onboarding: View {
             Divider()
             HStack {
                 OnboardingViewButton {
-                    viewModel.activeSheet = .library
+                    viewModel.activeSheet = .library(navigationItem: .categories)
                 } content: {
                     Text("Open File")
                 }
                 OnboardingViewButton {
-                    libraryViewModel.startRefresh(isUserInitiated: true)
+                    libraryViewModel.startRefresh(isUserInitiated: true) {
+                        viewModel.activeSheet = .library(navigationItem: .categories)
+                    }
                 } content: {
                     if libraryViewModel.isRefreshing {
                         HStack(spacing: 6) {

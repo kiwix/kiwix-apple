@@ -34,17 +34,25 @@ class LibraryViewModel: ObservableObject {
     
     // MARK: - Refresh
     
-    func startRefresh(isUserInitiated: Bool) {
+    func startRefresh(isUserInitiated: Bool, completion: (() -> Void)? = nil) {
         guard !isRefreshing else { return }
         
         // decide if refresh should proceed
         let isStale = (Defaults[.libraryLastRefresh]?.timeIntervalSinceNow ?? -3600) <= -3600
         guard isUserInitiated || (Defaults[.libraryAutoRefresh] && isStale) else { return }
         
+        // configure operation
+        let operation = LibraryRefreshOperation()
+        operation.completionBlock = {
+            DispatchQueue.main.async {
+                completion?()
+            }
+        }
+        
         // start refresh
         isRefreshing = true
         LibraryViewModel.operationQueue.progress.totalUnitCount += 1
-        LibraryViewModel.operationQueue.addOperation(LibraryRefreshOperation())
+        LibraryViewModel.operationQueue.addOperation(operation)
     }
 }
 
