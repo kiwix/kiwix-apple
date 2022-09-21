@@ -23,7 +23,7 @@ struct Welcome: View {
     @State private var selectedZimFile: ZimFile?
     
     var body: some View {
-        if !zimFiles.isEmpty {
+        if zimFiles.isEmpty {
             Onboarding()
         } else {
             ScrollView {
@@ -112,7 +112,9 @@ private struct Onboarding: View {
                         Spacer()
                         if libraryViewModel.isRefreshing {
                             HStack(spacing: 6) {
-                                ProgressView()
+                                // Height is set to a small value to prevent the height of
+                                // the button to be taller than the text when refreshing
+                                ProgressView().frame(height: 1)
                                 Text("Fetching...")
                             }
                         } else {

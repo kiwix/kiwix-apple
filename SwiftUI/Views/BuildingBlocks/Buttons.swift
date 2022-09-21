@@ -97,10 +97,7 @@ struct FileImportButton<Label: View>: View {
     var body: some View {
         Button {
             isPresented.toggle()
-        } label: {
-            label
-//            Label("Open...", systemImage: "plus")
-        }
+        } label: { label }
         .fileImporter(
             isPresented: $isPresented,
             allowedContentTypes: [UTType(exportedAs: "org.openzim.zim")],
