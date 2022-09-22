@@ -30,13 +30,18 @@ struct ZimFilesCategories: View {
 struct ZimFilesCategory: View {
     @Binding var category: Category
     @Binding var url: URL?
+    @EnvironmentObject private var libraryViewModel: LibraryViewModel
     @State private var searchText = ""
     
     var body: some View {
-        if #available(iOS 15.0, *), category != .ted, category != .stackExchange, category != .other {
-            CategoryGrid(category: $category, searchText: $searchText, url: $url)
-        } else {
-            CategoryList(category: $category, searchText: $searchText, url: $url)
+        Group {
+            if #available(iOS 15.0, *), category != .ted, category != .stackExchange, category != .other {
+                CategoryGrid(category: $category, searchText: $searchText, url: $url)
+            } else {
+                CategoryList(category: $category, searchText: $searchText, url: $url)
+            }
+        }.onAppear {
+            libraryViewModel.startRefresh(isUserInitiated: false)
         }
     }
     
