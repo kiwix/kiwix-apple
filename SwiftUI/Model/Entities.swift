@@ -17,6 +17,8 @@ class Bookmark: NSManagedObject, Identifiable {
     @NSManaged var snippet: String?
     @NSManaged var created: Date
     
+    @NSManaged var zimFile: ZimFile?
+    
     class func fetchRequest(
         predicate: NSPredicate? = nil, sortDescriptors: [NSSortDescriptor] = []
     ) -> NSFetchRequest<Bookmark> {
@@ -78,6 +80,7 @@ class ZimFile: NSManagedObject, Identifiable {
     @NSManaged var size: Int64
     
     @NSManaged var downloadTask: DownloadTask?
+    @NSManaged var bookmarks: [Bookmark]
     
     static var openedPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
         NSPredicate(format: "fileURLBookmark != nil"),

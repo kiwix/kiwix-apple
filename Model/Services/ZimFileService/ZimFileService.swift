@@ -16,10 +16,6 @@ extension ZimFileService {
     
     // MARK: - Reader Management
     
-    /// Open a zim file from URL
-    /// - Parameter url: file url of the zim file to open
-    func open(url: URL) { __open(url) }
-    
     /// Open a zim file from bookmark data
     /// - Parameter bookmark: url bookmark data of the zim file to open
     /// - Returns: new url bookmark data if the one used to open the zim file is stale
@@ -39,7 +35,7 @@ extension ZimFileService {
         }
         #endif
         
-        open(url: url)
+        __open(url)
         return isStale ? ZimFileService.getBookmarkData(url: url) : nil
     }
     
@@ -90,13 +86,15 @@ extension ZimFileService {
         return URL(zimFileID: zimFileID.uuidString, contentPath: redirectedPath)
     }
     
-    func getMainPageURL(zimFileID: UUID) -> URL? {
-        guard let path = __getMainPagePath(zimFileID) else { return nil }
+    func getMainPageURL(zimFileID: UUID? = nil) -> URL? {
+        guard let zimFileID = zimFileID ?? fileIDs.randomElement(),
+              let path = __getMainPagePath(zimFileID) else { return nil }
         return URL(zimFileID: zimFileID.uuidString, contentPath: path)
     }
     
-    func getRandomPageURL(zimFileID: UUID) -> URL? {
-        guard let path = __getRandomPagePath(zimFileID) else { return nil }
+    func getRandomPageURL(zimFileID: UUID? = nil) -> URL? {
+        guard let zimFileID = zimFileID ?? fileIDs.randomElement(),
+              let path = __getRandomPagePath(zimFileID) else { return nil }
         return URL(zimFileID: zimFileID.uuidString, contentPath: path)
     }
     

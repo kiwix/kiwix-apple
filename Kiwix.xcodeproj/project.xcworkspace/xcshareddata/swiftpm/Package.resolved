@@ -17,6 +17,24 @@
         "revision" : "f08c8323da21e985f3772610753bcfc652c2103f",
         "version" : "3.1.3"
       }
+    },
+    {
+      "identity" : "swiftui-introspect",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/siteline/SwiftUI-Introspect.git",
+      "state" : {
+        "branch" : "master",
+        "revision" : "7ef0df639079491ee1aaf6b83b6fd4d08df80393"
+      }
+    },
+    {
+      "identity" : "swiftuibackports",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/shaps80/SwiftUIBackports.git",
+      "state" : {
+        "revision" : "4cab730480277c5ae6ac3ea8ee02b4845dee4903",
+        "version" : "1.6.3"
+      }
     }
   ],
   "version" : 2
