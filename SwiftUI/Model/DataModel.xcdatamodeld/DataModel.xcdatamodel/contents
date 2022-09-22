@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="20086" systemVersion="21G72" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="20086" systemVersion="21F79" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="Bookmark" representedClassName=".Bookmark" syncable="YES">
         <attribute name="articleURL" attributeType="URI"/>
         <attribute name="created" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="snippet" optional="YES" attributeType="String" spotlightIndexingEnabled="YES"/>
         <attribute name="thumbImageURL" optional="YES" attributeType="URI"/>
         <attribute name="title" attributeType="String" spotlightIndexingEnabled="YES"/>
-        <relationship name="zimFile" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ZimFile" inverseName="bookmarks" inverseEntity="ZimFile"/>
         <uniquenessConstraints>
             <uniquenessConstraint>
                 <constraint value="articleURL"/>
@@ -49,7 +48,6 @@
         <attribute name="persistentID" attributeType="String"/>
         <attribute name="requiresServiceWorkers" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
         <attribute name="size" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
-        <relationship name="bookmarks" toMany="YES" deletionRule="Cascade" destinationEntity="Bookmark" inverseName="zimFile" inverseEntity="Bookmark"/>
         <relationship name="downloadTask" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="DownloadTask" inverseName="zimFile" inverseEntity="DownloadTask"/>
         <fetchIndex name="category">
             <fetchIndexElement property="category" type="Binary" order="ascending"/>
@@ -64,8 +62,8 @@
         </uniquenessConstraints>
     </entity>
     <elements>
-        <element name="Bookmark" positionX="-63" positionY="-18" width="128" height="119"/>
+        <element name="Bookmark" positionX="-63" positionY="-18" width="128" height="104"/>
         <element name="DownloadTask" positionX="-63" positionY="135" width="128" height="134"/>
-        <element name="ZimFile" positionX="-63" positionY="18" width="128" height="374"/>
+        <element name="ZimFile" positionX="-63" positionY="18" width="128" height="359"/>
     </elements>
 </model>
