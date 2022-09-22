@@ -90,7 +90,7 @@ class Database {
             let fetchRequest = NSPersistentHistoryChangeRequest.fetchHistory(after: self.token)
             guard let result = try? context.execute(fetchRequest) as? NSPersistentHistoryResult,
                   let transactions = result.result as? [NSPersistentHistoryTransaction] else { return }
-            self.container.viewContext.perform {
+            self.container.viewContext.performAndWait {
                 transactions.forEach { transaction in
                     self.container.viewContext.mergeChanges(fromContextDidSave: transaction.objectIDNotification())
                     self.token = transaction.token

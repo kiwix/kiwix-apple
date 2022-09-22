@@ -23,7 +23,7 @@ extension Defaults.Keys {
 //    static let sideBarDisplayMode = Key<SideBarDisplayMode>("sideBarDisplayMode", default: .automatic)
 //
 //    // search
-//    static let recentSearchTexts = Key<[String]>("recentSearchTexts", default: [])
+    static let recentSearchTexts = Key<[String]>("recentSearchTexts", default: [])
     
     
     // library

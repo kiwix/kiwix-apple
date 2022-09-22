@@ -8,6 +8,23 @@
 
 import Defaults
 
+enum ActiveAlert: Hashable, Identifiable {
+    var id: Int { hashValue }
+    
+    case externalLinkAsk(url: URL)
+    case externalLinkNotLoading
+}
+
+enum ActiveSheet: Hashable, Identifiable {
+    var id: Int { hashValue }
+    
+    case outline
+    case bookmarks
+    case library(navigationItem: NavigationItem? = nil)
+    case settings
+    case safari(url: URL)
+}
+
 enum Category: String, CaseIterable, Identifiable {
     var id: String { rawValue }
     
@@ -115,71 +132,50 @@ enum LibraryLanguageSortingMode: String, CaseIterable, Identifiable, Defaults.Se
     }
 }
 
-enum LibraryTopic: Hashable, Identifiable, RawRepresentable {
-    case opened, new, downloads, categories
-    case category(Category)
-    
-    init?(rawValue: String) {
-        let parts = rawValue.split(separator: ".")
-        switch parts.first {
-        case "new":
-            self = .new
-        case "downloads":
-            self = .downloads
-        case "categories":
-            self = .categories
-        default:
-            self = .opened
-        }
-    }
-    
-    var rawValue: String {
-        switch self {
-        case .opened:
-            return "opened"
-        case .new:
-            return "new"
-        case .downloads:
-            return "downloads"
-        case .categories:
-            return "categories"
-        case .category(let category):
-            return "category.\(category.rawValue)"
-        }
-    }
-    
+enum NavigationItem: String, Identifiable, CaseIterable {
     var id: String { rawValue }
-    
+
+    case reading, bookmarks, map, opened, categories, new, downloads
+
     var name: String {
         switch self {
+        case .reading:
+            return "Reading"
+        case .bookmarks:
+            return "Bookmarks"
+        case .map:
+            return "Map"
         case .opened:
             return "Opened"
+        case .categories:
+            return "Categories"
         case .new:
             return "New"
         case .downloads:
             return "Downloads"
-        case .categories:
-            return "Categories"
-        case .category(let category):
-            return category.description
         }
     }
     
-    var iconName: String {
+    var icon: String {
         switch self {
+        case .reading:
+            return "book"
+        case .bookmarks:
+            return "star"
+        case .map:
+            return "map"
         case .opened:
             return "folder"
+        case .categories:
+            return "books.vertical"
         case .new:
             return "newspaper"
         case .downloads:
             return "tray.and.arrow.down"
-        case .categories:
-            return "books.vertical"
-        case .category(_):
-            return "book"
         }
     }
 }
+
 
 enum SearchResultSnippetMode: String, CaseIterable, Identifiable, Defaults.Serializable  {
     case disabled, firstParagraph, firstSentence, matches
@@ -204,36 +200,4 @@ enum SheetDisplayMode: String, Identifiable {
     case outline, bookmarks, library, settings
     
     var id: String { rawValue }
-}
-
-enum SidebarDisplayMode: String, CaseIterable, Identifiable {
-    case search, bookmarks, outline, library
-    
-    var id: String { rawValue }
-    
-    var imageName: String {
-        switch self {
-        case .search:
-            return "magnifyingglass"
-        case .bookmarks:
-            return "star"
-        case .outline:
-            return "list.bullet"
-        case .library:
-            return "folder"
-        }
-    }
-    
-    var help: String {
-        switch self {
-        case .search:
-            return "Search for articles"
-        case .bookmarks:
-            return "Show bookmarked articles"
-        case .outline:
-            return "Show article outline"
-        case .library:
-            return "Show opened zim files"
-        }
-    }
 }
