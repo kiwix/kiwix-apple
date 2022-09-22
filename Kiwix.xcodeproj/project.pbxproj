@@ -1046,6 +1046,7 @@
 				976D90E72815D63A00CC7D29 /* ZimFilesNew.swift */,
 				974C33A12853DDEE00DF6F4C /* SettingsView.swift */,
 				977B1B5A28971D5E001D07C4 /* App.swift */,
+				974C33A7285589E900DF6F4C /* Patches.swift */,
 				97E94B1D271EF250005B0295 /* Assets.xcassets */,
 			);
 			path = SwiftUI;
@@ -1059,7 +1060,6 @@
 				97E94B22271EF250005B0295 /* Kiwix.entitlements */,
 				97E94B20271EF250005B0295 /* Preview Assets.xcassets */,
 				97EEFF2028398E9A00BDD6E2 /* iOSApp.swift */,
-				974C33A7285589E900DF6F4C /* Patches.swift */,
 			);
 			path = Support;
 			sourceTree = "<group>";
