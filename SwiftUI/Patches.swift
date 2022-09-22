@@ -15,9 +15,9 @@ extension URL: Identifiable {
     }
 }
 
-extension View {
-    func modify<Content>(@ViewBuilder _ transform: (Self) -> Content) -> Content {
-        transform(self)
+extension SwiftUI.View {
+    func modify<T: View>(@ViewBuilder _ modifier: (Self) -> T) -> some View {
+        modifier(self)
     }
 }
 
