@@ -67,6 +67,8 @@ struct RootView: View {
                 view
                     .focusedSceneValue(\.navigationItem, $viewModel.navigationItem)
                     .focusedSceneValue(\.url, url)
+            } else {
+                view
             }
         }
         .alert(item: $viewModel.activeAlert) { activeAlert in
