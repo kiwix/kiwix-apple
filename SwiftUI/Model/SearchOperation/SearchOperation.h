@@ -13,7 +13,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface SearchOperation : NSOperation
 
 @property (nonatomic, strong) NSString *searchText;
-@property (nonatomic, strong) NSString *snippetMode;
+@property (nonatomic, assign) BOOL extractMatchingSnippet;
 
 @property (nonatomic, strong) NSMutableOrderedSet *results NS_REFINED_FOR_SWIFT;
 
