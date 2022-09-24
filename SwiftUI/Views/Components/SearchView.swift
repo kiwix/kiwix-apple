@@ -90,16 +90,21 @@ struct SearchView: View {
             HStack(alignment: .firstTextBaseline) {
                 Text("Included in Search").fontWeight(.medium)
                 Spacer()
-                Group {
-                    if zimFiles.count == zimFiles.filter({ $0.includedInSearch }).count {
-                        Button("None") { zimFiles.forEach { $0.includedInSearch = false } }
-                    } else {
-                        Button("All") { zimFiles.forEach { $0.includedInSearch = true } }
+                if zimFiles.count == zimFiles.filter({ $0.includedInSearch }).count {
+                    Button {
+                        zimFiles.forEach { $0.includedInSearch = false }
+                        try? managedObjectContext.save()
+                    } label: {
+                        Text("None").font(.caption).fontWeight(.medium)
+                    }
+                } else {
+                    Button {
+                        zimFiles.forEach { $0.includedInSearch = true }
+                        try? managedObjectContext.save()
+                    } label: {
+                        Text("All").font(.caption).fontWeight(.medium)
                     }
                 }
-                #if os(macOS)
-                .font(.caption2)
-                #endif
             }
         }
     }
