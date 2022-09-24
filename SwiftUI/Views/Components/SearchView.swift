@@ -87,9 +87,19 @@ struct SearchView: View {
                 }
             }
         } header: {
-            HStack {
+            HStack(alignment: .firstTextBaseline) {
                 Text("Included in Search").fontWeight(.medium)
                 Spacer()
+                Group {
+                    if zimFiles.count == zimFiles.filter({ $0.includedInSearch }).count {
+                        Button("None") { zimFiles.forEach { $0.includedInSearch = false } }
+                    } else {
+                        Button("All") { zimFiles.forEach { $0.includedInSearch = true } }
+                    }
+                }
+                #if os(macOS)
+                .font(.caption2)
+                #endif
             }
         }
     }
