@@ -52,7 +52,9 @@ struct SearchView: View {
             } else {
                 content
             }
-        }.background(Color.background)
+        }
+        .background(Color.background)
+        .ignoresSafeArea(.container, edges: .bottom)
         #endif
     }
     
@@ -72,14 +74,21 @@ struct SearchView: View {
     }
     
     var filter: some View {
-        ForEach(zimFiles) { zimFile in
+        Section {
+            ForEach(zimFiles) { zimFile in
+                HStack {
+                    Toggle(zimFile.name, isOn: Binding<Bool>(get: {
+                        zimFile.includedInSearch
+                    }, set: {
+                        zimFile.includedInSearch = $0
+                        try? managedObjectContext.save()
+                    }))
+                    Spacer()
+                }
+            }
+        } header: {
             HStack {
-                Toggle(zimFile.name, isOn: Binding<Bool>(get: {
-                    zimFile.includedInSearch
-                }, set: {
-                    zimFile.includedInSearch = $0
-                    try? managedObjectContext.save()
-                }))
+                Text("Included in Search").fontWeight(.medium)
                 Spacer()
             }
         }
@@ -108,14 +117,7 @@ struct SearchView: View {
                     }
                 }
                 Spacer().frame(height: 20)
-                Section {
-                    filter
-                } header: {
-                    HStack {
-                        Text("Included in Search").fontWeight(.medium)
-                        Spacer()
-                    }
-                }
+                filter
             }.padding()
         }
         #elseif os(iOS)
@@ -131,10 +133,8 @@ struct SearchView: View {
                     }
                 } header: { Text("Recent Search") }
             }
-            Section {
-                filter
-            } header: { Text("Included in Search") }
-        }
+            filter
+        }.listStyle(.insetGrouped) // explicit list style required for iOS 14
         #endif
     }
     
