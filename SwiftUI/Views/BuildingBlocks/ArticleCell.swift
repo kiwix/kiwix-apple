@@ -14,6 +14,7 @@ struct ArticleCell: View {
     let title: String
     let snippet: NSAttributedString?
     let zimFile: ZimFile?
+    let alwaysShowSnippet: Bool
     
     init(bookmark: Bookmark) {
         self.title = bookmark.title
@@ -23,12 +24,14 @@ struct ArticleCell: View {
             self.snippet = nil
         }
         self.zimFile = bookmark.zimFile
+        self.alwaysShowSnippet = true
     }
     
     init(result: SearchResult, zimFile: ZimFile?) {
         self.title = result.title
         self.snippet = result.snippet
         self.zimFile = zimFile
+        self.alwaysShowSnippet = false
     }
     
     var body: some View {
@@ -43,6 +46,8 @@ struct ArticleCell: View {
                         } else {
                             Text(snippet.string).lineLimit(4)
                         }
+                    } else if alwaysShowSnippet {
+                        Text("No snippet").foregroundColor(.secondary)
                     }
                 }.font(.caption).multilineTextAlignment(.leading)
                 Spacer(minLength: 0)
