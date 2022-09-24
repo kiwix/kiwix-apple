@@ -24,7 +24,7 @@ struct SettingsView: View {
     var body: some View {
         Form {
             Section {
-                Stepper(value: $webViewPageZoom, in: 0.5...1.5, step: 0.05) {
+                Stepper(value: $webViewPageZoom, in: 0.5...2, step: 0.05) {
                     Text("Page zoom: \(Formatter.percent.string(from: NSNumber(value: webViewPageZoom)) ?? "")")
                 }
                 Picker("External link", selection: $externalLinkLoadingPolicy) {
