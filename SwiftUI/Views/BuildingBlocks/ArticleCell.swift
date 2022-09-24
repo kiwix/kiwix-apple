@@ -43,8 +43,6 @@ struct ArticleCell: View {
                         } else {
                             Text(snippet.string).lineLimit(4)
                         }
-                    } else {
-                        Text("No snippet").foregroundColor(.secondary)
                     }
                 }.font(.caption).multilineTextAlignment(.leading)
                 Spacer(minLength: 0)
