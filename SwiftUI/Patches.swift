@@ -15,12 +15,13 @@ extension URL: Identifiable {
     }
 }
 
-extension View {
-    func modify<Content>(@ViewBuilder _ transform: (Self) -> Content) -> Content {
-        transform(self)
+extension SwiftUI.View {
+    func modify<T: View>(@ViewBuilder _ modifier: (Self) -> T) -> some View {
+        modifier(self)
     }
 }
 
+/// Brings size classes to macOS, with regular as defaults
 #if os(macOS)
 enum UserInterfaceSizeClass {
     case compact
@@ -44,26 +45,8 @@ extension EnvironmentValues {
 }
 #endif
 
-struct FocusedSceneValue<T>: ViewModifier {
-    private let keyPath: WritableKeyPath<FocusedValues, T?>
-    private let value: T
-    
-    init(_ keyPath: WritableKeyPath<FocusedValues, T?>, _ value: T) {
-        self.keyPath = keyPath
-        self.value = value
-    }
-    
-    func body(content: Content) -> some View {
-        if #available(macOS 12.0, iOS 15.0, *) {
-            content.focusedSceneValue(keyPath, value)
-        } else {
-            content.focusedValue(keyPath, value)
-        }
-    }
-}
-
 /// Ports theme adaptive background colors to SwiftUI
-public extension Color {
+extension Color {
     #if os(macOS)
     static let background = Color(NSColor.windowBackgroundColor)
     static let secondaryBackground = Color(NSColor.underPageBackgroundColor)

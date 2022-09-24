@@ -1,3 +1,10 @@
+## 1.16
+
+- Tabbed library UI with opened, categories, download tasks and new zim files section
+- Articles also have a new look in bookmark and search results
+- Streamlined settings UI
+- Add iOS 16 compatibility and remove iOS 13 support
+
 ## 1.15.5
 
 - libkiwix 10 & libzim 7 compatibility

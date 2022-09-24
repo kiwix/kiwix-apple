@@ -56,6 +56,8 @@ struct About: View {
             }
             Section {
                 release
+                appVersion
+                buildNumber
                 source
                 license
             } header: { Text("Release") }
@@ -92,6 +94,26 @@ struct About: View {
     
     var release: some View {
         Text("This app is released under the terms of the GNU General Public License version 3.")
+    }
+    
+    var appVersion: some View {
+        HStack {
+            Text("Version")
+            Spacer()
+            if let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String {
+                Text(version).foregroundColor(.secondary)
+            }
+        }
+    }
+    
+    var buildNumber: some View {
+        HStack {
+            Text("Build")
+            Spacer()
+            if let build = Bundle.main.infoDictionary?["CFBundleVersion"] as? String {
+                Text(build).foregroundColor(.secondary)
+            }
+        }
     }
     
     var ourWebsite: some View {

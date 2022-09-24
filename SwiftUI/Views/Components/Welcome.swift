@@ -128,6 +128,8 @@ private struct Onboarding: View {
             .modify { view in
                 if #available(iOS 15.0, *) {
                     view.buttonStyle(.bordered)
+                } else {
+                    view
                 }
             }
         }

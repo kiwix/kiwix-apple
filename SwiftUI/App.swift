@@ -23,8 +23,7 @@ struct Kiwix: App {
     
     var body: some Scene {
         WindowGroup {
-            RootView()
-                .environment(\.managedObjectContext, Database.shared.container.viewContext)
+            RootView().environment(\.managedObjectContext, Database.shared.container.viewContext)
         }.commands {
             CommandGroup(replacing: .importExport) {
                 FileImportButton { Text("Open...") }
