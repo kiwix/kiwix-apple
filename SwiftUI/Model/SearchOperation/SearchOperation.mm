@@ -34,7 +34,6 @@
         self.searchText = searchText;
         self.searchText_C = [searchText cStringUsingEncoding:NSUTF8StringEncoding];
         self.zimFileIDs = zimFileIDs;
-        self.snippetMode = @"disabled";
         self.results = [[NSMutableOrderedSet alloc] initWithCapacity:35];
         self.qualityOfService = NSQualityOfServiceUserInitiated;
     }
@@ -89,7 +88,7 @@
         searchResult.probability = [[NSNumber alloc] initWithFloat:result.getScore() / 100];
         
         // optionally, add snippet
-        if ([self.snippetMode isEqual: @"matches"]) {
+        if (self.extractMatchingSnippet) {
             NSString *html = [NSString stringWithCString:result.getSnippet().c_str() encoding:NSUTF8StringEncoding];
             searchResult.htmlSnippet = html;
         }

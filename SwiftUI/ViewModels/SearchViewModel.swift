@@ -9,6 +9,8 @@
 import Combine
 import CoreData
 
+import Defaults
+
 class SearchViewModel: NSObject, ObservableObject, NSFetchedResultsControllerDelegate {
     @Published var searchText: String = ""  // text in the search field
     @Published private(set) var zimFiles: [UUID: ZimFile]  // ID of zim files that are included in search
@@ -63,7 +65,7 @@ class SearchViewModel: NSObject, ObservableObject, NSFetchedResultsControllerDel
     private func updateSearchResults(_ searchText: String, _ zimFileIDs: [UUID]) {
         queue.cancelAllOperations()
         let operation = SearchOperation(searchText: searchText, zimFileIDs: Set(zimFileIDs))
-        operation.snippetMode = SearchResultSnippetMode.firstSentence.rawValue
+        operation.extractMatchingSnippet = Defaults[.searchResultSnippetMode] == .matches
         operation.completionBlock = { [unowned self] in
             guard !operation.isCancelled else { return }
             DispatchQueue.main.sync {

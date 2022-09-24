@@ -8,12 +8,14 @@
 
 import SwiftUI
 
+/// A rounded rect cell displaying preview of an article.
 struct ArticleCell: View {
     @State var isHovering: Bool = false
     
     let title: String
     let snippet: NSAttributedString?
     let zimFile: ZimFile?
+    let alwaysShowSnippet: Bool
     
     init(bookmark: Bookmark) {
         self.title = bookmark.title
@@ -23,12 +25,14 @@ struct ArticleCell: View {
             self.snippet = nil
         }
         self.zimFile = bookmark.zimFile
+        self.alwaysShowSnippet = true
     }
     
     init(result: SearchResult, zimFile: ZimFile?) {
         self.title = result.title
         self.snippet = result.snippet
         self.zimFile = zimFile
+        self.alwaysShowSnippet = false
     }
     
     var body: some View {
@@ -43,7 +47,7 @@ struct ArticleCell: View {
                         } else {
                             Text(snippet.string).lineLimit(4)
                         }
-                    } else {
+                    } else if alwaysShowSnippet {
                         Text("No snippet").foregroundColor(.secondary)
                     }
                 }.font(.caption).multilineTextAlignment(.leading)
@@ -76,7 +80,7 @@ struct ArticleCell_Previews: PreviewProvider {
     
     static var previews: some View {
         ArticleCell(result: ArticleCell_Previews.result, zimFile: nil)
-            .frame(width: 500)
+            .frame(width: 500, height: 100)
             .padding()
             .previewLayout(.sizeThatFits)
     }

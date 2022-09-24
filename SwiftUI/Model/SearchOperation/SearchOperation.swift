@@ -6,6 +6,8 @@
 //  Copyright © 2020-2022 Chris Li. All rights reserved.
 //
 
+import Defaults
+
 extension SearchOperation {
     var results: [SearchResult] { get { __results.array as? [SearchResult] ?? [] } }
 
@@ -16,7 +18,7 @@ extension SearchOperation {
         
         // parse and extract search result snippet
         guard !isCancelled else { return }
-        let snippetMode = SearchResultSnippetMode(rawValue: self.snippetMode) ?? .disabled
+        let snippetMode = Defaults[.searchResultSnippetMode]
         let dispatchGroup = DispatchGroup()
         for result in results {
             dispatchGroup.enter()
