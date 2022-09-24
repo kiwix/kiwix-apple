@@ -8,6 +8,7 @@
 
 import SwiftUI
 
+/// A rounded rect cell displaying preview of an article.
 struct ArticleCell: View {
     @State var isHovering: Bool = false
     
@@ -79,7 +80,7 @@ struct ArticleCell_Previews: PreviewProvider {
     
     static var previews: some View {
         ArticleCell(result: ArticleCell_Previews.result, zimFile: nil)
-            .frame(width: 500)
+            .frame(width: 500, height: 100)
             .padding()
             .previewLayout(.sizeThatFits)
     }
