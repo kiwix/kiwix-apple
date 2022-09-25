@@ -144,9 +144,31 @@ struct SearchView: View {
                             DispatchQueue.main.async {
                                 viewModel.searchText = searchText
                             }
+                        }.modify { button in
+                            if #available(iOS 15.0, *) {
+                                button.swipeActions {
+                                    Button("Remove", role: .destructive) {
+                                        recentSearchTexts.removeAll { $0 == searchText }
+                                    }
+                                }
+                            } else {
+                                button
+                            }
                         }
                     }
-                } header: { Text("Recent Search") }
+                } header: {
+                    HStack {
+                        Text("Recent Search")
+                        Spacer()
+                        Button {
+                            withAnimation {
+                                recentSearchTexts.removeAll()
+                            }
+                        } label: {
+                            Text("Clear").font(.caption).fontWeight(.medium)
+                        }
+                    }
+                }
             }
             filter
         }.listStyle(.insetGrouped) // explicit list style required for iOS 14
