@@ -53,8 +53,7 @@ struct SearchView: View {
                 content
             }
         }
-        .background(Color.background)
-        .ignoresSafeArea(.container, edges: .bottom)
+        .background(Color.background.ignoresSafeArea())
         #endif
     }
     
@@ -192,7 +191,7 @@ struct SearchView: View {
                     }.buttonStyle(.plain)
                 }
             }.padding()
-        }.background(Color.background)
+        }
     }
 }
 
