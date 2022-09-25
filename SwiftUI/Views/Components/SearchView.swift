@@ -12,6 +12,7 @@ import Defaults
 
 struct SearchView: View {
     @Binding var url: URL?
+    @Binding var isActive: Bool
     @Default(.recentSearchTexts) private var recentSearchTexts
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     @Environment(\.managedObjectContext) private var managedObjectContext
@@ -186,6 +187,7 @@ struct SearchView: View {
                             return searchTexts
                         }()
                         url = result.url
+                        isActive = false
                     } label: {
                         ArticleCell(result: result, zimFile: viewModel.zimFiles[result.zimFileID])
                     }.buttonStyle(.plain)

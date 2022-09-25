@@ -122,7 +122,7 @@ private struct Content: View {
                 WebView(url: $url).ignoresSafeArea(.container, edges: .all)
             }
             if isSearchActive {
-                SearchView(url: $url)
+                SearchView(url: $url, isActive: $isSearchActive)
             }
         }
         .onChange(of: url) { _ in isSearchActive = false }
