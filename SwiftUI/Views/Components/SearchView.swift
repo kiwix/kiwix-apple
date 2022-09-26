@@ -73,6 +73,40 @@ struct SearchView: View {
         }
     }
     
+    var recentSearches: some View {
+        Section {
+            ForEach(recentSearchTexts.prefix(6), id: \.self) { searchText in
+                Button(searchText) {
+                    DispatchQueue.main.async {
+                        viewModel.searchText = searchText
+                    }
+                }.modify { button in
+                    if #available(iOS 15.0, *) {
+                        button.swipeActions {
+                            Button("Remove", role: .destructive) {
+                                recentSearchTexts.removeAll { $0 == searchText }
+                            }
+                        }
+                    } else {
+                        button
+                    }
+                }
+            }
+        } header: {
+            HStack {
+                Text("Recent Search")
+                Spacer()
+                Button {
+                    withAnimation {
+                        recentSearchTexts.removeAll()
+                    }
+                } label: {
+                    Text("Clear").font(.caption).fontWeight(.medium)
+                }
+            }
+        }
+    }
+    
     var filter: some View {
         Section {
             ForEach(zimFiles) { zimFile in
@@ -110,68 +144,14 @@ struct SearchView: View {
     }
     
     var noSearchText: some View {
-        #if os(macOS)
-        ScrollView {
-            LazyVGrid(columns: [GridItem(.flexible())]) {
-                if !recentSearchTexts.isEmpty {
-                    Section {
-                        ForEach(recentSearchTexts.prefix(12), id: \.self) { searchText in
-                            Button {
-                                DispatchQueue.main.async {
-                                    viewModel.searchText = searchText
-                                }
-                            } label: {
-                                RecentSearch(searchText: searchText)
-                            }.buttonStyle(.borderless)
-                        }
-                    } header: {
-                        HStack {
-                            Text("Recent Search").fontWeight(.medium)
-                            Spacer()
-                        }
-                    }
-                }
-                Spacer().frame(height: 20)
-                filter
-            }.padding()
-        }
-        #elseif os(iOS)
         List {
             if !recentSearchTexts.isEmpty {
-                Section {
-                    ForEach(recentSearchTexts.prefix(6), id: \.self) { searchText in
-                        Button(searchText) {
-                            DispatchQueue.main.async {
-                                viewModel.searchText = searchText
-                            }
-                        }.modify { button in
-                            if #available(iOS 15.0, *) {
-                                button.swipeActions {
-                                    Button("Remove", role: .destructive) {
-                                        recentSearchTexts.removeAll { $0 == searchText }
-                                    }
-                                }
-                            } else {
-                                button
-                            }
-                        }
-                    }
-                } header: {
-                    HStack {
-                        Text("Recent Search")
-                        Spacer()
-                        Button {
-                            withAnimation {
-                                recentSearchTexts.removeAll()
-                            }
-                        } label: {
-                            Text("Clear").font(.caption).fontWeight(.medium)
-                        }
-                    }
-                }
+                recentSearches
             }
             filter
-        }.listStyle(.insetGrouped) // explicit list style required for iOS 14
+        }
+        #if os(iOS)
+        .listStyle(.insetGrouped) // explicit list style required for iOS 14
         #endif
     }
     
@@ -194,21 +174,5 @@ struct SearchView: View {
                 }
             }.padding()
         }
-    }
-}
-
-struct RecentSearch: View {
-    @State var isHovering: Bool = false
-    
-    let searchText: String
-    
-    var body: some View {
-        HStack {
-            Text(searchText).font(.headline).foregroundColor(.primary)
-            Spacer()
-        }
-        .padding(EdgeInsets(top: 8, leading: 12, bottom: 8, trailing: 12))
-        .modifier(CellBackground(isHovering: isHovering))
-        .onHover { self.isHovering = $0 }
     }
 }
