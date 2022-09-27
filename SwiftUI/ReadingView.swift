@@ -47,6 +47,7 @@ private struct ReadingViewContent: View {
                 #endif
             }
         }
+        .onChange(of: url) { _ in dismissSearch() }
         .focusedSceneValue(\.canGoBack, readingViewModel.canGoBack)
         .focusedSceneValue(\.canGoForward, readingViewModel.canGoForward)
         .focusedSceneValue(\.readingViewModel, readingViewModel)

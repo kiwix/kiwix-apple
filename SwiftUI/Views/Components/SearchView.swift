@@ -23,6 +23,7 @@ struct SearchView: View {
         predicate: ZimFile.withFileURLBookmarkPredicate,
         animation: .easeInOut
     ) private var zimFiles: FetchedResults<ZimFile>
+    @State private var isPresentingClearRecentSearchConfirmation = false
     
     var body: some View {
         #if os(macOS)
@@ -98,11 +99,20 @@ struct SearchView: View {
                 Text("Recent Search")
                 Spacer()
                 Button {
-                    withAnimation {
-                        recentSearchTexts.removeAll()
-                    }
+                    isPresentingClearRecentSearchConfirmation = true
                 } label: {
                     Text("Clear").font(.caption).fontWeight(.medium)
+                }.alert(isPresented: $isPresentingClearRecentSearchConfirmation) {
+                    Alert(
+                        title: Text("Recent Searches"),
+                        message: Text("Clear recent search history. This action is not recoverable."),
+                        primaryButton: .destructive(Text("Clear")) {
+                            withAnimation {
+                                recentSearchTexts.removeAll()
+                            }
+                        },
+                        secondaryButton: .cancel()
+                    )
                 }
             }
         }
