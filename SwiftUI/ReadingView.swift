@@ -41,7 +41,7 @@ private struct ReadingViewContent: View {
         }
         .overlay {
             if isSearching {
-                SearchView(url: $url, isActive: .constant(false))
+                Search(url: $url, isActive: .constant(false))
                 #if os(macOS)
                     .environment(\.horizontalSizeClass, .compact)
                 #endif

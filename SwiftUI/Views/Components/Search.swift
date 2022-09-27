@@ -1,5 +1,5 @@
 //
-//  SearchView.swift
+//  Search.swift
 //  Kiwix
 //
 //  Created by Chris Li on 8/19/22.
@@ -10,7 +10,7 @@ import SwiftUI
 
 import Defaults
 
-struct SearchView: View {
+struct Search: View {
     @Binding var url: URL?
     @Binding var isActive: Bool
     @Default(.recentSearchTexts) private var recentSearchTexts
@@ -53,15 +53,14 @@ struct SearchView: View {
                 Message(text: "No opened zim file")
             } else if horizontalSizeClass == .regular {
                 HStack(spacing: 0) {
-                    noSearchText.frame(width: 320)
+                    sidebar.frame(width: 320)
                     Divider().ignoresSafeArea(.all, edges: .bottom)
                     content.frame(maxWidth: .infinity)
                 }
             } else {
                 content
             }
-        }
-        .background(Color.background.ignoresSafeArea())
+        }.background(Color.background.ignoresSafeArea())
         #endif
     }
     
@@ -70,7 +69,7 @@ struct SearchView: View {
         if zimFiles.isEmpty {
             Message(text: "No opened zim file")
         } else if viewModel.searchText.isEmpty, horizontalSizeClass == .compact {
-            noSearchText
+            sidebar
         } else if viewModel.inProgress {
             ProgressView().frame(maxWidth: .infinity, maxHeight: .infinity)
         } else if viewModel.results.isEmpty {
@@ -80,7 +79,20 @@ struct SearchView: View {
         }
     }
     
-    var recentSearches: some View {
+    /// A list with recent searches and search filter sections.
+    /// - Note: Upon activating search, this is the first thing user see on compact interfaces, or on displayed on the side on regular interfaces.
+    var sidebar: some View {
+        List {
+            if !recentSearchTexts.isEmpty { recent }
+            filter
+        }
+        #if os(iOS)
+        .listStyle(.insetGrouped) // explicit list style required for iOS 14
+        #endif
+    }
+    
+    /// Recently executed search terms.
+    var recent: some View {
         Section {
             ForEach(recentSearchTexts.prefix(6), id: \.self) { searchText in
                 Button(searchText) {
@@ -123,6 +135,7 @@ struct SearchView: View {
         }
     }
     
+    /// View and select zim files included in scope of search.
     var filter: some View {
         Section {
             ForEach(zimFiles) { zimFile in
@@ -159,18 +172,7 @@ struct SearchView: View {
         }
     }
     
-    var noSearchText: some View {
-        List {
-            if !recentSearchTexts.isEmpty {
-                recentSearches
-            }
-            filter
-        }
-        #if os(iOS)
-        .listStyle(.insetGrouped) // explicit list style required for iOS 14
-        #endif
-    }
-    
+    /// Search results, based on the search text and scope.
     var results: some View {
         ScrollView {
             LazyVGrid(columns: [GridItem(.flexible(minimum: 300, maximum: 700), alignment: .center)]) {
