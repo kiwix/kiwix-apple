@@ -14,7 +14,6 @@ struct SearchView: View {
     @Binding var url: URL?
     @Binding var isActive: Bool
     @Default(.recentSearchTexts) private var recentSearchTexts
-    @Environment(\.dismissSearch) private var dismissSearch
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     @Environment(\.managedObjectContext) private var managedObjectContext
     @EnvironmentObject private var viewModel: SearchViewModel
@@ -24,6 +23,12 @@ struct SearchView: View {
         animation: .easeInOut
     ) private var zimFiles: FetchedResults<ZimFile>
     @State private var isPresentingClearRecentSearchConfirmation = false
+    
+    // dismissSearch is in a separate section because it is only needed in macOS,
+    // only available for macOS 12 / iOS 15, and this view has to work for iOS 14 as well
+    #if os(macOS)
+    @Environment(\.dismissSearch) private var dismissSearch
+    #endif
     
     var body: some View {
         #if os(macOS)
@@ -179,7 +184,9 @@ struct SearchView: View {
                         }()
                         url = result.url
                         isActive = false
+                        #if os(macOS)
                         dismissSearch()
+                        #endif
                     } label: {
                         ArticleCell(result: result, zimFile: viewModel.zimFiles[result.zimFileID])
                     }.buttonStyle(.plain)
