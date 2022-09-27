@@ -47,20 +47,12 @@ private struct ReadingViewContent: View {
                 #endif
             }
         }
-        .onChange(of: url) { _ in
-            searchViewModel.searchText = ""
-            dismissSearch()
-        }
         .focusedSceneValue(\.canGoBack, readingViewModel.canGoBack)
         .focusedSceneValue(\.canGoForward, readingViewModel.canGoForward)
         .focusedSceneValue(\.readingViewModel, readingViewModel)
         #if os(macOS)
         .navigationTitle(url == nil ? "Kiwix" : readingViewModel.articleTitle)
         .navigationSubtitle(readingViewModel.zimFileName)
-        .onTapGesture {
-            searchViewModel.searchText = ""
-            dismissSearch()
-        }
         .toolbar {
             ToolbarItemGroup(placement: .navigation) {
                 ControlGroup {

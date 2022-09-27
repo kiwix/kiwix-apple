@@ -14,6 +14,7 @@ struct SearchView: View {
     @Binding var url: URL?
     @Binding var isActive: Bool
     @Default(.recentSearchTexts) private var recentSearchTexts
+    @Environment(\.dismissSearch) private var dismissSearch
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     @Environment(\.managedObjectContext) private var managedObjectContext
     @EnvironmentObject private var viewModel: SearchViewModel
@@ -27,7 +28,7 @@ struct SearchView: View {
         #if os(macOS)
         GeometryReader { proxy in
             ZStack(alignment: .topTrailing) {
-                Color.clear
+                Color.black.opacity(0.001).onTapGesture { dismissSearch() }
                 content
                     .background(Material.regular)
                     .cornerRadius(10)
@@ -168,6 +169,7 @@ struct SearchView: View {
                         }()
                         url = result.url
                         isActive = false
+                        dismissSearch()
                     } label: {
                         ArticleCell(result: result, zimFile: viewModel.zimFiles[result.zimFileID])
                     }.buttonStyle(.plain)
