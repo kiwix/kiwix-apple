@@ -22,10 +22,14 @@ struct CellBackground: ViewModifier {
     private var backgroundColor: Color {
         switch (colorScheme, isHovering) {
         case (.dark, true):
+            #if os(macOS)
+            return Color.background
+            #elseif os(iOS)
             return Color(white: 0.25)
+            #endif
         case (.dark, false):
             #if os(macOS)
-            return Color(white: 0.125)
+            return Color.tertiaryBackground
             #elseif os(iOS)
             return Color(white: 0.175)
             #endif
