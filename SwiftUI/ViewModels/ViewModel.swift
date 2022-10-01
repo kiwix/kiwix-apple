@@ -59,4 +59,8 @@ class ViewModel: NSObject, ObservableObject, WKNavigationDelegate {
         webView.evaluateJavaScript("expandAllDetailTags(); getOutlineItems();")
         webView.applyTextSizeAdjustment()
     }
+    
+    func webView(_ webView: WKWebView, didFailProvisionalNavigation navigation: WKNavigation!, withError error: Error) {
+        activeAlert = .articleFailedToLoad
+    }
 }
