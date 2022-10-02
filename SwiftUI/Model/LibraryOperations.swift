@@ -17,6 +17,8 @@ import Defaults
 struct LibraryOperations {
     private init() {}
     
+    static let backgroundTaskIdentifier = "org.kiwix.library_refresh"
+    
     // MARK: - Open
     
     /// Open a zim file with url
@@ -176,10 +178,12 @@ struct LibraryOperations {
     /// - Parameter isEnabled: if library should be refreshed on background
     static func applyLibraryAutoRefreshSetting(isEnabled: Bool? = nil) {
         if isEnabled ?? Defaults[.libraryAutoRefresh] {
-            let request = BGAppRefreshTaskRequest(identifier: LibraryViewModel.backgroundTaskIdentifier)
+            let request = BGAppRefreshTaskRequest(identifier: LibraryOperations.backgroundTaskIdentifier)
             try? BGTaskScheduler.shared.submit(request)
+            os_log("Enabling background library refresh.")
         } else {
-            BGTaskScheduler.shared.cancel(taskRequestWithIdentifier: LibraryViewModel.backgroundTaskIdentifier)
+            BGTaskScheduler.shared.cancel(taskRequestWithIdentifier: LibraryOperations.backgroundTaskIdentifier)
+            os_log("Disabling background library refresh.")
         }
     }
     #endif
