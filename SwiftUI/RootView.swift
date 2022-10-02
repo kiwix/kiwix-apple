@@ -55,7 +55,7 @@ struct RootView: View {
                     case .library(let navigationItem):
                         LibraryView_iOS(url: $url, navigationItem: navigationItem)
                     case .settings:
-                        SheetView { SettingsView() }
+                        SheetView { SettingsContent() }
                     case .safari(let url):
                         SafariView(url: url)
                     }
