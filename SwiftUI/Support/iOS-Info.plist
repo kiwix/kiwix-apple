@@ -33,9 +33,7 @@
 	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
 	<key>UIBackgroundModes</key>
-	<array>
-		<string>fetch</string>
-	</array>
+	<array/>
 	<key>UIFileSharingEnabled</key>
 	<true/>
 	<key>UTExportedTypeDeclarations</key>
