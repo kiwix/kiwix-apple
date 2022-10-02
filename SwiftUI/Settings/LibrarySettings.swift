@@ -96,7 +96,7 @@ struct LibrarySettings: View {
             Text("Backup")
         } footer: {
             Text("Does not apply to files opened in place.")
-        }
+        }.onChange(of: backupDocumentDirectory) { LibraryOperations.applyFileBackupSetting(isEnabled: $0) }
         #endif
     }
 }

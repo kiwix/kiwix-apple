@@ -9,6 +9,8 @@
 import CoreData
 import os
 
+import Defaults
+
 struct LibraryOperations {
     private init() {}
     
@@ -131,5 +133,34 @@ struct LibraryOperations {
             }
             if context.hasChanges { try? context.save() }
         }
+    }
+    
+    // MARK: - Backup
+    
+    static func applyFileBackupSetting(isEnabled: Bool? = nil) {
+        do {
+            let directory = try FileManager.default.url(
+                for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false
+            )
+            let urls = try FileManager.default.contentsOfDirectory(
+                at: directory,
+                includingPropertiesForKeys: [.isExcludedFromBackupKey],
+                options: [.skipsHiddenFiles, .skipsPackageDescendants, .skipsSubdirectoryDescendants]
+            ).filter({ $0.pathExtension.contains("zim") })
+            let backupDocumentDirectory = isEnabled ?? Defaults[.backupDocumentDirectory]
+            try urls.forEach { url in
+                var resourceValues = URLResourceValues()
+                resourceValues.isExcludedFromBackup = !backupDocumentDirectory
+                var url = url
+                try url.setResourceValues(resourceValues)
+            }
+            os_log(
+                "Applying zim file backup setting ({%s}) on {%u} zim file(s).",
+                log: Log.LibraryOperations,
+                type: .info,
+                backupDocumentDirectory ? "backing up" : "not backing up",
+                urls.count
+            )
+        } catch {}
     }
 }

@@ -16,6 +16,7 @@ struct Kiwix: App {
         fileMonitor = DirectoryMonitor(url: URL.documentDirectory) { LibraryOperations.scanDirectory($0) }
         LibraryOperations.reopen()
         LibraryOperations.scanDirectory(URL.documentDirectory)
+        LibraryOperations.applyFileBackupSetting()
         #if os(iOS)
         DatabaseMigration.start()
         #endif
