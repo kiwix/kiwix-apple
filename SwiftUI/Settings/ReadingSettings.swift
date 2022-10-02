@@ -69,5 +69,3 @@ struct ReadingSettings_Previews: PreviewProvider {
         ReadingSettings()
     }
 }
-
-
