@@ -11,6 +11,7 @@ import Defaults
 enum ActiveAlert: Hashable, Identifiable {
     var id: Int { hashValue }
     
+    case articleFailedToLoad
     case externalLinkAsk(url: URL)
     case externalLinkNotLoading
 }

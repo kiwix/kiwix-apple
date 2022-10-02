@@ -6,8 +6,13 @@
 //  Copyright © 2022 Chris Li. All rights reserved.
 //
 
+#if canImport(BackgroundTasks)
+import BackgroundTasks
+#endif
 import CoreData
 import os
+
+import Defaults
 
 struct LibraryOperations {
     private init() {}
@@ -132,4 +137,50 @@ struct LibraryOperations {
             if context.hasChanges { try? context.save() }
         }
     }
+    
+    // MARK: - Backup
+    
+    /// Apply iCloud backup setting on zim files in document directory.
+    /// - Parameter isEnabled: if file should be included in backup
+    static func applyFileBackupSetting(isEnabled: Bool? = nil) {
+        do {
+            let directory = try FileManager.default.url(
+                for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false
+            )
+            let urls = try FileManager.default.contentsOfDirectory(
+                at: directory,
+                includingPropertiesForKeys: [.isExcludedFromBackupKey],
+                options: [.skipsHiddenFiles, .skipsPackageDescendants, .skipsSubdirectoryDescendants]
+            ).filter({ $0.pathExtension.contains("zim") })
+            let backupDocumentDirectory = isEnabled ?? Defaults[.backupDocumentDirectory]
+            try urls.forEach { url in
+                var resourceValues = URLResourceValues()
+                resourceValues.isExcludedFromBackup = !backupDocumentDirectory
+                var url = url
+                try url.setResourceValues(resourceValues)
+            }
+            os_log(
+                "Applying zim file backup setting (%s) on %u zim file(s).",
+                log: Log.LibraryOperations,
+                type: .info,
+                backupDocumentDirectory ? "backing up" : "not backing up",
+                urls.count
+            )
+        } catch {}
+    }
+    
+    // MARK: - Background Refresh
+
+    #if os(iOS)
+    /// Apply library background refresh setting.
+    /// - Parameter isEnabled: if library should be refreshed on background
+    static func applyLibraryAutoRefreshSetting(isEnabled: Bool? = nil) {
+        if isEnabled ?? Defaults[.libraryAutoRefresh] {
+            let request = BGAppRefreshTaskRequest(identifier: LibraryViewModel.backgroundTaskIdentifier)
+            try? BGTaskScheduler.shared.submit(request)
+        } else {
+            BGTaskScheduler.shared.cancel(taskRequestWithIdentifier: LibraryViewModel.backgroundTaskIdentifier)
+        }
+    }
+    #endif
 }

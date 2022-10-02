@@ -55,7 +55,7 @@ struct RootView: View {
                     case .library(let navigationItem):
                         LibraryView_iOS(url: $url, navigationItem: navigationItem)
                     case .settings:
-                        SheetView { SettingsView() }
+                        SheetView { SettingsContent() }
                     case .safari(let url):
                         SafariView(url: url)
                     }
@@ -73,6 +73,13 @@ struct RootView: View {
         }
         .alert(item: $viewModel.activeAlert) { activeAlert in
             switch activeAlert {
+            case .articleFailedToLoad:
+                return Alert(
+                    title: Text("Unable to Load Article"),
+                    message: Text(
+                        "The zim file associated with the article might be missing or the link might be corrupted."
+                    )
+                )
             case .externalLinkAsk(let url):
                 return Alert(
                     title: Text("External Link"),

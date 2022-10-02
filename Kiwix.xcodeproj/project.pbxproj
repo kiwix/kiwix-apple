@@ -38,7 +38,6 @@
 		97252103200D3C4B00B60A80 /* HUDController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97252102200D3C4B00B60A80 /* HUDController.swift */; };
 		97252105200E908000B60A80 /* TableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97252104200E908000B60A80 /* TableViewCell.swift */; };
 		97255D8C273608C3002B995B /* WebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97255D8B273608C3002B995B /* WebView.swift */; };
-		9729E12D2862BA90003D19B1 /* SettingSection_macOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9729E12C2862BA90003D19B1 /* SettingSection_macOS.swift */; };
 		972B6662200808D6003F5365 /* WelcomeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 972B6661200808D6003F5365 /* WelcomeController.swift */; };
 		972C978026F042E40070987F /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 972C977F26F042E40070987F /* SettingsViewController.swift */; };
 		972DE4732814A116004FD9B9 /* Entities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 972DE4722814A116004FD9B9 /* Entities.swift */; };
@@ -96,6 +95,12 @@
 		9744068E28D0B2A800916BD4 /* RealmSwift.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 97EC18B026E8555E008309ED /* RealmSwift.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		9744069028D0B2BB00916BD4 /* RealmConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9779A5AF2456793600F6F6FF /* RealmConfig.swift */; };
 		9744658026F7981500072DC2 /* Fuzi in Frameworks */ = {isa = PBXBuildFile; productRef = 9744657F26F7981500072DC2 /* Fuzi */; };
+		9745AB5928E9257400067FF6 /* SettingsContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9745AB5828E9257400067FF6 /* SettingsContent.swift */; };
+		9745AB5A28E9257400067FF6 /* SettingsContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9745AB5828E9257400067FF6 /* SettingsContent.swift */; };
+		9745AB5C28E9277900067FF6 /* ReadingSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9745AB5B28E9277900067FF6 /* ReadingSettings.swift */; };
+		9745AB5D28E9277900067FF6 /* ReadingSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9745AB5B28E9277900067FF6 /* ReadingSettings.swift */; };
+		9745AB5F28E9C72900067FF6 /* LibrarySettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9745AB5E28E9C72900067FF6 /* LibrarySettings.swift */; };
+		9745AB6028E9C72900067FF6 /* LibrarySettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9745AB5E28E9C72900067FF6 /* LibrarySettings.swift */; };
 		97486D06284A36790096E4DD /* ArticleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97486D05284A36790096E4DD /* ArticleCell.swift */; };
 		97486D08284A42B90096E4DD /* SearchResultRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97486D07284A42B90096E4DD /* SearchResultRow.swift */; };
 		97486D0A284B96690096E4DD /* CellBackground.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97486D09284B96690096E4DD /* CellBackground.swift */; };
@@ -105,11 +110,9 @@
 		97486D0F284D44C20096E4DD /* HUDController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97252102200D3C4B00B60A80 /* HUDController.swift */; };
 		974C339F2853D4AC00DF6F4C /* About.swift in Sources */ = {isa = PBXBuildFile; fileRef = 974C339E2853D4AC00DF6F4C /* About.swift */; };
 		974C33A02853D4AC00DF6F4C /* About.swift in Sources */ = {isa = PBXBuildFile; fileRef = 974C339E2853D4AC00DF6F4C /* About.swift */; };
-		974C33A32853DDEE00DF6F4C /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 974C33A12853DDEE00DF6F4C /* SettingsView.swift */; };
 		974C33A62855884C00DF6F4C /* SafariView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 974C33A42855884C00DF6F4C /* SafariView.swift */; };
 		974C33A8285589E900DF6F4C /* Patches.swift in Sources */ = {isa = PBXBuildFile; fileRef = 974C33A7285589E900DF6F4C /* Patches.swift */; };
 		974C33A9285589E900DF6F4C /* Patches.swift in Sources */ = {isa = PBXBuildFile; fileRef = 974C33A7285589E900DF6F4C /* Patches.swift */; };
-		974C33AB28558D2900DF6F4C /* LibrarySettings_macOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 974C33AA28558D2900DF6F4C /* LibrarySettings_macOS.swift */; };
 		974FD5CF23405C3700FFDEEC /* WindowControllers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 974FD5CE23405C3700FFDEEC /* WindowControllers.swift */; };
 		974FFE5B2352704600F6BF28 /* ZimFileManagerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 974FFE5A2352704600F6BF28 /* ZimFileManagerController.swift */; };
 		974FFE612352744800F6BF28 /* WebKitWebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 974FFE602352744800F6BF28 /* WebKitWebViewController.swift */; };
@@ -397,7 +400,6 @@
 		97252102200D3C4B00B60A80 /* HUDController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HUDController.swift; sourceTree = "<group>"; };
 		97252104200E908000B60A80 /* TableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewCell.swift; sourceTree = "<group>"; };
 		97255D8B273608C3002B995B /* WebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebView.swift; sourceTree = "<group>"; };
-		9729E12C2862BA90003D19B1 /* SettingSection_macOS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingSection_macOS.swift; sourceTree = "<group>"; };
 		972B6661200808D6003F5365 /* WelcomeController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeController.swift; sourceTree = "<group>"; };
 		972C977F26F042E40070987F /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		972DE4722814A116004FD9B9 /* Entities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Entities.swift; sourceTree = "<group>"; };
@@ -423,15 +425,16 @@
 		973B2A5C254609FD00093661 /* Modifiers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Modifiers.swift; sourceTree = "<group>"; };
 		973B8011239066D0008CC8CE /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		9744068828CF65AE00916BD4 /* LibraryOperations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryOperations.swift; sourceTree = "<group>"; };
+		9745AB5828E9257400067FF6 /* SettingsContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsContent.swift; sourceTree = "<group>"; };
+		9745AB5B28E9277900067FF6 /* ReadingSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadingSettings.swift; sourceTree = "<group>"; };
+		9745AB5E28E9C72900067FF6 /* LibrarySettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibrarySettings.swift; sourceTree = "<group>"; };
 		97486D05284A36790096E4DD /* ArticleCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArticleCell.swift; sourceTree = "<group>"; };
 		97486D07284A42B90096E4DD /* SearchResultRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultRow.swift; sourceTree = "<group>"; };
 		97486D09284B96690096E4DD /* CellBackground.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellBackground.swift; sourceTree = "<group>"; };
 		97486D0C284C0EBC0096E4DD /* Welcome.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Welcome.swift; sourceTree = "<group>"; };
 		974C339E2853D4AC00DF6F4C /* About.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = About.swift; sourceTree = "<group>"; };
-		974C33A12853DDEE00DF6F4C /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		974C33A42855884C00DF6F4C /* SafariView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SafariView.swift; sourceTree = "<group>"; };
 		974C33A7285589E900DF6F4C /* Patches.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Patches.swift; sourceTree = "<group>"; };
-		974C33AA28558D2900DF6F4C /* LibrarySettings_macOS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibrarySettings_macOS.swift; sourceTree = "<group>"; };
 		974FD5CE23405C3700FFDEEC /* WindowControllers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindowControllers.swift; sourceTree = "<group>"; };
 		974FFE5A2352704600F6BF28 /* ZimFileManagerController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZimFileManagerController.swift; sourceTree = "<group>"; };
 		974FFE602352744800F6BF28 /* WebKitWebViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebKitWebViewController.swift; sourceTree = "<group>"; };
@@ -732,6 +735,18 @@
 			path = ViewModifiers;
 			sourceTree = "<group>";
 		};
+		9745AB5628E9235100067FF6 /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				9745AB5828E9257400067FF6 /* SettingsContent.swift */,
+				9745AB5B28E9277900067FF6 /* ReadingSettings.swift */,
+				9745AB5E28E9C72900067FF6 /* LibrarySettings.swift */,
+				975088B9287BBDFE00273181 /* LanguageSelector.swift */,
+				974C339E2853D4AC00DF6F4C /* About.swift */,
+			);
+			path = Settings;
+			sourceTree = "<group>";
+		};
 		975088BF287EEE2900273181 /* BuildingBlocks */ = {
 			isa = PBXGroup;
 			children = (
@@ -743,7 +758,6 @@
 				975088BC287DA10800273181 /* LibraryLastRefreshTime.swift */,
 				97FB4B0A27B819A90055F86E /* Message.swift */,
 				97486D07284A42B90096E4DD /* SearchResultRow.swift */,
-				9729E12C2862BA90003D19B1 /* SettingSection_macOS.swift */,
 				975088B228763B6900273181 /* SheetView.swift */,
 				973A2FD72780024600BD4320 /* ZimFileCell.swift */,
 				97121EBC28849F0000371AEB /* ZimFileMissingIndicator.swift */,
@@ -1004,10 +1018,7 @@
 		97DED67D275278EB008D2C56 /* Components */ = {
 			isa = PBXGroup;
 			children = (
-				974C339E2853D4AC00DF6F4C /* About.swift */,
-				975088B9287BBDFE00273181 /* LanguageSelector.swift */,
 				972DE4C12814A961004FD9B9 /* LibraryView_iOS.swift */,
-				974C33AA28558D2900DF6F4C /* LibrarySettings_macOS.swift */,
 				97C278DE2796249900666E07 /* Outline.swift */,
 				97255D8B273608C3002B995B /* WebView.swift */,
 				974C33A42855884C00DF6F4C /* SafariView.swift */,
@@ -1034,6 +1045,7 @@
 				9735D0B72775362000C7D495 /* Model */,
 				97FB4B0C27B81B530055F86E /* ViewModels */,
 				97E4E69C28B8FCC70012227D /* Views */,
+				9745AB5628E9235100067FF6 /* Settings */,
 				97E94B26271EF359005B0295 /* Support */,
 				97893876289E058100F0EAFC /* RootView.swift */,
 				978938722899556200F0EAFC /* RootView_iOS.swift */,
@@ -1044,7 +1056,6 @@
 				9790CA5828A05EBB00D39FC6 /* ZimFilesCategories.swift */,
 				973A0DE9281DDBB600B41E71 /* ZimFilesDownloads.swift */,
 				976D90E72815D63A00CC7D29 /* ZimFilesNew.swift */,
-				974C33A12853DDEE00DF6F4C /* SettingsView.swift */,
 				977B1B5A28971D5E001D07C4 /* App.swift */,
 				974C33A7285589E900DF6F4C /* Patches.swift */,
 				97E94B1D271EF250005B0295 /* Assets.xcassets */,
@@ -1465,6 +1476,7 @@
 				973A0DE4281D80E300B41E71 /* ZimFileDetail.swift in Sources */,
 				976BAEBC2849056B0049404F /* SearchOperation.mm in Sources */,
 				97909270286BF0BB002B7AA5 /* Formatter.swift in Sources */,
+				9745AB5A28E9257400067FF6 /* SettingsContent.swift in Sources */,
 				97DE2B9C2839D39100C63D9B /* WebView.swift in Sources */,
 				97341C6B2851165B00BC273E /* Searchable.swift in Sources */,
 				973A0DEB281DDBB600B41E71 /* ZimFilesDownloads.swift in Sources */,
@@ -1487,6 +1499,7 @@
 				973A0DF5282FEDA500B41E71 /* ZimFileViewModifiers.swift in Sources */,
 				97121EBE28849F0000371AEB /* ZimFileMissingIndicator.swift in Sources */,
 				975088BB287BBDFE00273181 /* LanguageSelector.swift in Sources */,
+				9745AB6028E9C72900067FF6 /* LibrarySettings.swift in Sources */,
 				97DE2B9D2839D77100C63D9B /* ReaderViewModel.swift in Sources */,
 				97DE2B9E2839D79A00C63D9B /* OutlineItem.swift in Sources */,
 				972DE4BA2814A590004FD9B9 /* ZimFileMetaData.mm in Sources */,
@@ -1517,8 +1530,8 @@
 				9724FC3028D5F5BE001B7DD2 /* BookmarkContextMenu.swift in Sources */,
 				976BAEBE284905760049404F /* SearchViewModel.swift in Sources */,
 				97486D0F284D44C20096E4DD /* HUDController.swift in Sources */,
-				974C33A32853DDEE00DF6F4C /* SettingsView.swift in Sources */,
 				977B1B65289801DE001D07C4 /* MapView.swift in Sources */,
+				9745AB5D28E9277900067FF6 /* ReadingSettings.swift in Sources */,
 				977B1B5E2897F9C8001D07C4 /* App.swift in Sources */,
 				970C0BDF28A28AEA0037A47D /* ReadingView.swift in Sources */,
 				973A0DE7281DC8F400B41E71 /* Downloads.swift in Sources */,
@@ -1671,6 +1684,7 @@
 				975088BA287BBDFE00273181 /* LanguageSelector.swift in Sources */,
 				97659CAA28DF817C002E6CE4 /* SearchResult.swift in Sources */,
 				973A0DFC283100C300B41E71 /* ZimFilesOpened.swift in Sources */,
+				9745AB5C28E9277900067FF6 /* ReadingSettings.swift in Sources */,
 				979D3A772841100B00E396B8 /* Focus.swift in Sources */,
 				97242B882735E66E00C87F85 /* OutlineItem.swift in Sources */,
 				973A2FC7277F656B00BD4320 /* OPDSStreamParser.mm in Sources */,
@@ -1686,12 +1700,11 @@
 				97B3BACC2736CDCE00A23F49 /* URLContent.swift in Sources */,
 				97FB4B0B27B819A90055F86E /* Message.swift in Sources */,
 				973A0DF0282E981200B41E71 /* ZimFileRow.swift in Sources */,
-				9729E12D2862BA90003D19B1 /* SettingSection_macOS.swift in Sources */,
 				97242B8A2735E67500C87F85 /* SearchOperation.mm in Sources */,
 				974C339F2853D4AC00DF6F4C /* About.swift in Sources */,
 				978A731227B9A0E0008101B4 /* Buttons.swift in Sources */,
+				9745AB5928E9257400067FF6 /* SettingsContent.swift in Sources */,
 				977B1B5D28972C33001D07C4 /* ReadingView.swift in Sources */,
-				974C33AB28558D2900DF6F4C /* LibrarySettings_macOS.swift in Sources */,
 				97B3048927796C9000E82DE0 /* SearchOperation.swift in Sources */,
 				973A2FD82780024600BD4320 /* ZimFileCell.swift in Sources */,
 				9735D0C027777E3300C7D495 /* Enum.swift in Sources */,
@@ -1710,6 +1723,7 @@
 				974C33A8285589E900DF6F4C /* Patches.swift in Sources */,
 				9744068928CF65AE00916BD4 /* LibraryOperations.swift in Sources */,
 				97B0737627825E3D007C7DF3 /* Favicon.swift in Sources */,
+				9745AB5F28E9C72900067FF6 /* LibrarySettings.swift in Sources */,
 				973A2FC6277EAA2700BD4320 /* OPDSRefreshError.swift in Sources */,
 				973A2FC3277EA9F300BD4320 /* OPDSStreamParser.swift in Sources */,
 				9735D0BC2775594700C7D495 /* Database.swift in Sources */,
