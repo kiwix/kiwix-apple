@@ -6,6 +6,9 @@
 //  Copyright © 2022 Chris Li. All rights reserved.
 //
 
+#if canImport(BackgroundTasks)
+import BackgroundTasks
+#endif
 import CoreData
 import os
 
@@ -137,6 +140,8 @@ struct LibraryOperations {
     
     // MARK: - Backup
     
+    /// Apply iCloud backup setting on zim files in document directory.
+    /// - Parameter isEnabled: if file should be included in backup
     static func applyFileBackupSetting(isEnabled: Bool? = nil) {
         do {
             let directory = try FileManager.default.url(
@@ -163,4 +168,19 @@ struct LibraryOperations {
             )
         } catch {}
     }
+    
+    // MARK: - Background Refresh
+
+    #if os(iOS)
+    /// Apply library background refresh setting.
+    /// - Parameter isEnabled: if library should be refreshed on background
+    static func applyLibraryAutoRefreshSetting(isEnabled: Bool? = nil) {
+        if isEnabled ?? Defaults[.libraryAutoRefresh] {
+            let request = BGAppRefreshTaskRequest(identifier: LibraryViewModel.backgroundTaskIdentifier)
+            try? BGTaskScheduler.shared.submit(request)
+        } else {
+            BGTaskScheduler.shared.cancel(taskRequestWithIdentifier: LibraryViewModel.backgroundTaskIdentifier)
+        }
+    }
+    #endif
 }
