@@ -741,6 +741,7 @@
 				9745AB5828E9257400067FF6 /* SettingsContent.swift */,
 				9745AB5B28E9277900067FF6 /* ReadingSettings.swift */,
 				9745AB5E28E9C72900067FF6 /* LibrarySettings.swift */,
+				975088B9287BBDFE00273181 /* LanguageSelector.swift */,
 				974C339E2853D4AC00DF6F4C /* About.swift */,
 			);
 			path = Settings;
@@ -1017,7 +1018,6 @@
 		97DED67D275278EB008D2C56 /* Components */ = {
 			isa = PBXGroup;
 			children = (
-				975088B9287BBDFE00273181 /* LanguageSelector.swift */,
 				972DE4C12814A961004FD9B9 /* LibraryView_iOS.swift */,
 				97C278DE2796249900666E07 /* Outline.swift */,
 				97255D8B273608C3002B995B /* WebView.swift */,
