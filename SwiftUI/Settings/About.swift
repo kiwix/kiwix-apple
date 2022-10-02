@@ -34,7 +34,7 @@ struct About: View {
                     license
                 }
             }
-            SettingSection(name: "Dependencies") {
+            SettingSection(name: "Dependencies", alignment: .top) {
                 Table(dependencies) {
                     TableColumn("Name", value: \.name)
                     TableColumn("License", value: \.license)
