@@ -20,9 +20,7 @@ struct ReadingSettings: View {
         VStack(spacing: 16) {
             SettingSection(name: "Page zoom") {
                 HStack {
-                    Stepper(value: $webViewPageZoom, in: 0.5...2, step: 0.05) {
-                        Text("\(Formatter.percent.string(from: NSNumber(value: webViewPageZoom)) ?? "")")
-                    }
+                    Stepper(webViewPageZoom.formatted(.percent), value: $webViewPageZoom, in: 0.5...2, step: 0.05)
                     Spacer()
                     Button("Reset") { webViewPageZoom = 1 }.disabled(webViewPageZoom == 1)
                 }

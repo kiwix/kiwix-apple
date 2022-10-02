@@ -160,7 +160,7 @@ struct LibraryOperations {
                 try url.setResourceValues(resourceValues)
             }
             os_log(
-                "Applying zim file backup setting ({%s}) on {%u} zim file(s).",
+                "Applying zim file backup setting (%s) on %u zim file(s).",
                 log: Log.LibraryOperations,
                 type: .info,
                 backupDocumentDirectory ? "backing up" : "not backing up",
