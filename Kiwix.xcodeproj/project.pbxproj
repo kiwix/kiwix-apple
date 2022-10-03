@@ -50,7 +50,7 @@
 		972DE4BB2814A5A4004FD9B9 /* OPDSRefreshError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 973A2FC4277EAA2500BD4320 /* OPDSRefreshError.swift */; };
 		972DE4BC2814A5BE004FD9B9 /* OPDSStreamParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9779A5A32456793500F6F6FF /* OPDSStreamParser.swift */; };
 		972DE4BD2814A5BE004FD9B9 /* OPDSStreamParser.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9779A5A52456793500F6F6FF /* OPDSStreamParser.mm */; };
-		972DE4C42814AAAE004FD9B9 /* LibraryView_iOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 972DE4C12814A961004FD9B9 /* LibraryView_iOS.swift */; };
+		972DE4C42814AAAE004FD9B9 /* Library.swift in Sources */ = {isa = PBXBuildFile; fileRef = 972DE4C12814A961004FD9B9 /* Library.swift */; };
 		972E6F641FA11A6100F5C927 /* RoundedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 972E6F631FA11A6100F5C927 /* RoundedButton.swift */; };
 		97341C6A2851165B00BC273E /* Searchable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97341C692851165B00BC273E /* Searchable.swift */; };
 		97341C6B2851165B00BC273E /* Searchable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97341C692851165B00BC273E /* Searchable.swift */; };
@@ -60,19 +60,16 @@
 		9735D0BA2775363900C7D495 /* DataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 9735D0B82775363900C7D495 /* DataModel.xcdatamodeld */; };
 		9735D0BC2775594700C7D495 /* Database.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9735D0BB2775594700C7D495 /* Database.swift */; };
 		9735D0C027777E3300C7D495 /* Enum.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9735D0BF27777E3300C7D495 /* Enum.swift */; };
-		973A0DE3281D80E300B41E71 /* ZimFileDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 973A0DE2281D80E300B41E71 /* ZimFileDetail.swift */; };
 		973A0DE4281D80E300B41E71 /* ZimFileDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 973A0DE2281D80E300B41E71 /* ZimFileDetail.swift */; };
 		973A0DE6281DC8F400B41E71 /* Downloads.swift in Sources */ = {isa = PBXBuildFile; fileRef = 973A0DE5281DC8F400B41E71 /* Downloads.swift */; };
 		973A0DE7281DC8F400B41E71 /* Downloads.swift in Sources */ = {isa = PBXBuildFile; fileRef = 973A0DE5281DC8F400B41E71 /* Downloads.swift */; };
 		973A0DE8281DD7EB00B41E71 /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9779A7E224567A5A00F6F6FF /* Log.swift */; };
-		973A0DEA281DDBB600B41E71 /* ZimFilesDownloads.swift in Sources */ = {isa = PBXBuildFile; fileRef = 973A0DE9281DDBB600B41E71 /* ZimFilesDownloads.swift */; };
 		973A0DEB281DDBB600B41E71 /* ZimFilesDownloads.swift in Sources */ = {isa = PBXBuildFile; fileRef = 973A0DE9281DDBB600B41E71 /* ZimFilesDownloads.swift */; };
 		973A0DF0282E981200B41E71 /* ZimFileRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 973A0DEF282E981200B41E71 /* ZimFileRow.swift */; };
 		973A0DF1282E981200B41E71 /* ZimFileRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 973A0DEF282E981200B41E71 /* ZimFileRow.swift */; };
 		973A0DF4282FEDA500B41E71 /* ZimFileViewModifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 973A0DF3282FEDA500B41E71 /* ZimFileViewModifiers.swift */; };
 		973A0DF5282FEDA500B41E71 /* ZimFileViewModifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 973A0DF3282FEDA500B41E71 /* ZimFileViewModifiers.swift */; };
 		973A0DF72830929C00B41E71 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 97E94B1D271EF250005B0295 /* Assets.xcassets */; };
-		973A0DFC283100C300B41E71 /* ZimFilesOpened.swift in Sources */ = {isa = PBXBuildFile; fileRef = 973A0DFB283100C300B41E71 /* ZimFilesOpened.swift */; };
 		973A0DFD283100C300B41E71 /* ZimFilesOpened.swift in Sources */ = {isa = PBXBuildFile; fileRef = 973A0DFB283100C300B41E71 /* ZimFilesOpened.swift */; };
 		973A0E002831053B00B41E71 /* ZimFileService.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9779A5A92456793500F6F6FF /* ZimFileService.mm */; };
 		973A0E012831053B00B41E71 /* ZimFileService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9779A5AA2456793500F6F6FF /* ZimFileService.swift */; };
@@ -101,6 +98,11 @@
 		9745AB5D28E9277900067FF6 /* ReadingSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9745AB5B28E9277900067FF6 /* ReadingSettings.swift */; };
 		9745AB5F28E9C72900067FF6 /* LibrarySettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9745AB5E28E9C72900067FF6 /* LibrarySettings.swift */; };
 		9745AB6028E9C72900067FF6 /* LibrarySettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9745AB5E28E9C72900067FF6 /* LibrarySettings.swift */; };
+		9745AB6428EB15C200067FF6 /* ZimFileDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 973A0DE2281D80E300B41E71 /* ZimFileDetail.swift */; };
+		9745AB6528EB15CC00067FF6 /* ZimFilesOpened.swift in Sources */ = {isa = PBXBuildFile; fileRef = 973A0DFB283100C300B41E71 /* ZimFilesOpened.swift */; };
+		9745AB6628EB15CC00067FF6 /* ZimFilesDownloads.swift in Sources */ = {isa = PBXBuildFile; fileRef = 973A0DE9281DDBB600B41E71 /* ZimFilesDownloads.swift */; };
+		9745AB6728EB15CC00067FF6 /* ZimFilesCategories.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9790CA5828A05EBB00D39FC6 /* ZimFilesCategories.swift */; };
+		9745AB6828EB15CC00067FF6 /* ZimFilesNew.swift in Sources */ = {isa = PBXBuildFile; fileRef = 976D90E72815D63A00CC7D29 /* ZimFilesNew.swift */; };
 		97486D06284A36790096E4DD /* ArticleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97486D05284A36790096E4DD /* ArticleCell.swift */; };
 		97486D08284A42B90096E4DD /* SearchResultRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97486D07284A42B90096E4DD /* SearchResultRow.swift */; };
 		97486D0A284B96690096E4DD /* CellBackground.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97486D09284B96690096E4DD /* CellBackground.swift */; };
@@ -149,7 +151,6 @@
 		976D90DB281584BF00CC7D29 /* FlavorTag.swift in Sources */ = {isa = PBXBuildFile; fileRef = 973A2FCD277FB03F00BD4320 /* FlavorTag.swift */; };
 		976D90DC281586B400CC7D29 /* ZimFileCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 973A2FD72780024600BD4320 /* ZimFileCell.swift */; };
 		976D90E428159BFA00CC7D29 /* Favicon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97B0737527825E3D007C7DF3 /* Favicon.swift */; };
-		976D90E82815D63A00CC7D29 /* ZimFilesNew.swift in Sources */ = {isa = PBXBuildFile; fileRef = 976D90E72815D63A00CC7D29 /* ZimFilesNew.swift */; };
 		976D90E92815D63A00CC7D29 /* ZimFilesNew.swift in Sources */ = {isa = PBXBuildFile; fileRef = 976D90E72815D63A00CC7D29 /* ZimFilesNew.swift */; };
 		977959C026D494C500D48E4A /* FaviconDownloadService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 977959BF26D494C500D48E4A /* FaviconDownloadService.swift */; };
 		9779A5B22456793600F6F6FF /* LibraryService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9779A59C2456793500F6F6FF /* LibraryService.swift */; };
@@ -214,7 +215,6 @@
 		978CB19B2793BC6B0086BFCE /* libkiwix.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97EC18AF26E8555E008309ED /* libkiwix.xcframework */; };
 		9790926F286BF0BB002B7AA5 /* Formatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9790926E286BF0BB002B7AA5 /* Formatter.swift */; };
 		97909270286BF0BB002B7AA5 /* Formatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9790926E286BF0BB002B7AA5 /* Formatter.swift */; };
-		9790CA5928A05EBB00D39FC6 /* ZimFilesCategories.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9790CA5828A05EBB00D39FC6 /* ZimFilesCategories.swift */; };
 		9790CA5A28A05EBB00D39FC6 /* ZimFilesCategories.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9790CA5828A05EBB00D39FC6 /* ZimFilesCategories.swift */; };
 		97952EF3264F557B00FC9237 /* SearchResultsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97952EF2264F557B00FC9237 /* SearchResultsView.swift */; };
 		9797434A257BF2B000D30F03 /* OutlineItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97974349257BF2B000D30F03 /* OutlineItem.swift */; };
@@ -404,7 +404,7 @@
 		972C977F26F042E40070987F /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		972DE4722814A116004FD9B9 /* Entities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Entities.swift; sourceTree = "<group>"; };
 		972DE4A62814A3D8004FD9B9 /* Kiwix.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Kiwix.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		972DE4C12814A961004FD9B9 /* LibraryView_iOS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryView_iOS.swift; sourceTree = "<group>"; };
+		972DE4C12814A961004FD9B9 /* Library.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Library.swift; sourceTree = "<group>"; };
 		972E6F631FA11A6100F5C927 /* RoundedButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedButton.swift; sourceTree = "<group>"; };
 		97341C692851165B00BC273E /* Searchable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Searchable.swift; sourceTree = "<group>"; };
 		97341C6C2852248500BC273E /* DownloadTaskCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadTaskCell.swift; sourceTree = "<group>"; };
@@ -747,6 +747,19 @@
 			path = Settings;
 			sourceTree = "<group>";
 		};
+		9745AB6128EA783B00067FF6 /* Library */ = {
+			isa = PBXGroup;
+			children = (
+				972DE4C12814A961004FD9B9 /* Library.swift */,
+				973A0DFB283100C300B41E71 /* ZimFilesOpened.swift */,
+				9790CA5828A05EBB00D39FC6 /* ZimFilesCategories.swift */,
+				973A0DE9281DDBB600B41E71 /* ZimFilesDownloads.swift */,
+				976D90E72815D63A00CC7D29 /* ZimFilesNew.swift */,
+				973A0DE2281D80E300B41E71 /* ZimFileDetail.swift */,
+			);
+			path = Library;
+			sourceTree = "<group>";
+		};
 		975088BF287EEE2900273181 /* BuildingBlocks */ = {
 			isa = PBXGroup;
 			children = (
@@ -1018,13 +1031,11 @@
 		97DED67D275278EB008D2C56 /* Components */ = {
 			isa = PBXGroup;
 			children = (
-				972DE4C12814A961004FD9B9 /* LibraryView_iOS.swift */,
 				97C278DE2796249900666E07 /* Outline.swift */,
 				97255D8B273608C3002B995B /* WebView.swift */,
 				974C33A42855884C00DF6F4C /* SafariView.swift */,
 				97F3332E28AFC1A2007FF53C /* Search.swift */,
 				97486D0C284C0EBC0096E4DD /* Welcome.swift */,
-				973A0DE2281D80E300B41E71 /* ZimFileDetail.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -1045,6 +1056,7 @@
 				9735D0B72775362000C7D495 /* Model */,
 				97FB4B0C27B81B530055F86E /* ViewModels */,
 				97E4E69C28B8FCC70012227D /* Views */,
+				9745AB6128EA783B00067FF6 /* Library */,
 				9745AB5628E9235100067FF6 /* Settings */,
 				97E94B26271EF359005B0295 /* Support */,
 				97893876289E058100F0EAFC /* RootView.swift */,
@@ -1052,10 +1064,6 @@
 				977B1B5C28972C33001D07C4 /* ReadingView.swift */,
 				9721BBB928427A93005C910D /* BookmarksView.swift */,
 				977B1B63289801DE001D07C4 /* MapView.swift */,
-				973A0DFB283100C300B41E71 /* ZimFilesOpened.swift */,
-				9790CA5828A05EBB00D39FC6 /* ZimFilesCategories.swift */,
-				973A0DE9281DDBB600B41E71 /* ZimFilesDownloads.swift */,
-				976D90E72815D63A00CC7D29 /* ZimFilesNew.swift */,
 				977B1B5A28971D5E001D07C4 /* App.swift */,
 				974C33A7285589E900DF6F4C /* Patches.swift */,
 				97E94B1D271EF250005B0295 /* Assets.xcassets */,
@@ -1526,7 +1534,7 @@
 				973A0E022831055600B41E71 /* URLContent.swift in Sources */,
 				974C33A62855884C00DF6F4C /* SafariView.swift in Sources */,
 				979D3A782841100B00E396B8 /* Focus.swift in Sources */,
-				972DE4C42814AAAE004FD9B9 /* LibraryView_iOS.swift in Sources */,
+				972DE4C42814AAAE004FD9B9 /* Library.swift in Sources */,
 				9724FC3028D5F5BE001B7DD2 /* BookmarkContextMenu.swift in Sources */,
 				976BAEBE284905760049404F /* SearchViewModel.swift in Sources */,
 				97486D0F284D44C20096E4DD /* HUDController.swift in Sources */,
@@ -1666,7 +1674,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				973A0DE3281D80E300B41E71 /* ZimFileDetail.swift in Sources */,
 				97242B9E2735E6A800C87F85 /* Platform.swift in Sources */,
 				97DE2BA2283A8E5C00C63D9B /* LibraryViewModel.swift in Sources */,
 				975088C0287EEE4600273181 /* ArticleCell.swift in Sources */,
@@ -1678,12 +1685,11 @@
 				97B3BAD02736CE3500A23F49 /* URL.swift in Sources */,
 				97255D8C273608C3002B995B /* WebView.swift in Sources */,
 				977B1B5B28971D5E001D07C4 /* App.swift in Sources */,
+				9745AB6628EB15CC00067FF6 /* ZimFilesDownloads.swift in Sources */,
 				976BAEB42847BD020049404F /* SearchViewModel.swift in Sources */,
-				976D90E82815D63A00CC7D29 /* ZimFilesNew.swift in Sources */,
 				9721BBBA28427A93005C910D /* BookmarksView.swift in Sources */,
 				975088BA287BBDFE00273181 /* LanguageSelector.swift in Sources */,
 				97659CAA28DF817C002E6CE4 /* SearchResult.swift in Sources */,
-				973A0DFC283100C300B41E71 /* ZimFilesOpened.swift in Sources */,
 				9745AB5C28E9277900067FF6 /* ReadingSettings.swift in Sources */,
 				979D3A772841100B00E396B8 /* Focus.swift in Sources */,
 				97242B882735E66E00C87F85 /* OutlineItem.swift in Sources */,
@@ -1692,12 +1698,14 @@
 				97659CAB28DF817C002E6CE4 /* SearchResult.m in Sources */,
 				97E94B2F271EF630005B0295 /* ZimFileService.mm in Sources */,
 				972DE4732814A116004FD9B9 /* Entities.swift in Sources */,
+				9745AB6728EB15CC00067FF6 /* ZimFilesCategories.swift in Sources */,
 				97F3332F28AFC1A2007FF53C /* Search.swift in Sources */,
 				9724FC2F28D5F5BE001B7DD2 /* BookmarkContextMenu.swift in Sources */,
 				97486D0A284B96690096E4DD /* CellBackground.swift in Sources */,
+				9745AB6428EB15C200067FF6 /* ZimFileDetail.swift in Sources */,
 				978A731027B99F25008101B4 /* ReaderViewModel.swift in Sources */,
-				9790CA5928A05EBB00D39FC6 /* ZimFilesCategories.swift in Sources */,
 				97B3BACC2736CDCE00A23F49 /* URLContent.swift in Sources */,
+				9745AB6828EB15CC00067FF6 /* ZimFilesNew.swift in Sources */,
 				97FB4B0B27B819A90055F86E /* Message.swift in Sources */,
 				973A0DF0282E981200B41E71 /* ZimFileRow.swift in Sources */,
 				97242B8A2735E67500C87F85 /* SearchOperation.mm in Sources */,
@@ -1716,7 +1724,6 @@
 				975088BD287DA10800273181 /* LibraryLastRefreshTime.swift in Sources */,
 				97E94B2E271EF630005B0295 /* ZimFileService.swift in Sources */,
 				973A2FCE277FB03F00BD4320 /* FlavorTag.swift in Sources */,
-				973A0DEA281DDBB600B41E71 /* ZimFilesDownloads.swift in Sources */,
 				97242B9B2735E6A800C87F85 /* DirectoryMonitor.swift in Sources */,
 				97242B992735E6A800C87F85 /* SearchQueue.swift in Sources */,
 				9735D0BA2775363900C7D495 /* DataModel.xcdatamodeld in Sources */,
@@ -1731,6 +1738,7 @@
 				97DE2BA5283A944100C63D9B /* GridCommon.swift in Sources */,
 				977B1B64289801DE001D07C4 /* MapView.swift in Sources */,
 				97486D0D284C0EBC0096E4DD /* Welcome.swift in Sources */,
+				9745AB6528EB15CC00067FF6 /* ZimFilesOpened.swift in Sources */,
 				97341C6D2852248500BC273E /* DownloadTaskCell.swift in Sources */,
 				97242B9D2735E6A800C87F85 /* Log.swift in Sources */,
 				970C0BE128A28AEB0037A47D /* RootView.swift in Sources */,
