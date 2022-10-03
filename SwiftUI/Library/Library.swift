@@ -8,6 +8,7 @@
 
 import SwiftUI
 
+#if os(iOS)
 /// Tabbed library view on iOS & iPadOS
 struct Library: View {
     @Binding var url: URL?
@@ -60,6 +61,8 @@ struct Library: View {
             if let defaultNavigationItem = defaultNavigationItem {
                 navigationItem = defaultNavigationItem
             }
+            libraryViewModel.startRefresh(isUserInitiated: false)
         }
     }
 }
+#endif
