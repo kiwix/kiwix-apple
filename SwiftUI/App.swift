@@ -18,6 +18,8 @@ struct Kiwix: App {
         LibraryOperations.scanDirectory(URL.documentDirectory)
         LibraryOperations.applyFileBackupSetting()
         #if os(iOS)
+        LibraryOperations.registerBackgroundTask()
+        LibraryOperations.applyLibraryAutoRefreshSetting()
         DatabaseMigration.start()
         #endif
     }

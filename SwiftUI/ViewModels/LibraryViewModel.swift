@@ -16,7 +16,6 @@ class LibraryViewModel: ObservableObject {
     
     private var progressObserver: NSKeyValueObservation?
     
-    static let backgroundTaskIdentifier = "org.kiwix.library_refresh"
     static let operationQueue: OperationQueue = {
         let operationQueue = OperationQueue()
         operationQueue.maxConcurrentOperationCount = 1

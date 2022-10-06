@@ -53,7 +53,7 @@ struct RootView: View {
                     case .bookmarks:
                         SheetView { BookmarksView(url: $url) }
                     case .library(let navigationItem):
-                        LibraryView_iOS(url: $url, navigationItem: navigationItem)
+                        Library(url: $url, navigationItem: navigationItem)
                     case .settings:
                         SheetView { SettingsContent() }
                     case .safari(let url):

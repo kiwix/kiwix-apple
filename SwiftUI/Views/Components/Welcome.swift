@@ -47,7 +47,7 @@ struct Welcome: View {
                     }
                     if !bookmarks.isEmpty {
                         Section {
-                            ForEach(bookmarks) { bookmark in
+                            ForEach(bookmarks.prefix(6)) { bookmark in
                                 Button { url = bookmark.articleURL } label: {
                                     ArticleCell(bookmark: bookmark).frame(height: bookmarkItemHeight)
                                 }

@@ -1,5 +1,5 @@
 //
-//  LibraryView_iOS.swift
+//  Library.swift
 //  Kiwix
 //
 //  Created by Chris Li on 4/23/22.
@@ -8,8 +8,9 @@
 
 import SwiftUI
 
+#if os(iOS)
 /// Tabbed library view on iOS & iPadOS
-struct LibraryView_iOS: View {
+struct Library: View {
     @Binding var url: URL?
     @EnvironmentObject private var libraryViewModel: LibraryViewModel
     @SceneStorage("LibraryNavigationItem") private var navigationItem: NavigationItem = .opened
@@ -60,6 +61,8 @@ struct LibraryView_iOS: View {
             if let defaultNavigationItem = defaultNavigationItem {
                 navigationItem = defaultNavigationItem
             }
+            libraryViewModel.startRefresh(isUserInitiated: false)
         }
     }
 }
+#endif

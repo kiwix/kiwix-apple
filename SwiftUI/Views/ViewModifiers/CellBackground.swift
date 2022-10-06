@@ -25,14 +25,10 @@ struct CellBackground: ViewModifier {
             #if os(macOS)
             return Color.background
             #elseif os(iOS)
-            return Color(white: 0.25)
+            return Color.secondaryBackground
             #endif
         case (.dark, false):
-            #if os(macOS)
             return Color.tertiaryBackground
-            #elseif os(iOS)
-            return Color(white: 0.175)
-            #endif
         case (.light, true):
             return Color(white: 0.9)
         case (.light, false), (_, _):
