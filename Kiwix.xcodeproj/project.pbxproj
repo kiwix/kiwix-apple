@@ -189,6 +189,8 @@
 		9779A7E424567A5A00F6F6FF /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9779A7E224567A5A00F6F6FF /* Log.swift */; };
 		9779A7E524567A5A00F6F6FF /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9779A7E224567A5A00F6F6FF /* Log.swift */; };
 		9779E7A22379230F0058DC98 /* SearchController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9779E7A12379230F0058DC98 /* SearchController.swift */; };
+		977A3D0328EF0CF90025E32D /* SheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 975088B228763B6900273181 /* SheetView.swift */; };
+		977A3D0428EF0DDF0025E32D /* SafariView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 974C33A42855884C00DF6F4C /* SafariView.swift */; };
 		977B1B5B28971D5E001D07C4 /* App.swift in Sources */ = {isa = PBXBuildFile; fileRef = 977B1B5A28971D5E001D07C4 /* App.swift */; };
 		977B1B5D28972C33001D07C4 /* ReadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 977B1B5C28972C33001D07C4 /* ReadingView.swift */; };
 		977B1B5E2897F9C8001D07C4 /* App.swift in Sources */ = {isa = PBXBuildFile; fileRef = 977B1B5A28971D5E001D07C4 /* App.swift */; };
@@ -1680,6 +1682,7 @@
 				975088C0287EEE4600273181 /* ArticleCell.swift in Sources */,
 				975088C1287EEE4600273181 /* SearchResultRow.swift in Sources */,
 				973A0DE6281DC8F400B41E71 /* Downloads.swift in Sources */,
+				977A3D0328EF0CF90025E32D /* SheetView.swift in Sources */,
 				97242BA02735E6A800C87F85 /* FeatureFlags.swift in Sources */,
 				97242B9A2735E6A800C87F85 /* WebKitHandler.swift in Sources */,
 				9790926F286BF0BB002B7AA5 /* Formatter.swift in Sources */,
@@ -1702,6 +1705,7 @@
 				9745AB6728EB15CC00067FF6 /* ZimFilesCategories.swift in Sources */,
 				97F3332F28AFC1A2007FF53C /* Search.swift in Sources */,
 				9724FC2F28D5F5BE001B7DD2 /* BookmarkContextMenu.swift in Sources */,
+				977A3D0428EF0DDF0025E32D /* SafariView.swift in Sources */,
 				97486D0A284B96690096E4DD /* CellBackground.swift in Sources */,
 				9745AB6428EB15C200067FF6 /* ZimFileDetail.swift in Sources */,
 				978A731027B99F25008101B4 /* ReaderViewModel.swift in Sources */,

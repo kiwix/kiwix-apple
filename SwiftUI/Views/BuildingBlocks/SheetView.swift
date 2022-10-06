@@ -8,6 +8,7 @@
 
 import SwiftUI
 
+#if os(iOS)
 struct SheetView<Content: View>: View {
     @Environment(\.presentationMode) private var presentationMode
     
@@ -29,3 +30,4 @@ struct SheetView<Content: View>: View {
         }.navigationViewStyle(.stack)
     }
 }
+#endif

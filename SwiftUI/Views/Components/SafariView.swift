@@ -9,6 +9,7 @@
 import SafariServices
 import SwiftUI
 
+#if os(iOS)
 struct SafariView: UIViewControllerRepresentable {
     let url: URL
 
@@ -18,3 +19,4 @@ struct SafariView: UIViewControllerRepresentable {
 
     func updateUIViewController(_ uiViewController: SFSafariViewController, context: Context) { }
 }
+#endif
