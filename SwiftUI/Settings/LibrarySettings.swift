@@ -81,7 +81,7 @@ struct LibrarySettings: View {
                 }
             } else {
                 Button("Refresh Now") {
-                    Task { viewModel.startRefresh(isUserInitiated: true) }
+                    viewModel.startRefresh(isUserInitiated: true)
                 }
             }
             Toggle("Auto refresh", isOn: $libraryAutoRefresh)
@@ -89,7 +89,7 @@ struct LibrarySettings: View {
             Text("Catalog")
         } footer: {
             Text("When enabled, the library catalog will be refreshed automatically when outdated.")
-        }
+        }.onChange(of: libraryAutoRefresh) { LibraryOperations.applyLibraryAutoRefreshSetting(isEnabled: $0) }
         Section {
             Toggle("Include zim files in backup", isOn: $backupDocumentDirectory)
         } header: {

@@ -171,20 +171,35 @@ struct LibraryOperations {
         } catch {}
     }
     
+#if os(iOS)
     // MARK: - Background Refresh
 
-    #if os(iOS)
     /// Apply library background refresh setting.
     /// - Parameter isEnabled: if library should be refreshed on background
     static func applyLibraryAutoRefreshSetting(isEnabled: Bool? = nil) {
         if isEnabled ?? Defaults[.libraryAutoRefresh] {
             let request = BGAppRefreshTaskRequest(identifier: LibraryOperations.backgroundTaskIdentifier)
+            if let lastRefreshData = Defaults[.libraryLastRefresh] {
+                request.earliestBeginDate = Date(timeInterval: 3600 * 24, since: lastRefreshData)
+            }
             try? BGTaskScheduler.shared.submit(request)
-            os_log("Enabling background library refresh.")
+            os_log("Enabling background library refresh.", log: Log.LibraryOperations, type: .info)
         } else {
             BGTaskScheduler.shared.cancel(taskRequestWithIdentifier: LibraryOperations.backgroundTaskIdentifier)
-            os_log("Disabling background library refresh.")
+            os_log("Disabling background library refresh.", log: Log.LibraryOperations, type: .info)
         }
     }
-    #endif
+    
+    static func registerBackgroundTask() {
+        BGTaskScheduler.shared.register(
+            forTaskWithIdentifier: LibraryOperations.backgroundTaskIdentifier, using: nil
+        ) { task in
+            let operation = LibraryRefreshOperation()
+            operation.completionBlock = {
+                task.setTaskCompleted(success: true)
+            }
+            OperationQueue().addOperation(operation)
+        }
+    }
+#endif
 }
