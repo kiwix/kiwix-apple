@@ -38,7 +38,7 @@ struct RootView: View {
                 detail.frame(minWidth: 500, minHeight: 500)
             }
             #elseif os(iOS)
-            RootView_iOS(url: $url)
+            RootViewV1(url: $url)
                 .ignoresSafeArea(.all)
                 .sheet(item: $viewModel.activeSheet) { activeSheet in
                     switch activeSheet {
