@@ -34,7 +34,7 @@ struct RootView: View {
         .sheet(item: $viewModel.activeSheet) { activeSheet in
             switch activeSheet {
             case .outline:
-                SheetView {
+                SheetContent {
                     OutlineTree().listStyle(.plain).navigationBarTitleDisplayMode(.inline)
                 }.modify { view in
                     if #available(iOS 16.0, *) {
@@ -42,11 +42,11 @@ struct RootView: View {
                     }
                 }
             case .bookmarks:
-                SheetView { BookmarksView(url: $url) }
+                SheetContent { BookmarksView(url: $url) }
             case .library(let navigationItem):
                 Library(url: $url, navigationItem: navigationItem)
             case .settings:
-                SheetView { SettingsContent() }
+                SheetContent { SettingsContent() }
             case .safari(let url):
                 SafariView(url: url)
             }

@@ -26,7 +26,7 @@ struct Library: View {
     var body: some View {
         TabView(selection: $navigationItem) {
             ForEach(navigationItems) { navigationItem in
-                SheetView {
+                SheetContent {
                     switch navigationItem {
                     case .opened:
                         ZimFilesOpened(url: $url)

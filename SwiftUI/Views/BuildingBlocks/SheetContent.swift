@@ -1,6 +1,6 @@
 //
-//  SheetView.swift
-//  Kiwix for iOS
+//  SheetContent.swift
+//  Kiwix
 //
 //  Created by Chris Li on 7/6/22.
 //  Copyright © 2022 Chris Li. All rights reserved.
@@ -8,8 +8,7 @@
 
 import SwiftUI
 
-#if os(iOS)
-struct SheetView<Content: View>: View {
+struct SheetContent<Content: View>: View {
     @Environment(\.presentationMode) private var presentationMode
     
     let content: Content
@@ -19,6 +18,9 @@ struct SheetView<Content: View>: View {
     }
     
     var body: some View {
+        #if os(macOS)
+        content
+        #elseif os(iOS)
         NavigationView {
             content.toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
@@ -28,6 +30,6 @@ struct SheetView<Content: View>: View {
                 }
             }
         }.navigationViewStyle(.stack)
+        #endif
     }
 }
-#endif

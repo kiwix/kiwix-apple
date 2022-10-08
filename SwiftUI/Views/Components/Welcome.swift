@@ -62,7 +62,7 @@ struct Welcome: View {
             }
             #if os(iOS)
             .sheet(item: $selectedZimFile) { zimFile in
-                SheetView {
+                SheetContent {
                     ZimFileDetail(url: $url, zimFile: zimFile)
                 }
             }
