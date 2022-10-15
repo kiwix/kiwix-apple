@@ -8,6 +8,8 @@
 
 import SwiftUI
 
+import Introspect
+
 @available(macOS 12.0, iOS 16.0, *)
 struct RootViewV2: View {
     @Binding var url: URL?
@@ -17,31 +19,31 @@ struct RootViewV2: View {
     private let libraryNavigationItems: [NavigationItem] = [.opened, .categories, .downloads, .new]
     
     var body: some View {
-        #if os(macOS)
-        NavigationView {
-            sidebar
-            detail.frame(minWidth: 500, minHeight: 500)
-        }
-        #elseif os(iOS)
-        NavigationSplitView {
-            sidebar
-        } detail: {
-            NavigationStack {
-                detail.navigationBarTitleDisplayMode(.inline)
+        if #available(macOS 13.0, *) {
+            NavigationSplitView {
+                sidebar
+            } detail: {
+                NavigationStack {
+                    detail.navigationBarTitleDisplayMode(.inline)
+                }
             }
+        } else {
+            NavigationView {
+                sidebar
+                detail.frame(minWidth: 500, minHeight: 500)
+            }.navigationViewStyle(.columns)
         }
-        #endif
     }
     
     @ViewBuilder
     private func navigationItem(_ navigationItem: NavigationItem) -> some View {
-        #if os(macOS)
-        Label(navigationItem.name, systemImage: navigationItem.icon)
-        #elseif os(iOS)
-        NavigationLink(value: navigationItem) {
+        if #available(macOS 13.0, *) {
+            NavigationLink(value: navigationItem) {
+                Label(navigationItem.name, systemImage: navigationItem.icon)
+            }
+        } else {
             Label(navigationItem.name, systemImage: navigationItem.icon)
         }
-        #endif
     }
     
     @ViewBuilder
