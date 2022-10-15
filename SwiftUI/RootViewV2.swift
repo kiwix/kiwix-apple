@@ -24,7 +24,10 @@ struct RootViewV2: View {
                 sidebar
             } detail: {
                 NavigationStack {
-                    detail.navigationBarTitleDisplayMode(.inline)
+                    detail
+                    #if os(iOS)
+                        .navigationBarTitleDisplayMode(.inline)
+                    #endif
                 }
             }
         } else {
