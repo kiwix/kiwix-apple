@@ -18,12 +18,10 @@ struct WebView: NSViewRepresentable {
     @EnvironmentObject var readingViewModel: ReadingViewModel
     
     func makeNSView(context: Context) -> WKWebView {
-        let webView = WKWebView(frame: .zero, configuration: WebViewConfiguration())
+        let webView = readingViewModel.webView
         webView.allowsBackForwardNavigationGestures = true
         webView.configuration.userContentController.add(readingViewModel, name: "headings")
         webView.navigationDelegate = viewModel
-        webView.interactionState = readingViewModel.webViewInteractionState
-        readingViewModel.webViews.insert(webView)
         context.coordinator.setupObservers(webView)
         return webView
     }
@@ -34,8 +32,7 @@ struct WebView: NSViewRepresentable {
     }
     
     static func dismantleNSView(_ webView: WKWebView, coordinator: WebViewCoordinator) {
-        coordinator.view.readingViewModel.webViews.remove(webView)
-        coordinator.view.readingViewModel.webViewInteractionState = webView.interactionState
+        webView.configuration.userContentController.removeScriptMessageHandler(forName: "headings")
     }
     
     func makeCoordinator() -> WebViewCoordinator { WebViewCoordinator(self) }
@@ -47,49 +44,43 @@ struct WebView: UIViewControllerRepresentable {
     @EnvironmentObject var readingViewModel: ReadingViewModel
     
     func makeUIViewController(context: Context) -> WebViewController {
-        let controller = WebViewController()
-        controller.webView.allowsBackForwardNavigationGestures = true
-        controller.webView.configuration.userContentController.add(readingViewModel, name: "headings")
-        controller.webView.navigationDelegate = viewModel
-        if #available(iOS 15.0, *) {
-            controller.webView.interactionState = readingViewModel.webViewInteractionState
-        }
-        readingViewModel.webViews.insert(controller.webView)
-        context.coordinator.setupObservers(controller.webView)
-        return controller
+        let webView = readingViewModel.webView
+        webView.allowsBackForwardNavigationGestures = true
+        webView.configuration.defaultWebpagePreferences.preferredContentMode = .mobile  // for font adjustment to work
+        webView.configuration.userContentController.add(readingViewModel, name: "headings")
+        webView.navigationDelegate = viewModel
+        context.coordinator.setupObservers(webView)
+        return WebViewController(webView: webView)
     }
     
     func updateUIViewController(_ controller: WebViewController, context: Context) {
-        guard let url = url, controller.webView.url?.absoluteString != url.absoluteString else { return }
-        controller.webView.load(URLRequest(url: url))
+        guard let url = url, readingViewModel.webView.url?.absoluteString != url.absoluteString else { return }
+        readingViewModel.webView.load(URLRequest(url: url))
     }
     
     static func dismantleUIViewController(_ controller: WebViewController, coordinator: WebViewCoordinator) {
-        if #available(iOS 15.0, *) {
-            coordinator.view.readingViewModel.webViews.remove(controller.webView)
-            coordinator.view.readingViewModel.webViewInteractionState = controller.webView.interactionState
-        }
+        controller.view.subviews.forEach { $0.removeFromSuperview() }
     }
-    
+
     func makeCoordinator() -> WebViewCoordinator { WebViewCoordinator(self) }
 }
 
 class WebViewController: UIViewController {
-    let webView: WKWebView = WKWebView(frame: .zero, configuration: WebViewConfiguration())
-    
-    override func loadView() {
-        view = webView
-    }
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        // required to get adjusting font size working on iPadOS
-        webView.configuration.defaultWebpagePreferences.preferredContentMode = .mobile
+    convenience init(webView: WKWebView) {
+        self.init(nibName: nil, bundle: nil)
+        webView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(webView)
+        NSLayoutConstraint.activate([
+            view.topAnchor.constraint(equalTo: webView.topAnchor),
+            view.leftAnchor.constraint(equalTo: webView.leftAnchor),
+            view.bottomAnchor.constraint(equalTo: webView.bottomAnchor),
+            view.rightAnchor.constraint(equalTo: webView.rightAnchor)
+        ])
     }
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
+        guard let webView = view.subviews.first as? WKWebView else { return }
         webView.setValue(view.safeAreaInsets, forKey: "_obscuredInsets")
     }
 }

@@ -23,11 +23,7 @@ struct RootView: View {
             #if os(macOS)
             RootViewV2(url: $url)
             #elseif os(iOS)
-            if #available(iOS 16.0, *), horizontalSizeClass == .regular {
-                RootViewV2(url: $url)
-            } else {
-                RootViewV1(url: $url).ignoresSafeArea(.all)
-            }
+            RootViewV1(url: $url).ignoresSafeArea(.all)
             #endif
         }
         #if os(iOS)
