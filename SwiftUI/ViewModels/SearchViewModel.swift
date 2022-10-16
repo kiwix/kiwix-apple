@@ -44,15 +44,15 @@ class SearchViewModel: NSObject, ObservableObject, NSFetchedResultsControllerDel
         fetchedResultsController.delegate = self
         
         // subscribers
-        searchSubscriber = Publishers.CombineLatest($zimFiles, $searchText)
-            .map { zimFiles, searchText in
+        searchSubscriber = Publishers.CombineLatest($searchText, $zimFiles)
+            .map { [unowned self] searchText, zimFiles in
                 self.inProgress = true
-                return (Array(zimFiles.keys), searchText)
+                return (searchText, zimFiles)
             }
             .debounce(for: 0.2, scheduler: DispatchQueue.global())
             .receive(on: DispatchQueue.main, options: nil)
-            .sink { zimFileIDs, searchText in
-                self.updateSearchResults(searchText, zimFileIDs)
+            .sink { [unowned self] searchText, zimFiles in
+                self.updateSearchResults(searchText, Set(zimFiles.keys))
             }
     }
     
@@ -62,9 +62,9 @@ class SearchViewModel: NSObject, ObservableObject, NSFetchedResultsControllerDel
         } ?? [:]
     }
     
-    private func updateSearchResults(_ searchText: String, _ zimFileIDs: [UUID]) {
+    private func updateSearchResults(_ searchText: String, _ zimFileIDs: Set<UUID>) {
         queue.cancelAllOperations()
-        let operation = SearchOperation(searchText: searchText, zimFileIDs: Set(zimFileIDs))
+        let operation = SearchOperation(searchText: searchText, zimFileIDs: zimFileIDs)
         operation.extractMatchingSnippet = Defaults[.searchResultSnippetMode] == .matches
         operation.completionBlock = { [unowned self] in
             guard !operation.isCancelled else { return }
