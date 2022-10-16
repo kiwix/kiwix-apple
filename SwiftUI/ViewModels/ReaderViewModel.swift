@@ -18,8 +18,7 @@ class ReadingViewModel: NSObject, ObservableObject, WKScriptMessageHandler {
     @Published var outlineItems = [OutlineItem]()
     @Published var outlineItemTree = [OutlineItem]()
     
-    var webViewInteractionState: Any?
-    var webViews = Set<WKWebView>()
+    let webView = WKWebView(frame: .zero, configuration: WebViewConfiguration())
     
     static let bookmarkNotificationName = NSNotification.Name(rawValue: "Bookmark.toggle")
     
@@ -37,11 +36,11 @@ class ReadingViewModel: NSObject, ObservableObject, WKScriptMessageHandler {
     // MARK: - navigation
     
     func goBack() {
-        webViews.first?.goBack()
+        webView.goBack()
     }
     
     func goForward() {
-        webViews.first?.goForward()
+        webView.goForward()
     }
     
     // MARK: - bookmark
@@ -90,7 +89,7 @@ class ReadingViewModel: NSObject, ObservableObject, WKScriptMessageHandler {
     /// Scroll to a outline item
     /// - Parameter outlineItemID: ID of the outline item to scroll to
     func scrollTo(outlineItemID: String) {
-        webViews.first?.evaluateJavaScript("scrollToHeading('\(outlineItemID)')")
+        webView.evaluateJavaScript("scrollToHeading('\(outlineItemID)')")
     }
     
     /// Convert flattened heading element data to a list of OutlineItems.

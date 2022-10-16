@@ -9,6 +9,8 @@
 import SwiftUI
 import WebKit
 
+import Introspect
+
 /// A view that show article content, along with welcome view, search view, and various article controls
 @available(macOS 12.0, iOS 16.0, *)
 struct ReadingView: View {
@@ -69,70 +71,22 @@ private struct ReadingViewContent: View {
             }
         }
         #elseif os(iOS)
-        .modifier(NavigationTitleConfigurator())
+        .navigationTitle(readingViewModel.articleTitle)
         .navigationBarTitleDisplayMode(.inline)
         .toolbarRole(.browser)
         .toolbarBackground(.visible, for: .navigationBar, .bottomBar)
         .toolbar {
             ToolbarItemGroup(placement: .navigationBarLeading) {
-                if horizontalSizeClass == .regular {
-                    NavigateBackButton()
-                    NavigateForwardButton()
-                }
+                NavigateBackButton()
+                NavigateForwardButton()
             }
-            ToolbarItemGroup(placement: .secondaryAction) {
-                if horizontalSizeClass == .regular {
-                    OutlineMenu()
-                    BookmarkToggleButton(url: url)
-                    RandomArticleMenu(url: $url)
-                    MainArticleMenu(url: $url)
-                }
-            }
-            ToolbarItemGroup(placement: .bottomBar) {
-                if horizontalSizeClass == .compact {
-                    Group {
-                        NavigateBackButton()
-                        Spacer()
-                        NavigateForwardButton()
-                    }
-                    Spacer()
-                    OutlineButton()
-                    Spacer()
-                    BookmarkMultiButton(url: url)
-                    Spacer()
-                    RandomArticleMenu(url: $url)
-                    Spacer()
-                    MoreActionMenu(url: $url)
-                }
+            ToolbarItemGroup(placement: .primaryAction) {
+                OutlineMenu()
+                BookmarkToggleButton(url: url)
+                RandomArticleMenu(url: $url)
+                MainArticleMenu(url: $url)
             }
         }
         #endif
     }
 }
-
-#if os(iOS)
-@available(iOS 16.0, *)
-private struct NavigationTitleConfigurator: ViewModifier {
-    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
-    @Environment(\.isSearching) private var isSearching
-    @EnvironmentObject private var readingViewModel: ReadingViewModel
-    
-    func body(content: Content) -> some View {
-        if horizontalSizeClass == .regular {
-            content.navigationTitle(readingViewModel.articleTitle)
-        } else {
-            content.toolbar {
-                ToolbarItemGroup(placement: .navigationBarLeading) {
-                    if !isSearching {
-                        Text(compactTitle).fontWeight(.semibold)
-                    }
-                }
-            }
-        }
-    }
-    
-    private var compactTitle: String {
-        readingViewModel.articleTitle.isEmpty ? "Kiwix" : readingViewModel.articleTitle
-    }
-}
-#endif
