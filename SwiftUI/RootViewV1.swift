@@ -119,7 +119,10 @@ private struct Content: View {
     var body: some View {
         Group {
             if isSearchActive {
-                Search(url: $url, isActive: $isSearchActive)
+                Search() { result in
+                    url = result.url
+                    isSearchActive = false
+                }
             } else if url == nil {
                 Welcome(url: $url)
             } else {
