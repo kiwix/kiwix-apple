@@ -19,34 +19,34 @@ struct RootViewV2: View {
     private let libraryNavigationItems: [NavigationItem] = [.opened, .categories, .downloads, .new]
     
     var body: some View {
-        if #available(macOS 13.0, *) {
-            NavigationSplitView {
-                sidebar
-            } detail: {
-                NavigationStack {
-                    detail
-                    #if os(iOS)
-                        .navigationBarTitleDisplayMode(.inline)
-                    #endif
-                }
-            }
-        } else {
+//        if #available(macOS 13.0, *) {
+//            NavigationSplitView {
+//                sidebar
+//            } detail: {
+//                NavigationStack {
+//                    detail
+//                    #if os(iOS)
+//                        .navigationBarTitleDisplayMode(.inline)
+//                    #endif
+//                }
+//            }
+//        } else {
             NavigationView {
                 sidebar
                 detail.frame(minWidth: 500, minHeight: 500)
             }.navigationViewStyle(.columns)
-        }
+//        }
     }
     
     @ViewBuilder
     private func navigationItem(_ navigationItem: NavigationItem) -> some View {
-        if #available(macOS 13.0, *) {
-            NavigationLink(value: navigationItem) {
-                Label(navigationItem.name, systemImage: navigationItem.icon)
-            }
-        } else {
+//        if #available(macOS 13.0, *) {
+//            NavigationLink(value: navigationItem) {
+//                Label(navigationItem.name, systemImage: navigationItem.icon)
+//            }
+//        } else {
             Label(navigationItem.name, systemImage: navigationItem.icon)
-        }
+//        }
     }
     
     @ViewBuilder
