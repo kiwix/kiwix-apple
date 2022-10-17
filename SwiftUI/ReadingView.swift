@@ -35,18 +35,19 @@ private struct ReadingViewContent: View {
     
     var body: some View {
         Group {
-            if url == nil {
+            if isSearching {
+                GeometryReader { proxy in
+                    Search() { result in
+                        url = result.url
+                        dismissSearch()
+                    }
+                    .safeAreaInset(edge: .top) { Divider() }
+                    .environment(\.horizontalSizeClass, proxy.size.width > 700 ? .regular : .compact)
+                }
+            } else if url == nil {
                 Welcome(url: $url)
             } else {
                 WebView(url: $url).ignoresSafeArea(.container)
-            }
-        }
-        .overlay {
-            if isSearching {
-                Search(url: $url, isActive: .constant(false))
-                #if os(macOS)
-                    .environment(\.horizontalSizeClass, .compact)
-                #endif
             }
         }
         .onChange(of: url) { _ in dismissSearch() }

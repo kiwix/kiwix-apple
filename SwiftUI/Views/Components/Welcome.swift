@@ -105,18 +105,24 @@ private struct Onboarding: View {
                 }
                 Button {
                     libraryViewModel.startRefresh(isUserInitiated: true) {
+                        #if os(macOS)
+                        viewModel.navigationItem = .categories
+                        #elseif os(iOS)
                         viewModel.activeSheet = .library(navigationItem: .categories)
+                        #endif
                     }
                 } label: {
                     HStack {
                         Spacer()
                         if libraryViewModel.isRefreshing {
+                            #if os(macOS)
+                            Text("Fetching...")
+                            #elseif os(iOS)
                             HStack(spacing: 6) {
-                                // Height is set to a small value to prevent the height of
-                                // the button to be taller than the text when refreshing
-                                ProgressView().frame(height: 1)
+                                ProgressView().scaledToFit()
                                 Text("Fetching...")
                             }
+                            #endif
                         } else {
                             Text("Fetch Catalog")
                         }
@@ -134,7 +140,11 @@ private struct Onboarding: View {
             }
         }
         .padding()
+        #if os(macOS)
+        .frame(maxWidth: 300)
+        #elseif os(iOS)
         .frame(maxWidth: 600)
+        #endif
     }
 }
 

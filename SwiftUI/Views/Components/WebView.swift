@@ -59,6 +59,8 @@ struct WebView: UIViewControllerRepresentable {
     }
     
     static func dismantleUIViewController(_ controller: WebViewController, coordinator: WebViewCoordinator) {
+        guard let webView = controller.view.subviews.first as? WKWebView else { return }
+        webView.configuration.userContentController.removeAllScriptMessageHandlers()
         controller.view.subviews.forEach { $0.removeFromSuperview() }
     }
 

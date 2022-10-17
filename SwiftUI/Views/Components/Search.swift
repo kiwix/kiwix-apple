@@ -11,8 +11,6 @@ import SwiftUI
 import Defaults
 
 struct Search: View {
-    @Binding var url: URL?
-    @Binding var isActive: Bool
     @Default(.recentSearchTexts) private var recentSearchTexts
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     @Environment(\.managedObjectContext) private var managedObjectContext
@@ -22,46 +20,23 @@ struct Search: View {
         predicate: ZimFile.withFileURLBookmarkPredicate,
         animation: .easeInOut
     ) private var zimFiles: FetchedResults<ZimFile>
-    @State private var isPresentingClearRecentSearchConfirmation = false
     
-    // dismissSearch is in a separate section because it is only needed in macOS,
-    // only available for macOS 12 / iOS 15, and this view has to work for iOS 14 as well
-    #if os(macOS)
-    @Environment(\.dismissSearch) private var dismissSearch
-    #endif
+    let onSelection: (SearchResult) -> Void
     
     var body: some View {
-        #if os(macOS)
-        GeometryReader { proxy in
-            ZStack(alignment: .topTrailing) {
-                Color.black.opacity(0.001).onTapGesture { dismissSearch() }
-                content
-                    .background(Material.thick)
-                    .cornerRadius(10)
-                    .shadow(color: Color.black.opacity(0.2), radius: 3, x: 0, y: 2)
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 10)
-                            .strokeBorder(Color.secondary.opacity(0.2), lineWidth: 0.5)
-                    )
-                    .frame(width: min(proxy.size.width * 0.75, 425), height: min(proxy.size.height * 0.8, 600))
-                    .padding(8)
-            }
-        }
-        #elseif os(iOS)
         Group {
             if zimFiles.isEmpty {
                 Message(text: "No opened zim file")
             } else if horizontalSizeClass == .regular {
                 HStack(spacing: 0) {
                     sidebar.frame(width: 320)
-                    Divider().ignoresSafeArea(.all, edges: .bottom)
+                    Divider().ignoresSafeArea(.all, edges: .vertical)
                     content.frame(maxWidth: .infinity)
                 }
             } else {
                 content
             }
-        }.background(Color.background.ignoresSafeArea())
-        #endif
+        }
     }
     
     @ViewBuilder
@@ -80,7 +55,7 @@ struct Search: View {
     }
     
     /// A list with recent searches and search filter sections.
-    /// - Note: Upon activating search, this is the first thing user see on compact interfaces, or on displayed on the side on regular interfaces.
+    /// - Note: Upon activating search, this is the first thing user see on compact interfaces, or displayed on the side on regular interfaces.
     var sidebar: some View {
         List {
             if !recentSearchTexts.isEmpty { recent }
@@ -110,27 +85,15 @@ struct Search: View {
                         button
                     }
                 }
+                #if os(macOS)
+                .buttonStyle(.link)
+                #endif
             }
         } header: {
             HStack {
                 Text("Recent Search")
                 Spacer()
-                Button {
-                    isPresentingClearRecentSearchConfirmation = true
-                } label: {
-                    Text("Clear").font(.caption).fontWeight(.medium)
-                }.alert(isPresented: $isPresentingClearRecentSearchConfirmation) {
-                    Alert(
-                        title: Text("Recent Searches"),
-                        message: Text("Clear recent search history. This action is not recoverable."),
-                        primaryButton: .destructive(Text("Clear")) {
-                            withAnimation {
-                                recentSearchTexts.removeAll()
-                            }
-                        },
-                        secondaryButton: .cancel()
-                    )
-                }
+                ClearRecentSearchButton()
             }
         }
     }
@@ -184,16 +147,36 @@ struct Search: View {
                             searchTexts.insert(viewModel.searchText, at: 0)
                             return searchTexts
                         }()
-                        url = result.url
-                        isActive = false
-                        #if os(macOS)
-                        dismissSearch()
-                        #endif
+                        onSelection(result)
                     } label: {
                         ArticleCell(result: result, zimFile: viewModel.zimFiles[result.zimFileID])
                     }.buttonStyle(.plain)
                 }
             }.padding()
+        }
+    }
+}
+
+private struct ClearRecentSearchButton: View {
+    @Default(.recentSearchTexts) private var recentSearchTexts
+    @State private var isPresentingConfirmation = false
+    
+    var body: some View {
+        Button {
+            isPresentingConfirmation = true
+        } label: {
+            Text("Clear").font(.caption).fontWeight(.medium)
+        }.alert(isPresented: $isPresentingConfirmation) {
+            Alert(
+                title: Text("Recent Searches"),
+                message: Text("Clear recent search history. This action is not recoverable."),
+                primaryButton: .destructive(Text("Clear")) {
+                    withAnimation {
+                        recentSearchTexts.removeAll()
+                    }
+                },
+                secondaryButton: .cancel()
+            )
         }
     }
 }
