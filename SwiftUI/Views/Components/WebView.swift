@@ -49,6 +49,7 @@ struct WebView: UIViewControllerRepresentable {
         webView.configuration.defaultWebpagePreferences.preferredContentMode = .mobile  // for font adjustment to work
         webView.configuration.userContentController.add(readingViewModel, name: "headings")
         webView.navigationDelegate = viewModel
+        webView.uiDelegate = viewModel
         context.coordinator.setupObservers(webView)
         return WebViewController(webView: webView)
     }

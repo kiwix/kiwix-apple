@@ -10,7 +10,7 @@ import WebKit
 
 import Defaults
 
-class ViewModel: NSObject, ObservableObject, WKNavigationDelegate {
+class ViewModel: NSObject, ObservableObject, WKNavigationDelegate, WKUIDelegate {
     @Published var activeAlert: ActiveAlert?
     @Published var activeSheet: ActiveSheet?
     @Published var navigationItem: NavigationItem? = .reading
@@ -62,5 +62,26 @@ class ViewModel: NSObject, ObservableObject, WKNavigationDelegate {
     
     func webView(_ webView: WKWebView, didFailProvisionalNavigation navigation: WKNavigation!, withError error: Error) {
         activeAlert = .articleFailedToLoad
+    }
+    
+    // MARK: - WKUIDelegate
+    
+    func webView(_ webView: WKWebView,
+                 contextMenuConfigurationForElement elementInfo: WKContextMenuElementInfo,
+                 completionHandler: @escaping (UIContextMenuConfiguration?) -> Void) {
+        guard let url = elementInfo.linkURL, url.isKiwixURL else { completionHandler(nil); return }
+        let configuration = UIContextMenuConfiguration(
+            previewProvider: {
+                let webView = WKWebView(frame: .zero, configuration: WebViewConfiguration())
+                webView.load(URLRequest(url: url))
+                return WebViewController(webView: webView)
+            },actionProvider: { suggestedActions in
+                let openAction = UIAction(title: "Open", image: UIImage(systemName: "doc.richtext")) { action in
+                    webView.load(URLRequest(url: url))
+                }
+                return UIMenu(children: [openAction])
+            }
+        )
+        completionHandler(configuration)
     }
 }
