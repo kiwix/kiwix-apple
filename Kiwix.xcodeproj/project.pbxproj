@@ -1900,6 +1900,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "SwiftUI/Support/iOS-Info.plist";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.reference";
 				INFOPLIST_KEY_LSSupportsOpeningDocumentsInPlace = YES;
 				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Kiwix needs permission to saves images to your photos app.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -1939,6 +1940,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "SwiftUI/Support/iOS-Info.plist";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.reference";
 				INFOPLIST_KEY_LSSupportsOpeningDocumentsInPlace = YES;
 				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Kiwix needs permission to saves images to your photos app.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
