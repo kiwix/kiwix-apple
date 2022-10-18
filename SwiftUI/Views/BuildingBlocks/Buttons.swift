@@ -31,9 +31,9 @@ struct BookmarkToggleButton: View {
     var body: some View {
         Button {
             if isBookmarked {
-                ReadingViewModel.deleteBookmark(url)
+                BookmarkOperations.delete(url)
             } else {
-                ReadingViewModel.createBookmark(url)
+                BookmarkOperations.create(url)
             }
         } label: {
             Label {
@@ -76,9 +76,9 @@ struct BookmarkMultiButton: View {
         })
         .simultaneousGesture(LongPressGesture().onEnded { _ in
             if isBookmarked {
-                ReadingViewModel.deleteBookmark(url)
+                BookmarkOperations.delete(url)
             } else {
-                ReadingViewModel.createBookmark(url)
+                BookmarkOperations.create(url)
             }
         })
         .help("Show bookmarks. Long press to bookmark or unbookmark the current article.")
