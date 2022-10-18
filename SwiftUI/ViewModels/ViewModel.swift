@@ -76,10 +76,32 @@ class ViewModel: NSObject, ObservableObject, WKNavigationDelegate, WKUIDelegate 
                 webView.load(URLRequest(url: url))
                 return WebViewController(webView: webView)
             },actionProvider: { suggestedActions in
-                let openAction = UIAction(title: "Open", image: UIImage(systemName: "doc.richtext")) { action in
+                var actions = [UIAction]()
+                
+                // open url
+                let openAction = UIAction(title: "Open", image: UIImage(systemName: "doc.richtext")) { _ in
                     webView.load(URLRequest(url: url))
                 }
-                return UIMenu(children: [openAction])
+                actions.append(openAction)
+                
+                // bookmark
+                let bookmarkAction: UIAction = {
+                    let context = Database.shared.container.viewContext
+                    let predicate = NSPredicate(format: "articleURL == %@", url as CVarArg)
+                    let request = Bookmark.fetchRequest(predicate: predicate)
+                    if let bookmarks = try? context.fetch(request), !bookmarks.isEmpty {
+                        return UIAction(title: "Remove Bookmark", image: UIImage(systemName: "star.slash.fill")) { _ in
+                            BookmarkOperations.delete(url, withNotification: false)
+                        }
+                    } else {
+                        return UIAction(title: "Bookmark", image: UIImage(systemName: "star")) { _ in
+                            BookmarkOperations.create(url, withNotification: false)
+                        }
+                    }
+                }()
+                actions.append(bookmarkAction)
+                
+                return UIMenu(children: actions)
             }
         )
         completionHandler(configuration)
