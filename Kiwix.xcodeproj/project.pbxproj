@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		970258B428FE418A00B68E84 /* BookmarkOperations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 970258B328FE418A00B68E84 /* BookmarkOperations.swift */; };
+		970258B528FE418A00B68E84 /* BookmarkOperations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 970258B328FE418A00B68E84 /* BookmarkOperations.swift */; };
 		9707B8F61F4B4F1500075D4F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9707B8F51F4B4F1500075D4F /* Assets.xcassets */; };
 		970885D1271339A300C5795C /* wikipedia_dark.css in Resources */ = {isa = PBXBuildFile; fileRef = 970885D0271339A300C5795C /* wikipedia_dark.css */; };
 		970C0BDF28A28AEA0037A47D /* ReadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 977B1B5C28972C33001D07C4 /* ReadingView.swift */; };
@@ -386,6 +388,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		970258B328FE418A00B68E84 /* BookmarkOperations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarkOperations.swift; sourceTree = "<group>"; };
 		97041F7E1F9652D4007D63F5 /* WikiMed.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = WikiMed.plist; sourceTree = "<group>"; };
 		9707541A23C2D3AB0076B74E /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
 		9707B8F51F4B4F1500075D4F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -715,6 +718,7 @@
 			children = (
 				97B3998724673FCA00BC6F5B /* SearchOperation */,
 				9735D0B82775363900C7D495 /* DataModel.xcdatamodeld */,
+				970258B328FE418A00B68E84 /* BookmarkOperations.swift */,
 				9735D0BB2775594700C7D495 /* Database.swift */,
 				9753D947285B55F100A626CC /* DefaultKeys.swift */,
 				9779A5CF2456796A00F6F6FF /* DirectoryMonitor.swift */,
@@ -1546,6 +1550,7 @@
 				9724FC3028D5F5BE001B7DD2 /* BookmarkContextMenu.swift in Sources */,
 				976BAEBE284905760049404F /* SearchViewModel.swift in Sources */,
 				977B1B65289801DE001D07C4 /* MapView.swift in Sources */,
+				970258B528FE418A00B68E84 /* BookmarkOperations.swift in Sources */,
 				9745AB5D28E9277900067FF6 /* ReadingSettings.swift in Sources */,
 				977B1B5E2897F9C8001D07C4 /* App.swift in Sources */,
 				970C0BDF28A28AEA0037A47D /* ReadingView.swift in Sources */,
@@ -1733,6 +1738,7 @@
 				975088BD287DA10800273181 /* LibraryLastRefreshTime.swift in Sources */,
 				97E94B2E271EF630005B0295 /* ZimFileService.swift in Sources */,
 				973A2FCE277FB03F00BD4320 /* FlavorTag.swift in Sources */,
+				970258B428FE418A00B68E84 /* BookmarkOperations.swift in Sources */,
 				97242B9B2735E6A800C87F85 /* DirectoryMonitor.swift in Sources */,
 				97242B992735E6A800C87F85 /* SearchQueue.swift in Sources */,
 				9735D0BA2775363900C7D495 /* DataModel.xcdatamodeld in Sources */,
