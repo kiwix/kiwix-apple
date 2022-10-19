@@ -96,7 +96,12 @@ struct FileImportButton<Label: View>: View {
     
     var body: some View {
         Button {
-            isPresented.toggle()
+            // On iOS 14 & 15, fileimporter's isPresented binding is not reset to false if user swipe to dismiss
+            // the sheet. In order to mitigate the issue, the binding is set to false then true with a 0.1s delay.
+            isPresented = false
+            DispatchQueue.main.asyncAfter(deadline: .now()+0.1) {
+                isPresented = true
+            }
         } label: { label }
         .fileImporter(
             isPresented: $isPresented,
