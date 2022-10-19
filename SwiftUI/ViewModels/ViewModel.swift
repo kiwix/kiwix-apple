@@ -66,6 +66,7 @@ class ViewModel: NSObject, ObservableObject, WKNavigationDelegate, WKUIDelegate 
     
     // MARK: - WKUIDelegate
     
+    #if os(iOS)
     func webView(_ webView: WKWebView,
                  contextMenuConfigurationForElement elementInfo: WKContextMenuElementInfo,
                  completionHandler: @escaping (UIContextMenuConfiguration?) -> Void) {
@@ -106,4 +107,5 @@ class ViewModel: NSObject, ObservableObject, WKNavigationDelegate, WKUIDelegate 
         )
         completionHandler(configuration)
     }
+    #endif
 }
