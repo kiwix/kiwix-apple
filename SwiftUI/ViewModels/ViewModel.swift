@@ -76,7 +76,7 @@ class ViewModel: NSObject, ObservableObject, WKNavigationDelegate, WKUIDelegate 
                 let webView = WKWebView(frame: .zero, configuration: WebViewConfiguration())
                 webView.load(URLRequest(url: url))
                 return WebViewController(webView: webView)
-            },actionProvider: { suggestedActions in
+            }, actionProvider: { suggestedActions in
                 var actions = [UIAction]()
                 
                 // open url
