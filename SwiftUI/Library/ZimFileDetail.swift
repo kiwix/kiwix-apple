@@ -16,6 +16,7 @@ import Defaults
 struct ZimFileDetail: View {
     @Binding var url: URL?
     @Default(.downloadUsingCellular) private var downloadUsingCellular
+    @Environment(\.presentationMode) var presentationMode
     @EnvironmentObject private var viewModel: ViewModel
     @EnvironmentObject private var libraryViewModel: LibraryViewModel
     @ObservedObject var zimFile: ZimFile
@@ -126,6 +127,9 @@ struct ZimFileDetail: View {
                 """),
                 primaryButton: .destructive(Text("Unlink")) {
                     LibraryOperations.unlink(zimFileID: zimFile.fileID)
+                    #if os(iOS)
+                    presentationMode.wrappedValue.dismiss()
+                    #endif
                 },
                 secondaryButton: .cancel()
             )
@@ -141,6 +145,9 @@ struct ZimFileDetail: View {
                 message: Text("The zim file and all bookmarked articles linked to this zim file will be deleted."),
                 primaryButton: .destructive(Text("Delete")) {
                     LibraryOperations.delete(zimFileID: zimFile.fileID)
+                    #if os(iOS)
+                    presentationMode.wrappedValue.dismiss()
+                    #endif
                 },
                 secondaryButton: .cancel()
             )
