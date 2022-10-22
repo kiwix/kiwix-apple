@@ -116,9 +116,11 @@ struct LibraryOperations {
     
     //MARK: - Deletion
     
-    /// Unlink a zim file from library, and delete the file.
+    /// Unlink a zim file from library, delete associated bookmarks, and delete the file.
     /// - Parameter zimFile: the zim file to delete
     static func delete(zimFileID: UUID) {
+        guard let url = ZimFileService.shared.getFileURL(zimFileID: zimFileID) else { return }
+        defer { try? FileManager.default.removeItem(at: url) }
         LibraryOperations.unlink(zimFileID: zimFileID)
     }
     
