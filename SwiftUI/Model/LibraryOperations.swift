@@ -122,14 +122,14 @@ struct LibraryOperations {
         LibraryOperations.unlink(zimFileID: zimFileID)
     }
     
-    /// Unlink a zim file from library, but don't delete the file.
+    /// Unlink a zim file from library, delete associated bookmarks, but don't delete the file.
     /// - Parameter zimFile: the zim file to unlink
     static func unlink(zimFileID: UUID) {
         ZimFileService.shared.close(fileID: zimFileID)
-        
         Database.shared.container.performBackgroundTask { context in
             context.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
             guard let zimFile = try? ZimFile.fetchRequest(fileID: zimFileID).execute().first else { return }
+            zimFile.bookmarks.forEach { context.delete($0) }
             if zimFile.downloadURL == nil {
                 context.delete(zimFile)
             } else {
