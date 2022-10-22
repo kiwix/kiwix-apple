@@ -10,7 +10,7 @@ import WebKit
 
 import Defaults
 
-class ViewModel: NSObject, ObservableObject, WKNavigationDelegate {
+class ViewModel: NSObject, ObservableObject, WKNavigationDelegate, WKUIDelegate {
     @Published var activeAlert: ActiveAlert?
     @Published var activeSheet: ActiveSheet?
     @Published var navigationItem: NavigationItem? = .reading
@@ -63,4 +63,49 @@ class ViewModel: NSObject, ObservableObject, WKNavigationDelegate {
     func webView(_ webView: WKWebView, didFailProvisionalNavigation navigation: WKNavigation!, withError error: Error) {
         activeAlert = .articleFailedToLoad
     }
+    
+    // MARK: - WKUIDelegate
+    
+    #if os(iOS)
+    func webView(_ webView: WKWebView,
+                 contextMenuConfigurationForElement elementInfo: WKContextMenuElementInfo,
+                 completionHandler: @escaping (UIContextMenuConfiguration?) -> Void) {
+        guard let url = elementInfo.linkURL, url.isKiwixURL else { completionHandler(nil); return }
+        let configuration = UIContextMenuConfiguration(
+            previewProvider: {
+                let webView = WKWebView(frame: .zero, configuration: WebViewConfiguration())
+                webView.load(URLRequest(url: url))
+                return WebViewController(webView: webView)
+            }, actionProvider: { suggestedActions in
+                var actions = [UIAction]()
+                
+                // open url
+                let openAction = UIAction(title: "Open", image: UIImage(systemName: "doc.richtext")) { _ in
+                    webView.load(URLRequest(url: url))
+                }
+                actions.append(openAction)
+                
+                // bookmark
+                let bookmarkAction: UIAction = {
+                    let context = Database.shared.container.viewContext
+                    let predicate = NSPredicate(format: "articleURL == %@", url as CVarArg)
+                    let request = Bookmark.fetchRequest(predicate: predicate)
+                    if let bookmarks = try? context.fetch(request), !bookmarks.isEmpty {
+                        return UIAction(title: "Remove Bookmark", image: UIImage(systemName: "star.slash.fill")) { _ in
+                            BookmarkOperations.delete(url, withNotification: false)
+                        }
+                    } else {
+                        return UIAction(title: "Bookmark", image: UIImage(systemName: "star")) { _ in
+                            BookmarkOperations.create(url, withNotification: false)
+                        }
+                    }
+                }()
+                actions.append(bookmarkAction)
+                
+                return UIMenu(children: actions)
+            }
+        )
+        completionHandler(configuration)
+    }
+    #endif
 }

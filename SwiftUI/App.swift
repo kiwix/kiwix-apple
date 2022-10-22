@@ -7,9 +7,12 @@
 //
 
 import SwiftUI
+import UniformTypeIdentifiers
 
 @main
 struct Kiwix: App {
+    static let zimFileType = UTType(exportedAs: "org.openzim.zim")
+    
     private let fileMonitor: DirectoryMonitor
     
     init() {
