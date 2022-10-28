@@ -75,6 +75,8 @@ struct RootViewV1: UIViewControllerRepresentable {
         if isSearchActive {
             searchBar.text = searchViewModel.searchText
         } else {
+            searchBar.text = ""
+            
             // Triggers "AttributeGraph: cycle detected through attribute" if not dispatched (iOS 16.0 SDK)
             DispatchQueue.main.async {
                 searchBar.resignFirstResponder()
@@ -102,11 +104,6 @@ struct RootViewV1: UIViewControllerRepresentable {
                 rootView.isSearchActive = true
             }
         }
-        
-        func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
-            searchBar.text = ""
-            rootView.searchViewModel.searchText = ""
-        }
     }
 }
 
@@ -114,7 +111,7 @@ private struct Content: View {
     @Binding var isSearchActive: Bool
     @Binding var url: URL?
     @Environment(\.horizontalSizeClass) var horizontalSizeClass
-    @EnvironmentObject var viewModel: ReadingViewModel
+    @EnvironmentObject var searchViewModel: SearchViewModel
     
     var body: some View {
         Group {
@@ -155,6 +152,7 @@ private struct Content: View {
                     SettingsButton()
                 } else if isSearchActive {
                     Button("Cancel") {
+                        searchViewModel.searchText = ""
                         isSearchActive = false
                     }
                 }
