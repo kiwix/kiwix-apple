@@ -94,7 +94,7 @@ struct LibraryOperations {
     /// Configure a zim file object based on its metadata.
     static func configureZimFile(_ zimFile: ZimFile, metadata: ZimFileMetaData) {
         zimFile.articleCount = metadata.articleCount.int64Value
-        zimFile.category = metadata.category
+        zimFile.category = (Category(rawValue: metadata.category) ?? .other).rawValue
         zimFile.created = metadata.creationDate
         zimFile.fileDescription = metadata.fileDescription
         zimFile.fileID = metadata.fileID
