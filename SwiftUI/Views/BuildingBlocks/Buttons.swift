@@ -132,6 +132,7 @@ struct LibraryButton: View {
 
 struct MainArticleButton: View {
     @Binding var url: URL?
+    @FetchRequest(sortDescriptors: [], predicate: ZimFile.openedPredicate) private var zimFiles: FetchedResults<ZimFile>
     
     var body: some View {
         Button {
@@ -139,7 +140,9 @@ struct MainArticleButton: View {
             url = ZimFileService.shared.getMainPageURL(zimFileID: zimFileID)
         } label: {
             Label("Main Article", systemImage: "house")
-        }.help("Show main article")
+        }
+        .disabled(zimFiles.isEmpty)
+        .help("Show main article")
     }
 }
 
@@ -163,7 +166,9 @@ struct MainArticleMenu: View {
         } primaryAction: {
             let zimFileID = UUID(uuidString: url?.host ?? "")
             url = ZimFileService.shared.getMainPageURL(zimFileID: zimFileID)
-        }.help("Show main article")
+        }
+        .disabled(zimFiles.isEmpty)
+        .help("Show main article")
     }
 }
 
@@ -289,6 +294,7 @@ struct PageZoomButtons: View {
 
 struct RandomArticleButton: View {
     @Binding var url: URL?
+    @FetchRequest(sortDescriptors: [], predicate: ZimFile.openedPredicate) private var zimFiles: FetchedResults<ZimFile>
     
     var body: some View {
         Button {
@@ -296,7 +302,9 @@ struct RandomArticleButton: View {
             url = ZimFileService.shared.getRandomPageURL(zimFileID: zimFileID)
         } label: {
             Label("Random Article", systemImage: "die.face.5")
-        }.help("Show random article")
+        }
+        .disabled(zimFiles.isEmpty)
+        .help("Show random article")
     }
 }
 
@@ -320,7 +328,9 @@ struct RandomArticleMenu: View {
         } primaryAction: {
             let zimFileID = UUID(uuidString: url?.host ?? "")
             url = ZimFileService.shared.getRandomPageURL(zimFileID: zimFileID)
-        }.help("Show random article")
+        }
+        .disabled(zimFiles.isEmpty)
+        .help("Show random article")
     }
 }
 
