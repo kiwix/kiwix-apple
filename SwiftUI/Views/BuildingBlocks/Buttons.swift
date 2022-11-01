@@ -364,17 +364,17 @@ struct SidebarNavigationItemButtons: View {
     @FocusedBinding(\.navigationItem) var navigationItem: NavigationItem??
     
     var body: some View {
-        buildButtons([.reading, .bookmarks], keyboardShortcutOffset: 1)
+        buildButtons([.reading, .bookmarks], modifiers: [.command])
         Divider()
-        buildButtons([.opened, .categories, .downloads, .new], keyboardShortcutOffset: 3)
+        buildButtons([.opened, .categories, .downloads, .new], modifiers: [.command, .control])
     }
     
-    private func buildButtons(_ navigationItems: [NavigationItem], keyboardShortcutOffset: Int) -> some View {
+    private func buildButtons(_ navigationItems: [NavigationItem], modifiers: EventModifiers = []) -> some View {
         ForEach(Array(navigationItems.enumerated()), id: \.element) { index, item in
             Button(item.name) {
                 navigationItem = item
             }
-            .keyboardShortcut(KeyEquivalent(Character("\(index + keyboardShortcutOffset)")))
+            .keyboardShortcut(KeyEquivalent(Character("\(index + 1)")), modifiers: modifiers)
             .disabled(navigationItem == nil)
         }
     }
