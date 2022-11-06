@@ -14,7 +14,7 @@ class KiwixURLSchemeHandler: NSObject, WKURLSchemeHandler {
     private var queue = DispatchQueue(label: "org.kiwix.webContent", qos: .userInitiated)
     
     func webView(_ webView: WKWebView, start urlSchemeTask: WKURLSchemeTask) {
-        queue.async {
+        queue.sync {
             // unpack zimFileID and content path from the url
             guard let url = urlSchemeTask.request.url, url.isKiwixURL else {
                 urlSchemeTask.didFailWithError(URLError(.unsupportedURL))
@@ -53,7 +53,7 @@ class KiwixURLSchemeHandler: NSObject, WKURLSchemeHandler {
     }
     
     func webView(_ webView: WKWebView, stop urlSchemeTask: WKURLSchemeTask) {
-        queue.async {
+        queue.sync {
             guard let url = urlSchemeTask.request.url else { return }
             self.urls.remove(url)
         }
