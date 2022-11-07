@@ -34,9 +34,11 @@ class KiwixURLSchemeHandler: NSObject, WKURLSchemeHandler {
                         httpVersion: "HTTP/1.1",
                         headerFields: ["Content-Type": content.mime, "Content-Length": "\(content.length)"])
                     {
-                        urlSchemeTask.didReceive(response)
-                        urlSchemeTask.didReceive(content.data)
-                        urlSchemeTask.didFinish()
+                        objCTryBlock {
+                            urlSchemeTask.didReceive(response)
+                            urlSchemeTask.didReceive(content.data)
+                            urlSchemeTask.didFinish()
+                        }
                     } else {
                         os_log(
                             "Resource not found for url: %s.",
