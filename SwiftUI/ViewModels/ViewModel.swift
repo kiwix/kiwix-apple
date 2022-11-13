@@ -61,6 +61,8 @@ class ViewModel: NSObject, ObservableObject, WKNavigationDelegate, WKUIDelegate 
     }
     
     func webView(_ webView: WKWebView, didFailProvisionalNavigation navigation: WKNavigation!, withError error: Error) {
+        let error = error as NSError
+        guard error.code != NSURLErrorCancelled else { return }
         activeAlert = .articleFailedToLoad
     }
     

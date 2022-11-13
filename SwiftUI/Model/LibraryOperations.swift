@@ -94,7 +94,7 @@ struct LibraryOperations {
     /// Configure a zim file object based on its metadata.
     static func configureZimFile(_ zimFile: ZimFile, metadata: ZimFileMetaData) {
         zimFile.articleCount = metadata.articleCount.int64Value
-        zimFile.category = metadata.category
+        zimFile.category = (Category(rawValue: metadata.category) ?? .other).rawValue
         zimFile.created = metadata.creationDate
         zimFile.fileDescription = metadata.fileDescription
         zimFile.fileID = metadata.fileID
@@ -116,20 +116,22 @@ struct LibraryOperations {
     
     //MARK: - Deletion
     
-    /// Unlink a zim file from library, and delete the file.
+    /// Unlink a zim file from library, delete associated bookmarks, and delete the file.
     /// - Parameter zimFile: the zim file to delete
     static func delete(zimFileID: UUID) {
+        guard let url = ZimFileService.shared.getFileURL(zimFileID: zimFileID) else { return }
+        defer { try? FileManager.default.removeItem(at: url) }
         LibraryOperations.unlink(zimFileID: zimFileID)
     }
     
-    /// Unlink a zim file from library, but don't delete the file.
+    /// Unlink a zim file from library, delete associated bookmarks, but don't delete the file.
     /// - Parameter zimFile: the zim file to unlink
     static func unlink(zimFileID: UUID) {
         ZimFileService.shared.close(fileID: zimFileID)
-        
         Database.shared.container.performBackgroundTask { context in
             context.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
             guard let zimFile = try? ZimFile.fetchRequest(fileID: zimFileID).execute().first else { return }
+            zimFile.bookmarks.forEach { context.delete($0) }
             if zimFile.downloadURL == nil {
                 context.delete(zimFile)
             } else {

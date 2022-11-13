@@ -80,7 +80,7 @@ class ZimFile: NSManagedObject, Identifiable {
     @NSManaged var size: Int64
     
     @NSManaged var downloadTask: DownloadTask?
-    @NSManaged var bookmarks: [Bookmark]
+    @NSManaged var bookmarks: Set<Bookmark>
     
     static var openedPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
         NSPredicate(format: "fileURLBookmark != nil"),

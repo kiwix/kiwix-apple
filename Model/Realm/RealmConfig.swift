@@ -138,7 +138,7 @@ extension Realm {
                                     guard let zimFileData = existingZimFiles.popLast() else { continue }
 
                                     zimFile.articleCount = zimFileData.articleCount
-                                    zimFile.category = zimFileData.category
+                                    zimFile.category = (Category(rawValue: zimFileData.category) ?? .other).rawValue
                                     zimFile.created = zimFileData.created
                                     zimFile.downloadURL = zimFileData.downloadURL
                                     zimFile.faviconData = zimFileData.faviconData

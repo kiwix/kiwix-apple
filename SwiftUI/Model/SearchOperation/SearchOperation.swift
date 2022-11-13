@@ -59,14 +59,17 @@ extension SearchOperation {
             }
         }
         
+        // sort the results
         guard !isCancelled else { return }
         __results.sort { lhs, rhs in
-            guard let lhs = (lhs as? SearchResult)?.score?.doubleValue,
-                  let rhs = (rhs as? SearchResult)?.score?.doubleValue else { return .orderedSame }
-            if lhs < rhs {
-                return .orderedAscending
-            } else if lhs > rhs {
-                return .orderedDescending
+            guard let lhs = lhs as? SearchResult,
+                  let rhs = rhs as? SearchResult,
+                  let lhsScore = lhs.score?.doubleValue,
+                  let rhsScore = rhs.score?.doubleValue else { return .orderedSame }
+            if lhsScore != rhsScore {
+                return lhsScore < rhsScore ? .orderedAscending : .orderedDescending
+            } else if let lhsSnippet = lhs.snippet, let rhsSnippet = rhs.snippet {
+                return lhsSnippet.length > rhsSnippet.length ? .orderedAscending : .orderedDescending
             } else {
                 return .orderedSame
             }
