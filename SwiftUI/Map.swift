@@ -10,24 +10,37 @@ import MapKit
 import SwiftUI
 
 struct Map: View {
-    @State var coordinateRegion = MKCoordinateRegion(
-        center: CLLocationCoordinate2D(latitude: 42.361145, longitude: -71.057083),
-        span: MKCoordinateSpan(latitudeDelta: 0.2, longitudeDelta: 0.2)
-    )
+    @State private var coordinateRegion: MKCoordinateRegion
+    private var annotationItems = [CLLocationCoordinate2D]()
+    
+    init(location: CLLocation?) {
+        _coordinateRegion = State(initialValue: MKCoordinateRegion(
+            center: location?.coordinate ?? CLLocationCoordinate2D(),
+            span: MKCoordinateSpan(latitudeDelta: 0.25, longitudeDelta: 0.25)
+        ))
+        annotationItems = [location?.coordinate ?? CLLocationCoordinate2D()]
+    }
     
     var body: some View {
-        MapKit.Map(coordinateRegion: $coordinateRegion)
-            .navigationTitle("Map")
-            .navigationBarTitleDisplayMode(.inline)
-            .modify { view in
-                if #available(iOS 16.0, *) {
-                    view
-                        .toolbarBackground(.visible, for: .navigationBar)
-                        .ignoresSafeArea(.all)
-                } else {
-                    view.ignoresSafeArea(.container, edges: [.horizontal, .bottom])
-                }
+        MapKit.Map(coordinateRegion: $coordinateRegion, annotationItems: annotationItems) { item in
+            MapMarker(coordinate: item)
+        }
+        .navigationTitle("Map")
+        .navigationBarTitleDisplayMode(.inline)
+        .modify { view in
+            if #available(iOS 16.0, *) {
+                view
+                    .toolbarBackground(.visible, for: .navigationBar)
+                    .ignoresSafeArea(.all)
+            } else {
+                view.ignoresSafeArea(.container, edges: [.horizontal, .bottom])
             }
-            
+        }
+    }
+}
+
+extension CLLocationCoordinate2D: Identifiable {
+    public var id: String {
+        "\(latitude),\(longitude)"
     }
 }
