@@ -74,7 +74,7 @@ struct RootViewV2: View {
         case .bookmarks:
             BookmarksView(url: $url)
         case .map:
-            MapView()
+            Map()
         case .opened:
             ZimFilesOpened(url: $url)
         case .categories:

@@ -22,6 +22,7 @@ enum ActiveSheet: Hashable, Identifiable {
     case outline
     case bookmarks
     case library(navigationItem: NavigationItem? = nil)
+    case map
     case settings
     case safari(url: URL)
 }
