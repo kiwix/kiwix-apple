@@ -6,6 +6,8 @@
 //  Copyright © 2021 Chris Li. All rights reserved.
 //
 
+import MapKit
+
 import Defaults
 
 enum ActiveAlert: Hashable, Identifiable {
@@ -22,7 +24,7 @@ enum ActiveSheet: Hashable, Identifiable {
     case outline
     case bookmarks
     case library(navigationItem: NavigationItem? = nil)
-    case map
+    case map(location: CLLocation?)
     case settings
     case safari(url: URL)
 }

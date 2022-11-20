@@ -6,6 +6,7 @@
 //  Copyright © 2022 Chris Li. All rights reserved.
 //
 
+import MapKit
 import WebKit
 
 import Defaults
@@ -42,7 +43,15 @@ class ViewModel: NSObject, ObservableObject, WKNavigationDelegate, WKUIDelegate 
             decisionHandler(.cancel)
         } else if url.scheme == "geo" {
             if FeatureFlags.map {
-                activeSheet = .map
+                let location: CLLocation? = {
+                    let parts = url.absoluteString.replacingOccurrences(of: "geo:", with: "").split(separator: ",")
+                    guard let latitudeString = parts.first,
+                          let longitudeString = parts.last,
+                          let latitude = Double(latitudeString),
+                          let longitude = Double(longitudeString) else { return nil }
+                    return CLLocation(latitude: latitude, longitude: longitude)
+                }()
+                activeSheet = .map(location: location)
             } else {
                 let coordinate = url.absoluteString.replacingOccurrences(of: "geo:", with: "")
                 if let url = URL(string: "http://maps.apple.com/?ll=\(coordinate)") {
