@@ -42,7 +42,9 @@ struct RootView: View {
             case .library(let navigationItem):
                 Library(url: $url, navigationItem: navigationItem)
             case .map:
-                Map().modify { view in
+                SheetContent {
+                    Map()
+                }.modify { view in
                     if #available(iOS 16.0, *) {
                         view.presentationDetents([.medium, .large])
                     }
