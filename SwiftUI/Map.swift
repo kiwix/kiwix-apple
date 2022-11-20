@@ -25,7 +25,9 @@ struct Map: View {
         MapKit.Map(coordinateRegion: $coordinateRegion, annotationItems: annotationItems) { item in
             MapMarker(coordinate: item)
         }
+        #if os(macOS)
         .navigationTitle("Map")
+        #elseif os(iOS)
         .navigationBarTitleDisplayMode(.inline)
         .modify { view in
             if #available(iOS 16.0, *) {
@@ -36,6 +38,7 @@ struct Map: View {
                 view.ignoresSafeArea(.container, edges: [.horizontal, .bottom])
             }
         }
+        #endif
     }
 }
 
