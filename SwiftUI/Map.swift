@@ -27,6 +27,7 @@ struct Map: View {
         }
         #if os(macOS)
         .navigationTitle("Map")
+        .ignoresSafeArea(.all)
         #elseif os(iOS)
         .navigationBarTitleDisplayMode(.inline)
         .modify { view in

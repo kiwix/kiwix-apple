@@ -51,7 +51,11 @@ class ViewModel: NSObject, ObservableObject, WKNavigationDelegate, WKUIDelegate 
                           let longitude = Double(longitudeString) else { return nil }
                     return CLLocation(latitude: latitude, longitude: longitude)
                 }()
+                #if os(macOS)
+                navigationItem = .map(location: location)
+                #elseif os(iOS)
                 activeSheet = .map(location: location)
+                #endif
             } else {
                 let coordinate = url.absoluteString.replacingOccurrences(of: "geo:", with: "")
                 if let url = URL(string: "http://maps.apple.com/?ll=\(coordinate)") {

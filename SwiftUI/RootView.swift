@@ -15,9 +15,6 @@ struct RootView: View {
     @StateObject private var readingViewModel = ReadingViewModel()
     @StateObject private var libraryViewModel = LibraryViewModel()
     
-    private let primaryNavigationItems: [NavigationItem] = [.reading, .bookmarks]
-    private let libraryNavigationItems: [NavigationItem] = [.opened, .categories, .downloads, .new]
-    
     var body: some View {
         Group {
             #if os(macOS)

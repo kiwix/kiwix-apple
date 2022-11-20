@@ -136,10 +136,10 @@ enum LibraryLanguageSortingMode: String, CaseIterable, Identifiable, Defaults.Se
     }
 }
 
-enum NavigationItem: String, Identifiable, CaseIterable {
-    var id: String { rawValue }
+enum NavigationItem: Hashable, Identifiable {
+    var id: Int { hashValue }
 
-    case reading, bookmarks, map, opened, categories, new, downloads
+    case reading, bookmarks, map(location: CLLocation?), opened, categories, new, downloads
 
     var name: String {
         switch self {
