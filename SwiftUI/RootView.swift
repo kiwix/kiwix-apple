@@ -35,18 +35,22 @@ struct RootView: View {
                 }.modify { view in
                     if #available(iOS 16.0, *) {
                         view.presentationDetents([.medium, .large])
+                    } else {
+                        view
                     }
                 }
             case .bookmarks:
                 SheetContent { BookmarksView(url: $url) }
             case .library(let navigationItem):
                 Library(url: $url, navigationItem: navigationItem)
-            case .map:
+            case .map(let location):
                 SheetContent {
-                    Map()
+                    Map(location: location)
                 }.modify { view in
                     if #available(iOS 16.0, *) {
                         view.presentationDetents([.medium, .large])
+                    } else {
+                        view
                     }
                 }
             case .settings:
