@@ -9,8 +9,15 @@
 import Foundation
 
 struct FeatureFlags {
-    static let homeViewEnabled = false
     static var wikipediaDarkUserCSS: Bool {
+        #if DEBUG
+        true
+        #else
+        false
+        #endif
+    }
+    
+    static var map: Bool {
         #if DEBUG
         true
         #else

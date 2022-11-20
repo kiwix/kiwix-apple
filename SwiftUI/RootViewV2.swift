@@ -15,7 +15,8 @@ struct RootViewV2: View {
     @Binding var url: URL?
     @EnvironmentObject private var viewModel: ViewModel
     
-    private let primaryNavigationItems: [NavigationItem] = [.reading, .bookmarks]
+    private let primaryNavigationItems: [NavigationItem] =
+        FeatureFlags.map ? [.reading, .bookmarks, .map(location: nil)] : [.reading, .bookmarks]
     private let libraryNavigationItems: [NavigationItem] = [.opened, .categories, .downloads, .new]
     
     var body: some View {
@@ -73,8 +74,8 @@ struct RootViewV2: View {
             ReadingView(url: $url)
         case .bookmarks:
             BookmarksView(url: $url)
-        case .map:
-            MapView()
+        case .map(let location):
+            Map(location: location)
         case .opened:
             ZimFilesOpened(url: $url)
         case .categories:
