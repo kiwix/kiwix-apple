@@ -41,13 +41,17 @@ class ViewModel: NSObject, ObservableObject, WKNavigationDelegate, WKUIDelegate 
             }
             decisionHandler(.cancel)
         } else if url.scheme == "geo" {
-            let coordinate = url.absoluteString.replacingOccurrences(of: "geo:", with: "")
-            if let url = URL(string: "http://maps.apple.com/?ll=\(coordinate)") {
-                #if os(macOS)
-                NSWorkspace.shared.open(url)
-                #elseif os(iOS)
-                UIApplication.shared.open(url)
-                #endif
+            if FeatureFlags.map {
+                activeSheet = .map
+            } else {
+                let coordinate = url.absoluteString.replacingOccurrences(of: "geo:", with: "")
+                if let url = URL(string: "http://maps.apple.com/?ll=\(coordinate)") {
+                    #if os(macOS)
+                    NSWorkspace.shared.open(url)
+                    #elseif os(iOS)
+                    UIApplication.shared.open(url)
+                    #endif
+                }
             }
             decisionHandler(.cancel)
         } else {
