@@ -199,8 +199,8 @@
 		977B1B5D28972C33001D07C4 /* ReadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 977B1B5C28972C33001D07C4 /* ReadingView.swift */; };
 		977B1B5E2897F9C8001D07C4 /* App.swift in Sources */ = {isa = PBXBuildFile; fileRef = 977B1B5A28971D5E001D07C4 /* App.swift */; };
 		977B1B6228980190001D07C4 /* Introspect in Frameworks */ = {isa = PBXBuildFile; productRef = 977B1B6128980190001D07C4 /* Introspect */; };
-		977B1B64289801DE001D07C4 /* MapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 977B1B63289801DE001D07C4 /* MapView.swift */; };
-		977B1B65289801DE001D07C4 /* MapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 977B1B63289801DE001D07C4 /* MapView.swift */; };
+		977B1B64289801DE001D07C4 /* Map.swift in Sources */ = {isa = PBXBuildFile; fileRef = 977B1B63289801DE001D07C4 /* Map.swift */; };
+		977B1B65289801DE001D07C4 /* Map.swift in Sources */ = {isa = PBXBuildFile; fileRef = 977B1B63289801DE001D07C4 /* Map.swift */; };
 		977B1B6728980F97001D07C4 /* Introspect in Frameworks */ = {isa = PBXBuildFile; productRef = 977B1B6628980F97001D07C4 /* Introspect */; };
 		977BD600276EA929004D2C32 /* Realm.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97EC18B126E8555E008309ED /* Realm.xcframework */; };
 		977BD601276EA929004D2C32 /* Realm.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 97EC18B126E8555E008309ED /* Realm.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -493,7 +493,7 @@
 		977A3D1128F1CCD40025E32D /* RootViewV2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootViewV2.swift; sourceTree = "<group>"; };
 		977B1B5A28971D5E001D07C4 /* App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = App.swift; sourceTree = "<group>"; };
 		977B1B5C28972C33001D07C4 /* ReadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadingView.swift; sourceTree = "<group>"; };
-		977B1B63289801DE001D07C4 /* MapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapView.swift; sourceTree = "<group>"; };
+		977B1B63289801DE001D07C4 /* Map.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Map.swift; sourceTree = "<group>"; };
 		977D50622621E47D005345D1 /* LibraryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryViewController.swift; sourceTree = "<group>"; };
 		977D506C2621EAD1005345D1 /* LibraryPrimaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryPrimaryView.swift; sourceTree = "<group>"; };
 		977D50762623580D005345D1 /* LibrarySettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibrarySettingsView.swift; sourceTree = "<group>"; };
@@ -1074,7 +1074,7 @@
 				977A3D1128F1CCD40025E32D /* RootViewV2.swift */,
 				977B1B5C28972C33001D07C4 /* ReadingView.swift */,
 				9721BBB928427A93005C910D /* BookmarksView.swift */,
-				977B1B63289801DE001D07C4 /* MapView.swift */,
+				977B1B63289801DE001D07C4 /* Map.swift */,
 				977B1B5A28971D5E001D07C4 /* App.swift */,
 				974C33A7285589E900DF6F4C /* Patches.swift */,
 				97E94B1D271EF250005B0295 /* Assets.xcassets */,
@@ -1549,7 +1549,7 @@
 				972DE4C42814AAAE004FD9B9 /* Library.swift in Sources */,
 				9724FC3028D5F5BE001B7DD2 /* BookmarkContextMenu.swift in Sources */,
 				976BAEBE284905760049404F /* SearchViewModel.swift in Sources */,
-				977B1B65289801DE001D07C4 /* MapView.swift in Sources */,
+				977B1B65289801DE001D07C4 /* Map.swift in Sources */,
 				970258B528FE418A00B68E84 /* BookmarkOperations.swift in Sources */,
 				9745AB5D28E9277900067FF6 /* ReadingSettings.swift in Sources */,
 				977B1B5E2897F9C8001D07C4 /* App.swift in Sources */,
@@ -1754,7 +1754,7 @@
 				9735D0BC2775594700C7D495 /* Database.swift in Sources */,
 				97EBDBF428C3AAC40067BE0F /* ViewModel.swift in Sources */,
 				97DE2BA5283A944100C63D9B /* GridCommon.swift in Sources */,
-				977B1B64289801DE001D07C4 /* MapView.swift in Sources */,
+				977B1B64289801DE001D07C4 /* Map.swift in Sources */,
 				97486D0D284C0EBC0096E4DD /* Welcome.swift in Sources */,
 				9745AB6528EB15CC00067FF6 /* ZimFilesOpened.swift in Sources */,
 				97341C6D2852248500BC273E /* DownloadTaskCell.swift in Sources */,
