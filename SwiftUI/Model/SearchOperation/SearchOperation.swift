@@ -78,27 +78,33 @@ extension SearchOperation {
 }
 
 private class Levenshtein {
-    private(set) var cache = [Set<String>: Int]()
+    private(set) var cache = [Key: Int]()
     
     func calculate(_ a: String.SubSequence, _ b: String.SubSequence) -> Int {
-        let key = Set([String(a), String(b)])
+        let key = Key(lhs: String(a), rhs: String(b))
         if let distance = cache[key] {
             return distance
         } else {
             let distance: Int = {
                 if a.count == 0 || b.count == 0 {
                     return abs(a.count - b.count)
-                } else if a.first == b.first {
-                    return calculate(a[a.index(after: a.startIndex)...], b[b.index(after: b.startIndex)...])
+                } else if a.last == b.last {
+                    return calculate(a[..<a.index(before: a.endIndex)], b[..<b.index(before: b.endIndex)])
                 } else {
-                    let add = calculate(a, b[b.index(after: b.startIndex)...])
-                    let replace = calculate(a[a.index(after: a.startIndex)...], b[b.index(after: b.startIndex)...])
-                    let delete = calculate(a[a.index(after: a.startIndex)...], b)
+                    let add = calculate(a, b[..<b.index(before: b.endIndex)])
+                    let replace = calculate(a[..<a.index(before: a.endIndex)], b[..<b.index(before: b.endIndex)])
+                    let delete = calculate(a[..<a.index(before: a.endIndex)], b)
                     return min(add, replace, delete) + 1
                 }
             }()
             cache[key] = distance
+            print(a, b, distance)
             return distance
         }
+    }
+    
+    struct Key: Hashable {
+        let lhs: String
+        let rhs: String
     }
 }
