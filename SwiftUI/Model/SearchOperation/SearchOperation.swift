@@ -98,7 +98,6 @@ private class Levenshtein {
                 }
             }()
             cache[key] = distance
-            print(a, b, distance)
             return distance
         }
     }
