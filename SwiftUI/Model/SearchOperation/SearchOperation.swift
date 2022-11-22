@@ -81,7 +81,7 @@ private class Levenshtein {
     private(set) var cache = [Key: Int]()
     
     func calculate(_ a: String.SubSequence, _ b: String.SubSequence) -> Int {
-        let key = Key(lhs: String(a), rhs: String(b))
+        let key = Key(a: String(a), b: String(b))
         if let distance = cache[key] {
             return distance
         } else {
@@ -104,7 +104,7 @@ private class Levenshtein {
     }
     
     struct Key: Hashable {
-        let lhs: String
-        let rhs: String
+        let a: String
+        let b: String
     }
 }
