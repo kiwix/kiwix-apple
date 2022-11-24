@@ -23,7 +23,7 @@ enum ActiveSheet: Hashable, Identifiable {
     
     case outline
     case bookmarks
-    case library(navigationItem: NavigationItem? = nil)
+    case library(tabItem: LibraryTabItem? = nil)
     case map(location: CLLocation?)
     case settings
     case safari(url: URL)
@@ -132,6 +132,38 @@ enum LibraryLanguageSortingMode: String, CaseIterable, Identifiable, Defaults.Se
             return "A-Z"
         case .byCounts:
             return "By Count"
+        }
+    }
+}
+
+enum LibraryTabItem: String, CaseIterable, Identifiable {
+    case opened, categories, new, downloads
+    
+    var id: String { self.rawValue }
+    
+    var name: String {
+        switch self {
+        case .opened:
+            return "Opened"
+        case .categories:
+            return "Categories"
+        case .new:
+            return "New"
+        case .downloads:
+            return "Downloads"
+        }
+    }
+    
+    var icon: String {
+        switch self {
+        case .opened:
+            return "folder"
+        case .categories:
+            return "books.vertical"
+        case .new:
+            return "newspaper"
+        case .downloads:
+            return "tray.and.arrow.down"
         }
     }
 }

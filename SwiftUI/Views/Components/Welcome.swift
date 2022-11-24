@@ -108,7 +108,7 @@ private struct Onboarding: View {
                         #if os(macOS)
                         viewModel.navigationItem = .categories
                         #elseif os(iOS)
-                        viewModel.activeSheet = .library(navigationItem: .categories)
+                        viewModel.activeSheet = .library(tabItem: .categories)
                         #endif
                     }
                 } label: {

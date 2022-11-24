@@ -38,8 +38,8 @@ struct RootView: View {
                 }
             case .bookmarks:
                 SheetContent { BookmarksView(url: $url) }
-            case .library(let navigationItem):
-                Library(url: $url, navigationItem: navigationItem)
+            case .library(let tabItem):
+                Library(url: $url, tabItem: tabItem)
             case .map(let location):
                 SheetContent {
                     Map(location: location)

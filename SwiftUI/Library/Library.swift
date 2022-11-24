@@ -13,21 +13,20 @@ import SwiftUI
 struct Library: View {
     @Binding var url: URL?
     @EnvironmentObject private var libraryViewModel: LibraryViewModel
-    @SceneStorage("LibraryNavigationItem") private var navigationItem: NavigationItem = .opened
+    @SceneStorage("LibraryTabItem") private var tabItem: LibraryTabItem = .opened
     
-    private let navigationItems: [NavigationItem] = [.opened, .categories, .downloads, .new]
-    private let defaultNavigationItem: NavigationItem?
+    private let defaultTabItem: LibraryTabItem?
     
-    init(url: Binding<URL?>, navigationItem: NavigationItem? = nil) {
+    init(url: Binding<URL?>, tabItem: LibraryTabItem? = nil) {
         self._url = url
-        self.defaultNavigationItem = navigationItem
+        self.defaultTabItem = tabItem
     }
     
     var body: some View {
-        TabView(selection: $navigationItem) {
-            ForEach(navigationItems) { navigationItem in
+        TabView(selection: $tabItem) {
+            ForEach(LibraryTabItem.allCases) { tabItem in
                 SheetContent {
-                    switch navigationItem {
+                    switch tabItem {
                     case .opened:
                         ZimFilesOpened(url: $url)
                     case .categories:
@@ -49,17 +48,15 @@ struct Library: View {
                         ZimFilesDownloads(url: $url)
                     case .new:
                         ZimFilesNew(url: $url)
-                    default:
-                        EmptyView()
                     }
                 }
-                .tag(navigationItem)
-                .tabItem { Label(navigationItem.name, systemImage: navigationItem.icon) }
+                .tag(tabItem)
+                .tabItem { Label(tabItem.name, systemImage: tabItem.icon) }
             }
         }
         .onAppear {
-            if let defaultNavigationItem = defaultNavigationItem {
-                navigationItem = defaultNavigationItem
+            if let defaultTabItem = defaultTabItem {
+                tabItem = defaultTabItem
             }
             libraryViewModel.startRefresh(isUserInitiated: false)
         }
