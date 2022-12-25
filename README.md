@@ -30,19 +30,32 @@ The xcframework is a bundle of a library for multiple architectures and/or platf
 
 Following steps are done from kiwix-build root and assume your apple repository is at `../apple`.
 
-#### Build kiwix-lib
+#### Build libkiwix
+
+Make sure to preinstall kiwix-build prerequisites (ninja and meson).
+
+If you use homebrew, run the following
+
+```bash
+brew install ninja meson
+```
+
+Make sure xcode command tools are installed
+
+```bash
+xcode-select --install
+```
+
+After you can build the `libkiwix` 
+
 ```bash
 git clone https://github.com/kiwix/kiwix-build.git
 cd kiwix-build
-# if on macOS mojave (10.14), install headers to standard location
-# https://developer.apple.com/documentation/xcode_release_notes/xcode_10_release_notes?language=objc
-open /Library/Developer/CommandLineTools/Packages/macOS_SDK_headers_for_macOS_10.14.pkg
-# make sure xcrun can find SDKs
-sudo xcode-select --switch /Applications/Xcode.app
-# [iOS] build kiwix-lib
-kiwix-build --target-platform iOS_multi kiwix-lib
-# [macOS] build kiwix-lib
-kiwix-build --target-platform native_static kiwix-lib
+# [iOS] build libkiwix
+kiwix-build --target-platform iOS_multi libkiwix
+# [macOS] build libkiwix
+kiwix-build --target-platform macOS_arm64 libkiwix
+kiwix-build --target-platform macOS_x86_64 libkiwix
 ```
 
 #### Create fat archive with all dependencies
@@ -50,7 +63,8 @@ kiwix-build --target-platform native_static kiwix-lib
 This creates a single `.a` archive named libkiwix which contains all libkiwix's dependencies.
 If you are to create an xcframework with multiple architectures/platforms, repeat this step for each:
 
-* `native_static` (for macOS – x86_64)
+* `macOS_x86_64`
+* `macOS_arm64`
 * `iOS_x86_64`
 * `iOS_arm64`
 
@@ -63,7 +77,7 @@ libtool -static -o BUILD_<target>/INSTALL/lib/libkiwix.a BUILD_<target>/INSTALL/
 #### Add fat archive to xcframework
 
 ```bash
-xcodebuild -create-xcframework -library BUILD_<target>/INSTALL/lib/libkiwix.a -headers BUILD_<target>/INSTALL/include -output ../apple/Model/libkiwix.xcframework
+xcodebuild -create-xcframework -library BUILD_<target>/INSTALL/lib/libkiwix.a -headers BUILD_<target>/INSTALL/include -output ../apple/Libraries/libkiwix.xcframework
 ```
 
 You can now launch the build from Xcode and use the iOS simulator or your macOS target.
