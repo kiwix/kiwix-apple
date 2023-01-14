@@ -68,11 +68,6 @@
 		9744068728CE263800916BD4 /* DirectoryMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9779A5CF2456796A00F6F6FF /* DirectoryMonitor.swift */; };
 		9744068928CF65AE00916BD4 /* LibraryOperations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9744068828CF65AE00916BD4 /* LibraryOperations.swift */; };
 		9744068A28CF65AE00916BD4 /* LibraryOperations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9744068828CF65AE00916BD4 /* LibraryOperations.swift */; };
-		9744068B28D0B2A800916BD4 /* Realm.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97EC18B126E8555E008309ED /* Realm.xcframework */; };
-		9744068C28D0B2A800916BD4 /* Realm.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 97EC18B126E8555E008309ED /* Realm.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		9744068D28D0B2A800916BD4 /* RealmSwift.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97EC18B026E8555E008309ED /* RealmSwift.xcframework */; };
-		9744068E28D0B2A800916BD4 /* RealmSwift.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 97EC18B026E8555E008309ED /* RealmSwift.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		9744069028D0B2BB00916BD4 /* RealmConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9779A5AF2456793600F6F6FF /* RealmConfig.swift */; };
 		9745AB5928E9257400067FF6 /* SettingsContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9745AB5828E9257400067FF6 /* SettingsContent.swift */; };
 		9745AB5A28E9257400067FF6 /* SettingsContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9745AB5828E9257400067FF6 /* SettingsContent.swift */; };
 		9745AB5C28E9277900067FF6 /* ReadingSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9745AB5B28E9277900067FF6 /* ReadingSettings.swift */; };
@@ -181,8 +176,6 @@
 		97EBDBF428C3AAC40067BE0F /* ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97EBDBF328C3AAC40067BE0F /* ViewModel.swift */; };
 		97EBDBF528C3AAC40067BE0F /* ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97EBDBF328C3AAC40067BE0F /* ViewModel.swift */; };
 		97EC18B426E8555E008309ED /* libkiwix.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97EC18AF26E8555E008309ED /* libkiwix.xcframework */; };
-		97EC18B726E8555E008309ED /* RealmSwift.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97EC18B026E8555E008309ED /* RealmSwift.xcframework */; };
-		97EC18BA26E8555E008309ED /* Realm.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97EC18B126E8555E008309ED /* Realm.xcframework */; };
 		97F3332F28AFC1A2007FF53C /* Search.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97F3332E28AFC1A2007FF53C /* Search.swift */; };
 		97F3333028AFC1A2007FF53C /* Search.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97F3332E28AFC1A2007FF53C /* Search.swift */; };
 		97FB4B0B27B819A90055F86E /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97FB4B0A27B819A90055F86E /* Message.swift */; };
@@ -196,8 +189,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				9744068C28D0B2A800916BD4 /* Realm.xcframework in Embed Frameworks */,
-				9744068E28D0B2A800916BD4 /* RealmSwift.xcframework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -219,7 +210,6 @@
 		9707541A23C2D3AB0076B74E /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
 		970885D0271339A300C5795C /* wikipedia_dark.css */ = {isa = PBXFileReference; lastKnownFileType = text.css; path = wikipedia_dark.css; sourceTree = "<group>"; };
 		970EC3AB23BCF31F008DCA27 /* ParserTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParserTests.swift; sourceTree = "<group>"; };
-		970EC3F123BE8E20008DCA27 /* ModelTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; name = ModelTests.xctest; path = "/Users/chrisli/Developer/Kiwix/build/Debug-iphoneos/ModelTests.xctest"; sourceTree = "<absolute>"; };
 		970EC3F523BE8E20008DCA27 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		970EC3FD23BE9987008DCA27 /* WikiMed.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WikiMed.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		97121EBC28849F0000371AEB /* ZimFileMissingIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZimFileMissingIndicator.swift; sourceTree = "<group>"; };
@@ -271,7 +261,6 @@
 		9779A5A52456793500F6F6FF /* OPDSStreamParser.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = OPDSStreamParser.mm; sourceTree = "<group>"; };
 		9779A5AC2456793600F6F6FF /* ZimFileMetaData.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ZimFileMetaData.mm; sourceTree = "<group>"; };
 		9779A5AD2456793600F6F6FF /* ZimFileMetaData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZimFileMetaData.h; sourceTree = "<group>"; };
-		9779A5AF2456793600F6F6FF /* RealmConfig.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RealmConfig.swift; sourceTree = "<group>"; };
 		9779A5CF2456796A00F6F6FF /* DirectoryMonitor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DirectoryMonitor.swift; sourceTree = "<group>"; };
 		9779A5D02456796A00F6F6FF /* Kiwix-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Kiwix-Bridging-Header.h"; sourceTree = "<group>"; };
 		9779A73A2456796B00F6F6FF /* WebKitHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebKitHandler.swift; sourceTree = "<group>"; };
@@ -302,6 +291,7 @@
 		97B4489D210FBC2E0004B056 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		97B448A0210FBC2E0004B056 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		97B448A2210FBC2E0004B056 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		97B706E529730F7600562392 /* ModelTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ModelTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		97BD6C9B2886E06B004A8532 /* HTMLParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HTMLParser.swift; sourceTree = "<group>"; };
 		97C13787284572AC00386C04 /* SearchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewModel.swift; sourceTree = "<group>"; };
 		97C278DE2796249900666E07 /* Outline.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Outline.swift; sourceTree = "<group>"; };
@@ -315,8 +305,6 @@
 		97E94B22271EF250005B0295 /* Kiwix.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Kiwix.entitlements; sourceTree = "<group>"; };
 		97EBDBF328C3AAC40067BE0F /* ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModel.swift; sourceTree = "<group>"; };
 		97EC18AF26E8555E008309ED /* libkiwix.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = libkiwix.xcframework; sourceTree = "<group>"; };
-		97EC18B026E8555E008309ED /* RealmSwift.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = RealmSwift.xcframework; sourceTree = "<group>"; };
-		97EC18B126E8555E008309ED /* Realm.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = Realm.xcframework; sourceTree = "<group>"; };
 		97EEFF2028398E9A00BDD6E2 /* iOSApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iOSApp.swift; sourceTree = "<group>"; };
 		97F3332E28AFC1A2007FF53C /* Search.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Search.swift; sourceTree = "<group>"; };
 		97F425C127151A0D00D0F738 /* QuickLook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuickLook.framework; path = System/Library/Frameworks/QuickLook.framework; sourceTree = SDKROOT; };
@@ -331,8 +319,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				97EC18B426E8555E008309ED /* libkiwix.xcframework in Frameworks */,
-				97EC18B726E8555E008309ED /* RealmSwift.xcframework in Frameworks */,
-				97EC18BA26E8555E008309ED /* Realm.xcframework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -345,8 +331,6 @@
 				977B1B6228980190001D07C4 /* Introspect in Frameworks */,
 				976BAEBA284903EA0049404F /* Fuzi in Frameworks */,
 				972DE4B82814A51C004FD9B9 /* libkiwix.xcframework in Frameworks */,
-				9744068B28D0B2A800916BD4 /* Realm.xcframework in Frameworks */,
-				9744068D28D0B2A800916BD4 /* RealmSwift.xcframework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -388,7 +372,6 @@
 			children = (
 				97FD2F5E251EA07B0034927C /* FeatureFlags.swift */,
 				9779A7E224567A5A00F6F6FF /* Log.swift */,
-				9779A5AF2456793600F6F6FF /* RealmConfig.swift */,
 				97B3BACD2736CE3500A23F49 /* URL.swift */,
 				9779A73A2456796B00F6F6FF /* WebKitHandler.swift */,
 			);
@@ -537,6 +520,7 @@
 				970EC3FD23BE9987008DCA27 /* WikiMed.app */,
 				97E94B17271EF24D005B0295 /* Kiwix.app */,
 				972DE4A62814A3D8004FD9B9 /* Kiwix.app */,
+				97B706E529730F7600562392 /* ModelTests.xctest */,
 			);
 			sourceTree = "<group>";
 			wrapsLines = 0;
@@ -644,8 +628,6 @@
 			isa = PBXGroup;
 			children = (
 				97EC18AF26E8555E008309ED /* libkiwix.xcframework */,
-				97EC18B026E8555E008309ED /* RealmSwift.xcframework */,
-				97EC18B126E8555E008309ED /* Realm.xcframework */,
 			);
 			path = Libraries;
 			sourceTree = "<group>";
@@ -678,7 +660,7 @@
 			);
 			name = ModelTests;
 			productName = ModelTests;
-			productReference = 970EC3F123BE8E20008DCA27 /* ModelTests.xctest */;
+			productReference = 97B706E529730F7600562392 /* ModelTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 		972DE4A52814A3D8004FD9B9 /* iOS_SwiftUI */ = {
@@ -901,7 +883,6 @@
 				976D90E428159BFA00CC7D29 /* Favicon.swift in Sources */,
 				976D90DB281584BF00CC7D29 /* FlavorTag.swift in Sources */,
 				972DE4BD2814A5BE004FD9B9 /* OPDSStreamParser.mm in Sources */,
-				9744069028D0B2BB00916BD4 /* RealmConfig.swift in Sources */,
 				9721BBB3284167C8005C910D /* Outline.swift in Sources */,
 				972DE4B52814A502004FD9B9 /* Entities.swift in Sources */,
 				9721BBBB28427A93005C910D /* BookmarksView.swift in Sources */,
