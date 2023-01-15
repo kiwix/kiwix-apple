@@ -15,7 +15,7 @@ extension OPDSParser {
         do {
             try self.__parseData(data)
         } catch {
-            throw OPDSRefreshError.parse
+            throw LibraryRefreshError.parse
         }
     }
     

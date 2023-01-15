@@ -58,7 +58,7 @@ class LibraryViewModel: ObservableObject {
 class LibraryRefreshOperation: Operation {
     private(set) var insertionCount = 0
     private(set) var deletionCount = 0
-    private(set) var error: OPDSRefreshError?
+    private(set) var error: LibraryRefreshError?
     
     override func main() {
         do {
@@ -83,7 +83,7 @@ class LibraryRefreshOperation: Operation {
                    deletionCount,
                    parser.zimFileIDs.count
             )
-        } catch let error as OPDSRefreshError {
+        } catch let error as LibraryRefreshError {
             self.error = error
             os_log("Error updating library: %s", log: Log.OPDS, type: .error, error.localizedDescription)
         } catch {
@@ -118,7 +118,7 @@ class LibraryRefreshOperation: Operation {
             let description = error?.localizedDescription ??
                 NSLocalizedString("Unable to fetch data", comment: "Library Refresh Error")
             os_log("Error retrieving OPDS Stream: %s", log: Log.OPDS, type: .error, description)
-            throw OPDSRefreshError.retrieve(description: description)
+            throw LibraryRefreshError.retrieve(description: description)
         }
     }
     
@@ -161,7 +161,7 @@ class LibraryRefreshOperation: Operation {
             deletionCount = (try context.execute(deleteRequest) as? NSBatchDeleteResult)?.result as? Int ?? 0
         } catch {
             os_log("Error processing OPDS Stream: %s", log: Log.OPDS, type: .error, error.localizedDescription)
-            throw OPDSRefreshError.process
+            throw LibraryRefreshError.process
         }
     }
 }

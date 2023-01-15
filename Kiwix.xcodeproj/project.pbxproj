@@ -21,7 +21,7 @@
 		972DE4B62814A502004FD9B9 /* Enum.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9735D0BF27777E3300C7D495 /* Enum.swift */; };
 		972DE4B92814A56A004FD9B9 /* Database.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9735D0BB2775594700C7D495 /* Database.swift */; };
 		972DE4BA2814A590004FD9B9 /* ZimFileMetaData.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9779A5AC2456793600F6F6FF /* ZimFileMetaData.mm */; };
-		972DE4BB2814A5A4004FD9B9 /* OPDSRefreshError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 973A2FC4277EAA2500BD4320 /* OPDSRefreshError.swift */; };
+		972DE4BB2814A5A4004FD9B9 /* Errors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 973A2FC4277EAA2500BD4320 /* Errors.swift */; };
 		972DE4BC2814A5BE004FD9B9 /* OPDSParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9779A5A32456793500F6F6FF /* OPDSParser.swift */; };
 		972DE4BD2814A5BE004FD9B9 /* OPDSParser.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9779A5A52456793500F6F6FF /* OPDSParser.mm */; };
 		972DE4C42814AAAE004FD9B9 /* Library.swift in Sources */ = {isa = PBXBuildFile; fileRef = 972DE4C12814A961004FD9B9 /* Library.swift */; };
@@ -149,7 +149,7 @@
 		973A0DEF282E981200B41E71 /* ZimFileRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZimFileRow.swift; sourceTree = "<group>"; };
 		973A0DF3282FEDA500B41E71 /* ZimFileViewModifiers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZimFileViewModifiers.swift; sourceTree = "<group>"; };
 		973A0DFB283100C300B41E71 /* ZimFilesOpened.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZimFilesOpened.swift; sourceTree = "<group>"; };
-		973A2FC4277EAA2500BD4320 /* OPDSRefreshError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OPDSRefreshError.swift; sourceTree = "<group>"; };
+		973A2FC4277EAA2500BD4320 /* Errors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Errors.swift; sourceTree = "<group>"; };
 		973A2FCD277FB03F00BD4320 /* FlavorTag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlavorTag.swift; sourceTree = "<group>"; };
 		973A2FD72780024600BD4320 /* ZimFileCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZimFileCell.swift; sourceTree = "<group>"; };
 		9744068828CF65AE00916BD4 /* LibraryOperations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryOperations.swift; sourceTree = "<group>"; };
@@ -402,7 +402,7 @@
 			children = (
 				97BF1F8E27CE5EEF00A94E06 /* SearchResult */,
 				97B7070629748CAA00562392 /* ZimFileMetaData */,
-				973A2FC4277EAA2500BD4320 /* OPDSRefreshError.swift */,
+				973A2FC4277EAA2500BD4320 /* Errors.swift */,
 				97974349257BF2B000D30F03 /* OutlineItem.swift */,
 				97B3BAC92736CDCE00A23F49 /* URLContent.swift */,
 			);
@@ -690,7 +690,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				972DE4BB2814A5A4004FD9B9 /* OPDSRefreshError.swift in Sources */,
+				972DE4BB2814A5A4004FD9B9 /* Errors.swift in Sources */,
 				9790CA5A28A05EBB00D39FC6 /* ZimFilesCategories.swift in Sources */,
 				97DE2BA7283AB6DC00C63D9B /* Buttons.swift in Sources */,
 				978938732899556200F0EAFC /* RootViewV1.swift in Sources */,
