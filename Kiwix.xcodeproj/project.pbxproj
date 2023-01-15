@@ -22,8 +22,8 @@
 		972DE4B92814A56A004FD9B9 /* Database.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9735D0BB2775594700C7D495 /* Database.swift */; };
 		972DE4BA2814A590004FD9B9 /* ZimFileMetaData.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9779A5AC2456793600F6F6FF /* ZimFileMetaData.mm */; };
 		972DE4BB2814A5A4004FD9B9 /* OPDSRefreshError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 973A2FC4277EAA2500BD4320 /* OPDSRefreshError.swift */; };
-		972DE4BC2814A5BE004FD9B9 /* OPDSStreamParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9779A5A32456793500F6F6FF /* OPDSStreamParser.swift */; };
-		972DE4BD2814A5BE004FD9B9 /* OPDSStreamParser.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9779A5A52456793500F6F6FF /* OPDSStreamParser.mm */; };
+		972DE4BC2814A5BE004FD9B9 /* OPDSParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9779A5A32456793500F6F6FF /* OPDSParser.swift */; };
+		972DE4BD2814A5BE004FD9B9 /* OPDSParser.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9779A5A52456793500F6F6FF /* OPDSParser.mm */; };
 		972DE4C42814AAAE004FD9B9 /* Library.swift in Sources */ = {isa = PBXBuildFile; fileRef = 972DE4C12814A961004FD9B9 /* Library.swift */; };
 		97341C6B2851165B00BC273E /* Searchable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97341C692851165B00BC273E /* Searchable.swift */; };
 		97341C6E2852248500BC273E /* DownloadTaskCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97341C6C2852248500BC273E /* DownloadTaskCell.swift */; };
@@ -173,9 +173,9 @@
 		975FDB061F608F4100A10E8C /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 		976A65B22659489F009A97C6 /* SearchResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResult.swift; sourceTree = "<group>"; };
 		976D90E72815D63A00CC7D29 /* ZimFilesNew.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZimFilesNew.swift; sourceTree = "<group>"; };
-		9779A5A32456793500F6F6FF /* OPDSStreamParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OPDSStreamParser.swift; sourceTree = "<group>"; };
-		9779A5A42456793500F6F6FF /* OPDSStreamParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OPDSStreamParser.h; sourceTree = "<group>"; };
-		9779A5A52456793500F6F6FF /* OPDSStreamParser.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = OPDSStreamParser.mm; sourceTree = "<group>"; };
+		9779A5A32456793500F6F6FF /* OPDSParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OPDSParser.swift; sourceTree = "<group>"; };
+		9779A5A42456793500F6F6FF /* OPDSParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OPDSParser.h; sourceTree = "<group>"; };
+		9779A5A52456793500F6F6FF /* OPDSParser.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = OPDSParser.mm; sourceTree = "<group>"; };
 		9779A5AC2456793600F6F6FF /* ZimFileMetaData.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ZimFileMetaData.mm; sourceTree = "<group>"; };
 		9779A5AD2456793600F6F6FF /* ZimFileMetaData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZimFileMetaData.h; sourceTree = "<group>"; };
 		9779A5CF2456796A00F6F6FF /* DirectoryMonitor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DirectoryMonitor.swift; sourceTree = "<group>"; };
@@ -285,7 +285,7 @@
 			isa = PBXGroup;
 			children = (
 				9779A5AB2456793600F6F6FF /* Entities */,
-				972DE4BF2814A5E3004FD9B9 /* OPDSStreamParser */,
+				972DE4BF2814A5E3004FD9B9 /* OPDSParser */,
 				9706555A2473682C00A51319 /* Utilities */,
 				974E7EE22930201500BDF59C /* ZimFileService */,
 			);
@@ -301,14 +301,14 @@
 			path = ModelTests;
 			sourceTree = "<group>";
 		};
-		972DE4BF2814A5E3004FD9B9 /* OPDSStreamParser */ = {
+		972DE4BF2814A5E3004FD9B9 /* OPDSParser */ = {
 			isa = PBXGroup;
 			children = (
-				9779A5A42456793500F6F6FF /* OPDSStreamParser.h */,
-				9779A5A52456793500F6F6FF /* OPDSStreamParser.mm */,
-				9779A5A32456793500F6F6FF /* OPDSStreamParser.swift */,
+				9779A5A42456793500F6F6FF /* OPDSParser.h */,
+				9779A5A52456793500F6F6FF /* OPDSParser.mm */,
+				9779A5A32456793500F6F6FF /* OPDSParser.swift */,
 			);
-			path = OPDSStreamParser;
+			path = OPDSParser;
 			sourceTree = "<group>";
 		};
 		9735D0B72775362000C7D495 /* Model */ = {
@@ -708,7 +708,7 @@
 				97486D06284A36790096E4DD /* ArticleCell.swift in Sources */,
 				973A0E032831057200B41E71 /* URL.swift in Sources */,
 				973A0DE8281DD7EB00B41E71 /* Log.swift in Sources */,
-				972DE4BC2814A5BE004FD9B9 /* OPDSStreamParser.swift in Sources */,
+				972DE4BC2814A5BE004FD9B9 /* OPDSParser.swift in Sources */,
 				974C33A02853D4AC00DF6F4C /* About.swift in Sources */,
 				97DE2B9F2839D7A200C63D9B /* WebKitHandler.swift in Sources */,
 				97486D0E284C0EBC0096E4DD /* Welcome.swift in Sources */,
@@ -733,7 +733,7 @@
 				976BAEBD2849056B0049404F /* SearchOperation.swift in Sources */,
 				976D90E428159BFA00CC7D29 /* Favicon.swift in Sources */,
 				976D90DB281584BF00CC7D29 /* FlavorTag.swift in Sources */,
-				972DE4BD2814A5BE004FD9B9 /* OPDSStreamParser.mm in Sources */,
+				972DE4BD2814A5BE004FD9B9 /* OPDSParser.mm in Sources */,
 				9721BBB3284167C8005C910D /* Outline.swift in Sources */,
 				972DE4B52814A502004FD9B9 /* Entities.swift in Sources */,
 				9721BBBB28427A93005C910D /* BookmarksView.swift in Sources */,

@@ -66,7 +66,7 @@ class LibraryRefreshOperation: Operation {
 
             // perform refresh
             let data = try fetchOPDSData()
-            let parser = OPDSStreamParser()
+            let parser = OPDSParser()
             try parser.parse(data: data)
             try processData(parser)
             
@@ -123,8 +123,8 @@ class LibraryRefreshOperation: Operation {
     }
     
     /// Process the parsed OPDS data
-    /// - Parameter parser: OPDS stream parser
-    private func processData(_ parser: OPDSStreamParser) throws {
+    /// - Parameter parser: OPDS parser
+    private func processData(_ parser: OPDSParser) throws {
         let context = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
         context.persistentStoreCoordinator = Database.shared.container.persistentStoreCoordinator
         context.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump

@@ -1,9 +1,9 @@
 //
-//  OPDSStreamParser.mm
+//  OPDSParser.mm
 //  Kiwix
 //
 //  Created by Chris Li on 3/8/20.
-//  Copyright © 2020 Chris Li. All rights reserved.
+//  Copyright © 2023 Chris Li. All rights reserved.
 //
 
 #pragma clang diagnostic push
@@ -13,16 +13,16 @@
 #include "kiwix/manager.h"
 #pragma clang diagnostic pop
 
-#import "OPDSStreamParser.h"
+#import "OPDSParser.h"
 #import "ZimFileMetaData.h"
 
-@interface OPDSStreamParser ()
+@interface OPDSParser ()
 
 @property kiwix::Library *library;
 
 @end
 
-@implementation OPDSStreamParser
+@implementation OPDSParser
 
 - (instancetype _Nonnull)init {
     self = [super init];

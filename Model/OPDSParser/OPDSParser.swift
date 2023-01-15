@@ -1,12 +1,12 @@
 //
-//  OPDSStreamParser.swift
+//  OPDSParser.swift
 //  Kiwix
 //
 //  Created by Chris Li on 3/8/20.
-//  Copyright © 2020 Chris Li. All rights reserved.
+//  Copyright © 2023 Chris Li. All rights reserved.
 //
 
-extension OPDSStreamParser {
+extension OPDSParser {
     var zimFileIDs: Set<UUID> {
         get { __getZimFileIDs() as? Set<UUID> ?? Set<UUID>() }
     }

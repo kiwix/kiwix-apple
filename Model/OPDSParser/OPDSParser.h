@@ -1,9 +1,9 @@
 //
-//  OPDSStreamParser.h
+//  OPDSParser.h
 //  Kiwix
 //
 //  Created by Chris Li on 3/8/20.
-//  Copyright © 2020 Chris Li. All rights reserved.
+//  Copyright © 2023 Chris Li. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
@@ -11,7 +11,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface OPDSStreamParser : NSObject
+@interface OPDSParser : NSObject
 
 - (nonnull instancetype)init;
 - (BOOL)parseData:(nonnull NSData *)data error:(NSError **)error NS_REFINED_FOR_SWIFT;

@@ -3,7 +3,7 @@
 //
 
 #import "ZimFileService.h"
-#import "OPDSStreamParser.h"
+#import "OPDSParser.h"
 #import "ZimFileMetaData.h"
 #import "SearchOperation.h"
 #import "SearchResult.h"
