@@ -46,7 +46,7 @@ final class OPDSParserTests: XCTestCase {
             <articleCount>50001</articleCount>
             <mediaCount>566835</mediaCount>
             <link rel="http://opds-spec.org/image/thumbnail"
-                  href="/catalog/v2/illustration/1ec90eab-5724-492b-9529-893959520de4/?size=48"
+                  href="/catalog/v2/illustration/1ec90eab-5724-492b-9529-893959520de4/"
                   type="image/png;width=48;height=48;scale=1"/>
             <link type="text/html" href="/content/wikipedia_en_top_maxi_2023-01"/>
             <author><name>Wikipedia</name></author>
@@ -80,5 +80,19 @@ final class OPDSParserTests: XCTestCase {
         XCTAssertEqual(metadata.mediaCount, 566835)
         XCTAssertEqual(metadata.creator, "Wikipedia")
         XCTAssertEqual(metadata.publisher, "Kiwix")
+        XCTAssertEqual(metadata.hasDetails, true)
+        XCTAssertEqual(metadata.hasPictures, true)
+        XCTAssertEqual(metadata.hasVideos, false)
+        XCTAssertEqual(metadata.requiresServiceWorkers, false)
+        
+        XCTAssertEqual(
+            metadata.downloadURL,
+            URL(string: "https://download.kiwix.org/zim/wikipedia/wikipedia_en_top_maxi_2023-01.zim.meta4")
+        )
+        XCTAssertEqual(
+            metadata.faviconURL,
+            URL(string: "https://library.kiwix.org/catalog/v2/illustration/1ec90eab-5724-492b-9529-893959520de4/")
+        )
+        XCTAssertEqual(metadata.flavor, "maxi")
     }
 }
