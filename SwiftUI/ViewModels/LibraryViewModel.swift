@@ -58,7 +58,7 @@ class LibraryViewModel: ObservableObject {
 class LibraryRefreshOperation: Operation {
     private(set) var insertionCount = 0
     private(set) var deletionCount = 0
-    private(set) var error: OPDSRefreshError?
+    private(set) var error: LibraryRefreshError?
     
     override func main() {
         do {
@@ -66,7 +66,7 @@ class LibraryRefreshOperation: Operation {
 
             // perform refresh
             let data = try fetchOPDSData()
-            let parser = OPDSStreamParser()
+            let parser = OPDSParser()
             try parser.parse(data: data)
             try processData(parser)
             
@@ -83,7 +83,7 @@ class LibraryRefreshOperation: Operation {
                    deletionCount,
                    parser.zimFileIDs.count
             )
-        } catch let error as OPDSRefreshError {
+        } catch let error as LibraryRefreshError {
             self.error = error
             os_log("Error updating library: %s", log: Log.OPDS, type: .error, error.localizedDescription)
         } catch {
@@ -118,13 +118,13 @@ class LibraryRefreshOperation: Operation {
             let description = error?.localizedDescription ??
                 NSLocalizedString("Unable to fetch data", comment: "Library Refresh Error")
             os_log("Error retrieving OPDS Stream: %s", log: Log.OPDS, type: .error, description)
-            throw OPDSRefreshError.retrieve(description: description)
+            throw LibraryRefreshError.retrieve(description: description)
         }
     }
     
     /// Process the parsed OPDS data
-    /// - Parameter parser: OPDS stream parser
-    private func processData(_ parser: OPDSStreamParser) throws {
+    /// - Parameter parser: OPDS parser
+    private func processData(_ parser: OPDSParser) throws {
         let context = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
         context.persistentStoreCoordinator = Database.shared.container.persistentStoreCoordinator
         context.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
@@ -132,15 +132,15 @@ class LibraryRefreshOperation: Operation {
         
         do {
             // insert new zim files
-            let existing = try context.fetch(ZimFile.fetchRequest()).map { $0.fileID.uuidString.lowercased() }
-            var zimFileIDs = Set(parser.zimFileIDs).subtracting(existing)
+            let existing = try context.fetch(ZimFile.fetchRequest()).map { $0.fileID }
+            var zimFileIDs = parser.zimFileIDs.subtracting(existing)
             let insertRequest = NSBatchInsertRequest(
                 entity: ZimFile.entity(),
                 managedObjectHandler: { zimFile in
                     guard let zimFile = zimFile as? ZimFile else { return true }
                     while !zimFileIDs.isEmpty {
                         guard let id = zimFileIDs.popFirst(),
-                              let metadata = parser.getZimFileMetaData(id: id) else { continue }
+                              let metadata = parser.getMetaData(id: id) else { continue }
                         LibraryOperations.configureZimFile(zimFile, metadata: metadata)
                         return false
                     }
@@ -154,14 +154,14 @@ class LibraryRefreshOperation: Operation {
             let fetchRequest: NSFetchRequest<NSFetchRequestResult> = ZimFile.fetchRequest()
             fetchRequest.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
                 NSPredicate(format: "fileURLBookmark == nil"),
-                NSPredicate(format: "NOT fileID IN %@", parser.zimFileIDs.compactMap { UUID(uuidString: $0) })
+                NSPredicate(format: "NOT fileID IN %@", parser.zimFileIDs)
             ])
             let deleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
             deleteRequest.resultType = .resultTypeCount
             deletionCount = (try context.execute(deleteRequest) as? NSBatchDeleteResult)?.result as? Int ?? 0
         } catch {
             os_log("Error processing OPDS Stream: %s", log: Log.OPDS, type: .error, error.localizedDescription)
-            throw OPDSRefreshError.process
+            throw LibraryRefreshError.process
         }
     }
 }

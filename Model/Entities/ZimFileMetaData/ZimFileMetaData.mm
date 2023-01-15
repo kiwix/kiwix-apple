@@ -24,8 +24,8 @@
         kiwix::Book *_book = static_cast<kiwix::Book *>(book);
         
         try {
-            self.identifier = [NSString stringWithUTF8String:_book->getId().c_str()];
-            self.fileID = [[NSUUID alloc] initWithUUIDString:self.identifier];
+            NSString *identifier = [NSString stringWithUTF8String:_book->getId().c_str()];
+            self.fileID = [[NSUUID alloc] initWithUUIDString:identifier];
             self.title = [NSString stringWithUTF8String:_book->getTitle().c_str()];
             self.groupIdentifier = [NSString stringWithUTF8String:_book->getName().c_str()];
             self.fileDescription = [NSString stringWithUTF8String:_book->getDescription().c_str()];
@@ -78,6 +78,7 @@
 - (NSDate *)getCreationDateFromBook:(kiwix::Book *)book {
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
     formatter.dateFormat = @"yyyy-MM-dd";
+    formatter.timeZone = [NSTimeZone timeZoneWithAbbreviation:@"UTC"];
     return [formatter dateFromString:[NSString stringWithUTF8String:book->getDate().c_str()]];
 }
 

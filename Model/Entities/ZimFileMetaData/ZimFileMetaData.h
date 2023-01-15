@@ -11,7 +11,6 @@
 @interface ZimFileMetaData : NSObject
 
 // nonnull attributes
-@property (nonatomic, strong, nonnull) NSString *identifier;
 @property (nonatomic, strong, nonnull) NSUUID *fileID;
 @property (nonatomic, strong, nonnull) NSString *groupIdentifier;
 @property (nonatomic, strong, nonnull) NSString *title;
@@ -28,7 +27,6 @@
 // nullable attributes
 @property (nonatomic, strong, nullable) NSURL *downloadURL;
 @property (nonatomic, strong, nullable) NSURL *faviconURL;
-@property (nonatomic, strong, nullable) NSData *faviconData DEPRECATED_ATTRIBUTE;
 @property (nonatomic, strong, nullable) NSString *flavor;
 
 // assigned attributes
@@ -37,6 +35,7 @@
 @property (nonatomic, assign) BOOL hasVideos;
 @property (nonatomic, assign) BOOL requiresServiceWorkers;
 
+// methods
 - (nullable instancetype)initWithBook:(nonnull void *)book;
 
 @end

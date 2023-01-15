@@ -1,12 +1,14 @@
 //
-//  OPDSRefreshError.swift
+//  Errors.swift
 //  Kiwix
 //
 //  Created by Chris Li on 12/30/21.
-//  Copyright © 2021 Chris Li. All rights reserved.
+//  Copyright © 2023 Chris Li. All rights reserved.
 //
 
-enum OPDSRefreshError: LocalizedError {
+import Foundation
+
+enum LibraryRefreshError: LocalizedError {
     case retrieve(description: String? = nil)
     case parse
     case process
