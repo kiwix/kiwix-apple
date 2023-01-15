@@ -8,7 +8,7 @@
 
 public extension OPDSParser {
     var zimFileIDs: Set<UUID> {
-        get { __getZimFileIDs() as? Set<UUID> ?? Set<UUID>() }
+        __getZimFileIDs() as? Set<UUID> ?? Set<UUID>()
     }
     
     func parse(data: Data) throws {
