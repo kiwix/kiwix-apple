@@ -7,6 +7,7 @@
 //
 
 import XCTest
+import Kiwix
 
 final class OPDSParserTests: XCTestCase {
     let parser = OPDSParser()
@@ -70,5 +71,14 @@ final class OPDSParserTests: XCTestCase {
         XCTAssertEqual(metadata.fileID, zimFileID)
         XCTAssertEqual(metadata.groupIdentifier, "wikipedia_en_top")
         XCTAssertEqual(metadata.title, "Best of Wikipedia")
+        XCTAssertEqual(metadata.fileDescription, "A selection of the best 50,000 Wikipedia articles")
+        XCTAssertEqual(metadata.languageCode, "en")
+        XCTAssertEqual(metadata.category, "wikipedia")
+        XCTAssertEqual(metadata.creationDate, try! Date("2023-01-07T00:00:00Z", strategy: .iso8601))
+        XCTAssertEqual(metadata.size, 6515656704)
+        XCTAssertEqual(metadata.articleCount, 50001)
+        XCTAssertEqual(metadata.mediaCount, 566835)
+        XCTAssertEqual(metadata.creator, "Wikipedia")
+        XCTAssertEqual(metadata.publisher, "Kiwix")
     }
 }

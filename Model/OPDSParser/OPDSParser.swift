@@ -6,7 +6,7 @@
 //  Copyright © 2023 Chris Li. All rights reserved.
 //
 
-extension OPDSParser {
+public extension OPDSParser {
     var zimFileIDs: Set<UUID> {
         get { __getZimFileIDs() as? Set<UUID> ?? Set<UUID>() }
     }
