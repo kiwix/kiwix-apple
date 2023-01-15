@@ -18,7 +18,7 @@
 
 @interface OPDSStreamParser ()
 
-@property (assign) kiwix::Library *library;
+@property kiwix::Library *library;
 
 @end
 
@@ -38,10 +38,9 @@
 
 - (BOOL)parseData:(nonnull NSData *)data error:(NSError **)error {
     try {
-        NSString *streamContent = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-        
+        NSString *content = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
         std::shared_ptr<kiwix::Manager> manager = std::make_shared<kiwix::Manager>(self.library);
-        manager->readOpds([streamContent cStringUsingEncoding:NSUTF8StringEncoding],
+        manager->readOpds([content cStringUsingEncoding:NSUTF8StringEncoding],
                           [@"https://library.kiwix.org" cStringUsingEncoding:NSUTF8StringEncoding]);
         return true;
     } catch (std::exception) {
@@ -50,17 +49,17 @@
     }
 }
 
-- (NSArray *)getZimFileIDs {
-    NSMutableArray *identifiers = [[NSMutableArray alloc] initWithCapacity:self.library->getBookCount(false, true)];
-    for (auto identifierC: self.library->getBooksIds()) {
+- (NSSet *)getZimFileIDs {
+    NSMutableArray *uuids = [[NSMutableArray alloc] initWithCapacity:self.library->getBookCount(false, true)];
+    for (std::string identifierC: self.library->getBooksIds()) {
         NSString *identifier = [NSString stringWithUTF8String:identifierC.c_str()];
-        [identifiers addObject:identifier];
+        [uuids addObject:[[NSUUID alloc] initWithUUIDString:identifier]];
     }
-    return identifiers;
+    return [[NSSet alloc] initWithArray:uuids];
 }
 
-- (ZimFileMetaData *)getZimFileMetaData:(NSString *)identifier {
-    std::string identifierC = [identifier cStringUsingEncoding:NSUTF8StringEncoding];
+- (ZimFileMetaData *)getZimFileMetaData:(NSUUID *)identifier {
+    std::string identifierC = [[[identifier UUIDString] lowercaseString] cStringUsingEncoding:NSUTF8StringEncoding];
     kiwix::Book book = self.library->getBookById(identifierC);
     return [[ZimFileMetaData alloc] initWithBook: &book];
 }

@@ -132,15 +132,15 @@ class LibraryRefreshOperation: Operation {
         
         do {
             // insert new zim files
-            let existing = try context.fetch(ZimFile.fetchRequest()).map { $0.fileID.uuidString.lowercased() }
-            var zimFileIDs = Set(parser.zimFileIDs).subtracting(existing)
+            let existing = try context.fetch(ZimFile.fetchRequest()).map { $0.fileID }
+            var zimFileIDs = parser.zimFileIDs.subtracting(existing)
             let insertRequest = NSBatchInsertRequest(
                 entity: ZimFile.entity(),
                 managedObjectHandler: { zimFile in
                     guard let zimFile = zimFile as? ZimFile else { return true }
                     while !zimFileIDs.isEmpty {
                         guard let id = zimFileIDs.popFirst(),
-                              let metadata = parser.getZimFileMetaData(id: id) else { continue }
+                              let metadata = parser.getMetaData(id: id) else { continue }
                         LibraryOperations.configureZimFile(zimFile, metadata: metadata)
                         return false
                     }
@@ -154,7 +154,7 @@ class LibraryRefreshOperation: Operation {
             let fetchRequest: NSFetchRequest<NSFetchRequestResult> = ZimFile.fetchRequest()
             fetchRequest.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
                 NSPredicate(format: "fileURLBookmark == nil"),
-                NSPredicate(format: "NOT fileID IN %@", parser.zimFileIDs.compactMap { UUID(uuidString: $0) })
+                NSPredicate(format: "NOT fileID IN %@", parser.zimFileIDs)
             ])
             let deleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
             deleteRequest.resultType = .resultTypeCount

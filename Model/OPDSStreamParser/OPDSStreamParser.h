@@ -15,8 +15,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (nonnull instancetype)init;
 - (BOOL)parseData:(nonnull NSData *)data error:(NSError **)error NS_REFINED_FOR_SWIFT;
-- (nonnull NSArray *)getZimFileIDs NS_REFINED_FOR_SWIFT;
-- (nullable ZimFileMetaData *)getZimFileMetaData:(nonnull NSString *)identifier NS_REFINED_FOR_SWIFT;
+- (nonnull NSSet *)getZimFileIDs NS_REFINED_FOR_SWIFT;
+- (nullable ZimFileMetaData *)getZimFileMetaData:(nonnull NSUUID *)identifier NS_REFINED_FOR_SWIFT;
 
 @end
 
