@@ -16,7 +16,7 @@
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "972DE4A52814A3D8004FD9B9"
                BuildableName = "Kiwix.app"
-               BlueprintName = "iOS_SwiftUI"
+               BlueprintName = "Kiwix"
                ReferencedContainer = "container:Kiwix.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -46,7 +46,7 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "972DE4A52814A3D8004FD9B9"
             BuildableName = "Kiwix.app"
-            BlueprintName = "iOS_SwiftUI"
+            BlueprintName = "Kiwix"
             ReferencedContainer = "container:Kiwix.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
@@ -63,7 +63,7 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "972DE4A52814A3D8004FD9B9"
             BuildableName = "Kiwix.app"
-            BlueprintName = "iOS_SwiftUI"
+            BlueprintName = "Kiwix"
             ReferencedContainer = "container:Kiwix.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>

@@ -23,7 +23,6 @@ struct Kiwix: App {
         #if os(iOS)
         LibraryOperations.registerBackgroundTask()
         LibraryOperations.applyLibraryAutoRefreshSetting()
-        DatabaseMigration.start()
         #endif
     }
     
