@@ -58,8 +58,12 @@
 
 - (ZimFileMetaData *)getZimFileMetaData:(NSUUID *)identifier {
     std::string identifierC = [[[identifier UUIDString] lowercaseString] cStringUsingEncoding:NSUTF8StringEncoding];
-    kiwix::Book book = self.library->getBookById(identifierC);
-    return [[ZimFileMetaData alloc] initWithBook: &book];
+    try {
+        kiwix::Book book = self.library->getBookById(identifierC);
+        return [[ZimFileMetaData alloc] initWithBook: &book];
+    } catch (std::out_of_range) {
+        return nil;
+    }
 }
 
 @end
