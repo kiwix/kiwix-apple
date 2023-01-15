@@ -7,6 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		97008ABD2974A5BF0076E60C /* Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97008ABC2974A5BF0076E60C /* Tests.swift */; };
+		97008AC32974A68E0076E60C /* OPDSParser.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9779A5A52456793500F6F6FF /* OPDSParser.mm */; };
+		97008AC42974A68E0076E60C /* OPDSParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9779A5A32456793500F6F6FF /* OPDSParser.swift */; };
+		97008AC52974A69A0076E60C /* Errors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 973A2FC4277EAA2500BD4320 /* Errors.swift */; };
+		97008AC62974A7110076E60C /* libkiwix.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97B706E72974599500562392 /* libkiwix.xcframework */; };
 		970258B528FE418A00B68E84 /* BookmarkOperations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 970258B328FE418A00B68E84 /* BookmarkOperations.swift */; };
 		970C0BDF28A28AEA0037A47D /* ReadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 977B1B5C28972C33001D07C4 /* ReadingView.swift */; };
 		970C0BE028A28AEA0037A47D /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97893876289E058100F0EAFC /* RootView.swift */; };
@@ -100,6 +105,16 @@
 		97FB4ECE28B4E221003FB524 /* SwiftUIBackports in Frameworks */ = {isa = PBXBuildFile; productRef = 97FB4ECD28B4E221003FB524 /* SwiftUIBackports */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		97008ABE2974A5BF0076E60C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 97A2AB801C1B80FF00052E74 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 972DE4A52814A3D8004FD9B9;
+			remoteInfo = Kiwix;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXCopyFilesBuildPhase section */
 		9744068F28D0B2A800916BD4 /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
@@ -124,12 +139,15 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		97008AB42974A5A70076E60C /* WikiMed.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WikiMed.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		97008AB52974A5A70076E60C /* ModelTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ModelTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		97008ABA2974A5BF0076E60C /* Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		97008ABC2974A5BF0076E60C /* Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tests.swift; sourceTree = "<group>"; };
 		970258B328FE418A00B68E84 /* BookmarkOperations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarkOperations.swift; sourceTree = "<group>"; };
 		9707541A23C2D3AB0076B74E /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
 		970885D0271339A300C5795C /* wikipedia_dark.css */ = {isa = PBXFileReference; lastKnownFileType = text.css; path = wikipedia_dark.css; sourceTree = "<group>"; };
 		970EC3AB23BCF31F008DCA27 /* ParserTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParserTests.swift; sourceTree = "<group>"; };
 		970EC3F523BE8E20008DCA27 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		970EC3FD23BE9987008DCA27 /* WikiMed.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; name = WikiMed.app; path = "/Users/chrisli/Developer/Kiwix/build/Debug-iphoneos/WikiMed.app"; sourceTree = "<absolute>"; };
 		97121EBC28849F0000371AEB /* ZimFileMissingIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZimFileMissingIndicator.swift; sourceTree = "<group>"; };
 		9721BBB928427A93005C910D /* BookmarksView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarksView.swift; sourceTree = "<group>"; };
 		9724FC2E28D5F5BE001B7DD2 /* BookmarkContextMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarkContextMenu.swift; sourceTree = "<group>"; };
@@ -208,7 +226,6 @@
 		97B4489D210FBC2E0004B056 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		97B448A0210FBC2E0004B056 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		97B448A2210FBC2E0004B056 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		97B706E529730F7600562392 /* ModelTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; name = ModelTests.xctest; path = "/Users/chrisli/Developer/Kiwix/build/Debug-iphoneos/ModelTests.xctest"; sourceTree = "<absolute>"; };
 		97B706E72974599500562392 /* libkiwix.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = libkiwix.xcframework; sourceTree = "<group>"; };
 		97B707042974637200562392 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		97BD6C9B2886E06B004A8532 /* HTMLParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HTMLParser.swift; sourceTree = "<group>"; };
@@ -228,6 +245,14 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		97008AB72974A5BF0076E60C /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				97008AC62974A7110076E60C /* libkiwix.xcframework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		970EC3EE23BE8E20008DCA27 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -268,6 +293,14 @@
 				97F425C127151A0D00D0F738 /* QuickLook.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		97008ABB2974A5BF0076E60C /* Tests */ = {
+			isa = PBXGroup;
+			children = (
+				97008ABC2974A5BF0076E60C /* Tests.swift */,
+			);
+			path = Tests;
 			sourceTree = "<group>";
 		};
 		9706555A2473682C00A51319 /* Utilities */ = {
@@ -417,8 +450,12 @@
 				97E94B26271EF359005B0295 /* Support */,
 				97B44895210FBC2C0004B056 /* WikiMed */,
 				970EC3F223BE8E20008DCA27 /* ModelTests */,
+				97008ABB2974A5BF0076E60C /* Tests */,
 				3B93EAF9B5C5AA23046BDEAC /* Frameworks */,
 				972DE4A62814A3D8004FD9B9 /* Kiwix.app */,
+				97008AB42974A5A70076E60C /* WikiMed.app */,
+				97008AB52974A5A70076E60C /* ModelTests.xctest */,
+				97008ABA2974A5BF0076E60C /* Tests.xctest */,
 			);
 			sourceTree = "<group>";
 			wrapsLines = 0;
@@ -534,6 +571,24 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		97008AB92974A5BF0076E60C /* Tests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 97008AC22974A5BF0076E60C /* Build configuration list for PBXNativeTarget "Tests" */;
+			buildPhases = (
+				97008AB62974A5BF0076E60C /* Sources */,
+				97008AB72974A5BF0076E60C /* Frameworks */,
+				97008AB82974A5BF0076E60C /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				97008ABF2974A5BF0076E60C /* PBXTargetDependency */,
+			);
+			name = Tests;
+			productName = Tests;
+			productReference = 97008ABA2974A5BF0076E60C /* Tests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		970EC3F023BE8E20008DCA27 /* ModelTests */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 970EC3F823BE8E20008DCA27 /* Build configuration list for PBXNativeTarget "ModelTests" */;
@@ -548,7 +603,7 @@
 			);
 			name = ModelTests;
 			productName = ModelTests;
-			productReference = 97B706E529730F7600562392 /* ModelTests.xctest */;
+			productReference = 97008AB52974A5A70076E60C /* ModelTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 		972DE4A52814A3D8004FD9B9 /* Kiwix */ = {
@@ -590,7 +645,7 @@
 			);
 			name = WikiMed;
 			productName = WikiMed;
-			productReference = 970EC3FD23BE9987008DCA27 /* WikiMed.app */;
+			productReference = 97008AB42974A5A70076E60C /* WikiMed.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -599,10 +654,14 @@
 		97A2AB801C1B80FF00052E74 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 1330;
+				LastSwiftUpdateCheck = 1420;
 				LastUpgradeCheck = 1410;
 				ORGANIZATIONNAME = "Chris Li";
 				TargetAttributes = {
+					97008AB92974A5BF0076E60C = {
+						CreatedOnToolsVersion = 14.2;
+						TestTargetID = 972DE4A52814A3D8004FD9B9;
+					};
 					970EC3F023BE8E20008DCA27 = {
 						CreatedOnToolsVersion = 11.3;
 						TestTargetID = 97A36C241F8C21210079B452;
@@ -639,11 +698,19 @@
 				972DE4A52814A3D8004FD9B9 /* Kiwix */,
 				97B44893210FBC2C0004B056 /* WikiMed */,
 				970EC3F023BE8E20008DCA27 /* ModelTests */,
+				97008AB92974A5BF0076E60C /* Tests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		97008AB82974A5BF0076E60C /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		970EC3EF23BE8E20008DCA27 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -674,6 +741,17 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		97008AB62974A5BF0076E60C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				97008AC52974A69A0076E60C /* Errors.swift in Sources */,
+				97008AC32974A68E0076E60C /* OPDSParser.mm in Sources */,
+				97008AC42974A68E0076E60C /* OPDSParser.swift in Sources */,
+				97008ABD2974A5BF0076E60C /* Tests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		970EC3ED23BE8E20008DCA27 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -777,6 +855,14 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		97008ABF2974A5BF0076E60C /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 972DE4A52814A3D8004FD9B9 /* Kiwix */;
+			targetProxy = 97008ABE2974A5BF0076E60C /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin PBXVariantGroup section */
 		97B4489A210FBC2C0004B056 /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
@@ -797,6 +883,64 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		97008AC02974A5BF0076E60C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = L7HWM3SP3L;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GENERATE_INFOPLIST_FILE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 13.1;
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = org.kiwix.Tests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_OBJC_BRIDGING_HEADER = "$(PROJECT_DIR)/Support/Kiwix-Bridging-Header.h";
+				SWIFT_VERSION = 5.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Kiwix.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Kiwix";
+			};
+			name = Debug;
+		};
+		97008AC12974A5BF0076E60C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = L7HWM3SP3L;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GENERATE_INFOPLIST_FILE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 13.1;
+				MARKETING_VERSION = 1.0;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = org.kiwix.Tests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_OBJC_BRIDGING_HEADER = "$(PROJECT_DIR)/Support/Kiwix-Bridging-Header.h";
+				SWIFT_VERSION = 5.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Kiwix.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Kiwix";
+			};
+			name = Release;
+		};
 		970EC3F923BE8E20008DCA27 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -896,7 +1040,7 @@
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_OBJC_BRIDGING_HEADER = "Support/Kiwix-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "$(PROJECT_DIR)/Support/Kiwix-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -939,7 +1083,7 @@
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_OBJC_BRIDGING_HEADER = "Support/Kiwix-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "$(PROJECT_DIR)/Support/Kiwix-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -1000,7 +1144,7 @@
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_SWIFT_FLAGS = "";
 				SDKROOT = iphoneos;
-				SWIFT_OBJC_BRIDGING_HEADER = "$(PROJECT_DIR)/Model/Support/Kiwix-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "$(PROJECT_DIR)/Support/Kiwix-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -1054,7 +1198,7 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
-				SWIFT_OBJC_BRIDGING_HEADER = "$(PROJECT_DIR)/Model/Support/Kiwix-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "$(PROJECT_DIR)/Support/Kiwix-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
@@ -1119,6 +1263,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		97008AC22974A5BF0076E60C /* Build configuration list for PBXNativeTarget "Tests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				97008AC02974A5BF0076E60C /* Debug */,
+				97008AC12974A5BF0076E60C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		970EC3F823BE8E20008DCA27 /* Build configuration list for PBXNativeTarget "ModelTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
