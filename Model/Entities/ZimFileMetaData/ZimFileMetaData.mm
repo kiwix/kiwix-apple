@@ -78,6 +78,7 @@
 - (NSDate *)getCreationDateFromBook:(kiwix::Book *)book {
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
     formatter.dateFormat = @"yyyy-MM-dd";
+    formatter.timeZone = [NSTimeZone timeZoneWithAbbreviation:@"UTC"];
     return [formatter dateFromString:[NSString stringWithUTF8String:book->getDate().c_str()]];
 }
 
