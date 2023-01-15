@@ -218,7 +218,6 @@
 		97DE2BA1283A8E5C00C63D9B /* LibraryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryViewModel.swift; sourceTree = "<group>"; };
 		97DE2BA4283A944100C63D9B /* GridCommon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GridCommon.swift; sourceTree = "<group>"; };
 		97E94B1D271EF250005B0295 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		97E94B20271EF250005B0295 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		97E94B22271EF250005B0295 /* Kiwix.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Kiwix.entitlements; sourceTree = "<group>"; };
 		97EBDBF328C3AAC40067BE0F /* ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModel.swift; sourceTree = "<group>"; };
 		97F3332E28AFC1A2007FF53C /* Search.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Search.swift; sourceTree = "<group>"; };
@@ -519,7 +518,6 @@
 			children = (
 				973A0E04283105EA00B41E71 /* Info.plist */,
 				97E94B22271EF250005B0295 /* Kiwix.entitlements */,
-				97E94B20271EF250005B0295 /* Preview Assets.xcassets */,
 			);
 			path = Support;
 			sourceTree = "<group>";
@@ -873,7 +871,7 @@
 				CODE_SIGN_ENTITLEMENTS = SwiftUI/Support/Kiwix.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 110;
-				DEVELOPMENT_ASSET_PATHS = "\"SwiftUI/Support\"";
+				DEVELOPMENT_ASSET_PATHS = "";
 				DEVELOPMENT_TEAM = L7HWM3SP3L;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -917,7 +915,7 @@
 				CODE_SIGN_ENTITLEMENTS = SwiftUI/Support/Kiwix.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 110;
-				DEVELOPMENT_ASSET_PATHS = "\"SwiftUI/Support\"";
+				DEVELOPMENT_ASSET_PATHS = "";
 				DEVELOPMENT_TEAM = L7HWM3SP3L;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
