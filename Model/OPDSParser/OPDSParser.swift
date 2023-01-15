@@ -12,9 +12,7 @@ extension OPDSParser {
     }
     
     func parse(data: Data) throws {
-        do {
-            try self.__parseData(data)
-        } catch {
+        if !self.__parseData(data) {
             throw LibraryRefreshError.parse
         }
     }

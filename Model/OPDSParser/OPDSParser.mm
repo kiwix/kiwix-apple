@@ -36,15 +36,13 @@
     delete self.library;
 }
 
-- (BOOL)parseData:(nonnull NSData *)data error:(NSError **)error {
+- (BOOL)parseData:(nonnull NSData *)data {
     try {
         NSString *content = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
         std::shared_ptr<kiwix::Manager> manager = std::make_shared<kiwix::Manager>(self.library);
-        manager->readOpds([content cStringUsingEncoding:NSUTF8StringEncoding],
-                          [@"https://library.kiwix.org" cStringUsingEncoding:NSUTF8StringEncoding]);
-        return true;
+        return manager->readOpds([content cStringUsingEncoding:NSUTF8StringEncoding],
+                                 [@"https://library.kiwix.org" cStringUsingEncoding:NSUTF8StringEncoding]);
     } catch (std::exception) {
-        *error = [[NSError alloc] init];
         return false;
     }
 }

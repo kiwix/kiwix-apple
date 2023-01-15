@@ -14,7 +14,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface OPDSParser : NSObject
 
 - (nonnull instancetype)init;
-- (BOOL)parseData:(nonnull NSData *)data error:(NSError **)error NS_REFINED_FOR_SWIFT;
+- (BOOL)parseData:(nonnull NSData *)data NS_REFINED_FOR_SWIFT;
 - (nonnull NSSet *)getZimFileIDs NS_REFINED_FOR_SWIFT;
 - (nullable ZimFileMetaData *)getZimFileMetaData:(nonnull NSUUID *)identifier NS_REFINED_FOR_SWIFT;
 
