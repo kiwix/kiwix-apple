@@ -59,10 +59,8 @@ private struct ReadingViewContent: View {
         .navigationSubtitle(readingViewModel.zimFileName)
         .toolbar {
             ToolbarItemGroup(placement: .navigation) {
-                ControlGroup {
-                    NavigateBackButton()
-                    NavigateForwardButton()
-                }
+                NavigateBackButton()
+                NavigateForwardButton()
             }
             ToolbarItemGroup {
                 OutlineMenu()
