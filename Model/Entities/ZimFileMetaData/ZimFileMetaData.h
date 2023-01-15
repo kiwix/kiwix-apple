@@ -28,7 +28,6 @@
 // nullable attributes
 @property (nonatomic, strong, nullable) NSURL *downloadURL;
 @property (nonatomic, strong, nullable) NSURL *faviconURL;
-@property (nonatomic, strong, nullable) NSData *faviconData DEPRECATED_ATTRIBUTE;
 @property (nonatomic, strong, nullable) NSString *flavor;
 
 // assigned attributes
@@ -37,6 +36,7 @@
 @property (nonatomic, assign) BOOL hasVideos;
 @property (nonatomic, assign) BOOL requiresServiceWorkers;
 
+// methods
 - (nullable instancetype)initWithBook:(nonnull void *)book;
 
 @end

@@ -401,11 +401,10 @@
 			isa = PBXGroup;
 			children = (
 				97BF1F8E27CE5EEF00A94E06 /* SearchResult */,
+				97B7070629748CAA00562392 /* ZimFileMetaData */,
 				973A2FC4277EAA2500BD4320 /* OPDSRefreshError.swift */,
 				97974349257BF2B000D30F03 /* OutlineItem.swift */,
 				97B3BAC92736CDCE00A23F49 /* URLContent.swift */,
-				9779A5AD2456793600F6F6FF /* ZimFileMetaData.h */,
-				9779A5AC2456793600F6F6FF /* ZimFileMetaData.mm */,
 			);
 			path = Entities;
 			sourceTree = "<group>";
@@ -445,6 +444,15 @@
 				97B448A2210FBC2E0004B056 /* Info.plist */,
 			);
 			path = WikiMed;
+			sourceTree = "<group>";
+		};
+		97B7070629748CAA00562392 /* ZimFileMetaData */ = {
+			isa = PBXGroup;
+			children = (
+				9779A5AD2456793600F6F6FF /* ZimFileMetaData.h */,
+				9779A5AC2456793600F6F6FF /* ZimFileMetaData.mm */,
+			);
+			path = ZimFileMetaData;
 			sourceTree = "<group>";
 		};
 		97BF1F8E27CE5EEF00A94E06 /* SearchResult */ = {
