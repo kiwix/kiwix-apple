@@ -9,22 +9,20 @@
 import XCTest
 import Kiwix
 
-final class OPDSParserTests: XCTestCase {
-    let parser = OPDSParser()
-    
+final class OPDSParserTests: XCTestCase {    
     /// Test OPDSParser.parse throws error when OPDS data is invalid.
     func testInvalidOPDSData() {
         XCTExpectFailure("Requires work in dependency to resolve the issue.")
         let content = "Invalid OPDS Data"
         XCTAssertThrowsError(
-            try self.parser.parse(data: content.data(using: .utf8)!)
+            try OPDSParser().parse(data: content.data(using: .utf8)!)
         )
     }
     
     /// Test OPDSParser.getMetaData returns nil when no metadata available with the given ID.
     func testMetadataNotFound() {
         let zimFileID = UUID(uuidString: "1ec90eab-5724-492b-9529-893959520de4")!
-        XCTAssertNil(self.parser.getMetaData(id: zimFileID))
+        XCTAssertNil(OPDSParser().getMetaData(id: zimFileID))
     }
     
     /// Test OPDSParser can parse and extract zim file metadata.
