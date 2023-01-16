@@ -3,9 +3,10 @@
 //  Kiwix
 //
 //  Created by Chris Li on 4/23/22.
-//  Copyright © 2022 Chris Li. All rights reserved.
+//  Copyright © 2023 Chris Li. All rights reserved.
 //
 
+import Combine
 import CoreData
 
 class Bookmark: NSManagedObject, Identifiable {
@@ -52,6 +53,72 @@ class DownloadTask: NSManagedObject, Identifiable {
         request.predicate = NSPredicate(format: "fileID == %@", fileID as CVarArg)
         return request
     }
+}
+
+struct Language: Identifiable, Comparable {
+    var id: String { code }
+    let code: String
+    let name: String
+    let count: Int
+    
+    init?(code: String, count: Int) {
+        guard let name = Locale.current.localizedString(forLanguageCode: code) else { return nil }
+        self.code = code
+        self.name = name
+        self.count = count
+    }
+    
+    static func < (lhs: Language, rhs: Language) -> Bool {
+        switch lhs.name.caseInsensitiveCompare(rhs.name) {
+        case .orderedAscending:
+            return true
+        case .orderedDescending:
+            return false
+        case .orderedSame:
+            return lhs.count > rhs.count
+        }
+    }
+}
+
+class OutlineItem: ObservableObject, Identifiable {
+    let id: String
+    let index: Int
+    let text: String
+    let level: Int
+    private(set) var children: [OutlineItem]?
+    
+    @Published var isExpanded = true
+    
+    init(id: String, index: Int, text: String, level: Int) {
+        self.id = id
+        self.index = index
+        self.text = text
+        self.level = level
+    }
+    
+    convenience init(index: Int, text: String, level: Int) {
+        self.init(id: String(index), index: index, text: text, level: level)
+    }
+    
+    func addChild(_ item: OutlineItem) {
+        if children != nil {
+            children?.append(item)
+        } else {
+            children = [item]
+        }
+    }
+    
+    @discardableResult
+    func removeAllChildren() -> [OutlineItem] {
+        defer { children = nil }
+        return children ?? []
+    }
+}
+
+struct URLContent {
+    let data: Data
+    let mime: String
+    let length: Int
 }
 
 class ZimFile: NSManagedObject, Identifiable {
@@ -101,30 +168,5 @@ class ZimFile: NSManagedObject, Identifiable {
         let request = super.fetchRequest() as! NSFetchRequest<ZimFile>
         request.predicate = NSPredicate(format: "fileID == %@", fileID as CVarArg)
         return request
-    }
-}
-
-struct Language: Identifiable, Comparable {
-    var id: String { code }
-    let code: String
-    let name: String
-    let count: Int
-    
-    init?(code: String, count: Int) {
-        guard let name = Locale.current.localizedString(forLanguageCode: code) else { return nil }
-        self.code = code
-        self.name = name
-        self.count = count
-    }
-    
-    static func < (lhs: Language, rhs: Language) -> Bool {
-        switch lhs.name.caseInsensitiveCompare(rhs.name) {
-        case .orderedAscending:
-            return true
-        case .orderedDescending:
-            return false
-        case .orderedSame:
-            return lhs.count > rhs.count
-        }
     }
 }
