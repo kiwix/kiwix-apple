@@ -11,6 +11,46 @@ import os
 
 import Defaults
 
+class LibraryRefreshViewModel: ObservableObject {
+    @Published private(set) var error: Error?
+    
+    
+    func start() async {
+        do {
+            defer { self.error = nil }
+            guard let data = try await fetchData() else { return }
+            try await process(data: data)
+        } catch {
+            self.error = error
+        }
+    }
+    
+    private func fetchData() async throws -> Data? {
+        guard let url = URL(string: "https://library.kiwix.org/catalog/root.xml") else { return nil }
+        do {
+            let request = URLRequest(url: url, timeoutInterval: 20)
+            let (data, response) = try await URLSession.shared.data(for: request)
+            guard let response = response as? HTTPURLResponse else { return nil }
+            guard response.statusCode == 200 else {
+                throw LibraryRefreshError.retrieve(description: "HTTP Status \(response.statusCode).")
+            }
+            return data
+        } catch {
+            throw LibraryRefreshError.retrieve(description: error.localizedDescription)
+        }
+    }
+    
+    private func process(data: Data) async throws -> OPDSParser {
+        try await withCheckedThrowingContinuation { continuation in
+            DispatchQueue.global().async {
+                let parser = OPDSParser()
+                do { try parser.parse(data: data) } catch { continuation.resume(throwing: error) }
+                continuation.resume(returning: parser)
+            }
+        }
+    }
+}
+
 class LibraryViewModel: ObservableObject {
     @Published private(set) var isRefreshing = false
     
