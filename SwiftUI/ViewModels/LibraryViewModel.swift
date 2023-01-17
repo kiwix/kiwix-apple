@@ -11,11 +11,16 @@ import os
 
 import Defaults
 
-class LibraryRefreshViewModel: ObservableObject {
-    @Published private(set) var error: Error?
+public class LibraryRefreshViewModel: ObservableObject {
+    @Published public private(set) var error: Error?
     
+    private let urlSession: URLSession
     
-    func start() async {
+    public init(urlSession: URLSession? = nil) {
+        self.urlSession = urlSession ?? URLSession.shared
+    }
+    
+    public func start() async {
         do {
             defer { self.error = nil }
             guard let data = try await fetchData() else { return }
@@ -29,7 +34,7 @@ class LibraryRefreshViewModel: ObservableObject {
         guard let url = URL(string: "https://library.kiwix.org/catalog/root.xml") else { return nil }
         do {
             let request = URLRequest(url: url, timeoutInterval: 20)
-            let (data, response) = try await URLSession.shared.data(for: request)
+            let (data, response) = try await self.urlSession.data(for: request)
             guard let response = response as? HTTPURLResponse else { return nil }
             guard response.statusCode == 200 else {
                 throw LibraryRefreshError.retrieve(description: "HTTP Status \(response.statusCode).")
