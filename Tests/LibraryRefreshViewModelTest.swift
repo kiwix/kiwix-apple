@@ -20,7 +20,7 @@ private class HTTPTestingURLProtocol: URLProtocol {
         if let handler = HTTPTestingURLProtocol.handler {
             handler(self)
         } else {
-//            client?.urlProtocol(self, didFailWithError: URLError(URLError.Code.timedOut))
+            client?.urlProtocolDidFinishLoading(self)
         }
     }
 }
@@ -38,7 +38,8 @@ final class LibraryRefreshViewModelTest: XCTestCase {
         HTTPTestingURLProtocol.handler = nil
     }
     
-    func testFetchError() async throws {
+    /// Test time out fetching library data.
+    func testFetchTimeOut() async {
         HTTPTestingURLProtocol.handler = { urlProtocol in
             urlProtocol.client?.urlProtocol(urlProtocol, didFailWithError: URLError(URLError.Code.timedOut))
         }
@@ -46,10 +47,28 @@ final class LibraryRefreshViewModelTest: XCTestCase {
         let viewModel = LibraryRefreshViewModel(urlSession: urlSession)
         await viewModel.start()
         XCTAssert(viewModel.error is LibraryRefreshError)
-        XCTAssert(viewModel.error!.localizedDescription
-            .hasPrefix("Error retrieving library data. The operation couldn’t be completed."))
+        XCTAssertEqual(
+            viewModel.error!.localizedDescription,
+            "Error retrieving library data. The operation couldn’t be completed. (NSURLErrorDomain error -1001.)"
+        )
     }
 
-    func testFetchBadStatusCode() throws {
+    func testFetchBadStatusCode() async {
+        HTTPTestingURLProtocol.handler = { urlProtocol in
+            let response = HTTPURLResponse(
+                url: URL(string: "https://library.kiwix.org/catalog/root.xml")!,
+                statusCode: 404, httpVersion: nil, headerFields: [:]
+            )!
+            urlProtocol.client?.urlProtocol(urlProtocol, didReceive: response, cacheStoragePolicy: .notAllowed)
+            urlProtocol.client?.urlProtocolDidFinishLoading(urlProtocol)
+        }
+        
+        let viewModel = LibraryRefreshViewModel(urlSession: urlSession)
+        await viewModel.start()
+        XCTAssert(viewModel.error is LibraryRefreshError)
+        XCTAssertEqual(
+            viewModel.error!.localizedDescription,
+            "Error retrieving library data. HTTP Status 404."
+        )
     }
 }

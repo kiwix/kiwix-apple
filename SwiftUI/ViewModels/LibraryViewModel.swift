@@ -41,7 +41,11 @@ public class LibraryRefreshViewModel: ObservableObject {
             }
             return data
         } catch {
-            throw LibraryRefreshError.retrieve(description: error.localizedDescription)
+            if let error = error as? LibraryRefreshError {
+                throw error
+            } else {
+                throw LibraryRefreshError.retrieve(description: error.localizedDescription)
+            }
         }
     }
     
