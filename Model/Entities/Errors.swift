@@ -8,12 +8,12 @@
 
 import Foundation
 
-enum LibraryRefreshError: LocalizedError {
+public enum LibraryRefreshError: LocalizedError {
     case retrieve(description: String)
     case parse
     case process
 
-    var errorDescription: String? {
+    public var errorDescription: String? {
         switch self {
         case .retrieve(let description):
             return [
