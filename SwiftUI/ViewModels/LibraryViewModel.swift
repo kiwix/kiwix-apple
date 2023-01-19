@@ -30,12 +30,31 @@ public class LibraryRefreshViewModel: ObservableObject {
         }()
     }
     
-    public func start() async {
+    public func start(isUserInitiated: Bool) async {
         do {
-            defer { self.error = nil }
+            // decide if refresh should proceed
+            let isStale = (Defaults[.libraryLastRefresh]?.timeIntervalSinceNow ?? -3600) <= -3600
+            guard isUserInitiated || (Defaults[.libraryAutoRefresh] && isStale) else { return }
+            
+            // refresh library
             guard let data = try await fetchData() else { return }
             let parser = try await parse(data: data)
-            try await process(parser)
+            try await process(parser: parser)
+            
+            // update library last refresh timestamp
+            Defaults[.libraryLastRefresh] = Date()
+            
+            // populate library language code if there isn't one set already
+            if Defaults[.libraryLanguageCodes].isEmpty, let currentLanguageCode = Locale.current.languageCode {
+                Defaults[.libraryLanguageCodes] = [currentLanguageCode]
+            }
+            
+            // reset error
+            error = nil
+            
+            // logging
+            os_log("Refresh finished -- addition: %d, deletion: %d, total: %d",
+                   log: Log.OPDS, type: .default, insertionCount, deletionCount, parser.zimFileIDs.count)
         } catch {
             self.error = error
         }
@@ -76,7 +95,7 @@ public class LibraryRefreshViewModel: ObservableObject {
         }
     }
     
-    private func process(_ parser: OPDSParser) async throws {
+    private func process(parser: OPDSParser) async throws {
         try await withCheckedThrowingContinuation { continuation in
             context.perform {
                 do {
@@ -120,20 +139,6 @@ public class LibraryRefreshViewModel: ObservableObject {
                 }
             }
         }
-    }
-    
-    private func postProcess() {
-        // update library last refresh timestamp
-        Defaults[.libraryLastRefresh] = Date()
-        
-        // populate library language code if there isn't one set already
-        if Defaults[.libraryLanguageCodes].isEmpty, let currentLanguageCode = Locale.current.languageCode {
-            Defaults[.libraryLanguageCodes] = [currentLanguageCode]
-        }
-        
-        // logging
-        os_log("Refresh finished -- addition: %d, deletion: %d",
-               log: Log.OPDS, type: .default, insertionCount, deletionCount)
     }
 }
 
