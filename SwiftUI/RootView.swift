@@ -14,6 +14,7 @@ struct RootView: View {
     @StateObject private var viewModel = ViewModel()
     @StateObject private var readingViewModel = ReadingViewModel()
     @StateObject private var libraryViewModel = LibraryViewModel()
+    @StateObject private var libraryRefreshViewModel = LibraryRefreshViewModel()
     
     var body: some View {
         Group {
@@ -117,5 +118,6 @@ struct RootView: View {
         .environmentObject(viewModel)
         .environmentObject(readingViewModel)
         .environmentObject(libraryViewModel)
+        .environmentObject(libraryRefreshViewModel)
     }
 }

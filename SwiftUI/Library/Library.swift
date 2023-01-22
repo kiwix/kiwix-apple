@@ -12,7 +12,7 @@ import SwiftUI
 /// Tabbed library view on iOS & iPadOS
 struct Library: View {
     @Binding var url: URL?
-    @EnvironmentObject private var libraryViewModel: LibraryViewModel
+    @EnvironmentObject private var viewModel: LibraryRefreshViewModel
     @SceneStorage("LibraryTabItem") private var tabItem: LibraryTabItem = .opened
     
     private let defaultTabItem: LibraryTabItem?
@@ -58,7 +58,7 @@ struct Library: View {
             if let defaultTabItem = defaultTabItem {
                 tabItem = defaultTabItem
             }
-            libraryViewModel.startRefresh(isUserInitiated: false)
+            viewModel.start(isUserInitiated: false)
         }
     }
 }

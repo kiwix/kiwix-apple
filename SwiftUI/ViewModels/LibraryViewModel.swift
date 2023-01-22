@@ -12,7 +12,8 @@ import os
 import Defaults
 
 public class LibraryRefreshViewModel: ObservableObject {
-    @Published public private(set) var error: Error?
+    @MainActor @Published public private(set) var error: Error?
+    @MainActor @Published public private(set) var isInProgress = false
     
     private let urlSession: URLSession
     private let context: NSManagedObjectContext
@@ -30,8 +31,17 @@ public class LibraryRefreshViewModel: ObservableObject {
         self.urlSession = urlSession ?? URLSession.shared
     }
     
+    public func start(isUserInitiated: Bool) {
+        Task { await start(isUserInitiated: isUserInitiated) }
+    }
+    
+    @MainActor
     public func start(isUserInitiated: Bool) async {
         do {
+            guard !isInProgress else { return }
+            isInProgress = true
+            defer { isInProgress = false }
+            
             // decide if refresh should proceed
             let isStale = (Defaults[.libraryLastRefresh]?.timeIntervalSinceNow ?? -3600) <= -3600
             guard isUserInitiated || (Defaults[.libraryAutoRefresh] && isStale) else { return }

@@ -30,7 +30,7 @@ struct ZimFilesCategories: View {
 struct ZimFilesCategory: View {
     @Binding var category: Category
     @Binding var url: URL?
-    @EnvironmentObject private var libraryViewModel: LibraryViewModel
+    @EnvironmentObject private var libraryRefreshViewModel: LibraryRefreshViewModel
     @State private var searchText = ""
     
     var body: some View {
@@ -41,7 +41,7 @@ struct ZimFilesCategory: View {
                 CategoryList(category: $category, searchText: $searchText, url: $url)
             }
         }.onAppear {
-            libraryViewModel.startRefresh(isUserInitiated: false)
+            libraryRefreshViewModel.start(isUserInitiated: false)
         }
     }
     
