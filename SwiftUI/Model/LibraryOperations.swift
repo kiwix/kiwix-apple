@@ -196,11 +196,10 @@ struct LibraryOperations {
         BGTaskScheduler.shared.register(
             forTaskWithIdentifier: LibraryOperations.backgroundTaskIdentifier, using: nil
         ) { task in
-            let operation = LibraryRefreshOperation()
-            operation.completionBlock = {
+            Task {
+                await LibraryRefreshViewModel().start(isUserInitiated: false)
                 task.setTaskCompleted(success: true)
             }
-            OperationQueue().addOperation(operation)
         }
     }
 #endif
