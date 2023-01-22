@@ -6,7 +6,9 @@
 //  Copyright © 2023 Chris Li. All rights reserved.
 //
 
+import CoreData
 import XCTest
+
 import Kiwix
 
 private class HTTPTestingURLProtocol: URLProtocol {
@@ -25,17 +27,37 @@ private class HTTPTestingURLProtocol: URLProtocol {
     }
 }
 
+private class PersistentContainer: NSPersistentContainer {
+    convenience init(inMemory: Bool = false) {
+        self.init(name: "DataModel")
+        guard let description = persistentStoreDescriptions.first else {
+            fatalError("Failed to retrieve a persistent store description.")
+        }
+        if inMemory {
+            description.url = URL(fileURLWithPath: "/dev/null")
+        }
+        loadPersistentStores { description, error in
+            
+        }
+    }
+}
+
 final class LibraryRefreshViewModelTest: XCTestCase {
     private var urlSession: URLSession?
+    private var container: NSPersistentContainer?
 
     override func setUpWithError() throws {
-        let config = URLSessionConfiguration.ephemeral
-        config.protocolClasses = [HTTPTestingURLProtocol.self]
-        self.urlSession = URLSession(configuration: config)
+        self.urlSession = {
+            let config = URLSessionConfiguration.ephemeral
+            config.protocolClasses = [HTTPTestingURLProtocol.self]
+            return URLSession(configuration: config)
+        }()
+        let container = PersistentContainer(inMemory: true)
     }
 
     override func tearDownWithError() throws {
         HTTPTestingURLProtocol.handler = nil
+        container = nil
     }
     
     /// Test time out fetching library data.
@@ -45,7 +67,7 @@ final class LibraryRefreshViewModelTest: XCTestCase {
         }
         
         let viewModel = LibraryRefreshViewModel(urlSession: urlSession)
-        await viewModel.start()
+        await viewModel.start(isUserInitiated: true)
         XCTAssert(viewModel.error is LibraryRefreshError)
         XCTAssertEqual(
             viewModel.error?.localizedDescription,
@@ -65,7 +87,7 @@ final class LibraryRefreshViewModelTest: XCTestCase {
         }
         
         let viewModel = LibraryRefreshViewModel(urlSession: urlSession)
-        await viewModel.start()
+        await viewModel.start(isUserInitiated: true)
         XCTAssert(viewModel.error is LibraryRefreshError)
         XCTAssertEqual(
             viewModel.error?.localizedDescription,
@@ -85,13 +107,17 @@ final class LibraryRefreshViewModelTest: XCTestCase {
             urlProtocol.client?.urlProtocolDidFinishLoading(urlProtocol)
         }
         
-        let viewModel = LibraryRefreshViewModel(urlSession: urlSession)
-        await viewModel.start()
+        let viewModel = LibraryRefreshViewModel(urlSession: urlSession, context: container?.viewContext)
+        await viewModel.start(isUserInitiated: true)
         
         XCTExpectFailure("Requires work in dependency to resolve the issue.")
         XCTAssertEqual(
             viewModel.error?.localizedDescription,
             "Error retrieving library data. HTTP Status 404."
         )
+    }
+    
+    func testNewZimFile() {
+        
     }
 }
