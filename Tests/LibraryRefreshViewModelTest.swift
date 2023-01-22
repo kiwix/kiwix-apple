@@ -47,6 +47,7 @@ final class LibraryRefreshViewModelTest: XCTestCase {
     private var container: NSPersistentContainer?
 
     override func setUpWithError() throws {
+        self.container = PersistentContainer(inMemory: true)
         self.urlSession = {
             let config = URLSessionConfiguration.ephemeral
             config.protocolClasses = [HTTPTestingURLProtocol.self]
@@ -57,7 +58,6 @@ final class LibraryRefreshViewModelTest: XCTestCase {
 
     override func tearDownWithError() throws {
         HTTPTestingURLProtocol.handler = nil
-        container = nil
     }
     
     /// Test time out fetching library data.
@@ -107,7 +107,7 @@ final class LibraryRefreshViewModelTest: XCTestCase {
             urlProtocol.client?.urlProtocolDidFinishLoading(urlProtocol)
         }
         
-        let viewModel = LibraryRefreshViewModel(urlSession: urlSession, context: container?.viewContext)
+        let viewModel = LibraryRefreshViewModel(urlSession: urlSession)
         await viewModel.start(isUserInitiated: true)
         
         XCTExpectFailure("Requires work in dependency to resolve the issue.")
@@ -118,6 +118,5 @@ final class LibraryRefreshViewModelTest: XCTestCase {
     }
     
     func testNewZimFile() {
-        
     }
 }
