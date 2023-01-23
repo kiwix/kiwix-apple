@@ -137,7 +137,7 @@ enum LibraryLanguageSortingMode: String, CaseIterable, Identifiable, Defaults.Se
 }
 
 enum LibraryTabItem: String, CaseIterable, Identifiable {
-    case opened, categories, new, downloads
+    case opened, categories, downloads, new
     
     var id: String { self.rawValue }
     
@@ -147,10 +147,10 @@ enum LibraryTabItem: String, CaseIterable, Identifiable {
             return "Opened"
         case .categories:
             return "Categories"
-        case .new:
-            return "New"
         case .downloads:
             return "Downloads"
+        case .new:
+            return "New"
         }
     }
     
@@ -160,10 +160,10 @@ enum LibraryTabItem: String, CaseIterable, Identifiable {
             return "folder"
         case .categories:
             return "books.vertical"
-        case .new:
-            return "newspaper"
         case .downloads:
             return "tray.and.arrow.down"
+        case .new:
+            return "newspaper"
         }
     }
 }

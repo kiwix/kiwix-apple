@@ -23,7 +23,7 @@ struct Welcome: View {
     @State private var selectedZimFile: ZimFile?
     
     var body: some View {
-        if !zimFiles.isEmpty {
+        if zimFiles.isEmpty {
             Onboarding()
         } else {
             ScrollView {
