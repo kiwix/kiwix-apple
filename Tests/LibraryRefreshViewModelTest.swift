@@ -61,11 +61,12 @@ final class LibraryRefreshViewModelTest: XCTestCase {
     }
     
     /// Test time out fetching library data.
+    @MainActor
     func testFetchTimeOut() async {
         HTTPTestingURLProtocol.handler = { urlProtocol in
             urlProtocol.client?.urlProtocol(urlProtocol, didFailWithError: URLError(URLError.Code.timedOut))
         }
-        
+
         let viewModel = LibraryRefreshViewModel(urlSession: urlSession)
         await viewModel.start(isUserInitiated: true)
         XCTAssert(viewModel.error is LibraryRefreshError)
@@ -76,6 +77,7 @@ final class LibraryRefreshViewModelTest: XCTestCase {
     }
 
     /// Test fetching library data response contains non-success status code.
+    @MainActor
     func testFetchBadStatusCode() async {
         HTTPTestingURLProtocol.handler = { urlProtocol in
             let response = HTTPURLResponse(
@@ -85,7 +87,7 @@ final class LibraryRefreshViewModelTest: XCTestCase {
             urlProtocol.client?.urlProtocol(urlProtocol, didReceive: response, cacheStoragePolicy: .notAllowed)
             urlProtocol.client?.urlProtocolDidFinishLoading(urlProtocol)
         }
-        
+
         let viewModel = LibraryRefreshViewModel(urlSession: urlSession)
         await viewModel.start(isUserInitiated: true)
         XCTAssert(viewModel.error is LibraryRefreshError)
@@ -94,8 +96,9 @@ final class LibraryRefreshViewModelTest: XCTestCase {
             "Error retrieving library data. HTTP Status 404."
         )
     }
-    
+
     /// Test OPDS data is invalid.
+    @MainActor
     func testInvalidOPDSData() async {
         HTTPTestingURLProtocol.handler = { urlProtocol in
             let response = HTTPURLResponse(
@@ -106,17 +109,17 @@ final class LibraryRefreshViewModelTest: XCTestCase {
             urlProtocol.client?.urlProtocol(urlProtocol, didReceive: response, cacheStoragePolicy: .notAllowed)
             urlProtocol.client?.urlProtocolDidFinishLoading(urlProtocol)
         }
-        
+
         let viewModel = LibraryRefreshViewModel(urlSession: urlSession)
         await viewModel.start(isUserInitiated: true)
-        
+
         XCTExpectFailure("Requires work in dependency to resolve the issue.")
         XCTAssertEqual(
             viewModel.error?.localizedDescription,
-            "Error retrieving library data. HTTP Status 404."
+            "Error parsing library data."
         )
     }
-    
-    func testNewZimFile() {
-    }
+
+//    func testNewZimFile() {
+//    }
 }
