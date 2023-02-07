@@ -44,16 +44,13 @@ private class PersistentContainer: NSPersistentContainer {
 
 final class LibraryRefreshViewModelTest: XCTestCase {
     private var urlSession: URLSession?
-    private var container: NSPersistentContainer?
 
     override func setUpWithError() throws {
-        self.container = PersistentContainer(inMemory: true)
         self.urlSession = {
             let config = URLSessionConfiguration.ephemeral
             config.protocolClasses = [HTTPTestingURLProtocol.self]
             return URLSession(configuration: config)
         }()
-        let container = PersistentContainer(inMemory: true)
     }
 
     override func tearDownWithError() throws {

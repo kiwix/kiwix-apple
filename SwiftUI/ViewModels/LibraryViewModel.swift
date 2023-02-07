@@ -20,15 +20,13 @@ public class LibraryRefreshViewModel: ObservableObject {
     private var insertionCount = 0
     private var deletionCount = 0
     
-    public init(context: NSManagedObjectContext? = nil, urlSession: URLSession? = nil) {
-        self.context = context ?? {
-            let context = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
-            context.persistentStoreCoordinator = Database.shared.container.persistentStoreCoordinator
-            context.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
-            context.undoManager = nil
-            return context
-        }()
+    public init(urlSession: URLSession? = nil) {
         self.urlSession = urlSession ?? URLSession.shared
+        
+        context = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
+        context.persistentStoreCoordinator = Database.shared.container.persistentStoreCoordinator
+        context.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
+        context.undoManager = nil
     }
     
     public func start(isUserInitiated: Bool) {
