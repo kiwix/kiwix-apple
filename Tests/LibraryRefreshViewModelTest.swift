@@ -199,9 +199,6 @@ final class LibraryRefreshViewModelTest: XCTestCase {
         XCTAssertEqual(zimFile.persistentID, "wikipedia_en_top")
         XCTAssertEqual(zimFile.requiresServiceWorkers, false)
         XCTAssertEqual(zimFile.size, 6515656704)
-        
-//        XCTAssertEqual(metadata.creator, "Wikipedia")
-//        XCTAssertEqual(metadata.publisher, "Kiwix")
     }
     
     /// Test zim file deprecation
