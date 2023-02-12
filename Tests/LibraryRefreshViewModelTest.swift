@@ -32,11 +32,20 @@ final class LibraryRefreshViewModelTest: XCTestCase {
     private var urlSession: URLSession?
 
     override func setUpWithError() throws {
-        self.urlSession = {
-            let config = URLSessionConfiguration.ephemeral
-            config.protocolClasses = [HTTPTestingURLProtocol.self]
-            return URLSession(configuration: config)
-        }()
+        let config = URLSessionConfiguration.ephemeral
+        config.protocolClasses = [HTTPTestingURLProtocol.self]
+        urlSession = URLSession(configuration: config)
+        
+        HTTPTestingURLProtocol.handler = { urlProtocol in
+            let response = HTTPURLResponse(
+                url: URL(string: "https://library.kiwix.org/catalog/root.xml")!,
+                statusCode: 200, httpVersion: nil, headerFields: [:]
+            )!
+            let data = self.makeOPDSData(zimFileID: UUID()).data(using: .utf8)!
+            urlProtocol.client?.urlProtocol(urlProtocol, didLoad: data)
+            urlProtocol.client?.urlProtocol(urlProtocol, didReceive: response, cacheStoragePolicy: .notAllowed)
+            urlProtocol.client?.urlProtocolDidFinishLoading(urlProtocol)
+        }
     }
 
     override func tearDownWithError() throws {
@@ -90,7 +99,7 @@ final class LibraryRefreshViewModelTest: XCTestCase {
         )
     }
 
-    /// Test fetching library data response contains non-success status code.
+    /// Test fetching library data URL response contains non-success status code.
     @MainActor
     func testFetchBadStatusCode() async {
         HTTPTestingURLProtocol.handler = { urlProtocol in
@@ -126,7 +135,6 @@ final class LibraryRefreshViewModelTest: XCTestCase {
 
         let viewModel = LibraryRefreshViewModel(urlSession: urlSession)
         await viewModel.start(isUserInitiated: true)
-
         XCTExpectFailure("Requires work in dependency to resolve the issue.")
         XCTAssertEqual(
             viewModel.error?.localizedDescription,
@@ -134,9 +142,9 @@ final class LibraryRefreshViewModelTest: XCTestCase {
         )
     }
     
-    /// Test zim file metadata is saved
+    /// Test zim file entity is created, and metadata are saved when new zim file becomes available in online catalog.
     @MainActor
-    func testZimFileProperties() async throws {
+    func testNewZimFileAndProperties() async throws {
         let zimFileID = UUID()
         HTTPTestingURLProtocol.handler = { urlProtocol in
             let response = HTTPURLResponse(
@@ -194,5 +202,34 @@ final class LibraryRefreshViewModelTest: XCTestCase {
         
 //        XCTAssertEqual(metadata.creator, "Wikipedia")
 //        XCTAssertEqual(metadata.publisher, "Kiwix")
+    }
+    
+    /// Test zim file deprecation
+    @MainActor
+    func testZimFileDeprecation() async throws {
+        // refresh library for the first time, which should create one zim file
+        let viewModel = LibraryRefreshViewModel(urlSession: urlSession)
+        await viewModel.start(isUserInitiated: true)
+        let context = Database.shared.container.viewContext
+        let zimFile1 = try XCTUnwrap(try context.fetch(ZimFile.fetchRequest()).first)
+        
+        // refresh library for the second time, which should replace the old zim file with a new one
+        await viewModel.start(isUserInitiated: true)
+        var zimFiles = try context.fetch(ZimFile.fetchRequest())
+        XCTAssertEqual(zimFiles.count, 1)
+        let zimFile2 = try XCTUnwrap(zimFiles.first)
+        XCTAssertNotEqual(zimFile1.fileID, zimFile2.fileID)
+        
+        // set fileURLBookmark of zim file 2
+        zimFile2.fileURLBookmark = "some file url bookmark data".data(using: .utf8)
+        try context.save()
+
+        // refresh library for the third time
+        await viewModel.start(isUserInitiated: true)
+        zimFiles = try context.fetch(ZimFile.fetchRequest())
+        
+        // check there are two zim files in the database, and zim file 2 is not deprecated
+        XCTAssertEqual(zimFiles.count, 2)
+        XCTAssertEqual(zimFiles.filter({ $0.fileID == zimFile2.fileID }).count, 1)
     }
 }
