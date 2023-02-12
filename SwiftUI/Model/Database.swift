@@ -39,6 +39,9 @@ class Database {
         guard let description = container.persistentStoreDescriptions.first else {
             fatalError("Failed to retrieve a persistent store description.")
         }
+        if ProcessInfo.processInfo.arguments.contains("testing") {
+            description.url = URL(fileURLWithPath: "/dev/null")
+        }
 
         description.setOption(true as NSNumber, forKey: NSPersistentStoreRemoteChangeNotificationPostOptionKey)
         description.setOption(true as NSNumber, forKey: NSPersistentHistoryTrackingKey)

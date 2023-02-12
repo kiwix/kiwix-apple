@@ -13,7 +13,6 @@ struct RootView: View {
     @State private var url: URL?
     @StateObject private var viewModel = ViewModel()
     @StateObject private var readingViewModel = ReadingViewModel()
-    @StateObject private var libraryViewModel = LibraryViewModel()
     
     var body: some View {
         Group {
@@ -116,6 +115,5 @@ struct RootView: View {
         }
         .environmentObject(viewModel)
         .environmentObject(readingViewModel)
-        .environmentObject(libraryViewModel)
     }
 }

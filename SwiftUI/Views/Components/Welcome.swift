@@ -81,7 +81,7 @@ struct Welcome: View {
 
 private struct Onboarding: View {
     @EnvironmentObject private var viewModel: ViewModel
-    @StateObject private var libraryViewModel = LibraryViewModel()
+    @EnvironmentObject var libraryRefreshViewModel: LibraryRefreshViewModel
     
     var body: some View {
         VStack(spacing: 20) {
@@ -103,18 +103,10 @@ private struct Onboarding: View {
                         Spacer()
                     }.padding(6)
                 }
-                Button {
-                    libraryViewModel.startRefresh(isUserInitiated: true) {
-                        #if os(macOS)
-                        viewModel.navigationItem = .categories
-                        #elseif os(iOS)
-                        viewModel.activeSheet = .library(tabItem: .categories)
-                        #endif
-                    }
-                } label: {
+                Button { libraryRefreshViewModel.start(isUserInitiated: true) } label: {
                     HStack {
                         Spacer()
-                        if libraryViewModel.isRefreshing {
+                        if libraryRefreshViewModel.isInProgress {
                             #if os(macOS)
                             Text("Fetching...")
                             #elseif os(iOS)
@@ -128,7 +120,7 @@ private struct Onboarding: View {
                         }
                         Spacer()
                     }.padding(6)
-                }.disabled(libraryViewModel.isRefreshing)
+                }.disabled(libraryRefreshViewModel.isInProgress)
             }
             .font(.subheadline)
             .modify { view in
@@ -137,6 +129,14 @@ private struct Onboarding: View {
                 } else {
                     view
                 }
+            }
+            .onChange(of: libraryRefreshViewModel.isInProgress) { isInProgress in
+                guard !isInProgress else { return }
+                #if os(macOS)
+                viewModel.navigationItem = .categories
+                #elseif os(iOS)
+                viewModel.activeSheet = .library(tabItem: .categories)
+                #endif
             }
         }
         .padding()

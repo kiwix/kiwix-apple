@@ -13,7 +13,7 @@ import Defaults
 /// A grid of zim files that are newly available.
 struct ZimFilesNew: View {
     @Binding var url: URL?
-    @EnvironmentObject var viewModel: LibraryViewModel
+    @EnvironmentObject var libraryRefreshViewModel: LibraryRefreshViewModel
     @Default(.libraryLanguageCodes) private var languageCodes
     @FetchRequest(
         sortDescriptors: [
@@ -48,7 +48,7 @@ struct ZimFilesNew: View {
         .navigationTitle(NavigationItem.new.name)
         .modifier(ZimFileDetailPanel_macOS(url: $url, zimFile: selected))
         .modifier(Searchable(searchText: $searchText))
-        .onAppear { viewModel.startRefresh(isUserInitiated: false) }
+        .onAppear { libraryRefreshViewModel.start(isUserInitiated: false) }
         .onChange(of: languageCodes) { _ in
             if #available(iOS 15.0, *) {
                 zimFiles.nsPredicate = ZimFilesNew.buildPredicate(searchText: searchText)
@@ -60,14 +60,14 @@ struct ZimFilesNew: View {
             }
         }
         .toolbar {
-            if viewModel.isRefreshing {
+            if libraryRefreshViewModel.isInProgress {
                 ProgressView()
                 #if os(macOS)
                     .scaleEffect(0.5)
                 #endif
             } else {
                 Button {
-                    viewModel.startRefresh(isUserInitiated: true)
+                    libraryRefreshViewModel.start(isUserInitiated: true)
                 } label: {
                     Label("Refresh", systemImage: "arrow.triangle.2.circlepath.circle")
                 }

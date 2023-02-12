@@ -8,19 +8,20 @@
 
 import Foundation
 
-enum LibraryRefreshError: LocalizedError {
-    case retrieve(description: String? = nil)
+public enum LibraryRefreshError: LocalizedError {
+    case retrieve(description: String?)
     case parse
     case process
 
-    var errorDescription: String? {
+    public var errorDescription: String? {
         switch self {
         case .retrieve(let description):
-            return description ?? NSLocalizedString("Error retrieving online catalog.", comment: "")
+            let prefix = NSLocalizedString("Error retrieving library data.", comment: "Library Refresh Error")
+            return [prefix, description].compactMap({ $0 }).joined(separator: " ")
         case .parse:
-            return NSLocalizedString("Library data parsing Error", comment: "")
+            return NSLocalizedString("Error parsing library data.", comment: "Library Refresh Error")
         case .process:
-            return NSLocalizedString("Library data processing error", comment: "")
+            return NSLocalizedString("Error processing library data.", comment: "Library Refresh Error")
         }
     }
 }

@@ -18,7 +18,6 @@ struct ZimFileDetail: View {
     @Default(.downloadUsingCellular) private var downloadUsingCellular
     @Environment(\.presentationMode) var presentationMode
     @EnvironmentObject private var viewModel: ViewModel
-    @EnvironmentObject private var libraryViewModel: LibraryViewModel
     @ObservedObject var zimFile: ZimFile
     @State private var isPresentingDeleteAlert = false
     @State private var isPresentingDownloadAlert = false
