@@ -11,6 +11,8 @@ import UniformTypeIdentifiers
 
 @main
 struct Kiwix: App {
+    @StateObject private var libraryRefreshViewModel = LibraryRefreshViewModel()
+    
     static let zimFileType = UTType(exportedAs: "org.openzim.zim")
     
     private let fileMonitor: DirectoryMonitor
@@ -28,7 +30,9 @@ struct Kiwix: App {
     
     var body: some Scene {
         WindowGroup {
-            RootView().environment(\.managedObjectContext, Database.shared.container.viewContext)
+            RootView()
+                .environment(\.managedObjectContext, Database.shared.container.viewContext)
+                .environmentObject(libraryRefreshViewModel)
         }.commands {
             CommandGroup(replacing: .importExport) {
                 FileImportButton { Text("Open...") }
@@ -59,7 +63,7 @@ struct Kiwix: App {
             #endif
         }
         #if os(macOS)
-        Settings { SettingsContent() }
+        Settings { SettingsContent().environmentObject(libraryRefreshViewModel) }
         #endif
     }
 }

@@ -15,7 +15,7 @@ struct LibrarySettings: View {
     @Default(.downloadUsingCellular) private var downloadUsingCellular
     @Default(.libraryAutoRefresh) private var libraryAutoRefresh
     @Default(.libraryLanguageCodes) private var libraryLanguageCodes
-    @StateObject private var libraryRefreshViewModel = LibraryRefreshViewModel()
+    @EnvironmentObject private var viewModel: LibraryRefreshViewModel
     
     var body: some View {
         #if os(macOS)
@@ -23,9 +23,9 @@ struct LibrarySettings: View {
             SettingSection(name: "Catalog") {
                 HStack(spacing: 6) {
                     Button("Refresh Now") {
-                        libraryRefreshViewModel.start(isUserInitiated: true)
-                    }.disabled(libraryRefreshViewModel.isInProgress)
-                    if libraryRefreshViewModel.isInProgress {
+                        viewModel.start(isUserInitiated: true)
+                    }.disabled(viewModel.isInProgress)
+                    if viewModel.isInProgress {
                         ProgressView().progressViewStyle(.circular).scaleEffect(0.5).frame(height: 1)
                     }
                     Spacer()
