@@ -73,7 +73,7 @@ struct LibrarySettings: View {
                 Spacer()
                 LibraryLastRefreshTime().foregroundColor(.secondary)
             }
-            if libraryRefreshViewModel.isInProgress {
+            if viewModel.isInProgress {
                 HStack {
                     Text("Refreshing...").foregroundColor(.secondary)
                     Spacer()
@@ -81,7 +81,7 @@ struct LibrarySettings: View {
                 }
             } else {
                 Button("Refresh Now") {
-                    libraryRefreshViewModel.start(isUserInitiated: true)
+                    viewModel.start(isUserInitiated: true)
                 }
             }
             Toggle("Auto refresh", isOn: $libraryAutoRefresh)
