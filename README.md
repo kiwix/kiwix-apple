@@ -11,7 +11,7 @@ This is the home for Kiwix apps on iOS and macOS.
 
 ### Kiwix Desktop for macOS ###
 - Download Kiwix Desktop on the [Mac App Store](https://macos.kiwix.org)
-- Download Kiwix Desktop [DMG file](https://download.kiwix.org/release/kiwix-desktop-macos/)
+- Download Kiwix Desktop [DMG file](https://download.kiwix.org/release/kiwix-desktop-macos/kiwix-desktop-macos.dmg)
 
 ## Developers
 
