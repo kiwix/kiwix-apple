@@ -20,11 +20,11 @@ This is the home for Kiwix apps on iOS and macOS.
 * An [Apple Developer account](https://developer.apple.com) (doesn't require membership)
 * Latest Apple Developers Tools ([Xcode](https://developer.apple.com/xcode/))
 * Its command-line utilities (`xcode-select --install`)
-* `libkiwix.xcframework` ([kiwix-lib](https://github.com/kiwix/kiwix-lib))
+* `libkiwix.xcframework` ([libkiwix](https://github.com/kiwix/libkiwix))
 
 ### Creating `libkiwix.xcframework`
 
-Instructions to build kiwix-lib at [on the kiwix-build repo](https://github.com/kiwix/kiwix-build).
+Instructions to build libkiwix at [on the kiwix-build repo](https://github.com/kiwix/kiwix-build).
 
 The xcframework is a bundle of a library for multiple architectures and/or platforms. The `libkiwix.xcframework` will contain libkiwix library for macOS arch and for iOS. You don't have to follow steps for other platform/arch if you don't need them.
 
