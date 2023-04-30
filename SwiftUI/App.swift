@@ -15,17 +15,11 @@ struct Kiwix: App {
     
     static let zimFileType = UTType(exportedAs: "org.openzim.zim")
     
-    private let fileMonitor: DirectoryMonitor
-    
+#if os(macOS)
     init() {
-        fileMonitor = DirectoryMonitor(url: URL.documentDirectory) { LibraryOperations.scanDirectory($0) }
         LibraryOperations.reopen()
         LibraryOperations.scanDirectory(URL.documentDirectory)
         LibraryOperations.applyFileBackupSetting()
-        #if os(iOS)
-        LibraryOperations.registerBackgroundTask()
-        LibraryOperations.applyLibraryAutoRefreshSetting()
-        #endif
     }
     
     var body: some Scene {
@@ -37,7 +31,6 @@ struct Kiwix: App {
             CommandGroup(replacing: .importExport) {
                 FileImportButton { Text("Open...") }
             }
-            #if os(macOS)
             CommandGroup(replacing: .newItem) {
                 Button("New Tab") {
                     guard let currentWindow = NSApp.keyWindow, let controller = currentWindow.windowController else { return }
@@ -55,15 +48,36 @@ struct Kiwix: App {
                 SidebarNavigationItemButtons()
                 Divider()
             }
-            #elseif os(iOS)
+        }
+        Settings { SettingsContent().environmentObject(libraryRefreshViewModel) }
+    }
+#elseif os(iOS)
+    private let fileMonitor: DirectoryMonitor
+    
+    init() {
+        fileMonitor = DirectoryMonitor(url: URL.documentDirectory) { LibraryOperations.scanDirectory($0) }
+        
+        LibraryOperations.reopen()
+        LibraryOperations.scanDirectory(URL.documentDirectory)
+        LibraryOperations.applyFileBackupSetting()
+        LibraryOperations.registerBackgroundTask()
+        LibraryOperations.applyLibraryAutoRefreshSetting()
+    }
+    
+    var body: some Scene {
+        WindowGroup {
+            RootView()
+                .environment(\.managedObjectContext, Database.shared.container.viewContext)
+                .environmentObject(libraryRefreshViewModel)
+        }.commands {
+            CommandGroup(replacing: .importExport) {
+                FileImportButton { Text("Open...") }
+            }
             CommandGroup(after: .toolbar) {
                 NavigationButtons()
                 Divider()
             }
-            #endif
         }
-        #if os(macOS)
-        Settings { SettingsContent().environmentObject(libraryRefreshViewModel) }
-        #endif
     }
+#endif
 }
