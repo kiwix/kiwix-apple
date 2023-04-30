@@ -17,7 +17,10 @@ struct Kiwix: App {
     static let zimFileType = UTType(exportedAs: "org.openzim.zim")
     
 #if os(macOS)
+    private let notificationCenterDelegate = NotificationCenterDelegate()
+    
     init() {
+        UNUserNotificationCenter.current().delegate = notificationCenterDelegate
         LibraryOperations.reopen()
         LibraryOperations.scanDirectory(URL.documentDirectory)
         LibraryOperations.applyFileBackupSetting()
@@ -52,6 +55,19 @@ struct Kiwix: App {
         }
         Settings { SettingsContent().environmentObject(libraryRefreshViewModel) }
     }
+    
+    private class NotificationCenterDelegate: NSObject, UNUserNotificationCenterDelegate {
+        /// Handling file download complete notification
+        func userNotificationCenter(_ center: UNUserNotificationCenter,
+                                    didReceive response: UNNotificationResponse,
+                                    withCompletionHandler completionHandler: @escaping () -> Void) {
+            if let zimFileID = UUID(uuidString: response.notification.request.identifier),
+               let mainPageURL = ZimFileService.shared.getMainPageURL(zimFileID: zimFileID) {
+                NSWorkspace.shared.open(mainPageURL)
+            }
+            completionHandler()
+        }
+    }
 #elseif os(iOS)
     @UIApplicationDelegateAdaptor(AppDelegate.self) private var appDelegate
     
@@ -59,7 +75,6 @@ struct Kiwix: App {
     
     init() {
         fileMonitor = DirectoryMonitor(url: URL.documentDirectory) { LibraryOperations.scanDirectory($0) }
-        
         UNUserNotificationCenter.current().delegate = appDelegate
         LibraryOperations.reopen()
         LibraryOperations.scanDirectory(URL.documentDirectory)
@@ -92,7 +107,7 @@ struct Kiwix: App {
             DownloadService.shared.backgroundCompletionHandler = completionHandler
         }
         
-        // handling
+        /// Handling file download complete notification
         func userNotificationCenter(_ center: UNUserNotificationCenter,
                                     didReceive response: UNNotificationResponse,
                                     withCompletionHandler completionHandler: @escaping () -> Void) {
