@@ -20,6 +20,7 @@ class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegate, URL
         let configuration = URLSessionConfiguration.background(withIdentifier: "org.kiwix.background")
         configuration.allowsCellularAccess = true
         configuration.isDiscretionary = false
+        configuration.sessionSendsLaunchEvents = true
         let operationQueue = OperationQueue()
         operationQueue.underlyingQueue = queue
         return URLSession(configuration: configuration, delegate: self, delegateQueue: operationQueue)
@@ -95,6 +96,7 @@ class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegate, URL
             var urlRequest = URLRequest(url: url)
             urlRequest.allowsCellularAccess = allowsCellularAccess
             let task = self.session.downloadTask(with: urlRequest)
+            task.countOfBytesClientExpectsToReceive = zimFile.size
             task.taskDescription = zimFileID.uuidString
             task.resume()
         }
