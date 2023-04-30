@@ -52,6 +52,8 @@ struct Kiwix: App {
         Settings { SettingsContent().environmentObject(libraryRefreshViewModel) }
     }
 #elseif os(iOS)
+    @UIApplicationDelegateAdaptor(AppDelegate.self) private var appDelegate
+    
     private let fileMonitor: DirectoryMonitor
     
     init() {
@@ -77,6 +79,15 @@ struct Kiwix: App {
                 NavigationButtons()
                 Divider()
             }
+        }
+    }
+    
+    private class AppDelegate: NSObject, UIApplicationDelegate {
+        /// Storing background download completion handler sent to application delegate
+        func application(_ application: UIApplication,
+                         handleEventsForBackgroundURLSession identifier: String,
+                         completionHandler: @escaping () -> Void) {
+            DownloadService.shared.backgroundCompletionHandler = completionHandler
         }
     }
 #endif

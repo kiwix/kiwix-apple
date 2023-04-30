@@ -16,6 +16,7 @@ class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegate, URL
     private var totalBytesWritten = [UUID: Int64]()
     private var heartbeat: Timer?
     
+    var backgroundCompletionHandler: (() -> Void)?
     private lazy var session: URLSession = {
         let configuration = URLSessionConfiguration.background(withIdentifier: "org.kiwix.background")
         configuration.allowsCellularAccess = true
@@ -250,5 +251,13 @@ class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegate, URL
         
         // open the file
         LibraryOperations.open(url: destination)
+    }
+    
+    // MARK: - URLSessionDelegate
+    
+    func urlSessionDidFinishEvents(forBackgroundURLSession session: URLSession) {
+        DispatchQueue.main.async {
+            self.backgroundCompletionHandler?()
+        }
     }
 }
