@@ -1,5 +1,5 @@
 //
-//  Downloads.swift
+//  DownloadService.swift
 //  Kiwix
 //
 //  Created by Chris Li on 4/30/22.
@@ -9,8 +9,8 @@
 import CoreData
 import os
 
-class Downloads: NSObject, URLSessionDelegate, URLSessionTaskDelegate, URLSessionDownloadDelegate {
-    static let shared = Downloads()
+class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegate, URLSessionDownloadDelegate {
+    static let shared = DownloadService()
     
     private let queue = DispatchQueue(label: "downloads")
     private var totalBytesWritten = [UUID: Int64]()
