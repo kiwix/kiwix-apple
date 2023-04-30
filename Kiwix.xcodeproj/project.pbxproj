@@ -303,6 +303,7 @@
 				972DE4BF2814A5E3004FD9B9 /* OPDSParser */,
 				9706555A2473682C00A51319 /* Utilities */,
 				974E7EE22930201500BDF59C /* ZimFileService */,
+				973A0DE5281DC8F400B41E71 /* DownloadService.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -325,7 +326,6 @@
 				9735D0BB2775594700C7D495 /* Database.swift */,
 				9753D947285B55F100A626CC /* DefaultKeys.swift */,
 				9779A5CF2456796A00F6F6FF /* DirectoryMonitor.swift */,
-				973A0DE5281DC8F400B41E71 /* DownloadService.swift */,
 				9735D0BF27777E3300C7D495 /* Enum.swift */,
 				979D3A762841100B00E396B8 /* Focus.swift */,
 				9790926E286BF0BB002B7AA5 /* Formatter.swift */,
