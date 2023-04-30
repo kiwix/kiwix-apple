@@ -7,6 +7,7 @@
 //
 
 import CoreData
+import UserNotifications
 import os
 
 class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegate, URLSessionDownloadDelegate {
@@ -79,6 +80,7 @@ class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegate, URL
     ///   - zimFile: the zim file to download
     ///   - allowsCellularAccess: if using cellular data is allowed
     func start(zimFileID: UUID, allowsCellularAccess: Bool) {
+        requestNotificationAuthorization()
         Database.shared.container.performBackgroundTask { context in
             context.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
             let fetchRequest = ZimFile.fetchRequest(fileID: zimFileID)
@@ -135,6 +137,7 @@ class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegate, URL
     /// Resume a zim file download task and start heartbeat
     /// - Parameter zimFileID: identifier of the zim file
     func resume(zimFileID: UUID) {
+        requestNotificationAuthorization()
         Database.shared.container.performBackgroundTask { context in
             context.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
             
@@ -172,6 +175,32 @@ class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegate, URL
                     error.localizedDescription
                 )
             }
+        }
+    }
+    
+    // MARK: - Notification
+    
+    private func requestNotificationAuthorization() {
+        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound]) { _, _ in }
+    }
+    
+    private func scheduleDownloadCompleteNotification(zimFileID: UUID) {
+        let center = UNUserNotificationCenter.current()
+        center.getNotificationSettings { settings in
+            guard settings.authorizationStatus != .denied else { return }
+            
+            // configure notification content
+            let content = UNMutableNotificationContent()
+            content.title = "Download Completed"
+            content.sound = .default
+            Database.shared.container.performBackgroundTask { context in
+                guard let zimFile = try? context.fetch(ZimFile.fetchRequest(fileID: zimFileID)).first else { return }
+                content.body = "Zim file \(zimFile.name) has been downloaded. Tap to open main page."
+            }
+            
+            // schedule notification
+            let request = UNNotificationRequest(identifier: zimFileID.uuidString, content: content, trigger: nil)
+            center.add(request)
         }
     }
     
@@ -242,15 +271,18 @@ class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegate, URL
         
         // move file
         guard let directory = FileManager.default.urls(for: searchPath, in: .userDomainMask).first,
-            let zimFileID = downloadTask.taskDescription else {return}
+            let zimFileID = UUID(uuidString: downloadTask.taskDescription ?? "") else {return}
         let fileName = downloadTask.response?.suggestedFilename
             ?? downloadTask.originalRequest?.url?.lastPathComponent
-            ?? zimFileID + ".zim"
+            ?? zimFileID.uuidString + ".zim"
         let destination = directory.appendingPathComponent(fileName)
         try? FileManager.default.moveItem(at: location, to: destination)
         
         // open the file
         LibraryOperations.open(url: destination)
+        
+        // schedule notification
+        scheduleDownloadCompleteNotification(zimFileID: zimFileID)
     }
     
     // MARK: - URLSessionDelegate
