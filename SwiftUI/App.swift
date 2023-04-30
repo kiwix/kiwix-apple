@@ -8,6 +8,7 @@
 
 import SwiftUI
 import UniformTypeIdentifiers
+import UserNotifications
 
 @main
 struct Kiwix: App {
@@ -59,6 +60,7 @@ struct Kiwix: App {
     init() {
         fileMonitor = DirectoryMonitor(url: URL.documentDirectory) { LibraryOperations.scanDirectory($0) }
         
+        UNUserNotificationCenter.current().delegate = appDelegate
         LibraryOperations.reopen()
         LibraryOperations.scanDirectory(URL.documentDirectory)
         LibraryOperations.applyFileBackupSetting()
@@ -82,12 +84,23 @@ struct Kiwix: App {
         }
     }
     
-    private class AppDelegate: NSObject, UIApplicationDelegate {
+    private class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCenterDelegate {
         /// Storing background download completion handler sent to application delegate
         func application(_ application: UIApplication,
                          handleEventsForBackgroundURLSession identifier: String,
                          completionHandler: @escaping () -> Void) {
             DownloadService.shared.backgroundCompletionHandler = completionHandler
+        }
+        
+        // handling
+        func userNotificationCenter(_ center: UNUserNotificationCenter,
+                                    didReceive response: UNNotificationResponse,
+                                    withCompletionHandler completionHandler: @escaping () -> Void) {
+            if let zimFileID = UUID(uuidString: response.notification.request.identifier),
+               let mainPageURL = ZimFileService.shared.getMainPageURL(zimFileID: zimFileID) {
+                UIApplication.shared.open(mainPageURL)
+            }
+            completionHandler()
         }
     }
 #endif

@@ -188,19 +188,19 @@ class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegate, URL
         let center = UNUserNotificationCenter.current()
         center.getNotificationSettings { settings in
             guard settings.authorizationStatus != .denied else { return }
-            
-            // configure notification content
-            let content = UNMutableNotificationContent()
-            content.title = "Download Completed"
-            content.sound = .default
             Database.shared.container.performBackgroundTask { context in
-                guard let zimFile = try? context.fetch(ZimFile.fetchRequest(fileID: zimFileID)).first else { return }
-                content.body = "Zim file \(zimFile.name) has been downloaded. Tap to open main page."
+                // configure notification content
+                let content = UNMutableNotificationContent()
+                content.title = "Download Completed"
+                content.sound = .default
+                if let zimFile = try? context.fetch(ZimFile.fetchRequest(fileID: zimFileID)).first {
+                    content.body = "\(zimFile.name) has been downloaded. Tap to open main page."
+                }
+                
+                // schedule notification
+                let request = UNNotificationRequest(identifier: zimFileID.uuidString, content: content, trigger: nil)
+                center.add(request)
             }
-            
-            // schedule notification
-            let request = UNNotificationRequest(identifier: zimFileID.uuidString, content: content, trigger: nil)
-            center.add(request)
         }
     }
     
