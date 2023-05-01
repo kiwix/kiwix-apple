@@ -1,3 +1,9 @@
+## 3.1
+
+- Notification for when a download task complete
+- 5 mins timeout for each download task
+- Improved handling and error surfacing for failed download tasks
+
 ## 1.16
 
 - Tabbed library UI with opened, categories, download tasks and new zim files section
