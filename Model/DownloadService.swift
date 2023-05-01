@@ -23,7 +23,6 @@ class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegate, URL
         configuration.allowsCellularAccess = true
         configuration.isDiscretionary = false
         configuration.sessionSendsLaunchEvents = true
-        configuration.timeoutIntervalForResource = 300
         let operationQueue = OperationQueue()
         operationQueue.underlyingQueue = queue
         return URLSession(configuration: configuration, delegate: self, delegateQueue: operationQueue)
