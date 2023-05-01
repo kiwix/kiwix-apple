@@ -194,7 +194,7 @@ class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegate, URL
                 content.title = "Download Completed"
                 content.sound = .default
                 if let zimFile = try? context.fetch(ZimFile.fetchRequest(fileID: zimFileID)).first {
-                    content.body = "\(zimFile.name) has been downloaded. Tap to open main page."
+                    content.body = "\(zimFile.name) has been downloaded successfully."
                 }
                 
                 // schedule notification
