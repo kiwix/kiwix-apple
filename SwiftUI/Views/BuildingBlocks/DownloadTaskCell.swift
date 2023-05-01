@@ -40,7 +40,9 @@ struct DownloadTaskCell: View {
                 Text(downloadTask.fileID.uuidString)
             }
             VStack(alignment: .leading, spacing: 4) {
-                if downloadTask.resumeData == nil {
+                if downloadTask.error != nil {
+                    Text("Failed")
+                } else if downloadTask.resumeData == nil {
                     Text("Downloading...")
                 } else {
                     Text("Paused")

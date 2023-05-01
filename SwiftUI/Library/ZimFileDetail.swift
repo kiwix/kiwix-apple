@@ -243,7 +243,15 @@ private struct DownloadTaskDetail: View {
         Action(title: "Cancel", isDestructive: true) {
             DownloadService.shared.cancel(zimFileID: downloadTask.fileID)
         }
-        if downloadTask.resumeData == nil {
+        if let error = downloadTask.error {
+            if downloadTask.resumeData != nil {
+                Action(title: "Try to Recover") {
+                    DownloadService.shared.resume(zimFileID: downloadTask.fileID)
+                }
+            }
+            Attribute(title: "Failed", detail: detail)
+            Text(error)
+        } else if downloadTask.resumeData == nil {
             Action(title: "Pause") {
                 DownloadService.shared.pause(zimFileID: downloadTask.fileID)
             }
@@ -253,9 +261,6 @@ private struct DownloadTaskDetail: View {
                 DownloadService.shared.resume(zimFileID: downloadTask.fileID)
             }
             Attribute(title: "Paused", detail: detail)
-        }
-        if let error = downloadTask.error {
-            Text(error)
         }
     }
     
