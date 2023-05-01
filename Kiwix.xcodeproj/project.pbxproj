@@ -298,11 +298,11 @@
 		970EC39E23BCE7F5008DCA27 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				9735D0B82775363900C7D495 /* DataModel.xcdatamodeld */,
 				9779A5AB2456793600F6F6FF /* Entities */,
 				972DE4BF2814A5E3004FD9B9 /* OPDSParser */,
 				9706555A2473682C00A51319 /* Utilities */,
 				974E7EE22930201500BDF59C /* ZimFileService */,
+				9735D0B82775363900C7D495 /* DataModel.xcdatamodeld */,
 				973A0DE5281DC8F400B41E71 /* DownloadService.swift */,
 			);
 			path = Model;
