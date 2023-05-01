@@ -8,6 +8,7 @@
 
 import SwiftUI
 import UniformTypeIdentifiers
+import UserNotifications
 
 @main
 struct Kiwix: App {
@@ -15,17 +16,14 @@ struct Kiwix: App {
     
     static let zimFileType = UTType(exportedAs: "org.openzim.zim")
     
-    private let fileMonitor: DirectoryMonitor
+#if os(macOS)
+    private let notificationCenterDelegate = NotificationCenterDelegate()
     
     init() {
-        fileMonitor = DirectoryMonitor(url: URL.documentDirectory) { LibraryOperations.scanDirectory($0) }
+        UNUserNotificationCenter.current().delegate = notificationCenterDelegate
         LibraryOperations.reopen()
         LibraryOperations.scanDirectory(URL.documentDirectory)
         LibraryOperations.applyFileBackupSetting()
-        #if os(iOS)
-        LibraryOperations.registerBackgroundTask()
-        LibraryOperations.applyLibraryAutoRefreshSetting()
-        #endif
     }
     
     var body: some Scene {
@@ -37,7 +35,6 @@ struct Kiwix: App {
             CommandGroup(replacing: .importExport) {
                 FileImportButton { Text("Open...") }
             }
-            #if os(macOS)
             CommandGroup(replacing: .newItem) {
                 Button("New Tab") {
                     guard let currentWindow = NSApp.keyWindow, let controller = currentWindow.windowController else { return }
@@ -55,15 +52,71 @@ struct Kiwix: App {
                 SidebarNavigationItemButtons()
                 Divider()
             }
-            #elseif os(iOS)
+        }
+        Settings { SettingsContent().environmentObject(libraryRefreshViewModel) }
+    }
+    
+    private class NotificationCenterDelegate: NSObject, UNUserNotificationCenterDelegate {
+        /// Handling file download complete notification
+        func userNotificationCenter(_ center: UNUserNotificationCenter,
+                                    didReceive response: UNNotificationResponse,
+                                    withCompletionHandler completionHandler: @escaping () -> Void) {
+            if let zimFileID = UUID(uuidString: response.notification.request.identifier),
+               let mainPageURL = ZimFileService.shared.getMainPageURL(zimFileID: zimFileID) {
+                NSWorkspace.shared.open(mainPageURL)
+            }
+            completionHandler()
+        }
+    }
+#elseif os(iOS)
+    @UIApplicationDelegateAdaptor(AppDelegate.self) private var appDelegate
+    
+    private let fileMonitor: DirectoryMonitor
+    
+    init() {
+        fileMonitor = DirectoryMonitor(url: URL.documentDirectory) { LibraryOperations.scanDirectory($0) }
+        UNUserNotificationCenter.current().delegate = appDelegate
+        LibraryOperations.reopen()
+        LibraryOperations.scanDirectory(URL.documentDirectory)
+        LibraryOperations.applyFileBackupSetting()
+        LibraryOperations.registerBackgroundTask()
+        LibraryOperations.applyLibraryAutoRefreshSetting()
+    }
+    
+    var body: some Scene {
+        WindowGroup {
+            RootView()
+                .environment(\.managedObjectContext, Database.shared.container.viewContext)
+                .environmentObject(libraryRefreshViewModel)
+        }.commands {
+            CommandGroup(replacing: .importExport) {
+                FileImportButton { Text("Open...") }
+            }
             CommandGroup(after: .toolbar) {
                 NavigationButtons()
                 Divider()
             }
-            #endif
         }
-        #if os(macOS)
-        Settings { SettingsContent().environmentObject(libraryRefreshViewModel) }
-        #endif
     }
+    
+    private class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCenterDelegate {
+        /// Storing background download completion handler sent to application delegate
+        func application(_ application: UIApplication,
+                         handleEventsForBackgroundURLSession identifier: String,
+                         completionHandler: @escaping () -> Void) {
+            DownloadService.shared.backgroundCompletionHandler = completionHandler
+        }
+        
+        /// Handling file download complete notification
+        func userNotificationCenter(_ center: UNUserNotificationCenter,
+                                    didReceive response: UNNotificationResponse,
+                                    withCompletionHandler completionHandler: @escaping () -> Void) {
+            if let zimFileID = UUID(uuidString: response.notification.request.identifier),
+               let mainPageURL = ZimFileService.shared.getMainPageURL(zimFileID: zimFileID) {
+                UIApplication.shared.open(mainPageURL)
+            }
+            completionHandler()
+        }
+    }
+#endif
 }

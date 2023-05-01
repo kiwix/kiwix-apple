@@ -158,7 +158,7 @@ struct ZimFileDetail: View {
             if let freeSpace = freeSpace, zimFile.size >= freeSpace - 10^9 {
                 isPresentingDownloadAlert = true
             } else {
-                Downloads.shared.start(zimFileID: zimFile.id, allowsCellularAccess: downloadUsingCellular)
+                DownloadService.shared.start(zimFileID: zimFile.id, allowsCellularAccess: downloadUsingCellular)
             }
         }.alert(isPresented: $isPresentingDownloadAlert) {
             Alert(
@@ -171,7 +171,7 @@ struct ZimFileDetail: View {
                     }
                 }()),
                 primaryButton: .default(Text("Download Anyway")) {
-                    Downloads.shared.start(zimFileID: zimFile.id, allowsCellularAccess: false)
+                    DownloadService.shared.start(zimFileID: zimFile.id, allowsCellularAccess: false)
                 },
                 secondaryButton: .cancel()
             )
@@ -241,21 +241,26 @@ private struct DownloadTaskDetail: View {
     
     var body: some View {
         Action(title: "Cancel", isDestructive: true) {
-            Downloads.shared.cancel(zimFileID: downloadTask.fileID)
+            DownloadService.shared.cancel(zimFileID: downloadTask.fileID)
         }
-        if downloadTask.resumeData == nil {
+        if let error = downloadTask.error {
+            if downloadTask.resumeData != nil {
+                Action(title: "Try to Recover") {
+                    DownloadService.shared.resume(zimFileID: downloadTask.fileID)
+                }
+            }
+            Attribute(title: "Failed", detail: detail)
+            Text(error)
+        } else if downloadTask.resumeData == nil {
             Action(title: "Pause") {
-                Downloads.shared.pause(zimFileID: downloadTask.fileID)
+                DownloadService.shared.pause(zimFileID: downloadTask.fileID)
             }
             Attribute(title: "Downloading...", detail: detail)
         } else {
             Action(title: "Resume") {
-                Downloads.shared.resume(zimFileID: downloadTask.fileID)
+                DownloadService.shared.resume(zimFileID: downloadTask.fileID)
             }
             Attribute(title: "Paused", detail: detail)
-        }
-        if let error = downloadTask.error {
-            Text(error)
         }
     }
     

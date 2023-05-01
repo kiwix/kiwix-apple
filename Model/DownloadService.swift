@@ -1,5 +1,5 @@
 //
-//  Downloads.swift
+//  DownloadService.swift
 //  Kiwix
 //
 //  Created by Chris Li on 4/30/22.
@@ -7,19 +7,23 @@
 //
 
 import CoreData
+import UserNotifications
 import os
 
-class Downloads: NSObject, URLSessionDelegate, URLSessionTaskDelegate, URLSessionDownloadDelegate {
-    static let shared = Downloads()
+class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegate, URLSessionDownloadDelegate {
+    static let shared = DownloadService()
     
     private let queue = DispatchQueue(label: "downloads")
     private var totalBytesWritten = [UUID: Int64]()
     private var heartbeat: Timer?
     
+    var backgroundCompletionHandler: (() -> Void)?
     private lazy var session: URLSession = {
         let configuration = URLSessionConfiguration.background(withIdentifier: "org.kiwix.background")
         configuration.allowsCellularAccess = true
         configuration.isDiscretionary = false
+        configuration.sessionSendsLaunchEvents = true
+        configuration.timeoutIntervalForResource = 300
         let operationQueue = OperationQueue()
         operationQueue.underlyingQueue = queue
         return URLSession(configuration: configuration, delegate: self, delegateQueue: operationQueue)
@@ -77,6 +81,7 @@ class Downloads: NSObject, URLSessionDelegate, URLSessionTaskDelegate, URLSessio
     ///   - zimFile: the zim file to download
     ///   - allowsCellularAccess: if using cellular data is allowed
     func start(zimFileID: UUID, allowsCellularAccess: Bool) {
+        requestNotificationAuthorization()
         Database.shared.container.performBackgroundTask { context in
             context.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
             let fetchRequest = ZimFile.fetchRequest(fileID: zimFileID)
@@ -95,6 +100,7 @@ class Downloads: NSObject, URLSessionDelegate, URLSessionTaskDelegate, URLSessio
             var urlRequest = URLRequest(url: url)
             urlRequest.allowsCellularAccess = allowsCellularAccess
             let task = self.session.downloadTask(with: urlRequest)
+            task.countOfBytesClientExpectsToReceive = zimFile.size
             task.taskDescription = zimFileID.uuidString
             task.resume()
         }
@@ -132,6 +138,7 @@ class Downloads: NSObject, URLSessionDelegate, URLSessionTaskDelegate, URLSessio
     /// Resume a zim file download task and start heartbeat
     /// - Parameter zimFileID: identifier of the zim file
     func resume(zimFileID: UUID) {
+        requestNotificationAuthorization()
         Database.shared.container.performBackgroundTask { context in
             context.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
             
@@ -168,6 +175,32 @@ class Downloads: NSObject, URLSessionDelegate, URLSessionTaskDelegate, URLSessio
                     type: .error,
                     error.localizedDescription
                 )
+            }
+        }
+    }
+    
+    // MARK: - Notification
+    
+    private func requestNotificationAuthorization() {
+        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound]) { _, _ in }
+    }
+    
+    private func scheduleDownloadCompleteNotification(zimFileID: UUID) {
+        let center = UNUserNotificationCenter.current()
+        center.getNotificationSettings { settings in
+            guard settings.authorizationStatus != .denied else { return }
+            Database.shared.container.performBackgroundTask { context in
+                // configure notification content
+                let content = UNMutableNotificationContent()
+                content.title = "Download Completed"
+                content.sound = .default
+                if let zimFile = try? context.fetch(ZimFile.fetchRequest(fileID: zimFileID)).first {
+                    content.body = "\(zimFile.name) has been downloaded successfully."
+                }
+                
+                // schedule notification
+                let request = UNNotificationRequest(identifier: zimFileID.uuidString, content: content, trigger: nil)
+                center.add(request)
             }
         }
     }
@@ -239,14 +272,25 @@ class Downloads: NSObject, URLSessionDelegate, URLSessionTaskDelegate, URLSessio
         
         // move file
         guard let directory = FileManager.default.urls(for: searchPath, in: .userDomainMask).first,
-            let zimFileID = downloadTask.taskDescription else {return}
+            let zimFileID = UUID(uuidString: downloadTask.taskDescription ?? "") else {return}
         let fileName = downloadTask.response?.suggestedFilename
             ?? downloadTask.originalRequest?.url?.lastPathComponent
-            ?? zimFileID + ".zim"
+            ?? zimFileID.uuidString + ".zim"
         let destination = directory.appendingPathComponent(fileName)
         try? FileManager.default.moveItem(at: location, to: destination)
         
         // open the file
         LibraryOperations.open(url: destination)
+        
+        // schedule notification
+        scheduleDownloadCompleteNotification(zimFileID: zimFileID)
+    }
+    
+    // MARK: - URLSessionDelegate
+    
+    func urlSessionDidFinishEvents(forBackgroundURLSession session: URLSession) {
+        DispatchQueue.main.async {
+            self.backgroundCompletionHandler?()
+        }
     }
 }
