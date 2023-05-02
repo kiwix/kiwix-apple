@@ -227,7 +227,6 @@ class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegate, URL
         }
         
         // save the error description and resume data if possible
-        guard error.code != URLError.cancelled.rawValue else { return }
         Database.shared.container.performBackgroundTask { context in
             context.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
             let request = DownloadTask.fetchRequest(fileID: zimFileID)
@@ -239,7 +238,7 @@ class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegate, URL
             try? context.save()
         }
         os_log(
-            "Download errored. File ID: %s. Error",
+            "Download finished with error. File ID: %s. Error",
             log: Log.DownloadService,
             type: .error,
             zimFileID.uuidString,
