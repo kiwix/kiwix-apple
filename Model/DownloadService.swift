@@ -28,10 +28,10 @@ class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegate, URL
         return URLSession(configuration: configuration, delegate: self, delegateQueue: operationQueue)
     }()
     
-    // MARK: - Init & Heartbeat
+    // MARK: - Heartbeat
     
-    private override init() {
-        super.init()
+    /// Restart heartbeat if there are unfinished download task
+    func restartHeartbeatIfNeeded() {
         session.getTasksWithCompletionHandler { _, _, downloadTasks in
             guard downloadTasks.count > 0 else { return }
             for task in downloadTasks {
