@@ -23,16 +23,15 @@ class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegate, URL
         configuration.allowsCellularAccess = true
         configuration.isDiscretionary = false
         configuration.sessionSendsLaunchEvents = true
-        configuration.timeoutIntervalForResource = 300
         let operationQueue = OperationQueue()
         operationQueue.underlyingQueue = queue
         return URLSession(configuration: configuration, delegate: self, delegateQueue: operationQueue)
     }()
     
-    // MARK: - Init & Heartbeat
+    // MARK: - Heartbeat
     
-    private override init() {
-        super.init()
+    /// Restart heartbeat if there are unfinished download task
+    func restartHeartbeatIfNeeded() {
         session.getTasksWithCompletionHandler { _, _, downloadTasks in
             guard downloadTasks.count > 0 else { return }
             for task in downloadTasks {
@@ -228,7 +227,6 @@ class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegate, URL
         }
         
         // save the error description and resume data if possible
-        guard error.code != URLError.cancelled.rawValue else { return }
         Database.shared.container.performBackgroundTask { context in
             context.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
             let request = DownloadTask.fetchRequest(fileID: zimFileID)
@@ -240,7 +238,7 @@ class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegate, URL
             try? context.save()
         }
         os_log(
-            "Download errored. File ID: %s. Error",
+            "Download finished with error. File ID: %s. Error",
             log: Log.DownloadService,
             type: .error,
             zimFileID.uuidString,

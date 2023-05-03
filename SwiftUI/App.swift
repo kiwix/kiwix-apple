@@ -24,6 +24,7 @@ struct Kiwix: App {
         LibraryOperations.reopen()
         LibraryOperations.scanDirectory(URL.documentDirectory)
         LibraryOperations.applyFileBackupSetting()
+        DownloadService.shared.restartHeartbeatIfNeeded()
     }
     
     var body: some Scene {
@@ -81,6 +82,7 @@ struct Kiwix: App {
         LibraryOperations.applyFileBackupSetting()
         LibraryOperations.registerBackgroundTask()
         LibraryOperations.applyLibraryAutoRefreshSetting()
+        DownloadService.shared.restartHeartbeatIfNeeded()
     }
     
     var body: some Scene {
