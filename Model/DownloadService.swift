@@ -226,15 +226,19 @@ class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegate, URL
             return
         }
         
-        // save the error description and resume data if possible
+        /*
+         Save the error description and resume data if there are new resule data
+         Note: The result data equality check is used as a trick to distinguish user pausing the download task vs
+         failure. When pausing, the same resume data would have already been saved when the delegate is called.
+        */
         Database.shared.container.performBackgroundTask { context in
             context.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
             let request = DownloadTask.fetchRequest(fileID: zimFileID)
-            guard let downloadTask = try? context.fetch(request).first else { return }
+            let resumeData = error.userInfo[NSURLSessionDownloadTaskResumeData] as? Data
+            guard let downloadTask = try? context.fetch(request).first,
+                  downloadTask.resumeData != resumeData else { return }
             downloadTask.error = error.localizedDescription
-            if let resumeData = error.userInfo[NSURLSessionDownloadTaskResumeData] as? Data {
-                downloadTask.resumeData = resumeData
-            }
+            downloadTask.resumeData = resumeData
             try? context.save()
         }
         os_log(
