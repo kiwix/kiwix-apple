@@ -27,19 +27,7 @@ class KiwixURLSchemeHandler: NSObject, WKURLSchemeHandler {
                 let content = ZimFileService.shared.getURLContent(url: url)
                 self.queue.async {
                     guard self.urls.contains(url) else { return }
-                    if let content = content,
-                       let response = HTTPURLResponse(
-                        url: url,
-                        statusCode: 200,
-                        httpVersion: "HTTP/1.1",
-                        headerFields: ["Content-Type": content.mime, "Content-Length": "\(content.length)"])
-                    {
-                        objCTryBlock {
-                            urlSchemeTask.didReceive(response)
-                            urlSchemeTask.didReceive(content.data)
-                            urlSchemeTask.didFinish()
-                        }
-                    } else {
+                    guard let content = content else {
                         os_log(
                             "Resource not found for url: %s.",
                             log: Log.URLSchemeHandler,
@@ -47,6 +35,15 @@ class KiwixURLSchemeHandler: NSObject, WKURLSchemeHandler {
                             url.absoluteString
                         )
                         urlSchemeTask.didFailWithError(URLError(.resourceUnavailable, userInfo: ["url": url]))
+                        return
+                    }
+                    
+                    objCTryBlock {
+                        if let range = urlSchemeTask.request.allHTTPHeaderFields?["Range"] as? String {
+                            self.handleHTTP206(urlSchemeTask, url: url, content: content, range: range)
+                        } else {
+                            self.handleHTTP200(urlSchemeTask, url: url, content: content)
+                        }
                     }
                     self.urls.remove(url)
                 }
@@ -58,6 +55,44 @@ class KiwixURLSchemeHandler: NSObject, WKURLSchemeHandler {
         queue.async {
             guard let url = urlSchemeTask.request.url else { return }
             self.urls.remove(url)
+        }
+    }
+    
+    private func handleHTTP200(_ urlSchemeTask: WKURLSchemeTask, url: URL, content: URLContent) {
+        let headers = ["Content-Type": content.mime, "Content-Length": "\(content.length)"]
+        if let response = HTTPURLResponse(url: url, statusCode: 200, httpVersion: "HTTP/1.1", headerFields: headers) {
+            urlSchemeTask.didReceive(response)
+            urlSchemeTask.didReceive(content.data)
+            urlSchemeTask.didFinish()
+        } else {
+            urlSchemeTask.didFailWithError(URLError(.badServerResponse, userInfo: ["url": url]))
+        }
+    }
+    
+    private func handleHTTP206(_ urlSchemeTask: WKURLSchemeTask, url: URL, content: URLContent, range: String) {
+        let parts = range.components(separatedBy: ["=", "-"])
+        guard parts.count == 3, let start = Int(parts[1]), let end = Int(parts[2]) else {
+            if let response = HTTPURLResponse(url: url, statusCode: 400, httpVersion: nil, headerFields: nil) {
+                urlSchemeTask.didReceive(response)
+                urlSchemeTask.didFinish()
+            } else {
+                urlSchemeTask.didFailWithError(URLError(.badServerResponse, userInfo: ["url": url]))
+            }
+            return
+        }
+        
+        let data = content.data.subdata(in: start..<end)
+        let headers = [
+            "Content-Type": content.mime,
+            "Content-Length": "\(end-start)",
+            "Content-Range": "bytes \(start)-\(end)/\(content.length)"
+        ]
+        if let response = HTTPURLResponse(url: url, statusCode: 206, httpVersion: "HTTP/1.1", headerFields: headers) {
+            urlSchemeTask.didReceive(response)
+            urlSchemeTask.didReceive(data)
+            urlSchemeTask.didFinish()
+        } else {
+            urlSchemeTask.didFailWithError(URLError(.badServerResponse, userInfo: ["url": url]))
         }
     }
 }
