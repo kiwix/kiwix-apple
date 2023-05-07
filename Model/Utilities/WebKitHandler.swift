@@ -81,10 +81,10 @@ class KiwixURLSchemeHandler: NSObject, WKURLSchemeHandler {
             return
         }
         
-        let data = content.data.subdata(in: start..<end)
+        let data = content.data.subdata(in: start..<end + 1)
         let headers = [
             "Content-Type": content.mime,
-            "Content-Length": "\(end-start)",
+            "Content-Length": "\(data.count)",
             "Content-Range": "bytes \(start)-\(end)/\(content.length)"
         ]
         if let response = HTTPURLResponse(url: url, statusCode: 206, httpVersion: "HTTP/1.1", headerFields: headers) {
