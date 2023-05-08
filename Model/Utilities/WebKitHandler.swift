@@ -26,6 +26,7 @@ class KiwixURLSchemeHandler: NSObject, WKURLSchemeHandler {
             DispatchQueue.global(qos: .userInitiated).async {
                 let content = ZimFileService.shared.getURLContent(url: url)
                 self.queue.async {
+                    defer { self.urls.remove(url) }
                     guard self.urls.contains(url) else { return }
                     guard let content = content else {
                         os_log(
@@ -34,10 +35,9 @@ class KiwixURLSchemeHandler: NSObject, WKURLSchemeHandler {
                             type: .info,
                             url.absoluteString
                         )
-                        urlSchemeTask.didFailWithError(URLError(.resourceUnavailable, userInfo: ["url": url]))
+                        self.sendHTTP404Response(urlSchemeTask, url: url)
                         return
                     }
-                    
                     objCTryBlock {
                         if let range = urlSchemeTask.request.allHTTPHeaderFields?["Range"] as? String {
                             self.sendHTTP206Response(urlSchemeTask, url: url, content: content, range: range)
@@ -45,7 +45,6 @@ class KiwixURLSchemeHandler: NSObject, WKURLSchemeHandler {
                             self.sendHTTP200Response(urlSchemeTask, url: url, content: content)
                         }
                     }
-                    self.urls.remove(url)
                 }
             }
         }
@@ -90,6 +89,15 @@ class KiwixURLSchemeHandler: NSObject, WKURLSchemeHandler {
         if let response = HTTPURLResponse(url: url, statusCode: 206, httpVersion: "HTTP/1.1", headerFields: headers) {
             urlSchemeTask.didReceive(response)
             urlSchemeTask.didReceive(data)
+            urlSchemeTask.didFinish()
+        } else {
+            urlSchemeTask.didFailWithError(URLError(.badServerResponse, userInfo: ["url": url]))
+        }
+    }
+    
+    private func sendHTTP404Response(_ urlSchemeTask: WKURLSchemeTask, url: URL) {
+        if let response = HTTPURLResponse(url: url, statusCode: 404, httpVersion: "HTTP/1.1", headerFields: nil) {
+            urlSchemeTask.didReceive(response)
             urlSchemeTask.didFinish()
         } else {
             urlSchemeTask.didFailWithError(URLError(.badServerResponse, userInfo: ["url": url]))
