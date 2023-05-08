@@ -40,9 +40,9 @@ class KiwixURLSchemeHandler: NSObject, WKURLSchemeHandler {
                     
                     objCTryBlock {
                         if let range = urlSchemeTask.request.allHTTPHeaderFields?["Range"] as? String {
-                            self.handleHTTP206(urlSchemeTask, url: url, content: content, range: range)
+                            self.sendHTTP206Response(urlSchemeTask, url: url, content: content, range: range)
                         } else {
-                            self.handleHTTP200(urlSchemeTask, url: url, content: content)
+                            self.sendHTTP200Response(urlSchemeTask, url: url, content: content)
                         }
                     }
                     self.urls.remove(url)
@@ -58,7 +58,7 @@ class KiwixURLSchemeHandler: NSObject, WKURLSchemeHandler {
         }
     }
     
-    private func handleHTTP200(_ urlSchemeTask: WKURLSchemeTask, url: URL, content: URLContent) {
+    private func sendHTTP200Response(_ urlSchemeTask: WKURLSchemeTask, url: URL, content: URLContent) {
         let headers = ["Content-Type": content.mime, "Content-Length": "\(content.length)"]
         if let response = HTTPURLResponse(url: url, statusCode: 200, httpVersion: "HTTP/1.1", headerFields: headers) {
             urlSchemeTask.didReceive(response)
@@ -69,7 +69,7 @@ class KiwixURLSchemeHandler: NSObject, WKURLSchemeHandler {
         }
     }
     
-    private func handleHTTP206(_ urlSchemeTask: WKURLSchemeTask, url: URL, content: URLContent, range: String) {
+    private func sendHTTP206Response(_ urlSchemeTask: WKURLSchemeTask, url: URL, content: URLContent, range: String) {
         let parts = range.components(separatedBy: ["=", "-"])
         guard parts.count == 3, let start = Int(parts[1]), let end = Int(parts[2]) else {
             if let response = HTTPURLResponse(url: url, statusCode: 400, httpVersion: nil, headerFields: nil) {
