@@ -118,7 +118,8 @@ class OutlineItem: ObservableObject, Identifiable {
 struct URLContent {
     let data: Data
     let mime: String
-    let length: Int
+    let size: Int
+    let totalSize: Int
 }
 
 class ZimFile: NSManagedObject, Identifiable {

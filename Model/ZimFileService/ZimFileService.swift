@@ -117,7 +117,7 @@ extension ZimFileService {
               let mime = content["mime"] as? String,
               let size = content["size"] as? Int,
               let totalSize = content["totalSize"] as? Int else { return nil }
-        return URLContent(data: data, mime: mime, length: size)
+        return URLContent(data: data, mime: mime, size: size, totalSize: totalSize)
     }
 }
 

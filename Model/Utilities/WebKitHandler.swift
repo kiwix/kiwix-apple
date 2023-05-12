@@ -58,7 +58,7 @@ class KiwixURLSchemeHandler: NSObject, WKURLSchemeHandler {
     }
     
     private func sendHTTP200Response(_ urlSchemeTask: WKURLSchemeTask, url: URL, content: URLContent) {
-        let headers = ["Content-Type": content.mime, "Content-Length": "\(content.length)"]
+        let headers = ["Content-Type": content.mime, "Content-Length": "\(content.size)"]
         if let response = HTTPURLResponse(url: url, statusCode: 200, httpVersion: "HTTP/1.1", headerFields: headers) {
             urlSchemeTask.didReceive(response)
             urlSchemeTask.didReceive(content.data)
@@ -83,8 +83,8 @@ class KiwixURLSchemeHandler: NSObject, WKURLSchemeHandler {
         let data = content.data.subdata(in: start..<end + 1)
         let headers = [
             "Content-Type": content.mime,
-            "Content-Length": "\(data.count)",
-            "Content-Range": "bytes \(start)-\(end)/\(content.length)"
+            "Content-Length": "\(content.size)",
+            "Content-Range": "bytes \(start)-\(end)/\(content.totalSize)"
         ]
         if let response = HTTPURLResponse(url: url, statusCode: 206, httpVersion: "HTTP/1.1", headerFields: headers) {
             urlSchemeTask.didReceive(response)
