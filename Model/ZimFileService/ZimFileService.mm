@@ -193,7 +193,8 @@
     }
 }
 
-- (NSDictionary *)getContent:(NSUUID *)zimFileID contentPath:(NSString *)contentPath {
+- (NSDictionary *)getContent:(NSUUID *)zimFileID contentPath:(NSString *)contentPath
+                  offset:(NSUInteger)offset size:(NSUInteger)size {
     if ([contentPath hasPrefix:@"/"]) {
         contentPath = [contentPath substringFromIndex:1];
     }
@@ -206,10 +207,13 @@
     try {
         zim::Entry entry = found->second.getEntryByPath([contentPath cStringUsingEncoding:NSUTF8StringEncoding]);
         zim::Item item = entry.getItem(entry.isRedirect());
-        NSNumber *length = [NSNumber numberWithUnsignedLongLong:item.getSize()];
-        NSData *data = [NSData dataWithBytes:item.getData().data() length:length.unsignedLongLongValue];
-        NSString *mime = [NSString stringWithUTF8String:item.getMimetype().c_str()];
-        return @{@"data": data, @"mime": mime, @"length": length};
+        zim::Blob blob = size == 0 ? item.getData() : item.getData(offset, fmin(item.getSize() - offset, size));
+        return @{
+            @"data": [NSData dataWithBytes:item.getData().data() length:blob.size()],
+            @"mime": [NSString stringWithUTF8String:item.getMimetype().c_str()],
+            @"size": [NSNumber numberWithUnsignedLongLong:blob.size()],
+            @"totalSize": [NSNumber numberWithUnsignedLongLong:item.getSize()]
+        };
     } catch (std::exception) {
         return nil;
     }
