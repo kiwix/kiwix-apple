@@ -211,6 +211,7 @@
         return @{
             @"data": [NSData dataWithBytes:item.getData().data() length:blob.size()],
             @"mime": [NSString stringWithUTF8String:item.getMimetype().c_str()],
+            @"offset": [NSNumber numberWithUnsignedLongLong:offset],
             @"size": [NSNumber numberWithUnsignedLongLong:blob.size()],
             @"totalSize": [NSNumber numberWithUnsignedLongLong:item.getSize()]
         };

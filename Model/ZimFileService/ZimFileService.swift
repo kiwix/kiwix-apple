@@ -115,9 +115,10 @@ extension ZimFileService {
               let content = __getContent(zimFileID, contentPath: contentPath, offset: offset, size: size),
               let data = content["data"] as? Data,
               let mime = content["mime"] as? String,
-              let size = content["size"] as? Int,
-              let totalSize = content["totalSize"] as? Int else { return nil }
-        return URLContent(data: data, mime: mime, size: size, totalSize: totalSize)
+              let offset = content["offset"] as? UInt,
+              let size = content["size"] as? UInt,
+              let totalSize = content["totalSize"] as? UInt else { return nil }
+        return URLContent(data: data, mime: mime, offset: offset, size: size, totalSize: totalSize)
     }
 }
 

@@ -33,7 +33,7 @@ class KiwixURLSchemeHandler: NSObject, WKURLSchemeHandler {
                         self.sendHTTP404Response(urlSchemeTask, url: url)
                         return
                     }
-                    self.sendHTTP206Response(urlSchemeTask, url: url, content: content, start: Int(start))
+                    self.sendHTTP206Response(urlSchemeTask, url: url, content: content)
                 } else {
                     guard let content = ZimFileService.shared.getURLContent(url: url) else {
                         self.sendHTTP404Response(urlSchemeTask, url: url)
@@ -45,12 +45,7 @@ class KiwixURLSchemeHandler: NSObject, WKURLSchemeHandler {
         }
     }
     
-    func webView(_ webView: WKWebView, stop urlSchemeTask: WKURLSchemeTask) {
-//        queue.async {
-//            guard let url = urlSchemeTask.request.url else { return }
-//            self.urls.remove(url)
-//        }
-    }
+    func webView(_ webView: WKWebView, stop urlSchemeTask: WKURLSchemeTask) { }
     
     private func sendHTTP200Response(_ urlSchemeTask: WKURLSchemeTask, url: URL, content: URLContent) {
         let headers = ["Content-Type": content.mime, "Content-Length": "\(content.size)"]
@@ -63,13 +58,12 @@ class KiwixURLSchemeHandler: NSObject, WKURLSchemeHandler {
         }
     }
     
-    private func sendHTTP206Response(_ urlSchemeTask: WKURLSchemeTask, url: URL, content: URLContent, start: Int) {
+    private func sendHTTP206Response(_ urlSchemeTask: WKURLSchemeTask, url: URL, content: URLContent) {
         let headers = [
             "Content-Type": content.mime,
             "Content-Length": "\(content.size)",
-            "Content-Range": "bytes \(start)-\(start + content.size - 1)/\(content.totalSize)"
+            "Content-Range": "bytes \(content.offset)-\(content.offset + content.size - 1)/\(content.totalSize)"
         ]
-        print(headers)
         if let response = HTTPURLResponse(url: url, statusCode: 206, httpVersion: "HTTP/1.1", headerFields: headers) {
             urlSchemeTask.didReceive(response)
             urlSchemeTask.didReceive(content.data)
