@@ -23,12 +23,13 @@ class KiwixURLSchemeHandler: NSObject, WKURLSchemeHandler {
             objCTryBlock {
                 if let range = urlSchemeTask.request.allHTTPHeaderFields?["Range"] as? String {
                     let parts = range.components(separatedBy: ["=", "-"])
-                    guard parts.count == 3, let start = UInt(parts[1]), let end = UInt(parts[2]) else {
+                    guard parts.count >= 2, let start = UInt(parts[1]) else {
                         self.sendHTTP400Response(urlSchemeTask, url: url)
                         return
                     }
+                    let end = parts.count == 3 ? UInt(parts[2]) ?? 0 : 0
                     guard let content = ZimFileService.shared.getURLContent(
-                        url: url, offset: start, size: end - start + 1
+                        url: url, start: start, end: end
                     ) else {
                         self.sendHTTP404Response(urlSchemeTask, url: url)
                         return
@@ -61,8 +62,8 @@ class KiwixURLSchemeHandler: NSObject, WKURLSchemeHandler {
     private func sendHTTP206Response(_ urlSchemeTask: WKURLSchemeTask, url: URL, content: URLContent) {
         let headers = [
             "Content-Type": content.mime,
-            "Content-Length": "\(content.size)",
-            "Content-Range": "bytes \(content.offset)-\(content.offset + content.size - 1)/\(content.totalSize)"
+            "Content-Length": "\(content.data.count)",
+            "Content-Range": "bytes \(content.start)-\(content.end)/\(content.size)"
         ]
         if let response = HTTPURLResponse(url: url, statusCode: 206, httpVersion: "HTTP/1.1", headerFields: headers) {
             urlSchemeTask.didReceive(response)

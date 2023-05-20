@@ -105,20 +105,20 @@ extension ZimFileService {
         return getURLContent(zimFileID: zimFileID, contentPath: url.path)
     }
     
-    func getURLContent(url: URL, offset: UInt, size: UInt) -> URLContent? {
+    func getURLContent(url: URL, start: UInt, end: UInt) -> URLContent? {
         guard let zimFileID = url.host else { return nil }
-        return getURLContent(zimFileID: zimFileID, contentPath: url.path, offset: offset, size: size)
+        return getURLContent(zimFileID: zimFileID, contentPath: url.path, start: start, end: end)
     }
     
-    func getURLContent(zimFileID: String, contentPath: String, offset: UInt = 0, size: UInt = 0) -> URLContent? {
+    func getURLContent(zimFileID: String, contentPath: String, start: UInt = 0, end: UInt = 0) -> URLContent? {
         guard let zimFileID = UUID(uuidString: zimFileID),
-              let content = __getContent(zimFileID, contentPath: contentPath, offset: offset, size: size),
+              let content = __getContent(zimFileID, contentPath: contentPath, start: start, end: end),
               let data = content["data"] as? Data,
               let mime = content["mime"] as? String,
-              let offset = content["offset"] as? UInt,
-              let size = content["size"] as? UInt,
-              let totalSize = content["totalSize"] as? UInt else { return nil }
-        return URLContent(data: data, mime: mime, offset: offset, size: size, totalSize: totalSize)
+              let start = content["start"] as? UInt,
+              let end = content["end"] as? UInt,
+              let size = content["size"] as? UInt else { return nil }
+        return URLContent(data: data, mime: mime, start: start, end: end, size: size)
     }
 }
 
