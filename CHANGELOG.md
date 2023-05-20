@@ -3,6 +3,7 @@
 - Notification for when a download task complete
 - Improved handling and error surfacing for failed download tasks
 - Fixed an issue where tasks are not labeled as failed when app is force quit (iOS & iPadOS)
+- Implemented HTTP partial content response, which may help with video playback
 
 ## 1.16
 
