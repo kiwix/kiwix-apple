@@ -5,6 +5,12 @@
 - Fixed an issue where tasks are not labeled as failed when app is force quit (iOS & iPadOS)
 - Implemented HTTP partial content response, which may help with video playback
 
+## 3.0
+
+- Kiwix for iOS & iPadOS is now also on macOS
+- Library now has opened, categories, downloads, and new sections
+- Zim file list in library and bookmark list has new design
+
 ## 1.16
 
 - Tabbed library UI with opened, categories, download tasks and new zim files section
