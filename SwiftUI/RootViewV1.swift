@@ -112,6 +112,7 @@ private struct Content: View {
     @Binding var url: URL?
     @Environment(\.horizontalSizeClass) var horizontalSizeClass
     @EnvironmentObject var searchViewModel: SearchViewModel
+    @EnvironmentObject var readingViewModel: ReadingViewModel
     
     var body: some View {
         Group {
@@ -177,6 +178,38 @@ private struct Content: View {
                     Spacer()
                     MoreActionMenu(url: $url)
                 }
+            }
+        }
+        .sheet(item: $readingViewModel.activeSheet) { activeSheet in
+            switch activeSheet {
+            case .outline:
+                SheetContent {
+                    OutlineTree().listStyle(.plain).navigationBarTitleDisplayMode(.inline)
+                }.modify { view in
+                    if #available(iOS 16.0, *) {
+                        view.presentationDetents([.medium, .large])
+                    } else {
+                        view
+                    }
+                }
+            case .bookmarks:
+                SheetContent { BookmarksView(url: $url) }
+            case .library(let tabItem):
+                Library(url: $url, tabItem: tabItem)
+            case .map(let location):
+                SheetContent {
+                    Map(location: location)
+                }.modify { view in
+                    if #available(iOS 16.0, *) {
+                        view.presentationDetents([.medium, .large])
+                    } else {
+                        view
+                    }
+                }
+            case .settings:
+                SheetContent { SettingsContent() }
+            case .safari(let url):
+                SafariView(url: url)
             }
         }
         .introspectNavigationController { controller in

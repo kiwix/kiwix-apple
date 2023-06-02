@@ -154,7 +154,7 @@ class ReadingViewModel: NSObject, ObservableObject, WKScriptMessageHandler, WKNa
                     return CLLocation(latitude: latitude, longitude: longitude)
                 }()
                 #if os(macOS)
-                navigationItem = .map(location: location)
+//                navigationItem = .map(location: location)
                 #elseif os(iOS)
                 activeSheet = .map(location: location)
                 #endif
