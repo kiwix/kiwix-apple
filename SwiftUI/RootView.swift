@@ -12,7 +12,6 @@ struct RootView: View {
     @Environment(\.horizontalSizeClass) var horizontalSizeClass
     @State private var url: URL?
     @StateObject private var viewModel = ViewModel()
-    @StateObject private var readingViewModel = ReadingViewModel()
     
     var body: some View {
         Group {
@@ -31,14 +30,6 @@ struct RootView: View {
                 view
             }
         }
-        .onChange(of: url) { _ in
-            viewModel.navigationItem = .reading
-            readingViewModel.activeSheet = nil
-        }
-        .onChange(of: horizontalSizeClass) { _ in
-            viewModel.navigationItem = .reading
-            readingViewModel.activeSheet = nil
-        }
         .onOpenURL { url in
             if url.isFileURL {
                 guard let metadata = ZimFileService.getMetaData(url: url) else { return }
@@ -49,6 +40,5 @@ struct RootView: View {
             }
         }
         .environmentObject(viewModel)
-        .environmentObject(readingViewModel)
     }
 }

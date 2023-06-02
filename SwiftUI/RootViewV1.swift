@@ -112,7 +112,7 @@ private struct Content: View {
     @Binding var url: URL?
     @Environment(\.horizontalSizeClass) var horizontalSizeClass
     @EnvironmentObject var searchViewModel: SearchViewModel
-    @EnvironmentObject var readingViewModel: ReadingViewModel
+    @StateObject private var readingViewModel = ReadingViewModel()
     
     var body: some View {
         Group {
@@ -127,7 +127,10 @@ private struct Content: View {
                 WebView(url: $url).ignoresSafeArea(.container)
             }
         }
-        .onChange(of: url) { _ in isSearchActive = false }
+        .onChange(of: url) { _ in
+            isSearchActive = false
+            readingViewModel.activeSheet = nil
+        }
         .toolbar {
             ToolbarItemGroup(placement: .navigationBarLeading) {
                 if horizontalSizeClass == .regular, !isSearchActive {
@@ -213,6 +216,7 @@ private struct Content: View {
             }
         }
         .modifier(AlertPresenter(activeAlert: $readingViewModel.activeAlert, activeSheet: $readingViewModel.activeSheet))
+        .environmentObject(readingViewModel)
         .introspectNavigationController { controller in
             controller.setToolbarHidden(horizontalSizeClass != .compact || isSearchActive, animated: false)
         }
