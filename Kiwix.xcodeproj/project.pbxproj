@@ -340,12 +340,12 @@
 		973A0DF2282FED6F00B41E71 /* ViewModifiers */ = {
 			isa = PBXGroup;
 			children = (
+				975FDF792A2A1CD000AD9120 /* AlertPresenter.swift */,
 				9724FC2E28D5F5BE001B7DD2 /* BookmarkContextMenu.swift */,
 				97486D09284B96690096E4DD /* CellBackground.swift */,
 				97DE2BA4283A944100C63D9B /* GridCommon.swift */,
 				97341C692851165B00BC273E /* Searchable.swift */,
 				973A0DF3282FEDA500B41E71 /* ZimFileViewModifiers.swift */,
-				975FDF792A2A1CD000AD9120 /* AlertPresenter.swift */,
 			);
 			path = ViewModifiers;
 			sourceTree = "<group>";
