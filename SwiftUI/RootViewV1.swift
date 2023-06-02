@@ -112,6 +112,7 @@ private struct Content: View {
     @Binding var url: URL?
     @Environment(\.horizontalSizeClass) var horizontalSizeClass
     @EnvironmentObject var searchViewModel: SearchViewModel
+    @StateObject private var readingViewModel = ReadingViewModel()
     
     var body: some View {
         Group {
@@ -126,7 +127,10 @@ private struct Content: View {
                 WebView(url: $url).ignoresSafeArea(.container)
             }
         }
-        .onChange(of: url) { _ in isSearchActive = false }
+        .onChange(of: url) { _ in
+            isSearchActive = false
+            readingViewModel.activeSheet = nil
+        }
         .toolbar {
             ToolbarItemGroup(placement: .navigationBarLeading) {
                 if horizontalSizeClass == .regular, !isSearchActive {
@@ -179,6 +183,40 @@ private struct Content: View {
                 }
             }
         }
+        .sheet(item: $readingViewModel.activeSheet) { activeSheet in
+            switch activeSheet {
+            case .outline:
+                SheetContent {
+                    OutlineTree().listStyle(.plain).navigationBarTitleDisplayMode(.inline)
+                }.modify { view in
+                    if #available(iOS 16.0, *) {
+                        view.presentationDetents([.medium, .large])
+                    } else {
+                        view
+                    }
+                }
+            case .bookmarks:
+                SheetContent { BookmarksView(url: $url) }
+            case .library(let tabItem):
+                Library(url: $url, tabItem: tabItem)
+            case .map(let location):
+                SheetContent {
+                    Map(location: location)
+                }.modify { view in
+                    if #available(iOS 16.0, *) {
+                        view.presentationDetents([.medium, .large])
+                    } else {
+                        view
+                    }
+                }
+            case .settings:
+                SheetContent { SettingsContent() }
+            case .safari(let url):
+                SafariView(url: url)
+            }
+        }
+        .modifier(AlertPresenter(activeAlert: $readingViewModel.activeAlert, activeSheet: $readingViewModel.activeSheet))
+        .environmentObject(readingViewModel)
         .introspectNavigationController { controller in
             controller.setToolbarHidden(horizontalSizeClass != .compact || isSearchActive, animated: false)
         }
