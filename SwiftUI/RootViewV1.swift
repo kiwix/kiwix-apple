@@ -212,6 +212,7 @@ private struct Content: View {
                 SafariView(url: url)
             }
         }
+        .modifier(AlertPresenter(activeAlert: $readingViewModel.activeAlert, activeSheet: $readingViewModel.activeSheet))
         .introspectNavigationController { controller in
             controller.setToolbarHidden(horizontalSizeClass != .compact || isSearchActive, animated: false)
         }

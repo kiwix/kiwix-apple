@@ -69,6 +69,7 @@ private struct ReadingViewContent: View {
                 MainArticleButton(url: $url)
             }
         }
+        .modifier(AlertPresenter(activeAlert: $readingViewModel.activeAlert, activeSheet: $readingViewModel.activeSheet))
         #elseif os(iOS)
         .navigationTitle(readingViewModel.articleTitle)
         .navigationBarTitleDisplayMode(.inline)
