@@ -49,7 +49,7 @@ struct BookmarkToggleButton: View {
 }
 
 struct BookmarkMultiButton: View {
-    @EnvironmentObject var viewModel: ReadingViewModel
+    @EnvironmentObject var viewModel: ViewModel
     @FetchRequest private var bookmarks: FetchedResults<Bookmark>
     
     private let url: URL?
@@ -119,7 +119,7 @@ struct FileImportButton<Label: View>: View {
 }
 
 struct LibraryButton: View {
-    @EnvironmentObject var viewModel: ReadingViewModel
+    @EnvironmentObject var viewModel: ViewModel
     
     var body: some View {
         Button {
@@ -242,11 +242,12 @@ struct NavigationButtons: View {
 }
 
 struct OutlineButton: View {
+    @EnvironmentObject var viewModel: ViewModel
     @EnvironmentObject var readingviewModel: ReadingViewModel
     
     var body: some View {
         Button {
-            readingviewModel.activeSheet = .outline
+            viewModel.activeSheet = .outline
         } label: {
             Image(systemName: "list.bullet")
         }
@@ -334,7 +335,7 @@ struct RandomArticleMenu: View {
 }
 
 struct SettingsButton: View {
-    @EnvironmentObject var viewModel: ReadingViewModel
+    @EnvironmentObject var viewModel: ViewModel
     
     var body: some View {
         Button {

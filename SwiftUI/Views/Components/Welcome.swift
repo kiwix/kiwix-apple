@@ -81,7 +81,6 @@ struct Welcome: View {
 
 private struct Onboarding: View {
     @EnvironmentObject private var viewModel: ViewModel
-    @EnvironmentObject private var readingViewModel: ReadingViewModel
     @EnvironmentObject var libraryRefreshViewModel: LibraryRefreshViewModel
     
     var body: some View {
@@ -136,7 +135,7 @@ private struct Onboarding: View {
                 #if os(macOS)
                 viewModel.navigationItem = .categories
                 #elseif os(iOS)
-                readingViewModel.activeSheet = .library(tabItem: .categories)
+                viewModel.activeSheet = .library(tabItem: .categories)
                 #endif
             }
         }

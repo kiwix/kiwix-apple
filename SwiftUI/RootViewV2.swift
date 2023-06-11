@@ -14,7 +14,6 @@ import Introspect
 struct RootViewV2: View {
     @Binding var url: URL?
     @EnvironmentObject private var viewModel: ViewModel
-    @StateObject private var readingViewModel = ReadingViewModel()
     
     private let primaryNavigationItems: [NavigationItem] =
         FeatureFlags.map ? [.reading, .bookmarks, .map(location: nil)] : [.reading, .bookmarks]
@@ -36,11 +35,7 @@ struct RootViewV2: View {
             NavigationView {
                 sidebar
                 detail.frame(minWidth: 500, minHeight: 500)
-            }
-            .navigationViewStyle(.columns)
-            .onChange(of: url) { _ in
-                viewModel.navigationItem = .reading
-            }
+            }.navigationViewStyle(.columns)
 //        }
     }
     
@@ -76,7 +71,7 @@ struct RootViewV2: View {
     private var detail: some View {
         switch viewModel.navigationItem {
         case .reading:
-            ReadingView(url: $url).environmentObject(readingViewModel)
+            ReadingView(url: $url)
         case .bookmarks:
             BookmarksView(url: $url)
         case .map(let location):

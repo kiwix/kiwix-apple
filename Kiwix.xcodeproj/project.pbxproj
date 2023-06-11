@@ -55,7 +55,6 @@
 		975088BE287DA10800273181 /* LibraryLastRefreshTime.swift in Sources */ = {isa = PBXBuildFile; fileRef = 975088BC287DA10800273181 /* LibraryLastRefreshTime.swift */; };
 		9753D949285B55F100A626CC /* DefaultKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9753D947285B55F100A626CC /* DefaultKeys.swift */; };
 		9753D94B285B56C900A626CC /* Defaults in Frameworks */ = {isa = PBXBuildFile; productRef = 9753D94A285B56C900A626CC /* Defaults */; };
-		975FDF7A2A2A1CD000AD9120 /* AlertPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 975FDF792A2A1CD000AD9120 /* AlertPresenter.swift */; };
 		97659CAC28DF817D002E6CE4 /* SearchResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 976A65B22659489F009A97C6 /* SearchResult.swift */; };
 		97659CAD28DF817D002E6CE4 /* SearchResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 97B3998C2467561900BC6F5B /* SearchResult.m */; };
 		976BAEBA284903EA0049404F /* Fuzi in Frameworks */ = {isa = PBXBuildFile; productRef = 976BAEB9284903EA0049404F /* Fuzi */; };
@@ -178,7 +177,6 @@
 		975088BC287DA10800273181 /* LibraryLastRefreshTime.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryLastRefreshTime.swift; sourceTree = "<group>"; };
 		9753D947285B55F100A626CC /* DefaultKeys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultKeys.swift; sourceTree = "<group>"; };
 		975FDB061F608F4100A10E8C /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
-		975FDF792A2A1CD000AD9120 /* AlertPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertPresenter.swift; sourceTree = "<group>"; };
 		976A65B22659489F009A97C6 /* SearchResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResult.swift; sourceTree = "<group>"; };
 		976D90E72815D63A00CC7D29 /* ZimFilesNew.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZimFilesNew.swift; sourceTree = "<group>"; };
 		9779A5A32456793500F6F6FF /* OPDSParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OPDSParser.swift; sourceTree = "<group>"; };
@@ -340,7 +338,6 @@
 		973A0DF2282FED6F00B41E71 /* ViewModifiers */ = {
 			isa = PBXGroup;
 			children = (
-				975FDF792A2A1CD000AD9120 /* AlertPresenter.swift */,
 				9724FC2E28D5F5BE001B7DD2 /* BookmarkContextMenu.swift */,
 				97486D09284B96690096E4DD /* CellBackground.swift */,
 				97DE2BA4283A944100C63D9B /* GridCommon.swift */,
@@ -719,7 +716,6 @@
 				97DE2B9F2839D7A200C63D9B /* WebKitHandler.swift in Sources */,
 				97486D0E284C0EBC0096E4DD /* Welcome.swift in Sources */,
 				976D90E92815D63A00CC7D29 /* ZimFilesNew.swift in Sources */,
-				975FDF7A2A2A1CD000AD9120 /* AlertPresenter.swift in Sources */,
 				97659CAC28DF817D002E6CE4 /* SearchResult.swift in Sources */,
 				975088B328763B6900273181 /* SheetContent.swift in Sources */,
 				972DE4B92814A56A004FD9B9 /* Database.swift in Sources */,

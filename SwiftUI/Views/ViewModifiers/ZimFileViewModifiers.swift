@@ -14,7 +14,6 @@ struct ZimFileContextMenu: ViewModifier {
     @Binding var selected: ZimFile?
     @Binding var url: URL?
     @EnvironmentObject private var viewModel: ViewModel
-    @EnvironmentObject private var readingViewModel: ReadingViewModel
     
     let zimFile: ZimFile
     
@@ -35,14 +34,14 @@ struct ZimFileContextMenu: ViewModifier {
     var opened: some View {
         Button {
             url = ZimFileService.shared.getMainPageURL(zimFileID: zimFile.fileID)
-            readingViewModel.activeSheet = nil
+            viewModel.activeSheet = nil
             viewModel.navigationItem = .reading
         } label: {
             Label("Main Page", systemImage: "house")
         }
         Button {
             url = ZimFileService.shared.getRandomPageURL(zimFileID: zimFile.fileID)
-            readingViewModel.activeSheet = nil
+            viewModel.activeSheet = nil
             viewModel.navigationItem = .reading
         } label: {
             Label("Random Page", systemImage: "die.face.5")

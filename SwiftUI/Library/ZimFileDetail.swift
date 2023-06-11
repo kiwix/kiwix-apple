@@ -18,7 +18,6 @@ struct ZimFileDetail: View {
     @Default(.downloadUsingCellular) private var downloadUsingCellular
     @Environment(\.presentationMode) var presentationMode
     @EnvironmentObject private var viewModel: ViewModel
-    @EnvironmentObject private var readingViewModel: ReadingViewModel
     @ObservedObject var zimFile: ZimFile
     @State private var isPresentingDeleteAlert = false
     @State private var isPresentingDownloadAlert = false
@@ -89,7 +88,7 @@ struct ZimFileDetail: View {
         } else if zimFile.fileURLBookmark != nil {  // zim file is opened
             Action(title: "Open Main Page") {
                 url = ZimFileService.shared.getMainPageURL(zimFileID: zimFile.fileID)
-                readingViewModel.activeSheet = nil
+                viewModel.activeSheet = nil
                 viewModel.navigationItem = .reading
             }
             #if os(macOS)

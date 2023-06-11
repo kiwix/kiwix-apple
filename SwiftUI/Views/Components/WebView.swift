@@ -14,13 +14,14 @@ import Defaults
 #if os(macOS)
 struct WebView: NSViewRepresentable {
     @Binding var url: URL?
+    @EnvironmentObject var viewModel: ViewModel
     @EnvironmentObject var readingViewModel: ReadingViewModel
     
     func makeNSView(context: Context) -> WKWebView {
         let webView = readingViewModel.webView
         webView.allowsBackForwardNavigationGestures = true
         webView.configuration.userContentController.add(readingViewModel, name: "headings")
-        webView.navigationDelegate = readingViewModel
+        webView.navigationDelegate = viewModel
         context.coordinator.setupObservers(webView)
         return webView
     }
@@ -39,6 +40,7 @@ struct WebView: NSViewRepresentable {
 #elseif os(iOS)
 struct WebView: UIViewControllerRepresentable {
     @Binding var url: URL?
+    @EnvironmentObject var viewModel: ViewModel
     @EnvironmentObject var readingViewModel: ReadingViewModel
     
     func makeUIViewController(context: Context) -> WebViewController {
@@ -46,8 +48,8 @@ struct WebView: UIViewControllerRepresentable {
         webView.allowsBackForwardNavigationGestures = true
         webView.configuration.defaultWebpagePreferences.preferredContentMode = .mobile  // for font adjustment to work
         webView.configuration.userContentController.add(readingViewModel, name: "headings")
-        webView.navigationDelegate = readingViewModel
-        webView.uiDelegate = readingViewModel
+        webView.navigationDelegate = viewModel
+        webView.uiDelegate = viewModel
         context.coordinator.setupObservers(webView)
         return WebViewController(webView: webView)
     }
