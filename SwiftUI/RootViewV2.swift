@@ -84,7 +84,7 @@ struct RootViewV2: View {
             ZimFilesDownloads(url: $url)
         case .new:
             ZimFilesNew(url: $url)
-        case .none:
+        default:
             EmptyView()
         }
     }
