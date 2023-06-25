@@ -10,13 +10,13 @@ import SwiftUI
 import UniformTypeIdentifiers
 import UserNotifications
 
+#if os(macOS)
 @main
 struct Kiwix: App {
     @StateObject private var libraryRefreshViewModel = LibraryRefreshViewModel()
     
     static let zimFileType = UTType(exportedAs: "org.openzim.zim")
     
-#if os(macOS)
     private let notificationCenterDelegate = NotificationCenterDelegate()
     
     init() {
@@ -69,7 +69,13 @@ struct Kiwix: App {
             completionHandler()
         }
     }
+}
 #elseif os(iOS)
+struct Kiwix: App {
+    @StateObject private var libraryRefreshViewModel = LibraryRefreshViewModel()
+    
+    static let zimFileType = UTType(exportedAs: "org.openzim.zim")
+    
     @UIApplicationDelegateAdaptor(AppDelegate.self) private var appDelegate
     
     private let fileMonitor: DirectoryMonitor
@@ -120,5 +126,5 @@ struct Kiwix: App {
             completionHandler()
         }
     }
-#endif
 }
+#endif
