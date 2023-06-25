@@ -6,6 +6,7 @@
 //  Copyright © 2021 Chris Li. All rights reserved.
 //
 
+import CoreData
 import MapKit
 
 import Defaults
@@ -171,7 +172,9 @@ enum LibraryTabItem: String, CaseIterable, Identifiable {
 enum NavigationItem: Hashable, Identifiable {
     var id: Int { hashValue }
 
-    case reading, bookmarks, map(location: CLLocation?), opened, categories, new, downloads
+    case reading, bookmarks, map(location: CLLocation?), tab(objectID: NSManagedObjectID)
+    case opened, categories, new, downloads
+    case settings
 
     var name: String {
         switch self {
@@ -181,6 +184,8 @@ enum NavigationItem: Hashable, Identifiable {
             return "Bookmarks"
         case .map:
             return "Map"
+        case .tab:
+            return "New Tab"
         case .opened:
             return "Opened"
         case .categories:
@@ -189,6 +194,8 @@ enum NavigationItem: Hashable, Identifiable {
             return "New"
         case .downloads:
             return "Downloads"
+        case .settings:
+            return "Settings"
         }
     }
     
@@ -200,6 +207,8 @@ enum NavigationItem: Hashable, Identifiable {
             return "star"
         case .map:
             return "map"
+        case .tab:
+            return "square"
         case .opened:
             return "folder"
         case .categories:
@@ -208,6 +217,8 @@ enum NavigationItem: Hashable, Identifiable {
             return "newspaper"
         case .downloads:
             return "tray.and.arrow.down"
+        case .settings:
+            return "gear"
         }
     }
 }

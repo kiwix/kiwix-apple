@@ -31,6 +31,18 @@ class Database {
         }
     }
     
+    static var viewContext: NSManagedObjectContext {
+        Database.shared.container.viewContext
+    }
+    
+    static func performBackgroundTask(_ block: @escaping (NSManagedObjectContext) -> Void) {
+        Database.shared.container.performBackgroundTask(block)
+    }
+    
+    static func performBackgroundTask<T>(_ block: @escaping (NSManagedObjectContext) throws -> T) async rethrows -> T {
+        try await Database.shared.container.performBackgroundTask(block)
+    }
+
     /// A persistent container to set up the Core Data stack.
     lazy var container: NSPersistentContainer = {
         /// - Tag: persistentContainer
