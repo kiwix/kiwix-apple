@@ -1,6 +1,6 @@
 ## 3.1.1
 
-- Reverted a change around HTTP partial content handling that resulted in worse video playing experience for iOS / iPadOS
+- Reverted a change around HTTP partial content handling that resulted in worse video playback experience for iOS / iPadOS
 
 ## 3.1
 
