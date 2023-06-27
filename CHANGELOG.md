@@ -1,3 +1,7 @@
+## 3.1.1
+
+- Reverted a change around HTTP partial content handling that resulted in worse video playing experience for iOS / iPadOS
+
 ## 3.1
 
 - Notification for when a download task complete
