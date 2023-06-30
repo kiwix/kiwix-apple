@@ -115,6 +115,31 @@ class OutlineItem: ObservableObject, Identifiable {
     }
 }
 
+class Tab: NSManagedObject, Identifiable {
+    @NSManaged var created: Date
+    @NSManaged var id: UUID
+    @NSManaged var interactionState: Data?
+    @NSManaged var lastOpened: Date
+    @NSManaged var title: String?
+    
+    @NSManaged var zimFile: ZimFile?
+    
+    class func fetchRequest(
+        predicate: NSPredicate? = nil, sortDescriptors: [NSSortDescriptor] = []
+    ) -> NSFetchRequest<Tab> {
+        let request = super.fetchRequest() as! NSFetchRequest<Tab>
+        request.predicate = predicate
+        request.sortDescriptors = sortDescriptors
+        return request
+    }
+    
+    class func fetchRequest(id: UUID) -> NSFetchRequest<Tab> {
+        let request = super.fetchRequest() as! NSFetchRequest<Tab>
+        request.predicate = NSPredicate(format: "id == %@", id as CVarArg)
+        return request
+    }
+}
+
 struct URLContent {
     let data: Data
     let mime: String
@@ -148,8 +173,9 @@ class ZimFile: NSManagedObject, Identifiable {
     @NSManaged var requiresServiceWorkers: Bool
     @NSManaged var size: Int64
     
-    @NSManaged var downloadTask: DownloadTask?
     @NSManaged var bookmarks: Set<Bookmark>
+    @NSManaged var downloadTask: DownloadTask?
+    @NSManaged var tabs: Set<Tab>
     
     static var openedPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
         NSPredicate(format: "fileURLBookmark != nil"),
