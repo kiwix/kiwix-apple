@@ -1,3 +1,9 @@
+## 3.2
+
+- Browse with multiple tabs on iOS and iPadOS
+- On iPadOS, the app use sidebar to facilitate navigation between different tabs and functionalities
+- Dropped support for iOS 14 & iPadOS 14
+
 ## 3.1.1
 
 - Reverted a change around HTTP partial content handling that resulted in worse video playback experience for iOS / iPadOS
