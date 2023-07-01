@@ -14,7 +14,7 @@ import UIKit
 import SwiftUIBackports
 
 class CompactViewController<Content>: UIHostingController<Content>, UISearchBarDelegate where Content: View{
-    let searchController = UISearchController()
+    private let searchController = UISearchController()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -29,39 +29,76 @@ class CompactViewController<Content>: UIHostingController<Content>, UISearchBarD
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
         guard traitCollection.horizontalSizeClass == .compact,
               UIDevice.current.userInterfaceIdiom == .pad else { return }
-        navigationItem.setRightBarButton(UIBarButtonItem(systemItem: .cancel, primaryAction: UIAction { _ in
-            searchBar.resignFirstResponder()
-            self.navigationItem.rightBarButtonItem = nil
-        }), animated: true)
+        navigationItem.setRightBarButton(
+            UIBarButtonItem(systemItem: .cancel, primaryAction: UIAction { [unowned self] _ in
+                searchBar.resignFirstResponder()
+                navigationItem.rightBarButtonItem = nil
+            }), animated: true
+        )
     }
 }
 
 struct CompactView: View {
-    @State private var isShowingTabsManager = false
+    @EnvironmentObject private var viewModel: BrowserViewModel
     
     var body: some View {
         Group {
-            Text("Compact view")
+            WebView().ignoresSafeArea().id(viewModel.tabID)
         }
         .toolbar {
             ToolbarItemGroup(placement: .bottomBar) {
-                Button {
-                    isShowingTabsManager = true
-                } label: {
-                    Label("Tabs Manager", systemImage: "square.stack")
-                }.sheet(isPresented: $isShowingTabsManager) {
-                    TabsManager().modify { view in
-                        if #available(iOS 16.0, *) {
-                            view.presentationDetents([.medium, .large])
-                        } else {
-                            view.backport.presentationDetents([.medium, .large], selection: .constant(.medium))
-                        }
-                    }
+                NavigationButtons()
+                Spacer()
+                OutlineButton()
+                Spacer()
+                BookmarkButton()
+                Spacer()
+                RandomArticleButton()
+                Spacer()
+                TabsManagerButton()
+            }
+        }
+    }
+}
+
+private struct TabsManagerButton: View {
+    @EnvironmentObject private var viewModel: BrowserViewModel
+    @FetchRequest(
+        sortDescriptors: [NSSortDescriptor(keyPath: \ZimFile.size, ascending: false)],
+        predicate: ZimFile.openedPredicate
+    ) private var zimFiles: FetchedResults<ZimFile>
+    @State private var isShowingTabsManager = false
+    
+    var body: some View {
+        Menu {
+            Section {
+                ForEach(zimFiles) { zimFile in
+                    Button {
+                        viewModel.loadMainArticle(zimFileID: zimFile.fileID)
+                    } label: { Label(zimFile.name, systemImage: "house") }
+                }
+            }
+        } label: {
+            Label("Tabs Manager", systemImage: "square.stack")
+        } primaryAction: {
+            isShowingTabsManager = true
+        }.sheet(isPresented: $isShowingTabsManager) {
+            TabsManager().ignoresSafeArea().modify { view in
+                if #available(iOS 16.0, *) {
+                    view.presentationDetents([.medium, .large])
+                } else {
+                    /*
+                     HACK: Use medium as selection so that half sized sheets are consistently shown
+                     when tab manager button is pressed, user can still freely adjust sheet size.
+                    */
+                    view.backport.presentationDetents([.medium, .large], selection: .constant(.medium))
                 }
             }
         }
     }
 }
+
+// MARK: - Tabs Management
 
 struct TabsManager: UIViewControllerRepresentable {
     func makeUIViewController(context: Context) -> UINavigationController {
@@ -71,7 +108,7 @@ struct TabsManager: UIViewControllerRepresentable {
     func updateUIViewController(_ uiViewController: UINavigationController, context: Context) { }
 }
 
-class TabsManagerViewController: UICollectionViewController, NSFetchedResultsControllerDelegate {
+private class TabsManagerViewController: UICollectionViewController, NSFetchedResultsControllerDelegate {
     private lazy var dataSource = {
         let cellRegistration = UICollectionView.CellRegistration<UICollectionViewListCell, NSManagedObjectID> {
             [unowned self] cell, indexPath, item in configureCell(cell: cell, indexPath: indexPath, objectID: item)
@@ -103,7 +140,7 @@ class TabsManagerViewController: UICollectionViewController, NSFetchedResultsCon
         collectionView.allowsMultipleSelection = true
     }
     
-    // MARK: - Lifecycle
+    // MARK: Lifecycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -160,7 +197,7 @@ class TabsManagerViewController: UICollectionViewController, NSFetchedResultsCon
         }
     }
     
-    // MARK: - Delegations
+    // MARK: Delegations
     
     func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>,
                     didChangeContentWith snapshot: NSDiffableDataSourceSnapshotReference) {
@@ -182,7 +219,7 @@ class TabsManagerViewController: UICollectionViewController, NSFetchedResultsCon
         false
     }
     
-    // MARK: - Collection View Configuration
+    // MARK: Collection View Configuration
     
     private func configureCell(cell: UICollectionViewListCell, indexPath: IndexPath, objectID: NSManagedObjectID) {
         guard let tab = try? Database.viewContext.existingObject(with: objectID) as? Tab else { return }

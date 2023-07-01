@@ -8,6 +8,7 @@
 
 #if os(iOS)
 import CoreData
+import SwiftUI
 import UIKit
 
 @main
@@ -50,18 +51,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 }
 
 class SplitViewController: UISplitViewController {
-    @MainActor private(set) var selectedNavigationItem: NavigationItem = {
-        let fetchRequest = Tab.fetchRequest(sortDescriptors: [NSSortDescriptor(key: "created", ascending: false)])
-        let tab = (try? Database.viewContext.fetch(fetchRequest).first) ?? {
-            let tab = Tab(context: Database.viewContext)
-            tab.id = UUID()
-            tab.created = Date()
-            tab.lastOpened = Date()
-            try? Database.viewContext.save()
-            return tab
-        }()
-        return NavigationItem.tab(objectID: tab.objectID)
-    }()
+    @MainActor private var browserViewModel = BrowserViewModel()
+    @MainActor private(set) var selectedNavigationItem: NavigationItem?
     
     convenience init() {
         self.init(style: .doubleColumn)
@@ -69,17 +60,59 @@ class SplitViewController: UISplitViewController {
         setViewController(SidebarViewController(), for: .primary)
         setViewController(UITableViewController(), for: .secondary)
         
-        let compactViewController = CompactViewController(rootView: CompactView())
+        let compactView = CompactView()
+            .environmentObject(browserViewModel)
+            .environment(\.managedObjectContext, Database.viewContext)
+        let compactViewController = CompactViewController(rootView: compactView)
         setViewController(UINavigationController(rootViewController: compactViewController), for: .compact)
-        
+
         if #available(iOS 16.0, *) {} else {
             preferredSplitBehavior = .tile
         }
     }
     
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        // load initial tab
+        let initialNavigationItem = {
+            let fetchRequest = Tab.fetchRequest(sortDescriptors: [NSSortDescriptor(key: "created", ascending: false)])
+            let tab = (try? Database.viewContext.fetch(fetchRequest).first) ?? {
+                let tab = Tab(context: Database.viewContext)
+                tab.id = UUID()
+                tab.created = Date()
+                tab.lastOpened = Date()
+                try? Database.viewContext.obtainPermanentIDs(for: [tab])
+                try? Database.viewContext.save()
+                return tab
+            }()
+            return NavigationItem.tab(objectID: tab.objectID)
+        }()
+        navigateTo(initialNavigationItem)
+    }
+    
     @MainActor
     func navigateTo(_ navigationItem: NavigationItem) {
+        guard selectedNavigationItem != navigationItem else { return }
         selectedNavigationItem = navigationItem
+        switch navigationItem {
+        case .bookmarks:
+            let view = Bookmarks(onSelect: { bookmark in
+                Task { await self.createTab(url: bookmark.articleURL) }
+            }).environment(\.managedObjectContext, Database.viewContext)
+            let controller = UINavigationController(rootViewController: UIHostingController(rootView: view))
+            setViewController(controller, for: .secondary)
+        case .tab(let objectID):
+            guard let tab = try? Database.viewContext.existingObject(with: objectID) as? Tab else { return }
+            browserViewModel.prepareForTab(tab.id)
+            let view = BrowserTab()
+                .environmentObject(browserViewModel)
+                .environment(\.managedObjectContext, Database.viewContext)
+            let controller = UINavigationController(rootViewController: UIHostingController(rootView: view))
+            setViewController(controller, for: .secondary)
+        default:
+            setViewController(UITableViewController(), for: .secondary)
+        }
     }
     
     // MARK: - Tab Management
@@ -92,7 +125,7 @@ class SplitViewController: UISplitViewController {
         return tab
     }
     
-    func createTab() async {
+    func createTab(url: URL? = nil) async {
         let objectID = await Database.performBackgroundTask { context in
             let tab = self.makeTab(context: context)
             try? context.obtainPermanentIDs(for: [tab])
@@ -100,6 +133,9 @@ class SplitViewController: UISplitViewController {
             return tab.objectID
         }
         navigateTo(NavigationItem.tab(objectID: objectID))
+        if let url {
+            browserViewModel.load(url: url)
+        }
     }
     
     func deleteTab(objectID: NSManagedObjectID) async {
