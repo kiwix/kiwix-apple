@@ -123,7 +123,7 @@ private struct Content: View {
             } else if url == nil {
                 Welcome(url: $url)
             } else {
-                WebView(url: $url).ignoresSafeArea(.container)
+                WebView().ignoresSafeArea(.container)
             }
         }
         .onChange(of: url) { _ in isSearchActive = false }
@@ -132,22 +132,14 @@ private struct Content: View {
                 if horizontalSizeClass == .regular, !isSearchActive {
                     NavigateBackButton()
                     NavigateForwardButton()
-                    OutlineMenu()
+                    OutlineButton()
                     BookmarkMultiButton(url: url)
                 }
             }
             ToolbarItemGroup(placement: .navigationBarTrailing) {
                 if horizontalSizeClass == .regular, !isSearchActive {
-                    if #available(iOS 15.0, *) {
-                        RandomArticleMenu(url: $url)
-                    } else {
-                        RandomArticleButton(url: $url)
-                    }
-                    if #available(iOS 15.0, *) {
-                        MainArticleMenu(url: $url)
-                    } else {
-                        MainArticleButton(url: $url)
-                    }
+                    RandomArticleButton()
+                    MainArticleButton()
                     LibraryButton()
                     SettingsButton()
                 } else if isSearchActive {
@@ -169,11 +161,7 @@ private struct Content: View {
                     Spacer()
                     BookmarkMultiButton(url: url)
                     Spacer()
-                    if #available(iOS 15.0, *) {
-                        RandomArticleMenu(url: $url)
-                    } else {
-                        RandomArticleButton(url: $url)
-                    }
+                    RandomArticleButton()
                     Spacer()
                     MoreActionMenu(url: $url)
                 }

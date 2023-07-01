@@ -8,63 +8,57 @@
 
 import SwiftUI
 
+#if os(macOS)
 struct RootView: View {
     @Environment(\.horizontalSizeClass) var horizontalSizeClass
     @State private var url: URL?
     @StateObject private var viewModel = ViewModel()
     @StateObject private var readingViewModel = ReadingViewModel()
+    @StateObject private var browserViewModel = BrowserViewModel()
+    
+    private let primaryItems: [NavigationItem] =
+        FeatureFlags.map ? [.reading, .bookmarks, .map(location: nil)] : [.reading, .bookmarks]
+    private let libraryItems: [NavigationItem] = [.opened, .categories, .downloads, .new]
     
     var body: some View {
-        Group {
-            #if os(macOS)
-            RootViewV2(url: $url)
-            #elseif os(iOS)
-            RootViewV1(url: $url).ignoresSafeArea(.all)
-            #endif
-        }
-        #if os(iOS)
-        .sheet(item: $viewModel.activeSheet) { activeSheet in
-            switch activeSheet {
-            case .outline:
-                SheetContent {
-                    OutlineTree().listStyle(.plain).navigationBarTitleDisplayMode(.inline)
-                }.modify { view in
-                    if #available(iOS 16.0, *) {
-                        view.presentationDetents([.medium, .large])
-                    } else {
-                        view
+        NavigationView {
+            List(selection: $viewModel.navigationItem) {
+                ForEach(primaryItems, id: \.self) { navigationItem in
+                    Label(navigationItem.name, systemImage: navigationItem.icon)
+                }
+                Section("Library") {
+                    ForEach(libraryItems, id: \.self) { navigationItem in
+                        Label(navigationItem.name, systemImage: navigationItem.icon)
                     }
                 }
-            case .bookmarks:
-                SheetContent { BookmarksView(url: $url) }
-            case .library(let tabItem):
-                Library(url: $url, tabItem: tabItem)
-            case .map(let location):
-                SheetContent {
+            }.frame(minWidth: 150).toolbar { SidebarButton() }
+            Group {
+                switch viewModel.navigationItem {
+                case .reading:
+                    BrowserTab().environmentObject(browserViewModel)
+                case .bookmarks:
+                    Bookmarks(onSelect: { bookmark in
+                        browserViewModel.load(url: bookmark.articleURL)
+                        viewModel.navigationItem = .reading
+                    })
+                case .map(let location):
                     Map(location: location)
-                }.modify { view in
-                    if #available(iOS 16.0, *) {
-                        view.presentationDetents([.medium, .large])
-                    } else {
-                        view
-                    }
+                case .opened:
+                    ZimFilesOpened(url: $url)
+                case .categories:
+                    ZimFilesCategories(url: $url)
+                case .downloads:
+                    ZimFilesDownloads(url: $url)
+                case .new:
+                    ZimFilesNew(url: $url)
+                default:
+                    EmptyView()
                 }
-            case .settings:
-                SheetContent { SettingsContent() }
-            case .safari(let url):
-                SafariView(url: url)
-            }
+            }.frame(minWidth: 500, minHeight: 500)
         }
-        #endif
-        .modify { view in
-            if #available(macOS 12.0, iOS 15.0, *) {
-                view
-                    .focusedSceneValue(\.navigationItem, $viewModel.navigationItem)
-                    .focusedSceneValue(\.url, url)
-            } else {
-                view
-            }
-        }
+        .navigationViewStyle(.columns)
+        .focusedSceneValue(\.navigationItem, $viewModel.navigationItem)
+        .focusedSceneValue(\.url, url)
         .alert(item: $viewModel.activeAlert) { activeAlert in
             switch activeAlert {
             case .articleFailedToLoad:
@@ -117,3 +111,4 @@ struct RootView: View {
         .environmentObject(readingViewModel)
     }
 }
+#endif
