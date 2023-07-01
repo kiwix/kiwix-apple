@@ -6,6 +6,7 @@
 //  Copyright © 2021 Chris Li. All rights reserved.
 //
 
+import CoreData
 import SwiftUI
 import WebKit
 
@@ -39,52 +40,69 @@ struct WebView: NSViewRepresentable {
 }
 #elseif os(iOS)
 struct WebView: UIViewControllerRepresentable {
-    @Binding var url: URL?
-    @EnvironmentObject var viewModel: ViewModel
-    @EnvironmentObject var readingViewModel: ReadingViewModel
-    
+    @EnvironmentObject private var viewModel: BrowserViewModel
+        
     func makeUIViewController(context: Context) -> WebViewController {
-        let webView = readingViewModel.webView
-        webView.allowsBackForwardNavigationGestures = true
-        webView.configuration.defaultWebpagePreferences.preferredContentMode = .mobile  // for font adjustment to work
-        webView.configuration.userContentController.add(readingViewModel, name: "headings")
-        webView.navigationDelegate = viewModel
-        webView.uiDelegate = viewModel
-        context.coordinator.setupObservers(webView)
-        return WebViewController(webView: webView)
+        WebViewController(tabID: viewModel.tabID, webView: viewModel.webView)
     }
     
-    func updateUIViewController(_ controller: WebViewController, context: Context) {
-        guard let url = url, readingViewModel.webView.url?.absoluteString != url.absoluteString else { return }
-        readingViewModel.webView.load(URLRequest(url: url))
-    }
+    func updateUIViewController(_ controller: WebViewController, context: Context) { }
     
-    static func dismantleUIViewController(_ controller: WebViewController, coordinator: WebViewCoordinator) {
-        guard let webView = controller.view.subviews.first as? WKWebView else { return }
-        webView.configuration.userContentController.removeAllScriptMessageHandlers()
-        controller.view.subviews.forEach { $0.removeFromSuperview() }
+    static func dismantleUIViewController(_ controller: WebViewController, coordinator: ()) {
+        guard let interactionState = controller.webView.interactionState as? Data else { return }
+        Database.performBackgroundTask { context in
+            context.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
+            guard let tab = try? context.fetch(Tab.fetchRequest(id: controller.tabID)).first else { return }
+            tab.interactionState = interactionState
+            try? context.save()
+        }
     }
-
-    func makeCoordinator() -> WebViewCoordinator { WebViewCoordinator(self) }
 }
 
 class WebViewController: UIViewController {
-    convenience init(webView: WKWebView) {
-        self.init(nibName: nil, bundle: nil)
-        webView.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(webView)
-        NSLayoutConstraint.activate([
-            view.topAnchor.constraint(equalTo: webView.topAnchor),
-            view.leftAnchor.constraint(equalTo: webView.leftAnchor),
-            view.bottomAnchor.constraint(equalTo: webView.bottomAnchor),
-            view.rightAnchor.constraint(equalTo: webView.rightAnchor)
-        ])
+    let tabID: UUID
+    let webView: WKWebView
+    
+    init(tabID: UUID, webView: WKWebView) {
+        self.tabID = tabID
+        self.webView = webView
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        setupWebView()
     }
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        guard let webView = view.subviews.first as? WKWebView else { return }
         webView.setValue(view.safeAreaInsets, forKey: "_obscuredInsets")
+    }
+    
+    /// Install web view, and setup property observers
+    private func setupWebView() {
+        guard !view.subviews.contains(webView) else { return }
+        webView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(webView)
+        
+        NSLayoutConstraint.activate([
+            view.leftAnchor.constraint(equalTo: webView.leftAnchor),
+            view.bottomAnchor.constraint(equalTo: webView.bottomAnchor),
+            view.rightAnchor.constraint(equalTo: webView.rightAnchor)
+        ])
+        
+        let topSafeAreaConstraint = view.safeAreaLayoutGuide.topAnchor.constraint(equalTo: webView.topAnchor)
+        topSafeAreaConstraint.isActive = true
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
+            topSafeAreaConstraint.isActive = false
+            let topConstraint = self.view.topAnchor.constraint(equalTo: self.webView.topAnchor)
+            topConstraint.isActive = true
+        }
     }
 }
 #endif
@@ -128,48 +146,5 @@ class WebViewConfiguration: WKWebViewConfiguration {
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-}
-
-class WebViewCoordinator {
-    var canGoBackObserver: NSKeyValueObservation?
-    var canGoForwardObserver: NSKeyValueObservation?
-    var pageZoomObserver: Defaults.Observation?
-    var titleObserver: NSKeyValueObservation?
-    var urlObserver: NSKeyValueObservation?
-    
-    let view: WebView
-    
-    init(_ view: WebView) {
-        self.view = view
-    }
-    
-    func setupObservers(_ webView: WKWebView) {
-        canGoBackObserver = webView.observe(\.canGoBack) { [unowned self] webView, _ in
-            self.view.readingViewModel.canGoBack = webView.canGoBack
-        }
-        canGoForwardObserver = webView.observe(\.canGoForward) { [unowned self] webView, _ in
-            self.view.readingViewModel.canGoForward = webView.canGoForward
-        }
-        pageZoomObserver = Defaults.observe(.webViewPageZoom) { change in
-            #if os(macOS)
-            webView.pageZoom = change.newValue
-            #elseif os(iOS)
-            webView.applyTextSizeAdjustment()
-            #endif
-        }
-        urlObserver = webView.observe(\.url) { [unowned self] webView, _ in
-            guard webView.url?.absoluteString != self.view.url?.absoluteString else { return }
-            self.view.url = webView.url
-        }
-        titleObserver = webView.observe(\.title) { [unowned self] webView, _ in
-            guard let title = webView.title, !title.isEmpty,
-                  let zimFileID = webView.url?.host,
-                  let zimFile = try? Database.shared.container.viewContext.fetch(
-                    ZimFile.fetchRequest(predicate: NSPredicate(format: "fileID == %@", zimFileID))
-                  ).first else { return }
-            self.view.readingViewModel.articleTitle = title
-            self.view.readingViewModel.zimFileName = zimFile.name
-        }
     }
 }
