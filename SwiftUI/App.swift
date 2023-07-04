@@ -46,7 +46,7 @@ struct Kiwix: App {
                 Divider()
             }
             CommandGroup(after: .toolbar) {
-                NavigationButtons()
+                NavigationCommandButtons()
                 Divider()
                 PageZoomButtons()
                 Divider()
@@ -93,7 +93,7 @@ struct Kiwix: App {
     
     var body: some Scene {
         WindowGroup {
-            RootView()
+            EmptyView()
                 .environment(\.managedObjectContext, Database.shared.container.viewContext)
                 .environmentObject(libraryRefreshViewModel)
         }.commands {
@@ -101,7 +101,7 @@ struct Kiwix: App {
                 FileImportButton { Text("Open...") }
             }
             CommandGroup(after: .toolbar) {
-                NavigationButtons()
+                NavigationCommandButtons()
                 Divider()
             }
         }

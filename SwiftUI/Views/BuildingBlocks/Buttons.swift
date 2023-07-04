@@ -130,48 +130,6 @@ struct LibraryButton: View {
     }
 }
 
-struct MainArticleButton: View {
-    @Binding var url: URL?
-    @FetchRequest(sortDescriptors: [], predicate: ZimFile.openedPredicate) private var zimFiles: FetchedResults<ZimFile>
-    
-    var body: some View {
-        Button {
-            let zimFileID = UUID(uuidString: url?.host ?? "")
-            url = ZimFileService.shared.getMainPageURL(zimFileID: zimFileID)
-        } label: {
-            Label("Main Article", systemImage: "house")
-        }
-        .disabled(zimFiles.isEmpty)
-        .help("Show main article")
-    }
-}
-
-@available(iOS 15.0, *)
-struct MainArticleMenu: View {
-    @Binding var url: URL?
-    @FetchRequest(
-        sortDescriptors: [NSSortDescriptor(keyPath: \ZimFile.size, ascending: false)],
-        predicate: ZimFile.openedPredicate
-    ) private var zimFiles: FetchedResults<ZimFile>
-    
-    var body: some View {
-        Menu {
-            ForEach(zimFiles) { zimFile in
-                Button(zimFile.name) {
-                    url = ZimFileService.shared.getMainPageURL(zimFileID: zimFile.id)
-                }
-            }
-        } label: {
-            Label("Main Page", systemImage: "house")
-        } primaryAction: {
-            let zimFileID = UUID(uuidString: url?.host ?? "")
-            url = ZimFileService.shared.getMainPageURL(zimFileID: zimFileID)
-        }
-        .disabled(zimFiles.isEmpty)
-        .help("Show main article")
-    }
-}
-
 struct MoreActionMenu: View {
     @Binding var url: URL?
     @FetchRequest(
@@ -226,7 +184,7 @@ struct NavigateForwardButton: View {
     }
 }
 
-struct NavigationButtons: View {
+struct NavigationCommandButtons: View {
     @FocusedValue(\.canGoBack) var canGoBack: Bool?
     @FocusedValue(\.canGoForward) var canGoForward: Bool?
     @FocusedValue(\.readingViewModel) var viewModel: ReadingViewModel?
@@ -238,39 +196,6 @@ struct NavigationButtons: View {
         Button("Go Forward") { viewModel?.goForward() }
             .keyboardShortcut("]")
             .disabled(!(canGoForward ?? false))
-    }
-}
-
-struct OutlineButton: View {
-    @EnvironmentObject var viewModel: ViewModel
-    @EnvironmentObject var readingviewModel: ReadingViewModel
-    
-    var body: some View {
-        Button {
-            viewModel.activeSheet = .outline
-        } label: {
-            Image(systemName: "list.bullet")
-        }
-        .disabled(readingviewModel.outlineItems.isEmpty)
-        .help("Show article outline")
-    }
-}
-
-struct OutlineMenu: View {
-    @EnvironmentObject var viewModel: ReadingViewModel
-    
-    var body: some View {
-        Menu {
-            ForEach(viewModel.outlineItems) { item in
-                Button(String(repeating: "    ", count: item.level) + item.text) {
-                    viewModel.scrollTo(outlineItemID: item.id)
-                }
-            }
-        } label: {
-            Label("Outline", systemImage: "list.bullet")
-        }
-        .disabled(viewModel.outlineItems.isEmpty)
-        .help("Show article outline")
     }
 }
 
@@ -289,48 +214,6 @@ struct PageZoomButtons: View {
         Button("Zoom Out") { webViewPageZoom -= 0.1 }
             .keyboardShortcut("-")
             .disabled(navigationItem != .reading || (url ?? nil) == nil)
-    }
-}
-
-struct RandomArticleButton: View {
-    @Binding var url: URL?
-    @FetchRequest(sortDescriptors: [], predicate: ZimFile.openedPredicate) private var zimFiles: FetchedResults<ZimFile>
-    
-    var body: some View {
-        Button {
-            let zimFileID = UUID(uuidString: url?.host ?? "")
-            url = ZimFileService.shared.getRandomPageURL(zimFileID: zimFileID)
-        } label: {
-            Label("Random Article", systemImage: "die.face.5")
-        }
-        .disabled(zimFiles.isEmpty)
-        .help("Show random article")
-    }
-}
-
-@available(iOS 15.0, *)
-struct RandomArticleMenu: View {
-    @Binding var url: URL?
-    @FetchRequest(
-        sortDescriptors: [NSSortDescriptor(keyPath: \ZimFile.size, ascending: false)],
-        predicate: ZimFile.openedPredicate
-    ) private var zimFiles: FetchedResults<ZimFile>
-    
-    var body: some View {
-        Menu {
-            ForEach(zimFiles) { zimFile in
-                Button(zimFile.name) {
-                    url = ZimFileService.shared.getRandomPageURL(zimFileID: zimFile.id)
-                }
-            }
-        } label: {
-            Label("Random Page", systemImage: "die.face.5")
-        } primaryAction: {
-            let zimFileID = UUID(uuidString: url?.host ?? "")
-            url = ZimFileService.shared.getRandomPageURL(zimFileID: zimFileID)
-        }
-        .disabled(zimFiles.isEmpty)
-        .help("Show random article")
     }
 }
 

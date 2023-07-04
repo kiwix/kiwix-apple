@@ -92,9 +92,10 @@ class ViewModel: NSObject, ObservableObject, WKNavigationDelegate, WKUIDelegate 
         guard let url = elementInfo.linkURL, url.isKiwixURL else { completionHandler(nil); return }
         let configuration = UIContextMenuConfiguration(
             previewProvider: {
-                let webView = WKWebView(frame: .zero, configuration: WebViewConfiguration())
-                webView.load(URLRequest(url: url))
-                return WebViewController(webView: webView)
+                return UIViewController()
+//                let webView = WKWebView(frame: .zero, configuration: WebViewConfiguration())
+//                webView.load(URLRequest(url: url))
+//                return WebViewController(webView: webView)
             }, actionProvider: { suggestedActions in
                 var actions = [UIAction]()
                 
