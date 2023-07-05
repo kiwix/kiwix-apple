@@ -197,7 +197,7 @@ struct LibraryOperations {
             forTaskWithIdentifier: LibraryOperations.backgroundTaskIdentifier, using: nil
         ) { task in
             Task {
-                await LibraryRefreshViewModel().start(isUserInitiated: false)
+                await LibraryViewModel().start(isUserInitiated: false)
                 task.setTaskCompleted(success: true)
             }
         }

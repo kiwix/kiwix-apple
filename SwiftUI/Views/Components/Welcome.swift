@@ -40,7 +40,6 @@ struct Welcome: View {
                                 ZimFileCell(zimFile, prominent: .name)
                             }
                             .buttonStyle(.plain)
-                            .modifier(ZimFileContextMenu(selected: $selectedZimFile, url: $url, zimFile: zimFile))
                         }
                     } header: {
                         Text("Main Page").font(.title3).fontWeight(.semibold)
@@ -63,7 +62,7 @@ struct Welcome: View {
             #if os(iOS)
             .sheet(item: $selectedZimFile) { zimFile in
                 SheetContent {
-                    ZimFileDetail(url: $url, zimFile: zimFile)
+                    ZimFileDetail(zimFile: zimFile)
                 }
             }
             #endif
@@ -81,7 +80,7 @@ struct Welcome: View {
 
 private struct Onboarding: View {
     @EnvironmentObject private var viewModel: ViewModel
-    @EnvironmentObject var libraryRefreshViewModel: LibraryRefreshViewModel
+    @EnvironmentObject var libraryRefreshViewModel: LibraryViewModel
     
     var body: some View {
         VStack(spacing: 20) {
