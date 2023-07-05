@@ -67,7 +67,12 @@ private struct TabsManagerButton: View {
         sortDescriptors: [NSSortDescriptor(keyPath: \ZimFile.size, ascending: false)],
         predicate: ZimFile.openedPredicate
     ) private var zimFiles: FetchedResults<ZimFile>
-    @State private var isShowingTabsManager = false
+    @State private var presentedSheet: PresentedSheet?
+    
+    enum PresentedSheet: String, Identifiable {
+        var id: String { rawValue }
+        case library, tabsManager
+    }
     
     var body: some View {
         Menu {
@@ -78,20 +83,32 @@ private struct TabsManagerButton: View {
                     } label: { Label(zimFile.name, systemImage: "house") }
                 }
             }
+            Section {
+                Button {
+                    presentedSheet = .library
+                } label: {
+                    Label("Library", systemImage: "folder")
+                }
+            }
         } label: {
             Label("Tabs Manager", systemImage: "square.stack")
         } primaryAction: {
-            isShowingTabsManager = true
-        }.sheet(isPresented: $isShowingTabsManager) {
-            TabsManager().ignoresSafeArea().modify { view in
-                if #available(iOS 16.0, *) {
-                    view.presentationDetents([.medium, .large])
-                } else {
-                    /*
-                     HACK: Use medium as selection so that half sized sheets are consistently shown
-                     when tab manager button is pressed, user can still freely adjust sheet size.
-                    */
-                    view.backport.presentationDetents([.medium, .large], selection: .constant(.medium))
+            presentedSheet = .tabsManager
+        }.sheet(item: $presentedSheet) { presentedSheet in
+            switch presentedSheet {
+            case .library:
+                Library()
+            case .tabsManager:
+                TabsManager().ignoresSafeArea().modify { view in
+                    if #available(iOS 16.0, *) {
+                        view.presentationDetents([.medium, .large])
+                    } else {
+                        /*
+                         HACK: Use medium as selection so that half sized sheets are consistently shown
+                         when tab manager button is pressed, user can still freely adjust sheet size.
+                        */
+                        view.backport.presentationDetents([.medium, .large], selection: .constant(.medium))
+                    }
                 }
             }
         }

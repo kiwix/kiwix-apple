@@ -41,18 +41,26 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     }
     
     func scene(_ scene: UIScene, openURLContexts urlContexts: Set<UIOpenURLContext>) {
+        // attempt to open files
         urlContexts.forEach { context in
-            if context.url.isFileURL {
-                guard let _ = ZimFileService.getMetaData(url: context.url) else { return }
-                LibraryOperations.open(url: context.url)
-            }
+            guard context.url.isFileURL, let _ = ZimFileService.getMetaData(url: context.url) else { return }
+            LibraryOperations.open(url: context.url)
         }
+        
+        // attempt to open article url
+        guard let url = urlContexts.first?.url,
+              !url.isFileURL,
+              let splitViewController = window?.rootViewController as? SplitViewController else { return }
+        Task { await splitViewController.createTab(url: url) }
     }
 }
 
 class SplitViewController: UISplitViewController {
     @MainActor private var browserViewModel = BrowserViewModel()
+    @MainActor private var libraryViewModel = LibraryViewModel()
     @MainActor private(set) var selectedNavigationItem: NavigationItem?
+    
+    private var openURLNotificationObserver: AnyObject?
     
     convenience init() {
         self.init(style: .doubleColumn)
@@ -62,6 +70,7 @@ class SplitViewController: UISplitViewController {
         
         let compactView = CompactView()
             .environmentObject(browserViewModel)
+            .environmentObject(libraryViewModel)
             .environment(\.managedObjectContext, Database.viewContext)
         let compactViewController = CompactViewController(rootView: compactView)
         setViewController(UINavigationController(rootViewController: compactViewController), for: .compact)
@@ -69,6 +78,21 @@ class SplitViewController: UISplitViewController {
         if #available(iOS 16.0, *) {} else {
             preferredSplitBehavior = .tile
         }
+        
+        openURLNotificationObserver = NotificationCenter.default.addObserver(
+            forName: Notification.Name.openURL, object: nil, queue: nil) { [unowned self] notification in
+                presentedViewController?.dismiss(animated: true)
+                guard let url = notification.userInfo?["url"] as? URL else { return }
+                if case .tab = selectedNavigationItem {
+                    browserViewModel.load(url: url)
+                } else {
+                    Task { await self.createTab(url: url) }
+                }
+        }
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
     }
     
     override func viewDidLoad() {
@@ -97,9 +121,7 @@ class SplitViewController: UISplitViewController {
         selectedNavigationItem = navigationItem
         switch navigationItem {
         case .bookmarks:
-            let view = Bookmarks(onSelect: { bookmark in
-                Task { await self.createTab(url: bookmark.articleURL) }
-            }).environment(\.managedObjectContext, Database.viewContext)
+            let view = Bookmarks().environment(\.managedObjectContext, Database.viewContext)
             let controller = UINavigationController(rootViewController: UIHostingController(rootView: view))
             setViewController(controller, for: .secondary)
         case .tab(let objectID):
@@ -107,6 +129,35 @@ class SplitViewController: UISplitViewController {
             browserViewModel.prepareForTab(tab.id)
             let view = BrowserTab()
                 .environmentObject(browserViewModel)
+                .environment(\.managedObjectContext, Database.viewContext)
+            let controller = UINavigationController(rootViewController: UIHostingController(rootView: view))
+            setViewController(controller, for: .secondary)
+            presentedViewController?.dismiss(animated: true)
+        case .opened:
+            libraryViewModel.selectedZimFile = nil
+            let view = ZimFilesOpened()
+                .environmentObject(libraryViewModel)
+                .environment(\.managedObjectContext, Database.viewContext)
+            let controller = UINavigationController(rootViewController: UIHostingController(rootView: view))
+            setViewController(controller, for: .secondary)
+        case .categories:
+            libraryViewModel.selectedZimFile = nil
+            let view = ZimFilesCategories()
+                .environmentObject(libraryViewModel)
+                .environment(\.managedObjectContext, Database.viewContext)
+            let controller = UINavigationController(rootViewController: UIHostingController(rootView: view))
+            setViewController(controller, for: .secondary)
+        case .downloads:
+            libraryViewModel.selectedZimFile = nil
+            let view = ZimFilesDownloads()
+                .environmentObject(libraryViewModel)
+                .environment(\.managedObjectContext, Database.viewContext)
+            let controller = UINavigationController(rootViewController: UIHostingController(rootView: view))
+            setViewController(controller, for: .secondary)
+        case .new:
+            libraryViewModel.selectedZimFile = nil
+            let view = ZimFilesNew()
+                .environmentObject(libraryViewModel)
                 .environment(\.managedObjectContext, Database.viewContext)
             let controller = UINavigationController(rootViewController: UIHostingController(rootView: view))
             setViewController(controller, for: .secondary)
