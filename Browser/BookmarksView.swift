@@ -18,20 +18,22 @@ struct Bookmarks: View {
     ) private var bookmarks: FetchedResults<Bookmark>
     @State private var searchText = ""
     
-    let onSelect: (Bookmark) -> Void
-    
     var body: some View {
         LazyVGrid(columns: ([gridItem]), spacing: 12) {
             ForEach(bookmarks) { bookmark in
                 Button {
-                    onSelect(bookmark)
+                    NotificationCenter.default.post(
+                        name: Notification.Name.openURL, object: nil, userInfo: ["url": bookmark.articleURL]
+                    )
                 } label: {
                     ArticleCell(bookmark: bookmark).frame(height: itemHeight)
                 }
                 .buttonStyle(.plain)
                 .contextMenu {
                     Button {
-                        onSelect(bookmark)
+                        NotificationCenter.default.post(
+                            name: Notification.Name.openURL, object: nil, userInfo: ["url": bookmark.articleURL]
+                        )
                     } label: {
                         Label("View", systemImage: "doc.richtext")
                     }
