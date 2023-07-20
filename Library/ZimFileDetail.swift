@@ -14,10 +14,8 @@ import Defaults
 
 /// Detail about one single zim file.
 struct ZimFileDetail: View {
-    @Binding var url: URL?
     @Default(.downloadUsingCellular) private var downloadUsingCellular
     @Environment(\.presentationMode) var presentationMode
-    @EnvironmentObject private var viewModel: ViewModel
     @ObservedObject var zimFile: ZimFile
     @State private var isPresentingDeleteAlert = false
     @State private var isPresentingDownloadAlert = false
@@ -87,9 +85,8 @@ struct ZimFileDetail: View {
             unlinkAction
         } else if zimFile.fileURLBookmark != nil {  // zim file is opened
             Action(title: "Open Main Page") {
-                url = ZimFileService.shared.getMainPageURL(zimFileID: zimFile.fileID)
-                viewModel.activeSheet = nil
-                viewModel.navigationItem = .reading
+                guard let url = ZimFileService.shared.getMainPageURL(zimFileID: zimFile.fileID) else { return }
+                NotificationCenter.default.post(name: Notification.Name.openURL, object: nil, userInfo: ["url": url])
             }
             #if os(macOS)
             Action(title: "Reveal in Finder") {
@@ -380,6 +377,6 @@ struct ZimFileDetail_Previews: PreviewProvider {
     }()
     
     static var previews: some View {
-        ZimFileDetail(url: .constant(nil), zimFile: zimFile).frame(width: 300).previewLayout(.sizeThatFits)
+        ZimFileDetail(zimFile: zimFile).frame(width: 300).previewLayout(.sizeThatFits)
     }
 }

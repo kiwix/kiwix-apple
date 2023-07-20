@@ -13,7 +13,7 @@ import UserNotifications
 #if os(macOS)
 @main
 struct Kiwix: App {
-    @StateObject private var libraryRefreshViewModel = LibraryRefreshViewModel()
+    @StateObject private var libraryRefreshViewModel = LibraryViewModel()
     
     static let zimFileType = UTType(exportedAs: "org.openzim.zim")
     
@@ -72,7 +72,7 @@ struct Kiwix: App {
 }
 #elseif os(iOS)
 struct Kiwix: App {
-    @StateObject private var libraryRefreshViewModel = LibraryRefreshViewModel()
+    @StateObject private var libraryRefreshViewModel = LibraryViewModel()
     
     static let zimFileType = UTType(exportedAs: "org.openzim.zim")
     
@@ -128,3 +128,7 @@ struct Kiwix: App {
     }
 }
 #endif
+
+extension Notification.Name {
+    static let openURL = Notification.Name("openURL")
+}

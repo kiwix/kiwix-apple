@@ -90,7 +90,7 @@ final class LibraryRefreshViewModelTest: XCTestCase {
             urlProtocol.client?.urlProtocol(urlProtocol, didFailWithError: URLError(URLError.Code.timedOut))
         }
 
-        let viewModel = LibraryRefreshViewModel(urlSession: urlSession)
+        let viewModel = LibraryViewModel(urlSession: urlSession)
         await viewModel.start(isUserInitiated: true)
         XCTAssert(viewModel.error is LibraryRefreshError)
         XCTAssertEqual(
@@ -111,7 +111,7 @@ final class LibraryRefreshViewModelTest: XCTestCase {
             urlProtocol.client?.urlProtocolDidFinishLoading(urlProtocol)
         }
 
-        let viewModel = LibraryRefreshViewModel(urlSession: urlSession)
+        let viewModel = LibraryViewModel(urlSession: urlSession)
         await viewModel.start(isUserInitiated: true)
         XCTAssert(viewModel.error is LibraryRefreshError)
         XCTAssertEqual(
@@ -133,7 +133,7 @@ final class LibraryRefreshViewModelTest: XCTestCase {
             urlProtocol.client?.urlProtocolDidFinishLoading(urlProtocol)
         }
 
-        let viewModel = LibraryRefreshViewModel(urlSession: urlSession)
+        let viewModel = LibraryViewModel(urlSession: urlSession)
         await viewModel.start(isUserInitiated: true)
         XCTExpectFailure("Requires work in dependency to resolve the issue.")
         XCTAssertEqual(
@@ -157,7 +157,7 @@ final class LibraryRefreshViewModelTest: XCTestCase {
             urlProtocol.client?.urlProtocolDidFinishLoading(urlProtocol)
         }
         
-        let viewModel = LibraryRefreshViewModel(urlSession: urlSession)
+        let viewModel = LibraryViewModel(urlSession: urlSession)
         await viewModel.start(isUserInitiated: true)
         
         // check no error has happened
@@ -205,7 +205,7 @@ final class LibraryRefreshViewModelTest: XCTestCase {
     @MainActor
     func testZimFileDeprecation() async throws {
         // refresh library for the first time, which should create one zim file
-        let viewModel = LibraryRefreshViewModel(urlSession: urlSession)
+        let viewModel = LibraryViewModel(urlSession: urlSession)
         await viewModel.start(isUserInitiated: true)
         let context = Database.shared.container.viewContext
         let zimFile1 = try XCTUnwrap(try context.fetch(ZimFile.fetchRequest()).first)

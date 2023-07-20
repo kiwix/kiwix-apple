@@ -10,14 +10,12 @@ import SwiftUI
 
 /// A grid of zim files that are opened, or was open but is now missing.
 struct ZimFilesOpened: View {
-    @Binding var url: URL?
     @FetchRequest(
         sortDescriptors: [NSSortDescriptor(keyPath: \ZimFile.size, ascending: false)],
         predicate: ZimFile.withFileURLBookmarkPredicate,
         animation: .easeInOut
     ) private var zimFiles: FetchedResults<ZimFile>
     @State private var isFileImporterPresented = false
-    @State private var selected: ZimFile?
     
     var body: some View {
         Group {
@@ -31,14 +29,13 @@ struct ZimFilesOpened: View {
                 ) {
                     ForEach(zimFiles) { zimFile in
                         ZimFileCell(zimFile, prominent: .name)
-                            .modifier(ZimFileContextMenu(selected: $selected, url: $url, zimFile: zimFile))
-                            .modifier(ZimFileSelection(selected: $selected, url: $url, zimFile: zimFile))
+                            .modifier(LibraryZimFileContext(zimFile: zimFile))
                     }
                 }.modifier(GridCommon())
             }
         }
         .navigationTitle(NavigationItem.opened.name)
-        .modifier(ZimFileDetailPanel_macOS(url: $url, zimFile: selected))
+        .modifier(ToolbarRoleBrowser())
         .toolbar {
             Button {
                 // On iOS 14 & 15, fileimporter's isPresented binding is not reset to false if user swipe to dismiss

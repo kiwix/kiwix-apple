@@ -15,7 +15,7 @@ struct LibrarySettings: View {
     @Default(.downloadUsingCellular) private var downloadUsingCellular
     @Default(.libraryAutoRefresh) private var libraryAutoRefresh
     @Default(.libraryLanguageCodes) private var libraryLanguageCodes
-    @EnvironmentObject private var viewModel: LibraryRefreshViewModel
+    @EnvironmentObject private var viewModel: LibraryViewModel
     
     var body: some View {
         #if os(macOS)

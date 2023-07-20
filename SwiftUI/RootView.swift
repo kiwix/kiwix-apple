@@ -19,6 +19,7 @@ struct RootView: View {
     private let primaryItems: [NavigationItem] =
         FeatureFlags.map ? [.reading, .bookmarks, .map(location: nil)] : [.reading, .bookmarks]
     private let libraryItems: [NavigationItem] = [.opened, .categories, .downloads, .new]
+    private let openURLNotification = NotificationCenter.default.publisher(for: Notification.Name.openURL)
     
     var body: some View {
         NavigationView {
@@ -37,20 +38,17 @@ struct RootView: View {
                 case .reading:
                     BrowserTab().environmentObject(browserViewModel)
                 case .bookmarks:
-                    Bookmarks(onSelect: { bookmark in
-                        browserViewModel.load(url: bookmark.articleURL)
-                        viewModel.navigationItem = .reading
-                    })
+                    Bookmarks()
                 case .map(let location):
                     Map(location: location)
                 case .opened:
-                    ZimFilesOpened(url: $url)
+                    ZimFilesOpened().modifier(LibraryZimFileDetailSidePanel())
                 case .categories:
-                    ZimFilesCategories(url: $url)
+                    ZimFilesCategories().modifier(LibraryZimFileDetailSidePanel())
                 case .downloads:
-                    ZimFilesDownloads(url: $url)
+                    ZimFilesDownloads().modifier(LibraryZimFileDetailSidePanel())
                 case .new:
-                    ZimFilesNew(url: $url)
+                    ZimFilesNew().modifier(LibraryZimFileDetailSidePanel())
                 default:
                     EmptyView()
                 }
@@ -106,6 +104,11 @@ struct RootView: View {
             } else if url.scheme == "kiwix" {
                 self.url = url
             }
+        }
+        .onReceive(openURLNotification) { notification in
+            guard let url = notification.userInfo?["url"] as? URL else { return }
+            browserViewModel.load(url: url)
+            viewModel.navigationItem = .reading
         }
         .environmentObject(viewModel)
         .environmentObject(readingViewModel)

@@ -11,12 +11,10 @@ import SwiftUI
 
 /// A grid of zim files that are being downloaded.
 struct ZimFilesDownloads: View {
-    @Binding var url: URL?
     @FetchRequest(
         sortDescriptors: [NSSortDescriptor(keyPath: \DownloadTask.created, ascending: false)],
         animation: .easeInOut
     ) private var downloadTasks: FetchedResults<DownloadTask>
-    @State private var selected: ZimFile?
     
     var body: some View {
         Group {
@@ -30,15 +28,14 @@ struct ZimFilesDownloads: View {
                 ) {
                     ForEach(downloadTasks) { downloadTask in
                         if let zimFile = downloadTask.zimFile {
-                            DownloadTaskCell(downloadTask)
-                                .modifier(ZimFileContextMenu(selected: $selected, url: $url, zimFile: zimFile))
-                                .modifier(ZimFileSelection(selected: $selected, url: $url, zimFile: zimFile))
+                            DownloadTaskCell(downloadTask).modifier(LibraryZimFileContext(zimFile: zimFile))
+//                                .modifier(ZimFileContextMenu(selected: $selected, url: $url, zimFile: zimFile))
+//                                .modifier(ZimFileSelection(selected: $selected, url: $url, zimFile: zimFile))
                         }
                     }
                 }.modifier(GridCommon())
             }
         }
         .navigationTitle(NavigationItem.downloads.name)
-        .modifier(ZimFileDetailPanel_macOS(url: $url, zimFile: selected))
     }
 }

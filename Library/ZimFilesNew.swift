@@ -12,8 +12,7 @@ import Defaults
 
 /// A grid of zim files that are newly available.
 struct ZimFilesNew: View {
-    @Binding var url: URL?
-    @EnvironmentObject var libraryRefreshViewModel: LibraryRefreshViewModel
+    @EnvironmentObject var viewModel: LibraryViewModel
     @Default(.libraryLanguageCodes) private var languageCodes
     @FetchRequest(
         sortDescriptors: [
@@ -25,7 +24,6 @@ struct ZimFilesNew: View {
         animation: .easeInOut
     ) private var zimFiles: FetchedResults<ZimFile>
     @State private var searchText = ""
-    @State private var selected: ZimFile?
     
     var body: some View {
         Group {
@@ -39,35 +37,30 @@ struct ZimFilesNew: View {
                 ) {
                     ForEach(zimFiles) { zimFile in
                         ZimFileCell(zimFile, prominent: .name)
-                            .modifier(ZimFileContextMenu(selected: $selected, url: $url, zimFile: zimFile))
-                            .modifier(ZimFileSelection(selected: $selected, url: $url, zimFile: zimFile))
+                            .modifier(LibraryZimFileContext(zimFile: zimFile))
                     }
                 }.modifier(GridCommon())
             }
         }
         .navigationTitle(NavigationItem.new.name)
-        .modifier(ZimFileDetailPanel_macOS(url: $url, zimFile: selected))
-        .modifier(Searchable(searchText: $searchText))
-        .onAppear { libraryRefreshViewModel.start(isUserInitiated: false) }
+        .modifier(ToolbarRoleBrowser())
+        .searchable(text: $searchText)
+        .onAppear { viewModel.start(isUserInitiated: false) }
         .onChange(of: languageCodes) { _ in
-            if #available(iOS 15.0, *) {
-                zimFiles.nsPredicate = ZimFilesNew.buildPredicate(searchText: searchText)
-            }
+            zimFiles.nsPredicate = ZimFilesNew.buildPredicate(searchText: searchText)
         }
         .onChange(of: searchText) { searchText in
-            if #available(iOS 15.0, *) {
-                zimFiles.nsPredicate = ZimFilesNew.buildPredicate(searchText: searchText)
-            }
+            zimFiles.nsPredicate = ZimFilesNew.buildPredicate(searchText: searchText)
         }
         .toolbar {
-            if libraryRefreshViewModel.isInProgress {
+            if viewModel.isInProgress {
                 ProgressView()
                 #if os(macOS)
                     .scaleEffect(0.5)
                 #endif
             } else {
                 Button {
-                    libraryRefreshViewModel.start(isUserInitiated: true)
+                    viewModel.start(isUserInitiated: true)
                 } label: {
                     Label("Refresh", systemImage: "arrow.triangle.2.circlepath.circle")
                 }
@@ -87,5 +80,16 @@ struct ZimFilesNew: View {
             predicates.append(NSPredicate(format: "name CONTAINS[cd] %@", searchText))
         }
         return NSCompoundPredicate(andPredicateWithSubpredicates: predicates)
+    }
+}
+
+@available(macOS 13.0, iOS 16.0, *)
+struct ZimFilesNew_Previews: PreviewProvider {
+    static var previews: some View {
+        NavigationStack {
+            ZimFilesNew()
+                .environmentObject(LibraryViewModel())
+                .environment(\.managedObjectContext, Database.viewContext)
+        }
     }
 }

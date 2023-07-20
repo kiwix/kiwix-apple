@@ -11,7 +11,9 @@ import os
 
 import Defaults
 
-public class LibraryRefreshViewModel: ObservableObject {
+public class LibraryViewModel: ObservableObject {
+    @Published var selectedTabItem: LibraryTabItem = .opened
+    @Published var selectedZimFile: ZimFile?
     @MainActor @Published public private(set) var error: Error?
     @MainActor @Published public private(set) var isInProgress = false
     

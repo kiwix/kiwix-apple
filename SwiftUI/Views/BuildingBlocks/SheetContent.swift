@@ -9,7 +9,7 @@
 import SwiftUI
 
 struct SheetContent<Content: View>: View {
-    @Environment(\.presentationMode) private var presentationMode
+    @Environment(\.dismiss) private var dismiss
     
     let content: Content
 
@@ -24,8 +24,10 @@ struct SheetContent<Content: View>: View {
         NavigationView {
             content.toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
-                    Button("Done") {
-                        presentationMode.wrappedValue.dismiss()
+                    Button {
+                        dismiss()
+                    } label: {
+                        Text("Done").fontWeight(.semibold)
                     }
                 }
             }

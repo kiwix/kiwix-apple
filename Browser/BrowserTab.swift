@@ -287,10 +287,7 @@ struct BookmarkButton: View {
         .help("Show bookmarks. Long press to bookmark or unbookmark the current article.")
         .popover(isPresented: $isShowingBookmark) {
             NavigationView {
-                Bookmarks(onSelect: { bookmark in
-                    viewModel.load(url: bookmark.articleURL)
-                    isShowingBookmark = false
-                }).toolbar {
+                Bookmarks().toolbar {
                     ToolbarItem(placement: .navigationBarLeading) {
                         Button {
                             isShowingBookmark = false
