@@ -54,7 +54,15 @@ struct Kiwix: App {
                 Divider()
             }
         }
-        Settings { SettingsContent().environmentObject(libraryRefreshViewModel) }
+        Settings {
+            TabView {
+                ReadingSettings()
+                LibrarySettings()
+                About()
+            }
+            .frame(width: 550, height: 400)
+            .environmentObject(libraryRefreshViewModel)
+        }
     }
     
     private class NotificationCenterDelegate: NSObject, UNUserNotificationCenterDelegate {
