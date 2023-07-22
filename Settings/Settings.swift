@@ -8,7 +8,27 @@
 
 import SwiftUI
 
-#if os(macOS)
+#if os(iOS)
+struct Settings: View {
+    var body: some View {
+        List {
+            ReadingSettings()
+            LibrarySettings()
+            Section("Misc") {
+                Button("Feedback") { UIApplication.shared.open(URL(string: "mailto:feedback@kiwix.org")!) }
+                Button("Rate the App") {
+                    let url = URL(string:"itms-apps://itunes.apple.com/us/app/kiwix/id997079563?action=write-review")!
+                    UIApplication.shared.open(url)
+                }
+                NavigationLink("About") { About() }
+            }
+        }
+        .navigationTitle("Settings")
+        .modifier(ToolbarRoleBrowser())
+    }
+}
+#endif
+
 struct SettingSection<Content: View>: View {
     let name: String
     let alignment: VerticalAlignment
@@ -32,23 +52,3 @@ struct SettingSection<Content: View>: View {
         }
     }
 }
-#elseif os(iOS)
-struct Settings: View {
-    var body: some View {
-        List {
-            ReadingSettings()
-            LibrarySettings()
-            Section("Misc") {
-                Button("Feedback") { UIApplication.shared.open(URL(string: "mailto:feedback@kiwix.org")!) }
-                Button("Rate the App") {
-                    let url = URL(string:"itms-apps://itunes.apple.com/us/app/kiwix/id997079563?action=write-review")!
-                    UIApplication.shared.open(url)
-                }
-                NavigationLink("About") { About() }
-            }
-        }
-        .navigationTitle("Settings")
-        .modifier(ToolbarRoleBrowser())
-    }
-}
-#endif
