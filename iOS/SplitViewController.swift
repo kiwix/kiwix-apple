@@ -161,6 +161,12 @@ class SplitViewController: UISplitViewController {
                 .environment(\.managedObjectContext, Database.viewContext)
             let controller = UINavigationController(rootViewController: UIHostingController(rootView: view))
             setViewController(controller, for: .secondary)
+        case .settings:
+            let view = Settings()
+                .environmentObject(libraryViewModel)
+                .environment(\.managedObjectContext, Database.viewContext)
+            let controller = UINavigationController(rootViewController: UIHostingController(rootView: view))
+            setViewController(controller, for: .secondary)
         default:
             setViewController(UITableViewController(), for: .secondary)
         }

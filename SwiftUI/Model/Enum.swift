@@ -92,11 +92,11 @@ enum ExternalLinkLoadingPolicy: String, CaseIterable, Identifiable, Defaults.Ser
     var name: String {
         switch self {
         case .alwaysAsk:
-            return "Always ask"
+            return "Always Ask"
         case .alwaysLoad:
-            return "Always load"
+            return "Always Load"
         case .neverLoad:
-            return "Never load"
+            return "Never Load"
         }
     }
 }

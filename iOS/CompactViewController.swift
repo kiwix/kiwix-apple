@@ -71,7 +71,7 @@ private struct TabsManagerButton: View {
     
     enum PresentedSheet: String, Identifiable {
         var id: String { rawValue }
-        case library, tabsManager
+        case tabsManager, library, settings
     }
     
     var body: some View {
@@ -89,6 +89,11 @@ private struct TabsManagerButton: View {
                 } label: {
                     Label("Library", systemImage: "folder")
                 }
+                Button {
+                    presentedSheet = .settings
+                } label: {
+                    Label("Settings", systemImage: "gear")
+                }
             }
         } label: {
             Label("Tabs Manager", systemImage: "square.stack")
@@ -96,8 +101,6 @@ private struct TabsManagerButton: View {
             presentedSheet = .tabsManager
         }.sheet(item: $presentedSheet) { presentedSheet in
             switch presentedSheet {
-            case .library:
-                Library()
             case .tabsManager:
                 TabsManager().ignoresSafeArea().modify { view in
                     if #available(iOS 16.0, *) {
@@ -110,6 +113,10 @@ private struct TabsManagerButton: View {
                         view.backport.presentationDetents([.medium, .large], selection: .constant(.medium))
                     }
                 }
+            case .library:
+                Library()
+            case .settings:
+                SheetContent { Settings() }
             }
         }
     }

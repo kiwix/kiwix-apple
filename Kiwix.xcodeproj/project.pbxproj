@@ -39,7 +39,7 @@
 		973A0E032831057200B41E71 /* URL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97B3BACD2736CE3500A23F49 /* URL.swift */; };
 		9744068728CE263800916BD4 /* DirectoryMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9779A5CF2456796A00F6F6FF /* DirectoryMonitor.swift */; };
 		9744068A28CF65AE00916BD4 /* LibraryOperations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9744068828CF65AE00916BD4 /* LibraryOperations.swift */; };
-		9745AB5A28E9257400067FF6 /* SettingsContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9745AB5828E9257400067FF6 /* SettingsContent.swift */; };
+		9745AB5A28E9257400067FF6 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9745AB5828E9257400067FF6 /* Settings.swift */; };
 		9745AB5D28E9277900067FF6 /* ReadingSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9745AB5B28E9277900067FF6 /* ReadingSettings.swift */; };
 		9745AB6028E9C72900067FF6 /* LibrarySettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9745AB5E28E9C72900067FF6 /* LibrarySettings.swift */; };
 		97486D06284A36790096E4DD /* ArticleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97486D05284A36790096E4DD /* ArticleCell.swift */; };
@@ -160,7 +160,7 @@
 		973A2FCD277FB03F00BD4320 /* FlavorTag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlavorTag.swift; sourceTree = "<group>"; };
 		973A2FD72780024600BD4320 /* ZimFileCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZimFileCell.swift; sourceTree = "<group>"; };
 		9744068828CF65AE00916BD4 /* LibraryOperations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryOperations.swift; sourceTree = "<group>"; };
-		9745AB5828E9257400067FF6 /* SettingsContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsContent.swift; sourceTree = "<group>"; };
+		9745AB5828E9257400067FF6 /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
 		9745AB5B28E9277900067FF6 /* ReadingSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadingSettings.swift; sourceTree = "<group>"; };
 		9745AB5E28E9C72900067FF6 /* LibrarySettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibrarySettings.swift; sourceTree = "<group>"; };
 		97486D05284A36790096E4DD /* ArticleCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArticleCell.swift; sourceTree = "<group>"; };
@@ -359,7 +359,7 @@
 		9745AB5628E9235100067FF6 /* Settings */ = {
 			isa = PBXGroup;
 			children = (
-				9745AB5828E9257400067FF6 /* SettingsContent.swift */,
+				9745AB5828E9257400067FF6 /* Settings.swift */,
 				9745AB5B28E9277900067FF6 /* ReadingSettings.swift */,
 				9745AB5E28E9C72900067FF6 /* LibrarySettings.swift */,
 				975088B9287BBDFE00273181 /* LanguageSelector.swift */,
@@ -429,6 +429,7 @@
 				97B172F22A48F39200039108 /* iOS */,
 				97176AD02A4FBD140093E3B0 /* Browser */,
 				97A092782A54D088009C039E /* Library */,
+				9745AB5628E9235100067FF6 /* Settings */,
 				97E94B18271EF24D005B0295 /* SwiftUI */,
 				97E94B26271EF359005B0295 /* Support */,
 				97B44895210FBC2C0004B056 /* WikiMed */,
@@ -519,7 +520,6 @@
 				9735D0B72775362000C7D495 /* Model */,
 				97FB4B0C27B81B530055F86E /* ViewModels */,
 				97E4E69C28B8FCC70012227D /* Views */,
-				9745AB5628E9235100067FF6 /* Settings */,
 				97893876289E058100F0EAFC /* RootView.swift */,
 				978938722899556200F0EAFC /* RootViewV1.swift */,
 				977B1B63289801DE001D07C4 /* Map.swift */,
@@ -719,7 +719,7 @@
 				974E7EE62930201500BDF59C /* ZimFileService.mm in Sources */,
 				976BAEBC2849056B0049404F /* SearchOperation.mm in Sources */,
 				97909270286BF0BB002B7AA5 /* Formatter.swift in Sources */,
-				9745AB5A28E9257400067FF6 /* SettingsContent.swift in Sources */,
+				9745AB5A28E9257400067FF6 /* Settings.swift in Sources */,
 				97DE2B9C2839D39100C63D9B /* WebView.swift in Sources */,
 				973A0DEB281DDBB600B41E71 /* ZimFilesDownloads.swift in Sources */,
 				975088BE287DA10800273181 /* LibraryLastRefreshTime.swift in Sources */,

@@ -8,32 +8,26 @@
 
 import SwiftUI
 
-struct SettingsContent: View {
+#if os(iOS)
+struct Settings: View {
     var body: some View {
-        #if os(macOS)
-        TabView {
+        List {
             ReadingSettings()
             LibrarySettings()
-            About()
-        }.frame(width: 550, height: 400)
-        #elseif os(iOS)
-        Form {
-            ReadingSettings()
-            LibrarySettings()
-            Section {
+            Section("Misc") {
                 Button("Feedback") { UIApplication.shared.open(URL(string: "mailto:feedback@kiwix.org")!) }
                 Button("Rate the App") {
                     let url = URL(string:"itms-apps://itunes.apple.com/us/app/kiwix/id997079563?action=write-review")!
                     UIApplication.shared.open(url)
                 }
                 NavigationLink("About") { About() }
-            } header: {
-                Text("Misc")
             }
-        }.navigationTitle("Settings")
-        #endif
+        }
+        .navigationTitle("Settings")
+        .modifier(ToolbarRoleBrowser())
     }
 }
+#endif
 
 struct SettingSection<Content: View>: View {
     let name: String
