@@ -14,7 +14,6 @@ class BrowserViewModel: NSObject, ObservableObject,
                         WKNavigationDelegate, WKScriptMessageHandler,
                         NSFetchedResultsControllerDelegate
 {
-    @Published private(set) var tabID = UUID()
     @Published private(set) var canGoBack = false
     @Published private(set) var canGoForward = false
     @Published private(set) var articleTitle: String = ""
@@ -24,53 +23,31 @@ class BrowserViewModel: NSObject, ObservableObject,
     @Published private(set) var outlineItemTree = [OutlineItem]()
     @Published private(set) var url: URL?
     
-    private(set) var webView = WKWebView(frame: .zero, configuration: WebViewConfiguration())
+    private(set) var tabID: NSManagedObjectID?
+    private(set) var webView: WKWebView?
     private var canGoBackObserver: NSKeyValueObservation?
     private var canGoForwardObserver: NSKeyValueObservation?
     private var titleObserver: NSKeyValueObservation?
     private var urlObserver: NSKeyValueObservation?
     private var bookmarkFetchedResultsController: NSFetchedResultsController<Bookmark>?
     
-    static let bookmarkNotificationName = NSNotification.Name(rawValue: "Bookmark.toggle")
-    
-    override init() {
-        super.init()
-        configureWebView()
-    }
-    
-    /// when tab is changed, create new web view
-    func prepareForTab(_ newTabID: UUID) {
-        guard tabID != newTabID else { return }
+    func configure(tabID: NSManagedObjectID?, webView: WKWebView) {
+        self.tabID = tabID
+        self.webView = webView
         
-        tabID = newTabID
-        articleTitle = ""
-        zimFileName = ""
-        outlineItems = []
-        outlineItemTree = []
-        webView = WKWebView(frame: .zero, configuration: WebViewConfiguration())
-        
-        configureWebView()
-    }
-    
-    private func configureWebView() {
+        // configure web view
         webView.allowsBackForwardNavigationGestures = true
         webView.configuration.defaultWebpagePreferences.preferredContentMode = .mobile  // for font adjustment to work
+        webView.configuration.userContentController.removeScriptMessageHandler(forName: "headings")
         webView.configuration.userContentController.add(self, name: "headings")
         webView.navigationDelegate = self
-//        webView.uiDelegate = self
-        let tab = try? Database.viewContext.fetch(Tab.fetchRequest(id: tabID)).first
-        webView.interactionState = tab?.interactionState
         
         // setup web view property observers
         canGoBackObserver = webView.observe(\.canGoBack, options: .initial) { [unowned self] webView, _ in
-            DispatchQueue.main.async {
-                self.canGoBack = webView.canGoBack
-            }
+            canGoBack = webView.canGoBack
         }
         canGoForwardObserver = webView.observe(\.canGoForward, options: .initial) { [unowned self] webView, _ in
-            DispatchQueue.main.async {
-                self.canGoForward = webView.canGoForward
-            }
+            canGoForward = webView.canGoForward
         }
         titleObserver = webView.observe(\.title, options: .initial) { [unowned self] webView, _ in
             guard let zimFileID = UUID(uuidString: webView.url?.host ?? ""),
@@ -78,7 +55,8 @@ class BrowserViewModel: NSObject, ObservableObject,
                   !title.isEmpty else { return }
             Database.performBackgroundTask { context in
                 context.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
-                guard let tab = try? context.fetch(Tab.fetchRequest(id: self.tabID)).first else { return }
+                guard let tabID = self.tabID,
+                      let tab = try? context.existingObject(with: tabID) as? Tab else { return }
                 tab.title = title
                 if let zimFile = try? context.fetch(ZimFile.fetchRequest(fileID: zimFileID)).first {
                     tab.zimFile = zimFile
@@ -113,20 +91,20 @@ class BrowserViewModel: NSObject, ObservableObject,
     // MARK: - Content Loading
     
     func load(url: URL) {
-        guard webView.url != url else { return }
-        webView.load(URLRequest(url: url))
+        guard webView?.url != url else { return }
+        webView?.load(URLRequest(url: url))
     }
     
     func loadRandomArticle(zimFileID: UUID? = nil) {
-        let zimFileID = zimFileID ?? UUID(uuidString: webView.url?.host ?? "")
+        let zimFileID = zimFileID ?? UUID(uuidString: webView?.url?.host ?? "")
         guard let url = ZimFileService.shared.getRandomPageURL(zimFileID: zimFileID) else { return }
-        webView.load(URLRequest(url: url))
+        load(url: url)
     }
     
     func loadMainArticle(zimFileID: UUID? = nil) {
-        let zimFileID = zimFileID ?? UUID(uuidString: webView.url?.host ?? "")
+        let zimFileID = zimFileID ?? UUID(uuidString: webView?.url?.host ?? "")
         guard let url = ZimFileService.shared.getMainPageURL(zimFileID: zimFileID) else { return }
-        webView.load(URLRequest(url: url))
+        load(url: url)
     }
     
     // MARK: - WKNavigationDelegate
@@ -155,7 +133,7 @@ class BrowserViewModel: NSObject, ObservableObject,
     }
     
     func createBookmark() {
-        guard let url = webView.url else { return }
+        guard let url = webView?.url else { return }
         Database.performBackgroundTask { context in
             let bookmark = Bookmark(context: context)
             bookmark.articleURL = url
@@ -175,7 +153,7 @@ class BrowserViewModel: NSObject, ObservableObject,
     }
     
     func deleteBookmark() {
-        guard let url = webView.url else { return }
+        guard let url = webView?.url else { return }
         Database.performBackgroundTask { context in
             let request = Bookmark.fetchRequest(predicate: NSPredicate(format: "articleURL == %@", url as CVarArg))
             guard let bookmark = try? context.fetch(request).first else { return }
@@ -189,7 +167,7 @@ class BrowserViewModel: NSObject, ObservableObject,
     /// Scroll to an outline item
     /// - Parameter outlineItemID: ID of the outline item to scroll to
     func scrollTo(outlineItemID: String) {
-        webView.evaluateJavaScript("scrollToHeading('\(outlineItemID)')")
+        webView?.evaluateJavaScript("scrollToHeading('\(outlineItemID)')")
     }
     
     /// Convert flattened heading element data to a list of OutlineItems.

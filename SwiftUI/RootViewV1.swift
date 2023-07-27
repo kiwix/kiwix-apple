@@ -120,7 +120,7 @@ private struct Content: View {
             } else if url == nil {
                 Welcome(url: $url)
             } else {
-                WebView().ignoresSafeArea(.container)
+//                WebView().ignoresSafeArea(.container)
             }
         }
         .onChange(of: url) { _ in isSearchActive = false }

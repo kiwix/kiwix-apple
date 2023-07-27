@@ -8,6 +8,8 @@
 
 import SwiftUI
 
+import SwiftUIBackports
+
 struct NavigationButtons: View {
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     @EnvironmentObject private var viewModel: BrowserViewModel
@@ -25,7 +27,7 @@ struct NavigationButtons: View {
     
     var goBackButton: some View {
         Button {
-            viewModel.webView.goBack()
+            viewModel.webView?.goBack()
         } label: {
             Label("Go Back", systemImage: "chevron.left")
         }.disabled(!viewModel.canGoBack)
@@ -33,7 +35,7 @@ struct NavigationButtons: View {
     
     var goForwardButton: some View {
         Button {
-            viewModel.webView.goForward()
+            viewModel.webView?.goForward()
         } label: {
             Label("Go Forward", systemImage: "chevron.right")
         }.disabled(!viewModel.canGoForward)

@@ -79,62 +79,62 @@ struct Kiwix: App {
     }
 }
 #elseif os(iOS)
-struct Kiwix: App {
-    @StateObject private var libraryRefreshViewModel = LibraryViewModel()
-    
-    static let zimFileType = UTType(exportedAs: "org.openzim.zim")
-    
-    @UIApplicationDelegateAdaptor(AppDelegate.self) private var appDelegate
-    
-    private let fileMonitor: DirectoryMonitor
-    
-    init() {
-        fileMonitor = DirectoryMonitor(url: URL.documentDirectory) { LibraryOperations.scanDirectory($0) }
-        UNUserNotificationCenter.current().delegate = appDelegate
-        LibraryOperations.reopen()
-        LibraryOperations.scanDirectory(URL.documentDirectory)
-        LibraryOperations.applyFileBackupSetting()
-        LibraryOperations.registerBackgroundTask()
-        LibraryOperations.applyLibraryAutoRefreshSetting()
-        DownloadService.shared.restartHeartbeatIfNeeded()
-    }
-    
-    var body: some Scene {
-        WindowGroup {
-            EmptyView()
-                .environment(\.managedObjectContext, Database.shared.container.viewContext)
-                .environmentObject(libraryRefreshViewModel)
-        }.commands {
-            CommandGroup(replacing: .importExport) {
-                FileImportButton { Text("Open...") }
-            }
-            CommandGroup(after: .toolbar) {
-                NavigationCommandButtons()
-                Divider()
-            }
-        }
-    }
-    
-    private class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCenterDelegate {
-        /// Storing background download completion handler sent to application delegate
-        func application(_ application: UIApplication,
-                         handleEventsForBackgroundURLSession identifier: String,
-                         completionHandler: @escaping () -> Void) {
-            DownloadService.shared.backgroundCompletionHandler = completionHandler
-        }
-        
-        /// Handling file download complete notification
-        func userNotificationCenter(_ center: UNUserNotificationCenter,
-                                    didReceive response: UNNotificationResponse,
-                                    withCompletionHandler completionHandler: @escaping () -> Void) {
-            if let zimFileID = UUID(uuidString: response.notification.request.identifier),
-               let mainPageURL = ZimFileService.shared.getMainPageURL(zimFileID: zimFileID) {
-                UIApplication.shared.open(mainPageURL)
-            }
-            completionHandler()
-        }
-    }
-}
+//struct Kiwix: App {
+//    @StateObject private var libraryRefreshViewModel = LibraryViewModel()
+//
+//    static let zimFileType = UTType(exportedAs: "org.openzim.zim")
+//
+//    @UIApplicationDelegateAdaptor(AppDelegate.self) private var appDelegate
+//
+//    private let fileMonitor: DirectoryMonitor
+//
+//    init() {
+//        fileMonitor = DirectoryMonitor(url: URL.documentDirectory) { LibraryOperations.scanDirectory($0) }
+//        UNUserNotificationCenter.current().delegate = appDelegate
+//        LibraryOperations.reopen()
+//        LibraryOperations.scanDirectory(URL.documentDirectory)
+//        LibraryOperations.applyFileBackupSetting()
+//        LibraryOperations.registerBackgroundTask()
+//        LibraryOperations.applyLibraryAutoRefreshSetting()
+//        DownloadService.shared.restartHeartbeatIfNeeded()
+//    }
+//
+//    var body: some Scene {
+//        WindowGroup {
+//            EmptyView()
+//                .environment(\.managedObjectContext, Database.shared.container.viewContext)
+//                .environmentObject(libraryRefreshViewModel)
+//        }.commands {
+//            CommandGroup(replacing: .importExport) {
+//                FileImportButton { Text("Open...") }
+//            }
+//            CommandGroup(after: .toolbar) {
+//                NavigationCommandButtons()
+//                Divider()
+//            }
+//        }
+//    }
+//
+//    private class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCenterDelegate {
+//        /// Storing background download completion handler sent to application delegate
+//        func application(_ application: UIApplication,
+//                         handleEventsForBackgroundURLSession identifier: String,
+//                         completionHandler: @escaping () -> Void) {
+//            DownloadService.shared.backgroundCompletionHandler = completionHandler
+//        }
+//
+//        /// Handling file download complete notification
+//        func userNotificationCenter(_ center: UNUserNotificationCenter,
+//                                    didReceive response: UNNotificationResponse,
+//                                    withCompletionHandler completionHandler: @escaping () -> Void) {
+//            if let zimFileID = UUID(uuidString: response.notification.request.identifier),
+//               let mainPageURL = ZimFileService.shared.getMainPageURL(zimFileID: zimFileID) {
+//                UIApplication.shared.open(mainPageURL)
+//            }
+//            completionHandler()
+//        }
+//    }
+//}
 #endif
 
 extension Notification.Name {

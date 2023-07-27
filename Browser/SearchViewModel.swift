@@ -13,6 +13,7 @@ import Defaults
 
 class SearchViewModel: NSObject, ObservableObject, NSFetchedResultsControllerDelegate {
     @Published var searchText: String = ""  // text in the search field
+    @Published var isSearching = false  // for iOS 15 & 14
     @Published private(set) var zimFiles: [UUID: ZimFile]  // ID of zim files that are included in search
     @Published private(set) var inProgress = false
     @Published private(set) var results = [SearchResult]()

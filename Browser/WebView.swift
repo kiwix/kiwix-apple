@@ -24,55 +24,43 @@ struct WebView: NSViewRepresentable {
 }
 #elseif os(iOS)
 struct WebView: UIViewControllerRepresentable {
-    @EnvironmentObject private var viewModel: BrowserViewModel
+    let view: WKWebView
         
     func makeUIViewController(context: Context) -> WebViewController {
-        WebViewController(tabID: viewModel.tabID, webView: viewModel.webView)
+        WebViewController(webView: view)
     }
     
     func updateUIViewController(_ controller: WebViewController, context: Context) { }
-    
-    static func dismantleUIViewController(_ controller: WebViewController, coordinator: ()) {
-        guard let interactionState = controller.webView.interactionState as? Data else { return }
-        Database.performBackgroundTask { context in
-            context.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
-            guard let tab = try? context.fetch(Tab.fetchRequest(id: controller.tabID)).first else { return }
-            tab.interactionState = interactionState
-            try? context.save()
-        }
-    }
 }
 
 class WebViewController: UIViewController {
-    let tabID: UUID
     let webView: WKWebView
     private var zoomScale: CGFloat = 1
     
-    init(tabID: UUID, webView: WKWebView) {
-        self.tabID = tabID
+    init(webView: WKWebView) {
         self.webView = webView
         super.init(nibName: nil, bundle: nil)
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(sceneDidEnterBackground),
-            name: UIScene.didEnterBackgroundNotification,
-            object: nil
-        )
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(sceneWillEnterForeground),
-            name: UIScene.willEnterForegroundNotification,
-            object: nil
-        )
+//        NotificationCenter.default.addObserver(
+//            self,
+//            selector: #selector(sceneDidEnterBackground),
+//            name: UIScene.didEnterBackgroundNotification,
+//            object: nil
+//        )
+//        NotificationCenter.default.addObserver(
+//            self,
+//            selector: #selector(sceneWillEnterForeground),
+//            name: UIScene.willEnterForegroundNotification,
+//            object: nil
+//        )
     }
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    deinit {
-        NotificationCenter.default.removeObserver(self)
-    }
+//    deinit {
+//        NotificationCenter.default.removeObserver(self)
+//    }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -119,18 +107,19 @@ class WebViewController: UIViewController {
         NSLayoutConstraint.activate([
             view.leftAnchor.constraint(equalTo: webView.leftAnchor),
             view.bottomAnchor.constraint(equalTo: webView.bottomAnchor),
-            view.rightAnchor.constraint(equalTo: webView.rightAnchor)
+            view.rightAnchor.constraint(equalTo: webView.rightAnchor),
+            view.topAnchor.constraint(equalTo: webView.topAnchor),
         ])
         
-        let topSafeAreaConstraint = view.safeAreaLayoutGuide.topAnchor.constraint(equalTo: webView.topAnchor)
-        topSafeAreaConstraint.isActive = true
-                
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
-            guard self.webView.superview == self.view else { return }
-            topSafeAreaConstraint.isActive = false
-            let topConstraint = self.view.topAnchor.constraint(equalTo: self.webView.topAnchor)
-            topConstraint.isActive = true
-        }
+//        let topSafeAreaConstraint = view.safeAreaLayoutGuide.topAnchor.constraint(equalTo: webView.topAnchor)
+//        topSafeAreaConstraint.isActive = true
+//
+//        DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
+//            guard self.webView.superview == self.view else { return }
+//            topSafeAreaConstraint.isActive = false
+//            let topConstraint = self.view.topAnchor.constraint(equalTo: self.webView.topAnchor)
+//            topConstraint.isActive = true
+//        }
     }
 }
 #endif
