@@ -1,5 +1,5 @@
 //
-//  BookmarksView.swift
+//  Bookmarks.swift
 //  Kiwix
 //
 //  Created by Chris Li on 5/28/22.

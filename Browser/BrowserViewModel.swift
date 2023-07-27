@@ -22,6 +22,7 @@ class BrowserViewModel: NSObject, ObservableObject,
     @Published private(set) var articleBookmarked = false
     @Published private(set) var outlineItems = [OutlineItem]()
     @Published private(set) var outlineItemTree = [OutlineItem]()
+    @Published private(set) var url: URL?
     
     private(set) var webView = WKWebView(frame: .zero, configuration: WebViewConfiguration())
     private var canGoBackObserver: NSKeyValueObservation?
@@ -90,6 +91,7 @@ class BrowserViewModel: NSObject, ObservableObject,
             }
         }
         urlObserver = webView.observe(\.url, options: .initial) { [unowned self] webView, _ in
+            url = webView.url
             let fetchRequest = Bookmark.fetchRequest(predicate: {
                 if let url = webView.url {
                     return NSPredicate(format: "articleURL == %@", url as CVarArg)
