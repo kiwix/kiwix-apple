@@ -23,7 +23,7 @@ struct Bookmarks: View {
             ForEach(bookmarks) { bookmark in
                 Button {
                     NotificationCenter.default.post(
-                        name: Notification.Name.openURL, object: nil, userInfo: ["url": bookmark.articleURL]
+                        name: Notification.Name.openURL, object: nil, userInfo:  ["url": bookmark.articleURL]
                     )
                 } label: {
                     ArticleCell(bookmark: bookmark).frame(height: itemHeight)
@@ -47,25 +47,24 @@ struct Bookmarks: View {
             }
         }
         .modifier(GridCommon())
+        .navigationTitle("Bookmarks")
+        .searchable(text: $searchText)
+        .onChange(of: searchText) { searchText in
+            bookmarks.nsPredicate = Bookmarks.buildPredicate(searchText: searchText)
+        }
         .overlay {
             if bookmarks.isEmpty {
                 Message(text: "No bookmarks")
             }
         }
-        .searchable(text: $searchText)
-        .onChange(of: searchText) { _ in
-            bookmarks.nsPredicate = Bookmarks.buildPredicate(searchText: searchText)
-        }
         .modify { view in
             #if os(macOS)
-            view.navigationTitle("Bookmarks")
+            view
             #elseif os(iOS)
             if #available(iOS 16.0, *) {
-                view.navigationBarTitleDisplayMode(.inline).navigationTitle("Bookmarks").toolbarRole(.browser)
-            } else if horizontalSizeClass == .regular {
-                view.navigationBarTitleDisplayMode(.inline)
+                view.navigationBarTitleDisplayMode(.inline).toolbarRole(.browser)
             } else {
-                view.navigationTitle("Bookmarks").navigationBarTitleDisplayMode(.inline)
+                view.navigationBarTitleDisplayMode(.inline)
             }
             #endif
         }
