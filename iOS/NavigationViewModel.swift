@@ -13,7 +13,11 @@ import WebKit
 class NavigationViewModel: ObservableObject {
     @Published var currentItem: NavigationItem?
     
+    // for iOS 15 & above, where one scene supports multiple web views
     private var webViews = [NSManagedObjectID: WKWebView]()
+    
+    // for iOS 15 & below, and macOS, where one scene supports one web view
+    private(set) lazy var webView = WKWebView(frame: .zero, configuration: WebViewConfiguration())
     
     init() {
         navigateToMostRecentTab()
@@ -91,13 +95,11 @@ class NavigationViewModel: ObservableObject {
         currentItem = NavigationItem.tab(objectID: objectID)
     }
     
-    // MARK: - Web Management
-    
-    private(set) lazy var webView = WKWebView(frame: .zero, configuration: WebViewConfiguration())
+    // MARK: - Web View Management
     
     func getWebView(tabID: NSManagedObjectID) -> WKWebView {
         let webView = webViews[tabID] ?? WKWebView(frame: .zero, configuration: WebViewConfiguration())
-        if let tab = try? Database.viewContext.existingObject(with: tabID) as? Tab {
+        if webView.url == nil, let tab = try? Database.viewContext.existingObject(with: tabID) as? Tab {
             webView.interactionState = tab.interactionState
         }
         webViews[tabID] = webView

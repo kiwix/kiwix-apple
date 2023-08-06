@@ -63,7 +63,7 @@ struct RootView: View {
         .environmentObject(library)
         .environmentObject(navigation)
         .onChange(of: scenePhase) { newScenePhase in
-            guard newScenePhase == .background else { return }
+            guard newScenePhase == .inactive else { return }
             navigation.persistWebViewStates()
         }
         .onOpenURL { url in

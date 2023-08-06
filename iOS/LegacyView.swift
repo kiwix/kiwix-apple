@@ -93,7 +93,7 @@ private struct Content: View {
             } else if browser.url == nil {
                 List { Text("Welcome") }
             } else {
-                WebView(view: navigation.webView).ignoresSafeArea()
+                WebView(tabID: nil).ignoresSafeArea()
             }
         }
         .toolbar {

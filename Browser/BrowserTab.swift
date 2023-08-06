@@ -66,7 +66,7 @@ struct BrowserTabRegular: View {
                 if browser.url == nil {
                     List { Text("Welcome") }
                 } else {
-                    WebView(view: navigation.getWebView(tabID: tabID)).ignoresSafeArea()
+                    WebView(tabID: tabID).ignoresSafeArea()
                 }
             }.overlay {
                 if isSearching {
@@ -91,7 +91,7 @@ struct BrowserTabCompact: View {
             if browser.url == nil {
                 List { Text("Welcome") }
             } else {
-                WebView(view: navigation.getWebView(tabID: tabID)).ignoresSafeArea()
+                WebView(tabID: tabID).ignoresSafeArea()
             }
         }
         .toolbar {
