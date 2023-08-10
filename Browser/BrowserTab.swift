@@ -46,8 +46,9 @@ struct BrowserTabRegular: View {
                 view.navigationTitle(browserViewModel.articleTitle).navigationSubtitle(browserViewModel.zimFileName)
             }
             #elseif os(iOS)
+            // navigationBarTitle is deprecated, but still using it to avoid _UIModernBarButton related constraint error
             view.navigationBarTitleDisplayMode(.inline)
-                .navigationTitle(browser.articleTitle)
+                .navigationBarTitle(browser.articleTitle)
                 .toolbarRole(.browser)
                 .toolbarBackground(.visible, for: .navigationBar)
             #endif
@@ -75,42 +76,6 @@ struct BrowserTabRegular: View {
                     }
                 }
             }
-        }
-    }
-}
-
-@available(iOS 16.0, *)
-struct BrowserTabCompact: View {
-    @EnvironmentObject private var navigation: NavigationViewModel
-    @StateObject private var browser = BrowserViewModel()
-    
-    let tabID: NSManagedObjectID
-    
-    var body: some View {
-        Group {
-            if browser.url == nil {
-                List { Text("Welcome") }
-            } else {
-                WebView(tabID: tabID).ignoresSafeArea()
-            }
-        }
-        .toolbar {
-            ToolbarItemGroup(placement: .bottomBar) {
-                NavigationButtons()
-                Spacer()
-                OutlineButton()
-                Spacer()
-                BookmarkButton()
-                Spacer()
-                RandomArticleButton()
-                Spacer()
-                TabsManagerButton()
-            }
-        }
-        .environmentObject(browser)
-        .onAppear {
-            navigation.updateTab(tabID: tabID, lastOpened: Date())
-            browser.configure(tabID: tabID, webView: navigation.getWebView(tabID: tabID))
         }
     }
 }

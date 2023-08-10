@@ -6,39 +6,28 @@
 //  Copyright © 2023 Chris Li. All rights reserved.
 //
 
-import CoreData
 import SwiftUI
 
 @available(iOS 16.0, *)
 struct CompactView: UIViewControllerRepresentable {
-    @EnvironmentObject private var navigation: NavigationViewModel
-    
     func makeUIViewController(context: Context) -> UINavigationController {
-        let controller = UINavigationController()
-        controller.isToolbarHidden = false
-        controller.toolbar.scrollEdgeAppearance = {
-            let apperance = UIToolbarAppearance()
-            apperance.configureWithDefaultBackground()
-            return apperance
-        }()
-        return controller
-    }
-    
-    func updateUIViewController(_ navigationController: UINavigationController, context: Context) {
-        let controller: CompactViewController<AnyView> = {
-            if case let .tab(tabID) = navigation.currentItem {
-                return CompactViewController(rootView: AnyView(BrowserTabCompact(tabID: tabID)))
-            } else {
-                return CompactViewController(rootView: AnyView(EmptyView()))
-            }
-        }()
+        let controller = CompactViewController(rootView: Content())
         controller.navigationItem.scrollEdgeAppearance = {
             let apperance = UINavigationBarAppearance()
             apperance.configureWithDefaultBackground()
             return apperance
         }()
-        navigationController.viewControllers = [controller]
+        let navigationController = UINavigationController(rootViewController: controller)
+        navigationController.isToolbarHidden = false
+        navigationController.toolbar.scrollEdgeAppearance = {
+            let apperance = UIToolbarAppearance()
+            apperance.configureWithDefaultBackground()
+            return apperance
+        }()
+        return navigationController
     }
+    
+    func updateUIViewController(_ navigationController: UINavigationController, context: Context) { }
 }
 
 private class CompactViewController<Content>: UIHostingController<Content>,
@@ -67,10 +56,12 @@ private class CompactViewController<Content>: UIHostingController<Content>,
         searchController.showsSearchResultsController = true
         navigationItem.titleView = searchController.searchBar
         
+        // observe openURL notification so that search can be deactivated when new article is loaded
         NotificationCenter.default.addObserver(self, selector: #selector(onOpenURL), name: .openURL, object: nil)
     }
 
     func willPresentSearchController(_ searchController: UISearchController) {
+        // The iOS SDK does not add cancel button for an active search bar on iPadOS, so adding one below
         guard traitCollection.horizontalSizeClass == .compact,
               UIDevice.current.userInterfaceIdiom == .pad else { return }
         navigationController?.setToolbarHidden(true, animated: true)
@@ -93,5 +84,45 @@ private class CompactViewController<Content>: UIHostingController<Content>,
         
     @objc func onOpenURL() {
         searchController.isActive = false
+    }
+}
+
+@available(iOS 16.0, *)
+private struct Content: View {
+    @EnvironmentObject private var navigation: NavigationViewModel
+    @StateObject private var browser = BrowserViewModel()
+    
+    var body: some View {
+        Group {
+            if case let .tab(tabID) = navigation.currentItem, browser.url != nil {
+                WebView(tabID: tabID).ignoresSafeArea().id(tabID)
+            } else {
+                List { Text("Welcome") }
+            }
+        }
+        .toolbar {
+            ToolbarItemGroup(placement: .bottomBar) {
+                NavigationButtons()
+                Spacer()
+                OutlineButton()
+                Spacer()
+                BookmarkButton()
+                Spacer()
+                RandomArticleButton()
+                Spacer()
+                TabsManagerButton()
+            }
+        }
+        .environmentObject(browser)
+        .onAppear {
+            guard case let .tab(tabID) = navigation.currentItem else { return }
+            navigation.updateTab(tabID: tabID, lastOpened: Date())
+            browser.configure(tabID: tabID, webView: navigation.getWebView(tabID: tabID))
+        }
+        .onChange(of: navigation.currentItem) { navigationItem in
+            guard case let .tab(tabID) = navigation.currentItem else { return }
+            navigation.updateTab(tabID: tabID, lastOpened: Date())
+            browser.configure(tabID: tabID, webView: navigation.getWebView(tabID: tabID))
+        }
     }
 }

@@ -97,7 +97,7 @@ class WebViewController: UIViewController {
         ])
         topSafeAreaConstraint = view.safeAreaLayoutGuide.topAnchor.constraint(equalTo: webView.topAnchor)
         topSafeAreaConstraint?.isActive = true
-        layoutCancellable = layoutSubject.debounce(for: .seconds(0.1), scheduler: RunLoop.main).sink { _ in
+        layoutCancellable = layoutSubject.debounce(for: .seconds(0.15), scheduler: RunLoop.main).sink { _ in
             guard self.view.subviews.contains(self.webView) else { return }
             self.topSafeAreaConstraint?.isActive = false
             let topConstraint = self.view.topAnchor.constraint(equalTo: self.webView.topAnchor)

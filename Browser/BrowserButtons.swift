@@ -12,7 +12,7 @@ import SwiftUIBackports
 
 struct NavigationButtons: View {
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
-    @EnvironmentObject private var viewModel: BrowserViewModel
+    @EnvironmentObject private var browser: BrowserViewModel
     
     var body: some View {
         if horizontalSizeClass == .regular {
@@ -27,23 +27,23 @@ struct NavigationButtons: View {
     
     var goBackButton: some View {
         Button {
-            viewModel.webView?.goBack()
+            browser.webView?.goBack()
         } label: {
             Label("Go Back", systemImage: "chevron.left")
-        }.disabled(!viewModel.canGoBack)
+        }.disabled(!browser.canGoBack)
     }
     
     var goForwardButton: some View {
         Button {
-            viewModel.webView?.goForward()
+            browser.webView?.goForward()
         } label: {
             Label("Go Forward", systemImage: "chevron.right")
-        }.disabled(!viewModel.canGoForward)
+        }.disabled(!browser.canGoForward)
     }
 }
 
 struct RandomArticleButton: View {
-    @EnvironmentObject private var viewModel: BrowserViewModel
+    @EnvironmentObject private var browser: BrowserViewModel
     @FetchRequest(
         sortDescriptors: [NSSortDescriptor(keyPath: \ZimFile.size, ascending: false)],
         predicate: ZimFile.openedPredicate
@@ -52,7 +52,7 @@ struct RandomArticleButton: View {
     var body: some View {
         #if os(macOS)
         Button {
-            viewModel.loadRandomArticle()
+            browser.loadRandomArticle()
         } label: {
             Label("Random Article", systemImage: "die.face.5")
         }
@@ -62,13 +62,13 @@ struct RandomArticleButton: View {
         Menu {
             ForEach(zimFiles) { zimFile in
                 Button(zimFile.name) {
-                    viewModel.loadRandomArticle(zimFileID: zimFile.fileID)
+                    browser.loadRandomArticle(zimFileID: zimFile.fileID)
                 }
             }
         } label: {
             Label("Random Page", systemImage: "die.face.5")
         } primaryAction: {
-            viewModel.loadRandomArticle()
+            browser.loadRandomArticle()
         }
         .disabled(zimFiles.isEmpty)
         .help("Show random article")
@@ -77,40 +77,56 @@ struct RandomArticleButton: View {
 }
 
 struct MainArticleButton: View {
-    @EnvironmentObject private var viewModel: BrowserViewModel
+    @EnvironmentObject private var browser: BrowserViewModel
     @FetchRequest(
         sortDescriptors: [NSSortDescriptor(keyPath: \ZimFile.size, ascending: false)],
         predicate: ZimFile.openedPredicate
     ) private var zimFiles: FetchedResults<ZimFile>
     
     var body: some View {
+        #if os(macOS)
         Button {
-            viewModel.loadMainArticle()
+            browser.loadMainArticle()
         } label: {
             Label("Main Article", systemImage: "house")
         }
         .disabled(zimFiles.isEmpty)
         .help("Show main article")
+        #elseif os(iOS)
+        Menu {
+            ForEach(zimFiles) { zimFile in
+                Button(zimFile.name) {
+                    browser.loadMainArticle(zimFileID: zimFile.fileID)
+                }
+            }
+        } label: {
+            Label("Main Article", systemImage: "house")
+        } primaryAction: {
+            browser.loadMainArticle()
+        }
+        .disabled(zimFiles.isEmpty)
+        .help("Show main article")
+        #endif
     }
 }
 
 struct OutlineButton: View {
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
-    @EnvironmentObject private var viewModel: BrowserViewModel
+    @EnvironmentObject private var browser: BrowserViewModel
     @State private var isShowingOutline = false
 
     var body: some View {
         if horizontalSizeClass == .regular {
             Menu {
-                ForEach(viewModel.outlineItems) { item in
+                ForEach(browser.outlineItems) { item in
                     Button(String(repeating: "    ", count: item.level) + item.text) {
-                        viewModel.scrollTo(outlineItemID: item.id)
+                        browser.scrollTo(outlineItemID: item.id)
                     }
                 }
             } label: {
                 Label("Outline", systemImage: "list.bullet")
             }
-            .disabled(viewModel.outlineItems.isEmpty)
+            .disabled(browser.outlineItems.isEmpty)
             .help("Show article outline")
         } else {
             Button {
@@ -118,23 +134,23 @@ struct OutlineButton: View {
             } label: {
                 Image(systemName: "list.bullet")
             }
-            .disabled(viewModel.outlineItems.isEmpty)
+            .disabled(browser.outlineItems.isEmpty)
             .help("Show article outline")
             .sheet(isPresented: $isShowingOutline) {
                 NavigationView {
                     Group {
-                        if viewModel.outlineItemTree.isEmpty {
+                        if browser.outlineItemTree.isEmpty {
                             Message(text: "No outline available")
                         } else {
-                            List(viewModel.outlineItemTree) { item in
+                            List(browser.outlineItemTree) { item in
                                 OutlineNode(item: item) { item in
-                                    viewModel.scrollTo(outlineItemID: item.id)
+                                    browser.scrollTo(outlineItemID: item.id)
                                     isShowingOutline = false
                                 }
                             }.listStyle(.plain)
                         }
                     }
-                    .navigationTitle(viewModel.articleTitle)
+                    .navigationTitle(browser.articleTitle)
                     #if os(iOS)
                     .navigationBarTitleDisplayMode(.inline)
                     #endif
@@ -189,7 +205,7 @@ struct OutlineButton: View {
 
 struct BookmarkButton: View {
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
-    @EnvironmentObject private var viewModel: BrowserViewModel
+    @EnvironmentObject private var browser: BrowserViewModel
     @State private var isShowingBookmark = false
     
     var body: some View {
@@ -210,15 +226,15 @@ struct BookmarkButton: View {
         }
         #elseif os(iOS)
         Menu {
-            if viewModel.articleBookmarked {
+            if browser.articleBookmarked {
                 Button(role: .destructive) {
-                    viewModel.deleteBookmark()
+                    browser.deleteBookmark()
                 } label: {
                     Label("Remove Bookmark", systemImage: "star.slash.fill")
                 }
             } else {
                 Button {
-                    viewModel.createBookmark()
+                    browser.createBookmark()
                 } label: {
                     Label("Add Bookmark", systemImage: "star")
                 }
@@ -232,8 +248,8 @@ struct BookmarkButton: View {
             Label {
                 Text("Show Bookmarks")
             } icon: {
-                Image(systemName: viewModel.articleBookmarked ? "star.fill" : "star")
-                    .renderingMode(viewModel.articleBookmarked ? .original : .template)
+                Image(systemName: browser.articleBookmarked ? "star.fill" : "star")
+                    .renderingMode(browser.articleBookmarked ? .original : .template)
             }
         } primaryAction: {
             isShowingBookmark = true

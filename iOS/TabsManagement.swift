@@ -87,6 +87,26 @@ struct TabsManagerButton: View {
     var body: some View {
         Menu {
             Section {
+                Button {
+                    navigation.createTab()
+                } label: {
+                    Label("New Tab", systemImage: "plus.square")
+                }
+                Button(role: .destructive) {
+                    Task {
+                        guard case .tab(let tabID) = navigation.currentItem else { return }
+                        await navigation.deleteTab(objectID: tabID)
+                    }
+                } label: {
+                    Label("Close This Tab", systemImage: "xmark.square")
+                }
+                Button(role: .destructive) {
+                    Task { await navigation.deleteAllTabs() }
+                } label: {
+                    Label("Close All Tabs", systemImage: "xmark.square.fill")
+                }
+            }
+            Section {
                 ForEach(zimFiles) { zimFile in
                     Button {
                         browser.loadMainArticle(zimFileID: zimFile.fileID)

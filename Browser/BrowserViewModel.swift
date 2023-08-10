@@ -42,6 +42,11 @@ class BrowserViewModel: NSObject, ObservableObject,
         webView.configuration.userContentController.add(self, name: "headings")
         webView.navigationDelegate = self
         
+        // get outline items if something is already loaded
+        if webView.url != nil {
+            webView.evaluateJavaScript("getOutlineItems();")
+        }
+        
         // setup web view property observers
         canGoBackObserver = webView.observe(\.canGoBack, options: .initial) { [unowned self] webView, _ in
             canGoBack = webView.canGoBack
