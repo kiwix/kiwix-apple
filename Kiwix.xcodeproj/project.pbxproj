@@ -315,8 +315,6 @@
 		97176AD02A4FBD140093E3B0 /* Browser */ = {
 			isa = PBXGroup;
 			children = (
-				97176AD12A4FBD710093E3B0 /* BrowserViewModel.swift */,
-				97C13787284572AC00386C04 /* SearchViewModel.swift */,
 				97176AD32A506B3B0093E3B0 /* BrowserTab.swift */,
 				9767E7822A6D537400C5082D /* BrowserButtons.swift */,
 				97255D8B273608C3002B995B /* WebView.swift */,
@@ -324,6 +322,17 @@
 				97F3332E28AFC1A2007FF53C /* SearchResults.swift */,
 			);
 			path = Browser;
+			sourceTree = "<group>";
+		};
+		972727A82A883FB600BCAF75 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				9767E78F2A756CEE00C5082D /* NavigationViewModel.swift */,
+				97176AD12A4FBD710093E3B0 /* BrowserViewModel.swift */,
+				97C13787284572AC00386C04 /* SearchViewModel.swift */,
+				97DE2BA1283A8E5C00C63D9B /* LibraryViewModel.swift */,
+			);
+			path = ViewModel;
 			sourceTree = "<group>";
 		};
 		972DE4BF2814A5E3004FD9B9 /* OPDSParser */ = {
@@ -425,7 +434,6 @@
 		97A092782A54D088009C039E /* Library */ = {
 			isa = PBXGroup;
 			children = (
-				97DE2BA1283A8E5C00C63D9B /* LibraryViewModel.swift */,
 				972DE4C12814A961004FD9B9 /* Library.swift */,
 				973A0DFB283100C300B41E71 /* ZimFilesOpened.swift */,
 				9790CA5828A05EBB00D39FC6 /* ZimFilesCategories.swift */,
@@ -440,6 +448,7 @@
 			isa = PBXGroup;
 			children = (
 				970EC39E23BCE7F5008DCA27 /* Model */,
+				972727A82A883FB600BCAF75 /* ViewModel */,
 				9767E7842A72A1D800C5082D /* macOS */,
 				97B172F22A48F39200039108 /* iOS */,
 				97176AD02A4FBD140093E3B0 /* Browser */,
@@ -461,7 +470,6 @@
 			isa = PBXGroup;
 			children = (
 				9767E7852A72A21300C5082D /* App_iOS.swift */,
-				9767E78F2A756CEE00C5082D /* NavigationViewModel.swift */,
 				97B7E7DD2A768FA8002B6644 /* CompactView.swift */,
 				97E8033D2A7BD80F00DD251D /* LegacyView.swift */,
 				9767E78B2A75420400C5082D /* TabsManagement.swift */,
