@@ -164,9 +164,9 @@ private struct Content: View {
                 }
             }
         }
-        .introspectNavigationController { controller in
-            controller.setToolbarHidden(horizontalSizeClass != .compact || isSearchActive, animated: false)
-        }
+//        .introspectNavigationController { controller in
+//            controller.setToolbarHidden(horizontalSizeClass != .compact || isSearchActive, animated: false)
+//        }
     }
 }
 
