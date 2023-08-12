@@ -8,6 +8,7 @@
 
 import SwiftUI
 
+#if os(iOS)
 @available(iOS 16.0, *)
 struct CompactView: UIViewControllerRepresentable {
     func makeUIViewController(context: Context) -> UINavigationController {
@@ -126,3 +127,4 @@ private struct Content: View {
         }
     }
 }
+#endif

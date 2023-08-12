@@ -7,16 +7,18 @@
 //
 
 import SwiftUI
-import UniformTypeIdentifiers
+import UserNotifications
 
 #if os(iOS)
 @main
 struct Kiwix: App {
-    static let zimFileType = UTType(exportedAs: "org.openzim.zim")
+    @UIApplicationDelegateAdaptor(AppDelegate.self) private var appDelegate
+    
     private let fileMonitor: DirectoryMonitor
     
     init() {
         fileMonitor = DirectoryMonitor(url: URL.documentDirectory) { LibraryOperations.scanDirectory($0) }
+        UNUserNotificationCenter.current().delegate = appDelegate
         LibraryOperations.reopen()
         LibraryOperations.scanDirectory(URL.documentDirectory)
         LibraryOperations.applyFileBackupSetting()
@@ -28,6 +30,35 @@ struct Kiwix: App {
     var body: some Scene {
         WindowGroup {
             RootView().environment(\.managedObjectContext, Database.viewContext)
+        }
+//        .commands {
+//            CommandGroup(replacing: .importExport) {
+//                FileImportButton { Text("Open...") }
+//            }
+//            CommandGroup(after: .toolbar) {
+//                NavigationCommandButtons()
+//                Divider()
+//            }
+//        }
+    }
+    
+    private class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCenterDelegate {
+        /// Storing background download completion handler sent to application delegate
+        func application(_ application: UIApplication,
+                         handleEventsForBackgroundURLSession identifier: String,
+                         completionHandler: @escaping () -> Void) {
+            DownloadService.shared.backgroundCompletionHandler = completionHandler
+        }
+
+        /// Handling file download complete notification
+        func userNotificationCenter(_ center: UNUserNotificationCenter,
+                                    didReceive response: UNNotificationResponse,
+                                    withCompletionHandler completionHandler: @escaping () -> Void) {
+            if let zimFileID = UUID(uuidString: response.notification.request.identifier),
+               let mainPageURL = ZimFileService.shared.getMainPageURL(zimFileID: zimFileID) {
+                UIApplication.shared.open(mainPageURL)
+            }
+            completionHandler()
         }
     }
 }
@@ -114,7 +145,7 @@ struct RootView: View {
         case .settings:
             Settings()
         case .tab(let tabID):
-            BrowserTabRegular(tabID: tabID).id(tabID)
+            BrowserTab(tabID: tabID).id(tabID)
         case .opened:
             ZimFilesOpened()
         case .categories:

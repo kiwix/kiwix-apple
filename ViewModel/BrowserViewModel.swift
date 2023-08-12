@@ -60,16 +60,15 @@ class BrowserViewModel: NSObject, ObservableObject,
                   !title.isEmpty else { return }
             Database.performBackgroundTask { context in
                 context.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
-                guard let tabID = self.tabID,
-                      let tab = try? context.existingObject(with: tabID) as? Tab else { return }
-                tab.title = title
-                if let zimFile = try? context.fetch(ZimFile.fetchRequest(fileID: zimFileID)).first {
+                let zimFile = try? context.fetch(ZimFile.fetchRequest(fileID: zimFileID)).first
+                if let tabID = self.tabID, let tab = try? context.existingObject(with: tabID) as? Tab {
+                    tab.title = title
                     tab.zimFile = zimFile
                 }
                 try? context.save()
                 DispatchQueue.main.async {
                     self.articleTitle = title
-                    self.zimFileName = tab.zimFile?.name ?? ""
+                    self.zimFileName = zimFile?.name ?? ""
                 }
             }
         }

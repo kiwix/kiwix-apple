@@ -20,7 +20,11 @@ class NavigationViewModel: ObservableObject {
     private(set) lazy var webView = WKWebView(frame: .zero, configuration: WebViewConfiguration())
     
     init() {
+        #if os(macOS)
+        currentItem = .reading
+        #elseif os(iOS)
         navigateToMostRecentTab()
+        #endif
     }
     
     // MARK: - Tab Management

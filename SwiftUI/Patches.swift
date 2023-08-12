@@ -8,6 +8,8 @@
 
 import Foundation
 import SwiftUI
+import UniformTypeIdentifiers
+import UserNotifications
 
 extension URL: Identifiable {
     public var id: String {
@@ -71,4 +73,12 @@ struct ToolbarRoleBrowser: ViewModifier {
         }
         #endif
     }
+}
+
+extension Notification.Name {
+    static let openURL = Notification.Name("openURL")
+}
+
+extension UTType {
+    static let zimFile = UTType(exportedAs: "org.openzim.zim")
 }

@@ -8,6 +8,7 @@
 
 import SwiftUI
 
+#if os(iOS)
 struct LegacyView: UIViewControllerRepresentable {
     @StateObject private var search = SearchViewModel()
     
@@ -177,3 +178,4 @@ private struct Content: View {
         }
     }
 }
+#endif

@@ -211,17 +211,17 @@ struct BookmarkButton: View {
     var body: some View {
         #if os(macOS)
         Button {
-            if viewModel.articleBookmarked {
-                viewModel.deleteBookmark()
+            if browser.articleBookmarked {
+                browser.deleteBookmark()
             } else {
-                viewModel.createBookmark()
+                browser.createBookmark()
             }
         } label: {
             Label {
-                Text(viewModel.articleBookmarked ? "Remove Bookmark" : "Add Bookmark")
+                Text(browser.articleBookmarked ? "Remove Bookmark" : "Add Bookmark")
             } icon: {
-                Image(systemName: viewModel.articleBookmarked ? "star.fill" : "star")
-                    .renderingMode(viewModel.articleBookmarked ? .original : .template)
+                Image(systemName: browser.articleBookmarked ? "star.fill" : "star")
+                    .renderingMode(browser.articleBookmarked ? .original : .template)
             }
         }
         #elseif os(iOS)

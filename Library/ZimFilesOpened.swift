@@ -7,6 +7,7 @@
 //
 
 import SwiftUI
+import UniformTypeIdentifiers
 
 /// A grid of zim files that are opened, or was open but is now missing.
 struct ZimFilesOpened: View {
@@ -51,7 +52,7 @@ struct ZimFilesOpened: View {
         // not using FileImportButton here, because it does not work on iOS/iPadOS, since this view is in a modal
         .fileImporter(
             isPresented: $isFileImporterPresented,
-            allowedContentTypes: [Kiwix.zimFileType],
+            allowedContentTypes: [UTType.zimFile],
             allowsMultipleSelection: true
         ) { result in
             guard case let .success(urls) = result else { return }

@@ -9,8 +9,9 @@
 import CoreData
 import SwiftUI
 
+#if os(iOS)
 @available(iOS 16.0, *)
-struct BrowserTabRegular: View {
+struct BrowserTab: View {
     @EnvironmentObject private var navigation: NavigationViewModel
     @StateObject private var browser = BrowserViewModel()
     @StateObject private var search = SearchViewModel()
@@ -19,11 +20,7 @@ struct BrowserTabRegular: View {
     
     var body: some View {
         Content(tabID: tabID).toolbar {
-            #if os(macOS)
-            ToolbarItemGroup(placement: .navigation) { NavigationButtons() }
-            #elseif os(iOS)
             ToolbarItemGroup(placement: .navigationBarLeading) { NavigationButtons() }
-            #endif
             ToolbarItemGroup(placement: .primaryAction) {
                 OutlineButton()
                 BookmarkButton()
@@ -34,24 +31,13 @@ struct BrowserTabRegular: View {
         .environmentObject(browser)
         .environmentObject(search)
         .searchable(text: $search.searchText, placement: .toolbar)
+        .navigationBarTitle(browser.articleTitle)  // avoid _UIModernBarButton related constraint error
+        .navigationBarTitleDisplayMode(.inline)
+        .toolbarRole(.browser)
+        .toolbarBackground(.visible, for: .navigationBar)
         .onAppear {
             navigation.updateTab(tabID: tabID, lastOpened: Date())
             browser.configure(tabID: tabID, webView: navigation.getWebView(tabID: tabID))
-        }
-        .modify { view in
-            #if os(macOS)
-            if browserViewModel.articleTitle.isEmpty {
-                view.navigationTitle("Kiwix")
-            } else {
-                view.navigationTitle(browserViewModel.articleTitle).navigationSubtitle(browserViewModel.zimFileName)
-            }
-            #elseif os(iOS)
-            // navigationBarTitle is deprecated, but still using it to avoid _UIModernBarButton related constraint error
-            view.navigationBarTitleDisplayMode(.inline)
-                .navigationBarTitle(browser.articleTitle)
-                .toolbarRole(.browser)
-                .toolbarBackground(.visible, for: .navigationBar)
-            #endif
         }
     }
     
@@ -79,3 +65,4 @@ struct BrowserTabRegular: View {
         }
     }
 }
+#endif

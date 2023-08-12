@@ -6,9 +6,9 @@
 //  Copyright © 2023 Chris Li. All rights reserved.
 //
 
-import CoreData
 import SwiftUI
 
+#if os(iOS)
 @available(iOS 16.0, *)
 struct TabsSectionContent: View {
     @EnvironmentObject private var navigation: NavigationViewModel
@@ -152,3 +152,4 @@ struct TabsManagerButton: View {
         }
     }
 }
+#endif

@@ -15,10 +15,10 @@ import Defaults
 
 #if os(macOS)
 struct WebView: NSViewRepresentable {
-    @EnvironmentObject private var viewModel: BrowserViewModel
+    @EnvironmentObject private var navigation: NavigationViewModel
     
     func makeNSView(context: Context) -> WKWebView {
-        viewModel.webView
+        navigation.webView
     }
     
     func updateNSView(_ webView: WKWebView, context: Context) { }
