@@ -36,7 +36,6 @@ struct ZimFilesOpened: View {
             }
         }
         .navigationTitle(NavigationItem.opened.name)
-        .modifier(ToolbarRoleBrowser())
         .toolbar {
             Button {
                 // On iOS 14 & 15, fileimporter's isPresented binding is not reset to false if user swipe to dismiss

@@ -60,21 +60,6 @@ extension Color {
     #endif
 }
 
-/// Set toolbar role to browser when possible
-struct ToolbarRoleBrowser: ViewModifier {
-    func body(content: Content) -> some View {
-        #if os(macOS)
-        content
-        #elseif os(iOS)
-        if #available(iOS 16.0, *) {
-            content.toolbarRole(.browser)
-        } else {
-            content
-        }
-        #endif
-    }
-}
-
 extension Notification.Name {
     static let openURL = Notification.Name("openURL")
 }

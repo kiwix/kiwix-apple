@@ -80,7 +80,7 @@ struct RootView: View {
                     NavigationSplitView {
                         sidebar
                     } detail: {
-                        content
+                        NavigationStack { content.navigationBarTitleDisplayMode(.inline).toolbarRole(.browser) }
                     }
                 } else {
                     CompactView().ignoresSafeArea().onAppear() {

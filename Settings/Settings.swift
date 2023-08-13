@@ -22,9 +22,7 @@ struct Settings: View {
                 }
                 NavigationLink("About") { About() }
             }
-        }
-        .navigationTitle("Settings")
-        .modifier(ToolbarRoleBrowser())
+        }.navigationTitle("Settings")
     }
 }
 #endif

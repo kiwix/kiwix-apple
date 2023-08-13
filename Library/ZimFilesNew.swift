@@ -43,7 +43,6 @@ struct ZimFilesNew: View {
             }
         }
         .navigationTitle(NavigationItem.new.name)
-        .modifier(ToolbarRoleBrowser())
         .searchable(text: $searchText)
         .onAppear { viewModel.start(isUserInitiated: false) }
         .onChange(of: languageCodes) { _ in

@@ -45,17 +45,6 @@ struct Bookmarks: View {
                 Message(text: "No bookmarks")
             }
         }
-        .modify { view in
-            #if os(macOS)
-            view
-            #elseif os(iOS)
-            if #available(iOS 16.0, *) {
-                view.navigationBarTitleDisplayMode(.inline).toolbarRole(.browser)
-            } else {
-                view.navigationBarTitleDisplayMode(.inline)
-            }
-            #endif
-        }
     }
     
     private var gridItem: GridItem {

@@ -17,7 +17,6 @@ struct ZimFilesCategories: View {
     var body: some View {
         ZimFilesCategory(category: $selected)
             .navigationTitle(NavigationItem.categories.name)
-            .modifier(ToolbarRoleBrowser())
             .toolbar {
                 Picker("Category", selection: $selected) {
                     ForEach(Category.allCases) {
