@@ -62,6 +62,7 @@ extension Color {
 
 extension Notification.Name {
     static let openURL = Notification.Name("openURL")
+    static let articleLoadingAlert = Notification.Name("articleLoadingAlert")
 }
 
 extension UTType {
