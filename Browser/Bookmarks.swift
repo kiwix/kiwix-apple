@@ -9,6 +9,7 @@
 import SwiftUI
 
 struct Bookmarks: View {
+    @Environment(\.dismiss) private var dismiss
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     @Environment(\.managedObjectContext) private var managedObjectContext
     @FetchRequest(
@@ -22,28 +23,15 @@ struct Bookmarks: View {
         LazyVGrid(columns: ([gridItem]), spacing: 12) {
             ForEach(bookmarks) { bookmark in
                 Button {
-                    NotificationCenter.default.post(
-                        name: Notification.Name.openURL, object: nil, userInfo:  ["url": bookmark.articleURL]
-                    )
+                    NotificationCenter.openURL(bookmark.articleURL)
+                    if horizontalSizeClass == .compact {
+                        dismiss()
+                    }
                 } label: {
-                    ArticleCell(bookmark: bookmark).frame(height: itemHeight)
+                    ArticleCell(bookmark: bookmark)
                 }
                 .buttonStyle(.plain)
-                .contextMenu {
-                    Button {
-                        NotificationCenter.default.post(
-                            name: Notification.Name.openURL, object: nil, userInfo: ["url": bookmark.articleURL]
-                        )
-                    } label: {
-                        Label("View", systemImage: "doc.richtext")
-                    }
-                    Button(role: .destructive) {
-                        managedObjectContext.delete(bookmark)
-                        try? managedObjectContext.save()
-                    } label: {
-                        Label("Remove", systemImage: "star.slash.fill")
-                    }
-                }
+                .modifier(BookmarkContextMenu(bookmark: bookmark))
             }
         }
         .modifier(GridCommon())
@@ -75,14 +63,6 @@ struct Bookmarks: View {
         GridItem(.adaptive(minimum: 250, maximum: 500), spacing: 12)
         #elseif os(iOS)
         GridItem(.adaptive(minimum: 250, maximum: 500), spacing: 12)
-        #endif
-    }
-    
-    private var itemHeight: CGFloat? {
-        #if os(macOS)
-        82
-        #elseif os(iOS)
-        horizontalSizeClass == .regular ? 110: nil
         #endif
     }
     

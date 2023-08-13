@@ -41,7 +41,7 @@ struct ReadingView: View {
         var body: some View {
             Group {
                 if browser.url == nil {
-                    List { Text("Welcome") }
+                    Welcome()
                 } else {
                     WebView().ignoresSafeArea()
                 }

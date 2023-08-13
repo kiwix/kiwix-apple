@@ -82,3 +82,10 @@ extension Notification.Name {
 extension UTType {
     static let zimFile = UTType(exportedAs: "org.openzim.zim")
 }
+
+extension NotificationCenter {
+    static func openURL(_ url: URL?) {
+        guard let url else { return }
+        NotificationCenter.default.post(name: Notification.Name.openURL, object: nil, userInfo: ["url": url])
+    }
+}

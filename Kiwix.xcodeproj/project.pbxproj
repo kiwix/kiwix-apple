@@ -18,6 +18,7 @@
 		9724FC3028D5F5BE001B7DD2 /* BookmarkContextMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9724FC2E28D5F5BE001B7DD2 /* BookmarkContextMenu.swift */; };
 		972727AA2A89122F00BCAF75 /* App_macOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 972727A92A89122F00BCAF75 /* App_macOS.swift */; };
 		972727AC2A891B9000BCAF75 /* ReadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 972727AB2A891B9000BCAF75 /* ReadingView.swift */; };
+		972727AE2A897FAA00BCAF75 /* GridSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 972727AD2A897FAA00BCAF75 /* GridSection.swift */; };
 		972DE4B42814A4F6004FD9B9 /* DataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 9735D0B82775363900C7D495 /* DataModel.xcdatamodeld */; };
 		972DE4B52814A502004FD9B9 /* Entities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 972DE4722814A116004FD9B9 /* Entities.swift */; };
 		972DE4B62814A502004FD9B9 /* Enum.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9735D0BF27777E3300C7D495 /* Enum.swift */; };
@@ -145,6 +146,7 @@
 		97255D8B273608C3002B995B /* WebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebView.swift; sourceTree = "<group>"; };
 		972727A92A89122F00BCAF75 /* App_macOS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = App_macOS.swift; sourceTree = "<group>"; };
 		972727AB2A891B9000BCAF75 /* ReadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadingView.swift; sourceTree = "<group>"; };
+		972727AD2A897FAA00BCAF75 /* GridSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GridSection.swift; sourceTree = "<group>"; };
 		972DE4722814A116004FD9B9 /* Entities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Entities.swift; sourceTree = "<group>"; };
 		972DE4A62814A3D8004FD9B9 /* Kiwix.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Kiwix.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		972DE4C12814A961004FD9B9 /* Library.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Library.swift; sourceTree = "<group>"; };
@@ -400,6 +402,7 @@
 				97341C6C2852248500BC273E /* DownloadTaskCell.swift */,
 				97B0737527825E3D007C7DF3 /* Favicon.swift */,
 				973A2FCD277FB03F00BD4320 /* FlavorTag.swift */,
+				972727AD2A897FAA00BCAF75 /* GridSection.swift */,
 				975088BC287DA10800273181 /* LibraryLastRefreshTime.swift */,
 				97FB4B0A27B819A90055F86E /* Message.swift */,
 				97486D07284A42B90096E4DD /* SearchResultRow.swift */,
@@ -761,6 +764,7 @@
 				972DE4B92814A56A004FD9B9 /* Database.swift in Sources */,
 				97659CAD28DF817D002E6CE4 /* SearchResult.m in Sources */,
 				97F3333028AFC1A2007FF53C /* SearchResults.swift in Sources */,
+				972727AE2A897FAA00BCAF75 /* GridSection.swift in Sources */,
 				97176AD42A506B3B0093E3B0 /* BrowserTab.swift in Sources */,
 				97341C6E2852248500BC273E /* DownloadTaskCell.swift in Sources */,
 				976D90DC281586B400CC7D29 /* ZimFileCell.swift in Sources */,

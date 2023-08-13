@@ -98,7 +98,7 @@ private struct Content: View {
             if case let .tab(tabID) = navigation.currentItem, browser.url != nil {
                 WebView(tabID: tabID).ignoresSafeArea().id(tabID)
             } else {
-                List { Text("Welcome") }
+                Welcome()
             }
         }
         .toolbar {

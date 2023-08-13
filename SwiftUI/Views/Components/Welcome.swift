@@ -9,8 +9,9 @@
 import SwiftUI
 
 struct Welcome: View {
-    @Binding var url: URL?
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
+    @EnvironmentObject private var library: LibraryViewModel
+    @EnvironmentObject private var navigation: NavigationViewModel
     @FetchRequest(
         sortDescriptors: [NSSortDescriptor(keyPath: \Bookmark.created, ascending: false)],
         animation: .easeInOut
@@ -20,136 +21,120 @@ struct Welcome: View {
         predicate: ZimFile.openedPredicate,
         animation: .easeInOut
     ) private var zimFiles: FetchedResults<ZimFile>
-    @State private var selectedZimFile: ZimFile?
+    @State private var isLibraryPresented = false
     
     var body: some View {
         if zimFiles.isEmpty {
-            Onboarding()
-        } else {
-            ScrollView {
-                LazyVGrid(
-                    columns: ([GridItem(.adaptive(minimum: 250, maximum: 500), spacing: 12)]),
-                    alignment: .leading,
-                    spacing: 12
-                ) {
-                    Section {
-                        ForEach(zimFiles) { zimFile in
-                            Button {
-                                url = ZimFileService.shared.getMainPageURL(zimFileID: zimFile.fileID)
-                            } label: {
-                                ZimFileCell(zimFile, prominent: .name)
-                            }
-                            .buttonStyle(.plain)
-                        }
-                    } header: {
-                        Text("Main Page").font(.title3).fontWeight(.semibold)
-                    }
-                    if !bookmarks.isEmpty {
-                        Section {
-                            ForEach(bookmarks.prefix(6)) { bookmark in
-                                Button { url = bookmark.articleURL } label: {
-                                    ArticleCell(bookmark: bookmark).frame(height: bookmarkItemHeight)
-                                }
-                                .buttonStyle(.plain)
-                                .modifier(BookmarkContextMenu(url: $url, bookmark: bookmark))
-                            }
-                        } header: {
-                            Text("Bookmarks").font(.title3).fontWeight(.semibold)
-                        }
-                    }
-                }.padding()
+            VStack(spacing: 20) {
+                logo
+                Divider()
+                actions
             }
-            #if os(iOS)
-            .sheet(item: $selectedZimFile) { zimFile in
-                SheetContent {
-                    ZimFileDetail(zimFile: zimFile)
-                }
-            }
-            #endif
-        }
-    }
-    
-    private var bookmarkItemHeight: CGFloat? {
-        #if os(macOS)
-        82
-        #elseif os(iOS)
-        horizontalSizeClass == .regular ? 110: nil
-        #endif
-    }
-}
-
-private struct Onboarding: View {
-    @EnvironmentObject private var viewModel: ViewModel
-    @EnvironmentObject var libraryRefreshViewModel: LibraryViewModel
-    
-    var body: some View {
-        VStack(spacing: 20) {
-            VStack(spacing: 4) {
-                Image("Kiwix_logo_v3")
-                    .resizable()
-                    .aspectRatio(1, contentMode: .fit)
-                    .frame(width: 60, height: 60)
-                    .padding(2)
-                    .background(RoundedRectangle(cornerRadius: 10).foregroundColor(.white))
-                Text("KIWIX").font(.largeTitle).fontWeight(.bold)
-            }
-            Divider()
-            HStack {
-                FileImportButton {
-                    HStack {
-                        Spacer()
-                        Text("Open Files")
-                        Spacer()
-                    }.padding(6)
-                }
-                Button { libraryRefreshViewModel.start(isUserInitiated: true) } label: {
-                    HStack {
-                        Spacer()
-                        if libraryRefreshViewModel.isInProgress {
-                            #if os(macOS)
-                            Text("Fetching...")
-                            #elseif os(iOS)
-                            HStack(spacing: 6) {
-                                ProgressView().scaledToFit()
-                                Text("Fetching...")
-                            }
-                            #endif
-                        } else {
-                            Text("Fetch Catalog")
-                        }
-                        Spacer()
-                    }.padding(6)
-                }.disabled(libraryRefreshViewModel.isInProgress)
-            }
-            .font(.subheadline)
-            .modify { view in
-                if #available(iOS 15.0, *) {
-                    view.buttonStyle(.bordered)
-                } else {
-                    view
-                }
-            }
-            .onChange(of: libraryRefreshViewModel.isInProgress) { isInProgress in
+            .padding()
+            .onChange(of: library.isInProgress) { isInProgress in
                 guard !isInProgress else { return }
                 #if os(macOS)
-                viewModel.navigationItem = .categories
+                navigation.currentItem = .categories
                 #elseif os(iOS)
-                viewModel.activeSheet = .library(tabItem: .categories)
+                if horizontalSizeClass == .regular {
+                    navigation.currentItem = .categories
+                } else {
+                    isLibraryPresented = true
+                }
                 #endif
             }
+            #if os(macOS)
+            .frame(maxWidth: 300)
+            #elseif os(iOS)
+            .frame(maxWidth: 600)
+            .sheet(isPresented: $isLibraryPresented) {
+                // TODO: show categories directly
+                Library()
+            }
+            #endif
+        } else {
+            LazyVGrid(
+                columns: ([GridItem(.adaptive(minimum: 250, maximum: 500), spacing: 12)]),
+                alignment: .leading,
+                spacing: 12
+            ) {
+                GridSection(title: "Main Page") {
+                    ForEach(zimFiles) { zimFile in
+                        Button {
+                            NotificationCenter.openURL(ZimFileService.shared.getMainPageURL(zimFileID: zimFile.fileID))
+                        } label: {
+                            ZimFileCell(zimFile, prominent: .name)
+                        }.buttonStyle(.plain)
+                    }
+                }
+                if !bookmarks.isEmpty {
+                    GridSection(title: "Bookmarks") {
+                        ForEach(bookmarks.prefix(6)) { bookmark in
+                            Button {
+                                NotificationCenter.openURL(bookmark.articleURL)
+                            } label: {
+                                ArticleCell(bookmark: bookmark)
+                            }
+                            .buttonStyle(.plain)
+                            .modifier(BookmarkContextMenu(bookmark: bookmark))
+                        }
+                    }
+                }
+            }.modifier(GridCommon(edges: .all))
         }
-        .padding()
-        #if os(macOS)
-        .frame(maxWidth: 300)
-        #elseif os(iOS)
-        .frame(maxWidth: 600)
-        #endif
+    }
+    
+    /// Kiwix logo shown in onboarding view
+    private var logo: some View {
+        VStack(spacing: 6) {
+            Image("Kiwix_logo_v3")
+                .resizable()
+                .aspectRatio(1, contentMode: .fit)
+                .frame(width: 60, height: 60)
+                .background(RoundedRectangle(cornerRadius: 10, style: .continuous).foregroundColor(.white))
+            Text("KIWIX").font(.largeTitle).fontWeight(.bold)
+        }
+    }
+    
+    /// Onboarding actions, open a zim file or refresh catalog
+    private var actions: some View {
+        HStack {
+            FileImportButton {
+                HStack {
+                    Spacer()
+                    Text("Open File")
+                    Spacer()
+                }.padding(6)
+            }
+            Button {
+                library.start(isUserInitiated: true)
+            } label: {
+                HStack {
+                    Spacer()
+                    if library.isInProgress {
+                        #if os(macOS)
+                        Text("Fetching...")
+                        #elseif os(iOS)
+                        HStack(spacing: 6) {
+                            ProgressView().frame(maxHeight: 10)
+                            Text("Fetching...")
+                        }
+                        #endif
+                    } else {
+                        Text("Fetch Catalog")
+                    }
+                    Spacer()
+                }.padding(6)
+            }.disabled(library.isInProgress)
+        }
+        .font(.subheadline)
+        .buttonStyle(.bordered)
     }
 }
 
 struct WelcomeView_Previews: PreviewProvider {
     static var previews: some View {
-        Welcome(url: .constant(nil)).preferredColorScheme(.light).padding()
-        Welcome(url: .constant(nil)).preferredColorScheme(.dark).padding()
+        Welcome().environmentObject(LibraryViewModel()).preferredColorScheme(.light).padding()
+        Welcome().environmentObject(LibraryViewModel()).preferredColorScheme(.dark).padding()
     }
 }

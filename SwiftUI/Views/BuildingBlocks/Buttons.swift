@@ -105,7 +105,7 @@ struct FileImportButton<Label: View>: View {
         } label: { label }
         .fileImporter(
             isPresented: $isPresented,
-            allowedContentTypes: [UTType(exportedAs: "org.openzim.zim")],
+            allowedContentTypes: [UTType.zimFile],
             allowsMultipleSelection: true
         ) { result in
             guard case let .success(urls) = result else { return }
