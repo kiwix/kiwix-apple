@@ -61,8 +61,9 @@ extension Color {
 }
 
 extension Notification.Name {
+    static let alert = Notification.Name("alert")
+    static let externalLink = Notification.Name("externalLink")
     static let openURL = Notification.Name("openURL")
-    static let articleLoadingAlert = Notification.Name("articleLoadingAlert")
 }
 
 extension UTType {
@@ -72,6 +73,6 @@ extension UTType {
 extension NotificationCenter {
     static func openURL(_ url: URL?) {
         guard let url else { return }
-        NotificationCenter.default.post(name: Notification.Name.openURL, object: nil, userInfo: ["url": url])
+        NotificationCenter.default.post(name: .openURL, object: nil, userInfo: ["url": url])
     }
 }

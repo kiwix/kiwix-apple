@@ -10,10 +10,8 @@ import CoreData
 import CoreLocation
 import WebKit
 
-import Defaults
-
 class BrowserViewModel: NSObject, ObservableObject,
-                        WKNavigationDelegate, WKScriptMessageHandler,
+                        WKNavigationDelegate, WKScriptMessageHandler, WKUIDelegate,
                         NSFetchedResultsControllerDelegate
 {
     @Published private(set) var canGoBack = false
@@ -57,22 +55,18 @@ class BrowserViewModel: NSObject, ObservableObject,
             canGoForward = webView.canGoForward
         }
         titleObserver = webView.observe(\.title, options: .initial) { [unowned self] webView, _ in
+            guard let title = webView.title, !title.isEmpty else { return }
+            self.articleTitle = title
+            
             guard let zimFileID = UUID(uuidString: webView.url?.host ?? ""),
-                  let title = webView.title,
-                  !title.isEmpty else { return }
-            Database.performBackgroundTask { context in
-                context.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
-                let zimFile = try? context.fetch(ZimFile.fetchRequest(fileID: zimFileID)).first
-                if let tabID = self.tabID, let tab = try? context.existingObject(with: tabID) as? Tab {
-                    tab.title = title
-                    tab.zimFile = zimFile
-                }
-                try? context.save()
-                DispatchQueue.main.async {
-                    self.articleTitle = title
-                    self.zimFileName = zimFile?.name ?? ""
-                }
-            }
+                  let zimFile = try? Database.viewContext.fetch(ZimFile.fetchRequest(fileID: zimFileID)).first
+            else { return }
+            self.zimFileName = zimFile.name
+            
+            guard let tabID, let tab = try? Database.viewContext.existingObject(with: tabID) as? Tab else { return }
+            tab.title = title
+            tab.zimFile = zimFile
+            try? Database.viewContext.save()
         }
         urlObserver = webView.observe(\.url, options: .initial) { [unowned self] webView, _ in
             url = webView.url
@@ -125,18 +119,7 @@ class BrowserViewModel: NSObject, ObservableObject,
         } else if url.isKiwixURL {
             decisionHandler(.allow)
         } else if url.scheme == "http" || url.scheme == "https" {
-//            switch Defaults[.externalLinkLoadingPolicy] {
-//            case .alwaysAsk:
-//                activeAlert = .externalLinkAsk(url: url)
-//            case .alwaysLoad:
-//                #if os(macOS)
-//                NSWorkspace.shared.open(url)
-//                #elseif os(iOS)
-//                activeSheet = .safari(url: url)
-//                #endif
-//            case .neverLoad:
-//                activeAlert = .externalLinkNotLoading
-//            }
+            NotificationCenter.default.post(name: .externalLink, object: nil, userInfo: ["url": url])
             decisionHandler(.cancel)
         } else if url.scheme == "geo" {
             if FeatureFlags.map {
@@ -172,7 +155,9 @@ class BrowserViewModel: NSObject, ObservableObject,
     func webView(_ webView: WKWebView, didFailProvisionalNavigation navigation: WKNavigation!, withError error: Error) {
         let error = error as NSError
         guard error.code != NSURLErrorCancelled else { return }
-//        activeAlert = .articleFailedToLoad
+        NotificationCenter.default.post(
+            name: .alert, object: nil, userInfo: ["rawValue": ActiveAlert.articleFailedToLoad.rawValue]
+        )
     }
     
     // MARK: - WKScriptMessageHandler

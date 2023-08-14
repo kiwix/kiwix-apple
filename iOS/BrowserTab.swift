@@ -35,6 +35,7 @@ struct BrowserTab: View {
         .navigationBarTitleDisplayMode(.inline)
         .toolbarRole(.browser)
         .toolbarBackground(.visible, for: .navigationBar)
+        .modifier(ExternalLinkHandler())
         .onAppear {
             navigation.updateTab(tabID: tabID, lastOpened: Date())
             browser.configure(tabID: tabID, webView: navigation.getWebView(tabID: tabID))

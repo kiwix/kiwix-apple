@@ -93,6 +93,8 @@ struct RootView: View {
         }
         .environmentObject(library)
         .environmentObject(navigation)
+        .modifier(AlertHandler())
+        .modifier(ExternalLinkHandler())
         .onChange(of: scenePhase) { newScenePhase in
             guard newScenePhase == .inactive else { return }
             navigation.persistWebViewStates()

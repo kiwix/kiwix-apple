@@ -1,9 +1,9 @@
 //
 //  SafariView.swift
-//  Kiwix for iOS
+//  Kiwix
 //
-//  Created by Chris Li on 6/11/22.
-//  Copyright © 2022 Chris Li. All rights reserved.
+//  Created by Chris Li on 8/14/23.
+//  Copyright © 2023 Chris Li. All rights reserved.
 //
 
 import SafariServices
@@ -12,8 +12,8 @@ import SwiftUI
 #if os(iOS)
 struct SafariView: UIViewControllerRepresentable {
     let url: URL
-
-    func makeUIViewController(context: UIViewControllerRepresentableContext<SafariView>) -> SFSafariViewController {
+    
+    func makeUIViewController(context: Context) -> SFSafariViewController {
         SFSafariViewController(url: url)
     }
 

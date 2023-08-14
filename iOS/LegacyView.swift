@@ -163,7 +163,9 @@ private struct Content: View {
             }
         }
         .environmentObject(browser)
-        .onAppear { browser.configure(tabID: nil, webView: navigation.webView) }
+        .onAppear {
+            browser.configure(tabID: nil, webView: navigation.webView)
+        }
         .onChange(of: browser.url) { _ in
             search.isSearching = false
             presentedSheet = nil

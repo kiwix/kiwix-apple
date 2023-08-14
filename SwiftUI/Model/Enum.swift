@@ -11,12 +11,10 @@ import MapKit
 
 import Defaults
 
-enum ActiveAlert: Hashable, Identifiable {
-    var id: Int { hashValue }
+enum ActiveAlert: String, Identifiable {
+    var id: String { rawValue }
     
     case articleFailedToLoad
-    case externalLinkAsk(url: URL)
-    case externalLinkNotLoading
 }
 
 enum ActiveSheet: Hashable, Identifiable {
