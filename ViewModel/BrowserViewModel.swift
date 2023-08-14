@@ -41,6 +41,7 @@ class BrowserViewModel: NSObject, ObservableObject,
         webView.configuration.userContentController.removeScriptMessageHandler(forName: "headings")
         webView.configuration.userContentController.add(self, name: "headings")
         webView.navigationDelegate = self
+        webView.uiDelegate = self
         
         // get outline items if something is already loaded
         if webView.url != nil {
@@ -170,6 +171,51 @@ class BrowserViewModel: NSObject, ObservableObject,
             }
         }
     }
+    
+    // MARK: - WKUIDelegate
+    
+    #if os(iOS)
+    func webView(_ webView: WKWebView,
+                 contextMenuConfigurationForElement elementInfo: WKContextMenuElementInfo,
+                 completionHandler: @escaping (UIContextMenuConfiguration?) -> Void) {
+        guard let url = elementInfo.linkURL, url.isKiwixURL else { completionHandler(nil); return }
+        let configuration = UIContextMenuConfiguration(
+            previewProvider: {
+                let webView = WKWebView(frame: .zero, configuration: WebViewConfiguration())
+                webView.load(URLRequest(url: url))
+                return WebViewController(webView: webView)
+            }, actionProvider: { suggestedActions in
+                var actions = [UIAction]()
+                
+                // open url
+                let openAction = UIAction(title: "Open", image: UIImage(systemName: "doc.richtext")) { _ in
+                    webView.load(URLRequest(url: url))
+                }
+                actions.append(openAction)
+
+                // bookmark
+                let bookmarkAction: UIAction = {
+                    let context = Database.viewContext
+                    let predicate = NSPredicate(format: "articleURL == %@", url as CVarArg)
+                    let request = Bookmark.fetchRequest(predicate: predicate)
+                    if let bookmarks = try? context.fetch(request), !bookmarks.isEmpty {
+                        return UIAction(title: "Remove Bookmark", image: UIImage(systemName: "star.slash.fill")) { _ in
+                            BookmarkOperations.delete(url, withNotification: false)
+                        }
+                    } else {
+                        return UIAction(title: "Bookmark", image: UIImage(systemName: "star")) { _ in
+                            BookmarkOperations.create(url, withNotification: false)
+                        }
+                    }
+                }()
+                actions.append(bookmarkAction)
+                
+                return UIMenu(children: actions)
+            }
+        )
+        completionHandler(configuration)
+    }
+    #endif
     
     // MARK: - Bookmark
     
