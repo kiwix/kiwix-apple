@@ -164,7 +164,7 @@ private struct Content: View {
         }
         .environmentObject(browser)
         .onAppear {
-            browser.configure(tabID: nil, webView: navigation.webView)
+            browser.configure(tabID: nil)
         }
         .onChange(of: browser.url) { _ in
             search.isSearching = false

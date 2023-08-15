@@ -6,6 +6,7 @@
 //  Copyright © 2023 Chris Li. All rights reserved.
 //
 
+import Combine
 import CoreData
 import CoreLocation
 import WebKit
@@ -24,16 +25,30 @@ class BrowserViewModel: NSObject, ObservableObject,
     @Published private(set) var url: URL?
     
     private(set) var tabID: NSManagedObjectID?
-    private(set) var webView: WKWebView?
     private var canGoBackObserver: NSKeyValueObservation?
     private var canGoForwardObserver: NSKeyValueObservation?
     private var titleObserver: NSKeyValueObservation?
     private var urlObserver: NSKeyValueObservation?
     private var bookmarkFetchedResultsController: NSFetchedResultsController<Bookmark>?
     
-    func configure(tabID: NSManagedObjectID?, webView: WKWebView) {
+    var webView: WKWebView {
+        if let tabID {
+            return WebViewCache.shared.getWebView(tabID: tabID)
+        } else {
+            return WebViewCache.shared.webView
+        }
+    }
+    
+    override init() {
+        print("BrowserViewModel creation")
+    }
+    
+    deinit {
+        print("BrowserViewModel destroy")
+    }
+    
+    func configure(tabID: NSManagedObjectID?) {
         self.tabID = tabID
-        self.webView = webView
         
         // configure web view
         webView.allowsBackForwardNavigationGestures = true
@@ -49,61 +64,63 @@ class BrowserViewModel: NSObject, ObservableObject,
         }
         
         // setup web view property observers
-        canGoBackObserver = webView.observe(\.canGoBack, options: .initial) { [unowned self] webView, _ in
-            canGoBack = webView.canGoBack
+        canGoBackObserver = webView.observe(\.canGoBack, options: .initial) { [weak self] webView, _ in
+            self?.canGoBack = webView.canGoBack
         }
-        canGoForwardObserver = webView.observe(\.canGoForward, options: .initial) { [unowned self] webView, _ in
-            canGoForward = webView.canGoForward
+        canGoForwardObserver = webView.observe(\.canGoForward, options: .initial) { [weak self] webView, _ in
+            self?.canGoForward = webView.canGoForward
         }
-        titleObserver = webView.observe(\.title, options: .initial) { [unowned self] webView, _ in
+        titleObserver = webView.observe(\.title, options: .initial) { [weak self] webView, _ in
             guard let title = webView.title, !title.isEmpty else { return }
-            self.articleTitle = title
+            self?.articleTitle = title
             
             guard let zimFileID = UUID(uuidString: webView.url?.host ?? ""),
                   let zimFile = try? Database.viewContext.fetch(ZimFile.fetchRequest(fileID: zimFileID)).first
             else { return }
-            self.zimFileName = zimFile.name
+            self?.zimFileName = zimFile.name
             
             guard let tabID, let tab = try? Database.viewContext.existingObject(with: tabID) as? Tab else { return }
             tab.title = title
             tab.zimFile = zimFile
+            tab.lastOpened = Date()
             try? Database.viewContext.save()
         }
-        urlObserver = webView.observe(\.url, options: .initial) { [unowned self] webView, _ in
-            url = webView.url
-            let fetchRequest = Bookmark.fetchRequest(predicate: {
-                if let url = webView.url {
-                    return NSPredicate(format: "articleURL == %@", url as CVarArg)
-                } else {
-                    return NSPredicate(format: "articleURL == nil")
-                }
-            }())
-            bookmarkFetchedResultsController = NSFetchedResultsController(
-                fetchRequest: fetchRequest,
+        urlObserver = webView.observe(\.url, options: .initial) { [weak self] webView, _ in
+            self?.url = webView.url
+            
+            // setup bookmark fetched results controller
+            self?.bookmarkFetchedResultsController = NSFetchedResultsController(
+                fetchRequest: Bookmark.fetchRequest(predicate: {
+                    if let url = webView.url {
+                        return NSPredicate(format: "articleURL == %@", url as CVarArg)
+                    } else {
+                        return NSPredicate(format: "articleURL == nil")
+                    }
+                }()),
                 managedObjectContext: Database.viewContext,
                 sectionNameKeyPath: nil,
                 cacheName: nil
             )
-            bookmarkFetchedResultsController?.delegate = self
-            try? bookmarkFetchedResultsController?.performFetch()
+            self?.bookmarkFetchedResultsController?.delegate = self
+            try? self?.bookmarkFetchedResultsController?.performFetch()
         }
     }
     
     // MARK: - Content Loading
     
     func load(url: URL) {
-        guard webView?.url != url else { return }
-        webView?.load(URLRequest(url: url))
+        guard webView.url != url else { return }
+        webView.load(URLRequest(url: url))
     }
     
     func loadRandomArticle(zimFileID: UUID? = nil) {
-        let zimFileID = zimFileID ?? UUID(uuidString: webView?.url?.host ?? "")
+        let zimFileID = zimFileID ?? UUID(uuidString: webView.url?.host ?? "")
         guard let url = ZimFileService.shared.getRandomPageURL(zimFileID: zimFileID) else { return }
         load(url: url)
     }
     
     func loadMainArticle(zimFileID: UUID? = nil) {
-        let zimFileID = zimFileID ?? UUID(uuidString: webView?.url?.host ?? "")
+        let zimFileID = zimFileID ?? UUID(uuidString: webView.url?.host ?? "")
         guard let url = ZimFileService.shared.getMainPageURL(zimFileID: zimFileID) else { return }
         load(url: url)
     }
@@ -225,7 +242,7 @@ class BrowserViewModel: NSObject, ObservableObject,
     }
     
     func createBookmark() {
-        guard let url = webView?.url else { return }
+        guard let url = webView.url else { return }
         Database.performBackgroundTask { context in
             let bookmark = Bookmark(context: context)
             bookmark.articleURL = url
@@ -245,7 +262,7 @@ class BrowserViewModel: NSObject, ObservableObject,
     }
     
     func deleteBookmark() {
-        guard let url = webView?.url else { return }
+        guard let url = webView.url else { return }
         Database.performBackgroundTask { context in
             let request = Bookmark.fetchRequest(predicate: NSPredicate(format: "articleURL == %@", url as CVarArg))
             guard let bookmark = try? context.fetch(request).first else { return }
@@ -259,7 +276,7 @@ class BrowserViewModel: NSObject, ObservableObject,
     /// Scroll to an outline item
     /// - Parameter outlineItemID: ID of the outline item to scroll to
     func scrollTo(outlineItemID: String) {
-        webView?.evaluateJavaScript("scrollToHeading('\(outlineItemID)')")
+        webView.evaluateJavaScript("scrollToHeading('\(outlineItemID)')")
     }
     
     /// Convert flattened heading element data to a list of OutlineItems.

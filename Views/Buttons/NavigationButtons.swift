@@ -25,7 +25,7 @@ struct NavigationButtons: View {
     
     var goBackButton: some View {
         Button {
-            browser.webView?.goBack()
+            browser.webView.goBack()
         } label: {
             Label("Go Back", systemImage: "chevron.left")
         }.disabled(!browser.canGoBack)
@@ -33,7 +33,7 @@ struct NavigationButtons: View {
     
     var goForwardButton: some View {
         Button {
-            browser.webView?.goForward()
+            browser.webView.goForward()
         } label: {
             Label("Go Forward", systemImage: "chevron.right")
         }.disabled(!browser.canGoForward)

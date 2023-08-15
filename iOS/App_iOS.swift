@@ -77,11 +77,7 @@ struct RootView: View {
         Group {
             if #available(iOS 16.0, *) {
                 if horizontalSizeClass == .regular {
-                    NavigationSplitView {
-                        sidebar
-                    } detail: {
-                        NavigationStack { content.navigationBarTitleDisplayMode(.inline).toolbarRole(.browser) }
-                    }
+                    RegularView()
                 } else {
                     CompactView().ignoresSafeArea().onAppear() {
                         navigation.navigateToMostRecentTab()
@@ -97,67 +93,23 @@ struct RootView: View {
         .modifier(ExternalLinkHandler())
         .onChange(of: scenePhase) { newScenePhase in
             guard newScenePhase == .inactive else { return }
-            navigation.persistWebViewStates()
+            WebViewCache.shared.persistStates()
         }
         .onOpenURL { url in
-            NotificationCenter.default.post(
-                name: Notification.Name.openURL, object: nil, userInfo: ["url": url]
-            )
+            NotificationCenter.openURL(url)
         }
         .onReceive(openURL) { notification in
             guard let url = notification.userInfo?["url"] as? URL else { return }
             if #available(iOS 16.0, *) {
                 if case let .tab(tabID) = navigation.currentItem {
-                    navigation.getWebView(tabID: tabID).load(URLRequest(url: url))
+                    WebViewCache.shared.getWebView(tabID: tabID).load(URLRequest(url: url))
                 } else {
                     let tabID = navigation.createTab()
-                    navigation.getWebView(tabID: tabID).load(URLRequest(url: url))
+                    WebViewCache.shared.getWebView(tabID: tabID).load(URLRequest(url: url))
                 }
             } else {
-                navigation.webView.load(URLRequest(url: url))
+                WebViewCache.shared.webView.load(URLRequest(url: url))
             }
-        }
-    }
-    
-    @available(iOS 16.0, *)
-    private var sidebar: some View {
-        List(selection: $navigation.currentItem) {
-            ForEach(primaryItems, id: \.self) { navigationItem in
-                Label(navigationItem.name, systemImage: navigationItem.icon)
-            }
-            Section("Tabs") {
-                TabsSectionContent()
-            }
-            Section("Library") {
-                ForEach(libraryItems, id: \.self) { navigationItem in
-                    Label(navigationItem.name, systemImage: navigationItem.icon)
-                }
-            }
-        }
-        .navigationTitle("Kiwix")
-        .toolbar { NewTabButton() }
-    }
-    
-    @ViewBuilder
-    @available(iOS 16.0, *)
-    private var content: some View {
-        switch navigation.currentItem {
-        case .bookmarks:
-            Bookmarks()
-        case .settings:
-            Settings()
-        case .tab(let tabID):
-            BrowserTab(tabID: tabID).id(tabID)
-        case .opened:
-            ZimFilesOpened()
-        case .categories:
-            ZimFilesCategories()
-        case .downloads:
-            ZimFilesDownloads()
-        case .new:
-            ZimFilesNew()
-        default:
-            EmptyView()
         }
     }
 }

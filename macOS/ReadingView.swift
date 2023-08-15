@@ -30,7 +30,7 @@ struct ReadingView: View {
         .navigationTitle(browser.articleTitle.isEmpty ? "Kiwix" : browser.articleTitle)
         .navigationSubtitle(browser.zimFileName)
         .onAppear {
-            browser.configure(tabID: nil, webView: navigation.webView)
+            browser.configure(tabID: nil)
         }
     }
     

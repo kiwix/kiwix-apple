@@ -15,30 +15,42 @@ import Defaults
 
 #if os(macOS)
 struct WebView: NSViewRepresentable {
-    @EnvironmentObject private var navigation: NavigationViewModel
-    
     func makeNSView(context: Context) -> WKWebView {
-        navigation.webView
+        WebViewCache.shared.webView
     }
     
     func updateNSView(_ webView: WKWebView, context: Context) { }
 }
 #elseif os(iOS)
-struct WebView: UIViewControllerRepresentable {
-    @EnvironmentObject private var navigation: NavigationViewModel
-    
+struct WebView: UIViewRepresentable {
     let tabID: NSManagedObjectID?
-        
-    func makeUIViewController(context: Context) -> WebViewController {
+    
+    func makeUIView(context: Context) -> some UIView {
         if let tabID {
-            return WebViewController(webView: navigation.getWebView(tabID: tabID))
+            return WebViewCache.shared.getWebView(tabID: tabID)
         } else {
-            return WebViewController(webView: navigation.webView)
+            return WebViewCache.shared.webView
         }
     }
     
-    func updateUIViewController(_ controller: WebViewController, context: Context) { }
+    func updateUIView(_ uiView: UIViewType, context: Context) {
+        
+    }
 }
+
+//struct WebView: UIViewControllerRepresentable {
+//    let tabID: NSManagedObjectID?
+//
+//    func makeUIViewController(context: Context) -> WebViewController {
+//        if let tabID {
+//            return WebViewController(webView: WebViewCache.shared.getWebView(tabID: tabID))
+//        } else {
+//            return WebViewController(webView: WebViewCache.shared.webView)
+//        }
+//    }
+//
+//    func updateUIViewController(_ controller: WebViewController, context: Context) { }
+//}
 
 class WebViewController: UIViewController {
     private let webView: WKWebView
@@ -97,12 +109,14 @@ class WebViewController: UIViewController {
         ])
         topSafeAreaConstraint = view.safeAreaLayoutGuide.topAnchor.constraint(equalTo: webView.topAnchor)
         topSafeAreaConstraint?.isActive = true
-        layoutCancellable = layoutSubject.debounce(for: .seconds(0.15), scheduler: RunLoop.main).sink { _ in
-            guard self.view.subviews.contains(self.webView) else { return }
-            self.topSafeAreaConstraint?.isActive = false
-            let topConstraint = self.view.topAnchor.constraint(equalTo: self.webView.topAnchor)
-            topConstraint.isActive = true
-        }
+        layoutCancellable = layoutSubject
+            .debounce(for: .seconds(0.15), scheduler: RunLoop.main)
+            .sink { [unowned self] _ in
+                guard view.subviews.contains(webView) else { return }
+                topSafeAreaConstraint?.isActive = false
+                let topConstraint = view.topAnchor.constraint(equalTo: webView.topAnchor)
+                topConstraint.isActive = true
+            }
     }
     
     override func viewDidLayoutSubviews() {

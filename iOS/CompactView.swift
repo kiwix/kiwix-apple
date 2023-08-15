@@ -117,13 +117,11 @@ private struct Content: View {
         .environmentObject(browser)
         .onAppear {
             guard case let .tab(tabID) = navigation.currentItem else { return }
-            navigation.updateTab(tabID: tabID, lastOpened: Date())
-            browser.configure(tabID: tabID, webView: navigation.getWebView(tabID: tabID))
+            browser.configure(tabID: tabID)
         }
         .onChange(of: navigation.currentItem) { navigationItem in
             guard case let .tab(tabID) = navigation.currentItem else { return }
-            navigation.updateTab(tabID: tabID, lastOpened: Date())
-            browser.configure(tabID: tabID, webView: navigation.getWebView(tabID: tabID))
+            browser.configure(tabID: tabID)
         }
     }
 }

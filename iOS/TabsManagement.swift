@@ -41,7 +41,7 @@ struct TabsSectionContent: View {
             .lineLimit(1)
             .swipeActions {
                 Button(role: .destructive) {
-                    Task { await navigation.deleteTab(objectID: item.tab.objectID) }
+                    Task { await navigation.deleteTab(tabID: item.tab.objectID) }
                 } label: {
                     Label("Close Tab", systemImage: "xmark")
                 }
@@ -95,7 +95,7 @@ struct TabsManagerButton: View {
                 Button(role: .destructive) {
                     Task {
                         guard case .tab(let tabID) = navigation.currentItem else { return }
-                        await navigation.deleteTab(objectID: tabID)
+                        await navigation.deleteTab(tabID: tabID)
                     }
                 } label: {
                     Label("Close This Tab", systemImage: "xmark.square")
