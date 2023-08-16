@@ -39,14 +39,6 @@ class BrowserViewModel: NSObject, ObservableObject,
         }
     }
     
-    override init() {
-        print("BrowserViewModel creation")
-    }
-    
-    deinit {
-        print("BrowserViewModel destroy")
-    }
-    
     func configure(tabID: NSManagedObjectID?) {
         self.tabID = tabID
         

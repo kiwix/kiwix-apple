@@ -39,31 +39,13 @@ struct WebView: UIViewControllerRepresentable {
 class WebViewController: UIViewController {
     private let webView: WKWebView
     private var topSafeAreaConstraint: NSLayoutConstraint?
-    private var layoutSubject: PassthroughSubject? = PassthroughSubject<Void, Never>()
+    private var layoutSubject = PassthroughSubject<Void, Never>()
     private var layoutCancellable: AnyCancellable?
     private var zoomScale: CGFloat = 1
     
     init(webView: WKWebView) {
         self.webView = webView
         super.init(nibName: nil, bundle: nil)
-        
-        /*
-         HACK: when scene enters background, the system resizes the scene and take various screenshots
-         (e.g. for app switcher), during the resizing the webview might become zoomed in. To mitigate,
-         store and reapply webview's zoom scale when scene enters backgroud / foreground.
-         */
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(sceneDidEnterBackground),
-            name: UIScene.didEnterBackgroundNotification,
-            object: nil
-        )
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(sceneWillEnterForeground),
-            name: UIScene.willEnterForegroundNotification,
-            object: nil
-        )
     }
     
     required init?(coder: NSCoder) {
@@ -75,12 +57,14 @@ class WebViewController: UIViewController {
         
         webView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(webView)
+        webView.alpha = 0
         
         /*
          HACK: Make sure the webview content does not jump after state restoration
          It appears the webview's state restoration does not properly take into account of the content inset.
          To mitigate, first pin the webview's top against safe area top anchor, after all viewDidLayoutSubviews calls,
          pin the webview's top against view's top anchor, so that content does not appears to move up.
+         HACK: when view resize, the webview might become zoomed in. To mitigate, set zoom scale to 1.
          */
         NSLayoutConstraint.activate([
             view.leftAnchor.constraint(equalTo: webView.leftAnchor),
@@ -89,33 +73,24 @@ class WebViewController: UIViewController {
         ])
         topSafeAreaConstraint = view.safeAreaLayoutGuide.topAnchor.constraint(equalTo: webView.topAnchor)
         topSafeAreaConstraint?.isActive = true
-        layoutCancellable = layoutSubject?
-            .debounce(for: .seconds(0.15), scheduler: RunLoop.main)
+        layoutCancellable = layoutSubject
+            .debounce(for: .seconds(0.1), scheduler: RunLoop.main)
             .sink { [weak self] _ in
                 guard let view = self?.view,
                       let webView = self?.webView,
                       view.subviews.contains(webView) else { return }
+                webView.alpha = 1
+                webView.scrollView.zoomScale = 1
+                guard self?.topSafeAreaConstraint?.isActive == true else { return }
                 self?.topSafeAreaConstraint?.isActive = false
                 self?.view.topAnchor.constraint(equalTo: webView.topAnchor).isActive = true
-                self?.layoutSubject = nil
-                self?.layoutCancellable = nil
             }
     }
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         webView.setValue(view.safeAreaInsets, forKey: "_obscuredInsets")
-        layoutSubject?.send()
-    }
-    
-    /// Store page zoom scale when scene enters background
-    @objc private func sceneDidEnterBackground() {
-        zoomScale = webView.scrollView.zoomScale
-    }
-
-    /// Reapply stored zoom scale when scene enters foreground
-    @objc private func sceneWillEnterForeground() {
-        webView.scrollView.zoomScale = zoomScale
+        layoutSubject.send()
     }
 }
 #endif
