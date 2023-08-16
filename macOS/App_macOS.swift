@@ -128,7 +128,7 @@ struct RootView: View {
         }
         .onReceive(openURL) { notification in
             guard let url = notification.userInfo?["url"] as? URL else { return }
-            navigation.webView.load(URLRequest(url: url))
+            WebViewCache.shared.webView.load(URLRequest(url: url))
             navigation.currentItem = .reading
         }
     }
