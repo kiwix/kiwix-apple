@@ -38,15 +38,11 @@ struct ArticleCell: View {
     var body: some View {
         HStack(alignment: .top) {
             VStack(alignment: .leading, spacing: 0) {
-                Text(title).fontWeight(.medium)
+                Text(title).fontWeight(.medium).lineLimit(1)
                 Spacer().frame(height: 2)
                 Group {
                     if let snippet = snippet {
-                        if #available(iOS 15, *) {
-                            Text(AttributedString(snippet)).lineLimit(4)
-                        } else {
-                            Text(snippet.string).lineLimit(4)
-                        }
+                        Text(AttributedString(snippet)).lineLimit(4)
                     } else if alwaysShowSnippet {
                         Text("No snippet").foregroundColor(.secondary)
                     }
