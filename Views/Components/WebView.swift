@@ -22,40 +22,24 @@ struct WebView: NSViewRepresentable {
     func updateNSView(_ webView: WKWebView, context: Context) { }
 }
 #elseif os(iOS)
-struct WebView: UIViewRepresentable {
+struct WebView: UIViewControllerRepresentable {
     let tabID: NSManagedObjectID?
-    
-    func makeUIView(context: Context) -> some UIView {
+
+    func makeUIViewController(context: Context) -> WebViewController {
         if let tabID {
-            return WebViewCache.shared.getWebView(tabID: tabID)
+            return WebViewController(webView: WebViewCache.shared.getWebView(tabID: tabID))
         } else {
-            return WebViewCache.shared.webView
+            return WebViewController(webView: WebViewCache.shared.webView)
         }
     }
-    
-    func updateUIView(_ uiView: UIViewType, context: Context) {
-        
-    }
-}
 
-//struct WebView: UIViewControllerRepresentable {
-//    let tabID: NSManagedObjectID?
-//
-//    func makeUIViewController(context: Context) -> WebViewController {
-//        if let tabID {
-//            return WebViewController(webView: WebViewCache.shared.getWebView(tabID: tabID))
-//        } else {
-//            return WebViewController(webView: WebViewCache.shared.webView)
-//        }
-//    }
-//
-//    func updateUIViewController(_ controller: WebViewController, context: Context) { }
-//}
+    func updateUIViewController(_ controller: WebViewController, context: Context) { }
+}
 
 class WebViewController: UIViewController {
     private let webView: WKWebView
     private var topSafeAreaConstraint: NSLayoutConstraint?
-    private let layoutSubject = PassthroughSubject<Void, Never>()
+    private var layoutSubject: PassthroughSubject? = PassthroughSubject<Void, Never>()
     private var layoutCancellable: AnyCancellable?
     private var zoomScale: CGFloat = 1
     
@@ -65,7 +49,7 @@ class WebViewController: UIViewController {
         
         /*
          HACK: when scene enters background, the system resizes the scene and take various screenshots
-         (for app switcher), during the resizing the webview might become zoomed in. To mitigate,
+         (e.g. for app switcher), during the resizing the webview might become zoomed in. To mitigate,
          store and reapply webview's zoom scale when scene enters backgroud / foreground.
          */
         NotificationCenter.default.addObserver(
@@ -81,13 +65,9 @@ class WebViewController: UIViewController {
             object: nil
         )
     }
-
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-    
-    deinit {
-        NotificationCenter.default.removeObserver(self)
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -109,20 +89,23 @@ class WebViewController: UIViewController {
         ])
         topSafeAreaConstraint = view.safeAreaLayoutGuide.topAnchor.constraint(equalTo: webView.topAnchor)
         topSafeAreaConstraint?.isActive = true
-        layoutCancellable = layoutSubject
+        layoutCancellable = layoutSubject?
             .debounce(for: .seconds(0.15), scheduler: RunLoop.main)
-            .sink { [unowned self] _ in
-                guard view.subviews.contains(webView) else { return }
-                topSafeAreaConstraint?.isActive = false
-                let topConstraint = view.topAnchor.constraint(equalTo: webView.topAnchor)
-                topConstraint.isActive = true
+            .sink { [weak self] _ in
+                guard let view = self?.view,
+                      let webView = self?.webView,
+                      view.subviews.contains(webView) else { return }
+                self?.topSafeAreaConstraint?.isActive = false
+                self?.view.topAnchor.constraint(equalTo: webView.topAnchor).isActive = true
+                self?.layoutSubject = nil
+                self?.layoutCancellable = nil
             }
     }
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         webView.setValue(view.safeAreaInsets, forKey: "_obscuredInsets")
-        layoutSubject.send()
+        layoutSubject?.send()
     }
     
     /// Store page zoom scale when scene enters background
