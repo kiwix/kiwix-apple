@@ -115,13 +115,7 @@ class WebViewController: UIViewController {
 
     /// Reapply stored zoom scale when scene enters foreground
     @objc private func sceneWillEnterForeground() {
-        webView.alpha = 0
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-            self.webView.scrollView.setZoomScale(self.zoomScale, animated: false)
-            UIView.animate(withDuration: 0.1) {
-                self.webView.alpha = 1
-            }
-        }
+        webView.scrollView.zoomScale = zoomScale
     }
 }
 #endif
