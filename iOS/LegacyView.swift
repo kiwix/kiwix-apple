@@ -6,6 +6,7 @@
 //  Copyright © 2023 Chris Li. All rights reserved.
 //
 
+import Combine
 import SwiftUI
 
 #if os(iOS)
@@ -30,7 +31,11 @@ struct LegacyView: UIViewControllerRepresentable {
     }
     
     func updateUIViewController(_ navigationController: UINavigationController, context: Context) {
-        if !search.isSearching {
+        if search.isSearching {
+            DispatchQueue.main.async {
+                context.coordinator.searchBar.text = search.searchText
+            }
+        } else {
             DispatchQueue.main.async {
                 context.coordinator.searchBar.resignFirstResponder()
             }
@@ -66,6 +71,7 @@ struct LegacyView: UIViewControllerRepresentable {
         }
         
         func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+            guard view.search.searchText != searchText else { return }
             view.search.searchText = searchText
         }
     }

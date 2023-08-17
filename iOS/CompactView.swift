@@ -6,6 +6,7 @@
 //  Copyright © 2023 Chris Li. All rights reserved.
 //
 
+import Combine
 import SwiftUI
 
 #if os(iOS)
@@ -35,6 +36,7 @@ private class CompactViewController<Content>: UIHostingController<Content>,
                                               UISearchResultsUpdating, UISearchControllerDelegate where Content: View {
     private let searchController: UISearchController
     private let searchViewModel = SearchViewModel()
+    private var searchTextObserver: AnyCancellable?
     
     override init(rootView: Content) {
         let searchResults = SearchResults().environmentObject(searchViewModel)
@@ -49,6 +51,14 @@ private class CompactViewController<Content>: UIHostingController<Content>,
     override func viewDidLoad() {
         super.viewDidLoad()
         definesPresentationContext = true
+        
+        // update search bar text when search text in view model change
+        searchTextObserver = searchViewModel.$searchText.sink { searchText in
+            DispatchQueue.main.async {
+                guard self.searchController.searchBar.text != searchText else { return }
+                self.searchController.searchBar.text = searchText
+            }
+        }
 
         // configure search
         searchController.delegate = self
