@@ -26,11 +26,14 @@ struct Welcome: View {
     var body: some View {
         if zimFiles.isEmpty {
             VStack(spacing: 20) {
+                Spacer()
                 logo
                 Divider()
                 actions
+                Spacer()
             }
             .padding()
+            .ignoresSafeArea()
             .onChange(of: library.isInProgress) { isInProgress in
                 guard !isInProgress else { return }
                 #if os(macOS)
