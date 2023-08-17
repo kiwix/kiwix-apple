@@ -79,12 +79,18 @@ struct RootView: View {
                 if horizontalSizeClass == .regular {
                     RegularView()
                 } else {
-                    CompactView().ignoresSafeArea().onAppear() {
+                    ContainerView {
+                        CompactView()
+                    }
+                    .ignoresSafeArea()
+                    .onAppear() {
                         navigation.navigateToMostRecentTab()
                     }
                 }
             } else {
-                LegacyView().ignoresSafeArea()
+                ContainerView {
+                    LegacyView()
+                }.ignoresSafeArea()
             }
         }
         .environmentObject(library)

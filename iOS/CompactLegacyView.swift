@@ -1,20 +1,25 @@
 //
-//  LegacyView.swift
+//  CompactLegacyView.swift
 //  Kiwix
 //
 //  Created by Chris Li on 8/3/23.
 //  Copyright © 2023 Chris Li. All rights reserved.
 //
 
-import Combine
 import SwiftUI
 
 #if os(iOS)
-struct LegacyView: UIViewControllerRepresentable {
+struct ContainerView<Content: View>: UIViewControllerRepresentable {
     @StateObject private var search = SearchViewModel()
     
+    let content: Content
+    
+    init(@ViewBuilder content: () -> Content) {
+        self.content = content()
+    }
+    
     func makeUIViewController(context: Context) -> UINavigationController {
-        let controller = UIHostingController(rootView: Content().environmentObject(search))
+        let controller = UIHostingController(rootView: self.content.environmentObject(search))
         controller.navigationItem.scrollEdgeAppearance = {
             let apperance = UINavigationBarAppearance()
             apperance.configureWithDefaultBackground()
@@ -22,6 +27,7 @@ struct LegacyView: UIViewControllerRepresentable {
         }()
         controller.navigationItem.titleView = context.coordinator.searchBar
         let navigation = UINavigationController(rootViewController: controller)
+        navigation.isToolbarHidden = false
         navigation.toolbar.scrollEdgeAppearance = {
             let apperance = UIToolbarAppearance()
             apperance.configureWithDefaultBackground()
@@ -47,10 +53,10 @@ struct LegacyView: UIViewControllerRepresentable {
     }
     
     class Coordinator: NSObject, UISearchBarDelegate {
-        let view: LegacyView
+        let view: ContainerView
         let searchBar = UISearchBar()
         
-        init(view: LegacyView) {
+        init(view: ContainerView) {
             self.view = view
             searchBar.autocorrectionType = .no
             searchBar.autocapitalizationType = .none
@@ -77,7 +83,57 @@ struct LegacyView: UIViewControllerRepresentable {
     }
 }
 
-private struct Content: View {
+@available(iOS 16.0, *)
+struct CompactView: View {
+    @EnvironmentObject private var navigation: NavigationViewModel
+    @EnvironmentObject private var search: SearchViewModel
+    @StateObject private var browser = BrowserViewModel()
+    
+    var body: some View {
+        Group {
+            if search.isSearching {
+                SearchResults()
+            } else if case let .tab(tabID) = navigation.currentItem, browser.url != nil {
+                WebView(tabID: tabID).ignoresSafeArea().id(tabID)
+            } else {
+                Welcome()
+            }
+        }
+        .toolbar {
+            ToolbarItemGroup(placement: .navigationBarTrailing) {
+                if search.isSearching {
+                    Button("Cancel") {
+                        search.isSearching = false
+                    }
+                }
+            }
+            ToolbarItemGroup(placement: .bottomBar) {
+                if !search.isSearching {
+                    NavigationButtons()
+                    Spacer()
+                    OutlineButton()
+                    Spacer()
+                    BookmarkButton()
+                    Spacer()
+                    RandomArticleButton()
+                    Spacer()
+                    TabsManagerButton()
+                }
+            }
+        }
+        .environmentObject(browser)
+        .onAppear {
+            guard case let .tab(tabID) = navigation.currentItem else { return }
+            browser.configure(tabID: tabID)
+        }
+        .onChange(of: navigation.currentItem) { navigationItem in
+            guard case let .tab(tabID) = navigation.currentItem else { return }
+            browser.configure(tabID: tabID)
+        }
+    }
+}
+
+struct LegacyView: View {
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     @EnvironmentObject private var navigation: NavigationViewModel
     @EnvironmentObject private var search: SearchViewModel
@@ -98,7 +154,7 @@ private struct Content: View {
             if search.isSearching {
                 SearchResults()
             } else if browser.url == nil {
-                List { Text("Welcome") }
+                Welcome()
             } else {
                 WebView(tabID: nil).ignoresSafeArea()
             }
