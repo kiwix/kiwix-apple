@@ -8,6 +8,8 @@
 
 import Foundation
 import SwiftUI
+import UniformTypeIdentifiers
+import UserNotifications
 
 extension URL: Identifiable {
     public var id: String {
@@ -58,17 +60,19 @@ extension Color {
     #endif
 }
 
-/// Set toolbar role to browser when possible
-struct ToolbarRoleBrowser: ViewModifier {
-    func body(content: Content) -> some View {
-        #if os(macOS)
-        content
-        #elseif os(iOS)
-        if #available(iOS 16.0, *) {
-            content.toolbarRole(.browser)
-        } else {
-            content
-        }
-        #endif
+extension Notification.Name {
+    static let alert = Notification.Name("alert")
+    static let externalLink = Notification.Name("externalLink")
+    static let openURL = Notification.Name("openURL")
+}
+
+extension UTType {
+    static let zimFile = UTType(exportedAs: "org.openzim.zim")
+}
+
+extension NotificationCenter {
+    static func openURL(_ url: URL?) {
+        guard let url else { return }
+        NotificationCenter.default.post(name: .openURL, object: nil, userInfo: ["url": url])
     }
 }
