@@ -45,7 +45,7 @@ struct Kiwix: App {
             CommandGroup(after: .toolbar) {
                 NavigationCommandButtons()
                 Divider()
-                PageZoomButtons()
+                PageZoomCommands()
                 Divider()
                 SidebarNavigationItemButtons()
                 Divider()

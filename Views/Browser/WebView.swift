@@ -20,6 +20,20 @@ struct WebView: NSViewRepresentable {
     }
     
     func updateNSView(_ webView: WKWebView, context: Context) { }
+    
+    func makeCoordinator() -> Coordinator {
+        Coordinator()
+    }
+    
+    class Coordinator {
+        private let pageZoomObserver: Defaults.Observation
+        
+        init() {
+            pageZoomObserver = Defaults.observe(.webViewPageZoom) { change in
+                WebViewCache.shared.webView.pageZoom = change.newValue
+            }
+        }
+    }
 }
 #elseif os(iOS)
 struct WebView: UIViewControllerRepresentable {
@@ -38,13 +52,17 @@ struct WebView: UIViewControllerRepresentable {
 
 class WebViewController: UIViewController {
     private let webView: WKWebView
+    private let pageZoomObserver: Defaults.Observation
+    private var webViewURLObserver: NSKeyValueObservation?
     private var topSafeAreaConstraint: NSLayoutConstraint?
     private var layoutSubject = PassthroughSubject<Void, Never>()
     private var layoutCancellable: AnyCancellable?
-    private var zoomScale: CGFloat = 1
     
     init(webView: WKWebView) {
         self.webView = webView
+        self.pageZoomObserver = Defaults.observe(.webViewPageZoom) { change in
+            webView.adjustTextSize(pageZoom: change.newValue)
+        }
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -93,18 +111,16 @@ class WebViewController: UIViewController {
         layoutSubject.send()
     }
 }
-#endif
 
 extension WKWebView {
-    func applyTextSizeAdjustment() {
-        #if os(iOS)
-        guard Defaults[.webViewPageZoom] != 1 else { return }
+    func adjustTextSize(pageZoom: Double? = nil) {
+        let pageZoom = pageZoom ?? Defaults[.webViewPageZoom]
         let template = "document.getElementsByTagName('body')[0].style.webkitTextSizeAdjust='%.0f%%'"
-        let javascript = String(format: template, Defaults[.webViewPageZoom] * 100)
+        let javascript = String(format: template, pageZoom * 100)
         evaluateJavaScript(javascript, completionHandler: nil)
-        #endif
     }
 }
+#endif
 
 class WebViewConfiguration: WKWebViewConfiguration {
     override init() {

@@ -159,7 +159,9 @@ class BrowserViewModel: NSObject, ObservableObject,
     
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
         webView.evaluateJavaScript("expandAllDetailTags(); getOutlineItems();")
-        webView.applyTextSizeAdjustment()
+        #if os(iOS)
+        webView.adjustTextSize()
+        #endif
     }
     
     func webView(_ webView: WKWebView, didFailProvisionalNavigation navigation: WKNavigation!, withError error: Error) {

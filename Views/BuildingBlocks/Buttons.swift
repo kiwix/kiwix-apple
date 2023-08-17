@@ -59,24 +59,6 @@ struct NavigationCommandButtons: View {
     }
 }
 
-struct PageZoomButtons: View {
-    @Default(.webViewPageZoom) var webViewPageZoom
-    @FocusedBinding(\.navigationItem) var navigationItem: NavigationItem??
-    @FocusedValue(\.url) var url: URL??
-    
-    var body: some View {
-        Button("Actual Size") { webViewPageZoom = 1 }
-            .keyboardShortcut("0")
-            .disabled(webViewPageZoom == 1)
-        Button("Zoom In") { webViewPageZoom += 0.1 }
-            .keyboardShortcut("+")
-            .disabled(navigationItem != .reading || (url ?? nil) == nil)
-        Button("Zoom Out") { webViewPageZoom -= 0.1 }
-            .keyboardShortcut("-")
-            .disabled(navigationItem != .reading || (url ?? nil) == nil)
-    }
-}
-
 #if os(macOS)
 struct SidebarButton: View {
     var body: some View {

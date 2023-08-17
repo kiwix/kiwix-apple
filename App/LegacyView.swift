@@ -101,6 +101,7 @@ struct LegacyView: View {
             }
         }
         .environmentObject(browser)
+        .focusedSceneValue(\.browserViewModel, browser)
         .onAppear {
             browser.configure(tabID: nil)
         }

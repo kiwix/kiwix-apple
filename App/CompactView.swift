@@ -48,6 +48,7 @@ struct CompactView: View {
             }
         }
         .environmentObject(browser)
+        .focusedSceneValue(\.browserViewModel, browser)
         .onAppear {
             guard case let .tab(tabID) = navigation.currentItem else { return }
             browser.configure(tabID: tabID)

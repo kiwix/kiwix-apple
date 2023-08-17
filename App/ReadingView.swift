@@ -26,6 +26,7 @@ struct ReadingView: View {
         }
         .environmentObject(browser)
         .environmentObject(search)
+        .focusedSceneValue(\.browserViewModel, browser)
         .searchable(text: $search.searchText, placement: .toolbar)
         .navigationTitle(browser.articleTitle.isEmpty ? "Kiwix" : browser.articleTitle)
         .navigationSubtitle(browser.zimFileName)
