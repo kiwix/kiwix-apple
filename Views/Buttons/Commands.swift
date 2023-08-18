@@ -41,3 +41,24 @@ struct PageZoomCommands: View {
             .disabled(webViewPageZoom <= 0.5 || browser?.url == nil)
     }
 }
+
+/// Only used on macOS
+struct SidebarNavigationCommands: View {
+    @FocusedBinding(\.navigationItem) var navigationItem: NavigationItem??
+    
+    var body: some View {
+        buildButtons([.reading, .bookmarks], modifiers: [.command])
+        Divider()
+        buildButtons([.opened, .categories, .downloads, .new], modifiers: [.command, .control])
+    }
+    
+    private func buildButtons(_ navigationItems: [NavigationItem], modifiers: EventModifiers = []) -> some View {
+        ForEach(Array(navigationItems.enumerated()), id: \.element) { index, item in
+            Button(item.name) {
+                navigationItem = item
+            }
+            .keyboardShortcut(KeyEquivalent(Character("\(index + 1)")), modifiers: modifiers)
+            .disabled(navigationItem == nil)
+        }
+    }
+}

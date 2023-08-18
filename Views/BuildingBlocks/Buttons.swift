@@ -43,37 +43,3 @@ struct FileImportButton<Label: View>: View {
         .keyboardShortcut("o")
     }
 }
-
-#if os(macOS)
-struct SidebarButton: View {
-    var body: some View {
-        Button {
-            guard let responder = NSApp.keyWindow?.firstResponder else { return }
-            responder.tryToPerform(#selector(NSSplitViewController.toggleSidebar(_:)), with: nil)
-        } label: {
-            Image(systemName: "sidebar.leading")
-        }
-        .help("Show sidebar")
-    }
-}
-#endif
-
-struct SidebarNavigationItemButtons: View {
-    @FocusedBinding(\.navigationItem) var navigationItem: NavigationItem??
-    
-    var body: some View {
-        buildButtons([.reading, .bookmarks], modifiers: [.command])
-        Divider()
-        buildButtons([.opened, .categories, .downloads, .new], modifiers: [.command, .control])
-    }
-    
-    private func buildButtons(_ navigationItems: [NavigationItem], modifiers: EventModifiers = []) -> some View {
-        ForEach(Array(navigationItems.enumerated()), id: \.element) { index, item in
-            Button(item.name) {
-                navigationItem = item
-            }
-            .keyboardShortcut(KeyEquivalent(Character("\(index + 1)")), modifiers: modifiers)
-            .disabled(navigationItem == nil)
-        }
-    }
-}
