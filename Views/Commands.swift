@@ -10,6 +10,44 @@ import SwiftUI
 
 import Defaults
 
+struct BrowserViewModelKey: FocusedValueKey {
+    typealias Value = BrowserViewModel
+}
+
+struct CanGoBackKey: FocusedValueKey {
+    typealias Value = Bool
+}
+
+struct CanGoForwardKey: FocusedValueKey {
+    typealias Value = Bool
+}
+
+struct NavigationItemKey: FocusedValueKey {
+    typealias Value = Binding<NavigationItem?>
+}
+
+extension FocusedValues {
+    var browserViewModel: BrowserViewModelKey.Value? {
+        get { self[BrowserViewModelKey.self] }
+        set { self[BrowserViewModelKey.self] = newValue }
+    }
+    
+    var canGoBack: CanGoBackKey.Value? {
+        get { self[CanGoBackKey.self] }
+        set { self[CanGoBackKey.self] = newValue }
+    }
+    
+    var canGoForward: CanGoForwardKey.Value? {
+        get { self[CanGoForwardKey.self] }
+        set { self[CanGoForwardKey.self] = newValue }
+    }
+    
+    var navigationItem: NavigationItemKey.Value? {
+        get { self[NavigationItemKey.self] }
+        set { self[NavigationItemKey.self] = newValue }
+    }
+}
+
 struct NavigationCommands: View {
     @FocusedValue(\.canGoBack) var canGoBack: Bool?
     @FocusedValue(\.canGoForward) var canGoForward: Bool?
