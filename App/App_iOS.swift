@@ -35,8 +35,10 @@ struct Kiwix: App {
 //            CommandGroup(replacing: .importExport) {
 //                FileImportButton { Text("Open...") }
 //            }
+            CommandGroup(replacing: .undoRedo) {
+                NavigationCommands()
+            }
             CommandGroup(replacing: .textFormatting) {
-//                NavigationCommandButtons()
                 PageZoomCommands()
             }
         }

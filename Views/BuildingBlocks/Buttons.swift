@@ -44,21 +44,6 @@ struct FileImportButton<Label: View>: View {
     }
 }
 
-struct NavigationCommandButtons: View {
-    @FocusedValue(\.canGoBack) var canGoBack: Bool?
-    @FocusedValue(\.canGoForward) var canGoForward: Bool?
-    @FocusedValue(\.readingViewModel) var viewModel: ReadingViewModel?
-    
-    var body: some View {
-        Button("Go Back") { viewModel?.goBack() }
-            .keyboardShortcut("[")
-            .disabled(!(canGoBack ?? false))
-        Button("Go Forward") { viewModel?.goForward() }
-            .keyboardShortcut("]")
-            .disabled(!(canGoForward ?? false))
-    }
-}
-
 #if os(macOS)
 struct SidebarButton: View {
     var body: some View {

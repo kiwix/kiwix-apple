@@ -24,14 +24,6 @@ struct NavigationItemKey: FocusedValueKey {
     typealias Value = Binding<NavigationItem?>
 }
 
-struct ReadingViewModelKey: FocusedValueKey {
-    typealias Value = ReadingViewModel
-}
-
-struct SearchFieldFocusActionKey: FocusedValueKey {
-    typealias Value = () -> Void
-}
-
 struct URLKey: FocusedValueKey {
     typealias Value = URL?
 }
@@ -55,16 +47,6 @@ extension FocusedValues {
     var navigationItem: NavigationItemKey.Value? {
         get { self[NavigationItemKey.self] }
         set { self[NavigationItemKey.self] = newValue }
-    }
-    
-    var readingViewModel: ReadingViewModelKey.Value? {
-        get { self[ReadingViewModelKey.self] }
-        set { self[ReadingViewModelKey.self] = newValue }
-    }
-    
-    var searchFieldFocusAction: SearchFieldFocusActionKey.Value? {
-        get { self[SearchFieldFocusActionKey.self] }
-        set { self[SearchFieldFocusActionKey.self] = newValue }
     }
     
     var url: URLKey.Value? {

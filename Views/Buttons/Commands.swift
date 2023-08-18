@@ -10,6 +10,21 @@ import SwiftUI
 
 import Defaults
 
+struct NavigationCommands: View {
+    @FocusedValue(\.canGoBack) var canGoBack: Bool?
+    @FocusedValue(\.canGoForward) var canGoForward: Bool?
+    @FocusedValue(\.browserViewModel) var browser: BrowserViewModel?
+    
+    var body: some View {
+        Button("Go Back") { browser?.webView.goBack() }
+            .keyboardShortcut("[")
+            .disabled(canGoBack != true)
+        Button("Go Forward") { browser?.webView.goForward() }
+            .keyboardShortcut("]")
+            .disabled(canGoForward != true)
+    }
+}
+
 struct PageZoomCommands: View {
     @Default(.webViewPageZoom) var webViewPageZoom
     @FocusedValue(\.browserViewModel) var browser: BrowserViewModel?
