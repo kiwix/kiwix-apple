@@ -30,12 +30,14 @@ struct Kiwix: App {
                 .environment(\.managedObjectContext, Database.shared.container.viewContext)
                 .environmentObject(libraryRefreshViewModel)
         }.commands {
+            SidebarCommands()
             CommandGroup(replacing: .importExport) {
                 FileImportButton { Text("Open...") }
             }
             CommandGroup(replacing: .newItem) {
                 Button("New Tab") {
-                    guard let currentWindow = NSApp.keyWindow, let controller = currentWindow.windowController else { return }
+                    guard let currentWindow = NSApp.keyWindow,
+                          let controller = currentWindow.windowController else { return }
                     controller.newWindowForTab(nil)
                     guard let newWindow = NSApp.keyWindow, currentWindow != newWindow else { return }
                     currentWindow.addTabbedWindow(newWindow, ordered: .above)
@@ -43,11 +45,11 @@ struct Kiwix: App {
                 Divider()
             }
             CommandGroup(after: .toolbar) {
-                NavigationCommandButtons()
+                NavigationCommands()
                 Divider()
-                PageZoomButtons()
+                PageZoomCommands()
                 Divider()
-                SidebarNavigationItemButtons()
+                SidebarNavigationCommands()
                 Divider()
             }
         }
@@ -94,7 +96,16 @@ struct RootView: View {
                         Label(navigationItem.name, systemImage: navigationItem.icon)
                     }
                 }
-            }.frame(minWidth: 150).toolbar { SidebarButton() }
+            }
+            .frame(minWidth: 150)
+            .toolbar {
+                Button {
+                    guard let responder = NSApp.keyWindow?.firstResponder else { return }
+                    responder.tryToPerform(#selector(NSSplitViewController.toggleSidebar(_:)), with: nil)
+                } label: {
+                    Image(systemName: "sidebar.leading")
+                }.help("Show sidebar")
+            }
             switch navigation.currentItem {
             case .reading:
                 ReadingView()

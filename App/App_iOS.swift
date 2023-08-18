@@ -31,15 +31,17 @@ struct Kiwix: App {
         WindowGroup {
             RootView().environment(\.managedObjectContext, Database.viewContext)
         }
-//        .commands {
+        .commands {
 //            CommandGroup(replacing: .importExport) {
 //                FileImportButton { Text("Open...") }
 //            }
-//            CommandGroup(after: .toolbar) {
-//                NavigationCommandButtons()
-//                Divider()
-//            }
-//        }
+            CommandGroup(replacing: .undoRedo) {
+                NavigationCommands()
+            }
+            CommandGroup(replacing: .textFormatting) {
+                PageZoomCommands()
+            }
+        }
     }
     
     private class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCenterDelegate {
@@ -93,6 +95,7 @@ struct RootView: View {
                 }.ignoresSafeArea()
             }
         }
+        .focusedSceneValue(\.navigationItem, $navigation.currentItem)
         .environmentObject(library)
         .environmentObject(navigation)
         .modifier(AlertHandler())
