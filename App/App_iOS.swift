@@ -107,7 +107,7 @@ struct RootView: View {
         }
         .onOpenURL { url in
             if url.isFileURL {
-                NotificationCenter.importFiles([url])
+                NotificationCenter.openFiles([url])
             } else if url.scheme == "kiwix" {
                 NotificationCenter.openURL(url)
             }

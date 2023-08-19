@@ -20,7 +20,7 @@ struct OpenFileButton<Label: View>: View {
     
     var body: some View {
         Button {
-            // On iOS 14 & 15, fileimporter's isPresented binding is not reset to false if user swipe to dismiss
+            // On iOS/iPadOS 15, fileimporter's isPresented binding is not reset to false if user swipe to dismiss
             // the sheet. In order to mitigate the issue, the binding is set to false then true with a 0.1s delay.
             isPresented = false
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
@@ -33,7 +33,7 @@ struct OpenFileButton<Label: View>: View {
             allowsMultipleSelection: true
         ) { result in
             guard case let .success(urls) = result else { return }
-            NotificationCenter.importFiles(urls)
+            NotificationCenter.openFiles(urls)
         }
         .help("Open a zim file")
         .keyboardShortcut("o")
@@ -42,7 +42,7 @@ struct OpenFileButton<Label: View>: View {
 
 
 struct OpenFileHandler: ViewModifier {
-    private let importFiles = NotificationCenter.default.publisher(for: .importFiles)
+    private let importFiles = NotificationCenter.default.publisher(for: .openFiles)
     
     func body(content: Content) -> some View {
         content.onReceive(importFiles) { notification in

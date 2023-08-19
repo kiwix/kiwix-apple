@@ -24,7 +24,7 @@ struct Welcome: View {
     @State private var isLibraryPresented = false
     
     var body: some View {
-        if !zimFiles.isEmpty {
+        if zimFiles.isEmpty {
             VStack(spacing: 20) {
                 Spacer()
                 logo
