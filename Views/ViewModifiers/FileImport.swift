@@ -42,15 +42,40 @@ struct OpenFileButton<Label: View>: View {
 
 
 struct OpenFileHandler: ViewModifier {
+    @State private var isAlertPresented = false
+    @State private var activeAlert: ActiveAlert?
+    
     private let importFiles = NotificationCenter.default.publisher(for: .openFiles)
+    
+    enum ActiveAlert {
+        case unableToOpen(filenames: [String])
+    }
     
     func body(content: Content) -> some View {
         content.onReceive(importFiles) { notification in
             guard let urls = notification.userInfo?["urls"] as? [URL] else { return }
-            print(urls)
+            let invalidURLs = urls.filter({ ZimFileService.getMetaData(url: $0) == nil })
+            
+            // open files that are valid
+            Set(urls).subtracting(invalidURLs).forEach { url in
+                LibraryOperations.open(url: url)
+            }
+            
+            // show alert if there are invalid files
+            if !invalidURLs.isEmpty {
+                isAlertPresented = true
+                activeAlert = .unableToOpen(filenames: invalidURLs.map({ $0.lastPathComponent }))
+            }
+                
 //            guard let metadata = ZimFileService.getMetaData(url: url) else { return }
 //            LibraryOperations.open(url: url)
 //            self.url = ZimFileService.shared.getMainPageURL(zimFileID: metadata.fileID)
+        }.alert("Unable to open file", isPresented: $isAlertPresented, presenting: activeAlert) { _ in
+        } message: { alert in
+            switch alert {
+            case .unableToOpen(let filenames):
+                Text("\(ListFormatter.localizedString(byJoining: filenames)) cannot be opened.")
+            }
         }
     }
 }
