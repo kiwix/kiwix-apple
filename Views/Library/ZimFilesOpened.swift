@@ -56,7 +56,7 @@ struct ZimFilesOpened: View {
             allowsMultipleSelection: true
         ) { result in
             guard case let .success(urls) = result else { return }
-            NotificationCenter.openFiles(urls)
+            NotificationCenter.openFiles(urls, context: .library)
         }
     }
 }

@@ -12,9 +12,11 @@ import UniformTypeIdentifiers
 struct OpenFileButton<Label: View>: View {
     @State private var isPresented: Bool = false
     
+    let context: OpenFileContext
     let label: Label
     
-    init(@ViewBuilder label: () -> Label) {
+    init(context: OpenFileContext, @ViewBuilder label: () -> Label) {
+        self.context = context
         self.label = label()
     }
     
@@ -33,7 +35,7 @@ struct OpenFileButton<Label: View>: View {
             allowsMultipleSelection: true
         ) { result in
             guard case let .success(urls) = result else { return }
-            NotificationCenter.openFiles(urls)
+            NotificationCenter.openFiles(urls, context: context)
         }
         .help("Open a zim file")
         .keyboardShortcut("o")

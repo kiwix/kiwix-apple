@@ -33,7 +33,7 @@ struct Kiwix: App {
         }
         .commands {
             CommandGroup(replacing: .importExport) {
-                OpenFileButton { Text("Open...") }
+                OpenFileButton(context: .command) { Text("Open...") }
             }
             CommandGroup(replacing: .undoRedo) {
                 NavigationCommands()
@@ -107,7 +107,7 @@ struct RootView: View {
         }
         .onOpenURL { url in
             if url.isFileURL {
-                NotificationCenter.openFiles([url])
+                NotificationCenter.openFiles([url], context: .file)
             } else if url.scheme == "kiwix" {
                 NotificationCenter.openURL(url)
             }

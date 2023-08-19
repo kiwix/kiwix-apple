@@ -99,6 +99,13 @@ enum ExternalLinkLoadingPolicy: String, CaseIterable, Identifiable, Defaults.Ser
     }
 }
 
+enum OpenFileContext: String {
+    case command
+    case file
+    case onBoarding
+    case library
+}
+
 enum Flavor: String, CustomStringConvertible {
     case max = "maxi"
     case noPic = "nopic"

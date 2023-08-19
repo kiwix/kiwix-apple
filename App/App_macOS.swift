@@ -32,7 +32,7 @@ struct Kiwix: App {
         }.commands {
             SidebarCommands()
             CommandGroup(replacing: .importExport) {
-                OpenFileButton { Text("Open...") }
+                OpenFileButton(context: .command) { Text("Open...") }
             }
             CommandGroup(replacing: .newItem) {
                 Button("New Tab") {
@@ -131,7 +131,7 @@ struct RootView: View {
         .modifier(OpenFileHandler())
         .onOpenURL { url in
             if url.isFileURL {
-                NotificationCenter.openFiles([url])
+                NotificationCenter.openFiles([url], context: .file)
             } else if url.scheme == "kiwix" {
                 NotificationCenter.openURL(url)
             }

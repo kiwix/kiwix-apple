@@ -77,7 +77,7 @@ extension NotificationCenter {
         NotificationCenter.default.post(name: .openURL, object: nil, userInfo: ["url": url])
     }
     
-    static func openFiles(_ urls: [URL]) {
-        NotificationCenter.default.post(name: .openFiles, object: nil, userInfo: ["urls": urls])
+    static func openFiles(_ urls: [URL], context: OpenFileContext) {
+        NotificationCenter.default.post(name: .openFiles, object: nil, userInfo: ["urls": urls, "context": context])
     }
 }
