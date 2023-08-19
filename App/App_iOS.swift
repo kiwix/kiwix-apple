@@ -32,9 +32,9 @@ struct Kiwix: App {
             RootView().environment(\.managedObjectContext, Database.viewContext)
         }
         .commands {
-//            CommandGroup(replacing: .importExport) {
-//                FileImportButton { Text("Open...") }
-//            }
+            CommandGroup(replacing: .importExport) {
+                OpenFileButton { Text("Open...") }
+            }
             CommandGroup(replacing: .undoRedo) {
                 NavigationCommands()
             }
@@ -100,12 +100,17 @@ struct RootView: View {
         .environmentObject(navigation)
         .modifier(AlertHandler())
         .modifier(ExternalLinkHandler())
+        .modifier(OpenFileHandler())
         .onChange(of: scenePhase) { newScenePhase in
             guard newScenePhase == .inactive else { return }
             WebViewCache.shared.persistStates()
         }
         .onOpenURL { url in
-            NotificationCenter.openURL(url)
+            if url.isFileURL {
+                NotificationCenter.importFiles([url])
+            } else if url.scheme == "kiwix" {
+                NotificationCenter.openURL(url)
+            }
         }
         .onReceive(openURL) { notification in
             guard let url = notification.userInfo?["url"] as? URL else { return }

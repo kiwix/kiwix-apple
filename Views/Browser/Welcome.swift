@@ -24,7 +24,7 @@ struct Welcome: View {
     @State private var isLibraryPresented = false
     
     var body: some View {
-        if zimFiles.isEmpty {
+        if !zimFiles.isEmpty {
             VStack(spacing: 20) {
                 Spacer()
                 logo
@@ -102,7 +102,7 @@ struct Welcome: View {
     /// Onboarding actions, open a zim file or refresh catalog
     private var actions: some View {
         HStack {
-            FileImportButton {
+            OpenFileButton {
                 HStack {
                     Spacer()
                     Text("Open File")

@@ -63,6 +63,7 @@ extension Color {
 extension Notification.Name {
     static let alert = Notification.Name("alert")
     static let externalLink = Notification.Name("externalLink")
+    static let importFiles = Notification.Name("importFiles")
     static let openURL = Notification.Name("openURL")
 }
 
@@ -74,5 +75,9 @@ extension NotificationCenter {
     static func openURL(_ url: URL?) {
         guard let url else { return }
         NotificationCenter.default.post(name: .openURL, object: nil, userInfo: ["url": url])
+    }
+    
+    static func importFiles(_ urls: [URL]) {
+        NotificationCenter.default.post(name: .importFiles, object: nil, userInfo: ["urls": urls])
     }
 }
