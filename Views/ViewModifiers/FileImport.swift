@@ -13,6 +13,8 @@ import UniformTypeIdentifiers
 /// Note 1: On iOS/iPadOS 15, fileimporter's isPresented binding is not reset to false if user swipe to dismiss the sheet.
 ///     In order to mitigate the issue, the binding is set to false then true with a 0.1s delay.
 /// Note 2: Does not work on iOS / iPadOS via commands.
+/// Note 3: Does not allow multiple selection, because we want a new tab to be opened with main page when file is opened,
+///     and the multitab implementation on iOS / iPadOS does not support open multiple tabs with an url right now.
 struct OpenFileButton<Label: View>: View {
     @State private var isPresented: Bool = false
     
@@ -34,7 +36,7 @@ struct OpenFileButton<Label: View>: View {
         .fileImporter(
             isPresented: $isPresented,
             allowedContentTypes: [UTType.zimFile],
-            allowsMultipleSelection: true
+            allowsMultipleSelection: false
         ) { result in
             guard case let .success(urls) = result else { return }
             NotificationCenter.openFiles(urls, context: context)
