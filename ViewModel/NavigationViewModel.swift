@@ -25,7 +25,6 @@ class NavigationViewModel: ObservableObject {
     
     private func makeTab(context: NSManagedObjectContext) -> Tab {
         let tab = Tab(context: context)
-        tab.id = UUID()
         tab.created = Date()
         tab.lastOpened = Date()
         return tab
