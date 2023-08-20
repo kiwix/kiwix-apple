@@ -23,14 +23,16 @@ struct LibraryOperations {
     
     /// Open a zim file with url
     /// - Parameter url: url of the zim file
-    static func open(url: URL) {
+    @discardableResult
+    static func open(url: URL) -> ZimFileMetaData? {
         guard let metadata = ZimFileService.getMetaData(url: url),
-              let fileURLBookmark = ZimFileService.getBookmarkData(url: url) else { return }
+              let fileURLBookmark = ZimFileService.getBookmarkData(url: url) else { return nil }
+        
         // open the file
         do {
             try ZimFileService.shared.open(bookmark: fileURLBookmark)
         } catch {
-            return
+            return nil
         }
         
         // upsert zim file in the database
@@ -44,6 +46,8 @@ struct LibraryOperations {
             zimFile.isMissing = false
             if context.hasChanges { try? context.save() }
         }
+        
+        return metadata
     }
     
     /// Reopen zim files from url bookmark data.

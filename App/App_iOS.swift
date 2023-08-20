@@ -32,9 +32,6 @@ struct Kiwix: App {
             RootView().environment(\.managedObjectContext, Database.viewContext)
         }
         .commands {
-            CommandGroup(replacing: .importExport) {
-                OpenFileButton(context: .command) { Text("Open...") }
-            }
             CommandGroup(replacing: .undoRedo) {
                 NavigationCommands()
             }
@@ -114,8 +111,12 @@ struct RootView: View {
         }
         .onReceive(openURL) { notification in
             guard let url = notification.userInfo?["url"] as? URL else { return }
+            let inNewTab = notification.userInfo?["inNewTab"] as? Bool ?? false
             if #available(iOS 16.0, *) {
-                if case let .tab(tabID) = navigation.currentItem {
+                if inNewTab {
+                    let tabID = navigation.createTab()
+                    WebViewCache.shared.getWebView(tabID: tabID).load(URLRequest(url: url))
+                } else if case let .tab(tabID) = navigation.currentItem {
                     WebViewCache.shared.getWebView(tabID: tabID).load(URLRequest(url: url))
                 } else {
                     let tabID = navigation.createTab()

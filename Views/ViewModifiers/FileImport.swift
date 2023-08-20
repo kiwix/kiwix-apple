@@ -9,6 +9,10 @@
 import SwiftUI
 import UniformTypeIdentifiers
 
+/// Button that presents a file importer.
+/// Note 1: On iOS/iPadOS 15, fileimporter's isPresented binding is not reset to false if user swipe to dismiss the sheet.
+///     In order to mitigate the issue, the binding is set to false then true with a 0.1s delay.
+/// Note 2: Does not work on iOS / iPadOS via commands.
 struct OpenFileButton<Label: View>: View {
     @State private var isPresented: Bool = false
     
@@ -22,8 +26,6 @@ struct OpenFileButton<Label: View>: View {
     
     var body: some View {
         Button {
-            // On iOS/iPadOS 15, fileimporter's isPresented binding is not reset to false if user swipe to dismiss
-            // the sheet. In order to mitigate the issue, the binding is set to false then true with a 0.1s delay.
             isPresented = false
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
                 isPresented = true
@@ -55,23 +57,45 @@ struct OpenFileHandler: ViewModifier {
     
     func body(content: Content) -> some View {
         content.onReceive(importFiles) { notification in
-            guard let urls = notification.userInfo?["urls"] as? [URL] else { return }
-            let invalidURLs = urls.filter({ ZimFileService.getMetaData(url: $0) == nil })
+            guard let urls = notification.userInfo?["urls"] as? [URL],
+                  let context = notification.userInfo?["context"] as? OpenFileContext else { return }
             
-            // open files that are valid
-            Set(urls).subtracting(invalidURLs).forEach { url in
-                LibraryOperations.open(url: url)
+            // try open zim files
+            var openedZimFileIDs = Set<UUID>()
+            var invalidURLs = Set<URL>()
+            for url in urls {
+                if let metadata = LibraryOperations.open(url: url) {
+                    openedZimFileIDs.insert(metadata.fileID)
+                } else {
+                    invalidURLs.insert(url)
+                }
             }
             
-            // show alert if there are invalid files
+            // action for zim files that can be opened (e.g. open main page)
+            switch context {
+            case .command, .file:
+                openedZimFileIDs.forEach { fileID in
+                    guard let url = ZimFileService.shared.getMainPageURL(zimFileID: fileID) else { return }
+                    #if os(macOS)
+                    NSWorkspace.shared.open(url)
+                    #elseif os(iOS)
+                    NotificationCenter.openURL(url, inNewTab: true)
+                    #endif
+                }
+            case .onBoarding:
+                openedZimFileIDs.forEach { fileID in
+                    guard let url = ZimFileService.shared.getMainPageURL(zimFileID: fileID) else { return }
+                    NotificationCenter.openURL(url)
+                }
+            default:
+                break
+            }
+            
+            // show alert if there are any files that cannot be opened
             if !invalidURLs.isEmpty {
                 isAlertPresented = true
                 activeAlert = .unableToOpen(filenames: invalidURLs.map({ $0.lastPathComponent }))
             }
-                
-//            guard let metadata = ZimFileService.getMetaData(url: url) else { return }
-//            LibraryOperations.open(url: url)
-//            self.url = ZimFileService.shared.getMainPageURL(zimFileID: metadata.fileID)
         }.alert("Unable to open file", isPresented: $isAlertPresented, presenting: activeAlert) { _ in
         } message: { alert in
             switch alert {
