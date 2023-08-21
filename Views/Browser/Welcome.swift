@@ -102,7 +102,7 @@ struct Welcome: View {
     /// Onboarding actions, open a zim file or refresh catalog
     private var actions: some View {
         HStack {
-            FileImportButton {
+            OpenFileButton(context: .onBoarding) {
                 HStack {
                     Spacer()
                     Text("Open File")

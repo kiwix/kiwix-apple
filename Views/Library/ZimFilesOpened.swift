@@ -38,26 +38,25 @@ struct ZimFilesOpened: View {
         .navigationTitle(NavigationItem.opened.name)
         .toolbar {
             Button {
-                // On iOS 14 & 15, fileimporter's isPresented binding is not reset to false if user swipe to dismiss
+                // On iOS/iPadOS 15, fileimporter's isPresented binding is not reset to false if user swipe to dismiss
                 // the sheet. In order to mitigate the issue, the binding is set to false then true with a 0.1s delay.
                 isFileImporterPresented = false
                 DispatchQueue.main.asyncAfter(deadline: .now()+0.1) {
                     isFileImporterPresented = true
                 }
+                isFileImporterPresented = true
             } label: {
                 Label("Open...", systemImage: "plus")
             }.help("Open a zim file")
         }
-        // not using FileImportButton here, because it does not work on iOS/iPadOS, since this view is in a modal
+        // not using OpenFileButton here, because it does not work on iOS/iPadOS 15, since this view is in a modal
         .fileImporter(
             isPresented: $isFileImporterPresented,
             allowedContentTypes: [UTType.zimFile],
             allowsMultipleSelection: true
         ) { result in
             guard case let .success(urls) = result else { return }
-            for url in urls {
-                LibraryOperations.open(url: url)
-            }
+            NotificationCenter.openFiles(urls, context: .library)
         }
     }
 }

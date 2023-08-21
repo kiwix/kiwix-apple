@@ -32,7 +32,7 @@ struct Kiwix: App {
         }.commands {
             SidebarCommands()
             CommandGroup(replacing: .importExport) {
-                FileImportButton { Text("Open...") }
+                OpenFileButton(context: .command) { Text("Open...") }
             }
             CommandGroup(replacing: .newItem) {
                 Button("New Tab") {
@@ -128,13 +128,12 @@ struct RootView: View {
         .environmentObject(navigation)
         .modifier(AlertHandler())
         .modifier(ExternalLinkHandler())
+        .modifier(OpenFileHandler())
         .onOpenURL { url in
             if url.isFileURL {
-                guard let metadata = ZimFileService.getMetaData(url: url) else { return }
-                LibraryOperations.open(url: url)
-//                self.url = ZimFileService.shared.getMainPageURL(zimFileID: metadata.fileID)
+                NotificationCenter.openFiles([url], context: .file)
             } else if url.scheme == "kiwix" {
-                NotificationCenter.default.post(name: Notification.Name.openURL, object: nil, userInfo: ["url": url])
+                NotificationCenter.openURL(url)
             }
         }
         .onReceive(openURL) { notification in

@@ -29,7 +29,6 @@
     </entity>
     <entity name="Tab" representedClassName=".Tab" syncable="YES">
         <attribute name="created" attributeType="Date" usesScalarValueType="NO"/>
-        <attribute name="id" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="interactionState" optional="YES" attributeType="Binary"/>
         <attribute name="lastOpened" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="title" optional="YES" attributeType="String"/>
@@ -37,11 +36,6 @@
         <fetchIndex name="created">
             <fetchIndexElement property="created" type="Binary" order="ascending"/>
         </fetchIndex>
-        <uniquenessConstraints>
-            <uniquenessConstraint>
-                <constraint value="id"/>
-            </uniquenessConstraint>
-        </uniquenessConstraints>
     </entity>
     <entity name="ZimFile" representedClassName=".ZimFile" syncable="YES">
         <attribute name="articleCount" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>

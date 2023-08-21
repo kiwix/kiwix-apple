@@ -117,7 +117,6 @@ class OutlineItem: ObservableObject, Identifiable {
 
 class Tab: NSManagedObject, Identifiable {
     @NSManaged var created: Date
-    @NSManaged var id: UUID
     @NSManaged var interactionState: Data?
     @NSManaged var lastOpened: Date
     @NSManaged var title: String?
