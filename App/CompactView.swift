@@ -12,17 +12,27 @@ import SwiftUI
 @available(iOS 16.0, *)
 struct CompactView: View {
     @EnvironmentObject private var navigation: NavigationViewModel
+    
+    var body: some View {
+        if case let .tab(tabID) = navigation.currentItem {
+            Content().id(tabID).environmentObject(WebViewCache.shared.getViewModel(tabID: tabID))
+        }
+    }
+}
+
+@available(iOS 16.0, *)
+private struct Content: View {
+    @EnvironmentObject private var browser: BrowserViewModel
     @EnvironmentObject private var search: SearchViewModel
-    @StateObject private var browser = BrowserViewModel()
     
     var body: some View {
         Group {
             if search.isSearching {
                 SearchResults()
-            } else if case let .tab(tabID) = navigation.currentItem, browser.url != nil {
-                WebView(tabID: tabID).ignoresSafeArea().id(tabID)
-            } else {
+            } else if browser.url == nil {
                 Welcome()
+            } else {
+                WebView().ignoresSafeArea()
             }
         }
         .toolbar {
@@ -47,18 +57,9 @@ struct CompactView: View {
                 }
             }
         }
-        .environmentObject(browser)
         .focusedSceneValue(\.browserViewModel, browser)
         .focusedSceneValue(\.canGoBack, browser.canGoBack)
         .focusedSceneValue(\.canGoForward, browser.canGoForward)
-        .onAppear {
-            guard case let .tab(tabID) = navigation.currentItem else { return }
-            browser.configure(tabID: tabID)
-        }
-        .onChange(of: navigation.currentItem) { navigationItem in
-            guard case let .tab(tabID) = navigation.currentItem else { return }
-            browser.configure(tabID: tabID)
-        }
     }
 }
 #endif

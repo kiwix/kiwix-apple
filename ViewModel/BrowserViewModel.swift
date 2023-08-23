@@ -24,23 +24,25 @@ class BrowserViewModel: NSObject, ObservableObject,
     @Published private(set) var outlineItemTree = [OutlineItem]()
     @Published private(set) var url: URL?
     
-    private(set) var tabID: NSManagedObjectID?
+    let tabID: NSManagedObjectID?
+    let webView: WKWebView
     private var canGoBackObserver: NSKeyValueObservation?
     private var canGoForwardObserver: NSKeyValueObservation?
     private var titleObserver: NSKeyValueObservation?
     private var urlObserver: NSKeyValueObservation?
     private var bookmarkFetchedResultsController: NSFetchedResultsController<Bookmark>?
     
-    var webView: WKWebView {
-        if let tabID {
-            return WebViewCache.shared.getWebView(tabID: tabID)
-        } else {
-            return WebViewCache.shared.webView
-        }
+    init(tabID: NSManagedObjectID? = nil) {
+        self.tabID = tabID
+        self.webView = WKWebView(frame: .zero, configuration: WebViewConfiguration())
+        super.init()
+        configure(tabID: tabID)
     }
     
-    func configure(tabID: NSManagedObjectID?) {
-        self.tabID = tabID
+    private func configure(tabID: NSManagedObjectID?) {
+        if let tabID, let tab = try? Database.viewContext.existingObject(with: tabID) as? Tab {
+            webView.interactionState = tab.interactionState
+        }
         
         // configure web view
         webView.allowsBackForwardNavigationGestures = true

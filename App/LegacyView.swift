@@ -32,7 +32,7 @@ struct LegacyView: View {
             } else if browser.url == nil {
                 Welcome()
             } else {
-                WebView(tabID: nil).ignoresSafeArea()
+                WebView().ignoresSafeArea()
             }
         }
         .toolbar {
@@ -104,9 +104,6 @@ struct LegacyView: View {
         .focusedSceneValue(\.browserViewModel, browser)
         .focusedSceneValue(\.canGoBack, browser.canGoBack)
         .focusedSceneValue(\.canGoForward, browser.canGoForward)
-        .onAppear {
-            browser.configure(tabID: nil)
-        }
         .onChange(of: browser.url) { _ in
             search.isSearching = false
             presentedSheet = nil

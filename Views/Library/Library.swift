@@ -104,10 +104,16 @@ struct LibraryZimFileContext: ViewModifier {
                 content
             }.buttonStyle(.plain)
             #elseif os(iOS)
-            NavigationLink(tag: zimFile, selection: $viewModel.selectedZimFile) {
-                ZimFileDetail(zimFile: zimFile)
-            } label: {
-                content
+            if #available(iOS 16.0, *) {
+                NavigationLink(value: zimFile) {
+                    content
+                }
+            } else {
+                NavigationLink(tag: zimFile, selection: $viewModel.selectedZimFile) {
+                    ZimFileDetail(zimFile: zimFile)
+                } label: {
+                    content
+                }
             }
             #endif
         }.contextMenu {

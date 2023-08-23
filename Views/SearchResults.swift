@@ -46,7 +46,15 @@ struct SearchResults: View {
     @ViewBuilder
     var content: some View {
         if viewModel.inProgress {
-            ProgressView()
+            VStack {
+                Spacer()
+                HStack {
+                    Spacer()
+                    ProgressView()
+                    Spacer()
+                }
+                Spacer()
+            }
         } else if viewModel.results.isEmpty {
             Message(text: "No result")
         } else {

@@ -74,22 +74,18 @@ struct RootView: View {
     
     var body: some View {
         Group {
-            if #available(iOS 16.0, *) {
-                if horizontalSizeClass == .regular {
-                    RegularView()
-                } else {
-                    ContainerView {
-                        CompactView()
-                    }
-                    .ignoresSafeArea()
-                    .onAppear() {
-                        navigation.navigateToMostRecentTab()
-                    }
-                }
+            if #available(iOS 16.0, *), horizontalSizeClass == .regular {
+                RegularView()
+            } else if horizontalSizeClass == .regular {
+                RegularView_iOS15()
             } else {
                 ContainerView {
-                    LegacyView()
-                }.ignoresSafeArea()
+//                    CompactView()
+                }
+                .ignoresSafeArea()
+                .onAppear() {
+                    navigation.navigateToMostRecentTab()
+                }
             }
         }
         .focusedSceneValue(\.navigationItem, $navigation.currentItem)

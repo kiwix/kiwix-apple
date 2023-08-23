@@ -10,6 +10,7 @@ import SwiftUI
 
 struct Welcome: View {
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
+    @EnvironmentObject private var browser: BrowserViewModel
     @EnvironmentObject private var library: LibraryViewModel
     @EnvironmentObject private var navigation: NavigationViewModel
     @FetchRequest(
@@ -64,7 +65,8 @@ struct Welcome: View {
                 GridSection(title: "Main Page") {
                     ForEach(zimFiles) { zimFile in
                         Button {
-                            NotificationCenter.openURL(ZimFileService.shared.getMainPageURL(zimFileID: zimFile.fileID))
+                            guard let url = ZimFileService.shared.getMainPageURL(zimFileID: zimFile.fileID) else { return }
+                            browser.load(url: url)
                         } label: {
                             ZimFileCell(zimFile, prominent: .name)
                         }.buttonStyle(.plain)
@@ -74,7 +76,7 @@ struct Welcome: View {
                     GridSection(title: "Bookmarks") {
                         ForEach(bookmarks.prefix(6)) { bookmark in
                             Button {
-                                NotificationCenter.openURL(bookmark.articleURL)
+                                browser.load(url: bookmark.articleURL)
                             } label: {
                                 ArticleCell(bookmark: bookmark)
                             }

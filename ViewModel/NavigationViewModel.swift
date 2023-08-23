@@ -103,6 +103,7 @@ class WebViewCache {
     static let shared = WebViewCache()
     
     private var webViews = [NSManagedObjectID: WKWebView]()
+    private var viewModels = [NSManagedObjectID: BrowserViewModel]()
     private(set) lazy var webView = WKWebView(frame: .zero, configuration: WebViewConfiguration())
     
     private init() { }
@@ -117,6 +118,16 @@ class WebViewCache {
             }
             webViews[tabID] = webView
             return webView
+        }
+    }
+    
+    func getViewModel(tabID: NSManagedObjectID) -> BrowserViewModel {
+        if let viewModel = viewModels[tabID] {
+            return viewModel
+        } else {
+            let viewModel = BrowserViewModel(tabID: tabID)
+            viewModels[tabID] = viewModel
+            return viewModel
         }
     }
     

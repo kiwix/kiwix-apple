@@ -67,11 +67,11 @@ class SearchViewModel: NSObject, ObservableObject, NSFetchedResultsControllerDel
         queue.cancelAllOperations()
         let operation = SearchOperation(searchText: searchText, zimFileIDs: zimFileIDs)
         operation.extractMatchingSnippet = Defaults[.searchResultSnippetMode] == .matches
-        operation.completionBlock = { [unowned self] in
+        operation.completionBlock = { [weak self] in
             guard !operation.isCancelled else { return }
             DispatchQueue.main.sync {
-                self.results = operation.results
-                self.inProgress = false
+                self?.results = operation.results
+                self?.inProgress = false
             }
         }
         queue.addOperation(operation)

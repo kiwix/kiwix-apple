@@ -9,48 +9,20 @@
 import SwiftUI
 
 #if os(iOS)
-@available(iOS 16.0, *)
-struct TabsSectionContent: View {
-    @EnvironmentObject private var navigation: NavigationViewModel
-    @FetchRequest(
-        sortDescriptors: [SortDescriptor(\Tab.created, order: .reverse)],
-        animation: .easeInOut
-    ) private var tabs: FetchedResults<Tab>
-    
-    private struct Item {
-        let tab: Tab
-        let navigationItem: NavigationItem
-        
-        init(tab: Tab) {
-            self.tab = tab
-            self.navigationItem = NavigationItem.tab(objectID: tab.objectID)
-        }
-    }
+struct TabLabel: View {
+    let tab: Tab
     
     var body: some View {
-        ForEach(tabs.map({ Item(tab: $0) }), id: \.navigationItem) { item in
-            Group {
-                if let zimFile = item.tab.zimFile, let category = Category(rawValue: zimFile.category) {
-                    Label { Text(item.tab.title ?? "New Tab") } icon: {
-                        Favicon(category: category, imageData: zimFile.faviconData).frame(width: 22, height: 22)
-                    }
-                } else {
-                    Label(item.tab.title ?? "New Tab", systemImage: "square")
-                }
+        if let zimFile = tab.zimFile, let category = Category(rawValue: zimFile.category) {
+            Label { Text(tab.title ?? "New Tab") } icon: {
+                Favicon(category: category, imageData: zimFile.faviconData).frame(width: 22, height: 22)
             }
-            .lineLimit(1)
-            .swipeActions {
-                Button(role: .destructive) {
-                    Task { await navigation.deleteTab(tabID: item.tab.objectID) }
-                } label: {
-                    Label("Close Tab", systemImage: "xmark")
-                }
-            }
+        } else {
+            Label(tab.title ?? "New Tab", systemImage: "square")
         }
     }
 }
 
-@available(iOS 16.0, *)
 struct NewTabButton: View {
     @EnvironmentObject private var navigation: NavigationViewModel
     
