@@ -17,8 +17,22 @@ struct BrowserTab: View {
             #if os(macOS)
             ToolbarItemGroup(placement: .navigation) { NavigationButtons() }
             #elseif os(iOS)
-            ToolbarItemGroup(placement: .navigationBarLeading) { NavigationButtons() }
+            ToolbarItemGroup(placement: .navigationBarLeading) {
+                if #unavailable(iOS 16) {
+                    Button {
+                        NotificationCenter.toggleSidebar()
+                    } label: {
+                        Label("Show Sidebar", systemImage: "sidebar.left")
+                    }
+                }
+                NavigationButtons()
+            }
             #endif
+            ToolbarItemGroup(placement: .primaryAction) {
+                OutlineButton()
+                BookmarkButton()
+                ArticleShortcutButtons(displayMode: .mainAndRandomArticle)
+            }
         }
         .environmentObject(search)
         .focusedSceneValue(\.browserViewModel, browser)
@@ -28,14 +42,17 @@ struct BrowserTab: View {
         .searchable(text: $search.searchText, placement: .toolbar)
         .modify { view in
             #if os(macOS)
-            view
+            view.navigationTitle(browser.articleTitle.isEmpty ? "Kiwix" : browser.articleTitle)
+                .navigationSubtitle(browser.zimFileName)
             #elseif os(iOS)
-            if #available(iOS 16.0, *) {
-                view.toolbarBackground(.visible, for: .navigationBar)
-            } else {
-                view
-            }
+            view
             #endif
+        }
+        .onAppear {
+            browser.updateLastOpened()
+        }
+        .onDisappear {
+            browser.persistState()
         }
     }
     
@@ -54,28 +71,6 @@ struct BrowserTab: View {
                     } else {
                         WebView().ignoresSafeArea()
                     }
-                }
-                .toolbar {
-                    ToolbarItemGroup(placement: .primaryAction) {
-                        if proxy.size.width > 750 || !isSearching {
-                            OutlineButton()
-                            BookmarkButton()
-                            RandomArticleButton()
-                            MainArticleButton()
-                        }
-                    }
-                }
-                .modify { view in
-                    #if os(macOS)
-                    view.navigationTitle(browser.articleTitle.isEmpty ? "Kiwix" : browser.articleTitle)
-                        .navigationSubtitle(browser.zimFileName)
-                    #elseif os(iOS)
-                    if #available(iOS 16.0, *), proxy.size.width > 750 || !isSearching {
-                        view.navigationTitle(browser.articleTitle).navigationBarTitleDisplayMode(.inline)
-                    } else {
-                        view
-                    }
-                    #endif
                 }
             }
         }

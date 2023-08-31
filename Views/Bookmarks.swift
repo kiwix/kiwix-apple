@@ -35,6 +35,7 @@ struct Bookmarks: View {
             }
         }
         .modifier(GridCommon())
+        .modifier(ToolbarRoleBrowser())
         .navigationTitle("Bookmarks")
         .searchable(text: $searchText)
         .onChange(of: searchText) { searchText in
@@ -44,6 +45,19 @@ struct Bookmarks: View {
             if bookmarks.isEmpty {
                 Message(text: "No bookmarks")
             }
+        }
+        .toolbar {
+            #if os(iOS)
+            ToolbarItem(placement: .navigationBarLeading) {
+                if #unavailable(iOS 16), horizontalSizeClass == .regular {
+                    Button {
+                        NotificationCenter.toggleSidebar()
+                    } label: {
+                        Label("Show Sidebar", systemImage: "sidebar.left")
+                    }
+                }
+            }
+            #endif
         }
     }
     

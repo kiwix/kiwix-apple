@@ -125,21 +125,8 @@ struct Settings: View {
             backupSettings
             miscellaneous
         }
+        .modifier(ToolbarRoleBrowser())
         .navigationTitle("Settings")
-        .modify { view in
-            if #available(iOS 16.0, *) {
-                view.navigationDestination(for: Route.self) { route in
-                    switch route {
-                    case .languageSelector:
-                        LanguageSelector()
-                    case .about:
-                        About()
-                    }
-                }
-            } else {
-                view
-            }
-        }
     }
     
     var readingSettings: some View {
@@ -162,16 +149,10 @@ struct Settings: View {
     
     var librarySettings: some View {
         Section {
-            if #available(iOS 16.0, *) {
-                NavigationLink(value: Route.languageSelector) {
-                    SelectedLanaguageLabel()
-                }
-            } else {
-                NavigationLink {
-                    LanguageSelector()
-                } label: {
-                    SelectedLanaguageLabel()
-                }
+            NavigationLink {
+                LanguageSelector()
+            } label: {
+                SelectedLanaguageLabel()
             }
             Toggle("Download using cellular", isOn: $downloadUsingCellular)
         } header: {
@@ -224,11 +205,7 @@ struct Settings: View {
                 let url = URL(string:"itms-apps://itunes.apple.com/us/app/kiwix/id997079563?action=write-review")!
                 UIApplication.shared.open(url)
             }
-            if #available(iOS 16.0, *) {
-                NavigationLink("About", value: Route.about)
-            } else {
-                NavigationLink("About") { About() }
-            }
+            NavigationLink("About") { About() }
         }
     }
 }

@@ -23,13 +23,15 @@ struct SearchResults: View {
     ) private var zimFiles: FetchedResults<ZimFile>
     @State private var isClearSearchConfirmationPresented = false
     
+    private let openURL = NotificationCenter.default.publisher(for: .openURL)
+    
     var body: some View {
         Group {
             if zimFiles.isEmpty {
                 Message(text: "No opened zim file")
             } else if horizontalSizeClass == .regular {
                 HStack(spacing: 0) {
-                    sidebar.frame(width: 320)
+                    sidebar.frame(width: 350)
                     Divider().ignoresSafeArea(.all, edges: .vertical)
                     content.frame(maxWidth: .infinity)
                 }.safeAreaInset(edge: .top, spacing: 0) {
@@ -40,7 +42,11 @@ struct SearchResults: View {
             } else {
                 content
             }
-        }.background(Color.background)
+        }
+        .background(Color.background)
+        .onReceive(openURL) { _ in
+            dismissSearch()
+        }
     }
     
     @ViewBuilder
@@ -68,10 +74,7 @@ struct SearchResults: View {
                                 searchTexts.insert(viewModel.searchText, at: 0)
                                 return searchTexts
                             }()
-                            NotificationCenter.default.post(
-                                name: Notification.Name.openURL, object: nil, userInfo: ["url": result.url]
-                            )
-                            dismissSearch()
+                            NotificationCenter.openURL(result.url)
                         } label: {
                             ArticleCell(result: result, zimFile: viewModel.zimFiles[result.zimFileID])
                         }.buttonStyle(.plain)

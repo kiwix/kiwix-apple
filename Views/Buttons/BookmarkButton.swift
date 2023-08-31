@@ -73,21 +73,7 @@ struct BookmarkButton: View {
                 }
             }
             .frame(idealWidth: 360, idealHeight: 600)
-            .modify { view in
-                #if os(macOS)
-                view
-                #elseif os(iOS)
-                if #available(iOS 16.0, *) {
-                    view.presentationDetents([.medium, .large])
-                } else {
-                    /*
-                     HACK: Use medium as selection so that half sized sheets are consistently shown
-                     when tab manager button is pressed, user can still freely adjust sheet size.
-                    */
-                    view.backport.presentationDetents([.medium, .large], selection: .constant(.medium))
-                }
-                #endif
-            }
+            .modifier(MarkAsHalfSheet())
         }
         #endif
     }

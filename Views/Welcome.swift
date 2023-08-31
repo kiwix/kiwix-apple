@@ -26,11 +26,20 @@ struct Welcome: View {
     
     var body: some View {
         if zimFiles.isEmpty {
-            VStack(spacing: 20) {
+            HStack {
                 Spacer()
-                logo
-                Divider()
-                actions
+                VStack(spacing: 20) {
+                    Spacer()
+                    logo
+                    Divider()
+                    actions
+                    Spacer()
+                }
+                #if os(macOS)
+                .frame(maxWidth: 300)
+                #elseif os(iOS)
+                .frame(maxWidth: 600)
+                #endif
                 Spacer()
             }
             .padding()
@@ -47,13 +56,9 @@ struct Welcome: View {
                 }
                 #endif
             }
-            #if os(macOS)
-            .frame(maxWidth: 300)
-            #elseif os(iOS)
-            .frame(maxWidth: 600)
+            #if os(iOS)
             .sheet(isPresented: $isLibraryPresented) {
-                // TODO: show categories directly
-                Library()
+                Library(tabItem: .categories)
             }
             #endif
         } else {

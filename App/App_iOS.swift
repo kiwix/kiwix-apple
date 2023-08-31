@@ -12,6 +12,9 @@ import UserNotifications
 #if os(iOS)
 @main
 struct Kiwix: App {
+    @Environment(\.scenePhase) private var scenePhase
+    @StateObject private var library = LibraryViewModel()
+    @StateObject private var navigation = NavigationViewModel()
     @UIApplicationDelegateAdaptor(AppDelegate.self) private var appDelegate
     
     private let fileMonitor: DirectoryMonitor
@@ -29,7 +32,24 @@ struct Kiwix: App {
     
     var body: some Scene {
         WindowGroup {
-            RootView().environment(\.managedObjectContext, Database.viewContext)
+            RootView()
+                .ignoresSafeArea()
+                .environment(\.managedObjectContext, Database.viewContext)
+                .environmentObject(library)
+                .environmentObject(navigation)
+                .modifier(AlertHandler())
+                .modifier(OpenFileHandler())
+                .onChange(of: scenePhase) { newValue in
+                    guard newValue == .inactive else { return }
+                    try? Database.viewContext.save()
+                }
+                .onOpenURL { url in
+                    if url.isFileURL {
+                        NotificationCenter.openFiles([url], context: .file)
+                    } else if url.scheme == "kiwix" {
+                        NotificationCenter.openURL(url)
+                    }
+                }
         }
         .commands {
             CommandGroup(replacing: .undoRedo) {
@@ -55,73 +75,21 @@ struct Kiwix: App {
                                     withCompletionHandler completionHandler: @escaping () -> Void) {
             if let zimFileID = UUID(uuidString: response.notification.request.identifier),
                let mainPageURL = ZimFileService.shared.getMainPageURL(zimFileID: zimFileID) {
-                UIApplication.shared.open(mainPageURL)
+                NotificationCenter.openURL(mainPageURL, inNewTab: true)
             }
             completionHandler()
         }
     }
 }
 
-struct RootView: View {
-    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
-    @Environment(\.scenePhase) private var scenePhase
-    @StateObject private var library = LibraryViewModel()
-    @StateObject private var navigation = NavigationViewModel()
+private struct RootView: UIViewControllerRepresentable {
+    @EnvironmentObject private var navigation: NavigationViewModel
     
-    private let primaryItems: [NavigationItem] = [.bookmarks, .settings]
-    private let libraryItems: [NavigationItem] = [.opened, .categories, .downloads, .new]
-    private let openURL = NotificationCenter.default.publisher(for: .openURL)
+    func makeUIViewController(context: Context) -> SplitViewController {
+        SplitViewController(navigationViewModel: navigation)
+    }
     
-    var body: some View {
-        Group {
-            if #available(iOS 16.0, *), horizontalSizeClass == .regular {
-                RegularView()
-            } else if horizontalSizeClass == .regular {
-                RegularView_iOS15()
-            } else {
-                ContainerView {
-//                    CompactView()
-                }
-                .ignoresSafeArea()
-                .onAppear() {
-                    navigation.navigateToMostRecentTab()
-                }
-            }
-        }
-        .focusedSceneValue(\.navigationItem, $navigation.currentItem)
-        .environmentObject(library)
-        .environmentObject(navigation)
-        .modifier(AlertHandler())
-        .modifier(ExternalLinkHandler())
-        .modifier(OpenFileHandler())
-        .onChange(of: scenePhase) { newScenePhase in
-            guard newScenePhase == .inactive else { return }
-            WebViewCache.shared.persistStates()
-        }
-        .onOpenURL { url in
-            if url.isFileURL {
-                NotificationCenter.openFiles([url], context: .file)
-            } else if url.scheme == "kiwix" {
-                NotificationCenter.openURL(url)
-            }
-        }
-        .onReceive(openURL) { notification in
-            guard let url = notification.userInfo?["url"] as? URL else { return }
-            let inNewTab = notification.userInfo?["inNewTab"] as? Bool ?? false
-            if #available(iOS 16.0, *) {
-                if inNewTab {
-                    let tabID = navigation.createTab()
-                    WebViewCache.shared.getWebView(tabID: tabID).load(URLRequest(url: url))
-                } else if case let .tab(tabID) = navigation.currentItem {
-                    WebViewCache.shared.getWebView(tabID: tabID).load(URLRequest(url: url))
-                } else {
-                    let tabID = navigation.createTab()
-                    WebViewCache.shared.getWebView(tabID: tabID).load(URLRequest(url: url))
-                }
-            } else {
-                WebViewCache.shared.webView.load(URLRequest(url: url))
-            }
-        }
+    func updateUIViewController(_ controller: SplitViewController, context: Context) {
     }
 }
 #endif

@@ -13,9 +13,16 @@ import UniformTypeIdentifiers
 /// Tabbed library view on iOS & iPadOS
 struct Library: View {
     @EnvironmentObject private var viewModel: LibraryViewModel
+    @SceneStorage("LibraryTabItem") private var tabItem: LibraryTabItem = .opened
+        
+    private let defaultTabItem: LibraryTabItem?
+    
+    init(tabItem: LibraryTabItem? = nil) {
+        self.defaultTabItem = tabItem
+    }
     
     var body: some View {
-        TabView(selection: $viewModel.selectedTabItem) {
+        TabView(selection: $tabItem) {
             ForEach(LibraryTabItem.allCases) { tabItem in
                 SheetContent {
                     switch tabItem {
@@ -46,8 +53,11 @@ struct Library: View {
                 .tabItem { Label(tabItem.name, systemImage: tabItem.icon) }
             }
         }.onAppear {
+            if let defaultTabItem = defaultTabItem {
+                tabItem = defaultTabItem
+            }
             viewModel.start(isUserInitiated: false)
-        }.onChange(of: viewModel.selectedTabItem) { _ in
+        }.onChange(of: tabItem) { _ in
             viewModel.selectedZimFile = nil
         }
     }

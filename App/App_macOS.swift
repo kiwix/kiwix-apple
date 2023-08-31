@@ -85,7 +85,7 @@ struct RootView: View {
     
     private let primaryItems: [NavigationItem] = [.reading, .bookmarks]
     private let libraryItems: [NavigationItem] = [.opened, .categories, .downloads, .new]
-    private let openURL = NotificationCenter.default.publisher(for: Notification.Name.openURL)
+    private let openURL = NotificationCenter.default.publisher(for: .openURL)
     
     var body: some View {
         NavigationView {

@@ -24,15 +24,15 @@ struct WebView: NSViewRepresentable {
     func updateNSView(_ webView: WKWebView, context: Context) { }
     
     func makeCoordinator() -> Coordinator {
-        Coordinator()
+        Coordinator(view: self)
     }
     
     class Coordinator {
         private let pageZoomObserver: Defaults.Observation
         
-        init() {
+        init(view: WebView) {
             pageZoomObserver = Defaults.observe(.webViewPageZoom) { change in
-                WebViewCache.shared.webView.pageZoom = change.newValue
+                view.browser.webView.pageZoom = change.newValue
             }
         }
     }
