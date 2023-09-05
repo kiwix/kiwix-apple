@@ -86,7 +86,7 @@ struct ZimFileDetail: View {
         } else if zimFile.fileURLBookmark != nil {  // zim file is opened
             Action(title: "Open Main Page") {
                 guard let url = ZimFileService.shared.getMainPageURL(zimFileID: zimFile.fileID) else { return }
-                NotificationCenter.default.post(name: Notification.Name.openURL, object: nil, userInfo: ["url": url])
+                NotificationCenter.openURL(url, inNewTab: true)
             }
             #if os(macOS)
             Action(title: "Reveal in Finder") {

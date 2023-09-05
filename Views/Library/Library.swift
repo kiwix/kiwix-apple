@@ -57,8 +57,6 @@ struct Library: View {
                 tabItem = defaultTabItem
             }
             viewModel.start(isUserInitiated: false)
-        }.onChange(of: tabItem) { _ in
-            viewModel.selectedZimFile = nil
         }
     }
 }
@@ -114,16 +112,10 @@ struct LibraryZimFileContext: ViewModifier {
                 content
             }.buttonStyle(.plain)
             #elseif os(iOS)
-            if #available(iOS 16.0, *) {
-                NavigationLink(value: zimFile) {
-                    content
-                }
-            } else {
-                NavigationLink(tag: zimFile, selection: $viewModel.selectedZimFile) {
-                    ZimFileDetail(zimFile: zimFile)
-                } label: {
-                    content
-                }
+            NavigationLink {
+                ZimFileDetail(zimFile: zimFile)
+            } label: {
+                content
             }
             #endif
         }.contextMenu {
@@ -138,13 +130,13 @@ struct LibraryZimFileContext: ViewModifier {
     var articleActions: some View {
         Button {
             guard let url = ZimFileService.shared.getMainPageURL(zimFileID: zimFile.fileID) else { return }
-            NotificationCenter.default.post(name: Notification.Name.openURL, object: nil, userInfo: ["url": url])
+            NotificationCenter.openURL(url, inNewTab: true)
         } label: {
             Label("Main Page", systemImage: "house")
         }
         Button {
             guard let url = ZimFileService.shared.getRandomPageURL(zimFileID: zimFile.fileID) else { return }
-            NotificationCenter.default.post(name: Notification.Name.openURL, object: nil, userInfo: ["url": url])
+            NotificationCenter.openURL(url, inNewTab: true)
         } label: {
             Label("Random Page", systemImage: "die.face.5")
         }
@@ -152,11 +144,6 @@ struct LibraryZimFileContext: ViewModifier {
     
     @ViewBuilder
     var supplementaryActions: some View {
-        Button {
-            viewModel.selectedZimFile = zimFile
-        } label: {
-            Label("Show Detail", systemImage: "info.circle")
-        }
         if let downloadURL = zimFile.downloadURL {
             Button {
                 #if os(macOS)

@@ -31,7 +31,7 @@ struct GridCommon: ViewModifier {
                     edges ?? (
                         horizontalSizeClass == .compact || verticalSizeClass == .compact ? [.horizontal, .bottom] : .all
                     ),
-                    proxy.size.width > 375 && verticalSizeClass == .regular ? 20 : 16
+                    proxy.size.width > 380 && verticalSizeClass == .regular ? 20 : 16
                 )
             }
         }

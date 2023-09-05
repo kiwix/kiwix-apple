@@ -16,11 +16,25 @@ struct ZimFilesCategories: View {
     
     var body: some View {
         ZimFilesCategory(category: $selected)
+            .modifier(ToolbarRoleBrowser())
             .navigationTitle(NavigationItem.categories.name)
             .toolbar {
-                Picker("Category", selection: $selected) {
-                    ForEach(Category.allCases) {
-                        Text($0.name).tag($0)
+                #if os(iOS)
+                ToolbarItem(placement: .navigationBarLeading) {
+                    if #unavailable(iOS 16) {
+                        Button {
+                            NotificationCenter.toggleSidebar()
+                        } label: {
+                            Label("Show Sidebar", systemImage: "sidebar.left")
+                        }
+                    }
+                }
+                #endif
+                ToolbarItem {
+                    Picker("Category", selection: $selected) {
+                        ForEach(Category.allCases) {
+                            Text($0.name).tag($0)
+                        }
                     }
                 }
             }

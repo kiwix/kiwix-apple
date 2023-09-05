@@ -112,8 +112,17 @@ class SplitViewController: UISplitViewController {
                 return apperance
             }()
             setViewController(UINavigationController(rootViewController: controller), for: .secondary)
+        case .opened:
+            let controller = UIHostingController(rootView: ZimFilesOpened())
+            setViewController(UINavigationController(rootViewController: controller), for: .secondary)
         case .categories:
             let controller = UIHostingController(rootView: ZimFilesCategories())
+            setViewController(UINavigationController(rootViewController: controller), for: .secondary)
+        case .downloads:
+            let controller = UIHostingController(rootView: ZimFilesDownloads())
+            setViewController(UINavigationController(rootViewController: controller), for: .secondary)
+        case .new:
+            let controller = UIHostingController(rootView: ZimFilesNew())
             setViewController(UINavigationController(rootViewController: controller), for: .secondary)
         case .settings:
             let controller = UIHostingController(rootView: Settings())
