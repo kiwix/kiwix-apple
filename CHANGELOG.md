@@ -1,7 +1,7 @@
 ## 3.2
 
 - Browse with multiple tabs on iOS and iPadOS
-- On iPadOS, the app use sidebar to facilitate navigation between different tabs and functionalities
+- On iPadOS, table of contents is now displayed as popover instead of menu
 - Dropped support for iOS 14 & iPadOS 14
 
 ## 3.1.1
