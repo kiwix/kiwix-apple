@@ -31,7 +31,11 @@ struct SearchResults: View {
                 Message(text: "No opened zim file")
             } else if horizontalSizeClass == .regular {
                 HStack(spacing: 0) {
+                    #if os(macOS)
+                    sidebar.frame(width: 250)
+                    #elseif os(iOS)
                     sidebar.frame(width: 350)
+                    #endif
                     Divider().ignoresSafeArea(.all, edges: .vertical)
                     content.frame(maxWidth: .infinity)
                 }.safeAreaInset(edge: .top, spacing: 0) {

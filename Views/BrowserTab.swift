@@ -65,7 +65,11 @@ struct BrowserTab: View {
                 Group {
                     if isSearching {
                         SearchResults()
+                            #if os(macOS)
+                            .environment(\.horizontalSizeClass, proxy.size.width > 650 ? .regular : .compact)
+                            #elseif os(iOS)
                             .environment(\.horizontalSizeClass, proxy.size.width > 750 ? .regular : .compact)
+                            #endif
                     } else if browser.url == nil {
                         Welcome()
                     } else {
