@@ -11,10 +11,32 @@ import CoreData
 import CoreLocation
 import WebKit
 
+import OrderedCollections
+
 class BrowserViewModel: NSObject, ObservableObject,
                         WKNavigationDelegate, WKScriptMessageHandler, WKUIDelegate,
                         NSFetchedResultsControllerDelegate
 {
+    static private var cache = OrderedDictionary<NSManagedObjectID, BrowserViewModel>()
+    
+    static func getCached(tabID: NSManagedObjectID) -> BrowserViewModel {
+        let viewModel = cache[tabID] ?? BrowserViewModel(tabID: tabID)
+        cache.removeValue(forKey: tabID)
+        cache[tabID] = viewModel
+        return viewModel
+    }
+    
+    static func purgeCache() {
+        guard cache.count > 10 else { return }
+        let range = 0 ..< cache.count - 5
+        cache.values[range].forEach { viewModel in
+            viewModel.persistState()
+        }
+        cache.removeSubrange(range)
+    }
+    
+    // MARK: - Properties
+    
     @Published private(set) var canGoBack = false
     @Published private(set) var canGoForward = false
     @Published private(set) var articleTitle: String = ""
@@ -24,23 +46,26 @@ class BrowserViewModel: NSObject, ObservableObject,
     @Published private(set) var outlineItemTree = [OutlineItem]()
     @Published private(set) var url: URL?
     
-    private(set) var tabID: NSManagedObjectID?
+    let tabID: NSManagedObjectID?
+    let webView: WKWebView
     private var canGoBackObserver: NSKeyValueObservation?
     private var canGoForwardObserver: NSKeyValueObservation?
-    private var titleObserver: NSKeyValueObservation?
-    private var urlObserver: NSKeyValueObservation?
+    private var titleURLObserver: AnyCancellable?
     private var bookmarkFetchedResultsController: NSFetchedResultsController<Bookmark>?
     
-    var webView: WKWebView {
-        if let tabID {
-            return WebViewCache.shared.getWebView(tabID: tabID)
-        } else {
-            return WebViewCache.shared.webView
-        }
-    }
+    // MARK: - Lifecycle
     
-    func configure(tabID: NSManagedObjectID?) {
+    init(tabID: NSManagedObjectID? = nil) {
         self.tabID = tabID
+        self.webView = WKWebView(frame: .zero, configuration: WebViewConfiguration())
+        super.init()
+        
+        // restore webview state, and set url before observer call back
+        // note: optionality of url determines what to show in a tab, so it should be set before tab is on screen
+        if let tabID, let tab = try? Database.viewContext.existingObject(with: tabID) as? Tab {
+            webView.interactionState = tab.interactionState
+            url = webView.url
+        }
         
         // configure web view
         webView.allowsBackForwardNavigationGestures = true
@@ -62,28 +87,42 @@ class BrowserViewModel: NSObject, ObservableObject,
         canGoForwardObserver = webView.observe(\.canGoForward, options: .initial) { [weak self] webView, _ in
             self?.canGoForward = webView.canGoForward
         }
-        titleObserver = webView.observe(\.title, options: .initial) { [weak self] webView, _ in
-            guard let title = webView.title, !title.isEmpty else { return }
-            self?.articleTitle = title
+        titleURLObserver = Publishers.CombineLatest(
+            webView.publisher(for: \.title, options: .initial),
+            webView.publisher(for: \.url, options: .initial)
+        )
+        .debounce(for: 0.1, scheduler: DispatchQueue.global())
+        .receive(on: DispatchQueue.main)
+        .sink { [weak self] title, url in
+            let title: String? = {
+                if let title, !title.isEmpty {
+                    return title
+                } else {
+                    return nil
+                }
+            }()
+            let zimFile: ZimFile? = {
+                guard let url, let zimFileID = UUID(uuidString: url.host ?? "") else { return nil }
+                return try? Database.viewContext.fetch(ZimFile.fetchRequest(fileID: zimFileID)).first
+            }()
             
-            guard let zimFileID = UUID(uuidString: webView.url?.host ?? ""),
-                  let zimFile = try? Database.viewContext.fetch(ZimFile.fetchRequest(fileID: zimFileID)).first
-            else { return }
-            self?.zimFileName = zimFile.name
+            // update view model
+            self?.articleTitle = title ?? ""
+            self?.zimFileName = zimFile?.name ?? ""
+            self?.url = url
             
-            guard let tabID, let tab = try? Database.viewContext.existingObject(with: tabID) as? Tab else { return }
-            tab.title = title
-            tab.zimFile = zimFile
-            tab.lastOpened = Date()
-            try? Database.viewContext.save()
-        }
-        urlObserver = webView.observe(\.url, options: .initial) { [weak self] webView, _ in
-            self?.url = webView.url
+            // update tab data
+            if let tabID = self?.tabID,
+               let tab = try? Database.viewContext.existingObject(with: tabID) as? Tab,
+               let title {
+                tab.title = title
+                tab.zimFile = zimFile
+            }
             
             // setup bookmark fetched results controller
             self?.bookmarkFetchedResultsController = NSFetchedResultsController(
                 fetchRequest: Bookmark.fetchRequest(predicate: {
-                    if let url = webView.url {
+                    if let url = url {
                         return NSPredicate(format: "articleURL == %@", url as CVarArg)
                     } else {
                         return NSPredicate(format: "articleURL == nil")
@@ -96,6 +135,17 @@ class BrowserViewModel: NSObject, ObservableObject,
             self?.bookmarkFetchedResultsController?.delegate = self
             try? self?.bookmarkFetchedResultsController?.performFetch()
         }
+    }
+    
+    func updateLastOpened() {
+        guard let tabID, let tab = try? Database.viewContext.existingObject(with: tabID) as? Tab else { return }
+        tab.lastOpened = Date()
+    }
+    
+    func persistState() {
+        guard let tabID, let tab = try? Database.viewContext.existingObject(with: tabID) as? Tab else { return }
+        tab.interactionState = webView.interactionState as? Data
+        try? Database.viewContext.save()
     }
     
     // MARK: - Content Loading
@@ -199,10 +249,16 @@ class BrowserViewModel: NSObject, ObservableObject,
                 var actions = [UIAction]()
                 
                 // open url
-                let openAction = UIAction(title: "Open", image: UIImage(systemName: "doc.richtext")) { _ in
-                    webView.load(URLRequest(url: url))
-                }
-                actions.append(openAction)
+                actions.append(
+                    UIAction(title: "Open", image: UIImage(systemName: "doc.text")) { _ in
+                        webView.load(URLRequest(url: url))
+                    }
+                )
+                actions.append(
+                    UIAction(title: "Open in New Tab", image: UIImage(systemName: "doc.badge.plus")) { _ in
+                        NotificationCenter.openURL(url, inNewTab: true)
+                    }
+                )
 
                 // bookmark
                 let bookmarkAction: UIAction = {
@@ -211,11 +267,11 @@ class BrowserViewModel: NSObject, ObservableObject,
                     let request = Bookmark.fetchRequest(predicate: predicate)
                     if let bookmarks = try? context.fetch(request), !bookmarks.isEmpty {
                         return UIAction(title: "Remove Bookmark", image: UIImage(systemName: "star.slash.fill")) { _ in
-                            BookmarkOperations.delete(url, withNotification: false)
+                            self.deleteBookmark(url: url)
                         }
                     } else {
                         return UIAction(title: "Bookmark", image: UIImage(systemName: "star")) { _ in
-                            BookmarkOperations.create(url, withNotification: false)
+                            self.createBookmark(url: url)
                         }
                     }
                 }()
@@ -235,8 +291,8 @@ class BrowserViewModel: NSObject, ObservableObject,
         articleBookmarked = !snapshot.itemIdentifiers.isEmpty
     }
     
-    func createBookmark() {
-        guard let url = webView.url else { return }
+    func createBookmark(url: URL? = nil) {
+        guard let url = url ?? webView.url else { return }
         Database.performBackgroundTask { context in
             let bookmark = Bookmark(context: context)
             bookmark.articleURL = url
@@ -255,8 +311,8 @@ class BrowserViewModel: NSObject, ObservableObject,
         }
     }
     
-    func deleteBookmark() {
-        guard let url = webView.url else { return }
+    func deleteBookmark(url: URL? = nil) {
+        guard let url = url ?? webView.url else { return }
         Database.performBackgroundTask { context in
             let request = Bookmark.fetchRequest(predicate: NSPredicate(format: "articleURL == %@", url as CVarArg))
             guard let bookmark = try? context.fetch(request).first else { return }

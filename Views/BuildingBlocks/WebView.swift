@@ -15,36 +15,34 @@ import Defaults
 
 #if os(macOS)
 struct WebView: NSViewRepresentable {
+    @EnvironmentObject private var browser: BrowserViewModel
+    
     func makeNSView(context: Context) -> WKWebView {
-        WebViewCache.shared.webView
+        browser.webView
     }
     
     func updateNSView(_ webView: WKWebView, context: Context) { }
     
     func makeCoordinator() -> Coordinator {
-        Coordinator()
+        Coordinator(view: self)
     }
     
     class Coordinator {
         private let pageZoomObserver: Defaults.Observation
         
-        init() {
+        init(view: WebView) {
             pageZoomObserver = Defaults.observe(.webViewPageZoom) { change in
-                WebViewCache.shared.webView.pageZoom = change.newValue
+                view.browser.webView.pageZoom = change.newValue
             }
         }
     }
 }
 #elseif os(iOS)
 struct WebView: UIViewControllerRepresentable {
-    let tabID: NSManagedObjectID?
+    @EnvironmentObject private var browser: BrowserViewModel
 
     func makeUIViewController(context: Context) -> WebViewController {
-        if let tabID {
-            return WebViewController(webView: WebViewCache.shared.getWebView(tabID: tabID))
-        } else {
-            return WebViewController(webView: WebViewCache.shared.webView)
-        }
+        WebViewController(webView: browser.webView)
     }
 
     func updateUIViewController(_ controller: WebViewController, context: Context) { }

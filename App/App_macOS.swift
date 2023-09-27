@@ -79,11 +79,13 @@ struct Kiwix: App {
 }
 
 struct RootView: View {
+    @Environment(\.controlActiveState) var controlActiveState
+    @StateObject private var browser = BrowserViewModel()
     @StateObject private var navigation = NavigationViewModel()
     
     private let primaryItems: [NavigationItem] = [.reading, .bookmarks]
     private let libraryItems: [NavigationItem] = [.opened, .categories, .downloads, .new]
-    private let openURL = NotificationCenter.default.publisher(for: Notification.Name.openURL)
+    private let openURL = NotificationCenter.default.publisher(for: .openURL)
     
     var body: some View {
         NavigationView {
@@ -108,7 +110,7 @@ struct RootView: View {
             }
             switch navigation.currentItem {
             case .reading:
-                ReadingView()
+                BrowserTab().environmentObject(browser)
             case .bookmarks:
                 Bookmarks()
             case .opened:
@@ -127,7 +129,6 @@ struct RootView: View {
         .focusedSceneValue(\.navigationItem, $navigation.currentItem)
         .environmentObject(navigation)
         .modifier(AlertHandler())
-        .modifier(ExternalLinkHandler())
         .modifier(OpenFileHandler())
         .onOpenURL { url in
             if url.isFileURL {
@@ -137,8 +138,8 @@ struct RootView: View {
             }
         }
         .onReceive(openURL) { notification in
-            guard let url = notification.userInfo?["url"] as? URL else { return }
-            WebViewCache.shared.webView.load(URLRequest(url: url))
+            guard controlActiveState == .key, let url = notification.userInfo?["url"] as? URL else { return }
+            browser.load(url: url)
             navigation.currentItem = .reading
         }
     }

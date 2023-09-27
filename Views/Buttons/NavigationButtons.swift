@@ -9,6 +9,7 @@
 import SwiftUI
 
 struct NavigationButtons: View {
+    @Environment(\.dismissSearch) private var dismissSearch
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     @EnvironmentObject private var browser: BrowserViewModel
     
@@ -26,6 +27,7 @@ struct NavigationButtons: View {
     var goBackButton: some View {
         Button {
             browser.webView.goBack()
+            dismissSearch()
         } label: {
             Label("Go Back", systemImage: "chevron.left")
         }.disabled(!browser.canGoBack)
@@ -34,6 +36,7 @@ struct NavigationButtons: View {
     var goForwardButton: some View {
         Button {
             browser.webView.goForward()
+            dismissSearch()
         } label: {
             Label("Go Forward", systemImage: "chevron.right")
         }.disabled(!browser.canGoForward)

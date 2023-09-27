@@ -13,9 +13,16 @@ import UniformTypeIdentifiers
 /// Tabbed library view on iOS & iPadOS
 struct Library: View {
     @EnvironmentObject private var viewModel: LibraryViewModel
+    @SceneStorage("LibraryTabItem") private var tabItem: LibraryTabItem = .opened
+        
+    private let defaultTabItem: LibraryTabItem?
+    
+    init(tabItem: LibraryTabItem? = nil) {
+        self.defaultTabItem = tabItem
+    }
     
     var body: some View {
-        TabView(selection: $viewModel.selectedTabItem) {
+        TabView(selection: $tabItem) {
             ForEach(LibraryTabItem.allCases) { tabItem in
                 SheetContent {
                     switch tabItem {
@@ -46,9 +53,10 @@ struct Library: View {
                 .tabItem { Label(tabItem.name, systemImage: tabItem.icon) }
             }
         }.onAppear {
+            if let defaultTabItem = defaultTabItem {
+                tabItem = defaultTabItem
+            }
             viewModel.start(isUserInitiated: false)
-        }.onChange(of: viewModel.selectedTabItem) { _ in
-            viewModel.selectedZimFile = nil
         }
     }
 }
@@ -104,7 +112,7 @@ struct LibraryZimFileContext: ViewModifier {
                 content
             }.buttonStyle(.plain)
             #elseif os(iOS)
-            NavigationLink(tag: zimFile, selection: $viewModel.selectedZimFile) {
+            NavigationLink {
                 ZimFileDetail(zimFile: zimFile)
             } label: {
                 content
@@ -122,13 +130,13 @@ struct LibraryZimFileContext: ViewModifier {
     var articleActions: some View {
         Button {
             guard let url = ZimFileService.shared.getMainPageURL(zimFileID: zimFile.fileID) else { return }
-            NotificationCenter.default.post(name: Notification.Name.openURL, object: nil, userInfo: ["url": url])
+            NotificationCenter.openURL(url, inNewTab: true)
         } label: {
             Label("Main Page", systemImage: "house")
         }
         Button {
             guard let url = ZimFileService.shared.getRandomPageURL(zimFileID: zimFile.fileID) else { return }
-            NotificationCenter.default.post(name: Notification.Name.openURL, object: nil, userInfo: ["url": url])
+            NotificationCenter.openURL(url, inNewTab: true)
         } label: {
             Label("Random Page", systemImage: "die.face.5")
         }
@@ -136,11 +144,6 @@ struct LibraryZimFileContext: ViewModifier {
     
     @ViewBuilder
     var supplementaryActions: some View {
-        Button {
-            viewModel.selectedZimFile = zimFile
-        } label: {
-            Label("Show Detail", systemImage: "info.circle")
-        }
         if let downloadURL = zimFile.downloadURL {
             Button {
                 #if os(macOS)

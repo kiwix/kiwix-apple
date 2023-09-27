@@ -65,6 +65,7 @@ extension Notification.Name {
     static let externalLink = Notification.Name("externalLink")
     static let openFiles = Notification.Name("openFiles")
     static let openURL = Notification.Name("openURL")
+    static let toggleSidebar = Notification.Name("toggleSidebar")
 }
 
 extension UTType {
@@ -79,5 +80,9 @@ extension NotificationCenter {
     
     static func openFiles(_ urls: [URL], context: OpenFileContext) {
         NotificationCenter.default.post(name: .openFiles, object: nil, userInfo: ["urls": urls, "context": context])
+    }
+    
+    static func toggleSidebar() {
+        NotificationCenter.default.post(name: .toggleSidebar, object: nil, userInfo: nil)
     }
 }

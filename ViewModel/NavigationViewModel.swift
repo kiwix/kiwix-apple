@@ -52,79 +52,45 @@ class NavigationViewModel: ObservableObject {
     
     /// Delete a single tab, and select another tab
     /// - Parameter tabID: ID of the tab to delete
-    func deleteTab(tabID: NSManagedObjectID) async {
-        let deletedTabCreatedAt: Date? = await Database.performBackgroundTask { context in
-            defer { try? context.save() }
-            guard let tab = try? context.existingObject(with: tabID) as? Tab else { return nil }
+    func deleteTab(tabID: NSManagedObjectID) {
+        Database.performBackgroundTask { context in
+            guard let tab = try? context.existingObject(with: tabID) as? Tab else { return }
+            
+            // select a new tab if the currently selected tab is being deleted
+            if case let .tab(selectedTabID) = self.currentItem, selectedTabID == tabID {
+                let fetchRequest = Tab.fetchRequest(
+                    predicate: NSPredicate(format: "created < %@", tab.created as CVarArg),
+                    sortDescriptors: [NSSortDescriptor(key: "created", ascending: false)]
+                )
+                fetchRequest.fetchLimit = 1
+                let newTab = (try? context.fetch(fetchRequest).first) ?? self.makeTab(context: context)
+                try? context.obtainPermanentIDs(for: [newTab])
+                DispatchQueue.main.async {
+                    self.currentItem = NavigationItem.tab(objectID: newTab.objectID)
+                }
+            }
+            
+            // delete tab
             context.delete(tab)
-            return tab.created
-        }
-//        webViews.removeValue(forKey: tabID)
-        
-        // wait for a bit to avoid broken sidebar animation
-        try? await Task.sleep(nanoseconds: UInt64(0.1 * Double(NSEC_PER_SEC)))
-        
-        // select a new tab if current tab is deleted
-        guard case let .tab(selectedTabID) = self.currentItem,
-              selectedTabID == tabID,
-              let deletedTabCreatedAt else { return }
-        let tabID = await Database.performBackgroundTask { context in
-            let fetchRequest = Tab.fetchRequest(
-                predicate: NSPredicate(format: "created < %@", deletedTabCreatedAt as CVarArg),
-                sortDescriptors: [NSSortDescriptor(key: "created", ascending: false)]
-            )
-            fetchRequest.fetchLimit = 1
-            let newTab = (try? context.fetch(fetchRequest).first) ?? self.makeTab(context: context)
-            try? context.obtainPermanentIDs(for: [newTab])
             try? context.save()
-            return newTab.objectID
         }
-        currentItem = NavigationItem.tab(objectID: tabID)
     }
     
     /// Delete all tabs, and open a new tab
-    func deleteAllTabs() async {
-        await Database.performBackgroundTask { context in
+    func deleteAllTabs() {
+        Database.performBackgroundTask { context in
+            // delete all existing tabs
             let tabs = try? context.fetch(Tab.fetchRequest())
             tabs?.forEach { context.delete($0) }
+            
+            // create new tab
+            let newTab = self.makeTab(context: context)
+            try? context.obtainPermanentIDs(for: [newTab])
+            DispatchQueue.main.async {
+                self.currentItem = NavigationItem.tab(objectID: newTab.objectID)
+            }
+            
             try? context.save()
         }
-//        webViews.removeAll()
-        
-        // wait for a bit to avoid broken sidebar animation
-        try? await Task.sleep(nanoseconds: UInt64(0.1 * Double(NSEC_PER_SEC)))
-        
-        // create a new tab
-        currentItem = NavigationItem.tab(objectID: createTab())
-    }
-}
-
-class WebViewCache {
-    static let shared = WebViewCache()
-    
-    private var webViews = [NSManagedObjectID: WKWebView]()
-    private(set) lazy var webView = WKWebView(frame: .zero, configuration: WebViewConfiguration())
-    
-    private init() { }
-    
-    func getWebView(tabID: NSManagedObjectID) -> WKWebView {
-        if let webView = webViews[tabID] {
-            return webView
-        } else {
-            let webView = WKWebView(frame: .zero, configuration: WebViewConfiguration())
-            if let tab = try? Database.viewContext.existingObject(with: tabID) as? Tab {
-                webView.interactionState = tab.interactionState
-            }
-            webViews[tabID] = webView
-            return webView
-        }
-    }
-    
-    func persistStates() {
-        webViews.forEach { tabID, webView in
-            guard let tab = try? Database.viewContext.existingObject(with: tabID) as? Tab else { return }
-            tab.interactionState = webView.interactionState as? Data
-        }
-        try? Database.viewContext.save()
     }
 }

@@ -10,6 +10,7 @@ import SwiftUI
 
 struct Welcome: View {
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
+    @EnvironmentObject private var browser: BrowserViewModel
     @EnvironmentObject private var library: LibraryViewModel
     @EnvironmentObject private var navigation: NavigationViewModel
     @FetchRequest(
@@ -25,11 +26,20 @@ struct Welcome: View {
     
     var body: some View {
         if zimFiles.isEmpty {
-            VStack(spacing: 20) {
+            HStack {
                 Spacer()
-                logo
-                Divider()
-                actions
+                VStack(spacing: 20) {
+                    Spacer()
+                    logo
+                    Divider()
+                    actions
+                    Spacer()
+                }
+                #if os(macOS)
+                .frame(maxWidth: 300)
+                #elseif os(iOS)
+                .frame(maxWidth: 600)
+                #endif
                 Spacer()
             }
             .padding()
@@ -46,13 +56,9 @@ struct Welcome: View {
                 }
                 #endif
             }
-            #if os(macOS)
-            .frame(maxWidth: 300)
-            #elseif os(iOS)
-            .frame(maxWidth: 600)
+            #if os(iOS)
             .sheet(isPresented: $isLibraryPresented) {
-                // TODO: show categories directly
-                Library()
+                Library(tabItem: .categories)
             }
             #endif
         } else {
@@ -64,7 +70,8 @@ struct Welcome: View {
                 GridSection(title: "Main Page") {
                     ForEach(zimFiles) { zimFile in
                         Button {
-                            NotificationCenter.openURL(ZimFileService.shared.getMainPageURL(zimFileID: zimFile.fileID))
+                            guard let url = ZimFileService.shared.getMainPageURL(zimFileID: zimFile.fileID) else { return }
+                            browser.load(url: url)
                         } label: {
                             ZimFileCell(zimFile, prominent: .name)
                         }.buttonStyle(.plain)
@@ -74,7 +81,7 @@ struct Welcome: View {
                     GridSection(title: "Bookmarks") {
                         ForEach(bookmarks.prefix(6)) { bookmark in
                             Button {
-                                NotificationCenter.openURL(bookmark.articleURL)
+                                browser.load(url: bookmark.articleURL)
                             } label: {
                                 ArticleCell(bookmark: bookmark)
                             }

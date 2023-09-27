@@ -10,6 +10,7 @@ import SwiftUI
 
 /// Add padding around the modified view. On iOS, the padding is adjusted so that the modified view align with the search bar.
 struct GridCommon: ViewModifier {
+    @Environment(\.horizontalSizeClass) var horizontalSizeClass
     @Environment(\.verticalSizeClass) var verticalSizeClass
     
     let edges: Edge.Set?
@@ -27,8 +28,10 @@ struct GridCommon: ViewModifier {
         GeometryReader { proxy in
             ScrollView {
                 content.padding(
-                    edges ?? (verticalSizeClass == .compact ? .all : [.horizontal, .bottom]),
-                    proxy.size.width > 375 ? 20 : 16
+                    edges ?? (
+                        horizontalSizeClass == .compact || verticalSizeClass == .compact ? [.horizontal, .bottom] : .all
+                    ),
+                    proxy.size.width > 380 && verticalSizeClass == .regular ? 20 : 16
                 )
             }
         }
