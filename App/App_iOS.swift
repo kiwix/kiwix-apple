@@ -79,6 +79,11 @@ struct Kiwix: App {
             }
             completionHandler()
         }
+        
+        /// Purge some cached browser view models when receiving memory warning
+        func applicationDidReceiveMemoryWarning(_ application: UIApplication) {
+            BrowserViewModel.purgeCache()
+        }
     }
 }
 

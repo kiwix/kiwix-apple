@@ -56,6 +56,7 @@
 		975088B328763B6900273181 /* SheetContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 975088B228763B6900273181 /* SheetContent.swift */; };
 		975088BB287BBDFE00273181 /* LanguageSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 975088B9287BBDFE00273181 /* LanguageSelector.swift */; };
 		975088BE287DA10800273181 /* LibraryLastRefreshTime.swift in Sources */ = {isa = PBXBuildFile; fileRef = 975088BC287DA10800273181 /* LibraryLastRefreshTime.swift */; };
+		975346C42AC30CFD000DECB6 /* OrderedCollections in Frameworks */ = {isa = PBXBuildFile; productRef = 975346C32AC30CFD000DECB6 /* OrderedCollections */; };
 		9753D949285B55F100A626CC /* DefaultKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9753D947285B55F100A626CC /* DefaultKeys.swift */; };
 		9753D94B285B56C900A626CC /* Defaults in Frameworks */ = {isa = PBXBuildFile; productRef = 9753D94A285B56C900A626CC /* Defaults */; };
 		97659CAC28DF817D002E6CE4 /* SearchResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 976A65B22659489F009A97C6 /* SearchResult.swift */; };
@@ -253,6 +254,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				975346C42AC30CFD000DECB6 /* OrderedCollections in Frameworks */,
 				97FB4ECE28B4E221003FB524 /* SwiftUIBackports in Frameworks */,
 				9753D94B285B56C900A626CC /* Defaults in Frameworks */,
 				97B706E82974599500562392 /* libkiwix.xcframework in Frameworks */,
@@ -598,6 +600,7 @@
 				976BAEB9284903EA0049404F /* Fuzi */,
 				9753D94A285B56C900A626CC /* Defaults */,
 				97FB4ECD28B4E221003FB524 /* SwiftUIBackports */,
+				975346C32AC30CFD000DECB6 /* OrderedCollections */,
 			);
 			productName = iOS_SwiftUI;
 			productReference = 972DE4A62814A3D8004FD9B9 /* Kiwix.app */;
@@ -659,6 +662,7 @@
 				9744657E26F7981500072DC2 /* XCRemoteSwiftPackageReference "Fuzi" */,
 				97654724273214530070163D /* XCRemoteSwiftPackageReference "Defaults" */,
 				97FB4ECC28B4E221003FB524 /* XCRemoteSwiftPackageReference "SwiftUIBackports" */,
+				975346C22AC30CFD000DECB6 /* XCRemoteSwiftPackageReference "swift-collections" */,
 			);
 			productRefGroup = 97A2AB7F1C1B80FF00052E74;
 			projectDirPath = "";
@@ -1204,6 +1208,14 @@
 				minimumVersion = 3.0.0;
 			};
 		};
+		975346C22AC30CFD000DECB6 /* XCRemoteSwiftPackageReference "swift-collections" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/apple/swift-collections.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.4;
+			};
+		};
 		97654724273214530070163D /* XCRemoteSwiftPackageReference "Defaults" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/sindresorhus/Defaults";
@@ -1223,6 +1235,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		975346C32AC30CFD000DECB6 /* OrderedCollections */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 975346C22AC30CFD000DECB6 /* XCRemoteSwiftPackageReference "swift-collections" */;
+			productName = OrderedCollections;
+		};
 		9753D94A285B56C900A626CC /* Defaults */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 97654724273214530070163D /* XCRemoteSwiftPackageReference "Defaults" */;
