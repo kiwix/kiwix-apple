@@ -8,6 +8,7 @@
 
 import SwiftUI
 
+#if os(iOS)
 struct TabLabel: View {
     @ObservedObject var tab: Tab
     
@@ -23,6 +24,7 @@ struct TabLabel: View {
         }
     }
 }
+#endif
 
 struct TabLabelForMacOS: View {
     @ObservedObject var tab: Tab

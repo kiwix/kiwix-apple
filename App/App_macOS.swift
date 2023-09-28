@@ -105,7 +105,7 @@ class LoadTab {
 struct RootView: View {
     @Environment(\.controlActiveState) var controlActiveState
     @StateObject private var browser = BrowserViewModel()
-    @StateObject private var navigation = NavigationViewModel() // ICI c'est la source !
+    @StateObject private var navigation = NavigationViewModel()
     
     private let primaryItems: [NavigationItem] = [.reading, .bookmarks]
     private let libraryItems: [NavigationItem] = [.opened, .categories, .downloads, .new]
@@ -169,10 +169,7 @@ struct RootView: View {
             }
         }
         .onReceive(openURL) { notification in
-            guard controlActiveState == .key, let url = notification.userInfo?["url"] as? URL else {
-                print("debug: deja actif")
-                return
-            }
+            guard controlActiveState == .key, let url = notification.userInfo?["url"] as? URL else { return }
             browser.load(url: url)
             navigation.currentItem = .reading
         }

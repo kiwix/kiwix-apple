@@ -11,22 +11,28 @@ import CoreData
 import CoreLocation
 import WebKit
 
+import OrderedCollections
+
 class BrowserViewModel: NSObject, ObservableObject,
                         WKNavigationDelegate, WKScriptMessageHandler, WKUIDelegate,
                         NSFetchedResultsControllerDelegate
 {
-    //@EnvironmentObject var navigation: NavigationViewModel
-
-
-    static var cache = [NSManagedObjectID: BrowserViewModel]()
+    static private var cache = OrderedDictionary<NSManagedObjectID, BrowserViewModel>()
+    
     static func getCached(tabID: NSManagedObjectID) -> BrowserViewModel {
-        if let viewModel = cache[tabID] {
-            return viewModel
-        } else {
-            let viewModel = BrowserViewModel(tabID: tabID)
-            cache[tabID] = viewModel
-            return viewModel
+        let viewModel = cache[tabID] ?? BrowserViewModel(tabID: tabID)
+        cache.removeValue(forKey: tabID)
+        cache[tabID] = viewModel
+        return viewModel
+    }
+    
+    static func purgeCache() {
+        guard cache.count > 10 else { return }
+        let range = 0 ..< cache.count - 5
+        cache.values[range].forEach { viewModel in
+            viewModel.persistState()
         }
+        cache.removeSubrange(range)
     }
     
     // MARK: - Properties
