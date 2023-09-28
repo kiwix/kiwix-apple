@@ -28,8 +28,34 @@ struct Kiwix: App {
         LibraryOperations.registerBackgroundTask()
         LibraryOperations.applyLibraryAutoRefreshSetting()
         DownloadService.shared.restartHeartbeatIfNeeded()
+        
+        if let availableDiskSpace = getAvailableDiskSpace() {
+            print("Available Disk Space: \(availableDiskSpace) bytes")
+            
+            // You can convert bytes to other units like megabytes or gigabytes as needed
+            let availableDiskSpaceMB = Double(availableDiskSpace) / 1_048_576 // 1 MB = 1,048,576 bytes
+            print("Available Disk Space: \(availableDiskSpaceMB) MB")
+        }
     }
     
+    func getAvailableDiskSpace() -> Int64? {
+        do {
+            let fileManager = FileManager.default
+            let documentsURL = try fileManager.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false)
+            let attributes = try fileManager.attributesOfFileSystem(forPath: documentsURL.path)
+            
+            if let freeSize = attributes[FileAttributeKey.systemFreeSize] as? Int64 {
+                return freeSize
+            }
+        } catch {
+            print("Error getting available disk space: \(error)")
+        }
+        
+        return nil
+    }
+
+
+
     var body: some Scene {
         WindowGroup {
             RootView()

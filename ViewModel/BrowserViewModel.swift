@@ -15,6 +15,9 @@ class BrowserViewModel: NSObject, ObservableObject,
                         WKNavigationDelegate, WKScriptMessageHandler, WKUIDelegate,
                         NSFetchedResultsControllerDelegate
 {
+    //@EnvironmentObject var navigation: NavigationViewModel
+
+
     static var cache = [NSManagedObjectID: BrowserViewModel]()
     static func getCached(tabID: NSManagedObjectID) -> BrowserViewModel {
         if let viewModel = cache[tabID] {
@@ -142,7 +145,9 @@ class BrowserViewModel: NSObject, ObservableObject,
     // MARK: - Content Loading
     
     func load(url: URL) {
+        print(url)
         guard webView.url != url else { return }
+        print("debug: LOADING.")
         webView.load(URLRequest(url: url))
     }
     
@@ -158,6 +163,39 @@ class BrowserViewModel: NSObject, ObservableObject,
         load(url: url)
     }
     
+    // MARK: - mes modifs
+    
+#if os(macOS)
+    func webView(_ webView: WKWebView, createWebViewWith configuration: WKWebViewConfiguration, for navigationAction: WKNavigationAction, windowFeatures: WKWindowFeatures) -> WKWebView? {
+        if navigationAction.targetFrame == nil {
+            // TODO: ancien truc
+            //NotificationCenter.openURL(url, inNewTab: true) // ca
+            
+            if let newUrl = navigationAction.request.url {
+                
+                
+                guard let currentWindow = NSApp.keyWindow,
+                      
+                let controller = currentWindow.windowController else { return nil }
+                controller.newWindowForTab(nil)
+                
+                /*let tabbedWindowController = NSWindowController(windowNibName: "TabbedWindow")
+                 tabbedWindowController.window?.title = "Tabbed Window"
+                 tabbedWindowController.window?.contentViewController = TabbedViewController() // Customize this as needed
+                 */
+                
+                guard let newWindow = NSApp.keyWindow, currentWindow != newWindow else { return nil }
+                
+                newWindow.title = "akjsakdjsa Tab"
+                currentWindow.addTabbedWindow(newWindow, ordered: .above)
+                
+                NotificationCenter.openURL(newUrl, inNewTab: true)
+            }
+        }
+        return nil
+    }
+#endif
+
     // MARK: - WKNavigationDelegate
     
     func webView(_ webView: WKWebView,
@@ -224,6 +262,23 @@ class BrowserViewModel: NSObject, ObservableObject,
         }
     }
     
+    /*
+    func willOpenMenu(_ menu: NSMenu, with event: NSEvent) {
+        for menuItem in menu.items {
+            if  menuItem.identifier?.rawValue == "WKMenuItemIdentifierDownloadImage" ||
+                menuItem.identifier?.rawValue == "WKMenuItemIdentifierDownloadLinkedFile" {
+                menuItem.action = #selector(menuClick(_:))
+                menuItem.target = self
+            }
+        }
+    }
+
+    @objc func menuClick(_ sender: AnyObject) {
+        if let menuItem = sender as? NSMenuItem {
+            Swift.print("Menu \(menuItem.title) clicked")
+        }
+    }*/
+
     // MARK: - WKUIDelegate
     
     #if os(iOS)
