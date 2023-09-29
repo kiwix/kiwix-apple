@@ -11,12 +11,11 @@ import SwiftUI
 import Defaults
 
 struct ExternalLinkHandler: ViewModifier {
+    @Binding var externalURL: URL?
+
     @State private var isAlertPresented = false
     @State private var activeAlert: ActiveAlert?
     @State private var activeSheet: ActiveSheet?
-    
-    private let externalLink = NotificationCenter.default.publisher(for: .externalLink)
-    
     enum ActiveAlert {
         case ask(url: URL)
         case notLoading
@@ -28,8 +27,10 @@ struct ExternalLinkHandler: ViewModifier {
     }
     
     func body(content: Content) -> some View {
-        content.onReceive(externalLink) { notification in
-            guard let url = notification.userInfo?["url"] as? URL else { return }
+        content.onChange(of: externalURL, perform: { value in
+            guard let url = externalURL else { return }
+            externalURL = URL(string: "") // Reset the value to prevent the alert from showing up again
+        
             switch Defaults[.externalLinkLoadingPolicy] {
             case .alwaysAsk:
                 isAlertPresented = true
@@ -40,7 +41,7 @@ struct ExternalLinkHandler: ViewModifier {
                 isAlertPresented = true
                 activeAlert = .notLoading
             }
-        }
+        })
         .alert("External Link", isPresented: $isAlertPresented, presenting: activeAlert) { alert in
             if case .ask(let url) = alert {
                 Button("Load the link") {

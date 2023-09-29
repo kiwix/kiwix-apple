@@ -38,7 +38,7 @@ struct BrowserTab: View {
         .focusedSceneValue(\.browserViewModel, browser)
         .focusedSceneValue(\.canGoBack, browser.canGoBack)
         .focusedSceneValue(\.canGoForward, browser.canGoForward)
-        .modifier(ExternalLinkHandler())
+        .modifier(ExternalLinkHandler(externalURL: $browser.openExternalLinkURL))
         .searchable(text: $search.searchText, placement: .toolbar)
         .modify { view in
             #if os(macOS)

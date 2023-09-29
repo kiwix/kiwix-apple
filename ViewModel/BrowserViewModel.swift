@@ -37,6 +37,7 @@ class BrowserViewModel: NSObject, ObservableObject,
     
     // MARK: - Properties
     
+    @Published var openExternalLinkURL = URL(string: "")
     @Published private(set) var canGoBack = false
     @Published private(set) var canGoForward = false
     @Published private(set) var articleTitle: String = ""
@@ -179,7 +180,7 @@ class BrowserViewModel: NSObject, ObservableObject,
         } else if url.isKiwixURL {
             decisionHandler(.allow)
         } else if url.scheme == "http" || url.scheme == "https" {
-            NotificationCenter.default.post(name: .externalLink, object: nil, userInfo: ["url": url])
+            self.openExternalLinkURL = url
             decisionHandler(.cancel)
         } else if url.scheme == "geo" {
             if FeatureFlags.map {
@@ -391,4 +392,38 @@ class BrowserViewModel: NSObject, ObservableObject,
             }
         }
     }
+    
+    // TODO: Utils
+    func isExternalLink(url: URL) -> Bool {
+        return url.scheme == "http" || url.scheme == "https"
+    }
+
+    // MARK: - New tab in macos desktop
+      
+      #if os(macOS)
+      func webView(_ webView: WKWebView, createWebViewWith configuration: WKWebViewConfiguration, for navigationAction: WKNavigationAction, windowFeatures: WKWindowFeatures) -> WKWebView? {
+          
+          guard navigationAction.targetFrame == nil else { return nil }
+          guard let newUrl = navigationAction.request.url else { return nil }
+          
+          // open external link in default browser
+          if(isExternalLink(url: newUrl)) {
+              self.openExternalLinkURL = newUrl
+              return nil
+          }
+
+          // create new tab
+          guard let currentWindow = NSApp.keyWindow,
+                let windowController = currentWindow.windowController else { return nil }
+          windowController.newWindowForTab(nil)
+          guard let newWindow = NSApp.keyWindow, currentWindow != newWindow else { return nil }
+          currentWindow.addTabbedWindow(newWindow, ordered: .above)
+          
+          // open url in new tab
+          NotificationCenter.openURL(newUrl, inNewTab: true)
+        
+          return nil
+      }
+
+      #endif
 }
