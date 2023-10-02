@@ -17,5 +17,9 @@ extension URL {
         return scheme?.caseInsensitiveCompare("kiwix") == .orderedSame
     }
     
+    var isExternalLink: Bool {
+        return scheme == "http" || scheme == "https"
+    }
+    
     static let documentDirectory = try! FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false)
 }

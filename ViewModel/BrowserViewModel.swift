@@ -407,7 +407,7 @@ class BrowserViewModel: NSObject, ObservableObject,
           guard let newUrl = navigationAction.request.url else { return nil }
           
           // open external link in default browser
-          if(isExternalLink(url: newUrl)) {
+          if(newUrl.isExternalLink) {
               self.openExternalLinkURL = newUrl
               return nil
           }
