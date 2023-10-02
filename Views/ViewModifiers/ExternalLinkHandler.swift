@@ -27,7 +27,7 @@ struct ExternalLinkHandler: ViewModifier {
     }
     
     func body(content: Content) -> some View {
-        content.onChange(of: externalURL, perform: { value in
+        content.onChange(of: externalURL, perform: { _ in
             guard let url = externalURL else { return }
             externalURL = URL(string: "") // Reset the value to prevent the alert from showing up again
         
