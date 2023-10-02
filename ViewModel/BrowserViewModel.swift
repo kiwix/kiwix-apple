@@ -392,11 +392,6 @@ class BrowserViewModel: NSObject, ObservableObject,
             }
         }
     }
-    
-    // TODO: Utils
-    func isExternalLink(url: URL) -> Bool {
-        return url.scheme == "http" || url.scheme == "https"
-    }
 
     // MARK: - New tab in macos desktop
       
