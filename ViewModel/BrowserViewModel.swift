@@ -396,7 +396,8 @@ class BrowserViewModel: NSObject, ObservableObject,
     // MARK: - New tab in macos desktop
       
       #if os(macOS)
-      func webView(_ webView: WKWebView, createWebViewWith configuration: WKWebViewConfiguration, for navigationAction: WKNavigationAction, windowFeatures: WKWindowFeatures) -> WKWebView? {
+      func webView(_ webView: WKWebView, createWebViewWith configuration: WKWebViewConfiguration,
+                   for navigationAction: WKNavigationAction, windowFeatures: WKWindowFeatures) -> WKWebView? {
           
           guard navigationAction.targetFrame == nil else { return nil }
           guard let newUrl = navigationAction.request.url else { return nil }
