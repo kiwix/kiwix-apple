@@ -74,7 +74,6 @@
 		976D90E428159BFA00CC7D29 /* Favicon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97B0737527825E3D007C7DF3 /* Favicon.swift */; };
 		976D90E92815D63A00CC7D29 /* ZimFilesNew.swift in Sources */ = {isa = PBXBuildFile; fileRef = 976D90E72815D63A00CC7D29 /* ZimFilesNew.swift */; };
 		976F5EC62A97909100938490 /* BrowserTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = 976F5EC52A97909100938490 /* BrowserTab.swift */; };
-		977B1B65289801DE001D07C4 /* Map.swift in Sources */ = {isa = PBXBuildFile; fileRef = 977B1B63289801DE001D07C4 /* Map.swift */; };
 		977DD4462AA570450001D6CC /* ArticleShortcutButtons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 977DD4452AA570450001D6CC /* ArticleShortcutButtons.swift */; };
 		977DD4492AA617680001D6CC /* SplitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 977DD4482AA617680001D6CC /* SplitViewController.swift */; };
 		977DD44B2AA617A40001D6CC /* SidebarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 977DD44A2AA617A40001D6CC /* SidebarViewController.swift */; };
@@ -632,7 +631,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = YES;
 				LastSwiftUpdateCheck = 1420;
-				LastUpgradeCheck = 1430;
+				LastUpgradeCheck = 1500;
 				ORGANIZATIONNAME = "Chris Li";
 				TargetAttributes = {
 					97008AB92974A5BF0076E60C = {
@@ -787,7 +786,6 @@
 				976F5EC62A97909100938490 /* BrowserTab.swift in Sources */,
 				9724FC3028D5F5BE001B7DD2 /* BookmarkContextMenu.swift in Sources */,
 				976BAEBE284905760049404F /* SearchViewModel.swift in Sources */,
-				977B1B65289801DE001D07C4 /* Map.swift in Sources */,
 				973A0DE7281DC8F400B41E71 /* DownloadService.swift in Sources */,
 				9721BBB72841C16D005C910D /* Message.swift in Sources */,
 				97BD6C9D2886E06B004A8532 /* HTMLParser.swift in Sources */,
@@ -1043,6 +1041,7 @@
 				OTHER_SWIFT_FLAGS = "";
 				SDKROOT = iphoneos;
 				SWIFT_OBJC_BRIDGING_HEADER = "$(PROJECT_DIR)/Support/Kiwix-Bridging-Header.h";
+				SWIFT_OBJC_INTEROP_MODE = objcxx;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -1097,6 +1096,7 @@
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OBJC_BRIDGING_HEADER = "$(PROJECT_DIR)/Support/Kiwix-Bridging-Header.h";
+				SWIFT_OBJC_INTEROP_MODE = objcxx;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
