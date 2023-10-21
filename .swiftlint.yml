@@ -1,5 +1,4 @@
 disabled_rules:
   - trailing_whitespace
 included:
-  - iOS/Controller/LibraryViewController.swift
-  - iOS/Controller/SettingsViewController.swift
+  - Views/Settings/About.swift

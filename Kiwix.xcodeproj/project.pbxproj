@@ -576,6 +576,7 @@
 			buildConfigurationList = 972DE4B32814A3D9004FD9B9 /* Build configuration list for PBXNativeTarget "Kiwix" */;
 			buildPhases = (
 				97E88F502AE409630037F0E5 /* Run Script */,
+				972096E52AE41ED000B378B0 /* ShellScript */,
 				972DE4A22814A3D8004FD9B9 /* Sources */,
 				972DE4A32814A3D8004FD9B9 /* Frameworks */,
 				972DE4A42814A3D8004FD9B9 /* Resources */,
@@ -695,6 +696,23 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		972096E52AE41ED000B378B0 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# SwiftLint\n\nif [[ \"$(uname -m)\" == arm64 ]]; then\n    export PATH=\"/opt/homebrew/bin:$PATH\"\nfi\n\nif which swiftlint > /dev/null; then\n  swiftlint\nelse\n  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
+		};
 		97E88F502AE409630037F0E5 /* Run Script */ = {
 			isa = PBXShellScriptBuildPhase;
 			alwaysOutOfDate = 1;
