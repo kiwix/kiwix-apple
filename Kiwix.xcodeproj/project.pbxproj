@@ -221,7 +221,7 @@
 		97DE2BA1283A8E5C00C63D9B /* LibraryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryViewModel.swift; sourceTree = "<group>"; };
 		97DE2BA4283A944100C63D9B /* GridCommon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GridCommon.swift; sourceTree = "<group>"; };
 		97E88F4C2AE407320037F0E5 /* CoreKiwix.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = CoreKiwix.xcframework; sourceTree = "<group>"; };
-		97E88F4F2AE408490037F0E5 /* module.modulemap */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.module-map"; path = module.modulemap; sourceTree = "<group>"; };
+		97E88F512AE40F9D0037F0E5 /* module.modulemap */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.module-map"; path = module.modulemap; sourceTree = "<group>"; };
 		97E94B1D271EF250005B0295 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		97E94B22271EF250005B0295 /* Kiwix.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Kiwix.entitlements; sourceTree = "<group>"; };
 		97F3332E28AFC1A2007FF53C /* SearchResults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResults.swift; sourceTree = "<group>"; };
@@ -544,7 +544,7 @@
 				9735B88B279D9A74005F0D1A /* injection.js */,
 				97E94B22271EF250005B0295 /* Kiwix.entitlements */,
 				9779A5D02456796A00F6F6FF /* Kiwix-Bridging-Header.h */,
-				97E88F4F2AE408490037F0E5 /* module.modulemap */,
+				97E88F512AE40F9D0037F0E5 /* module.modulemap */,
 				970885D0271339A300C5795C /* wikipedia_dark.css */,
 			);
 			path = Support;
@@ -575,6 +575,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 972DE4B32814A3D9004FD9B9 /* Build configuration list for PBXNativeTarget "Kiwix" */;
 			buildPhases = (
+				97E88F502AE409630037F0E5 /* Run Script */,
 				972DE4A22814A3D8004FD9B9 /* Sources */,
 				972DE4A32814A3D8004FD9B9 /* Frameworks */,
 				972DE4A42814A3D8004FD9B9 /* Resources */,
@@ -692,6 +693,28 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		97E88F502AE409630037F0E5 /* Run Script */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Run Script";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Copy Clang module map to xcframework for Swift C++ Interoperability \n\nrm CoreKiwix.xcframework/ios-arm64/Headers/module.modulemap\nrm CoreKiwix.xcframework/ios-arm64_x86_64-simulator/Headers/module.modulemap\nrm CoreKiwix.xcframework/macos-arm64_x86_64/Headers/module.modulemap\n\ncp Support/module.modulemap CoreKiwix.xcframework/ios-arm64/Headers\ncp Support/module.modulemap CoreKiwix.xcframework/ios-arm64_x86_64-simulator/Headers\ncp Support/module.modulemap CoreKiwix.xcframework/macos-arm64_x86_64/Headers\n";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		97008AB62974A5BF0076E60C /* Sources */ = {
