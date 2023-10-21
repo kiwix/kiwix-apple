@@ -202,7 +202,7 @@ struct Settings: View {
         Section("Misc") {
             Button("Feedback") { UIApplication.shared.open(URL(string: "mailto:feedback@kiwix.org")!) }
             Button("Rate the App") {
-                let url = URL(string:"itms-apps://itunes.apple.com/us/app/kiwix/id997079563?action=write-review")!
+                let url = URL(string: "itms-apps://itunes.apple.com/us/app/kiwix/id997079563?action=write-review")!
                 UIApplication.shared.open(url)
             }
             NavigationLink("About") { About() }
