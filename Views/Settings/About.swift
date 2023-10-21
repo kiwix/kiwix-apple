@@ -71,18 +71,12 @@ struct About: View {
         }
         .navigationTitle("About")
         .navigationBarTitleDisplayMode(.inline)
-        .sheet(item: $externalLinkURL) {
-            SafariView(url: $0)
-        }
-        .task {
-            dependencies = kiwix.getVersions().map { datum in
-                Dependency(name: String(datum.first), version: String(datum.second))
-            }
-        }
+        .sheet(item: $externalLinkURL) { SafariView(url: $0) }
+        .task { await getDependencies() }
         #endif
     }
     
-    var about: some View {
+    private var about: some View {
         Text(
              """
              Kiwix is an offline reader for online content like Wikipedia, Project Gutenberg, or TED Talks. \
@@ -94,11 +88,11 @@ struct About: View {
         .minimumScaleFactor(0.5) // to avoid unnecessary truncation (three dots)
     }
     
-    var release: some View {
+    private var release: some View {
         Text("This app is released under the terms of the GNU General Public License version 3.")
     }
     
-    var appVersion: some View {
+    private var appVersion: some View {
         HStack {
             Text("Version")
             Spacer()
@@ -108,7 +102,7 @@ struct About: View {
         }
     }
     
-    var buildNumber: some View {
+    private var buildNumber: some View {
         HStack {
             Text("Build")
             Spacer()
@@ -118,21 +112,27 @@ struct About: View {
         }
     }
     
-    var ourWebsite: some View {
+    private var ourWebsite: some View {
         Button("Our Website") {
             externalLinkURL = URL(string: "https://www.kiwix.org")
         }
     }
     
-    var source: some View {
+    private var source: some View {
         Button("Source") {
             externalLinkURL = URL(string: "https://github.com/kiwix/apple")
         }
     }
     
-    var license: some View {
+    private var license: some View {
         Button("GNU General Public License v3") {
             externalLinkURL = URL(string: "https://www.gnu.org/licenses/gpl-3.0.en.html")
+        }
+    }
+    
+    private func getDependencies() async {
+        dependencies = kiwix.getVersions().map { datum in
+            Dependency(name: String(datum.first), version: String(datum.second))
         }
     }
 }
@@ -142,7 +142,6 @@ private struct Dependency: Identifiable {
     
     let name: String
     let version: String
-    
     
     var license: String? {
         switch name {
