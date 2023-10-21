@@ -132,6 +132,7 @@
 		9709C0972A8E4C5700E4564C /* Commands.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Commands.swift; sourceTree = "<group>"; };
 		970EC3AB23BCF31F008DCA27 /* ParserTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParserTests.swift; sourceTree = "<group>"; };
 		97121EBC28849F0000371AEB /* ZimFileMissingIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZimFileMissingIndicator.swift; sourceTree = "<group>"; };
+		9713F7782AE416E5007DD9EC /* CoreKiwix.modulemap */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.module-map"; path = CoreKiwix.modulemap; sourceTree = "<group>"; };
 		97176AD12A4FBD710093E3B0 /* BrowserViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowserViewModel.swift; sourceTree = "<group>"; };
 		9721BBB928427A93005C910D /* Bookmarks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bookmarks.swift; sourceTree = "<group>"; };
 		9724FC2E28D5F5BE001B7DD2 /* BookmarkContextMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarkContextMenu.swift; sourceTree = "<group>"; };
@@ -221,7 +222,6 @@
 		97DE2BA1283A8E5C00C63D9B /* LibraryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryViewModel.swift; sourceTree = "<group>"; };
 		97DE2BA4283A944100C63D9B /* GridCommon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GridCommon.swift; sourceTree = "<group>"; };
 		97E88F4C2AE407320037F0E5 /* CoreKiwix.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = CoreKiwix.xcframework; sourceTree = "<group>"; };
-		97E88F512AE40F9D0037F0E5 /* module.modulemap */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.module-map"; path = module.modulemap; sourceTree = "<group>"; };
 		97E94B1D271EF250005B0295 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		97E94B22271EF250005B0295 /* Kiwix.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Kiwix.entitlements; sourceTree = "<group>"; };
 		97F3332E28AFC1A2007FF53C /* SearchResults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResults.swift; sourceTree = "<group>"; };
@@ -540,11 +540,11 @@
 			isa = PBXGroup;
 			children = (
 				97E94B1D271EF250005B0295 /* Assets.xcassets */,
+				9713F7782AE416E5007DD9EC /* CoreKiwix.modulemap */,
 				97B707042974637200562392 /* Info.plist */,
 				9735B88B279D9A74005F0D1A /* injection.js */,
 				97E94B22271EF250005B0295 /* Kiwix.entitlements */,
 				9779A5D02456796A00F6F6FF /* Kiwix-Bridging-Header.h */,
-				97E88F512AE40F9D0037F0E5 /* module.modulemap */,
 				970885D0271339A300C5795C /* wikipedia_dark.css */,
 			);
 			path = Support;
@@ -712,7 +712,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "# Copy Clang module map to xcframework for Swift C++ Interoperability \n\nrm CoreKiwix.xcframework/ios-arm64/Headers/module.modulemap\nrm CoreKiwix.xcframework/ios-arm64_x86_64-simulator/Headers/module.modulemap\nrm CoreKiwix.xcframework/macos-arm64_x86_64/Headers/module.modulemap\n\ncp Support/module.modulemap CoreKiwix.xcframework/ios-arm64/Headers\ncp Support/module.modulemap CoreKiwix.xcframework/ios-arm64_x86_64-simulator/Headers\ncp Support/module.modulemap CoreKiwix.xcframework/macos-arm64_x86_64/Headers\n";
+			shellScript = "# Copy Clang module map to xcframework for Swift C++ Interoperability \n\ncp Support/CoreKiwix.modulemap CoreKiwix.xcframework/ios-arm64/Headers/module.modulemap\ncp Support/CoreKiwix.modulemap CoreKiwix.xcframework/ios-arm64_x86_64-simulator/Headers/module.modulemap\ncp Support/CoreKiwix.modulemap CoreKiwix.xcframework/macos-arm64_x86_64/Headers/module.modulemap\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
