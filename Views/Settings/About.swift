@@ -84,8 +84,6 @@ struct About: View {
              The software as well as the content is free to use for anyone.
              """
         )
-        .lineLimit(nil)
-        .minimumScaleFactor(0.5) // to avoid unnecessary truncation (three dots)
     }
     
     private var release: some View {
