@@ -31,13 +31,14 @@ struct About: View {
             SettingSection(name: "Dependencies", alignment: .top) {
                 Table(dependencies) {
                     TableColumn("Name", value: \.name)
-                    TableColumn("License", value: \.license)
-                    TableColumn("Version") { dependency in Text(dependency.version ?? "") }
+                    TableColumn("License") { dependency in Text(dependency.license ?? "") }
+                    TableColumn("Version", value: \.version)
                 }.tableStyle(.bordered(alternatesRowBackgrounds: true))
             }
         }
         .padding()
         .tabItem { Label("About", systemImage: "info.circle") }
+        .task { await getDependencies() }
         .onChange(of: externalLinkURL) { url in
             guard let url = url else { return }
             NSWorkspace.shared.open(url)
@@ -145,13 +146,10 @@ private struct Dependency: Identifiable {
     }
 }
 
-struct About_Previews: PreviewProvider {
-    static var previews: some View {
-        #if os(macOS)
-        TabView { About() }.preferredColorScheme(.light)
-        TabView { About() }.preferredColorScheme(.dark)
-        #elseif os(iOS)
-        NavigationView { About() }
-        #endif
-    }
+#Preview {
+    #if os(macOS)
+    TabView { About() }
+    #elseif os(iOS)
+    NavigationView { About() }
+    #endif
 }
