@@ -8,17 +8,11 @@
 
 import SwiftUI
 
+import CoreKiwix
+
 struct About: View {
+    @State private var dependencies = [Dependency]()
     @State private var externalLinkURL: URL?
-    
-    private let dependencies = [
-        Dependency(name: "libkiwix", license: "GPLv3", version: ZimFileService.shared.libkiwixVersion),
-        Dependency(name: "libzim", license: "GPLv2", version: ZimFileService.shared.libzimVersion),
-        Dependency(name: "Xapian", license: "GPLv2", version: nil),
-        Dependency(name: "ICU", license: "ICU", version: nil),
-        Dependency(name: "Defaults", license: "MIT", version: "6.3.0"),
-        Dependency(name: "Fuzi", license: "MIT", version: "3.1.3")
-    ]
     
     var body: some View {
         #if os(macOS)
@@ -37,13 +31,14 @@ struct About: View {
             SettingSection(name: "Dependencies", alignment: .top) {
                 Table(dependencies) {
                     TableColumn("Name", value: \.name)
-                    TableColumn("License", value: \.license)
-                    TableColumn("Version") { dependency in Text(dependency.version ?? "") }
+                    TableColumn("License") { dependency in Text(dependency.license ?? "") }
+                    TableColumn("Version", value: \.version)
                 }.tableStyle(.bordered(alternatesRowBackgrounds: true))
             }
         }
         .padding()
         .tabItem { Label("About", systemImage: "info.circle") }
+        .task { await getDependencies() }
         .onChange(of: externalLinkURL) { url in
             guard let url = url else { return }
             NSWorkspace.shared.open(url)
@@ -54,33 +49,35 @@ struct About: View {
                 about
                 ourWebsite
             }
-            Section {
+            Section("Release") {
                 release
                 appVersion
                 buildNumber
                 source
                 license
-            } header: { Text("Release") }
-            Section {
+            }
+            Section("Dependencies") {
                 ForEach(dependencies) { dependency in
                     HStack {
                         Text(dependency.name)
                         Spacer()
-                        Text(dependency.license).foregroundColor(.secondary)
-                        if let version = dependency.version {
-                            Text("(\(version))").foregroundColor(.secondary)
+                        if let license = dependency.license {
+                            Text("\(license) (\(dependency.version))").foregroundColor(.secondary)
+                        } else {
+                            Text(dependency.version).foregroundColor(.secondary)
                         }
                     }
                 }
-            } header: { Text("Dependencies") }
+            }
         }
         .navigationTitle("About")
         .navigationBarTitleDisplayMode(.inline)
         .sheet(item: $externalLinkURL) { SafariView(url: $0) }
+        .task { await getDependencies() }
         #endif
     }
     
-    var about: some View {
+    private var about: some View {
         Text(
              """
              Kiwix is an offline reader for online content like Wikipedia, Project Gutenberg, or TED Talks. \
@@ -88,64 +85,71 @@ struct About: View {
              The software as well as the content is free to use for anyone.
              """
         )
-        .lineLimit(nil)
-        .minimumScaleFactor(0.5) // to avoid unnecessary truncation (three dots)
     }
     
-    var release: some View {
+    private var release: some View {
         Text("This app is released under the terms of the GNU General Public License version 3.")
     }
     
-    var appVersion: some View {
-        HStack {
-            Text("Version")
-            Spacer()
-            if let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String {
-                Text(version).foregroundColor(.secondary)
-            }
+    private var appVersion: some View {
+        Attribute(title: "Version", detail: Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String)
+    }
+    
+    private var buildNumber: some View {
+        Attribute(title: "Build", detail: Bundle.main.infoDictionary?["CFBundleVersion"] as? String)
+    }
+    
+    private var ourWebsite: some View {
+        Button("Our Website") {
+            externalLinkURL = URL(string: "https://www.kiwix.org")
         }
     }
     
-    var buildNumber: some View {
-        HStack {
-            Text("Build")
-            Spacer()
-            if let build = Bundle.main.infoDictionary?["CFBundleVersion"] as? String {
-                Text(build).foregroundColor(.secondary)
-            }
+    private var source: some View {
+        Button("Source") {
+            externalLinkURL = URL(string: "https://github.com/kiwix/apple")
         }
     }
     
-    var ourWebsite: some View {
-        Button("Our Website") { externalLinkURL = URL(string: "https://www.kiwix.org") }
-    }
-    
-    var source: some View {
-        Button("Source") { externalLinkURL = URL(string: "https://github.com/kiwix/apple") }
-    }
-    
-    var license: some View {
+    private var license: some View {
         Button("GNU General Public License v3") {
             externalLinkURL = URL(string: "https://www.gnu.org/licenses/gpl-3.0.en.html")
         }
     }
     
-    struct Dependency: Identifiable {
-        var id: String { name }
-        
-        let name: String
-        let license: String
-        let version: String?
+    private func getDependencies() async {
+        dependencies = kiwix.getVersions().map { datum in
+            Dependency(name: String(datum.first), version: String(datum.second))
+        }
     }
 }
 
-struct About_Previews: PreviewProvider {
-    static var previews: some View {
-        #if os(macOS)
-        TabView { About() }.preferredColorScheme(.light)
-        TabView { About() }.preferredColorScheme(.dark)
-        #elseif os(iOS)
-        NavigationView { About() }
-        #endif
+private struct Dependency: Identifiable {
+    var id: String { name }
+    
+    let name: String
+    let version: String
+    
+    var license: String? {
+        switch name {
+        case "libkiwix":
+            "GPLv3"
+        case "libzim":
+            "GPLv2"
+        case "libxapian":
+            "GPLv2"
+        case "libicu":
+            "ICU"
+        default:
+            nil
+        }
     }
+}
+
+#Preview {
+    #if os(macOS)
+    TabView { About() }
+    #elseif os(iOS)
+    NavigationView { About() }
+    #endif
 }

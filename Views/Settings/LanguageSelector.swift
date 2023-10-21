@@ -48,7 +48,7 @@ struct LanguageSelector: View {
     @State private var hiding = [Language]()
     
     var body: some View {
-        List() {
+        List {
             Section {
                 if showing.isEmpty {
                     Text("No language").foregroundColor(.secondary)
@@ -84,7 +84,7 @@ struct LanguageSelector: View {
                 hiding = languages.filter { !Defaults[.libraryLanguageCodes].contains($0.code) }
             }
         }
-        .onChange(of: sortingMode) { sortingMode in
+        .onChange(of: sortingMode) { _ in
             showing.sort(by: Languages.compare(lhs:rhs:))
             hiding.sort(by: Languages.compare(lhs:rhs:))
         }
@@ -121,7 +121,6 @@ private struct LanguageLabel: View {
     }
 }
 #endif
-
 
 private class Languages {
     /// Retrieve a list of languages.
