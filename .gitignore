@@ -1,8 +1,6 @@
 AppStore/screenshots
-libkiwix.xcframework
+CoreKiwix.xcframework
 *.zim
-
-\.idea
 
 # Xcode
 #
