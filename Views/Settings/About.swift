@@ -93,23 +93,11 @@ struct About: View {
     }
     
     private var appVersion: some View {
-        HStack {
-            Text("Version")
-            Spacer()
-            if let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String {
-                Text(version).foregroundColor(.secondary)
-            }
-        }
+        Attribute(title: "Version", detail: Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String)
     }
     
     private var buildNumber: some View {
-        HStack {
-            Text("Build")
-            Spacer()
-            if let build = Bundle.main.infoDictionary?["CFBundleVersion"] as? String {
-                Text(build).foregroundColor(.secondary)
-            }
-        }
+        Attribute(title: "Build", detail: Bundle.main.infoDictionary?["CFBundleVersion"] as? String)
     }
     
     private var ourWebsite: some View {
