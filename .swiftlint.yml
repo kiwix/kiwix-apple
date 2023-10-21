@@ -1,4 +1,4 @@
 disabled_rules:
   - trailing_whitespace
 included:
-  - Views/Settings/About.swift
+  - Views/Settings/
