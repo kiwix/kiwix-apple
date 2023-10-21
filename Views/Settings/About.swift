@@ -8,17 +8,11 @@
 
 import SwiftUI
 
+import CoreKiwix
+
 struct About: View {
+    @State private var dependencies = [Dependency]()
     @State private var externalLinkURL: URL?
-    
-    private let dependencies = [
-        Dependency(name: "libkiwix", license: "GPLv3", version: ZimFileService.shared.libkiwixVersion),
-        Dependency(name: "libzim", license: "GPLv2", version: ZimFileService.shared.libzimVersion),
-        Dependency(name: "Xapian", license: "GPLv2", version: nil),
-        Dependency(name: "ICU", license: "ICU", version: nil),
-        Dependency(name: "Defaults", license: "MIT", version: "6.3.0"),
-        Dependency(name: "Fuzi", license: "MIT", version: "3.1.3")
-    ]
     
     var body: some View {
         #if os(macOS)
@@ -54,29 +48,37 @@ struct About: View {
                 about
                 ourWebsite
             }
-            Section {
+            Section("Release") {
                 release
                 appVersion
                 buildNumber
                 source
                 license
-            } header: { Text("Release") }
-            Section {
+            }
+            Section("Dependencies") {
                 ForEach(dependencies) { dependency in
                     HStack {
                         Text(dependency.name)
                         Spacer()
-                        Text(dependency.license).foregroundColor(.secondary)
-                        if let version = dependency.version {
-                            Text("(\(version))").foregroundColor(.secondary)
+                        if let license = dependency.license {
+                            Text("\(license) (\(dependency.version))").foregroundColor(.secondary)
+                        } else {
+                            Text(dependency.version).foregroundColor(.secondary)
                         }
                     }
                 }
-            } header: { Text("Dependencies") }
+            }
         }
         .navigationTitle("About")
         .navigationBarTitleDisplayMode(.inline)
-        .sheet(item: $externalLinkURL) { SafariView(url: $0) }
+        .sheet(item: $externalLinkURL) {
+            SafariView(url: $0)
+        }
+        .task {
+            dependencies = kiwix.getVersions().map { datum in
+                Dependency(name: String(datum.first), version: String(datum.second))
+            }
+        }
         #endif
     }
     
@@ -117,11 +119,15 @@ struct About: View {
     }
     
     var ourWebsite: some View {
-        Button("Our Website") { externalLinkURL = URL(string: "https://www.kiwix.org") }
+        Button("Our Website") {
+            externalLinkURL = URL(string: "https://www.kiwix.org")
+        }
     }
     
     var source: some View {
-        Button("Source") { externalLinkURL = URL(string: "https://github.com/kiwix/apple") }
+        Button("Source") {
+            externalLinkURL = URL(string: "https://github.com/kiwix/apple")
+        }
     }
     
     var license: some View {
@@ -129,13 +135,28 @@ struct About: View {
             externalLinkURL = URL(string: "https://www.gnu.org/licenses/gpl-3.0.en.html")
         }
     }
+}
+
+private struct Dependency: Identifiable {
+    var id: String { name }
     
-    struct Dependency: Identifiable {
-        var id: String { name }
-        
-        let name: String
-        let license: String
-        let version: String?
+    let name: String
+    let version: String
+    
+    
+    var license: String? {
+        switch name {
+        case "libkiwix":
+            "GPLv3"
+        case "libzim":
+            "GPLv2"
+        case "libxapian":
+            "GPLv2"
+        case "libicu":
+            "ICU"
+        default:
+            nil
+        }
     }
 }
 
