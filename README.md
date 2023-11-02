@@ -20,13 +20,13 @@ This is the home for Kiwix apps on iOS and macOS.
 * An [Apple Developer account](https://developer.apple.com) (doesn't require membership)
 * Latest Apple Developers Tools ([Xcode](https://developer.apple.com/xcode/))
 * Its command-line utilities (`xcode-select --install`)
-* `libkiwix.xcframework` ([libkiwix](https://github.com/kiwix/libkiwix))
+* `CoreKiwix.xcframework` ([libkiwix](https://github.com/kiwix/libkiwix))
 
-### Creating `libkiwix.xcframework`
+### Creating `CoreKiwix.xcframework`
 
 Instructions to build libkiwix at [on the kiwix-build repo](https://github.com/kiwix/kiwix-build).
 
-The xcframework is a bundle of a library for multiple architectures and/or platforms. The `libkiwix.xcframework` will contain libkiwix library for macOS arch and for iOS. You don't have to follow steps for other platform/arch if you don't need them.
+The xcframework is a bundle of a library for multiple architectures and/or platforms. The `CoreKiwix.xcframework` will contain libkiwix library for macOS archs and for iOS. You don't have to follow steps for other platform/arch if you don't need them.
 
 Following steps are done from kiwix-build root and assume your apple repository is at `../apple`.
 
@@ -36,59 +36,65 @@ Make sure to preinstall kiwix-build prerequisites (ninja and meson).
 
 If you use homebrew, run the following
 
-```bash
+```sh
 brew install ninja meson
 ```
 
-Make sure xcode command tools are installed
+Make sure xcode command tools are installed. Make sure to download an iOS SDK if you want to build for iOS.
 
-```bash
+```sh
 xcode-select --install
 ```
 
-After you can build the `libkiwix` 
+Then you can build `libkiwix` 
 
-```bash
+```sh
 git clone https://github.com/kiwix/kiwix-build.git
 cd kiwix-build
 # [iOS] build libkiwix
-kiwix-build --target-platform iOS_multi libkiwix
+kiwix-build --target-platform iOS_arm64 libkiwix
+kiwix-build --target-platform iOS_x86_64 libkiwix  # iOS simulator in Xcode
 # [macOS] build libkiwix
-kiwix-build --target-platform macOS_arm64 libkiwix
 kiwix-build --target-platform macOS_x86_64 libkiwix
+kiwix-build --target-platform macOS_arm64_static libkiwix
 ```
 
 #### Create fat archive with all dependencies
 
-This creates a single `.a` archive named libkiwix which contains all libkiwix's dependencies.
-If you are to create an xcframework with multiple architectures/platforms, repeat this step for each:
+This creates a single `.a` archive named `merged.a` (for each platform) which contains libkiwix and all it's dependencies.
+Skip those you don't want to support.
 
-* `macOS_x86_64`
-* `macOS_arm64`
-* `iOS_x86_64`
-* `iOS_arm64`
+```sh
+libtool -static -o BUILD_macOS_x86_64/INSTALL/lib/merged.a BUILD_macOS_x86_64/INSTALL/lib/*.a
+libtool -static -o BUILD_macOS_arm64_static/INSTALL/lib/merged.a BUILD_macOS_arm64_static/INSTALL/lib/*.a
+libtool -static -o BUILD_iOS_x86_64/INSTALL/lib/merged.a BUILD_iOS_x86_64/INSTALL/lib/*.a
+libtool -static -o BUILD_iOS_arm64/INSTALL/lib/merged.a BUILD_iOS_arm64/INSTALL/lib/*.a
+```
 
-You'll have to do it for both iOS archs although you built it using `multi`.
+If you built macOS support for both archs (that's what you want unless you know what you're doing), you need to merge both files into a single one
 
-```bash
-libtool -static -o BUILD_<target>/INSTALL/lib/libkiwix.a BUILD_<target>/INSTALL/lib/*.a
+```sh
+mkdir -p macOS_fat
+lipo -create -output macOS_fat/merged.a \
+	-arch x86_64 BUILD_macOS_x86_64/INSTALL/lib/merged.a \
+	-arch arm64 BUILD_macOS_arm64_static/INSTALL/lib/merged.a
 ```
 
 #### Add fat archive to xcframework
 
-```bash
-xcodebuild -create-xcframework -library BUILD_<target>/INSTALL/lib/libkiwix.a -headers BUILD_<target>/INSTALL/include -output ../apple/Libraries/libkiwix.xcframework
+```sh
+xcodebuild -create-xcframework \
+	-library macOS_fat/merged.a -headers BUILD_macOS_x86_64/INSTALL/include \
+	-library BUILD_iOS_x86_64/INSTALL/lib/merged.a -headers BUILD_iOS_x86_64/INSTALL/include \
+	-library BUILD_iOS_arm64/INSTALL/lib/merged.a -headers BUILD_iOS_arm64/INSTALL/include \
+	-output ../apple/CoreKiwix.xcframework
 ```
 
-You can now launch the build from Xcode and use the iOS simulator or your macOS target.
+You can now launch the build from Xcode and use the iOS simulator or your macOS target. At this point the xcframework is not signed.
 
 
 ### Building Kiwix iOS or Kiwix macOS
 
-* Open project with Xcode `open Kiwix.xcodeproj`
-* Change the App groups (in *Capabilities*) and Bundle Identifier for both iOS and Bookmarks targets
-  * App Group must be different and unique (ex: `tld.mydomain.apple`)
-  * iOS Bundle Identifier must be different and unique (ex: `tld.mydomain.apple.Kiwix`)
-  * Bookmarks Bundle Identifier must be a child of iOS one (ex: `tld.mydomain.apple.Kiwix.Bookmarks`)
-  * ⚠ if you are using a regular (non-paying) Apple Developer Account, you are limited in the number of App IDs you can use so be careful not to fumble much with those.
-* Change the Signing profile to your account.
+* Open project with Xcode `open Kiwix.xcodeproj/project.xcworkspace/`
+* Change the Bundle Identifier (in *Signing & Capabilities*)
+* Select appropriate Signing Certificate/Profile.
