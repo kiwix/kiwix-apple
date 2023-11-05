@@ -32,7 +32,7 @@ version of macOS with latest version of Xcode distributed on it.
 
 ### CPU Architectures
 
-Kiwix compiles on both macOS with x86_64 or arm64 (M1, M2, ... family).
+Kiwix compiles on both macOS architectures x86_64 and arm64 (Apple silicon).
 
 Kiwix for iOS and macOS can run, in both cases, on x86_64 or arm64.
 
