@@ -58,7 +58,7 @@ To compile Kiwix, follow these steps:
 available](https://dev.kiwix.org/apple/CoreKiwix.xcframework.zip) for
 all supported OSes and CPU architectures. But you might want to
 compile this piece (C++ code) by yourself. Here follow the
-instructions to build libkiwix at [on the kiwix-build
+instructions to build libkiwix+libzim at [on the kiwix-build
 repo](https://github.com/kiwix/kiwix-build).
 
 The xcframework is a bundle of a library for multiple architectures
