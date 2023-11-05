@@ -61,7 +61,7 @@ compile this piece (C++ code) by yourself. Here follow the
 instructions to build libkiwix+libzim at [on the kiwix-build
 repo](https://github.com/kiwix/kiwix-build).
 
-The xcframework is a bundle of a library for multiple architectures
+The xcframework is a bundle of all libkiwix dependencies for multiple architectures
 and/or platforms. The `CoreKiwix.xcframework` will contain libkiwix
 library for macOS archs and for iOS. You don't have to follow steps
 for other platform/arch if you don't need them.
