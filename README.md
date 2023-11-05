@@ -47,6 +47,7 @@ To compile Kiwix you rely on the following compilation tools:
 ### Steps
 
 To compile Kiwix, follow these steps:
+* Put CoreKiwix/xcframework at the root of the root of code folder
 * Open project with Xcode `open Kiwix.xcodeproj/project.xcworkspace/`
 * Change the Bundle Identifier (in *Signing & Capabilities*)
 * Select appropriate Signing Certificate/Profile.
