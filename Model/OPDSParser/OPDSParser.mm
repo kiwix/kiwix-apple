@@ -18,7 +18,7 @@
 
 @interface OPDSParser ()
 
-@property kiwix::Library *library;
+@property kiwix::LibraryPtr library;
 
 @end
 
@@ -27,13 +27,9 @@
 - (instancetype _Nonnull)init {
     self = [super init];
     if (self) {
-        self.library = new kiwix::Library();
+        self.library = kiwix::Library::create();
     }
     return self;
-}
-
-- (void)dealloc {
-    delete self.library;
 }
 
 - (BOOL)parseData:(nonnull NSData *)data {
