@@ -8,8 +8,60 @@ on:
       - ci
 
 jobs:
-  test:
-    runs-on: ubuntu-22.04
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        destination:
+          - platform: macOS
+            name: Any Mac
+          - platform: iOS
+            name: Any iOS Device
+    runs-on: macos-13
+    env:
+      XCF_URL: https://tmp.kiwix.org/ci/dev_preview/xcframework/libkiwix_xcframework-2023-11-11.tar.gz
+      # XCF_URL: https://download.kiwix.org/nightly/libkiwix_xcframework-2023-11-11.tar.gz
+      XC_PROJECT: Kiwix.xcodeproj
+      XC_SCHEME: Kiwix
+      XC_CONFIG: Release
+      XC_DESTINATION: platform=${{ matrix.destination.platform }},name=${{ matrix.destination.name }}
+      STORE_AUTH_KEY: /tmp/authkey.p8
     steps:
-    - name: Hello
-      run: echo "hello world"
+    - name: Update Apple Intermediate Certificate
+      run: |
+        curl -L -o ~/Downloads/AppleWWDRCAG3.cer https://www.apple.com/certificateauthority/AppleWWDRCAG3.cer
+        sudo security import ~/Downloads/AppleWWDRCAG3.cer \
+          -k /Library/Keychains/System.keychain \
+          -T /usr/bin/codesign \
+          -T /usr/bin/security \
+          -T /usr/bin/productbuild
+    - name: Set Xcode version (15.0.1)
+      # https://github.com/actions/runner-images/blob/main/images/macos/macos-13-Readme.md#xcode
+      run: sudo xcode-select -s /Applications/Xcode_15.0.1.app
+    - name: Checkout code
+      uses: actions/checkout@v3
+    - name: Download CoreKiwix.xcframework
+      run: curl -L -o - $XCF_URL | tar -x --strip-components 2
+    - name: Prepare Xcode
+      run: xcrun xcodebuild -checkFirstLaunchStatus || xcrun xcodebuild -runFirstLaunch
+    - name: Dump build settings
+      run: xcrun xcodebuild -project Kiwix.xcodeproj -scheme Kiwix -showBuildSettings
+    - name: Copy Key file to disk
+      run: echo "%{{ secrets.APPLE_STORE_AUTH_KEY }}" > ${STORE_AUTH_KEY} && chmod 600 ${STORE_AUTH_KEY}
+    - name: Build for ${{ matrix.destination.platform }}/${{ matrix.destination.name }}
+      env:
+        APPLE_STORE_AUTH_KEY_ID: ${{ secrets.APPLE_STORE_AUTH_KEY_ID }}
+        APPLE_STORE_AUTH_KEY_ISSUER_ID: ${{ secrets.APPLE_STORE_AUTH_KEY_ISSUER_ID }}
+      run: xcrun xcodebuild \
+        -project ${XC_PROJECT} \
+        -scheme ${XC_SCHEME} \
+        -destination "${XC_DESTINATION}" \
+        -configuration ${XC_CONFIG} \
+        -onlyUsePackageVersionsFromResolvedFile \
+        -derivedDataPath $PWD/build \
+        -allowProvisioningUpdates \
+        -authenticationKeyPath ${STORE_AUTH_KEY} \
+        -authenticationKeyID ${APPLE_STORE_AUTH_KEY_ID} \
+        -authenticationKeyIssuerID ${APPLE_STORE_AUTH_KEY_ISSUER_ID} \
+        -verbose \
+        build
