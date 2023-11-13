@@ -22,6 +22,7 @@ jobs:
       XCF_URL: https://tmp.kiwix.org/ci/dev_preview/xcframework/libkiwix_xcframework-2023-11-11.tar.gz
       # XCF_URL: https://download.kiwix.org/nightly/libkiwix_xcframework-2023-11-11.tar.gz
       XC_PROJECT: Kiwix.xcodeproj
+      XC_WORKSPACE: Kiwix.xcodeproj/project.xcworkspace/
       XC_SCHEME: Kiwix
       XC_CONFIG: Release
       XC_DESTINATION: platform=${{ matrix.destination.platform }},name=${{ matrix.destination.name }}
@@ -34,7 +35,7 @@ jobs:
           -k /Library/Keychains/System.keychain \
           -T /usr/bin/codesign \
           -T /usr/bin/security \
-          -T /usr/bin/productbuild
+          -T /usr/bin/productbuild || true
     - name: Set Xcode version (15.0.1)
       # https://github.com/actions/runner-images/blob/main/images/macos/macos-13-Readme.md#xcode
       run: sudo xcode-select -s /Applications/Xcode_15.0.1.app
@@ -45,23 +46,11 @@ jobs:
     - name: Prepare Xcode
       run: xcrun xcodebuild -checkFirstLaunchStatus || xcrun xcodebuild -runFirstLaunch
     - name: Dump build settings
-      run: xcrun xcodebuild -project Kiwix.xcodeproj -scheme Kiwix -showBuildSettings
+      run: xcrun xcodebuild -workspace $XC_WORKSPACE -scheme $XC_SCHEME -showBuildSettings
     - name: Copy Key file to disk
-      run: echo "%{{ secrets.APPLE_STORE_AUTH_KEY }}" > ${STORE_AUTH_KEY} && chmod 600 ${STORE_AUTH_KEY}
+      run: echo "${{ secrets.APPLE_STORE_AUTH_KEY }}" > ${STORE_AUTH_KEY} && chmod 600 ${STORE_AUTH_KEY}
     - name: Build for ${{ matrix.destination.platform }}/${{ matrix.destination.name }}
       env:
         APPLE_STORE_AUTH_KEY_ID: ${{ secrets.APPLE_STORE_AUTH_KEY_ID }}
         APPLE_STORE_AUTH_KEY_ISSUER_ID: ${{ secrets.APPLE_STORE_AUTH_KEY_ISSUER_ID }}
-      run: xcrun xcodebuild \
-        -project ${XC_PROJECT} \
-        -scheme ${XC_SCHEME} \
-        -destination "${XC_DESTINATION}" \
-        -configuration ${XC_CONFIG} \
-        -onlyUsePackageVersionsFromResolvedFile \
-        -derivedDataPath $PWD/build \
-        -allowProvisioningUpdates \
-        -authenticationKeyPath ${STORE_AUTH_KEY} \
-        -authenticationKeyID ${APPLE_STORE_AUTH_KEY_ID} \
-        -authenticationKeyIssuerID ${APPLE_STORE_AUTH_KEY_ISSUER_ID} \
-        -verbose \
-        build
+      run: xcrun xcodebuild -workspace $XC_WORKSPACE -scheme $XC_SCHEME -destination "$XC_DESTINATION" -configuration $XC_CONFIG -onlyUsePackageVersionsFromResolvedFile -derivedDataPath $PWD/build -allowProvisioningUpdates -authenticationKeyPath $STORE_AUTH_KEY -authenticationKeyID $APPLE_STORE_AUTH_KEY_ID -authenticationKeyIssuerID $APPLE_STORE_AUTH_KEY_ISSUER_ID -verbose build
