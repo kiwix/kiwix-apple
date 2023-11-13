@@ -14,7 +14,6 @@ import WebKit
 import OrderedCollections
 
 final class BrowserViewModel: NSObject, ObservableObject,
-                              WKNavigationDelegate, WKScriptMessageHandler, WKUIDelegate,
                               NSFetchedResultsControllerDelegate
 {
     static private var cache = OrderedDictionary<NSManagedObjectID, BrowserViewModel>()
@@ -53,16 +52,34 @@ final class BrowserViewModel: NSObject, ObservableObject,
     private var canGoForwardObserver: NSKeyValueObservation?
     private var titleURLObserver: AnyCancellable?
     private var bookmarkFetchedResultsController: NSFetchedResultsController<Bookmark>?
+    private let scriptHandler: BrowserScriptHandler
+    private let navDelegate: BrowserNavDelegate
+    private let uiDelegate: BrowserUIDelegate
     /// A temporary placeholder for the url that should be opened in a new tab, set on macOS only
-    private static var urlForNewTab: URL?
+    static var urlForNewTab: URL?
+    private var cancellables: Set<AnyCancellable> = []
 
     // MARK: - Lifecycle
     
     init(tabID: NSManagedObjectID? = nil) {
         self.tabID = tabID
         self.webView = WKWebView(frame: .zero, configuration: WebViewConfiguration())
+        scriptHandler = BrowserScriptHandler()
+        navDelegate = BrowserNavDelegate()
+        uiDelegate = BrowserUIDelegate()
         super.init()
-        
+
+        scriptHandler.$outlineItems.assign(to: \.outlineItems, on: self)
+            .store(in: &cancellables)
+        scriptHandler.$outlineItemTree.assign(to: \.outlineItemTree, on: self)
+            .store(in: &cancellables)
+
+        navDelegate.$externalURL.assign(to: \.externalURL, on: self)
+            .store(in: &cancellables)
+
+        uiDelegate.$externalURL.assign(to: \.externalURL, on: self)
+            .store(in: &cancellables)
+
         // restore webview state, and set url before observer call back
         // note: optionality of url determines what to show in a tab, so it should be set before tab is on screen
         if let tabID, let tab = try? Database.viewContext.existingObject(with: tabID) as? Tab {
@@ -78,10 +95,10 @@ final class BrowserViewModel: NSObject, ObservableObject,
         webView.allowsBackForwardNavigationGestures = true
         webView.configuration.defaultWebpagePreferences.preferredContentMode = .mobile  // for font adjustment to work
         webView.configuration.userContentController.removeScriptMessageHandler(forName: "headings")
-        webView.configuration.userContentController.add(self, name: "headings")
-        webView.navigationDelegate = self
-        webView.uiDelegate = self
-        
+        webView.configuration.userContentController.add(scriptHandler, name: "headings")
+        webView.navigationDelegate = navDelegate
+        webView.uiDelegate = uiDelegate
+
         // get outline items if something is already loaded
         if webView.url != nil {
             webView.evaluateJavaScript("getOutlineItems();")
@@ -174,150 +191,6 @@ final class BrowserViewModel: NSObject, ObservableObject,
         load(url: url)
     }
     
-    // MARK: - WKNavigationDelegate
-    
-    func webView(_ webView: WKWebView,
-                 decidePolicyFor navigationAction: WKNavigationAction,
-                 decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
-        guard let url = navigationAction.request.url else { decisionHandler(.cancel); return }
-        if url.isKiwixURL, let redirectedURL = ZimFileService.shared.getRedirectedURL(url: url) {
-            DispatchQueue.main.async { webView.load(URLRequest(url: redirectedURL)) }
-            decisionHandler(.cancel)
-        } else if url.isKiwixURL {
-            decisionHandler(.allow)
-        } else if url.isExternal {
-            externalURL = url
-            decisionHandler(.cancel)
-        } else if url.scheme == "geo" {
-            if FeatureFlags.map {
-                let _: CLLocation? = {
-                    let parts = url.absoluteString.replacingOccurrences(of: "geo:", with: "").split(separator: ",")
-                    guard let latitudeString = parts.first,
-                          let longitudeString = parts.last,
-                          let latitude = Double(latitudeString),
-                          let longitude = Double(longitudeString) else { return nil }
-                    return CLLocation(latitude: latitude, longitude: longitude)
-                }()
-            } else {
-                let coordinate = url.absoluteString.replacingOccurrences(of: "geo:", with: "")
-                if let url = URL(string: "http://maps.apple.com/?ll=\(coordinate)") {
-                    #if os(macOS)
-                    NSWorkspace.shared.open(url)
-                    #elseif os(iOS)
-                    UIApplication.shared.open(url)
-                    #endif
-                }
-            }
-            decisionHandler(.cancel)
-        } else {
-            decisionHandler(.cancel)
-        }
-    }
-    
-    func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
-        webView.evaluateJavaScript("expandAllDetailTags(); getOutlineItems();")
-        #if os(iOS)
-        webView.adjustTextSize()
-        #endif
-    }
-    
-    func webView(_ webView: WKWebView, didFailProvisionalNavigation navigation: WKNavigation!, withError error: Error) {
-        let error = error as NSError
-        guard error.code != NSURLErrorCancelled else { return }
-        NotificationCenter.default.post(
-            name: .alert, object: nil, userInfo: ["rawValue": ActiveAlert.articleFailedToLoad.rawValue]
-        )
-    }
-    
-    // MARK: - WKScriptMessageHandler
-    
-    func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
-        if message.name == "headings", let headings = message.body as? [[String: String]] {
-            DispatchQueue.global(qos: .userInitiated).async {
-                self.generateOutlineList(headings: headings)
-                self.generateOutlineTree(headings: headings)
-            }
-        }
-    }
-    
-    // MARK: - WKUIDelegate
-#if os(macOS)
-    func webView(_ webView: WKWebView, createWebViewWith configuration: WKWebViewConfiguration,
-                 for navigationAction: WKNavigationAction, windowFeatures: WKWindowFeatures) -> WKWebView? {
-
-        guard navigationAction.targetFrame == nil else { return nil }
-        guard let newUrl = navigationAction.request.url else { return nil }
-
-        // open external link in default browser
-        guard newUrl.isExternal == false else {
-            externalURL = newUrl
-            return nil
-        }
-
-        // create new tab
-        guard let currentWindow = NSApp.keyWindow,
-              let windowController = currentWindow.windowController else { return nil }
-        // store the new url in a static way
-        Self.urlForNewTab = newUrl
-        // this creates a new BrowserViewModel
-        windowController.newWindowForTab(self)
-        // now reset the static url to nil, as the new BrowserViewModel already has it
-        Self.urlForNewTab = nil
-        guard let newWindow = NSApp.keyWindow, currentWindow != newWindow else { return nil }
-        currentWindow.addTabbedWindow(newWindow, ordered: .above)
-        return nil
-    }
-#endif
-
-    #if os(iOS)
-    func webView(_ webView: WKWebView,
-                 contextMenuConfigurationForElement elementInfo: WKContextMenuElementInfo,
-                 completionHandler: @escaping (UIContextMenuConfiguration?) -> Void) {
-        guard let url = elementInfo.linkURL, url.isKiwixURL else { completionHandler(nil); return }
-        let configuration = UIContextMenuConfiguration(
-            previewProvider: {
-                let webView = WKWebView(frame: .zero, configuration: WebViewConfiguration())
-                webView.load(URLRequest(url: url))
-                return WebViewController(webView: webView)
-            }, actionProvider: { suggestedActions in
-                var actions = [UIAction]()
-                
-                // open url
-                actions.append(
-                    UIAction(title: "Open", image: UIImage(systemName: "doc.text")) { _ in
-                        webView.load(URLRequest(url: url))
-                    }
-                )
-                actions.append(
-                    UIAction(title: "Open in New Tab", image: UIImage(systemName: "doc.badge.plus")) { _ in
-                        NotificationCenter.openURL(url, inNewTab: true)
-                    }
-                )
-
-                // bookmark
-                let bookmarkAction: UIAction = {
-                    let context = Database.viewContext
-                    let predicate = NSPredicate(format: "articleURL == %@", url as CVarArg)
-                    let request = Bookmark.fetchRequest(predicate: predicate)
-                    if let bookmarks = try? context.fetch(request), !bookmarks.isEmpty {
-                        return UIAction(title: "Remove Bookmark", image: UIImage(systemName: "star.slash.fill")) { _ in
-                            self.deleteBookmark(url: url)
-                        }
-                    } else {
-                        return UIAction(title: "Bookmark", image: UIImage(systemName: "star")) { _ in
-                            self.createBookmark(url: url)
-                        }
-                    }
-                }()
-                actions.append(bookmarkAction)
-                
-                return UIMenu(children: actions)
-            }
-        )
-        completionHandler(configuration)
-    }
-    #endif
-    
     // MARK: - Bookmark
     
     func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>,
@@ -361,68 +234,5 @@ final class BrowserViewModel: NSObject, ObservableObject,
     /// - Parameter outlineItemID: ID of the outline item to scroll to
     func scrollTo(outlineItemID: String) {
         webView.evaluateJavaScript("scrollToHeading('\(outlineItemID)')")
-    }
-    
-    /// Convert flattened heading element data to a list of OutlineItems.
-    /// - Parameter headings: list of heading element data retrieved from webview
-    private func generateOutlineList(headings: [[String: String]]) {
-        let allLevels = headings.compactMap { Int($0["tag"]?.suffix(1) ?? "") }
-        let offset = allLevels.filter({ $0 == 1 }).count == 1 ? 2 : allLevels.min() ?? 0
-        let outlineItems: [OutlineItem] = headings.enumerated().compactMap { index, heading in
-            guard let id = heading["id"],
-                  let text = heading["text"],
-                  let tag = heading["tag"],
-                  let level = Int(tag.suffix(1)) else { return nil }
-            return OutlineItem(id: id, index: index, text: text, level: max(level - offset, 0))
-        }
-        DispatchQueue.main.async {
-            self.outlineItems = outlineItems
-        }
-    }
-    
-    /// Convert flattened heading element data to a tree of OutlineItems.
-    /// - Parameter headings: list of heading element data retrieved from webview
-    private func generateOutlineTree(headings: [[String: String]]) {
-        let root = OutlineItem(index: -1, text: "", level: 0)
-        var stack: [OutlineItem] = [root]
-        var all = [String: OutlineItem]()
-        
-        headings.enumerated().forEach { index, heading in
-            guard let id = heading["id"],
-                  let text = heading["text"],
-                  let tag = heading["tag"], let level = Int(tag.suffix(1)) else { return }
-            let item = OutlineItem(id: id, index: index, text: text, level: level)
-            all[item.id] = item
-            
-            // get last item in stack
-            // if last item is child of item's sibling, unwind stack until a sibling is found
-            guard var lastItem = stack.last else { return }
-            while lastItem.level > item.level {
-                stack.removeLast()
-                lastItem = stack[stack.count - 1]
-            }
-            
-            // if item is last item's sibling, add item to parent and replace last item with itself in stack
-            // if item is last item's child, add item to parent and add item to stack
-            if lastItem.level == item.level {
-                stack[stack.count - 2].addChild(item)
-                stack[stack.count - 1] = item
-            } else if lastItem.level < item.level {
-                stack[stack.count - 1].addChild(item)
-                stack.append(item)
-            }
-        }
-        
-        // if there is only one h1, flatten one level
-        if let rootChildren = root.children, rootChildren.count == 1, let rootFirstChild = rootChildren.first {
-            let children = rootFirstChild.removeAllChildren()
-            DispatchQueue.main.async {
-                self.outlineItemTree = [rootFirstChild] + children
-            }
-        } else {
-            DispatchQueue.main.async {
-                self.outlineItemTree = root.children ?? []
-            }
-        }
     }
 }
