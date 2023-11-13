@@ -13,9 +13,9 @@ import WebKit
 
 import OrderedCollections
 
-class BrowserViewModel: NSObject, ObservableObject,
-                        WKNavigationDelegate, WKScriptMessageHandler, WKUIDelegate,
-                        NSFetchedResultsControllerDelegate
+final class BrowserViewModel: NSObject, ObservableObject,
+                              WKNavigationDelegate, WKScriptMessageHandler, WKUIDelegate,
+                              NSFetchedResultsControllerDelegate
 {
     static private var cache = OrderedDictionary<NSManagedObjectID, BrowserViewModel>()
     
@@ -45,14 +45,17 @@ class BrowserViewModel: NSObject, ObservableObject,
     @Published private(set) var outlineItems = [OutlineItem]()
     @Published private(set) var outlineItemTree = [OutlineItem]()
     @Published private(set) var url: URL?
-    
+    @Published var externalURL: URL?
+
     let tabID: NSManagedObjectID?
     let webView: WKWebView
     private var canGoBackObserver: NSKeyValueObservation?
     private var canGoForwardObserver: NSKeyValueObservation?
     private var titleURLObserver: AnyCancellable?
     private var bookmarkFetchedResultsController: NSFetchedResultsController<Bookmark>?
-    
+    /// A temporary placeholder for the url that should be opened in a new tab, set on macOS only
+    private static var urlForNewTab: URL?
+
     // MARK: - Lifecycle
     
     init(tabID: NSManagedObjectID? = nil) {
@@ -66,7 +69,11 @@ class BrowserViewModel: NSObject, ObservableObject,
             webView.interactionState = tab.interactionState
             url = webView.url
         }
-        
+        if let urlForNewTab = Self.urlForNewTab {
+            url = urlForNewTab
+            load(url: urlForNewTab)
+        }
+
         // configure web view
         webView.allowsBackForwardNavigationGestures = true
         webView.configuration.defaultWebpagePreferences.preferredContentMode = .mobile  // for font adjustment to work
@@ -178,8 +185,8 @@ class BrowserViewModel: NSObject, ObservableObject,
             decisionHandler(.cancel)
         } else if url.isKiwixURL {
             decisionHandler(.allow)
-        } else if url.scheme == "http" || url.scheme == "https" {
-            NotificationCenter.default.post(name: .externalLink, object: nil, userInfo: ["url": url])
+        } else if url.isExternal {
+            externalURL = url
             decisionHandler(.cancel)
         } else if url.scheme == "geo" {
             if FeatureFlags.map {
@@ -234,7 +241,34 @@ class BrowserViewModel: NSObject, ObservableObject,
     }
     
     // MARK: - WKUIDelegate
-    
+#if os(macOS)
+    func webView(_ webView: WKWebView, createWebViewWith configuration: WKWebViewConfiguration,
+                 for navigationAction: WKNavigationAction, windowFeatures: WKWindowFeatures) -> WKWebView? {
+
+        guard navigationAction.targetFrame == nil else { return nil }
+        guard let newUrl = navigationAction.request.url else { return nil }
+
+        // open external link in default browser
+        guard newUrl.isExternal == false else {
+            externalURL = newUrl
+            return nil
+        }
+
+        // create new tab
+        guard let currentWindow = NSApp.keyWindow,
+              let windowController = currentWindow.windowController else { return nil }
+        // store the new url in a static way
+        Self.urlForNewTab = newUrl
+        // this creates a new BrowserViewModel
+        windowController.newWindowForTab(self)
+        // now reset the static url to nil, as the new BrowserViewModel already has it
+        Self.urlForNewTab = nil
+        guard let newWindow = NSApp.keyWindow, currentWindow != newWindow else { return nil }
+        currentWindow.addTabbedWindow(newWindow, ordered: .above)
+        return nil
+    }
+#endif
+
     #if os(iOS)
     func webView(_ webView: WKWebView,
                  contextMenuConfigurationForElement elementInfo: WKContextMenuElementInfo,
