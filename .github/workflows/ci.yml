@@ -27,7 +27,31 @@ jobs:
       XC_CONFIG: Release
       XC_DESTINATION: platform=${{ matrix.destination.platform }},name=${{ matrix.destination.name }}
       STORE_AUTH_KEY: /tmp/authkey.p8
+      CERTIFICATE: /tmp/apple-development.p12
+      SIGNING_IDENTITY: ${{ secrets.APPLE_DEVELOPMENT_SIGNING_IDENTITY }}
+      KEYCHAIN: /Users/runner/build.keychain-db
+      KEYCHAIN_PASSWORD: mysecretpassword
+      KEYCHAIN_PROFILE: build-profile
     steps:
+    - name: install Apple certificate
+      shell: bash
+      run: |
+        echo "${{ secrets.APPLE_DEVELOPMENT_SIGNING_CERTIFICATE }}" | base64 --decode -o $CERTIFICATE
+        security create-keychain -p $KEYCHAIN_PASSWORD $KEYCHAIN
+        security default-keychain -s $KEYCHAIN
+        security set-keychain-settings $KEYCHAIN
+        security unlock-keychain -p $KEYCHAIN_PASSWORD $KEYCHAIN
+        security import $CERTIFICATE -k $KEYCHAIN -P "${{ secrets.APPLE_DEVELOPMENT_SIGNING_P12_PASSWORD }}" -A -T /usr/bin/codesign -T /usr/bin/security -T /usr/bin/productbuild
+        rm $CERTIFICATE
+        security set-key-partition-list -S apple-tool:,apple: -s -k $KEYCHAIN_PASSWORD $KEYCHAIN
+        security find-identity -v $KEYCHAIN
+        xcrun notarytool store-credentials \
+            --apple-id "${{ secrets.APPLE_SIGNING_ALTOOL_USERNAME }}" \
+            --password "${{ secrets.APPLE_SIGNING_ALTOOL_PASSWORD }}" \
+            --team-id "${{ secrets.APPLE_SIGNING_TEAM }}" \
+            --validate \
+            --keychain $KEYCHAIN \
+            $KEYCHAIN_PROFILE
     - name: Update Apple Intermediate Certificate
       run: |
         curl -L -o ~/Downloads/AppleWWDRCAG3.cer https://www.apple.com/certificateauthority/AppleWWDRCAG3.cer
