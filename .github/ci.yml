@@ -1,0 +1,15 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+      - ci
+
+jobs:
+  test:
+    runs-on: ubuntu-22-04
+    steps:
+    - name: Hello
+      run: echo "hello world"
