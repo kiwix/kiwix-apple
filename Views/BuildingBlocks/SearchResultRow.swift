@@ -38,12 +38,12 @@ struct SearchResultRow: View {
 
 struct SearchResultRow_Previews: PreviewProvider {
     static let result: SearchResult = {
-        let result = SearchResult(zimFileID: UUID(), path: "", title: "Article Title")!
+        let result = SearchResult(zimFileID: UUID(), path: "", title: "Article Title".localized)!
         result.snippet = NSAttributedString(string:
             """
             Lorem ipsum dolor sit amet, consectetur adipiscing elit, \
             sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-            """
+            """.localized
         )
         return result
     }()

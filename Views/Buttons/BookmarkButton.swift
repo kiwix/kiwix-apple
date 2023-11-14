@@ -23,7 +23,7 @@ struct BookmarkButton: View {
             }
         } label: {
             Label {
-                Text(browser.articleBookmarked ? "Remove Bookmark" : "Add Bookmark")
+                Text(browser.articleBookmarked ? "Remove Bookmark".localized : "Add Bookmark".localized)
             } icon: {
                 Image(systemName: browser.articleBookmarked ? "star.fill" : "star")
                     .renderingMode(browser.articleBookmarked ? .original : .template)
@@ -35,23 +35,23 @@ struct BookmarkButton: View {
                 Button(role: .destructive) {
                     browser.deleteBookmark()
                 } label: {
-                    Label("Remove Bookmark", systemImage: "star.slash.fill")
+                    Label("Remove Bookmark".localized, systemImage: "star.slash.fill")
                 }
             } else {
                 Button {
                     browser.createBookmark()
                 } label: {
-                    Label("Add Bookmark", systemImage: "star")
+                    Label("Add Bookmark".localized, systemImage: "star")
                 }
             }
             Button {
                 isShowingBookmark = true
             } label: {
-                Label("Show Bookmarks", systemImage: "list.star")
+                Label("Show Bookmarks".localized, systemImage: "list.star")
             }
         } label: {
             Label {
-                Text("Show Bookmarks")
+                Text("Show Bookmarks".localized)
             } icon: {
                 Image(systemName: browser.articleBookmarked ? "star.fill" : "star")
                     .renderingMode(browser.articleBookmarked ? .original : .template)
@@ -59,7 +59,7 @@ struct BookmarkButton: View {
         } primaryAction: {
             isShowingBookmark = true
         }
-        .help("Show bookmarks. Long press to bookmark or unbookmark the current article.")
+        .help("Show bookmarks. Long press to bookmark or unbookmark the current article.".localized)
         .popover(isPresented: $isShowingBookmark) {
             NavigationView {
                 Bookmarks().navigationBarTitleDisplayMode(.inline).toolbar {
@@ -67,7 +67,7 @@ struct BookmarkButton: View {
                         Button {
                             isShowingBookmark = false
                         } label: {
-                            Text("Done").fontWeight(.semibold)
+                            Text("Done".localized).fontWeight(.semibold)
                         }
                     }
                 }

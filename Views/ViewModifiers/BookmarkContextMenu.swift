@@ -18,13 +18,13 @@ struct BookmarkContextMenu: ViewModifier {
             Button {
                 NotificationCenter.openURL(bookmark.articleURL)
             } label: {
-                Label("View", systemImage: "doc.richtext")
+                Label("View".localized, systemImage: "doc.richtext")
             }
             Button(role: .destructive) {
                 managedObjectContext.delete(bookmark)
                 try? managedObjectContext.save()
             } label: {
-                Label("Remove", systemImage: "star.slash.fill")
+                Label("Remove".localized, systemImage: "star.slash.fill")
             }
         }
     }

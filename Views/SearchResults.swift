@@ -28,7 +28,7 @@ struct SearchResults: View {
     var body: some View {
         Group {
             if zimFiles.isEmpty {
-                Message(text: "No opened zim file")
+                Message(text: "No opened zim file".localized)
             } else if horizontalSizeClass == .regular {
                 HStack(spacing: 0) {
                     #if os(macOS)
@@ -66,7 +66,7 @@ struct SearchResults: View {
                 Spacer()
             }
         } else if viewModel.results.isEmpty {
-            Message(text: "No result")
+            Message(text: "No result".localized)
         } else {
             ScrollView {
                 LazyVGrid(columns: [GridItem(.flexible(minimum: 300, maximum: 700), alignment: .center)]) {
@@ -98,7 +98,7 @@ struct SearchResults: View {
                                 viewModel.searchText = searchText
                             }
                         }.swipeActions {
-                            Button("Remove", role: .destructive) {
+                            Button("Remove".localized, role: .destructive) {
                                 recentSearchTexts.removeAll { $0 == searchText }
                             }
                         }
@@ -126,39 +126,39 @@ struct SearchResults: View {
     
     private var recentSearchHeader: some View {
         HStack {
-            Text("Recent Search")
+            Text("Recent Search".localized)
             Spacer()
             Button {
                 isClearSearchConfirmationPresented = true
             } label: {
-                Text("Clear").font(.caption).fontWeight(.medium)
-            }.confirmationDialog("Clear Recent Searches", isPresented: $isClearSearchConfirmationPresented) {
-                Button("Clear All", role: .destructive) {
+                Text("Clear".localized).font(.caption).fontWeight(.medium)
+            }.confirmationDialog("Clear Recent Searches".localized, isPresented: $isClearSearchConfirmationPresented) {
+                Button("Clear All".localized, role: .destructive) {
                     recentSearchTexts.removeAll()
                 }
             } message: {
-                Text("All recent search history will be removed.")
+                Text("All recent search history will be removed.".localized)
             }
         }
     }
     
     private var searchFilterHeader: some View {
         HStack {
-            Text("Included in Search")
+            Text("Included in Search".localized)
             Spacer()
             if zimFiles.count == zimFiles.filter({ $0.includedInSearch }).count {
                 Button {
                     zimFiles.forEach { $0.includedInSearch = false }
                     try? managedObjectContext.save()
                 } label: {
-                    Text("None").font(.caption).fontWeight(.medium)
+                    Text("None".localized).font(.caption).fontWeight(.medium)
                 }
             } else {
                 Button {
                     zimFiles.forEach { $0.includedInSearch = true }
                     try? managedObjectContext.save()
                 } label: {
-                    Text("All").font(.caption).fontWeight(.medium)
+                    Text("All".localized).font(.caption).fontWeight(.medium)
                 }
             }
         }
