@@ -16,7 +16,7 @@ struct Attribute: View {
         HStack {
             Text(title)
             Spacer()
-            Text(detail ?? "Unknown").foregroundColor(.secondary)
+            Text(detail ?? "Unknown".localized).foregroundColor(.secondary)
         }
     }
 }
@@ -30,7 +30,7 @@ struct AttributeBool: View {
             Text(title)
             Spacer()
             #if os(macOS)
-            Text(detail ? "Yes" : "No").foregroundColor(.secondary)
+            Text(detail ? "Yes".localized : "No".localized).foregroundColor(.secondary)
             #elseif os(iOS)
             if detail {
                 Image(systemName: "checkmark.circle.fill").foregroundColor(.green)

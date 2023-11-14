@@ -40,10 +40,10 @@ struct ArticleShortcutButtons: View {
             browser.loadMainArticle()
             dismissSearch()
         } label: {
-            Label("Main Article", systemImage: "house")
+            Label("Main Article".localized, systemImage: "house")
         }
         .disabled(zimFiles.isEmpty)
-        .help("Show main article")
+        .help("Show main article".localized)
         #elseif os(iOS)
         Menu {
             ForEach(zimFiles) { zimFile in
@@ -53,13 +53,13 @@ struct ArticleShortcutButtons: View {
                 }
             }
         } label: {
-            Label("Main Article", systemImage: "house")
+            Label("Main Article".localized, systemImage: "house")
         } primaryAction: {
             browser.loadMainArticle()
             dismissSearch()
         }
         .disabled(zimFiles.isEmpty)
-        .help("Show main article")
+        .help("Show main article".localized)
         #endif
     }
     
@@ -69,10 +69,10 @@ struct ArticleShortcutButtons: View {
             browser.loadRandomArticle()
             dismissSearch()
         } label: {
-            Label("Random Article", systemImage: "die.face.5")
+            Label("Random Article".localized, systemImage: "die.face.5")
         }
         .disabled(zimFiles.isEmpty)
-        .help("Show random article")
+        .help("Show random article".localized)
         #elseif os(iOS)
         Menu {
             ForEach(zimFiles) { zimFile in
@@ -82,13 +82,13 @@ struct ArticleShortcutButtons: View {
                 }
             }
         } label: {
-            Label("Random Page", systemImage: "die.face.5")
+            Label("Random Page".localized, systemImage: "die.face.5")
         } primaryAction: {
             browser.loadRandomArticle()
             dismissSearch()
         }
         .disabled(zimFiles.isEmpty)
-        .help("Show random article")
+        .help("Show random article".localized)
         #endif
     }
 }
