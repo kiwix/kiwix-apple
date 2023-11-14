@@ -102,8 +102,8 @@ struct OpenFileHandler: ViewModifier {
         } message: { alert in
             switch alert {
             case .unableToOpen(let filenames):
-                Text("%@ cannot be opened.".localizedWithFormat(withArgs: 
-                                                                    ListFormatter.localizedString(byJoining: filenames)))
+                let name = ListFormatter.localizedString(byJoining: filenames)
+                Text("%@ cannot be opened.".localizedWithFormat(withArgs: name))
             }
         }
     }
