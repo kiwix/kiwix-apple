@@ -75,8 +75,7 @@ final class BrowserUIDelegate: NSObject, WKUIDelegate {
                         let request = Bookmark.fetchRequest(predicate: predicate)
                         if let bookmarks = try? context.fetch(request), !bookmarks.isEmpty {
                             return UIAction(title: "Remove Bookmark",
-                                            image: UIImage(systemName: "star.slash.fill"))
-                            { _ in
+                                            image: UIImage(systemName: "star.slash.fill")) { _ in
                                 self.deleteBookmark(url: url)
                             }
                         } else {
