@@ -14,7 +14,7 @@ extension String {
         return NSLocalizedString(self, tableName: nil, bundle: Bundle.main, value: "", comment: "")
     }
     
-    func localized(withComment:String) -> String {
+    func localized(withComment: String) -> String {
         return NSLocalizedString(self, tableName: nil, bundle: Bundle.main, value: "", comment: withComment)
     }
     
@@ -22,11 +22,10 @@ extension String {
         let format = NSLocalizedString(self, tableName: nil, bundle: Bundle.main, value: "", comment: "")
         
         switch withArgs.count {
-            case 1: return String.localizedStringWithFormat(format, withArgs[0])
-            case 2: return String.localizedStringWithFormat(format, withArgs[0], withArgs[1])
-            default: return String.localizedStringWithFormat(format, withArgs)
+        case 1: return String.localizedStringWithFormat(format, withArgs[0])
+        case 2: return String.localizedStringWithFormat(format, withArgs[0], withArgs[1])
+        default: return String.localizedStringWithFormat(format, withArgs)
         }
     }
     
 }
-

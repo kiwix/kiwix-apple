@@ -132,7 +132,8 @@ struct Settings: View {
     var readingSettings: some View {
         Section("Reading".localized) {
             Stepper(value: $webViewPageZoom, in: 0.5...2, step: 0.05) {
-                Text("Page zoom".localized + ": \(Formatter.percent.string(from: NSNumber(value: webViewPageZoom)) ?? "")")
+                Text("Page zoom".localized + 
+                     ": \(Formatter.percent.string(from: NSNumber(value: webViewPageZoom)) ?? "")")
             }
             Picker("External link".localized, selection: $externalLinkLoadingPolicy) {
                 ForEach(ExternalLinkLoadingPolicy.allCases) { loadingPolicy in
