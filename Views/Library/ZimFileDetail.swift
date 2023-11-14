@@ -138,7 +138,10 @@ struct ZimFileDetail: View {
         }.alert(isPresented: $isPresentingDeleteAlert) {
             Alert(
                 title: Text("Delete %@".localizedWithFormat(withArgs: zimFile.name)),
-                message: Text("The zim file and all bookmarked articles linked to this zim file will be deleted.".localized),
+                message: Text("""
+                              The zim file and all bookmarked articles \
+                            linked to this zim file will be deleted.
+                            """.localized),
                 primaryButton: .destructive(Text("Delete".localized)) {
                     LibraryOperations.delete(zimFileID: zimFile.fileID)
                     #if os(iOS)
@@ -177,7 +180,8 @@ struct ZimFileDetail: View {
     
     @ViewBuilder
     var basicInfo: some View {
-        Attribute(title: "Language".localized, detail: Locale.current.localizedString(forLanguageCode: zimFile.languageCode))
+        Attribute(title: "Language".localized, 
+                  detail: Locale.current.localizedString(forLanguageCode: zimFile.languageCode))
         Attribute(title: "Category".localized, detail: Category(rawValue: zimFile.category)?.description)
         Attribute(title: "Size".localized, detail: Formatter.size.string(fromByteCount: zimFile.size))
         Attribute(title: "Created".localized, detail: Formatter.dateMedium.string(from: zimFile.created))

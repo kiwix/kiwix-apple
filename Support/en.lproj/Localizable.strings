@@ -45,7 +45,9 @@
 "Load the link" = "Load the link";
 "Cancel" = "Cancel";
 "An external link is tapped, do you wish to load the link?" = "An external link is tapped, do you wish to load the link?";
-"An external link is tapped. However, your current setting does not allow it to be loaded." = "An external link is tapped. However, your current setting does not allow it to be loaded.";
+"An external link is tapped. \
+However, your current setting does not allow it to be loaded." = "An external link is tapped. \
+However, your current setting does not allow it to be loaded.";
 "Open a zim file" = "Open a zim file";
 "Unable to open file" = "Unable to open file";
 "%@  cannot be opened." = "%@  cannot be opened.";
@@ -97,7 +99,9 @@ sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.";
 but the original file will remain in place." = "All bookmarked articles linked to this zim file will be deleted, \
 but the original file will remain in place.";
 "Delete %@" = "Delete %@";
-"The zim file and all bookmarked articles linked to this zim file will be deleted." = "The zim file and all bookmarked articles linked to this zim file will be deleted.";
+"The zim file and all bookmarked articles \
+linked to this zim file will be deleted." = "The zim file and all bookmarked articles \
+linked to this zim file will be deleted.";
 "Download" = "Download";
 "Space Warning" = "Space Warning";
 "There might not be enough space on your device for this zim file." = "There might not be enough space on your device for this zim file.";
