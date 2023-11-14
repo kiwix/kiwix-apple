@@ -250,12 +250,12 @@ class BrowserViewModel: NSObject, ObservableObject,
                 
                 // open url
                 actions.append(
-                    UIAction(title: "Open", image: UIImage(systemName: "doc.text")) { _ in
+                    UIAction(title: "Open".localized, image: UIImage(systemName: "doc.text")) { _ in
                         webView.load(URLRequest(url: url))
                     }
                 )
                 actions.append(
-                    UIAction(title: "Open in New Tab", image: UIImage(systemName: "doc.badge.plus")) { _ in
+                    UIAction(title: "Open in New Tab".localized, image: UIImage(systemName: "doc.badge.plus")) { _ in
                         NotificationCenter.openURL(url, inNewTab: true)
                     }
                 )
@@ -266,11 +266,11 @@ class BrowserViewModel: NSObject, ObservableObject,
                     let predicate = NSPredicate(format: "articleURL == %@", url as CVarArg)
                     let request = Bookmark.fetchRequest(predicate: predicate)
                     if let bookmarks = try? context.fetch(request), !bookmarks.isEmpty {
-                        return UIAction(title: "Remove Bookmark", image: UIImage(systemName: "star.slash.fill")) { _ in
+                        return UIAction(title: "Remove Bookmark".localized, image: UIImage(systemName: "star.slash.fill")) { _ in
                             self.deleteBookmark(url: url)
                         }
                     } else {
-                        return UIAction(title: "Bookmark", image: UIImage(systemName: "star")) { _ in
+                        return UIAction(title: "Bookmark".localized, image: UIImage(systemName: "star")) { _ in
                             self.createBookmark(url: url)
                         }
                     }

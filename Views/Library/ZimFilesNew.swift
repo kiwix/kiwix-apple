@@ -39,7 +39,7 @@ struct ZimFilesNew: View {
         }
         .modifier(GridCommon())
         .modifier(ToolbarRoleBrowser())
-        .navigationTitle(NavigationItem.new.name)
+        .navigationTitle(NavigationItem.new.name.localized)
         .searchable(text: $searchText)
         .onAppear {
             viewModel.start(isUserInitiated: false)
@@ -52,7 +52,7 @@ struct ZimFilesNew: View {
         }
         .overlay {
             if zimFiles.isEmpty {
-                Message(text: "No new zim file")
+                Message(text: "No new zim file".localized)
             }
         }
         .toolbar {
@@ -62,7 +62,7 @@ struct ZimFilesNew: View {
                     Button {
                         NotificationCenter.toggleSidebar()
                     } label: {
-                        Label("Show Sidebar", systemImage: "sidebar.left")
+                        Label("Show Sidebar".localized, systemImage: "sidebar.left")
                     }
                 }
             }
@@ -77,7 +77,7 @@ struct ZimFilesNew: View {
                     Button {
                         viewModel.start(isUserInitiated: true)
                     } label: {
-                        Label("Refresh", systemImage: "arrow.triangle.2.circlepath.circle")
+                        Label("Refresh".localized, systemImage: "arrow.triangle.2.circlepath.circle")
                     }
                 }
             }
