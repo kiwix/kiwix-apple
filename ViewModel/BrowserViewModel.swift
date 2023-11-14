@@ -267,7 +267,8 @@ class BrowserViewModel: NSObject, ObservableObject,
                     let predicate = NSPredicate(format: "articleURL == %@", url as CVarArg)
                     let request = Bookmark.fetchRequest(predicate: predicate)
                     if let bookmarks = try? context.fetch(request), !bookmarks.isEmpty {
-                        return UIAction(title: "Remove Bookmark".localized, image: UIImage(systemName: "star.slash.fill")) { _ in
+                        return UIAction(title: "Remove Bookmark".localized, 
+                                        image: UIImage(systemName: "star.slash.fill")) { _ in
                             self.deleteBookmark(url: url)
                         }
                     } else {
