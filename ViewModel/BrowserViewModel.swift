@@ -14,17 +14,17 @@ import WebKit
 import OrderedCollections
 
 final class BrowserViewModel: NSObject, ObservableObject,
-                              NSFetchedResultsControllerDelegate
+    NSFetchedResultsControllerDelegate
 {
-    static private var cache = OrderedDictionary<NSManagedObjectID, BrowserViewModel>()
-    
+    private static var cache = OrderedDictionary<NSManagedObjectID, BrowserViewModel>()
+
     static func getCached(tabID: NSManagedObjectID) -> BrowserViewModel {
         let viewModel = cache[tabID] ?? BrowserViewModel(tabID: tabID)
         cache.removeValue(forKey: tabID)
         cache[tabID] = viewModel
         return viewModel
     }
-    
+
     static func purgeCache() {
         guard cache.count > 10 else { return }
         let range = 0 ..< cache.count - 5
@@ -33,9 +33,9 @@ final class BrowserViewModel: NSObject, ObservableObject,
         }
         cache.removeSubrange(range)
     }
-    
+
     // MARK: - Properties
-    
+
     @Published private(set) var canGoBack = false
     @Published private(set) var canGoForward = false
     @Published private(set) var articleTitle: String = ""
@@ -60,10 +60,10 @@ final class BrowserViewModel: NSObject, ObservableObject,
     private var cancellables: Set<AnyCancellable> = []
 
     // MARK: - Lifecycle
-    
+
     init(tabID: NSManagedObjectID? = nil) {
         self.tabID = tabID
-        self.webView = WKWebView(frame: .zero, configuration: WebViewConfiguration())
+        webView = WKWebView(frame: .zero, configuration: WebViewConfiguration())
         scriptHandler = BrowserScriptHandler()
         navDelegate = BrowserNavDelegate()
         uiDelegate = BrowserUIDelegate()
@@ -93,7 +93,7 @@ final class BrowserViewModel: NSObject, ObservableObject,
 
         // configure web view
         webView.allowsBackForwardNavigationGestures = true
-        webView.configuration.defaultWebpagePreferences.preferredContentMode = .mobile  // for font adjustment to work
+        webView.configuration.defaultWebpagePreferences.preferredContentMode = .mobile // for font adjustment to work
         webView.configuration.userContentController.removeScriptMessageHandler(forName: "headings")
         webView.configuration.userContentController.add(scriptHandler, name: "headings")
         webView.navigationDelegate = navDelegate
@@ -103,7 +103,7 @@ final class BrowserViewModel: NSObject, ObservableObject,
         if webView.url != nil {
             webView.evaluateJavaScript("getOutlineItems();")
         }
-        
+
         // setup web view property observers
         canGoBackObserver = webView.observe(\.canGoBack, options: .initial) { [weak self] webView, _ in
             self?.canGoBack = webView.canGoBack
@@ -129,24 +129,25 @@ final class BrowserViewModel: NSObject, ObservableObject,
                 guard let url, let zimFileID = UUID(uuidString: url.host ?? "") else { return nil }
                 return try? Database.viewContext.fetch(ZimFile.fetchRequest(fileID: zimFileID)).first
             }()
-            
+
             // update view model
             self?.articleTitle = title ?? ""
             self?.zimFileName = zimFile?.name ?? ""
             self?.url = url
-            
+
             // update tab data
             if let tabID = self?.tabID,
                let tab = try? Database.viewContext.existingObject(with: tabID) as? Tab,
-               let title {
+               let title
+            {
                 tab.title = title
                 tab.zimFile = zimFile
             }
-            
+
             // setup bookmark fetched results controller
             self?.bookmarkFetchedResultsController = NSFetchedResultsController(
                 fetchRequest: Bookmark.fetchRequest(predicate: {
-                    if let url = url {
+                    if let url {
                         return NSPredicate(format: "articleURL == %@", url as CVarArg)
                     } else {
                         return NSPredicate(format: "articleURL == nil")
@@ -160,44 +161,45 @@ final class BrowserViewModel: NSObject, ObservableObject,
             try? self?.bookmarkFetchedResultsController?.performFetch()
         }
     }
-    
+
     func updateLastOpened() {
         guard let tabID, let tab = try? Database.viewContext.existingObject(with: tabID) as? Tab else { return }
         tab.lastOpened = Date()
     }
-    
+
     func persistState() {
         guard let tabID, let tab = try? Database.viewContext.existingObject(with: tabID) as? Tab else { return }
         tab.interactionState = webView.interactionState as? Data
         try? Database.viewContext.save()
     }
-    
+
     // MARK: - Content Loading
-    
+
     func load(url: URL) {
         guard webView.url != url else { return }
         webView.load(URLRequest(url: url))
     }
-    
+
     func loadRandomArticle(zimFileID: UUID? = nil) {
         let zimFileID = zimFileID ?? UUID(uuidString: webView.url?.host ?? "")
         guard let url = ZimFileService.shared.getRandomPageURL(zimFileID: zimFileID) else { return }
         load(url: url)
     }
-    
+
     func loadMainArticle(zimFileID: UUID? = nil) {
         let zimFileID = zimFileID ?? UUID(uuidString: webView.url?.host ?? "")
         guard let url = ZimFileService.shared.getMainPageURL(zimFileID: zimFileID) else { return }
         load(url: url)
     }
-    
+
     // MARK: - Bookmark
-    
-    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>,
-                    didChangeContentWith snapshot: NSDiffableDataSourceSnapshotReference) {
+
+    func controller(_: NSFetchedResultsController<NSFetchRequestResult>,
+                    didChangeContentWith snapshot: NSDiffableDataSourceSnapshotReference)
+    {
         articleBookmarked = !snapshot.itemIdentifiers.isEmpty
     }
-    
+
     func createBookmark(url: URL? = nil) {
         guard let url = url ?? webView.url else { return }
         Database.performBackgroundTask { context in
@@ -217,7 +219,7 @@ final class BrowserViewModel: NSObject, ObservableObject,
             try? context.save()
         }
     }
-    
+
     func deleteBookmark(url: URL? = nil) {
         guard let url = url ?? webView.url else { return }
         Database.performBackgroundTask { context in
@@ -227,9 +229,9 @@ final class BrowserViewModel: NSObject, ObservableObject,
             try? context.save()
         }
     }
-    
+
     // MARK: - Outline
-    
+
     /// Scroll to an outline item
     /// - Parameter outlineItemID: ID of the outline item to scroll to
     func scrollTo(outlineItemID: String) {

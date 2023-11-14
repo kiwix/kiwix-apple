@@ -11,7 +11,7 @@ final class BrowserScriptHandler: NSObject, WKScriptMessageHandler {
     @Published private(set) var outlineItems = [OutlineItem]()
     @Published private(set) var outlineItemTree = [OutlineItem]()
 
-    func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
+    func userContentController(_: WKUserContentController, didReceive message: WKScriptMessage) {
         if message.name == "headings", let headings = message.body as? [[String: String]] {
             DispatchQueue.global(qos: .userInitiated).async {
                 self.generateOutlineList(headings: headings)
@@ -24,7 +24,7 @@ final class BrowserScriptHandler: NSObject, WKScriptMessageHandler {
     /// - Parameter headings: list of heading element data retrieved from webview
     private func generateOutlineList(headings: [[String: String]]) {
         let allLevels = headings.compactMap { Int($0["tag"]?.suffix(1) ?? "") }
-        let offset = allLevels.filter({ $0 == 1 }).count == 1 ? 2 : allLevels.min() ?? 0
+        let offset = allLevels.filter { $0 == 1 }.count == 1 ? 2 : allLevels.min() ?? 0
         let outlineItems: [OutlineItem] = headings.enumerated().compactMap { index, heading in
             guard let id = heading["id"],
                   let text = heading["text"],

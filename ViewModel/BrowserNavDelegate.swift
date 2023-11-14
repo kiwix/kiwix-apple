@@ -5,16 +5,16 @@
 //  Copyright © 2023 Chris Li. All rights reserved.
 //
 
-import WebKit
 import CoreLocation
+import WebKit
 
 final class BrowserNavDelegate: NSObject, WKNavigationDelegate {
-
     @Published private(set) var externalURL: URL?
 
     func webView(_ webView: WKWebView,
                  decidePolicyFor navigationAction: WKNavigationAction,
-                 decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
+                 decisionHandler: @escaping (WKNavigationActionPolicy) -> Void)
+    {
         guard let url = navigationAction.request.url else { decisionHandler(.cancel); return }
         if url.isKiwixURL, let redirectedURL = ZimFileService.shared.getRedirectedURL(url: url) {
             DispatchQueue.main.async { webView.load(URLRequest(url: redirectedURL)) }
@@ -38,9 +38,9 @@ final class BrowserNavDelegate: NSObject, WKNavigationDelegate {
                 let coordinate = url.absoluteString.replacingOccurrences(of: "geo:", with: "")
                 if let url = URL(string: "http://maps.apple.com/?ll=\(coordinate)") {
                     #if os(macOS)
-                    NSWorkspace.shared.open(url)
+                        NSWorkspace.shared.open(url)
                     #elseif os(iOS)
-                    UIApplication.shared.open(url)
+                        UIApplication.shared.open(url)
                     #endif
                 }
             }
@@ -50,14 +50,14 @@ final class BrowserNavDelegate: NSObject, WKNavigationDelegate {
         }
     }
 
-    func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
+    func webView(_ webView: WKWebView, didFinish _: WKNavigation!) {
         webView.evaluateJavaScript("expandAllDetailTags(); getOutlineItems();")
         #if os(iOS)
-        webView.adjustTextSize()
+            webView.adjustTextSize()
         #endif
     }
 
-    func webView(_ webView: WKWebView, didFailProvisionalNavigation navigation: WKNavigation!, withError error: Error) {
+    func webView(_: WKWebView, didFailProvisionalNavigation _: WKNavigation!, withError error: Error) {
         let error = error as NSError
         guard error.code != NSURLErrorCancelled else { return }
         NotificationCenter.default.post(
