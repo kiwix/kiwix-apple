@@ -11,9 +11,12 @@ final class BrowserUIDelegate: NSObject, WKUIDelegate {
     @Published private(set) var externalURL: URL?
 
     #if os(macOS)
-        func webView(_: WKWebView, createWebViewWith _: WKWebViewConfiguration,
-                     for navigationAction: WKNavigationAction, windowFeatures _: WKWindowFeatures) -> WKWebView?
-        {
+        func webView(
+            _: WKWebView,
+            createWebViewWith _: WKWebViewConfiguration,
+            for navigationAction: WKNavigationAction,
+            windowFeatures _: WKWindowFeatures
+        ) -> WKWebView? {
             guard navigationAction.targetFrame == nil else { return nil }
             guard let newUrl = navigationAction.request.url else { return nil }
 
@@ -39,10 +42,11 @@ final class BrowserUIDelegate: NSObject, WKUIDelegate {
     #endif
 
     #if os(iOS)
-        func webView(_ webView: WKWebView,
-                     contextMenuConfigurationForElement elementInfo: WKContextMenuElementInfo,
-                     completionHandler: @escaping (UIContextMenuConfiguration?) -> Void)
-        {
+        func webView(
+            _ webView: WKWebView,
+            contextMenuConfigurationForElement elementInfo: WKContextMenuElementInfo,
+            completionHandler: @escaping (UIContextMenuConfiguration?) -> Void
+        ) {
             guard let url = elementInfo.linkURL, url.isKiwixURL else { completionHandler(nil); return }
             let configuration = UIContextMenuConfiguration(
                 previewProvider: {
@@ -70,7 +74,9 @@ final class BrowserUIDelegate: NSObject, WKUIDelegate {
                         let predicate = NSPredicate(format: "articleURL == %@", url as CVarArg)
                         let request = Bookmark.fetchRequest(predicate: predicate)
                         if let bookmarks = try? context.fetch(request), !bookmarks.isEmpty {
-                            return UIAction(title: "Remove Bookmark", image: UIImage(systemName: "star.slash.fill")) { _ in
+                            return UIAction(title: "Remove Bookmark",
+                                            image: UIImage(systemName: "star.slash.fill"))
+                            { _ in
                                 self.deleteBookmark(url: url)
                             }
                         } else {
