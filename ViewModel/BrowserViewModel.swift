@@ -138,8 +138,7 @@ final class BrowserViewModel: NSObject, ObservableObject,
             // update tab data
             if let tabID = self?.tabID,
                let tab = try? Database.viewContext.existingObject(with: tabID) as? Tab,
-               let title
-            {
+               let title {
                 tab.title = title
                 tab.zimFile = zimFile
             }
@@ -195,8 +194,7 @@ final class BrowserViewModel: NSObject, ObservableObject,
     // MARK: - Bookmark
 
     func controller(_: NSFetchedResultsController<NSFetchRequestResult>,
-                    didChangeContentWith snapshot: NSDiffableDataSourceSnapshotReference)
-    {
+                    didChangeContentWith snapshot: NSDiffableDataSourceSnapshotReference) {
         articleBookmarked = !snapshot.itemIdentifiers.isEmpty
     }
 
