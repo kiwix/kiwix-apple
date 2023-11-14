@@ -11,10 +11,11 @@ import WebKit
 final class BrowserNavDelegate: NSObject, WKNavigationDelegate {
     @Published private(set) var externalURL: URL?
 
-    func webView(_ webView: WKWebView,
-                 decidePolicyFor navigationAction: WKNavigationAction,
-                 decisionHandler: @escaping (WKNavigationActionPolicy) -> Void)
-    {
+    func webView(
+        _ webView: WKWebView,
+        decidePolicyFor navigationAction: WKNavigationAction,
+        decisionHandler: @escaping (WKNavigationActionPolicy) -> Void
+    ) {
         guard let url = navigationAction.request.url else { decisionHandler(.cancel); return }
         if url.isKiwixURL, let redirectedURL = ZimFileService.shared.getRedirectedURL(url: url) {
             DispatchQueue.main.async { webView.load(URLRequest(url: redirectedURL)) }
@@ -57,7 +58,11 @@ final class BrowserNavDelegate: NSObject, WKNavigationDelegate {
         #endif
     }
 
-    func webView(_: WKWebView, didFailProvisionalNavigation _: WKNavigation!, withError error: Error) {
+    func webView(
+        _: WKWebView,
+        didFailProvisionalNavigation _: WKNavigation!,
+        withError error: Error
+    ) {
         let error = error as NSError
         guard error.code != NSURLErrorCancelled else { return }
         NotificationCenter.default.post(
