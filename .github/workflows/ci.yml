@@ -51,6 +51,7 @@ jobs:
             --validate \
             --keychain $KEYCHAIN \
             $KEYCHAIN_PROFILE
+    # not necessary on github runner but serves as documentation for local setup
     - name: Update Apple Intermediate Certificate
       run: |
         curl -L -o ~/Downloads/AppleWWDRCAG3.cer https://www.apple.com/certificateauthority/AppleWWDRCAG3.cer
@@ -70,6 +71,7 @@ jobs:
       run: xcrun xcodebuild -checkFirstLaunchStatus || xcrun xcodebuild -runFirstLaunch
     - name: Dump build settings
       run: xcrun xcodebuild -workspace $XC_WORKSPACE -scheme $XC_SCHEME -showBuildSettings
+    # build is launched up to twice as it's common the build fails, looking for CoreKiwix module
     - name: Install retry command
       run: brew install kadwanev/brew/retry
     - name: Build for ${{ matrix.destination.platform }}/${{ matrix.destination.name }}
