@@ -39,7 +39,7 @@ struct SearchResultRow: View {
 struct SearchResultRow_Previews: PreviewProvider {
     static let result: SearchResult = {
         let result = SearchResult(zimFileID: UUID(), path: "", title: "Article Title".localized)!
-        result.snippet = NSAttributedString(string:"loc-article-cell-template".localized)
+        result.snippet = NSAttributedString(string: "loc-article-cell-template".localized)
         return result
     }()
     
