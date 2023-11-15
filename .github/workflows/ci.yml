@@ -73,8 +73,11 @@ jobs:
       run: xcrun xcodebuild -workspace $XC_WORKSPACE -scheme $XC_SCHEME -showBuildSettings
     - name: Copy Key file to disk
       run: echo "${{ secrets.APPLE_STORE_AUTH_KEY }}" > ${STORE_AUTH_KEY} && chmod 600 ${STORE_AUTH_KEY}
+    - name: Install retry command
+      run: brew install kadwanev/brew/retry
     - name: Build for ${{ matrix.destination.platform }}/${{ matrix.destination.name }}
       env:
         APPLE_STORE_AUTH_KEY_ID: ${{ secrets.APPLE_STORE_AUTH_KEY_ID }}
         APPLE_STORE_AUTH_KEY_ISSUER_ID: ${{ secrets.APPLE_STORE_AUTH_KEY_ISSUER_ID }}
-      run: xcrun xcodebuild -workspace $XC_WORKSPACE -scheme $XC_SCHEME -destination "$XC_DESTINATION" -configuration $XC_CONFIG -onlyUsePackageVersionsFromResolvedFile -derivedDataPath $PWD/build -allowProvisioningUpdates -authenticationKeyPath $STORE_AUTH_KEY -authenticationKeyID $APPLE_STORE_AUTH_KEY_ID -authenticationKeyIssuerID $APPLE_STORE_AUTH_KEY_ISSUER_ID -verbose build
+        FRAMEWORK_SEARCH_PATHS: /Users/runner/work/apple/apple/
+      run: retry -t 2 -- xcrun xcodebuild -workspace $XC_WORKSPACE -scheme $XC_SCHEME -destination "$XC_DESTINATION" -configuration $XC_CONFIG -onlyUsePackageVersionsFromResolvedFile -derivedDataPath $PWD/build -allowProvisioningUpdates -authenticationKeyPath $STORE_AUTH_KEY -authenticationKeyID $APPLE_STORE_AUTH_KEY_ID -authenticationKeyIssuerID $APPLE_STORE_AUTH_KEY_ISSUER_ID -verbose build
