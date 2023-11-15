@@ -117,10 +117,7 @@ struct ZimFileDetail: View {
         }.alert(isPresented: $isPresentingUnlinkAlert) {
             Alert(
                 title: Text("Unlink %@".localizedWithFormat(withArgs: zimFile.name)),
-                message: Text("""
-                All bookmarked articles linked to this zim file will be deleted, \
-                but the original file will remain in place.
-                """),
+                message: Text("loc-ZimFileDetail-Alert-unlink".localized),
                 primaryButton: .destructive(Text("Unlink".localized)) {
                     LibraryOperations.unlink(zimFileID: zimFile.fileID)
                     #if os(iOS)
@@ -138,10 +135,7 @@ struct ZimFileDetail: View {
         }.alert(isPresented: $isPresentingDeleteAlert) {
             Alert(
                 title: Text("Delete %@".localizedWithFormat(withArgs: zimFile.name)),
-                message: Text("""
-                              The zim file and all bookmarked articles \
-                            linked to this zim file will be deleted.
-                            """.localized),
+                message: Text("loc-ZimFileDetail-Alert-Delete".localized),
                 primaryButton: .destructive(Text("Delete".localized)) {
                     LibraryOperations.delete(zimFileID: zimFile.fileID)
                     #if os(iOS)

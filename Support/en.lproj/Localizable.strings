@@ -45,16 +45,14 @@
 "Load the link" = "Load the link";
 "Cancel" = "Cancel";
 "An external link is tapped, do you wish to load the link?" = "An external link is tapped, do you wish to load the link?";
-"An external link is tapped. \
-However, your current setting does not allow it to be loaded." = "An external link is tapped. \
+"loc-extenral-alert" = "An external link is tapped. \
 However, your current setting does not allow it to be loaded.";
 "Open a zim file" = "Open a zim file";
 "Unable to open file" = "Unable to open file";
 "%@  cannot be opened." = "%@  cannot be opened.";
 "No snippet" = "No snippet";
 "Article Title" = "Article Title";
-"Lorem ipsum dolor sit amet, consectetur adipiscing elit, \
-sed do eiusmod tempor incididunt ut labore et dolore magna aliqua." = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, \
+"loc-article-cell-template" = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, \
 sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.";
 "Unknown" = "Unknown";
 "Yes" = "Yes";
@@ -95,12 +93,10 @@ sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.";
 "Download using cellular" = "Download using cellular";
 "Unlink" = "Unlink";
 "Unlink %@" = "Unlink %@";
-"All bookmarked articles linked to this zim file will be deleted, \
-but the original file will remain in place." = "All bookmarked articles linked to this zim file will be deleted, \
+"loc-ZimFileDetail-Alert-unlink" = "All bookmarked articles linked to this zim file will be deleted, \
 but the original file will remain in place.";
 "Delete %@" = "Delete %@";
-"The zim file and all bookmarked articles \
-linked to this zim file will be deleted." = "The zim file and all bookmarked articles \
+"loc-ZimFileDetail-Alert-Delete" = "The zim file and all bookmarked articles \
 linked to this zim file will be deleted.";
 "Download" = "Download";
 "Space Warning" = "Space Warning";
@@ -152,9 +148,7 @@ linked to this zim file will be deleted.";
 "Dependencies" = "Dependencies";
 "License" = "License";
 "Version" = "Version";
-"Kiwix is an offline reader for online content like Wikipedia, Project Gutenberg, or TED Talks. \
-It makes knowledge available to people with no or limited internet access. \
-The software as well as the content is free to use for anyone." = "Kiwix is an offline reader for online content like Wikipedia, Project Gutenberg, or TED Talks. \
+"loc-About-description" = "Kiwix is an offline reader for online content like Wikipedia, Project Gutenberg, or TED Talks. \
 It makes knowledge available to people with no or limited internet access. \
 The software as well as the content is free to use for anyone.";
 "This app is released under the terms of the GNU General Public License version 3." = "This app is released under the terms of the GNU General Public License version 3.";
@@ -203,4 +197,7 @@ The software as well as the content is free to use for anyone.";
 "Vikidia" = "Vikidia";
 "StackExchange" = "StackExchange";
 "Other" = "Other";
-
+"Disabled" = "Disabled";
+"First Paragraph" = "First Paragraph";
+"First Sentence" = "First Sentence";
+"Matches" = "Matches";

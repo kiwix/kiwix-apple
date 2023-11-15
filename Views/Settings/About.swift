@@ -78,13 +78,7 @@ struct About: View {
     }
     
     private var about: some View {
-        Text(
-             """
-             Kiwix is an offline reader for online content like Wikipedia, Project Gutenberg, or TED Talks. \
-             It makes knowledge available to people with no or limited internet access. \
-             The software as well as the content is free to use for anyone.
-             """.localized
-        )
+        Text("loc-About-description".localized)
     }
     
     private var release: some View {
