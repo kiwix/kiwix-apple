@@ -8,27 +8,15 @@ This is the home for Kiwix apps for Apple iOS and macOS.
 
 ## Download
 
-Kiwix apps are made available primarily via the [Mac App
-Store](https://macos.kiwix.org).
+Kiwix apps are made available primarily via the [App Store](https://ios.kiwix.org) and [Mac App Store](https://macos.kiwix.org). macOS version can also be [downloaded directly](https://download.kiwix.org/release/kiwix-desktop-macos/kiwix-desktop-macos.dmg).
 
-Most recent versions of Kiwix support the three latest versions of the
+Most recent versions of Kiwix support the three latest major versions of the
 OSes (either iOS or macOS). Older versions of Kiwix being still
 downloadable for older versions of macOS and iOS on the Mac App Store.
 
-### iPads & iPhones ###
-- Download the iOS mobile app on the [App Store](https://ios.kiwix.org)
-
-### macOS ###
-- Download Kiwix Desktop on the [Mac App Store](https://macos.kiwix.org)
-- Download Kiwix Desktop [DMG file](https://download.kiwix.org/release/kiwix-desktop-macos/kiwix-desktop-macos.dmg)
-
 ## Develop
 
-Kiwix developers use to work with cutting-edge versions of both macOS
-and Xcode. [Continuous
-integration](https://en.wikipedia.org/wiki/Continuous_integration)
-secures that the whole project still compiles on the next to last
-version of macOS with latest version of Xcode distributed on it.
+Kiwix developers usually work with latest macOS and Xcode. Check our [Continuous Integration Workflow](https://github.com/kiwix/apple/blob/main/.github/workflows/ci.yml) to find out which XCode version we use on Github Actions.
 
 ### CPU Architectures
 
@@ -39,6 +27,7 @@ Kiwix for iOS and macOS can run, in both cases, on x86_64 or arm64.
 ### Dependencies
 
 To compile Kiwix you rely on the following compilation tools:
+
 * An [Apple Developer account](https://developer.apple.com) (doesn't require membership)
 * Latest Apple Developers Tools ([Xcode](https://developer.apple.com/xcode/))
 * Its command-line utilities (`xcode-select --install`)
@@ -47,33 +36,29 @@ To compile Kiwix you rely on the following compilation tools:
 ### Steps
 
 To compile Kiwix, follow these steps:
-* Put CoreKiwix/xcframework at the root of the root of code folder
+
+* Put `CoreKiwix/xcframework` at the root of this folder
 * Open project with Xcode `open Kiwix.xcodeproj/project.xcworkspace/`
 * Change the Bundle Identifier (in *Signing & Capabilities*)
 * Select appropriate Signing Certificate/Profile.
 
-## Compile `CoreKiwix.xcframework` yourself
+### Getting `CoreKiwix.xcframework`
 
-`CoreKiwix.xcframework` is [made
-available](https://dev.kiwix.org/apple/CoreKiwix.xcframework.zip) for
-all supported OSes and CPU architectures. But you might want to
-compile this piece (C++ code) by yourself. Here follow the
-instructions to build libkiwix+libzim at [on the kiwix-build
-repo](https://github.com/kiwix/kiwix-build).
+`CoreKiwix.xcframework` is published with all supported platforms and CPU architectures:
+
+- [latest release](https://download.kiwix.org/release/libkiwix/libkiwix_xcframework.tar.gz)
+- [latest nightly](https://download.kiwix.org/nightly/libkiwix_xcframework.tar.gz): using `main` branch of both `libkiwix` and `libzim`.
+
+#### Compiling `CoreKiwix.xcframework`
+
+You may want to compile it yourself, to use different branches of said projects for instance.
 
 The xcframework is a bundle of all libkiwix dependencies for multiple architectures
-and/or platforms. The `CoreKiwix.xcframework` will contain libkiwix
-library for macOS archs and for iOS. You don't have to follow steps
-for other platform/arch if you don't need them.
+and platforms. The `CoreKiwix.xcframework` will contain libkiwix
+library for macOS archs and for iOS. It is built off [kiwix-build
+repo](https://github.com/kiwix/kiwix-build).
 
-Following steps are done from kiwix-build root and assume your apple
-repository is at `../apple`.
-
-### Build libkiwix
-
-Make sure to preinstall kiwix-build prerequisites (ninja and meson).
-
-If you use homebrew, run the following
+Make sure to preinstall kiwix-build prerequisites (ninja and meson). If you use homebrew, run the following
 
 ```sh
 brew install ninja meson
@@ -91,46 +76,13 @@ Then you can build `libkiwix`
 ```sh
 git clone https://github.com/kiwix/kiwix-build.git
 cd kiwix-build
-# [iOS] build libkiwix
-kiwix-build --target-platform iOS_arm64 libkiwix
-kiwix-build --target-platform iOS_x86_64 libkiwix  # iOS simulator in Xcode
-# [macOS] build libkiwix
-kiwix-build --target-platform macOS_x86_64 libkiwix
-kiwix-build --target-platform macOS_arm64_static libkiwix
-```
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -e .
 
-### Create fat archive with all dependencies
-
-This creates a single `.a` archive named `merged.a` (for each
-platform) which contains libkiwix and all it's dependencies.  Skip
-those you don't want to support.
-
-```sh
-libtool -static -o BUILD_macOS_x86_64/INSTALL/lib/merged.a BUILD_macOS_x86_64/INSTALL/lib/*.a
-libtool -static -o BUILD_macOS_arm64_static/INSTALL/lib/merged.a BUILD_macOS_arm64_static/INSTALL/lib/*.a
-libtool -static -o BUILD_iOS_x86_64/INSTALL/lib/merged.a BUILD_iOS_x86_64/INSTALL/lib/*.a
-libtool -static -o BUILD_iOS_arm64/INSTALL/lib/merged.a BUILD_iOS_arm64/INSTALL/lib/*.a
-```
-
-If you built macOS support for both archs (that's what you want unless
-you know what you're doing), you need to merge both files into a
-single one
-
-```sh
-mkdir -p macOS_fat
-lipo -create -output macOS_fat/merged.a \
-	-arch x86_64 BUILD_macOS_x86_64/INSTALL/lib/merged.a \
-	-arch arm64 BUILD_macOS_arm64_static/INSTALL/lib/merged.a
-```
-
-### Add fat archive to xcframework
-
-```sh
-xcodebuild -create-xcframework \
-	-library macOS_fat/merged.a -headers BUILD_macOS_x86_64/INSTALL/include \
-	-library BUILD_iOS_x86_64/INSTALL/lib/merged.a -headers BUILD_iOS_x86_64/INSTALL/include \
-	-library BUILD_iOS_arm64/INSTALL/lib/merged.a -headers BUILD_iOS_arm64/INSTALL/include \
-	-output ../apple/CoreKiwix.xcframework
+kiwix-build --target-platform apple_all_static libkiwix
+# assuming your kiwix-build and apple folder at at same level
+cp -r BUILD_apple_all_static/INSTALL/lib/CoreKiwix.xcframework ../apple/
 ```
 
 You can now launch the build from Xcode and use the iOS simulator or
