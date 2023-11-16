@@ -5,7 +5,6 @@ on:
   push:
     branches:
       - main
-      - ci
 
 jobs:
   build:
@@ -19,8 +18,7 @@ jobs:
             name: Any iOS Device
     runs-on: macos-13
     env:
-      XCF_URL: https://tmp.kiwix.org/ci/dev_preview/xcframework/libkiwix_xcframework-2023-11-11.tar.gz
-      # XCF_URL: https://download.kiwix.org/nightly/libkiwix_xcframework-2023-11-11.tar.gz
+      XCF_URL: https://download.kiwix.org/nightly/libkiwix_xcframework.tar.gz
       XC_PROJECT: Kiwix.xcodeproj
       XC_WORKSPACE: Kiwix.xcodeproj/project.xcworkspace/
       XC_SCHEME: Kiwix
