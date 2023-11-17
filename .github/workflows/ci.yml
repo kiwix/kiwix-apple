@@ -5,6 +5,10 @@ on:
   push:
     branches:
       - main
+
+env:
+  LIBKIWIX_VERSION: "13.0.0"
+
 jobs:
   build:
     strategy:
@@ -17,8 +21,6 @@ jobs:
             name: Any iOS Device
     runs-on: macos-13
     env:
-      XCF_URL: https://download.kiwix.org/nightly/libkiwix_xcframework.tar.gz
-      XC_PROJECT: Kiwix.xcodeproj
       XC_WORKSPACE: Kiwix.xcodeproj/project.xcworkspace/
       XC_SCHEME: Kiwix
       XC_CONFIG: Release
@@ -63,6 +65,8 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v3
     - name: Download CoreKiwix.xcframework
+      env:
+        XCF_URL: https://download.kiwix.org/release/libkiwix/libkiwix_xcframework-${{ env.LIBKIWIX_VERSION }}.tar.gz
       run: curl -L -o - $XCF_URL | tar -x --strip-components 2
     - name: Prepare Xcode
       run: xcrun xcodebuild -checkFirstLaunchStatus || xcrun xcodebuild -runFirstLaunch
