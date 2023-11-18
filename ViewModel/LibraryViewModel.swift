@@ -42,9 +42,11 @@ public class LibraryViewModel: ObservableObject {
             defer { isInProgress = false }
             
             // decide if refresh should proceed
-            let isStale = (Defaults[.libraryLastRefresh]?.timeIntervalSinceNow ?? -3600) <= -3600
-            guard isUserInitiated || (Defaults[.libraryAutoRefresh] && isStale) else { return }
-            
+            let lastRefresh: Date? = Defaults[.libraryLastRefresh]
+            let hasAutoRefresh: Bool = Defaults[.libraryAutoRefresh]
+            let isStale = (lastRefresh?.timeIntervalSinceNow ?? -3600) <= -3600
+            guard isUserInitiated || (hasAutoRefresh && isStale) else { return }
+
             // refresh library
             guard let data = try await fetchData() else { return }
             let parser = try await parse(data: data)
@@ -57,7 +59,7 @@ public class LibraryViewModel: ObservableObject {
             if Defaults[.libraryLanguageCodes].isEmpty, let currentLanguageCode = Locale.current.languageCode {
                 Defaults[.libraryLanguageCodes] = [currentLanguageCode]
             }
-            
+
             // reset error
             error = nil
             

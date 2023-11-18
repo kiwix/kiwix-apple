@@ -80,6 +80,14 @@ final class BrowserViewModel: NSObject, ObservableObject,
         uiDelegate.$externalURL.assign(to: \.externalURL, on: self)
             .store(in: &cancellables)
 
+        uiDelegate.$createBookMark.sink { [weak self] url in
+            self?.createBookmark(url: url)
+        }.store(in: &cancellables)
+
+        uiDelegate.$deleteBookMark.sink { [weak self] url in
+            self?.deleteBookmark(url: url)
+        }.store(in: &cancellables)
+
         // restore webview state, and set url before observer call back
         // note: optionality of url determines what to show in a tab, so it should be set before tab is on screen
         if let tabID, let tab = try? Database.viewContext.existingObject(with: tabID) as? Tab {
@@ -115,30 +123,22 @@ final class BrowserViewModel: NSObject, ObservableObject,
             webView.publisher(for: \.title, options: .initial),
             webView.publisher(for: \.url, options: .initial)
         )
-        .debounce(for: 0.1, scheduler: DispatchQueue.global())
         .receive(on: DispatchQueue.main)
         .sink { [weak self] title, url in
-            let title: String? = {
-                if let title, !title.isEmpty {
-                    return title
-                } else {
-                    return nil
-                }
-            }()
+            guard let title, let url else { return }
             let zimFile: ZimFile? = {
-                guard let url, let zimFileID = UUID(uuidString: url.host ?? "") else { return nil }
+                guard let zimFileID = UUID(uuidString: url.host ?? "") else { return nil }
                 return try? Database.viewContext.fetch(ZimFile.fetchRequest(fileID: zimFileID)).first
             }()
 
             // update view model
-            self?.articleTitle = title ?? ""
+            self?.articleTitle = title
             self?.zimFileName = zimFile?.name ?? ""
             self?.url = url
 
             // update tab data
             if let tabID = self?.tabID,
-               let tab = try? Database.viewContext.existingObject(with: tabID) as? Tab,
-               let title {
+               let tab = try? Database.viewContext.existingObject(with: tabID) as? Tab {
                 tab.title = title
                 tab.zimFile = zimFile
             }
@@ -146,11 +146,7 @@ final class BrowserViewModel: NSObject, ObservableObject,
             // setup bookmark fetched results controller
             self?.bookmarkFetchedResultsController = NSFetchedResultsController(
                 fetchRequest: Bookmark.fetchRequest(predicate: {
-                    if let url {
-                        return NSPredicate(format: "articleURL == %@", url as CVarArg)
-                    } else {
-                        return NSPredicate(format: "articleURL == nil")
-                    }
+                    return NSPredicate(format: "articleURL == %@", url as CVarArg)
                 }()),
                 managedObjectContext: Database.viewContext,
                 sectionNameKeyPath: nil,

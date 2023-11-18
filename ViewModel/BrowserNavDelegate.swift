@@ -18,7 +18,9 @@ final class BrowserNavDelegate: NSObject, WKNavigationDelegate {
     ) {
         guard let url = navigationAction.request.url else { decisionHandler(.cancel); return }
         if url.isKiwixURL, let redirectedURL = ZimFileService.shared.getRedirectedURL(url: url) {
-            DispatchQueue.main.async { webView.load(URLRequest(url: redirectedURL)) }
+            if webView.url != redirectedURL {
+                DispatchQueue.main.async { webView.load(URLRequest(url: redirectedURL)) }
+            }
             decisionHandler(.cancel)
         } else if url.isKiwixURL {
             decisionHandler(.allow)

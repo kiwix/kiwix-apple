@@ -101,6 +101,7 @@
 		983ED6DC2B02E89300409078 /* BrowserScriptHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 983ED6DB2B02E89300409078 /* BrowserScriptHandler.swift */; };
 		983ED6DE2B02ED4000409078 /* BrowserNavDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 983ED6DD2B02ED4000409078 /* BrowserNavDelegate.swift */; };
 		983ED6E02B02EF1E00409078 /* BrowserUIDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 983ED6DF2B02EF1E00409078 /* BrowserUIDelegate.swift */; };
+		983ED7192B08AFE700409078 /* Kiwix-Bridging-Header.h in Sources */ = {isa = PBXBuildFile; fileRef = 9779A5D02456796A00F6F6FF /* Kiwix-Bridging-Header.h */; platformFilter = ios; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -761,6 +762,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				983ED7192B08AFE700409078 /* Kiwix-Bridging-Header.h in Sources */,
 				972DE4BB2814A5A4004FD9B9 /* Errors.swift in Sources */,
 				9790CA5A28A05EBB00D39FC6 /* ZimFilesCategories.swift in Sources */,
 				97486D08284A42B90096E4DD /* SearchResultRow.swift in Sources */,
