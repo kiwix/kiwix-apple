@@ -45,6 +45,7 @@ class BrowserViewModel: NSObject, ObservableObject,
     @Published private(set) var outlineItems = [OutlineItem]()
     @Published private(set) var outlineItemTree = [OutlineItem]()
     @Published private(set) var url: URL?
+    @Published var externalLink: URL?
     
     let tabID: NSManagedObjectID?
     let webView: WKWebView
@@ -179,7 +180,7 @@ class BrowserViewModel: NSObject, ObservableObject,
         } else if url.isKiwixURL {
             decisionHandler(.allow)
         } else if url.scheme == "http" || url.scheme == "https" {
-            NotificationCenter.default.post(name: .externalLink, object: nil, userInfo: ["url": url])
+            externalLink = url
             decisionHandler(.cancel)
         } else if url.scheme == "geo" {
             if FeatureFlags.map {

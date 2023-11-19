@@ -62,7 +62,6 @@ extension Color {
 
 extension Notification.Name {
     static let alert = Notification.Name("alert")
-    static let externalLink = Notification.Name("externalLink")
     static let openFiles = Notification.Name("openFiles")
     static let openURL = Notification.Name("openURL")
     static let toggleSidebar = Notification.Name("toggleSidebar")
