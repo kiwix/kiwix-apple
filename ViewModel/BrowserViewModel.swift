@@ -93,8 +93,8 @@ final class BrowserViewModel: NSObject, ObservableObject, NSFetchedResultsContro
         }.store(in: &cancellables)
 
         uiDelegate.$externalURL.assign(to: \.externalURL, on: self).store(in: &cancellables)
-        uiDelegate.$createBookMark.sink { [weak self] url in self?.createBookmark(url: url) }.store(in: &cancellables)
-        uiDelegate.$deleteBookMark.sink { [weak self] url in self?.deleteBookmark(url: url) }.store(in: &cancellables)
+        uiDelegate.$createBookmark.sink { [weak self] url in self?.createBookmark(url: url) }.store(in: &cancellables)
+        uiDelegate.$deleteBookmark.sink { [weak self] url in self?.deleteBookmark(url: url) }.store(in: &cancellables)
 
         // configure web view
         webView.allowsBackForwardNavigationGestures = true

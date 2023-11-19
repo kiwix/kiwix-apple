@@ -9,8 +9,8 @@ import WebKit
 
 final class BrowserUIDelegate: NSObject, WKUIDelegate {
     @Published private(set) var externalURL: URL?
-    @Published private(set) var createBookMark: URL?
-    @Published private(set) var deleteBookMark: URL?
+    @Published private(set) var createBookmark: URL?
+    @Published private(set) var deleteBookmark: URL?
 
     #if os(macOS)
         func webView(
@@ -78,11 +78,11 @@ final class BrowserUIDelegate: NSObject, WKUIDelegate {
                         if let bookmarks = try? context.fetch(request), !bookmarks.isEmpty {
                             return UIAction(title: "Remove Bookmark",
                                             image: UIImage(systemName: "star.slash.fill")) { [weak self] _ in
-                                self?.deleteBookMark = url
+                                self?.deleteBookmark = url
                             }
                         } else {
                             return UIAction(title: "Bookmark", image: UIImage(systemName: "star")) { [weak self] _ in
-                                self?.createBookMark = url
+                                self?.createBookmark = url
                             }
                         }
                     }()

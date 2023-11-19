@@ -8,10 +8,9 @@
 
 import SwiftUI
 
-struct BrowserTab: View, Identifiable {
+struct BrowserTab: View {
     @EnvironmentObject private var browser: BrowserViewModel
     @StateObject private var search = SearchViewModel()
-    var id: Int = UUID().hashValue
 
     var body: some View {
         Content().toolbar {
