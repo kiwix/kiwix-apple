@@ -14,9 +14,7 @@ import Defaults
 
 import OrderedCollections
 
-final class BrowserViewModel: NSObject, ObservableObject,
-    NSFetchedResultsControllerDelegate
-{
+final class BrowserViewModel: NSObject, ObservableObject, NSFetchedResultsControllerDelegate {
     private static var cache = OrderedDictionary<NSManagedObjectID, BrowserViewModel>()
 
     static func getCached(tabID: NSManagedObjectID) -> BrowserViewModel {
@@ -83,13 +81,10 @@ final class BrowserViewModel: NSObject, ObservableObject,
         uiDelegate = BrowserUIDelegate()
         super.init()
 
-        scriptHandler.$outlineItems.assign(to: \.outlineItems, on: self)
-            .store(in: &cancellables)
-        scriptHandler.$outlineItemTree.assign(to: \.outlineItemTree, on: self)
-            .store(in: &cancellables)
+        scriptHandler.$outlineItems.assign(to: \.outlineItems, on: self).store(in: &cancellables)
+        scriptHandler.$outlineItemTree.assign(to: \.outlineItemTree, on: self).store(in: &cancellables)
 
-        navDelegate.$externalURL.assign(to: \.externalURL, on: self)
-            .store(in: &cancellables)
+        navDelegate.$externalURL.assign(to: \.externalURL, on: self).store(in: &cancellables)
 
         navDelegate.$didLoadContent.sink { [weak self] didLoad in
             if didLoad == true {
@@ -97,20 +92,9 @@ final class BrowserViewModel: NSObject, ObservableObject,
             }
         }.store(in: &cancellables)
 
-        uiDelegate.$externalURL.assign(to: \.externalURL, on: self)
-            .store(in: &cancellables)
-
-        uiDelegate.$createBookMark.sink { [weak self] url in
-            self?.createBookmark(url: url)
-        }.store(in: &cancellables)
-
-        uiDelegate.$deleteBookMark.sink { [weak self] url in
-            self?.deleteBookmark(url: url)
-        }.store(in: &cancellables)
-
-        // restore webview state, and set url before observer call back
-        // note: optionality of url determines what to show in a tab, so it should be set before tab is on screen
-
+        uiDelegate.$externalURL.assign(to: \.externalURL, on: self).store(in: &cancellables)
+        uiDelegate.$createBookMark.sink { [weak self] url in self?.createBookmark(url: url) }.store(in: &cancellables)
+        uiDelegate.$deleteBookMark.sink { [weak self] url in self?.deleteBookmark(url: url) }.store(in: &cancellables)
 
         // configure web view
         webView.allowsBackForwardNavigationGestures = true
@@ -147,43 +131,41 @@ final class BrowserViewModel: NSObject, ObservableObject,
         .receive(on: DispatchQueue.main)
         .sink { [weak self] title, url in
             guard let title, let url else { return }
-            let zimFile: ZimFile? = {
-                guard let zimFileID = UUID(uuidString: url.host ?? "") else { return nil }
-                return try? Database.viewContext.fetch(ZimFile.fetchRequest(fileID: zimFileID)).first
-            }()
-
-            guard let strongSelf = self else { return }
-
-            // update view model
-            strongSelf.articleTitle = title
-            strongSelf.zimFileName = zimFile?.name ?? ""
-            strongSelf.url = url
-
-            let currentTabID: NSManagedObjectID
-            if let tabID = strongSelf.tabID {
-                currentTabID = tabID
-            } else {
-                currentTabID = strongSelf.createNewTabID()
-                strongSelf.tabID = currentTabID
-            }
-            // update tab data
-            if let tab = try? Database.viewContext.existingObject(with: currentTabID) as? Tab {
-                tab.title = title
-                tab.zimFile = zimFile
-            }
-
-            // setup bookmark fetched results controller
-            strongSelf.bookmarkFetchedResultsController = NSFetchedResultsController(
-                fetchRequest: Bookmark.fetchRequest(predicate: {
-                    return NSPredicate(format: "articleURL == %@", url as CVarArg)
-                }()),
-                managedObjectContext: Database.viewContext,
-                sectionNameKeyPath: nil,
-                cacheName: nil
-            )
-            strongSelf.bookmarkFetchedResultsController?.delegate = self
-            try? strongSelf.bookmarkFetchedResultsController?.performFetch()
+            self?.didUpdate(title: title, url: url)
         }
+        bookmarkFetchedResultsController?.delegate = self
+    }
+
+    private func didUpdate(title: String, url: URL) {
+        let zimFile: ZimFile? = {
+            guard let zimFileID = UUID(uuidString: url.host ?? "") else { return nil }
+            return try? Database.viewContext.fetch(ZimFile.fetchRequest(fileID: zimFileID)).first
+        }()
+
+        // update view model
+        articleTitle = title
+        zimFileName = zimFile?.name ?? ""
+        self.url = url
+
+        let currentTabID: NSManagedObjectID = tabID ?? createNewTabID()
+        tabID = currentTabID
+
+        // update tab data
+        if let tab = try? Database.viewContext.existingObject(with: currentTabID) as? Tab {
+            tab.title = title
+            tab.zimFile = zimFile
+        }
+
+        // setup bookmark fetched results controller
+        bookmarkFetchedResultsController = NSFetchedResultsController(
+            fetchRequest: Bookmark.fetchRequest(predicate: {
+                return NSPredicate(format: "articleURL == %@", url as CVarArg)
+            }()),
+            managedObjectContext: Database.viewContext,
+            sectionNameKeyPath: nil,
+            cacheName: nil
+        )
+        try? bookmarkFetchedResultsController?.performFetch()
     }
 
     func updateLastOpened() {
@@ -208,14 +190,12 @@ final class BrowserViewModel: NSObject, ObservableObject,
     }
 
     func loadRandomArticle(zimFileID: UUID? = nil) {
-        let zimFileID = zimFileID ?? UUID(uuidString: webView.url?.host ?? "")
-        guard let url = ZimFileService.shared.getRandomPageURL(zimFileID: zimFileID) else { return }
+        guard let url = ZimFileService.shared.getRandomPageURL(zimFileID: zimIdOf(zimFileID)) else { return }
         load(url: url)
     }
 
     func loadMainArticle(zimFileID: UUID? = nil) {
-        let zimFileID = zimFileID ?? UUID(uuidString: webView.url?.host ?? "")
-        guard let url = ZimFileService.shared.getMainPageURL(zimFileID: zimFileID) else { return }
+        guard let url = ZimFileService.shared.getMainPageURL(zimFileID: zimIdOf(zimFileID)) else { return }
         load(url: url)
     }
 
@@ -224,6 +204,10 @@ final class BrowserViewModel: NSObject, ObservableObject,
            webView.interactionState = tab.interactionState
            url = webView.url
        }
+    }
+
+    private func zimIdOf(_ uuid: UUID? = nil) -> UUID? {
+        uuid ?? UUID(uuidString: webView.url?.host ?? "")
     }
 
     // MARK: - TabID management via NSWindow for macOS
@@ -287,11 +271,8 @@ final class BrowserViewModel: NSObject, ObservableObject,
     }
     #endif
 
-
     private func createNewTabID() -> NSManagedObjectID {
-        if let tabID {
-            return tabID
-        }
+        if let tabID { return tabID }
         let context = Database.viewContext
         let tab = Tab(context: context)
         tab.created = Date()
@@ -342,7 +323,5 @@ final class BrowserViewModel: NSObject, ObservableObject,
 
     /// Scroll to an outline item
     /// - Parameter outlineItemID: ID of the outline item to scroll to
-    func scrollTo(outlineItemID: String) {
-        webView.evaluateJavaScript("scrollToHeading('\(outlineItemID)')")
-    }
+    func scrollTo(outlineItemID: String) { webView.evaluateJavaScript("scrollToHeading('\(outlineItemID)')") }
 }

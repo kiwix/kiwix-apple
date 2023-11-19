@@ -42,12 +42,12 @@ class NavigationViewModel: ObservableObject {
     }
     
     @discardableResult
-    func createTab() -> NSManagedObjectID{
+    func createTab() -> NSManagedObjectID {
         let context = Database.viewContext
         let tab = self.makeTab(context: context)
         try? context.obtainPermanentIDs(for: [tab])
         try? context.save()
-        #if !os(macOS) //TODO: maybe we don't need this for iOS either
+        #if !os(macOS)
         currentItem = NavigationItem.tab(objectID: tab.objectID)
         #endif
         return tab.objectID
@@ -58,7 +58,8 @@ class NavigationViewModel: ObservableObject {
         guard let url else {
             return createTab()
         }
-        guard let tabID = Database.viewContext.persistentStoreCoordinator?.managedObjectID(forURIRepresentation: url) else {
+        let coordinator = Database.viewContext.persistentStoreCoordinator
+        guard let tabID = coordinator?.managedObjectID(forURIRepresentation: url) else {
             return createTab()
         }
         return tabID

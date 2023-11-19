@@ -24,8 +24,7 @@ extension Defaults.Keys {
 //
 //    // search
     static let recentSearchTexts = Key<[String]>("recentSearchTexts", default: [])
-    
-    
+
     // library
     static let libraryLanguageCodes = Key<Set<String>>("libraryLanguageCodes", default: Set())
     static let libraryLanguageSortingMode = Key<LibraryLanguageSortingMode>(
