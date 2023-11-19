@@ -166,7 +166,7 @@ extension View {
 
 struct HostingWindowFinder: NSViewRepresentable {
     typealias NSViewType = NSView
-    var callback: (NSWindow?) -> ()
+    var callback: (NSWindow?) -> Void
     func makeNSView(context: Context) -> NSView {
         let view = NSView()
         DispatchQueue.main.async { [weak view] in
