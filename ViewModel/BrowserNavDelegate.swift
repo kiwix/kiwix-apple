@@ -10,6 +10,7 @@ import WebKit
 
 final class BrowserNavDelegate: NSObject, WKNavigationDelegate {
     @Published private(set) var externalURL: URL?
+    @Published private(set) var didLoadContent: Bool?
 
     func webView(
         _ webView: WKWebView,
@@ -57,6 +58,8 @@ final class BrowserNavDelegate: NSObject, WKNavigationDelegate {
         webView.evaluateJavaScript("expandAllDetailTags(); getOutlineItems();")
         #if os(iOS)
             webView.adjustTextSize()
+        #else
+            didLoadContent = true
         #endif
     }
 

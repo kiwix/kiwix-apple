@@ -20,37 +20,41 @@ class KiwixURLSchemeHandler: NSObject, WKURLSchemeHandler {
                 return
             }
             
-            objCTryBlock {
-                /// Skipping handling for HTTP 206 Partial Content
-                /// For video playback, WebKit makes a large amount of requests with small byte range (e.g. 8 bytes) to retrieve content of the video.
-                /// As a result of the large volume of small requests, CPU usage will be very high, which can result in app or webpage frozen.
-                /// To mitigate, opting for the less "broken" behavior of ignoring Range header until WebKit behavior is changed.
-                //if let range = urlSchemeTask.request.allHTTPHeaderFields?["Range"] as? String {
-                //    let parts = range.components(separatedBy: ["=", "-"])
-                //    guard parts.count >= 2, let start = UInt(parts[1]) else {
-                //        self.sendHTTP400Response(urlSchemeTask, url: url)
-                //        return
-                //    }
-                //    let end = parts.count == 3 ? UInt(parts[2]) ?? 0 : 0
-                //    guard let content = ZimFileService.shared.getURLContent(
-                //        url: url, start: start, end: end
-                //    ) else {
-                //        self.sendHTTP404Response(urlSchemeTask, url: url)
-                //        return
-                //    }
-                //    self.sendHTTP206Response(urlSchemeTask, url: url, content: content)
-                //} else {
-                //    guard let content = ZimFileService.shared.getURLContent(url: url) else {
-                //        self.sendHTTP404Response(urlSchemeTask, url: url)
-                //        return
-                //    }
-                //    self.sendHTTP200Response(urlSchemeTask, url: url, content: content)
-                //}
-                guard let content = ZimFileService.shared.getURLContent(url: url) else {
-                    self.sendHTTP404Response(urlSchemeTask, url: url)
-                    return
+            do {
+                objCTryBlock {
+                    /// Skipping handling for HTTP 206 Partial Content
+                    /// For video playback, WebKit makes a large amount of requests with small byte range (e.g. 8 bytes) to retrieve content of the video.
+                    /// As a result of the large volume of small requests, CPU usage will be very high, which can result in app or webpage frozen.
+                    /// To mitigate, opting for the less "broken" behavior of ignoring Range header until WebKit behavior is changed.
+                    //if let range = urlSchemeTask.request.allHTTPHeaderFields?["Range"] as? String {
+                    //    let parts = range.components(separatedBy: ["=", "-"])
+                    //    guard parts.count >= 2, let start = UInt(parts[1]) else {
+                    //        self.sendHTTP400Response(urlSchemeTask, url: url)
+                    //        return
+                    //    }
+                    //    let end = parts.count == 3 ? UInt(parts[2]) ?? 0 : 0
+                    //    guard let content = ZimFileService.shared.getURLContent(
+                    //        url: url, start: start, end: end
+                    //    ) else {
+                    //        self.sendHTTP404Response(urlSchemeTask, url: url)
+                    //        return
+                    //    }
+                    //    self.sendHTTP206Response(urlSchemeTask, url: url, content: content)
+                    //} else {
+                    //    guard let content = ZimFileService.shared.getURLContent(url: url) else {
+                    //        self.sendHTTP404Response(urlSchemeTask, url: url)
+                    //        return
+                    //    }
+                    //    self.sendHTTP200Response(urlSchemeTask, url: url, content: content)
+                    //}
+                    guard let content = ZimFileService.shared.getURLContent(url: url) else {
+                        self.sendHTTP404Response(urlSchemeTask, url: url)
+                        return
+                    }
+                    self.sendHTTP200Response(urlSchemeTask, url: url, content: content)
                 }
-                self.sendHTTP200Response(urlSchemeTask, url: url, content: content)
+            } catch(let error) {
+                debugPrint(error)
             }
         }
     }

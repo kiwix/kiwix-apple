@@ -10,6 +10,7 @@ import Combine
 import CoreData
 import CoreLocation
 import WebKit
+import Defaults
 
 import OrderedCollections
 
@@ -46,7 +47,20 @@ final class BrowserViewModel: NSObject, ObservableObject,
     @Published private(set) var url: URL?
     @Published var externalURL: URL?
 
-    let tabID: NSManagedObjectID?
+    private(set) var tabID: NSManagedObjectID? {
+        didSet {
+            #if os(macOS)
+            if let tabID, tabID != oldValue {
+                storeTabIDInCurrentWindow()
+            }
+            #endif
+        }
+    }
+    #if os(macOS)
+    private var windowURLs: [URL] {
+        UserDefaults.standard[.windowURLs]
+    }
+    #endif
     let webView: WKWebView
     private var canGoBackObserver: NSKeyValueObservation?
     private var canGoForwardObserver: NSKeyValueObservation?
@@ -77,6 +91,12 @@ final class BrowserViewModel: NSObject, ObservableObject,
         navDelegate.$externalURL.assign(to: \.externalURL, on: self)
             .store(in: &cancellables)
 
+        navDelegate.$didLoadContent.sink { [weak self] didLoad in
+            if didLoad == true {
+                self?.persistState()
+            }
+        }.store(in: &cancellables)
+
         uiDelegate.$externalURL.assign(to: \.externalURL, on: self)
             .store(in: &cancellables)
 
@@ -90,14 +110,7 @@ final class BrowserViewModel: NSObject, ObservableObject,
 
         // restore webview state, and set url before observer call back
         // note: optionality of url determines what to show in a tab, so it should be set before tab is on screen
-        if let tabID, let tab = try? Database.viewContext.existingObject(with: tabID) as? Tab {
-            webView.interactionState = tab.interactionState
-            url = webView.url
-        }
-        if let urlForNewTab = Self.urlForNewTab {
-            url = urlForNewTab
-            load(url: urlForNewTab)
-        }
+
 
         // configure web view
         webView.allowsBackForwardNavigationGestures = true
@@ -106,6 +119,14 @@ final class BrowserViewModel: NSObject, ObservableObject,
         webView.configuration.userContentController.add(scriptHandler, name: "headings")
         webView.navigationDelegate = navDelegate
         webView.uiDelegate = uiDelegate
+
+        if let tabID {
+            restoreBy(tabID: tabID)
+        }
+        if let urlForNewTab = Self.urlForNewTab {
+            url = urlForNewTab
+            load(url: urlForNewTab)
+        }
 
         // get outline items if something is already loaded
         if webView.url != nil {
@@ -131,20 +152,28 @@ final class BrowserViewModel: NSObject, ObservableObject,
                 return try? Database.viewContext.fetch(ZimFile.fetchRequest(fileID: zimFileID)).first
             }()
 
-            // update view model
-            self?.articleTitle = title
-            self?.zimFileName = zimFile?.name ?? ""
-            self?.url = url
+            guard let strongSelf = self else { return }
 
+            // update view model
+            strongSelf.articleTitle = title
+            strongSelf.zimFileName = zimFile?.name ?? ""
+            strongSelf.url = url
+
+            let currentTabID: NSManagedObjectID
+            if let tabID = strongSelf.tabID {
+                currentTabID = tabID
+            } else {
+                currentTabID = strongSelf.createNewTabID()
+                strongSelf.tabID = currentTabID
+            }
             // update tab data
-            if let tabID = self?.tabID,
-               let tab = try? Database.viewContext.existingObject(with: tabID) as? Tab {
+            if let tab = try? Database.viewContext.existingObject(with: currentTabID) as? Tab {
                 tab.title = title
                 tab.zimFile = zimFile
             }
 
             // setup bookmark fetched results controller
-            self?.bookmarkFetchedResultsController = NSFetchedResultsController(
+            strongSelf.bookmarkFetchedResultsController = NSFetchedResultsController(
                 fetchRequest: Bookmark.fetchRequest(predicate: {
                     return NSPredicate(format: "articleURL == %@", url as CVarArg)
                 }()),
@@ -152,8 +181,8 @@ final class BrowserViewModel: NSObject, ObservableObject,
                 sectionNameKeyPath: nil,
                 cacheName: nil
             )
-            self?.bookmarkFetchedResultsController?.delegate = self
-            try? self?.bookmarkFetchedResultsController?.performFetch()
+            strongSelf.bookmarkFetchedResultsController?.delegate = self
+            try? strongSelf.bookmarkFetchedResultsController?.performFetch()
         }
     }
 
@@ -163,7 +192,10 @@ final class BrowserViewModel: NSObject, ObservableObject,
     }
 
     func persistState() {
-        guard let tabID, let tab = try? Database.viewContext.existingObject(with: tabID) as? Tab else { return }
+        guard let tabID,
+                let tab = try? Database.viewContext.existingObject(with: tabID) as? Tab else {
+            return
+        }
         tab.interactionState = webView.interactionState as? Data
         try? Database.viewContext.save()
     }
@@ -185,6 +217,88 @@ final class BrowserViewModel: NSObject, ObservableObject,
         let zimFileID = zimFileID ?? UUID(uuidString: webView.url?.host ?? "")
         guard let url = ZimFileService.shared.getMainPageURL(zimFileID: zimFileID) else { return }
         load(url: url)
+    }
+
+    private func restoreBy(tabID: NSManagedObjectID) {
+        if let tab = try? Database.viewContext.existingObject(with: tabID) as? Tab {
+           webView.interactionState = tab.interactionState
+           url = webView.url
+       }
+    }
+
+    // MARK: - TabID management via NSWindow for macOS
+
+    #if os(macOS)
+    private (set) var windowNumber: Int?
+
+    // RESTORATION
+    func restoreByWindowNumber(
+        windowNumber currentNumber: Int,
+        urlToTabIdConverter: @escaping (URL?) -> NSManagedObjectID
+    ) {
+        windowNumber = currentNumber
+        let windows = NSApplication.shared.windows
+        let tabURL: URL?
+
+        guard let currentWindow = windowBy(number: currentNumber),
+              let index = windows.firstIndex(of: currentWindow) else { return }
+
+        // find the url for this window in user defaults, by pure index
+        if 0 <= index,
+           index < windowURLs.count {
+            tabURL = windowURLs[index]
+        } else {
+            tabURL = nil
+        }
+        let tabID = urlToTabIdConverter(tabURL) // if url is nil it will create a new tab
+        self.tabID = tabID
+        restoreBy(tabID: tabID)
+    }
+
+    private func indexOf(windowNumber number: Int, in windows: [NSWindow]) -> Int? {
+        let windowNumbers = windows.map { $0.windowNumber }
+        guard windowNumbers.contains(number),
+              let index = windowNumbers.firstIndex(of: number) else {
+            return nil
+        }
+        return index
+    }
+
+    // PERSISTENCE:
+    func persistAllTabIdsFromWindows() {
+        let urls = NSApplication.shared.windows.compactMap { window in
+            window.accessibilityURL()
+        }
+        UserDefaults.standard[.windowURLs] = urls
+    }
+
+    private func storeTabIDInCurrentWindow() {
+        guard let tabID,
+                let windowNumber,
+              let currentWindow = windowBy(number: windowNumber) else {
+            return
+        }
+        let url = tabID.uriRepresentation()
+        currentWindow.setAccessibilityURL(url)
+    }
+
+    private func windowBy(number: Int) -> NSWindow? {
+        NSApplication.shared.windows.first { $0.windowNumber == number }
+    }
+    #endif
+
+
+    private func createNewTabID() -> NSManagedObjectID {
+        if let tabID {
+            return tabID
+        }
+        let context = Database.viewContext
+        let tab = Tab(context: context)
+        tab.created = Date()
+        tab.lastOpened = Date()
+        try? context.obtainPermanentIDs(for: [tab])
+        try? context.save()
+        return tab.objectID
     }
 
     // MARK: - Bookmark

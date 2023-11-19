@@ -12,7 +12,8 @@ import WebKit
 @MainActor
 class NavigationViewModel: ObservableObject {
     @Published var currentItem: NavigationItem?
-    
+    @Published var readingURL: URL?
+
     init() {
         #if os(macOS)
         currentItem = .reading
@@ -46,10 +47,23 @@ class NavigationViewModel: ObservableObject {
         let tab = self.makeTab(context: context)
         try? context.obtainPermanentIDs(for: [tab])
         try? context.save()
+        #if !os(macOS) //TODO: maybe we don't need this for iOS either
         currentItem = NavigationItem.tab(objectID: tab.objectID)
+        #endif
         return tab.objectID
     }
-    
+
+    @MainActor
+    func tabIDFor(url: URL?) -> NSManagedObjectID {
+        guard let url else {
+            return createTab()
+        }
+        guard let tabID = Database.viewContext.persistentStoreCoordinator?.managedObjectID(forURIRepresentation: url) else {
+            return createTab()
+        }
+        return tabID
+    }
+
     /// Delete a single tab, and select another tab
     /// - Parameter tabID: ID of the tab to delete
     func deleteTab(tabID: NSManagedObjectID) {

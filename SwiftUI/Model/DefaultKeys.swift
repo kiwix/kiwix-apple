@@ -37,6 +37,11 @@ extension Defaults.Keys {
     
     static let downloadUsingCellular = Key<Bool>("downloadUsingCellular", default: false)
     static let backupDocumentDirectory = Key<Bool>("backupDocumentDirectory", default: false)
+
+    #if os(macOS)
+    // window management:
+    static let windowURLs = Key<[URL]>("windowURLs", default: [])
+    #endif
 }
 
 extension Defaults.Serializable where Self: Codable {
