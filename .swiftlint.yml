@@ -2,4 +2,3 @@ disabled_rules:
   - trailing_whitespace
 included:
   - Views/Settings/
-  - ViewModel
