@@ -98,9 +98,6 @@
 		97E88F4D2AE407350037F0E5 /* CoreKiwix.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97E88F4C2AE407320037F0E5 /* CoreKiwix.xcframework */; };
 		97F3333028AFC1A2007FF53C /* SearchResults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97F3332E28AFC1A2007FF53C /* SearchResults.swift */; };
 		97FB4ECE28B4E221003FB524 /* SwiftUIBackports in Frameworks */ = {isa = PBXBuildFile; productRef = 97FB4ECD28B4E221003FB524 /* SwiftUIBackports */; };
-		983ED6DC2B02E89300409078 /* BrowserScriptHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 983ED6DB2B02E89300409078 /* BrowserScriptHandler.swift */; };
-		983ED6DE2B02ED4000409078 /* BrowserNavDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 983ED6DD2B02ED4000409078 /* BrowserNavDelegate.swift */; };
-		983ED6E02B02EF1E00409078 /* BrowserUIDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 983ED6DF2B02EF1E00409078 /* BrowserUIDelegate.swift */; };
 		983ED7192B08AFE700409078 /* Kiwix-Bridging-Header.h in Sources */ = {isa = PBXBuildFile; fileRef = 9779A5D02456796A00F6F6FF /* Kiwix-Bridging-Header.h */; platformFilter = ios; };
 /* End PBXBuildFile section */
 
@@ -235,9 +232,6 @@
 		97F6CC5020BD960F005CDBD2 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		97FB4B0A27B819A90055F86E /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
 		97FD2F5E251EA07B0034927C /* FeatureFlags.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeatureFlags.swift; sourceTree = "<group>"; };
-		983ED6DB2B02E89300409078 /* BrowserScriptHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowserScriptHandler.swift; sourceTree = "<group>"; };
-		983ED6DD2B02ED4000409078 /* BrowserNavDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowserNavDelegate.swift; sourceTree = "<group>"; };
-		983ED6DF2B02EF1E00409078 /* BrowserUIDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowserUIDelegate.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -324,9 +318,6 @@
 				97176AD12A4FBD710093E3B0 /* BrowserViewModel.swift */,
 				97C13787284572AC00386C04 /* SearchViewModel.swift */,
 				97DE2BA1283A8E5C00C63D9B /* LibraryViewModel.swift */,
-				983ED6DB2B02E89300409078 /* BrowserScriptHandler.swift */,
-				983ED6DD2B02ED4000409078 /* BrowserNavDelegate.swift */,
-				983ED6DF2B02EF1E00409078 /* BrowserUIDelegate.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -800,7 +791,6 @@
 				97F3333028AFC1A2007FF53C /* SearchResults.swift in Sources */,
 				972727AE2A897FAA00BCAF75 /* GridSection.swift in Sources */,
 				9709C0982A8E4C5700E4564C /* Commands.swift in Sources */,
-				983ED6E02B02EF1E00409078 /* BrowserUIDelegate.swift in Sources */,
 				972727BF2A8A52DC00BCAF75 /* AlertHandler.swift in Sources */,
 				972096E72AE421C300B378B0 /* Attribute.swift in Sources */,
 				97341C6E2852248500BC273E /* DownloadTaskCell.swift in Sources */,
@@ -818,7 +808,6 @@
 				976D90DB281584BF00CC7D29 /* FlavorTag.swift in Sources */,
 				972DE4BD2814A5BE004FD9B9 /* OPDSParser.mm in Sources */,
 				972DE4B52814A502004FD9B9 /* Entities.swift in Sources */,
-				983ED6DC2B02E89300409078 /* BrowserScriptHandler.swift in Sources */,
 				9721BBBB28427A93005C910D /* Bookmarks.swift in Sources */,
 				974E7EE92930201500BDF59C /* ZimFileService.swift in Sources */,
 				973A0DFD283100C300B41E71 /* ZimFilesOpened.swift in Sources */,
@@ -833,7 +822,6 @@
 				972727B12A898B9700BCAF75 /* NavigationButtons.swift in Sources */,
 				976F5EC62A97909100938490 /* BrowserTab.swift in Sources */,
 				9724FC3028D5F5BE001B7DD2 /* BookmarkContextMenu.swift in Sources */,
-				983ED6DE2B02ED4000409078 /* BrowserNavDelegate.swift in Sources */,
 				976BAEBE284905760049404F /* SearchViewModel.swift in Sources */,
 				973A0DE7281DC8F400B41E71 /* DownloadService.swift in Sources */,
 				9721BBB72841C16D005C910D /* Message.swift in Sources */,

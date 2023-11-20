@@ -26,16 +26,12 @@ class KiwixURLSchemeHandler: NSObject, WKURLSchemeHandler {
                 urlSchemeTask.didFailWithError(URLError(.unsupportedURL))
                 return
             }
-            do {
-                objCTryBlock {
-                    guard let content = ZimFileService.shared.getURLContent(url: url) else {
-                        self.sendHTTP404Response(urlSchemeTask, url: url)
-                        return
-                    }
-                    self.sendHTTP200Response(urlSchemeTask, url: url, content: content)
+            objCTryBlock { [weak self] in
+                guard let content = ZimFileService.shared.getURLContent(url: url) else {
+                    self?.sendHTTP404Response(urlSchemeTask, url: url)
+                    return
                 }
-            } catch let error {
-                debugPrint(error)
+                self?.sendHTTP200Response(urlSchemeTask, url: url, content: content)
             }
         }
     }
