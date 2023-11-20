@@ -11,7 +11,6 @@ import SwiftUI
 import Defaults
 
 struct ExternalLinkHandler: ViewModifier {
-    @EnvironmentObject private var browserViewModel: BrowserViewModel
     @State private var isAlertPresented = false
     @State private var activeAlert: ActiveAlert?
     @State private var activeSheet: ActiveSheet?
