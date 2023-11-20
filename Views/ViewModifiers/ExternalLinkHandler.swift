@@ -53,7 +53,7 @@ struct ExternalLinkHandler: ViewModifier {
             case .ask:
                 Text("An external link is tapped, do you wish to load the link?".localized)
             case .notLoading:
-                Text("loc-extenral-alert".localized)
+                Text("loc-external-alert".localized)
             }
         }
         #if os(iOS)
