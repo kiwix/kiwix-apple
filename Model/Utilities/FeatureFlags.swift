@@ -8,20 +8,12 @@
 
 import Foundation
 
-struct FeatureFlags {
-    static var wikipediaDarkUserCSS: Bool {
-        #if DEBUG
-        true
-        #else
-        false
-        #endif
-    }
-    
-    static var map: Bool {
-        #if DEBUG
-        true
-        #else
-        false
-        #endif
-    }
+enum FeatureFlags {
+#if DEBUG
+    static let wikipediaDarkUserCSS: Bool = true
+    static let map: Bool = true
+#else
+    static let wikipediaDarkUserCSS: Bool = false
+    static let map: Bool = false
+#endif
 }
