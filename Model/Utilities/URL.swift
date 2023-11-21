@@ -5,6 +5,7 @@
 //  Created by Chris Li on 11/6/21.
 //  Copyright © 2021 Chris Li. All rights reserved.
 //
+import Foundation
 
 extension URL {
     init?(zimFileID: String, contentPath: String) {
@@ -16,6 +17,10 @@ extension URL {
     var isKiwixURL: Bool {
         return scheme?.caseInsensitiveCompare("kiwix") == .orderedSame
     }
-    
+
+    var isExternal: Bool {
+        ["http", "https"].contains(scheme)
+    }
+
     static let documentDirectory = try! FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false)
 }

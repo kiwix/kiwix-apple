@@ -130,7 +130,7 @@ private struct Content: View {
         .focusedSceneValue(\.browserViewModel, browser)
         .focusedSceneValue(\.canGoBack, browser.canGoBack)
         .focusedSceneValue(\.canGoForward, browser.canGoForward)
-        .modifier(ExternalLinkHandler())
+        .modifier(ExternalLinkHandler(externalURL: $browser.externalURL))
         .onAppear {
             browser.updateLastOpened()
         }

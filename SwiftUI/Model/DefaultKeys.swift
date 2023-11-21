@@ -24,8 +24,7 @@ extension Defaults.Keys {
 //
 //    // search
     static let recentSearchTexts = Key<[String]>("recentSearchTexts", default: [])
-    
-    
+
     // library
     static let libraryLanguageCodes = Key<Set<String>>("libraryLanguageCodes", default: Set())
     static let libraryLanguageSortingMode = Key<LibraryLanguageSortingMode>(
@@ -37,6 +36,11 @@ extension Defaults.Keys {
     
     static let downloadUsingCellular = Key<Bool>("downloadUsingCellular", default: false)
     static let backupDocumentDirectory = Key<Bool>("backupDocumentDirectory", default: false)
+
+    #if os(macOS)
+    // window management:
+    static let windowURLs = Key<[URL]>("windowURLs", default: [])
+    #endif
 }
 
 extension Defaults.Serializable where Self: Codable {
