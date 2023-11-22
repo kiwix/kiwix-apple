@@ -17,4 +17,5 @@ struct Log {
     static let LibraryOperations = OSLog(subsystem: subsystem, category: "LibraryOperations")
     static let OPDS = OSLog(subsystem: subsystem, category: "OPDS")
     static let URLSchemeHandler = OSLog(subsystem: subsystem, category: "URLSchemeHandler")
+    static let Branding = OSLog(subsystem: subsystem, category: "Branding")
 }

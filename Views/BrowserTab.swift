@@ -42,7 +42,7 @@ struct BrowserTab: View {
         .searchable(text: $search.searchText, placement: .toolbar)
         .modify { view in
             #if os(macOS)
-            view.navigationTitle(browser.articleTitle.isEmpty ? "Kiwix" : browser.articleTitle)
+            view.navigationTitle(browser.articleTitle.isEmpty ? Brand.appName : browser.articleTitle)
                 .navigationSubtitle(browser.zimFileName)
             #elseif os(iOS)
             view

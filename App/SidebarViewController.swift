@@ -77,7 +77,7 @@ class SidebarViewController: UICollectionViewController, NSFetchedResultsControl
         fetchedResultController.delegate = self
         
         // configure view
-        navigationItem.title = "Kiwix"
+        navigationItem.title = Brand.appName
         navigationItem.rightBarButtonItem = UIBarButtonItem(
             image: UIImage(systemName: "plus.square"),
             primaryAction: UIAction { [unowned self] _ in
