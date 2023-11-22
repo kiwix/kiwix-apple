@@ -1,7 +1,7 @@
 name: CI
 
 on:
-  pull_request:
+  pull_request_target:
   push:
     branches:
       - main
@@ -11,7 +11,14 @@ env:
   APPLE_STORE_AUTH_KEY_PATH: /tmp/authkey.p8
 
 jobs:
+  authorize:
+    # sets environment based on origin of PR: internal (non-existent) for own-repo or external (requires reviewer to run) for external repos
+    environment: ${{ github.event_name == 'pull_request_target' && github.event.pull_request.head.repo.full_name != github.repository && 'external' || 'internal' }}
+    runs-on: ubuntu-22.04
+    steps:
+      - run: true
   build:
+    needs: authorize
     runs-on: macos-13
     strategy:
       fail-fast: false
@@ -23,6 +30,9 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
+        with:
+          # /!\ important: this checks out code from the HEAD of the PR instead of the main branch (for pull_request_target)
+          ref: ${{ github.event.pull_request.head.sha || github.ref }}
 
       - name: Add Apple Store Key
         if: ${{ matrix.destination.platform == 'iOS' }}
