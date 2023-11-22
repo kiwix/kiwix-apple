@@ -41,9 +41,9 @@ struct DownloadTaskCell: View {
             }
             VStack(alignment: .leading, spacing: 4) {
                 if downloadTask.error != nil {
-                    Text("Failed")
+                    Text("Failed".localized)
                 } else if downloadTask.resumeData == nil {
-                    Text("Downloading...")
+                    Text("Downloading...".localized)
                 } else {
                     Text("Paused")
                 }

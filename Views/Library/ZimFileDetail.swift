@@ -25,10 +25,10 @@ struct ZimFileDetail: View {
     var body: some View {
         #if os(macOS)
         List {
-            Section("Name") { Text(zimFile.name).lineLimit(nil) }.collapsible(false)
-            Section("Description") { Text(zimFile.fileDescription).lineLimit(nil) }.collapsible(false)
-            Section("Actions") { actions }.collapsible(false)
-            Section("Info") {
+            Section("Name".localized) { Text(zimFile.name).lineLimit(nil) }.collapsible(false)
+            Section("Description".localized) { Text(zimFile.fileDescription).lineLimit(nil) }.collapsible(false)
+            Section("Actions".localized) { actions }.collapsible(false)
+            Section("Info".localized) {
                 basicInfo
                 boolInfo
                 counts
@@ -81,15 +81,15 @@ struct ZimFileDetail: View {
         if let downloadTask = zimFile.downloadTask {  // zim file is being downloaded
             DownloadTaskDetail(downloadTask: downloadTask)
         } else if zimFile.isMissing {  // zim file was opened, but is now missing
-            Action(title: "Locate") { isPresentingFileLocator = true }
+            Action(title: "Locate".localized) { isPresentingFileLocator = true }
             unlinkAction
         } else if zimFile.fileURLBookmark != nil {  // zim file is opened
-            Action(title: "Open Main Page") {
+            Action(title: "Open Main Page".localized) {
                 guard let url = ZimFileService.shared.getMainPageURL(zimFileID: zimFile.fileID) else { return }
                 NotificationCenter.openURL(url, inNewTab: true)
             }
             #if os(macOS)
-            Action(title: "Reveal in Finder") {
+            Action(title: "Reveal in Finder".localized) {
                 guard let url = ZimFileService.shared.getFileURL(zimFileID: zimFile.id) else { return }
                 NSWorkspace.shared.activateFileViewerSelecting([url])
             }
@@ -105,23 +105,20 @@ struct ZimFileDetail: View {
             #endif
         } else if zimFile.downloadURL != nil {  // zim file can be downloaded
             #if os(iOS)
-            Toggle("Download using cellular", isOn: $downloadUsingCellular)
+            Toggle("Download using cellular".localized, isOn: $downloadUsingCellular)
             #endif
             downloadAction
         }
     }
     
     var unlinkAction: some View {
-        Action(title: "Unlink", isDestructive: true) {
+        Action(title: "Unlink".localized, isDestructive: true) {
             isPresentingUnlinkAlert = true
         }.alert(isPresented: $isPresentingUnlinkAlert) {
             Alert(
-                title: Text("Unlink \(zimFile.name)"),
-                message: Text("""
-                All bookmarked articles linked to this zim file will be deleted, \
-                but the original file will remain in place.
-                """),
-                primaryButton: .destructive(Text("Unlink")) {
+                title: Text("Unlink %@".localizedWithFormat(withArgs: zimFile.name)),
+                message: Text("loc-ZimFileDetail-Alert-unlink".localized),
+                primaryButton: .destructive(Text("Unlink".localized)) {
                     LibraryOperations.unlink(zimFileID: zimFile.fileID)
                     #if os(iOS)
                     presentationMode.wrappedValue.dismiss()
@@ -137,9 +134,9 @@ struct ZimFileDetail: View {
             isPresentingDeleteAlert = true
         }.alert(isPresented: $isPresentingDeleteAlert) {
             Alert(
-                title: Text("Delete \(zimFile.name)"),
-                message: Text("The zim file and all bookmarked articles linked to this zim file will be deleted."),
-                primaryButton: .destructive(Text("Delete")) {
+                title: Text("Delete %@".localizedWithFormat(withArgs: zimFile.name)),
+                message: Text("loc-ZimFileDetail-Alert-Delete".localized),
+                primaryButton: .destructive(Text("Delete".localized)) {
                     LibraryOperations.delete(zimFileID: zimFile.fileID)
                     #if os(iOS)
                     presentationMode.wrappedValue.dismiss()
@@ -151,7 +148,7 @@ struct ZimFileDetail: View {
     }
     
     var downloadAction: some View {
-        Action(title: "Download") {
+        Action(title: "Download".localized) {
             if let freeSpace = freeSpace, zimFile.size >= freeSpace - 10^9 {
                 isPresentingDownloadAlert = true
             } else {
@@ -159,15 +156,15 @@ struct ZimFileDetail: View {
             }
         }.alert(isPresented: $isPresentingDownloadAlert) {
             Alert(
-                title: Text("Space Warning"),
+                title: Text("Space Warning".localized),
                 message: Text({
                     if let freeSpace = freeSpace, zimFile.size > freeSpace {
-                        return "There might not be enough space on your device for this zim file."
+                        return "There might not be enough space on your device for this zim file.".localized
                     } else {
-                        return "There would be less than 1GB space left after the zim file is downloaded."
+                        return "There would be less than 1GB space left after the zim file is downloaded.".localized
                     }
                 }()),
-                primaryButton: .default(Text("Download Anyway")) {
+                primaryButton: .default(Text("Download Anyway".localized)) {
                     DownloadService.shared.start(zimFileID: zimFile.id, allowsCellularAccess: false)
                 },
                 secondaryButton: .cancel()
@@ -177,37 +174,38 @@ struct ZimFileDetail: View {
     
     @ViewBuilder
     var basicInfo: some View {
-        Attribute(title: "Language", detail: Locale.current.localizedString(forLanguageCode: zimFile.languageCode))
-        Attribute(title: "Category", detail: Category(rawValue: zimFile.category)?.description)
-        Attribute(title: "Size", detail: Formatter.size.string(fromByteCount: zimFile.size))
-        Attribute(title: "Created", detail: Formatter.dateMedium.string(from: zimFile.created))
+        Attribute(title: "Language".localized, 
+                  detail: Locale.current.localizedString(forLanguageCode: zimFile.languageCode))
+        Attribute(title: "Category".localized, detail: Category(rawValue: zimFile.category)?.description)
+        Attribute(title: "Size".localized, detail: Formatter.size.string(fromByteCount: zimFile.size))
+        Attribute(title: "Created".localized, detail: Formatter.dateMedium.string(from: zimFile.created))
     }
     
     @ViewBuilder
     var boolInfo: some View {
-        AttributeBool(title: "Pictures", detail: zimFile.hasPictures)
-        AttributeBool(title: "Videos", detail: zimFile.hasVideos)
-        AttributeBool(title: "Details", detail: zimFile.hasDetails)
+        AttributeBool(title: "Pictures".localized, detail: zimFile.hasPictures)
+        AttributeBool(title: "Videos".localized, detail: zimFile.hasVideos)
+        AttributeBool(title: "Details".localized, detail: zimFile.hasDetails)
         if zimFile.requiresServiceWorkers {
-            AttributeBool(title: "Requires Service Workers", detail: zimFile.requiresServiceWorkers)
+            AttributeBool(title: "Requires Service Workers".localized, detail: zimFile.requiresServiceWorkers)
         }
     }
     
     @ViewBuilder
     var counts: some View {
         Attribute(
-            title: "Article Count",
+            title: "Article Count".localized,
             detail: Formatter.number.string(from: NSNumber(value: zimFile.articleCount))
         )
         Attribute(
-            title: "Media Count",
+            title: "Media Count".localized,
             detail: Formatter.number.string(from: NSNumber(value: zimFile.mediaCount))
         )
     }
     
     @ViewBuilder
     var id: some View {
-        Attribute(title: "ID", detail: String(zimFile.fileID.uuidString.prefix(8)))
+        Attribute(title: "ID".localized, detail: String(zimFile.fileID.uuidString.prefix(8)))
     }
     
     private var freeSpace: Int64? {
@@ -237,27 +235,27 @@ private struct DownloadTaskDetail: View {
     @ObservedObject var downloadTask: DownloadTask
     
     var body: some View {
-        Action(title: "Cancel", isDestructive: true) {
+        Action(title: "Cancel".localized, isDestructive: true) {
             DownloadService.shared.cancel(zimFileID: downloadTask.fileID)
         }
         if let error = downloadTask.error {
             if downloadTask.resumeData != nil {
-                Action(title: "Try to Recover") {
+                Action(title: "Try to Recover".localized) {
                     DownloadService.shared.resume(zimFileID: downloadTask.fileID)
                 }
             }
-            Attribute(title: "Failed", detail: detail)
+            Attribute(title: "Failed".localized, detail: detail)
             Text(error)
         } else if downloadTask.resumeData == nil {
-            Action(title: "Pause") {
+            Action(title: "Pause".localized) {
                 DownloadService.shared.pause(zimFileID: downloadTask.fileID)
             }
-            Attribute(title: "Downloading...", detail: detail)
+            Attribute(title: "Downloading...".localized, detail: detail)
         } else {
-            Action(title: "Resume") {
+            Action(title: "Resume".localized) {
                 DownloadService.shared.resume(zimFileID: downloadTask.fileID)
             }
-            Attribute(title: "Paused", detail: detail)
+            Attribute(title: "Paused".localized, detail: detail)
         }
     }
     
@@ -313,7 +311,7 @@ private struct Action: View {
 private struct ServiceWorkerWarning: View {
     var body: some View {
         Label {
-            Text("Zim files requiring service workers are not supported.")
+            Text("Zim files requiring service workers are not supported.".localized)
         } icon: {
             Image(systemName: "exclamationmark.triangle.fill").renderingMode(.original)
         }
@@ -329,7 +327,7 @@ struct ZimFileDetail_Previews: PreviewProvider {
         zimFile.created = Date()
         zimFile.downloadURL = URL(string: "https://www.example.com")
         zimFile.fileID = UUID()
-        zimFile.fileDescription = "A very long description"
+        zimFile.fileDescription = "A very long description".localized
         zimFile.flavor = "max"
         zimFile.hasDetails = true
         zimFile.hasPictures = false

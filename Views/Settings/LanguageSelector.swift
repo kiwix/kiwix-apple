@@ -30,8 +30,8 @@ struct LanguageSelector: View {
                     }
                 })
             }.width(14)
-            TableColumn("Name", value: \.name)
-            TableColumn("Count", value: \.count) { language in Text(language.count.formatted()) }
+            TableColumn("Name".localized, value: \.name)
+            TableColumn("Count".localized, value: \.count) { language in Text(language.count.formatted()) }
         }
         .tableStyle(.bordered(alternatesRowBackgrounds: true))
         .onChange(of: sortOrder) { languages.sort(using: $0) }
@@ -51,29 +51,29 @@ struct LanguageSelector: View {
         List {
             Section {
                 if showing.isEmpty {
-                    Text("No language").foregroundColor(.secondary)
+                    Text("No language".localized).foregroundColor(.secondary)
                 } else {
                     ForEach(showing) { language in
                         Button { hide(language) } label: { LanguageLabel(language: language) }
                     }
                 }
-            } header: { Text("Showing") }
+            } header: { Text("Showing".localized) }
             Section {
                 ForEach(hiding) { language in
                     Button { show(language) } label: { LanguageLabel(language: language) }
                 }
-            } header: { Text("Hiding") }
+            } header: { Text("Hiding".localized) }
         }
         .listStyle(.insetGrouped)
-        .navigationTitle("Languages")
+        .navigationTitle("Languages".localized)
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             Picker(selection: $sortingMode) {
                 ForEach(LibraryLanguageSortingMode.allCases) { sortingMode in
-                    Text(sortingMode.name).tag(sortingMode)
+                    Text(sortingMode.name.localized).tag(sortingMode)
                 }
             } label: {
-                Label("Sorting", systemImage: "arrow.up.arrow.down")
+                Label("Sorting".localized, systemImage: "arrow.up.arrow.down")
             }.pickerStyle(.menu)
         }
         .onAppear {

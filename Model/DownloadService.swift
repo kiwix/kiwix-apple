@@ -191,10 +191,10 @@ class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegate, URL
             Database.shared.container.performBackgroundTask { context in
                 // configure notification content
                 let content = UNMutableNotificationContent()
-                content.title = "Download Completed"
+                content.title = "Download Completed".localized
                 content.sound = .default
                 if let zimFile = try? context.fetch(ZimFile.fetchRequest(fileID: zimFileID)).first {
-                    content.body = "\(zimFile.name) has been downloaded successfully."
+                    content.body = "%@ has been downloaded successfully.".localizedWithFormat(withArgs: zimFile.name)
                 }
                 
                 // schedule notification
