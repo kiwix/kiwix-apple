@@ -95,9 +95,11 @@ struct RootView: View {
                 ForEach(primaryItems, id: \.self) { navigationItem in
                     Label(navigationItem.name, systemImage: navigationItem.icon)
                 }
-                Section("Library") {
-                    ForEach(libraryItems, id: \.self) { navigationItem in
-                        Label(navigationItem.name, systemImage: navigationItem.icon)
+                if Brand.hasLibrary {
+                    Section("Library") {
+                        ForEach(libraryItems, id: \.self) { navigationItem in
+                            Label(navigationItem.name, systemImage: navigationItem.icon)
+                        }
                     }
                 }
             }
