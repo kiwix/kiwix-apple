@@ -22,12 +22,14 @@ struct Kiwix: App {
     init() {
         fileMonitor = DirectoryMonitor(url: URL.documentDirectory) { LibraryOperations.scanDirectory($0) }
         UNUserNotificationCenter.current().delegate = appDelegate
-        LibraryOperations.reopen()
-        LibraryOperations.scanDirectory(URL.documentDirectory)
-        LibraryOperations.applyFileBackupSetting()
-        LibraryOperations.registerBackgroundTask()
-        LibraryOperations.applyLibraryAutoRefreshSetting()
-        DownloadService.shared.restartHeartbeatIfNeeded()
+        if FeatureFlags.hasLibrary {
+            LibraryOperations.reopen()
+            LibraryOperations.scanDirectory(URL.documentDirectory)
+            LibraryOperations.applyFileBackupSetting()
+            LibraryOperations.registerBackgroundTask()
+            LibraryOperations.applyLibraryAutoRefreshSetting()
+            DownloadService.shared.restartHeartbeatIfNeeded()
+        }
     }
     
     var body: some Scene {

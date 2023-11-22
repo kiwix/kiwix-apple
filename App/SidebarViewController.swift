@@ -43,6 +43,14 @@ class SidebarViewController: UICollectionViewController, NSFetchedResultsControl
         case tabs
         case library
         case settings
+
+        static var allSections: [Section] {
+            if FeatureFlags.hasLibrary {
+                allCases
+            } else {
+                allCases.filter { $0 != .library }
+            }
+        }
     }
     
     init() {
@@ -107,9 +115,11 @@ class SidebarViewController: UICollectionViewController, NSFetchedResultsControl
         
         // apply initial snapshot
         var snapshot = NSDiffableDataSourceSnapshot<Section, NavigationItem>()
-        snapshot.appendSections(Section.allCases)
+        snapshot.appendSections(Section.allSections)
         snapshot.appendItems([.bookmarks], toSection: .primary)
-        snapshot.appendItems([.opened, .categories, .downloads, .new], toSection: .library)
+        if FeatureFlags.hasLibrary {
+            snapshot.appendItems([.opened, .categories, .downloads, .new], toSection: .library)
+        }
         snapshot.appendItems([.settings], toSection: .settings)
         dataSource.apply(snapshot, animatingDifferences: false)
         try? fetchedResultController.performFetch()
@@ -184,7 +194,7 @@ class SidebarViewController: UICollectionViewController, NSFetchedResultsControl
     }
     
     private func configureHeader(headerView: UICollectionViewListCell, elementKind: String, indexPath: IndexPath) {
-        let section = Section.allCases[indexPath.section]
+        let section = Section.allSections[indexPath.section]
         switch section {
         case .tabs:
             var config = UIListContentConfiguration.sidebarHeader()
