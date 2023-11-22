@@ -8,14 +8,15 @@
 
 import SwiftUI
 import UserNotifications
+import Combine
+import Defaults
 
 #if os(macOS)
 @main
 struct Kiwix: App {
     @StateObject private var libraryRefreshViewModel = LibraryViewModel()
-    
     private let notificationCenterDelegate = NotificationCenterDelegate()
-    
+
     init() {
         UNUserNotificationCenter.current().delegate = notificationCenterDelegate
         LibraryOperations.reopen()
@@ -63,7 +64,7 @@ struct Kiwix: App {
             .environmentObject(libraryRefreshViewModel)
         }
     }
-    
+
     private class NotificationCenterDelegate: NSObject, UNUserNotificationCenterDelegate {
         /// Handling file download complete notification
         func userNotificationCenter(_ center: UNUserNotificationCenter,
@@ -86,7 +87,8 @@ struct RootView: View {
     private let primaryItems: [NavigationItem] = [.reading, .bookmarks]
     private let libraryItems: [NavigationItem] = [.opened, .categories, .downloads, .new]
     private let openURL = NotificationCenter.default.publisher(for: .openURL)
-    
+    private let appTerminates = NotificationCenter.default.publisher(for: NSApplication.willTerminateNotification)
+
     var body: some View {
         NavigationView {
             List(selection: $navigation.currentItem) {
@@ -111,6 +113,12 @@ struct RootView: View {
             switch navigation.currentItem {
             case .reading:
                 BrowserTab().environmentObject(browser)
+                    .withHostingWindow { window in
+                        if let windowNumber = window?.windowNumber {
+                            browser.restoreByWindowNumber(windowNumber: windowNumber,
+                                                          urlToTabIdConverter: navigation.tabIDFor(url:))
+                        }
+                    }
             case .bookmarks:
                 Bookmarks()
             case .opened:
@@ -139,9 +147,35 @@ struct RootView: View {
         }
         .onReceive(openURL) { notification in
             guard controlActiveState == .key, let url = notification.userInfo?["url"] as? URL else { return }
-            browser.load(url: url)
             navigation.currentItem = .reading
+            browser.load(url: url)
+        }
+        .onReceive(appTerminates) { _ in
+            browser.persistAllTabIdsFromWindows()
         }
     }
 }
+
+// MARK: helpers to capture the window
+
+extension View {
+    func withHostingWindow(_ callback: @escaping (NSWindow?) -> Void) -> some View {
+        self.background(HostingWindowFinder(callback: callback))
+    }
+}
+
+struct HostingWindowFinder: NSViewRepresentable {
+    typealias NSViewType = NSView
+    var callback: (NSWindow?) -> Void
+    func makeNSView(context: Context) -> NSView {
+        let view = NSView()
+        DispatchQueue.main.async { [weak view] in
+            self.callback(view?.window)
+        }
+        return view
+    }
+
+    func updateNSView(_ nsView: NSView, context: Context) {}
+}
+
 #endif

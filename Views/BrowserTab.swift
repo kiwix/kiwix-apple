@@ -11,7 +11,7 @@ import SwiftUI
 struct BrowserTab: View {
     @EnvironmentObject private var browser: BrowserViewModel
     @StateObject private var search = SearchViewModel()
-    
+
     var body: some View {
         Content().toolbar {
             #if os(macOS)
@@ -38,7 +38,7 @@ struct BrowserTab: View {
         .focusedSceneValue(\.browserViewModel, browser)
         .focusedSceneValue(\.canGoBack, browser.canGoBack)
         .focusedSceneValue(\.canGoForward, browser.canGoForward)
-        .modifier(ExternalLinkHandler())
+        .modifier(ExternalLinkHandler(externalURL: $browser.externalURL))
         .searchable(text: $search.searchText, placement: .toolbar)
         .modify { view in
             #if os(macOS)

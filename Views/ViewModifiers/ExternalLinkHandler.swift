@@ -11,10 +11,10 @@ import SwiftUI
 import Defaults
 
 struct ExternalLinkHandler: ViewModifier {
-    @EnvironmentObject private var browserViewModel: BrowserViewModel
     @State private var isAlertPresented = false
     @State private var activeAlert: ActiveAlert?
     @State private var activeSheet: ActiveSheet?
+    @Binding var externalURL: URL?
     
     enum ActiveAlert {
         case ask(url: URL)
@@ -27,9 +27,8 @@ struct ExternalLinkHandler: ViewModifier {
     }
     
     func body(content: Content) -> some View {
-        content.onChange(of: browserViewModel.externalLink) { url in
-            defer { browserViewModel.externalLink = nil }
-            guard let url = url else { return }
+        content.onChange(of: externalURL) { url in
+            guard let url else { return }
             switch Defaults[.externalLinkLoadingPolicy] {
             case .alwaysAsk:
                 isAlertPresented = true
