@@ -200,7 +200,7 @@ struct Settings: View {
     }
     
     var miscellaneous: some View {
-        Section("Misc".lowercased) {
+        Section("Misc".localized) {
             Button("Feedback".localized) { UIApplication.shared.open(URL(string: "mailto:feedback@kiwix.org")!) }
             Button("Rate the App".localized) {
                 let url = URL(string: "itms-apps://itunes.apple.com/us/app/kiwix/id997079563?action=write-review")!
