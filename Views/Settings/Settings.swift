@@ -118,15 +118,24 @@ struct Settings: View {
     }
     
     var body: some View {
-        List {
-            readingSettings
-            librarySettings
-            catalogSettings
-            backupSettings
-            miscellaneous
+        if FeatureFlags.hasLibrary {
+            List {
+                readingSettings
+                librarySettings
+                catalogSettings
+                backupSettings
+                miscellaneous
+            }
+            .modifier(ToolbarRoleBrowser())
+            .navigationTitle("Settings")
+        } else {
+            List {
+                readingSettings
+                miscellaneous
+            }
+            .modifier(ToolbarRoleBrowser())
+            .navigationTitle("Settings")
         }
-        .modifier(ToolbarRoleBrowser())
-        .navigationTitle("Settings")
     }
     
     var readingSettings: some View {
