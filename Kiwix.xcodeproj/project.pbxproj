@@ -100,6 +100,9 @@
 		97FB4ECE28B4E221003FB524 /* SwiftUIBackports in Frameworks */ = {isa = PBXBuildFile; productRef = 97FB4ECD28B4E221003FB524 /* SwiftUIBackports */; };
 		980179512B0DF42100E8E1E2 /* Brand.swift in Sources */ = {isa = PBXBuildFile; fileRef = 980179502B0DF42100E8E1E2 /* Brand.swift */; };
 		980179522B0DF42100E8E1E2 /* Brand.swift in Sources */ = {isa = PBXBuildFile; fileRef = 980179502B0DF42100E8E1E2 /* Brand.swift */; };
+		980179542B0E402C00E8E1E2 /* kiwix.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 980179532B0E402C00E8E1E2 /* kiwix.xcconfig */; };
+		980179562B0E403E00E8E1E2 /* dwds.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 980179552B0E403E00E8E1E2 /* dwds.xcconfig */; };
+		980179592B0EA60200E8E1E2 /* DWDS_2023-11.zim in Resources */ = {isa = PBXBuildFile; fileRef = 980179582B0EA60200E8E1E2 /* DWDS_2023-11.zim */; };
 		983ED7192B08AFE700409078 /* Kiwix-Bridging-Header.h in Sources */ = {isa = PBXBuildFile; fileRef = 9779A5D02456796A00F6F6FF /* Kiwix-Bridging-Header.h */; platformFilter = ios; };
 		98FBF3A82B0D5ADB00B70826 /* Kiwix-Bridging-Header.h in Sources */ = {isa = PBXBuildFile; fileRef = 9779A5D02456796A00F6F6FF /* Kiwix-Bridging-Header.h */; platformFilter = ios; };
 		98FBF3A92B0D5ADB00B70826 /* Errors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 973A2FC4277EAA2500BD4320 /* Errors.swift */; };
@@ -320,6 +323,9 @@
 		97FB4B0A27B819A90055F86E /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
 		97FD2F5E251EA07B0034927C /* FeatureFlags.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeatureFlags.swift; sourceTree = "<group>"; };
 		980179502B0DF42100E8E1E2 /* Brand.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Brand.swift; sourceTree = "<group>"; };
+		980179532B0E402C00E8E1E2 /* kiwix.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = kiwix.xcconfig; sourceTree = "<group>"; };
+		980179552B0E403E00E8E1E2 /* dwds.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = dwds.xcconfig; sourceTree = "<group>"; };
+		980179582B0EA60200E8E1E2 /* DWDS_2023-11.zim */ = {isa = PBXFileReference; lastKnownFileType = file; path = "DWDS_2023-11.zim"; sourceTree = "<group>"; };
 		98FBF4022B0D5ADB00B70826 /* DWDS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DWDS.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		98FBF4032B0D5ADB00B70826 /* DWDS-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "DWDS-Info.plist"; path = "/Users/balazs/dev/ios/kiwix-fork/DWDS-Info.plist"; sourceTree = "<absolute>"; };
 		98FBF4042B0D5C2A00B70826 /* DWDS.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = DWDS.xcassets; sourceTree = "<group>"; };
@@ -649,6 +655,7 @@
 		97E94B26271EF359005B0295 /* Support */ = {
 			isa = PBXGroup;
 			children = (
+				980179572B0EA5DF00E8E1E2 /* DWDS */,
 				98FBF4042B0D5C2A00B70826 /* DWDS.xcassets */,
 				97E94B1D271EF250005B0295 /* Kiwix.xcassets */,
 				9713F7782AE416E5007DD9EC /* CoreKiwix.modulemap */,
@@ -657,8 +664,18 @@
 				97E94B22271EF250005B0295 /* Kiwix.entitlements */,
 				9779A5D02456796A00F6F6FF /* Kiwix-Bridging-Header.h */,
 				970885D0271339A300C5795C /* wikipedia_dark.css */,
+				980179532B0E402C00E8E1E2 /* kiwix.xcconfig */,
+				980179552B0E403E00E8E1E2 /* dwds.xcconfig */,
 			);
 			path = Support;
+			sourceTree = "<group>";
+		};
+		980179572B0EA5DF00E8E1E2 /* DWDS */ = {
+			isa = PBXGroup;
+			children = (
+				980179582B0EA60200E8E1E2 /* DWDS_2023-11.zim */,
+			);
+			path = DWDS;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -815,6 +832,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				973A0DF72830929C00B41E71 /* Kiwix.xcassets in Resources */,
+				980179542B0E402C00E8E1E2 /* kiwix.xcconfig in Resources */,
 				979D3A7C284159BF00E396B8 /* injection.js in Resources */,
 				97DE2BAD283B133700C63D9B /* wikipedia_dark.css in Resources */,
 			);
@@ -836,6 +854,8 @@
 			files = (
 				98FBF3FD2B0D5ADB00B70826 /* injection.js in Resources */,
 				98FBF3FE2B0D5ADB00B70826 /* wikipedia_dark.css in Resources */,
+				980179592B0EA60200E8E1E2 /* DWDS_2023-11.zim in Resources */,
+				980179562B0E403E00E8E1E2 /* dwds.xcconfig in Resources */,
 				98FBF4052B0D5C2A00B70826 /* DWDS.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1200,6 +1220,7 @@
 		};
 		972DE4B12814A3D9004FD9B9 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 980179532B0E402C00E8E1E2 /* kiwix.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -1248,6 +1269,7 @@
 		};
 		972DE4B22814A3D9004FD9B9 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 980179532B0E402C00E8E1E2 /* kiwix.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -1466,6 +1488,7 @@
 		};
 		98FBF4002B0D5ADB00B70826 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 980179552B0E403E00E8E1E2 /* dwds.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -1514,6 +1537,7 @@
 		};
 		98FBF4012B0D5ADB00B70826 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 980179552B0E403E00E8E1E2 /* dwds.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ANALYZER_NONNULL = YES;

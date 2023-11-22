@@ -6,12 +6,18 @@ import os
 enum Brand {
     static let appName: String = Config.value(for: .displayName) ?? "Kiwix"
     static let welcomeLogoImageName: String = "welcomeLogo"
-    static let hasLibrary: Bool = false
+    static var mainZimFileURL: URL? {
+        guard let zimFileName: String = Config.value(for: .zimFileMain),
+              !zimFileName.isEmpty else { return nil }
+        return Bundle.main.url(forResource: zimFileName, withExtension: "zim")
+    }
 }
 
-private enum Config: String {
+enum Config: String {
 
     case displayName = "CFBundleDisplayName"
+    case hasLibrary = "HAS_LIBRARY"
+    case zimFileMain = "ZIM_FILE_MAIN"
 
     static func value<T>(for key: Config) -> T? where T: LosslessStringConvertible {
         guard let object = Bundle.main.object(forInfoDictionaryKey:key.rawValue) else {

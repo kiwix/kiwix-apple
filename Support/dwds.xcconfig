@@ -1,0 +1,6 @@
+//  Copyright © 2023 Kiwix. All rights reserved.
+
+// Configuration settings file format documentation can be found at:
+// https://help.apple.com/xcode/#/dev745c5c974
+HAS_LIBRARY = false
+ZIM_FILE_MAIN = DWDS_2023-11

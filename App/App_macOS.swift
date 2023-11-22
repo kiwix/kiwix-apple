@@ -19,10 +19,6 @@ struct Kiwix: App {
 
     init() {
         UNUserNotificationCenter.current().delegate = notificationCenterDelegate
-        LibraryOperations.reopen()
-        LibraryOperations.scanDirectory(URL.documentDirectory)
-        LibraryOperations.applyFileBackupSetting()
-        DownloadService.shared.restartHeartbeatIfNeeded()
     }
     
     var body: some Scene {
@@ -57,11 +53,13 @@ struct Kiwix: App {
         Settings {
             TabView {
                 ReadingSettings()
-                LibrarySettings()
+                if FeatureFlags.hasLibrary {
+                    LibrarySettings()
+                        .environmentObject(libraryRefreshViewModel)
+                }
                 About()
             }
             .frame(width: 550, height: 400)
-            .environmentObject(libraryRefreshViewModel)
         }
     }
 
@@ -95,7 +93,7 @@ struct RootView: View {
                 ForEach(primaryItems, id: \.self) { navigationItem in
                     Label(navigationItem.name, systemImage: navigationItem.icon)
                 }
-                if Brand.hasLibrary {
+                if FeatureFlags.hasLibrary {
                     Section("Library") {
                         ForEach(libraryItems, id: \.self) { navigationItem in
                             Label(navigationItem.name, systemImage: navigationItem.icon)
@@ -154,6 +152,17 @@ struct RootView: View {
         }
         .onReceive(appTerminates) { _ in
             browser.persistAllTabIdsFromWindows()
+        }.task {
+            if FeatureFlags.hasLibrary {
+                LibraryOperations.reopen()
+                LibraryOperations.scanDirectory(URL.documentDirectory)
+                LibraryOperations.applyFileBackupSetting()
+                DownloadService.shared.restartHeartbeatIfNeeded()
+            } else if let url = Brand.mainZimFileURL {
+                LibraryOperations.open(url: url)
+            } else {
+                assertionFailure("App should support library, or should have a main zip file")
+            }
         }
     }
 }

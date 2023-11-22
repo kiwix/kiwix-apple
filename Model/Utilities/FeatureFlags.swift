@@ -1,10 +1,4 @@
-//
-//  FeatureFlags.swift
-//  Kiwix
-//
-//  Created by Chris Li on 9/25/20.
-//  Copyright © 2020 Chris Li. All rights reserved.
-//
+//  Copyright © 2023 Kiwix. All rights reserved.
 
 import Foundation
 
@@ -16,4 +10,6 @@ enum FeatureFlags {
     static let wikipediaDarkUserCSS: Bool = false
     static let map: Bool = false
 #endif
+    /// Display or not the Library items in the side menu, such as Opened, Categories, Downloads, New
+    static let hasLibrary: Bool = Config.value(for: .hasLibrary) ?? true
 }

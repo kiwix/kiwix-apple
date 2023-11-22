@@ -30,6 +30,8 @@
 			</array>
 		</dict>
 	</array>
+	<key>HAS_LIBRARY</key>
+	<string>$(HAS_LIBRARY)</string>
 	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
 	<key>UIBackgroundModes</key>
@@ -61,5 +63,7 @@
 			</dict>
 		</dict>
 	</array>
+	<key>ZIM_FILE_MAIN</key>
+	<string>$(ZIM_FILE_MAIN)</string>
 </dict>
 </plist>
