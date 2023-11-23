@@ -19,7 +19,6 @@ jobs:
   build_and_deploy:
     strategy:
       fail-fast: false
-      max-parallel: 1
       matrix:
         destination:
           - platform: macOS
