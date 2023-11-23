@@ -19,12 +19,13 @@ def run_command(
             return ps.returncode
 
         if attempts >= max_attempts:
-            print(f"Reached {max_attempts=}")
+            print(f"Reached {max_attempts=}", flush=True)
             return ps.returncode
 
         print(
             f"Received retcode={ps.returncode} on attempt #{attempts}. "
-            f"Retrying in {sleep_seconds}s."
+            f"Retrying in {sleep_seconds}s.",
+            flush=True,
         )
         if sleep_seconds:
             time.sleep(sleep_seconds)
