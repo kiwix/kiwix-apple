@@ -3,6 +3,8 @@
 This is the home for Kiwix apps for Apple iOS and macOS.
 
 [![CodeFactor](https://www.codefactor.io/repository/github/kiwix/apple/badge)](https://www.codefactor.io/repository/github/kiwix/apple)
+[![CI Build Status](https://github.com/kiwix/apple/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/kiwix/apple/actions/workflows/ci.yml?query=branch%3Amain)
+[![CD Build Status](https://github.com/kiwix/apple/actions/workflows/cd.yml/badge.svg?branch=main)](https://github.com/kiwix/apple/actions/workflows/cd?query=branch%3Amain)
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 <img src="https://img.shields.io/badge/Swift-5.2-orange.svg" alt="Drawing="/>
 
