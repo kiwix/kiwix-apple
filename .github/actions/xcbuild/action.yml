@@ -113,12 +113,8 @@ runs:
         XC_SCHEME: ${{ inputs.XC_SCHEME }}
       shell: bash
       run: xcrun xcodebuild -workspace $XC_WORKSPACE -scheme $XC_SCHEME -showBuildSettings
+
     # build is launched up to twice as it's common the build fails, looking for CoreKiwix module
-
-    - name: Install retry command
-      shell: bash
-      run: brew install kadwanev/brew/retry
-
     - name: Build with Xcode
       env:
         FRAMEWORK_SEARCH_PATHS: ${{ env.PWD }}
@@ -130,4 +126,4 @@ runs:
         XC_DESTINATION: ${{ inputs.xc-destination }}
         EXTRA_XCODEBUILD: ${{ inputs.EXTRA_XCODEBUILD }}
       shell: bash
-      run: retry -t 2 -- xcrun xcodebuild ${EXTRA_XCODEBUILD} -workspace $XC_WORKSPACE -scheme $XC_SCHEME -destination "$XC_DESTINATION" -configuration $XC_CONFIG -onlyUsePackageVersionsFromResolvedFile -allowProvisioningUpdates -verbose -archivePath $PWD/Kiwix-$VERSION.xcarchive ${ACTION}
+      run: python .github/retry-if-retcode.py --sleep 60 --attempts 5 --retcode 65 xcrun xcodebuild ${EXTRA_XCODEBUILD} -workspace $XC_WORKSPACE -scheme $XC_SCHEME -destination "$XC_DESTINATION" -configuration $XC_CONFIG -onlyUsePackageVersionsFromResolvedFile -allowProvisioningUpdates -verbose -archivePath $PWD/Kiwix-$VERSION.xcarchive ${ACTION}
