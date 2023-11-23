@@ -22,6 +22,7 @@ jobs:
     runs-on: macos-13
     strategy:
       fail-fast: false
+      max-parallel: 1
       matrix:
         destination:
           - platform: macOS
