@@ -40,7 +40,6 @@
 		973A0DE8281DD7EB00B41E71 /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9779A7E224567A5A00F6F6FF /* Log.swift */; };
 		973A0DEB281DDBB600B41E71 /* ZimFilesDownloads.swift in Sources */ = {isa = PBXBuildFile; fileRef = 973A0DE9281DDBB600B41E71 /* ZimFilesDownloads.swift */; };
 		973A0DF1282E981200B41E71 /* ZimFileRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 973A0DEF282E981200B41E71 /* ZimFileRow.swift */; };
-		973A0DF72830929C00B41E71 /* Kiwix.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 97E94B1D271EF250005B0295 /* Kiwix.xcassets */; };
 		973A0DFD283100C300B41E71 /* ZimFilesOpened.swift in Sources */ = {isa = PBXBuildFile; fileRef = 973A0DFB283100C300B41E71 /* ZimFilesOpened.swift */; };
 		973A0E032831057200B41E71 /* URL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97B3BACD2736CE3500A23F49 /* URL.swift */; };
 		9744068728CE263800916BD4 /* DirectoryMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9779A5CF2456796A00F6F6FF /* DirectoryMonitor.swift */; };
@@ -103,6 +102,7 @@
 		980179542B0E402C00E8E1E2 /* kiwix.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 980179532B0E402C00E8E1E2 /* kiwix.xcconfig */; };
 		980179562B0E403E00E8E1E2 /* dwds.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 980179552B0E403E00E8E1E2 /* dwds.xcconfig */; };
 		980179592B0EA60200E8E1E2 /* DWDS_2023-11.zim in Resources */ = {isa = PBXBuildFile; fileRef = 980179582B0EA60200E8E1E2 /* DWDS_2023-11.zim */; };
+		983A3F562B129F6B000E7A51 /* Kiwix.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 983A3F552B129F6B000E7A51 /* Kiwix.xcassets */; };
 		983ED7192B08AFE700409078 /* Kiwix-Bridging-Header.h in Sources */ = {isa = PBXBuildFile; fileRef = 9779A5D02456796A00F6F6FF /* Kiwix-Bridging-Header.h */; platformFilter = ios; };
 		98AB9E022B121CF8007693C1 /* Launch.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 98AB9E012B121CF8007693C1 /* Launch.storyboard */; platformFilter = ios; };
 		98FBF3A82B0D5ADB00B70826 /* Kiwix-Bridging-Header.h in Sources */ = {isa = PBXBuildFile; fileRef = 9779A5D02456796A00F6F6FF /* Kiwix-Bridging-Header.h */; platformFilter = ios; };
@@ -316,7 +316,6 @@
 		97DE2BA1283A8E5C00C63D9B /* LibraryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryViewModel.swift; sourceTree = "<group>"; };
 		97DE2BA4283A944100C63D9B /* GridCommon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GridCommon.swift; sourceTree = "<group>"; };
 		97E88F4C2AE407320037F0E5 /* CoreKiwix.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = CoreKiwix.xcframework; sourceTree = SOURCE_ROOT; };
-		97E94B1D271EF250005B0295 /* Kiwix.xcassets */ = {isa = PBXFileReference; explicitFileType = wrapper.application; path = Kiwix.xcassets; sourceTree = "<group>"; };
 		97E94B22271EF250005B0295 /* Kiwix.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Kiwix.entitlements; sourceTree = "<group>"; };
 		97F3332E28AFC1A2007FF53C /* SearchResults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResults.swift; sourceTree = "<group>"; };
 		97F425C127151A0D00D0F738 /* QuickLook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuickLook.framework; path = System/Library/Frameworks/QuickLook.framework; sourceTree = SDKROOT; };
@@ -327,6 +326,7 @@
 		980179532B0E402C00E8E1E2 /* kiwix.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = kiwix.xcconfig; sourceTree = "<group>"; };
 		980179552B0E403E00E8E1E2 /* dwds.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = dwds.xcconfig; sourceTree = "<group>"; };
 		980179582B0EA60200E8E1E2 /* DWDS_2023-11.zim */ = {isa = PBXFileReference; lastKnownFileType = file; path = "DWDS_2023-11.zim"; sourceTree = "<group>"; };
+		983A3F552B129F6B000E7A51 /* Kiwix.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Kiwix.xcassets; sourceTree = "<group>"; };
 		98AB9E012B121CF8007693C1 /* Launch.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Launch.storyboard; sourceTree = "<group>"; };
 		98FBF4022B0D5ADB00B70826 /* DWDS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DWDS.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		98FBF4032B0D5ADB00B70826 /* DWDS-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "DWDS-Info.plist"; path = "/Users/balazs/dev/ios/kiwix-fork/DWDS-Info.plist"; sourceTree = "<absolute>"; };
@@ -657,10 +657,10 @@
 		97E94B26271EF359005B0295 /* Support */ = {
 			isa = PBXGroup;
 			children = (
+				983A3F552B129F6B000E7A51 /* Kiwix.xcassets */,
 				98AB9E012B121CF8007693C1 /* Launch.storyboard */,
 				980179572B0EA5DF00E8E1E2 /* DWDS */,
 				98FBF4042B0D5C2A00B70826 /* DWDS.xcassets */,
-				97E94B1D271EF250005B0295 /* Kiwix.xcassets */,
 				9713F7782AE416E5007DD9EC /* CoreKiwix.modulemap */,
 				97B707042974637200562392 /* Info.plist */,
 				9735B88B279D9A74005F0D1A /* injection.js */,
@@ -834,9 +834,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				973A0DF72830929C00B41E71 /* Kiwix.xcassets in Resources */,
 				980179542B0E402C00E8E1E2 /* kiwix.xcconfig in Resources */,
 				979D3A7C284159BF00E396B8 /* injection.js in Resources */,
+				983A3F562B129F6B000E7A51 /* Kiwix.xcassets in Resources */,
 				97DE2BAD283B133700C63D9B /* wikipedia_dark.css in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
