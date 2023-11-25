@@ -29,10 +29,10 @@ struct Kiwix: App {
         }.commands {
             SidebarCommands()
             CommandGroup(replacing: .importExport) {
-                OpenFileButton(context: .command) { Text("Open...") }
+                OpenFileButton(context: .command) { Text("Open...".localized) }
             }
             CommandGroup(replacing: .newItem) {
-                Button("New Tab") {
+                Button("New Tab".localized) {
                     guard let currentWindow = NSApp.keyWindow,
                           let controller = currentWindow.windowController else { return }
                     controller.newWindowForTab(nil)
@@ -91,12 +91,12 @@ struct RootView: View {
         NavigationView {
             List(selection: $navigation.currentItem) {
                 ForEach(primaryItems, id: \.self) { navigationItem in
-                    Label(navigationItem.name, systemImage: navigationItem.icon)
+                    Label(navigationItem.name.localized, systemImage: navigationItem.icon)
                 }
                 if FeatureFlags.hasLibrary {
-                    Section("Library") {
+                    Section("Library".localized) {
                         ForEach(libraryItems, id: \.self) { navigationItem in
-                            Label(navigationItem.name, systemImage: navigationItem.icon)
+                            Label(navigationItem.name.localized, systemImage: navigationItem.icon)
                         }
                     }
                 }
@@ -108,7 +108,7 @@ struct RootView: View {
                     responder.tryToPerform(#selector(NSSplitViewController.toggleSidebar(_:)), with: nil)
                 } label: {
                     Image(systemName: "sidebar.leading")
-                }.help("Show sidebar")
+                }.help("Show sidebar".localized)
             }
             switch navigation.currentItem {
             case .reading:

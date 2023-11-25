@@ -18,30 +18,30 @@ struct ReadingSettings: View {
     
     var body: some View {
         VStack(spacing: 16) {
-            SettingSection(name: "Page zoom") {
+            SettingSection(name: "Page zoom".localized) {
                 HStack {
                     Stepper(webViewPageZoom.formatted(.percent), value: $webViewPageZoom, in: 0.5...2, step: 0.05)
                     Spacer()
-                    Button("Reset") { webViewPageZoom = 1 }.disabled(webViewPageZoom == 1)
+                    Button("Reset".localized) { webViewPageZoom = 1 }.disabled(webViewPageZoom == 1)
                 }
             }
-            SettingSection(name: "External link") {
+            SettingSection(name: "External link".localized) {
                 Picker(selection: $externalLinkLoadingPolicy) {
                     ForEach(ExternalLinkLoadingPolicy.allCases) { loadingPolicy in
-                        Text(loadingPolicy.name).tag(loadingPolicy)
+                        Text(loadingPolicy.name.localized).tag(loadingPolicy)
                     }
                 } label: { }
             }
-            SettingSection(name: "Search snippet") {
+            SettingSection(name: "Search snippet".localized) {
                 Picker(selection: $searchResultSnippetMode) {
                     ForEach(SearchResultSnippetMode.allCases) { snippetMode in
-                        Text(snippetMode.name).tag(snippetMode)
+                        Text(snippetMode.name.localized).tag(snippetMode)
                     }
                 } label: { }
             }
         }
         .padding()
-        .tabItem { Label("Reading", systemImage: "book") }
+        .tabItem { Label("Reading".localized, systemImage: "book") }
     }
 }
 
@@ -51,30 +51,30 @@ struct LibrarySettings: View {
     
     var body: some View {
         VStack(spacing: 16) {
-            SettingSection(name: "Catalog") {
+            SettingSection(name: "Catalog".localized) {
                 HStack(spacing: 6) {
-                    Button("Refresh Now") {
+                    Button("Refresh Now".localized) {
                         library.start(isUserInitiated: true)
                     }.disabled(library.isInProgress)
                     if library.isInProgress {
                         ProgressView().progressViewStyle(.circular).scaleEffect(0.5).frame(height: 1)
                     }
                     Spacer()
-                    Text("Last refresh:").foregroundColor(.secondary)
+                    Text("Last refresh".localized + ":").foregroundColor(.secondary)
                     LibraryLastRefreshTime().foregroundColor(.secondary)
                 }
                 VStack(alignment: .leading) {
-                    Toggle("Auto refresh", isOn: $libraryAutoRefresh)
-                    Text("When enabled, the library catalog will be refreshed automatically when outdated.")
+                    Toggle("Auto refresh".localized, isOn: $libraryAutoRefresh)
+                    Text("When enabled, the library catalog will be refreshed automatically when outdated.".localized)
                         .foregroundColor(.secondary)
                 }
             }
-            SettingSection(name: "Languages", alignment: .top) {
+            SettingSection(name: "Languages".localized, alignment: .top) {
                 LanguageSelector()
             }
         }
         .padding()
-        .tabItem { Label("Library", systemImage: "folder.badge.gearshape") }
+        .tabItem { Label("Library".localized, systemImage: "folder.badge.gearshape") }
     }
 }
 
@@ -127,30 +127,31 @@ struct Settings: View {
                 miscellaneous
             }
             .modifier(ToolbarRoleBrowser())
-            .navigationTitle("Settings")
+            .navigationTitle("Settings".localized)
         } else {
             List {
                 readingSettings
                 miscellaneous
             }
             .modifier(ToolbarRoleBrowser())
-            .navigationTitle("Settings")
+            .navigationTitle("Settings".localized)
         }
     }
     
     var readingSettings: some View {
-        Section("Reading") {
+        Section("Reading".localized) {
             Stepper(value: $webViewPageZoom, in: 0.5...2, step: 0.05) {
-                Text("Page zoom: \(Formatter.percent.string(from: NSNumber(value: webViewPageZoom)) ?? "")")
+                Text("Page zoom".localized + 
+                     ": \(Formatter.percent.string(from: NSNumber(value: webViewPageZoom)) ?? "")")
             }
-            Picker("External link", selection: $externalLinkLoadingPolicy) {
+            Picker("External link".localized, selection: $externalLinkLoadingPolicy) {
                 ForEach(ExternalLinkLoadingPolicy.allCases) { loadingPolicy in
-                    Text(loadingPolicy.name).tag(loadingPolicy)
+                    Text(loadingPolicy.name.localized).tag(loadingPolicy)
                 }
             }
-            Picker("Search snippet", selection: $searchResultSnippetMode) {
+            Picker("Search snippet".localized, selection: $searchResultSnippetMode) {
                 ForEach(SearchResultSnippetMode.allCases) { snippetMode in
-                    Text(snippetMode.name).tag(snippetMode)
+                    Text(snippetMode.name.localized).tag(snippetMode)
                 }
             }
         }
@@ -163,58 +164,58 @@ struct Settings: View {
             } label: {
                 SelectedLanaguageLabel()
             }
-            Toggle("Download using cellular", isOn: $downloadUsingCellular)
+            Toggle("Download using cellular".localized, isOn: $downloadUsingCellular)
         } header: {
-            Text("Library")
+            Text("Library".localized)
         } footer: {
-            Text("Change will only apply to new download tasks.")
+            Text("Change will only apply to new download tasks.".localized)
         }
     }
     
     var catalogSettings: some View {
         Section {
             HStack {
-                Text("Last refresh")
+                Text("Last refresh".localized)
                 Spacer()
                 LibraryLastRefreshTime().foregroundColor(.secondary)
             }
             if library.isInProgress {
                 HStack {
-                    Text("Refreshing...").foregroundColor(.secondary)
+                    Text("Refreshing...".localized).foregroundColor(.secondary)
                     Spacer()
                     ProgressView().progressViewStyle(.circular)
                 }
             } else {
-                Button("Refresh Now") {
+                Button("Refresh Now".localized) {
                     library.start(isUserInitiated: true)
                 }
             }
-            Toggle("Auto refresh", isOn: $libraryAutoRefresh)
+            Toggle("Auto refresh".localized, isOn: $libraryAutoRefresh)
         } header: {
-            Text("Catalog")
+            Text("Catalog".localized)
         } footer: {
-            Text("When enabled, the library catalog will be refreshed automatically when outdated.")
+            Text("When enabled, the library catalog will be refreshed automatically when outdated.".localized)
         }.onChange(of: libraryAutoRefresh) { LibraryOperations.applyLibraryAutoRefreshSetting(isEnabled: $0) }
     }
     
     var backupSettings: some View {
         Section {
-            Toggle("Include zim files in backup", isOn: $backupDocumentDirectory)
+            Toggle("Include zim files in backup".localized, isOn: $backupDocumentDirectory)
         } header: {
-            Text("Backup")
+            Text("Backup".localized)
         } footer: {
-            Text("Does not apply to files opened in place.")
+            Text("Does not apply to files opened in place.".localized)
         }.onChange(of: backupDocumentDirectory) { LibraryOperations.applyFileBackupSetting(isEnabled: $0) }
     }
     
     var miscellaneous: some View {
-        Section("Misc") {
-            Button("Feedback") { UIApplication.shared.open(URL(string: "mailto:feedback@kiwix.org")!) }
-            Button("Rate the App") {
+        Section("Misc".localized) {
+            Button("Feedback".localized) { UIApplication.shared.open(URL(string: "mailto:feedback@kiwix.org")!) }
+            Button("Rate the App".localized) {
                 let url = URL(string: "itms-apps://itunes.apple.com/us/app/kiwix/id997079563?action=write-review")!
                 UIApplication.shared.open(url)
             }
-            NavigationLink("About") { About() }
+            NavigationLink("About".localized) { About() }
         }
     }
 }
@@ -224,7 +225,7 @@ private struct SelectedLanaguageLabel: View {
     
     var body: some View {
         HStack {
-            Text("Languages")
+            Text("Languages".localized)
             Spacer()
             if languageCodes.count == 1,
                let languageCode = languageCodes.first,

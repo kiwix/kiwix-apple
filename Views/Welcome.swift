@@ -67,7 +67,7 @@ struct Welcome: View {
                 alignment: .leading,
                 spacing: 12
             ) {
-                GridSection(title: "Main Page") {
+                GridSection(title: "Main Page".localized) {
                     ForEach(zimFiles) { zimFile in
                         Button {
                             guard let url = ZimFileService.shared.getMainPageURL(zimFileID: zimFile.fileID) else { return }
@@ -78,7 +78,7 @@ struct Welcome: View {
                     }
                 }
                 if !bookmarks.isEmpty {
-                    GridSection(title: "Bookmarks") {
+                    GridSection(title: "Bookmarks".localized) {
                         ForEach(bookmarks.prefix(6)) { bookmark in
                             Button {
                                 browser.load(url: bookmark.articleURL)
@@ -112,7 +112,7 @@ struct Welcome: View {
             OpenFileButton(context: .onBoarding) {
                 HStack {
                     Spacer()
-                    Text("Open File")
+                    Text("Open File".localized)
                     Spacer()
                 }.padding(6)
             }
@@ -123,15 +123,15 @@ struct Welcome: View {
                     Spacer()
                     if library.isInProgress {
                         #if os(macOS)
-                        Text("Fetching...")
+                        Text("Fetching...".localized)
                         #elseif os(iOS)
                         HStack(spacing: 6) {
                             ProgressView().frame(maxHeight: 10)
-                            Text("Fetching...")
+                            Text("Fetching...".localized)
                         }
                         #endif
                     } else {
-                        Text("Fetch Catalog")
+                        Text("Fetch Catalog".localized)
                     }
                     Spacer()
                 }.padding(6)

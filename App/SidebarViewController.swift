@@ -94,7 +94,7 @@ class SidebarViewController: UICollectionViewController, NSFetchedResultsControl
             },
             menu: UIMenu(children: [
                 UIAction(
-                    title: "Close This Tab",
+                    title: "Close This Tab".localized,
                     image: UIImage(systemName: "xmark.square"),
                     attributes: .destructive
                 ) { [unowned self] _ in
@@ -103,7 +103,7 @@ class SidebarViewController: UICollectionViewController, NSFetchedResultsControl
                     splitViewController.navigationViewModel.deleteTab(tabID: tabID)
                 },
                 UIAction(
-                    title: "Close All Tabs",
+                    title: "Close All Tabs".localized,
                     image: UIImage(systemName: "xmark.square.fill"),
                     attributes: .destructive
                 ) { [unowned self] _ in
@@ -198,11 +198,11 @@ class SidebarViewController: UICollectionViewController, NSFetchedResultsControl
         switch section {
         case .tabs:
             var config = UIListContentConfiguration.sidebarHeader()
-            config.text = "Tabs"
+            config.text = "Tabs".localized
             headerView.contentConfiguration = config
         case .library:
             var config = UIListContentConfiguration.sidebarHeader()
-            config.text = "Library"
+            config.text = "Library".localized
             headerView.contentConfiguration = config
         default:
             headerView.contentConfiguration = nil
@@ -213,7 +213,7 @@ class SidebarViewController: UICollectionViewController, NSFetchedResultsControl
         guard let splitViewController = splitViewController as? SplitViewController,
               let item = dataSource.itemIdentifier(for: indexPath),
               case let .tab(tabID) = item else { return nil }
-        let action = UIContextualAction(style: .destructive, title: "Close") { _, _, _ in
+        let action = UIContextualAction(style: .destructive, title: "Close".localized) { _, _, _ in
             splitViewController.navigationViewModel.deleteTab(tabID: tabID)
         }
         action.image = UIImage(systemName: "xmark")

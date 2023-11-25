@@ -1,0 +1,129 @@
+name: Build with XCode
+description: Run xcodebuild for Kiwix
+
+inputs:
+  action:
+    required: true
+  version:
+    required: true
+  xc-destination:
+    required: true
+  upload-to:
+    required: true
+  libkiwix-version:
+    required: true
+  APPLE_DEVELOPMENT_SIGNING_CERTIFICATE:
+    required: true
+  APPLE_DEVELOPMENT_SIGNING_P12_PASSWORD:
+    required: true
+  DEPLOYMENT_SIGNING_CERTIFICATE:
+    required: false
+  DEPLOYMENT_SIGNING_CERTIFICATE_P12_PASSWORD:
+    required: false
+  KEYCHAIN:
+    required: false
+    default: /Users/runner/build.keychain-db
+  KEYCHAIN_PASSWORD:
+    required: false
+    default: mysecretpassword
+  KEYCHAIN_PROFILE:
+    required: false
+    default: build-profile
+  XC_WORKSPACE:
+    required: false
+    default: Kiwix.xcodeproj/project.xcworkspace/
+  XC_SCHEME:
+    required: false
+    default: Kiwix
+  XC_CONFIG:
+    required: false
+    default: Release
+  EXTRA_XCODEBUILD:
+    required: false
+    default: ""
+
+runs:
+  using: composite
+  steps:
+
+    # not necessary on github runner but serves as documentation for local setup
+    - name: Update Apple Intermediate Certificate
+      shell: bash
+      run: |
+        curl -L -o ~/Downloads/AppleWWDRCAG3.cer https://www.apple.com/certificateauthority/AppleWWDRCAG3.cer
+        sudo security import ~/Downloads/AppleWWDRCAG3.cer \
+          -k /Library/Keychains/System.keychain \
+          -T /usr/bin/codesign \
+          -T /usr/bin/security \
+          -T /usr/bin/productbuild || true
+
+    - name: Set Xcode version (15.0.1)
+      shell: bash
+      # https://github.com/actions/runner-images/blob/main/images/macos/macos-13-Readme.md#xcode
+      run: sudo xcode-select -s /Applications/Xcode_15.0.1.app
+
+    - name: Create Keychain
+      shell: bash
+      env:
+        KEYCHAIN: ${{ inputs.KEYCHAIN }}
+        KEYCHAIN_PASSWORD: ${{ inputs.KEYCHAIN_PASSWORD }}
+        KEYCHAIN_PROFILE: ${{ inputs.KEYCHAIN_PROFILE }}
+        CERTIFICATE_PATH: /tmp/cert.p12
+        APPLE_DEVELOPER_CERTIFICATE_PATH: /tmp/dev-cert.p12
+        SIGNING_CERTIFICATE: ${{ inputs.SIGNING_CERTIFICATE }}
+        SIGNING_CERTIFICATE_P12_PASSWORD: ${{ inputs.SIGNING_CERTIFICATE_P12_PASSWORD }}
+        APPLE_DEVELOPER_ID_SIGNING_CERTIFICATE: ${{ inputs.APPLE_DEVELOPER_ID_SIGNING_CERTIFICATE }}
+        APPLE_DEVELOPER_ID_SIGNING_P12_PASSWORD: ${{ inputs.APPLE_DEVELOPER_ID_SIGNING_P12_PASSWORD }}
+      run: |
+        security create-keychain -p $KEYCHAIN_PASSWORD $KEYCHAIN
+        security default-keychain -s $KEYCHAIN
+        security set-keychain-settings $KEYCHAIN
+        security unlock-keychain -p $KEYCHAIN_PASSWORD $KEYCHAIN
+
+    - name: Add Apple Development certificate to Keychain
+      uses: ./.github/actions/install-cert
+      with:
+        SIGNING_CERTIFICATE: ${{ inputs.APPLE_DEVELOPMENT_SIGNING_CERTIFICATE }}
+        SIGNING_CERTIFICATE_P12_PASSWORD: ${{ inputs.APPLE_DEVELOPMENT_SIGNING_P12_PASSWORD }}
+        KEYCHAIN: ${{ inputs.KEYCHAIN }}
+        KEYCHAIN_PASSWORD: ${{ inputs.KEYCHAIN_PASSWORD }}
+
+    - name: Add Distribution certificate to Keychain
+      if: ${{ inputs.DEPLOYMENT_SIGNING_CERTIFICATE }}
+      uses: ./.github/actions/install-cert
+      with:
+        SIGNING_CERTIFICATE: ${{ inputs.DEPLOYMENT_SIGNING_CERTIFICATE }}
+        SIGNING_CERTIFICATE_P12_PASSWORD: ${{ inputs.DEPLOYMENT_SIGNING_CERTIFICATE_P12_PASSWORD }}
+        KEYCHAIN: ${{ inputs.KEYCHAIN }}
+        KEYCHAIN_PASSWORD: ${{ inputs.KEYCHAIN_PASSWORD }}
+
+    - name: Download CoreKiwix.xcframework
+      env:
+        XCF_URL: https://download.kiwix.org/release/libkiwix/libkiwix_xcframework-${{ inputs.libkiwix-version }}.tar.gz
+      shell: bash
+      run: curl -L -o - $XCF_URL | tar -x --strip-components 2
+
+    - name: Prepare Xcode
+      shell: bash
+      run: xcrun xcodebuild -checkFirstLaunchStatus || xcrun xcodebuild -runFirstLaunch
+
+    - name: Dump build settings
+      env:
+        XC_WORKSPACE: ${{ inputs.XC_WORKSPACE }}
+        XC_SCHEME: ${{ inputs.XC_SCHEME }}
+      shell: bash
+      run: xcrun xcodebuild -workspace $XC_WORKSPACE -scheme $XC_SCHEME -showBuildSettings
+
+    # build is launched up to twice as it's common the build fails, looking for CoreKiwix module
+    - name: Build with Xcode
+      env:
+        FRAMEWORK_SEARCH_PATHS: ${{ env.PWD }}
+        ACTION: ${{ inputs.action }}
+        VERSION: ${{ inputs.version }}
+        XC_WORKSPACE: ${{ inputs.XC_WORKSPACE }}
+        XC_SCHEME: ${{ inputs.XC_SCHEME }}
+        XC_CONFIG: ${{ inputs.XC_CONFIG }}
+        XC_DESTINATION: ${{ inputs.xc-destination }}
+        EXTRA_XCODEBUILD: ${{ inputs.EXTRA_XCODEBUILD }}
+      shell: bash
+      run: python .github/retry-if-retcode.py --sleep 60 --attempts 5 --retcode 65 xcrun xcodebuild ${EXTRA_XCODEBUILD} -workspace $XC_WORKSPACE -scheme $XC_SCHEME -destination "$XC_DESTINATION" -configuration $XC_CONFIG -onlyUsePackageVersionsFromResolvedFile -allowProvisioningUpdates -verbose -archivePath $PWD/Kiwix-$VERSION.xcarchive ${ACTION}

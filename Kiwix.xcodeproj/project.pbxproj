@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8E4396462B02E455007F0BC4 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 8E4396492B02E455007F0BC4 /* Localizable.strings */; };
+		8E4396472B02E455007F0BC4 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 8E4396492B02E455007F0BC4 /* Localizable.strings */; };
+		8E43964C2B02E4C6007F0BC4 /* String+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E43964B2B02E4C6007F0BC4 /* String+Extension.swift */; };
+		8E43964D2B02E4C6007F0BC4 /* String+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E43964B2B02E4C6007F0BC4 /* String+Extension.swift */; };
 		97008ABD2974A5BF0076E60C /* OPDSParserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97008ABC2974A5BF0076E60C /* OPDSParserTests.swift */; };
 		9709C0982A8E4C5700E4564C /* Commands.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9709C0972A8E4C5700E4564C /* Commands.swift */; };
 		97121EBE28849F0000371AEB /* ZimFileMissingIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97121EBC28849F0000371AEB /* ZimFileMissingIndicator.swift */; };
@@ -216,6 +220,11 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		8E4396442B02E443007F0BC4 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Main.strings; sourceTree = "<group>"; };
+		8E4396452B02E443007F0BC4 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
+		8E4396482B02E455007F0BC4 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		8E43964A2B02E458007F0BC4 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Localizable.strings; sourceTree = "<group>"; };
+		8E43964B2B02E4C6007F0BC4 /* String+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extension.swift"; sourceTree = "<group>"; };
 		97008AB42974A5A70076E60C /* WikiMed.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WikiMed.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		97008ABA2974A5BF0076E60C /* Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		97008ABC2974A5BF0076E60C /* OPDSParserTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OPDSParserTests.swift; sourceTree = "<group>"; };
@@ -405,6 +414,7 @@
 				9779A7E224567A5A00F6F6FF /* Log.swift */,
 				97B3BACD2736CE3500A23F49 /* URL.swift */,
 				9779A73A2456796B00F6F6FF /* WebKitHandler.swift */,
+				8E43964B2B02E4C6007F0BC4 /* String+Extension.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -499,8 +509,8 @@
 		974E7EE22930201500BDF59C /* ZimFileService */ = {
 			isa = PBXGroup;
 			children = (
-				974E7EE32930201500BDF59C /* ZimFileService.mm */,
 				974E7EE42930201500BDF59C /* ZimFileService.h */,
+				974E7EE32930201500BDF59C /* ZimFileService.mm */,
 				974E7EE52930201500BDF59C /* ZimFileService.swift */,
 			);
 			path = ZimFileService;
@@ -667,6 +677,7 @@
 				97E94B22271EF250005B0295 /* Kiwix.entitlements */,
 				9779A5D02456796A00F6F6FF /* Kiwix-Bridging-Header.h */,
 				970885D0271339A300C5795C /* wikipedia_dark.css */,
+				8E4396492B02E455007F0BC4 /* Localizable.strings */,
 				980179532B0E402C00E8E1E2 /* kiwix.xcconfig */,
 				980179552B0E403E00E8E1E2 /* dwds.xcconfig */,
 			);
@@ -802,6 +813,7 @@
 			knownRegions = (
 				en,
 				Base,
+				es,
 			);
 			mainGroup = 97A2AB7F1C1B80FF00052E74;
 			packageReferences = (
@@ -835,6 +847,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				980179542B0E402C00E8E1E2 /* kiwix.xcconfig in Resources */,
+				8E4396462B02E455007F0BC4 /* Localizable.strings in Resources */,
 				979D3A7C284159BF00E396B8 /* injection.js in Resources */,
 				983A3F562B129F6B000E7A51 /* Kiwix.xcassets in Resources */,
 				97DE2BAD283B133700C63D9B /* wikipedia_dark.css in Resources */,
@@ -846,6 +859,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				97B448A1210FBC2E0004B056 /* LaunchScreen.storyboard in Resources */,
+				8E4396472B02E455007F0BC4 /* Localizable.strings in Resources */,
 				97B4489E210FBC2E0004B056 /* Assets.xcassets in Resources */,
 				97B4489C210FBC2C0004B056 /* Main.storyboard in Resources */,
 			);
@@ -960,6 +974,7 @@
 			files = (
 				983ED7192B08AFE700409078 /* Kiwix-Bridging-Header.h in Sources */,
 				972DE4BB2814A5A4004FD9B9 /* Errors.swift in Sources */,
+				8E43964C2B02E4C6007F0BC4 /* String+Extension.swift in Sources */,
 				9790CA5A28A05EBB00D39FC6 /* ZimFilesCategories.swift in Sources */,
 				97486D08284A42B90096E4DD /* SearchResultRow.swift in Sources */,
 				9753D949285B55F100A626CC /* DefaultKeys.swift in Sources */,
@@ -1044,6 +1059,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				97B44899210FBC2C0004B056 /* ViewController.swift in Sources */,
+				8E43964D2B02E4C6007F0BC4 /* String+Extension.swift in Sources */,
 				97B44897210FBC2C0004B056 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1144,10 +1160,20 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
+		8E4396492B02E455007F0BC4 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				8E4396482B02E455007F0BC4 /* en */,
+				8E43964A2B02E458007F0BC4 /* es */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
 		97B4489A210FBC2C0004B056 /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
 				97B4489B210FBC2C0004B056 /* Base */,
+				8E4396442B02E443007F0BC4 /* es */,
 			);
 			name = Main.storyboard;
 			sourceTree = "<group>";
@@ -1156,6 +1182,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				97B448A0210FBC2E0004B056 /* Base */,
+				8E4396452B02E443007F0BC4 /* es */,
 			);
 			name = LaunchScreen.storyboard;
 			sourceTree = "<group>";
