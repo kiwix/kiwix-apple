@@ -46,7 +46,13 @@ final class BrowserViewModel: NSObject, ObservableObject,
     @Published private(set) var articleBookmarked = false
     @Published private(set) var outlineItems = [OutlineItem]()
     @Published private(set) var outlineItemTree = [OutlineItem]()
-    @Published private(set) var url: URL?
+    @Published private(set) var url: URL? {
+        didSet {
+            if !FeatureFlags.hasLibrary, url == nil {
+                loadMainArticle()
+            }
+        }
+    }
     @Published var externalURL: URL?
 
     private(set) var tabID: NSManagedObjectID? {

@@ -59,7 +59,7 @@ struct BrowserTab: View {
     struct Content: View {
         @Environment(\.isSearching) private var isSearching
         @EnvironmentObject private var browser: BrowserViewModel
-        
+
         var body: some View {
             GeometryReader { proxy in
                 Group {
@@ -70,7 +70,7 @@ struct BrowserTab: View {
                             #elseif os(iOS)
                             .environment(\.horizontalSizeClass, proxy.size.width > 750 ? .regular : .compact)
                             #endif
-                    } else if browser.url == nil {
+                    } else if browser.url == nil && FeatureFlags.hasLibrary {
                         Welcome()
                     } else {
                         WebView().ignoresSafeArea()

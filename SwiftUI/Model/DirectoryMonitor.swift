@@ -24,7 +24,6 @@ class DirectoryMonitor {
     init(url: URL, onChange: ((URL) -> Void)? = nil) {
         self.url = url
         self.onChange = onChange
-        start()
     }
     
     // MARK: Monitoring

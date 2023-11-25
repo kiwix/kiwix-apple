@@ -21,15 +21,8 @@ struct Kiwix: App {
     
     init() {
         fileMonitor = DirectoryMonitor(url: URL.documentDirectory) { LibraryOperations.scanDirectory($0) }
+        LibraryOperations.registerBackgroundTask()
         UNUserNotificationCenter.current().delegate = appDelegate
-        if FeatureFlags.hasLibrary {
-            LibraryOperations.reopen()
-            LibraryOperations.scanDirectory(URL.documentDirectory)
-            LibraryOperations.applyFileBackupSetting()
-            LibraryOperations.registerBackgroundTask()
-            LibraryOperations.applyLibraryAutoRefreshSetting()
-            DownloadService.shared.restartHeartbeatIfNeeded()
-        }
     }
     
     var body: some Scene {
@@ -50,6 +43,23 @@ struct Kiwix: App {
                         NotificationCenter.openFiles([url], context: .file)
                     } else if url.scheme == "kiwix" {
                         NotificationCenter.openURL(url)
+                    }
+                }
+                .task {
+                    if FeatureFlags.hasLibrary {
+                        fileMonitor.start()
+                        LibraryOperations.reopen()
+                        LibraryOperations.scanDirectory(URL.documentDirectory)
+                        LibraryOperations.applyFileBackupSetting()
+                        LibraryOperations.applyLibraryAutoRefreshSetting()
+                        DownloadService.shared.restartHeartbeatIfNeeded()
+                        navigation.navigateToMostRecentTab()
+                    } else if let url = Brand.mainZimFileURL {
+                        LibraryOperations.open(url: url) {
+                            navigation.navigateToMostRecentTab()
+                        }
+                    } else {
+                        assertionFailure("App should support library, or should have a main zip file")
                     }
                 }
         }

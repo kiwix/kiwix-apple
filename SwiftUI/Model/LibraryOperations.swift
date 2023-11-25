@@ -24,7 +24,7 @@ struct LibraryOperations {
     /// Open a zim file with url
     /// - Parameter url: url of the zim file
     @discardableResult
-    static func open(url: URL) -> ZimFileMetaData? {
+    static func open(url: URL, onComplete: (() -> Void)? = nil) -> ZimFileMetaData? {
         guard let metadata = ZimFileService.getMetaData(url: url),
               let fileURLBookmark = ZimFileService.getBookmarkData(url: url) else { return nil }
         
@@ -45,6 +45,9 @@ struct LibraryOperations {
             zimFile.fileURLBookmark = fileURLBookmark
             zimFile.isMissing = false
             if context.hasChanges { try? context.save() }
+            DispatchQueue.main.async {
+                onComplete?()
+            }
         }
         
         return metadata

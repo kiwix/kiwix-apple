@@ -12,13 +12,12 @@ import WebKit
 @MainActor
 class NavigationViewModel: ObservableObject {
     @Published var currentItem: NavigationItem?
-    @Published var readingURL: URL?
 
     init() {
         #if os(macOS)
         currentItem = .reading
         #elseif os(iOS)
-        navigateToMostRecentTab()
+        currentItem = .loading
         #endif
     }
     
@@ -55,11 +54,9 @@ class NavigationViewModel: ObservableObject {
 
     @MainActor
     func tabIDFor(url: URL?) -> NSManagedObjectID {
-        guard let url else {
-            return createTab()
-        }
-        let coordinator = Database.viewContext.persistentStoreCoordinator
-        guard let tabID = coordinator?.managedObjectID(forURIRepresentation: url) else {
+        guard let url,
+              let coordinator = Database.viewContext.persistentStoreCoordinator,
+              let tabID = coordinator.managedObjectID(forURIRepresentation: url) else {
             return createTab()
         }
         return tabID
