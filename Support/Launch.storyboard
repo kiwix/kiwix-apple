@@ -25,8 +25,8 @@
                         <constraints>
                             <constraint firstItem="sT8-B9-Wfi" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="aRd-zN-Ayu"/>
                             <constraint firstItem="sT8-B9-Wfi" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="dcs-vi-a5t"/>
-                            <constraint firstItem="sT8-B9-Wfi" firstAttribute="height" relation="lessThanOrEqual" secondItem="Bcu-3y-fUS" secondAttribute="height" multiplier="0.309" id="haJ-Ad-xti"/>
-                            <constraint firstItem="sT8-B9-Wfi" firstAttribute="width" relation="lessThanOrEqual" secondItem="Bcu-3y-fUS" secondAttribute="width" multiplier="0.309" id="igy-km-Y48"/>
+                            <constraint firstItem="sT8-B9-Wfi" firstAttribute="height" relation="lessThanOrEqual" secondItem="Bcu-3y-fUS" secondAttribute="height" multiplier="0.618" id="haJ-Ad-xti"/>
+                            <constraint firstItem="sT8-B9-Wfi" firstAttribute="width" relation="lessThanOrEqual" secondItem="Bcu-3y-fUS" secondAttribute="width" multiplier="0.618" id="igy-km-Y48"/>
                         </constraints>
                     </view>
                 </viewController>
