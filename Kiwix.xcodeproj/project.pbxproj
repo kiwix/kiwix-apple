@@ -105,10 +105,12 @@
 		980179522B0DF42100E8E1E2 /* Brand.swift in Sources */ = {isa = PBXBuildFile; fileRef = 980179502B0DF42100E8E1E2 /* Brand.swift */; };
 		980179542B0E402C00E8E1E2 /* kiwix.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 980179532B0E402C00E8E1E2 /* kiwix.xcconfig */; };
 		980179562B0E403E00E8E1E2 /* dwds.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 980179552B0E403E00E8E1E2 /* dwds.xcconfig */; };
-		980179592B0EA60200E8E1E2 /* DWDS_2023-11.zim in Resources */ = {isa = PBXBuildFile; fileRef = 980179582B0EA60200E8E1E2 /* DWDS_2023-11.zim */; };
 		983A3F562B129F6B000E7A51 /* Kiwix.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 983A3F552B129F6B000E7A51 /* Kiwix.xcassets */; };
 		983ED7192B08AFE700409078 /* Kiwix-Bridging-Header.h in Sources */ = {isa = PBXBuildFile; fileRef = 9779A5D02456796A00F6F6FF /* Kiwix-Bridging-Header.h */; platformFilter = ios; };
 		98AB9E022B121CF8007693C1 /* Launch.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 98AB9E012B121CF8007693C1 /* Launch.storyboard */; platformFilter = ios; };
+		98AF8F9F2B12B241000125E1 /* dwds_de_dictionary_nopic_2023-11-20.zim in Resources */ = {isa = PBXBuildFile; fileRef = 98AF8F9E2B12B241000125E1 /* dwds_de_dictionary_nopic_2023-11-20.zim */; };
+		98AF8FA02B12B282000125E1 /* String+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E43964B2B02E4C6007F0BC4 /* String+Extension.swift */; };
+		98AF8FA12B12B2BC000125E1 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 8E4396492B02E455007F0BC4 /* Localizable.strings */; };
 		98FBF3A82B0D5ADB00B70826 /* Kiwix-Bridging-Header.h in Sources */ = {isa = PBXBuildFile; fileRef = 9779A5D02456796A00F6F6FF /* Kiwix-Bridging-Header.h */; platformFilter = ios; };
 		98FBF3A92B0D5ADB00B70826 /* Errors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 973A2FC4277EAA2500BD4320 /* Errors.swift */; };
 		98FBF3AA2B0D5ADB00B70826 /* ZimFilesCategories.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9790CA5828A05EBB00D39FC6 /* ZimFilesCategories.swift */; };
@@ -334,9 +336,9 @@
 		980179502B0DF42100E8E1E2 /* Brand.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Brand.swift; sourceTree = "<group>"; };
 		980179532B0E402C00E8E1E2 /* kiwix.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = kiwix.xcconfig; sourceTree = "<group>"; };
 		980179552B0E403E00E8E1E2 /* dwds.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = dwds.xcconfig; sourceTree = "<group>"; };
-		980179582B0EA60200E8E1E2 /* DWDS_2023-11.zim */ = {isa = PBXFileReference; lastKnownFileType = file; path = "DWDS_2023-11.zim"; sourceTree = "<group>"; };
 		983A3F552B129F6B000E7A51 /* Kiwix.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Kiwix.xcassets; sourceTree = "<group>"; };
 		98AB9E012B121CF8007693C1 /* Launch.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Launch.storyboard; sourceTree = "<group>"; };
+		98AF8F9E2B12B241000125E1 /* dwds_de_dictionary_nopic_2023-11-20.zim */ = {isa = PBXFileReference; lastKnownFileType = file; path = "dwds_de_dictionary_nopic_2023-11-20.zim"; sourceTree = "<group>"; };
 		98FBF4022B0D5ADB00B70826 /* DWDS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DWDS.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		98FBF4032B0D5ADB00B70826 /* DWDS-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "DWDS-Info.plist"; path = "/Users/balazs/dev/ios/kiwix-fork/DWDS-Info.plist"; sourceTree = "<absolute>"; };
 		98FBF4042B0D5C2A00B70826 /* DWDS.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = DWDS.xcassets; sourceTree = "<group>"; };
@@ -687,7 +689,7 @@
 		980179572B0EA5DF00E8E1E2 /* DWDS */ = {
 			isa = PBXGroup;
 			children = (
-				980179582B0EA60200E8E1E2 /* DWDS_2023-11.zim */,
+				98AF8F9E2B12B241000125E1 /* dwds_de_dictionary_nopic_2023-11-20.zim */,
 			);
 			path = DWDS;
 			sourceTree = "<group>";
@@ -871,8 +873,9 @@
 			files = (
 				98FBF3FD2B0D5ADB00B70826 /* injection.js in Resources */,
 				98FBF3FE2B0D5ADB00B70826 /* wikipedia_dark.css in Resources */,
-				980179592B0EA60200E8E1E2 /* DWDS_2023-11.zim in Resources */,
 				980179562B0E403E00E8E1E2 /* dwds.xcconfig in Resources */,
+				98AF8FA12B12B2BC000125E1 /* Localizable.strings in Resources */,
+				98AF8F9F2B12B241000125E1 /* dwds_de_dictionary_nopic_2023-11-20.zim in Resources */,
 				98FBF4052B0D5C2A00B70826 /* DWDS.xcassets in Resources */,
 				98AB9E022B121CF8007693C1 /* Launch.storyboard in Resources */,
 			);
@@ -1110,6 +1113,7 @@
 				98FBF3CF2B0D5ADB00B70826 /* Attribute.swift in Sources */,
 				98FBF3D02B0D5ADB00B70826 /* DownloadTaskCell.swift in Sources */,
 				98FBF3D12B0D5ADB00B70826 /* TabsManagerButton.swift in Sources */,
+				98AF8FA02B12B282000125E1 /* String+Extension.swift in Sources */,
 				98FBF3D22B0D5ADB00B70826 /* ZimFileCell.swift in Sources */,
 				98FBF3D32B0D5ADB00B70826 /* ZimFileMissingIndicator.swift in Sources */,
 				98FBF3D42B0D5ADB00B70826 /* CompactViewController.swift in Sources */,

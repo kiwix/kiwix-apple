@@ -3,4 +3,4 @@
 // Configuration settings file format documentation can be found at:
 // https://help.apple.com/xcode/#/dev745c5c974
 HAS_LIBRARY = false
-ZIM_FILE_MAIN = DWDS_2023-11
+ZIM_FILE_MAIN = dwds_de_dictionary_nopic_2023-11-20
