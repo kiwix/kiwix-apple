@@ -10,6 +10,7 @@ enum FeatureFlags {
     static let wikipediaDarkUserCSS: Bool = false
     static let map: Bool = false
 #endif
-    /// Display or not the Library items in the side menu, such as Opened, Categories, Downloads, New
+    /// Custom apps, which have a bundled zim file, do not require library access
+    /// this will remove all library related features
     static let hasLibrary: Bool = Config.value(for: .hasLibrary) ?? true
 }
