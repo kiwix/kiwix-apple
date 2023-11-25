@@ -104,8 +104,8 @@
 		980179562B0E403E00E8E1E2 /* dwds.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 980179552B0E403E00E8E1E2 /* dwds.xcconfig */; };
 		980179592B0EA60200E8E1E2 /* DWDS_2023-11.zim in Resources */ = {isa = PBXBuildFile; fileRef = 980179582B0EA60200E8E1E2 /* DWDS_2023-11.zim */; };
 		983ED7192B08AFE700409078 /* Kiwix-Bridging-Header.h in Sources */ = {isa = PBXBuildFile; fileRef = 9779A5D02456796A00F6F6FF /* Kiwix-Bridging-Header.h */; platformFilter = ios; };
-		98AB9E022B121CF8007693C1 /* Launch.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 98AB9E012B121CF8007693C1 /* Launch.storyboard */; };
-		98AB9E032B121F55007693C1 /* Launch.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 98AB9E012B121CF8007693C1 /* Launch.storyboard */; };
+		98AB9E022B121CF8007693C1 /* Launch.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 98AB9E012B121CF8007693C1 /* Launch.storyboard */; platformFilter = ios; };
+		98AB9E032B121F55007693C1 /* Launch.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 98AB9E012B121CF8007693C1 /* Launch.storyboard */; platformFilter = ios; };
 		98FBF3A82B0D5ADB00B70826 /* Kiwix-Bridging-Header.h in Sources */ = {isa = PBXBuildFile; fileRef = 9779A5D02456796A00F6F6FF /* Kiwix-Bridging-Header.h */; platformFilter = ios; };
 		98FBF3A92B0D5ADB00B70826 /* Errors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 973A2FC4277EAA2500BD4320 /* Errors.swift */; };
 		98FBF3AA2B0D5ADB00B70826 /* ZimFilesCategories.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9790CA5828A05EBB00D39FC6 /* ZimFilesCategories.swift */; };
