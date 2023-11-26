@@ -34,6 +34,10 @@
 	<string>$(HAS_LIBRARY)</string>
 	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
+	<key>SETTINGS_DEFAULT_EXTERNAL_LINK_TO</key>
+	<string>$(SETTINGS_DEFAULT_EXTERNAL_LINK_TO)</string>
+	<key>SETTINGS_SHOW_EXTERNAL_LINK_OPTION</key>
+	<string>$(SETTINGS_SHOW_EXTERNAL_LINK_OPTION)</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>fetch</string>

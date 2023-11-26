@@ -4,3 +4,5 @@
 // https://help.apple.com/xcode/#/dev745c5c974
 HAS_LIBRARY = true
 ZIM_FILE_MAIN =
+SETTINGS_DEFAULT_EXTERNAL_LINK_TO = alwaysAsk
+SETTINGS_SHOW_EXTERNAL_LINK_OPTION = true

@@ -25,12 +25,14 @@ struct ReadingSettings: View {
                     Button("Reset".localized) { webViewPageZoom = 1 }.disabled(webViewPageZoom == 1)
                 }
             }
-            SettingSection(name: "External link".localized) {
-                Picker(selection: $externalLinkLoadingPolicy) {
-                    ForEach(ExternalLinkLoadingPolicy.allCases) { loadingPolicy in
-                        Text(loadingPolicy.name.localized).tag(loadingPolicy)
-                    }
-                } label: { }
+            if FeatureFlags.showExternalLinkOptionInSettings {
+                SettingSection(name: "External link".localized) {
+                    Picker(selection: $externalLinkLoadingPolicy) {
+                        ForEach(ExternalLinkLoadingPolicy.allCases) { loadingPolicy in
+                            Text(loadingPolicy.name.localized).tag(loadingPolicy)
+                        }
+                    } label: { }
+                }
             }
             SettingSection(name: "Search snippet".localized) {
                 Picker(selection: $searchResultSnippetMode) {
@@ -144,9 +146,11 @@ struct Settings: View {
                 Text("Page zoom".localized + 
                      ": \(Formatter.percent.string(from: NSNumber(value: webViewPageZoom)) ?? "")")
             }
-            Picker("External link".localized, selection: $externalLinkLoadingPolicy) {
-                ForEach(ExternalLinkLoadingPolicy.allCases) { loadingPolicy in
-                    Text(loadingPolicy.name.localized).tag(loadingPolicy)
+            if FeatureFlags.showExternalLinkOptionInSettings {
+                Picker("External link".localized, selection: $externalLinkLoadingPolicy) {
+                    ForEach(ExternalLinkLoadingPolicy.allCases) { loadingPolicy in
+                        Text(loadingPolicy.name.localized).tag(loadingPolicy)
+                    }
                 }
             }
             Picker("Search snippet".localized, selection: $searchResultSnippetMode) {

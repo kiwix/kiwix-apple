@@ -11,6 +11,14 @@ enum Brand {
               !zimFileName.isEmpty else { return nil }
         return Bundle.main.url(forResource: zimFileName, withExtension: "zim")
     }
+
+    static var defaultExternalLinkPolicy: ExternalLinkLoadingPolicy {
+        guard let policyString: String = Config.value(for: .externalLinkDefaultPolicy),
+              let policy = ExternalLinkLoadingPolicy(rawValue: policyString) else {
+            return .alwaysAsk
+        }
+        return policy
+    }
 }
 
 enum Config: String {
@@ -18,6 +26,8 @@ enum Config: String {
     case displayName = "CFBundleDisplayName"
     case hasLibrary = "HAS_LIBRARY"
     case zimFileMain = "ZIM_FILE_MAIN"
+    case showExternalLinkSettings = "SETTINGS_SHOW_EXTERNAL_LINK_OPTION"
+    case externalLinkDefaultPolicy = "SETTINGS_DEFAULT_EXTERNAL_LINK_TO"
 
     static func value<T>(for key: Config) -> T? where T: LosslessStringConvertible {
         guard let object = Bundle.main.object(forInfoDictionaryKey:key.rawValue) else {
