@@ -182,13 +182,13 @@ jobs:
       if: ${{ matrix.destination.uploadto == 'dmg' }}
       run: |
         pip install dmgbuild
-        dmgbuild -s .github/dmg-settings.py -Dapp=$PWD/export/Kiwix.app -Dbg=.github/dmg-bg.png "Kiwix-$VERSION" $PWD/Kiwix-$VERSION.dmg
+        dmgbuild -s .github/dmg-settings.py -Dapp=$PWD/export/Kiwix.app -Dbg=.github/dmg-bg.png "Kiwix-$VERSION" $PWD/kiwix-$VERSION.dmg
 
     - name: Notarize DMG
       if: ${{ matrix.destination.uploadto == 'dmg' }}
       run: |
-        xcrun notarytool submit --keychain $KEYCHAIN --keychain-profile $KEYCHAIN_PROFILE --wait $PWD/Kiwix-$VERSION.dmg
-        xcrun stapler staple $PWD/Kiwix-$VERSION.dmg
+        xcrun notarytool submit --keychain $KEYCHAIN --keychain-profile $KEYCHAIN_PROFILE --wait $PWD/kiwix-$VERSION.dmg
+        xcrun stapler staple $PWD/kiwix-$VERSION.dmg
 
     - name: Add SSH_KEY to filesystem
       shell: bash
@@ -200,10 +200,10 @@ jobs:
 
     - name: Upload DMG
       if: ${{ matrix.destination.uploadto == 'dmg' }}
-      run: python .github/upload_file.py --src ${PWD}/Kiwix-${VERSION}.dmg --dest ci@master.download.kiwix.org:30022/data/download/${UPLOAD_FOLDER} --ssh-key ${SSH_KEY}
+      run: python .github/upload_file.py --src ${PWD}/kiwix-${VERSION}.dmg --dest ci@master.download.kiwix.org:30022/data/download/${UPLOAD_FOLDER} --ssh-key ${SSH_KEY}
 
     - name: Upload IPA
       if: ${{ matrix.destination.uploadto == 'ipa' }}
       run: |
-        mv ${PWD}/export/Kiwix.ipa ${PWD}/export/Kiwix-${VERSION}.ipa
-        python .github/upload_file.py --src ${PWD}/export/Kiwix-${VERSION}.ipa --dest ci@master.download.kiwix.org:30022/data/download/${UPLOAD_FOLDER} --ssh-key ${SSH_KEY}
+        mv ${PWD}/export/Kiwix.ipa ${PWD}/export/kiwix-${VERSION}.ipa
+        python .github/upload_file.py --src ${PWD}/export/kiwix-${VERSION}.ipa --dest ci@master.download.kiwix.org:30022/data/download/${UPLOAD_FOLDER} --ssh-key ${SSH_KEY}
