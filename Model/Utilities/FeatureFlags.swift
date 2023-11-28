@@ -15,4 +15,5 @@ enum FeatureFlags {
     static let hasLibrary: Bool = Config.value(for: .hasLibrary) ?? true
 
     static let showExternalLinkOptionInSettings: Bool = Config.value(for: .showExternalLinkSettings) ?? true
+    static let showSearchSnippetInSettings: Bool = Config.value(for: .showSearchSnippetInSettings) ?? true
 }

@@ -34,12 +34,14 @@ struct ReadingSettings: View {
                     } label: { }
                 }
             }
-            SettingSection(name: "Search snippet".localized) {
-                Picker(selection: $searchResultSnippetMode) {
-                    ForEach(SearchResultSnippetMode.allCases) { snippetMode in
-                        Text(snippetMode.name.localized).tag(snippetMode)
-                    }
-                } label: { }
+            if FeatureFlags.showSearchSnippetInSettings {
+                SettingSection(name: "Search snippet".localized) {
+                    Picker(selection: $searchResultSnippetMode) {
+                        ForEach(SearchResultSnippetMode.allCases) { snippetMode in
+                            Text(snippetMode.name.localized).tag(snippetMode)
+                        }
+                    } label: { }
+                }
             }
         }
         .padding()
@@ -153,9 +155,11 @@ struct Settings: View {
                     }
                 }
             }
-            Picker("Search snippet".localized, selection: $searchResultSnippetMode) {
-                ForEach(SearchResultSnippetMode.allCases) { snippetMode in
-                    Text(snippetMode.name.localized).tag(snippetMode)
+            if FeatureFlags.showSearchSnippetInSettings {
+                Picker("Search snippet".localized, selection: $searchResultSnippetMode) {
+                    ForEach(SearchResultSnippetMode.allCases) { snippetMode in
+                        Text(snippetMode.name.localized).tag(snippetMode)
+                    }
                 }
             }
         }

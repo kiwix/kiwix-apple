@@ -20,6 +20,14 @@ enum Brand {
         }
         return policy
     }
+
+    static var defaultSearchSnippetMode :SearchResultSnippetMode {
+        guard FeatureFlags.showSearchSnippetInSettings else {
+            // for custom apps, where we do not show this in settings, it should be disabled by default
+            return .disabled
+        }
+        return .firstSentence
+    }
 }
 
 enum Config: String {
@@ -30,6 +38,7 @@ enum Config: String {
     case showExternalLinkSettings = "SETTINGS_SHOW_EXTERNAL_LINK_OPTION"
     case externalLinkDefaultPolicy = "SETTINGS_DEFAULT_EXTERNAL_LINK_TO"
     case appStoreID = "APP_STORE_ID"
+    case showSearchSnippetInSettings = "SETTINGS_SHOW_SEARCH_SNIPPET"
 
     static func value<T>(for key: Config) -> T? where T: LosslessStringConvertible {
         guard let object = Bundle.main.object(forInfoDictionaryKey:key.rawValue) else {
