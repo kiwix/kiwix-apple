@@ -11,16 +11,9 @@ import WebKit
 
 @MainActor
 class NavigationViewModel: ObservableObject {
-    @Published var currentItem: NavigationItem?
+    // remained optional due to focusedSceneValue conformance
+    @Published var currentItem: NavigationItem? = .loading
 
-    init() {
-        #if os(macOS)
-        currentItem = .reading
-        #elseif os(iOS)
-        currentItem = .loading
-        #endif
-    }
-    
     // MARK: - Tab Management
     
     private func makeTab(context: NSManagedObjectContext) -> Tab {

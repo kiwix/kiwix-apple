@@ -106,6 +106,8 @@
 		980179542B0E402C00E8E1E2 /* kiwix.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 980179532B0E402C00E8E1E2 /* kiwix.xcconfig */; };
 		980179562B0E403E00E8E1E2 /* dwds.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 980179552B0E403E00E8E1E2 /* dwds.xcconfig */; };
 		983A3F562B129F6B000E7A51 /* Kiwix.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 983A3F552B129F6B000E7A51 /* Kiwix.xcassets */; };
+		983D22672B16ABB6005EBAF1 /* LoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 983D22662B16ABB6005EBAF1 /* LoadingView.swift */; };
+		983D22682B16ABB6005EBAF1 /* LoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 983D22662B16ABB6005EBAF1 /* LoadingView.swift */; };
 		983ED7192B08AFE700409078 /* Kiwix-Bridging-Header.h in Sources */ = {isa = PBXBuildFile; fileRef = 9779A5D02456796A00F6F6FF /* Kiwix-Bridging-Header.h */; platformFilter = ios; };
 		98AB9E022B121CF8007693C1 /* Launch.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 98AB9E012B121CF8007693C1 /* Launch.storyboard */; platformFilter = ios; };
 		98AF8F9F2B12B241000125E1 /* dwds_de_dictionary_nopic_2023-11-20.zim in Resources */ = {isa = PBXBuildFile; fileRef = 98AF8F9E2B12B241000125E1 /* dwds_de_dictionary_nopic_2023-11-20.zim */; };
@@ -337,6 +339,7 @@
 		980179532B0E402C00E8E1E2 /* kiwix.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = kiwix.xcconfig; sourceTree = "<group>"; };
 		980179552B0E403E00E8E1E2 /* dwds.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = dwds.xcconfig; sourceTree = "<group>"; };
 		983A3F552B129F6B000E7A51 /* Kiwix.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Kiwix.xcassets; sourceTree = "<group>"; };
+		983D22662B16ABB6005EBAF1 /* LoadingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoadingView.swift; sourceTree = "<group>"; };
 		98AB9E012B121CF8007693C1 /* Launch.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Launch.storyboard; sourceTree = "<group>"; };
 		98AF8F9E2B12B241000125E1 /* dwds_de_dictionary_nopic_2023-11-20.zim */ = {isa = PBXFileReference; lastKnownFileType = file; path = "dwds_de_dictionary_nopic_2023-11-20.zim"; sourceTree = "<group>"; };
 		98FBF4022B0D5ADB00B70826 /* DWDS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DWDS.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -521,6 +524,7 @@
 		975088BF287EEE2900273181 /* BuildingBlocks */ = {
 			isa = PBXGroup;
 			children = (
+				983D22662B16ABB6005EBAF1 /* LoadingView.swift */,
 				97486D05284A36790096E4DD /* ArticleCell.swift */,
 				972096E62AE421C300B378B0 /* Attribute.swift */,
 				97341C6C2852248500BC273E /* DownloadTaskCell.swift */,
@@ -1028,6 +1032,7 @@
 				972DE4B42814A4F6004FD9B9 /* DataModel.xcdatamodeld in Sources */,
 				976BAEBD2849056B0049404F /* SearchOperation.swift in Sources */,
 				976D90E428159BFA00CC7D29 /* Favicon.swift in Sources */,
+				983D22672B16ABB6005EBAF1 /* LoadingView.swift in Sources */,
 				976D90DB281584BF00CC7D29 /* FlavorTag.swift in Sources */,
 				972DE4BD2814A5BE004FD9B9 /* OPDSParser.mm in Sources */,
 				972DE4B52814A502004FD9B9 /* Entities.swift in Sources */,
@@ -1124,6 +1129,7 @@
 				98FBF3D92B0D5ADB00B70826 /* DataModel.xcdatamodeld in Sources */,
 				98FBF3DA2B0D5ADB00B70826 /* SearchOperation.swift in Sources */,
 				98FBF3DB2B0D5ADB00B70826 /* Favicon.swift in Sources */,
+				983D22682B16ABB6005EBAF1 /* LoadingView.swift in Sources */,
 				98FBF3DC2B0D5ADB00B70826 /* FlavorTag.swift in Sources */,
 				98FBF3DD2B0D5ADB00B70826 /* OPDSParser.mm in Sources */,
 				98FBF3DE2B0D5ADB00B70826 /* Entities.swift in Sources */,

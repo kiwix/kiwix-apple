@@ -111,6 +111,8 @@ struct RootView: View {
                 }.help("Show sidebar".localized)
             }
             switch navigation.currentItem {
+            case .loading:
+                LoadingView()
             case .reading:
                 BrowserTab().environmentObject(browser)
                     .withHostingWindow { window in
@@ -159,7 +161,9 @@ struct RootView: View {
                 LibraryOperations.applyFileBackupSetting()
                 DownloadService.shared.restartHeartbeatIfNeeded()
             } else if let url = Brand.mainZimFileURL {
-                LibraryOperations.open(url: url)
+                LibraryOperations.open(url: url) {
+                    navigation.currentItem = .reading
+                }
             } else {
                 assertionFailure("App should support library, or should have a main zip file")
             }

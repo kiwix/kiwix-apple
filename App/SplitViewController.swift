@@ -128,7 +128,7 @@ final class SplitViewController: UISplitViewController {
             let controller = UIHostingController(rootView: Settings())
             setViewController(UINavigationController(rootViewController: controller), for: .secondary)
         case .loading:
-            let controller = UIHostingController(rootView: Text("Loading...".localized))
+            let controller = UIHostingController(rootView: LoadingView())
             setViewController(UINavigationController(rootViewController: controller), for: .secondary)
         default:
             let controller = UIHostingController(rootView: Text("Not yet implemented".localized))
