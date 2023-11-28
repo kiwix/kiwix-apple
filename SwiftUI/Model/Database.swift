@@ -8,16 +8,18 @@
 
 import CoreData
 
-class Database {
+final class Database {
     static let shared = Database()
     private var notificationToken: NSObjectProtocol?
     private var token: NSPersistentHistoryToken?
     private var tokenURL = NSPersistentContainer.defaultDirectoryURL().appendingPathComponent("token.data")
     
     private init() {
+        // due to objc++ interop, only the older notification value is working for downloads:
+        // https://developer.apple.com/documentation/coredata/nspersistentstoreremotechangenotification?language=objc
+        let storeChange: NSNotification.Name = .init(rawValue: "NSPersistentStoreRemoteChangeNotification")
         notificationToken = NotificationCenter.default.addObserver(
-            forName: NSNotification.Name(rawValue: "NSPersistentStoreRemoteChange"), object: nil, queue: nil
-        ) { notification in
+            forName: storeChange, object: nil, queue: nil) { _ in
             try? self.mergeChanges()
         }
         token = {
@@ -59,7 +61,7 @@ class Database {
         description.setOption(true as NSNumber, forKey: NSPersistentStoreRemoteChangeNotificationPostOptionKey)
         description.setOption(true as NSNumber, forKey: NSPersistentHistoryTrackingKey)
 
-        container.loadPersistentStores { storeDescription, error in
+        container.loadPersistentStores { _, error in
             if let error = error as NSError? {
                 fatalError("Unresolved error \(error), \(error.userInfo)")
             }
@@ -78,7 +80,7 @@ class Database {
     
     /// Save image data to zim files.
     func saveImageData(url: URL, completion: @escaping (Data) -> Void) {
-        URLSession.shared.dataTask(with: url) { data, response, error in
+        URLSession.shared.dataTask(with: url) { data, response, _ in
             guard let response = response as? HTTPURLResponse,
                   response.statusCode == 200,
                   let mimeType = response.mimeType,
