@@ -5,6 +5,7 @@ import os
 
 enum Brand {
     static let appName: String = Config.value(for: .displayName) ?? "Kiwix"
+    static let appStoreId: String = Config.value(for: .appStoreID) ?? "id997079563"
     static let welcomeLogoImageName: String = "welcomeLogo"
     static var mainZimFileURL: URL? {
         guard let zimFileName: String = Config.value(for: .zimFileMain),
@@ -28,6 +29,7 @@ enum Config: String {
     case zimFileMain = "ZIM_FILE_MAIN"
     case showExternalLinkSettings = "SETTINGS_SHOW_EXTERNAL_LINK_OPTION"
     case externalLinkDefaultPolicy = "SETTINGS_DEFAULT_EXTERNAL_LINK_TO"
+    case appStoreID = "APP_STORE_ID"
 
     static func value<T>(for key: Config) -> T? where T: LosslessStringConvertible {
         guard let object = Bundle.main.object(forInfoDictionaryKey:key.rawValue) else {

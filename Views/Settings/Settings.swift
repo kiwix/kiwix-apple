@@ -216,7 +216,8 @@ struct Settings: View {
         Section("Misc".localized) {
             Button("Feedback".localized) { UIApplication.shared.open(URL(string: "mailto:feedback@kiwix.org")!) }
             Button("Rate the App".localized) {
-                let url = URL(string: "itms-apps://itunes.apple.com/us/app/kiwix/id997079563?action=write-review")!
+                let url = URL(appStoreReviewForName: Brand.appName.lowercased(),
+                              appStoreID: Brand.appStoreId)
                 UIApplication.shared.open(url)
             }
             NavigationLink("About".localized) { About() }
