@@ -56,7 +56,11 @@ jobs:
           version = str(datetime.date.today())
           upload_folder = f"nightly/{version}"
 
-        export_method = "developer-id" if os.getenv("UPLOAD_TO") == "dmg" else "app-store"
+        upload_to = os.getenv("UPLOAD_TO")
+        export_method = "developer-id" if upload_to == "dmg" else "app-store"
+        upload_to_apple = True
+        if not is_release and upload_to == "app-store":
+          upload_to_apple = False
 
         extra_xcode = os.getenv("EXTRA_XCODEBUILD", "")
         if os.getenv("PLATFORM") == "iOS":
@@ -70,6 +74,7 @@ jobs:
           fh.write(f"EXPORT_METHOD={export_method}\n")
           fh.write(f"UPLOAD_FOLDER={upload_folder}\n")
           fh.write(f"EXTRA_XCODEBUILD={extra_xcode}\n")
+          fh.write(f"UPLOAD_TO_APPLE={'yes' if upload_to_apple else ''}\n")
 
     - name: Prepare use of Developper ID Certificate
       if: ${{ matrix.destination.uploadto == 'dmg' }}
@@ -164,6 +169,7 @@ jobs:
         plutil -replace provisioningProfiles -json '{ "self.Kiwix" : "iOS Team Provisioning Profile" }' ./export.plist
 
     - name: Upload Archive to Apple (App Store or Notarization)
+      if: ${{ env.UPLOAD_TO_APPLE }}
       env:
         APPLE_STORE_AUTH_KEY_PATH: ${{ env.APPLE_STORE_AUTH_KEY_PATH }}
         APPLE_STORE_AUTH_KEY_ID: ${{ secrets.APPLE_STORE_AUTH_KEY_ID }}
@@ -182,15 +188,16 @@ jobs:
       if: ${{ matrix.destination.uploadto == 'dmg' }}
       run: |
         pip install dmgbuild
-        dmgbuild -s .github/dmg-settings.py -Dapp=$PWD/export/Kiwix.app -Dbg=.github/dmg-bg.png "Kiwix-$VERSION" $PWD/Kiwix-$VERSION.dmg
+        dmgbuild -s .github/dmg-settings.py -Dapp=$PWD/export/Kiwix.app -Dbg=.github/dmg-bg.png "Kiwix-$VERSION" $PWD/kiwix-$VERSION.dmg
 
     - name: Notarize DMG
       if: ${{ matrix.destination.uploadto == 'dmg' }}
       run: |
-        xcrun notarytool submit --keychain $KEYCHAIN --keychain-profile $KEYCHAIN_PROFILE --wait $PWD/Kiwix-$VERSION.dmg
-        xcrun stapler staple $PWD/Kiwix-$VERSION.dmg
+        xcrun notarytool submit --keychain $KEYCHAIN --keychain-profile $KEYCHAIN_PROFILE --wait $PWD/kiwix-$VERSION.dmg
+        xcrun stapler staple $PWD/kiwix-$VERSION.dmg
 
     - name: Add SSH_KEY to filesystem
+      if: ${{ matrix.destination.uploadto == 'dmg' || matrix.destination.uploadto == 'ipa' }}
       shell: bash
       env:
         PRIVATE_KEY: ${{ secrets.SSH_KEY }}
@@ -200,10 +207,10 @@ jobs:
 
     - name: Upload DMG
       if: ${{ matrix.destination.uploadto == 'dmg' }}
-      run: python .github/upload_file.py --src ${PWD}/Kiwix-${VERSION}.dmg --dest ci@master.download.kiwix.org:30022/data/download/${UPLOAD_FOLDER} --ssh-key ${SSH_KEY}
+      run: python .github/upload_file.py --src ${PWD}/kiwix-${VERSION}.dmg --dest ci@master.download.kiwix.org:30022/data/download/${UPLOAD_FOLDER} --ssh-key ${SSH_KEY}
 
     - name: Upload IPA
       if: ${{ matrix.destination.uploadto == 'ipa' }}
       run: |
-        mv ${PWD}/export/Kiwix.ipa ${PWD}/export/Kiwix-${VERSION}.ipa
-        python .github/upload_file.py --src ${PWD}/export/Kiwix-${VERSION}.ipa --dest ci@master.download.kiwix.org:30022/data/download/${UPLOAD_FOLDER} --ssh-key ${SSH_KEY}
+        mv ${PWD}/export/Kiwix.ipa ${PWD}/export/kiwix-${VERSION}.ipa
+        python .github/upload_file.py --src ${PWD}/export/kiwix-${VERSION}.ipa --dest ci@master.download.kiwix.org:30022/data/download/${UPLOAD_FOLDER} --ssh-key ${SSH_KEY}
