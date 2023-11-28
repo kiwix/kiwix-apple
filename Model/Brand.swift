@@ -21,7 +21,7 @@ enum Brand {
         return policy
     }
 
-    static var defaultSearchSnippetMode :SearchResultSnippetMode {
+    static var defaultSearchSnippetMode: SearchResultSnippetMode {
         guard FeatureFlags.showSearchSnippetInSettings else {
             // for custom apps, where we do not show this in settings, it should be disabled by default
             return .disabled
