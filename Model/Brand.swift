@@ -41,7 +41,7 @@ enum Config: String {
     case showSearchSnippetInSettings = "SETTINGS_SHOW_SEARCH_SNIPPET"
 
     static func value<T>(for key: Config) -> T? where T: LosslessStringConvertible {
-        guard let object = Bundle.main.object(forInfoDictionaryKey:key.rawValue) else {
+        guard let object = Bundle.main.object(forInfoDictionaryKey: key.rawValue) else {
             os_log("Missing key from bundle: %@", log: Log.Branding, type: .error, key.rawValue)
             return nil
         }
@@ -58,4 +58,3 @@ enum Config: String {
         }
     }
 }
-

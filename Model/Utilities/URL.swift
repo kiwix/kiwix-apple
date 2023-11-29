@@ -22,7 +22,13 @@ extension URL {
         ["http", "https"].contains(scheme)
     }
 
-    static let documentDirectory = try! FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false)
+    // swiftlint:disable:next force_try
+    static let documentDirectory = try! FileManager.default.url(
+        for: .documentDirectory,
+        in: .userDomainMask,
+        appropriateFor: nil,
+        create: false
+    )
 
     init(appStoreReviewForName appName: String, appStoreID: String) {
         self.init(string: "itms-apps://itunes.apple.com/us/app/\(appName)/\(appStoreID)?action=write-review")!

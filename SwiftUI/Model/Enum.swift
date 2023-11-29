@@ -233,7 +233,6 @@ enum NavigationItem: Hashable, Identifiable {
     }
 }
 
-
 enum SearchResultSnippetMode: String, CaseIterable, Identifiable, Defaults.Serializable {
     case disabled, firstParagraph, firstSentence, matches
     
