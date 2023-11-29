@@ -156,7 +156,9 @@ struct RootView: View {
             browser.persistAllTabIdsFromWindows()
         }.task {
             if FeatureFlags.hasLibrary {
-                LibraryOperations.reopen()
+                LibraryOperations.reopen {
+                    navigation.currentItem = .reading
+                }
                 LibraryOperations.scanDirectory(URL.documentDirectory)
                 LibraryOperations.applyFileBackupSetting()
                 DownloadService.shared.restartHeartbeatIfNeeded()
