@@ -13,10 +13,10 @@ extension Defaults.Keys {
     static let webViewTextSizeAdjustFactor = Key<Double>("webViewZoomScale", default: 1)
     static let webViewPageZoom = Key<Double>("webViewPageZoom", default: 1)
     static let externalLinkLoadingPolicy = Key<ExternalLinkLoadingPolicy>(
-        "externalLinkLoadingPolicy", default: .alwaysAsk
+        "externalLinkLoadingPolicy", default: Brand.defaultExternalLinkPolicy
     )
     static let searchResultSnippetMode = Key<SearchResultSnippetMode>(
-        "searchResultSnippetMode", default: .firstSentence
+        "searchResultSnippetMode", default: Brand.defaultSearchSnippetMode
     )
 //
 //    // UI

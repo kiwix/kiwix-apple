@@ -108,19 +108,21 @@ struct SearchResults: View {
                     }
                 } header: { recentSearchHeader }
             }
-            Section {
-                ForEach(zimFiles) { zimFile in
-                    HStack {
-                        Toggle(zimFile.name, isOn: Binding<Bool>(get: {
-                            zimFile.includedInSearch
-                        }, set: {
-                            zimFile.includedInSearch = $0
-                            try? managedObjectContext.save()
-                        }))
-                        Spacer()
+            if FeatureFlags.hasLibrary {
+                Section {
+                    ForEach(zimFiles) { zimFile in
+                        HStack {
+                            Toggle(zimFile.name, isOn: Binding<Bool>(get: {
+                                zimFile.includedInSearch
+                            }, set: {
+                                zimFile.includedInSearch = $0
+                                try? managedObjectContext.save()
+                            }))
+                            Spacer()
+                        }
                     }
-                }
-            } header: { searchFilterHeader }
+                } header: { searchFilterHeader }
+            }
         }
     }
     
