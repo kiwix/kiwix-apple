@@ -24,7 +24,7 @@ struct LibraryOperations {
     /// Open a zim file with url
     /// - Parameter url: url of the zim file
     @discardableResult
-    static func open(url: URL) -> ZimFileMetaData? {
+    static func open(url: URL, onComplete: (() -> Void)? = nil) -> ZimFileMetaData? {
         guard let metadata = ZimFileService.getMetaData(url: url),
               let fileURLBookmark = ZimFileService.getBookmarkData(url: url) else { return nil }
         
@@ -45,18 +45,24 @@ struct LibraryOperations {
             zimFile.fileURLBookmark = fileURLBookmark
             zimFile.isMissing = false
             if context.hasChanges { try? context.save() }
+            DispatchQueue.main.async {
+                onComplete?()
+            }
         }
         
         return metadata
     }
     
     /// Reopen zim files from url bookmark data.
-    static func reopen() {
+    static func reopen(onComplete: (() -> Void)?) {
         var successCount = 0
         let context = Database.shared.container.viewContext
         let request = ZimFile.fetchRequest(predicate: ZimFile.withFileURLBookmarkPredicate)
         
-        guard let zimFiles = try? context.fetch(request) else { return }
+        guard let zimFiles = try? context.fetch(request) else {
+            onComplete?()
+            return
+        }
         zimFiles.forEach { zimFile in
             guard let data = zimFile.fileURLBookmark else { return }
             do {
@@ -77,6 +83,7 @@ struct LibraryOperations {
         }
         
         os_log("Reopened %d out of %d zim files", log: Log.LibraryOperations, type: .info, successCount, zimFiles.count)
+        onComplete?()
     }
     
     /// Scan a directory and open available zim files inside it

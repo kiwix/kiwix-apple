@@ -44,6 +44,7 @@ class CompactViewController: UIHostingController<AnyView>, UISearchControllerDel
             apperance.configureWithDefaultBackground()
             return apperance
         }()
+        searchController.searchBar.autocorrectionType = .no
         navigationItem.titleView = searchController.searchBar
         searchController.automaticallyShowsCancelButton = false
         searchController.delegate = self

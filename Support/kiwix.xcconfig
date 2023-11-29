@@ -1,0 +1,10 @@
+//  Copyright © 2023 Kiwix. All rights reserved.
+
+// Configuration settings file format documentation can be found at:
+// https://help.apple.com/xcode/#/dev745c5c974
+HAS_LIBRARY = true
+ZIM_FILE_MAIN =
+SETTINGS_DEFAULT_EXTERNAL_LINK_TO = alwaysAsk
+SETTINGS_SHOW_EXTERNAL_LINK_OPTION = true
+APP_STORE_ID = id997079563
+SETTINGS_SHOW_SEARCH_SNIPPET = true
