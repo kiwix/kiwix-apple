@@ -48,12 +48,13 @@ struct Kiwix: App {
                 .task {
                     if FeatureFlags.hasLibrary {
                         fileMonitor.start()
-                        LibraryOperations.reopen()
+                        LibraryOperations.reopen() {
+                            navigation.navigateToMostRecentTab()
+                        }
                         LibraryOperations.scanDirectory(URL.documentDirectory)
                         LibraryOperations.applyFileBackupSetting()
                         LibraryOperations.applyLibraryAutoRefreshSetting()
                         DownloadService.shared.restartHeartbeatIfNeeded()
-                        navigation.navigateToMostRecentTab()
                     } else if let url = Brand.mainZimFileURL {
                         LibraryOperations.open(url: url) {
                             navigation.navigateToMostRecentTab()
