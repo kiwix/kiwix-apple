@@ -18,7 +18,7 @@ hide_extension = [ "Kiwix.app" ]
 # Volume icon (reuse from app)
 icon = Path(application).joinpath("Contents/Resources/AppIcon.icns")
 # Where to put the icons
-icon_locations = {appname: (146, 180), "Applications": (481, 181)}
+icon_locations = {appname: (146, 180), "Applications": (450, 181)}
 
 background = background
 show_status_bar = False
