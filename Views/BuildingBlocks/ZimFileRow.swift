@@ -31,7 +31,7 @@ struct ZimFileRow: View {
                     {
                         if #available(iOS 15.0, *) {
                             return "\(zimFile.articleCount.formatted(.number.notation(.compactName)))" + 
-                            "articles".localized
+                            "zim-articles".localized
                         } else {
                             return Formatter.largeNumber(zimFile.articleCount)
                         }

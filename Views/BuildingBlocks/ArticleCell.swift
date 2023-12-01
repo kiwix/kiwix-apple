@@ -44,7 +44,7 @@ struct ArticleCell: View {
                     if let snippet = snippet {
                         Text(AttributedString(snippet)).lineLimit(4)
                     } else if alwaysShowSnippet {
-                        Text("No snippet".localized).foregroundColor(.secondary)
+                        Text("article-no-snippet".localized).foregroundColor(.secondary)
                     }
                 }.font(.caption).multilineTextAlignment(.leading)
                 Spacer(minLength: 0)
@@ -64,7 +64,7 @@ struct ArticleCell: View {
 
 struct ArticleCell_Previews: PreviewProvider {
     static let result: SearchResult = {
-        let result = SearchResult(zimFileID: UUID(), path: "", title: "Article Title".localized)!
+        let result = SearchResult(zimFileID: UUID(), path: "", title: "article-title".localized)!
         result.snippet = NSAttributedString(string: "loc-article-cell-template".localized)
         return result
     }()

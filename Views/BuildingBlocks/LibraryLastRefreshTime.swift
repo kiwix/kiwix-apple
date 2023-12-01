@@ -16,12 +16,12 @@ struct LibraryLastRefreshTime: View {
     var body: some View {
         if let lastRefresh = lastRefresh {
             if Date().timeIntervalSince(lastRefresh) < 120 {
-                Text("Just Now".localized)
+                Text("refresh-time-last".localized)
             } else {
                 Text(RelativeDateTimeFormatter().localizedString(for: lastRefresh, relativeTo: Date()))
             }
         } else {
-            Text("Never".localized)
+            Text("refresh-time-never".localized)
         }
     }
 }

@@ -40,19 +40,19 @@ struct ExternalLinkHandler: ViewModifier {
                 activeAlert = .notLoading
             }
         }
-        .alert("External Link".localized, isPresented: $isAlertPresented, presenting: activeAlert) { alert in
+        .alert("alert-external-link".localized, isPresented: $isAlertPresented, presenting: activeAlert) { alert in
             if case .ask(let url) = alert {
-                Button("Load the link".localized) {
+                Button("alert-load-link".localized) {
                     load(url: url)
                 }
-                Button("Cancel".localized, role: .cancel) { }
+                Button("alert-cancel".localized, role: .cancel) { }
             }
         } message: { alert in
             switch alert {
             case .ask:
-                Text("An external link is tapped, do you wish to load the link?".localized)
+                Text("alert-external-link-ask".localized)
             case .notLoading:
-                Text("loc-external-alert".localized)
+                Text("alert-external-link-noloading".localized)
             }
         }
         #if os(iOS)

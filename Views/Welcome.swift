@@ -67,7 +67,7 @@ struct Welcome: View {
                 alignment: .leading,
                 spacing: 12
             ) {
-                GridSection(title: "Main Page".localized) {
+                GridSection(title: "library-main-page".localized) {
                     ForEach(zimFiles) { zimFile in
                         Button {
                             guard let url = ZimFileService.shared.getMainPageURL(zimFileID: zimFile.fileID) else { return }
@@ -78,7 +78,7 @@ struct Welcome: View {
                     }
                 }
                 if !bookmarks.isEmpty {
-                    GridSection(title: "Bookmarks".localized) {
+                    GridSection(title: "title-bookmarks".localized) {
                         ForEach(bookmarks.prefix(6)) { bookmark in
                             Button {
                                 browser.load(url: bookmark.articleURL)
@@ -112,7 +112,7 @@ struct Welcome: View {
             OpenFileButton(context: .onBoarding) {
                 HStack {
                     Spacer()
-                    Text("Open File".localized)
+                    Text("title-open-file".localized)
                     Spacer()
                 }.padding(6)
             }
@@ -123,15 +123,15 @@ struct Welcome: View {
                     Spacer()
                     if library.isInProgress {
                         #if os(macOS)
-                        Text("Fetching...".localized)
+                        Text("title-fetching".localized)
                         #elseif os(iOS)
                         HStack(spacing: 6) {
                             ProgressView().frame(maxHeight: 10)
-                            Text("Fetching...".localized)
+                            Text("title-fetching".localized)
                         }
                         #endif
                     } else {
-                        Text("Fetch Catalog".localized)
+                        Text("title-fetch-catalog".localized)
                     }
                     Spacer()
                 }.padding(6)

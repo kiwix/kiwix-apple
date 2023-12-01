@@ -17,7 +17,7 @@ struct ZimFilesCategories: View {
     var body: some View {
         ZimFilesCategory(category: $selected)
             .modifier(ToolbarRoleBrowser())
-            .navigationTitle(NavigationItem.categories.name.localized)
+            .navigationTitle(NavigationItem.categories.name)
             .toolbar {
                 #if os(iOS)
                 ToolbarItem(placement: .navigationBarLeading) {
@@ -25,13 +25,13 @@ struct ZimFilesCategories: View {
                         Button {
                             NotificationCenter.toggleSidebar()
                         } label: {
-                            Label("Show Sidebar".localized, systemImage: "sidebar.left")
+                            Label("zim-file-show-slider".localized, systemImage: "sidebar.left")
                         }
                     }
                 }
                 #endif
                 ToolbarItem {
-                    Picker("Category".localized, selection: $selected) {
+                    Picker("zim-file-category".localized, selection: $selected) {
                         ForEach(Category.allCases) {
                             Text($0.name).tag($0)
                         }
@@ -91,7 +91,7 @@ private struct CategoryGrid: View {
     var body: some View {
         Group {
             if sections.isEmpty {
-                Message(text: "No zim file under this category.".localized)
+                Message(text: "zim-file-no-description".localized)
             } else {
                 LazyVGrid(columns: ([gridItem]), alignment: .leading, spacing: 12) {
                     ForEach(sections) { section in
@@ -187,7 +187,7 @@ private struct CategoryList: View {
     var body: some View {
         Group {
             if zimFiles.isEmpty {
-                Message(text: "No zim file under this category.".localized)
+                Message(text: "zim-file-no-description".localized)
             } else {
                 List(zimFiles, id: \.self, selection: $viewModel.selectedZimFile) { zimFile in
                     ZimFileRow(zimFile)

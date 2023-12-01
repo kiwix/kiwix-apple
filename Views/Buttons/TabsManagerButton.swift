@@ -29,18 +29,18 @@ struct TabsManagerButton: View {
                 Button {
                     navigation.createTab()
                 } label: {
-                    Label("New Tab".localized, systemImage: "plus.square")
+                    Label("title-tab-new".localized, systemImage: "plus.square")
                 }
                 Button(role: .destructive) {
                     guard case .tab(let tabID) = navigation.currentItem else { return }
                     navigation.deleteTab(tabID: tabID)
                 } label: {
-                    Label("Close This Tab".localized, systemImage: "xmark.square")
+                    Label("button-tab-close-this".localized, systemImage: "xmark.square")
                 }
                 Button(role: .destructive) {
                     navigation.deleteAllTabs()
                 } label: {
-                    Label("Close All Tabs".localized, systemImage: "xmark.square.fill")
+                    Label("button-tab-close-all".localized, systemImage: "xmark.square.fill")
                 }
             }
             Section {
@@ -55,17 +55,17 @@ struct TabsManagerButton: View {
                     Button {
                         presentedSheet = .library
                     } label: {
-                        Label("Library".localized, systemImage: "folder")
+                        Label("button-tab-library".localized, systemImage: "folder")
                     }
                 }
                 Button {
                     presentedSheet = .settings
                 } label: {
-                    Label("Settings".localized, systemImage: "gear")
+                    Label("button-tab-settings".localized, systemImage: "gear")
                 }
             }
         } label: {
-            Label("Tabs Manager".localized, systemImage: "square.stack")
+            Label("button-tab-manager-title".localized, systemImage: "square.stack")
         } primaryAction: {
             presentedSheet = .tabsManager
         }
@@ -78,7 +78,7 @@ struct TabsManagerButton: View {
                             Button {
                                 self.presentedSheet = nil
                             } label: {
-                                Text("Done".localized).fontWeight(.semibold)
+                                Text("button-done".localized).fontWeight(.semibold)
                             }
                         }
                     }
@@ -92,7 +92,7 @@ struct TabsManagerButton: View {
                             Button {
                                 self.presentedSheet = nil
                             } label: {
-                                Text("Done".localized).fontWeight(.semibold)
+                                Text("button-done".localized).fontWeight(.semibold)
                             }
                         }
                     }
@@ -131,12 +131,12 @@ struct TabManager: View {
                 Button(role: .destructive) {
                     navigation.deleteTab(tabID: tab.objectID)
                 } label: {
-                    Label("Close Tab".localized, systemImage: "xmark")
+                    Label("button-tab-close".localized, systemImage: "xmark")
                 }
             }
         }
         .listStyle(.plain)
-        .navigationTitle("Tabs".localized)
+        .navigationTitle("button-tab-title".localized)
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             Menu {
@@ -144,15 +144,15 @@ struct TabManager: View {
                     guard case let .tab(tabID) = navigation.currentItem else { return }
                     navigation.deleteTab(tabID: tabID)
                 } label: {
-                    Label("Close This Tab".localized, systemImage: "xmark.square")
+                    Label("button-tab-close-this".localized, systemImage: "xmark.square")
                 }
                 Button(role: .destructive) {
                     navigation.deleteAllTabs()
                 } label: {
-                    Label("Close All Tabs".localized, systemImage: "xmark.square.fill")
+                    Label("button-tab-close-all".localized, systemImage: "xmark.square.fill")
                 }
             } label: {
-                Label("New Tab".localized, systemImage: "plus.square")
+                Label("title-tab-new".localized, systemImage: "plus.square")
             } primaryAction: {
                 navigation.createTab()
             }

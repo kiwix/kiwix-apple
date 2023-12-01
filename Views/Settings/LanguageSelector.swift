@@ -30,8 +30,8 @@ struct LanguageSelector: View {
                     }
                 })
             }.width(14)
-            TableColumn("Name".localized, value: \.name)
-            TableColumn("Count".localized, value: \.count) { language in Text(language.count.formatted()) }
+            TableColumn("title-new".localized, value: \.name)
+            TableColumn("title-count".localized, value: \.count) { language in Text(language.count.formatted()) }
         }
         .tableStyle(.bordered(alternatesRowBackgrounds: true))
         .onChange(of: sortOrder) { languages.sort(using: $0) }
@@ -51,21 +51,21 @@ struct LanguageSelector: View {
         List {
             Section {
                 if showing.isEmpty {
-                    Text("No language".localized).foregroundColor(.secondary)
+                    Text("title-no-language".localized).foregroundColor(.secondary)
                 } else {
                     ForEach(showing) { language in
                         Button { hide(language) } label: { LanguageLabel(language: language) }
                     }
                 }
-            } header: { Text("Showing".localized) }
+            } header: { Text("title-showing".localized) }
             Section {
                 ForEach(hiding) { language in
                     Button { show(language) } label: { LanguageLabel(language: language) }
                 }
-            } header: { Text("Hiding".localized) }
+            } header: { Text("title-hiding".localized) }
         }
         .listStyle(.insetGrouped)
-        .navigationTitle("Languages".localized)
+        .navigationTitle("title-language".localized)
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             Picker(selection: $sortingMode) {
@@ -73,7 +73,7 @@ struct LanguageSelector: View {
                     Text(sortingMode.name.localized).tag(sortingMode)
                 }
             } label: {
-                Label("Sorting".localized, systemImage: "arrow.up.arrow.down")
+                Label("title-sorting".localized, systemImage: "arrow.up.arrow.down")
             }.pickerStyle(.menu)
         }
         .onAppear {

@@ -16,12 +16,12 @@ public enum LibraryRefreshError: LocalizedError {
     public var errorDescription: String? {
         switch self {
         case .retrieve(let description):
-            let prefix = "Error retrieving library data.".localized(withComment: "Library Refresh Error")
+            let prefix = "error-description-retrieve".localized(withComment: "Library Refresh Error")
             return [prefix, description].compactMap({ $0 }).joined(separator: " ")
         case .parse:
-            return "Error parsing library data.".localized(withComment: "Library Refresh Error")
+            return "error-description-parsing-library".localized(withComment: "Library Refresh Error")
         case .process:
-            return "Error processing library data.".localized(withComment: "Library Refresh Error")
+            return "error-description-processing-library".localized(withComment: "Library Refresh Error")
         }
     }
 }
