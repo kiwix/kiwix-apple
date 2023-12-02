@@ -1,10 +1,4 @@
-//
-//  TabsManagerButton.swift
-//  Kiwix
-//
-//  Created by Chris Li on 9/1/23.
-//  Copyright © 2023 Chris Li. All rights reserved.
-//
+//  Copyright © 2023 Kiwix.
 
 import SwiftUI
 
