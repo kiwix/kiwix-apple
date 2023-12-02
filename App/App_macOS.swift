@@ -1,10 +1,4 @@
-//
-//  App_macOS.swift
-//  Kiwix
-//
-//  Created by Chris Li on 8/13/23.
-//  Copyright © 2023 Chris Li. All rights reserved.
-//
+//  Copyright © 2023 Kiwix.
 
 import SwiftUI
 import UserNotifications
@@ -167,7 +161,7 @@ struct RootView: View {
                     navigation.currentItem = .reading
                 }
             } else {
-                assertionFailure("App should support library, or should have a main zip file")
+                assertionFailure("App should support library, or should have a main zim file")
             }
         }
     }

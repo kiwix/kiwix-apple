@@ -1,10 +1,4 @@
-//
-//  Enum.swift
-//  Kiwix
-//
-//  Created by Chris Li on 12/25/21.
-//  Copyright © 2021 Chris Li. All rights reserved.
-//
+//  Copyright © 2023 Kiwix.
 
 import CoreData
 import MapKit
