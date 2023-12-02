@@ -1,10 +1,4 @@
-//
-//  App_iOS.swift
-//  Kiwix
-//
-//  Created by Chris Li on 7/27/23.
-//  Copyright © 2023 Chris Li. All rights reserved.
-//
+//  Copyright © 2023 Kiwix.
 
 import SwiftUI
 import UserNotifications
@@ -48,7 +42,7 @@ struct Kiwix: App {
                 .task {
                     if FeatureFlags.hasLibrary {
                         fileMonitor.start()
-                        LibraryOperations.reopen() {
+                        LibraryOperations.reopen {
                             navigation.navigateToMostRecentTab()
                         }
                         LibraryOperations.scanDirectory(URL.documentDirectory)
@@ -60,7 +54,7 @@ struct Kiwix: App {
                             navigation.navigateToMostRecentTab()
                         }
                     } else {
-                        assertionFailure("App should support library, or should have a main zip file")
+                        assertionFailure("App should support library, or should have a main zim file")
                     }
                 }
         }

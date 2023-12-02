@@ -1,10 +1,4 @@
-//
-//  Log.swift
-//  Kiwix
-//
-//  Created by Chris Li on 3/8/20.
-//  Copyright © 2020 Chris Li. All rights reserved.
-//
+//  Copyright © 2023 Kiwix.
 
 import os
 

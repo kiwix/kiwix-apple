@@ -55,10 +55,6 @@ class CompactViewController: UIHostingController<AnyView>, UISearchControllerDel
             guard self?.searchController.searchBar.text != searchText else { return }
             self?.searchController.searchBar.text = searchText
         }
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
         openURLObserver = NotificationCenter.default.addObserver(
             forName: .openURL, object: nil, queue: nil
         ) { [weak self] _ in
@@ -66,12 +62,11 @@ class CompactViewController: UIHostingController<AnyView>, UISearchControllerDel
             self?.navigationItem.setRightBarButton(nil, animated: true)
         }
     }
-    
-    override func viewDidDisappear(_ animated: Bool) {
-        super.viewDidDisappear(animated)
+
+    deinit {
         NotificationCenter.default.removeObserver(self)
     }
-    
+
     func willPresentSearchController(_ searchController: UISearchController) {
         navigationController?.setToolbarHidden(true, animated: true)
         navigationItem.setRightBarButton(

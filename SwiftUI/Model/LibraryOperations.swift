@@ -1,10 +1,4 @@
-//
-//  LibraryOperations.swift
-//  Kiwix
-//
-//  Created by Chris Li on 9/12/22.
-//  Copyright © 2022 Chris Li. All rights reserved.
-//
+//  Copyright © 2023 Kiwix.
 
 #if canImport(BackgroundTasks)
 import BackgroundTasks

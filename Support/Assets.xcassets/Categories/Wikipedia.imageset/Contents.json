@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "Wikipedia-logo-v2.svg",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

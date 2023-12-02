@@ -1,4 +1,4 @@
-//  Copyright © 2023 Kiwix. All rights reserved.
+//  Copyright © 2023 Kiwix.
 
 import SwiftUI
 
