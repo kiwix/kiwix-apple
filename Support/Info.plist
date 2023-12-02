@@ -34,12 +34,6 @@
 	</array>
 	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
-	<key>SETTINGS_DEFAULT_EXTERNAL_LINK_TO</key>
-	<string>$(SETTINGS_DEFAULT_EXTERNAL_LINK_TO)</string>
-	<key>SETTINGS_SHOW_EXTERNAL_LINK_OPTION</key>
-	<string>$(SETTINGS_SHOW_EXTERNAL_LINK_OPTION)</string>
-	<key>SETTINGS_SHOW_SEARCH_SNIPPET</key>
-	<string>$(SETTINGS_SHOW_SEARCH_SNIPPET)</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>fetch</string>
@@ -69,7 +63,5 @@
 			</dict>
 		</dict>
 	</array>
-	<key>CUSTOM_ZIM_FILE</key>
-	<string>$(CUSTOM_ZIM_FILE)</string>
 </dict>
 </plist>

@@ -54,12 +54,13 @@ enum Brand {
 
 enum Config: String {
 
+    case appStoreID = "APP_STORE_ID"
     case displayName = "CFBundleDisplayName"
+
     // this marks if the app is custom or not
     case customZimFile = "CUSTOM_ZIM_FILE"
     case showExternalLinkSettings = "SETTINGS_SHOW_EXTERNAL_LINK_OPTION"
     case externalLinkDefaultPolicy = "SETTINGS_DEFAULT_EXTERNAL_LINK_TO"
-    case appStoreID = "APP_STORE_ID"
     case showSearchSnippetInSettings = "SETTINGS_SHOW_SEARCH_SNIPPET"
 
     static func value<T>(for key: Config) -> T? where T: LosslessStringConvertible {
