@@ -98,7 +98,6 @@
 		97DE2BA3283A8E5C00C63D9B /* LibraryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97DE2BA1283A8E5C00C63D9B /* LibraryViewModel.swift */; };
 		97DE2BA6283A944100C63D9B /* GridCommon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97DE2BA4283A944100C63D9B /* GridCommon.swift */; };
 		97DE2BAD283B133700C63D9B /* wikipedia_dark.css in Resources */ = {isa = PBXBuildFile; fileRef = 970885D0271339A300C5795C /* wikipedia_dark.css */; };
-		97E88F4D2AE407350037F0E5 /* CoreKiwix.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97E88F4C2AE407320037F0E5 /* CoreKiwix.xcframework */; settings = {ATTRIBUTES = (Required, ); }; };
 		97F3333028AFC1A2007FF53C /* SearchResults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97F3332E28AFC1A2007FF53C /* SearchResults.swift */; };
 		97FB4ECE28B4E221003FB524 /* SwiftUIBackports in Frameworks */ = {isa = PBXBuildFile; productRef = 97FB4ECD28B4E221003FB524 /* SwiftUIBackports */; };
 		980179512B0DF42100E8E1E2 /* Brand.swift in Sources */ = {isa = PBXBuildFile; fileRef = 980179502B0DF42100E8E1E2 /* Brand.swift */; };
@@ -109,6 +108,8 @@
 		983D22672B16ABB6005EBAF1 /* LoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 983D22662B16ABB6005EBAF1 /* LoadingView.swift */; };
 		983D22682B16ABB6005EBAF1 /* LoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 983D22662B16ABB6005EBAF1 /* LoadingView.swift */; };
 		983ED7192B08AFE700409078 /* Kiwix-Bridging-Header.h in Sources */ = {isa = PBXBuildFile; fileRef = 9779A5D02456796A00F6F6FF /* Kiwix-Bridging-Header.h */; platformFilter = ios; };
+		984610642B1BDCD9002512AE /* CoreKiwix.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97E88F4C2AE407320037F0E5 /* CoreKiwix.xcframework */; };
+		984610652B1BDCDA002512AE /* CoreKiwix.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97E88F4C2AE407320037F0E5 /* CoreKiwix.xcframework */; };
 		98AB9E022B121CF8007693C1 /* Launch.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 98AB9E012B121CF8007693C1 /* Launch.storyboard */; platformFilter = ios; };
 		98AF8F9F2B12B241000125E1 /* dwds_de_dictionary_nopic_2023-11-20.zim in Resources */ = {isa = PBXBuildFile; fileRef = 98AF8F9E2B12B241000125E1 /* dwds_de_dictionary_nopic_2023-11-20.zim */; };
 		98AF8FA02B12B282000125E1 /* String+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E43964B2B02E4C6007F0BC4 /* String+Extension.swift */; };
@@ -190,7 +191,6 @@
 		98FBF3F22B0D5ADB00B70826 /* App_macOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 972727A92A89122F00BCAF75 /* App_macOS.swift */; };
 		98FBF3F32B0D5ADB00B70826 /* LibraryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97DE2BA1283A8E5C00C63D9B /* LibraryViewModel.swift */; };
 		98FBF3F42B0D5ADB00B70826 /* FeatureFlags.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97FD2F5E251EA07B0034927C /* FeatureFlags.swift */; };
-		98FBF3F62B0D5ADB00B70826 /* CoreKiwix.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97E88F4C2AE407320037F0E5 /* CoreKiwix.xcframework */; };
 		98FBF3F72B0D5ADB00B70826 /* OrderedCollections in Frameworks */ = {isa = PBXBuildFile; productRef = 98FBF3A32B0D5ADB00B70826 /* OrderedCollections */; };
 		98FBF3F82B0D5ADB00B70826 /* SwiftUIBackports in Frameworks */ = {isa = PBXBuildFile; productRef = 98FBF3A12B0D5ADB00B70826 /* SwiftUIBackports */; };
 		98FBF3F92B0D5ADB00B70826 /* Defaults in Frameworks */ = {isa = PBXBuildFile; productRef = 98FBF39F2B0D5ADB00B70826 /* Defaults */; };
@@ -359,7 +359,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				97E88F4D2AE407350037F0E5 /* CoreKiwix.xcframework in Frameworks */,
+				984610652B1BDCDA002512AE /* CoreKiwix.xcframework in Frameworks */,
 				975346C42AC30CFD000DECB6 /* OrderedCollections in Frameworks */,
 				97FB4ECE28B4E221003FB524 /* SwiftUIBackports in Frameworks */,
 				9753D94B285B56C900A626CC /* Defaults in Frameworks */,
@@ -378,7 +378,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				98FBF3F62B0D5ADB00B70826 /* CoreKiwix.xcframework in Frameworks */,
+				984610642B1BDCD9002512AE /* CoreKiwix.xcframework in Frameworks */,
 				98FBF3F72B0D5ADB00B70826 /* OrderedCollections in Frameworks */,
 				98FBF3F82B0D5ADB00B70826 /* SwiftUIBackports in Frameworks */,
 				98FBF3F92B0D5ADB00B70826 /* Defaults in Frameworks */,

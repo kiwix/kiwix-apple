@@ -4,6 +4,7 @@ import SwiftUI
 import UserNotifications
 import Combine
 import Defaults
+import CoreKiwix
 
 #if os(macOS)
 @main
@@ -149,19 +150,18 @@ struct RootView: View {
         .onReceive(appTerminates) { _ in
             browser.persistAllTabIdsFromWindows()
         }.task {
-            if FeatureFlags.hasLibrary {
+            switch AppType.current {
+            case .kiwix:
                 LibraryOperations.reopen {
                     navigation.currentItem = .reading
                 }
                 LibraryOperations.scanDirectory(URL.documentDirectory)
                 LibraryOperations.applyFileBackupSetting()
                 DownloadService.shared.restartHeartbeatIfNeeded()
-            } else if let url = Brand.mainZimFileURL {
-                LibraryOperations.open(url: url) {
+            case let .custom(zimFileURL):
+                LibraryOperations.open(url: zimFileURL) {
                     navigation.currentItem = .reading
                 }
-            } else {
-                assertionFailure("App should support library, or should have a main zim file")
             }
         }
     }

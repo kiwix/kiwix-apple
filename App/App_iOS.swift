@@ -40,7 +40,8 @@ struct Kiwix: App {
                     }
                 }
                 .task {
-                    if FeatureFlags.hasLibrary {
+                    switch AppType.current {
+                    case .kiwix:
                         fileMonitor.start()
                         LibraryOperations.reopen {
                             navigation.navigateToMostRecentTab()
@@ -49,12 +50,10 @@ struct Kiwix: App {
                         LibraryOperations.applyFileBackupSetting()
                         LibraryOperations.applyLibraryAutoRefreshSetting()
                         DownloadService.shared.restartHeartbeatIfNeeded()
-                    } else if let url = Brand.mainZimFileURL {
-                        LibraryOperations.open(url: url) {
+                    case let .custom(zimFileURL):
+                        LibraryOperations.open(url: zimFileURL) {
                             navigation.navigateToMostRecentTab()
                         }
-                    } else {
-                        assertionFailure("App should support library, or should have a main zim file")
                     }
                 }
         }
