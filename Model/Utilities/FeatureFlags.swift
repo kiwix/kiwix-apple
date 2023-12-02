@@ -12,7 +12,7 @@ enum FeatureFlags {
 #endif
     /// Custom apps, which have a bundled zim file, do not require library access
     /// this will remove all library related features
-    static let hasLibrary: Bool = Config.value(for: .hasLibrary) ?? true
+    static let hasLibrary: Bool = !AppType.isCustom
 
     static let showExternalLinkOptionInSettings: Bool = Config.value(for: .showExternalLinkSettings) ?? true
     static let showSearchSnippetInSettings: Bool = Config.value(for: .showSearchSnippetInSettings) ?? true

@@ -32,16 +32,8 @@
 			</array>
 		</dict>
 	</array>
-	<key>HAS_LIBRARY</key>
-	<string>$(HAS_LIBRARY)</string>
 	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
-	<key>SETTINGS_DEFAULT_EXTERNAL_LINK_TO</key>
-	<string>$(SETTINGS_DEFAULT_EXTERNAL_LINK_TO)</string>
-	<key>SETTINGS_SHOW_EXTERNAL_LINK_OPTION</key>
-	<string>$(SETTINGS_SHOW_EXTERNAL_LINK_OPTION)</string>
-	<key>SETTINGS_SHOW_SEARCH_SNIPPET</key>
-	<string>$(SETTINGS_SHOW_SEARCH_SNIPPET)</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>fetch</string>
@@ -71,7 +63,5 @@
 			</dict>
 		</dict>
 	</array>
-	<key>ZIM_FILE_MAIN</key>
-	<string>$(ZIM_FILE_MAIN)</string>
 </dict>
 </plist>
