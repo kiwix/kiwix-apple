@@ -1,4 +1,10 @@
-//  Copyright © 2023 Kiwix.
+//
+//  Settings.swift
+//  Kiwix
+//
+//  Created by Chris Li on 10/1/22.
+//  Copyright © 2022 Chris Li. All rights reserved.
+//
 
 import SwiftUI
 

@@ -1,4 +1,10 @@
-//  Copyright © 2023 Kiwix.
+//
+//  NavigationViewModel.swift
+//  Kiwix
+//
+//  Created by Chris Li on 7/29/23.
+//  Copyright © 2023 Chris Li. All rights reserved.
+//
 
 import CoreData
 import WebKit

@@ -1,4 +1,10 @@
-//  Copyright © 2023 Kiwix.
+//
+//  DefaultKeys.swift
+//  Kiwix
+//
+//  Created by Chris Li on 6/16/22.
+//  Copyright © 2022 Chris Li. All rights reserved.
+//
 
 import Defaults
 

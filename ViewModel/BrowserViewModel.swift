@@ -1,4 +1,10 @@
-//  Copyright © 2023 Kiwix.
+//
+//  BrowserViewModel.swift
+//  Kiwix
+//
+//  Created by Chris Li on 6/21/23.
+//  Copyright © 2023 Chris Li. All rights reserved.
+//
 
 import Combine
 import CoreData

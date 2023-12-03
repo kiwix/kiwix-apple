@@ -1,4 +1,9 @@
-//  Copyright © 2023 Kiwix.
+//  App_iOS.swift
+//  Kiwix
+//
+//  Created by Chris Li on 7/27/23.
+//  Copyright © 2023 Chris Li. All rights reserved.
+//
 
 import SwiftUI
 import UserNotifications
