@@ -13,6 +13,7 @@ import WebKit
 import Defaults
 
 import OrderedCollections
+import CoreKiwix
 
 // swiftlint:disable file_length
 // swiftlint:disable:next type_body_length
@@ -51,6 +52,10 @@ final class BrowserViewModel: NSObject, ObservableObject,
             if !FeatureFlags.hasLibrary, url == nil {
                 loadMainArticle()
             }
+            if url != oldValue {
+                bookmarkFetchedResultsController.fetchRequest.predicate = Self.bookmarksPredicateFor(url: url)
+                try? bookmarkFetchedResultsController.performFetch()
+            }
         }
     }
     @Published var externalURL: URL?
@@ -73,17 +78,25 @@ final class BrowserViewModel: NSObject, ObservableObject,
     private var canGoBackObserver: NSKeyValueObservation?
     private var canGoForwardObserver: NSKeyValueObservation?
     private var titleURLObserver: AnyCancellable?
-    private var bookmarkFetchedResultsController: NSFetchedResultsController<Bookmark>?
+    private let bookmarkFetchedResultsController: NSFetchedResultsController<Bookmark>
     /// A temporary placeholder for the url that should be opened in a new tab, set on macOS only
     static var urlForNewTab: URL?
-    private var cancellables: Set<AnyCancellable> = []
 
     // MARK: - Lifecycle
 
     init(tabID: NSManagedObjectID? = nil) {
         self.tabID = tabID
         webView = WKWebView(frame: .zero, configuration: WebViewConfiguration())
+        // Bookmark fetching:
+        bookmarkFetchedResultsController = NSFetchedResultsController(
+            fetchRequest: Bookmark.fetchRequest(), // initially empty
+            managedObjectContext: Database.viewContext,
+            sectionNameKeyPath: nil,
+            cacheName: nil
+        )
         super.init()
+
+        bookmarkFetchedResultsController.delegate = self
 
         // configure web view
         webView.allowsBackForwardNavigationGestures = true
@@ -122,7 +135,6 @@ final class BrowserViewModel: NSObject, ObservableObject,
             guard let title, let url else { return }
             self?.didUpdate(title: title, url: url)
         }
-        bookmarkFetchedResultsController?.delegate = self
     }
 
     private func didUpdate(title: String, url: URL) {
@@ -144,17 +156,6 @@ final class BrowserViewModel: NSObject, ObservableObject,
             tab.title = title
             tab.zimFile = zimFile
         }
-
-        // setup bookmark fetched results controller
-        bookmarkFetchedResultsController = NSFetchedResultsController(
-            fetchRequest: Bookmark.fetchRequest(predicate: {
-                return NSPredicate(format: "articleURL == %@", url as CVarArg)
-            }()),
-            managedObjectContext: Database.viewContext,
-            sectionNameKeyPath: nil,
-            cacheName: nil
-        )
-        try? bookmarkFetchedResultsController?.performFetch()
     }
 
     func updateLastOpened() {
@@ -176,6 +177,7 @@ final class BrowserViewModel: NSObject, ObservableObject,
     func load(url: URL) {
         guard webView.url != url else { return }
         webView.load(URLRequest(url: url))
+        self.url = url
     }
 
     func loadRandomArticle(zimFileID: UUID? = nil) {
@@ -318,9 +320,10 @@ final class BrowserViewModel: NSObject, ObservableObject,
                 let webView = WKWebView(frame: .zero, configuration: WebViewConfiguration())
                 webView.load(URLRequest(url: url))
                 return WebViewController(webView: webView)
-            }, actionProvider: { _ in
+            },
+            actionProvider: { _ in
                 var actions = [UIAction]()
-
+                
                 // open url
                 actions.append(
                     UIAction(title: "Open".localized, image: UIImage(systemName: "doc.text")) { _ in
@@ -332,19 +335,23 @@ final class BrowserViewModel: NSObject, ObservableObject,
                         NotificationCenter.openURL(url, inNewTab: true)
                     }
                 )
-
+                
                 // bookmark
                 let bookmarkAction: UIAction = {
                     let context = Database.viewContext
                     let predicate = NSPredicate(format: "articleURL == %@", url as CVarArg)
                     let request = Bookmark.fetchRequest(predicate: predicate)
-                    if let bookmarks = try? context.fetch(request), !bookmarks.isEmpty {
+                    if let bookmarks = try? context.fetch(request),
+                       !bookmarks.isEmpty {
                         return UIAction(title: "Remove Bookmark".localized, 
                                         image: UIImage(systemName: "star.slash.fill")) { [weak self] _ in
                             self?.deleteBookmark(url: url)
                         }
                     } else {
-                        return UIAction(title: "Bookmark".localized, image: UIImage(systemName: "star")) { [weak self] _ in
+                        return UIAction(
+                            title: "Bookmark".localized,
+                            image: UIImage(systemName: "star")
+                        ) { [weak self] _ in
                             self?.createBookmark(url: url)
                         }
                     }
@@ -536,5 +543,10 @@ final class BrowserViewModel: NSObject, ObservableObject,
                 self.outlineItemTree = root.children ?? []
             }
         }
+    }
+
+    private static func bookmarksPredicateFor(url: URL?) -> NSPredicate? {
+        guard let url else { return nil }
+        return NSPredicate(format: "articleURL == %@", url as CVarArg)
     }
 }
