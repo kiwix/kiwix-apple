@@ -86,8 +86,10 @@ struct SidebarNavigationCommands: View {
     
     var body: some View {
         buildButtons([.reading, .bookmarks], modifiers: [.command])
-        Divider()
-        buildButtons([.opened, .categories, .downloads, .new], modifiers: [.command, .control])
+        if FeatureFlags.hasLibrary {
+            Divider()
+            buildButtons([.opened, .categories, .downloads, .new], modifiers: [.command, .control])
+        }
     }
     
     private func buildButtons(_ navigationItems: [NavigationItem], modifiers: EventModifiers = []) -> some View {
