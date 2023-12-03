@@ -60,7 +60,7 @@ struct Kiwix: App {
                             navigation.navigateToMostRecentTab()
                         }
                     } else {
-                        assertionFailure("App should support library, or should have a main zip file")
+                        assertionFailure("App should support library, or should have a main zim file")
                     }
                 }
         }
