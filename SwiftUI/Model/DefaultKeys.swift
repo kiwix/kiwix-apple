@@ -1,10 +1,4 @@
-//
-//  DefaultKeys.swift
-//  Kiwix
-//
-//  Created by Chris Li on 6/16/22.
-//  Copyright © 2022 Chris Li. All rights reserved.
-//
+//  Copyright © 2023 Kiwix.
 
 import Defaults
 
@@ -13,10 +7,10 @@ extension Defaults.Keys {
     static let webViewTextSizeAdjustFactor = Key<Double>("webViewZoomScale", default: 1)
     static let webViewPageZoom = Key<Double>("webViewPageZoom", default: 1)
     static let externalLinkLoadingPolicy = Key<ExternalLinkLoadingPolicy>(
-        "externalLinkLoadingPolicy", default: .alwaysAsk
+        "externalLinkLoadingPolicy", default: Brand.defaultExternalLinkPolicy
     )
     static let searchResultSnippetMode = Key<SearchResultSnippetMode>(
-        "searchResultSnippetMode", default: .firstSentence
+        "searchResultSnippetMode", default: Brand.defaultSearchSnippetMode
     )
 //
 //    // UI

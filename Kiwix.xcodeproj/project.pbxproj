@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 55;
+	objectVersion = 60;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -44,7 +44,6 @@
 		973A0DE8281DD7EB00B41E71 /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9779A7E224567A5A00F6F6FF /* Log.swift */; };
 		973A0DEB281DDBB600B41E71 /* ZimFilesDownloads.swift in Sources */ = {isa = PBXBuildFile; fileRef = 973A0DE9281DDBB600B41E71 /* ZimFilesDownloads.swift */; };
 		973A0DF1282E981200B41E71 /* ZimFileRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 973A0DEF282E981200B41E71 /* ZimFileRow.swift */; };
-		973A0DF72830929C00B41E71 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 97E94B1D271EF250005B0295 /* Assets.xcassets */; };
 		973A0DFD283100C300B41E71 /* ZimFilesOpened.swift in Sources */ = {isa = PBXBuildFile; fileRef = 973A0DFB283100C300B41E71 /* ZimFilesOpened.swift */; };
 		973A0E032831057200B41E71 /* URL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97B3BACD2736CE3500A23F49 /* URL.swift */; };
 		9744068728CE263800916BD4 /* DirectoryMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9779A5CF2456796A00F6F6FF /* DirectoryMonitor.swift */; };
@@ -99,9 +98,13 @@
 		97DE2BA3283A8E5C00C63D9B /* LibraryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97DE2BA1283A8E5C00C63D9B /* LibraryViewModel.swift */; };
 		97DE2BA6283A944100C63D9B /* GridCommon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97DE2BA4283A944100C63D9B /* GridCommon.swift */; };
 		97DE2BAD283B133700C63D9B /* wikipedia_dark.css in Resources */ = {isa = PBXBuildFile; fileRef = 970885D0271339A300C5795C /* wikipedia_dark.css */; };
-		97E88F4D2AE407350037F0E5 /* CoreKiwix.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97E88F4C2AE407320037F0E5 /* CoreKiwix.xcframework */; };
+		97E88F4D2AE407350037F0E5 /* CoreKiwix.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97E88F4C2AE407320037F0E5 /* CoreKiwix.xcframework */; settings = {ATTRIBUTES = (Required, ); }; };
 		97F3333028AFC1A2007FF53C /* SearchResults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97F3332E28AFC1A2007FF53C /* SearchResults.swift */; };
 		97FB4ECE28B4E221003FB524 /* SwiftUIBackports in Frameworks */ = {isa = PBXBuildFile; productRef = 97FB4ECD28B4E221003FB524 /* SwiftUIBackports */; };
+		980179512B0DF42100E8E1E2 /* Brand.swift in Sources */ = {isa = PBXBuildFile; fileRef = 980179502B0DF42100E8E1E2 /* Brand.swift */; };
+		980179542B0E402C00E8E1E2 /* kiwix.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 980179532B0E402C00E8E1E2 /* kiwix.xcconfig */; };
+		983A3F562B129F6B000E7A51 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 983A3F552B129F6B000E7A51 /* Assets.xcassets */; };
+		983D22672B16ABB6005EBAF1 /* LoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 983D22662B16ABB6005EBAF1 /* LoadingView.swift */; };
 		983ED7192B08AFE700409078 /* Kiwix-Bridging-Header.h in Sources */ = {isa = PBXBuildFile; fileRef = 9779A5D02456796A00F6F6FF /* Kiwix-Bridging-Header.h */; platformFilter = ios; };
 /* End PBXBuildFile section */
 
@@ -234,13 +237,16 @@
 		97DE2BA1283A8E5C00C63D9B /* LibraryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryViewModel.swift; sourceTree = "<group>"; };
 		97DE2BA4283A944100C63D9B /* GridCommon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GridCommon.swift; sourceTree = "<group>"; };
 		97E88F4C2AE407320037F0E5 /* CoreKiwix.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = CoreKiwix.xcframework; sourceTree = SOURCE_ROOT; };
-		97E94B1D271EF250005B0295 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		97E94B22271EF250005B0295 /* Kiwix.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Kiwix.entitlements; sourceTree = "<group>"; };
 		97F3332E28AFC1A2007FF53C /* SearchResults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResults.swift; sourceTree = "<group>"; };
 		97F425C127151A0D00D0F738 /* QuickLook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuickLook.framework; path = System/Library/Frameworks/QuickLook.framework; sourceTree = SDKROOT; };
 		97F6CC5020BD960F005CDBD2 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		97FB4B0A27B819A90055F86E /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
 		97FD2F5E251EA07B0034927C /* FeatureFlags.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeatureFlags.swift; sourceTree = "<group>"; };
+		980179502B0DF42100E8E1E2 /* Brand.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Brand.swift; sourceTree = "<group>"; };
+		980179532B0E402C00E8E1E2 /* kiwix.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = kiwix.xcconfig; sourceTree = "<group>"; };
+		983A3F552B129F6B000E7A51 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		983D22662B16ABB6005EBAF1 /* LoadingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoadingView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -317,6 +323,7 @@
 				974E7EE22930201500BDF59C /* ZimFileService */,
 				9735D0B82775363900C7D495 /* DataModel.xcdatamodeld */,
 				973A0DE5281DC8F400B41E71 /* DownloadService.swift */,
+				980179502B0DF42100E8E1E2 /* Brand.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -407,6 +414,7 @@
 		975088BF287EEE2900273181 /* BuildingBlocks */ = {
 			isa = PBXGroup;
 			children = (
+				983D22662B16ABB6005EBAF1 /* LoadingView.swift */,
 				97486D05284A36790096E4DD /* ArticleCell.swift */,
 				972096E62AE421C300B378B0 /* Attribute.swift */,
 				97341C6C2852248500BC273E /* DownloadTaskCell.swift */,
@@ -553,7 +561,7 @@
 		97E94B26271EF359005B0295 /* Support */ = {
 			isa = PBXGroup;
 			children = (
-				97E94B1D271EF250005B0295 /* Assets.xcassets */,
+				983A3F552B129F6B000E7A51 /* Assets.xcassets */,
 				9713F7782AE416E5007DD9EC /* CoreKiwix.modulemap */,
 				97B707042974637200562392 /* Info.plist */,
 				9735B88B279D9A74005F0D1A /* injection.js */,
@@ -561,6 +569,7 @@
 				9779A5D02456796A00F6F6FF /* Kiwix-Bridging-Header.h */,
 				970885D0271339A300C5795C /* wikipedia_dark.css */,
 				8E4396492B02E455007F0BC4 /* Localizable.strings */,
+				980179532B0E402C00E8E1E2 /* kiwix.xcconfig */,
 			);
 			path = Support;
 			sourceTree = "<group>";
@@ -638,7 +647,7 @@
 				BuildIndependentTargetsInParallel = YES;
 				LastSwiftUpdateCheck = 1420;
 				LastUpgradeCheck = 1500;
-				ORGANIZATIONNAME = "Chris Li";
+				ORGANIZATIONNAME = Kiwix;
 				TargetAttributes = {
 					97008AB92974A5BF0076E60C = {
 						CreatedOnToolsVersion = 14.2;
@@ -655,7 +664,7 @@
 				};
 			};
 			buildConfigurationList = 97A2AB831C1B80FF00052E74 /* Build configuration list for PBXProject "Kiwix" */;
-			compatibilityVersion = "Xcode 13.0";
+			compatibilityVersion = "Xcode 15.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -693,9 +702,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				973A0DF72830929C00B41E71 /* Assets.xcassets in Resources */,
+				980179542B0E402C00E8E1E2 /* kiwix.xcconfig in Resources */,
 				8E4396462B02E455007F0BC4 /* Localizable.strings in Resources */,
 				979D3A7C284159BF00E396B8 /* injection.js in Resources */,
+				983A3F562B129F6B000E7A51 /* Assets.xcassets in Resources */,
 				97DE2BAD283B133700C63D9B /* wikipedia_dark.css in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -724,6 +734,7 @@
 			);
 			inputPaths = (
 			);
+			name = "Run Script";
 			outputFileListPaths = (
 			);
 			outputPaths = (
@@ -820,6 +831,7 @@
 				972DE4B42814A4F6004FD9B9 /* DataModel.xcdatamodeld in Sources */,
 				976BAEBD2849056B0049404F /* SearchOperation.swift in Sources */,
 				976D90E428159BFA00CC7D29 /* Favicon.swift in Sources */,
+				983D22672B16ABB6005EBAF1 /* LoadingView.swift in Sources */,
 				976D90DB281584BF00CC7D29 /* FlavorTag.swift in Sources */,
 				972DE4BD2814A5BE004FD9B9 /* OPDSParser.mm in Sources */,
 				972DE4B52814A502004FD9B9 /* Entities.swift in Sources */,
@@ -841,6 +853,7 @@
 				973A0DE7281DC8F400B41E71 /* DownloadService.swift in Sources */,
 				9721BBB72841C16D005C910D /* Message.swift in Sources */,
 				97BD6C9D2886E06B004A8532 /* HTMLParser.swift in Sources */,
+				980179512B0DF42100E8E1E2 /* Brand.swift in Sources */,
 				97677B572A8FA80000F523AB /* FileImport.swift in Sources */,
 				972727AA2A89122F00BCAF75 /* App_macOS.swift in Sources */,
 				97DE2BA3283A8E5C00C63D9B /* LibraryViewModel.swift in Sources */,
@@ -961,6 +974,7 @@
 		};
 		972DE4B12814A3D9004FD9B9 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 980179532B0E402C00E8E1E2 /* kiwix.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -970,13 +984,14 @@
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CODE_SIGN_ENTITLEMENTS = Support/Kiwix.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 119;
+				CURRENT_PROJECT_VERSION = 120;
 				DEVELOPMENT_ASSET_PATHS = "";
 				DEVELOPMENT_TEAM = L7HWM3SP3L;
 				"ENABLE_HARDENED_RUNTIME[sdk=macosx*]" = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Support/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = Kiwix;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.reference";
 				INFOPLIST_KEY_LSSupportsOpeningDocumentsInPlace = YES;
 				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Kiwix needs permission to saves images to your photos app.";
@@ -989,7 +1004,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 3.2;
+				MARKETING_VERSION = 3.3;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = self.Kiwix;
@@ -1007,6 +1022,7 @@
 		};
 		972DE4B22814A3D9004FD9B9 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 980179532B0E402C00E8E1E2 /* kiwix.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -1016,18 +1032,20 @@
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CODE_SIGN_ENTITLEMENTS = Support/Kiwix.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 119;
+				CURRENT_PROJECT_VERSION = 120;
 				DEVELOPMENT_ASSET_PATHS = "";
 				DEVELOPMENT_TEAM = L7HWM3SP3L;
 				"ENABLE_HARDENED_RUNTIME[sdk=macosx*]" = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Support/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = Kiwix;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.reference";
 				INFOPLIST_KEY_LSSupportsOpeningDocumentsInPlace = YES;
 				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Kiwix needs permission to saves images to your photos app.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchKiwix.storyboard;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
@@ -1035,7 +1053,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 3.2;
+				MARKETING_VERSION = 3.3;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = self.Kiwix;
 				PRODUCT_NAME = Kiwix;

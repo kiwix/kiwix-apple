@@ -1,10 +1,4 @@
-//
-//  BrowserViewModel.swift
-//  Kiwix
-//
-//  Created by Chris Li on 6/21/23.
-//  Copyright © 2023 Chris Li. All rights reserved.
-//
+//  Copyright © 2023 Kiwix.
 
 import Combine
 import CoreData
@@ -46,7 +40,13 @@ final class BrowserViewModel: NSObject, ObservableObject,
     @Published private(set) var articleBookmarked = false
     @Published private(set) var outlineItems = [OutlineItem]()
     @Published private(set) var outlineItemTree = [OutlineItem]()
-    @Published private(set) var url: URL?
+    @Published private(set) var url: URL? {
+        didSet {
+            if !FeatureFlags.hasLibrary, url == nil {
+                loadMainArticle()
+            }
+        }
+    }
     @Published var externalURL: URL?
 
     private(set) var tabID: NSManagedObjectID? {

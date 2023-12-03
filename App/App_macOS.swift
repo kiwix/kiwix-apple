@@ -1,15 +1,10 @@
-//
-//  App_macOS.swift
-//  Kiwix
-//
-//  Created by Chris Li on 8/13/23.
-//  Copyright © 2023 Chris Li. All rights reserved.
-//
+//  Copyright © 2023 Kiwix.
 
 import SwiftUI
 import UserNotifications
 import Combine
 import Defaults
+import CoreKiwix
 
 #if os(macOS)
 @main
@@ -19,10 +14,6 @@ struct Kiwix: App {
 
     init() {
         UNUserNotificationCenter.current().delegate = notificationCenterDelegate
-        LibraryOperations.reopen()
-        LibraryOperations.scanDirectory(URL.documentDirectory)
-        LibraryOperations.applyFileBackupSetting()
-        DownloadService.shared.restartHeartbeatIfNeeded()
     }
     
     var body: some Scene {
@@ -57,11 +48,13 @@ struct Kiwix: App {
         Settings {
             TabView {
                 ReadingSettings()
-                LibrarySettings()
+                if FeatureFlags.hasLibrary {
+                    LibrarySettings()
+                        .environmentObject(libraryRefreshViewModel)
+                }
                 About()
             }
             .frame(width: 550, height: 400)
-            .environmentObject(libraryRefreshViewModel)
         }
     }
 
@@ -95,9 +88,11 @@ struct RootView: View {
                 ForEach(primaryItems, id: \.self) { navigationItem in
                     Label(navigationItem.name.localized, systemImage: navigationItem.icon)
                 }
-                Section("Library".localized) {
-                    ForEach(libraryItems, id: \.self) { navigationItem in
-                        Label(navigationItem.name.localized, systemImage: navigationItem.icon)
+                if FeatureFlags.hasLibrary {
+                    Section("Library".localized) {
+                        ForEach(libraryItems, id: \.self) { navigationItem in
+                            Label(navigationItem.name.localized, systemImage: navigationItem.icon)
+                        }
                     }
                 }
             }
@@ -111,6 +106,8 @@ struct RootView: View {
                 }.help("Show sidebar".localized)
             }
             switch navigation.currentItem {
+            case .loading:
+                LoadingView()
             case .reading:
                 BrowserTab().environmentObject(browser)
                     .withHostingWindow { window in
@@ -152,6 +149,20 @@ struct RootView: View {
         }
         .onReceive(appTerminates) { _ in
             browser.persistAllTabIdsFromWindows()
+        }.task {
+            switch AppType.current {
+            case .kiwix:
+                LibraryOperations.reopen {
+                    navigation.currentItem = .reading
+                }
+                LibraryOperations.scanDirectory(URL.documentDirectory)
+                LibraryOperations.applyFileBackupSetting()
+                DownloadService.shared.restartHeartbeatIfNeeded()
+            case let .custom(zimFileURL):
+                LibraryOperations.open(url: zimFileURL) {
+                    navigation.currentItem = .reading
+                }
+            }
         }
     }
 }

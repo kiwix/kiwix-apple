@@ -1,10 +1,4 @@
-//
-//  Log.swift
-//  Kiwix
-//
-//  Created by Chris Li on 3/8/20.
-//  Copyright © 2020 Chris Li. All rights reserved.
-//
+//  Copyright © 2023 Kiwix.
 
 import os
 
@@ -17,4 +11,5 @@ struct Log {
     static let LibraryOperations = OSLog(subsystem: subsystem, category: "LibraryOperations")
     static let OPDS = OSLog(subsystem: subsystem, category: "OPDS")
     static let URLSchemeHandler = OSLog(subsystem: subsystem, category: "URLSchemeHandler")
+    static let Branding = OSLog(subsystem: subsystem, category: "Branding")
 }

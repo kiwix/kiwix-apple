@@ -1,10 +1,4 @@
-//
-//  TabsManagerButton.swift
-//  Kiwix
-//
-//  Created by Chris Li on 9/1/23.
-//  Copyright © 2023 Chris Li. All rights reserved.
-//
+//  Copyright © 2023 Kiwix.
 
 import SwiftUI
 
@@ -51,10 +45,12 @@ struct TabsManagerButton: View {
                 }
             }
             Section {
-                Button {
-                    presentedSheet = .library
-                } label: {
-                    Label("Library".localized, systemImage: "folder")
+                if FeatureFlags.hasLibrary {
+                    Button {
+                        presentedSheet = .library
+                    } label: {
+                        Label("Library".localized, systemImage: "folder")
+                    }
                 }
                 Button {
                     presentedSheet = .settings

@@ -1,10 +1,4 @@
-//
-//  Settings.swift
-//  Kiwix
-//
-//  Created by Chris Li on 10/1/22.
-//  Copyright © 2022 Chris Li. All rights reserved.
-//
+//  Copyright © 2023 Kiwix.
 
 import SwiftUI
 
@@ -25,19 +19,23 @@ struct ReadingSettings: View {
                     Button("Reset".localized) { webViewPageZoom = 1 }.disabled(webViewPageZoom == 1)
                 }
             }
-            SettingSection(name: "External link".localized) {
-                Picker(selection: $externalLinkLoadingPolicy) {
-                    ForEach(ExternalLinkLoadingPolicy.allCases) { loadingPolicy in
-                        Text(loadingPolicy.name.localized).tag(loadingPolicy)
-                    }
-                } label: { }
+            if FeatureFlags.showExternalLinkOptionInSettings {
+                SettingSection(name: "External link".localized) {
+                    Picker(selection: $externalLinkLoadingPolicy) {
+                        ForEach(ExternalLinkLoadingPolicy.allCases) { loadingPolicy in
+                            Text(loadingPolicy.name.localized).tag(loadingPolicy)
+                        }
+                    } label: { }
+                }
             }
-            SettingSection(name: "Search snippet".localized) {
-                Picker(selection: $searchResultSnippetMode) {
-                    ForEach(SearchResultSnippetMode.allCases) { snippetMode in
-                        Text(snippetMode.name.localized).tag(snippetMode)
-                    }
-                } label: { }
+            if FeatureFlags.showSearchSnippetInSettings {
+                SettingSection(name: "Search snippet".localized) {
+                    Picker(selection: $searchResultSnippetMode) {
+                        ForEach(SearchResultSnippetMode.allCases) { snippetMode in
+                            Text(snippetMode.name.localized).tag(snippetMode)
+                        }
+                    } label: { }
+                }
             }
         }
         .padding()
@@ -118,15 +116,24 @@ struct Settings: View {
     }
     
     var body: some View {
-        List {
-            readingSettings
-            librarySettings
-            catalogSettings
-            backupSettings
-            miscellaneous
+        if FeatureFlags.hasLibrary {
+            List {
+                readingSettings
+                librarySettings
+                catalogSettings
+                backupSettings
+                miscellaneous
+            }
+            .modifier(ToolbarRoleBrowser())
+            .navigationTitle("Settings".localized)
+        } else {
+            List {
+                readingSettings
+                miscellaneous
+            }
+            .modifier(ToolbarRoleBrowser())
+            .navigationTitle("Settings".localized)
         }
-        .modifier(ToolbarRoleBrowser())
-        .navigationTitle("Settings".localized)
     }
     
     var readingSettings: some View {
@@ -135,14 +142,18 @@ struct Settings: View {
                 Text("Page zoom".localized + 
                      ": \(Formatter.percent.string(from: NSNumber(value: webViewPageZoom)) ?? "")")
             }
-            Picker("External link".localized, selection: $externalLinkLoadingPolicy) {
-                ForEach(ExternalLinkLoadingPolicy.allCases) { loadingPolicy in
-                    Text(loadingPolicy.name.localized).tag(loadingPolicy)
+            if FeatureFlags.showExternalLinkOptionInSettings {
+                Picker("External link".localized, selection: $externalLinkLoadingPolicy) {
+                    ForEach(ExternalLinkLoadingPolicy.allCases) { loadingPolicy in
+                        Text(loadingPolicy.name.localized).tag(loadingPolicy)
+                    }
                 }
             }
-            Picker("Search snippet".localized, selection: $searchResultSnippetMode) {
-                ForEach(SearchResultSnippetMode.allCases) { snippetMode in
-                    Text(snippetMode.name.localized).tag(snippetMode)
+            if FeatureFlags.showSearchSnippetInSettings {
+                Picker("Search snippet".localized, selection: $searchResultSnippetMode) {
+                    ForEach(SearchResultSnippetMode.allCases) { snippetMode in
+                        Text(snippetMode.name.localized).tag(snippetMode)
+                    }
                 }
             }
         }
@@ -203,7 +214,8 @@ struct Settings: View {
         Section("Misc".localized) {
             Button("Feedback".localized) { UIApplication.shared.open(URL(string: "mailto:feedback@kiwix.org")!) }
             Button("Rate the App".localized) {
-                let url = URL(string: "itms-apps://itunes.apple.com/us/app/kiwix/id997079563?action=write-review")!
+                let url = URL(appStoreReviewForName: Brand.appName.lowercased(),
+                              appStoreID: Brand.appStoreId)
                 UIApplication.shared.open(url)
             }
             NavigationLink("About".localized) { About() }

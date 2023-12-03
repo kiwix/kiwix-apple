@@ -1,10 +1,4 @@
-//
-//  App_iOS.swift
-//  Kiwix
-//
-//  Created by Chris Li on 7/27/23.
-//  Copyright © 2023 Chris Li. All rights reserved.
-//
+//  Copyright © 2023 Kiwix.
 
 import SwiftUI
 import UserNotifications
@@ -21,13 +15,8 @@ struct Kiwix: App {
     
     init() {
         fileMonitor = DirectoryMonitor(url: URL.documentDirectory) { LibraryOperations.scanDirectory($0) }
-        UNUserNotificationCenter.current().delegate = appDelegate
-        LibraryOperations.reopen()
-        LibraryOperations.scanDirectory(URL.documentDirectory)
-        LibraryOperations.applyFileBackupSetting()
         LibraryOperations.registerBackgroundTask()
-        LibraryOperations.applyLibraryAutoRefreshSetting()
-        DownloadService.shared.restartHeartbeatIfNeeded()
+        UNUserNotificationCenter.current().delegate = appDelegate
     }
     
     var body: some Scene {
@@ -48,6 +37,23 @@ struct Kiwix: App {
                         NotificationCenter.openFiles([url], context: .file)
                     } else if url.scheme == "kiwix" {
                         NotificationCenter.openURL(url)
+                    }
+                }
+                .task {
+                    switch AppType.current {
+                    case .kiwix:
+                        fileMonitor.start()
+                        LibraryOperations.reopen {
+                            navigation.navigateToMostRecentTab()
+                        }
+                        LibraryOperations.scanDirectory(URL.documentDirectory)
+                        LibraryOperations.applyFileBackupSetting()
+                        LibraryOperations.applyLibraryAutoRefreshSetting()
+                        DownloadService.shared.restartHeartbeatIfNeeded()
+                    case let .custom(zimFileURL):
+                        LibraryOperations.open(url: zimFileURL) {
+                            navigation.navigateToMostRecentTab()
+                        }
                     }
                 }
         }

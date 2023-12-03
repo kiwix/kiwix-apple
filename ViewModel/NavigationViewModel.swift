@@ -1,27 +1,13 @@
-//
-//  NavigationViewModel.swift
-//  Kiwix
-//
-//  Created by Chris Li on 7/29/23.
-//  Copyright © 2023 Chris Li. All rights reserved.
-//
+//  Copyright © 2023 Kiwix.
 
 import CoreData
 import WebKit
 
 @MainActor
 class NavigationViewModel: ObservableObject {
-    @Published var currentItem: NavigationItem?
-    @Published var readingURL: URL?
+    // remained optional due to focusedSceneValue conformance
+    @Published var currentItem: NavigationItem? = .loading
 
-    init() {
-        #if os(macOS)
-        currentItem = .reading
-        #elseif os(iOS)
-        navigateToMostRecentTab()
-        #endif
-    }
-    
     // MARK: - Tab Management
     
     private func makeTab(context: NSManagedObjectContext) -> Tab {
@@ -55,11 +41,9 @@ class NavigationViewModel: ObservableObject {
 
     @MainActor
     func tabIDFor(url: URL?) -> NSManagedObjectID {
-        guard let url else {
-            return createTab()
-        }
-        let coordinator = Database.viewContext.persistentStoreCoordinator
-        guard let tabID = coordinator?.managedObjectID(forURIRepresentation: url) else {
+        guard let url,
+              let coordinator = Database.viewContext.persistentStoreCoordinator,
+              let tabID = coordinator.managedObjectID(forURIRepresentation: url) else {
             return createTab()
         }
         return tabID

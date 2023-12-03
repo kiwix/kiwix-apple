@@ -1,10 +1,4 @@
-//
-//  SearchResults.swift
-//  Kiwix
-//
-//  Created by Chris Li on 8/19/22.
-//  Copyright © 2022 Chris Li. All rights reserved.
-//
+//  Copyright © 2023 Kiwix.
 
 import SwiftUI
 
@@ -108,19 +102,21 @@ struct SearchResults: View {
                     }
                 } header: { recentSearchHeader }
             }
-            Section {
-                ForEach(zimFiles) { zimFile in
-                    HStack {
-                        Toggle(zimFile.name, isOn: Binding<Bool>(get: {
-                            zimFile.includedInSearch
-                        }, set: {
-                            zimFile.includedInSearch = $0
-                            try? managedObjectContext.save()
-                        }))
-                        Spacer()
+            if FeatureFlags.hasLibrary {
+                Section {
+                    ForEach(zimFiles) { zimFile in
+                        HStack {
+                            Toggle(zimFile.name, isOn: Binding<Bool>(get: {
+                                zimFile.includedInSearch
+                            }, set: {
+                                zimFile.includedInSearch = $0
+                                try? managedObjectContext.save()
+                            }))
+                            Spacer()
+                        }
                     }
-                }
-            } header: { searchFilterHeader }
+                } header: { searchFilterHeader }
+            }
         }
     }
     

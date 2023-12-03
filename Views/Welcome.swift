@@ -1,10 +1,4 @@
-//
-//  Welcome.swift
-//  Kiwix
-//
-//  Created by Chris Li on 6/4/22.
-//  Copyright © 2022 Chris Li. All rights reserved.
-//
+//  Copyright © 2023 Kiwix.
 
 import SwiftUI
 
@@ -94,15 +88,15 @@ struct Welcome: View {
         }
     }
     
-    /// Kiwix logo shown in onboarding view
+    /// App logo shown in onboarding view
     private var logo: some View {
         VStack(spacing: 6) {
-            Image("Kiwix_logo_v3")
+            Image(Brand.welcomeLogoImageName)
                 .resizable()
                 .aspectRatio(1, contentMode: .fit)
                 .frame(width: 60, height: 60)
                 .background(RoundedRectangle(cornerRadius: 10, style: .continuous).foregroundColor(.white))
-            Text("KIWIX").font(.largeTitle).fontWeight(.bold)
+            Text(Brand.appName.uppercased()).font(.largeTitle).fontWeight(.bold)
         }
     }
     
