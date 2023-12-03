@@ -11,7 +11,7 @@ import SwiftUI
 struct BookmarkButton: View {
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     @EnvironmentObject private var browser: BrowserViewModel
-    @State private var isShowingBookmark = false
+    @State private var isShowingPopOver = false
     
     var body: some View {
         #if os(macOS)
@@ -45,7 +45,7 @@ struct BookmarkButton: View {
                 }
             }
             Button {
-                isShowingBookmark = true
+                isShowingPopOver = true
             } label: {
                 Label("Show Bookmarks".localized, systemImage: "list.star")
             }
@@ -57,15 +57,15 @@ struct BookmarkButton: View {
                     .renderingMode(browser.articleBookmarked ? .original : .template)
             }
         } primaryAction: {
-            isShowingBookmark = true
+            isShowingPopOver = true
         }
         .help("Show bookmarks. Long press to bookmark or unbookmark the current article.".localized)
-        .popover(isPresented: $isShowingBookmark) {
+        .popover(isPresented: $isShowingPopOver) {
             NavigationView {
                 Bookmarks().navigationBarTitleDisplayMode(.inline).toolbar {
                     ToolbarItem(placement: .navigationBarLeading) {
                         Button {
-                            isShowingBookmark = false
+                            isShowingPopOver = false
                         } label: {
                             Text("Done".localized).fontWeight(.semibold)
                         }
