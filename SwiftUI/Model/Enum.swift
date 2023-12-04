@@ -177,12 +177,15 @@ enum LibraryTabItem: String, CaseIterable, Identifiable {
 enum NavigationItem: Hashable, Identifiable {
     var id: Int { hashValue }
 
+    case loading
     case reading, bookmarks, map(location: CLLocation?), tab(objectID: NSManagedObjectID)
     case opened, categories, new, downloads
     case settings
 
     var name: String {
         switch self {
+        case .loading:
+            return "Loading"
         case .reading:
             return "Reading"
         case .bookmarks:
@@ -206,6 +209,8 @@ enum NavigationItem: Hashable, Identifiable {
     
     var icon: String {
         switch self {
+        case .loading:
+            return "loading"
         case .reading:
             return "book"
         case .bookmarks:
@@ -227,7 +232,6 @@ enum NavigationItem: Hashable, Identifiable {
         }
     }
 }
-
 
 enum SearchResultSnippetMode: String, CaseIterable, Identifiable, Defaults.Serializable {
     case disabled, firstParagraph, firstSentence, matches

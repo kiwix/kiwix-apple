@@ -51,10 +51,12 @@ struct TabsManagerButton: View {
                 }
             }
             Section {
-                Button {
-                    presentedSheet = .library
-                } label: {
-                    Label("Library".localized, systemImage: "folder")
+                if FeatureFlags.hasLibrary {
+                    Button {
+                        presentedSheet = .library
+                    } label: {
+                        Label("Library".localized, systemImage: "folder")
+                    }
                 }
                 Button {
                     presentedSheet = .settings

@@ -11,7 +11,7 @@ import Combine
 import SwiftUI
 import UIKit
 
-class SplitViewController: UISplitViewController {
+final class SplitViewController: UISplitViewController {
     let navigationViewModel: NavigationViewModel
     private var navigationItemObserver: AnyCancellable?
     private var openURLObserver: NSObjectProtocol?
@@ -126,6 +126,9 @@ class SplitViewController: UISplitViewController {
             setViewController(UINavigationController(rootViewController: controller), for: .secondary)
         case .settings:
             let controller = UIHostingController(rootView: Settings())
+            setViewController(UINavigationController(rootViewController: controller), for: .secondary)
+        case .loading:
+            let controller = UIHostingController(rootView: LoadingView())
             setViewController(UINavigationController(rootViewController: controller), for: .secondary)
         default:
             let controller = UIHostingController(rootView: Text("Not yet implemented".localized))
