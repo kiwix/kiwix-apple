@@ -326,12 +326,14 @@ final class BrowserViewModel: NSObject, ObservableObject,
                 
                 // open url
                 actions.append(
-                    UIAction(title: "common.dialog.button.open".localized, image: UIImage(systemName: "doc.text")) { _ in
+                    UIAction(title: "common.dialog.button.open".localized, 
+                             image: UIImage(systemName: "doc.text")) { _ in
                         webView.load(URLRequest(url: url))
                     }
                 )
                 actions.append(
-                    UIAction(title: "common.dialog.button.open_in_new_tab".localized, image: UIImage(systemName: "doc.badge.plus")) { _ in
+                    UIAction(title: "common.dialog.button.open_in_new_tab".localized, 
+                             image: UIImage(systemName: "doc.badge.plus")) { _ in
                         NotificationCenter.openURL(url, inNewTab: true)
                     }
                 )

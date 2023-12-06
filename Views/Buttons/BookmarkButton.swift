@@ -23,7 +23,8 @@ struct BookmarkButton: View {
             }
         } label: {
             Label {
-                Text(browser.articleBookmarked ? "common.dialog.button.remove_bookmark".localized : "common.dialog.button.add_bookmark".localized)
+                Text(browser.articleBookmarked ? 
+                     "common.dialog.button.remove_bookmark".localized : "common.dialog.button.add_bookmark".localized)
             } icon: {
                 Image(systemName: browser.articleBookmarked ? "star.fill" : "star")
                     .renderingMode(browser.articleBookmarked ? .original : .template)

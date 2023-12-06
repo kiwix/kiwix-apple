@@ -31,7 +31,9 @@ struct About: View {
             SettingSection(name: "settings.about.dependencies".localized, alignment: .top) {
                 Table(dependencies) {
                     TableColumn("settings.about.dependencies.name".localized, value: \.name)
-                    TableColumn("settings.about.dependencies.license".localized) { dependency in Text(dependency.license ?? "") }
+                    TableColumn("settings.about.dependencies.license".localized) { dependency in
+                        Text(dependency.license ?? "")
+                    }
                     TableColumn("settings.about.dependencies.version".localized, value: \.version)
                 }.tableStyle(.bordered(alternatesRowBackgrounds: true))
             }
@@ -91,7 +93,8 @@ struct About: View {
     }
     
     private var buildNumber: some View {
-        Attribute(title: "settings.about.build.title".localized, detail: Bundle.main.infoDictionary?["CFBundleVersion"] as? String)
+        Attribute(title: "settings.about.build.title".localized, 
+                  detail: Bundle.main.infoDictionary?["CFBundleVersion"] as? String)
     }
     
     private var ourWebsite: some View {

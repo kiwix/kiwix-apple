@@ -40,7 +40,9 @@ struct ExternalLinkHandler: ViewModifier {
                 activeAlert = .notLoading
             }
         }
-        .alert("external_link_handler.alert.title".localized, isPresented: $isAlertPresented, presenting: activeAlert) { alert in
+        .alert("external_link_handler.alert.title".localized, 
+               isPresented: $isAlertPresented,
+               presenting: activeAlert) { alert in
             if case .ask(let url) = alert {
                 Button("external_link_handler.alert.button.load.link".localized) {
                     load(url: url)

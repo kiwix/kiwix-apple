@@ -87,7 +87,8 @@ struct LibraryZimFileDetailSidePanel: ViewModifier {
                     if let zimFile = viewModel.selectedZimFile {
                         ZimFileDetail(zimFile: zimFile)
                     } else {
-                        Message(text: "library.zim_file_details.side_panel.message".localized).background(.thickMaterial)
+                        Message(text: "library.zim_file_details.side_panel.message".localized)
+                            .background(.thickMaterial)
                     }
                 }.frame(width: 275).background(.ultraThinMaterial)
             }

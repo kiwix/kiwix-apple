@@ -134,7 +134,8 @@ struct SearchResults: View {
                 isClearSearchConfirmationPresented = true
             } label: {
                 Text("search_result.button.clear".localized).font(.caption).fontWeight(.medium)
-            }.confirmationDialog("search_result.clear_dialog.title".localized, isPresented: $isClearSearchConfirmationPresented) {
+            }.confirmationDialog("search_result.clear_dialog.title".localized, 
+                                 isPresented: $isClearSearchConfirmationPresented) {
                 Button("search_result.clear_dialog.button.all".localized, role: .destructive) {
                     recentSearchTexts.removeAll()
                 }

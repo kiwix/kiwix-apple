@@ -22,7 +22,9 @@ struct ReadingSettings: View {
                 HStack {
                     Stepper(webViewPageZoom.formatted(.percent), value: $webViewPageZoom, in: 0.5...2, step: 0.05)
                     Spacer()
-                    Button("reading_settings.zoom.reset.button".localized) { webViewPageZoom = 1 }.disabled(webViewPageZoom == 1)
+                    Button("reading_settings.zoom.reset.button".localized) {
+                        webViewPageZoom = 1
+                    }.disabled(webViewPageZoom == 1)
                 }
             }
             if FeatureFlags.showExternalLinkOptionInSettings {

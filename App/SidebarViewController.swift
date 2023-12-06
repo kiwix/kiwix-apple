@@ -213,7 +213,8 @@ class SidebarViewController: UICollectionViewController, NSFetchedResultsControl
         guard let splitViewController = splitViewController as? SplitViewController,
               let item = dataSource.itemIdentifier(for: indexPath),
               case let .tab(tabID) = item else { return nil }
-        let action = UIContextualAction(style: .destructive, title: "sidebar_view.navigation.button.close".localized) { _, _, _ in
+        let action = UIContextualAction(style: .destructive, 
+                                        title: "sidebar_view.navigation.button.close".localized) { _, _, _ in
             splitViewController.navigationViewModel.deleteTab(tabID: tabID)
         }
         action.image = UIImage(systemName: "xmark")

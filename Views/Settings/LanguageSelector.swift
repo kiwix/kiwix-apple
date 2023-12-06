@@ -31,7 +31,9 @@ struct LanguageSelector: View {
                 })
             }.width(14)
             TableColumn("language_selector.name.title".localized, value: \.name)
-            TableColumn("language_selector.count.table.title".localized, value: \.count) { language in Text(language.count.formatted()) }
+            TableColumn("language_selector.count.table.title".localized, value: \.count) {
+                language in Text(language.count.formatted())
+            }
         }
         .tableStyle(.bordered(alternatesRowBackgrounds: true))
         .onChange(of: sortOrder) { languages.sort(using: $0) }

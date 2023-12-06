@@ -26,7 +26,9 @@ struct ZimFileDetail: View {
         #if os(macOS)
         List {
             Section("zim_file.list.name.text".localized) { Text(zimFile.name).lineLimit(nil) }.collapsible(false)
-            Section("zim_file.list.description.text".localized) { Text(zimFile.fileDescription).lineLimit(nil) }.collapsible(false)
+            Section("zim_file.list.description.text".localized) { 
+                Text(zimFile.fileDescription).lineLimit(nil)
+            }.collapsible(false)
             Section("zim_file.list.actions.text".localized) { actions }.collapsible(false)
             Section("zim_file.list.info.text".localized) {
                 basicInfo
@@ -176,9 +178,12 @@ struct ZimFileDetail: View {
     var basicInfo: some View {
         Attribute(title: "zim_file.base_info.attribute.language".localized,
                   detail: Locale.current.localizedString(forLanguageCode: zimFile.languageCode))
-        Attribute(title: "zim_file.base_info.attribute.category".localized, detail: Category(rawValue: zimFile.category)?.name)
-        Attribute(title: "zim_file.base_info.attribute.size".localized, detail: Formatter.size.string(fromByteCount: zimFile.size))
-        Attribute(title: "zim_file.base_info.attribute.created".localized, detail: Formatter.dateMedium.string(from: zimFile.created))
+        Attribute(title: "zim_file.base_info.attribute.category".localized, 
+                  detail: Category(rawValue: zimFile.category)?.name)
+        Attribute(title: "zim_file.base_info.attribute.size".localized, 
+                  detail: Formatter.size.string(fromByteCount: zimFile.size))
+        Attribute(title: "zim_file.base_info.attribute.created".localized, 
+                  detail: Formatter.dateMedium.string(from: zimFile.created))
     }
     
     @ViewBuilder
