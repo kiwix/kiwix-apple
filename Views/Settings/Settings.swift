@@ -131,14 +131,14 @@ struct Settings: View {
                 miscellaneous
             }
             .modifier(ToolbarRoleBrowser())
-            .navigationTitle("Settings".localized)
+            .navigationTitle("settings.navigation.title".localized)
         } else {
             List {
                 readingSettings
                 miscellaneous
             }
             .modifier(ToolbarRoleBrowser())
-            .navigationTitle("Settings".localized)
+            .navigationTitle("settings.navigation.title".localized)
         }
     }
     

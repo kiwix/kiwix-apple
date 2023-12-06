@@ -210,7 +210,7 @@ enum NavigationItem: Hashable, Identifiable {
     var name: String {
         switch self {
         case .loading:
-            return "Loading"
+            return "enum.navigation_item.loading".localized
         case .reading:
             return "enum.navigation_item.reading".localized
         case .bookmarks:
