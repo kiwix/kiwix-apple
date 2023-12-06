@@ -326,12 +326,12 @@ final class BrowserViewModel: NSObject, ObservableObject,
                 
                 // open url
                 actions.append(
-                    UIAction(title: "Open".localized, image: UIImage(systemName: "doc.text")) { _ in
+                    UIAction(title: "common.dialog.button.open".localized, image: UIImage(systemName: "doc.text")) { _ in
                         webView.load(URLRequest(url: url))
                     }
                 )
                 actions.append(
-                    UIAction(title: "Open in New Tab".localized, image: UIImage(systemName: "doc.badge.plus")) { _ in
+                    UIAction(title: "common.dialog.button.open_in_new_tab".localized, image: UIImage(systemName: "doc.badge.plus")) { _ in
                         NotificationCenter.openURL(url, inNewTab: true)
                     }
                 )
@@ -344,13 +344,13 @@ final class BrowserViewModel: NSObject, ObservableObject,
                     
                     if let bookmarks = try? context.fetch(request),
                        !bookmarks.isEmpty {
-                        return UIAction(title: "button-remove-bookmark".localized,
+                        return UIAction(title: "common.dialog.button.remove_bookmark".localized,
                                         image: UIImage(systemName: "star.slash.fill")) { [weak self] _ in
                             self?.deleteBookmark(url: url)
                         }
                     } else {
                         return UIAction(
-                            title: "Bookmark".localized,
+                            title: "common.dialog.button.bookmark".localized,
                             image: UIImage(systemName: "star")
                         ) { [weak self] _ in
                             self?.createBookmark(url: url)

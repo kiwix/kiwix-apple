@@ -67,7 +67,7 @@ struct Welcome: View {
                 alignment: .leading,
                 spacing: 12
             ) {
-                GridSection(title: "library-main-page".localized) {
+                GridSection(title: "welcome.main_page.title".localized) {
                     ForEach(zimFiles) { zimFile in
                         Button {
                             guard let url = ZimFileService.shared.getMainPageURL(zimFileID: zimFile.fileID) else { return }
@@ -78,7 +78,7 @@ struct Welcome: View {
                     }
                 }
                 if !bookmarks.isEmpty {
-                    GridSection(title: "title-bookmarks".localized) {
+                    GridSection(title: "welcome.grid.bookmarks.title".localized) {
                         ForEach(bookmarks.prefix(6)) { bookmark in
                             Button {
                                 browser.load(url: bookmark.articleURL)
@@ -112,7 +112,7 @@ struct Welcome: View {
             OpenFileButton(context: .onBoarding) {
                 HStack {
                     Spacer()
-                    Text("title-open-file".localized)
+                    Text("welcome.actions.open_file".localized)
                     Spacer()
                 }.padding(6)
             }
@@ -123,15 +123,15 @@ struct Welcome: View {
                     Spacer()
                     if library.isInProgress {
                         #if os(macOS)
-                        Text("title-fetching".localized)
+                        Text("welcome.button.status.fetching.text".localized)
                         #elseif os(iOS)
                         HStack(spacing: 6) {
                             ProgressView().frame(maxHeight: 10)
-                            Text("title-fetching".localized)
+                            Text("welcome.button.status.fetching.text".localized)
                         }
                         #endif
                     } else {
-                        Text("title-fetch-catalog".localized)
+                        Text("welcome.button.status.fetch_catalog.text".localized)
                     }
                     Spacer()
                 }.padding(6)

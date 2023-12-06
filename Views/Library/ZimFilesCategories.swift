@@ -25,13 +25,13 @@ struct ZimFilesCategories: View {
                         Button {
                             NotificationCenter.toggleSidebar()
                         } label: {
-                            Label("zim-file-show-slider".localized, systemImage: "sidebar.left")
+                            Label("zim_file_opened.toolbar.show_sidebar.label".localized, systemImage: "sidebar.left")
                         }
                     }
                 }
                 #endif
                 ToolbarItem {
-                    Picker("zim-file-category".localized, selection: $selected) {
+                    Picker("zim_file_category.title".localized, selection: $selected) {
                         ForEach(Category.allCases) {
                             Text($0.name).tag($0)
                         }
@@ -91,7 +91,7 @@ private struct CategoryGrid: View {
     var body: some View {
         Group {
             if sections.isEmpty {
-                Message(text: "zim-file-no-description".localized)
+                Message(text: "zim_file_category.section.empty.message".localized)
             } else {
                 LazyVGrid(columns: ([gridItem]), alignment: .leading, spacing: 12) {
                     ForEach(sections) { section in
@@ -187,7 +187,7 @@ private struct CategoryList: View {
     var body: some View {
         Group {
             if zimFiles.isEmpty {
-                Message(text: "zim-file-no-description".localized)
+                Message(text: "zim_file_category.section.empty.message".localized)
             } else {
                 List(zimFiles, id: \.self, selection: $viewModel.selectedZimFile) { zimFile in
                     ZimFileRow(zimFile)

@@ -51,29 +51,29 @@ enum Category: String, CaseIterable, Identifiable {
     var name: String {
         switch self {
         case .wikipedia:
-            return "title-wikipedia".localized
+            return "enum.category.wikipedia".localized
         case .wikibooks:
-            return "title-wikibooks".localized
+            return "enum.category.wikibooks".localized
         case .wikinews:
-            return "title-wikinews".localized
+            return "enum.category.wikinews".localized
         case .wikiquote:
-            return "title-wikiquote".localized
+            return "enum.category.wikiquote".localized
         case .wikisource:
-            return "title-wikisource".localized
+            return "enum.category.wikisource".localized
         case .wikiversity:
-            return "title-wikiversity".localized
+            return "enum.category.wikiversity".localized
         case .wikivoyage:
-            return "title-wikivoyage".localized
+            return "enum.category.wikivoyage".localized
         case .wiktionary:
-            return "title-wiktionary".localized
+            return "enum.category.wiktionary".localized
         case .ted:
-            return "title-ted".localized
+            return "enum.category.ted".localized
         case .vikidia:
-            return "title-vikidia".localized
+            return "enum.category.vikidia".localized
         case .stackExchange:
-            return "title-stackexchange".localized
+            return "enum.category.stackexchange".localized
         case .other:
-            return "title-other".localized
+            return "enum.category.other".localized
         }
     }
     
@@ -115,11 +115,11 @@ enum ExternalLinkLoadingPolicy: String, CaseIterable, Identifiable, Defaults.Ser
     var name: String {
         switch self {
         case .alwaysAsk:
-            return "title-always-ask".localized
+            return "enum.external_link_loading_policy.always_ask".localized
         case .alwaysLoad:
-            return "title-always-load".localized
+            return "enum.external_link_loading_policy.always_load".localized
         case .neverLoad:
-            return "title-never-load".localized
+            return "enum.external_link_loading_policy.never_load".localized
         }
     }
 }
@@ -143,11 +143,11 @@ enum Flavor: String, CustomStringConvertible {
     var description: String {
         switch self {
         case .max:
-            return "title-max".localized
+            return "enum.flavor.max".localized
         case .noPic:
-            return "title-no-pic".localized
+            return "enum.flavor.no_pic".localized
         case .mini:
-            return "title-mini".localized
+            return "enum.flavor.mini".localized
         }
     }
 }
@@ -160,9 +160,9 @@ enum LibraryLanguageSortingMode: String, CaseIterable, Identifiable, Defaults.Se
     var name: String {
         switch self {
         case .alphabetically:
-            return "title-a-z".localized
+            return "enum.library_language_sorting_model.a-z".localized
         case .byCounts:
-            return "title_by_country".localized
+            return "enum.library_language_sorting_model.by_count".localized
         }
     }
 }
@@ -175,13 +175,13 @@ enum LibraryTabItem: String, CaseIterable, Identifiable {
     var name: String {
         switch self {
         case .opened:
-            return "title-opened".localized
+            return "enum.libray_tab_item.opened".localized
         case .categories:
-            return "title-categories".localized
+            return "enum.libray_tab_item.categories".localized
         case .downloads:
-            return "title-downloads".localized
+            return "enum.libray_tab_item.downloads".localized
         case .new:
-            return "title-new".localized
+            return "enum.libray_tab_item.new".localized
         }
     }
     
@@ -212,23 +212,23 @@ enum NavigationItem: Hashable, Identifiable {
         case .loading:
             return "Loading"
         case .reading:
-            return "title_reading".localized
+            return "enum.navigation_item.reading".localized
         case .bookmarks:
-            return "title-bookmarks".localized
+            return "enum.navigation_item.bookmarks".localized
         case .map:
-            return "title-map".localized
+            return "enum.navigation_item.map".localized
         case .tab:
-            return "title-tab-new".localized
+            return "enum.navigation_item.new_tab".localized
         case .opened:
-            return "title-opened".localized
+            return "enum.navigation_item.opened".localized
         case .categories:
-            return "title-categories".localized
+            return "enum.navigation_item.categories".localized
         case .new:
-            return "title-new".localized
+            return "enum.navigation_item.new".localized
         case .downloads:
-            return "title-downloads".localized
+            return "enum.navigation_item.downloads".localized
         case .settings:
-            return "button-tab-settings".localized
+            return "enum.navigation_item.settings".localized
         }
     }
     
@@ -266,13 +266,13 @@ enum SearchResultSnippetMode: String, CaseIterable, Identifiable, Defaults.Seria
     var name: String {
         switch self {
         case .disabled:
-            return "title-disabled".localized
+            return "enum.search_result_snippet_mode.disabled".localized
         case .firstParagraph:
-            return "title-first-paragraph".localized
+            return "enum.search_result_snippet_mode.paragraph".localized
         case .firstSentence:
-            return "title-first-sentence".localized
+            return "enum.search_result_snippet_mode.sentence".localized
         case .matches:
-            return "title-matches".localized
+            return "enum.search_result_snippet_mode.matches".localized
         }
     }
 }

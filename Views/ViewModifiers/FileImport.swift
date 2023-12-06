@@ -98,12 +98,12 @@ struct OpenFileHandler: ViewModifier {
                 isAlertPresented = true
                 activeAlert = .unableToOpen(filenames: invalidURLs.map({ $0.lastPathComponent }))
             }
-        }.alert("import-open-unable".localized, isPresented: $isAlertPresented, presenting: activeAlert) { _ in
+        }.alert("file_import.alert.no_open.title".localized, isPresented: $isAlertPresented, presenting: activeAlert) { _ in
         } message: { alert in
             switch alert {
             case .unableToOpen(let filenames):
                 let name = ListFormatter.localizedString(byJoining: filenames)
-                Text(name + "import-open-cannot".localized)
+                Text(name + "file_import.alert.no_open.message".localized)
             }
         }
     }

@@ -28,7 +28,7 @@ struct SearchResults: View {
     var body: some View {
         Group {
             if zimFiles.isEmpty {
-                Message(text: "zim-file-no-opened".localized)
+                Message(text: "search_result.zimfile.empty.message".localized)
             } else if horizontalSizeClass == .regular {
                 HStack(spacing: 0) {
                     #if os(macOS)
@@ -66,7 +66,7 @@ struct SearchResults: View {
                 Spacer()
             }
         } else if viewModel.results.isEmpty {
-            Message(text: "title-no-result".localized)
+            Message(text: "search_result.zimfile.no_result.message".localized)
         } else {
             ScrollView {
                 LazyVGrid(columns: [GridItem(.flexible(minimum: 300, maximum: 700), alignment: .center)]) {
@@ -98,7 +98,7 @@ struct SearchResults: View {
                                 viewModel.searchText = searchText
                             }
                         }.swipeActions {
-                            Button("menu-remove".localized, role: .destructive) {
+                            Button("search_result.sidebar.button.remove".localized, role: .destructive) {
                                 recentSearchTexts.removeAll { $0 == searchText }
                             }
                         }
@@ -128,39 +128,39 @@ struct SearchResults: View {
     
     private var recentSearchHeader: some View {
         HStack {
-            Text("title-recent-search".localized)
+            Text("search_result.header.text".localized)
             Spacer()
             Button {
                 isClearSearchConfirmationPresented = true
             } label: {
-                Text("title-clear".localized).font(.caption).fontWeight(.medium)
-            }.confirmationDialog("title-clear-dialog".localized, isPresented: $isClearSearchConfirmationPresented) {
-                Button("title-clear-all".localized, role: .destructive) {
+                Text("search_result.button.clear".localized).font(.caption).fontWeight(.medium)
+            }.confirmationDialog("search_result.clear_dialog.title".localized, isPresented: $isClearSearchConfirmationPresented) {
+                Button("search_result.clear_dialog.button.all".localized, role: .destructive) {
                     recentSearchTexts.removeAll()
                 }
             } message: {
-                Text("title-search-dialog-description".localized)
+                Text("search_result.clear_dialog.description".localized)
             }
         }
     }
     
     private var searchFilterHeader: some View {
         HStack {
-            Text("title-include-search".localized)
+            Text("search_result.filter_hearder.text".localized)
             Spacer()
             if zimFiles.count == zimFiles.filter({ $0.includedInSearch }).count {
                 Button {
                     zimFiles.forEach { $0.includedInSearch = false }
                     try? managedObjectContext.save()
                 } label: {
-                    Text("title-none".localized).font(.caption).fontWeight(.medium)
+                    Text("search_result.filter_hearder.button.none".localized).font(.caption).fontWeight(.medium)
                 }
             } else {
                 Button {
                     zimFiles.forEach { $0.includedInSearch = true }
                     try? managedObjectContext.save()
                 } label: {
-                    Text("title-all".localized).font(.caption).fontWeight(.medium)
+                    Text("search_result.filter_hearder.button.all".localized).font(.caption).fontWeight(.medium)
                 }
             }
         }

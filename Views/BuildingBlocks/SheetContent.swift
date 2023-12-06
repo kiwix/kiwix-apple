@@ -27,7 +27,7 @@ struct SheetContent<Content: View>: View {
                     Button {
                         dismiss()
                     } label: {
-                        Text("button-done".localized).fontWeight(.semibold)
+                        Text("common.button.done".localized).fontWeight(.semibold)
                     }
                 }
             }

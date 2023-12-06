@@ -41,11 +41,11 @@ struct DownloadTaskCell: View {
             }
             VStack(alignment: .leading, spacing: 4) {
                 if downloadTask.error != nil {
-                    Text("button-failed".localized)
+                    Text("download_task_cell.status.failed".localized)
                 } else if downloadTask.resumeData == nil {
-                    Text("button-downloading".localized)
+                    Text("download_task_cell.status.downloading".localized)
                 } else {
-                    Text("button-paused".localized)
+                    Text("download_task_cell.status.paused".localized)
                 }
                 ProgressView(
                     value: Float(downloadTask.downloadedBytes),

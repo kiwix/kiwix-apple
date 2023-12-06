@@ -87,7 +87,7 @@ struct LibraryZimFileDetailSidePanel: ViewModifier {
                     if let zimFile = viewModel.selectedZimFile {
                         ZimFileDetail(zimFile: zimFile)
                     } else {
-                        Message(text: "library-select-zim-file".localized).background(.thickMaterial)
+                        Message(text: "library.zim_file_details.side_panel.message".localized).background(.thickMaterial)
                     }
                 }.frame(width: 275).background(.ultraThinMaterial)
             }
@@ -132,13 +132,13 @@ struct LibraryZimFileContext: ViewModifier {
             guard let url = ZimFileService.shared.getMainPageURL(zimFileID: zimFile.fileID) else { return }
             NotificationCenter.openURL(url, inNewTab: true)
         } label: {
-            Label("library-main-page".localized, systemImage: "house")
+            Label("library.zim_file_context.main_page.label".localized, systemImage: "house")
         }
         Button {
             guard let url = ZimFileService.shared.getRandomPageURL(zimFileID: zimFile.fileID) else { return }
             NotificationCenter.openURL(url, inNewTab: true)
         } label: {
-            Label("button-article-ramdon-title".localized, systemImage: "die.face.5")
+            Label("library.zim_file_context.random.label".localized, systemImage: "die.face.5")
         }
     }
     
@@ -153,7 +153,7 @@ struct LibraryZimFileContext: ViewModifier {
                 UIPasteboard.general.setValue(downloadURL.absoluteString, forPasteboardType: UTType.url.identifier)
                 #endif
             } label: {
-                Label("library-copy-url".localized, systemImage: "doc.on.doc")
+                Label("library.zim_file_context.copy_url".localized, systemImage: "doc.on.doc")
             }
         }
         Button {
@@ -164,7 +164,7 @@ struct LibraryZimFileContext: ViewModifier {
             UIPasteboard.general.setValue(zimFile.fileID.uuidString, forPasteboardType: UTType.plainText.identifier)
             #endif
         } label: {
-            Label("library-copy-id".localized, systemImage: "barcode.viewfinder")
+            Label("library.zim_file_context.copy_id".localized, systemImage: "barcode.viewfinder")
         }
     }
 }

@@ -40,10 +40,10 @@ struct ArticleShortcutButtons: View {
             browser.loadMainArticle()
             dismissSearch()
         } label: {
-            Label("button-article-title".localized, systemImage: "house")
+            Label("article_shortcut.main.button.title".localized, systemImage: "house")
         }
         .disabled(zimFiles.isEmpty)
-        .help("button-article-help".localized)
+        .help("article_shortcut.main.button.help".localized)
         #elseif os(iOS)
         Menu {
             ForEach(zimFiles) { zimFile in
@@ -53,13 +53,13 @@ struct ArticleShortcutButtons: View {
                 }
             }
         } label: {
-            Label("button-article-title".localized, systemImage: "house")
+            Label("article_shortcut.main.button.title".localized, systemImage: "house")
         } primaryAction: {
             browser.loadMainArticle()
             dismissSearch()
         }
         .disabled(zimFiles.isEmpty)
-        .help("button-article-help".localized)
+        .help("article_shortcut.main.button.help".localized)
         #endif
     }
     
@@ -69,10 +69,10 @@ struct ArticleShortcutButtons: View {
             browser.loadRandomArticle()
             dismissSearch()
         } label: {
-            Label("button-article-random".localized, systemImage: "die.face.5")
+            Label("article_shortcut.random.button.title.mac".localized, systemImage: "die.face.5")
         }
         .disabled(zimFiles.isEmpty)
-        .help("button-article-random-help".localized)
+        .help("article_shortcut.random.button.help".localized)
         #elseif os(iOS)
         Menu {
             ForEach(zimFiles) { zimFile in
@@ -82,13 +82,13 @@ struct ArticleShortcutButtons: View {
                 }
             }
         } label: {
-            Label("button-article-ramdon-title".localized, systemImage: "die.face.5")
+            Label("article_shortcut.random.button.title.ios".localized, systemImage: "die.face.5")
         } primaryAction: {
             browser.loadRandomArticle()
             dismissSearch()
         }
         .disabled(zimFiles.isEmpty)
-        .help("button-article-random-help".localized)
+        .help("article_shortcut.random.button.help".localized)
         #endif
     }
 }

@@ -40,19 +40,19 @@ struct ExternalLinkHandler: ViewModifier {
                 activeAlert = .notLoading
             }
         }
-        .alert("alert-external-link".localized, isPresented: $isAlertPresented, presenting: activeAlert) { alert in
+        .alert("external_link_handler.alert.title".localized, isPresented: $isAlertPresented, presenting: activeAlert) { alert in
             if case .ask(let url) = alert {
-                Button("alert-load-link".localized) {
+                Button("external_link_handler.alert.button.load.link".localized) {
                     load(url: url)
                 }
-                Button("alert-cancel".localized, role: .cancel) { }
+                Button("common.button.cancel".localized, role: .cancel) { }
             }
         } message: { alert in
             switch alert {
             case .ask:
-                Text("alert-external-link-ask".localized)
+                Text("external_link_handler.alert.ask.description".localized)
             case .notLoading:
-                Text("alert-external-link-noloading".localized)
+                Text("external_link_handler.alert.not_loading.description".localized)
             }
         }
         #if os(iOS)

@@ -52,7 +52,7 @@ struct ZimFilesNew: View {
         }
         .overlay {
             if zimFiles.isEmpty {
-                Message(text: "zim-file-no-new".localized)
+                Message(text: "zim_file_new_overlay.empty".localized)
             }
         }
         .toolbar {
@@ -62,7 +62,8 @@ struct ZimFilesNew: View {
                     Button {
                         NotificationCenter.toggleSidebar()
                     } label: {
-                        Label("zim-file-show-slider".localized, systemImage: "sidebar.left")
+                        Label("zim_file_opened.toolbar.show_sidebar.label".localized,
+                              systemImage: "sidebar.left")
                     }
                 }
             }
@@ -77,7 +78,8 @@ struct ZimFilesNew: View {
                     Button {
                         viewModel.start(isUserInitiated: true)
                     } label: {
-                        Label("zim-file-refresh".localized, systemImage: "arrow.triangle.2.circlepath.circle")
+                        Label("zim_file_new_button_refresh".localized,
+                              systemImage: "arrow.triangle.2.circlepath.circle")
                     }
                 }
             }

@@ -29,8 +29,8 @@ struct GridSection<Content: View>: View {
 
 struct GridSection_Previews: PreviewProvider {
     static var previews: some View {
-        GridSection(title: "grid_section_title".localized) {
-            Text("grid-section-content".localized)
+        GridSection(title: "grid_section.preview.title".localized) {
+            Text("grid_section.preview.content".localized)
         }
     }
 }
