@@ -1,0 +1,11 @@
+//  Copyright © 2023 Kiwix. All rights reserved.
+
+// Configuration settings file format documentation can be found at:
+// https://help.apple.com/xcode/#/dev745c5c974
+CUSTOM_ZIM_FILE = dwds_de_dictionary_nopic_2023-11-20
+SETTINGS_DEFAULT_EXTERNAL_LINK_TO = alwaysLoad
+SETTINGS_SHOW_EXTERNAL_LINK_OPTION = false
+APP_STORE_ID = id6473090365
+SETTINGS_SHOW_SEARCH_SNIPPET = false
+CUSTOM_ABOUT_TEXT = Für Schreibende, Lernende, Lehrende und Sprachinteressierte: Das Digitale Wörterbuch der deutschen Sprache (DWDS) ist das große Bedeutungswörterbuch des Deutschen der Gegenwart. Es bietet umfassende und wissenschaftlich verlässliche lexikalische Informationen, kostenlos und werbefrei.
+CUSTOM_ABOUT_WEBSITE = www.dwds.de
