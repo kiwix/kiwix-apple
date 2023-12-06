@@ -41,7 +41,7 @@ struct OpenFileButton<Label: View>: View {
             guard case let .success(urls) = result else { return }
             NotificationCenter.openFiles(urls, context: context)
         }
-        .help("Open a zim file".localized)
+        .help("import-open-zim-file".localized)
         .keyboardShortcut("o")
     }
 }
@@ -98,12 +98,13 @@ struct OpenFileHandler: ViewModifier {
                 isAlertPresented = true
                 activeAlert = .unableToOpen(filenames: invalidURLs.map({ $0.lastPathComponent }))
             }
-        }.alert("Unable to open file".localized, isPresented: $isAlertPresented, presenting: activeAlert) { _ in
+        }.alert("file_import.alert.no_open.title".localized, 
+                isPresented: $isAlertPresented, presenting: activeAlert) { _ in
         } message: { alert in
             switch alert {
             case .unableToOpen(let filenames):
                 let name = ListFormatter.localizedString(byJoining: filenames)
-                Text("%@ cannot be opened.".localizedWithFormat(withArgs: name))
+                Text(name + "file_import.alert.no_open.message".localized)
             }
         }
     }

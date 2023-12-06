@@ -61,7 +61,8 @@ struct ZimFileCell: View {
                 HStack(alignment: .bottom) {
                     VStack(alignment: .leading) {
                         if #available(iOS 15.0, *) {
-                            Text("\(zimFile.articleCount.formatted(.number.notation(.compactName))) articles")
+                            Text("\(zimFile.articleCount.formatted(.number.notation(.compactName))) " +
+                                 "zim_file_cell_article_count_suffix".localized)
                                 .font(.caption)
                         }
                         Text(ZimFileCell.dateFormatter.string(from: zimFile.created))

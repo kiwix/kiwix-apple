@@ -41,11 +41,11 @@ struct FlavorTag: View {
     var help: String {
         switch flavor {
         case .max:
-            return "everything except large media files like video/audio".localized
+            return "flavor_tag.help.max".localized
         case .noPic:
-            return "most pictures have been removed".localized
+            return "flavor-no-pic-description".localized
         case .mini:
-            return "only a subset of the text is available, probably the first section".localized
+            return "flavor_tag.help.mini".localized
         }
     }
 }

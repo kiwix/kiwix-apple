@@ -22,7 +22,7 @@ struct BrowserTab: View {
                     Button {
                         NotificationCenter.toggleSidebar()
                     } label: {
-                        Label("Show Sidebar".localized, systemImage: "sidebar.left")
+                        Label("browser_tab.toolbar.show_sidebar.label".localized, systemImage: "sidebar.left")
                     }
                 }
                 NavigationButtons()

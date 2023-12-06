@@ -23,7 +23,8 @@ struct BookmarkButton: View {
             }
         } label: {
             Label {
-                Text(browser.articleBookmarked ? "Remove Bookmark".localized : "Add Bookmark".localized)
+                Text(browser.articleBookmarked ? 
+                     "common.dialog.button.remove_bookmark".localized : "common.dialog.button.add_bookmark".localized)
             } icon: {
                 Image(systemName: browser.articleBookmarked ? "star.fill" : "star")
                     .renderingMode(browser.articleBookmarked ? .original : .template)
@@ -35,23 +36,23 @@ struct BookmarkButton: View {
                 Button(role: .destructive) {
                     browser.deleteBookmark()
                 } label: {
-                    Label("Remove Bookmark".localized, systemImage: "star.slash.fill")
+                    Label("common.dialog.button.remove_bookmark".localized, systemImage: "star.slash.fill")
                 }
             } else {
                 Button {
                     browser.createBookmark()
                 } label: {
-                    Label("Add Bookmark".localized, systemImage: "star")
+                    Label("common.dialog.button.add_bookmark".localized, systemImage: "star")
                 }
             }
             Button {
                 isShowingPopOver = true
             } label: {
-                Label("Show Bookmarks".localized, systemImage: "list.star")
+                Label("common.dialog.button.show_bookmarks".localized, systemImage: "list.star")
             }
         } label: {
             Label {
-                Text("Show Bookmarks".localized)
+                Text("common.dialog.button.show_bookmarks".localized)
             } icon: {
                 Image(systemName: browser.articleBookmarked ? "star.fill" : "star")
                     .renderingMode(browser.articleBookmarked ? .original : .template)
@@ -59,7 +60,7 @@ struct BookmarkButton: View {
         } primaryAction: {
             isShowingPopOver = true
         }
-        .help("Show bookmarks. Long press to bookmark or unbookmark the current article.".localized)
+        .help("bookmark_button.show.help".localized)
         .popover(isPresented: $isShowingPopOver) {
             NavigationView {
                 Bookmarks().navigationBarTitleDisplayMode(.inline).toolbar {
@@ -67,7 +68,7 @@ struct BookmarkButton: View {
                         Button {
                             isShowingPopOver = false
                         } label: {
-                            Text("Done".localized).fontWeight(.semibold)
+                            Text("common.button.done".localized).fontWeight(.semibold)
                         }
                     }
                 }

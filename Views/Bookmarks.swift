@@ -36,14 +36,14 @@ struct Bookmarks: View {
         }
         .modifier(GridCommon())
         .modifier(ToolbarRoleBrowser())
-        .navigationTitle("Bookmarks".localized)
+        .navigationTitle("bookmark.navigation.title".localized)
         .searchable(text: $searchText)
         .onChange(of: searchText) { searchText in
             bookmarks.nsPredicate = Bookmarks.buildPredicate(searchText: searchText)
         }
         .overlay {
             if bookmarks.isEmpty {
-                Message(text: "No bookmarks".localized)
+                Message(text: "bookmark.overlay.empty.title".localized)
             }
         }
         .toolbar {
@@ -53,7 +53,7 @@ struct Bookmarks: View {
                     Button {
                         NotificationCenter.toggleSidebar()
                     } label: {
-                        Label("Show Sidebar".localized, systemImage: "sidebar.left")
+                        Label("bookmark.toolbar.show_sidebar.label".localized, systemImage: "sidebar.left")
                     }
                 }
             }

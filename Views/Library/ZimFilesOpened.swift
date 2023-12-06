@@ -31,10 +31,10 @@ struct ZimFilesOpened: View {
         }
         .modifier(GridCommon(edges: .all))
         .modifier(ToolbarRoleBrowser())
-        .navigationTitle(NavigationItem.opened.name.localized)
+        .navigationTitle(NavigationItem.opened.name)
         .overlay {
             if zimFiles.isEmpty {
-                Message(text: "No opened zim file".localized)
+                Message(text: "zim_file_opened.overlay.no-opened.message".localized)
             }
         }
         // not using OpenFileButton here, because it does not work on iOS/iPadOS 15 when this view is in a modal
@@ -53,7 +53,7 @@ struct ZimFilesOpened: View {
                     Button {
                         NotificationCenter.toggleSidebar()
                     } label: {
-                        Label("Show Sidebar".localized, systemImage: "sidebar.left")
+                        Label("zim_file_opened.toolbar.show_sidebar.label".localized, systemImage: "sidebar.left")
                     }
                 }
             }
@@ -68,8 +68,8 @@ struct ZimFilesOpened: View {
                     }
                     isFileImporterPresented = true
                 } label: {
-                    Label("Open...".localized, systemImage: "plus")
-                }.help("Open a zim file".localized)
+                    Label("zim_file_opened.toolbar.open.title".localized, systemImage: "plus")
+                }.help("zim_file_opened.toolbar.open.help".localized)
             }
         }
     }

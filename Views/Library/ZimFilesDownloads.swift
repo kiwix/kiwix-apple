@@ -31,10 +31,10 @@ struct ZimFilesDownloads: View {
         }
         .modifier(GridCommon())
         .modifier(ToolbarRoleBrowser())
-        .navigationTitle(NavigationItem.downloads.name.localized)
+        .navigationTitle(NavigationItem.downloads.name)
         .overlay {
             if downloadTasks.isEmpty {
-                Message(text: "No download tasks".localized)
+                Message(text: "zim_file_downloads.overlay.empty.message".localized)
             }
         }
         .toolbar {
@@ -44,7 +44,7 @@ struct ZimFilesDownloads: View {
                     Button {
                         NotificationCenter.toggleSidebar()
                     } label: {
-                        Label("Show Sidebar".localized, systemImage: "sidebar.left")
+                        Label("zim_file_downloads.toolbar.show_sidebar.label".localized, systemImage: "sidebar.left")
                     }
                 }
             }

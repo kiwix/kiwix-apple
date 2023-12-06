@@ -18,15 +18,17 @@ struct ReadingSettings: View {
     
     var body: some View {
         VStack(spacing: 16) {
-            SettingSection(name: "Page zoom".localized) {
+            SettingSection(name: "reading_settings.zoom.title".localized) {
                 HStack {
                     Stepper(webViewPageZoom.formatted(.percent), value: $webViewPageZoom, in: 0.5...2, step: 0.05)
                     Spacer()
-                    Button("Reset".localized) { webViewPageZoom = 1 }.disabled(webViewPageZoom == 1)
+                    Button("reading_settings.zoom.reset.button".localized) {
+                        webViewPageZoom = 1
+                    }.disabled(webViewPageZoom == 1)
                 }
             }
             if FeatureFlags.showExternalLinkOptionInSettings {
-                SettingSection(name: "External link".localized) {
+                SettingSection(name: "reading_settings.external_link.title".localized) {
                     Picker(selection: $externalLinkLoadingPolicy) {
                         ForEach(ExternalLinkLoadingPolicy.allCases) { loadingPolicy in
                             Text(loadingPolicy.name.localized).tag(loadingPolicy)
@@ -35,7 +37,7 @@ struct ReadingSettings: View {
                 }
             }
             if FeatureFlags.showSearchSnippetInSettings {
-                SettingSection(name: "Search snippet".localized) {
+                SettingSection(name: "reading_settings.search_snippet.title".localized) {
                     Picker(selection: $searchResultSnippetMode) {
                         ForEach(SearchResultSnippetMode.allCases) { snippetMode in
                             Text(snippetMode.name.localized).tag(snippetMode)
@@ -45,7 +47,7 @@ struct ReadingSettings: View {
             }
         }
         .padding()
-        .tabItem { Label("Reading".localized, systemImage: "book") }
+        .tabItem { Label("reading_settings.tab.reading".localized, systemImage: "book") }
     }
 }
 
@@ -55,30 +57,30 @@ struct LibrarySettings: View {
     
     var body: some View {
         VStack(spacing: 16) {
-            SettingSection(name: "Catalog".localized) {
+            SettingSection(name: "library_settings.catalog.title".localized) {
                 HStack(spacing: 6) {
-                    Button("Refresh Now".localized) {
+                    Button("library_settings.button.refresh_now".localized) {
                         library.start(isUserInitiated: true)
                     }.disabled(library.isInProgress)
                     if library.isInProgress {
                         ProgressView().progressViewStyle(.circular).scaleEffect(0.5).frame(height: 1)
                     }
                     Spacer()
-                    Text("Last refresh".localized + ":").foregroundColor(.secondary)
+                    Text("library_settings.last_refresh.text".localized + ":").foregroundColor(.secondary)
                     LibraryLastRefreshTime().foregroundColor(.secondary)
                 }
                 VStack(alignment: .leading) {
-                    Toggle("Auto refresh".localized, isOn: $libraryAutoRefresh)
-                    Text("When enabled, the library catalog will be refreshed automatically when outdated.".localized)
+                    Toggle("library_settings.auto_refresh.toggle".localized, isOn: $libraryAutoRefresh)
+                    Text("library_settings.catalog_warning.text".localized)
                         .foregroundColor(.secondary)
                 }
             }
-            SettingSection(name: "Languages".localized, alignment: .top) {
+            SettingSection(name: "library_settings.languages.title".localized, alignment: .top) {
                 LanguageSelector()
             }
         }
         .padding()
-        .tabItem { Label("Library".localized, systemImage: "folder.badge.gearshape") }
+        .tabItem { Label("library_settings.tab.library.title".localized, systemImage: "folder.badge.gearshape") }
     }
 }
 
@@ -131,32 +133,32 @@ struct Settings: View {
                 miscellaneous
             }
             .modifier(ToolbarRoleBrowser())
-            .navigationTitle("Settings".localized)
+            .navigationTitle("settings.navigation.title".localized)
         } else {
             List {
                 readingSettings
                 miscellaneous
             }
             .modifier(ToolbarRoleBrowser())
-            .navigationTitle("Settings".localized)
+            .navigationTitle("settings.navigation.title".localized)
         }
     }
     
     var readingSettings: some View {
-        Section("Reading".localized) {
+        Section("reading_settings.tab.reading".localized) {
             Stepper(value: $webViewPageZoom, in: 0.5...2, step: 0.05) {
-                Text("Page zoom".localized + 
+                Text("reading_settings.zoom.title".localized +
                      ": \(Formatter.percent.string(from: NSNumber(value: webViewPageZoom)) ?? "")")
             }
             if FeatureFlags.showExternalLinkOptionInSettings {
-                Picker("External link".localized, selection: $externalLinkLoadingPolicy) {
+                Picker("reading_settings.external_link.title".localized, selection: $externalLinkLoadingPolicy) {
                     ForEach(ExternalLinkLoadingPolicy.allCases) { loadingPolicy in
                         Text(loadingPolicy.name.localized).tag(loadingPolicy)
                     }
                 }
             }
             if FeatureFlags.showSearchSnippetInSettings {
-                Picker("Search snippet".localized, selection: $searchResultSnippetMode) {
+                Picker("reading_settings.search_snippet.title".localized, selection: $searchResultSnippetMode) {
                     ForEach(SearchResultSnippetMode.allCases) { snippetMode in
                         Text(snippetMode.name.localized).tag(snippetMode)
                     }
@@ -172,59 +174,61 @@ struct Settings: View {
             } label: {
                 SelectedLanaguageLabel()
             }
-            Toggle("Download using cellular".localized, isOn: $downloadUsingCellular)
+            Toggle("library_settings.toggle.cellular".localized, isOn: $downloadUsingCellular)
         } header: {
-            Text("Library".localized)
+            Text("library_settings.tab.library.title".localized)
         } footer: {
-            Text("Change will only apply to new download tasks.".localized)
+            Text("settings-new-download-task-description".localized)
         }
     }
     
     var catalogSettings: some View {
         Section {
             HStack {
-                Text("Last refresh".localized)
+                Text("catalog_settings.last_refresh.text".localized)
                 Spacer()
                 LibraryLastRefreshTime().foregroundColor(.secondary)
             }
             if library.isInProgress {
                 HStack {
-                    Text("Refreshing...".localized).foregroundColor(.secondary)
+                    Text("catalog_settings.refreshing.text".localized).foregroundColor(.secondary)
                     Spacer()
                     ProgressView().progressViewStyle(.circular)
                 }
             } else {
-                Button("Refresh Now".localized) {
+                Button("catalog_settings.refresh_now.button".localized) {
                     library.start(isUserInitiated: true)
                 }
             }
-            Toggle("Auto refresh".localized, isOn: $libraryAutoRefresh)
+            Toggle("catalog_settings.auto_refresh.toggle".localized, isOn: $libraryAutoRefresh)
         } header: {
-            Text("Catalog".localized)
+            Text("catalog_settings.header.text".localized)
         } footer: {
-            Text("When enabled, the library catalog will be refreshed automatically when outdated.".localized)
+            Text("catalog_settings.footer.text".localized)
         }.onChange(of: libraryAutoRefresh) { LibraryOperations.applyLibraryAutoRefreshSetting(isEnabled: $0) }
     }
     
     var backupSettings: some View {
         Section {
-            Toggle("Include zim files in backup".localized, isOn: $backupDocumentDirectory)
+            Toggle("backup_settings.toggle.title".localized, isOn: $backupDocumentDirectory)
         } header: {
-            Text("Backup".localized)
+            Text("backup_settings.header.text".localized)
         } footer: {
-            Text("Does not apply to files opened in place.".localized)
+            Text("backup_settings.footer.text".localized)
         }.onChange(of: backupDocumentDirectory) { LibraryOperations.applyFileBackupSetting(isEnabled: $0) }
     }
     
     var miscellaneous: some View {
-        Section("Misc".localized) {
-            Button("Feedback".localized) { UIApplication.shared.open(URL(string: "mailto:feedback@kiwix.org")!) }
-            Button("Rate the App".localized) {
+        Section("settings.miscellaneous.title".localized) {
+            Button("settings.miscellaneous.button.feedback".localized) {
+                UIApplication.shared.open(URL(string: "mailto:feedback@kiwix.org")!)
+            }
+            Button("settings.miscellaneous.button.rate_app".localized) {
                 let url = URL(appStoreReviewForName: Brand.appName.lowercased(),
                               appStoreID: Brand.appStoreId)
                 UIApplication.shared.open(url)
             }
-            NavigationLink("About".localized) { About() }
+            NavigationLink("settings.miscellaneous.navigation.about".localized) { About() }
         }
     }
 }
@@ -234,7 +238,7 @@ private struct SelectedLanaguageLabel: View {
     
     var body: some View {
         HStack {
-            Text("Languages".localized)
+            Text("settings.selected_language.title".localized)
             Spacer()
             if languageCodes.count == 1,
                let languageCode = languageCodes.first,

@@ -32,7 +32,7 @@ struct Library: View {
                         List(Category.allCases) { category in
                             NavigationLink {
                                 ZimFilesCategory(category: .constant(category))
-                                    .navigationTitle(category.name.localized)
+                                    .navigationTitle(category.name)
                                     .navigationBarTitleDisplayMode(.inline)
                             } label: {
                                 HStack {
@@ -42,7 +42,7 @@ struct Library: View {
                             }
                         }
                         .listStyle(.plain)
-                        .navigationTitle(NavigationItem.categories.name.localized)
+                        .navigationTitle(NavigationItem.categories.name)
                     case .downloads:
                         ZimFilesDownloads()
                     case .new:
@@ -87,7 +87,8 @@ struct LibraryZimFileDetailSidePanel: ViewModifier {
                     if let zimFile = viewModel.selectedZimFile {
                         ZimFileDetail(zimFile: zimFile)
                     } else {
-                        Message(text: "Select a zim file to see detail".localized).background(.thickMaterial)
+                        Message(text: "library.zim_file_details.side_panel.message".localized)
+                            .background(.thickMaterial)
                     }
                 }.frame(width: 275).background(.ultraThinMaterial)
             }
@@ -132,13 +133,13 @@ struct LibraryZimFileContext: ViewModifier {
             guard let url = ZimFileService.shared.getMainPageURL(zimFileID: zimFile.fileID) else { return }
             NotificationCenter.openURL(url, inNewTab: true)
         } label: {
-            Label("Main Page".localized, systemImage: "house")
+            Label("library.zim_file_context.main_page.label".localized, systemImage: "house")
         }
         Button {
             guard let url = ZimFileService.shared.getRandomPageURL(zimFileID: zimFile.fileID) else { return }
             NotificationCenter.openURL(url, inNewTab: true)
         } label: {
-            Label("Random Page".localized, systemImage: "die.face.5")
+            Label("library.zim_file_context.random.label".localized, systemImage: "die.face.5")
         }
     }
     
@@ -153,7 +154,7 @@ struct LibraryZimFileContext: ViewModifier {
                 UIPasteboard.general.setValue(downloadURL.absoluteString, forPasteboardType: UTType.url.identifier)
                 #endif
             } label: {
-                Label("Copy URL".localized, systemImage: "doc.on.doc")
+                Label("library.zim_file_context.copy_url".localized, systemImage: "doc.on.doc")
             }
         }
         Button {
@@ -164,7 +165,7 @@ struct LibraryZimFileContext: ViewModifier {
             UIPasteboard.general.setValue(zimFile.fileID.uuidString, forPasteboardType: UTType.plainText.identifier)
             #endif
         } label: {
-            Label("Copy ID".localized, systemImage: "barcode.viewfinder")
+            Label("library.zim_file_context.copy_id".localized, systemImage: "barcode.viewfinder")
         }
     }
 }
