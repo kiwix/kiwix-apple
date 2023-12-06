@@ -220,7 +220,9 @@ struct Settings: View {
     
     var miscellaneous: some View {
         Section("settings.miscellaneous.title".localized) {
-            Button("settings.miscellaneous.button.feedback".localized) { UIApplication.shared.open(URL(string: "mailto:feedback@kiwix.org")!) }
+            Button("settings.miscellaneous.button.feedback".localized) {
+                UIApplication.shared.open(URL(string: "mailto:feedback@kiwix.org")!)
+            }
             Button("settings.miscellaneous.button.rate_app".localized) {
                 let url = URL(appStoreReviewForName: Brand.appName.lowercased(),
                               appStoreID: Brand.appStoreId)
