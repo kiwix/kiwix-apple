@@ -8,7 +8,7 @@ on:
     types: [published]
 
 env:
-  LIBKIWIX_VERSION: "13.0.0"
+  LIBKIWIX_VERSION: "13.0.0-1"
   KEYCHAIN: /Users/runner/build.keychain-db
   KEYCHAIN_PASSWORD: mysecretpassword
   KEYCHAIN_PROFILE: build-profile

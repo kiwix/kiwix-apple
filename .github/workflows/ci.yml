@@ -7,7 +7,7 @@ on:
       - main
 
 env:
-  LIBKIWIX_VERSION: "13.0.0"
+  LIBKIWIX_VERSION: "13.0.0-1"
   APPLE_STORE_AUTH_KEY_PATH: /tmp/authkey.p8
 
 jobs:
