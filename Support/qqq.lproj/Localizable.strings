@@ -1,0 +1,10 @@
+// Messages for Message documentation (Message documentation)
+// Exported from translatewiki.net
+// Author: Amire80
+// Author: McDutchie
+
+"download_service.complete.description" = "(Known issue: Lego message. Reported at https://github.com/kiwix/apple/issues/585.)";
+"file_import.alert.no_open.message" = "(Known issue: Lego message. Reported at https://github.com/kiwix/apple/issues/585.)";
+"article_cell.search_result.snippet.template" = "In publishing and graphic design, [[:w:en:Lorem ipsum|Lorem ipsum]] (/ˌlɔː.rəm ˈɪp.səm/) is a placeholder text commonly used to demonstrate the visual form of a document or a typeface without relying on meaningful content.";
+"enum.category.ted" = "{{Optional}}";
+"enum.category.stackexchange" = "{{Optional}}";
