@@ -232,11 +232,9 @@
 		97008AB42974A5A70076E60C /* WikiMed.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WikiMed.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		97008ABA2974A5BF0076E60C /* Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		97008ABC2974A5BF0076E60C /* OPDSParserTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OPDSParserTests.swift; sourceTree = "<group>"; };
-		970258B328FE418A00B68E84 /* BookmarkOperations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarkOperations.swift; sourceTree = "<group>"; };
 		9707541A23C2D3AB0076B74E /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
 		970885D0271339A300C5795C /* wikipedia_dark.css */ = {isa = PBXFileReference; lastKnownFileType = text.css; path = wikipedia_dark.css; sourceTree = "<group>"; };
 		9709C0972A8E4C5700E4564C /* Commands.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Commands.swift; sourceTree = "<group>"; };
-		970EC3AB23BCF31F008DCA27 /* ParserTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParserTests.swift; sourceTree = "<group>"; };
 		97121EBC28849F0000371AEB /* ZimFileMissingIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZimFileMissingIndicator.swift; sourceTree = "<group>"; };
 		9713F7782AE416E5007DD9EC /* CoreKiwix.modulemap */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.module-map"; path = CoreKiwix.modulemap; sourceTree = "<group>"; };
 		97176AD12A4FBD710093E3B0 /* BrowserViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowserViewModel.swift; sourceTree = "<group>"; };
@@ -407,7 +405,6 @@
 			children = (
 				97008ABC2974A5BF0076E60C /* OPDSParserTests.swift */,
 				97DA90D72975B0C100738365 /* LibraryRefreshViewModelTest.swift */,
-				970EC3AB23BCF31F008DCA27 /* ParserTests.swift */,
 			);
 			path = Tests;
 			sourceTree = "<group>";
@@ -475,7 +472,6 @@
 			isa = PBXGroup;
 			children = (
 				97B3998724673FCA00BC6F5B /* SearchOperation */,
-				970258B328FE418A00B68E84 /* BookmarkOperations.swift */,
 				9735D0BB2775594700C7D495 /* Database.swift */,
 				9753D947285B55F100A626CC /* DefaultKeys.swift */,
 				9779A5CF2456796A00F6F6FF /* DirectoryMonitor.swift */,
