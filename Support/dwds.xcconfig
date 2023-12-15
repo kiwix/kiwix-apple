@@ -2,7 +2,7 @@
 
 // Configuration settings file format documentation can be found at:
 // https://help.apple.com/xcode/#/dev745c5c974
-CUSTOM_ZIM_FILE = dwds_de_dictionary_nopic_2023-11-20
+CUSTOM_ZIM_FILE = dwds_de_dictionary_nopic_2023-12-15
 SETTINGS_DEFAULT_EXTERNAL_LINK_TO = alwaysLoad
 SETTINGS_SHOW_EXTERNAL_LINK_OPTION = false
 APP_STORE_ID = id6473090365

@@ -104,6 +104,7 @@
 		980179522B0DF42100E8E1E2 /* Brand.swift in Sources */ = {isa = PBXBuildFile; fileRef = 980179502B0DF42100E8E1E2 /* Brand.swift */; };
 		980179542B0E402C00E8E1E2 /* kiwix.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 980179532B0E402C00E8E1E2 /* kiwix.xcconfig */; };
 		980179562B0E403E00E8E1E2 /* dwds.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 980179552B0E403E00E8E1E2 /* dwds.xcconfig */; };
+		981A3C4F2B2C56FB00D4D167 /* dwds_de_dictionary_nopic_2023-12-15.zim in Resources */ = {isa = PBXBuildFile; fileRef = 981A3C4E2B2C56FB00D4D167 /* dwds_de_dictionary_nopic_2023-12-15.zim */; };
 		983A3F562B129F6B000E7A51 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 983A3F552B129F6B000E7A51 /* Assets.xcassets */; };
 		983D22672B16ABB6005EBAF1 /* LoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 983D22662B16ABB6005EBAF1 /* LoadingView.swift */; };
 		983D22682B16ABB6005EBAF1 /* LoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 983D22662B16ABB6005EBAF1 /* LoadingView.swift */; };
@@ -111,7 +112,6 @@
 		984610642B1BDCD9002512AE /* CoreKiwix.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97E88F4C2AE407320037F0E5 /* CoreKiwix.xcframework */; };
 		984610652B1BDCDA002512AE /* CoreKiwix.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97E88F4C2AE407320037F0E5 /* CoreKiwix.xcframework */; };
 		98AB9E022B121CF8007693C1 /* Launch.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 98AB9E012B121CF8007693C1 /* Launch.storyboard */; platformFilter = ios; };
-		98AF8F9F2B12B241000125E1 /* dwds_de_dictionary_nopic_2023-11-20.zim in Resources */ = {isa = PBXBuildFile; fileRef = 98AF8F9E2B12B241000125E1 /* dwds_de_dictionary_nopic_2023-11-20.zim */; };
 		98AF8FA02B12B282000125E1 /* String+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E43964B2B02E4C6007F0BC4 /* String+Extension.swift */; };
 		98AF8FA12B12B2BC000125E1 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 8E4396492B02E455007F0BC4 /* Localizable.strings */; };
 		98FBF3A82B0D5ADB00B70826 /* Kiwix-Bridging-Header.h in Sources */ = {isa = PBXBuildFile; fileRef = 9779A5D02456796A00F6F6FF /* Kiwix-Bridging-Header.h */; platformFilter = ios; };
@@ -338,10 +338,10 @@
 		980179502B0DF42100E8E1E2 /* Brand.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Brand.swift; sourceTree = "<group>"; };
 		980179532B0E402C00E8E1E2 /* kiwix.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = kiwix.xcconfig; sourceTree = "<group>"; };
 		980179552B0E403E00E8E1E2 /* dwds.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = dwds.xcconfig; sourceTree = "<group>"; };
+		981A3C4E2B2C56FB00D4D167 /* dwds_de_dictionary_nopic_2023-12-15.zim */ = {isa = PBXFileReference; lastKnownFileType = file; path = "dwds_de_dictionary_nopic_2023-12-15.zim"; sourceTree = "<group>"; };
 		983A3F552B129F6B000E7A51 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		983D22662B16ABB6005EBAF1 /* LoadingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoadingView.swift; sourceTree = "<group>"; };
 		98AB9E012B121CF8007693C1 /* Launch.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Launch.storyboard; sourceTree = "<group>"; };
-		98AF8F9E2B12B241000125E1 /* dwds_de_dictionary_nopic_2023-11-20.zim */ = {isa = PBXFileReference; lastKnownFileType = file; path = "dwds_de_dictionary_nopic_2023-11-20.zim"; sourceTree = "<group>"; };
 		98FBF4022B0D5ADB00B70826 /* DWDS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DWDS.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		98FBF4032B0D5ADB00B70826 /* DWDS-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "DWDS-Info.plist"; path = "/Users/balazs/dev/ios/kiwix-fork/DWDS-Info.plist"; sourceTree = "<absolute>"; };
 		98FBF4042B0D5C2A00B70826 /* DWDS.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = DWDS.xcassets; sourceTree = "<group>"; };
@@ -693,7 +693,7 @@
 		980179572B0EA5DF00E8E1E2 /* DWDS */ = {
 			isa = PBXGroup;
 			children = (
-				98AF8F9E2B12B241000125E1 /* dwds_de_dictionary_nopic_2023-11-20.zim */,
+				981A3C4E2B2C56FB00D4D167 /* dwds_de_dictionary_nopic_2023-12-15.zim */,
 			);
 			path = DWDS;
 			sourceTree = "<group>";
@@ -878,8 +878,8 @@
 				98FBF3FD2B0D5ADB00B70826 /* injection.js in Resources */,
 				98FBF3FE2B0D5ADB00B70826 /* wikipedia_dark.css in Resources */,
 				980179562B0E403E00E8E1E2 /* dwds.xcconfig in Resources */,
+				981A3C4F2B2C56FB00D4D167 /* dwds_de_dictionary_nopic_2023-12-15.zim in Resources */,
 				98AF8FA12B12B2BC000125E1 /* Localizable.strings in Resources */,
-				98AF8F9F2B12B241000125E1 /* dwds_de_dictionary_nopic_2023-11-20.zim in Resources */,
 				98FBF4052B0D5C2A00B70826 /* DWDS.xcassets in Resources */,
 				98AB9E022B121CF8007693C1 /* Launch.storyboard in Resources */,
 			);
@@ -1543,7 +1543,7 @@
 				CODE_SIGN_ENTITLEMENTS = Support/Kiwix.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 129;
+				CURRENT_PROJECT_VERSION = 130;
 				DEVELOPMENT_ASSET_PATHS = "";
 				DEVELOPMENT_TEAM = L7HWM3SP3L;
 				"ENABLE_HARDENED_RUNTIME[sdk=macosx*]" = YES;
@@ -1564,7 +1564,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2023.11.1;
+				MARKETING_VERSION = 2023.12.1;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = org.kiwix.custom.dwds;
@@ -1593,7 +1593,7 @@
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CODE_SIGN_ENTITLEMENTS = Support/Kiwix.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 129;
+				CURRENT_PROJECT_VERSION = 130;
 				DEVELOPMENT_ASSET_PATHS = "";
 				DEVELOPMENT_TEAM = L7HWM3SP3L;
 				"ENABLE_HARDENED_RUNTIME[sdk=macosx*]" = YES;
@@ -1614,7 +1614,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2023.11.1;
+				MARKETING_VERSION = 2023.12.1;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = org.kiwix.custom.dwds;
 				PRODUCT_NAME = "$(TARGET_NAME)";
