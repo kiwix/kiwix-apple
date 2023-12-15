@@ -47,7 +47,6 @@
 "file_import.alert.no_open.message" = " не може да се отвори.";
 "article_cell.no_snippet.label" = "Нема исечок";
 "article_cell.search_result.title" = "Наслов на статијата";
-"article_cell.search_result.snippet.template" = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.";
 "attribute.detail.unknown" = "Непознато";
 "download_task_cell.status.failed" = "Неуспешно";
 "download_task_cell.status.downloading" = "Преземам...";

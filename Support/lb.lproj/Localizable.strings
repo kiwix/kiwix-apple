@@ -19,7 +19,6 @@
 "bookmark_context_menu.remove.title" = "Ewechhuelen";
 "file_import.alert.no_open.message" = "kann net opgemaach ginn.";
 "article_cell.search_result.title" = "Titel vum Artikel";
-"article_cell.search_result.snippet.template" = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.";
 "attribute.detail.unknown" = "Onbekannt";
 "download_task_cell.status.downloading" = "Eroflueden...";
 "library_refresh_time.last" = "Elo just";

@@ -48,7 +48,6 @@
 "file_import.alert.no_open.message" = "kann nicht geöffnet werden.";
 "article_cell.no_snippet.label" = "Kein Treffer";
 "article_cell.search_result.title" = "Titel des Artikels";
-"article_cell.search_result.snippet.template" = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.";
 "attribute.detail.unknown" = "Unbekannt";
 "download_task_cell.status.failed" = "Fehlgeschlagen";
 "download_task_cell.status.downloading" = "Herunterladen …";
