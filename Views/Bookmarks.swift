@@ -37,7 +37,7 @@ struct Bookmarks: View {
         .modifier(GridCommon())
         .modifier(ToolbarRoleBrowser())
         .navigationTitle("bookmark.navigation.title".localized)
-        .searchable(text: $searchText)
+        .searchable(text: $searchText, prompt: "common.search".localized)
         .onChange(of: searchText) { searchText in
             bookmarks.nsPredicate = Bookmarks.buildPredicate(searchText: searchText)
         }

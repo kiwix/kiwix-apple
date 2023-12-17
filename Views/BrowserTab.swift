@@ -39,7 +39,7 @@ struct BrowserTab: View {
         .focusedSceneValue(\.canGoBack, browser.canGoBack)
         .focusedSceneValue(\.canGoForward, browser.canGoForward)
         .modifier(ExternalLinkHandler(externalURL: $browser.externalURL))
-        .searchable(text: $search.searchText, placement: .toolbar)
+        .searchable(text: $search.searchText, placement: .toolbar, prompt: "common.search".localized)
         .modify { view in
             #if os(macOS)
             view.navigationTitle(browser.articleTitle.isEmpty ? Brand.appName : browser.articleTitle)
