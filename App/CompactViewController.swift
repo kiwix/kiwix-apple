@@ -71,8 +71,13 @@ final class CompactViewController: UIHostingController<AnyView>, UISearchControl
     func willPresentSearchController(_ searchController: UISearchController) {
         navigationController?.setToolbarHidden(true, animated: true)
         navigationItem.setRightBarButton(
-            UIBarButtonItem(title: "common.button.cancel".localized, style: .done, target: self, action: #selector(onSearchCancelled))
-            , animated: true
+            UIBarButtonItem(
+                title: "common.button.cancel".localized,
+                style: .done,
+                target: self,
+                action: #selector(onSearchCancelled)
+            ),
+            animated: true
         )
     }
     @objc func onSearchCancelled() {
