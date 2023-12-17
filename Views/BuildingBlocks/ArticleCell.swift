@@ -64,8 +64,11 @@ struct ArticleCell: View {
 
 struct ArticleCell_Previews: PreviewProvider {
     static let result: SearchResult = {
-        let result = SearchResult(zimFileID: UUID(), path: "", title: "article_cell.search_result.title".localized)!
-        result.snippet = NSAttributedString(string: "article_cell.search_result.snippet.template".localized)
+        let result = SearchResult(zimFileID: UUID(), path: "", title: "Article Title")!
+        result.snippet = NSAttributedString(string: """
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, \
+                    sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                    """)
         return result
     }()
     
