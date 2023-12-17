@@ -129,6 +129,8 @@
 		98848D952B2D0310004B7BB1 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 988208012B2CF57A00D6B1AE /* Localizable.strings */; };
 		98AB9E022B121CF8007693C1 /* Launch.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 98AB9E012B121CF8007693C1 /* Launch.storyboard */; platformFilter = ios; };
 		98AF8FA02B12B282000125E1 /* String+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E43964B2B02E4C6007F0BC4 /* String+Extension.swift */; };
+		98CDFEF02B2EFD51005493A2 /* DefaultLanguages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98CDFEEF2B2EFD51005493A2 /* DefaultLanguages.swift */; };
+		98CDFEF12B2EFD51005493A2 /* DefaultLanguages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98CDFEEF2B2EFD51005493A2 /* DefaultLanguages.swift */; };
 		98FBF3A82B0D5ADB00B70826 /* Kiwix-Bridging-Header.h in Sources */ = {isa = PBXBuildFile; fileRef = 9779A5D02456796A00F6F6FF /* Kiwix-Bridging-Header.h */; platformFilter = ios; };
 		98FBF3A92B0D5ADB00B70826 /* Errors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 973A2FC4277EAA2500BD4320 /* Errors.swift */; };
 		98FBF3AA2B0D5ADB00B70826 /* ZimFilesCategories.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9790CA5828A05EBB00D39FC6 /* ZimFilesCategories.swift */; };
@@ -360,6 +362,7 @@
 		98848D872B2D02E1004B7BB1 /* skr-arab */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "skr-arab"; path = Localizable.strings; sourceTree = "<group>"; };
 		98848D8A2B2D02E1004B7BB1 /* zh-hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-hant"; path = Localizable.strings; sourceTree = "<group>"; };
 		98AB9E012B121CF8007693C1 /* Launch.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Launch.storyboard; sourceTree = "<group>"; };
+		98CDFEEF2B2EFD51005493A2 /* DefaultLanguages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultLanguages.swift; sourceTree = "<group>"; };
 		98FBF4022B0D5ADB00B70826 /* DWDS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DWDS.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		98FBF4032B0D5ADB00B70826 /* DWDS-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "DWDS-Info.plist"; path = "/Users/balazs/dev/ios/kiwix-fork/DWDS-Info.plist"; sourceTree = "<absolute>"; };
 		98FBF4042B0D5C2A00B70826 /* DWDS.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = DWDS.xcassets; sourceTree = "<group>"; };
@@ -710,6 +713,7 @@
 				970885D0271339A300C5795C /* wikipedia_dark.css */,
 				980179532B0E402C00E8E1E2 /* kiwix.xcconfig */,
 				980179552B0E403E00E8E1E2 /* dwds.xcconfig */,
+				98CDFEEF2B2EFD51005493A2 /* DefaultLanguages.swift */,
 			);
 			path = Support;
 			sourceTree = "<group>";
@@ -1160,6 +1164,7 @@
 				974E7EE92930201500BDF59C /* ZimFileService.swift in Sources */,
 				973A0DFD283100C300B41E71 /* ZimFilesOpened.swift in Sources */,
 				9744068A28CF65AE00916BD4 /* LibraryOperations.swift in Sources */,
+				98CDFEF02B2EFD51005493A2 /* DefaultLanguages.swift in Sources */,
 				972DE4B62814A502004FD9B9 /* Enum.swift in Sources */,
 				9744068728CE263800916BD4 /* DirectoryMonitor.swift in Sources */,
 				974C33A9285589E900DF6F4C /* Patches.swift in Sources */,
@@ -1257,6 +1262,7 @@
 				98FBF3E02B0D5ADB00B70826 /* ZimFileService.swift in Sources */,
 				98FBF3E12B0D5ADB00B70826 /* ZimFilesOpened.swift in Sources */,
 				98FBF3E22B0D5ADB00B70826 /* LibraryOperations.swift in Sources */,
+				98CDFEF12B2EFD51005493A2 /* DefaultLanguages.swift in Sources */,
 				98FBF3E32B0D5ADB00B70826 /* Enum.swift in Sources */,
 				98FBF3E42B0D5ADB00B70826 /* DirectoryMonitor.swift in Sources */,
 				98FBF3E52B0D5ADB00B70826 /* Patches.swift in Sources */,

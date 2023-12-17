@@ -7,6 +7,7 @@
 //
 
 import Defaults
+import Foundation
 
 extension Defaults.Keys {
 //    // reading
@@ -34,6 +35,7 @@ extension Defaults.Keys {
     static let libraryLastRefresh = Key<Date?>("libraryLastRefresh")
     static let libraryLastRefreshTime = Key<Date?>("libraryLastRefreshTime")
     
+    static let isFirstLaunch = Key<Bool>("isFirstLaunch", default: true)
     static let downloadUsingCellular = Key<Bool>("downloadUsingCellular", default: false)
     static let backupDocumentDirectory = Key<Bool>("backupDocumentDirectory", default: false)
 

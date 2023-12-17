@@ -38,6 +38,8 @@
 	<string>$(CUSTOM_ABOUT_WEBSITE)</string>
 	<key>CUSTOM_ZIM_FILE</key>
 	<string>$(CUSTOM_ZIM_FILE)</string>
+	<key>ENFORCED_LANGUAGE</key>
+	<string>$(ENFORCED_LANGUAGE)</string>
 	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
 	<key>SETTINGS_DEFAULT_EXTERNAL_LINK_TO</key>
