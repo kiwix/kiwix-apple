@@ -46,7 +46,6 @@
 "file_import.alert.no_open.title" = "Не можам да ја отворам податотеката";
 "file_import.alert.no_open.message" = " не може да се отвори.";
 "article_cell.no_snippet.label" = "Нема исечок";
-"article_cell.search_result.title" = "Наслов на статијата";
 "attribute.detail.unknown" = "Непознато";
 "download_task_cell.status.failed" = "Неуспешно";
 "download_task_cell.status.downloading" = "Преземам...";

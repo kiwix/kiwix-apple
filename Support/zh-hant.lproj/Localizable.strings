@@ -46,7 +46,6 @@
 "file_import.alert.no_open.title" = "無法開啟檔案";
 "file_import.alert.no_open.message" = "無法開啟。";
 "article_cell.no_snippet.label" = "沒有片段";
-"article_cell.search_result.title" = "條目標題";
 "attribute.detail.unknown" = "不明";
 "download_task_cell.status.failed" = "失敗";
 "download_task_cell.status.downloading" = "正在下載…";

@@ -25,7 +25,6 @@
 "bookmark_context_menu.remove.title" = "ہٹاؤ";
 "external_link_handler.alert.title" = "ٻاہرلا لنک";
 "external_link_handler.alert.button.load.link" = "لنک لوڈ کرو";
-"article_cell.search_result.title" = "مضمون دا عنوان";
 "attribute.detail.unknown" = "نامعلوم";
 "download_task_cell.status.failed" = "ناکام تھیا";
 "download_task_cell.status.paused" = "جمب ڳیا";
@@ -56,6 +55,7 @@
 "zim_file.download_task.action.title.cancel" = "منسوخ";
 "zim_file.download_task.action.failed" = "ناکام تھیا";
 "zim_file.download_task.action.pause" = "اجھکو";
+"zim_file.download_task.action.resume" = "ولدا شروع کرو";
 "zim_file.download_task.action.paused" = "جمب ڳیا";
 "reading_settings.zoom.reset.button" = "ولدا ٹھیک کرو";
 "reading_settings.external_link.title" = "ٻاہرلا لنک";
@@ -106,6 +106,7 @@
 "sidebar_view.navigation.button.close_all" = "سارے ٹیب بند کرو";
 "enum.category.wikipedia" = "وکیپیڈیا";
 "enum.category.wikibooks" = "وکی کتاباں";
+"enum.category.wikinews" = "وکی خبراں";
 "enum.category.wikiquote" = "وکی ٻول";
 "enum.category.wikisource" = "وکی ماخذ";
 "enum.category.wikiversity" = "وکی ورسٹی";
