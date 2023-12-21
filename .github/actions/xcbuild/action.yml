@@ -97,6 +97,14 @@ runs:
         KEYCHAIN: ${{ inputs.KEYCHAIN }}
         KEYCHAIN_PASSWORD: ${{ inputs.KEYCHAIN_PASSWORD }}
 
+    - name: Install xcodegen
+      shell: bash
+      run: brew install xcodegen
+    
+    - name: Run xcodegen
+      shell: bash
+      run: xcodegen
+
     - name: Download CoreKiwix.xcframework
       env:
         XCF_URL: https://download.kiwix.org/release/libkiwix/libkiwix_xcframework-${{ inputs.libkiwix-version }}.tar.gz
