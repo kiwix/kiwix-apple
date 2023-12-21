@@ -11,7 +11,7 @@ import Combine
 import SwiftUI
 import UIKit
 
-class CompactViewController: UIHostingController<AnyView>, UISearchControllerDelegate, UISearchResultsUpdating {
+final class CompactViewController: UIHostingController<AnyView>, UISearchControllerDelegate, UISearchResultsUpdating {
     private let searchViewModel: SearchViewModel
     private let searchController: UISearchController
     private var searchTextObserver: AnyCancellable?
@@ -50,7 +50,8 @@ class CompactViewController: UIHostingController<AnyView>, UISearchControllerDel
         searchController.delegate = self
         searchController.hidesNavigationBarDuringPresentation = false
         searchController.showsSearchResultsController = true
-        
+        searchController.searchBar.searchTextField.placeholder = "common.search".localized
+
         searchTextObserver = searchViewModel.$searchText.sink { [weak self] searchText in
             guard self?.searchController.searchBar.text != searchText else { return }
             self?.searchController.searchBar.text = searchText
@@ -70,13 +71,20 @@ class CompactViewController: UIHostingController<AnyView>, UISearchControllerDel
     func willPresentSearchController(_ searchController: UISearchController) {
         navigationController?.setToolbarHidden(true, animated: true)
         navigationItem.setRightBarButton(
-            UIBarButtonItem(systemItem: .cancel, primaryAction: UIAction { [unowned self] _ in
-                searchController.isActive = false
-                navigationItem.setRightBarButton(nil, animated: true)
-            }), animated: true
+            UIBarButtonItem(
+                title: "common.button.cancel".localized,
+                style: .done,
+                target: self,
+                action: #selector(onSearchCancelled)
+            ),
+            animated: true
         )
     }
-    
+    @objc func onSearchCancelled() {
+        searchController.isActive = false
+        navigationItem.setRightBarButton(nil, animated: true)
+    }
+
     func willDismissSearchController(_ searchController: UISearchController) {
         navigationController?.setToolbarHidden(false, animated: true)
         searchViewModel.searchText = ""

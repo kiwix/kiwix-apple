@@ -17,8 +17,11 @@ struct Kiwix: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) private var appDelegate
     
     private let fileMonitor: DirectoryMonitor
-    
+
     init() {
+        if let enforcedLanguage: String = Config.value(for: .enforcedLanguage) {
+            DefaultLanguages.enforce(language: enforcedLanguage)
+        }
         fileMonitor = DirectoryMonitor(url: URL.documentDirectory) { LibraryOperations.scanDirectory($0) }
         LibraryOperations.registerBackgroundTask()
         UNUserNotificationCenter.current().delegate = appDelegate

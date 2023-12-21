@@ -29,6 +29,7 @@
 "common.button.cancel" = "Cancel";
 "common.button.yes" = "Yes";
 "common.button.no" = "no";
+"common.search" = "Search";
 
 "common.tab.manager.title" = "Tabs Manager";
 "common.tab.navigation.title" = "Tabs";
