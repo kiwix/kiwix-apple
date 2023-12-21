@@ -70,3 +70,7 @@ fastlane/test_output
 .DS_Store
 xcuserdata
 Libraries
+
+# Brew deps
+Brewfile.lock.json
+

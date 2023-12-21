@@ -20,6 +20,16 @@ downloadable for older versions of macOS and iOS on the Mac App Store.
 
 Kiwix developers usually work with latest macOS and Xcode. Check our [Continuous Integration Workflow](https://github.com/kiwix/apple/blob/main/.github/workflows/ci.yml) to find out which XCode version we use on Github Actions.
 
+After checkout please run:
+```
+brew bundle
+```
+This will install our pre-commit hooks, and set you up with XCodeGen that will generate the project file.
+You can also generate the project file manually by calling at the root of the project:
+```
+xcodegen
+```
+
 ### CPU Architectures
 
 Kiwix compiles on both macOS architectures x86_64 and arm64 (Apple silicon).
