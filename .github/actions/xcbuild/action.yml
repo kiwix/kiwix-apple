@@ -138,4 +138,4 @@ runs:
 
     - name: commit the project files back to git
       shell: bash
-      run: git add *.xcodeproj && git commit -m "CI XcodeGen project file updates"
+      run: git add *.xcodeproj && git commit -m "CI XcodeGen project file updates" && git push
