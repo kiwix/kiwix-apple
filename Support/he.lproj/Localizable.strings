@@ -46,8 +46,6 @@
 "file_import.alert.no_open.title" = "לא ניתן לפתוח את הקובץ";
 "file_import.alert.no_open.message" = "אינו יכול להיפתח.";
 "article_cell.no_snippet.label" = "אין קטע גזור";
-"article_cell.search_result.title" = "כותרת הערך";
-"article_cell.search_result.snippet.template" = "ונאן ואני רובוטו ני נא בזואר דון קירקירר בותותון כיפי נא עברנצי, דה גנגן ינה דה ואוטה דה כלמומין דבה אפאסרה סו בה.";
 "attribute.detail.unknown" = "לא ידוע";
 "download_task_cell.status.failed" = "נכשל";
 "download_task_cell.status.downloading" = "בהורדה...";

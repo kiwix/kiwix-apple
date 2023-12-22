@@ -194,7 +194,7 @@ class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegate, URL
                 content.title = "download_service.complete.title".localized
                 content.sound = .default
                 if let zimFile = try? context.fetch(ZimFile.fetchRequest(fileID: zimFileID)).first {
-                    content.body = zimFile.name + "download_service.complete.description".localized
+                    content.body = "download_service.complete.description".localizedWithFormat(withArgs: zimFile.name)
                 }
                 
                 // schedule notification

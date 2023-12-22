@@ -1,5 +1,6 @@
 // Messages for Luxembourgish (Lëtzebuergesch)
 // Exported from translatewiki.net
+// Author: Robby
 // Author: Volvox
 
 "common.dialog.button.add_bookmark" = "Lieszeechen derbäisetzen";
@@ -7,8 +8,11 @@
 "common.dialog.button.show_bookmarks" = "Lieszeeche weisen";
 "common.dialog.button.bookmark" = "Lieszeechen";
 "common.button.go_back" = "Zréck goen";
+"common.button.done" = "Fäerdeg";
 "common.button.cancel" = "Ofbriechen";
 "common.button.yes" = "Jo";
+"common.button.no" = "neen";
+"common.tab.list.close" = "Tab zoumaachen";
 "common.tab.menu.library" = "Bibliothéik";
 "common.tab.menu.settings" = "Astellungen";
 "article_shortcut.main.button.title" = "Haaptartikel";
@@ -16,9 +20,10 @@
 "article_shortcut.random.button.title.mac" = "Zoufällegen Artikel";
 "article_shortcut.random.button.title.ios" = "Zoufälleg Säit";
 "article_shortcut.random.button.help" = "Zoufällegen Artikel weisen";
+"bookmark_context_menu.view.title" = "Weisen";
 "bookmark_context_menu.remove.title" = "Ewechhuelen";
+"external_link_handler.alert.title" = "Externe Link";
 "file_import.alert.no_open.message" = "kann net opgemaach ginn.";
-"article_cell.search_result.title" = "Titel vum Artikel";
 "attribute.detail.unknown" = "Onbekannt";
 "download_task_cell.status.downloading" = "Eroflueden...";
 "library_refresh_time.last" = "Elo just";
@@ -31,6 +36,7 @@
 "library.zim_file_context.copy_id" = "ID kopéieren";
 "zim_file_opened.toolbar.open.title" = "Opmaachen...";
 "zim_file_category.title" = "Kategorie";
+"zim_file_category.section.empty.message" = "Keen Zim Fichier an dëser Kategorie.";
 "zim_file_new_button_refresh" = "Aktualiséieren";
 "zim_file.list.name.text" = "Numm";
 "zim_file.list.description.text" = "Beschreiwung";
@@ -48,9 +54,11 @@
 "zim_file.detail.id.title" = "ID";
 "zim_file.download_task.action.title.cancel" = "Ofbriechen";
 "zim_file.download_task.action.downloading" = "Eroflueden...";
+"zim_file.download_task.action.resume" = "Virufueren";
 "zim_file.preview.file.description" = "Eng ganz laang Beschreiwung";
 "reading_settings.zoom.title" = "Säitezoom";
 "reading_settings.zoom.reset.button" = "Zrécksetzen";
+"reading_settings.tab.reading" = "Liesen";
 "library_settings.catalog.title" = "Katalog";
 "library_settings.button.refresh_now" = "Elo aktualiséieren";
 "library_settings.languages.title" = "Sproochen";
@@ -62,19 +70,26 @@
 "settings.miscellaneous.navigation.about" = "Iwwer";
 "settings.selected_language.title" = "Sproochen";
 "language_selector.name.title" = "Numm";
+"language_selector.count.table.title" = "Zuel";
 "language_selector.no_language.title" = "Keng Sprooch";
+"language_selector.hiding.header" = "Verstoppen";
 "language_selector.navitation.title" = "Sprooch";
+"settings.about.title" = "Iwwer";
 "settings.about.dependencies" = "Ofhängegkeeten";
 "settings.about.dependencies.name" = "Numm";
 "settings.about.appverion.title" = "Versioun";
 "settings.about.our_website.button" = "Eis Websäit";
+"settings.about.source.title" = "Quell";
 "bookmark.navigation.title" = "Lieszeechen";
 "bookmark.overlay.empty.title" = "Keng Lieszeechen";
 "app.navigation.title" = "Kiwix";
 "search_result.zimfile.no_result.message" = "Keng Resultater";
 "search_result.sidebar.button.remove" = "Ewechhuelen";
+"search_result.header.text" = "Rezent gesicht";
+"search_result.button.clear" = "Eidel maachen";
 "welcome.main_page.title" = "Haaptsäit";
 "welcome.grid.bookmarks.title" = "Lieszeechen";
+"welcome.actions.open_file" = "Fichier opmaachen";
 "commands.button.actual_size" = "Tatsächlech Gréisst";
 "app_macos_commands.open_file" = "Opmaachen...";
 "app_macos_navigation.button.library" = "Bibliothéik";
@@ -89,14 +104,18 @@
 "enum.category.wiktionary" = "Wiktionnaire";
 "enum.category.other" = "Anerer";
 "enum.external_link_loading_policy.always_ask" = "Allkéiers froen";
+"enum.external_link_loading_policy.always_load" = "Ëmmer Lueden";
 "enum.flavor.no_pic" = "kee Bild";
 "enum.library_language_sorting_model.a-z" = "A-Z";
 "enum.libray_tab_item.categories" = "Kategorien";
 "enum.libray_tab_item.new" = "Nei";
+"enum.navigation_item.reading" = "Liesen";
 "enum.navigation_item.bookmarks" = "Lieszeechen";
 "enum.navigation_item.map" = "Kaart";
+"enum.navigation_item.new_tab" = "Neien Tab";
 "enum.navigation_item.categories" = "Kategorien";
 "enum.navigation_item.new" = "Nei";
 "enum.navigation_item.settings" = "Astellungen";
 "enum.search_result_snippet_mode.disabled" = "Desaktivéiert";
 "enum.search_result_snippet_mode.sentence" = "Éischte Saz";
+"enum.search_result_snippet_mode.matches" = "Treffer";
