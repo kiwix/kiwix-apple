@@ -136,6 +136,10 @@ runs:
       shell: bash
       run: python .github/retry-if-retcode.py --sleep 60 --attempts 5 --retcode 65 xcrun xcodebuild ${EXTRA_XCODEBUILD} -workspace $XC_WORKSPACE -scheme $XC_SCHEME -destination "$XC_DESTINATION" -configuration $XC_CONFIG -onlyUsePackageVersionsFromResolvedFile -allowProvisioningUpdates -verbose -archivePath $PWD/Kiwix-$VERSION.xcarchive ${ACTION}
 
+    - name: Run xcodegen again
+      shell: bash
+      run: xcodegen
+
     - name: commit the project files back to git
       shell: bash
       run: |
@@ -143,4 +147,4 @@ runs:
           git config --global user.email '6784320+BPerlakiH@users.noreply.github.com'
           git add *.xcodeproj
           git commit -m "CI XcodeGen project file updates"
-          git push
+          git push origin ${{ github.event.pull_request.head.ref }}
