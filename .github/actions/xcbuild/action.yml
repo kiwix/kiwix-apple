@@ -145,4 +145,4 @@ runs:
           xcodegen
           git add Kiwix.xcodeproj
           git commit -m "CI XcodeGen project file updates"
-          git push origin ${{ github.event.pull_request.head.ref }}
+          git push origin/${{ github.event.pull_request.head.ref }}
