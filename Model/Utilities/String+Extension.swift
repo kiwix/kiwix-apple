@@ -28,7 +28,7 @@ extension String {
     }
 
     private func localizedWithFallback(
-        bundle: Bundle = DefaultLanguages.currentBundle,
+        bundle: Bundle = Bundle.main,
         comment: String = ""
     ) -> String {
         let englishValue: String

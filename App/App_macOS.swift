@@ -19,9 +19,6 @@ struct Kiwix: App {
     private let notificationCenterDelegate = NotificationCenterDelegate()
 
     init() {
-        if let enforcedLanguage: String = Config.value(for: .enforcedLanguage) {
-            DefaultLanguages.enforce(language: enforcedLanguage)
-        }
         UNUserNotificationCenter.current().delegate = notificationCenterDelegate
     }
     
