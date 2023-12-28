@@ -6,7 +6,7 @@
 "library_refresh_error.parse.description" = "Грешка при расчленувањето на податоците од библиотеката.";
 "library_refresh_error.process.description" = "Грешка при обработката на податоци од библиотеката.";
 "download_service.complete.title" = "Преземањето е завршено";
-"download_service.complete.description" = " е успешно преземено.";
+"download_service.complete.description" = "%@ е успешно преземено.";
 "common.dialog.button.open" = "Отвори";
 "common.dialog.button.open_in_new_tab" = "Отвори во ново јазиче";
 "common.dialog.button.add_bookmark" = "Додај обележувач";
@@ -19,6 +19,7 @@
 "common.button.cancel" = "Откажи";
 "common.button.yes" = "Да";
 "common.button.no" = "Не";
+"common.search" = "Пребарај";
 "common.tab.manager.title" = "Управник на јазичиња";
 "common.tab.navigation.title" = "Јазичиња";
 "common.tab.menu.new_tab" = "Ново јазиче";
@@ -44,7 +45,7 @@
 "external_link_handler.alert.ask.description" = "Допрена е надворешна врска. Дали сакате да ја вчитате?";
 "external_link_handler.alert.not_loading.description" = "Допрена е надворешна врска. Сепак, вашата моментална поставка не ѝ дозволува да се вчита.";
 "file_import.alert.no_open.title" = "Не можам да ја отворам податотеката";
-"file_import.alert.no_open.message" = " не може да се отвори.";
+"file_import.alert.no_open.message" = "%@ не може да се отвори.";
 "article_cell.no_snippet.label" = "Нема исечок";
 "attribute.detail.unknown" = "Непознато";
 "download_task_cell.status.failed" = "Неуспешно";

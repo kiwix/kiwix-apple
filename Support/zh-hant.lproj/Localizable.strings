@@ -6,7 +6,7 @@
 "library_refresh_error.parse.description" = "解析圖書館資料時發生錯誤。";
 "library_refresh_error.process.description" = "處理圖書館資料時發生錯誤。";
 "download_service.complete.title" = "下載完成";
-"download_service.complete.description" = "已下載成功。";
+"download_service.complete.description" = "已成功下載%@。";
 "common.dialog.button.open" = "開啟";
 "common.dialog.button.open_in_new_tab" = "在新分頁開啟";
 "common.dialog.button.add_bookmark" = "新增書籤";
@@ -19,6 +19,7 @@
 "common.button.cancel" = "取消";
 "common.button.yes" = "是";
 "common.button.no" = "否";
+"common.search" = "搜尋";
 "common.tab.manager.title" = "分頁管理器";
 "common.tab.navigation.title" = "分頁";
 "common.tab.menu.new_tab" = "新分頁";
@@ -44,7 +45,7 @@
 "external_link_handler.alert.ask.description" = "有點擊到外部連結，您要載入該連結嗎？";
 "external_link_handler.alert.not_loading.description" = "有點擊到外部連結，但是您目前的設定不允許載入該連結。";
 "file_import.alert.no_open.title" = "無法開啟檔案";
-"file_import.alert.no_open.message" = "無法開啟。";
+"file_import.alert.no_open.message" = "無法開啟%@。";
 "article_cell.no_snippet.label" = "沒有片段";
 "attribute.detail.unknown" = "不明";
 "download_task_cell.status.failed" = "失敗";

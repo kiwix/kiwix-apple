@@ -13,6 +13,7 @@
 "common.button.cancel" = "منسوخ";
 "common.button.yes" = "جیا";
 "common.button.no" = "کو";
+"common.search" = "ڳولو";
 "common.tab.navigation.title" = "ٹیباں";
 "common.tab.menu.new_tab" = "نویں ٹیب";
 "common.tab.menu.close_this" = "ایہ ٹیب بند کرو";
