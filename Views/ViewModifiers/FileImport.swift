@@ -104,7 +104,7 @@ struct OpenFileHandler: ViewModifier {
             switch alert {
             case .unableToOpen(let filenames):
                 let name = ListFormatter.localizedString(byJoining: filenames)
-                Text(name + "file_import.alert.no_open.message".localized)
+                Text("file_import.alert.no_open.message".localizedWithFormat(withArgs: name))
             }
         }
     }

@@ -14,7 +14,7 @@
 "library_refresh_error.process.description" = "Error processing library data.";
 
 "download_service.complete.title" = "Download Completed";
-"download_service.complete.description" = " has been downloaded successfully.";
+"download_service.complete.description" = "%@ has been downloaded successfully.";
 
 "common.dialog.button.open" = "Open";
 "common.dialog.button.open_in_new_tab" = "Open in New Tab";
@@ -62,7 +62,7 @@
 "external_link_handler.alert.ask.description" = "An external link is tapped, do you wish to load the link?";
 "external_link_handler.alert.not_loading.description" = "An external link is tapped. However, your current setting does not allow it to be loaded.";
 "file_import.alert.no_open.title" = "Unable to open file";
-"file_import.alert.no_open.message" = " cannot be opened.";
+"file_import.alert.no_open.message" = "%@ cannot be opened.";
 
 "article_cell.no_snippet.label" = "No snippet";
 "attribute.detail.unknown" = "Unknown";

@@ -46,7 +46,7 @@ struct Favicon: View {
         if let data = imageData, let image = UIImage(data: data) {
             Image(uiImage: image).resizable()
         } else {
-            Image(category.name).resizable()
+            Image(category.icon).resizable()
         }
         #endif
     }

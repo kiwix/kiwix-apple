@@ -11,38 +11,42 @@ import Foundation
 extension String {
 
     var localized: String {
-        NSLocalizedString(
-            self,
-            tableName: nil,
-            bundle: DefaultLanguages.currentBundle,
-            value: "",
-            comment: ""
-        )
+        localizedWithFallback()
     }
     
-    func localized(withComment: String) -> String {
-        return NSLocalizedString(
-            self,
-            tableName: nil,
-            bundle: DefaultLanguages.currentBundle,
-            value: "",
-            comment: withComment
-        )
+    func localizedWith(comment: String) -> String {
+        localizedWithFallback(comment: comment)
     }
     
     func localizedWithFormat(withArgs: CVarArg...) -> String {
-        let format = NSLocalizedString(
-            self,
-            tableName: nil,
-            bundle: DefaultLanguages.currentBundle,
-            value: "",
-            comment: ""
-        )
-
+        let format = localizedWithFallback()
         switch withArgs.count {
         case 1: return String.localizedStringWithFormat(format, withArgs[0])
         case 2: return String.localizedStringWithFormat(format, withArgs[0], withArgs[1])
         default: return String.localizedStringWithFormat(format, withArgs)
         }
+    }
+
+    private func localizedWithFallback(
+        bundle: Bundle = DefaultLanguages.currentBundle,
+        comment: String = ""
+    ) -> String {
+        let englishValue: String
+        if let path = Bundle.main.path(forResource: "en", ofType: "lproj"),
+           let bundle = Bundle(path: path) {
+            englishValue = NSLocalizedString(self, bundle: bundle, comment: comment)
+            if NSLocale.preferredLanguages.first == "en" {
+                return englishValue
+            }
+        } else {
+            englishValue = ""
+        }
+        return NSLocalizedString(
+            self,
+            tableName: nil,
+            bundle: bundle,
+            value: englishValue, // fall back to this, if translation not found
+            comment: comment
+        )
     }
 }
