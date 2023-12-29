@@ -1,9 +1,11 @@
 // Messages for Italian (italiano)
 // Exported from translatewiki.net
+// Author: Beta16
 // Author: Luca.favorido
 
 "library_refresh_error.retrieve.description" = "Errore durante il recupero dei dati della libreria.";
 "download_service.complete.title" = "Download completato";
+"download_service.complete.description" = "%@ è stato scaricato con successo.";
 "common.dialog.button.remove_bookmark" = "Rimuovi segnalibro";
 "common.dialog.button.show_bookmarks" = "Mostra preferiti";
 "common.dialog.button.bookmark" = "Segnalibro";
@@ -26,7 +28,7 @@
 "alert_handler.alert.failed.title" = "Impossibile caricare la voce richiesta.";
 "bookmark_context_menu.view.title" = "Visualizza";
 "external_link_handler.alert.title" = "Collegamento esterno";
-"file_import.alert.no_open.message" = "non può essere aperto.";
+"file_import.alert.no_open.message" = "%@ non può essere aperto.";
 "download_task_cell.status.paused" = "In pausa";
 "library_refresh_time.last" = "Proprio adesso";
 "zim_file_missing_indicator.help" = "Manca il file Zim.";

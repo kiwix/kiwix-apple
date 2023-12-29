@@ -3,6 +3,7 @@
 // Author: Robby
 // Author: Volvox
 
+"download_service.complete.description" = "%@ gouf erfollegräich erofgeluden.";
 "common.dialog.button.add_bookmark" = "Lieszeechen derbäisetzen";
 "common.dialog.button.remove_bookmark" = "Lieszeechen ewechhuelen";
 "common.dialog.button.show_bookmarks" = "Lieszeeche weisen";
@@ -12,6 +13,7 @@
 "common.button.cancel" = "Ofbriechen";
 "common.button.yes" = "Jo";
 "common.button.no" = "neen";
+"common.search" = "Sichen";
 "common.tab.list.close" = "Tab zoumaachen";
 "common.tab.menu.library" = "Bibliothéik";
 "common.tab.menu.settings" = "Astellungen";
@@ -23,7 +25,7 @@
 "bookmark_context_menu.view.title" = "Weisen";
 "bookmark_context_menu.remove.title" = "Ewechhuelen";
 "external_link_handler.alert.title" = "Externe Link";
-"file_import.alert.no_open.message" = "kann net opgemaach ginn.";
+"file_import.alert.no_open.message" = "%@ konnt net opgemaach ginn.";
 "attribute.detail.unknown" = "Onbekannt";
 "download_task_cell.status.downloading" = "Eroflueden...";
 "library_refresh_time.last" = "Elo just";

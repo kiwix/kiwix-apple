@@ -6,7 +6,7 @@
 "library_refresh_error.parse.description" = "Napaka pri razčlenjevanju podatkov knjižnice.";
 "library_refresh_error.process.description" = "Napaka pri obdelavi podatkov knjižnice.";
 "download_service.complete.title" = "Prenos končan";
-"download_service.complete.description" = "se je uspešno preneslo.";
+"download_service.complete.description" = "%@ se je uspešno preneslo.";
 "common.dialog.button.open" = "Odpri";
 "common.dialog.button.open_in_new_tab" = "Odpri v novem zavihku";
 "common.dialog.button.add_bookmark" = "Dodaj zaznamek";
@@ -19,6 +19,7 @@
 "common.button.cancel" = "Prekliči";
 "common.button.yes" = "Da";
 "common.button.no" = "ne";
+"common.search" = "Iskanje";
 "common.tab.manager.title" = "Upravitelj zavihkov";
 "common.tab.navigation.title" = "Zavihki";
 "common.tab.menu.new_tab" = "Nov zavihek";
@@ -44,7 +45,7 @@
 "external_link_handler.alert.ask.description" = "Tapnjena je bila zunanja povezava; ali jo želite naložiti?";
 "external_link_handler.alert.not_loading.description" = "Tapnjena je bila zunanja povezava, vendar vam trenutna nastavitev ne omogoča njenega prenosa.";
 "file_import.alert.no_open.title" = "Datoteke ni mogoče odpreti";
-"file_import.alert.no_open.message" = "ni mogoče odpreti.";
+"file_import.alert.no_open.message" = "%@ ni mogoče odpreti.";
 "article_cell.no_snippet.label" = "Ni delčka";
 "attribute.detail.unknown" = "Neznano";
 "download_task_cell.status.failed" = "Spodletelo";

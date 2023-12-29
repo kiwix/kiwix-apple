@@ -6,7 +6,7 @@
 "library_refresh_error.parse.description" = "שגיאה בפענוח נתוני ספרייה.";
 "library_refresh_error.process.description" = "שגיאה בעיבוד נתוני ספרייה.";
 "download_service.complete.title" = "ההורדה הושלמה";
-"download_service.complete.description" = "הורד בהצלחה.";
+"download_service.complete.description" = "%@ הורד בהצלחה.";
 "common.dialog.button.open" = "פתיחה";
 "common.dialog.button.open_in_new_tab" = "פתיחה בלשונית חדשה";
 "common.dialog.button.add_bookmark" = "הוספת סימנייה";
@@ -19,6 +19,7 @@
 "common.button.cancel" = "ביטול";
 "common.button.yes" = "כן";
 "common.button.no" = "לא";
+"common.search" = "חיפוש";
 "common.tab.manager.title" = "מנהל הלשוניות";
 "common.tab.navigation.title" = "לשוניות";
 "common.tab.menu.new_tab" = "לשונית חדשה";
@@ -44,7 +45,7 @@
 "external_link_handler.alert.ask.description" = "נלחץ קישור חיצוני, האם ברצונך לטעון את הקישור?";
 "external_link_handler.alert.not_loading.description" = "נלחץ קישור חיצוני. עם זאת, ההגדרה הנוכחית שלך לא מאפשרת לטעון אותו.";
 "file_import.alert.no_open.title" = "לא ניתן לפתוח את הקובץ";
-"file_import.alert.no_open.message" = "אינו יכול להיפתח.";
+"file_import.alert.no_open.message" = "לא ניתן לפתוח את %@.";
 "article_cell.no_snippet.label" = "אין קטע גזור";
 "attribute.detail.unknown" = "לא ידוע";
 "download_task_cell.status.failed" = "נכשל";

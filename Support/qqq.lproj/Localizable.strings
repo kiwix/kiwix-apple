@@ -2,7 +2,7 @@
 // Exported from translatewiki.net
 // Author: Amire80
 
-"download_service.complete.description" = "(Known issue: Lego message. Reported at https://github.com/kiwix/apple/issues/585.)";
-"file_import.alert.no_open.message" = "(Known issue: Lego message. Reported at https://github.com/kiwix/apple/issues/585.)";
+"download_service.complete.description" = "%@ is a file name.";
+"file_import.alert.no_open.message" = "%@ is one or more filenames.";
 "enum.category.ted" = "{{Optional}}";
 "enum.category.stackexchange" = "{{Optional}}";
