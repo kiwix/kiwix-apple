@@ -113,7 +113,6 @@
 		9882080D2B2CF57A00D6B1AE /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 988207FE2B2CF57A00D6B1AE /* Localizable.strings */; };
 		9882080E2B2CF57A00D6B1AE /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 988208012B2CF57A00D6B1AE /* Localizable.strings */; };
 		9882080F2B2CF57A00D6B1AE /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 988208042B2CF57A00D6B1AE /* Localizable.strings */; };
-		98B5D3252B2F36680047CC13 /* DefaultLanguages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98B5D3242B2F36680047CC13 /* DefaultLanguages.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -258,7 +257,6 @@
 		988207FF2B2CF57A00D6B1AE /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = Localizable.strings; sourceTree = "<group>"; };
 		988208022B2CF57A00D6B1AE /* mk */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = mk; path = Localizable.strings; sourceTree = "<group>"; };
 		988208052B2CF57A00D6B1AE /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = Localizable.strings; sourceTree = "<group>"; };
-		98B5D3242B2F36680047CC13 /* DefaultLanguages.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DefaultLanguages.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -571,7 +569,6 @@
 		97E94B26271EF359005B0295 /* Support */ = {
 			isa = PBXGroup;
 			children = (
-				98B5D3242B2F36680047CC13 /* DefaultLanguages.swift */,
 				988207FD2B2CF57A00D6B1AE /* de.lproj */,
 				988208032B2CF57A00D6B1AE /* en.lproj */,
 				988207EE2B2CF57A00D6B1AE /* he.lproj */,
@@ -946,7 +943,6 @@
 				974E7EE92930201500BDF59C /* ZimFileService.swift in Sources */,
 				973A0DFD283100C300B41E71 /* ZimFilesOpened.swift in Sources */,
 				9744068A28CF65AE00916BD4 /* LibraryOperations.swift in Sources */,
-				98B5D3252B2F36680047CC13 /* DefaultLanguages.swift in Sources */,
 				972DE4B62814A502004FD9B9 /* Enum.swift in Sources */,
 				9744068728CE263800916BD4 /* DirectoryMonitor.swift in Sources */,
 				974C33A9285589E900DF6F4C /* Patches.swift in Sources */,
