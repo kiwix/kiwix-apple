@@ -33,18 +33,16 @@ To compile Kiwix you rely on the following compilation tools:
 * An [Apple Developer account](https://developer.apple.com) (doesn't require membership)
 * Latest Apple Developers Tools ([Xcode](https://developer.apple.com/xcode/))
 * Its command-line utilities (`xcode-select --install`)
-* `CoreKiwix.xcframework` ([libkiwix](https://github.com/kiwix/libkiwix) and [libzim](https://github.com/openzim/libzim))
+* Brew dependencies, (see `Brewfile`, which also downloads our `CoreKiwix.xcframework` ([libkiwix](https://github.com/kiwix/libkiwix) and [libzim](https://github.com/openzim/libzim))
 
 ### Steps
 
 To compile Kiwix, follow these steps:
-
-* Put `CoreKiwix/xcframework` at the root of this folder
-* Open project with Xcode `open Kiwix.xcodeproj/project.xcworkspace/`
+* From the commandline on the root of this project run: `brew bundle`, this will download and install all the dependencies you need to get started
 * Change the Bundle Identifier (in *Signing & Capabilities*)
 * Select appropriate Signing Certificate/Profile.
 
-### Getting `CoreKiwix.xcframework`
+### Switch to another version of the `CoreKiwix.xcframework`
 
 `CoreKiwix.xcframework` is published with all supported platforms and CPU architectures:
 
