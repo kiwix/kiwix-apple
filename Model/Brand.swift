@@ -66,7 +66,6 @@ enum Config: String {
     case showSearchSnippetInSettings = "SETTINGS_SHOW_SEARCH_SNIPPET"
     case aboutText = "CUSTOM_ABOUT_TEXT"
     case aboutWebsite = "CUSTOM_ABOUT_WEBSITE"
-    case enforcedLanguage = "ENFORCED_LANGUAGE"
 
     static func value<T>(for key: Config) -> T? where T: LosslessStringConvertible {
         guard let object = Bundle.main.object(forInfoDictionaryKey: key.rawValue) else {
