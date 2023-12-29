@@ -160,6 +160,7 @@
 		608FD854AE4038F74BD04DB7 /* DirectoryMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectoryMonitor.swift; sourceTree = "<group>"; };
 		639DECF09B846A05E77745C6 /* ArticleCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArticleCell.swift; sourceTree = "<group>"; };
 		6480279B70E1D262EF38C5AF /* ZimFileMetaData.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ZimFileMetaData.h; sourceTree = "<group>"; };
+		6716A9A5D325D74A80464A2D /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Localizable.strings; sourceTree = "<group>"; };
 		67DF21C87E582EB71BC809E4 /* kiwix.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = kiwix.xcconfig; sourceTree = "<group>"; };
 		69ABEE90A05F16857F7CE335 /* skr-arab */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "skr-arab"; path = "skr-arab.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		6A4E976BC92B555D6D713B3F /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
@@ -210,6 +211,7 @@
 		CA54E20E6D7DD3B53EDF6AE8 /* Welcome.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Welcome.swift; sourceTree = "<group>"; };
 		CBE85373B6F762FC00DE3DEF /* NotificationCenter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NotificationCenter.framework; path = System/Library/Frameworks/NotificationCenter.framework; sourceTree = SDKROOT; };
 		CEA3B21CD160D5C22E34A240 /* mk */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = mk; path = mk.lproj/Localizable.strings; sourceTree = "<group>"; };
+		D02B2CF599A73E01BA3CB7F9 /* sl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sl; path = sl.lproj/Localizable.strings; sourceTree = "<group>"; };
 		D58FBF1777F7A39A6F93CC7A /* CoreKiwix.modulemap */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.module-map"; path = CoreKiwix.modulemap; sourceTree = "<group>"; };
 		D8DFB0B29B6C00D04C89355B /* Kiwix.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = Kiwix.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DBDA1C0D36F85785BA16B821 /* ZimFileRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZimFileRow.swift; sourceTree = "<group>"; };
@@ -602,7 +604,9 @@
 				it,
 				lb,
 				mk,
+				ru,
 				"skr-arab",
+				sl,
 				"zh-hant",
 			);
 			mainGroup = EBC440B13B6CA6B0E2260D9C;
@@ -775,7 +779,9 @@
 				5CBBE39EDBBD7A850D7C20E8 /* it */,
 				C41C1E36697F2024635674B6 /* lb */,
 				CEA3B21CD160D5C22E34A240 /* mk */,
+				6716A9A5D325D74A80464A2D /* ru */,
 				69ABEE90A05F16857F7CE335 /* skr-arab */,
+				D02B2CF599A73E01BA3CB7F9 /* sl */,
 				3FBEB61E39F2C2584AB42FCB /* zh-hant */,
 			);
 			name = Localizable.strings;
