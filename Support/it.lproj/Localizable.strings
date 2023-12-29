@@ -27,7 +27,6 @@
 "bookmark_context_menu.view.title" = "Visualizza";
 "external_link_handler.alert.title" = "Collegamento esterno";
 "file_import.alert.no_open.message" = "non può essere aperto.";
-"article_cell.search_result.title" = "Titolo della voce";
 "download_task_cell.status.paused" = "In pausa";
 "library_refresh_time.last" = "Proprio adesso";
 "zim_file_missing_indicator.help" = "Manca il file Zim.";
