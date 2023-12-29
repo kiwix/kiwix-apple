@@ -812,6 +812,7 @@
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				de,
+				Base,
 			);
 			mainGroup = 97A2AB7F1C1B80FF00052E74;
 			packageReferences = (
@@ -1513,7 +1514,7 @@
 				CODE_SIGN_ENTITLEMENTS = Support/Kiwix.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 132;
+				CURRENT_PROJECT_VERSION = 133;
 				DEVELOPMENT_ASSET_PATHS = "";
 				DEVELOPMENT_TEAM = L7HWM3SP3L;
 				"ENABLE_HARDENED_RUNTIME[sdk=macosx*]" = YES;
@@ -1534,7 +1535,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2023.12.2;
+				MARKETING_VERSION = 2023.12.3;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = org.kiwix.custom.dwds;
@@ -1563,7 +1564,7 @@
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CODE_SIGN_ENTITLEMENTS = Support/Kiwix.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 132;
+				CURRENT_PROJECT_VERSION = 133;
 				DEVELOPMENT_ASSET_PATHS = "";
 				DEVELOPMENT_TEAM = L7HWM3SP3L;
 				"ENABLE_HARDENED_RUNTIME[sdk=macosx*]" = YES;
@@ -1584,7 +1585,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2023.12.2;
+				MARKETING_VERSION = 2023.12.3;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = org.kiwix.custom.dwds;
 				PRODUCT_NAME = "$(TARGET_NAME)";
