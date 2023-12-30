@@ -1,4 +1,4 @@
-name: Build with XCode
+name: Build with Xcode
 description: Run xcodebuild for Kiwix
 
 inputs:

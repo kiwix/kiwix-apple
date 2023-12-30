@@ -1,7 +1,7 @@
 name: Kiwix
 options:
-  xcodeVersion: 13.0
-  deploymentTarget:
+  xcodeVersion: 15.0
+  deploymentTarget: # the three latest major versions should be supported
       iOS: 15.0
       macOS: 12.0
   generateEmptyDirectories: true
@@ -67,9 +67,6 @@ targets:
         INFOPLIST_KEY_CFBundleDisplayName: Kiwix
     type: application
     supportedDestinations: [iOS, macOS]
-    # info:
-      # path: Support/Info.plist
-      # CFBundleName: Kiwix
     sources: 
       - path: App
       - path: Support/Kiwix-Bridging-Header.h
@@ -79,7 +76,6 @@ targets:
         excludes: 
           - "Launch.storyboard"
           - "**/*.zim"
-          - "DWDS.xcassets"
           - "**/qqq.lproj"
       - path: SwiftUI
       - path: ViewModel
