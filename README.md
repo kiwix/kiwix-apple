@@ -44,6 +44,15 @@ Our `Brewfile` will install all the necessary dependencies for you:
 - our latest `CoreKiwix.xcframework` ([libkiwix](https://github.com/kiwix/libkiwix) and [libzim](https://github.com/openzim/libzim))
 - [XcodeGen](https://github.com/yonaskolb/XcodeGen) which will create the project files for you
 
+### How XcodeGen is working?
+Xcode project files are not directly contained within this repository, instead they are generated for you automatically (as git hooks on post-merge, post-checkout, post-rewrite - see the `.pre-commit-config.yaml`).
+
+This means, that you can work in Xcode as usual, but you don't need to worry about the project file changes anymore.
+
+Contributors: please note, **changes to the Xcode project folder will not be tracked by git**.
+
+If you wish to change any settings as part of your contribution, please **edit the `project.yml` file instead.**
+
 ### CPU Architectures
 
 Kiwix compiles on both macOS architectures x86_64 and arm64 (Apple silicon).
