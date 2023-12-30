@@ -53,6 +53,8 @@ Contributors: please note, **changes to the Xcode project folder will not be tra
 
 If you wish to change any settings as part of your contribution, please **edit the `project.yml` file instead.**
 
+Please refer to the [XcodeGen documentation](https://github.com/yonaskolb/XcodeGen) for further details.
+
 ### CPU Architectures
 
 Kiwix compiles on both macOS architectures x86_64 and arm64 (Apple silicon).
