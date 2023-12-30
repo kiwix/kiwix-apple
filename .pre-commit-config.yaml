@@ -4,8 +4,8 @@ repos:
   - repo: local
     hooks:
       - id: xcodegen
-        name: Generate project files for XCode
-        description: "Generate project file for XCode"
+        name: Generate project files for Xcode
+        description: "Generate project file for Xcode"
         entry: xcodegen
         language: system
         always_run: true
