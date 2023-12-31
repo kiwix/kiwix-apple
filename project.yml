@@ -12,14 +12,13 @@ settings:
   base:
     DEVELOPMENT_TEAM: L7HWM3SP3L
     GENERATE_INFOPLIST_FILE: YES
-    CURRENT_PROJECT_VERSION: 120
+    CURRENT_PROJECT_VERSION: 133
     ENABLE_USER_SCRIPT_SANDBOXING: NO
     ENABLE_MODULE_VERIFIER: YES
     MODULE_VERIFIER_SUPPORTED_LANGUAGES: "objective-c objective-c++"
     ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS: YES
     CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED: YES
     ENABLE_PREVIEWS: YES
-    INFOPLIST_FILE: Support/Info.plist
     INFOPLIST_KEY_LSApplicationCategoryType: public.app-category.reference
     INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone: UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight
     INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad: UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight
@@ -58,28 +57,10 @@ packages:
     url: https://github.com/apple/swift-collections.git
     majorVersion: 1.0.4
 
-targets:
-  Kiwix:
-    settings:
-      base:
-        MARKETING_VERSION: "3.3"
-        PRODUCT_BUNDLE_IDENTIFIER: self.Kiwix
-        INFOPLIST_KEY_CFBundleDisplayName: Kiwix
+targetTemplates:
+  ApplicationTemplate:
     type: application
     supportedDestinations: [iOS, macOS]
-    sources: 
-      - path: App
-      - path: Support/Kiwix-Bridging-Header.h
-        destinationFilters: [iOS]
-      - path: Model
-      - path: Support
-        excludes: 
-          - "Launch.storyboard"
-          - "**/*.zim"
-          - "**/qqq.lproj"
-      - path: SwiftUI
-      - path: ViewModel
-      - path: Views
     preBuildScripts:
       - script: |
                 # Copy Clang module map to xcframework for Swift C++ Interoperability 
@@ -88,9 +69,6 @@ targets:
                 cp Support/CoreKiwix.modulemap CoreKiwix.xcframework/macos-arm64_x86_64/Headers/module.modulemap
         name: "Copy CoreKiwix module maps"
         basedOnDependencyAnalysis: false
-    configFiles:
-      Debug: Support/kiwix.xcconfig
-      Release: Support/kiwix.xcconfig
     entitlements:
       path: Support/Kiwix.entitlements
       properties:
@@ -111,6 +89,30 @@ targets:
       - package: Defaults
       - package: SwiftUIBackports
       - package: OrderedCollections
+    sources: 
+      - path: App
+      - path: Model
+      - path: SwiftUI
+      - path: ViewModel
+      - path: Views
+
+targets:
+  Kiwix:
+    templates:
+      - ApplicationTemplate
+    settings:
+      base:
+        MARKETING_VERSION: "3.3"
+        PRODUCT_BUNDLE_IDENTIFIER: self.Kiwix
+        INFOPLIST_KEY_CFBundleDisplayName: Kiwix
+        INFOPLIST_FILE: Support/Info.plist
+    configFiles:
+      Debug: Support/kiwix.xcconfig
+      Release: Support/kiwix.xcconfig
+    sources:
+      - path: Support
+        excludes: 
+          - "**/qqq.lproj"
   UnitTests:
     type: bundle.unit-test
     platform: macOS
@@ -118,13 +120,11 @@ targets:
       PRODUCT_BUNDLE_IDENTIFIER: org.kiwix.Tests
       TEST_HOST: $(BUILT_PRODUCTS_DIR)/Kiwix.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Kiwix
       BUNDLE_LOADER: $(TEST_HOST)
-      DEVELOPMENT_TEAM: L7HWM3SP3L
     sources:
       - path: Tests
     dependencies:
       - target: Kiwix
     
-
 schemes:
   Kiwix:
     build:
