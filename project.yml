@@ -1,0 +1,139 @@
+name: Kiwix
+options:
+  xcodeVersion: 15.0
+  deploymentTarget: # the three latest major versions should be supported
+      iOS: 15.0
+      macOS: 12.0
+  generateEmptyDirectories: true
+  useTabs: false
+  groupSortPosition: top
+
+settings:
+  base:
+    DEVELOPMENT_TEAM: L7HWM3SP3L
+    GENERATE_INFOPLIST_FILE: YES
+    CURRENT_PROJECT_VERSION: 133
+    ENABLE_USER_SCRIPT_SANDBOXING: NO
+    ENABLE_MODULE_VERIFIER: YES
+    MODULE_VERIFIER_SUPPORTED_LANGUAGES: "objective-c objective-c++"
+    ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS: YES
+    CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED: YES
+    ENABLE_PREVIEWS: YES
+    INFOPLIST_KEY_LSApplicationCategoryType: public.app-category.reference
+    INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone: UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight
+    INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad: UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight
+    INFOPLIST_KEY_NSPhotoLibraryUsageDescription: "Kiwix needs permission to saves images to your photos app."
+    INFOPLIST_KEY_LSSupportsOpeningDocumentsInPlace: YES
+    INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents: YES
+    SWIFT_OBJC_INTEROP_MODE: objcxx
+    SWIFT_OBJC_BRIDGING_HEADER: $(PROJECT_DIR)/Support/Kiwix-Bridging-Header.h
+    GCC_C_LANGUAGE_STANDARD: c11
+    CLANG_CXX_LANGUAGE_STANDARD: c++14
+    ENABLE_HARDENED_RUNTIME[sdk=macosx*]: YES
+    APP_STORE_ID: $(APP_STORE_ID)
+    INFOPLIST_KEY_UILaunchScreen_Generation: YES
+    INFOPLIST_KEY_UILaunchStoryboardName: LaunchKiwix.storyboard
+
+  configs:
+    debug:
+      DEAD_CODE_STRIPPING: YES
+      MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS: "gnu11 gnu14++"
+    release:
+      DEAD_CODE_STRIPPING: YES
+      MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS: "gnu11 gnu14++"
+      VALIDATE_PRODUCT: YES
+
+packages:
+  Fuzi:
+    url: https://github.com/cezheng/Fuzi
+    majorVersion: 3.0.0
+  Defaults:
+    url: https://github.com/sindresorhus/Defaults
+    majorVersion: 6.0.0
+  SwiftUIBackports:
+    url: https://github.com/shaps80/SwiftUIBackports.git
+    majorVersion: 1.0.0
+  OrderedCollections:
+    url: https://github.com/apple/swift-collections.git
+    majorVersion: 1.0.4
+
+targetTemplates:
+  ApplicationTemplate:
+    type: application
+    supportedDestinations: [iOS, macOS]
+    preBuildScripts:
+      - script: |
+                # Copy Clang module map to xcframework for Swift C++ Interoperability 
+                cp Support/CoreKiwix.modulemap CoreKiwix.xcframework/ios-arm64/Headers/module.modulemap
+                cp Support/CoreKiwix.modulemap CoreKiwix.xcframework/ios-arm64_x86_64-simulator/Headers/module.modulemap
+                cp Support/CoreKiwix.modulemap CoreKiwix.xcframework/macos-arm64_x86_64/Headers/module.modulemap
+        name: "Copy CoreKiwix module maps"
+        basedOnDependencyAnalysis: false
+    entitlements:
+      path: Support/Kiwix.entitlements
+      properties:
+        com.apple.security.app-sandbox: true
+        com.apple.security.files.downloads.read-write: true
+        com.apple.security.files.user-selected.read-only: true
+        com.apple.security.network.client: true
+    dependencies:
+      - framework: CoreKiwix.xcframework
+        embed: false
+        codeSign: true
+      - sdk: SwiftUI.framework
+      - sdk: MapKit.framework
+      - sdk: WebKit.framework
+      - sdk: NotificationCenter.framework
+      - sdk: QuickLook.framework
+      - package: Fuzi
+      - package: Defaults
+      - package: SwiftUIBackports
+      - package: OrderedCollections
+    sources: 
+      - path: App
+      - path: Model
+      - path: SwiftUI
+      - path: ViewModel
+      - path: Views
+
+targets:
+  Kiwix:
+    templates:
+      - ApplicationTemplate
+    settings:
+      base:
+        MARKETING_VERSION: "3.3"
+        PRODUCT_BUNDLE_IDENTIFIER: self.Kiwix
+        INFOPLIST_KEY_CFBundleDisplayName: Kiwix
+        INFOPLIST_FILE: Support/Info.plist
+    configFiles:
+      Debug: Support/kiwix.xcconfig
+      Release: Support/kiwix.xcconfig
+    sources:
+      - path: Support
+        excludes: 
+          - "**/qqq.lproj"
+  UnitTests:
+    type: bundle.unit-test
+    platform: macOS
+    settings:
+      PRODUCT_BUNDLE_IDENTIFIER: org.kiwix.Tests
+      TEST_HOST: $(BUILT_PRODUCTS_DIR)/Kiwix.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Kiwix
+      BUNDLE_LOADER: $(TEST_HOST)
+    sources:
+      - path: Tests
+    dependencies:
+      - target: Kiwix
+    
+schemes:
+  Kiwix:
+    build:
+      targets:
+        Kiwix: all
+    test:
+      targets:
+        - UnitTests
+      commandLineArguments:
+            testing: true
+      
+      

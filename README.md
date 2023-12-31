@@ -6,7 +6,7 @@ This is the home for Kiwix apps for Apple iOS and macOS.
 [![CI Build Status](https://github.com/kiwix/apple/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/kiwix/apple/actions/workflows/ci.yml?query=branch%3Amain)
 [![CD Build Status](https://github.com/kiwix/apple/actions/workflows/cd.yml/badge.svg?branch=main)](https://github.com/kiwix/apple/actions/workflows/cd?query=branch%3Amain)
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
-<img src="https://img.shields.io/badge/Swift-5.2-orange.svg" alt="Drawing="/>
+<img src="https://img.shields.io/badge/Swift-5.9-orange.svg" alt="Drawing="/>
 
 ## Download
 
@@ -18,7 +18,42 @@ downloadable for older versions of macOS and iOS on the Mac App Store.
 
 ## Develop
 
-Kiwix developers usually work with latest macOS and Xcode. Check our [Continuous Integration Workflow](https://github.com/kiwix/apple/blob/main/.github/workflows/ci.yml) to find out which XCode version we use on Github Actions.
+Kiwix developers usually work with latest macOS and Xcode. Check our [Continuous Integration Workflow](https://github.com/kiwix/apple/blob/main/.github/workflows/ci.yml) to find out which Xcode version we use on Github Actions.
+
+### Get started
+
+To get started, you will need the following:
+
+* An [Apple Developer account](https://developer.apple.com) (doesn't require membership)
+* [Xcode](https://developer.apple.com/xcode/) installed
+* Its command-line utilities (`xcode-select --install`)
+* [Homebrew](https://brew.sh) installed
+
+### Steps
+ 1) clone this repository
+ 2) from the project folder **run the following command: `brew bundle`**
+
+### Xcode settings
+
+To compile and run Kiwix from Xcode locally, you will need to:
+* Change the Bundle Identifier (in *Signing & Capabilities*)
+* Select appropriate Signing Certificate/Profile.
+
+### Dependencies installed for you
+Our `Brewfile` will install all the necessary dependencies for you: 
+- our latest `CoreKiwix.xcframework` ([libkiwix](https://github.com/kiwix/libkiwix) and [libzim](https://github.com/openzim/libzim))
+- [XcodeGen](https://github.com/yonaskolb/XcodeGen) which will create the project files for you
+
+### How XcodeGen is working?
+Xcode project files are not directly contained within this repository, instead they are generated for you automatically (as git hooks on post-merge, post-checkout, post-rewrite - see the `.pre-commit-config.yaml`).
+
+This means, that you can work in Xcode as usual, but you don't need to worry about the project file changes anymore.
+
+Contributors: please note, **changes to the Xcode project folder will not be tracked by git**.
+
+If you wish to change any settings as part of your contribution, please **edit the `project.yml` file instead.**
+
+Please refer to the [XcodeGen documentation](https://github.com/yonaskolb/XcodeGen) for further details.
 
 ### CPU Architectures
 
@@ -26,30 +61,14 @@ Kiwix compiles on both macOS architectures x86_64 and arm64 (Apple silicon).
 
 Kiwix for iOS and macOS can run, in both cases, on x86_64 or arm64.
 
-### Dependencies
-
-To compile Kiwix you rely on the following compilation tools:
-
-* An [Apple Developer account](https://developer.apple.com) (doesn't require membership)
-* Latest Apple Developers Tools ([Xcode](https://developer.apple.com/xcode/))
-* Its command-line utilities (`xcode-select --install`)
-* `CoreKiwix.xcframework` ([libkiwix](https://github.com/kiwix/libkiwix) and [libzim](https://github.com/openzim/libzim))
-
-### Steps
-
-To compile Kiwix, follow these steps:
-
-* Put `CoreKiwix/xcframework` at the root of this folder
-* Open project with Xcode `open Kiwix.xcodeproj/project.xcworkspace/`
-* Change the Bundle Identifier (in *Signing & Capabilities*)
-* Select appropriate Signing Certificate/Profile.
-
-### Getting `CoreKiwix.xcframework`
+### Switch to another version of the `CoreKiwix.xcframework`
 
 `CoreKiwix.xcframework` is published with all supported platforms and CPU architectures:
 
 - [latest release](https://download.kiwix.org/release/libkiwix/libkiwix_xcframework.tar.gz)
 - [latest nightly](https://download.kiwix.org/nightly/libkiwix_xcframework.tar.gz): using `main` branch of both `libkiwix` and `libzim`.
+
+In order to use another version of CoreKiwix, than the one pre-installed, you can simply replace the CoreKiwix.xcframework folder at the root of the project with the version downloaded, and unpacked.
 
 #### Compiling `CoreKiwix.xcframework`
 

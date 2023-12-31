@@ -1,0 +1,12 @@
+# docs: https://pre-commit.com
+default_install_hook_types: [post-merge, post-checkout, post-rewrite]
+repos:
+  - repo: local
+    hooks:
+      - id: xcodegen
+        name: Generate project files for Xcode
+        description: "Generate project file for Xcode"
+        entry: xcodegen
+        language: system
+        always_run: true
+        stages: [post-checkout, post-merge, post-rewrite]

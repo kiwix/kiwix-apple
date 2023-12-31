@@ -1,4 +1,4 @@
-name: Build with XCode
+name: Build with Xcode
 description: Run xcodebuild for Kiwix
 
 inputs:
@@ -97,11 +97,9 @@ runs:
         KEYCHAIN: ${{ inputs.KEYCHAIN }}
         KEYCHAIN_PASSWORD: ${{ inputs.KEYCHAIN_PASSWORD }}
 
-    - name: Download CoreKiwix.xcframework
-      env:
-        XCF_URL: https://download.kiwix.org/release/libkiwix/libkiwix_xcframework-${{ inputs.libkiwix-version }}.tar.gz
+    - name: Download dependencies
       shell: bash
-      run: curl -L -o - $XCF_URL | tar -x --strip-components 2
+      run: brew bundle
 
     - name: Prepare Xcode
       shell: bash
