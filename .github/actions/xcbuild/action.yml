@@ -10,8 +10,6 @@ inputs:
     required: true
   upload-to:
     required: true
-  libkiwix-version:
-    required: true
   APPLE_DEVELOPMENT_SIGNING_CERTIFICATE:
     required: true
   APPLE_DEVELOPMENT_SIGNING_P12_PASSWORD:

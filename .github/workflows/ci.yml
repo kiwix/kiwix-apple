@@ -7,7 +7,6 @@ on:
       - main
 
 env:
-  LIBKIWIX_VERSION: "13.0.0-1"
   APPLE_STORE_AUTH_KEY_PATH: /tmp/authkey.p8
 
 jobs:
@@ -66,7 +65,6 @@ jobs:
           action: build
           xc-destination: generic/platform=${{ matrix.destination.platform }}
           upload-to: dev
-          libkiwix-version: ${{ env.LIBKIWIX_VERSION }}
           version: CI
           APPLE_DEVELOPMENT_SIGNING_CERTIFICATE: ${{ secrets.APPLE_DEVELOPMENT_SIGNING_CERTIFICATE }}
           APPLE_DEVELOPMENT_SIGNING_P12_PASSWORD: ${{ secrets.APPLE_DEVELOPMENT_SIGNING_P12_PASSWORD }}
