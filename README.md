@@ -41,7 +41,7 @@ To compile and run Kiwix from Xcode locally, you will need to:
 
 ### Dependencies installed for you
 Our `Brewfile` will install all the necessary dependencies for you: 
-- our latest `CoreKiwix.xcframework` ([libkiwix](https://github.com/kiwix/libkiwix) and [libzim](https://github.com/openzim/libzim))
+- our `CoreKiwix.xcframework` ([libkiwix](https://github.com/kiwix/libkiwix) and [libzim](https://github.com/openzim/libzim)) - the version of which is specified in the `Brewfile`
 - [XcodeGen](https://github.com/yonaskolb/XcodeGen) which will create the project files for you
 
 ### How XcodeGen is working?
