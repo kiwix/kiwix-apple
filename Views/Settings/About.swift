@@ -99,7 +99,7 @@ struct About: View {
     
     private var ourWebsite: some View {
         Button("settings.about.our_website.button".localized) {
-            externalLinkURL = URL(string: "https://\(Brand.aboutWebsite)")
+            externalLinkURL = URL(string: "\(Brand.aboutWebsite)")
         }
     }
     
