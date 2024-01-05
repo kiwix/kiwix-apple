@@ -46,6 +46,7 @@
 "external_link_handler.alert.not_loading.description" = "Harici bir bağlantıya tıklanıldı ancak mevcut ayarınız bunun yüklenmesine izin vermiyor.";
 "file_import.alert.no_open.title" = "Dosya açılamıyor";
 "file_import.alert.no_open.message" = "%@ açılamadı";
+"article_cell.no_snippet.label" = "Parçacık yok";
 "attribute.detail.unknown" = "Bilinmiyor";
 "download_task_cell.status.failed" = "Başarısız";
 "download_task_cell.status.downloading" = "Yükleniyor...";
@@ -135,6 +136,7 @@
 "catalog_settings.footer.text" = "Etkinleştirildiğinde kütüphane kataloğu güncelliğini yitirdiğinde otomatik olarak yenilenecektir.";
 "backup_settings.toggle.title" = "Zim dosyalarını yedeklemeye dahil et";
 "backup_settings.header.text" = "Yedek";
+"backup_settings.footer.text" = "Yerinde açılan dosyalar için geçerli değildir.";
 "settings.miscellaneous.title" = "Çeşitli";
 "settings.miscellaneous.button.feedback" = "Geri bildirim";
 "settings.miscellaneous.button.rate_app" = "Uygulamayı Oyla";
@@ -185,6 +187,7 @@
 "commands.button.actual_size" = "Gerçek Boyut";
 "comments.button.zoom_in" = "Yakınlaştır";
 "comments.button.zoom_out" = "Uzaklaştır";
+"app_macos_commands.open_file" = "Aç...";
 "app_macos_commands.new" = "Yeni Sekme";
 "app_macos_navigation.button.library" = "Kütüphane";
 "app_macos_navigation.show_sidebar" = "Kenar Çubuğunu Göster";
@@ -208,13 +211,16 @@
 "enum.flavor.mini" = "mini";
 "enum.library_language_sorting_model.a-z" = "A-Z";
 "enum.library_language_sorting_model.by_count" = "Sayıma göre";
+"enum.libray_tab_item.opened" = "Açıldı";
 "enum.libray_tab_item.categories" = "Kategoriler";
 "enum.libray_tab_item.downloads" = "İndirilenler";
 "enum.libray_tab_item.new" = "Yeni";
 "enum.navigation_item.loading" = "Yükleniyor";
+"enum.navigation_item.reading" = "Okuma";
 "enum.navigation_item.bookmarks" = "Yer İşaretleri";
 "enum.navigation_item.map" = "Harita";
 "enum.navigation_item.new_tab" = "Yeni Sekme";
+"enum.navigation_item.opened" = "Açıldı";
 "enum.navigation_item.categories" = "Kategoriler";
 "enum.navigation_item.new" = "Yeni";
 "enum.navigation_item.downloads" = "İndirilenler";
