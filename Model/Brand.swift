@@ -35,7 +35,7 @@ enum Brand {
     static let appStoreId: String = Config.value(for: .appStoreID) ?? "id997079563"
     static let welcomeLogoImageName: String = "welcomeLogo"
     static let aboutText: String = Config.value(for: .aboutText) ?? "settings.about.description".localized
-    static let aboutWebsite: String = Config.value(for: .aboutWebsite) ?? "www.kiwix.org"
+    static let aboutWebsite: String = Config.value(for: .aboutWebsite) ?? "https://www.kiwix.org"
 
     static var defaultExternalLinkPolicy: ExternalLinkLoadingPolicy {
         guard let policyString: String = Config.value(for: .externalLinkDefaultPolicy),
