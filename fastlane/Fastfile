@@ -21,7 +21,6 @@ platform :ios do
     load_app_store_api_key
     fetch_certificates
     build_app(scheme: ENV["APP_SCHEME"])
-    upload_to_testflight
   end
 end
 
@@ -31,7 +30,6 @@ platform :mac do
     load_app_store_api_key
     fetch_certificates
     build_app(scheme: ENV["APP_SCHEME"])
-    upload_to_testflight
   end
 end
 
