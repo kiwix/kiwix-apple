@@ -61,14 +61,6 @@ targetTemplates:
   ApplicationTemplate:
     type: application
     supportedDestinations: [iOS, macOS]
-    preBuildScripts:
-      - script: |
-                # Copy Clang module map to xcframework for Swift C++ Interoperability 
-                cp Support/CoreKiwix.modulemap CoreKiwix.xcframework/ios-arm64/Headers/module.modulemap
-                cp Support/CoreKiwix.modulemap CoreKiwix.xcframework/ios-arm64_x86_64-simulator/Headers/module.modulemap
-                cp Support/CoreKiwix.modulemap CoreKiwix.xcframework/macos-arm64_x86_64/Headers/module.modulemap
-        name: "Copy CoreKiwix module maps"
-        basedOnDependencyAnalysis: false
     entitlements:
       path: Support/Kiwix.entitlements
       properties:
