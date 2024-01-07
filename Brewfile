@@ -8,6 +8,6 @@ at_exit do
     # Copy Clang module map to xcframework for Swift C++ Interoperability 
     system "cp Support/CoreKiwix.modulemap CoreKiwix.xcframework/ios-arm64/Headers/module.modulemap"
     system "cp Support/CoreKiwix.modulemap CoreKiwix.xcframework/ios-arm64_x86_64-simulator/Headers/module.modulemap"
-    system "cp Support/CoreKiwix.modulemap"
+    system "cp Support/CoreKiwix.modulemap CoreKiwix.xcframework/macos-arm64_x86_64/Headers/module.modulemap"
     system "xcodegen"
 end
