@@ -1,0 +1,59 @@
+# This file contains the fastlane.tools configuration
+# You can find the documentation at https://docs.fastlane.tools
+#
+# For a list of all available actions, check out
+#
+#     https://docs.fastlane.tools/actions
+#
+# For a list of all available plugins, check out
+#
+#     https://docs.fastlane.tools/plugins/available-plugins
+#
+
+# Uncomment the line if you want fastlane to automatically update itself
+# update_fastlane
+
+default_platform(:ios)
+
+platform :ios do
+  desc "Push a new iOS build to TestFlight"
+  lane :beta do
+    load_app_store_api_key
+    fetch_certificates
+    build_app(scheme: ENV["APP_SCHEME"])
+    upload_to_testflight
+  end
+end
+
+platform :mac do
+  desc "Push a new macOS build to TestFlight"
+  lane :beta do
+    load_app_store_api_key
+    fetch_certificates
+    build_app(scheme: ENV["APP_SCHEME"])
+    upload_to_testflight
+  end
+end
+
+private_lane :fetch_certificates do
+  if is_ci
+    match(type: "appstore", additional_cert_types: "mac_installer_distribution", readonly: true, git_url: "./certificates")
+  else
+    match(type: "appstore", additional_cert_types: "mac_installer_distribution", readonly: true)
+  end
+end
+
+private_lane :load_app_store_api_key do
+  # the default env variables, * - required
+  # @see: https://sarunw.com/posts/using-app-store-connect-api-with-fastlane-match/
+  # * key_id	The key ID	APP_STORE_CONNECT_API_KEY_KEY_ID
+  # * issuer_id	The issuer ID	APP_STORE_CONNECT_API_KEY_ISSUER_ID
+  # * key_content	The content of the key p8 file	APP_STORE_CONNECT_API_KEY_KEY
+  # key_filepath	The path to the key p8 file	APP_STORE_CONNECT_API_KEY_KEY_FILEPATH
+  # duration	The token session duration	APP_STORE_CONNECT_API_KEY_DURATION
+  # in_house	Is App Store or Enterprise (in house)	APP_STORE_CONNECT_API_KEY_IN_HOUSE
+  app_store_connect_api_key(
+     is_key_content_base64: true,
+     in_house: false # detecting this via App Store Connect private key not currently supported
+   )
+end

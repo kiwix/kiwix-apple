@@ -1,0 +1,7 @@
+#!/usr/bin/env ruby
+# For more information about the Appfile, see:
+#     https://docs.fastlane.tools/advanced/#appfile
+
+team_name "Wikimedia CH"
+team_id "L7HWM3SP3L"
+app_identifier "self.Kiwix" # to be replaced with ENV["APP_BUNDLE_ID"]
