@@ -37,9 +37,9 @@ end
 
 private_lane :fetch_certificates do
   if is_ci
-    match(type: "appstore", additional_cert_types: "mac_installer_distribution", readonly: true, git_url: "./certificates")
+    match(type: "development", additional_cert_types: "mac_installer_distribution", readonly: true, git_url: "./certificates")
   else
-    match(type: "appstore", additional_cert_types: "mac_installer_distribution", readonly: true)
+    match(type: "development", additional_cert_types: "mac_installer_distribution", readonly: true)
   end
 end
 
