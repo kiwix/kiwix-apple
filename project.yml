@@ -98,9 +98,6 @@ targets:
         PRODUCT_BUNDLE_IDENTIFIER: self.Kiwix
         INFOPLIST_KEY_CFBundleDisplayName: Kiwix
         INFOPLIST_FILE: Support/Info.plist
-    configFiles:
-      Debug: Support/kiwix.xcconfig
-      Release: Support/kiwix.xcconfig
     sources:
       - path: Support
         excludes: 

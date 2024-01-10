@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>APP_STORE_ID</key>
-	<string>$(APP_STORE_ID)</string>
+	<string>id997079563</string>
 	<key>BGTaskSchedulerPermittedIdentifiers</key>
 	<array>
 		<string>org.kiwix.library_refresh</string>
