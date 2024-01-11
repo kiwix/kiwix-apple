@@ -16,7 +16,27 @@
 default_platform(:ios)
 
 platform :ios do
-  desc "Push a new iOS build to TestFlight"
+  desc "Build the iOS app"
+  lane :build do
+    load_app_store_api_key
+    fetch_certificates
+    build_app(scheme: ENV["APP_SCHEME"])
+    upload_to_testflight
+  end
+end
+
+platform :mac do
+  desc "Build the macOS app"
+  lane :build do
+    load_app_store_api_key
+    fetch_certificates
+    build_app(scheme: ENV["APP_SCHEME"])
+    upload_to_testflight
+  end
+end
+
+platform :ios do
+  desc "Build and upload the iOS app to testflight"
   lane :beta do
     load_app_store_api_key
     fetch_certificates
@@ -26,7 +46,7 @@ platform :ios do
 end
 
 platform :mac do
-  desc "Push a new macOS build to TestFlight"
+  desc "Build and upload the macOS app"
   lane :beta do
     load_app_store_api_key
     fetch_certificates
