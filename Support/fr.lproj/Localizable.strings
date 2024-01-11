@@ -1,6 +1,7 @@
 // Messages for French (français)
 // Exported from translatewiki.net
 // Author: Crochet.david
+// Author: Gomoko
 // Author: Vikoula5
 // Author: Wladek92
 
@@ -16,6 +17,7 @@
 "common.dialog.button.show_bookmarks" = "Afficher le marque-page";
 "common.dialog.button.bookmark" = "Marque-page";
 "common.button.go_back" = "Retour";
+"common.button.go_forward" = "Avancer";
 "common.button.done" = "Terminé";
 "common.button.cancel" = "Annuler";
 "common.button.yes" = "Oui";
@@ -29,6 +31,9 @@
 "common.tab.list.close" = "Fermer l’onglet";
 "common.tab.menu.library" = "Bibliothèque";
 "common.tab.menu.settings" = "Paramètres";
+"outline_button.outline.title" = "Vue d’ensemble";
+"outline_button.outline.help" = "Afficher la vue d’ensemble de l’article";
+"outline_button.outline.empty.message" = "Aucune vue d’ensemble disponible";
 "bookmark_button.show.help" = "Afficher les signets. Appuyez longuement pour ajouter ou supprimer l'article actuel dans vos favoris.";
 "article_shortcut.main.button.title" = "Article principal";
 "article_shortcut.main.button.help" = "Afficher l'article principal";
@@ -40,8 +45,11 @@
 "bookmark_context_menu.remove.title" = "Supprimer";
 "external_link_handler.alert.title" = "Lien externe";
 "external_link_handler.alert.button.load.link" = "Charger le lien";
+"external_link_handler.alert.ask.description" = "Un lien externe est tapé, voulez-vous charger le lien ?";
+"external_link_handler.alert.not_loading.description" = "Un lien externe est tapé. Toutefois, votre paramétrage actuel ne permet pas de le charger.";
 "file_import.alert.no_open.title" = "Impossible d’ouvrir le fichier !";
 "file_import.alert.no_open.message" = "%@ ne peut pas être ouvert.";
+"article_cell.no_snippet.label" = "Aucun extrait";
 "attribute.detail.unknown" = "Inconnu";
 "download_task_cell.status.failed" = "Échec";
 "download_task_cell.status.downloading" = "Téléchargement...";
@@ -77,6 +85,7 @@
 "zim_file.list.info.text" = "Info";
 "zim_file.action.locate.title" = "Localiser";
 "zim_file.action.open_main_page.title" = "Ouvrir la page principale";
+"zim_file.action.reveal_in_finder.title" = "Révéler dans le Finder";
 "zim_file.action.toggle_cellular" = "Télécharger en utilisant le téléphone cellulaire";
 "zim_file.action.unlink.title" = "Délier";
 "zim_file.action.unlink.message" = "Tous les articles mis en signet liés à ce fichier zim seront supprimés, mais le fichier d'origine restera en place.";
@@ -85,6 +94,7 @@
 "zim_file.action.delete.message" = "Le fichier zim et tous les articles mis en favoris liés à ce fichier zim seront supprimés.";
 "zim_file.action.delete.button.title" = "Supprimer";
 "zim_file.action.download.title" = "Télécharger";
+"zim_file.action.download.warning.title" = "Avertissement d’espace";
 "zim_file.action.download.warning.message" = "Il n'y a peut-être pas assez d'espace sur votre appareil pour ce fichier zim.";
 "zim_file.action.download.warning.message1" = "Il resterait moins de 1 Go d’espace après le téléchargement du fichier zim.";
 "zim_file.action.download.button.anyway" = "Télécharger quand même";
@@ -95,8 +105,10 @@
 "zim_file.bool_info.pictures" = "Images";
 "zim_file.bool_info.videos" = "Vidéos";
 "zim_file.bool_info.details" = "Détails";
+"zim_file.bool_info.require_service_workers" = "Nécessite des travailleurs pour le service";
 "zim_file.counts.article_count" = "Nombre d’articles";
 "zim_file.counts.article.media_count" = "Nombre de médias";
+"zim_file.detail.id.title" = "ID";
 "zim_file.download_task.action.title.cancel" = "Annuler";
 "zim_file.download_task.action.try_recover" = "Essayez de récupérer";
 "zim_file.download_task.action.failed" = "Échec";
@@ -104,10 +116,13 @@
 "zim_file.download_task.action.downloading" = "Téléchargement...";
 "zim_file.download_task.action.resume" = "Reprendre";
 "zim_file.download_task.action.paused" = "Pause";
+"service_worker_warning.label.description" = "Les fichiers Zim nécessitant des travailleurs de service ne sont pas supportés.";
 "zim_file.preview.file.description" = "Une très longue description";
 "zim_file.preview.file.name" = "Nom du fichier Wikipédia Zim";
+"reading_settings.zoom.title" = "Zoom de la page";
 "reading_settings.zoom.reset.button" = "Réinitialiser";
 "reading_settings.external_link.title" = "Lien externe";
+"reading_settings.search_snippet.title" = "Rechercher l’extrait";
 "reading_settings.tab.reading" = "Lecture";
 "library_settings.catalog.title" = "Catalogue";
 "library_settings.button.refresh_now" = "Rafraîchir maintenant";
@@ -117,31 +132,44 @@
 "library_settings.languages.title" = "Langues";
 "library_settings.tab.library.title" = "Bibliothèque";
 "settings.navigation.title" = "Paramètres";
+"library_settings.toggle.cellular" = "Télécharger en utilisant un téléphone cellulaire";
 "library_settings.new-download-task-description" = "Le changement ne s'appliquera qu'aux nouvelles tâches de téléchargement.";
 "catalog_settings.last_refresh.text" = "Dernière actualisation";
+"catalog_settings.refreshing.text" = "Rafraîchissement…";
 "catalog_settings.refresh_now.button" = "Actualiser maintenant";
 "catalog_settings.auto_refresh.toggle" = "Actualisation automatique";
 "catalog_settings.header.text" = "Catalogue";
 "catalog_settings.footer.text" = "Lorsqu'il est activé, le catalogue de la bibliothèque sera actualisé automatiquement lorsqu'il sera obsolète.";
 "backup_settings.toggle.title" = "Inclure les fichiers zim dans la sauvegarde";
 "backup_settings.header.text" = "Sauvegarde";
+"backup_settings.footer.text" = "Ne pas appliquer les fichiers ouverts sur place.";
+"settings.miscellaneous.title" = "Divers";
 "settings.miscellaneous.button.feedback" = "Commentaire";
 "settings.miscellaneous.button.rate_app" = "Évaluer l’application";
 "settings.miscellaneous.navigation.about" = "À propos";
 "settings.selected_language.title" = "Langues";
 "language_selector.name.title" = "Nom";
 "language_selector.count.table.title" = "Nombre";
+"language_selector.no_language.title" = "Pas de langue";
+"language_selector.showing.header" = "Affichage";
+"language_selector.hiding.header" = "Masquage";
 "language_selector.navitation.title" = "Langue";
 "language_selector.toolbar.sorting" = "Tri";
 "settings.about.title" = "À propos";
+"settings.about.release" = "Publication";
 "settings.about.dependencies" = "Dépendances";
 "settings.about.dependencies.name" = "Nom";
 "settings.about.dependencies.license" = "Licence";
 "settings.about.dependencies.version" = "Version";
+"settings.about.description" = "Kiwix est un lecteur hors ligne pour du contenu en ligne tel que Wikipédia, le projet Gutenberg, ou les discussions TED. Cela rend la connaissance disponible aux gens sans accès internet, ou un accès limité. Le logiciel aussi bien que le contenu est libre d’utilisation pour quiconque.";
+"settings.about.license-description" = "Cette application est mise à disposition sous les conditions de la Licence Publique Générale GNU version 3.";
 "settings.about.appverion.title" = "Version";
 "settings.about.build.title" = "Construire";
+"settings.about.our_website.button" = "Notre site web";
 "settings.about.source.title" = "Source";
 "settings.about.button.license" = "Licence publique générale GNU v3";
+"bookmark.navigation.title" = "Signets";
+"bookmark.overlay.empty.title" = "Aucun signet";
 "bookmark.toolbar.show_sidebar.label" = "Afficher la barre latérale";
 "browser_tab.toolbar.show_sidebar.label" = "Afficher la barre latérale";
 "app.navigation.title" = "Kiwix";
@@ -157,8 +185,11 @@
 "search_result.filter_hearder.text" = "Inclus dans la recherche";
 "search_result.filter_hearder.button.none" = "Aucun";
 "search_result.filter_hearder.button.all" = "Tous";
+"welcome.main_page.title" = "Page principale";
+"welcome.grid.bookmarks.title" = "Signets";
 "welcome.actions.open_file" = "Ouvrir le fichier";
 "welcome.button.status.fetching.text" = "Récupération…";
+"welcome.button.status.fetch_catalog.text" = "Récupérer le catalogue";
 "commands.button.actual_size" = "Taille actuelle";
 "comments.button.zoom_in" = "Zoom avant";
 "comments.button.zoom_out" = "Zoom arrière";
@@ -169,6 +200,7 @@
 "sidebar_view.navigation.button.close" = "Fermer";
 "sidebar_view.navigation.button.close_all" = "Fermer tous les onglets";
 "enum.category.wikipedia" = "Wikipédia";
+"enum.category.wikibooks" = "Wikibooks";
 "enum.category.wikinews" = "Wikinews";
 "enum.category.wikiquote" = "Wikiquote";
 "enum.category.wikisource" = "Wikisource";
@@ -177,3 +209,29 @@
 "enum.category.wiktionary" = "Wiktionnaire";
 "enum.category.vikidia" = "Vikidia";
 "enum.category.other" = "Autre";
+"enum.external_link_loading_policy.always_ask" = "Toujours demander";
+"enum.external_link_loading_policy.always_load" = "Toujours charger";
+"enum.external_link_loading_policy.never_load" = "Ne jamais charger";
+"enum.flavor.max" = "max";
+"enum.flavor.no_pic" = "aucune image";
+"enum.flavor.mini" = "mini";
+"enum.library_language_sorting_model.a-z" = "A-Z";
+"enum.library_language_sorting_model.by_count" = "Par nombre";
+"enum.libray_tab_item.opened" = "Ouvert";
+"enum.libray_tab_item.categories" = "Catégories";
+"enum.libray_tab_item.downloads" = "Téléchargements";
+"enum.libray_tab_item.new" = "Nouveau";
+"enum.navigation_item.loading" = "Chargement";
+"enum.navigation_item.reading" = "Lecture";
+"enum.navigation_item.bookmarks" = "Signets";
+"enum.navigation_item.map" = "Carte";
+"enum.navigation_item.new_tab" = "Nouvel onglet";
+"enum.navigation_item.opened" = "Ouvert";
+"enum.navigation_item.categories" = "Catégories";
+"enum.navigation_item.new" = "Nouveau";
+"enum.navigation_item.downloads" = "Téléchargements";
+"enum.navigation_item.settings" = "Paramètres";
+"enum.search_result_snippet_mode.disabled" = "Désactivé";
+"enum.search_result_snippet_mode.paragraph" = "Premier paragraphe";
+"enum.search_result_snippet_mode.sentence" = "Première phrase";
+"enum.search_result_snippet_mode.matches" = "Correspondances";
