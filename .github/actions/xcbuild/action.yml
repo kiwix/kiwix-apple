@@ -122,4 +122,4 @@ runs:
         XC_DESTINATION: ${{ inputs.xc-destination }}
         EXTRA_XCODEBUILD: ${{ inputs.EXTRA_XCODEBUILD }}
       shell: bash
-      run: python .github/retry-if-retcode.py --sleep 60 --attempts 5 --retcode 65 xcrun xcodebuild ${EXTRA_XCODEBUILD} -workspace $XC_WORKSPACE -scheme $XC_SCHEME -destination "$XC_DESTINATION" -configuration $XC_CONFIG -onlyUsePackageVersionsFromResolvedFile -allowProvisioningUpdates -verbose -archivePath $PWD/Kiwix-$VERSION.xcarchive ${ACTION}
+      run: xcrun xcodebuild ${EXTRA_XCODEBUILD} -workspace $XC_WORKSPACE -scheme $XC_SCHEME -destination "$XC_DESTINATION" -configuration $XC_CONFIG -onlyUsePackageVersionsFromResolvedFile -allowProvisioningUpdates -verbose -archivePath $PWD/Kiwix-$VERSION.xcarchive ${ACTION}
