@@ -16,24 +16,28 @@
 platform :ios do
   desc "Build the iOS app"
   lane :build do
-    update_code_signing_settings(use_automatic_signing: false, path: "Kiwix.xcodeproj")
     load_app_store_api_key
     setup_ci
-    sync_code_signing(type: "appstore", readonly: true, git_url: "./certificates")
-    # match(type: "development", readonly: true)
-
-    build_app(scheme: ENV["APP_SCHEME"], destination: "generic/platform=iOS")
+    get_certificates
+    get_provisioning_profile
+    build_app(scheme: ENV["APP_SCHEME"],
+              destination: "generic/platform=iOS",
+              sdk: 'iphoneos')
   end
 end
 
-# platform :mac do
-#   desc "Build the macOS app"
-#   lane :build do
-#     load_app_store_api_key
-#     # fetch_certificates
-#     build_app(scheme: ENV["APP_SCHEME"])
-#   end
-# end
+platform :mac do
+  desc "Build the macOS app"
+  lane :build do
+    load_app_store_api_key
+    setup_ci
+    get_certificates
+    get_provisioning_profile
+    # fetch_certificates
+    build_app(scheme: ENV["APP_SCHEME"],
+              destination: "generic/platform=macOS")
+  end
+end
 
 # platform :ios do
 #   desc "Build and upload the iOS app to testflight"
