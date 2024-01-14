@@ -19,7 +19,7 @@ inputs:
     default: true
   ROOT:
     required: true
-    default: .
+    default: "."
   DEPLOYMENT_SIGNING_CERTIFICATE:
     required: false
   DEPLOYMENT_SIGNING_CERTIFICATE_P12_PASSWORD:
