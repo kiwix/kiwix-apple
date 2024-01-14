@@ -16,7 +16,7 @@ inputs:
     required: true
   DOWNLOAD_DEPENDENCIES:
     required: false
-    default: true
+    default: 'true'
   DEPLOYMENT_SIGNING_CERTIFICATE:
     required: false
   DEPLOYMENT_SIGNING_CERTIFICATE_P12_PASSWORD:
@@ -99,7 +99,7 @@ runs:
         KEYCHAIN_PASSWORD: ${{ inputs.KEYCHAIN_PASSWORD }}
 
     - name: Download dependencies if needed
-      if: ${{ inputs.DOWNLOAD_DEPENDENCIES }}
+      if: ${{ inputs.DOWNLOAD_DEPENDENCIES == 'true' }}
       shell: bash
       run: brew bundle
 
