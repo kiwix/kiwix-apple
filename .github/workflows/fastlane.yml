@@ -61,6 +61,7 @@ jobs:
           APP_SCHEME: "Kiwix"
           MATCH_PASSWORD: ${{ secrets.APPLE_CERTIFICATES_MATCH_PASSWORD }}
           MATCH_KEYCHAIN_PASSWORD: ${{ secrets.APPLE_CERTIFICATES_MATCH_PASSWORD }}
+          MATCH_GIT_PRIVATE_KEY: ${{ secrets.APPLE_CERTIFICATES_PAT }}
         run:
           |
           bundle exec fastlane ios build 

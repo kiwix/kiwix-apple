@@ -1,7 +1,7 @@
 storage_mode("git")
-git_url("git@github.com:kiwix/apple-certificates.git")
+git_url("https://github.com/kiwix/apple-certificates.git")
 git_branch("master")
-type("development") # The default type, can be: appstore, adhoc, enterprise or development
+type("appstore") # The default type, can be: appstore, adhoc, enterprise or development
 verbose(true)
 app_identifier(["self.Kiwix", "org.kiwix.custom.dwds"])
 # username("user@fastlane.tools") # Your Apple Developer Portal username
