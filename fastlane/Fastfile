@@ -20,6 +20,7 @@ platform :ios do
   lane :build do
     load_app_store_api_key
     match(type: "development", readonly: true, git_url: "./certificates")
+    disable_automatic_code_signing(path: "Kiwix.xcodeproj")
     build_app(scheme: ENV["APP_SCHEME"])
   end
 end
