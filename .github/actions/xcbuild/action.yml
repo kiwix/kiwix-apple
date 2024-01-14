@@ -15,7 +15,7 @@ inputs:
   APPLE_DEVELOPMENT_SIGNING_P12_PASSWORD:
     required: true
   DOWNLOAD_DEPENDENCIES:
-    required: true
+    required: false
     default: true
   DEPLOYMENT_SIGNING_CERTIFICATE:
     required: false
