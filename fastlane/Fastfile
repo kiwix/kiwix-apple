@@ -19,7 +19,7 @@ platform :ios do
   desc "Build the iOS app"
   lane :build do
     load_app_store_api_key
-    match(type: "development", readonly: true)
+    match(type: "development", readonly: true, git_url: "./certificates")
     build_app(scheme: ENV["APP_SCHEME"])
   end
 end
