@@ -19,7 +19,7 @@ platform :ios do
     update_code_signing_settings(use_automatic_signing: false, path: "Kiwix.xcodeproj")
     load_app_store_api_key
     setup_ci
-    # sync_code_signing(type: "appstore", readonly: true) #, git_url: "./certificates")
+    sync_code_signing(type: "appstore", readonly: true) #, git_url: "./certificates")
     # match(type: "development", readonly: true)
 
     build_app(scheme: ENV["APP_SCHEME"], destination: "generic/platform=iOS")
