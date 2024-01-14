@@ -17,9 +17,6 @@ inputs:
   DOWNLOAD_DEPENDENCIES:
     required: true
     default: true
-  ROOT:
-    required: true
-    default: .
   DEPLOYMENT_SIGNING_CERTIFICATE:
     required: false
   DEPLOYMENT_SIGNING_CERTIFICATE_P12_PASSWORD:
@@ -85,7 +82,7 @@ runs:
         security unlock-keychain -p $KEYCHAIN_PASSWORD $KEYCHAIN
 
     - name: Add Apple Development certificate to Keychain
-      uses: ${{ inputs.ROOT }}/.github/actions/install-cert
+      uses: ./.github/actions/install-cert
       with:
         SIGNING_CERTIFICATE: ${{ inputs.APPLE_DEVELOPMENT_SIGNING_CERTIFICATE }}
         SIGNING_CERTIFICATE_P12_PASSWORD: ${{ inputs.APPLE_DEVELOPMENT_SIGNING_P12_PASSWORD }}
@@ -94,7 +91,7 @@ runs:
 
     - name: Add Distribution certificate to Keychain
       if: ${{ inputs.DEPLOYMENT_SIGNING_CERTIFICATE }}
-      uses: ${{ inputs.ROOT }}/.github/actions/install-cert
+      uses: ./.github/actions/install-cert
       with:
         SIGNING_CERTIFICATE: ${{ inputs.DEPLOYMENT_SIGNING_CERTIFICATE }}
         SIGNING_CERTIFICATE_P12_PASSWORD: ${{ inputs.DEPLOYMENT_SIGNING_CERTIFICATE_P12_PASSWORD }}
