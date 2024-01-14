@@ -13,17 +13,15 @@
 # Uncomment the line if you want fastlane to automatically update itself
 # update_fastlane
 
-default_platform(:ios)
-
 platform :ios do
   desc "Build the iOS app"
   lane :build do
-    disable_automatic_code_signing(path: "Kiwix.xcodeproj")
+    update_code_signing_settings(use_automatic_signing: false, path: "Kiwix.xcodeproj")
     load_app_store_api_key
     setup_ci
     # sync_code_signing(type: "appstore", readonly: true, git_url: "./certificates")
     # match(type: "development", readonly: true, git_url: "./certificates")
-    build_app(scheme: ENV["APP_SCHEME"], )
+    build_ios_app(scheme: ENV["APP_SCHEME"])
   end
 end
 
