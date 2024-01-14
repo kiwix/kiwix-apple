@@ -114,7 +114,6 @@ runs:
       shell: bash
       run: xcrun xcodebuild -workspace $XC_WORKSPACE -scheme $XC_SCHEME -showBuildSettings
 
-    # build is launched up to twice as it's common the build fails, looking for CoreKiwix module
     - name: Build with Xcode
       env:
         FRAMEWORK_SEARCH_PATHS: ${{ env.PWD }}
