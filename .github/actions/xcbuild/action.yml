@@ -14,6 +14,9 @@ inputs:
     required: true
   APPLE_DEVELOPMENT_SIGNING_P12_PASSWORD:
     required: true
+  DOWNLOAD_DEPENDENCIES:
+    required: true
+    default: true
   DEPLOYMENT_SIGNING_CERTIFICATE:
     required: false
   DEPLOYMENT_SIGNING_CERTIFICATE_P12_PASSWORD:
@@ -95,7 +98,8 @@ runs:
         KEYCHAIN: ${{ inputs.KEYCHAIN }}
         KEYCHAIN_PASSWORD: ${{ inputs.KEYCHAIN_PASSWORD }}
 
-    - name: Download dependencies
+    - name: Download dependencies if needed
+      if: ${{ inputs.DOWNLOAD_DEPENDENCIES }}
       shell: bash
       run: brew bundle
 
