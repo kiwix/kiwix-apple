@@ -70,26 +70,25 @@
 "library_refresh_time.last" = "Just Now";
 "library_refresh_time.never" = "Never";
 
-"message.preview.nothing" = "There is nothing to see";
-"zim_file_cell_article_count_suffix" = "articles";
+"zim_file_cell_article_count_suffix" = "Part of the ZIM file description, when we list ZIM files (as card results), eg: '246K articles', the word articles is added after the number";
 
-"zim_file_missing_indicator.help" = "Zim file is missing.";
+"zim_file_missing_indicator.help" = "Accessibility label for a warning (!) icon";
 
-"library.zim_file_details.side_panel.message" = "Select a zim file to see detail";
-"library.zim_file_context.main_page.label" = "Main Page";
-"library.zim_file_context.random.label" = "Random Page";
-"library.zim_file_context.copy_url" = "Copy URL";
-"library.zim_file_context.copy_id" = "Copy ID";
+"library.zim_file_details.side_panel.message" = "Default placeholder text for side panel on macOS, when no file is selected.";
+"library.zim_file_context.main_page.label" = "Supplementary action title, when long pressing on a ZIM file";
+"library.zim_file_context.random.label" = "Supplementary action title, when long pressing on a ZIM file";
+"library.zim_file_context.copy_url" = "Suplementary action title, when long pressing a ZIM file.";
+"library.zim_file_context.copy_id" = "Supplementary action title, when long pressing on a ZIM file";
 
-"zim_file_opened.overlay.no-opened.message" = "No opened zim file";
+"zim_file_opened.overlay.no-opened.message" = "Default placeholder text for center panel on macOS, when we have no history of opened files";
 "zim_file_opened.toolbar.show_sidebar.label" = "Show Sidebar";
-"zim_file_opened.toolbar.open.title" = "Open...";
-"zim_file_opened.toolbar.open.help" = "Open a zim file";
-"zim_file_category.title" = "Category";
+"zim_file_opened.toolbar.open.title" = "Accesissiblit label of a (+) icon on iOS, in the top right corner, to open a local file";
+"zim_file_opened.toolbar.open.help" = "Accessibility label of a (+) icon in the macOS app, in the top right corner, to open a local file";
+"zim_file_category.title" = "Accessiblity label for category picker";
 
-"zim_file_category.section.empty.message" = "No zim file under this category.";
-"zim_file_downloads.overlay.empty.message" = "No download tasks";
-"zim_file_downloads.toolbar.show_sidebar.label" = "Show Sidebar";
+"zim_file_category.section.empty.message" = "Fallback text for listing results";
+"zim_file_downloads.overlay.empty.message" = "Fallback text for center panel, when downloads are selected from the side menu.";
+"zim_file_downloads.toolbar.show_sidebar.label" = "Accessibility label for side bar toggle button";
 
 "zim_file_new_overlay.empty" = "No new zim file";
 "zim_file_new_button_refresh" = "Refresh";
@@ -206,7 +205,7 @@
 "search_result.filter_hearder.button.none" = "None";
 "search_result.filter_hearder.button.all" = "All";
 
-"welcome.main_page.title" = "Main Page";
+"welcome.main_page.title" = "Default new browser tab title on iOS. the downloaded ZIM files are listed below this title";
 "welcome.grid.bookmarks.title" = "Bookmarks";
 "welcome.actions.open_file" = "Open File";
 "welcome.button.status.fetching.text" = "Fetching...";
