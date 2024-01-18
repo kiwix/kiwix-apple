@@ -6,3 +6,261 @@
 "file_import.alert.no_open.message" = "%@ is one or more filenames.";
 "enum.category.ted" = "{{Optional}}";
 "enum.category.stackexchange" = "{{Optional}}";
+
+"download_service.complete.title" = "Title of the notification a user receives, once the started download completes";
+
+"common.dialog.button.open" = "After long pressing a link it is the title of one of the options in the overflow menu";
+"common.dialog.button.open_in_new_tab" = "After long pressing a link it is the title of one of the options in the overflow menu";
+"common.dialog.button.add_bookmark" = "After long pressing the bottom tab menu item it is the title of one of the options in the overflow menu";
+"common.dialog.button.remove_bookmark" = "After long pressing a link or the bottom tab menu item it is the title of one of the options in the overflow menu";
+"common.dialog.button.show_bookmarks" = "After long pressing the bottom tab menu item it is the title of one of the options in the overflow menu";
+"common.dialog.button.bookmark" = "After long pressing a link or the bottom tab menu item it is the title of one of the options in the overflow menu";
+
+"common.button.go_back" = "Browser navigation buttton title";
+"common.button.go_forward" = "Browser navigation buttton title";
+"common.button.done" = "The default button label for overflow menus, in order to close them";
+"common.button.cancel" = "Button label for both the search bar, to dismiss search results, and also a dismiss button label on an alert about opening external links";
+"common.button.yes" = "It is a title in the summary table on macOS: we list the attributes of a ZIM file: does it contain pictures yes/no, does it contain Videos yes/no, Details? yes/no";
+"common.button.no" = "It is a title in the summary table on macOS: we list the attributes of a ZIM file: does it contain pictures yes/no, does it contain Videos yes/no, Details? yes/no";
+"common.search" = "The default placeholder text for searchbars, when the search input field is empty";
+
+"common.tab.manager.title" = "Accessibility label for button tab bar button that opens an overlay menu.";
+"common.tab.navigation.title" = "On iPad it is a title in the sidemenu grouping tabs related buttons";
+"common.tab.menu.new_tab" = "Button title of an item in the overflow menu on iOS, the default title for a new tab (that has no content loaded yet) on iPad";
+"common.tab.menu.close_this" = "Button title of an item in the overflow menu on iOS";
+"common.tab.menu.close_all" = "Button title of an item in the overflow menu on iOS";
+"common.tab.list.close" = "Accessibility label for button to close the current tab";
+"common.tab.menu.library" = "On iPad it is a sidemenu title grouping library/ZIM file related buttons. Library: Opened | Categories | Downloads | New";
+"common.tab.menu.settings" = "On iPad it is a sidemenu title leading to application settings page";
+
+"outline_button.outline.title" = "Button label on macOS for topbar browser button";
+"outline_button.outline.help" = "Accessibility label on macOS for topbar browser button";
+"outline_button.outline.empty.message" = "Title within an overlay menu, when there's no outline available for the current article loaded";
+
+"bookmark_button.show.help" = "Accessibility label of the tab bar button on iOS for bookmarks behaviour.";
+
+"article_shortcut.main.button.title" = "Fallback button title leading to the Main Article of the ZIM File";
+"article_shortcut.main.button.help" = "Accessibility label for button";
+"article_shortcut.random.button.title.mac" = "Fallback button title on the topbar navigation";
+"article_shortcut.random.button.title.ios" = "Fallback button title on the topbar navigation";
+"article_shortcut.random.button.help" = "Accessibility label for button";
+
+"alert_handler.alert.failed.title" = "Title of a pop-up alert";
+
+"bookmark_context_menu.view.title" = "Overflow menu option, when long pressing a bookmark item";
+"bookmark_context_menu.remove.title" = "Overflow menu option, when long pressing a bookmark item";
+
+"external_link_handler.alert.title" = "Title for pop-up alert about opening an External Link";
+"external_link_handler.alert.button.load.link" = "Button option for alert if an external link should be opened";
+"external_link_handler.alert.ask.description" = "Description for an external link alert.";
+"external_link_handler.alert.not_loading.description" = "Alternative description for external link alert.";
+"file_import.alert.no_open.title" = "Alert title when user fails to open a local file";
+
+"article_cell.no_snippet.label" = "Search result cells contain the title and a snippet of each found article, if there's no spippet for a given search result this is the fallback text used.";
+"attribute.detail.unknown" = "We list the attributes of each ZIM file: pictures yes/no, etc. If the attribute name is missing eg. 'pictures', this is the fallback text used";
+
+"download_task_cell.status.failed" = "The title reporting the status of the current ZIM file download";
+"download_task_cell.status.downloading" = "The title reporting the status of the current ZIM file download";
+"download_task_cell.status.paused" = "The title reporting the status of the current ZIM file download";
+
+"flavor_tag.help.max" = "Accessibility label for ZIM file results, explaining the different flavours of the same ZIM file (mini|max|nopic)";
+"flavor_tag.help.no_pic" = "Accessibility label for ZIM file results, explaining the different flavours of the same ZIM file (mini|max|nopic)";
+"flavor_tag.help.mini" = "Accessibility label for ZIM file results, explaining the different flavours of the same ZIM file (mini|max|nopic)";
+
+"grid_section.preview.title" = "Header Text";
+"grid_section.preview.content" = "Content";
+"library_refresh_time.last" = "Just Now";
+"library_refresh_time.never" = "Never";
+
+"message.preview.nothing" = "There is nothing to see";
+"zim_file_cell_article_count_suffix" = "articles";
+
+"zim_file_missing_indicator.help" = "Zim file is missing.";
+
+"library.zim_file_details.side_panel.message" = "Select a zim file to see detail";
+"library.zim_file_context.main_page.label" = "Main Page";
+"library.zim_file_context.random.label" = "Random Page";
+"library.zim_file_context.copy_url" = "Copy URL";
+"library.zim_file_context.copy_id" = "Copy ID";
+
+"zim_file_opened.overlay.no-opened.message" = "No opened zim file";
+"zim_file_opened.toolbar.show_sidebar.label" = "Show Sidebar";
+"zim_file_opened.toolbar.open.title" = "Open...";
+"zim_file_opened.toolbar.open.help" = "Open a zim file";
+"zim_file_category.title" = "Category";
+
+"zim_file_category.section.empty.message" = "No zim file under this category.";
+"zim_file_downloads.overlay.empty.message" = "No download tasks";
+"zim_file_downloads.toolbar.show_sidebar.label" = "Show Sidebar";
+
+"zim_file_new_overlay.empty" = "No new zim file";
+"zim_file_new_button_refresh" = "Refresh";
+
+"zim_file.list.name.text" = "Name";
+"zim_file.list.description.text" = "Description";
+"zim_file.list.actions.text" = "Actions";
+"zim_file.list.info.text" = "Info";
+"zim_file.action.locate.title" = "Locate";
+"zim_file.action.open_main_page.title" = "Open Main Page";
+"zim_file.action.reveal_in_finder.title" = "Reveal in Finder";
+"zim_file.action.toggle_cellular" = "Download using cellular";
+"zim_file.action.unlink.title" = "Unlink";
+"zim_file.action.unlink.message" = "All bookmarked articles linked to this zim file will be deleted, but the original file will remain in place.";
+"zim_file.action.unlink.button.title" = "Unlink";
+"zim_file.action.delete.title" = "Delete";
+"zim_file.action.delete.message" = "The zim file and all bookmarked articles linked to this zim file will be deleted.";
+"zim_file.action.delete.button.title" = "Delete";
+"zim_file.action.download.title" = "Download";
+"zim_file.action.download.warning.title" = "Space Warning";
+"zim_file.action.download.warning.message" = "There might not be enough space on your device for this zim file.";
+"zim_file.action.download.warning.message1" = "There would be less than 1GB space left after the zim file is downloaded.";
+"zim_file.action.download.button.anyway" = "Download Anyway";
+"zim_file.base_info.attribute.language" = "Language";
+"zim_file.base_info.attribute.category" = "Category";
+"zim_file.base_info.attribute.size" = "Size";
+"zim_file.base_info.attribute.created" = "Created";
+"zim_file.bool_info.pictures" = "Pictures";
+"zim_file.bool_info.videos"  = "Videos";
+"zim_file.bool_info.details" = "Details";
+"zim_file.bool_info.require_service_workers" = "Requires Service Workers";
+"zim_file.counts.article_count" = "Article Count";
+"zim_file.counts.article.media_count" = "Media Count";
+"zim_file.detail.id.title" = "ID";
+"zim_file.download_task.action.title.cancel" = "Cancel";
+"zim_file.download_task.action.try_recover" = "Try to Recover";
+"zim_file.download_task.action.failed" = "Failed";
+"zim_file.download_task.action.pause" = "Pause";
+"zim_file.download_task.action.downloading" = "Downloading...";
+"zim_file.download_task.action.resume" = "Resume";
+"zim_file.download_task.action.paused" = "Paused";
+"service_worker_warning.label.description" = "Zim files requiring service workers are not supported.";
+"zim_file.preview.file.description" = "A very long description";
+"zim_file.preview.file.name" = "Wikipedia Zim File Name";
+
+"reading_settings.zoom.title" = "Page zoom";
+"reading_settings.zoom.reset.button" = "Reset";
+"reading_settings.external_link.title" = "External Link";
+"reading_settings.search_snippet.title" = "Search snippet";
+"reading_settings.tab.reading" = "Reading";
+"library_settings.catalog.title" = "Catalog";
+"library_settings.button.refresh_now" = "Refresh Now";
+"library_settings.last_refresh.text" = "Last refresh";
+"library_settings.auto_refresh.toggle" = "Auto refresh";
+"library_settings.catalog_warning.text" = "When enabled, the library catalog will be refreshed automatically when outdated.";
+"library_settings.languages.title" = "Languages";
+"library_settings.tab.library.title" = "Library";
+"settings.navigation.title" = "Settings";
+"library_settings.toggle.cellular" = "Download using cellular";
+"library_settings.new-download-task-description" = "Change will only apply to new download tasks.";
+"catalog_settings.last_refresh.text" = "Last refresh";
+"catalog_settings.refreshing.text" = "Refreshing...";
+"catalog_settings.refresh_now.button" = "Refresh Now";
+"catalog_settings.auto_refresh.toggle" = "Auto refresh";
+"catalog_settings.header.text" = "Catalog";
+"catalog_settings.footer.text" = "When enabled, the library catalog will be refreshed automatically when outdated.";
+"backup_settings.toggle.title" = "Include zim files in backup";
+"backup_settings.header.text" = "Backup";
+"backup_settings.footer.text" = "Does not apply to files opened in place.";
+"settings.miscellaneous.title" = "Misc";
+"settings.miscellaneous.button.feedback" = "Feedback";
+"settings.miscellaneous.button.rate_app" = "Rate the App";
+"settings.miscellaneous.navigation.about" = "About";
+"settings.selected_language.title" = "Languages";
+"language_selector.name.title" = "Name";
+"language_selector.count.table.title" = "Count";
+"language_selector.no_language.title" = "No language";
+"language_selector.showing.header" = "Showing";
+"language_selector.hiding.header" = "Hiding";
+"language_selector.navitation.title" = "Language";
+"language_selector.toolbar.sorting" = "Sorting";
+
+"settings.about.title" = "About";
+"settings.about.release" = "Release";
+"settings.about.dependencies" = "Dependencies";
+"settings.about.dependencies.name" = "Name";
+"settings.about.dependencies.license" = "License";
+"settings.about.dependencies.version" = "Version";
+"settings.about.description" = "Kiwix is an offline reader for online content like Wikipedia, Project Gutenberg, or TED Talks. It makes knowledge available to people with no or limited internet access. The software as well as the content is free to use for anyone.";
+"settings.about.license-description" = "This app is released under the terms of the GNU General Public License version 3.";
+"settings.about.appverion.title" = "Version";
+"settings.about.build.title" = "Build";
+"settings.about.our_website.button" = "Our Website";
+"settings.about.source.title" = "Source";
+"settings.about.button.license" = "GNU General Public License v3";
+
+"bookmark.navigation.title" = "Bookmarks";
+"bookmark.overlay.empty.title" = "No bookmarks";
+"bookmark.toolbar.show_sidebar.label" = "Show Sidebar";
+
+"browser_tab.toolbar.show_sidebar.label" = "Show Sidebar";
+"app.navigation.title" = "Kiwix";
+
+"search_result.zimfile.empty.message" = "No opened zim file";
+"search_result.zimfile.no_result.message" = "No result";
+"search_result.sidebar.button.remove" = "Remove";
+"search_result.header.text" = "Recent Search";
+"search_result.button.clear" = "Clear";
+"search_result.clear_dialog.title" = "Clear Recent Searches";
+"search_result.clear_dialog.button.all" = "Clear All";
+"search_result.clear_dialog.dialog-description" = "All recent search history will be removed.";
+"search_result.clear_dialog.description" = "All recent search history will be removed.";
+"search_result.filter_hearder.text" = "Included in Search";
+"search_result.filter_hearder.button.none" = "None";
+"search_result.filter_hearder.button.all" = "All";
+
+"welcome.main_page.title" = "Main Page";
+"welcome.grid.bookmarks.title" = "Bookmarks";
+"welcome.actions.open_file" = "Open File";
+"welcome.button.status.fetching.text" = "Fetching...";
+"welcome.button.status.fetch_catalog.text" = "Fetch Catalog";
+
+"commands.button.actual_size" = "Actual Size";
+"comments.button.zoom_in" = "Zoom In";
+"comments.button.zoom_out" = "Zoom Out";
+
+"app_macos_commands.open_file" = "Open...";
+"app_macos_commands.new" = "New Tab";
+"app_macos_navigation.button.library" = "Library";
+"app_macos_navigation.show_sidebar" = "Show Sidebar";
+
+"sidebar_view.navigation.button.close" = "Close This Tab";
+"sidebar_view.navigation.button.close_all" = "Close All Tabs";
+"sidebar_view.navigation.button.close" = "Close";
+
+"enum.category.wikipedia" = "Wikipedia";
+"enum.category.wikibooks" = "Wikibooks";
+"enum.category.wikinews" = "Wikinews";
+"enum.category.wikiquote" = "Wikiquote";
+"enum.category.wikisource" = "Wikisource";
+"enum.category.wikiversity" = "Wikiversity";
+"enum.category.wikivoyage" = "Wikivoyage";
+"enum.category.wiktionary" = "Wiktionary";
+"enum.category.vikidia" = "Vikidia";
+"enum.category.other" = "Other";
+"enum.external_link_loading_policy.always_ask" = "Always Ask";
+"enum.external_link_loading_policy.always_load" = "Always Load";
+"enum.external_link_loading_policy.never_load" = "Never Load";
+"enum.flavor.max" = "max";
+"enum.flavor.no_pic" = "no pic";
+"enum.flavor.mini" = "mini";
+"enum.library_language_sorting_model.a-z" = "A-Z";
+"enum.library_language_sorting_model.by_count" = "By Count";
+"enum.libray_tab_item.opened" = "Opened";
+"enum.libray_tab_item.categories" = "Categories";
+"enum.libray_tab_item.downloads" = "Downloads";
+"enum.libray_tab_item.new" = "New";
+
+"enum.navigation_item.loading" = "Loading";
+"enum.navigation_item.reading" = "Reading";
+"enum.navigation_item.bookmarks" = "Bookmarks";
+"enum.navigation_item.map" = "Map";
+"enum.navigation_item.new_tab" = "New Tab";
+"enum.navigation_item.opened" = "Opened";
+"enum.navigation_item.categories" = "Categories";
+"enum.navigation_item.new" = "New";
+"enum.navigation_item.downloads" = "Downloads";
+"enum.navigation_item.settings" = "Settings";
+"enum.search_result_snippet_mode.disabled" = "Disabled";
+"enum.search_result_snippet_mode.paragraph" = "First Paragraph";
+"enum.search_result_snippet_mode.sentence" = "First Sentence";
+"enum.search_result_snippet_mode.matches" = "Matches";
