@@ -54,8 +54,6 @@
 "flavor_tag.help.max" = "video/ses gibi büyük medya dosyaları dışındaki her şey";
 "flavor_tag.help.no_pic" = "resimlerin çoğu kaldırıldı";
 "flavor_tag.help.mini" = "metnin yalnızca bir alt kümesi mevcut, muhtemelen ilk bölüm";
-"grid_section.preview.title" = "Başlık Metni";
-"grid_section.preview.content" = "İçerik";
 "library_refresh_time.last" = "Şu anda";
 "library_refresh_time.never" = "Asla";
 "message.preview.nothing" = "Görülecek bir şey yok";

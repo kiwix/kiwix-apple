@@ -58,8 +58,6 @@
 "flavor_tag.help.max" = "alles außer große Mediendateien wie Video/Audio";
 "flavor_tag.help.no_pic" = "Die meisten Bilder wurden entfernt";
 "flavor_tag.help.mini" = "Es ist nur ein Teil des Textes verfügbar, wahrscheinlich der erste Abschnitt";
-"grid_section.preview.title" = "Überschrift";
-"grid_section.preview.content" = "Inhalt";
 "library_refresh_time.last" = "Soeben";
 "library_refresh_time.never" = "Niemals";
 "message.preview.nothing" = "Hier ist nichts.";

@@ -57,8 +57,6 @@
 "flavor_tag.help.max" = "tout sauf les gros fichiers multimédias comme la vidéo/audio";
 "flavor_tag.help.no_pic" = "la plupart des photos ont été supprimées";
 "flavor_tag.help.mini" = "seul un sous-ensemble du texte est disponible, probablement la première section";
-"grid_section.preview.title" = "Texte de l’en-tête";
-"grid_section.preview.content" = "Contenu";
 "library_refresh_time.last" = "à l’instant";
 "library_refresh_time.never" = "Jamais";
 "message.preview.nothing" = "Il n'y a rien à voir";

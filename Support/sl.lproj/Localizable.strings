@@ -54,8 +54,6 @@
 "flavor_tag.help.max" = "vse, razen velikih predstavnostnih datotek, kot je video/avdio";
 "flavor_tag.help.no_pic" = "večina slik je bila odstranjena";
 "flavor_tag.help.mini" = "na voljo je samo del besedila, verjetno prvi razdelek";
-"grid_section.preview.title" = "Besedilo glave";
-"grid_section.preview.content" = "Vsebina";
 "library_refresh_time.last" = "Pravkar";
 "library_refresh_time.never" = "Nikoli";
 "message.preview.nothing" = "Tu ni ničesar.";

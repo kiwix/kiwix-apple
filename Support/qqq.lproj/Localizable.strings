@@ -67,8 +67,6 @@
 "flavor_tag.help.no_pic" = "Accessibility label for ZIM file results, explaining the different flavours of the same ZIM file (mini|max|nopic)";
 "flavor_tag.help.mini" = "Accessibility label for ZIM file results, explaining the different flavours of the same ZIM file (mini|max|nopic)";
 
-"grid_section.preview.title" = "Header Text";
-"grid_section.preview.content" = "Content";
 "library_refresh_time.last" = "Just Now";
 "library_refresh_time.never" = "Never";
 

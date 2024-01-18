@@ -50,8 +50,6 @@
 "download_task_cell.status.paused" = "Pausad";
 "flavor_tag.help.max" = "förutom stora mediafiler som video/ljud";
 "flavor_tag.help.no_pic" = "de flesta bilderna har tagits bort";
-"grid_section.preview.title" = "Rubriktext";
-"grid_section.preview.content" = "Innehåll";
 "library_refresh_time.last" = "Precis nu";
 "library_refresh_time.never" = "Aldrig";
 "message.preview.nothing" = "Det finns inget att se";

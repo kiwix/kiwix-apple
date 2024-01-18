@@ -54,8 +54,6 @@
 "flavor_tag.help.max" = "הכול חוץ מקובצי מדיה גדולים כמו וידאו/אודיו";
 "flavor_tag.help.no_pic" = "רוב התמונות הוסרו";
 "flavor_tag.help.mini" = "רק חלק מהטקסט זמין, כנראה הפרק הראשון";
-"grid_section.preview.title" = "טקסט כותרת";
-"grid_section.preview.content" = "תוכן";
 "library_refresh_time.last" = "זה עתה";
 "library_refresh_time.never" = "מעולם לא";
 "message.preview.nothing" = "אין מה לראות";

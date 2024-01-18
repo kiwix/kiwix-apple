@@ -75,8 +75,6 @@
 "flavor_tag.help.no_pic" = "most pictures have been removed";
 "flavor_tag.help.mini" = "only a subset of the text is available, probably the first section";
 
-"grid_section.preview.title" = "Header Text";
-"grid_section.preview.content" = "Content";
 "library_refresh_time.last" = "Just Now";
 "library_refresh_time.never" = "Never";
 

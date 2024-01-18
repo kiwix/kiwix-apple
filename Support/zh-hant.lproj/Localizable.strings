@@ -54,8 +54,6 @@
 "flavor_tag.help.max" = "除了影片/音訊等大型多媒體檔案之外的所有內容";
 "flavor_tag.help.no_pic" = "大多數圖片已被移除";
 "flavor_tag.help.mini" = "僅有文字的子集合可用，有可能是第一段落";
-"grid_section.preview.title" = "標題文字";
-"grid_section.preview.content" = "內容";
 "library_refresh_time.last" = "現在";
 "library_refresh_time.never" = "永不";
 "message.preview.nothing" = "沒什麼需要查看";

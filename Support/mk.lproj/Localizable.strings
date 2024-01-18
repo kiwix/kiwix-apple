@@ -54,8 +54,6 @@
 "flavor_tag.help.max" = "сè освен големи медиумски податотеки како видео/звучни";
 "flavor_tag.help.no_pic" = "највеќето слики се отстранети";
 "flavor_tag.help.mini" = "достапен е само дел од текстот, веројатно првиот";
-"grid_section.preview.title" = "Текст на заглавието";
-"grid_section.preview.content" = "Содржина";
 "library_refresh_time.last" = "Штотуку";
 "library_refresh_time.never" = "Никогаш";
 "message.preview.nothing" = "Нема што да се види";

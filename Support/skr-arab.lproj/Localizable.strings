@@ -29,8 +29,6 @@
 "attribute.detail.unknown" = "نامعلوم";
 "download_task_cell.status.failed" = "ناکام تھیا";
 "download_task_cell.status.paused" = "جمب ڳیا";
-"grid_section.preview.title" = "ہیڈر عبارت";
-"grid_section.preview.content" = "شامل حصے";
 "library_refresh_time.last" = "ہُݨے ہُݨے";
 "library_refresh_time.never" = "کݙاہیں وی کائناں";
 "zim_file_cell_article_count_suffix" = "مضمون";
