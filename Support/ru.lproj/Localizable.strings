@@ -1,6 +1,7 @@
 // Messages for Russian (русский)
 // Exported from translatewiki.net
 // Author: Kareyac
+// Author: Pacha Tchernof
 
 "common.dialog.button.open" = "Открыть";
 "common.dialog.button.add_bookmark" = "Добавить закладку";
@@ -93,7 +94,7 @@
 "enum.external_link_loading_policy.always_load" = "Всегда загружать";
 "enum.flavor.max" = "макс.";
 "enum.libray_tab_item.categories" = "Категории";
-"enum.navigation_item.loading" = "Загрузка";
+"enum.navigation_item.loading" = "Загружается";
 "enum.navigation_item.map" = "Карта";
 "enum.navigation_item.categories" = "Категории";
 "enum.navigation_item.settings" = "Настройки";

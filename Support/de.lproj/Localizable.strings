@@ -2,13 +2,13 @@
 // Exported from translatewiki.net
 // Author: Amire80
 // Author: Brettchenweber
+// Author: Caro
 // Author: Gremid
 
 "library_refresh_error.retrieve.description" = "Fehler beim Abrufen von Bibliotheksdaten.";
 "library_refresh_error.parse.description" = "Fehler beim Lesen von Bibliotheksdaten.";
 "library_refresh_error.process.description" = "Fehler beim Verarbeiten von Bibliotheksdaten.";
 "download_service.complete.title" = "Download abgeschlossen";
-// Fuzzy
 "download_service.complete.description" = "%@ wurde erfolgreich heruntergeladen.";
 "common.dialog.button.open" = "Öffnen";
 "common.dialog.button.open_in_new_tab" = "In neuem Tab öffnen";
@@ -48,7 +48,6 @@
 "external_link_handler.alert.ask.description" = "Ein externer Link wurde aktiviert. Möchten Sie den Link öffnen?";
 "external_link_handler.alert.not_loading.description" = "Ein externer Link wird aktiviert. Ihre aktuelle Einstellung lässt jedoch das Öffnen nicht zu.";
 "file_import.alert.no_open.title" = "Kann Datei nicht öffnen";
-// Fuzzy
 "file_import.alert.no_open.message" = "%@ kann nicht geöffnet werden.";
 "article_cell.no_snippet.label" = "Kein Treffer";
 "attribute.detail.unknown" = "Unbekannt";
