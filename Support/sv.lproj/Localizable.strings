@@ -52,7 +52,6 @@
 "flavor_tag.help.no_pic" = "de flesta bilderna har tagits bort";
 "library_refresh_time.last" = "Precis nu";
 "library_refresh_time.never" = "Aldrig";
-"message.preview.nothing" = "Det finns inget att se";
 "zim_file_cell_article_count_suffix" = "artiklar";
 "zim_file_missing_indicator.help" = "Zim-fil saknas.";
 "library.zim_file_details.side_panel.message" = "Välj en zim-fil för att se information";

@@ -56,7 +56,6 @@
 "flavor_tag.help.mini" = "רק חלק מהטקסט זמין, כנראה הפרק הראשון";
 "library_refresh_time.last" = "זה עתה";
 "library_refresh_time.never" = "מעולם לא";
-"message.preview.nothing" = "אין מה לראות";
 "zim_file_cell_article_count_suffix" = "ערכים";
 "zim_file_missing_indicator.help" = "קובץ ה־zim חסר.";
 "library.zim_file_details.side_panel.message" = "נא לבחור קובץ zim כדי לראות פרטים.";

@@ -56,7 +56,6 @@
 "flavor_tag.help.mini" = "僅有文字的子集合可用，有可能是第一段落";
 "library_refresh_time.last" = "現在";
 "library_refresh_time.never" = "永不";
-"message.preview.nothing" = "沒什麼需要查看";
 "zim_file_cell_article_count_suffix" = "條目";
 "zim_file_missing_indicator.help" = "遺失 Zim 檔案。";
 "library.zim_file_details.side_panel.message" = "選擇一個 zim 檔案以查看詳細資訊";

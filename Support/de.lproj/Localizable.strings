@@ -60,7 +60,6 @@
 "flavor_tag.help.mini" = "Es ist nur ein Teil des Textes verfügbar, wahrscheinlich der erste Abschnitt";
 "library_refresh_time.last" = "Soeben";
 "library_refresh_time.never" = "Niemals";
-"message.preview.nothing" = "Hier ist nichts.";
 "zim_file_cell_article_count_suffix" = "Artikel";
 "zim_file_missing_indicator.help" = "Zim-Datei fehlt.";
 "library.zim_file_details.side_panel.message" = "Wählen Sie eine ZIM-Datei aus, um Details anzuzeigen";

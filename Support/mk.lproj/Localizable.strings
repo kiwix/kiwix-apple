@@ -56,7 +56,6 @@
 "flavor_tag.help.mini" = "достапен е само дел од текстот, веројатно првиот";
 "library_refresh_time.last" = "Штотуку";
 "library_refresh_time.never" = "Никогаш";
-"message.preview.nothing" = "Нема што да се види";
 "zim_file_cell_article_count_suffix" = "статии";
 "zim_file_missing_indicator.help" = "ZIM-податотеката недостасува.";
 "library.zim_file_details.side_panel.message" = "Изберете ZIM-податотека за да ги видите поединостите";

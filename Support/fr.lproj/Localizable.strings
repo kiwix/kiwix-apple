@@ -59,7 +59,6 @@
 "flavor_tag.help.mini" = "seul un sous-ensemble du texte est disponible, probablement la première section";
 "library_refresh_time.last" = "à l’instant";
 "library_refresh_time.never" = "Jamais";
-"message.preview.nothing" = "Il n'y a rien à voir";
 "zim_file_cell_article_count_suffix" = "articles";
 "zim_file_missing_indicator.help" = "Le fichier Zim est manquant.";
 "library.zim_file_details.side_panel.message" = "Sélectionnez un fichier zim pour voir les détails";

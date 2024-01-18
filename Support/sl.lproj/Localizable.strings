@@ -56,7 +56,6 @@
 "flavor_tag.help.mini" = "na voljo je samo del besedila, verjetno prvi razdelek";
 "library_refresh_time.last" = "Pravkar";
 "library_refresh_time.never" = "Nikoli";
-"message.preview.nothing" = "Tu ni ničesar.";
 "zim_file_cell_article_count_suffix" = "članki";
 "zim_file_missing_indicator.help" = "Datoteka Zim manjka.";
 "library.zim_file_details.side_panel.message" = "Izberite datoteko ZIM za ogled podrobnosti";

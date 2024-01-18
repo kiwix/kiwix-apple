@@ -78,7 +78,6 @@
 "library_refresh_time.last" = "Just Now";
 "library_refresh_time.never" = "Never";
 
-"message.preview.nothing" = "There is nothing to see";
 "zim_file_cell_article_count_suffix" = "articles";
 
 "zim_file_missing_indicator.help" = "Zim file is missing.";
