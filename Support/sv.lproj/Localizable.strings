@@ -101,7 +101,6 @@
 "zim_file.download_task.action.downloading" = "Laddar ned...";
 "zim_file.download_task.action.resume" = "Återuppta";
 "zim_file.download_task.action.paused" = "Pausad";
-"zim_file.preview.file.description" = "En mycket lång beskrivning";
 "reading_settings.zoom.title" = "Sidzoom";
 "reading_settings.zoom.reset.button" = "Återställ";
 "reading_settings.external_link.title" = "Extern länk";

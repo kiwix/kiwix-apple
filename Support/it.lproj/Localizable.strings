@@ -49,7 +49,6 @@
 "zim_file.base_info.attribute.created" = "Creato";
 "zim_file.bool_info.pictures" = "Immagini";
 "zim_file.download_task.action.paused" = "In pausa";
-"zim_file.preview.file.description" = "Una descrizione molto lunga";
 "reading_settings.zoom.title" = "Zoom della pagina";
 "library_settings.button.refresh_now" = "Aggiorna ora";
 "library_settings.languages.title" = "Lingue";

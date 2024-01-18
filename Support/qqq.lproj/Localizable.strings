@@ -131,8 +131,6 @@
 "zim_file.download_task.action.resume" = "Button title to resume a paused download";
 "zim_file.download_task.action.paused" = "Attribute title of a paused download";
 "service_worker_warning.label.description" = "Accessiblity label for warning icon (!)";
-"zim_file.preview.file.description" = "A very long description";
-"zim_file.preview.file.name" = "Wikipedia Zim File Name";
 
 "reading_settings.zoom.title" = "Page zoom";
 "reading_settings.zoom.reset.button" = "Reset";

@@ -109,8 +109,6 @@
 "zim_file.download_task.action.downloading" = "Yükleniyor...";
 "zim_file.download_task.action.resume" = "Devam et";
 "zim_file.download_task.action.paused" = "Durduruldu";
-"zim_file.preview.file.description" = "Çok uzun bir açıklama";
-"zim_file.preview.file.name" = "Vikipedi Zim Dosya Adı";
 "reading_settings.zoom.title" = "Sayfa yakınlaştırma";
 "reading_settings.zoom.reset.button" = "Sıfırla";
 "reading_settings.external_link.title" = "Dış Bağlantı";

@@ -111,8 +111,6 @@
 "zim_file.download_task.action.resume" = "להמשיך";
 "zim_file.download_task.action.paused" = "מושהה";
 "service_worker_warning.label.description" = "קובצי zim שדורשים service workers אינם נתמכים";
-"zim_file.preview.file.description" = "תיאור ארוך מאוד";
-"zim_file.preview.file.name" = "שם קובץ zim של ויקיפדיה";
 "reading_settings.zoom.title" = "תקריב דף";
 "reading_settings.zoom.reset.button" = "איפוס";
 "reading_settings.external_link.title" = "קישור חיצוני";

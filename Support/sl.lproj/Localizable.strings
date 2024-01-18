@@ -111,8 +111,6 @@
 "zim_file.download_task.action.resume" = "Nadaljuj";
 "zim_file.download_task.action.paused" = "Zaustavljeno";
 "service_worker_warning.label.description" = "Datuteke Zim, ki potrebujejo Service Worker, niso podprte.";
-"zim_file.preview.file.description" = "Zelo dolg opis";
-"zim_file.preview.file.name" = "Ime datoteke Zim Wikipedije";
 "reading_settings.zoom.title" = "Povečava strani";
 "reading_settings.zoom.reset.button" = "Ponastavi";
 "reading_settings.external_link.title" = "Zunanja povezava";

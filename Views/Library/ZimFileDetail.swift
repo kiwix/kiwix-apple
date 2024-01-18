@@ -333,14 +333,14 @@ struct ZimFileDetail_Previews: PreviewProvider {
         zimFile.created = Date()
         zimFile.downloadURL = URL(string: "https://www.example.com")
         zimFile.fileID = UUID()
-        zimFile.fileDescription = "zim_file.preview.file.description".localized
+        zimFile.fileDescription = "A very long description"
         zimFile.flavor = "max"
         zimFile.hasDetails = true
         zimFile.hasPictures = false
         zimFile.hasVideos = true
         zimFile.languageCode = "en"
         zimFile.mediaCount = 100
-        zimFile.name = "zim_file.preview.file.name".localized
+        zimFile.name = "Wikipedia Zim File Name"
         zimFile.persistentID = ""
         zimFile.size = 1000000000
         return zimFile

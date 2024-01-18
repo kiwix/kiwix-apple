@@ -111,8 +111,6 @@
 "zim_file.download_task.action.resume" = "Продолжи";
 "zim_file.download_task.action.paused" = "Запрено";
 "service_worker_warning.label.description" = "Не се поддржани ZIM-податотеки што бараат застапнички служби.";
-"zim_file.preview.file.description" = "Многу долг опис";
-"zim_file.preview.file.name" = "Име на ZIM-податотеката за Википедија";
 "reading_settings.zoom.title" = "Приближување на страницата";
 "reading_settings.zoom.reset.button" = "Поништи";
 "reading_settings.external_link.title" = "Надворешна врска";
