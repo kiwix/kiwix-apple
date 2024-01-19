@@ -57,11 +57,8 @@
 "flavor_tag.help.max" = "tout sauf les gros fichiers multimédias comme la vidéo/audio";
 "flavor_tag.help.no_pic" = "la plupart des photos ont été supprimées";
 "flavor_tag.help.mini" = "seul un sous-ensemble du texte est disponible, probablement la première section";
-"grid_section.preview.title" = "Texte de l’en-tête";
-"grid_section.preview.content" = "Contenu";
 "library_refresh_time.last" = "à l’instant";
 "library_refresh_time.never" = "Jamais";
-"message.preview.nothing" = "Il n'y a rien à voir";
 "zim_file_cell_article_count_suffix" = "articles";
 "zim_file_missing_indicator.help" = "Le fichier Zim est manquant.";
 "library.zim_file_details.side_panel.message" = "Sélectionnez un fichier zim pour voir les détails";
@@ -117,8 +114,6 @@
 "zim_file.download_task.action.resume" = "Reprendre";
 "zim_file.download_task.action.paused" = "Pause";
 "service_worker_warning.label.description" = "Les fichiers Zim nécessitant des travailleurs de service ne sont pas supportés.";
-"zim_file.preview.file.description" = "Une très longue description";
-"zim_file.preview.file.name" = "Nom du fichier Wikipédia Zim";
 "reading_settings.zoom.title" = "Zoom de la page";
 "reading_settings.zoom.reset.button" = "Réinitialiser";
 "reading_settings.external_link.title" = "Lien externe";
@@ -172,7 +167,6 @@
 "bookmark.overlay.empty.title" = "Aucun signet";
 "bookmark.toolbar.show_sidebar.label" = "Afficher la barre latérale";
 "browser_tab.toolbar.show_sidebar.label" = "Afficher la barre latérale";
-"app.navigation.title" = "Kiwix";
 "search_result.zimfile.empty.message" = "Aucun fichier zim ouvert";
 "search_result.zimfile.no_result.message" = "Aucun résultat";
 "search_result.sidebar.button.remove" = "Retirer";
@@ -180,7 +174,6 @@
 "search_result.button.clear" = "Effacer";
 "search_result.clear_dialog.title" = "Effacer les recherches récentes";
 "search_result.clear_dialog.button.all" = "Effacer tout";
-"search_result.clear_dialog.dialog-description" = "Tout l’historique de recherche récent sera supprimé.";
 "search_result.clear_dialog.description" = "Tout l’historique de recherche récent sera supprimé.";
 "search_result.filter_hearder.text" = "Inclus dans la recherche";
 "search_result.filter_hearder.button.none" = "Aucun";

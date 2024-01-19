@@ -54,11 +54,8 @@
 "flavor_tag.help.max" = "除了影片/音訊等大型多媒體檔案之外的所有內容";
 "flavor_tag.help.no_pic" = "大多數圖片已被移除";
 "flavor_tag.help.mini" = "僅有文字的子集合可用，有可能是第一段落";
-"grid_section.preview.title" = "標題文字";
-"grid_section.preview.content" = "內容";
 "library_refresh_time.last" = "現在";
 "library_refresh_time.never" = "永不";
-"message.preview.nothing" = "沒什麼需要查看";
 "zim_file_cell_article_count_suffix" = "條目";
 "zim_file_missing_indicator.help" = "遺失 Zim 檔案。";
 "library.zim_file_details.side_panel.message" = "選擇一個 zim 檔案以查看詳細資訊";
@@ -114,8 +111,6 @@
 "zim_file.download_task.action.resume" = "繼續";
 "zim_file.download_task.action.paused" = "已暫停";
 "service_worker_warning.label.description" = "不支援需要 service worker 的 Zim 檔案。";
-"zim_file.preview.file.description" = "很長的描述";
-"zim_file.preview.file.name" = "維基百科 Zim 檔名";
 "reading_settings.zoom.title" = "頁面縮放";
 "reading_settings.zoom.reset.button" = "重設";
 "reading_settings.external_link.title" = "外部連結";
@@ -169,7 +164,6 @@
 "bookmark.overlay.empty.title" = "沒有書籤";
 "bookmark.toolbar.show_sidebar.label" = "顯示側邊欄";
 "browser_tab.toolbar.show_sidebar.label" = "顯示側邊欄";
-"app.navigation.title" = "Kiwix";
 "search_result.zimfile.empty.message" = "沒有開啟的 zim 檔案";
 "search_result.zimfile.no_result.message" = "沒有結果";
 "search_result.sidebar.button.remove" = "移除";
@@ -177,7 +171,6 @@
 "search_result.button.clear" = "清除";
 "search_result.clear_dialog.title" = "清除最近搜尋";
 "search_result.clear_dialog.button.all" = "全部清除";
-"search_result.clear_dialog.dialog-description" = "將會移除全部的最近搜尋歷史。";
 "search_result.clear_dialog.description" = "將會移除全部的最近搜尋歷史。";
 "search_result.filter_hearder.text" = "包含在搜尋中";
 "search_result.filter_hearder.button.none" = "無";

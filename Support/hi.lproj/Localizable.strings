@@ -20,7 +20,6 @@
 "external_link_handler.alert.title" = "बाहरी कड़ियाँ";
 "attribute.detail.unknown" = "अज्ञात";
 "download_task_cell.status.failed" = "विफल हुआ";
-"grid_section.preview.content" = "सामग्री";
 "library_refresh_time.never" = "कभी नहीं";
 "library.zim_file_context.main_page.label" = "मुखपृष्ठ";
 "zim_file_opened.toolbar.open.title" = "खोलें...";

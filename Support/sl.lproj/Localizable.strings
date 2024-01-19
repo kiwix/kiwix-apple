@@ -54,11 +54,8 @@
 "flavor_tag.help.max" = "vse, razen velikih predstavnostnih datotek, kot je video/avdio";
 "flavor_tag.help.no_pic" = "večina slik je bila odstranjena";
 "flavor_tag.help.mini" = "na voljo je samo del besedila, verjetno prvi razdelek";
-"grid_section.preview.title" = "Besedilo glave";
-"grid_section.preview.content" = "Vsebina";
 "library_refresh_time.last" = "Pravkar";
 "library_refresh_time.never" = "Nikoli";
-"message.preview.nothing" = "Tu ni ničesar.";
 "zim_file_cell_article_count_suffix" = "članki";
 "zim_file_missing_indicator.help" = "Datoteka Zim manjka.";
 "library.zim_file_details.side_panel.message" = "Izberite datoteko ZIM za ogled podrobnosti";
@@ -114,8 +111,6 @@
 "zim_file.download_task.action.resume" = "Nadaljuj";
 "zim_file.download_task.action.paused" = "Zaustavljeno";
 "service_worker_warning.label.description" = "Datuteke Zim, ki potrebujejo Service Worker, niso podprte.";
-"zim_file.preview.file.description" = "Zelo dolg opis";
-"zim_file.preview.file.name" = "Ime datoteke Zim Wikipedije";
 "reading_settings.zoom.title" = "Povečava strani";
 "reading_settings.zoom.reset.button" = "Ponastavi";
 "reading_settings.external_link.title" = "Zunanja povezava";
@@ -169,7 +164,6 @@
 "bookmark.overlay.empty.title" = "Ni zaznamkov";
 "bookmark.toolbar.show_sidebar.label" = "Prikaži stransko vrstico";
 "browser_tab.toolbar.show_sidebar.label" = "Prikaži stransko vrstico";
-"app.navigation.title" = "Kiwix";
 "search_result.zimfile.empty.message" = "Ni odprte datoteke zim";
 "search_result.zimfile.no_result.message" = "Ni zadetkov";
 "search_result.sidebar.button.remove" = "Odstrani";
@@ -177,7 +171,6 @@
 "search_result.button.clear" = "Počisti";
 "search_result.clear_dialog.title" = "Počisti nedavna iskanja";
 "search_result.clear_dialog.button.all" = "Počisti vse";
-"search_result.clear_dialog.dialog-description" = "Vsa nedavna zgodovina iskanja bo odstranjena.";
 "search_result.clear_dialog.description" = "Odstranjena bo vsa nedavna zgodovina iskanja.";
 "search_result.filter_hearder.text" = "Vključeno v iskanje";
 "search_result.filter_hearder.button.none" = "Nič";

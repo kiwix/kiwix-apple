@@ -26,7 +26,7 @@ struct Message: View {
 
 struct Message_Previews: PreviewProvider {
     static var previews: some View {
-        Message(text: "message.preview.nothing".localized)
+        Message(text: "There is nothing to see")
             .frame(width: 250, height: 200)
     }
 }

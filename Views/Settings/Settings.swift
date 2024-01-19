@@ -178,7 +178,7 @@ struct Settings: View {
         } header: {
             Text("library_settings.tab.library.title".localized)
         } footer: {
-            Text("settings-new-download-task-description".localized)
+            Text("library_settings.new-download-task-description".localized)
         }
     }
     

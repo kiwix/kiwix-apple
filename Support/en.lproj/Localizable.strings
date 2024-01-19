@@ -75,12 +75,9 @@
 "flavor_tag.help.no_pic" = "most pictures have been removed";
 "flavor_tag.help.mini" = "only a subset of the text is available, probably the first section";
 
-"grid_section.preview.title" = "Header Text";
-"grid_section.preview.content" = "Content";
 "library_refresh_time.last" = "Just Now";
 "library_refresh_time.never" = "Never";
 
-"message.preview.nothing" = "There is nothing to see";
 "zim_file_cell_article_count_suffix" = "articles";
 
 "zim_file_missing_indicator.help" = "Zim file is missing.";
@@ -142,8 +139,6 @@
 "zim_file.download_task.action.resume" = "Resume";
 "zim_file.download_task.action.paused" = "Paused";
 "service_worker_warning.label.description" = "Zim files requiring service workers are not supported.";
-"zim_file.preview.file.description" = "A very long description";
-"zim_file.preview.file.name" = "Wikipedia Zim File Name";
 
 "reading_settings.zoom.title" = "Page zoom";
 "reading_settings.zoom.reset.button" = "Reset";
@@ -201,7 +196,6 @@
 "bookmark.toolbar.show_sidebar.label" = "Show Sidebar";
 
 "browser_tab.toolbar.show_sidebar.label" = "Show Sidebar";
-"app.navigation.title" = "Kiwix";
 
 "search_result.zimfile.empty.message" = "No opened zim file";
 "search_result.zimfile.no_result.message" = "No result";
@@ -210,7 +204,6 @@
 "search_result.button.clear" = "Clear";
 "search_result.clear_dialog.title" = "Clear Recent Searches";
 "search_result.clear_dialog.button.all" = "Clear All";
-"search_result.clear_dialog.dialog-description" = "All recent search history will be removed.";
 "search_result.clear_dialog.description" = "All recent search history will be removed.";
 "search_result.filter_hearder.text" = "Included in Search";
 "search_result.filter_hearder.button.none" = "None";

@@ -58,11 +58,8 @@
 "flavor_tag.help.max" = "alles außer große Mediendateien wie Video/Audio";
 "flavor_tag.help.no_pic" = "Die meisten Bilder wurden entfernt";
 "flavor_tag.help.mini" = "Es ist nur ein Teil des Textes verfügbar, wahrscheinlich der erste Abschnitt";
-"grid_section.preview.title" = "Überschrift";
-"grid_section.preview.content" = "Inhalt";
 "library_refresh_time.last" = "Soeben";
 "library_refresh_time.never" = "Niemals";
-"message.preview.nothing" = "Hier ist nichts.";
 "zim_file_cell_article_count_suffix" = "Artikel";
 "zim_file_missing_indicator.help" = "Zim-Datei fehlt.";
 "library.zim_file_details.side_panel.message" = "Wählen Sie eine ZIM-Datei aus, um Details anzuzeigen";
@@ -118,8 +115,6 @@
 "zim_file.download_task.action.resume" = "Fortfahren";
 "zim_file.download_task.action.paused" = "Pausiert";
 "service_worker_warning.label.description" = "ZIM-Dateien, die Service Worker erfordern, werden nicht unterstützt.";
-"zim_file.preview.file.description" = "Eine sehr lange Beschreibung";
-"zim_file.preview.file.name" = "Wikipedia Zim-Dateiname";
 "reading_settings.zoom.title" = "Seitenzoom";
 "reading_settings.zoom.reset.button" = "Zurücksetzen";
 "reading_settings.external_link.title" = "Externer Link";
@@ -173,7 +168,6 @@
 "bookmark.overlay.empty.title" = "Keine Lesezeichen";
 "bookmark.toolbar.show_sidebar.label" = "Seitenleiste anzeigen";
 "browser_tab.toolbar.show_sidebar.label" = "Seitenleiste anzeigen";
-"app.navigation.title" = "Kiwix";
 "search_result.zimfile.empty.message" = "Keine geöffnete ZIM-Datei";
 "search_result.zimfile.no_result.message" = "Keine Ergebnisse";
 "search_result.sidebar.button.remove" = "Entfernen";
@@ -181,7 +175,6 @@
 "search_result.button.clear" = "Löschen";
 "search_result.clear_dialog.title" = "Letzte Suchanfragen löschen";
 "search_result.clear_dialog.button.all" = "Alle löschen";
-"search_result.clear_dialog.dialog-description" = "Der gesamte aktuelle Suchverlauf wird entfernt.";
 "search_result.clear_dialog.description" = "Der gesamte aktuelle Suchverlauf wird entfernt.";
 "search_result.filter_hearder.text" = "In der Suche enthalten";
 "search_result.filter_hearder.button.none" = "Nichts";

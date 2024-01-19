@@ -54,11 +54,8 @@
 "flavor_tag.help.max" = "сè освен големи медиумски податотеки како видео/звучни";
 "flavor_tag.help.no_pic" = "највеќето слики се отстранети";
 "flavor_tag.help.mini" = "достапен е само дел од текстот, веројатно првиот";
-"grid_section.preview.title" = "Текст на заглавието";
-"grid_section.preview.content" = "Содржина";
 "library_refresh_time.last" = "Штотуку";
 "library_refresh_time.never" = "Никогаш";
-"message.preview.nothing" = "Нема што да се види";
 "zim_file_cell_article_count_suffix" = "статии";
 "zim_file_missing_indicator.help" = "ZIM-податотеката недостасува.";
 "library.zim_file_details.side_panel.message" = "Изберете ZIM-податотека за да ги видите поединостите";
@@ -114,8 +111,6 @@
 "zim_file.download_task.action.resume" = "Продолжи";
 "zim_file.download_task.action.paused" = "Запрено";
 "service_worker_warning.label.description" = "Не се поддржани ZIM-податотеки што бараат застапнички служби.";
-"zim_file.preview.file.description" = "Многу долг опис";
-"zim_file.preview.file.name" = "Име на ZIM-податотеката за Википедија";
 "reading_settings.zoom.title" = "Приближување на страницата";
 "reading_settings.zoom.reset.button" = "Поништи";
 "reading_settings.external_link.title" = "Надворешна врска";
@@ -169,7 +164,6 @@
 "bookmark.overlay.empty.title" = "Нема обележани";
 "bookmark.toolbar.show_sidebar.label" = "Прикажи страничник";
 "browser_tab.toolbar.show_sidebar.label" = "Прикажи страничник";
-"app.navigation.title" = "Кивикс";
 "search_result.zimfile.empty.message" = "Нема отворена ZIM-податотека";
 "search_result.zimfile.no_result.message" = "Нема исход";
 "search_result.sidebar.button.remove" = "Отстрани";
@@ -177,7 +171,6 @@
 "search_result.button.clear" = "Исчисти";
 "search_result.clear_dialog.title" = "Исчисти скорешни пребарувања";
 "search_result.clear_dialog.button.all" = "Исчисти сè";
-"search_result.clear_dialog.dialog-description" = "Ќе бидат отстранети сите скорешни пребарувања од историјата.";
 "search_result.clear_dialog.description" = "Ќе бидат отстранети сите скорешни пребарувања од историјата.";
 "search_result.filter_hearder.text" = "Вклучено во пребарувањето";
 "search_result.filter_hearder.button.none" = "Ништо";

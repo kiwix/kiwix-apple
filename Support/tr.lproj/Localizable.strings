@@ -54,11 +54,8 @@
 "flavor_tag.help.max" = "video/ses gibi büyük medya dosyaları dışındaki her şey";
 "flavor_tag.help.no_pic" = "resimlerin çoğu kaldırıldı";
 "flavor_tag.help.mini" = "metnin yalnızca bir alt kümesi mevcut, muhtemelen ilk bölüm";
-"grid_section.preview.title" = "Başlık Metni";
-"grid_section.preview.content" = "İçerik";
 "library_refresh_time.last" = "Şu anda";
 "library_refresh_time.never" = "Asla";
-"message.preview.nothing" = "Görülecek bir şey yok";
 "zim_file_cell_article_count_suffix" = "makale";
 "zim_file_missing_indicator.help" = "Zim dosyası eksik.";
 "library.zim_file_details.side_panel.message" = "Ayrıntıları görmek için bir zim dosyası seçin";
@@ -112,8 +109,6 @@
 "zim_file.download_task.action.downloading" = "Yükleniyor...";
 "zim_file.download_task.action.resume" = "Devam et";
 "zim_file.download_task.action.paused" = "Durduruldu";
-"zim_file.preview.file.description" = "Çok uzun bir açıklama";
-"zim_file.preview.file.name" = "Vikipedi Zim Dosya Adı";
 "reading_settings.zoom.title" = "Sayfa yakınlaştırma";
 "reading_settings.zoom.reset.button" = "Sıfırla";
 "reading_settings.external_link.title" = "Dış Bağlantı";
@@ -166,7 +161,6 @@
 "bookmark.overlay.empty.title" = "Yer işareti yok";
 "bookmark.toolbar.show_sidebar.label" = "Kenar Çubuğunu Göster";
 "browser_tab.toolbar.show_sidebar.label" = "Kenar Çubuğunu Göster";
-"app.navigation.title" = "Kiwix";
 "search_result.zimfile.empty.message" = "Açık zim dosyası yok";
 "search_result.zimfile.no_result.message" = "Sonuç yok";
 "search_result.sidebar.button.remove" = "Kaldır";
@@ -174,7 +168,6 @@
 "search_result.button.clear" = "Temizle";
 "search_result.clear_dialog.title" = "Son Aramaları Temizle";
 "search_result.clear_dialog.button.all" = "Tümünü Temizle";
-"search_result.clear_dialog.dialog-description" = "Son arama geçmişinin tümü kaldırılacak.";
 "search_result.clear_dialog.description" = "Son arama geçmişinin tümü kaldırılacak.";
 "search_result.filter_hearder.text" = "Aramaya dahil edildi";
 "search_result.filter_hearder.button.none" = "Hiçbiri";

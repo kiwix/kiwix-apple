@@ -50,11 +50,8 @@
 "download_task_cell.status.paused" = "Pausad";
 "flavor_tag.help.max" = "förutom stora mediafiler som video/ljud";
 "flavor_tag.help.no_pic" = "de flesta bilderna har tagits bort";
-"grid_section.preview.title" = "Rubriktext";
-"grid_section.preview.content" = "Innehåll";
 "library_refresh_time.last" = "Precis nu";
 "library_refresh_time.never" = "Aldrig";
-"message.preview.nothing" = "Det finns inget att se";
 "zim_file_cell_article_count_suffix" = "artiklar";
 "zim_file_missing_indicator.help" = "Zim-fil saknas.";
 "library.zim_file_details.side_panel.message" = "Välj en zim-fil för att se information";
@@ -104,7 +101,6 @@
 "zim_file.download_task.action.downloading" = "Laddar ned...";
 "zim_file.download_task.action.resume" = "Återuppta";
 "zim_file.download_task.action.paused" = "Pausad";
-"zim_file.preview.file.description" = "En mycket lång beskrivning";
 "reading_settings.zoom.title" = "Sidzoom";
 "reading_settings.zoom.reset.button" = "Återställ";
 "reading_settings.external_link.title" = "Extern länk";
@@ -152,7 +148,6 @@
 "bookmark.overlay.empty.title" = "Inga bokmärken";
 "bookmark.toolbar.show_sidebar.label" = "Visa sidofält";
 "browser_tab.toolbar.show_sidebar.label" = "Visa sidofält";
-"app.navigation.title" = "Kiwix";
 "search_result.zimfile.empty.message" = "Ingen öppnad zim-fil";
 "search_result.zimfile.no_result.message" = "Inga resultat";
 "search_result.sidebar.button.remove" = "Ta bort";
@@ -160,7 +155,6 @@
 "search_result.button.clear" = "Rensa";
 "search_result.clear_dialog.title" = "Rensa senaste sökningar";
 "search_result.clear_dialog.button.all" = "Rensa allt";
-"search_result.clear_dialog.dialog-description" = "All senaste sökhistorik kommer att tas bort.";
 "search_result.clear_dialog.description" = "All senaste sökhistorik kommer att tas bort.";
 "search_result.filter_hearder.text" = "Inkluderas i sökning";
 "search_result.filter_hearder.button.none" = "Ingen";

@@ -54,11 +54,8 @@
 "flavor_tag.help.max" = "הכול חוץ מקובצי מדיה גדולים כמו וידאו/אודיו";
 "flavor_tag.help.no_pic" = "רוב התמונות הוסרו";
 "flavor_tag.help.mini" = "רק חלק מהטקסט זמין, כנראה הפרק הראשון";
-"grid_section.preview.title" = "טקסט כותרת";
-"grid_section.preview.content" = "תוכן";
 "library_refresh_time.last" = "זה עתה";
 "library_refresh_time.never" = "מעולם לא";
-"message.preview.nothing" = "אין מה לראות";
 "zim_file_cell_article_count_suffix" = "ערכים";
 "zim_file_missing_indicator.help" = "קובץ ה־zim חסר.";
 "library.zim_file_details.side_panel.message" = "נא לבחור קובץ zim כדי לראות פרטים.";
@@ -114,8 +111,6 @@
 "zim_file.download_task.action.resume" = "להמשיך";
 "zim_file.download_task.action.paused" = "מושהה";
 "service_worker_warning.label.description" = "קובצי zim שדורשים service workers אינם נתמכים";
-"zim_file.preview.file.description" = "תיאור ארוך מאוד";
-"zim_file.preview.file.name" = "שם קובץ zim של ויקיפדיה";
 "reading_settings.zoom.title" = "תקריב דף";
 "reading_settings.zoom.reset.button" = "איפוס";
 "reading_settings.external_link.title" = "קישור חיצוני";
@@ -169,7 +164,6 @@
 "bookmark.overlay.empty.title" = "אין סימניות";
 "bookmark.toolbar.show_sidebar.label" = "הצגת סרגל צד";
 "browser_tab.toolbar.show_sidebar.label" = "הצגת סרגל צד";
-"app.navigation.title" = "קיוויקס";
 "search_result.zimfile.empty.message" = "אין קובץ zim פתוח";
 "search_result.zimfile.no_result.message" = "אין תוצאות";
 "search_result.sidebar.button.remove" = "הסרה";
@@ -177,7 +171,6 @@
 "search_result.button.clear" = "ניקוי";
 "search_result.clear_dialog.title" = "ניקוי החיפושים האחרונים";
 "search_result.clear_dialog.button.all" = "ניקוי הכול";
-"search_result.clear_dialog.dialog-description" = "כל היסטוריית החיפושים האחרונה תוסר.";
 "search_result.clear_dialog.description" = "כל היסטוריית החיפושים האחרונה תוסר.";
 "search_result.filter_hearder.text" = "כלול בחיפוש";
 "search_result.filter_hearder.button.none" = "אין";
