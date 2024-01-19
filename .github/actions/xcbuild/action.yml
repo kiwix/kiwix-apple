@@ -14,6 +14,9 @@ inputs:
     required: true
   APPLE_DEVELOPMENT_SIGNING_P12_PASSWORD:
     required: true
+  DOWNLOAD_DEPENDENCIES:
+    required: false
+    default: 'true'
   DEPLOYMENT_SIGNING_CERTIFICATE:
     required: false
   DEPLOYMENT_SIGNING_CERTIFICATE_P12_PASSWORD:
@@ -95,7 +98,8 @@ runs:
         KEYCHAIN: ${{ inputs.KEYCHAIN }}
         KEYCHAIN_PASSWORD: ${{ inputs.KEYCHAIN_PASSWORD }}
 
-    - name: Download dependencies
+    - name: Download dependencies if needed
+      if: ${{ inputs.DOWNLOAD_DEPENDENCIES == 'true' }}
       shell: bash
       run: brew bundle
 
@@ -110,7 +114,6 @@ runs:
       shell: bash
       run: xcrun xcodebuild -workspace $XC_WORKSPACE -scheme $XC_SCHEME -showBuildSettings
 
-    # build is launched up to twice as it's common the build fails, looking for CoreKiwix module
     - name: Build with Xcode
       env:
         FRAMEWORK_SEARCH_PATHS: ${{ env.PWD }}
