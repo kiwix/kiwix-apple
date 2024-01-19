@@ -171,7 +171,6 @@
 "search_result.button.clear" = "Počisti";
 "search_result.clear_dialog.title" = "Počisti nedavna iskanja";
 "search_result.clear_dialog.button.all" = "Počisti vse";
-"search_result.clear_dialog.dialog-description" = "Vsa nedavna zgodovina iskanja bo odstranjena.";
 "search_result.clear_dialog.description" = "Odstranjena bo vsa nedavna zgodovina iskanja.";
 "search_result.filter_hearder.text" = "Vključeno v iskanje";
 "search_result.filter_hearder.button.none" = "Nič";

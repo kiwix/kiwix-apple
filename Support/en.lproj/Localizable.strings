@@ -204,7 +204,6 @@
 "search_result.button.clear" = "Clear";
 "search_result.clear_dialog.title" = "Clear Recent Searches";
 "search_result.clear_dialog.button.all" = "Clear All";
-"search_result.clear_dialog.dialog-description" = "All recent search history will be removed.";
 "search_result.clear_dialog.description" = "All recent search history will be removed.";
 "search_result.filter_hearder.text" = "Included in Search";
 "search_result.filter_hearder.button.none" = "None";

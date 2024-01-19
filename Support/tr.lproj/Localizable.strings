@@ -168,7 +168,6 @@
 "search_result.button.clear" = "Temizle";
 "search_result.clear_dialog.title" = "Son Aramaları Temizle";
 "search_result.clear_dialog.button.all" = "Tümünü Temizle";
-"search_result.clear_dialog.dialog-description" = "Son arama geçmişinin tümü kaldırılacak.";
 "search_result.clear_dialog.description" = "Son arama geçmişinin tümü kaldırılacak.";
 "search_result.filter_hearder.text" = "Aramaya dahil edildi";
 "search_result.filter_hearder.button.none" = "Hiçbiri";

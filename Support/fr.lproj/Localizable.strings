@@ -174,7 +174,6 @@
 "search_result.button.clear" = "Effacer";
 "search_result.clear_dialog.title" = "Effacer les recherches récentes";
 "search_result.clear_dialog.button.all" = "Effacer tout";
-"search_result.clear_dialog.dialog-description" = "Tout l’historique de recherche récent sera supprimé.";
 "search_result.clear_dialog.description" = "Tout l’historique de recherche récent sera supprimé.";
 "search_result.filter_hearder.text" = "Inclus dans la recherche";
 "search_result.filter_hearder.button.none" = "Aucun";

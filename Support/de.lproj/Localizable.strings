@@ -175,7 +175,6 @@
 "search_result.button.clear" = "Löschen";
 "search_result.clear_dialog.title" = "Letzte Suchanfragen löschen";
 "search_result.clear_dialog.button.all" = "Alle löschen";
-"search_result.clear_dialog.dialog-description" = "Der gesamte aktuelle Suchverlauf wird entfernt.";
 "search_result.clear_dialog.description" = "Der gesamte aktuelle Suchverlauf wird entfernt.";
 "search_result.filter_hearder.text" = "In der Suche enthalten";
 "search_result.filter_hearder.button.none" = "Nichts";
