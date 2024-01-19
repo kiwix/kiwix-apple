@@ -164,7 +164,6 @@
 "bookmark.overlay.empty.title" = "沒有書籤";
 "bookmark.toolbar.show_sidebar.label" = "顯示側邊欄";
 "browser_tab.toolbar.show_sidebar.label" = "顯示側邊欄";
-"app.navigation.title" = "Kiwix";
 "search_result.zimfile.empty.message" = "沒有開啟的 zim 檔案";
 "search_result.zimfile.no_result.message" = "沒有結果";
 "search_result.sidebar.button.remove" = "移除";

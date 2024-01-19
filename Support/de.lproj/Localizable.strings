@@ -168,7 +168,6 @@
 "bookmark.overlay.empty.title" = "Keine Lesezeichen";
 "bookmark.toolbar.show_sidebar.label" = "Seitenleiste anzeigen";
 "browser_tab.toolbar.show_sidebar.label" = "Seitenleiste anzeigen";
-"app.navigation.title" = "Kiwix";
 "search_result.zimfile.empty.message" = "Keine geöffnete ZIM-Datei";
 "search_result.zimfile.no_result.message" = "Keine Ergebnisse";
 "search_result.sidebar.button.remove" = "Entfernen";

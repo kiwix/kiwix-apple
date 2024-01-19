@@ -148,7 +148,6 @@
 "bookmark.overlay.empty.title" = "Inga bokmärken";
 "bookmark.toolbar.show_sidebar.label" = "Visa sidofält";
 "browser_tab.toolbar.show_sidebar.label" = "Visa sidofält";
-"app.navigation.title" = "Kiwix";
 "search_result.zimfile.empty.message" = "Ingen öppnad zim-fil";
 "search_result.zimfile.no_result.message" = "Inga resultat";
 "search_result.sidebar.button.remove" = "Ta bort";

@@ -161,7 +161,6 @@
 "bookmark.overlay.empty.title" = "Yer işareti yok";
 "bookmark.toolbar.show_sidebar.label" = "Kenar Çubuğunu Göster";
 "browser_tab.toolbar.show_sidebar.label" = "Kenar Çubuğunu Göster";
-"app.navigation.title" = "Kiwix";
 "search_result.zimfile.empty.message" = "Açık zim dosyası yok";
 "search_result.zimfile.no_result.message" = "Sonuç yok";
 "search_result.sidebar.button.remove" = "Kaldır";

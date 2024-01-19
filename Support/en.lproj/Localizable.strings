@@ -196,7 +196,6 @@
 "bookmark.toolbar.show_sidebar.label" = "Show Sidebar";
 
 "browser_tab.toolbar.show_sidebar.label" = "Show Sidebar";
-"app.navigation.title" = "Kiwix";
 
 "search_result.zimfile.empty.message" = "No opened zim file";
 "search_result.zimfile.no_result.message" = "No result";

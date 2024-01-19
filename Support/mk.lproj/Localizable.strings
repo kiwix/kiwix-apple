@@ -164,7 +164,6 @@
 "bookmark.overlay.empty.title" = "Нема обележани";
 "bookmark.toolbar.show_sidebar.label" = "Прикажи страничник";
 "browser_tab.toolbar.show_sidebar.label" = "Прикажи страничник";
-"app.navigation.title" = "Кивикс";
 "search_result.zimfile.empty.message" = "Нема отворена ZIM-податотека";
 "search_result.zimfile.no_result.message" = "Нема исход";
 "search_result.sidebar.button.remove" = "Отстрани";
