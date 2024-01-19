@@ -177,8 +177,8 @@ struct ZimFileDetail: View {
     @ViewBuilder
     var basicInfo: some View {
         Attribute(title: "zim_file.base_info.attribute.language".localized,
-                  detail: Locale.current.localizedString(forLanguageCode: zimFile.languageCode))
-        Attribute(title: "zim_file.base_info.attribute.category".localized, 
+                  detail: zimFile.languageCodesListed)
+        Attribute(title: "zim_file.base_info.attribute.category".localized,
                   detail: Category(rawValue: zimFile.category)?.name)
         Attribute(title: "zim_file.base_info.attribute.size".localized, 
                   detail: Formatter.size.string(fromByteCount: zimFile.size))

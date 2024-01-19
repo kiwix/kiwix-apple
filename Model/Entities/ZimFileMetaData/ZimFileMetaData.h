@@ -15,7 +15,7 @@
 @property (nonatomic, strong, nonnull) NSString *groupIdentifier;
 @property (nonatomic, strong, nonnull) NSString *title;
 @property (nonatomic, strong, nonnull) NSString *fileDescription;
-@property (nonatomic, strong, nonnull) NSString *languageCode;
+@property (nonatomic, strong, nonnull) NSString *languageCodes;
 @property (nonatomic, strong, nonnull) NSString *category;
 @property (nonatomic, strong, nonnull) NSDate *creationDate;
 @property (nonatomic, strong, nonnull) NSNumber *size;
