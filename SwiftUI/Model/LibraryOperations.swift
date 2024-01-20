@@ -113,7 +113,7 @@ struct LibraryOperations {
         zimFile.hasDetails = metadata.hasDetails
         zimFile.hasPictures = metadata.hasPictures
         zimFile.hasVideos = metadata.hasVideos
-        zimFile.languageCode = metadata.languageCode
+        zimFile.languageCode = metadata.languageCodes
         zimFile.mediaCount = metadata.mediaCount.int64Value
         zimFile.name = metadata.title
         zimFile.persistentID = metadata.groupIdentifier

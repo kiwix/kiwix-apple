@@ -29,7 +29,7 @@
             self.title = [NSString stringWithUTF8String:_book->getTitle().c_str()];
             self.groupIdentifier = [NSString stringWithUTF8String:_book->getName().c_str()];
             self.fileDescription = [NSString stringWithUTF8String:_book->getDescription().c_str()];
-            self.languageCode = [self getLanguageCodeFromBook:_book];
+            self.languageCodes = [self getLanguageCodesFromBook:_book];
             self.category = [self getCategoryFromBook:_book];
             self.creationDate = [self getCreationDateFromBook:_book];
             self.size = [NSNumber numberWithUnsignedLongLong:_book->getSize()];
@@ -62,9 +62,8 @@
     return self;
 }
 
-- (NSString *)getLanguageCodeFromBook:(kiwix::Book *)book {
-    NSString *code = [NSString stringWithUTF8String:book->getLanguage().c_str()];
-    return [NSLocale canonicalLanguageIdentifierFromString:code];
+- (NSString *)getLanguageCodesFromBook:(kiwix::Book *)book {
+    return [NSString stringWithUTF8String:book->getCommaSeparatedLanguages().c_str()];
 }
 
 - (NSString *)getCategoryFromBook:(kiwix::Book *)book {

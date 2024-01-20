@@ -175,7 +175,14 @@ class ZimFile: NSManagedObject, Identifiable {
     @NSManaged var bookmarks: Set<Bookmark>
     @NSManaged var downloadTask: DownloadTask?
     @NSManaged var tabs: Set<Tab>
-    
+
+    var languageCodesListed: String {
+        return languageCode.split(separator: ",").compactMap { code -> String? in
+            let langCode = NSLocale.canonicalLocaleIdentifier(from: String(code))
+            return Locale.current.localizedString(forLanguageCode: langCode)
+        }.joined(separator: ",")
+    }
+
     static var openedPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
         NSPredicate(format: "fileURLBookmark != nil"),
         NSPredicate(format: "isMissing == false")
