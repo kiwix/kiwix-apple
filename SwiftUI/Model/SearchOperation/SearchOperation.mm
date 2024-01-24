@@ -108,13 +108,16 @@
         auto results = zim::SuggestionSearcher(archive).suggest(self.searchText_C).getResults(0, count);
         for (auto result = results.begin(); result != results.end(); result++) {
             if (self.isCancelled) { break; }
-            
-            zim::Entry entry = result.getEntry();
-            zim::Item item = entry.getItem(entry.isRedirect());
-            NSString *path = [NSString stringWithCString:item.getPath().c_str() encoding:NSUTF8StringEncoding];
-            NSString *title = [NSString stringWithCString:item.getTitle().c_str() encoding:NSUTF8StringEncoding];
-            SearchResult *searchResult = [[SearchResult alloc] initWithZimFileID:zimFileID path:path title:title];
-            if (searchResult != nil) { [self.results addObject:searchResult]; }
+            try {
+                zim::Entry entry = result.getEntry();
+                zim::Item item = entry.getItem(entry.isRedirect());
+                NSString *path = [NSString stringWithCString:item.getPath().c_str() encoding:NSUTF8StringEncoding];
+                NSString *title = [NSString stringWithCString:item.getTitle().c_str() encoding:NSUTF8StringEncoding];
+                SearchResult *searchResult = [[SearchResult alloc] initWithZimFileID:zimFileID path:path title:title];
+                if (searchResult != nil) { [self.results addObject:searchResult]; }
+            } catch (std::exception) {
+                NSLog(@"Error in ZIM entry during search.");
+            }
         }
     }
 }
