@@ -1,15 +1,14 @@
 name: FASTLANE_CI
 
 on:
-  push:
-    branches: [ "main" ]
+  # push:
+  #   branches: [ "main" ]
   pull_request:
-    branches: [ "main" ]
+    # branches: [ "main" ]
 
 env:
   APPLE_STORE_AUTH_KEY_PATH: /tmp/authkey.p8
 
-  # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 jobs:
   authorize:
@@ -58,10 +57,8 @@ jobs:
           APP_STORE_CONNECT_API_KEY_KEY_ID: ${{ secrets.APPLE_STORE_AUTH_KEY_ID }}
           APP_STORE_CONNECT_API_KEY_ISSUER_ID: ${{ secrets.APPLE_STORE_AUTH_KEY_ISSUER_ID }}
           APP_STORE_CONNECT_API_KEY_KEY_FILEPATH: ${{ env.APPLE_STORE_AUTH_KEY_PATH }}
-          APP_SCHEME: "Kiwix"
           MATCH_PASSWORD: ${{ secrets.APPLE_CERTIFICATES_MATCH_PASSWORD }}
           MATCH_KEYCHAIN_PASSWORD: ${{ secrets.APPLE_CERTIFICATES_MATCH_PASSWORD }}
-          MATCH_GIT_PRIVATE_KEY: ${{ secrets.APPLE_CERTIFICATES_PAT }}
         run:
           |
-          bundle exec fastlane ios build 
+          bundle exec fastlane ios devbuild
