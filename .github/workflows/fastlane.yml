@@ -1,0 +1,67 @@
+name: FASTLANE_CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+env:
+  APPLE_STORE_AUTH_KEY_PATH: /tmp/authkey.p8
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+jobs:
+  authorize:
+    # sets environment based on origin of PR: internal (non-existent) for own-repo or external (requires reviewer to run) for external repos
+    environment: ${{ github.event_name == 'pull_request_target' && github.event.pull_request.head.repo.full_name != github.repository && 'external' || 'internal' }}
+    runs-on: ubuntu-22.04
+    steps:
+      - run: true
+  build:
+    needs: authorize
+    runs-on: macos-13
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          # /!\ important: this checks out code from the HEAD of the PR instead of the main branch (for pull_request_target)
+          ref: ${{ github.event.pull_request.head.sha || github.ref }}
+
+      - name: Checkout certs
+        uses: actions/checkout@v4
+        with:
+          repository: kiwix/apple-certificates
+          ref: master
+          path: certificates
+          token: ${{ secrets.APPLE_CERTIFICATES_PAT }}
+
+      - name: Select Xcode
+        run: sudo xcode-select --switch /Applications/Xcode_15.0.1.app
+
+      - name: Download dependencies
+        run: 
+          |
+          brew bundle
+          bundle update
+
+      - name: Add Apple Store Key
+        env:
+          APPLE_STORE_AUTH_KEY_PATH: ${{ env.APPLE_STORE_AUTH_KEY_PATH }}
+          APPLE_STORE_AUTH_KEY: ${{ secrets.APPLE_STORE_AUTH_KEY }}
+        shell: bash
+        run: echo "${APPLE_STORE_AUTH_KEY}" | base64 --decode -o $APPLE_STORE_AUTH_KEY_PATH
+      
+      - name: Build iOS Kiwix app with Fastlane
+        env:
+          APP_STORE_CONNECT_API_KEY_KEY_ID: ${{ secrets.APPLE_STORE_AUTH_KEY_ID }}
+          APP_STORE_CONNECT_API_KEY_ISSUER_ID: ${{ secrets.APPLE_STORE_AUTH_KEY_ISSUER_ID }}
+          APP_STORE_CONNECT_API_KEY_KEY_FILEPATH: ${{ env.APPLE_STORE_AUTH_KEY_PATH }}
+          APP_SCHEME: "Kiwix"
+          MATCH_PASSWORD: ${{ secrets.APPLE_CERTIFICATES_MATCH_PASSWORD }}
+          MATCH_KEYCHAIN_PASSWORD: ${{ secrets.APPLE_CERTIFICATES_MATCH_PASSWORD }}
+          MATCH_GIT_PRIVATE_KEY: ${{ secrets.APPLE_CERTIFICATES_PAT }}
+        run:
+          |
+          bundle exec fastlane ios build 
