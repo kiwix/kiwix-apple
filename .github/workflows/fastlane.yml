@@ -6,8 +6,8 @@ on:
   pull_request:
     # branches: [ "main" ]
 
-env:
-  APPLE_STORE_AUTH_KEY_PATH: /tmp/authkey.p8
+# env:
+#   APPLE_STORE_AUTH_KEY_PATH: /tmp/authkey.p8
 
   workflow_dispatch:
 jobs:
@@ -45,18 +45,18 @@ jobs:
           brew bundle
           bundle update
 
-      - name: Add Apple Store Key
-        env:
-          APPLE_STORE_AUTH_KEY_PATH: ${{ env.APPLE_STORE_AUTH_KEY_PATH }}
-          APPLE_STORE_AUTH_KEY: ${{ secrets.APPLE_STORE_AUTH_KEY }}
-        shell: bash
-        run: echo "${APPLE_STORE_AUTH_KEY}" | base64 --decode -o $APPLE_STORE_AUTH_KEY_PATH
+      # - name: Add Apple Store Key
+      #   env:
+      #     APPLE_STORE_AUTH_KEY_PATH: ${{ env.APPLE_STORE_AUTH_KEY_PATH }}
+      #     APPLE_STORE_AUTH_KEY: ${{ secrets.APPLE_STORE_AUTH_KEY }}
+      #   shell: bash
+      #   run: echo "${APPLE_STORE_AUTH_KEY}" | base64 --decode -o $APPLE_STORE_AUTH_KEY_PATH
       
       - name: Build iOS Kiwix app with Fastlane
         env:
-          APP_STORE_CONNECT_API_KEY_KEY_ID: ${{ secrets.APPLE_STORE_AUTH_KEY_ID }}
-          APP_STORE_CONNECT_API_KEY_ISSUER_ID: ${{ secrets.APPLE_STORE_AUTH_KEY_ISSUER_ID }}
-          APP_STORE_CONNECT_API_KEY_KEY_FILEPATH: ${{ env.APPLE_STORE_AUTH_KEY_PATH }}
+          # APP_STORE_CONNECT_API_KEY_KEY_ID: ${{ secrets.APPLE_STORE_AUTH_KEY_ID }}
+          # APP_STORE_CONNECT_API_KEY_ISSUER_ID: ${{ secrets.APPLE_STORE_AUTH_KEY_ISSUER_ID }}
+          # APP_STORE_CONNECT_API_KEY_KEY_FILEPATH: ${{ env.APPLE_STORE_AUTH_KEY_PATH }}
           MATCH_PASSWORD: ${{ secrets.APPLE_CERTIFICATES_MATCH_PASSWORD }}
           MATCH_KEYCHAIN_PASSWORD: ${{ secrets.APPLE_CERTIFICATES_MATCH_PASSWORD }}
         run:
