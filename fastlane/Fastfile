@@ -13,7 +13,7 @@
 platform :ios do
   desc "Build the iOS app for development "
   lane :devbuild do
-    match(type: "development", readonly: true)
+    match_ios_certificates
     build_app(scheme: "Kiwix",
               destination: "generic/platform=iOS",
               sdk: 'iphoneos',
@@ -36,5 +36,13 @@ platform :mac do
                 method: "development",
                 signingStyle: 'manual'
               })
+  end
+end
+
+private_lane :match_ios_certificates do
+  if is_ci
+    match(type: "development", readonly: true, git_url: "./certificates")
+  else
+    match(type: "development", readonly: true)
   end
 end
