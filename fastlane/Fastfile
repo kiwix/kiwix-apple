@@ -14,9 +14,6 @@ platform :ios do
   desc "Build the iOS app for development "
   lane :devbuild do
     setup_ci
-    if is_ci
-      get_provisioning_profile
-    end
     match_ios_certificates
     build_app(scheme: "Kiwix",
               destination: "generic/platform=iOS",
