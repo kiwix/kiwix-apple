@@ -10,19 +10,11 @@
 #     https://docs.fastlane.tools/plugins/available-plugins
 #
 
-# Uncomment the line if you want fastlane to automatically update itself
-# update_fastlane
-
-# load_app_store_api_key
-# setup_ci
-# get_certificates
-# get_provisioning_profile
-
 platform :ios do
   desc "Build the iOS app for development "
   lane :devbuild do
     match(type: "development", readonly: true)
-    build_app(scheme: ENV["APP_SCHEME"],
+    build_app(scheme: "Kiwix",
               destination: "generic/platform=iOS",
               sdk: 'iphoneos',
               export_options: {
@@ -38,54 +30,11 @@ end
 platform :mac do
   desc "Build the macOS app for development"
   lane :devbuild do
-    build_app(scheme: ENV["APP_SCHEME"],
+    build_app(scheme: "Kiwix",
               destination: "generic/platform=macOS",
               export_options: {
                 method: "development",
                 signingStyle: 'manual'
               })
   end
-end
-
-# platform :ios do
-#   desc "Build and upload the iOS app to testflight"
-#   lane :beta do
-#     load_app_store_api_key
-#     # fetch_certificates
-#     build_app(scheme: ENV["APP_SCHEME"])
-#     # upload_to_testflight
-#   end
-# end
-
-# platform :mac do
-#   desc "Build and upload the macOS app"
-#   lane :beta do
-#     load_app_store_api_key
-#     # fetch_certificates
-#     build_app(scheme: ENV["APP_SCHEME"])
-#     # upload_to_testflight
-#   end
-# end
-
-# private_lane :fetch_certificates do
-#   if is_ci
-#     match(type: "development", additional_cert_types: "mac_installer_distribution", readonly: true, git_url: "./certificates")
-#   else
-#     match(type: "development", additional_cert_types: "mac_installer_distribution", readonly: true)
-#   end
-# end
-
-private_lane :load_app_store_api_key do
-  # the default env variables, * - required
-  # @see: https://sarunw.com/posts/using-app-store-connect-api-with-fastlane-match/
-  # * key_id	The key ID	APP_STORE_CONNECT_API_KEY_KEY_ID
-  # * issuer_id	The issuer ID	APP_STORE_CONNECT_API_KEY_ISSUER_ID
-  # * key_content	The content of the key p8 file	APP_STORE_CONNECT_API_KEY_KEY
-  # key_filepath	The path to the key p8 file	APP_STORE_CONNECT_API_KEY_KEY_FILEPATH
-  # duration	The token session duration	APP_STORE_CONNECT_API_KEY_DURATION
-  # in_house	Is App Store or Enterprise (in house)	APP_STORE_CONNECT_API_KEY_IN_HOUSE
-  app_store_connect_api_key(
-    #  is_key_content_base64: true,
-     in_house: false # detecting this via App Store Connect private key not currently supported
-   )
 end

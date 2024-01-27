@@ -75,3 +75,5 @@ Libraries
 *.xcodeproj
 # SPM package resolved:
 **/Package.resolved
+# fastlane builds:
+builds

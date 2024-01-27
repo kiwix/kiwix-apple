@@ -5,5 +5,5 @@
 # fastlane gym --help
 
 scheme("Kiwix")
-output_directory("./")
+output_directory("./builds")
 export_method("development")

@@ -4,4 +4,4 @@
 
 team_name "Wikimedia CH"
 team_id "L7HWM3SP3L"
-app_identifier "self.Kiwix" # to be replaced with ENV["APP_BUNDLE_ID"]
+app_identifier "self.Kiwix"
