@@ -13,29 +13,37 @@
 # Uncomment the line if you want fastlane to automatically update itself
 # update_fastlane
 
+# load_app_store_api_key
+# setup_ci
+# get_certificates
+# get_provisioning_profile
+
 platform :ios do
-  desc "Build the iOS app"
-  lane :build do
-    # load_app_store_api_key
-    setup_ci
-    get_certificates
-    get_provisioning_profile
+  desc "Build the iOS app for development "
+  lane :devbuild do
+    match(type: "development", readonly: true)
     build_app(scheme: ENV["APP_SCHEME"],
               destination: "generic/platform=iOS",
-              sdk: 'iphoneos')
+              sdk: 'iphoneos',
+              export_options: {
+                method: "development",
+                signingStyle: 'manual',
+                provisioningProfiles: {
+                "self.Kiwix": "match Development self.Kiwix",
+                }
+              })
   end
 end
 
 platform :mac do
-  desc "Build the macOS app"
-  lane :build do
-    # load_app_store_api_key
-    setup_ci
-    get_certificates
-    get_provisioning_profile
-    # fetch_certificates
+  desc "Build the macOS app for development"
+  lane :devbuild do
     build_app(scheme: ENV["APP_SCHEME"],
-              destination: "generic/platform=macOS")
+              destination: "generic/platform=macOS",
+              export_options: {
+                method: "development",
+                signingStyle: 'manual'
+              })
   end
 end
 

@@ -15,10 +15,10 @@ For _fastlane_ installation instructions, see [Installing _fastlane_](https://do
 
 ## iOS
 
-### ios build
+### ios devbuild
 
 ```sh
-[bundle exec] fastlane ios build
+[bundle exec] fastlane ios devbuild
 ```
 
 Build the iOS app
@@ -28,10 +28,10 @@ Build the iOS app
 
 ## Mac
 
-### mac build
+### mac devbuild
 
 ```sh
-[bundle exec] fastlane mac build
+[bundle exec] fastlane mac devbuild
 ```
 
 Build the macOS app
