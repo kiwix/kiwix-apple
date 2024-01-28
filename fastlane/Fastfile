@@ -13,7 +13,7 @@
 platform :ios do
   desc "Build the iOS app for development "
   lane :devbuild do
-    setup_ci
+    ci_settings
     match_ios_certificates
     build_app(scheme: "Kiwix",
               destination: "generic/platform=iOS",
@@ -37,6 +37,13 @@ platform :mac do
                 method: "development",
                 signingStyle: 'manual'
               })
+  end
+end
+
+private_lane :ci_settings do
+  if is_ci
+    # setup_ci
+    xcode_select "./Application/Xcode_15.0.1.app"
   end
 end
 
