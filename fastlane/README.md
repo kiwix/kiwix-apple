@@ -21,7 +21,7 @@ For _fastlane_ installation instructions, see [Installing _fastlane_](https://do
 [bundle exec] fastlane ios devbuild
 ```
 
-Build the iOS app without codesigning
+Build iOS app without codesigning
 
 ### ios build
 
@@ -29,7 +29,7 @@ Build the iOS app without codesigning
 [bundle exec] fastlane ios build
 ```
 
-Build the iOS app for AppStore
+Build iOS app for AppStore
 
 ----
 
@@ -42,7 +42,15 @@ Build the iOS app for AppStore
 [bundle exec] fastlane mac devbuild
 ```
 
-Build the macOS app for development
+Build macOS app without codesigning
+
+### mac build
+
+```sh
+[bundle exec] fastlane mac build
+```
+
+Build macOS app for AppStore
 
 ----
 

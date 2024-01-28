@@ -33,11 +33,16 @@ platform :ios do
     build_app(
       destination: "generic/platform=iOS",
       sdk: 'iphoneos',
+      configuration: 'release',
       export_options: {
         method: "app-store",
         provisioningProfiles: {
           "self.Kiwix": "match AppStore self.Kiwix",
         },
+        allowProvisioningUpdates: true,
+        authenticationKeyPath: ENV['APP_STORE_CONNECT_API_KEY_KEY_FILEPATH'],
+        authenticationKeyID: ENV['APP_STORE_CONNECT_API_KEY_KEY_ID'],
+        authenticationKeyIssuerID: ENV['APP_STORE_CONNECT_API_KEY_ISSUER_ID'],
         signingStyle: 'manual',
       }
     )
@@ -77,9 +82,9 @@ private_lane :ci_settings do
 end
 
 private_lane :match_appstore_certificates do
-  if is_ci
+  # if is_ci
     match(type: "appstore", readonly: true, git_url: "./certificates")
-  else
-    match(type: "appstore", readonly: true)
-  end
+  # else
+    # match(type: "appstore", readonly: true)
+  # end
 end
