@@ -24,6 +24,12 @@ platform :ios do
   lane :build do
     ci_settings
     match_appstore_certificates
+    if is_ci
+      unlock_keychain(
+        path: "/Users/runner/Library/Keychains/fastlane_tmp_keychain-db",
+        password: "my_temp_secret"
+      )
+    end
     build_app(
       destination: "generic/platform=iOS",
       sdk: 'iphoneos',

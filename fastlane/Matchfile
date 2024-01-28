@@ -3,6 +3,7 @@ git_url "git@github.com:kiwix/apple-certificates.git"
 git_branch "master"
 verbose true
 readonly true
+keychain_password "my_temp_secret"
 app_identifier ["self.Kiwix", "org.kiwix.custom.dwds"]
 # username("user@fastlane.tools") # Your Apple Developer Portal username
 
