@@ -7,3 +7,4 @@
 scheme("Kiwix")
 output_directory("./builds")
 export_method("development")
+export_team_id("L7HWM3SP3L")
