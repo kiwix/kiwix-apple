@@ -43,7 +43,7 @@ end
 private_lane :ci_settings do
   if is_ci
     # setup_ci
-    xcode_select "./Application/Xcode_15.0.1.app"
+    xcode_select "/Application/Xcode_15.0.1.app"
   end
 end
 
