@@ -33,7 +33,7 @@ platform :ios do
     build_app(
       destination: "generic/platform=iOS",
       sdk: 'iphoneos',
-      configuration: 'release',
+      configuration: 'Release',
       export_options: {
         method: "app-store",
         provisioningProfiles: {
@@ -43,7 +43,6 @@ platform :ios do
         authenticationKeyPath: ENV['APP_STORE_CONNECT_API_KEY_KEY_FILEPATH'],
         authenticationKeyID: ENV['APP_STORE_CONNECT_API_KEY_KEY_ID'],
         authenticationKeyIssuerID: ENV['APP_STORE_CONNECT_API_KEY_ISSUER_ID'],
-        signingStyle: 'manual',
       }
     )
   end
