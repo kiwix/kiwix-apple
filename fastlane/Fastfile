@@ -23,7 +23,7 @@ platform :ios do
   desc "Build iOS app for AppStore"
   lane :build do
     ci_settings
-    build_app(
+    gym(
       destination: "generic/platform=iOS",
       sdk: 'iphoneos',
       configuration: 'Release',
