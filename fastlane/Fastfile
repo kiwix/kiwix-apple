@@ -26,6 +26,7 @@ platform :ios do
                 "self.Kiwix": "match Development self.Kiwix",
                 }
               })
+            end
 end
 
 platform :mac do
