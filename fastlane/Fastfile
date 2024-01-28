@@ -21,7 +21,7 @@ platform :ios do
             end
 
   desc "Build iOS app for AppStore"
-  lane :build_manual do
+  lane :build do
     ci_settings
     build_app(
       destination: "generic/platform=iOS",
