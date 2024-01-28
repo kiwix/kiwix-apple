@@ -11,57 +11,66 @@
 #
 
 platform :ios do
-  desc "Build the iOS app for development"
+  desc "Build iOS app without codesigning"
   lane :devbuild do
     ci_settings
-    match_ios_dev_certificates
     build_app(scheme: "Kiwix",
               destination: "generic/platform=iOS",
               sdk: 'iphoneos',
-              export_method: "development",
-              export_xcargs: "-allowProvisioningUpdates",
-              export_options: {
-                method: "development",
-                signingStyle: 'manual',
-                provisioningProfiles: {
-                "self.Kiwix": "match Development self.Kiwix",
-                }
-              })
+              skip_codesigning: true)
             end
+            
+  desc "Build iOS app for AppStore"
+  lane :build do
+    ci_settings
+    match_appstore_certificates
+    build_app(
+      destination: "generic/platform=iOS",
+      sdk: 'iphoneos',
+      export_options: {
+        method: "app-store",
+        provisioningProfiles: {
+          "self.Kiwix": "match AppStore self.Kiwix",
+        },
+        signingStyle: 'manual',
+      }
+    )
+  end
 end
 
+
 platform :mac do
-  desc "Build the macOS app for development"
+  desc "Build macOS app without codesigning"
   lane :devbuild do
     build_app(scheme: "Kiwix",
               destination: "generic/platform=macOS",
+              skip_codesigning: true)
+  end
+
+  desc "Build macOS app for AppStore"
+  lane :build do
+    ci_settings
+    match_appstore_certificates
+    build_app(scheme: "Kiwix",
+              destination: "generic/platform=macOS",
               export_options: {
-                method: "development",
-                signingStyle: 'manual'
-              })
+        method: "app-store",
+        provisioningProfiles: {
+          "self.Kiwix": "match AppStore self.Kiwix",
+        },
+        signingStyle: 'manual',
+      })
   end
 end
 
 private_lane :ci_settings do
   if is_ci
-    unlock_keychain(
-      path: ENV['KEYCHAIN'],
-      password: ENV['KEYCHAIN_PASSWORD'],
-      set_default: true
-    )
+    setup_ci
     xcode_select "/Applications/Xcode_15.0.1.app"
   end
 end
 
-private_lane :match_ios_dev_certificates do
-  if is_ci
-    match(type: "development", readonly: true, git_url: "./certificates")
-  else
-    match(type: "development", readonly: true)
-  end
-end
-
-private_lane :match_ios_appstore_certificates do
+private_lane :match_appstore_certificates do
   if is_ci
     match(type: "appstore", readonly: true, git_url: "./certificates")
   else
