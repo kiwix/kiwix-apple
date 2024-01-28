@@ -81,4 +81,4 @@ jobs:
           # KEYCHAIN_PASSWORD: ${{ env.KEYCHAIN_PASSWORD }}
         run:
           |
-          bundle exec fastlane ios devbuild
+          bundle exec fastlane ios build

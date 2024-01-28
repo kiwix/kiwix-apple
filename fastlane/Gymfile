@@ -6,5 +6,5 @@
 
 scheme("Kiwix")
 output_directory("./builds")
-export_method("development")
+export_method("app-store")
 export_team_id("L7HWM3SP3L")
