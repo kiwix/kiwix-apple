@@ -15,7 +15,6 @@ platform :ios do
   lane :devbuild do
     ci_settings
     match_ios_dev_certificates
-    update_project_provisioning(profile: ENV['sigh_self.Kiwix_development_profile-path'])
     build_app(scheme: "Kiwix",
               destination: "generic/platform=iOS",
               sdk: 'iphoneos',
@@ -43,7 +42,7 @@ end
 
 private_lane :ci_settings do
   if is_ci
-    # setup_ci
+    setup_ci
     xcode_select "/Applications/Xcode_15.0.1.app"
   end
 end
