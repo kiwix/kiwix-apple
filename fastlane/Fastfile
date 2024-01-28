@@ -42,7 +42,7 @@ end
 
 private_lane :ci_settings do
   if is_ci
-    setup_ci
+    # setup_ci
     xcode_select "/Applications/Xcode_15.0.1.app"
   end
 end
