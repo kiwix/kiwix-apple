@@ -30,6 +30,10 @@ platform :ios do
         password: "my_temp_secret"
       )
     end
+    update_code_signing_settings(
+      use_automatic_signing: false,
+      path: "Kiwix.xcodeproj"
+    )
     build_app(
       destination: "generic/platform=iOS",
       sdk: 'iphoneos',
@@ -43,6 +47,7 @@ platform :ios do
         authenticationKeyPath: ENV['APP_STORE_CONNECT_API_KEY_KEY_FILEPATH'],
         authenticationKeyID: ENV['APP_STORE_CONNECT_API_KEY_KEY_ID'],
         authenticationKeyIssuerID: ENV['APP_STORE_CONNECT_API_KEY_ISSUER_ID'],
+        signingStyle: 'manual',
       }
     )
   end
@@ -81,9 +86,9 @@ private_lane :ci_settings do
 end
 
 private_lane :match_appstore_certificates do
-  # if is_ci
+  if is_ci
     match(type: "appstore", readonly: true, git_url: "./certificates")
-  # else
-    # match(type: "appstore", readonly: true)
-  # end
+  else
+    match(type: "appstore", readonly: true)
+  end
 end
