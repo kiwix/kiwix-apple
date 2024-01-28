@@ -19,9 +19,26 @@ platform :ios do
               sdk: 'iphoneos',
               skip_codesigning: true)
             end
-            
+
   desc "Build iOS app for AppStore"
-  lane :build do
+  lane :build_manual do
+    ci_settings
+    build_app(
+      destination: "generic/platform=iOS",
+      sdk: 'iphoneos',
+      configuration: 'Release',
+      export_options: {
+        method: "app-store",
+        allowProvisioningUpdates: true,
+        authenticationKeyPath: ENV['APP_STORE_CONNECT_API_KEY_KEY_FILEPATH'],
+        authenticationKeyID: ENV['APP_STORE_CONNECT_API_KEY_KEY_ID'],
+        authenticationKeyIssuerID: ENV['APP_STORE_CONNECT_API_KEY_ISSUER_ID'],
+      }
+    )
+  end
+
+  desc "Build iOS app for AppStore, manual signing"
+  lane :build_manual do
     ci_settings
     match_appstore_certificates
     if is_ci
