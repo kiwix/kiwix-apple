@@ -32,7 +32,8 @@ platform :ios do
     end
     update_code_signing_settings(
       use_automatic_signing: false,
-      path: "Kiwix.xcodeproj"
+      path: "Kiwix.xcodeproj",
+      profile_name: "match AppStore self.Kiwix"
     )
     build_app(
       destination: "generic/platform=iOS",
