@@ -14,7 +14,8 @@ platform :ios do
   desc "Build the iOS app for development "
   lane :devbuild do
     ci_settings
-    match_ios_certificates
+    match_ios_dev_certificates
+    update_project_provisioning(profile: ENV['sigh_self.Kiwix_development_profile-path'])
     build_app(scheme: "Kiwix",
               destination: "generic/platform=iOS",
               sdk: 'iphoneos',
@@ -25,7 +26,6 @@ platform :ios do
                 "self.Kiwix": "match Development self.Kiwix",
                 }
               })
-  end
 end
 
 platform :mac do
@@ -47,10 +47,18 @@ private_lane :ci_settings do
   end
 end
 
-private_lane :match_ios_certificates do
+private_lane :match_ios_dev_certificates do
   if is_ci
     match(type: "development", readonly: true, git_url: "./certificates")
   else
     match(type: "development", readonly: true)
+  end
+end
+
+private_lane :match_ios_appstore_certificates do
+  if is_ci
+    match(type: "appstore", readonly: true, git_url: "./certificates")
+  else
+    match(type: "appstore", readonly: true)
   end
 end
