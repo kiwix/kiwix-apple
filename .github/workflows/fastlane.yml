@@ -36,9 +36,6 @@ jobs:
           path: certificates
           token: ${{ secrets.APPLE_CERTIFICATES_PAT }}
 
-      - name: Select Xcode
-        run: sudo xcode-select --switch /Applications/Xcode_15.0.1.app
-
       - name: Download dependencies
         run: 
           |
