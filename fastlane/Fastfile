@@ -27,9 +27,9 @@ platform :ios do
       destination: "generic/platform=iOS",
       sdk: 'iphoneos',
       configuration: 'Release',
+      allowProvisioningUpdates: true,
       export_options: {
         method: "app-store",
-        allowProvisioningUpdates: true,
         authenticationKeyPath: ENV['APP_STORE_CONNECT_API_KEY_KEY_FILEPATH'],
         authenticationKeyID: ENV['APP_STORE_CONNECT_API_KEY_KEY_ID'],
         authenticationKeyIssuerID: ENV['APP_STORE_CONNECT_API_KEY_ISSUER_ID'],
