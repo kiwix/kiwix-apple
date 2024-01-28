@@ -14,36 +14,30 @@ platform :ios do
   desc "Build the iOS app for development "
   lane :devbuild do
     ci_settings
-    match_ios_dev_certificates
     build_app(scheme: "Kiwix",
               destination: "generic/platform=iOS",
               sdk: 'iphoneos',
               export_options: {
-                method: "development",
-                signingStyle: 'manual',
-                provisioningProfiles: {
-                "self.Kiwix": "match Development self.Kiwix",
-                }
+                method: "development"
               })
-            end
+  end
 end
 
 platform :mac do
   desc "Build the macOS app for development"
   lane :devbuild do
     build_app(scheme: "Kiwix",
-              destination: "generic/platform=macOS",
-              export_options: {
-                method: "development",
-                signingStyle: 'manual'
-              })
+              destination: "generic/platform=macOS")
   end
 end
 
 private_lane :ci_settings do
   if is_ci
-    # setup_ci
-    xcode_select "/Applications/Xcode_15.0.1.app"
+    xcode_select("/Applications/Xcode_15.0.1.app")
+    unlock_keychain(
+      path: ENV['KEYCHAIN'],
+      password: ENV['KEYCHAIN_PASSWORD'],
+      set_default: true)
   end
 end
 
