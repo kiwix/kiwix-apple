@@ -52,7 +52,7 @@ platform :ios do
       path: "Kiwix.xcodeproj",
       profile_name: "match AppStore self.Kiwix"
     )
-    build_app(
+    gym(
       destination: "generic/platform=iOS",
       sdk: 'iphoneos',
       configuration: 'Release',
