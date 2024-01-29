@@ -40,7 +40,7 @@ platform :ios do
   desc "Build iOS app for AppStore, manual signing"
   lane :build_manual do
     ci_settings
-    match_appstore_certificates
+    match_certificates
     if is_ci
       unlock_keychain(
         path: "/Users/runner/Library/Keychains/fastlane_tmp_keychain-db",
@@ -83,7 +83,7 @@ platform :mac do
   desc "Build macOS app for AppStore"
   lane :build do
     ci_settings
-    match_appstore_certificates
+    match_certificates
     build_app(scheme: "Kiwix",
               destination: "generic/platform=macOS",
               export_options: {
@@ -103,10 +103,12 @@ private_lane :ci_settings do
   end
 end
 
-private_lane :match_appstore_certificates do
-  if is_ci
-    match(type: "appstore", readonly: true, git_url: "./certificates")
-  else
-    match(type: "appstore", readonly: true)
+private_lane :match_certificates do
+  ["appstore", "development"].each do |type|  
+    if is_ci
+      match(type: type, readonly: true, git_url: "./certificates")
+    else
+      match(type: type, readonly: true)
+    end
   end
 end
