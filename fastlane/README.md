@@ -31,6 +31,14 @@ Build iOS app without codesigning
 
 Build iOS app for AppStore
 
+### ios build_manual
+
+```sh
+[bundle exec] fastlane ios build_manual
+```
+
+Build iOS app for AppStore, manual signing
+
 ----
 
 

@@ -79,4 +79,4 @@ jobs:
           MATCH_KEYCHAIN_PASSWORD: ${{ secrets.APPLE_CERTIFICATES_MATCH_PASSWORD }}
         run:
           |
-          bundle exec fastlane ios build
+          bundle exec fastlane ios build_manual

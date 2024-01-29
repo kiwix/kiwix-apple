@@ -27,9 +27,7 @@ platform :ios do
       destination: "generic/platform=iOS",
       sdk: 'iphoneos',
       configuration: 'Release',
-      xcargs: {
-        allowProvisioningUpdates: true,
-      },
+      xcargs: "-allowProvisioningUpdates",
       export_options: {
         method: "app-store",
         authenticationKeyPath: ENV['APP_STORE_CONNECT_API_KEY_KEY_FILEPATH'],
@@ -58,12 +56,12 @@ platform :ios do
       destination: "generic/platform=iOS",
       sdk: 'iphoneos',
       configuration: 'Release',
+      xcargs: "-allowProvisioningUpdates",
       export_options: {
         method: "app-store",
         provisioningProfiles: {
           "self.Kiwix": "match AppStore self.Kiwix",
         },
-        allowProvisioningUpdates: true,
         authenticationKeyPath: ENV['APP_STORE_CONNECT_API_KEY_KEY_FILEPATH'],
         authenticationKeyID: ENV['APP_STORE_CONNECT_API_KEY_KEY_ID'],
         authenticationKeyIssuerID: ENV['APP_STORE_CONNECT_API_KEY_ISSUER_ID'],
