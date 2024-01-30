@@ -26,7 +26,8 @@ platform :ios do
     update_code_signing_settings(
       path: "Kiwix.xcodeproj",
       code_sign_identity: "Apple Distribution",
-      build_configurations: "Release"
+      build_configurations: "Release",
+      use_automatic_signing: true
     )
     gym(
       destination: "generic/platform=iOS",
