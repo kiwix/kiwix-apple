@@ -59,6 +59,7 @@ platform :ios do
       xcargs: "-allowProvisioningUpdates",
       export_options: {
         method: "app-store",
+        skip_profile_detection: true,
         provisioningProfiles: {
           "self.Kiwix": "match AppStore self.Kiwix",
         },
@@ -104,11 +105,10 @@ private_lane :ci_settings do
 end
 
 private_lane :match_certificates do
-  ["appstore", "development"].each do |type|  
-    if is_ci
-      match(type: type, readonly: true, git_url: "./certificates")
-    else
-      match(type: type, readonly: true)
-    end
+  type = "appstore"
+  if is_ci
+    match(type: type, readonly: true, git_url: "./certificates")
+  else
+    match(type: type, readonly: true)
   end
 end
