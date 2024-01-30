@@ -31,6 +31,14 @@ Build iOS app without codesigning
 
 Build iOS app for AppStore
 
+### ios switch_manual
+
+```sh
+[bundle exec] fastlane ios switch_manual
+```
+
+
+
 ### ios build_manual
 
 ```sh

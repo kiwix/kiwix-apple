@@ -37,6 +37,18 @@ platform :ios do
     )
   end
 
+  lane :switch_manual do
+    ci_settings
+    match_certificates
+    update_code_signing_settings(
+      use_automatic_signing: false,
+      path: "Kiwix.xcodeproj",
+      profile_name: "match AppStore self.Kiwix",
+      code_sign_identity: "Apple Distribution",
+      build_configurations: "Release"
+    )
+  end
+
   desc "Build iOS app for AppStore, manual signing"
   lane :build_manual do
     ci_settings
