@@ -71,6 +71,7 @@ platform :ios do
       sdk: 'iphoneos',
       configuration: 'Release',
       xcargs: "-allowProvisioningUpdates",
+      skip_profile_detection: true,
       export_options: {
         method: "app-store",
         skip_profile_detection: true,
