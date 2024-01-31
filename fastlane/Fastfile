@@ -25,7 +25,7 @@ platform :ios do
     ci_settings
     update_code_signing_settings(
       path: "Kiwix.xcodeproj",
-      code_sign_identity: "Apple Distribution",
+      code_sign_identity: "Apple Development",
       build_configurations: "Release",
       use_automatic_signing: true
     )
