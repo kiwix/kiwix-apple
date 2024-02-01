@@ -83,7 +83,7 @@ jobs:
           APP_STORE_CONNECT_API_KEY_KEY_ID: ${{ secrets.APPLE_STORE_AUTH_KEY_ID }}
           APP_STORE_CONNECT_API_KEY_ISSUER_ID: ${{ secrets.APPLE_STORE_AUTH_KEY_ISSUER_ID }}
           APP_STORE_CONNECT_API_KEY_KEY_FILEPATH: ${{ env.APPLE_STORE_AUTH_KEY_PATH }}
-          MATCH_PASSWORD: ${{ secrets.APPLE_CERTIFICATES_MATCH_PASSWORD }}
+          MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
         shell: bash
         run:
           |
