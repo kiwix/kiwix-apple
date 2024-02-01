@@ -41,13 +41,13 @@ jobs:
           security set-keychain-settings $KEYCHAIN
           security unlock-keychain -p $KEYCHAIN_PASSWORD $KEYCHAIN
 
-      # - name: Add Apple Development certificate to Keychain
-      #   uses: ./.github/actions/install-cert
-      #   with:
-      #     SIGNING_CERTIFICATE: ${{ secrets.APPLE_DEVELOPMENT_SIGNING_CERTIFICATE }}
-      #     SIGNING_CERTIFICATE_P12_PASSWORD: ${{ secrets.APPLE_DEVELOPMENT_SIGNING_P12_PASSWORD }}
-      #     KEYCHAIN: ${{ env.KEYCHAIN }}
-      #     KEYCHAIN_PASSWORD: ${{ env.KEYCHAIN_PASSWORD }}
+      - name: Add Apple Development certificate to Keychain
+        uses: ./.github/actions/install-cert
+        with:
+          SIGNING_CERTIFICATE: ${{ secrets.APPLE_DEVELOPMENT_SIGNING_CERTIFICATE }}
+          SIGNING_CERTIFICATE_P12_PASSWORD: ${{ secrets.APPLE_DEVELOPMENT_SIGNING_P12_PASSWORD }}
+          KEYCHAIN: ${{ env.KEYCHAIN }}
+          KEYCHAIN_PASSWORD: ${{ env.KEYCHAIN_PASSWORD }}
       
       # - name: Add Apple Distribution certificate to Keychain
       #   uses: ./.github/actions/install-cert
