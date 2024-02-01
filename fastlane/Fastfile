@@ -23,6 +23,12 @@ platform :ios do
   desc "Build iOS app for AppStore"
   lane :build do
     ci_settings
+    if is_ci
+      unlock_keychain(
+        path: ENV['KEYCHAIN'],
+        password: ENV['KEYCHAIN_PASSWORD']
+      )
+    end
     # update_code_signing_settings(
     #   path: "Kiwix.xcodeproj",
     #   code_sign_identity: "Apple Development",
