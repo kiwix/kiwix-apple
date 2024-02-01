@@ -48,12 +48,18 @@ jobs:
           security default-keychain -s $KEYCHAIN
           security set-keychain-settings $KEYCHAIN
           security unlock-keychain -p $KEYCHAIN_PASSWORD $KEYCHAIN
+
+      - name: Add Apple Development certificate to Keychain
+        uses: ./.github/actions/install-cert
+        with:
+          SIGNING_CERTIFICATE: ${{ secrets.APPLE_DEVELOPMENT_SIGNING_CERTIFICATE }}
+          SIGNING_CERTIFICATE_P12_PASSWORD: ${{ secrets.APPLE_DEVELOPMENT_SIGNING_P12_PASSWORD }}
+          KEYCHAIN: ${{ env.KEYCHAIN }}
+          KEYCHAIN_PASSWORD: ${{ env.KEYCHAIN_PASSWORD }}
       
       - name: Add Apple Distribution certificate to Keychain
         uses: ./.github/actions/install-cert
         with:
-          # SIGNING_CERTIFICATE: ${{ secrets.APPLE_DEVELOPMENT_SIGNING_CERTIFICATE }}
-          # SIGNING_CERTIFICATE_P12_PASSWORD: ${{ secrets.APPLE_DEVELOPMENT_SIGNING_P12_PASSWORD }}
           SIGNING_CERTIFICATE: ${{ secrets.APPLE_DISTRIBUTION_SIGNING_CERTIFICATE }}
           SIGNING_CERTIFICATE_P12_PASSWORD: ${{ secrets.APPLE_DISTRIBUTION_SIGNING_P12_PASSWORD }}
           KEYCHAIN: ${{ env.KEYCHAIN }}
@@ -77,8 +83,6 @@ jobs:
           APP_STORE_CONNECT_API_KEY_KEY_ID: ${{ secrets.APPLE_STORE_AUTH_KEY_ID }}
           APP_STORE_CONNECT_API_KEY_ISSUER_ID: ${{ secrets.APPLE_STORE_AUTH_KEY_ISSUER_ID }}
           APP_STORE_CONNECT_API_KEY_KEY_FILEPATH: ${{ env.APPLE_STORE_AUTH_KEY_PATH }}
-          # MATCH_PASSWORD: ${{ secrets.APPLE_CERTIFICATES_MATCH_PASSWORD }}
-          # MATCH_KEYCHAIN_PASSWORD: ${{ secrets.APPLE_CERTIFICATES_MATCH_PASSWORD }}
           KEYCHAIN: ${{ env.KEYCHAIN }}
           KEYCHAIN_PASSWORD: ${{ env.KEYCHAIN_PASSWORD }}
         shell: bash
