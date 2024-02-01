@@ -2,20 +2,14 @@
 // Exported from translatewiki.net
 // Author: Amire80
 
-"download_service.complete.description" = "%@ is a file name.";
-"file_import.alert.no_open.message" = "%@ is one or more filenames.";
-"enum.category.ted" = "{{Optional}}";
-"enum.category.stackexchange" = "{{Optional}}";
-
 "download_service.complete.title" = "Title of the notification a user receives, once the started download completes";
-
+"download_service.complete.description" = "%@ is a file name.";
 "common.dialog.button.open" = "After long pressing a link it is the title of one of the options in the overflow menu";
 "common.dialog.button.open_in_new_tab" = "After long pressing a link it is the title of one of the options in the overflow menu";
 "common.dialog.button.add_bookmark" = "After long pressing the bottom tab menu item it is the title of one of the options in the overflow menu";
 "common.dialog.button.remove_bookmark" = "After long pressing a link or the bottom tab menu item it is the title of one of the options in the overflow menu";
 "common.dialog.button.show_bookmarks" = "After long pressing the bottom tab menu item it is the title of one of the options in the overflow menu";
 "common.dialog.button.bookmark" = "After long pressing a link or the bottom tab menu item it is the title of one of the options in the overflow menu";
-
 "common.button.go_back" = "Browser navigation buttton title";
 "common.button.go_forward" = "Browser navigation buttton title";
 "common.button.done" = "The default button label for overflow menus, in order to close them";
@@ -23,7 +17,6 @@
 "common.button.yes" = "It is a title in the summary table on macOS: we list the attributes of a ZIM file: does it contain pictures yes/no, does it contain Videos yes/no, Details? yes/no";
 "common.button.no" = "It is a title in the summary table on macOS: we list the attributes of a ZIM file: does it contain pictures yes/no, does it contain Videos yes/no, Details? yes/no";
 "common.search" = "The default placeholder text for searchbars, when the search input field is empty";
-
 "common.tab.manager.title" = "Accessibility label for button tab bar button that opens an overlay menu.";
 "common.tab.navigation.title" = "On iPad it is a title in the sidemenu grouping tabs related buttons";
 "common.tab.menu.new_tab" = "Button title of an item in the overflow menu on iOS, the default title for a new tab (that has no content loaded yet) on iPad";
@@ -32,67 +25,51 @@
 "common.tab.list.close" = "Accessibility label for button to close the current tab";
 "common.tab.menu.library" = "On iPad it is a sidemenu title grouping library/ZIM file related buttons. Library: Opened | Categories | Downloads | New";
 "common.tab.menu.settings" = "On iPad it is a sidemenu title leading to application settings page";
-
 "outline_button.outline.title" = "Button label on macOS for topbar browser button";
 "outline_button.outline.help" = "Accessibility label on macOS for topbar browser button";
 "outline_button.outline.empty.message" = "Title within an overlay menu, when there's no outline available for the current article loaded";
-
 "bookmark_button.show.help" = "Accessibility label of the tab bar button on iOS for bookmarks behaviour.";
-
 "article_shortcut.main.button.title" = "Fallback button title leading to the Main Article of the ZIM File";
 "article_shortcut.main.button.help" = "Accessibility label for button";
 "article_shortcut.random.button.title.mac" = "Fallback button title on the topbar navigation";
 "article_shortcut.random.button.title.ios" = "Fallback button title on the topbar navigation";
 "article_shortcut.random.button.help" = "Accessibility label for button";
-
 "alert_handler.alert.failed.title" = "Title of a pop-up alert";
-
 "bookmark_context_menu.view.title" = "Overflow menu option, when long pressing a bookmark item";
 "bookmark_context_menu.remove.title" = "Overflow menu option, when long pressing a bookmark item";
-
 "external_link_handler.alert.title" = "Title for pop-up alert about opening an External Link";
 "external_link_handler.alert.button.load.link" = "Button option for alert if an external link should be opened";
 "external_link_handler.alert.ask.description" = "Description for an external link alert.";
 "external_link_handler.alert.not_loading.description" = "Alternative description for external link alert.";
 "file_import.alert.no_open.title" = "Alert title when user fails to open a local file";
-
+"file_import.alert.no_open.message" = "%@ is one or more filenames.";
 "article_cell.no_snippet.label" = "Search result cells contain the title and a snippet of each found article, if there's no spippet for a given search result this is the fallback text used.";
 "attribute.detail.unknown" = "We list the attributes of each ZIM file: pictures yes/no, etc. If the attribute name is missing eg. 'pictures', this is the fallback text used";
-
 "download_task_cell.status.failed" = "The title reporting the status of the current ZIM file download";
 "download_task_cell.status.downloading" = "The title reporting the status of the current ZIM file download";
 "download_task_cell.status.paused" = "The title reporting the status of the current ZIM file download";
-
 "flavor_tag.help.max" = "Accessibility label for ZIM file results, explaining the different flavours of the same ZIM file (mini|max|nopic)";
 "flavor_tag.help.no_pic" = "Accessibility label for ZIM file results, explaining the different flavours of the same ZIM file (mini|max|nopic)";
 "flavor_tag.help.mini" = "Accessibility label for ZIM file results, explaining the different flavours of the same ZIM file (mini|max|nopic)";
-
 "library_refresh_time.last" = "Just Now";
 "library_refresh_time.never" = "Never";
-
 "zim_file_cell_article_count_suffix" = "Part of the ZIM file description, when we list ZIM files (as card results), eg: '246K articles', the word articles is added after the number";
-
 "zim_file_missing_indicator.help" = "Accessibility label for a warning (!) icon";
-
 "library.zim_file_details.side_panel.message" = "Default placeholder text for side panel on macOS, when no file is selected.";
 "library.zim_file_context.main_page.label" = "Supplementary action title, when long pressing on a ZIM file";
 "library.zim_file_context.random.label" = "Supplementary action title, when long pressing on a ZIM file";
 "library.zim_file_context.copy_url" = "Suplementary action title, when long pressing a ZIM file.";
 "library.zim_file_context.copy_id" = "Supplementary action title, when long pressing on a ZIM file";
-
 "zim_file_opened.overlay.no-opened.message" = "Default placeholder text for center panel on macOS, when we have no history of opened files";
 "zim_file_opened.toolbar.show_sidebar.label" = "Show Sidebar";
 "zim_file_opened.toolbar.open.title" = "Accesissiblit label of a (+) icon on iOS, in the top right corner, to open a local file";
 "zim_file_opened.toolbar.open.help" = "Accessibility label of a (+) icon in the macOS app, in the top right corner, to open a local file";
 "zim_file_category.title" = "Accessiblity label for category picker";
-
 "zim_file_category.section.empty.message" = "Fallback text for listing results";
 "zim_file_downloads.overlay.empty.message" = "Fallback text for center panel, when downloads are selected from the side menu.";
 "zim_file_downloads.toolbar.show_sidebar.label" = "Accessibility label for side bar toggle button";
-
 "zim_file_new_overlay.empty" = "Fallback text for listing new ZIM files available for download";
 "zim_file_new_button_refresh" = "Accessibility label for refresh button on the top nav bar to refresh the list of new ZIM files";
-
 "zim_file.list.name.text" = "Title for displaying the details of a ZIM file";
 "zim_file.list.description.text" = "Title for displaying the details of a ZIM file";
 "zim_file.list.actions.text" = "Title for displaying the possible actions to a selected ZIM file. Eg. The 'Download' button is below this.";
@@ -117,7 +94,7 @@
 "zim_file.base_info.attribute.size" = "ZIM file details title, displayed in 2 columns, eg: Size: 1,5 GB";
 "zim_file.base_info.attribute.created" = "ZIM file details title, displayed in 2 columns, eg: Created: 10 Jan 2024";
 "zim_file.bool_info.pictures" = "ZIM file details title, displayed in 2 columns, eg: Pictures: yes";
-"zim_file.bool_info.videos"  = "ZIM file details title, displayed in 2 columns, eg: Videos: no";
+"zim_file.bool_info.videos" = "ZIM file details title, displayed in 2 columns, eg: Videos: no";
 "zim_file.bool_info.details" = "ZIM file details title, displayed in 2 columns, eg: Details: no";
 "zim_file.bool_info.require_service_workers" = "ZIM file details title, displayed in 2 columns, eg: Requires Service Workers: yes";
 "zim_file.counts.article_count" = "ZIM file details title, displayed in 2 columns, eg: Article Count:  8 799";
@@ -131,7 +108,6 @@
 "zim_file.download_task.action.resume" = "Button title to resume a paused download";
 "zim_file.download_task.action.paused" = "Attribute title of a paused download";
 "service_worker_warning.label.description" = "Accessiblity label for warning icon (!)";
-
 "reading_settings.zoom.title" = "Label title for a percentage selector in app settings, eg: 100%";
 "reading_settings.zoom.reset.button" = "Button title for percentage selector for zoom level in app settings";
 "reading_settings.external_link.title" = "Label title for option picker. External Link: Always Ask | Always Load | Never Load";
@@ -168,7 +144,6 @@
 "language_selector.hiding.header" = "Section title for listing the languages in settings";
 "language_selector.navitation.title" = "Page title for Language settings";
 "language_selector.toolbar.sorting" = "Accessibility for icon (^) to sort the languages by name or count in settings";
-
 "settings.about.title" = "Page title for About page in settings";
 "settings.about.release" = "Section title on About page";
 "settings.about.dependencies" = "Section title on About page";
@@ -182,13 +157,10 @@
 "settings.about.our_website.button" = "Button label taking the user to the Kiwix Website on About page";
 "settings.about.source.title" = "Button label taking the user to the source code of the application on Github, on About page";
 "settings.about.button.license" = "Button label taking the user to the license details, on About page";
-
 "bookmark.navigation.title" = "Navigation button label";
 "bookmark.overlay.empty.title" = "Fallback text displayed in center, when there are no bookmarks";
 "bookmark.toolbar.show_sidebar.label" = "Accesibility label for side bar button icon";
-
 "browser_tab.toolbar.show_sidebar.label" = "Accesibility label for side bar button icon";
-
 "search_result.zimfile.empty.message" = "Fallback text on search results";
 "search_result.zimfile.no_result.message" = "Fallback text on search results";
 "search_result.sidebar.button.remove" = "Button text on search results, to remove former results";
@@ -200,25 +172,20 @@
 "search_result.filter_hearder.text" = "Title for section listing all the ZIM files we should search in";
 "search_result.filter_hearder.button.none" = "Button title to toggle ZIM files selected for searching in";
 "search_result.filter_hearder.button.all" = "Button title to toggle ZIM files selected for searching in";
-
 "welcome.main_page.title" = "Default new browser tab title on iOS. the downloaded ZIM files are listed below this title";
 "welcome.grid.bookmarks.title" = "Welcome page section title";
 "welcome.actions.open_file" = "Welcome page button title";
 "welcome.button.status.fetching.text" = "Welcome page progress text for fetching...";
 "welcome.button.status.fetch_catalog.text" = "Welcome page button title";
-
 "commands.button.actual_size" = "MacOS command menu item";
 "comments.button.zoom_in" = "MacOS command menu item";
 "comments.button.zoom_out" = "MacOS command menu item";
-
 "app_macos_commands.open_file" = "MacOS command menu item";
 "app_macos_commands.new" = "MacOS command menu item";
 "app_macos_navigation.button.library" = "MacOS command menu item";
 "app_macos_navigation.show_sidebar" = "MacOS command menu item";
-
 "sidebar_view.navigation.button.close" = "Accessiblity title for navigation button icon";
 "sidebar_view.navigation.button.close_all" = "Accessiblity title for navigation button icon";
-
 "enum.category.wikipedia" = "{{Optional}}";
 "enum.category.wikibooks" = "{{Optional}}";
 "enum.category.wikinews" = "{{Optional}}";
@@ -227,7 +194,9 @@
 "enum.category.wikiversity" = "{{Optional}}";
 "enum.category.wikivoyage" = "{{Optional}}";
 "enum.category.wiktionary" = "{{Optional}}";
+"enum.category.ted" = "{{Optional}}";
 "enum.category.vikidia" = "{{Optional}}";
+"enum.category.stackexchange" = "{{Optional}}";
 "enum.category.other" = "Other type of category, eg apart from Wikipedia, WikiBooks ect.";
 "enum.external_link_loading_policy.always_ask" = "Settings picker option title: how external links should be treated";
 "enum.external_link_loading_policy.always_load" = "Settings picker option title: how external links should be treated";
@@ -241,7 +210,6 @@
 "enum.libray_tab_item.categories" = "Bottom Tab bar item title under Library on iOS";
 "enum.libray_tab_item.downloads" = "Bottom Tab bar item title under Library on iOS";
 "enum.libray_tab_item.new" = "Bottom Tab bar item title under Library on iOS";
-
 "enum.navigation_item.loading" = "Loading label displayed on application start";
 "enum.navigation_item.reading" = "Side navigation menu item title";
 "enum.navigation_item.bookmarks" = "Side navigation menu item title";
@@ -252,7 +220,6 @@
 "enum.navigation_item.new" = "Side navigation menu item title";
 "enum.navigation_item.downloads" = "Side navigation menu item title";
 "enum.navigation_item.settings" = "Side navigation menu item title";
-
 "enum.search_result_snippet_mode.disabled" = "Picker option title in settings. Search snippet: Disabled | First Paragraph | First Sentence | Matches";
 "enum.search_result_snippet_mode.paragraph" = "Picker option title in settings. Search snippet: Disabled | First Paragraph | First Sentence | Matches";
 "enum.search_result_snippet_mode.sentence" = "Picker option title in settings. Search snippet: Disabled | First Paragraph | First Sentence | Matches";
