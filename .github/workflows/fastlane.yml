@@ -59,18 +59,18 @@ jobs:
           KEYCHAIN: ${{ env.KEYCHAIN }}
           KEYCHAIN_PASSWORD: ${{ env.KEYCHAIN_PASSWORD }}
 
-      - name: Download dependencies
-        run: 
-          |
-          brew bundle
-          bundle update
-
       - name: Add Apple Store Key
         env:
           APPLE_STORE_AUTH_KEY_PATH: ${{ env.APPLE_STORE_AUTH_KEY_PATH }}
           APPLE_STORE_AUTH_KEY: ${{ secrets.APPLE_STORE_AUTH_KEY }}
         shell: bash
         run: echo "${APPLE_STORE_AUTH_KEY}" | base64 --decode -o $APPLE_STORE_AUTH_KEY_PATH
+
+      - name: Download dependencies
+        run: 
+          |
+          brew bundle
+          bundle update
       
       - name: Build iOS Kiwix app with Fastlane
         env:
