@@ -118,7 +118,7 @@ private_lane :ci_settings do
 end
 
 private_lane :match_certificates do
-  ["development"].each do |type|
+  ["development", "appstore"].each do |type|
     if is_ci
       match(type: type, readonly: true, git_url: "./certificates")
     else
