@@ -22,8 +22,9 @@ platform :ios do
 
   desc "Build iOS app for AppStore"
   lane :build do
-    ci_settings
+    # ci_settings
     if is_ci
+      xcode_select "/Applications/Xcode_15.0.1.app"
       unlock_keychain(
         path: ENV['KEYCHAIN'],
         password: ENV['KEYCHAIN_PASSWORD']
