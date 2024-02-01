@@ -30,14 +30,6 @@ jobs:
           # /!\ important: this checks out code from the HEAD of the PR instead of the main branch (for pull_request_target)
           ref: ${{ github.event.pull_request.head.sha || github.ref }}
 
-      # - name: Checkout certs
-      #   uses: actions/checkout@v4
-      #   with:
-      #     repository: kiwix/apple-certificates
-      #     ref: master
-      #     path: certificates
-      #     token: ${{ secrets.APPLE_CERTIFICATES_PAT }}
-
       - name: Create Keychain
         shell: bash
         env:

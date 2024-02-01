@@ -23,12 +23,6 @@ platform :ios do
   desc "Build iOS app for AppStore"
   lane :build do
     ci_settings
-    # update_code_signing_settings(
-    #   path: "Kiwix.xcodeproj",
-    #   code_sign_identity: "Apple Development",
-    #   build_configurations: "Release",
-    #   use_automatic_signing: true
-    # )
     gym(
       destination: "generic/platform=iOS",
       sdk: 'iphoneos',
@@ -36,9 +30,6 @@ platform :ios do
       xcargs: "-allowProvisioningUpdates -authenticationKeyPath #{ENV['APP_STORE_CONNECT_API_KEY_KEY_FILEPATH']} -authenticationKeyID #{ENV['APP_STORE_CONNECT_API_KEY_KEY_ID']} -authenticationKeyIssuerID #{ENV['APP_STORE_CONNECT_API_KEY_ISSUER_ID']}",
       export_options: {
         method: "app-store"
-        # authenticationKeyPath: ENV['APP_STORE_CONNECT_API_KEY_KEY_FILEPATH'],
-        # authenticationKeyID: ENV['APP_STORE_CONNECT_API_KEY_KEY_ID'],
-        # authenticationKeyIssuerID: ENV['APP_STORE_CONNECT_API_KEY_ISSUER_ID'],
       }
     )
   end
