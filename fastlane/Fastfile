@@ -22,14 +22,7 @@ platform :ios do
 
   desc "Build iOS app for AppStore"
   lane :build do
-    # ci_settings
-    if is_ci
-      xcode_select "/Applications/Xcode_15.0.1.app"
-      unlock_keychain(
-        path: ENV['KEYCHAIN'],
-        password: ENV['KEYCHAIN_PASSWORD']
-      )
-    end
+    ci_settings
     # update_code_signing_settings(
     #   path: "Kiwix.xcodeproj",
     #   code_sign_identity: "Apple Development",
@@ -40,12 +33,12 @@ platform :ios do
       destination: "generic/platform=iOS",
       sdk: 'iphoneos',
       configuration: 'Release',
-      xcargs: "-allowProvisioningUpdates",
+      xcargs: "-allowProvisioningUpdates -authenticationKeyPath #{ENV['APP_STORE_CONNECT_API_KEY_KEY_FILEPATH']} -authenticationKeyID #{ENV['APP_STORE_CONNECT_API_KEY_KEY_ID']} -authenticationKeyIssuerID #{ENV['APP_STORE_CONNECT_API_KEY_ISSUER_ID']}",
       export_options: {
-        method: "app-store",
-        authenticationKeyPath: ENV['APP_STORE_CONNECT_API_KEY_KEY_FILEPATH'],
-        authenticationKeyID: ENV['APP_STORE_CONNECT_API_KEY_KEY_ID'],
-        authenticationKeyIssuerID: ENV['APP_STORE_CONNECT_API_KEY_ISSUER_ID'],
+        method: "app-store"
+        # authenticationKeyPath: ENV['APP_STORE_CONNECT_API_KEY_KEY_FILEPATH'],
+        # authenticationKeyID: ENV['APP_STORE_CONNECT_API_KEY_KEY_ID'],
+        # authenticationKeyIssuerID: ENV['APP_STORE_CONNECT_API_KEY_ISSUER_ID'],
       }
     )
   end
