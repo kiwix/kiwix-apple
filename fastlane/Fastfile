@@ -23,6 +23,18 @@ platform :ios do
   desc "Build iOS app for AppStore"
   lane :build do
     ci_settings
+    get_certificates(
+      development: true,
+      api_key: app_store_connect_api_key(
+          key_id: ENV['APP_STORE_CONNECT_API_KEY_KEY_ID'],
+          issuer_id: ENV['APP_STORE_CONNECT_API_KEY_ISSUER_ID'],
+          key_filepath: ENV['APP_STORE_CONNECT_API_KEY_KEY_FILEPATH'],
+          duration: 1200, # optional (maximum 1200)
+          in_house: false # optional but may be required if using match/sigh
+        ),
+      keychain_password: ENV['KEYCHAIN_PASSWORD'],
+      platform: 'ios'
+    )
     gym(
       destination: "generic/platform=iOS",
       sdk: 'iphoneos',
@@ -67,7 +79,7 @@ platform :ios do
       destination: "generic/platform=iOS",
       sdk: 'iphoneos',
       configuration: 'Release',
-      xcargs: "-allowProvisioningUpdates",
+      xcargs: "-allowProvisioningUpdates -authenticationKeyPath #{ENV['APP_STORE_CONNECT_API_KEY_KEY_FILEPATH']} -authenticationKeyID #{ENV['APP_STORE_CONNECT_API_KEY_KEY_ID']} -authenticationKeyIssuerID #{ENV['APP_STORE_CONNECT_API_KEY_ISSUER_ID']}",
       skip_profile_detection: true,
       export_options: {
         method: "app-store",
@@ -75,9 +87,6 @@ platform :ios do
         provisioningProfiles: {
           "self.Kiwix": "match AppStore self.Kiwix",
         },
-        authenticationKeyPath: ENV['APP_STORE_CONNECT_API_KEY_KEY_FILEPATH'],
-        authenticationKeyID: ENV['APP_STORE_CONNECT_API_KEY_KEY_ID'],
-        authenticationKeyIssuerID: ENV['APP_STORE_CONNECT_API_KEY_ISSUER_ID'],
         signingStyle: 'manual',
       }
     )
