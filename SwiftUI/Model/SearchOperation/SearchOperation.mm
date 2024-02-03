@@ -84,6 +84,9 @@
         NSUUID *zimFileID = [[NSUUID alloc] initWithUUIDBytes:(unsigned char *)result.getZimId().data];
         NSString *path = [NSString stringWithCString:item.getPath().c_str() encoding:NSUTF8StringEncoding];
         NSString *title = [NSString stringWithCString:item.getTitle().c_str() encoding:NSUTF8StringEncoding];
+        if (title.length == 0) {
+            title = path; // display the path as a fallback
+        }
         SearchResult *searchResult = [[SearchResult alloc] initWithZimFileID:zimFileID path:path title:title];
         searchResult.probability = [[NSNumber alloc] initWithFloat:result.getScore() / 100];
         
