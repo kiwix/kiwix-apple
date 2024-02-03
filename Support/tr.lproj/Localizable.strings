@@ -99,6 +99,7 @@
 "zim_file.bool_info.pictures" = "Resimler";
 "zim_file.bool_info.videos" = "Videolar";
 "zim_file.bool_info.details" = "Ayrıntılar";
+"zim_file.bool_info.require_service_workers" = "Servis Çalışanları Gerektirir";
 "zim_file.counts.article_count" = "Makale Sayısı";
 "zim_file.counts.article.media_count" = "Medya Sayısı";
 "zim_file.detail.id.title" = "Kimlik";
@@ -109,6 +110,7 @@
 "zim_file.download_task.action.downloading" = "Yükleniyor...";
 "zim_file.download_task.action.resume" = "Devam et";
 "zim_file.download_task.action.paused" = "Durduruldu";
+"service_worker_warning.label.description" = "Servis çalışanlarını gerektiren Zim dosyaları desteklenmez.";
 "reading_settings.zoom.title" = "Sayfa yakınlaştırma";
 "reading_settings.zoom.reset.button" = "Sıfırla";
 "reading_settings.external_link.title" = "Dış Bağlantı";

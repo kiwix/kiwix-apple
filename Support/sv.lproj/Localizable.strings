@@ -1,10 +1,13 @@
 // Messages for Swedish (svenska)
 // Exported from translatewiki.net
 // Author: Amire80
+// Author: Sabelöga
 // Author: WikiPhoenix
 
+"library_refresh_error.retrieve.description" = "Fel vid hämtning av biblioteksdata.";
+"library_refresh_error.parse.description" = "Fel vid analys av biblioteksdata.";
+"library_refresh_error.process.description" = "Fel vid bearbetning av biblioteksdata.";
 "download_service.complete.title" = "Nedladdning slutfördes";
-// Fuzzy
 "download_service.complete.description" = "%@ har laddats ned.";
 "common.dialog.button.open" = "Öppna";
 "common.dialog.button.open_in_new_tab" = "Öppna i ny flik";
@@ -41,8 +44,9 @@
 "bookmark_context_menu.remove.title" = "Ta bort";
 "external_link_handler.alert.title" = "Extern länk";
 "external_link_handler.alert.button.load.link" = "Ladda länken";
+"external_link_handler.alert.ask.description" = "En extern länk är tryckt, vill du ladda in länken?";
+"external_link_handler.alert.not_loading.description" = "En extern länk har tryckts. Men dina nuvarande inställningar tillåter inte att länken laddas in.";
 "file_import.alert.no_open.title" = "Kunde inte öppna filen";
-// Fuzzy
 "file_import.alert.no_open.message" = "%@ kan inte öppnas.";
 "attribute.detail.unknown" = "Okänd";
 "download_task_cell.status.failed" = "Misslyckades";
