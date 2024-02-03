@@ -80,23 +80,20 @@
     for (auto result = resultSet.begin(); result != resultSet.end(); result++) {
         if (self.isCancelled) { break; }
         
+        zim::Item item = result->getItem(result->isRedirect());
         NSUUID *zimFileID = [[NSUUID alloc] initWithUUIDBytes:(unsigned char *)result.getZimId().data];
-        NSString *path = [NSString stringWithCString:result.getPath().c_str() encoding:NSUTF8StringEncoding];
-
-        NSString *title = [NSString stringWithCString:result.getTitle().c_str() encoding:NSUTF8StringEncoding];
-        if (title.length > 0) {
-            SearchResult *searchResult = [[SearchResult alloc] initWithZimFileID:zimFileID path:path title:title];
-            if (searchResult == nil) { break; }
-            searchResult.probability = [[NSNumber alloc] initWithFloat:result.getScore() / 100];
-
-            // optionally, add snippet
-            if (self.extractMatchingSnippet) {
-                NSString *html = [NSString stringWithCString:result.getSnippet().c_str() encoding:NSUTF8StringEncoding];
-                searchResult.htmlSnippet = html;
-            }
-
-            [self.results addObject:searchResult];
+        NSString *path = [NSString stringWithCString:item.getPath().c_str() encoding:NSUTF8StringEncoding];
+        NSString *title = [NSString stringWithCString:item.getTitle().c_str() encoding:NSUTF8StringEncoding];
+        SearchResult *searchResult = [[SearchResult alloc] initWithZimFileID:zimFileID path:path title:title];
+        searchResult.probability = [[NSNumber alloc] initWithFloat:result.getScore() / 100];
+        
+        // optionally, add snippet
+        if (self.extractMatchingSnippet) {
+            NSString *html = [NSString stringWithCString:result.getSnippet().c_str() encoding:NSUTF8StringEncoding];
+            searchResult.htmlSnippet = html;
         }
+        
+        if (searchResult != nil) { [self.results addObject:searchResult]; }
     }
 }
 
