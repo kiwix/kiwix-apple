@@ -12,7 +12,7 @@ env:
   KEYCHAIN_PASSWORD: mysecretpassword
   KEYCHAIN_PROFILE: build-profile
   SSH_KEY: /tmp/id_rsa
-  APPLE_STORE_AUTH_KEY_PATH: /tmp/authkey.p8
+  
 
 jobs:
   build_and_deploy:
@@ -32,12 +32,15 @@ jobs:
         #     uploadto: app-store
     runs-on: macos-13
     env:
-      APPLE_AUTH_PARAMS: "-authenticationKeyPath ${{ env.APPLE_STORE_AUTH_KEY_PATH }} -authenticationKeyID ${{ secrets.APPLE_STORE_AUTH_KEY_ID }} -authenticationKeyIssuerID ${{ secrets.APPLE_STORE_AUTH_KEY_ISSUER_ID }}"
+      APPLE_STORE_AUTH_KEY_PATH: /tmp/authkey.p8
+      APPLE_AUTH_PARAMS: "-authenticationKeyPath /tmp/authkey.p8 -authenticationKeyID ${{ secrets.APPLE_STORE_AUTH_KEY_ID }} -authenticationKeyIssuerID ${{ secrets.APPLE_STORE_AUTH_KEY_ISSUER_ID }}"
       # conditionally updated later:
       EXPORT_METHOD: "app-store"
       EXTRA_XCODEBUILD: ""
       UPLOAD_TO: ""
-      VERSION: "" 
+      VERSION: ""
+      SIGNING_CERTIFICATE: ""
+      SIGNING_CERTIFICATE_P12_PASSWORD: ""
       
     steps:
     - name: Checkout code
@@ -116,7 +119,6 @@ jobs:
       with:
         action: archive
         xc-destination: generic/platform=${{ matrix.platform }}
-        upload-to: ${{ env.UPLOAD_TO }}
         version: ${{ env.VERSION }}
         APPLE_DEVELOPMENT_SIGNING_CERTIFICATE: ${{ secrets.APPLE_DEVELOPMENT_SIGNING_CERTIFICATE }}
         APPLE_DEVELOPMENT_SIGNING_P12_PASSWORD: ${{ secrets.APPLE_DEVELOPMENT_SIGNING_P12_PASSWORD }}
