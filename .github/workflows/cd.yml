@@ -99,10 +99,7 @@ jobs:
 
     - name: Decode Apple Store Key
       if: env.UPLOAD_TO != ''
-      env:
-        APPLE_STORE_AUTH_KEY_PATH: ${{ env.APPLE_STORE_AUTH_KEY_PATH }}
-        APPLE_STORE_AUTH_KEY: ${{ secrets.APPLE_STORE_AUTH_KEY }}
-      run: echo "${APPLE_STORE_AUTH_KEY}" | base64 --decode -o $APPLE_STORE_AUTH_KEY_PATH
+      run: echo "${{ secrets.APPLE_STORE_AUTH_KEY }}" | base64 --decode -o ${{ env.APPLE_STORE_AUTH_KEY_PATH }}
 
     - name: Build xcarchive
       uses: ./.github/actions/xcbuild
@@ -145,7 +142,7 @@ jobs:
         plutil -insert provisioningProfiles -dictionary ./export.plist
         plutil -replace provisioningProfiles -json '{ "self.Kiwix" : "iOS Team Provisioning Profile" }' ./export.plist
 
-    - name: Prepare export for ${{ env.EXPORT_METHOD }}
+    - name: Prepare export for ${{ matrix.uploadto }}
       if: matrix.platform != 'iOS' || env.UPLOAD_TO == 'app-store'
       run: |
         plutil -create xml1 ./export.plist
