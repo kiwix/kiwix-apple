@@ -12,8 +12,16 @@ env:
   KEYCHAIN_PASSWORD: mysecretpassword
   KEYCHAIN_PROFILE: build-profile
   SSH_KEY: /tmp/id_rsa
+  APPLE_STORE_AUTH_KEY_PATH: /tmp/authkey.p8
+  APPLE_AUTH_PARAMS: "-authenticationKeyPath /tmp/authkey.p8 -authenticationKeyID ${{ secrets.APPLE_STORE_AUTH_KEY_ID }} -authenticationKeyIssuerID ${{ secrets.APPLE_STORE_AUTH_KEY_ISSUER_ID }}"
+  # conditionally updated later:
+  EXPORT_METHOD: "app-store"
+  EXTRA_XCODEBUILD: ""
+  UPLOAD_TO: ""
+  VERSION: ""
+  SIGNING_CERTIFICATE: ""
+  SIGNING_CERTIFICATE_P12_PASSWORD: ""
   
-
 jobs:
   build_and_deploy:
     strategy:
@@ -22,17 +30,7 @@ jobs:
         platform: [iOS, macOS]
         uploadto: [app-store, ftp]
     runs-on: macos-13
-    env:
-      APPLE_STORE_AUTH_KEY_PATH: /tmp/authkey.p8
-      APPLE_AUTH_PARAMS: "-authenticationKeyPath /tmp/authkey.p8 -authenticationKeyID ${{ secrets.APPLE_STORE_AUTH_KEY_ID }} -authenticationKeyIssuerID ${{ secrets.APPLE_STORE_AUTH_KEY_ISSUER_ID }}"
-      # conditionally updated later:
-      EXPORT_METHOD: "app-store"
-      EXTRA_XCODEBUILD: ""
-      UPLOAD_TO: ""
-      VERSION: ""
-      SIGNING_CERTIFICATE: ""
-      SIGNING_CERTIFICATE_P12_PASSWORD: ""
-      
+
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
