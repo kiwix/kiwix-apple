@@ -21,15 +21,6 @@ jobs:
       matrix:
         platform: [iOS, macOS]
         uploadto: [app-store, ftp]
-        # destination:
-        #   - platform: macOS
-        #     uploadto: dmg
-        #   - platform: macOS
-        #     uploadto: app-store
-        #   - platform: iOS
-        #     uploadto: ipa
-        #   - platform: iOS
-        #     uploadto: app-store
     runs-on: macos-13
     env:
       APPLE_STORE_AUTH_KEY_PATH: /tmp/authkey.p8
