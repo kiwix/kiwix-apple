@@ -1,5 +1,6 @@
 // Messages for French (français)
 // Exported from translatewiki.net
+// Author: Adriendelucca
 // Author: Crochet.david
 // Author: Gomoko
 // Author: Vikoula5
@@ -57,7 +58,7 @@
 "flavor_tag.help.max" = "tout sauf les gros fichiers multimédias comme la vidéo/audio";
 "flavor_tag.help.no_pic" = "la plupart des photos ont été supprimées";
 "flavor_tag.help.mini" = "seul un sous-ensemble du texte est disponible, probablement la première section";
-"library_refresh_time.last" = "à l’instant";
+"library_refresh_time.last" = "À l’instant";
 "library_refresh_time.never" = "Jamais";
 "zim_file_cell_article_count_suffix" = "articles";
 "zim_file_missing_indicator.help" = "Le fichier Zim est manquant.";
@@ -183,7 +184,7 @@
 "welcome.actions.open_file" = "Ouvrir le fichier";
 "welcome.button.status.fetching.text" = "Récupération…";
 "welcome.button.status.fetch_catalog.text" = "Récupérer le catalogue";
-"commands.button.actual_size" = "Taille actuelle";
+"commands.button.actual_size" = "Taille réelle";
 "comments.button.zoom_in" = "Zoom avant";
 "comments.button.zoom_out" = "Zoom arrière";
 "app_macos_commands.open_file" = "Ouvrir...";
