@@ -144,6 +144,9 @@ jobs:
       if: env.UPLOAD_TO == 'app-store'
       run: python .github/retry-if-retcode.py --sleep 60 --attempts 5 --retcode 70 xcrun xcodebuild -exportArchive -archivePath $PWD/Kiwix-$VERSION.xcarchive -exportPath $PWD/export/ -exportOptionsPlist export.plist -allowProvisioningUpdates $APPLE_AUTH_PARAMS
 
+    - name: Show the list of files
+      run: ls -la
+
     - name: Export notarized App from archive, Create DMG, Notarize DMG
       if: matrix.platform == 'macOS' && env.UPLOAD_TO == 'ftp'
       run: |
