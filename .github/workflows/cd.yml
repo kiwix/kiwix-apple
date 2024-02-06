@@ -109,7 +109,7 @@ jobs:
         EXTRA_XCODEBUILD: ${{ env.EXTRA_XCODEBUILD }}
 
     - name: Add altool credentials to Keychain
-      if: matrix.platform == 'macOS' && env.UPLOAD_TO == 'ftp'
+      if: env.UPLOAD_TO == 'ftp'
       env:
         APPLE_SIGNING_ALTOOL_USERNAME: ${{ secrets.APPLE_SIGNING_ALTOOL_USERNAME }}
         APPLE_SIGNING_ALTOOL_PASSWORD: ${{ secrets.APPLE_SIGNING_ALTOOL_PASSWORD }}
@@ -152,11 +152,7 @@ jobs:
         VERSION: ${{ env.VERSION }}
       run: python .github/retry-if-retcode.py --sleep 60 --attempts 20 --retcode 65 xcrun xcodebuild -exportNotarizedApp -archivePath $PWD/Kiwix-$VERSION.xcarchive -exportPath $PWD/export/ -allowProvisioningUpdates ${{ env.APPLE_AUTH_PARAMS }}
 
-    - name: Show the list of files
-      run: |
-        ls -la
-
-    - name: Create and Notarize Notarize DMG
+    - name: Create and Notarize DMG
       if: matrix.platform == 'macOS' && env.UPLOAD_TO == 'ftp'
       env:
         VERSION: ${{ env.VERSION }}
