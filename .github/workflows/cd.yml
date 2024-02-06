@@ -142,19 +142,24 @@ jobs:
 
     - name: Upload Archive to Apple (App Store or Notarization)
       if: env.UPLOAD_TO == 'app-store'
+      env:
+        VERSION: ${{ env.VERSION }}
       run: python .github/retry-if-retcode.py --sleep 60 --attempts 5 --retcode 70 xcrun xcodebuild -exportArchive -archivePath $PWD/Kiwix-$VERSION.xcarchive -exportPath $PWD/export/ -exportOptionsPlist export.plist -allowProvisioningUpdates ${{ env.APPLE_AUTH_PARAMS }}
 
     - name: Export notarized App from archive
       if: env.UPLOAD_TO == 'ftp'
+      env:
+        VERSION: ${{ env.VERSION }}
       run: python .github/retry-if-retcode.py --sleep 60 --attempts 20 --retcode 65 xcrun xcodebuild -exportNotarizedApp -archivePath $PWD/Kiwix-$VERSION.xcarchive -exportPath $PWD/export/ -allowProvisioningUpdates ${{ env.APPLE_AUTH_PARAMS }}
 
     - name: Show the list of files
       run: |
         ls -la
-        ls -la export/
 
     - name: Create and Notarize Notarize DMG
       if: matrix.platform == 'macOS' && env.UPLOAD_TO == 'ftp'
+      env:
+        VERSION: ${{ env.VERSION }}
       run: |  
         pip install dmgbuild
         dmgbuild -s .github/dmg-settings.py -Dapp=$PWD/export/Kiwix.app -Dbg=.github/dmg-bg.png "Kiwix-$VERSION" $PWD/kiwix-$VERSION.dmg
@@ -169,12 +174,16 @@ jobs:
 
     - name: Upload DMG
       if: env.UPLOAD_TO == 'ftp' && matrix.platform == 'macOS'
+      env:
+        VERSION: ${{ env.VERSION }}
       run: |
         echo 
       #  python .github/upload_file.py --src ${PWD}/kiwix-${VERSION}.dmg --dest ci@master.download.kiwix.org:30022/data/download/${UPLOAD_FOLDER} --ssh-key ${SSH_KEY}
 
     - name: Upload IPA
       if: env.UPLOAD_TO == 'ftp' && matrix.platform == 'iOS'
+      env:
+        VERSION: ${{ env.VERSION }}
       run: |
         mv ${PWD}/export/Kiwix.ipa ${PWD}/export/kiwix-${VERSION}.ipa
       #  python .github/upload_file.py --src ${PWD}/export/kiwix-${VERSION}.ipa --dest ci@master.download.kiwix.org:30022/data/download/${UPLOAD_FOLDER} --ssh-key ${SSH_KEY}
