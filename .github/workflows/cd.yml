@@ -147,7 +147,7 @@ jobs:
       run: python .github/retry-if-retcode.py --sleep 60 --attempts 5 --retcode 70 xcrun xcodebuild -exportArchive -archivePath $PWD/Kiwix-$VERSION.xcarchive -exportPath $PWD/export/ -exportOptionsPlist export.plist -allowProvisioningUpdates ${{ env.APPLE_AUTH_PARAMS }}
 
     - name: Export notarized App from archive
-      if: env.UPLOAD_TO == 'ftp'
+      if: matrix.platform == 'macOS' && env.UPLOAD_TO == 'ftp'
       env:
         VERSION: ${{ env.VERSION }}
       run: python .github/retry-if-retcode.py --sleep 60 --attempts 20 --retcode 65 xcrun xcodebuild -exportNotarizedApp -archivePath $PWD/Kiwix-$VERSION.xcarchive -exportPath $PWD/export/ -allowProvisioningUpdates ${{ env.APPLE_AUTH_PARAMS }}
