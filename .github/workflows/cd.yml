@@ -173,8 +173,7 @@ jobs:
       env:
         VERSION: ${{ env.VERSION }}
       run: |
-        echo 
-      #  python .github/upload_file.py --src ${PWD}/kiwix-${VERSION}.dmg --dest ci@master.download.kiwix.org:30022/data/download/${UPLOAD_FOLDER} --ssh-key ${SSH_KEY}
+        python .github/upload_file.py --src ${PWD}/kiwix-${VERSION}.dmg --dest ci@master.download.kiwix.org:30022/data/download/${UPLOAD_FOLDER} --ssh-key ${SSH_KEY}
 
     - name: Upload IPA
       if: env.UPLOAD_TO == 'ftp' && matrix.platform == 'iOS'
@@ -182,4 +181,4 @@ jobs:
         VERSION: ${{ env.VERSION }}
       run: |
         mv ${PWD}/export/Kiwix.ipa ${PWD}/export/kiwix-${VERSION}.ipa
-      #  python .github/upload_file.py --src ${PWD}/export/kiwix-${VERSION}.ipa --dest ci@master.download.kiwix.org:30022/data/download/${UPLOAD_FOLDER} --ssh-key ${SSH_KEY}
+        python .github/upload_file.py --src ${PWD}/export/kiwix-${VERSION}.ipa --dest ci@master.download.kiwix.org:30022/data/download/${UPLOAD_FOLDER} --ssh-key ${SSH_KEY}
