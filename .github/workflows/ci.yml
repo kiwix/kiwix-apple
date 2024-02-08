@@ -39,9 +39,7 @@ jobs:
 
       - name: Set EXTRA_XCODEBUILD
         if: matrix.platform == 'iOS'
-        env:
-          EXTRA_XCODEBUILD: "-sdk iphoneos ${{ env.APPLE_AUTH_PARAMS }}"
-        run: echo
+        run: echo "EXTRA_XCODEBUILD=-sdk iphoneos ${{ env.APPLE_AUTH_PARAMS }}" >> $GITHUB_ENV
 
       - name: Build
         uses: ./.github/actions/xcbuild
