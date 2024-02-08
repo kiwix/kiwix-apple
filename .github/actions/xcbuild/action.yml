@@ -8,8 +8,6 @@ inputs:
     required: true
   xc-destination:
     required: true
-  upload-to:
-    required: true
   APPLE_DEVELOPMENT_SIGNING_CERTIFICATE:
     required: true
   APPLE_DEVELOPMENT_SIGNING_P12_PASSWORD:

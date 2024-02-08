@@ -7,9 +7,6 @@ on:
     branches:
       - main
 
-env:
-  APPLE_STORE_AUTH_KEY_PATH: /tmp/authkey.p8
-
 jobs:
   authorize:
     # sets environment based on origin of PR: internal (non-existent) for own-repo or external (requires reviewer to run) for external repos
@@ -20,54 +17,36 @@ jobs:
   build:
     needs: authorize
     runs-on: macos-13
+    env:
+      EXTRA_XCODEBUILD: ""
+      APPLE_STORE_AUTH_KEY_PATH: /tmp/authkey.p8
+      APPLE_AUTH_PARAMS: "-authenticationKeyPath /tmp/authkey.p8 -authenticationKeyID ${{ secrets.APPLE_STORE_AUTH_KEY_ID }} -authenticationKeyIssuerID ${{ secrets.APPLE_STORE_AUTH_KEY_ISSUER_ID }}"
     strategy:
       fail-fast: false
       matrix:
-        destination:
-          - platform: macOS
-          - platform: iOS
-            xcode_extra: -sdk iphoneos
+        platform: [macOS, iOS]
+
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           # /!\ important: this checks out code from the HEAD of the PR instead of the main branch (for pull_request_target)
           ref: ${{ github.event.pull_request.head.sha || github.ref }}
 
       - name: Add Apple Store Key
-        if: ${{ matrix.destination.platform == 'iOS' }}
-        env:
-          APPLE_STORE_AUTH_KEY_PATH: ${{ env.APPLE_STORE_AUTH_KEY_PATH }}
-          APPLE_STORE_AUTH_KEY: ${{ secrets.APPLE_STORE_AUTH_KEY }}
-        shell: bash
-        run: echo "${APPLE_STORE_AUTH_KEY}" | base64 --decode -o $APPLE_STORE_AUTH_KEY_PATH
+        if: matrix.platform == 'iOS'
+        run: echo "${{ secrets.APPLE_STORE_AUTH_KEY }}" | base64 --decode -o ${{ env.APPLE_STORE_AUTH_KEY_PATH}}
 
-      - name: Extend EXTRA_XCODEBUILD
-        if: ${{ matrix.destination.platform == 'iOS' }}
-        env:
-          EXTRA_XCODEBUILD: ${{ matrix.destination.xcode_extra }}
-          APPLE_STORE_AUTH_KEY_PATH: ${{ env.APPLE_STORE_AUTH_KEY_PATH }}
-          APPLE_STORE_AUTH_KEY_ID: ${{ secrets.APPLE_STORE_AUTH_KEY_ID }}
-          APPLE_STORE_AUTH_KEY_ISSUER_ID: ${{ secrets.APPLE_STORE_AUTH_KEY_ISSUER_ID }}
-        shell: python
-        run: |
-          import os
-          extra_xcode = os.getenv("EXTRA_XCODEBUILD", "")
-          extra_xcode += f" -authenticationKeyPath {os.getenv('APPLE_STORE_AUTH_KEY_PATH')}"
-          extra_xcode += f" -authenticationKeyID {os.getenv('APPLE_STORE_AUTH_KEY_ID')}"
-          extra_xcode += f" -authenticationKeyIssuerID {os.getenv('APPLE_STORE_AUTH_KEY_ISSUER_ID')}"
-
-          with open(os.getenv("GITHUB_ENV"), "a") as fh:
-            fh.write(f"EXTRA_XCODEBUILD={extra_xcode}\n")
+      - name: Set EXTRA_XCODEBUILD
+        if: matrix.platform == 'iOS'
+        run: echo "EXTRA_XCODEBUILD=-sdk iphoneos ${{ env.APPLE_AUTH_PARAMS }}" >> $GITHUB_ENV
 
       - name: Build
         uses: ./.github/actions/xcbuild
         with:
           action: build
-          xc-destination: generic/platform=${{ matrix.destination.platform }}
-          upload-to: dev
+          xc-destination: generic/platform=${{ matrix.platform }}
           version: CI
           APPLE_DEVELOPMENT_SIGNING_CERTIFICATE: ${{ secrets.APPLE_DEVELOPMENT_SIGNING_CERTIFICATE }}
           APPLE_DEVELOPMENT_SIGNING_P12_PASSWORD: ${{ secrets.APPLE_DEVELOPMENT_SIGNING_P12_PASSWORD }}
           EXTRA_XCODEBUILD: ${{ env.EXTRA_XCODEBUILD }}
-
