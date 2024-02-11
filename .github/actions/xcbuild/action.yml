@@ -99,7 +99,7 @@ runs:
     - name: Download dependencies if needed
       if: ${{ inputs.DOWNLOAD_DEPENDENCIES == 'true' }}
       shell: bash
-      run: brew bundle
+      run: brew bundle --force
 
     - name: Prepare Xcode
       shell: bash
