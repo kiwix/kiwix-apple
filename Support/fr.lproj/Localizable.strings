@@ -3,6 +3,7 @@
 // Author: Adriendelucca
 // Author: Crochet.david
 // Author: Gomoko
+// Author: Stephane
 // Author: Vikoula5
 // Author: Wladek92
 
@@ -157,8 +158,8 @@
 "settings.about.dependencies.name" = "Nom";
 "settings.about.dependencies.license" = "Licence";
 "settings.about.dependencies.version" = "Version";
-"settings.about.description" = "Kiwix est un lecteur hors ligne pour du contenu en ligne tel que Wikipédia, le projet Gutenberg, ou les discussions TED. Cela rend la connaissance disponible aux gens sans accès internet, ou un accès limité. Le logiciel aussi bien que le contenu est libre d’utilisation pour quiconque.";
-"settings.about.license-description" = "Cette application est mise à disposition sous les conditions de la Licence Publique Générale GNU version 3.";
+"settings.about.description" = "Kiwix est un lecteur hors ligne pour du contenu en ligne tel que Wikipédia, le projet Gutenberg, ou les discussions TED. Cela rend la connaissance disponible aux gens sans accès internet, ou avec un accès limité. Le logiciel aussi bien que le contenu est libre et gratuit.";
+"settings.about.license-description" = "Cette application est mise à disposition sous les conditions de la Licence publique générale GNU version 3.";
 "settings.about.appverion.title" = "Version";
 "settings.about.build.title" = "Construire";
 "settings.about.our_website.button" = "Notre site web";
