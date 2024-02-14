@@ -3,6 +3,7 @@
 // Author: Adriendelucca
 // Author: Troer56
 
+"library_refresh_error.retrieve.description" = "Ur fazi zo bet en ur adtapout roadennoù al levraoueg.";
 "download_service.complete.title" = "Pellgargañ kaset da benn";
 "download_service.complete.description" = "%@ zo bet pellgarget gant berzh.";
 "common.dialog.button.open" = "Digeriñ";
