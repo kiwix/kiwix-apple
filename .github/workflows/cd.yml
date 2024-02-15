@@ -1,11 +1,22 @@
 name: CD
 
+# | Platform | Nightly | Weekly (if diff HEAD)  | TestFlight Tag | Post App Release |
+# |----------|---------|------------------------|----------------|------------------|
+# | macOS    | ftp     | app-store              | app-store      | ftp              |
+# | iOS      | ftp     | app-store              | app-store      | -                |
+# |----------|---------|------------------------|----------------|------------------|
+# | VERSION  | Date    | get from project.yml   | project.yml    | project.yml      |
+# |----------|---------|------------------------|----------------|------------------|
+
 on:
   schedule:
-  - cron: '32 1 * * *'
-  workflow_dispatch:
+  - cron: '32 1 * * *' # NIGHTLY @ 01:32
+  - cron: '00 2 * * 1' # WEEKLY @ 02:00 on Monday
+  push:
+    tags: 
+      - testflight**   # TestFlight Tag
   release:
-    types: [published]
+    types: [published]   # Post App Release
 
 env:
   KEYCHAIN: /Users/runner/build.keychain-db
@@ -17,7 +28,7 @@ env:
   # conditionally updated later:
   EXPORT_METHOD: "app-store"
   EXTRA_XCODEBUILD: ""
-  UPLOAD_TO: ""
+  UPLOAD_TO: "" # !important
   VERSION: ""
   SIGNING_CERTIFICATE: ""
   SIGNING_CERTIFICATE_P12_PASSWORD: ""
@@ -28,44 +39,76 @@ jobs:
       fail-fast: false
       matrix:
         platform: [iOS, macOS]
-        uploadto: [app-store, ftp]
     runs-on: macos-13
 
     steps:
+
     - name: Checkout code
       uses: actions/checkout@v4
+
+    - name: Install python dependencies
+      run: pip install pyyaml==6.0.1
+
+    - name: Set VERSION from code
+      shell: python
+      run: |
+        import yaml
+        import os
+        with open("project.yml") as yml_file:
+          project = yaml.safe_load(yml_file)
+        version = project['targets']['Kiwix']['settings']['base']['MARKETING_VERSION']
+        with open(os.getenv("GITHUB_ENV"), "a") as fh:
+            fh.write(f"VERSION={version}\n")
+
+    - name: Get the date of last change
+      run: echo "DATE_OF_LAST_CHANGE=`git log -1 --format=%ct`" >> $GITHUB_ENV
+
+    - name: Check for code changes in the last week
+      shell: python
+      run: |
+        import datetime
+        import os
+        now = datetime.datetime.now()
+        last_change = datetime.datetime.fromtimestamp(int(os.getenv("DATE_OF_LAST_CHANGE")))
+        value = "yes" if (now - last_change).days < 7 else "no"
+        with open(os.getenv("GITHUB_ENV"), "a") as fh:
+          fh.write(f"HAS_CHANGED_LAST_WEEK={value}\n")
+
+    - name: Nightly setup # use ftp and overrwrite VERSION with current date
+      if: github.event_name == 'schedule' && github.event.schedule == '32 1 * * *'
+      shell: python
+      run: |
+        import datetime
+        import os
+        version = str(datetime.date.today())
+        with open(os.getenv("GITHUB_ENV"), "a") as fh:
+          fh.write(f"VERSION={version}\n")
+          fh.write(f"UPLOAD_TO=ftp\n")
+          fh.write(f"UPLOAD_FOLDER=release/{version}\n")
+
+    - name: Weekly setup
+      if: github.event_name == 'schedule' && github.event.schedule == '00 2 * * 1' && env.HAS_CHANGED_LAST_WEEK == 'yes'
+      run: echo "UPLOAD_TO=app-store" >> $GITHUB_ENV
+
+    - name: Testflight tag setup
+      if: github.event_name == 'push'
+      run: echo "UPLOAD_TO=app-store" >> $GITHUB_ENV
+
+    - name: Post App Release macOS setup
+      if: github.event_name == 'release' && matrix.platform == 'macOS'
+      run: |
+        echo "UPLOAD_TO=ftp" >> $GITHUB_ENV
+        echo "UPLOAD_FOLDER=release/${{ env.VERSION }}" >> $GITHUB_ENV
+
+    # Post App Release: skip steps for iOS, by leaving the UPLOAD_TO empty ("")
 
     - name: Set iOS extra xcode params
       if: matrix.platform == 'iOS'
       run: echo "EXTRA_XCODEBUILD=-sdk iphoneos ${{ env.APPLE_AUTH_PARAMS }}" >> $GITHUB_ENV
 
     - name: Set macOS FTP export method
-      if: matrix.platform == 'macOS' && matrix.uploadto == 'ftp'
+      if: matrix.platform == 'macOS' && env.UPLOAD_TO == 'ftp'
       run: echo "EXPORT_METHOD=developer-id" >> $GITHUB_ENV
-
-    - name: Decide whether building nightly or release
-      env:
-        UPLOAD_TO: ${{ matrix.uploadto }}
-      shell: python
-      run: |
-        import datetime
-        import os
-
-        upload_to = os.getenv("UPLOAD_TO")
-
-        if os.getenv("GITHUB_EVENT_NAME", "") == "release":
-          version = os.getenv("GITHUB_REF_NAME")
-          upload_folder = f"release/{version}"
-        else:
-          version = str(datetime.date.today())
-          upload_folder = f"nightly/{version}"
-          if upload_to == "app-store":
-            upload_to = "" # do not upload in this case
-
-        with open(os.getenv("GITHUB_ENV"), "a") as fh:
-          fh.write(f"VERSION={version}\n")
-          fh.write(f"UPLOAD_FOLDER={upload_folder}\n")
-          fh.write(f"UPLOAD_TO={upload_to}\n")
 
     - name: Use Developer ID Certificate
       if: env.UPLOAD_TO == 'ftp' && matrix.platform == 'macOS'
@@ -133,9 +176,9 @@ jobs:
         plutil -insert provisioningProfiles -dictionary ./export.plist
         plutil -replace provisioningProfiles -json '{ "self.Kiwix" : "iOS Team Provisioning Profile" }' ./export.plist
 
-    - name: Prepare export for ${{ matrix.uploadto }}
+    - name: Prepare export for not IPA
       # else statement for Prepare export for IPA
-      # excluding UPLOAD_TO == '', which really means we should not upload
+      # excluding UPLOAD_TO == '', which means skip upload
       # [(macOS, ftp), (macOS, app-store), (iOS, app-store)]
       if: matrix.platform != 'iOS' || env.UPLOAD_TO == 'app-store'
       run: |
