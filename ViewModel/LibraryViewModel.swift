@@ -57,7 +57,7 @@ public class LibraryViewModel: ObservableObject {
             
             // populate library language code if there isn't one set already
             let currentLanguageCode: String?
-            if #available(iOS 16, *) {
+            if #available(iOS 16, macOS 13, *) {
                 currentLanguageCode = Locale.current.language.languageCode?.identifier(.alpha3)
             } else {
                 // Locale.current.languageCode is returning a 2 char lang code, eg: "en"
