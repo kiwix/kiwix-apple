@@ -56,10 +56,19 @@ public class LibraryViewModel: ObservableObject {
             Defaults[.libraryLastRefresh] = Date()
             
             // populate library language code if there isn't one set already
-            if Defaults[.libraryLanguageCodes].isEmpty, let currentLanguageCode = Locale.current.languageCode {
-                Defaults[.libraryLanguageCodes] = [currentLanguageCode]
+            let currentLanguageCode: String?
+            if #available(iOS 16, macOS 13, *) {
+                currentLanguageCode = Locale.current.language.languageCode?.identifier(.alpha3)
+            } else {
+                // Locale.current.languageCode is returning a 2 char lang code, eg: "en"
+                // we want a 3 char value, eg: "eng", otherwise we filter out every results
+                // and end up with an empty list in the categories
+                currentLanguageCode = "eng"
             }
-
+            if Defaults[.libraryLanguageCodes].isEmpty,
+               let currentLanguageCode {
+               Defaults[.libraryLanguageCodes] = [currentLanguageCode]
+            }
             // reset error
             error = nil
             
