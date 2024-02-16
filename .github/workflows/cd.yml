@@ -1,13 +1,14 @@
 name: CD
 
-# | Platform | Nightly | Weekly (if diff HEAD)  | TestFlight Tag | Post App Release |
-# |----------|---------|------------------------|----------------|------------------|
-# | macOS    | ftp     | app-store              | app-store      | ftp              |
-# | iOS      | ftp     | app-store              | app-store      | -                |
-# |----------|---------|------------------------|----------------|------------------|
-# | VERSION  | Date    | get from project.yml   | project.yml    | project.yml      |
-# |----------|---------|------------------------|----------------|------------------|
-
+# | Platform        | Nightly | Weekly (if diff HEAD)  | TestFlight Tag | Post App Release |
+# |-----------------|---------|------------------------|----------------|------------------|
+# | macOS           | ftp     | app-store              | app-store      | ftp              |
+# | iOS             | ftp     | app-store              | app-store      | -                |
+# |-----------------|---------|------------------------|----------------|------------------|
+# | VERSION         | Date    | get from project.yml   | project.yml    | project.yml      |
+# |-----------------|---------|------------------------|----------------|------------------|
+# | UPLOAD_FOLDER   | nightly | -                      | -              | release          |
+# |-----------------|---------|------------------------|----------------|------------------|
 on:
   schedule:
   - cron: '32 1 * * *' # NIGHTLY @ 01:32
@@ -84,7 +85,7 @@ jobs:
         with open(os.getenv("GITHUB_ENV"), "a") as fh:
           fh.write(f"VERSION={version}\n")
           fh.write(f"UPLOAD_TO=ftp\n")
-          fh.write(f"UPLOAD_FOLDER=release/{version}\n")
+          fh.write(f"UPLOAD_FOLDER=nightly/{version}\n")
 
     - name: Weekly setup
       if: github.event_name == 'schedule' && github.event.schedule == '00 2 * * 1' && env.HAS_CHANGED_LAST_WEEK == 'yes'
