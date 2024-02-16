@@ -38,7 +38,7 @@ final class LibraryRefreshViewModelTest: XCTestCase {
         
         HTTPTestingURLProtocol.handler = { urlProtocol in
             let response = HTTPURLResponse(
-                url: URL(string: "https://library.kiwix.org/catalog/root.xml")!,
+                url: URL(string: "https://library.kiwix.org/catalog/v2/entries?count=-1")!,
                 statusCode: 200, httpVersion: nil, headerFields: [:]
             )!
             let data = self.makeOPDSData(zimFileID: UUID()).data(using: .utf8)!
@@ -104,7 +104,7 @@ final class LibraryRefreshViewModelTest: XCTestCase {
     func testFetchBadStatusCode() async {
         HTTPTestingURLProtocol.handler = { urlProtocol in
             let response = HTTPURLResponse(
-                url: URL(string: "https://library.kiwix.org/catalog/root.xml")!,
+                url: URL(string: "https://library.kiwix.org/catalog/v2/entries?count=-1")!,
                 statusCode: 404, httpVersion: nil, headerFields: [:]
             )!
             urlProtocol.client?.urlProtocol(urlProtocol, didReceive: response, cacheStoragePolicy: .notAllowed)
@@ -125,7 +125,7 @@ final class LibraryRefreshViewModelTest: XCTestCase {
     func testInvalidOPDSData() async {
         HTTPTestingURLProtocol.handler = { urlProtocol in
             let response = HTTPURLResponse(
-                url: URL(string: "https://library.kiwix.org/catalog/root.xml")!,
+                url: URL(string: "https://library.kiwix.org/catalog/v2/entries?count=-1")!,
                 statusCode: 200, httpVersion: nil, headerFields: [:]
             )!
             urlProtocol.client?.urlProtocol(urlProtocol, didLoad: "Invalid OPDS Data".data(using: .utf8)!)
@@ -148,7 +148,7 @@ final class LibraryRefreshViewModelTest: XCTestCase {
         let zimFileID = UUID()
         HTTPTestingURLProtocol.handler = { urlProtocol in
             let response = HTTPURLResponse(
-                url: URL(string: "https://library.kiwix.org/catalog/root.xml")!,
+                url: URL(string: "https://library.kiwix.org/catalog/v2/entries?count=-1")!,
                 statusCode: 200, httpVersion: nil, headerFields: [:]
             )!
             let data = self.makeOPDSData(zimFileID: zimFileID).data(using: .utf8)!
@@ -193,7 +193,7 @@ final class LibraryRefreshViewModelTest: XCTestCase {
         XCTAssertEqual(zimFile.hasVideos, false)
         XCTAssertEqual(zimFile.includedInSearch, true)
         XCTAssertEqual(zimFile.isMissing, false)
-        XCTAssertEqual(zimFile.languageCode, "en")
+        XCTAssertEqual(zimFile.languageCode, "eng")
         XCTAssertEqual(zimFile.mediaCount, 566835)
         XCTAssertEqual(zimFile.name, "Best of Wikipedia")
         XCTAssertEqual(zimFile.persistentID, "wikipedia_en_top")
