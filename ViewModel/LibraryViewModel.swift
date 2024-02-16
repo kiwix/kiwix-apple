@@ -81,7 +81,7 @@ public class LibraryViewModel: ObservableObject {
     }
     
     private func fetchData() async throws -> Data? {
-        guard let url = URL(string: "https://library.kiwix.org/catalog/v2/entries") else { return nil }
+        guard let url = URL(string: "https://library.kiwix.org/catalog/v2/entries?count=-1") else { return nil }
         do {
             let request = URLRequest(url: url, timeoutInterval: 20)
             let (data, response) = try await self.urlSession.data(for: request)
