@@ -124,7 +124,7 @@ private struct LanguageLabel: View {
 }
 #endif
 
-private class Languages {
+class Languages {
     /// Retrieve a list of languages.
     /// - Returns: languages with count of zim files in each language
     static func fetch() async -> [Language] {
