@@ -16,11 +16,7 @@ struct ZimFilesCategories: View {
     private var categories: [Category]
 
     init() {
-        let contentLanguageCodes = Defaults[.libraryLanguageCodes]
-        let categoriesToLanguages = CategoriesToLanguages()
-        categories = Category.allCases.filter { (category: Category) in
-            categoriesToLanguages.has(category: category, inLanguages: contentLanguageCodes)
-        }
+        categories = CategoriesToLanguages.allCategories()
         selected = categories.first ?? .wikipedia
     }
 

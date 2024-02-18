@@ -23,4 +23,12 @@ struct CategoriesToLanguages {
     static func save(_ dictionary: [Category: Set<String>]) {
         Defaults[.categoriesToLanguages] = dictionary
     }
+
+    static func allCategories() -> [Category] {
+        let categoriesToLanguages = CategoriesToLanguages()
+        let contentLanguages = Defaults[.libraryLanguageCodes]
+        return Category.allCases.filter { (category: Category) in
+            categoriesToLanguages.has(category: category, inLanguages: contentLanguages)
+        }
+    }
 }

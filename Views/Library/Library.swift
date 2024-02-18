@@ -21,11 +21,7 @@ struct Library: View {
 
     init(tabItem: LibraryTabItem? = nil) {
         self.defaultTabItem = tabItem
-        let categoriesToLanguages = CategoriesToLanguages()
-        let contentLanguages = Defaults[.libraryLanguageCodes]
-        categories = Category.allCases.filter { (category: Category) in
-            categoriesToLanguages.has(category: category, inLanguages: contentLanguages)
-        }
+        categories = CategoriesToLanguages.allCategories()
     }
     
     var body: some View {
