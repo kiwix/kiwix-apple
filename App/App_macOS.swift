@@ -97,7 +97,7 @@ struct RootView: View {
                 if FeatureFlags.hasLibrary {
                     Section("app_macos_navigation.button.library".localized) {
                         ForEach(libraryItems, id: \.self) { navigationItem in
-                            Label(navigationItem.name.localized, systemImage: navigationItem.icon)
+                            Label(navigationItem.name, systemImage: navigationItem.icon)
                         }
                     }
                 }
