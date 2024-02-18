@@ -109,6 +109,25 @@ cp -r BUILD_apple_all_static/INSTALL/lib/CoreKiwix.xcframework ../apple/
 You can now launch the build from Xcode and use the iOS simulator or
 your macOS target. At this point the xcframework is not signed.
 
+
+## Deployment
+### Nightly to FTP
+Each night 01:32 am CET, we build our iOS and macOS apps.
+These are developer signed builds, notarized (a process required to install them outside of the app store) and uploaded to our FTP nightly folder. The files are versioned using the current date.
+
+### Weekly to TestFlight
+Mondays at 02:00 am CET, we build our apps, but only if there were code changes within the last week (any git commits to main).
+These are AppStore builds, which are uploaded to TestFlight, using the current app version from code (see `project.yml`).
+
+### On-demand TestFlight 
+It is also possible to create TestFlight builds on-demand, by pushing a git tag starting with "testflight" to the repo. This will run the same process as the "weekly" build (we just do not need to wait a whole week).
+
+### Releasing to AppStore and FTP
+Once we are happy with the quality of the app in TestFlight, we can send it for approval to Apple. Once approved by Apple, we can release them to the AppStore. At the same time, we do want to release our macOS app via FTP as well. For this, we run our "Post App Release" workflow, which can be triggered by creating a Github Release, based on the git commit used for the TestFlight apps (the ones that were approved by Apple). The specific commit that triggered the (now approved) TestFlight app, can be found under Github Actions. This Github Release (based on this specific commit) will rebuild the macOS application and upload it to FTP to the release folder. Again, the purpose of this is to make the very same macOS app - which was released to the AppStore  - also available via FTP.
+
+### Last step
+If all that is done, we should create a PR, incrementing the version number of the project (see: `project.yml`), and the deployment cycle can start again.
+
 ## License
 
 [GPLv3](https://www.gnu.org/licenses/gpl-3.0) or later, see
