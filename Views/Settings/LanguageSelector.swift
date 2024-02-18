@@ -25,7 +25,7 @@ struct LanguageSelector: View {
                 } set: { isSelected in
                     if isSelected {
                         selected.insert(language.code)
-                    } else {
+                    } else if selected.count > 1 {
                         selected.remove(language.code)
                     }
                 })
