@@ -31,7 +31,7 @@ struct ReadingSettings: View {
                 SettingSection(name: "reading_settings.external_link.title".localized) {
                     Picker(selection: $externalLinkLoadingPolicy) {
                         ForEach(ExternalLinkLoadingPolicy.allCases) { loadingPolicy in
-                            Text(loadingPolicy.name.localized).tag(loadingPolicy)
+                            Text(loadingPolicy.name).tag(loadingPolicy)
                         }
                     } label: { }
                 }
@@ -40,7 +40,7 @@ struct ReadingSettings: View {
                 SettingSection(name: "reading_settings.search_snippet.title".localized) {
                     Picker(selection: $searchResultSnippetMode) {
                         ForEach(SearchResultSnippetMode.allCases) { snippetMode in
-                            Text(snippetMode.name.localized).tag(snippetMode)
+                            Text(snippetMode.name).tag(snippetMode)
                         }
                     } label: { }
                 }
