@@ -102,6 +102,10 @@ struct LanguageSelector: View {
     }
     
     private func hide(_ language: Language) {
+        guard Defaults[.libraryLanguageCodes].count > 1 else {
+            // we should not remove all languages, it will produce empty results
+            return
+        }
         Defaults[.libraryLanguageCodes].remove(language.code)
         withAnimation {
             showing.removeAll { $0.code == language.code }

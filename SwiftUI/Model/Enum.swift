@@ -51,9 +51,9 @@ enum Category: String, CaseIterable, Identifiable, LosslessStringConvertible {
     }
 
     init?(rawValue: String?) {
-        self.init(rawValue: rawValue ?? "")
+        self.init(rawValue: rawValue ?? "other")
     }
-    
+
     var name: String {
         switch self {
         case .wikipedia:

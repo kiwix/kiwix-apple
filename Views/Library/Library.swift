@@ -17,11 +17,15 @@ struct Library: View {
     @SceneStorage("LibraryTabItem") private var tabItem: LibraryTabItem = .opened
         
     private let defaultTabItem: LibraryTabItem?
-    private let categoriesToLanguages = CategoriesToLanguages()
-    @Default(.libraryLanguageCodes) private var contentLanguages
+    private let categories: [Category]
 
     init(tabItem: LibraryTabItem? = nil) {
         self.defaultTabItem = tabItem
+        let categoriesToLanguages = CategoriesToLanguages()
+        let contentLanguages = Defaults[.libraryLanguageCodes]
+        categories = Category.allCases.filter { (category: Category) in
+            categoriesToLanguages.has(category: category, inLanguages: contentLanguages)
+        }
     }
     
     var body: some View {
@@ -32,9 +36,7 @@ struct Library: View {
                     case .opened:
                         ZimFilesOpened()
                     case .categories:
-                        List(Category.allCases.filter({ (category: Category) in
-                            categoriesToLanguages.has(category: category, inLanguages: contentLanguages)
-                        })) { category in
+                        List(categories) { category in
                             NavigationLink {
                                 ZimFilesCategory(category: .constant(category))
                                     .navigationTitle(category.name)

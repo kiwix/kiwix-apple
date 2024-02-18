@@ -74,8 +74,8 @@ public class LibraryViewModel: ObservableObject {
     private func saveCategoryAvailableInLanguages(using parser: OPDSParser) {
         var dictionary: [Category: Set<String>] = [:]
         for zimFileID in parser.zimFileIDs {
-            if let meta = parser.getMetaData(id: zimFileID),
-               let category = Category(rawValue: meta.category) {
+            if let meta = parser.getMetaData(id: zimFileID) {
+                let category = Category(rawValue: meta.category) ?? .other
                 let allLanguagesForCategory: Set<String>
                 let categoryLanguages: Set<String> = Set<String>(meta.languageCodes.components(separatedBy: ","))
                 if let existingLanguages = dictionary[category] {
@@ -89,10 +89,10 @@ public class LibraryViewModel: ObservableObject {
         CategoriesToLanguages.save(dictionary)
     }
 
-    /// Make sure we remove any incompatible non 3 char languages already set
+    /// Make sure we remove the incompatible "en" if it was already set
     static func cleanUpDefaultLanguages() {
         Defaults[.libraryLanguageCodes] = Defaults[.libraryLanguageCodes].filter { langCode in
-            langCode.count == 3
+            langCode != "en"
         }
     }
 
