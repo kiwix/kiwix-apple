@@ -72,7 +72,7 @@ struct LanguageSelector: View {
         .toolbar {
             Picker(selection: $sortingMode) {
                 ForEach(LibraryLanguageSortingMode.allCases) { sortingMode in
-                    Text(sortingMode.name.localized).tag(sortingMode)
+                    Text(sortingMode.name).tag(sortingMode)
                 }
             } label: {
                 Label("language_selector.toolbar.sorting".localized, systemImage: "arrow.up.arrow.down")

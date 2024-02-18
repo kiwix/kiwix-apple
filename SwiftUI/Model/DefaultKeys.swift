@@ -39,6 +39,8 @@ extension Defaults.Keys {
     static let downloadUsingCellular = Key<Bool>("downloadUsingCellular", default: false)
     static let backupDocumentDirectory = Key<Bool>("backupDocumentDirectory", default: false)
 
+    static let categoriesToLanguages = Key<[Category: Set<String>]>("categoriesToLanguages", default: [:])
+
     #if os(macOS)
     // window management:
     static let windowURLs = Key<[URL]>("windowURLs", default: [])

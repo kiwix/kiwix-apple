@@ -54,9 +54,12 @@ public class LibraryViewModel: ObservableObject {
             
             // update library last refresh timestamp
             Defaults[.libraryLastRefresh] = Date()
-            
+
+            saveCategoryAvailableInLanguages(using: parser)
+
             // populate library language code if there isn't one set already
             await setDefaultContentFilterLanguage()
+
             // reset error
             error = nil
             
@@ -67,13 +70,39 @@ public class LibraryViewModel: ObservableObject {
             self.error = error
         }
     }
-    
+
+    private func saveCategoryAvailableInLanguages(using parser: OPDSParser) {
+        var dictionary: [Category: Set<String>] = [:]
+        for zimFileID in parser.zimFileIDs {
+            if let meta = parser.getMetaData(id: zimFileID),
+               let category = Category(rawValue: meta.category) {
+                let allLanguagesForCategory: Set<String>
+                let categoryLanguages: Set<String> = Set<String>(meta.languageCodes.components(separatedBy: ","))
+                if let existingLanguages = dictionary[category] {
+                    allLanguagesForCategory = existingLanguages.union(categoryLanguages)
+                } else {
+                    allLanguagesForCategory = categoryLanguages
+                }
+                dictionary[category] = allLanguagesForCategory
+            }
+        }
+        CategoriesToLanguages.save(dictionary)
+    }
+
+    /// Make sure we remove any incompatible non 3 char languages already set
+    static func cleanUpDefaultLanguages() {
+        Defaults[.libraryLanguageCodes] = Defaults[.libraryLanguageCodes].filter { langCode in
+            langCode.count == 3
+        }
+    }
+
     /// The fetched content is filtered by the languages set in settings.
     /// Try to set it to the device language, making sure we have content to display.
     /// Falls back to English, where most of the content is.
     /// This is only affecting the "fresh-install" defaults.
     /// The user can always set the prefered content languages in settings.
     private func setDefaultContentFilterLanguage() async {
+        Self.cleanUpDefaultLanguages()
         guard Defaults[.libraryLanguageCodes].isEmpty else {
             return // it was already set earlier (either by default or the user)
         }
