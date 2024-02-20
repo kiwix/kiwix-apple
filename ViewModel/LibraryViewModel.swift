@@ -56,10 +56,7 @@ public class LibraryViewModel: ObservableObject {
             Defaults[.libraryLastRefresh] = Date()
             
             // populate library language code if there isn't one set already
-            if Defaults[.libraryLanguageCodes].isEmpty, let currentLanguageCode = Locale.current.languageCode {
-                Defaults[.libraryLanguageCodes] = [currentLanguageCode]
-            }
-
+            await setDefaultContentFilterLanguage()
             // reset error
             error = nil
             
@@ -71,8 +68,42 @@ public class LibraryViewModel: ObservableObject {
         }
     }
     
+    /// The fetched content is filtered by the languages set in settings.
+    /// Try to set it to the device language, making sure we have content to display.
+    /// Falls back to English, where most of the content is.
+    /// This is only affecting the "fresh-install" defaults.
+    /// The user can always set the prefered content languages in settings.
+    private func setDefaultContentFilterLanguage() async {
+        guard Defaults[.libraryLanguageCodes].isEmpty else {
+            return // it was already set earlier (either by default or the user)
+        }
+
+        let defaultLangCode: String
+
+        if #available(iOS 16, macOS 13, *) {
+            let languages = await Languages.fetch()
+            // Double check if the current device language is on the list of languages,
+            // and there is content in that language
+            if let deviceLang = Locale.current.language.languageCode?.identifier(.alpha3),
+               languages.contains(where: { (lang: Language) in
+                   lang.code == deviceLang && lang.count > 0
+               }) {
+                defaultLangCode  = deviceLang
+            } else {
+                defaultLangCode = "eng"
+            }
+        } else {
+            // Locale.current.languageCode is returning a 2 char lang code, eg: "en"
+            // we want a 3 char value, eg: "eng", otherwise we filter out every results
+            // and end up with an empty list in the categories
+            defaultLangCode = "eng"
+        }
+
+        Defaults[.libraryLanguageCodes] = [defaultLangCode]
+    }
+
     private func fetchData() async throws -> Data? {
-        guard let url = URL(string: "https://library.kiwix.org/catalog/root.xml") else { return nil }
+        guard let url = URL(string: "https://library.kiwix.org/catalog/v2/entries?count=-1") else { return nil }
         do {
             let request = URLRequest(url: url, timeoutInterval: 20)
             let (data, response) = try await self.urlSession.data(for: request)
