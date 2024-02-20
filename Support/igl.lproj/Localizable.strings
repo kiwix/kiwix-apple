@@ -1,0 +1,65 @@
+// Messages for Igala (Igala)
+// Exported from translatewiki.net
+// Author: Beracy
+// Author: JosefAnthony
+
+"common.dialog.button.open" = "Eebi";
+"common.button.go_back" = "Da bi";
+"common.button.go_forward" = "Lo tó gba";
+"common.button.done" = "Eché";
+"common.button.cancel" = "Kpalu";
+"common.button.yes" = "Iii";
+"common.button.no" = "É e";
+"common.search" = "Ete ne";
+"common.tab.manager.title" = "Aboji tansu";
+"bookmark_context_menu.view.title" = "Goo";
+"bookmark_context_menu.remove.title" = "Dukwo";
+"attribute.detail.unknown" = "E we ma";
+"library_refresh_time.last" = "Faafai";
+"library_refresh_time.never" = "Ógbegbele";
+"zim_file_opened.toolbar.open.title" = "Ebi";
+"zim_file.list.name.text" = "O du";
+"zim_file.list.info.text" = "U mà";
+"zim_file.base_info.attribute.language" = "Ichi";
+"zim_file.base_info.attribute.created" = "E nyi";
+"zim_file.bool_info.pictures" = "I foto";
+"reading_settings.zoom.reset.button" = "Da bi che";
+"reading_settings.tab.reading" = "Egbà";
+"settings.miscellaneous.navigation.about" = "To du";
+"language_selector.no_language.title" = "Ichi den";
+"language_selector.showing.header" = "Adu nwa go";
+"language_selector.hiding.header" = "Ma ja";
+"language_selector.navitation.title" = "Ichi";
+"settings.about.dependencies" = "Lóno";
+"settings.about.dependencies.name" = "O du";
+"settings.about.build.title" = "U nyi";
+"settings.about.source.title" = "E té";
+"search_result.filter_hearder.text" = "E tene ma nyu";
+"search_result.filter_hearder.button.all" = "Ó Cha ka";
+"welcome.main_page.title" = "Ugbo jali";
+"welcome.button.status.fetching.text" = "E kowa";
+"commands.button.actual_size" = "iKon jali";
+"comments.button.zoom_in" = "Che ki de re";
+"app_macos_navigation.button.library" = "U gbo egba";
+"sidebar_view.navigation.button.close" = "Re";
+"sidebar_view.navigation.button.close_all" = "Fa menw ke bi re.";
+"enum.category.other" = "Omu ne";
+"enum.external_link_loading_policy.always_ask" = "Tene egba du";
+"enum.external_link_loading_policy.always_load" = "Èki nadu";
+"enum.external_link_loading_policy.never_load" = "Èki na dun";
+"enum.library_language_sorting_model.a-z" = "A-Z";
+"enum.library_language_sorting_model.by_count" = "U ka lu ka";
+"enum.libray_tab_item.opened" = "Bite";
+"enum.libray_tab_item.categories" = "Amí gbúgbe";
+"enum.libray_tab_item.downloads" = "Downloadu";
+"enum.libray_tab_item.new" = "Etito";
+"enum.navigation_item.loading" = "Ya wa";
+"enum.navigation_item.reading" = "Egba";
+"enum.navigation_item.opened" = "Bi";
+"enum.navigation_item.categories" = "Amí gbúgbe";
+"enum.navigation_item.downloads" = "Downloadu";
+"enum.navigation_item.settings" = "Eñoche";
+"enum.search_result_snippet_mode.disabled" = "Nyo ló";
+"enum.search_result_snippet_mode.paragraph" = "Óla ubia nei";
+"enum.search_result_snippet_mode.sentence" = "Óla ejio dudu";
+"enum.search_result_snippet_mode.matches" = "A chana";

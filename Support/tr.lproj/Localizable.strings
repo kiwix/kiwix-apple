@@ -1,6 +1,7 @@
 // Messages for Turkish (Türkçe)
 // Exported from translatewiki.net
 // Author: Hedda
+// Author: Rofiatmustapha12
 
 "library_refresh_error.retrieve.description" = "Kitaplık verileri alınırken hata oluştu.";
 "library_refresh_error.parse.description" = "Kitaplık verileri ayrıştırılırken hata oluştu.";
@@ -114,6 +115,7 @@
 "reading_settings.zoom.title" = "Sayfa yakınlaştırma";
 "reading_settings.zoom.reset.button" = "Sıfırla";
 "reading_settings.external_link.title" = "Dış Bağlantı";
+"reading_settings.search_snippet.title" = "Arama snippet'i";
 "reading_settings.tab.reading" = "Okuma";
 "library_settings.catalog.title" = "Kataloglar";
 "library_settings.button.refresh_now" = "Şimdi Yenile";

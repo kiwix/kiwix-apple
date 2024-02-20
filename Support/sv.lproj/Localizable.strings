@@ -1,6 +1,7 @@
 // Messages for Swedish (svenska)
 // Exported from translatewiki.net
 // Author: Amire80
+// Author: Rofiatmustapha12
 // Author: Sabelöga
 // Author: WikiPhoenix
 
@@ -48,12 +49,14 @@
 "external_link_handler.alert.not_loading.description" = "En extern länk har tryckts. Men dina nuvarande inställningar tillåter inte att länken laddas in.";
 "file_import.alert.no_open.title" = "Kunde inte öppna filen";
 "file_import.alert.no_open.message" = "%@ kan inte öppnas.";
+"article_cell.no_snippet.label" = "Inget utdrag";
 "attribute.detail.unknown" = "Okänd";
 "download_task_cell.status.failed" = "Misslyckades";
 "download_task_cell.status.downloading" = "Laddar ned...";
 "download_task_cell.status.paused" = "Pausad";
 "flavor_tag.help.max" = "förutom stora mediafiler som video/ljud";
 "flavor_tag.help.no_pic" = "de flesta bilderna har tagits bort";
+"flavor_tag.help.mini" = "endast en delmängd av texten är tillgänglig, förmodligen det första avsnittet";
 "library_refresh_time.last" = "Precis nu";
 "library_refresh_time.never" = "Aldrig";
 "zim_file_cell_article_count_suffix" = "artiklar";
@@ -68,6 +71,7 @@
 "zim_file_opened.toolbar.open.title" = "Öppna...";
 "zim_file_opened.toolbar.open.help" = "Öppna en zim-fil";
 "zim_file_category.title" = "Kategori";
+"zim_file_category.section.empty.message" = "Ingen zim-fil under denna kategori.";
 "zim_file_downloads.overlay.empty.message" = "Inga nedladdningsuppgifter";
 "zim_file_downloads.toolbar.show_sidebar.label" = "Visa sidofält";
 "zim_file_new_overlay.empty" = "Ingen ny zim-fil";
@@ -81,11 +85,15 @@
 "zim_file.action.reveal_in_finder.title" = "Upptäck i Finder";
 "zim_file.action.toggle_cellular" = "Ladda ned med mobildata";
 "zim_file.action.unlink.title" = "Ta bort länk";
+"zim_file.action.unlink.message" = "Alla bokmärkta artiklar som är länkade till denna zim-fil kommer att raderas, men originalfilen kommer att finnas kvar.";
 "zim_file.action.unlink.button.title" = "Ta bort länk";
 "zim_file.action.delete.title" = "Radera";
+"zim_file.action.delete.message" = "Zim-filen och alla bokmärkta artiklar som är länkade till denna zim-fil kommer att raderas.";
 "zim_file.action.delete.button.title" = "Radera";
 "zim_file.action.download.title" = "Ladda ned";
 "zim_file.action.download.warning.title" = "Utrymmesvarning";
+"zim_file.action.download.warning.message" = "Det kanske inte finns tillräckligt med utrymme på din enhet för den här zim-filen.";
+"zim_file.action.download.warning.message1" = "Det skulle finnas mindre än 1 GB utrymme kvar efter att zim-filen har laddats ner.";
 "zim_file.action.download.button.anyway" = "Ladda ned ändå";
 "zim_file.base_info.attribute.language" = "Språk";
 "zim_file.base_info.attribute.category" = "Kategori";
@@ -105,23 +113,28 @@
 "zim_file.download_task.action.downloading" = "Laddar ned...";
 "zim_file.download_task.action.resume" = "Återuppta";
 "zim_file.download_task.action.paused" = "Pausad";
+"service_worker_warning.label.description" = "Zim-filer som kräver servicearbetare stöds inte.";
 "reading_settings.zoom.title" = "Sidzoom";
 "reading_settings.zoom.reset.button" = "Återställ";
 "reading_settings.external_link.title" = "Extern länk";
+"reading_settings.search_snippet.title" = "Sök utdrag";
 "reading_settings.tab.reading" = "Läsning";
 "library_settings.catalog.title" = "Katalog";
 "library_settings.button.refresh_now" = "Uppdatera nu";
 "library_settings.last_refresh.text" = "Senaste uppdatering";
 "library_settings.auto_refresh.toggle" = "Uppdatera automatiskt";
+"library_settings.catalog_warning.text" = "När den är aktiverad uppdateras bibliotekskatalogen automatiskt när den är föråldrad.";
 "library_settings.languages.title" = "Språk";
 "library_settings.tab.library.title" = "Bibliotek";
 "settings.navigation.title" = "Inställningar";
 "library_settings.toggle.cellular" = "Ladda ned med mobildata";
+"library_settings.new-download-task-description" = "Ändring kommer endast att gälla för nya nedladdningsuppgifter.";
 "catalog_settings.last_refresh.text" = "Senaste uppdatering";
 "catalog_settings.refreshing.text" = "Uppdaterar...";
 "catalog_settings.refresh_now.button" = "Uppdatera nu";
 "catalog_settings.auto_refresh.toggle" = "Uppdatera automatiskt";
 "catalog_settings.header.text" = "Katalog";
+"catalog_settings.footer.text" = "När den är aktiverad uppdateras bibliotekskatalogen automatiskt när den är föråldrad.";
 "backup_settings.toggle.title" = "Inkludera zim-filer i säkerhetskopian";
 "backup_settings.header.text" = "Säkerhetskopiering";
 "backup_settings.footer.text" = "Gäller inte filer som öppnas på plats.";
@@ -143,6 +156,8 @@
 "settings.about.dependencies.name" = "Namn";
 "settings.about.dependencies.license" = "Licens";
 "settings.about.dependencies.version" = "Version";
+"settings.about.description" = "Kiwix är en offlineläsare för onlineinnehåll som Wikipedia, Project Gutenberg eller TED Talks. Det gör kunskap tillgänglig för personer med ingen eller begränsad tillgång till internet. Programvaran såväl som innehållet är gratis att använda för alla.";
+"settings.about.license-description" = "Denna app släpps under villkoren i GNU General Public License version 3.";
 "settings.about.appverion.title" = "Version";
 "settings.about.build.title" = "Bygge";
 "settings.about.our_website.button" = "Vår webbplats";
