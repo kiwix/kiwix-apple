@@ -17,7 +17,7 @@ struct CategoriesToLanguages {
         guard let languages = dictionary[category] else {
             return false
         }
-        return !languages.intersection(langCodes).isEmpty
+        return !languages.isDisjoint(with: langCodes)
     }
 
     static func save(_ dictionary: [Category: Set<String>]) {
