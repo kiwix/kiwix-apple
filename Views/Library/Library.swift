@@ -8,6 +8,7 @@
 
 import SwiftUI
 import UniformTypeIdentifiers
+import Defaults
 
 #if os(iOS)
 /// Tabbed library view on iOS & iPadOS
@@ -16,9 +17,11 @@ struct Library: View {
     @SceneStorage("LibraryTabItem") private var tabItem: LibraryTabItem = .opened
         
     private let defaultTabItem: LibraryTabItem?
-    
+    private let categories: [Category]
+
     init(tabItem: LibraryTabItem? = nil) {
         self.defaultTabItem = tabItem
+        categories = CategoriesToLanguages.allCategories()
     }
     
     var body: some View {
@@ -29,7 +32,7 @@ struct Library: View {
                     case .opened:
                         ZimFilesOpened()
                     case .categories:
-                        List(Category.allCases) { category in
+                        List(categories) { category in
                             NavigationLink {
                                 ZimFilesCategory(category: .constant(category))
                                     .navigationTitle(category.name)

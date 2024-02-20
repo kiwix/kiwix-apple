@@ -28,7 +28,9 @@ enum ActiveSheet: Hashable, Identifiable {
     case safari(url: URL)
 }
 
-enum Category: String, CaseIterable, Identifiable {
+enum Category: String, CaseIterable, Identifiable, LosslessStringConvertible {
+    var description: String { rawValue }
+
     var id: String { rawValue }
     
     case wikipedia
@@ -43,11 +45,15 @@ enum Category: String, CaseIterable, Identifiable {
     case ted
     case stackExchange = "stack_exchange"
     case other
-    
-    init?(rawValue: String?) {
-        self.init(rawValue: rawValue ?? "")
+
+    init?(_ description: String) {
+        self.init(rawValue: description)
     }
-    
+
+    init?(rawValue: String?) {
+        self.init(rawValue: rawValue ?? "other")
+    }
+
     var name: String {
         switch self {
         case .wikipedia:

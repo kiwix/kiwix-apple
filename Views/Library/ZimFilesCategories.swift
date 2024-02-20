@@ -12,8 +12,14 @@ import Defaults
 
 /// A grid of zim files under each category.
 struct ZimFilesCategories: View {
-    @State private var selected: Category = .wikipedia
-    
+    @State private var selected: Category
+    private var categories: [Category]
+
+    init() {
+        categories = CategoriesToLanguages.allCategories()
+        selected = categories.first ?? .wikipedia
+    }
+
     var body: some View {
         ZimFilesCategory(category: $selected)
             .modifier(ToolbarRoleBrowser())
@@ -32,7 +38,7 @@ struct ZimFilesCategories: View {
                 #endif
                 ToolbarItem {
                     Picker("zim_file_category.title".localized, selection: $selected) {
-                        ForEach(Category.allCases) {
+                        ForEach(categories) {
                             Text($0.name).tag($0)
                         }
                     }

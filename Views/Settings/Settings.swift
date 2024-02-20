@@ -31,7 +31,7 @@ struct ReadingSettings: View {
                 SettingSection(name: "reading_settings.external_link.title".localized) {
                     Picker(selection: $externalLinkLoadingPolicy) {
                         ForEach(ExternalLinkLoadingPolicy.allCases) { loadingPolicy in
-                            Text(loadingPolicy.name.localized).tag(loadingPolicy)
+                            Text(loadingPolicy.name).tag(loadingPolicy)
                         }
                     } label: { }
                 }
@@ -40,7 +40,7 @@ struct ReadingSettings: View {
                 SettingSection(name: "reading_settings.search_snippet.title".localized) {
                     Picker(selection: $searchResultSnippetMode) {
                         ForEach(SearchResultSnippetMode.allCases) { snippetMode in
-                            Text(snippetMode.name.localized).tag(snippetMode)
+                            Text(snippetMode.name).tag(snippetMode)
                         }
                     } label: { }
                 }
@@ -153,14 +153,14 @@ struct Settings: View {
             if FeatureFlags.showExternalLinkOptionInSettings {
                 Picker("reading_settings.external_link.title".localized, selection: $externalLinkLoadingPolicy) {
                     ForEach(ExternalLinkLoadingPolicy.allCases) { loadingPolicy in
-                        Text(loadingPolicy.name.localized).tag(loadingPolicy)
+                        Text(loadingPolicy.name).tag(loadingPolicy)
                     }
                 }
             }
             if FeatureFlags.showSearchSnippetInSettings {
                 Picker("reading_settings.search_snippet.title".localized, selection: $searchResultSnippetMode) {
                     ForEach(SearchResultSnippetMode.allCases) { snippetMode in
-                        Text(snippetMode.name.localized).tag(snippetMode)
+                        Text(snippetMode.name).tag(snippetMode)
                     }
                 }
             }
@@ -235,7 +235,7 @@ struct Settings: View {
 
 private struct SelectedLanaguageLabel: View {
     @Default(.libraryLanguageCodes) private var languageCodes
-    
+
     var body: some View {
         HStack {
             Text("settings.selected_language.title".localized)
@@ -247,6 +247,8 @@ private struct SelectedLanaguageLabel: View {
             } else if languageCodes.count > 1 {
                 Text("\(languageCodes.count)").foregroundColor(.secondary)
             }
+        }.task {
+            LibraryViewModel.cleanUpDefaultLanguages()
         }
     }
 }

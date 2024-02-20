@@ -25,7 +25,7 @@ struct LanguageSelector: View {
                 } set: { isSelected in
                     if isSelected {
                         selected.insert(language.code)
-                    } else {
+                    } else if selected.count > 1 {
                         selected.remove(language.code)
                     }
                 })
@@ -72,7 +72,7 @@ struct LanguageSelector: View {
         .toolbar {
             Picker(selection: $sortingMode) {
                 ForEach(LibraryLanguageSortingMode.allCases) { sortingMode in
-                    Text(sortingMode.name.localized).tag(sortingMode)
+                    Text(sortingMode.name).tag(sortingMode)
                 }
             } label: {
                 Label("language_selector.toolbar.sorting".localized, systemImage: "arrow.up.arrow.down")
@@ -102,6 +102,10 @@ struct LanguageSelector: View {
     }
     
     private func hide(_ language: Language) {
+        guard Defaults[.libraryLanguageCodes].count > 1 else {
+            // we should not remove all languages, it will produce empty results
+            return
+        }
         Defaults[.libraryLanguageCodes].remove(language.code)
         withAnimation {
             showing.removeAll { $0.code == language.code }
