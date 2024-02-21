@@ -102,6 +102,7 @@ targets:
       - path: Support
         excludes: 
           - "**/qqq.lproj"
+          - "**/igl.lproj"
   UnitTests:
     type: bundle.unit-test
     platform: macOS
