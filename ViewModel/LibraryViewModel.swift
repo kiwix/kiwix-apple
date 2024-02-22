@@ -19,6 +19,7 @@ public class LibraryViewModel: ObservableObject {
     private let urlSession: URLSession
     private let context: NSManagedObjectContext
     private var insertionCount = 0
+    private var langUpdateCount = 0
     private var deletionCount = 0
     
     public init(urlSession: URLSession? = nil) {
@@ -64,8 +65,15 @@ public class LibraryViewModel: ObservableObject {
             error = nil
             
             // logging
-            os_log("Refresh finished -- addition: %d, deletion: %d, total: %d",
-                   log: Log.OPDS, type: .default, insertionCount, deletionCount, parser.zimFileIDs.count)
+            os_log(
+                "Refresh finished -- addition: %d, deletion: %d, langUpdates: %d total: %d",
+                log: Log.OPDS,
+                type: .default,
+                insertionCount,
+                deletionCount,
+                langUpdateCount,
+                parser.zimFileIDs.count
+            )
         } catch {
             self.error = error
         }
@@ -167,11 +175,40 @@ public class LibraryViewModel: ObservableObject {
     }
     
     private func process(parser: OPDSParser) async throws {
+        langUpdateCount = 0
         try await withCheckedThrowingContinuation { continuation in
             context.perform {
                 do {
+                    let zimFiles = try self.context.fetch(ZimFile.fetchRequest())
+                    // update languages if needed
+                    // group the updates by language codes
+                    var langUpdates: [String: Set<UUID>] = [:]
+                    zimFiles.forEach { (file: ZimFile) in
+                        if let feedMeta = parser.getMetaData(id: file.fileID) {
+                            if file.languageCode != feedMeta.languageCodes {
+                                var idsForLang = langUpdates[feedMeta.languageCodes] ?? Set<UUID>()
+                                idsForLang.insert(feedMeta.fileID)
+                                langUpdates[feedMeta.languageCodes] = idsForLang
+                                self.langUpdateCount += 1
+                            }
+                        }
+                    }
+                    if !langUpdates.isEmpty {
+                        langUpdates.forEach { (langCode: String, forIds: Set<UUID>) in
+                            let updateRequest = NSBatchUpdateRequest(entity: ZimFile.entity())
+                            updateRequest.predicate = NSPredicate(
+                                format: "%K IN (%@)",
+                                #keyPath(ZimFile.fileID), forIds.map { $0 as CVarArg }
+                            )
+                            updateRequest.propertiesToUpdate = [#keyPath(ZimFile.languageCode): langCode]
+                            let result = try? self.context.execute(updateRequest)
+                            debugPrint("result: \(result.debugDescription)")
+                        }
+                    }
+
+
                     // insert new zim files
-                    let existing = try self.context.fetch(ZimFile.fetchRequest()).map { $0.fileID }
+                    let existing = zimFiles.map { $0.fileID }
                     var zimFileIDs = parser.zimFileIDs.subtracting(existing)
                     let insertRequest = NSBatchInsertRequest(
                         entity: ZimFile.entity(),
