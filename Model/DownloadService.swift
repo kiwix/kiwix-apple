@@ -47,7 +47,7 @@ class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegate, URL
     private func startHeartbeat() {
         DispatchQueue.main.async {
             guard self.heartbeat == nil else { return }
-            self.heartbeat = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in
+            self.heartbeat = Timer.scheduledTimer(withTimeInterval: 0.5, repeats: true) { _ in
                 Database.shared.container.performBackgroundTask { context in
                     context.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
                     for (zimFileID, downloadedBytes) in self.totalBytesWritten {

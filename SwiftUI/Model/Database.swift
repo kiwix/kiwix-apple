@@ -20,7 +20,8 @@ final class Database {
         let storeChange: NSNotification.Name = .init(rawValue: "NSPersistentStoreRemoteChangeNotification")
         notificationToken = NotificationCenter.default.addObserver(
             forName: storeChange, object: nil, queue: nil) { _ in
-            try? self.mergeChanges()
+                guard !LibraryViewModel.isUpdating else { return }
+                try? self.mergeChanges()
         }
         token = {
             guard let data = UserDefaults.standard.data(forKey: "PersistentHistoryToken") else { return nil }

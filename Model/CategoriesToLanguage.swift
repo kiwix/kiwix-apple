@@ -11,8 +11,8 @@ struct CategoriesToLanguages {
     private let dictionary: [Category: Set<String>] = Defaults[.categoriesToLanguages]
 
     func has(category: Category, inLanguages langCodes: Set<String>) -> Bool {
-        guard !langCodes.isEmpty else {
-            return true // no languages provided, do not filter
+        guard !langCodes.isEmpty, !dictionary.isEmpty else {
+            return true // no languages or category filters provided, do not filter
         }
         guard let languages = dictionary[category] else {
             return false

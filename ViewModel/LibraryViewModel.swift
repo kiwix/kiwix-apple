@@ -14,14 +14,20 @@ import Defaults
 public class LibraryViewModel: ObservableObject {
     @Published var selectedZimFile: ZimFile?
     @MainActor @Published public private(set) var error: Error?
-    @MainActor @Published public private(set) var isInProgress = false
-    
+    @MainActor @Published public private(set) var isInProgress = false {
+        didSet {
+            LibraryViewModel.isUpdating = isInProgress
+        }
+    }
+
     private let urlSession: URLSession
     private let context: NSManagedObjectContext
     private var insertionCount = 0
     private var langUpdateCount = 0
     private var deletionCount = 0
-    
+
+    public private(set) static var isUpdating = false
+
     public init(urlSession: URLSession? = nil) {
         self.urlSession = urlSession ?? URLSession.shared
         
@@ -173,7 +179,8 @@ public class LibraryViewModel: ObservableObject {
             }
         }
     }
-    
+
+    // swiftlint:disable:next function_body_length
     private func process(parser: OPDSParser) async throws {
         langUpdateCount = 0
         try await withCheckedThrowingContinuation { continuation in
@@ -189,7 +196,6 @@ public class LibraryViewModel: ObservableObject {
                                 var idsForLang = langUpdates[feedMeta.languageCodes] ?? Set<UUID>()
                                 idsForLang.insert(feedMeta.fileID)
                                 langUpdates[feedMeta.languageCodes] = idsForLang
-                                self.langUpdateCount += 1
                             }
                         }
                     }
@@ -201,11 +207,12 @@ public class LibraryViewModel: ObservableObject {
                                 #keyPath(ZimFile.fileID), forIds.map { $0 as CVarArg }
                             )
                             updateRequest.propertiesToUpdate = [#keyPath(ZimFile.languageCode): langCode]
-                            let result = try? self.context.execute(updateRequest)
-                            debugPrint("result: \(result.debugDescription)")
+                            updateRequest.resultType = .updatedObjectsCountResultType
+                            if let result = try? self.context.execute(updateRequest) as? NSBatchUpdateResult {
+                                let count = result.result as? Int ?? 0
+                            }
                         }
                     }
-
 
                     // insert new zim files
                     let existing = zimFiles.map { $0.fileID }
