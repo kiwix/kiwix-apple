@@ -63,7 +63,13 @@
 }
 
 - (NSString *)getLanguageCodesFromBook:(kiwix::Book *)book {
-    return [NSString stringWithUTF8String:book->getCommaSeparatedLanguages().c_str()];
+    NSString* string = [NSString stringWithUTF8String:book->getCommaSeparatedLanguages().c_str()];
+    NSArray* components = [string componentsSeparatedByString: @","];
+    NSMutableArray* langCodes = [NSMutableArray array];
+    [components enumerateObjectsUsingBlock:^(id  _Nonnull codeString, NSUInteger idx, BOOL * _Nonnull stop) {
+        [langCodes addObject:[NSLocale canonicalLanguageIdentifierFromString: codeString]];
+    }];
+    return [langCodes componentsJoinedByString: @","];
 }
 
 - (NSString *)getCategoryFromBook:(kiwix::Book *)book {

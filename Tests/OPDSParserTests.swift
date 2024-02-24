@@ -70,7 +70,7 @@ final class OPDSParserTests: XCTestCase {
         XCTAssertEqual(metadata.groupIdentifier, "wikipedia_en_top")
         XCTAssertEqual(metadata.title, "Best of Wikipedia")
         XCTAssertEqual(metadata.fileDescription, "A selection of the best 50,000 Wikipedia articles")
-        XCTAssertEqual(metadata.languageCodes, "eng")
+        XCTAssertEqual(metadata.languageCodes, "en")
         XCTAssertEqual(metadata.category, "wikipedia")
         XCTAssertEqual(metadata.creationDate, try! Date("2023-01-07T00:00:00Z", strategy: .iso8601))
         XCTAssertEqual(metadata.size, 6515656704)

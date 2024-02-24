@@ -193,7 +193,7 @@ final class LibraryRefreshViewModelTest: XCTestCase {
         XCTAssertEqual(zimFile.hasVideos, false)
         XCTAssertEqual(zimFile.includedInSearch, true)
         XCTAssertEqual(zimFile.isMissing, false)
-        XCTAssertEqual(zimFile.languageCode, "eng")
+        XCTAssertEqual(zimFile.languageCode, "en")
         XCTAssertEqual(zimFile.mediaCount, 566835)
         XCTAssertEqual(zimFile.name, "Best of Wikipedia")
         XCTAssertEqual(zimFile.persistentID, "wikipedia_en_top")
