@@ -106,7 +106,7 @@ targets:
           - "**/dag.lproj"
   UnitTests:
     type: bundle.unit-test
-    platform: macOS
+    supportedDestinations: [iOS, macOS]
     settings:
       PRODUCT_BUNDLE_IDENTIFIER: org.kiwix.Tests
       TEST_HOST: $(BUILT_PRODUCTS_DIR)/Kiwix.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Kiwix
