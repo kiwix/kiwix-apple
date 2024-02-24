@@ -63,7 +63,7 @@
 }
 
 - (NSString *)getLanguageCodesFromBook:(kiwix::Book *)book {
-    return [NSString stringWithUTF8String:book->getCommaSeparatedLanguages().c_str()];
+    return @"invalid value";
 }
 
 - (NSString *)getCategoryFromBook:(kiwix::Book *)book {
