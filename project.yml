@@ -103,6 +103,7 @@ targets:
         excludes: 
           - "**/qqq.lproj"
           - "**/igl.lproj"
+          - "**/dag.lproj"
   UnitTests:
     type: bundle.unit-test
     platform: macOS
