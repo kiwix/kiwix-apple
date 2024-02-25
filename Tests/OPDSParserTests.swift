@@ -7,7 +7,7 @@
 //
 
 import XCTest
-import Kiwix
+@testable import Kiwix
 
 final class OPDSParserTests: XCTestCase {    
     /// Test OPDSParser.parse throws error when OPDS data is invalid.
