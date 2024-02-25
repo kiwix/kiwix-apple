@@ -50,6 +50,12 @@ public class LibraryViewModel: ObservableObject {
             // refresh library
             guard let data = try await fetchData() else { return }
             let parser = try await parse(data: data)
+            // delete all old ISO Lang Code entries if needed, by passing in an empty parser
+            if Defaults[.libraryUsingOldISOLangCodes] {
+                try await process(parser: DeletingParser())
+                Defaults[.libraryUsingOldISOLangCodes] = false
+            }
+            // process the feed
             try await process(parser: parser)
             
             // update library last refresh timestamp
@@ -90,31 +96,33 @@ public class LibraryViewModel: ObservableObject {
     }
 
     /// The fetched content is filtered by the languages set in settings.
+    /// We need to make sure, whatever was set by the user is
+    /// still on the list of languages we have from the feed
     /// Try to set it to the device language, making sure we have content to display.
     /// Falls back to English, where most of the content is.
-    /// This is only affecting the "fresh-install" defaults.
     /// The user can always set the prefered content languages in settings.
     private func setDefaultContentFilterLanguage() async {
+        let languages = await Languages.fetch()
+        let validCodes = Set<String>(languages.map { $0.code })
+        // preserve only valid selections, filtering out earlier invalid user selections
+        Defaults[.libraryLanguageCodes] = Defaults[.libraryLanguageCodes].intersection(validCodes)
+
         guard Defaults[.libraryLanguageCodes].isEmpty else {
             return // it was already set earlier (either by default or the user)
         }
-        let fallbackToEnglish = "en"
+
+        let fallbackToEnglish = "eng"
         let deviceLang: String?
-        // In both cases we store the 2 letter version in DB, that is our current
-        // standard, even though the feed values are 3 letter, those are also converted to 2 letter values
         if #available(iOS 16, macOS 13, *) {
-            deviceLang = Locale.current.language.languageCode?.identifier(.alpha2)
+            deviceLang = Locale.current.language.languageCode?.identifier(.alpha3)
         } else {
             deviceLang = Locale.current.languageCode
         }
         // if the device language code cannot be determined, we fall back to English
         let defaultLangCode: String = deviceLang ?? fallbackToEnglish
-        let languages = await Languages.fetch()
 
         // make sure the language we default to is on the list of Languages comming from the feed
-        if languages.contains(where: { (lang: Language) in
-            lang.code == defaultLangCode
-        }) {
+        if validCodes.contains(defaultLangCode) {
             Defaults[.libraryLanguageCodes] = [defaultLangCode]
         } else {
             Defaults[.libraryLanguageCodes] = [fallbackToEnglish]
@@ -156,7 +164,7 @@ public class LibraryViewModel: ObservableObject {
         }
     }
     
-    private func process(parser: OPDSParser) async throws {
+    private func process(parser: Parser) async throws {
         try await withCheckedThrowingContinuation { continuation in
             context.perform {
                 do {
@@ -181,7 +189,7 @@ public class LibraryViewModel: ObservableObject {
                         self.insertionCount = result.result as? Int ?? 0
                     }
                     
-                    // delete old zim files
+                    // delete old zim entries not included in the feed
                     let fetchRequest: NSFetchRequest<NSFetchRequestResult> = ZimFile.fetchRequest()
                     fetchRequest.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
                         NSPredicate(format: "fileURLBookmark == nil"),
