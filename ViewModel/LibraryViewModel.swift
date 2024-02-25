@@ -97,20 +97,24 @@ public class LibraryViewModel: ObservableObject {
 
     /// The fetched content is filtered by the languages set in settings.
     /// We need to make sure, whatever was set by the user is
-    /// still on the list of languages we have from the feed
-    /// Try to set it to the device language, making sure we have content to display.
-    /// Falls back to English, where most of the content is.
-    /// The user can always set the prefered content languages in settings.
+    /// still on the list of languages we now have from the feed
     private func setDefaultContentFilterLanguage() async {
         let languages = await Languages.fetch()
         let validCodes = Set<String>(languages.map { $0.code })
-        // preserve only valid selections, filtering out earlier invalid user selections
-        Defaults[.libraryLanguageCodes] = Defaults[.libraryLanguageCodes].intersection(validCodes)
+        // preserve only valid selections by:
+        // converting earlier user selections, and filtering out invalid ones
+        Defaults[.libraryLanguageCodes] = LanguagesConverter.convert(codes: Defaults[.libraryLanguageCodes],
+                                                                     validCodes: validCodes)
 
         guard Defaults[.libraryLanguageCodes].isEmpty else {
-            return // it was already set earlier (either by default or the user)
+            return // what was earlier set by the user or picked by default is valid
         }
 
+        // Nothing was set earlier, or validation filtered it out to empty
+        // Try to set it to the device language,
+        // at the same time make sure, we have content to display, meaning:
+        // the device language is on the list of languages from the feed
+        // If all that fails: fallback to English, where most of the content is
         let fallbackToEnglish = "eng"
         let deviceLang: String?
         if #available(iOS 16, macOS 13, *) {
@@ -118,14 +122,13 @@ public class LibraryViewModel: ObservableObject {
         } else {
             deviceLang = Locale.current.languageCode
         }
-        // if the device language code cannot be determined, we fall back to English
-        let defaultLangCode: String = deviceLang ?? fallbackToEnglish
-
-        // make sure the language we default to is on the list of Languages comming from the feed
-        if validCodes.contains(defaultLangCode) {
-            Defaults[.libraryLanguageCodes] = [defaultLangCode]
-        } else {
+        // convert it to a set, so we can use the same validation function
+        let deviceLangSet = Set<String>([deviceLang].compactMap { $0 })
+        let validDefaults = LanguagesConverter.convert(codes: deviceLangSet, validCodes: validCodes)
+        if validDefaults.isEmpty { // meaning the device language isn't valid (or nil)
             Defaults[.libraryLanguageCodes] = [fallbackToEnglish]
+        } else {
+            Defaults[.libraryLanguageCodes] = validDefaults
         }
     }
 

@@ -8,10 +8,12 @@ import XCTest
 final class LanguagesConverterTests: XCTestCase {
     func testShouldHaveEmptyResult() {
         let empty: Set<String> = .init()
+
         XCTAssertEqual(LanguagesConverter.convert(
             codes: empty,
             validCodes: empty
         ), empty)
+
         XCTAssertEqual(LanguagesConverter.convert(
             codes: empty,
             validCodes: .init(["eng", "fra"])
