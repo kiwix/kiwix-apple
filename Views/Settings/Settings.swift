@@ -247,8 +247,6 @@ private struct SelectedLanaguageLabel: View {
             } else if languageCodes.count > 1 {
                 Text("\(languageCodes.count)").foregroundColor(.secondary)
             }
-        }.task {
-            LibraryViewModel.cleanUpDefaultLanguages()
         }
     }
 }

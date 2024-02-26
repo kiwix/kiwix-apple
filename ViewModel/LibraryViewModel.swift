@@ -89,46 +89,36 @@ public class LibraryViewModel: ObservableObject {
         CategoriesToLanguages.save(dictionary)
     }
 
-    /// Make sure we remove the incompatible "en" if it was already set
-    static func cleanUpDefaultLanguages() {
-        Defaults[.libraryLanguageCodes] = Defaults[.libraryLanguageCodes].filter { langCode in
-            langCode != "en"
-        }
-    }
-
     /// The fetched content is filtered by the languages set in settings.
     /// Try to set it to the device language, making sure we have content to display.
     /// Falls back to English, where most of the content is.
     /// This is only affecting the "fresh-install" defaults.
     /// The user can always set the prefered content languages in settings.
     private func setDefaultContentFilterLanguage() async {
-        Self.cleanUpDefaultLanguages()
         guard Defaults[.libraryLanguageCodes].isEmpty else {
             return // it was already set earlier (either by default or the user)
         }
-
-        let defaultLangCode: String
-
+        let fallbackToEnglish = "en"
+        let deviceLang: String?
+        // In both cases we store the 2 letter version in DB, that is our current
+        // standard, even though the feed values are 3 letter, those are also converted to 2 letter values
         if #available(iOS 16, macOS 13, *) {
-            let languages = await Languages.fetch()
-            // Double check if the current device language is on the list of languages,
-            // and there is content in that language
-            if let deviceLang = Locale.current.language.languageCode?.identifier(.alpha3),
-               languages.contains(where: { (lang: Language) in
-                   lang.code == deviceLang && lang.count > 0
-               }) {
-                defaultLangCode  = deviceLang
-            } else {
-                defaultLangCode = "eng"
-            }
+            deviceLang = Locale.current.language.languageCode?.identifier(.alpha2)
         } else {
-            // Locale.current.languageCode is returning a 2 char lang code, eg: "en"
-            // we want a 3 char value, eg: "eng", otherwise we filter out every results
-            // and end up with an empty list in the categories
-            defaultLangCode = "eng"
+            deviceLang = Locale.current.languageCode
         }
+        // if the device language code cannot be determined, we fall back to English
+        let defaultLangCode: String = deviceLang ?? fallbackToEnglish
+        let languages = await Languages.fetch()
 
-        Defaults[.libraryLanguageCodes] = [defaultLangCode]
+        // make sure the language we default to is on the list of Languages comming from the feed
+        if languages.contains(where: { (lang: Language) in
+            lang.code == defaultLangCode
+        }) {
+            Defaults[.libraryLanguageCodes] = [defaultLangCode]
+        } else {
+            Defaults[.libraryLanguageCodes] = [fallbackToEnglish]
+        }
     }
 
     private func fetchData() async throws -> Data? {
