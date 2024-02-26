@@ -176,6 +176,6 @@ enum AlphaCodesLookUpTable {
         "yo": "yor",
         "za": "zha",
         "zh": "zho",
-        "zu": "zul",
+        "zu": "zul"
     ]
 }
