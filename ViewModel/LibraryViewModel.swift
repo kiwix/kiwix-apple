@@ -50,6 +50,12 @@ public class LibraryViewModel: ObservableObject {
             // refresh library
             guard let data = try await fetchData() else { return }
             let parser = try await parse(data: data)
+            // delete all old ISO Lang Code entries if needed, by passing in an empty parser
+            if Defaults[.libraryUsingOldISOLangCodes] {
+                try await process(parser: DeletingParser())
+                Defaults[.libraryUsingOldISOLangCodes] = false
+            }
+            // process the feed
             try await process(parser: parser)
             
             // update library last refresh timestamp
@@ -90,34 +96,39 @@ public class LibraryViewModel: ObservableObject {
     }
 
     /// The fetched content is filtered by the languages set in settings.
-    /// Try to set it to the device language, making sure we have content to display.
-    /// Falls back to English, where most of the content is.
-    /// This is only affecting the "fresh-install" defaults.
-    /// The user can always set the prefered content languages in settings.
+    /// We need to make sure, whatever was set by the user is
+    /// still on the list of languages we now have from the feed
     private func setDefaultContentFilterLanguage() async {
+        let languages = await Languages.fetch()
+        let validCodes = Set<String>(languages.map { $0.code })
+        // preserve only valid selections by:
+        // converting earlier user selections, and filtering out invalid ones
+        Defaults[.libraryLanguageCodes] = LanguagesConverter.convert(codes: Defaults[.libraryLanguageCodes],
+                                                                     validCodes: validCodes)
+
         guard Defaults[.libraryLanguageCodes].isEmpty else {
-            return // it was already set earlier (either by default or the user)
+            return // what was earlier set by the user or picked by default is valid
         }
-        let fallbackToEnglish = "en"
+
+        // Nothing was set earlier, or validation filtered it out to empty
+        // Try to set it to the device language,
+        // at the same time make sure, we have content to display, meaning:
+        // the device language is on the list of languages from the feed
+        // If all that fails: fallback to English, where most of the content is
+        let fallbackToEnglish = "eng"
         let deviceLang: String?
-        // In both cases we store the 2 letter version in DB, that is our current
-        // standard, even though the feed values are 3 letter, those are also converted to 2 letter values
         if #available(iOS 16, macOS 13, *) {
-            deviceLang = Locale.current.language.languageCode?.identifier(.alpha2)
+            deviceLang = Locale.current.language.languageCode?.identifier(.alpha3)
         } else {
             deviceLang = Locale.current.languageCode
         }
-        // if the device language code cannot be determined, we fall back to English
-        let defaultLangCode: String = deviceLang ?? fallbackToEnglish
-        let languages = await Languages.fetch()
-
-        // make sure the language we default to is on the list of Languages comming from the feed
-        if languages.contains(where: { (lang: Language) in
-            lang.code == defaultLangCode
-        }) {
-            Defaults[.libraryLanguageCodes] = [defaultLangCode]
-        } else {
+        // convert it to a set, so we can use the same validation function
+        let deviceLangSet = Set<String>([deviceLang].compactMap { $0 })
+        let validDefaults = LanguagesConverter.convert(codes: deviceLangSet, validCodes: validCodes)
+        if validDefaults.isEmpty { // meaning the device language isn't valid (or nil)
             Defaults[.libraryLanguageCodes] = [fallbackToEnglish]
+        } else {
+            Defaults[.libraryLanguageCodes] = validDefaults
         }
     }
 
@@ -156,7 +167,7 @@ public class LibraryViewModel: ObservableObject {
         }
     }
     
-    private func process(parser: OPDSParser) async throws {
+    private func process(parser: Parser) async throws {
         try await withCheckedThrowingContinuation { continuation in
             context.perform {
                 do {
@@ -181,7 +192,7 @@ public class LibraryViewModel: ObservableObject {
                         self.insertionCount = result.result as? Int ?? 0
                     }
                     
-                    // delete old zim files
+                    // delete old zim entries not included in the feed
                     let fetchRequest: NSFetchRequest<NSFetchRequestResult> = ZimFile.fetchRequest()
                     fetchRequest.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
                         NSPredicate(format: "fileURLBookmark == nil"),

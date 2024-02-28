@@ -7,7 +7,7 @@
 //
 
 import XCTest
-import Kiwix
+@testable import Kiwix
 
 final class OPDSParserTests: XCTestCase {    
     /// Test OPDSParser.parse throws error when OPDS data is invalid.
@@ -70,8 +70,8 @@ final class OPDSParserTests: XCTestCase {
         XCTAssertEqual(metadata.groupIdentifier, "wikipedia_en_top")
         XCTAssertEqual(metadata.title, "Best of Wikipedia")
         XCTAssertEqual(metadata.fileDescription, "A selection of the best 50,000 Wikipedia articles")
-        // !important make sure the language code is put into the DB as a 2 letter string
-        XCTAssertEqual(metadata.languageCodes, "en")
+        // !important make sure the language code is put into the DB as a 3 letter string
+        XCTAssertEqual(metadata.languageCodes, "eng")
         XCTAssertEqual(metadata.category, "wikipedia")
         XCTAssertEqual(metadata.creationDate, try! Date("2023-01-07T00:00:00Z", strategy: .iso8601))
         XCTAssertEqual(metadata.size, 6515656704)

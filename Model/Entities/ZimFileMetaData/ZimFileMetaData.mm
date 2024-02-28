@@ -67,7 +67,7 @@
     NSArray* components = [string componentsSeparatedByString: @","];
     NSMutableArray* langCodes = [NSMutableArray array];
     [components enumerateObjectsUsingBlock:^(id  _Nonnull codeString, NSUInteger idx, BOOL * _Nonnull stop) {
-        [langCodes addObject:[NSLocale canonicalLanguageIdentifierFromString: codeString]];
+        [langCodes addObject: codeString];
     }];
     return [langCodes componentsJoinedByString: @","];
 }
