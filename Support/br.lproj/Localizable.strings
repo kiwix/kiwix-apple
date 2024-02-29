@@ -43,6 +43,7 @@
 "download_task_cell.status.downloading" = "O pellgargañ...";
 "download_task_cell.status.paused" = "Ehanet";
 "flavor_tag.help.no_pic" = "lamet eo bet darn vrasañ ar skeudennoù";
+"library_refresh_time.last" = "Nevez zo";
 "library_refresh_time.never" = "James";
 "zim_file_cell_article_count_suffix" = "pennadoù";
 "zim_file_missing_indicator.help" = "Ar restr ZIM a vank.";
