@@ -85,7 +85,7 @@ class WebViewController: UIViewController {
         NSLayoutConstraint.activate([
             view.leftAnchor.constraint(equalTo: webView.leftAnchor),
             view.bottomAnchor.constraint(equalTo: webView.bottomAnchor),
-            view.rightAnchor.constraint(equalTo: webView.rightAnchor),
+            view.rightAnchor.constraint(equalTo: webView.rightAnchor)
         ])
         topSafeAreaConstraint = view.safeAreaLayoutGuide.topAnchor.constraint(equalTo: webView.topAnchor)
         topSafeAreaConstraint?.isActive = true
@@ -123,7 +123,7 @@ extension WKWebView {
 class WebViewConfiguration: WKWebViewConfiguration {
     override init() {
         super.init()
-        setURLSchemeHandler(KiwixURLSchemeHandler(), forURLScheme: "kiwix")
+        setURLSchemeHandler(KiwixURLSchemeHandler(), forURLScheme: KiwixURLSchemeHandler.KiwixScheme)
         userContentController = {
             let controller = WKUserContentController()
             if FeatureFlags.wikipediaDarkUserCSS,

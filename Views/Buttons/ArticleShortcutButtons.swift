@@ -73,6 +73,8 @@ struct ArticleShortcutButtons: View {
         }
         .disabled(zimFiles.isEmpty)
         .help("article_shortcut.random.button.help".localized)
+        .keyboardShortcut(KeyEquivalent("r"), modifiers: [.command, .option])
+
         #elseif os(iOS)
         Menu {
             ForEach(zimFiles) { zimFile in
