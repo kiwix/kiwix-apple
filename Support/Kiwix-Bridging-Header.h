@@ -15,7 +15,6 @@ NS_INLINE NSException * _Nullable objCTryBlock(void(^_Nonnull tryBlock)(void)) {
         return nil;
     }
     @catch (NSException *exception) {
-        NSLog(@"Exception: %s", exception);
         return exception;
     }
 }

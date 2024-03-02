@@ -12,8 +12,8 @@ extension ZimFileService {
     static let shared = ZimFileService.__sharedInstance()
     
     /// IDs of currently opened zim files
-    var fileIDs: [UUID] { get { return __getReaderIdentifiers().compactMap({ $0 as? UUID }) } }
-    
+    private var fileIDs: [UUID] { get { return __getReaderIdentifiers().compactMap({ $0 as? UUID }) } }
+
     // MARK: - Reader Management
     
     /// Open a zim file from system file URL bookmark data
@@ -44,14 +44,6 @@ extension ZimFileService {
     func close(fileID: UUID) { __close(fileID) }
     
     // MARK: - Metadata
-    
-    func getMetaData(id: UUID) -> ZimFileMetaData? {
-        __getMetaData(id)
-    }
-    
-    func getFavicon(id: UUID) -> Data? {
-        __getFavicon(id)
-    }
 
     static func getMetaData(url: URL) -> ZimFileMetaData? {
         __getMetaData(withFileURL: url)
