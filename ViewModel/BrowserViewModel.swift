@@ -253,15 +253,20 @@ final class BrowserViewModel: NSObject, ObservableObject,
     }
 
     func webView(
-        _: WKWebView,
+        _ webView: WKWebView,
         didFailProvisionalNavigation _: WKNavigation!,
         withError error: Error
     ) {
         let error = error as NSError
+        webView.stopLoading()
+        (webView.configuration
+            .urlSchemeHandler(forURLScheme: KiwixURLSchemeHandler.KiwixScheme) as? KiwixURLSchemeHandler)?
+            .didFailProvisionalNavigation()
         guard error.code != NSURLErrorCancelled else { return }
         NotificationCenter.default.post(
             name: .alert, object: nil, userInfo: ["rawValue": ActiveAlert.articleFailedToLoad.rawValue]
         )
+
     }
 
     // MARK: - WKScriptMessageHandler
