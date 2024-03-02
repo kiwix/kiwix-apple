@@ -16,27 +16,27 @@ extension ZimFileService {
     
     // MARK: - Reader Management
     
-    /// Open a zim file from bookmark data
+    /// Open a zim file from system file URL bookmark data
     /// - Parameter bookmark: url bookmark data of the zim file to open
     /// - Returns: new url bookmark data if the one used to open the zim file is stale
     @discardableResult
-    func open(bookmark: Data) throws -> Data? {
+    func open(fileURLBookmark data: Data) throws -> Data? {
         // resolve url
         var isStale: Bool = false
         #if os(macOS)
         guard let url = try? URL(
-            resolvingBookmarkData: bookmark,
+            resolvingBookmarkData: data,
             options: [.withSecurityScope],
             bookmarkDataIsStale: &isStale
         ) else { throw ZimFileOpenError.missing }
         #else
-        guard let url = try? URL(resolvingBookmarkData: bookmark, bookmarkDataIsStale: &isStale) else {
+        guard let url = try? URL(resolvingBookmarkData: data, bookmarkDataIsStale: &isStale) else {
             throw ZimFileOpenError.missing
         }
         #endif
         
         __open(url)
-        return isStale ? ZimFileService.getBookmarkData(url: url) : nil
+        return isStale ? ZimFileService.getFileURLBookmarkData(for: url) : nil
     }
     
     /// Close a zim file
@@ -57,9 +57,15 @@ extension ZimFileService {
         __getMetaData(withFileURL: url)
     }
     
-    // MARK: - URL Bookmark
-    
-    static func getBookmarkData(url: URL) -> Data? {
+    // MARK: - URL System Bookmark
+
+    /// System URL bookmark for the ZIM file itself
+    /// "bookmark data that can later be resolved into a URL object for a file
+    /// even if the user moves or renames it"
+    /// Not to be confused with the article bookmarks
+    /// - Parameter url: file system URL
+    /// - Returns: data that can later be resolved into a URL object
+    static func getFileURLBookmarkData(for url: URL) -> Data? {
         _ = url.startAccessingSecurityScopedResource()
         defer { url.stopAccessingSecurityScopedResource() }
         #if os(macOS)
