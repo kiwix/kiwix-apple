@@ -32,11 +32,6 @@
     return self;
 }
 
-//- (const kiwix::Bookmark &) bridged {
-//    static const kiwix::Bookmark bookmark = kiwix::Bookmark([self book], self.url_c, self.title_c);
-//    return bookmark;
-//}
-
 - (kiwix::Book) book {
     return [ZimFileService.sharedInstance getBookBy: self.zimFileID];
 }
