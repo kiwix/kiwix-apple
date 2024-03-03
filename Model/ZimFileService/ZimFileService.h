@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "ZimFileMetaData.h"
+#import "kiwix/book.h"
 
 @interface ZimFileService : NSObject
 
@@ -27,6 +28,7 @@
 # pragma mark - Metadata
 
 + (nullable ZimFileMetaData *)getMetaDataWithFileURL:(nonnull NSURL *)url NS_REFINED_FOR_SWIFT;
++ (kiwix::Book) getBookForURL: (nonnull NSURL*) url NS_REFINED_FOR_SWIFT;
 
 # pragma mark - URL Handling
 

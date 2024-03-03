@@ -115,6 +115,17 @@
     return metaData;
 }
 
++ (kiwix::Book) getBookForURL: (nonnull NSURL*) url {
+    kiwix::Book book = kiwix::Book();
+    [url startAccessingSecurityScopedResource];
+    try {
+        book.update(zim::Archive([url fileSystemRepresentation]));
+    } catch (std::exception e) { }
+    [url stopAccessingSecurityScopedResource];
+    return book;
+}
+
+
 # pragma mark - URL Handling
 
 - (NSURL *)getFileURL:(NSUUID *)zimFileID {
