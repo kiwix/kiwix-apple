@@ -88,7 +88,7 @@
 }
 
 - (void)close:(NSUUID *)zimFileID {
-    self.archives->erase([self zimfileID_C: zimFileID]);
+    self.archives->erase([ZimFileService zimfileID_C: zimFileID]);
     [self.fileURLs[zimFileID] stopAccessingSecurityScopedResource];
     [self.fileURLs removeObjectForKey:zimFileID];
 }
@@ -115,13 +115,12 @@
     return metaData;
 }
 
-+ (kiwix::Book) getBookForURL: (nonnull NSURL*) url {
+- (kiwix::Book) getBookBy:(nonnull NSUUID *) fileZimID {
     kiwix::Book book = kiwix::Book();
-    [url startAccessingSecurityScopedResource];
     try {
-        book.update(zim::Archive([url fileSystemRepresentation]));
+        NSURL *fileURL = [ZimFileService.sharedInstance getFileURL: fileZimID];
+        book.update(zim::Archive([fileURL fileSystemRepresentation]));
     } catch (std::exception e) { }
-    [url stopAccessingSecurityScopedResource];
     return book;
 }
 
@@ -202,12 +201,12 @@
 # pragma mark - private
 
 /// Converts the UUID to a C representation
-- (std::string) zimfileID_C: (NSUUID *_Nonnull) zimFileID {
++ (std::string) zimfileID_C: (NSUUID *_Nonnull) zimFileID {
     return [[[zimFileID UUIDString] lowercaseString] cStringUsingEncoding:NSUTF8StringEncoding];
 }
 
 - (zim::Archive *_Nullable) archiveBy: (NSUUID *_Nonnull) zimFileID {
-    std::string zimFileID_C = [self zimfileID_C: zimFileID];
+    std::string zimFileID_C = [ZimFileService zimfileID_C: zimFileID];
     auto found = self.archives->find(zimFileID_C);
     if (found == self.archives->end()) {
         return nil;

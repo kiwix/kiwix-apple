@@ -24,11 +24,11 @@
 - (void)close:(NSUUID *_Nonnull)zimFileID NS_REFINED_FOR_SWIFT;
 - (NSArray *_Nonnull)getReaderIdentifiers NS_REFINED_FOR_SWIFT;
 - (nonnull void *) getArchives;
+- (kiwix::Book) getBookBy: (nonnull NSUUID*) fileZimID NS_REFINED_FOR_SWIFT;
 
 # pragma mark - Metadata
 
 + (nullable ZimFileMetaData *)getMetaDataWithFileURL:(nonnull NSURL *)url NS_REFINED_FOR_SWIFT;
-+ (kiwix::Book) getBookForURL: (nonnull NSURL*) url NS_REFINED_FOR_SWIFT;
 
 # pragma mark - URL Handling
 

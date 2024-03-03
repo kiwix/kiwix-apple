@@ -15,6 +15,7 @@
 
 @interface LibBookmark()
 @property (nonatomic, strong) NSURL *_Nonnull url;
+@property (nonatomic, strong) NSUUID *_Nonnull zimFileID;
 @end
 
 @implementation LibBookmark
@@ -23,17 +24,21 @@
     self = [super init];
     if (self) {
         self.url = url;
-        self.zimFileID_c = [[[zimFileID UUIDString] lowercaseString] cStringUsingEncoding:NSUTF8StringEncoding];
+        self.zimFileID = zimFileID;
+        self.zimID_c = [[[zimFileID UUIDString] lowercaseString] cStringUsingEncoding:NSUTF8StringEncoding];
         self.url_c = [url fileSystemRepresentation];
         self.title_c = [title cStringUsingEncoding:NSUTF8StringEncoding];
     }
     return self;
 }
 
-- (const kiwix::Bookmark &) bridged {
-    kiwix::Book book = [ZimFileService getBookForURL: self.url];
-    static const kiwix::Bookmark bookmark = kiwix::Bookmark(book, self.url_c, self.title_c);
-    return bookmark;
+//- (const kiwix::Bookmark &) bridged {
+//    static const kiwix::Bookmark bookmark = kiwix::Bookmark([self book], self.url_c, self.title_c);
+//    return bookmark;
+//}
+
+- (kiwix::Book) book {
+    return [ZimFileService.sharedInstance getBookBy: self.zimFileID];
 }
 
 @end

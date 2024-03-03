@@ -33,7 +33,8 @@
 - (BOOL) isBookmarked: (nonnull NSURL *) url inZIM: (nonnull NSUUID *) zimFileID {
     std::string url_c = [url fileSystemRepresentation];
     std::string fileID_c = [[[zimFileID UUIDString] lowercaseString] cStringUsingEncoding:NSUTF8StringEncoding];
-    for (kiwix::Bookmark bookmark: self.library->getBookmarks()) {
+    const std::vector<kiwix::Bookmark> bookmarks = self.library->getBookmarks(true);
+    for (kiwix::Bookmark bookmark: bookmarks) {
         if (bookmark.getUrl() == url_c && bookmark.getBookId() == fileID_c) {
             return true;
         }
@@ -42,11 +43,14 @@
 }
 
 - (void) add: (LibBookmark *) bookmark {
-    self.library->addBookmark([bookmark bridged]);
+    kiwix::Book book = [bookmark book];
+    self.library->addBook(book);
+    kiwix::Bookmark bridgedBookmark = kiwix::Bookmark(book, bookmark.url_c, bookmark.title_c);
+    self.library->addBookmark(bridgedBookmark);
 }
 
 - (void) remove: (LibBookmark *) bookmark {
-    self.library->removeBookmark(bookmark.zimFileID_c, bookmark.url_c);
+    self.library->removeBookmark(bookmark.zimID_c, bookmark.url_c);
 }
 
 @end
