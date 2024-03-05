@@ -26,11 +26,11 @@ struct LibraryOperations {
     @discardableResult
     static func open(url: URL, onComplete: (() -> Void)? = nil) -> ZimFileMetaData? {
         guard let metadata = ZimFileService.getMetaData(url: url),
-              let fileURLBookmark = ZimFileService.getBookmarkData(url: url) else { return nil }
+              let fileURLBookmark = ZimFileService.getFileURLBookmarkData(for: url) else { return nil }
         
         // open the file
         do {
-            try ZimFileService.shared.open(bookmark: fileURLBookmark)
+            try ZimFileService.shared.open(fileURLBookmark: fileURLBookmark)
         } catch {
             return nil
         }
@@ -57,7 +57,7 @@ struct LibraryOperations {
     static func reopen(onComplete: (() -> Void)?) {
         var successCount = 0
         let context = Database.shared.container.viewContext
-        let request = ZimFile.fetchRequest(predicate: ZimFile.withFileURLBookmarkPredicate)
+        let request = ZimFile.fetchRequest(predicate: ZimFile.Predicate.isDownloaded)
         
         guard let zimFiles = try? context.fetch(request) else {
             onComplete?()
@@ -66,7 +66,7 @@ struct LibraryOperations {
         zimFiles.forEach { zimFile in
             guard let data = zimFile.fileURLBookmark else { return }
             do {
-                if let data = try ZimFileService.shared.open(bookmark: data) {
+                if let data = try ZimFileService.shared.open(fileURLBookmark: data) {
                     zimFile.fileURLBookmark = data
                 }
                 zimFile.isMissing = false

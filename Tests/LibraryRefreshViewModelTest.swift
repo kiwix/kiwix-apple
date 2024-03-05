@@ -219,7 +219,7 @@ final class LibraryRefreshViewModelTest: XCTestCase {
         XCTAssertNotEqual(zimFile1.fileID, zimFile2.fileID)
         
         // set fileURLBookmark of zim file 2
-        zimFile2.fileURLBookmark = "some file url bookmark data".data(using: .utf8)
+        zimFile2.fileURLBookmark = "/Users/tester/Downloads/file_url.zim".data(using: .utf8)
         try context.save()
 
         // refresh library for the third time

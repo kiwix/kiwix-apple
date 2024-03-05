@@ -18,7 +18,7 @@ struct SearchResults: View {
     @EnvironmentObject private var viewModel: SearchViewModel
     @FetchRequest(
         sortDescriptors: [NSSortDescriptor(keyPath: \ZimFile.size, ascending: false)],
-        predicate: ZimFile.withFileURLBookmarkPredicate,
+        predicate: ZimFile.Predicate.isDownloaded,
         animation: .easeInOut
     ) private var zimFiles: FetchedResults<ZimFile>
     @State private var isClearSearchConfirmationPresented = false

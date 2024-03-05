@@ -195,7 +195,7 @@ public class LibraryViewModel: ObservableObject {
                     // delete old zim entries not included in the feed
                     let fetchRequest: NSFetchRequest<NSFetchRequestResult> = ZimFile.fetchRequest()
                     fetchRequest.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
-                        NSPredicate(format: "fileURLBookmark == nil"),
+                        ZimFile.Predicate.notDownloaded,
                         NSPredicate(format: "NOT fileID IN %@", parser.zimFileIDs)
                     ])
                     let deleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)

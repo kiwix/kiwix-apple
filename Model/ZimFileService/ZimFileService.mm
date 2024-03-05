@@ -23,7 +23,7 @@
 
 @interface ZimFileService ()
 
-@property (assign) std::unordered_map<std::string, zim::Archive> *archives;
+@property (assign) std::unordered_map<std::string, zim::Archive> *archives; // (NSUUID_c: Archive)
 @property (strong) NSMutableDictionary *fileURLs; // [NSUUID: URL]
 
 @end
@@ -68,7 +68,7 @@
         if (![pathExtension isEqualToString:@"zim"]) {
             return;
         }
-        
+
         // if we have previously added this url, skip it
         if ([[self.fileURLs allKeysForObject:url] count] > 0) {
             return;
@@ -78,7 +78,7 @@
         [url startAccessingSecurityScopedResource];
         zim::Archive archive = zim::Archive([url fileSystemRepresentation]);
         self.archives->insert(std::make_pair(std::string(archive.getUuid()), archive));
-        
+
         // store file URL
         NSUUID *zimFileID = [[NSUUID alloc] initWithUUIDBytes:(unsigned char *)archive.getUuid().data];
         self.fileURLs[zimFileID] = url;
@@ -88,7 +88,7 @@
 }
 
 - (void)close:(NSUUID *)zimFileID {
-    self.archives->erase([[[zimFileID UUIDString] lowercaseString] cStringUsingEncoding:NSUTF8StringEncoding]);
+    self.archives->erase([self zimfileID_C: zimFileID]);
     [self.fileURLs[zimFileID] stopAccessingSecurityScopedResource];
     [self.fileURLs removeObjectForKey:zimFileID];
 }
@@ -102,33 +102,6 @@
 }
 
 # pragma mark - Metadata
-
-- (ZimFileMetaData *)getMetaData:(NSUUID *)zimFileID {
-    std::string zimFileID_C = [[[zimFileID UUIDString] lowercaseString] cStringUsingEncoding:NSUTF8StringEncoding];
-    auto found = self.archives->find(zimFileID_C);
-    if (found == self.archives->end()) {
-        return nil;
-    } else {
-        kiwix::Book book = kiwix::Book();
-        book.update(found->second);
-        return [[ZimFileMetaData alloc] initWithBook: &book];
-    }
-}
-
-- (NSData *)getFavicon:(NSUUID *)zimFileID {
-    std::string zimFileID_C = [[[zimFileID UUIDString] lowercaseString] cStringUsingEncoding:NSUTF8StringEncoding];
-        auto found = self.archives->find(zimFileID_C);
-        if (found == self.archives->end()) {
-            return nil;
-        } else {
-            try {
-                zim::Blob blob = found->second.getIllustrationItem().getData();
-                return [NSData dataWithBytes:blob.data() length:blob.size()];
-            } catch (std::exception) {
-                return nil;
-            }
-        }
-}
 
 + (ZimFileMetaData *)getMetaDataWithFileURL:(NSURL *)url {
     ZimFileMetaData *metaData = nil;
@@ -148,29 +121,23 @@
     return self.fileURLs[zimFileID];
 }
 
-- (NSString *_Nullable)getRedirectedPath:(NSUUID *_Nonnull)zimFileID contentPath:(NSString *_Nonnull)contentPath {
-    std::string zimFileID_C = [[[zimFileID UUIDString] lowercaseString] cStringUsingEncoding:NSUTF8StringEncoding];
-    auto found = self.archives->find(zimFileID_C);
-    if (found == self.archives->end()) {
-        return nil;
-    }
+- (NSString *_Nullable) getRedirectedPath:(NSUUID *_Nonnull)zimFileID contentPath:(NSString *_Nonnull)contentPath {
+    zim::Archive *archive = [self archiveBy: zimFileID];
+    if (archive == nil) { return nil; }
     try {
         std::string contentPathC = [contentPath cStringUsingEncoding:NSUTF8StringEncoding];
-        zim::Item item = found->second.getEntryByPath(contentPathC).getRedirect();
-        return [NSString stringWithUTF8String:item.getPath().c_str()];
+        zim::Item item = archive->getEntryByPath(contentPathC).getRedirect();
+        return [NSString stringWithUTF8String: item.getPath().c_str()];
     } catch (std::exception) {
         return nil;
     }
 }
 
 - (NSString *)getMainPagePath:(NSUUID *)zimFileID {
-    std::string zimFileID_C = [[[zimFileID UUIDString] lowercaseString] cStringUsingEncoding:NSUTF8StringEncoding];
-    auto found = self.archives->find(zimFileID_C);
-    if (found == self.archives->end()) {
-        return nil;
-    }
+    zim::Archive *archive = [self archiveBy: zimFileID];
+    if (archive == nil) { return nil; }
     try {
-        zim::Entry entry = found->second.getMainEntry();
+        zim::Entry entry = archive->getMainEntry();
         zim::Item item = entry.getItem(entry.isRedirect());
         return [NSString stringWithCString:item.getPath().c_str() encoding:NSUTF8StringEncoding];
     } catch (std::exception) {
@@ -179,13 +146,10 @@
 }
 
 - (NSString *)getRandomPagePath:(NSUUID *)zimFileID {
-    std::string zimFileID_C = [[[zimFileID UUIDString] lowercaseString] cStringUsingEncoding:NSUTF8StringEncoding];
-    auto found = self.archives->find(zimFileID_C);
-    if (found == self.archives->end()) {
-        return nil;
-    }
+    zim::Archive *archive = [self archiveBy: zimFileID];
+    if (archive == nil) { return nil; }
     try {
-        zim::Entry entry = found->second.getRandomEntry();
+        zim::Entry entry = archive->getRandomEntry();
         zim::Item item = entry.getItem(entry.isRedirect());
         return [NSString stringWithCString:item.getPath().c_str() encoding:NSUTF8StringEncoding];
     } catch (std::exception) {
@@ -194,18 +158,15 @@
 }
 
 - (NSDictionary *)getContent:(NSUUID *)zimFileID contentPath:(NSString *)contentPath
-                  start:(NSUInteger)start end:(NSUInteger)end {
+                       start:(NSUInteger)start end:(NSUInteger)end {
     if ([contentPath hasPrefix:@"/"]) {
         contentPath = [contentPath substringFromIndex:1];
     }
-    
-    std::string zimFileID_C = [[[zimFileID UUIDString] lowercaseString] cStringUsingEncoding:NSUTF8StringEncoding];
-    auto found = self.archives->find(zimFileID_C);
-    if (found == self.archives->end()) {
-        return nil;
-    }
+
+    zim::Archive *archive = [self archiveBy: zimFileID];
+    if (archive == nil) { return nil; }
     try {
-        zim::Entry entry = found->second.getEntryByPath([contentPath cStringUsingEncoding:NSUTF8StringEncoding]);
+        zim::Entry entry = archive->getEntryByPath([contentPath cStringUsingEncoding:NSUTF8StringEncoding]);
         zim::Item item = entry.getItem(entry.isRedirect());
         zim::Blob blob;
         if (start == 0 && end == 0) {
@@ -225,6 +186,22 @@
     } catch (std::exception) {
         return nil;
     }
+}
+
+# pragma mark - private
+
+/// Converts the UUID to a C representation
+- (std::string) zimfileID_C: (NSUUID *_Nonnull) zimFileID {
+    return [[[zimFileID UUIDString] lowercaseString] cStringUsingEncoding:NSUTF8StringEncoding];
+}
+
+- (zim::Archive *_Nullable) archiveBy: (NSUUID *_Nonnull) zimFileID {
+    std::string zimFileID_C = [self zimfileID_C: zimFileID];
+    auto found = self.archives->find(zimFileID_C);
+    if (found == self.archives->end()) {
+        return nil;
+    }
+    return &(found->second);
 }
 
 @end

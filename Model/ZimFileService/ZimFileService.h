@@ -26,8 +26,6 @@
 
 # pragma mark - Metadata
 
-- (nullable ZimFileMetaData *)getMetaData:(nonnull NSUUID *)zimFileID NS_REFINED_FOR_SWIFT;
-- (nullable NSData *)getFavicon:(nonnull NSUUID *)zimFileID NS_REFINED_FOR_SWIFT;
 + (nullable ZimFileMetaData *)getMetaDataWithFileURL:(nonnull NSURL *)url NS_REFINED_FOR_SWIFT;
 
 # pragma mark - URL Handling

@@ -148,7 +148,7 @@ struct URLContent {
     let size: UInt
 }
 
-class ZimFile: NSManagedObject, Identifiable {
+final class ZimFile: NSManagedObject, Identifiable {
     var id: UUID { fileID }
     
     @NSManaged var articleCount: Int64
@@ -159,6 +159,7 @@ class ZimFile: NSManagedObject, Identifiable {
     @NSManaged var faviconURL: URL?
     @NSManaged var fileDescription: String
     @NSManaged var fileID: UUID
+    ///  System file URL, if not nil, it means it's downloaded
     @NSManaged var fileURLBookmark: Data?
     @NSManaged var flavor: String?
     @NSManaged var hasDetails: Bool
@@ -184,11 +185,16 @@ class ZimFile: NSManagedObject, Identifiable {
         }.joined(separator: ",")
     }
 
+    enum Predicate {
+        static let isDownloaded = NSPredicate(format: "fileURLBookmark != nil")
+        static let notDownloaded = NSPredicate(format: "fileURLBookmark == nil")
+        static let notMissing = NSPredicate(format: "isMissing == false")
+    }
+
     static var openedPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
-        NSPredicate(format: "fileURLBookmark != nil"),
-        NSPredicate(format: "isMissing == false")
+        Predicate.isDownloaded,
+        Predicate.notMissing
     ])
-    static var withFileURLBookmarkPredicate = NSPredicate(format: "fileURLBookmark != nil")
     
     class func fetchRequest(
         predicate: NSPredicate? = nil, sortDescriptors: [NSSortDescriptor] = []
