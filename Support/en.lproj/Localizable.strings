@@ -82,23 +82,23 @@
 
 "zim_file_missing_indicator.help" = "Zim file is missing.";
 
-"library.zim_file_details.side_panel.message" = "Select a zim file to see detail";
+"library.zim_file_details.side_panel.message" = "Select a ZIM file to see detail";
 "library.zim_file_context.main_page.label" = "Main Page";
 "library.zim_file_context.random.label" = "Random Page";
 "library.zim_file_context.copy_url" = "Copy URL";
 "library.zim_file_context.copy_id" = "Copy ID";
 
-"zim_file_opened.overlay.no-opened.message" = "No opened zim file";
+"zim_file_opened.overlay.no-opened.message" = "No opened ZIM file";
 "zim_file_opened.toolbar.show_sidebar.label" = "Show Sidebar";
 "zim_file_opened.toolbar.open.title" = "Open...";
-"zim_file_opened.toolbar.open.help" = "Open a zim file";
+"zim_file_opened.toolbar.open.help" = "Open a ZIM file";
 "zim_file_category.title" = "Category";
 
-"zim_file_category.section.empty.message" = "No zim file under this category.";
+"zim_file_category.section.empty.message" = "No ZIM file under this category.";
 "zim_file_downloads.overlay.empty.message" = "No download tasks";
 "zim_file_downloads.toolbar.show_sidebar.label" = "Show Sidebar";
 
-"zim_file_new_overlay.empty" = "No new zim file";
+"zim_file_new_overlay.empty" = "No new ZIM file";
 "zim_file_new_button_refresh" = "Refresh";
 
 "zim_file.list.name.text" = "Name";
@@ -110,15 +110,15 @@
 "zim_file.action.reveal_in_finder.title" = "Reveal in Finder";
 "zim_file.action.toggle_cellular" = "Download using cellular";
 "zim_file.action.unlink.title" = "Unlink";
-"zim_file.action.unlink.message" = "All bookmarked articles linked to this zim file will be deleted, but the original file will remain in place.";
+"zim_file.action.unlink.message" = "All bookmarked articles linked to this ZIM file will be deleted, but the original file will remain in place.";
 "zim_file.action.unlink.button.title" = "Unlink";
 "zim_file.action.delete.title" = "Delete";
-"zim_file.action.delete.message" = "The zim file and all bookmarked articles linked to this zim file will be deleted.";
+"zim_file.action.delete.message" = "The ZIM file and all bookmarked articles linked to this ZIM file will be deleted.";
 "zim_file.action.delete.button.title" = "Delete";
 "zim_file.action.download.title" = "Download";
 "zim_file.action.download.warning.title" = "Space Warning";
-"zim_file.action.download.warning.message" = "There might not be enough space on your device for this zim file.";
-"zim_file.action.download.warning.message1" = "There would be less than 1GB space left after the zim file is downloaded.";
+"zim_file.action.download.warning.message" = "There might not be enough space on your device for this ZIM file.";
+"zim_file.action.download.warning.message1" = "There would be less than 1GB space left after the ZIM file is downloaded.";
 "zim_file.action.download.button.anyway" = "Download Anyway";
 "zim_file.base_info.attribute.language" = "Language";
 "zim_file.base_info.attribute.category" = "Category";
@@ -161,7 +161,7 @@
 "catalog_settings.auto_refresh.toggle" = "Auto refresh";
 "catalog_settings.header.text" = "Catalog";
 "catalog_settings.footer.text" = "When enabled, the library catalog will be refreshed automatically when outdated.";
-"backup_settings.toggle.title" = "Include zim files in backup";
+"backup_settings.toggle.title" = "Include ZIM files in backup";
 "backup_settings.header.text" = "Backup";
 "backup_settings.footer.text" = "Does not apply to files opened in place.";
 "settings.miscellaneous.title" = "Misc";
@@ -197,7 +197,7 @@
 
 "browser_tab.toolbar.show_sidebar.label" = "Show Sidebar";
 
-"search_result.zimfile.empty.message" = "No opened zim file";
+"search_result.zimfile.empty.message" = "No opened ZIM file";
 "search_result.zimfile.no_result.message" = "No result";
 "search_result.sidebar.button.remove" = "Remove";
 "search_result.header.text" = "Recent Search";
