@@ -69,7 +69,7 @@ struct ZimFilesNew: View {
             }
             #endif
             ToolbarItem {
-                if viewModel.isInProgress {
+                if viewModel.state == .inProgress {
                     ProgressView()
                     #if os(macOS)
                         .scaleEffect(0.5)

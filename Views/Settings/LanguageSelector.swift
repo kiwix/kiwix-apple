@@ -14,9 +14,10 @@ import Defaults
 #if os(macOS)
 struct LanguageSelector: View {
     @Default(.libraryLanguageCodes) private var selected
+    @EnvironmentObject private var library: LibraryViewModel
     @State private var languages = [Language]()
     @State private var sortOrder = [KeyPathComparator(\Language.count, order: .reverse)]
-    
+
     var body: some View {
         Table(languages, sortOrder: $sortOrder) {
             TableColumn("") { language in
@@ -35,9 +36,20 @@ struct LanguageSelector: View {
                 Text(language.count.formatted())
             }
         }
+        .opacity( library.state == .complete ? 1.0 : 0.3)
         .tableStyle(.bordered(alternatesRowBackgrounds: true))
         .onChange(of: sortOrder) { languages.sort(using: $0) }
-        .task {
+        .onChange(of: library.state) { state in
+            guard state != .inProgress else { return }
+            reloadLanguages()
+        }
+        .onAppear {
+            reloadLanguages()
+        }
+    }
+
+    private func reloadLanguages() {
+        Task {
             languages = await Languages.fetch()
             languages.sort(using: sortOrder)
         }
@@ -48,7 +60,7 @@ struct LanguageSelector: View {
     @Default(.libraryLanguageSortingMode) private var sortingMode
     @State private var showing = [Language]()
     @State private var hiding = [Language]()
-    
+
     var body: some View {
         List {
             Section {
