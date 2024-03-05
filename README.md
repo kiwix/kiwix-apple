@@ -92,7 +92,7 @@ iOS SDK if you want to build for iOS.
 xcode-select --install
 ```
 
-Then you can build `libkiwix` 
+Then you can build `libkiwix`
 
 ```sh
 git clone https://github.com/kiwix/kiwix-build.git
@@ -134,6 +134,15 @@ Once we are happy with the quality of the app in TestFlight, we can send it for 
 
 If all that is done, we should create a PR, incrementing the version number of the project (see: `project.yml`), and the deployment cycle can start again.
 
+## Reporting a bug
+
+* Bug reports and features requests should be done [online](https://github.com/kiwix/apple/issues).
+* Follow [issue reporting good
+  practices](https://github.com/kiwix/overview/blob/main/REPORT_BUG.md).
+* On macOS - if requested by a maintainer - pack your Kiwix app
+  container with the following command (then make it available
+  somewhere online): `tar -czvf ~/Documents/self.Kiwix.tgz
+  ~/Library/Containers/self.Kiwix`.
 
 ## License
 
