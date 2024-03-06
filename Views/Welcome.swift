@@ -44,8 +44,8 @@ struct Welcome: View {
             }
             .padding()
             .ignoresSafeArea()
-            .onChange(of: library.isInProgress) { isInProgress in
-                guard !isInProgress else { return }
+            .onChange(of: library.state) { state in
+                guard state != .inProgress else { return }
                 #if os(macOS)
                 navigation.currentItem = .categories
                 #elseif os(iOS)
@@ -70,7 +70,8 @@ struct Welcome: View {
                 GridSection(title: "welcome.main_page.title".localized) {
                     ForEach(zimFiles) { zimFile in
                         Button {
-                            guard let url = ZimFileService.shared.getMainPageURL(zimFileID: zimFile.fileID) else { return }
+                            guard let url = ZimFileService.shared
+                                .getMainPageURL(zimFileID: zimFile.fileID) else { return }
                             browser.load(url: url)
                         } label: {
                             ZimFileCell(zimFile, prominent: .name)
@@ -121,7 +122,7 @@ struct Welcome: View {
             } label: {
                 HStack {
                     Spacer()
-                    if library.isInProgress {
+                    if library.state == .inProgress {
                         #if os(macOS)
                         Text("welcome.button.status.fetching.text".localized)
                         #elseif os(iOS)
@@ -135,7 +136,7 @@ struct Welcome: View {
                     }
                     Spacer()
                 }.padding(6)
-            }.disabled(library.isInProgress)
+            }.disabled(library.state == .inProgress)
         }
         .font(.subheadline)
         .buttonStyle(.bordered)

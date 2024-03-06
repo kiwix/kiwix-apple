@@ -11,16 +11,23 @@ import os
 
 import Defaults
 
+public enum LibraryState {
+    case initial
+    case inProgress
+    case complete
+}
+
 public class LibraryViewModel: ObservableObject {
     @Published var selectedZimFile: ZimFile?
     @MainActor @Published public private(set) var error: Error?
-    @MainActor @Published public private(set) var isInProgress = false
-    
+    @MainActor @Published public private(set) var state: LibraryState
+
     private let urlSession: URLSession
     private let context: NSManagedObjectContext
     private var insertionCount = 0
     private var deletionCount = 0
     
+    @MainActor
     public init(urlSession: URLSession? = nil) {
         self.urlSession = urlSession ?? URLSession.shared
         
@@ -28,6 +35,11 @@ public class LibraryViewModel: ObservableObject {
         context.persistentStoreCoordinator = Database.shared.container.persistentStoreCoordinator
         context.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
         context.undoManager = nil
+        if Defaults[.libraryLastRefresh] == nil {
+            state = .initial
+        } else {
+            state = .complete
+        }
     }
     
     public func start(isUserInitiated: Bool) {
@@ -36,19 +48,22 @@ public class LibraryViewModel: ObservableObject {
     
     @MainActor
     public func start(isUserInitiated: Bool) async {
+        guard state != .inProgress else { return }
+        let oldState = state
         do {
-            guard !isInProgress else { return }
-            isInProgress = true
-            defer { isInProgress = false }
-            
             // decide if refresh should proceed
             let lastRefresh: Date? = Defaults[.libraryLastRefresh]
             let hasAutoRefresh: Bool = Defaults[.libraryAutoRefresh]
             let isStale = (lastRefresh?.timeIntervalSinceNow ?? -3600) <= -3600
             guard isUserInitiated || (hasAutoRefresh && isStale) else { return }
 
+            state = .inProgress
+
             // refresh library
-            guard let data = try await fetchData() else { return }
+            guard let data = try await fetchData() else {
+                state = oldState
+                return
+            }
             let parser = try await parse(data: data)
             // delete all old ISO Lang Code entries if needed, by passing in an empty parser
             if Defaults[.libraryUsingOldISOLangCodes] {
@@ -68,12 +83,14 @@ public class LibraryViewModel: ObservableObject {
 
             // reset error
             error = nil
-            
+            state = .complete
+
             // logging
             os_log("Refresh finished -- addition: %d, deletion: %d, total: %d",
                    log: Log.OPDS, type: .default, insertionCount, deletionCount, parser.zimFileIDs.count)
         } catch {
             self.error = error
+            state = oldState
         }
     }
 

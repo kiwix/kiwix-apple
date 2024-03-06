@@ -57,12 +57,12 @@ struct LibrarySettings: View {
     
     var body: some View {
         VStack(spacing: 16) {
-            SettingSection(name: "library_settings.catalog.title".localized) {
+            SettingSection(name: "library_settings.catalog.title".localized, alignment: .top) {
                 HStack(spacing: 6) {
                     Button("library_settings.button.refresh_now".localized) {
                         library.start(isUserInitiated: true)
-                    }.disabled(library.isInProgress)
-                    if library.isInProgress {
+                    }.disabled(library.state == .inProgress)
+                    if library.state == .inProgress {
                         ProgressView().progressViewStyle(.circular).scaleEffect(0.5).frame(height: 1)
                     }
                     Spacer()
@@ -173,7 +173,7 @@ struct Settings: View {
                 LanguageSelector()
             } label: {
                 SelectedLanaguageLabel()
-            }
+            }.disabled(library.state != .complete)
             Toggle("library_settings.toggle.cellular".localized, isOn: $downloadUsingCellular)
         } header: {
             Text("library_settings.tab.library.title".localized)
@@ -189,7 +189,7 @@ struct Settings: View {
                 Spacer()
                 LibraryLastRefreshTime().foregroundColor(.secondary)
             }
-            if library.isInProgress {
+            if library.state == .inProgress {
                 HStack {
                     Text("catalog_settings.refreshing.text".localized).foregroundColor(.secondary)
                     Spacer()
