@@ -58,19 +58,21 @@
 "library_refresh_time.never" = "Nikoli";
 "zim_file_cell_article_count_suffix" = "članki";
 "zim_file_missing_indicator.help" = "Datoteka Zim manjka.";
+// Fuzzy
 "library.zim_file_details.side_panel.message" = "Izberite datoteko ZIM za ogled podrobnosti";
 "library.zim_file_context.main_page.label" = "Glavna stran";
 "library.zim_file_context.random.label" = "Naključna stran";
 "library.zim_file_context.copy_url" = "Kopiraj URL";
 "library.zim_file_context.copy_id" = "Kopiraj ID";
-"zim_file_opened.overlay.no-opened.message" = "Odprta ni nobena datoteka Zim";
+"zim_file_opened.overlay.no-opened.message" = "Odprta ni nobena datoteka ZIM";
 "zim_file_opened.toolbar.show_sidebar.label" = "Prikaži stransko vrstico";
 "zim_file_opened.toolbar.open.title" = "Odpri ...";
 "zim_file_opened.toolbar.open.help" = "Odpri datoteko ZIM";
 "zim_file_category.title" = "Kategorija";
-"zim_file_category.section.empty.message" = "V tej kategoriji ni datoteke zim.";
+"zim_file_category.section.empty.message" = "V tej kategoriji ni datoteke ZIM.";
 "zim_file_downloads.overlay.empty.message" = "Ni opravil prenosa";
 "zim_file_downloads.toolbar.show_sidebar.label" = "Prikaži stransko vrstico";
+// Fuzzy
 "zim_file_new_overlay.empty" = "Ni novih datotek ZIM";
 "zim_file_new_button_refresh" = "Osveži";
 "zim_file.list.name.text" = "Ime";
@@ -82,15 +84,17 @@
 "zim_file.action.reveal_in_finder.title" = "Razkrij v Finderju";
 "zim_file.action.toggle_cellular" = "Mobilni prenos";
 "zim_file.action.unlink.title" = "Odstrani povezavo";
+// Fuzzy
 "zim_file.action.unlink.message" = "Vsi označeni članki, povezani s to datoteko ZIM, bodo izbrisani, vendar bo izvorna datoteka ostala na mestu.";
 "zim_file.action.unlink.button.title" = "Odstrani povezavo";
 "zim_file.action.delete.title" = "Izbriši";
+// Fuzzy
 "zim_file.action.delete.message" = "Datoteka ZIM in vsi zaznamovani članki, povezani s to datoteko ZIM, bodo odstranjeni.";
 "zim_file.action.delete.button.title" = "Izbriši";
 "zim_file.action.download.title" = "Prenos";
 "zim_file.action.download.warning.title" = "Opozorilo o prostoru";
-"zim_file.action.download.warning.message" = "V vaši napravi morda ni dovolj prostora za to datoteko Zim.";
-"zim_file.action.download.warning.message1" = "Po prenosu datoteke zim bi ostalo manj kot 1 GB prostora.";
+"zim_file.action.download.warning.message" = "V vaši napravi morda ni dovolj prostora za to datoteko ZIM.";
+"zim_file.action.download.warning.message1" = "Po prenosu datoteke ZIM bi ostalo manj kot 1 GB prostora.";
 "zim_file.action.download.button.anyway" = "Vseeno prenesi";
 "zim_file.base_info.attribute.language" = "Jezik";
 "zim_file.base_info.attribute.category" = "Kategorija";
@@ -132,7 +136,7 @@
 "catalog_settings.auto_refresh.toggle" = "Samodejno osveževanje";
 "catalog_settings.header.text" = "Katalog";
 "catalog_settings.footer.text" = "Če je omogočeno, se bo knjižnični katalog samodejno osvežil, ko bo zastarel.";
-"backup_settings.toggle.title" = "Vključuje datoteke ZIM in varnostno kopijo";
+"backup_settings.toggle.title" = "V varnostno kopijo vključi datoteko ZIM";
 "backup_settings.header.text" = "Varnostna kopija";
 "backup_settings.footer.text" = "Ne uporablja se za neposredno odprte datoteke.";
 "settings.miscellaneous.title" = "Razno";
@@ -164,7 +168,7 @@
 "bookmark.overlay.empty.title" = "Ni zaznamkov";
 "bookmark.toolbar.show_sidebar.label" = "Prikaži stransko vrstico";
 "browser_tab.toolbar.show_sidebar.label" = "Prikaži stransko vrstico";
-"search_result.zimfile.empty.message" = "Ni odprte datoteke zim";
+"search_result.zimfile.empty.message" = "Ni odprte datoteke ZIM";
 "search_result.zimfile.no_result.message" = "Ni zadetkov";
 "search_result.sidebar.button.remove" = "Odstrani";
 "search_result.header.text" = "Nedavna iskanja";

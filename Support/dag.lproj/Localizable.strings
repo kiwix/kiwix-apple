@@ -55,17 +55,22 @@
 "library_refresh_time.never" = "Abada";
 "zim_file_cell_article_count_suffix" = "Lahabaya";
 "zim_file_missing_indicator.help" = "Zim fasara nyɛla din kani.";
+// Fuzzy
 "library.zim_file_details.side_panel.message" = "Piimi zim fasara n- nya bayana";
 "library.zim_file_context.main_page.label" = "Yaɣili kpani";
 "library.zim_file_context.random.label" = "Gahim piigi yaɣili";
 "library.zim_file_context.copy_url" = "Yaai URL";
 "library.zim_file_context.copy_id" = "Yaai ID";
+// Fuzzy
 "zim_file_opened.overlay.no-opened.message" = "Zim fasara bi yooi";
 "zim_file_opened.toolbar.open.title" = "Yooi...";
+// Fuzzy
 "zim_file_opened.toolbar.open.help" = "Yoomi zim fasara";
 "zim_file_category.title" = "Pubu";
+// Fuzzy
 "zim_file_category.section.empty.message" = "Zim fasara kani pubu ŋɔ ni.";
 "zim_file_downloads.overlay.empty.message" = "Deebu tuma nima kani";
+// Fuzzy
 "zim_file_new_overlay.empty" = "Zim fasara palli kani";
 "zim_file_new_button_refresh" = "Kahigi";
 "zim_file.list.name.text" = "Yuli";
@@ -74,14 +79,18 @@
 "zim_file.list.info.text" = "Lahabali";
 "zim_file.action.locate.title" = "Dooshee";
 "zim_file.action.open_main_page.title" = "Yoomi mabiligu dundɔŋ";
+// Fuzzy
 "zim_file.action.unlink.message" = "Buku'daliŋ lahabaya zaa din taɣili n-ti zim fasara ŋɔ nyɛla din yɛn yihi, amaa fasara ŋɔ maŋmaŋ nyɛla din yɛn kpalim.";
 "zim_file.action.unlink.button.title" = "Din bi taɣili";
 "zim_file.action.delete.title" = "Nyɛhi";
+// Fuzzy
 "zim_file.action.delete.message" = "Zim fasara mini buku'daliŋ lahabaya kam din niŋ jɛndi zim fasara ŋɔ nyɛla din yɛn nyɛhi";
 "zim_file.action.delete.button.title" = "Nyɛhi";
 "zim_file.action.download.title" = "Deebu";
 "zim_file.action.download.warning.title" = "Polo saɣisigu";
+// Fuzzy
 "zim_file.action.download.warning.message" = "Din tooi niŋ ka polo viɛnyɛla kani a bimbuɣisirigu ŋɔ ni zaŋ n- ti zim fasara ŋɔ.";
+// Fuzzy
 "zim_file.action.download.warning.message1" = "Polo shɛli din yɛn be ni ku tooi lahi paai 1GB di yi niŋ ka a deei zim fasara ŋɔ naai.";
 "zim_file.action.download.button.anyway" = "Deemi kam";
 "zim_file.base_info.attribute.language" = "Balli";
@@ -120,6 +129,7 @@
 "catalog_settings.auto_refresh.toggle" = "Toli kahigibu";
 "catalog_settings.header.text" = "Yuya pii doli taba";
 "catalog_settings.footer.text" = "A yi niŋ, karimbu shee yuya pii doli taba nyɛla din yɛn kahigi di toli.";
+// Fuzzy
 "backup_settings.toggle.title" = "Pahimi zim fasara nima yaabu";
 "backup_settings.header.text" = "Yaabu";
 "backup_settings.footer.text" = "Di bi niŋdi n-tiri fasara shɛŋa yooi.";
@@ -143,6 +153,7 @@
 "settings.about.source.title" = "Kundivihira";
 "bookmark.navigation.title" = "Buku'dalima";
 "bookmark.overlay.empty.title" = "Buku'dalima kani";
+// Fuzzy
 "search_result.zimfile.empty.message" = "Zim fasara din yooi kani";
 "search_result.zimfile.no_result.message" = "Labisigu kani";
 "search_result.sidebar.button.remove" = "Yihi";

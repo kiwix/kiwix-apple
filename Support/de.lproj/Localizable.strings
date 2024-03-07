@@ -61,19 +61,24 @@
 "library_refresh_time.never" = "Niemals";
 "zim_file_cell_article_count_suffix" = "Artikel";
 "zim_file_missing_indicator.help" = "Zim-Datei fehlt.";
+// Fuzzy
 "library.zim_file_details.side_panel.message" = "Wählen Sie eine ZIM-Datei aus, um Details anzuzeigen";
 "library.zim_file_context.main_page.label" = "Hauptseite";
 "library.zim_file_context.random.label" = "Zufällige Seite";
 "library.zim_file_context.copy_url" = "URL kopieren";
 "library.zim_file_context.copy_id" = "ID kopieren";
+// Fuzzy
 "zim_file_opened.overlay.no-opened.message" = "Keine geöffnete ZIM-Datei";
 "zim_file_opened.toolbar.show_sidebar.label" = "Seitenleiste anzeigen";
 "zim_file_opened.toolbar.open.title" = "Öffnen…";
+// Fuzzy
 "zim_file_opened.toolbar.open.help" = "Öffne eine ZIM-Datei";
 "zim_file_category.title" = "Kategorie";
+// Fuzzy
 "zim_file_category.section.empty.message" = "Keine ZIM-Datei in dieser Kategorie.";
 "zim_file_downloads.overlay.empty.message" = "Keine ausstehenden Downloads";
 "zim_file_downloads.toolbar.show_sidebar.label" = "Seitenleiste anzeigen";
+// Fuzzy
 "zim_file_new_overlay.empty" = "Keine neue ZIM-Datei";
 "zim_file_new_button_refresh" = "Aktualisieren";
 "zim_file.list.name.text" = "Name";
@@ -85,14 +90,18 @@
 "zim_file.action.reveal_in_finder.title" = "Im Finder anzeigen";
 "zim_file.action.toggle_cellular" = "Über Mobilfunk herunterladen";
 "zim_file.action.unlink.title" = "Verknüpfung aufheben";
+// Fuzzy
 "zim_file.action.unlink.message" = "Alle mit dieser ZIM-Datei verknüpften Lesezeichen werden gelöscht, die Originaldatei bleibt jedoch erhalten.";
 "zim_file.action.unlink.button.title" = "Verknüpfung aufheben";
 "zim_file.action.delete.title" = "Löschen";
+// Fuzzy
 "zim_file.action.delete.message" = "Die ZIM-Datei und alle mit ihr verknüpften Lesezeichen werden gelöscht.";
 "zim_file.action.delete.button.title" = "Löschen";
 "zim_file.action.download.title" = "Herunterladen";
 "zim_file.action.download.warning.title" = "Speicherplatzwarnung";
+// Fuzzy
 "zim_file.action.download.warning.message" = "Möglicherweise ist auf Ihrem Gerät nicht genügend Speicherplatz für diese ZIM-Datei.";
+// Fuzzy
 "zim_file.action.download.warning.message1" = "Nach dem Herunterladen der ZIM-Datei wäre weniger als 1 GB Speicherplatz frei.";
 "zim_file.action.download.button.anyway" = "Trotzdem herunterladen";
 "zim_file.base_info.attribute.language" = "Sprache";
@@ -135,6 +144,7 @@
 "catalog_settings.auto_refresh.toggle" = "Automatisch aktualisieren";
 "catalog_settings.header.text" = "Katalog";
 "catalog_settings.footer.text" = "Wenn diese Option aktiviert ist, wird ein nicht aktueller Bibliothekskatalog automatisch aktualisiert.";
+// Fuzzy
 "backup_settings.toggle.title" = "Beziehe ZIM-Dateien ins Backup ein";
 "backup_settings.header.text" = "Backup";
 "backup_settings.footer.text" = "Gilt nicht für direkt geöffnete Dateien.";
@@ -167,6 +177,7 @@
 "bookmark.overlay.empty.title" = "Keine Lesezeichen";
 "bookmark.toolbar.show_sidebar.label" = "Seitenleiste anzeigen";
 "browser_tab.toolbar.show_sidebar.label" = "Seitenleiste anzeigen";
+// Fuzzy
 "search_result.zimfile.empty.message" = "Keine geöffnete ZIM-Datei";
 "search_result.zimfile.no_result.message" = "Keine Ergebnisse";
 "search_result.sidebar.button.remove" = "Entfernen";

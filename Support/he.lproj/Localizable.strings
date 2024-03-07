@@ -58,19 +58,24 @@
 "library_refresh_time.never" = "מעולם לא";
 "zim_file_cell_article_count_suffix" = "ערכים";
 "zim_file_missing_indicator.help" = "קובץ ה־zim חסר.";
+// Fuzzy
 "library.zim_file_details.side_panel.message" = "נא לבחור קובץ zim כדי לראות פרטים.";
 "library.zim_file_context.main_page.label" = "עמוד ראשי";
 "library.zim_file_context.random.label" = "דף אקראי";
 "library.zim_file_context.copy_url" = "העתקת URL";
 "library.zim_file_context.copy_id" = "העתקת מזהה";
+// Fuzzy
 "zim_file_opened.overlay.no-opened.message" = "לא נפתח קובץ zim";
 "zim_file_opened.toolbar.show_sidebar.label" = "הצגת סרגל צד";
 "zim_file_opened.toolbar.open.title" = "פתיחה...";
+// Fuzzy
 "zim_file_opened.toolbar.open.help" = "פתיחת קובץ zim";
 "zim_file_category.title" = "קטגוריה";
+// Fuzzy
 "zim_file_category.section.empty.message" = "אין קובץ zim בקטגוריה הזאת.";
 "zim_file_downloads.overlay.empty.message" = "אין משימות הורדה";
 "zim_file_downloads.toolbar.show_sidebar.label" = "הצגת סרגל צד";
+// Fuzzy
 "zim_file_new_overlay.empty" = "אין קובץ zim חדש";
 "zim_file_new_button_refresh" = "רענון";
 "zim_file.list.name.text" = "שם";
@@ -82,14 +87,18 @@
 "zim_file.action.reveal_in_finder.title" = "לחשוף ב־Finder";
 "zim_file.action.toggle_cellular" = "להוריד באמצעות הרשת הסלולרית";
 "zim_file.action.unlink.title" = "ניתוק הקשר";
+// Fuzzy
 "zim_file.action.unlink.message" = "כל הערכים עם סימניות המקושרים לקובץ ה־zim הזה יימחקו, אך הקובץ המקורי יישאר במקומו.";
 "zim_file.action.unlink.button.title" = "ניתוק הקשר";
 "zim_file.action.delete.title" = "מחיקה";
+// Fuzzy
 "zim_file.action.delete.message" = "קובץ ה־zim וכל הערכים עם סימניות המקושרים לקובץ ה־zim הזה יימחקו.";
 "zim_file.action.delete.button.title" = "מחיקה";
 "zim_file.action.download.title" = "הורדה";
 "zim_file.action.download.warning.title" = "אזהרת נפח";
+// Fuzzy
 "zim_file.action.download.warning.message" = "ייתכן שאין מספיק נפח במכשיר שלך לקובץ ה־zim הזה.";
+// Fuzzy
 "zim_file.action.download.warning.message1" = "יישאר פחות מגיגה אחד של נפח לאחר הורדת קובץ ה־zim.";
 "zim_file.action.download.button.anyway" = "להוריד בכל־זאת";
 "zim_file.base_info.attribute.language" = "שפה";
@@ -132,6 +141,7 @@
 "catalog_settings.auto_refresh.toggle" = "רענון אוטומטי";
 "catalog_settings.header.text" = "קטלוג";
 "catalog_settings.footer.text" = "כשזה מופעל, קטלוג הספרייה ירוענן אוטומטית כאשר הוא מתיישן.";
+// Fuzzy
 "backup_settings.toggle.title" = "לכלול קובצי zim בגיבוי";
 "backup_settings.header.text" = "גיבוי";
 "backup_settings.footer.text" = "לא חל על קבצים שנפתחו במקום.";
@@ -164,6 +174,7 @@
 "bookmark.overlay.empty.title" = "אין סימניות";
 "bookmark.toolbar.show_sidebar.label" = "הצגת סרגל צד";
 "browser_tab.toolbar.show_sidebar.label" = "הצגת סרגל צד";
+// Fuzzy
 "search_result.zimfile.empty.message" = "אין קובץ zim פתוח";
 "search_result.zimfile.no_result.message" = "אין תוצאות";
 "search_result.sidebar.button.remove" = "הסרה";

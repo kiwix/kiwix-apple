@@ -60,19 +60,24 @@
 "library_refresh_time.never" = "Никогда";
 "zim_file_cell_article_count_suffix" = "статей";
 "zim_file_missing_indicator.help" = "Zim-файл отсутствует.";
+// Fuzzy
 "library.zim_file_details.side_panel.message" = "Выберите ZIM-файл, чтобы просмотреть подробности.";
 "library.zim_file_context.main_page.label" = "Заглавная страница";
 "library.zim_file_context.random.label" = "Случайная страница";
 "library.zim_file_context.copy_url" = "Скопировать URL-адрес";
 "library.zim_file_context.copy_id" = "Копировать идентификатор";
+// Fuzzy
 "zim_file_opened.overlay.no-opened.message" = "Нет открытого файла ZIM";
 "zim_file_opened.toolbar.show_sidebar.label" = "Показать боковую панель";
 "zim_file_opened.toolbar.open.title" = "Открыть...";
+// Fuzzy
 "zim_file_opened.toolbar.open.help" = "Открыть ZIM-файл";
 "zim_file_category.title" = "Категория";
+// Fuzzy
 "zim_file_category.section.empty.message" = "В этой категории нет ZIM-файла.";
 "zim_file_downloads.overlay.empty.message" = "Нет задач по загрузке";
 "zim_file_downloads.toolbar.show_sidebar.label" = "Показать боковую панель";
+// Fuzzy
 "zim_file_new_overlay.empty" = "Нет открытого файла ZIM";
 "zim_file_new_button_refresh" = "Обновить";
 "zim_file.list.name.text" = "Имя";
@@ -84,14 +89,18 @@
 "zim_file.action.reveal_in_finder.title" = "Показать в Finder";
 "zim_file.action.toggle_cellular" = "Загрузка с помощью сотовой связи";
 "zim_file.action.unlink.title" = "Разорвать связь";
+// Fuzzy
 "zim_file.action.unlink.message" = "Все статьи с закладками, связанные с этим ZIM-файлом, будут удалены, но исходный файл останется на месте.";
 "zim_file.action.unlink.button.title" = "Разорвать связь";
 "zim_file.action.delete.title" = "Удалить";
+// Fuzzy
 "zim_file.action.delete.message" = "Zim-файл и все статьи с закладками, связанные с этим ZIM-файлом, будут удалены.";
 "zim_file.action.delete.button.title" = "Удалить";
 "zim_file.action.download.title" = "Скачать";
 "zim_file.action.download.warning.title" = "Космическое предупреждение";
+// Fuzzy
 "zim_file.action.download.warning.message" = "Возможно, на вашем устройстве недостаточно места для этого ZIM-файла.";
+// Fuzzy
 "zim_file.action.download.warning.message1" = "После загрузки файла ZIM останется менее 1 ГБ свободного места.";
 "zim_file.action.download.button.anyway" = "Все равно скачать";
 "zim_file.base_info.attribute.language" = "Язык";
@@ -134,6 +143,7 @@
 "catalog_settings.auto_refresh.toggle" = "Автообновление";
 "catalog_settings.header.text" = "Каталог";
 "catalog_settings.footer.text" = "Если эта опция включена, каталог библиотеки будет обновляться автоматически, если он устареет.";
+// Fuzzy
 "backup_settings.toggle.title" = "Включить файлы ZIM в резервную копию";
 "backup_settings.header.text" = "Резервное копирование";
 "backup_settings.footer.text" = "Не применяется к файлам, открытым на месте.";
@@ -166,6 +176,7 @@
 "bookmark.overlay.empty.title" = "Нет Закладок";
 "bookmark.toolbar.show_sidebar.label" = "Показать боковую панель";
 "browser_tab.toolbar.show_sidebar.label" = "Показать боковую панель";
+// Fuzzy
 "search_result.zimfile.empty.message" = "Нет открытого файла ZIM";
 "search_result.zimfile.no_result.message" = "Ничего не найдено";
 "search_result.sidebar.button.remove" = "Удалить";
