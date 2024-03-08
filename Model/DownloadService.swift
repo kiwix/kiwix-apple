@@ -1,22 +1,42 @@
 //
 //  DownloadService.swift
 //  Kiwix
-//
-//  Created by Chris Li on 4/30/22.
-//  Copyright © 2022 Chris Li. All rights reserved.
-//
 
 import CoreData
 import UserNotifications
 import os
 
-class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegate, URLSessionDownloadDelegate {
+private final class DownloadProgress {
+    private var dictionary = [UUID: Int64]()
+    private let inSync = InSync(label: "org.kiwix.downloadProgress")
+
+    func updateFor(uuid: UUID, totalBytes: Int64) {
+        inSync.execute { [weak self] in
+            self?.dictionary[uuid] = totalBytes
+        }
+    }
+
+    func values() -> [UUID: Int64] {
+        inSync.read { dictionary }
+    }
+
+    func resetFor(uuid: UUID) {
+        inSync.execute { [weak self] in
+            self?.dictionary.removeValue(forKey: uuid)
+        }
+    }
+
+    func isEmpty() -> Bool {
+        inSync.read { dictionary.isEmpty }
+    }
+}
+
+final class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegate, URLSessionDownloadDelegate {
     static let shared = DownloadService()
     
     private let queue = DispatchQueue(label: "downloads")
-    private var totalBytesWritten = [UUID: Int64]()
-    private var heartbeat: Timer?
-    
+    private let progress = DownloadProgress()
+    @MainActor private var heartbeat: Timer?
     var backgroundCompletionHandler: (() -> Void)?
     private lazy var session: URLSession = {
         let configuration = URLSessionConfiguration.background(withIdentifier: "org.kiwix.background")
@@ -36,27 +56,29 @@ class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegate, URL
             guard downloadTasks.count > 0 else { return }
             for task in downloadTasks {
                 guard let taskDescription = task.taskDescription,
-                      let zimFileID = UUID(uuidString: taskDescription) else {return}
-                self.totalBytesWritten[zimFileID] = task.countOfBytesReceived
+                      let zimFileID = UUID(uuidString: taskDescription) else { return }
+                self.progress.updateFor(uuid: zimFileID, totalBytes: task.countOfBytesReceived)
             }
             self.startHeartbeat()
         }
     }
     
-    /// Start heartbeat, which will update database every second
+    /// Start heartbeat, which will update database every 0.25 second
     private func startHeartbeat() {
         DispatchQueue.main.async {
             guard self.heartbeat == nil else { return }
-            self.heartbeat = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in
-                Database.shared.container.performBackgroundTask { context in
+            self.heartbeat = Timer.scheduledTimer(withTimeInterval: 0.25, repeats: true) { [weak self] _ in
+                Database.shared.container.performBackgroundTask { [weak self] context in
                     context.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
-                    for (zimFileID, downloadedBytes) in self.totalBytesWritten {
-                        let predicate = NSPredicate(format: "fileID == %@", zimFileID as CVarArg)
-                        let request = DownloadTask.fetchRequest(predicate: predicate)
-                        guard let downloadTask = try? context.fetch(request).first else { return }
-                        downloadTask.downloadedBytes = downloadedBytes
+                    if let progressValues = self?.progress.values() {
+                        for (zimFileID, downloadedBytes) in progressValues {
+                            let predicate = NSPredicate(format: "fileID == %@", zimFileID as CVarArg)
+                            let request = DownloadTask.fetchRequest(predicate: predicate)
+                            guard let downloadTask = try? context.fetch(request).first else { return }
+                            downloadTask.downloadedBytes = downloadedBytes
+                        }
+                        try? context.save()
                     }
-                    try? context.save()
                 }
             }
             os_log("Heartbeat started.", log: Log.DownloadService, type: .info)
@@ -209,8 +231,8 @@ class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegate, URL
     func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?) {
         guard let taskDescription = task.taskDescription,
               let zimFileID = UUID(uuidString: taskDescription) else { return }
-        totalBytesWritten[zimFileID] = nil
-        if totalBytesWritten.count == 0 {
+        progress.resetFor(uuid: zimFileID)
+        if progress.isEmpty() {
             stopHeartbeat()
         }
         
@@ -259,7 +281,7 @@ class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegate, URL
                     totalBytesExpectedToWrite: Int64) {
         guard let taskDescription = downloadTask.taskDescription,
               let zimFileID = UUID(uuidString: taskDescription) else { return }
-        self.totalBytesWritten[zimFileID] = totalBytesWritten
+        progress.updateFor(uuid: zimFileID, totalBytes: totalBytesWritten)
     }
     
     func urlSession(_ session: URLSession,
