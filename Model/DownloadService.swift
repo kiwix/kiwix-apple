@@ -36,8 +36,7 @@ final class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegat
     
     private let queue = DispatchQueue(label: "downloads")
     private let progress = DownloadProgress()
-    private var heartbeat: Timer?
-    
+    @MainActor private var heartbeat: Timer?
     var backgroundCompletionHandler: (() -> Void)?
     private lazy var session: URLSession = {
         let configuration = URLSessionConfiguration.background(withIdentifier: "org.kiwix.background")
@@ -64,7 +63,7 @@ final class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegat
         }
     }
     
-    /// Start heartbeat, which will update database every 0.25 seconds
+    /// Start heartbeat, which will update database every 0.25 second
     private func startHeartbeat() {
         DispatchQueue.main.async {
             guard self.heartbeat == nil else { return }

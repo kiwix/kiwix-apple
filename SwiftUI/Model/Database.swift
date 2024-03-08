@@ -7,6 +7,7 @@
 //
 
 import CoreData
+import os
 
 final class Database {
     static let shared = Database()
@@ -106,8 +107,16 @@ final class Database {
         context.perform {
             // fetch and merge changes
             let fetchRequest = NSPersistentHistoryChangeRequest.fetchHistory(after: self.token)
-            guard let result = try? context.execute(fetchRequest) as? NSPersistentHistoryResult,
-                  let transactions = result.result as? [NSPersistentHistoryTransaction] else { return }
+            guard let result = try? context.execute(fetchRequest) as? NSPersistentHistoryResult else {
+                os_log("no persistent history found after token: \(self.token)")
+                self.token = nil
+                return
+            }
+            guard let transactions = result.result as? [NSPersistentHistoryTransaction] else {
+                os_log("no transactions in persistent history found after token: \(self.token)")
+                self.token = nil
+                return
+            }
             self.container.viewContext.performAndWait {
                 transactions.forEach { transaction in
                     self.container.viewContext.mergeChanges(fromContextDidSave: transaction.objectIDNotification())
