@@ -51,13 +51,17 @@
 "library.zim_file_context.random.label" = "Pajenn dre zegouezh";
 "library.zim_file_context.copy_url" = "Eilañ an URL";
 "library.zim_file_context.copy_id" = "Eilañ an ID";
+// Fuzzy
 "zim_file_opened.overlay.no-opened.message" = "Restr ZIM digor ebet";
 "zim_file_opened.toolbar.show_sidebar.label" = "Diskouez ar varrenn-gostez";
 "zim_file_opened.toolbar.open.title" = "Digeriñ...";
+// Fuzzy
 "zim_file_opened.toolbar.open.help" = "Digeriñ ur restr ZIM";
 "zim_file_category.title" = "Rummad";
+// Fuzzy
 "zim_file_category.section.empty.message" = "Restr ZIM ebet er rummad-mañ.";
 "zim_file_downloads.toolbar.show_sidebar.label" = "Diskouez ar varrenn-gostez";
+// Fuzzy
 "zim_file_new_overlay.empty" = "Restr ZIM nevez ebet";
 "zim_file_new_button_refresh" = "Freskaat";
 "zim_file.list.name.text" = "Anv";
@@ -122,6 +126,7 @@
 "bookmark.overlay.empty.title" = "Sined ebet";
 "bookmark.toolbar.show_sidebar.label" = "Diskouez ar varrenn-gostez";
 "browser_tab.toolbar.show_sidebar.label" = "Diskouez ar varrenn-gostez";
+// Fuzzy
 "search_result.zimfile.empty.message" = "Restr ZIM digor ebet";
 "search_result.zimfile.no_result.message" = "Disoc’h ebet";
 "search_result.sidebar.button.remove" = "Dilemel";

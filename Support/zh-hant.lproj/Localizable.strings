@@ -58,19 +58,24 @@
 "library_refresh_time.never" = "永不";
 "zim_file_cell_article_count_suffix" = "條目";
 "zim_file_missing_indicator.help" = "遺失 Zim 檔案。";
+// Fuzzy
 "library.zim_file_details.side_panel.message" = "選擇一個 zim 檔案以查看詳細資訊";
 "library.zim_file_context.main_page.label" = "主頁";
 "library.zim_file_context.random.label" = "隨機頁面";
 "library.zim_file_context.copy_url" = "複製 URL";
 "library.zim_file_context.copy_id" = "複製 ID";
+// Fuzzy
 "zim_file_opened.overlay.no-opened.message" = "沒有開啟的 zim 檔案";
 "zim_file_opened.toolbar.show_sidebar.label" = "顯示側邊欄";
 "zim_file_opened.toolbar.open.title" = "開啟…";
+// Fuzzy
 "zim_file_opened.toolbar.open.help" = "開啟一個 zim 檔案";
 "zim_file_category.title" = "分類";
+// Fuzzy
 "zim_file_category.section.empty.message" = "此分類下沒有 zim 檔案。";
 "zim_file_downloads.overlay.empty.message" = "沒有下載任務";
 "zim_file_downloads.toolbar.show_sidebar.label" = "顯示側邊欄";
+// Fuzzy
 "zim_file_new_overlay.empty" = "沒有新的 zim 檔案";
 "zim_file_new_button_refresh" = "重整";
 "zim_file.list.name.text" = "名稱";
@@ -82,14 +87,18 @@
 "zim_file.action.reveal_in_finder.title" = "在 Finder 中顯示";
 "zim_file.action.toggle_cellular" = "使用蜂巢式網路下載";
 "zim_file.action.unlink.title" = "取消連結";
+// Fuzzy
 "zim_file.action.unlink.message" = "連結到該 zim 檔案的所有加入到書籤的條目都將被刪除，不過原始檔案會保留於原處。";
 "zim_file.action.unlink.button.title" = "取消連結";
 "zim_file.action.delete.title" = "刪除";
+// Fuzzy
 "zim_file.action.delete.message" = "Zim 檔案與連結到該檔案的所有加入到書籤的條目都將被刪除。";
 "zim_file.action.delete.button.title" = "刪除";
 "zim_file.action.download.title" = "下載";
 "zim_file.action.download.warning.title" = "空間警告";
+// Fuzzy
 "zim_file.action.download.warning.message" = "您的設備上可能沒有足夠的空間來容納此 zim 檔案。";
+// Fuzzy
 "zim_file.action.download.warning.message1" = "下載 zim 檔案後，剩餘空間會少於 1GB。";
 "zim_file.action.download.button.anyway" = "無論如何都要下載";
 "zim_file.base_info.attribute.language" = "語言";
@@ -132,6 +141,7 @@
 "catalog_settings.auto_refresh.toggle" = "自動重整";
 "catalog_settings.header.text" = "目錄";
 "catalog_settings.footer.text" = "啟用後，在圖書館目錄過期時會自動重整。";
+// Fuzzy
 "backup_settings.toggle.title" = "在備份中包含 zim 檔案";
 "backup_settings.header.text" = "備份";
 "backup_settings.footer.text" = "不適用於在此開啟的檔案。";
@@ -164,6 +174,7 @@
 "bookmark.overlay.empty.title" = "沒有書籤";
 "bookmark.toolbar.show_sidebar.label" = "顯示側邊欄";
 "browser_tab.toolbar.show_sidebar.label" = "顯示側邊欄";
+// Fuzzy
 "search_result.zimfile.empty.message" = "沒有開啟的 zim 檔案";
 "search_result.zimfile.no_result.message" = "沒有結果";
 "search_result.sidebar.button.remove" = "移除";

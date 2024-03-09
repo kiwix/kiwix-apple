@@ -3,6 +3,7 @@
 // Author: Adriendelucca
 // Author: Crochet.david
 // Author: Gomoko
+// Author: MacOS Weed
 // Author: Stephane
 // Author: Vikoula5
 // Author: Wladek92
@@ -63,20 +64,21 @@
 "library_refresh_time.never" = "Jamais";
 "zim_file_cell_article_count_suffix" = "articles";
 "zim_file_missing_indicator.help" = "Le fichier Zim est manquant.";
+// Fuzzy
 "library.zim_file_details.side_panel.message" = "Sélectionnez un fichier zim pour voir les détails";
 "library.zim_file_context.main_page.label" = "Page principale";
 "library.zim_file_context.random.label" = "Page au hasard";
 "library.zim_file_context.copy_url" = "Copier l’URL";
 "library.zim_file_context.copy_id" = "Copier l'identifiant";
-"zim_file_opened.overlay.no-opened.message" = "Aucun fichier zim ouvert";
+"zim_file_opened.overlay.no-opened.message" = "Aucun fichier ZIM ouvert";
 "zim_file_opened.toolbar.show_sidebar.label" = "Afficher la barre latérale";
 "zim_file_opened.toolbar.open.title" = "Ouvrir...";
-"zim_file_opened.toolbar.open.help" = "Ouvrir un fichier zim";
+"zim_file_opened.toolbar.open.help" = "Ouvrir un fichier ZIM";
 "zim_file_category.title" = "Catégorie";
-"zim_file_category.section.empty.message" = "Aucun fichier zim dans cette catégorie.";
+"zim_file_category.section.empty.message" = "Aucun fichier ZIM dans cette catégorie.";
 "zim_file_downloads.overlay.empty.message" = "Aucune tâche de téléchargement";
 "zim_file_downloads.toolbar.show_sidebar.label" = "Afficher la barre latérale";
-"zim_file_new_overlay.empty" = "Pas de nouveau fichier zim";
+"zim_file_new_overlay.empty" = "Pas de nouveau fichier ZIM";
 "zim_file_new_button_refresh" = "Actualiser";
 "zim_file.list.name.text" = "Nom";
 "zim_file.list.description.text" = "Description";
@@ -87,15 +89,16 @@
 "zim_file.action.reveal_in_finder.title" = "Révéler dans le Finder";
 "zim_file.action.toggle_cellular" = "Télécharger en utilisant le téléphone cellulaire";
 "zim_file.action.unlink.title" = "Délier";
-"zim_file.action.unlink.message" = "Tous les articles mis en signet liés à ce fichier zim seront supprimés, mais le fichier d'origine restera en place.";
+"zim_file.action.unlink.message" = "Tous les articles mis en signet liés à ce fichier ZIM seront supprimés, mais le fichier d'origine restera en place.";
 "zim_file.action.unlink.button.title" = "Délier";
 "zim_file.action.delete.title" = "Supprimer";
+// Fuzzy
 "zim_file.action.delete.message" = "Le fichier zim et tous les articles mis en favoris liés à ce fichier zim seront supprimés.";
 "zim_file.action.delete.button.title" = "Supprimer";
 "zim_file.action.download.title" = "Télécharger";
 "zim_file.action.download.warning.title" = "Avertissement d’espace";
-"zim_file.action.download.warning.message" = "Il n'y a peut-être pas assez d'espace sur votre appareil pour ce fichier zim.";
-"zim_file.action.download.warning.message1" = "Il resterait moins de 1 Go d’espace après le téléchargement du fichier zim.";
+"zim_file.action.download.warning.message" = "Il n'y a peut-être pas assez d'espace sur votre appareil pour ce fichier ZIM.";
+"zim_file.action.download.warning.message1" = "Il resterait moins de 1 Go d’espace après le téléchargement du fichier ZIM.";
 "zim_file.action.download.button.anyway" = "Télécharger quand même";
 "zim_file.base_info.attribute.language" = "Langue";
 "zim_file.base_info.attribute.category" = "Catégorie";
@@ -137,6 +140,7 @@
 "catalog_settings.auto_refresh.toggle" = "Actualisation automatique";
 "catalog_settings.header.text" = "Catalogue";
 "catalog_settings.footer.text" = "Lorsqu'il est activé, le catalogue de la bibliothèque sera actualisé automatiquement lorsqu'il sera obsolète.";
+// Fuzzy
 "backup_settings.toggle.title" = "Inclure les fichiers zim dans la sauvegarde";
 "backup_settings.header.text" = "Sauvegarde";
 "backup_settings.footer.text" = "Ne pas appliquer les fichiers ouverts sur place.";
@@ -169,7 +173,7 @@
 "bookmark.overlay.empty.title" = "Aucun signet";
 "bookmark.toolbar.show_sidebar.label" = "Afficher la barre latérale";
 "browser_tab.toolbar.show_sidebar.label" = "Afficher la barre latérale";
-"search_result.zimfile.empty.message" = "Aucun fichier zim ouvert";
+"search_result.zimfile.empty.message" = "Aucun fichier ZIM ouvert";
 "search_result.zimfile.no_result.message" = "Aucun résultat";
 "search_result.sidebar.button.remove" = "Retirer";
 "search_result.header.text" = "Recherche récente";

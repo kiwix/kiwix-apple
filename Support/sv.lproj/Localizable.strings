@@ -61,19 +61,24 @@
 "library_refresh_time.never" = "Aldrig";
 "zim_file_cell_article_count_suffix" = "artiklar";
 "zim_file_missing_indicator.help" = "Zim-fil saknas.";
+// Fuzzy
 "library.zim_file_details.side_panel.message" = "Välj en zim-fil för att se information";
 "library.zim_file_context.main_page.label" = "Huvudsida";
 "library.zim_file_context.random.label" = "Slumpsida";
 "library.zim_file_context.copy_url" = "Kopiera webbadress";
 "library.zim_file_context.copy_id" = "Kopiera ID";
+// Fuzzy
 "zim_file_opened.overlay.no-opened.message" = "Ingen öppnad zim-fil";
 "zim_file_opened.toolbar.show_sidebar.label" = "Visa sidofält";
 "zim_file_opened.toolbar.open.title" = "Öppna...";
+// Fuzzy
 "zim_file_opened.toolbar.open.help" = "Öppna en zim-fil";
 "zim_file_category.title" = "Kategori";
+// Fuzzy
 "zim_file_category.section.empty.message" = "Ingen zim-fil under denna kategori.";
 "zim_file_downloads.overlay.empty.message" = "Inga nedladdningsuppgifter";
 "zim_file_downloads.toolbar.show_sidebar.label" = "Visa sidofält";
+// Fuzzy
 "zim_file_new_overlay.empty" = "Ingen ny zim-fil";
 "zim_file_new_button_refresh" = "Uppdatera";
 "zim_file.list.name.text" = "Namn";
@@ -85,14 +90,18 @@
 "zim_file.action.reveal_in_finder.title" = "Upptäck i Finder";
 "zim_file.action.toggle_cellular" = "Ladda ned med mobildata";
 "zim_file.action.unlink.title" = "Ta bort länk";
+// Fuzzy
 "zim_file.action.unlink.message" = "Alla bokmärkta artiklar som är länkade till denna zim-fil kommer att raderas, men originalfilen kommer att finnas kvar.";
 "zim_file.action.unlink.button.title" = "Ta bort länk";
 "zim_file.action.delete.title" = "Radera";
+// Fuzzy
 "zim_file.action.delete.message" = "Zim-filen och alla bokmärkta artiklar som är länkade till denna zim-fil kommer att raderas.";
 "zim_file.action.delete.button.title" = "Radera";
 "zim_file.action.download.title" = "Ladda ned";
 "zim_file.action.download.warning.title" = "Utrymmesvarning";
+// Fuzzy
 "zim_file.action.download.warning.message" = "Det kanske inte finns tillräckligt med utrymme på din enhet för den här zim-filen.";
+// Fuzzy
 "zim_file.action.download.warning.message1" = "Det skulle finnas mindre än 1 GB utrymme kvar efter att zim-filen har laddats ner.";
 "zim_file.action.download.button.anyway" = "Ladda ned ändå";
 "zim_file.base_info.attribute.language" = "Språk";
@@ -135,6 +144,7 @@
 "catalog_settings.auto_refresh.toggle" = "Uppdatera automatiskt";
 "catalog_settings.header.text" = "Katalog";
 "catalog_settings.footer.text" = "När den är aktiverad uppdateras bibliotekskatalogen automatiskt när den är föråldrad.";
+// Fuzzy
 "backup_settings.toggle.title" = "Inkludera zim-filer i säkerhetskopian";
 "backup_settings.header.text" = "Säkerhetskopiering";
 "backup_settings.footer.text" = "Gäller inte filer som öppnas på plats.";
@@ -167,6 +177,7 @@
 "bookmark.overlay.empty.title" = "Inga bokmärken";
 "bookmark.toolbar.show_sidebar.label" = "Visa sidofält";
 "browser_tab.toolbar.show_sidebar.label" = "Visa sidofält";
+// Fuzzy
 "search_result.zimfile.empty.message" = "Ingen öppnad zim-fil";
 "search_result.zimfile.no_result.message" = "Inga resultat";
 "search_result.sidebar.button.remove" = "Ta bort";

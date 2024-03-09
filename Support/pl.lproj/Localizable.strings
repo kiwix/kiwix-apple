@@ -39,18 +39,22 @@
 "library_refresh_time.never" = "Nigdy";
 "zim_file_cell_article_count_suffix" = "artykuły";
 "zim_file_missing_indicator.help" = "Brak pliku Zim.";
+// Fuzzy
 "library.zim_file_details.side_panel.message" = "Wybierz plik zim, aby zobaczyć szczegóły";
 "library.zim_file_context.main_page.label" = "Strona główna";
 "library.zim_file_context.random.label" = "Losowa strona";
 "library.zim_file_context.copy_url" = "Kopiuj URL";
 "zim_file_category.title" = "Kategoria";
+// Fuzzy
 "zim_file_category.section.empty.message" = "Brak pliku zim w tej kategorii.";
 "zim_file_downloads.overlay.empty.message" = "Brak zadań pobierania";
 "zim_file_downloads.toolbar.show_sidebar.label" = "Pokaż pasek boczny";
+// Fuzzy
 "zim_file_new_overlay.empty" = "Brak nowego pliku zim";
 "zim_file_new_button_refresh" = "Odśwież";
 "zim_file.list.name.text" = "Nazwa";
 "zim_file.action.delete.title" = "Usuń";
+// Fuzzy
 "zim_file.action.delete.message" = "Plik zim i wszystkie artykuły dodane do zakładek powiązane z tym plikiem zim zostaną usunięte.";
 "zim_file.action.delete.button.title" = "Usuń";
 "zim_file.action.download.title" = "Pobierz";
@@ -89,6 +93,7 @@
 "catalog_settings.auto_refresh.toggle" = "Automatyczne odświeżanie";
 "catalog_settings.header.text" = "Katalog";
 "catalog_settings.footer.text" = "Gdy ta opcja jest włączona, katalog biblioteki będzie automatycznie odświeżany, jeśli będzie nieaktualny.";
+// Fuzzy
 "backup_settings.toggle.title" = "Dołącz pliki zim do kopii zapasowej";
 "backup_settings.header.text" = "Kopia zapasowa";
 "backup_settings.footer.text" = "Nie dotyczy plików otwieranych lokalnie.";
@@ -117,6 +122,7 @@
 "bookmark.overlay.empty.title" = "Brak zakładek";
 "bookmark.toolbar.show_sidebar.label" = "Pokaż pasek boczny";
 "browser_tab.toolbar.show_sidebar.label" = "Pokaż pasek boczny";
+// Fuzzy
 "search_result.zimfile.empty.message" = "Brak otwartego pliku zim";
 "search_result.zimfile.no_result.message" = "Brak wyników";
 "search_result.sidebar.button.remove" = "Usuń";

@@ -36,8 +36,10 @@
 "library.zim_file_context.copy_url" = "URL kopéieren";
 "library.zim_file_context.copy_id" = "ID kopéieren";
 "zim_file_opened.toolbar.open.title" = "Opmaachen...";
+"zim_file_opened.toolbar.open.help" = "ZIM-Fichier opmaachen";
 "zim_file_category.title" = "Kategorie";
-"zim_file_category.section.empty.message" = "Keen Zim Fichier an dëser Kategorie.";
+"zim_file_category.section.empty.message" = "Keen ZIM-Fichier an dëser Kategorie.";
+"zim_file_new_overlay.empty" = "Keng nei ZIM-Datei";
 "zim_file_new_button_refresh" = "Aktualiséieren";
 "zim_file.list.name.text" = "Numm";
 "zim_file.list.description.text" = "Beschreiwung";
@@ -45,6 +47,7 @@
 "zim_file.action.open_main_page.title" = "Haaptsäit opmaachen";
 "zim_file.action.delete.title" = "Läschen";
 "zim_file.action.delete.button.title" = "Läschen";
+"zim_file.action.download.warning.message" = "Et ass villäicht net genuch Plaz op Ärem Apparat fir dës ZIM-Datei.";
 "zim_file.action.download.button.anyway" = "Trotzdeem eroflueden";
 "zim_file.base_info.attribute.language" = "Sprooch";
 "zim_file.base_info.attribute.category" = "Kategorie";

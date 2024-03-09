@@ -1,6 +1,7 @@
 // Messages for Italian (italiano)
 // Exported from translatewiki.net
 // Author: Beta16
+// Author: LametinoWiki
 // Author: Luca.favorido
 
 "library_refresh_error.retrieve.description" = "Errore durante il recupero dei dati della libreria.";
@@ -32,9 +33,13 @@
 "download_task_cell.status.paused" = "In pausa";
 "library_refresh_time.last" = "Proprio adesso";
 "zim_file_missing_indicator.help" = "Manca il file Zim.";
+"library.zim_file_details.side_panel.message" = "Seleziona un file ZIM per vedere i dettagli";
 "library.zim_file_context.main_page.label" = "Pagina principale";
-"zim_file_opened.overlay.no-opened.message" = "Nessun file zim aperto";
+"zim_file_opened.overlay.no-opened.message" = "Nessun file ZIM aperto";
+"zim_file_opened.toolbar.open.help" = "Apri un file ZIM";
 "zim_file_category.title" = "Categoria";
+"zim_file_category.section.empty.message" = "Nessun file ZIM in questa categoria.";
+"zim_file_new_overlay.empty" = "Nessun nuovo file ZIM";
 "zim_file_new_button_refresh" = "Aggiorna";
 "zim_file.list.name.text" = "Nome";
 "zim_file.list.description.text" = "Descrizione";
@@ -42,7 +47,8 @@
 "zim_file.list.info.text" = "Informazioni";
 "zim_file.action.open_main_page.title" = "Apri pagina principale";
 "zim_file.action.unlink.button.title" = "Scollega";
-"zim_file.action.download.warning.message" = "Potrebbe non esserci spazio sufficiente sul tuo dispositivo per questo file zim.";
+"zim_file.action.download.warning.message" = "Potrebbe non esserci spazio sufficiente sul tuo dispositivo per questo file ZIM.";
+"zim_file.action.download.warning.message1" = "Rimarrebbe meno di 1 GB di spazio libero dopo il download del file ZIM.";
 "zim_file.action.download.button.anyway" = "Scarica comunque";
 "zim_file.base_info.attribute.language" = "Lingua";
 "zim_file.base_info.attribute.category" = "Categoria";
@@ -57,6 +63,7 @@
 "catalog_settings.refreshing.text" = "Aggiornamento...";
 "catalog_settings.refresh_now.button" = "Aggiorna ora";
 "catalog_settings.header.text" = "Catalogo";
+"backup_settings.toggle.title" = "Includi i file ZIM nel backup";
 "settings.miscellaneous.navigation.about" = "Informazioni";
 "settings.selected_language.title" = "Lingue";
 "language_selector.no_language.title" = "Nessuna lingua";
@@ -68,6 +75,7 @@
 "settings.about.build.title" = "Release";
 "bookmark.navigation.title" = "Segnalibri";
 "bookmark.toolbar.show_sidebar.label" = "Mostra barra laterale";
+"search_result.zimfile.empty.message" = "Nessun file ZIM aperto";
 "search_result.zimfile.no_result.message" = "Nessun risultato";
 "search_result.sidebar.button.remove" = "Rimuovi";
 "search_result.header.text" = "Ricerca recente";
