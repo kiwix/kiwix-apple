@@ -166,7 +166,10 @@ struct RootView: View {
                 DownloadService.shared.restartHeartbeatIfNeeded()
             case let .custom(zimFileURL):
                 LibraryOperations.open(url: zimFileURL) {
-                    navigation.currentItem = .reading
+                    Task {
+                        await BookmarksMigration.migrationForCustomApps()
+                        navigation.currentItem = .reading
+                    }
                 }
             }
         }

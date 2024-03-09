@@ -57,7 +57,10 @@ struct Kiwix: App {
                         DownloadService.shared.restartHeartbeatIfNeeded()
                     case let .custom(zimFileURL):
                         LibraryOperations.open(url: zimFileURL) {
-                            navigation.navigateToMostRecentTab()
+                            Task {
+                                await BookmarksMigration.migrationForCustomApps()
+                                navigation.navigateToMostRecentTab()
+                            }
                         }
                     }
                 }
