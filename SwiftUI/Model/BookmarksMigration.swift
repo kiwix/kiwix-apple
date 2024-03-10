@@ -38,7 +38,7 @@ enum BookmarksMigration {
         toZimFile toZim: ZimFile,
         using context: NSManagedObjectContext
     ) {
-        guard fromZim.bookmarks.isEmpty != false else { return }
+        guard fromZim.bookmarks.isEmpty == false else { return }
         context.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
         let newHost = toZim.fileID.uuidString
         fromZim.bookmarks.forEach { (bookmark: Bookmark) in
