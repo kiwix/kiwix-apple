@@ -24,9 +24,7 @@ enum BookmarksMigration {
                 return
             }
             for zimFile in zimFiles {
-                if zimFile.bookmarks.isEmpty == false {
-                    migrateFrom(zimFile: zimFile, toZimFile: latest, using: context)
-                }
+                migrateFrom(zimFile: zimFile, toZimFile: latest, using: context)
             }
         }
     }
