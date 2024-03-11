@@ -167,7 +167,7 @@ struct RootView: View {
             case let .custom(zimFileURL):
                 LibraryOperations.open(url: zimFileURL) {
                     Task {
-                        await BookmarksMigration.migrationForCustomApps()
+                        await ZimMigration.forCustomApps()
                         navigation.currentItem = .reading
                     }
                 }

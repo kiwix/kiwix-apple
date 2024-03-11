@@ -45,8 +45,10 @@ struct LibraryOperations {
             zimFile.fileURLBookmark = fileURLBookmark
             zimFile.isMissing = false
             if context.hasChanges { try? context.save() }
-            DispatchQueue.main.async {
-                onComplete?()
+            Task {
+                await MainActor.run {
+                    onComplete?()
+                }
             }
         }
         
