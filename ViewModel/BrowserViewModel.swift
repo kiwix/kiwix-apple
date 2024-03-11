@@ -20,16 +20,16 @@ import CoreKiwix
 final class BrowserViewModel: NSObject, ObservableObject,
                               WKNavigationDelegate, WKScriptMessageHandler, WKUIDelegate,
                               NSFetchedResultsControllerDelegate {
-    private static var cache = OrderedDictionary<NSManagedObjectID, BrowserViewModel>()
+    @MainActor private static var cache = OrderedDictionary<NSManagedObjectID, BrowserViewModel>()
 
-    static func getCached(tabID: NSManagedObjectID) -> BrowserViewModel {
+    @MainActor static func getCached(tabID: NSManagedObjectID) -> BrowserViewModel {
         let viewModel = cache[tabID] ?? BrowserViewModel(tabID: tabID)
         cache.removeValue(forKey: tabID)
         cache[tabID] = viewModel
         return viewModel
     }
 
-    static func purgeCache() {
+    @MainActor static func purgeCache() {
         guard cache.count > 10 else { return }
         let range = 0 ..< cache.count - 5
         cache.values[range].forEach { viewModel in
@@ -133,11 +133,14 @@ final class BrowserViewModel: NSObject, ObservableObject,
         .receive(on: DispatchQueue.main)
         .sink { [weak self] title, url in
             guard let title, let url else { return }
-            self?.didUpdate(title: title, url: url)
+            Task { [weak self] in
+                await self?.didUpdate(title: title, url: url)
+            }
+
         }
     }
 
-    private func didUpdate(title: String, url: URL) {
+    @MainActor private func didUpdate(title: String, url: URL) {
         let zimFile: ZimFile? = {
             guard let zimFileID = UUID(uuidString: url.host ?? "") else { return nil }
             return try? Database.viewContext.fetch(ZimFile.fetchRequest(fileID: zimFileID)).first
@@ -195,7 +198,17 @@ final class BrowserViewModel: NSObject, ObservableObject,
     private func restoreBy(tabID: NSManagedObjectID) {
         if let tab = try? Database.viewContext.existingObject(with: tabID) as? Tab {
             webView.interactionState = tab.interactionState
-            url = webView.url
+            if AppType.isCustom {
+                Task {
+                    guard let webURL = await webView.url else {
+                        url = nil
+                        return
+                    }
+                    url = await BookmarksMigration.migrateCustomAppURL(url: webURL)
+                }
+            } else {
+                url = webView.url
+            }
         }
     }
 

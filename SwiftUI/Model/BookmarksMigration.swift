@@ -5,28 +5,42 @@
 import Foundation
 import CoreData
 
-private extension ZimFile {
-    var groupById: String {
-        [name, flavor, languageCode].compactMap { $0 }.joined(separator: ":")
-    }
-}
-
 enum BookmarksMigration {
+
+    /// Holds the new zimfile host:
+    /// Set during migration,
+    /// and read back when updating URLS mapped from WebView interaction state,
+    /// witch is saved as Data for each opened Tab
+    @MainActor private static var newHost: String?
+    private static let sortDescriptors = [NSSortDescriptor(keyPath: \ZimFile.created, ascending: true)]
+    private static let requestLatestZimFile = ZimFile.fetchRequest(
+        predicate: ZimFile.Predicate.isDownloaded,
+        sortDescriptors: Self.sortDescriptors
+    )
 
     static func migrationForCustomApps() async {
         guard FeatureFlags.hasLibrary == false else { return }
         await Database.shared.container.performBackgroundTask { context in
-            let sortDescriptors = [NSSortDescriptor(keyPath: \ZimFile.created, ascending: true)]
-            guard var zimFiles = try? ZimFile.fetchRequest(predicate: ZimFile.Predicate.isDownloaded,
-                                                           sortDescriptors: sortDescriptors).execute(),
+            guard var zimFiles = try? requestLatestZimFile.execute(),
                   zimFiles.count > 1,
                   let latest = zimFiles.popLast() else {
                 return
             }
+
+            context.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
             for zimFile in zimFiles {
                 migrateFrom(zimFile: zimFile, toZimFile: latest, using: context)
             }
         }
+    }
+
+    static func migrateCustomAppURL(url: URL) async -> URL {
+        let newHost = await latestZimFileHost()
+        guard let newURL = url.updateHost(to: newHost) else {
+            assertionFailure("url cannot be updated")
+            return url
+        }
+        return newURL
     }
 
     /// Migrates the bookmars from an old to new zim file,
@@ -36,9 +50,12 @@ enum BookmarksMigration {
         toZimFile toZim: ZimFile,
         using context: NSManagedObjectContext
     ) {
-        guard fromZim.bookmarks.isEmpty == false else { return }
-        context.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
         let newHost = toZim.fileID.uuidString
+        Task {
+            await MainActor.run {
+                Self.newHost = newHost
+            }
+        }
         fromZim.bookmarks.forEach { (bookmark: Bookmark) in
             bookmark.zimFile = toZim
             if let newArticleURL = bookmark.articleURL.updateHost(to: newHost) {
@@ -46,7 +63,24 @@ enum BookmarksMigration {
             }
             bookmark.thumbImageURL = bookmark.thumbImageURL?.updateHost(to: newHost)
         }
+        fromZim.tabs.forEach { (tab: Tab) in
+            tab.zimFile = toZim
+        }
         if context.hasChanges { try? context.save() }
+    }
+
+    private static func latestZimFileHost() async -> String {
+        if let newHost = await Self.newHost { return newHost }
+        // if it wasn't set before, set and return by the last ZimFile in DB:
+        guard let zimFile = try? requestLatestZimFile.execute().first else {
+            fatalError("we should have at least 1 zim file for a custom app")
+        }
+        let newHost = zimFile.fileID.uuidString
+        // save the new host for later
+        await MainActor.run {
+            Self.newHost = newHost
+        }
+        return newHost
     }
 }
 
