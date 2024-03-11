@@ -20,16 +20,16 @@ import CoreKiwix
 final class BrowserViewModel: NSObject, ObservableObject,
                               WKNavigationDelegate, WKScriptMessageHandler, WKUIDelegate,
                               NSFetchedResultsControllerDelegate {
-    @MainActor private static var cache = OrderedDictionary<NSManagedObjectID, BrowserViewModel>()
+    private static var cache = OrderedDictionary<NSManagedObjectID, BrowserViewModel>()
 
-    @MainActor static func getCached(tabID: NSManagedObjectID) -> BrowserViewModel {
+    static func getCached(tabID: NSManagedObjectID) -> BrowserViewModel {
         let viewModel = cache[tabID] ?? BrowserViewModel(tabID: tabID)
         cache.removeValue(forKey: tabID)
         cache[tabID] = viewModel
         return viewModel
     }
 
-    @MainActor static func purgeCache() {
+    static func purgeCache() {
         guard cache.count > 10 else { return }
         let range = 0 ..< cache.count - 5
         cache.values[range].forEach { viewModel in
@@ -133,14 +133,11 @@ final class BrowserViewModel: NSObject, ObservableObject,
         .receive(on: DispatchQueue.main)
         .sink { [weak self] title, url in
             guard let title, let url else { return }
-            Task { [weak self] in
-                await self?.didUpdate(title: title, url: url)
-            }
-
+            self?.didUpdate(title: title, url: url)
         }
     }
 
-    @MainActor private func didUpdate(title: String, url: URL) {
+    private func didUpdate(title: String, url: URL) {
         let zimFile: ZimFile? = {
             guard let zimFileID = UUID(uuidString: url.host ?? "") else { return nil }
             return try? Database.viewContext.fetch(ZimFile.fetchRequest(fileID: zimFileID)).first
