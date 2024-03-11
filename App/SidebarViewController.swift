@@ -137,8 +137,10 @@ class SidebarViewController: UICollectionViewController, NSFetchedResultsControl
     
     // MARK: - Delegations
     
-    nonisolated func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>,
-                    didChangeContentWith snapshot: NSDiffableDataSourceSnapshotReference) {
+    nonisolated func controller(
+        _ controller: NSFetchedResultsController<NSFetchRequestResult>,
+        didChangeContentWith snapshot: NSDiffableDataSourceSnapshotReference
+    ) {
         let tabs = snapshot.itemIdentifiers
             .compactMap { $0 as? NSManagedObjectID }
             .map { NavigationItem.tab(objectID: $0) }
@@ -146,7 +148,11 @@ class SidebarViewController: UICollectionViewController, NSFetchedResultsControl
         snapshot.append(tabs)
         Task { [snapshot] in
             await MainActor.run { [snapshot] in
-                dataSource.apply(snapshot, to: .tabs, animatingDifferences: dataSource.snapshot(for: .tabs).items.count > 0) {
+                dataSource.apply(
+                    snapshot,
+                    to: .tabs,
+                    animatingDifferences: dataSource.snapshot(for: .tabs).items.count > 0
+                ) {
                     // [iOS 15] when a tab is selected, reload it to refresh title and icon
                     guard #unavailable(iOS 16),
                           let indexPath = self.collectionView.indexPathsForSelectedItems?.first,
