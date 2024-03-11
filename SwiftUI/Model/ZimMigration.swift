@@ -32,7 +32,6 @@ enum ZimMigration {
                 migrateFrom(zimFile: zimFile, toZimFile: latest, using: context)
             }
         }
-        debugPrint("migrationForCustomApps Complete")
     }
 
     static func customApp(url: URL) async -> URL {
