@@ -22,6 +22,7 @@ final class BrowserViewModel: NSObject, ObservableObject,
                               NSFetchedResultsControllerDelegate {
     private static var cache = OrderedDictionary<NSManagedObjectID, BrowserViewModel>()
 
+    @MainActor
     static func getCached(tabID: NSManagedObjectID) -> BrowserViewModel {
         let viewModel = cache[tabID] ?? BrowserViewModel(tabID: tabID)
         cache.removeValue(forKey: tabID)
@@ -47,7 +48,7 @@ final class BrowserViewModel: NSObject, ObservableObject,
     @Published private(set) var articleBookmarked = false
     @Published private(set) var outlineItems = [OutlineItem]()
     @Published private(set) var outlineItemTree = [OutlineItem]()
-    @Published private(set) var url: URL? {
+    @MainActor @Published private(set) var url: URL? {
         didSet {
             if !FeatureFlags.hasLibrary, url == nil {
                 loadMainArticle()
@@ -84,6 +85,7 @@ final class BrowserViewModel: NSObject, ObservableObject,
 
     // MARK: - Lifecycle
 
+    @MainActor
     init(tabID: NSManagedObjectID? = nil) {
         self.tabID = tabID
         webView = WKWebView(frame: .zero, configuration: WebViewConfiguration())
@@ -121,10 +123,18 @@ final class BrowserViewModel: NSObject, ObservableObject,
 
         // setup web view property observers
         canGoBackObserver = webView.observe(\.canGoBack, options: .initial) { [weak self] webView, _ in
-            self?.canGoBack = webView.canGoBack
+            Task { [weak self] in
+                await MainActor.run { [weak self] in
+                    self?.canGoBack = webView.canGoBack
+                }
+            }
         }
         canGoForwardObserver = webView.observe(\.canGoForward, options: .initial) { [weak self] webView, _ in
-            self?.canGoForward = webView.canGoForward
+            Task { [weak self] in
+                await MainActor.run { [weak self] in
+                    self?.canGoForward = webView.canGoForward
+                }
+            }
         }
         titleURLObserver = Publishers.CombineLatest(
             webView.publisher(for: \.title, options: .initial),
@@ -146,7 +156,11 @@ final class BrowserViewModel: NSObject, ObservableObject,
         // update view model
         articleTitle = title
         zimFileName = zimFile?.name ?? ""
-        self.url = url
+        Task {
+            await MainActor.run {
+                self.url = url
+            }
+        }
 
         let currentTabID: NSManagedObjectID = tabID ?? createNewTabID()
         tabID = currentTabID
@@ -173,19 +187,21 @@ final class BrowserViewModel: NSObject, ObservableObject,
     }
 
     // MARK: - Content Loading
-
+    @MainActor
     func load(url: URL) {
         guard webView.url != url else { return }
         webView.load(URLRequest(url: url))
         self.url = url
     }
 
+    @MainActor
     func loadRandomArticle(zimFileID: UUID? = nil) {
         let zimFileID = zimFileID ?? UUID(uuidString: webView.url?.host ?? "")
         guard let url = ZimFileService.shared.getRandomPageURL(zimFileID: zimFileID) else { return }
         load(url: url)
     }
 
+    @MainActor
     func loadMainArticle(zimFileID: UUID? = nil) {
         let zimFileID = zimFileID ?? UUID(uuidString: webView.url?.host ?? "")
         guard let url = ZimFileService.shared.getMainPageURL(zimFileID: zimFileID) else { return }
@@ -195,7 +211,26 @@ final class BrowserViewModel: NSObject, ObservableObject,
     private func restoreBy(tabID: NSManagedObjectID) {
         if let tab = try? Database.viewContext.existingObject(with: tabID) as? Tab {
             webView.interactionState = tab.interactionState
-            url = webView.url
+            if AppType.isCustom {
+                Task {
+                    guard let webURL = await webView.url else {
+                        await MainActor.run {
+                            url = nil
+                        }
+                        return
+                    }
+                    let newURL = await ZimMigration.customApp(url: webURL)
+                    await MainActor.run {
+                        url = newURL
+                    }
+                }
+            } else {
+                Task {
+                    await MainActor.run {
+                        url = webView.url
+                    }
+                }
+            }
         }
     }
 

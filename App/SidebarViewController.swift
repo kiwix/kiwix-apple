@@ -137,22 +137,32 @@ class SidebarViewController: UICollectionViewController, NSFetchedResultsControl
     
     // MARK: - Delegations
     
-    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>,
-                    didChangeContentWith snapshot: NSDiffableDataSourceSnapshotReference) {
+    nonisolated func controller(
+        _ controller: NSFetchedResultsController<NSFetchRequestResult>,
+        didChangeContentWith snapshot: NSDiffableDataSourceSnapshotReference
+    ) {
         let tabs = snapshot.itemIdentifiers
             .compactMap { $0 as? NSManagedObjectID }
             .map { NavigationItem.tab(objectID: $0) }
         var snapshot = NSDiffableDataSourceSectionSnapshot<NavigationItem>()
         snapshot.append(tabs)
-        dataSource.apply(snapshot, to: .tabs, animatingDifferences: dataSource.snapshot(for: .tabs).items.count > 0) {
-            // [iOS 15] when a tab is selected, reload it to refresh title and icon
-            guard #unavailable(iOS 16),
-                  let indexPath = self.collectionView.indexPathsForSelectedItems?.first,
-                  let item = self.dataSource.itemIdentifier(for: indexPath),
-                  case .tab = item else { return }
-            var snapshot = self.dataSource.snapshot()
-            snapshot.reconfigureItems([item])
-            self.dataSource.apply(snapshot, animatingDifferences: true)
+        Task { [snapshot] in
+            await MainActor.run { [snapshot] in
+                dataSource.apply(
+                    snapshot,
+                    to: .tabs,
+                    animatingDifferences: dataSource.snapshot(for: .tabs).items.count > 0
+                ) {
+                    // [iOS 15] when a tab is selected, reload it to refresh title and icon
+                    guard #unavailable(iOS 16),
+                          let indexPath = self.collectionView.indexPathsForSelectedItems?.first,
+                          let item = self.dataSource.itemIdentifier(for: indexPath),
+                          case .tab = item else { return }
+                    var snapshot = self.dataSource.snapshot()
+                    snapshot.reconfigureItems([item])
+                    self.dataSource.apply(snapshot, animatingDifferences: true)
+                }
+            }
         }
     }
     

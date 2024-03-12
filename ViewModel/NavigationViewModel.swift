@@ -30,7 +30,12 @@ class NavigationViewModel: ObservableObject {
         let tab = (try? context.fetch(fetchRequest).first) ?? self.makeTab(context: context)
         try? context.obtainPermanentIDs(for: [tab])
         try? context.save()
-        currentItem = NavigationItem.tab(objectID: tab.objectID)
+        Task {
+            await MainActor.run {
+                currentItem = NavigationItem.tab(objectID: tab.objectID)
+            }
+        }
+
     }
     
     @discardableResult
