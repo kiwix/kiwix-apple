@@ -1,3 +1,19 @@
+## 3.3.0
+
+- NEW: Introduce CI & CD (@rgaudin #538 #544 #546 #560 #568 @BPerlakiH #606 #610 #614 #625 #646 #648 #671)
+- NEW: Introduce localisation with help of Translatewiki (@tvision251 #537 #574 @BPerlakiH #585 #605 #628 #670 #672 #684)
+- NEW: Introduce ability to build custom apps (@BPerlakiH #550 #554 #555 #565 #573 #576 #584 #595)
+- NEW: Build nightlies (@rgaudin #560)
+- NEW: Migrate bookmarks - in custom apps (@BPerlakiH #688)
+- FIX: Multiple fixes around 'wicked' download (@BPerlakiH #563 #686)
+- FIX: Default language content filtering (@BPerlakiH #652)
+- FIX: Stop display empty categories (@BPerlakiH #657)
+- FIX: One search crashing scenario (@BPerlakiH #637)
+- UPDATE: Introduce libkiwix 13 support (@rgaudin #534)
+- UPDATE: Improved README file (@kelson42 #533 #683 @BPerlakiH #658)
+- UPDATE: Use latest feed from library.kiwix.org (@BPerlakiH #653)
+- DEL: Old Wikimed related code - is now a proper custom app (@BPerlakiH #636)
+
 ## 3.2
 
 - Browse with multiple tabs on iOS and iPadOS
