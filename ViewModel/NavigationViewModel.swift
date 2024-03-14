@@ -20,6 +20,8 @@ class NavigationViewModel: ObservableObject {
         let tab = Tab(context: context)
         tab.created = Date()
         tab.lastOpened = Date()
+        try? context.obtainPermanentIDs(for: [tab])
+        try? context.save()
         return tab
     }
     
@@ -28,8 +30,6 @@ class NavigationViewModel: ObservableObject {
         let fetchRequest = Tab.fetchRequest(sortDescriptors: [NSSortDescriptor(key: "lastOpened", ascending: false)])
         fetchRequest.fetchLimit = 1
         let tab = (try? context.fetch(fetchRequest).first) ?? self.makeTab(context: context)
-        try? context.obtainPermanentIDs(for: [tab])
-        try? context.save()
         Task {
             await MainActor.run {
                 currentItem = NavigationItem.tab(objectID: tab.objectID)
@@ -42,8 +42,6 @@ class NavigationViewModel: ObservableObject {
     func createTab() -> NSManagedObjectID {
         let context = Database.viewContext
         let tab = self.makeTab(context: context)
-        try? context.obtainPermanentIDs(for: [tab])
-        try? context.save()
         #if !os(macOS)
         currentItem = NavigationItem.tab(objectID: tab.objectID)
         #endif
@@ -74,9 +72,10 @@ class NavigationViewModel: ObservableObject {
                 )
                 fetchRequest.fetchLimit = 1
                 let newTab = (try? context.fetch(fetchRequest).first) ?? self.makeTab(context: context)
-                try? context.obtainPermanentIDs(for: [newTab])
-                DispatchQueue.main.async {
-                    self.currentItem = NavigationItem.tab(objectID: newTab.objectID)
+                Task {
+                    await MainActor.run {
+                        self.currentItem = NavigationItem.tab(objectID: newTab.objectID)
+                    }
                 }
             }
             
@@ -95,12 +94,11 @@ class NavigationViewModel: ObservableObject {
             
             // create new tab
             let newTab = self.makeTab(context: context)
-            try? context.obtainPermanentIDs(for: [newTab])
-            DispatchQueue.main.async {
-                self.currentItem = NavigationItem.tab(objectID: newTab.objectID)
+            Task {
+                await MainActor.run {
+                    self.currentItem = NavigationItem.tab(objectID: newTab.objectID)
+                }
             }
-            
-            try? context.save()
         }
     }
 }
