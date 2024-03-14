@@ -33,7 +33,7 @@ class SidebarViewController: UICollectionViewController, NSFetchedResultsControl
     }()
     private let fetchedResultController = NSFetchedResultsController(
         fetchRequest: Tab.fetchRequest(sortDescriptors: [NSSortDescriptor(key: "created", ascending: false)]),
-        managedObjectContext: Database.viewContext,
+        managedObjectContext: Database.shared.viewContext,
         sectionNameKeyPath: nil,
         cacheName: nil
     )
@@ -182,7 +182,7 @@ class SidebarViewController: UICollectionViewController, NSFetchedResultsControl
     // MARK: - Collection View Configuration
     
     private func configureCell(cell: UICollectionViewListCell, indexPath: IndexPath, item: NavigationItem) {
-        if case let .tab(objectID) = item, let tab = try? Database.viewContext.existingObject(with: objectID) as? Tab {
+        if case let .tab(objectID) = item, let tab = try? Database.shared.viewContext.existingObject(with: objectID) as? Tab {
             if #available(iOS 16.0, *) {
                 cell.contentConfiguration = UIHostingConfiguration {
                     TabLabel(tab: tab)

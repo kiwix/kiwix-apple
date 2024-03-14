@@ -20,7 +20,7 @@ enum ZimMigration {
 
     static func forCustomApps() async {
         guard FeatureFlags.hasLibrary == false else { return }
-        await Database.shared.container.performBackgroundTask { context in
+        await Database.shared.performBackgroundTask { context in
             guard var zimFiles = try? requestLatestZimFile.execute(),
                   zimFiles.count > 1,
                   let latest = zimFiles.popLast() else {

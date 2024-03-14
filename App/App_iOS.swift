@@ -28,14 +28,14 @@ struct Kiwix: App {
         WindowGroup {
             RootView()
                 .ignoresSafeArea()
-                .environment(\.managedObjectContext, Database.viewContext)
+                .environment(\.managedObjectContext, Database.shared.viewContext)
                 .environmentObject(library)
                 .environmentObject(navigation)
                 .modifier(AlertHandler())
                 .modifier(OpenFileHandler())
                 .onChange(of: scenePhase) { newValue in
                     guard newValue == .inactive else { return }
-                    try? Database.viewContext.save()
+                    try? Database.shared.viewContext.save()
                 }
                 .onOpenURL { url in
                     if url.isFileURL {

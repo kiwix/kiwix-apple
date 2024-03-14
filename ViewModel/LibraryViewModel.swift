@@ -32,7 +32,7 @@ public class LibraryViewModel: ObservableObject {
         self.urlSession = urlSession ?? URLSession.shared
         
         context = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
-        context.persistentStoreCoordinator = Database.shared.container.persistentStoreCoordinator
+        context.persistentStoreCoordinator = Database.shared.persistentStoreCoordinator
         context.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
         context.undoManager = nil
         if Defaults[.libraryLastRefresh] == nil {

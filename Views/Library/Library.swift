@@ -70,7 +70,7 @@ struct Library_Previews: PreviewProvider {
         NavigationStack {
             Library()
                 .environmentObject(LibraryViewModel())
-                .environment(\.managedObjectContext, Database.viewContext)
+                .environment(\.managedObjectContext, Database.shared.viewContext)
         }
     }
 }

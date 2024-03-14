@@ -26,7 +26,7 @@ class NavigationViewModel: ObservableObject {
     }
     
     func navigateToMostRecentTab() {
-        let context = Database.viewContext
+        let context = Database.shared.viewContext
         let fetchRequest = Tab.fetchRequest(sortDescriptors: [NSSortDescriptor(key: "lastOpened", ascending: false)])
         fetchRequest.fetchLimit = 1
         let tab = (try? context.fetch(fetchRequest).first) ?? self.makeTab(context: context)
@@ -40,7 +40,7 @@ class NavigationViewModel: ObservableObject {
     
     @discardableResult
     func createTab() -> NSManagedObjectID {
-        let context = Database.viewContext
+        let context = Database.shared.viewContext
         let tab = self.makeTab(context: context)
         #if !os(macOS)
         currentItem = NavigationItem.tab(objectID: tab.objectID)
@@ -51,7 +51,7 @@ class NavigationViewModel: ObservableObject {
     @MainActor
     func tabIDFor(url: URL?) -> NSManagedObjectID {
         guard let url,
-              let coordinator = Database.viewContext.persistentStoreCoordinator,
+              let coordinator = Database.shared.viewContext.persistentStoreCoordinator,
               let tabID = coordinator.managedObjectID(forURIRepresentation: url) else {
             return createTab()
         }
@@ -61,7 +61,7 @@ class NavigationViewModel: ObservableObject {
     /// Delete a single tab, and select another tab
     /// - Parameter tabID: ID of the tab to delete
     func deleteTab(tabID: NSManagedObjectID) {
-        Database.performBackgroundTask { context in
+        Database.shared.performBackgroundTask { context in
             guard let tab = try? context.existingObject(with: tabID) as? Tab else { return }
             
             // select a new tab if the currently selected tab is being deleted
@@ -87,7 +87,7 @@ class NavigationViewModel: ObservableObject {
     
     /// Delete all tabs, and open a new tab
     func deleteAllTabs() {
-        Database.performBackgroundTask { context in
+        Database.shared.performBackgroundTask { context in
             // delete all existing tabs
             let tabs = try? context.fetch(Tab.fetchRequest())
             tabs?.forEach { context.delete($0) }

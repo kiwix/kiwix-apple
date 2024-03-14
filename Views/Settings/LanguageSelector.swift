@@ -140,7 +140,7 @@ private struct LanguageLabel: View {
 }
 #endif
 
-class Languages {
+final class Languages {
     /// Retrieve a list of languages.
     /// - Returns: languages with count of zim files in each language
     static func fetch() async -> [Language] {
@@ -158,7 +158,7 @@ class Languages {
         fetchRequest.resultType = .dictionaryResultType
         
         let languages: [Language] = await withCheckedContinuation { continuation in
-            let context = Database.shared.container.newBackgroundContext()
+            let context = Database.shared.newBackgroundContext()
             context.perform {
                 guard let results = try? context.fetch(fetchRequest) else {
                     continuation.resume(returning: [])

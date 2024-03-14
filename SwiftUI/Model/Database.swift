@@ -11,6 +11,8 @@ import os
 
 final class Database {
     static let shared = Database()
+
+    private let container: NSPersistentContainer
     private var notificationToken: NSObjectProtocol?
     private var token: NSPersistentHistoryToken?
     private var tokenURL = NSPersistentContainer.defaultDirectoryURL().appendingPathComponent("token.data")
@@ -19,6 +21,9 @@ final class Database {
         // due to objc++ interop, only the older notification value is working for downloads:
         // https://developer.apple.com/documentation/coredata/nspersistentstoreremotechangenotification?language=objc
         let storeChange: NSNotification.Name = .init(rawValue: "NSPersistentStoreRemoteChangeNotification")
+
+        self.container = Self.creatContainer()
+
         notificationToken = NotificationCenter.default.addObserver(
             forName: storeChange, object: nil, queue: nil) { _ in
             try? self.mergeChanges()
@@ -35,20 +40,27 @@ final class Database {
         }
     }
     
-    static var viewContext: NSManagedObjectContext {
-        Database.shared.container.viewContext
-    }
-    
-    static func performBackgroundTask(_ block: @escaping (NSManagedObjectContext) -> Void) {
-        Database.shared.container.performBackgroundTask(block)
-    }
-    
-    static func performBackgroundTask<T>(_ block: @escaping (NSManagedObjectContext) throws -> T) async rethrows -> T {
-        try await Database.shared.container.performBackgroundTask(block)
+    var viewContext: NSManagedObjectContext {
+        container.viewContext
     }
 
-    /// A persistent container to set up the Core Data stack.
-    lazy var container: NSPersistentContainer = {
+    var persistentStoreCoordinator: NSPersistentStoreCoordinator {
+        container.persistentStoreCoordinator
+    }
+
+    func newBackgroundContext() -> NSManagedObjectContext {
+        container.newBackgroundContext()
+    }
+
+    func performBackgroundTask(_ block: @escaping (NSManagedObjectContext) -> Void) {
+        container.performBackgroundTask(block)
+    }
+    
+    func performBackgroundTask<T>(_ block: @escaping (NSManagedObjectContext) throws -> T) async rethrows -> T {
+        try await container.performBackgroundTask(block)
+    }
+
+    private static func creatContainer() -> NSPersistentContainer {
         /// - Tag: persistentContainer
         let container = NSPersistentContainer(name: "DataModel")
 
@@ -77,7 +89,7 @@ final class Database {
         container.viewContext.undoManager = nil
         container.viewContext.shouldDeleteInaccessibleFaults = true
         return container
-    }()
+    }
     
     /// Save image data to zim files.
     func saveImageData(url: URL, completion: @escaping (Data) -> Void) {

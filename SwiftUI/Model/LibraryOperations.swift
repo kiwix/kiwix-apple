@@ -36,7 +36,7 @@ struct LibraryOperations {
         }
         
         // upsert zim file in the database
-        Database.shared.container.performBackgroundTask { context in
+        Database.shared.performBackgroundTask { context in
             context.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
             let predicate = NSPredicate(format: "fileID == %@", metadata.fileID as CVarArg)
             let fetchRequest = ZimFile.fetchRequest(predicate: predicate)
@@ -58,7 +58,7 @@ struct LibraryOperations {
     /// Reopen zim files from url bookmark data.
     static func reopen(onComplete: (() -> Void)?) {
         var successCount = 0
-        let context = Database.shared.container.viewContext
+        let context = Database.shared.viewContext
         let request = ZimFile.fetchRequest(predicate: ZimFile.Predicate.isDownloaded)
         
         guard let zimFiles = try? context.fetch(request) else {
@@ -141,7 +141,7 @@ struct LibraryOperations {
     /// - Parameter zimFile: the zim file to unlink
     static func unlink(zimFileID: UUID) {
         ZimFileService.shared.close(fileID: zimFileID)
-        Database.shared.container.performBackgroundTask { context in
+        Database.shared.performBackgroundTask { context in
             context.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
             guard let zimFile = try? ZimFile.fetchRequest(fileID: zimFileID).execute().first else { return }
             zimFile.bookmarks.forEach { context.delete($0) }

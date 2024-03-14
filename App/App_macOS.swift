@@ -25,7 +25,7 @@ struct Kiwix: App {
     var body: some Scene {
         WindowGroup {
             RootView()
-                .environment(\.managedObjectContext, Database.shared.container.viewContext)
+                .environment(\.managedObjectContext, Database.shared.viewContext)
                 .environmentObject(libraryRefreshViewModel)
         }.commands {
             SidebarCommands()

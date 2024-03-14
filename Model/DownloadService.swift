@@ -68,7 +68,7 @@ final class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegat
         DispatchQueue.main.async {
             guard self.heartbeat == nil else { return }
             self.heartbeat = Timer.scheduledTimer(withTimeInterval: 0.25, repeats: true) { [weak self] _ in
-                Database.shared.container.performBackgroundTask { [weak self] context in
+                Database.shared.performBackgroundTask { [weak self] context in
                     context.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
                     if let progressValues = self?.progress.values() {
                         for (zimFileID, downloadedBytes) in progressValues {
@@ -103,7 +103,7 @@ final class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegat
     ///   - allowsCellularAccess: if using cellular data is allowed
     func start(zimFileID: UUID, allowsCellularAccess: Bool) {
         requestNotificationAuthorization()
-        Database.shared.container.performBackgroundTask { context in
+        Database.shared.performBackgroundTask { context in
             context.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
             let fetchRequest = ZimFile.fetchRequest(fileID: zimFileID)
             guard let zimFile = try? context.fetch(fetchRequest).first,
@@ -145,7 +145,7 @@ final class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegat
         session.getTasksWithCompletionHandler { _, _, downloadTasks in
             guard let task = downloadTasks.filter({ $0.taskDescription == zimFileID.uuidString }).first else { return }
             task.cancel { resumeData in
-                Database.shared.container.performBackgroundTask { context in
+                Database.shared.performBackgroundTask { context in
                     context.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
                     let request = DownloadTask.fetchRequest(fileID: zimFileID)
                     guard let downloadTask = try? context.fetch(request).first else { return }
@@ -160,7 +160,7 @@ final class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegat
     /// - Parameter zimFileID: identifier of the zim file
     func resume(zimFileID: UUID) {
         requestNotificationAuthorization()
-        Database.shared.container.performBackgroundTask { context in
+        Database.shared.performBackgroundTask { context in
             context.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
             
             let request = DownloadTask.fetchRequest(fileID: zimFileID)
@@ -182,7 +182,7 @@ final class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegat
     // MARK: - Database
     
     private func deleteDownloadTask(zimFileID: UUID) {
-        Database.shared.container.performBackgroundTask { context in
+        Database.shared.performBackgroundTask { context in
             context.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
             do {
                 let request = DownloadTask.fetchRequest(fileID: zimFileID)
@@ -210,7 +210,7 @@ final class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegat
         let center = UNUserNotificationCenter.current()
         center.getNotificationSettings { settings in
             guard settings.authorizationStatus != .denied else { return }
-            Database.shared.container.performBackgroundTask { context in
+            Database.shared.performBackgroundTask { context in
                 // configure notification content
                 let content = UNMutableNotificationContent()
                 content.title = "download_service.complete.title".localized
@@ -253,7 +253,7 @@ final class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegat
          Note: The result data equality check is used as a trick to distinguish user pausing the download task vs
          failure. When pausing, the same resume data would have already been saved when the delegate is called.
         */
-        Database.shared.container.performBackgroundTask { context in
+        Database.shared.performBackgroundTask { context in
             context.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
             let request = DownloadTask.fetchRequest(fileID: zimFileID)
             let resumeData = error.userInfo[NSURLSessionDownloadTaskResumeData] as? Data
