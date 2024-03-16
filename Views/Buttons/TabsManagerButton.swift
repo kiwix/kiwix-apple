@@ -43,27 +43,27 @@ struct TabsManagerButton: View {
                     Label("common.tab.menu.close_all".localized, systemImage: "xmark.square.fill")
                 }
             }
-            Section {
-                ForEach(zimFiles.prefix(5)) { zimFile in
-                    Button {
-                        browser.loadMainArticle(zimFileID: zimFile.fileID)
-                    } label: { Label(zimFile.name, systemImage: "house") }
-                }
-            }
-            Section {
-                if FeatureFlags.hasLibrary {
-                    Button {
-                        presentedSheet = .library
-                    } label: {
-                        Label("common.tab.menu.library".localized, systemImage: "folder")
-                    }
-                }
-                Button {
-                    presentedSheet = .settings
-                } label: {
-                    Label("common.tab.menu.settings".localized, systemImage: "gear")
-                }
-            }
+//            Section {
+//                ForEach(zimFiles.prefix(5)) { zimFile in
+//                    Button {
+//                        browser.loadMainArticle(zimFileID: zimFile.fileID)
+//                    } label: { Label(zimFile.name, systemImage: "house") }
+//                }
+//            }
+//            Section {
+//                if FeatureFlags.hasLibrary {
+//                    Button {
+//                        presentedSheet = .library
+//                    } label: {
+//                        Label("common.tab.menu.library".localized, systemImage: "folder")
+//                    }
+//                }
+//                Button {
+//                    presentedSheet = .settings
+//                } label: {
+//                    Label("common.tab.menu.settings".localized, systemImage: "gear")
+//                }
+//            }
         } label: {
             Label("common.tab.manager.title".localized, systemImage: "square.stack")
         } primaryAction: {

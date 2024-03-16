@@ -10,18 +10,29 @@
 import Combine
 import SwiftUI
 import UIKit
+import SwiftBackports
 
 final class CompactViewController: UIHostingController<AnyView>, UISearchControllerDelegate, UISearchResultsUpdating {
+
+    private enum Const {
+        #if os(macOS)
+        static let randomButtonTitle: String = "article_shortcut.random.button.title.mac".localized
+        #else
+        static let randomButtonTitle: String = "article_shortcut.random.button.title.ios".localized
+        #endif
+    }
     private let searchViewModel: SearchViewModel
     private let searchController: UISearchController
     private var searchTextObserver: AnyCancellable?
     private var openURLObserver: NSObjectProtocol?
-    
+    private var loadRandomArticle: (() -> Void)?
     init() {
         searchViewModel = SearchViewModel()
         let searchResult = SearchResults().environmentObject(searchViewModel)
         searchController = UISearchController(searchResultsController: UIHostingController(rootView: searchResult))
-        super.init(rootView: AnyView(CompactView()))
+        let compactView = CompactView()
+        loadRandomArticle = compactView.loadRandomArticle
+        super.init(rootView: AnyView(compactView))
         searchController.searchResultsUpdater = self
     }
     
@@ -46,6 +57,7 @@ final class CompactViewController: UIHostingController<AnyView>, UISearchControl
         }()
         searchController.searchBar.autocorrectionType = .no
         navigationItem.titleView = searchController.searchBar
+        navigationItem.rightBarButtonItem = randomArticleButton()
         searchController.automaticallyShowsCancelButton = false
         searchController.delegate = self
         searchController.hidesNavigationBarDuringPresentation = false
@@ -60,7 +72,7 @@ final class CompactViewController: UIHostingController<AnyView>, UISearchControl
             forName: .openURL, object: nil, queue: nil
         ) { [weak self] _ in
             self?.searchController.isActive = false
-            self?.navigationItem.setRightBarButton(nil, animated: true)
+            self?.navigationItem.setRightBarButton(self?.randomArticleButton(), animated: true)
         }
     }
 
@@ -82,7 +94,18 @@ final class CompactViewController: UIHostingController<AnyView>, UISearchControl
     }
     @objc func onSearchCancelled() {
         searchController.isActive = false
-        navigationItem.setRightBarButton(nil, animated: true)
+        navigationItem.setRightBarButton(randomArticleButton(), animated: true)
+    }
+
+    @objc func onRandomTapped(_ target: UIButton) {
+        loadRandomArticle?()
+    }
+
+    private func randomArticleButton() -> UIBarButtonItem {
+        UIBarButtonItem(image: .init(systemName: "die.face.5"),
+                        style: .plain,
+                        target: self,
+                        action: #selector(onRandomTapped))
     }
 
     func willDismissSearchController(_ searchController: UISearchController) {
@@ -97,7 +120,17 @@ final class CompactViewController: UIHostingController<AnyView>, UISearchControl
 
 private struct CompactView: View {
     @EnvironmentObject private var navigation: NavigationViewModel
-    
+
+    func loadRandomArticle() {
+        if case let .tab(tabID) = navigation.currentItem {
+            BrowserViewModel(tabID: tabID).loadRandomArticle()
+        }
+    }
+
+    init() {
+        debugPrint("Create CompactView")
+    }
+
     var body: some View {
         if case let .tab(tabID) = navigation.currentItem {
             Content().id(tabID).toolbar {
@@ -109,9 +142,23 @@ private struct CompactView: View {
                         Spacer()
                         BookmarkButton()
                         Spacer()
-                        ArticleShortcutButtons(displayMode: .randomArticle)
-                        Spacer()
                         TabsManagerButton()
+//                        Spacer()
+//                        ArticleShortcutButtons(displayMode: .randomArticle)
+                        if FeatureFlags.hasLibrary {
+                            Spacer()
+                            Button {
+//                                presentedSheet = .library
+                            } label: {
+                                Label("common.tab.menu.library".localized, systemImage: "folder")
+                            }
+                        }
+                        Spacer()
+                        Button {
+//                            presentedSheet = .settings
+                        } label: {
+                            Label("common.tab.menu.settings".localized, systemImage: "gear")
+                        }
                     }
                 }
             }
@@ -122,7 +169,7 @@ private struct CompactView: View {
 
 private struct Content: View {
     @EnvironmentObject private var browser: BrowserViewModel
-    
+
     var body: some View {
         Group {
             if browser.url == nil {
