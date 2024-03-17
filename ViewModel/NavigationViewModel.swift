@@ -62,7 +62,9 @@ class NavigationViewModel: ObservableObject {
     /// - Parameter tabID: ID of the tab to delete
     func deleteTab(tabID: NSManagedObjectID) {
         Database.performBackgroundTask { context in
-            guard let tabs: [Tab] = try? context.fetch(Tab.fetchRequest()),
+            let sortByCreation = [NSSortDescriptor(key: "created", ascending: false)]
+            guard let tabs: [Tab] = try? context.fetch(Tab.fetchRequest(predicate: nil,
+                                                                        sortDescriptors: sortByCreation)),
                   let tab: Tab = tabs.first(where: { $0.objectID == tabID }) else {
                 return
             }
