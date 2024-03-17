@@ -74,7 +74,7 @@ enum ZimMigration {
     private static func latestZimFileHost() async -> String {
         if let newHost = await Self.newHost { return newHost }
         // if it wasn't set before, set and return by the last ZimFile in DB:
-        guard let zimFile = try? requestLatestZimFile.execute().first else {
+        guard let zimFile = try? Database.viewContext.fetch(requestLatestZimFile).first else {
             fatalError("we should have at least 1 zim file for a custom app")
         }
         let newHost = zimFile.fileID.uuidString

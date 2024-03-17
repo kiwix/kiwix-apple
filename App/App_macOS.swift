@@ -120,6 +120,10 @@ struct RootView: View {
                         if let windowNumber = window?.windowNumber {
                             browser.restoreByWindowNumber(windowNumber: windowNumber,
                                                           urlToTabIdConverter: navigation.tabIDFor(url:))
+                        } else {
+                            if FeatureFlags.hasLibrary == false {
+                                browser.loadMainArticle()
+                            }
                         }
                     }
             case .bookmarks:
