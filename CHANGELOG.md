@@ -13,6 +13,7 @@
 - UPDATE: Improved README file (@kelson42 #533 #683 @BPerlakiH #658)
 - UPDATE: Use latest feed from library.kiwix.org (@BPerlakiH #653)
 - DEL: Old Wikimed related code - is now a proper custom app (@BPerlakiH #636)
+- FIX: iOS tab selection after the selected tab is deleted (@BPerlakiH #692)
 
 ## 3.2
 
