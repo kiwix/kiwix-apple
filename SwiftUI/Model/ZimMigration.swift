@@ -89,7 +89,10 @@ extension URL {
 extension Data {
     func updateHost(to newHost: String) -> Data {
         let string = String(decoding: self, as: UTF8.self)
-        if let replaced = try? string.replacingRegex(matching: "kiwix:\\/\\/[A-Z0-9-]{0,36}\\/", with: "kiwix://\(newHost)/") {
+        if let replaced = try? string.replacingRegex(
+            matching: "kiwix:\\/\\/[A-Z0-9-]{0,36}\\/",
+            with: "kiwix://\(newHost)/"
+        ) {
             return Data(replaced.utf8)
         } else {
             return self
