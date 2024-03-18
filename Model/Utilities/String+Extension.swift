@@ -49,4 +49,15 @@ extension String {
             comment: comment
         )
     }
+
+    func replacingRegex(
+        matching pattern: String,
+        findingOptions: NSRegularExpression.Options = .caseInsensitive,
+        replacingOptions: NSRegularExpression.MatchingOptions = [],
+        with template: String
+    ) throws -> String {
+        let regex = try NSRegularExpression(pattern: pattern, options: findingOptions)
+        let range = NSRange(startIndex..., in: self)
+        return regex.stringByReplacingMatches(in: self, options: replacingOptions, range: range, withTemplate: template)
+    }
 }
