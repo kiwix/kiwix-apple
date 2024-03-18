@@ -20,6 +20,8 @@ final class NavigationViewModel: ObservableObject {
         let tab = Tab(context: context)
         tab.created = Date()
         tab.lastOpened = Date()
+        try? context.obtainPermanentIDs(for: [tab])
+        try? context.save()
         return tab
     }
     
@@ -28,8 +30,6 @@ final class NavigationViewModel: ObservableObject {
         let fetchRequest = Tab.fetchRequest(sortDescriptors: [NSSortDescriptor(key: "lastOpened", ascending: false)])
         fetchRequest.fetchLimit = 1
         let tab = (try? context.fetch(fetchRequest).first) ?? self.makeTab(context: context)
-        try? context.obtainPermanentIDs(for: [tab])
-        try? context.save()
         Task {
             await MainActor.run {
                 currentItem = NavigationItem.tab(objectID: tab.objectID)
@@ -42,8 +42,6 @@ final class NavigationViewModel: ObservableObject {
     func createTab() -> NSManagedObjectID {
         let context = Database.viewContext
         let tab = self.makeTab(context: context)
-        try? context.obtainPermanentIDs(for: [tab])
-        try? context.save()
         #if !os(macOS)
         currentItem = NavigationItem.tab(objectID: tab.objectID)
         #endif
@@ -64,25 +62,32 @@ final class NavigationViewModel: ObservableObject {
     /// - Parameter tabID: ID of the tab to delete
     func deleteTab(tabID: NSManagedObjectID) {
         Database.performBackgroundTask { context in
-            guard let tab = try? context.existingObject(with: tabID) as? Tab else { return }
-            
-            // select a new tab if the currently selected tab is being deleted
-            if case let .tab(selectedTabID) = self.currentItem, selectedTabID == tabID {
-                let fetchRequest = Tab.fetchRequest(
-                    predicate: NSPredicate(format: "created < %@", tab.created as CVarArg),
-                    sortDescriptors: [NSSortDescriptor(key: "created", ascending: false)]
-                )
-                fetchRequest.fetchLimit = 1
-                let newTab = (try? context.fetch(fetchRequest).first) ?? self.makeTab(context: context)
-                try? context.obtainPermanentIDs(for: [newTab])
-                DispatchQueue.main.async {
-                    self.currentItem = NavigationItem.tab(objectID: newTab.objectID)
-                }
+            let sortByCreation = [NSSortDescriptor(key: "created", ascending: false)]
+            guard let tabs: [Tab] = try? context.fetch(Tab.fetchRequest(predicate: nil,
+                                                                        sortDescriptors: sortByCreation)),
+                  let tab: Tab = tabs.first(where: { $0.objectID == tabID }) else {
+                return
             }
-            
+            let newlySelectedTab: Tab?
+            // select a closeBy tab if the currently selected tab is to be deleted
+            if case let .tab(selectedTabID) = self.currentItem, selectedTabID == tabID {
+                newlySelectedTab = tabs.closeBy(toWhere: { $0.objectID == tabID }) ?? self.makeTab(context: context)
+            } else {
+                newlySelectedTab = nil // the current selection should remain
+            }
+
             // delete tab
             context.delete(tab)
             try? context.save()
+
+            // update selection if needed
+            if let newlySelectedTab {
+                Task {
+                    await MainActor.run {
+                        self.currentItem = NavigationItem.tab(objectID: newlySelectedTab.objectID)
+                    }
+                }
+            }
         }
     }
     
@@ -95,12 +100,38 @@ final class NavigationViewModel: ObservableObject {
             
             // create new tab
             let newTab = self.makeTab(context: context)
-            try? context.obtainPermanentIDs(for: [newTab])
-            DispatchQueue.main.async {
-                self.currentItem = NavigationItem.tab(objectID: newTab.objectID)
+            Task {
+                await MainActor.run {
+                    self.currentItem = NavigationItem.tab(objectID: newTab.objectID)
+                }
             }
-            
-            try? context.save()
         }
+    }
+}
+
+extension Array {
+
+    /// Return an element close to the one defined in the where callback,
+    /// either the one before or if this is the first, the one after
+    /// - Parameter toWhere: similar role as in find(where: ) closure, this element is never returned
+    /// - Returns: the element before or the one after, never the one that matches by toWhere:
+    func closeBy(toWhere whereCallback: @escaping (Element) -> Bool) -> Element? {
+        var previous: Element?
+        var returnNext: Bool = false
+        for element in self {
+            if returnNext {
+                return element
+            }
+            if whereCallback(element) {
+                if let previous {
+                    return previous
+                } else {
+                    returnNext = true
+                }
+            } else {
+                previous = element
+            }
+        }
+        return previous
     }
 }

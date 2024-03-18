@@ -34,15 +34,6 @@ enum ZimMigration {
         }
     }
 
-    static func customApp(url: URL) async -> URL {
-        let newHost = await latestZimFileHost()
-        guard let newURL = url.updateHost(to: newHost) else {
-            assertionFailure("url cannot be updated")
-            return url
-        }
-        return newURL
-    }
-
     /// Migrates the bookmars from an old to new zim file,
     /// also updates the bookmark urls accordingly (based on the new zim id as the host of those URLs)
     /// deletes the old zim file in the DB

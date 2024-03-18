@@ -211,24 +211,9 @@ final class BrowserViewModel: NSObject, ObservableObject,
     private func restoreBy(tabID: NSManagedObjectID) {
         if let tab = try? Database.viewContext.existingObject(with: tabID) as? Tab {
             webView.interactionState = tab.interactionState
-            if AppType.isCustom {
-                Task {
-                    guard let webURL = await webView.url else {
-                        await MainActor.run {
-                            url = nil
-                        }
-                        return
-                    }
-                    let newURL = await ZimMigration.customApp(url: webURL)
-                    await MainActor.run {
-                        url = newURL
-                    }
-                }
-            } else {
-                Task {
-                    await MainActor.run {
-                        url = webView.url
-                    }
+            Task {
+                await MainActor.run {
+                    url = webView.url
                 }
             }
         }
