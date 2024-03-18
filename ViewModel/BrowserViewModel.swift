@@ -401,7 +401,7 @@ final class BrowserViewModel: NSObject, ObservableObject,
     // RESTORATION
     func restoreByWindowNumber(
         windowNumber currentNumber: Int,
-        urlToTabIdConverter: @escaping (URL?) -> NSManagedObjectID
+        urlToTabIdConverter: @MainActor @escaping (URL?) -> NSManagedObjectID
     ) {
         windowNumber = currentNumber
         let windows = NSApplication.shared.windows
@@ -417,9 +417,13 @@ final class BrowserViewModel: NSObject, ObservableObject,
         } else {
             tabURL = nil
         }
-        let tabID = urlToTabIdConverter(tabURL) // if url is nil it will create a new tab
-        self.tabID = tabID
-        restoreBy(tabID: tabID)
+        Task {
+            await MainActor.run {
+                let tabID = urlToTabIdConverter(tabURL) // if url is nil it will create a new tab
+                self.tabID = tabID
+                restoreBy(tabID: tabID)
+            }
+        }
     }
 
     private func indexOf(windowNumber number: Int, in windows: [NSWindow]) -> Int? {
