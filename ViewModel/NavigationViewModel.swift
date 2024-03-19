@@ -10,7 +10,7 @@ import CoreData
 import WebKit
 
 @MainActor
-class NavigationViewModel: ObservableObject {
+final class NavigationViewModel: ObservableObject {
     // remained optional due to focusedSceneValue conformance
     @Published var currentItem: NavigationItem? = .loading
 

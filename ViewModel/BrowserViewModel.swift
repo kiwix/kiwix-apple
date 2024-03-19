@@ -211,24 +211,9 @@ final class BrowserViewModel: NSObject, ObservableObject,
     private func restoreBy(tabID: NSManagedObjectID) {
         if let tab = try? Database.viewContext.existingObject(with: tabID) as? Tab {
             webView.interactionState = tab.interactionState
-            if AppType.isCustom {
-                Task {
-                    guard let webURL = await webView.url else {
-                        await MainActor.run {
-                            url = nil
-                        }
-                        return
-                    }
-                    let newURL = await ZimMigration.customApp(url: webURL)
-                    await MainActor.run {
-                        url = newURL
-                    }
-                }
-            } else {
-                Task {
-                    await MainActor.run {
-                        url = webView.url
-                    }
+            Task {
+                await MainActor.run {
+                    url = webView.url
                 }
             }
         }
@@ -416,7 +401,7 @@ final class BrowserViewModel: NSObject, ObservableObject,
     // RESTORATION
     func restoreByWindowNumber(
         windowNumber currentNumber: Int,
-        urlToTabIdConverter: @escaping (URL?) -> NSManagedObjectID
+        urlToTabIdConverter: @MainActor @escaping (URL?) -> NSManagedObjectID
     ) {
         windowNumber = currentNumber
         let windows = NSApplication.shared.windows
@@ -432,9 +417,13 @@ final class BrowserViewModel: NSObject, ObservableObject,
         } else {
             tabURL = nil
         }
-        let tabID = urlToTabIdConverter(tabURL) // if url is nil it will create a new tab
-        self.tabID = tabID
-        restoreBy(tabID: tabID)
+        Task {
+            await MainActor.run {
+                let tabID = urlToTabIdConverter(tabURL) // if url is nil it will create a new tab
+                self.tabID = tabID
+                restoreBy(tabID: tabID)
+            }
+        }
     }
 
     private func indexOf(windowNumber number: Int, in windows: [NSWindow]) -> Int? {

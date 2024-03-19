@@ -34,15 +34,6 @@ enum ZimMigration {
         }
     }
 
-    static func customApp(url: URL) async -> URL {
-        let newHost = await latestZimFileHost()
-        guard let newURL = url.updateHost(to: newHost) else {
-            assertionFailure("url cannot be updated")
-            return url
-        }
-        return newURL
-    }
-
     /// Migrates the bookmars from an old to new zim file,
     /// also updates the bookmark urls accordingly (based on the new zim id as the host of those URLs)
     /// deletes the old zim file in the DB
@@ -66,6 +57,7 @@ enum ZimMigration {
         }
         fromZim.tabs.forEach { (tab: Tab) in
             tab.zimFile = toZim
+            tab.interactionState = tab.interactionState?.updateHost(to: newHost)
         }
         context.delete(fromZim)
         if context.hasChanges { try? context.save() }
@@ -74,7 +66,7 @@ enum ZimMigration {
     private static func latestZimFileHost() async -> String {
         if let newHost = await Self.newHost { return newHost }
         // if it wasn't set before, set and return by the last ZimFile in DB:
-        guard let zimFile = try? requestLatestZimFile.execute().first else {
+        guard let zimFile = try? Database.viewContext.fetch(requestLatestZimFile).first else {
             fatalError("we should have at least 1 zim file for a custom app")
         }
         let newHost = zimFile.fileID.uuidString
@@ -91,5 +83,19 @@ extension URL {
         guard var components = URLComponents(url: self, resolvingAgainstBaseURL: false) else { return nil }
         components.host = newHost
         return components.url
+    }
+}
+
+extension Data {
+    func updateHost(to newHost: String) -> Data {
+        let string = String(decoding: self, as: UTF8.self)
+        if let replaced = try? string.replacingRegex(
+            matching: "kiwix:\\/\\/[A-Z0-9-]{0,36}\\/",
+            with: "kiwix://\(newHost)/"
+        ) {
+            return Data(replaced.utf8)
+        } else {
+            return self
+        }
     }
 }
