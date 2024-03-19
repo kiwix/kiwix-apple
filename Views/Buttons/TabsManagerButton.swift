@@ -18,9 +18,9 @@ struct TabsManagerButton: View {
     ) private var zimFiles: FetchedResults<ZimFile>
     @State private var presentedSheet: PresentedSheet?
     
-    enum PresentedSheet: String, Identifiable {
+    private enum PresentedSheet: String, Identifiable {
         var id: String { rawValue }
-        case tabsManager, library, settings
+        case tabsManager
     }
     
     var body: some View {
@@ -43,27 +43,6 @@ struct TabsManagerButton: View {
                     Label("common.tab.menu.close_all".localized, systemImage: "xmark.square.fill")
                 }
             }
-            Section {
-                ForEach(zimFiles.prefix(5)) { zimFile in
-                    Button {
-                        browser.loadMainArticle(zimFileID: zimFile.fileID)
-                    } label: { Label(zimFile.name, systemImage: "house") }
-                }
-            }
-            Section {
-                if FeatureFlags.hasLibrary {
-                    Button {
-                        presentedSheet = .library
-                    } label: {
-                        Label("common.tab.menu.library".localized, systemImage: "folder")
-                    }
-                }
-                Button {
-                    presentedSheet = .settings
-                } label: {
-                    Label("common.tab.menu.settings".localized, systemImage: "gear")
-                }
-            }
         } label: {
             Label("common.tab.manager.title".localized, systemImage: "square.stack")
         } primaryAction: {
@@ -83,20 +62,6 @@ struct TabsManagerButton: View {
                         }
                     }
                 }.modifier(MarkAsHalfSheet())
-            case .library:
-                Library()
-            case .settings:
-                NavigationView {
-                    Settings().toolbar {
-                        ToolbarItem(placement: .navigationBarLeading) {
-                            Button {
-                                self.presentedSheet = nil
-                            } label: {
-                                Text("common.button.done".localized).fontWeight(.semibold)
-                            }
-                        }
-                    }
-                }
             }
         }
     }
