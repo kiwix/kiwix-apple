@@ -71,6 +71,26 @@ struct BookmarkButton: View {
                             Text("common.button.done".localized).fontWeight(.semibold)
                         }
                     }
+                    ToolbarItem(placement: .navigationBarTrailing) {
+                        Button {
+                            if browser.articleBookmarked {
+                                browser.deleteBookmark()
+                            } else {
+                                browser.createBookmark()
+                            }
+                        } label: {
+                            Label {
+                                Text(
+                                    browser.articleBookmarked ?
+                                    "common.dialog.button.remove_bookmark".localized :
+                                        "common.dialog.button.add_bookmark".localized
+                                )
+                            } icon: {
+                                Image(systemName: browser.articleBookmarked ? "star.fill" : "star")
+                                    .renderingMode(browser.articleBookmarked ? .original : .template)
+                            }
+                        }.disabled(browser.url == nil)
+                    }
                 }
             }
             .frame(idealWidth: 360, idealHeight: 600)
