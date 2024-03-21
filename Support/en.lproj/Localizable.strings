@@ -167,6 +167,7 @@
 "settings.miscellaneous.title" = "Misc";
 "settings.miscellaneous.button.feedback" = "Feedback";
 "settings.miscellaneous.button.rate_app" = "Rate the App";
+"settings.miscellaneous.button.donate" = "Support Kiwix";
 "settings.miscellaneous.navigation.about" = "About";
 "settings.selected_language.title" = "Languages";
 "language_selector.name.title" = "Name";
