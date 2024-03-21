@@ -105,7 +105,7 @@ struct RootView: View {
             .safeAreaInset(edge: .bottom) {
                 Link(destination: URL(string: "donations.url".localized)!) {
                     HStack {
-                        Image(systemName: "heart").foregroundColor(.blue)
+                        Image(systemName: "heart")
                         Text("enum.navigation_item.donations".localized)
                             .foregroundColor(.foregroundColor(.systemTextColor))
                     }
