@@ -228,7 +228,7 @@ final class BrowserViewModel: NSObject, ObservableObject,
     ) {
         guard let url = navigationAction.request.url else { decisionHandler(.cancel); return }
         
-        // detect cmd + click event
+        // detect cmd + click
         if navigationAction.modifierFlags.contains(.command) {
             // create new tab
             guard let currentWindow = NSApp.keyWindow, 
