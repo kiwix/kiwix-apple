@@ -227,6 +227,30 @@ final class BrowserViewModel: NSObject, ObservableObject,
         decisionHandler: @escaping (WKNavigationActionPolicy) -> Void
     ) {
         guard let url = navigationAction.request.url else { decisionHandler(.cancel); return }
+        
+        // detect cmd + click event
+        if navigationAction.modifierFlags.contains(.command) {
+            // create new tab
+            guard let currentWindow = NSApp.keyWindow,
+                  let windowController = currentWindow.windowController else {
+                decisionHandler(.allow)
+                return
+            }
+            // store the new url in a static way
+            BrowserViewModel.urlForNewTab = url
+            // this creates a new BrowserViewModel
+            windowController.newWindowForTab(self)
+            // now reset the static url to nil, as the new BrowserViewModel already has it
+            BrowserViewModel.urlForNewTab = nil
+            guard let newWindow = NSApp.keyWindow, currentWindow != newWindow else {
+                decisionHandler(.allow)
+                return
+            }
+            currentWindow.addTabbedWindow(newWindow, ordered: .above)
+            decisionHandler(.cancel)
+            return
+        }
+        
         if url.isKiwixURL, let redirectedURL = ZimFileService.shared.getRedirectedURL(url: url) {
             if webView.url != redirectedURL {
                 DispatchQueue.main.async { webView.load(URLRequest(url: redirectedURL)) }
