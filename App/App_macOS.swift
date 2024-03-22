@@ -107,7 +107,7 @@ struct RootView: View {
                     HStack {
                         Image(systemName: "heart")
                         Text("enum.navigation_item.donations".localized)
-                            .foregroundColor(.systemTextColor)
+                            .foregroundColor(.primary)
                     }
                     .padding()}
             }
