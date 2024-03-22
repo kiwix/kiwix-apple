@@ -231,10 +231,8 @@ final class BrowserViewModel: NSObject, ObservableObject,
         // detect cmd + click
         if navigationAction.modifierFlags.contains(.command) {
             // create new tab
-            guard let currentWindow = NSApp.keyWindow, 
-                    let windowController = currentWindow.windowController else { decisionHandler(.allow)
-                return
-            }
+            guard let currentWindow = NSApp.keyWindow else { decisionHandler(.allow); return }
+            guard let windowController = currentWindow.windowController else { decisionHandler(.allow); return }
             // store the new url in a static way
             BrowserViewModel.urlForNewTab = url
             // this creates a new BrowserViewModel
