@@ -146,6 +146,14 @@ struct URLContent {
     let start: UInt
     let end: UInt
     let size: UInt
+
+    var httpContentType: String {
+        if mime == "text/plain" {
+            return "text/plain;charset=UTf-8"
+        } else {
+            return mime
+        }
+    }
 }
 
 final class ZimFile: NSManagedObject, Identifiable {
