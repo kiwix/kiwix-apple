@@ -231,9 +231,7 @@ final class BrowserViewModel: NSObject, ObservableObject,
         // detect cmd + click event
         if navigationAction.modifierFlags.contains(.command) {
             // create new tab
-            guard let currentWindow = NSApp.keyWindow,
-                  let windowController = currentWindow.windowController else {
-                decisionHandler(.allow)
+            guard let currentWindow = NSApp.keyWindow, let windowController = currentWindow.windowController else { decisionHandler(.allow)
                 return
             }
             // store the new url in a static way
@@ -242,8 +240,7 @@ final class BrowserViewModel: NSObject, ObservableObject,
             windowController.newWindowForTab(self)
             // now reset the static url to nil, as the new BrowserViewModel already has it
             BrowserViewModel.urlForNewTab = nil
-            guard let newWindow = NSApp.keyWindow, currentWindow != newWindow else {
-                decisionHandler(.allow)
+            guard let newWindow = NSApp.keyWindow, currentWindow != newWindow else { decisionHandler(.allow)
                 return
             }
             currentWindow.addTabbedWindow(newWindow, ordered: .above)
