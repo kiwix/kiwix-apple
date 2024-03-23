@@ -357,7 +357,6 @@ final class BrowserViewModel: NSObject, ObservableObject,
     }
 #endif
 
-    
 #if os(iOS)
     func webView(
         _ webView: WKWebView,
