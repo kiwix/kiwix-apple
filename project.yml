@@ -65,7 +65,6 @@ targetTemplates:
       path: Support/Kiwix.entitlements
       properties:
         com.apple.security.app-sandbox: true
-        com.apple.security.files.downloads.read-write: true
         com.apple.security.files.user-selected.read-only: true
         com.apple.security.network.client: true
     dependencies:
@@ -92,6 +91,9 @@ targets:
   Kiwix:
     templates:
       - ApplicationTemplate
+    entitlements:
+      properties:
+        com.apple.security.files.downloads.read-write: true
     settings:
       base:
         MARKETING_VERSION: "3.3.0"
