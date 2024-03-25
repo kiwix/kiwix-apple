@@ -223,7 +223,6 @@ final class BrowserViewModel: NSObject, ObservableObject,
     
 #if os(macOS)
     private func createNewTab(url: URL) -> Bool {
-        // create new tab
         guard let currentWindow = NSApp.keyWindow else { return false }
         guard let windowController = currentWindow.windowController else { return false }
         // store the new url in a static way
@@ -351,7 +350,6 @@ final class BrowserViewModel: NSObject, ObservableObject,
             return nil
         }
 
-        // create new tab
         _ = createNewTab(url: newUrl)
         return nil
     }
