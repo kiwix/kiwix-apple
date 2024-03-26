@@ -113,7 +113,7 @@ final class SplitViewController: UISplitViewController {
             }()
             setViewController(UINavigationController(rootViewController: controller), for: .secondary)
         case .opened:
-            let controller = UIHostingController(rootView: ZimFilesOpened())
+            let controller = UIHostingController(rootView: ZimFilesOpened(dismiss: nil))
             setViewController(UINavigationController(rootViewController: controller), for: .secondary)
         case .categories:
             let controller = UIHostingController(rootView: ZimFilesCategories())

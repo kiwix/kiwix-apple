@@ -18,9 +18,11 @@ struct Library: View {
         
     private let defaultTabItem: LibraryTabItem?
     private let categories: [Category]
+    let dismiss: (() -> Void)?
 
-    init(tabItem: LibraryTabItem? = nil) {
+    init(dismiss: (() -> Void)?, tabItem: LibraryTabItem? = nil) {
         self.defaultTabItem = tabItem
+        self.dismiss = dismiss
         categories = CategoriesToLanguages.allCategories()
     }
     
@@ -30,7 +32,7 @@ struct Library: View {
                 SheetContent {
                     switch tabItem {
                     case .opened:
-                        ZimFilesOpened()
+                        ZimFilesOpened(dismiss: dismiss)
                     case .categories:
                         List(categories) { category in
                             NavigationLink {
@@ -68,7 +70,7 @@ struct Library: View {
 struct Library_Previews: PreviewProvider {
     static var previews: some View {
         NavigationStack {
-            Library()
+            Library(dismiss: nil)
                 .environmentObject(LibraryViewModel())
                 .environment(\.managedObjectContext, Database.viewContext)
         }
@@ -106,7 +108,13 @@ struct LibraryZimFileContext: ViewModifier {
     @EnvironmentObject private var viewModel: LibraryViewModel
     
     let zimFile: ZimFile
-    
+    let dismiss: (() -> Void)? // iOS only
+
+    init(zimFile: ZimFile, dismiss: (() -> Void)? = nil) {
+        self.zimFile = zimFile
+        self.dismiss = dismiss
+    }
+
     func body(content: Content) -> some View {
         Group {
             #if os(macOS)
@@ -117,7 +125,7 @@ struct LibraryZimFileContext: ViewModifier {
             }.buttonStyle(.plain)
             #elseif os(iOS)
             NavigationLink {
-                ZimFileDetail(zimFile: zimFile)
+                ZimFileDetail(zimFile: zimFile, dismissParent: dismiss)
             } label: {
                 content
             }

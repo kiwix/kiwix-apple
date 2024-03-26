@@ -18,7 +18,8 @@ struct ZimFilesOpened: View {
         animation: .easeInOut
     ) private var zimFiles: FetchedResults<ZimFile>
     @State private var isFileImporterPresented = false
-    
+    let dismiss: (() -> Void)? // iOS only
+
     var body: some View {
         LazyVGrid(
             columns: ([GridItem(.adaptive(minimum: 250, maximum: 500), spacing: 12)]),
@@ -26,7 +27,8 @@ struct ZimFilesOpened: View {
             spacing: 12
         ) {
             ForEach(zimFiles) { zimFile in
-                ZimFileCell(zimFile, prominent: .name).modifier(LibraryZimFileContext(zimFile: zimFile))
+                ZimFileCell(zimFile, prominent: .name).modifier(LibraryZimFileContext(zimFile: zimFile,
+                                                                                      dismiss: self.dismiss))
             }
         }
         .modifier(GridCommon(edges: .all))

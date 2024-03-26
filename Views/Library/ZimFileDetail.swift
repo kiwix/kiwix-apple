@@ -15,13 +15,14 @@ import Defaults
 /// Detail about one single zim file.
 struct ZimFileDetail: View {
     @Default(.downloadUsingCellular) private var downloadUsingCellular
-    @Environment(\.presentationMode) var presentationMode
+    @Environment(\.dismiss) var dismiss
     @ObservedObject var zimFile: ZimFile
     @State private var isPresentingDeleteAlert = false
     @State private var isPresentingDownloadAlert = false
     @State private var isPresentingFileLocator = false
     @State private var isPresentingUnlinkAlert = false
-    
+    let dismissParent: (() -> Void)? // iOS only
+
     var body: some View {
         #if os(macOS)
         List {
@@ -89,6 +90,9 @@ struct ZimFileDetail: View {
             Action(title: "zim_file.action.open_main_page.title".localized) {
                 guard let url = ZimFileService.shared.getMainPageURL(zimFileID: zimFile.fileID) else { return }
                 NotificationCenter.openURL(url, inNewTab: true)
+                #if os(iOS)
+                dismissParent?()
+                #endif
             }
             #if os(macOS)
             Action(title: "zim_file.action.reveal_in_finder.title".localized) {
@@ -123,7 +127,7 @@ struct ZimFileDetail: View {
                 primaryButton: .destructive(Text("zim_file.action.unlink.button.title".localized)) {
                     LibraryOperations.unlink(zimFileID: zimFile.fileID)
                     #if os(iOS)
-                    presentationMode.wrappedValue.dismiss()
+                    dismiss()
                     #endif
                 },
                 secondaryButton: .cancel()
@@ -141,7 +145,7 @@ struct ZimFileDetail: View {
                 primaryButton: .destructive(Text("zim_file.action.delete.button.title".localized)) {
                     LibraryOperations.delete(zimFileID: zimFile.fileID)
                     #if os(iOS)
-                    presentationMode.wrappedValue.dismiss()
+                    dismiss()
                     #endif
                 },
                 secondaryButton: .cancel()
@@ -347,6 +351,6 @@ struct ZimFileDetail_Previews: PreviewProvider {
     }()
     
     static var previews: some View {
-        ZimFileDetail(zimFile: zimFile).frame(width: 300).previewLayout(.sizeThatFits)
+        ZimFileDetail(zimFile: zimFile, dismissParent: nil).frame(width: 300).previewLayout(.sizeThatFits)
     }
 }
