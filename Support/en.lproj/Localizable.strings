@@ -269,5 +269,3 @@
 "enum.search_result_snippet_mode.paragraph" = "First Paragraph";
 "enum.search_result_snippet_mode.sentence" = "First Sentence";
 "enum.search_result_snippet_mode.matches" = "Matches";
-
-"donations.url" = "https://kiwix.org/get-involved/";
