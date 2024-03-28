@@ -46,8 +46,11 @@ struct ExternalLinkHandler: ViewModifier {
             if case .ask(let url) = alert {
                 Button("external_link_handler.alert.button.load.link".localized) {
                     load(url: url)
+                    externalURL = nil // important to nil out, so the same link tapped will trigger onChange again
                 }
-                Button("common.button.cancel".localized, role: .cancel) { }
+                Button("common.button.cancel".localized, role: .cancel) {
+                    externalURL = nil // important to nil out, so the same link tapped will trigger onChange again
+                }
             }
         } message: { alert in
             switch alert {

@@ -76,7 +76,7 @@ final class KiwixURLSchemeHandler: NSObject, WKURLSchemeHandler {
     }
 
     private func sendHTTP200Response(_ urlSchemeTask: WKURLSchemeTask, url: URL, content: URLContent) {
-        let headers = ["Content-Type": content.mime, "Content-Length": "\(content.size)"]
+        let headers = ["Content-Type": content.httpContentType, "Content-Length": "\(content.size)"]
         if let response = HTTPURLResponse(url: url, statusCode: 200, httpVersion: "HTTP/1.1", headerFields: headers) {
             guard isStartedFor(urlSchemeTask.hash) else { return }
             urlSchemeTask.didReceive(response)
