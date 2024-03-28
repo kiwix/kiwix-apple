@@ -36,6 +36,7 @@ enum Brand {
     static let welcomeLogoImageName: String = "welcomeLogo"
     static let aboutText: String = Config.value(for: .aboutText) ?? "settings.about.description".localized
     static let aboutWebsite: String = Config.value(for: .aboutWebsite) ?? "https://www.kiwix.org"
+    static let supportURLString: String = Config.value(for: .supportURL) ?? "https://kiwix.org/get-involved/"
 
     static var defaultExternalLinkPolicy: ExternalLinkLoadingPolicy {
         guard let policyString: String = Config.value(for: .externalLinkDefaultPolicy),
@@ -66,6 +67,7 @@ enum Config: String {
     case showSearchSnippetInSettings = "SETTINGS_SHOW_SEARCH_SNIPPET"
     case aboutText = "CUSTOM_ABOUT_TEXT"
     case aboutWebsite = "CUSTOM_ABOUT_WEBSITE"
+    case supportURL = "SUPPORT_URL"
 
     static func value<T>(for key: Config) -> T? where T: LosslessStringConvertible {
         guard let object = Bundle.main.object(forInfoDictionaryKey: key.rawValue) else {

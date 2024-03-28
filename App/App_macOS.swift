@@ -103,13 +103,17 @@ struct RootView: View {
                 }
             }
             .safeAreaInset(edge: .bottom) {
-                Link(destination: URL(string: "donations.url".localized)!) {
-                    HStack {
-                        Image(systemName: "heart")
-                        Text("enum.navigation_item.donations".localized)
-                            .foregroundColor(.primary)
+                if let url = URL(string: Brand.supportURLString) {
+                    Link(destination: url) {
+                        HStack {
+                            Image(systemName: "heart")
+                            Text("enum.navigation_item.donations".localizedWithFormat(withArgs: Brand.appName))
+                                .foregroundColor(.primary)
+                            Spacer()
+                        }
                     }
-                    .padding()}
+                    .padding()
+                }
             }
             .frame(minWidth: 150)
             .toolbar {
