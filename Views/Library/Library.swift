@@ -90,7 +90,7 @@ struct LibraryZimFileDetailSidePanel: ViewModifier {
                 HStack(spacing: 0) {
                     Divider()
                     if let zimFile = viewModel.selectedZimFile {
-                        ZimFileDetail(zimFile: zimFile)
+                        ZimFileDetail(zimFile: zimFile, dismissParent: nil)
                     } else {
                         Message(text: "library.zim_file_details.side_panel.message".localized)
                             .background(.thickMaterial)
