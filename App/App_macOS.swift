@@ -102,6 +102,20 @@ struct RootView: View {
                     }
                 }
             }
+            .safeAreaInset(edge: .bottom) {
+                if let url = URL(string: Brand.supportURLString) {
+                    Link(destination: url) {
+                        HStack {
+                            Image(systemName: "heart")
+                            Text("common.support.app_name".localizedWithFormat(withArgs: Brand.appName))
+                                .foregroundColor(.primary)
+                                .multilineTextAlignment(.leading)
+                            Spacer()
+                        }
+                    }
+                    .padding()
+                }
+            }
             .frame(minWidth: 150)
             .toolbar {
                 Button {

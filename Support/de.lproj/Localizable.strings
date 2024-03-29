@@ -23,6 +23,7 @@
 "common.button.yes" = "Ja";
 "common.button.no" = "nein";
 "common.search" = "Suchen";
+"common.support.app_name" = "%@ unterstützen";
 "common.tab.manager.title" = "Tabs-Manager";
 "common.tab.navigation.title" = "Tabs";
 "common.tab.menu.new_tab" = "Neuer Tab";

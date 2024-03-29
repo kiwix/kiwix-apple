@@ -39,6 +39,7 @@
 "common.tab.list.close" = "Close Tab";
 "common.tab.menu.library" = "Library";
 "common.tab.menu.settings" = "Settings";
+"common.support.app_name" = "Support %@";
 
 "outline_button.outline.title" = "Outline";
 "outline_button.outline.help" = "Show article outline";
