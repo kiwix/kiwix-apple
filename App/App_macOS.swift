@@ -109,6 +109,7 @@ struct RootView: View {
                             Image(systemName: "heart")
                             Text("common.support.app_name".localizedWithFormat(withArgs: Brand.appName))
                                 .foregroundColor(.primary)
+                                .multilineTextAlignment(.leading)
                             Spacer()
                         }
                     }
