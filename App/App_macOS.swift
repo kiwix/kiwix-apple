@@ -107,7 +107,7 @@ struct RootView: View {
                     Link(destination: url) {
                         HStack {
                             Image(systemName: "heart")
-                            Text("enum.navigation_item.donations".localizedWithFormat(withArgs: Brand.appName))
+                            Text("common.support.app_name".localizedWithFormat(withArgs: Brand.appName))
                                 .foregroundColor(.primary)
                             Spacer()
                         }

@@ -39,6 +39,7 @@
 "common.tab.list.close" = "Close Tab";
 "common.tab.menu.library" = "Library";
 "common.tab.menu.settings" = "Settings";
+"common.support.app_name" = "Support %@";
 
 "outline_button.outline.title" = "Outline";
 "outline_button.outline.help" = "Show article outline";
@@ -167,7 +168,6 @@
 "settings.miscellaneous.title" = "Misc";
 "settings.miscellaneous.button.feedback" = "Feedback";
 "settings.miscellaneous.button.rate_app" = "Rate the App";
-"settings.miscellaneous.button.donate" = "Support %@";
 "settings.miscellaneous.navigation.about" = "About";
 "settings.selected_language.title" = "Languages";
 "language_selector.name.title" = "Name";
@@ -264,7 +264,6 @@
 "enum.navigation_item.new" = "New";
 "enum.navigation_item.downloads" = "Downloads";
 "enum.navigation_item.settings" = "Settings";
-"enum.navigation_item.donations" = "Support %@";
 "enum.search_result_snippet_mode.disabled" = "Disabled";
 "enum.search_result_snippet_mode.paragraph" = "First Paragraph";
 "enum.search_result_snippet_mode.sentence" = "First Sentence";

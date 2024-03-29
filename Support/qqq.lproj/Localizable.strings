@@ -21,6 +21,7 @@
 "common.button.yes" = "It is a title in the summary table on macOS: we list the attributes of a ZIM file: does it contain pictures yes/no, does it contain Videos yes/no, Details? yes/no";
 "common.button.no" = "It is a title in the summary table on macOS: we list the attributes of a ZIM file: does it contain pictures yes/no, does it contain Videos yes/no, Details? yes/no";
 "common.search" = "The default placeholder text for searchbars, when the search input field is empty";
+"common.support.app_name" = "Button title, opening the external browser to support the app. The App Name being the argument, eg: Support Kiwix";
 "common.tab.manager.title" = "Accessibility label for button tab bar button that opens an overlay menu.";
 "common.tab.navigation.title" = "On iPad it is a title in the sidemenu grouping tabs related buttons";
 "common.tab.menu.new_tab" = "Button title of an item in the overflow menu on iOS, the default title for a new tab (that has no content loaded yet) on iPad";
@@ -140,7 +141,6 @@
 "settings.miscellaneous.button.feedback" = "Button title in settings";
 "settings.miscellaneous.button.rate_app" = "Button title in settings";
 "settings.miscellaneous.navigation.about" = "Button title in settings opening the about page";
-"settings.miscellaneous.button.donate" = "Button title in settings, opening the external browser to support the app. The App Name being the argument, eg: Support Kiwix"
 "settings.selected_language.title" = "Label text for language picker in settings";
 "language_selector.name.title" = "Table header name in listing the languages and ZIM file count in each language in settings";
 "language_selector.count.table.title" = "Table header name in listing the languages and ZIM file count in each language in settings";
@@ -225,7 +225,6 @@
 "enum.navigation_item.new" = "Side navigation menu item title";
 "enum.navigation_item.downloads" = "Side navigation menu item title";
 "enum.navigation_item.settings" = "Side navigation menu item title";
-"enum.navigation_item.donations" = "Side navigation menu item title, with the App Name being the argument, eg: Support Kiwix"
 "enum.search_result_snippet_mode.disabled" = "Picker option title in settings. Search snippet: Disabled | First Paragraph | First Sentence | Matches";
 "enum.search_result_snippet_mode.paragraph" = "Picker option title in settings. Search snippet: Disabled | First Paragraph | First Sentence | Matches";
 "enum.search_result_snippet_mode.sentence" = "Picker option title in settings. Search snippet: Disabled | First Paragraph | First Sentence | Matches";
