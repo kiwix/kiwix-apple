@@ -58,7 +58,7 @@ struct Welcome: View {
             }
             #if os(iOS)
             .sheet(isPresented: $isLibraryPresented) {
-                Library(tabItem: .categories)
+                Library(dismiss: { isLibraryPresented = false }, tabItem: .categories)
             }
             #endif
         } else {

@@ -143,7 +143,7 @@ struct RootView: View {
             case .bookmarks:
                 Bookmarks()
             case .opened:
-                ZimFilesOpened().modifier(LibraryZimFileDetailSidePanel())
+                ZimFilesOpened(dismiss: nil).modifier(LibraryZimFileDetailSidePanel())
             case .categories:
                 ZimFilesCategories().modifier(LibraryZimFileDetailSidePanel())
             case .downloads:

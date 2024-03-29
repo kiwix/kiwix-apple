@@ -113,6 +113,10 @@ private struct CompactView: View {
         case library, settings
     }
 
+    private func dismiss() {
+        presentedSheet = nil
+    }
+
     var body: some View {
         if case let .tab(tabID) = navigation.currentItem {
             Content()
@@ -148,7 +152,7 @@ private struct CompactView: View {
                 .sheet(item: $presentedSheet) { presentedSheet in
                     switch presentedSheet {
                     case .library:
-                        Library()
+                        Library(dismiss: dismiss)
                     case .settings:
                         NavigationView {
                             Settings().toolbar {
