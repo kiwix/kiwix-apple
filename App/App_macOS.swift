@@ -13,8 +13,15 @@ import Defaults
 import CoreKiwix
 
 #if os(macOS)
+final class AppDelegate: NSObject, NSApplicationDelegate {
+    @MainActor func applicationShouldTerminateAfterLastWindowClosed(_ sender: NSApplication) -> Bool {
+        true
+    }
+}
+
 @main
 struct Kiwix: App {
+    @NSApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     @StateObject private var libraryRefreshViewModel = LibraryViewModel()
     private let notificationCenterDelegate = NotificationCenterDelegate()
 
@@ -171,12 +178,6 @@ struct RootView: View {
             navigation.currentItem = .reading
             browser.load(url: url)
         }
-        .onReceive(NotificationCenter.default.publisher(for: NSWindow.willCloseNotification), perform: { output in
-            guard let window = output.object as? NSWindow else { return }
-            if window.isKeyWindow && window.isMainWindow { // if this is the very last window, close the app
-                NSApp.terminate(nil)
-            }
-        })
         .onReceive(appTerminates) { _ in
             browser.persistAllTabIdsFromWindows()
         }.task {
