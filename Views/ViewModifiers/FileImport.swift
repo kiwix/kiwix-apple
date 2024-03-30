@@ -79,7 +79,9 @@ struct OpenFileHandler: ViewModifier {
                 openedZimFileIDs.forEach { fileID in
                     guard let url = ZimFileService.shared.getMainPageURL(zimFileID: fileID) else { return }
                     #if os(macOS)
-                    NSWorkspace.shared.open(url)
+                    if .command == context {
+                        NotificationCenter.openURL(url, inNewTab: true)
+                    }
                     #elseif os(iOS)
                     NotificationCenter.openURL(url, inNewTab: true)
                     #endif
