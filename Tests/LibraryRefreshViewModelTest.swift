@@ -15,14 +15,6 @@
  * along with Kiwix; If not, see https://www.gnu.org/licenses/.
 */
 
-//
-//  LibraryRefreshViewModelTest.swift
-//  Tests
-//
-//  Created by Chris Li on 1/16/23.
-//  Copyright © 2023 Chris Li. All rights reserved.
-//
-
 import CoreData
 import XCTest
 

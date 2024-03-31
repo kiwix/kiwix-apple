@@ -15,14 +15,6 @@
  * along with Kiwix; If not, see https://www.gnu.org/licenses/.
 */
 
-//
-//  BrowserViewModel.swift
-//  Kiwix
-//
-//  Created by Chris Li on 6/21/23.
-//  Copyright © 2023 Chris Li. All rights reserved.
-//
-
 import Combine
 import CoreData
 import CoreLocation

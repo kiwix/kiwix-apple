@@ -15,18 +15,10 @@
  * along with Kiwix; If not, see https://www.gnu.org/licenses/.
 */
 
-//
-//  Tests.swift
-//  Tests
-//
-//  Created by Chris Li on 1/15/23.
-//  Copyright © 2023 Chris Li. All rights reserved.
-//
-
 import XCTest
 @testable import Kiwix
 
-final class OPDSParserTests: XCTestCase {    
+final class OPDSParserTests: XCTestCase {
     /// Test OPDSParser.parse throws error when OPDS data is invalid.
     func testInvalidOPDSData() {
         XCTExpectFailure("Requires work in dependency to resolve the issue.")

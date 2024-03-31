@@ -15,14 +15,6 @@
  * along with Kiwix; If not, see https://www.gnu.org/licenses/.
 */
 
-//
-//  Entities.swift
-//  Kiwix
-//
-//  Created by Chris Li on 4/23/22.
-//  Copyright © 2023 Chris Li. All rights reserved.
-//
-
 import Combine
 import CoreData
 

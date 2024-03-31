@@ -15,14 +15,6 @@
  * along with Kiwix; If not, see https://www.gnu.org/licenses/.
 */
 
-//
-//  OPDSParser.swift
-//  Kiwix
-//
-//  Created by Chris Li on 3/8/20.
-//  Copyright © 2023 Chris Li. All rights reserved.
-//
-
 protocol Parser {
     var zimFileIDs: Set<UUID> { get }
     func parse(data: Data) throws

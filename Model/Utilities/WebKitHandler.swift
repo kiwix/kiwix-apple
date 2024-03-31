@@ -15,14 +15,6 @@
  * along with Kiwix; If not, see https://www.gnu.org/licenses/.
 */
 
-//
-//  KiwixURLSchemeHandler.swift
-//  Kiwix
-//
-//  Created by Chris Li on 9/6/17.
-//  Copyright © 2017 Chris Li. All rights reserved.
-//
-
 import os
 import WebKit
 

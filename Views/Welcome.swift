@@ -15,14 +15,6 @@
  * along with Kiwix; If not, see https://www.gnu.org/licenses/.
 */
 
-//
-//  Welcome.swift
-//  Kiwix
-//
-//  Created by Chris Li on 6/4/22.
-//  Copyright © 2022 Chris Li. All rights reserved.
-//
-
 import SwiftUI
 
 struct Welcome: View {

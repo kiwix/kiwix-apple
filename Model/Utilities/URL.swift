@@ -15,14 +15,6 @@
  * along with Kiwix; If not, see https://www.gnu.org/licenses/.
 */
 
-//
-//  URL.swift
-//  Kiwix
-//
-//  Created by Chris Li on 11/6/21.
-//  Copyright © 2021 Chris Li. All rights reserved.
-//
-
 import Foundation
 
 extension URL {

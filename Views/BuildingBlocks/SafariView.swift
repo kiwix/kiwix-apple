@@ -15,14 +15,6 @@
  * along with Kiwix; If not, see https://www.gnu.org/licenses/.
 */
 
-//
-//  SafariView.swift
-//  Kiwix
-//
-//  Created by Chris Li on 8/14/23.
-//  Copyright © 2023 Chris Li. All rights reserved.
-//
-
 import SafariServices
 import SwiftUI
 

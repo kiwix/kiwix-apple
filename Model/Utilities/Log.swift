@@ -15,14 +15,6 @@
  * along with Kiwix; If not, see https://www.gnu.org/licenses/.
 */
 
-//
-//  Log.swift
-//  Kiwix
-//
-//  Created by Chris Li on 3/8/20.
-//  Copyright © 2020 Chris Li. All rights reserved.
-//
-
 import os
 
 private let subsystem = "org.kiwix.kiwix"

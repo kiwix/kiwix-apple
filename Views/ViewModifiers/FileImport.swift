@@ -15,14 +15,6 @@
  * along with Kiwix; If not, see https://www.gnu.org/licenses/.
 */
 
-//
-//  FileImport.swift
-//  Kiwix
-//
-//  Created by Chris Li on 8/18/23.
-//  Copyright © 2023 Chris Li. All rights reserved.
-//
-
 import SwiftUI
 import UniformTypeIdentifiers
 

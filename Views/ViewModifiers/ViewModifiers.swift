@@ -15,14 +15,6 @@
  * along with Kiwix; If not, see https://www.gnu.org/licenses/.
 */
 
-//
-//  ToolbarRoleBrowser.swift
-//  Kiwix
-//
-//  Created by Chris Li on 9/1/23.
-//  Copyright © 2023 Chris Li. All rights reserved.
-//
-
 import SwiftUI
 
 struct MarkAsHalfSheet: ViewModifier {

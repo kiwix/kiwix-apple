@@ -15,14 +15,6 @@
  * along with Kiwix; If not, see https://www.gnu.org/licenses/.
 */
 
-//
-//  TabLabel.swift
-//  Kiwix
-//
-//  Created by Chris Li on 7/29/23.
-//  Copyright © 2023 Chris Li. All rights reserved.
-//
-
 import SwiftUI
 
 #if os(iOS)

@@ -15,14 +15,6 @@
  * along with Kiwix; If not, see https://www.gnu.org/licenses/.
 */
 
-//
-//  Errors.swift
-//  Kiwix
-//
-//  Created by Chris Li on 12/30/21.
-//  Copyright © 2023 Chris Li. All rights reserved.
-//
-
 import Foundation
 
 public enum LibraryRefreshError: LocalizedError {

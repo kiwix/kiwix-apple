@@ -15,14 +15,6 @@
  * along with Kiwix; If not, see https://www.gnu.org/licenses/.
 */
 
-//
-//  SearchOperation.swift
-//  Kiwix
-//
-//  Created by Chris Li on 5/9/20.
-//  Copyright © 2020-2022 Chris Li. All rights reserved.
-//
-
 import Defaults
 
 extension SearchOperation {

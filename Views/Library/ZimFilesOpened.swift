@@ -15,14 +15,6 @@
  * along with Kiwix; If not, see https://www.gnu.org/licenses/.
 */
 
-//
-//  ZimFilesOpened.swift
-//  Kiwix
-//
-//  Created by Chris Li on 5/15/22.
-//  Copyright © 2022 Chris Li. All rights reserved.
-//
-
 import SwiftUI
 import UniformTypeIdentifiers
 

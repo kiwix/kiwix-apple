@@ -15,14 +15,6 @@
  * along with Kiwix; If not, see https://www.gnu.org/licenses/.
 */
 
-//
-//  Database.swift
-//  Kiwix
-//
-//  Created by Chris Li on 12/23/21.
-//  Copyright © 2022 Chris Li. All rights reserved.
-//
-
 import CoreData
 import os
 

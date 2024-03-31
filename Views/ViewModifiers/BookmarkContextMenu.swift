@@ -1,5 +1,5 @@
 /*
- * This file is part of Kiwix for iOS & macOS.
+65;6800;1c * This file is part of Kiwix for iOS & macOS.
  *
  * Kiwix is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by
@@ -14,14 +14,6 @@
  * You should have received a copy of the GNU General Public License
  * along with Kiwix; If not, see https://www.gnu.org/licenses/.
 */
-
-//
-//  BookmarkContextMenu.swift
-//  Kiwix
-//
-//  Created by Chris Li on 9/17/22.
-//  Copyright © 2022 Chris Li. All rights reserved.
-//
 
 import SwiftUI
 

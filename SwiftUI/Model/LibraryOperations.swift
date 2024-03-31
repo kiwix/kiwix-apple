@@ -15,14 +15,6 @@
  * along with Kiwix; If not, see https://www.gnu.org/licenses/.
 */
 
-//
-//  LibraryOperations.swift
-//  Kiwix
-//
-//  Created by Chris Li on 9/12/22.
-//  Copyright © 2022 Chris Li. All rights reserved.
-//
-
 #if canImport(BackgroundTasks)
 import BackgroundTasks
 #endif

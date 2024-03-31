@@ -15,14 +15,6 @@
  * along with Kiwix; If not, see https://www.gnu.org/licenses/.
 */
 
-//
-//  ZimFileMissingIndicator.swift
-//  Kiwix
-//
-//  Created by Chris Li on 7/17/22.
-//  Copyright © 2022 Chris Li. All rights reserved.
-//
-
 import SwiftUI
 
 struct ZimFileMissingIndicator: View {

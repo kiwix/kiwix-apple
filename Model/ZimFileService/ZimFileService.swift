@@ -15,14 +15,6 @@
  * along with Kiwix; If not, see https://www.gnu.org/licenses/.
 */
 
-//
-//  ZimFileService.swift
-//  Kiwix
-//
-//  Created by Chris Li on 8/21/17.
-//  Copyright © 2017-2022 Chris Li. All rights reserved.
-//
-
 /// A service to interact with zim files
 extension ZimFileService {
     /// Shared ZimFileService instance

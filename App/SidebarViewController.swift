@@ -15,14 +15,6 @@
  * along with Kiwix; If not, see https://www.gnu.org/licenses/.
 */
 
-//
-//  SidebarViewController.swift
-//  Kiwix
-//
-//  Created by Chris Li on 9/4/23.
-//  Copyright © 2023 Chris Li. All rights reserved.
-//
-
 #if os(iOS)
 import CoreData
 import SwiftUI

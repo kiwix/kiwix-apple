@@ -15,14 +15,6 @@
  * along with Kiwix; If not, see https://www.gnu.org/licenses/.
 */
 
-//
-//  Settings.swift
-//  Kiwix
-//
-//  Created by Chris Li on 10/1/22.
-//  Copyright © 2022 Chris Li. All rights reserved.
-//
-
 import SwiftUI
 
 import Defaults

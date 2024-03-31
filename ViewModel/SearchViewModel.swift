@@ -15,14 +15,6 @@
  * along with Kiwix; If not, see https://www.gnu.org/licenses/.
 */
 
-//
-//  SearchViewModel.swift
-//  Kiwix
-//
-//  Created by Chris Li on 5/30/22.
-//  Copyright © 2022 Chris Li. All rights reserved.
-//
-
 import Combine
 import CoreData
 

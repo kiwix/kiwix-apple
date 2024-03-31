@@ -15,14 +15,6 @@
  * along with Kiwix; If not, see https://www.gnu.org/licenses/.
 */
 
-//
-//  HTMLParser.swift
-//  Kiwix
-//
-//  Created by Chris Li on 1/1/20.
-//  Copyright © 2020 Chris Li. All rights reserved.
-//
-
 import CoreLocation
 import NaturalLanguage
 #if os(macOS)

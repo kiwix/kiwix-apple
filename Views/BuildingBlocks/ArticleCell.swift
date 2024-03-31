@@ -15,14 +15,6 @@
  * along with Kiwix; If not, see https://www.gnu.org/licenses/.
 */
 
-//
-//  ArticleCell.swift
-//  Kiwix
-//
-//  Created by Chris Li on 6/3/22.
-//  Copyright © 2022 Chris Li. All rights reserved.
-//
-
 import SwiftUI
 
 /// A rounded rect cell displaying preview of an article.

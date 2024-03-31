@@ -15,14 +15,6 @@
  * along with Kiwix; If not, see https://www.gnu.org/licenses/.
 */
 
-//
-//  FeatureFlags.swift
-//  Kiwix
-//
-//  Created by Chris Li on 9/25/20.
-//  Copyright © 2020 Chris Li. All rights reserved.
-//
-
 import Foundation
 
 enum FeatureFlags {

@@ -15,8 +15,6 @@
  * along with Kiwix; If not, see https://www.gnu.org/licenses/.
 */
 
-//  Copyright © 2023 Kiwix.
-
 import Foundation
 import os
 

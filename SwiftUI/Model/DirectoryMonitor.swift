@@ -15,14 +15,6 @@
  * along with Kiwix; If not, see https://www.gnu.org/licenses/.
 */
 
-/*
-Copyright (C) 2015 Apple Inc. All Rights Reserved.
-See LICENSE.txt for this sample’s licensing information
-
-Abstract:
-`DirectoryMonitor` is used to monitor the contents of the provided directory by using a GCD dispatch source.
-*/
-
 import Foundation
 
 protocol DirectoryMonitorDelegate: AnyObject {

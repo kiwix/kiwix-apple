@@ -15,14 +15,6 @@
  * along with Kiwix; If not, see https://www.gnu.org/licenses/.
 */
 
-//
-//  DefaultKeys.swift
-//  Kiwix
-//
-//  Created by Chris Li on 6/16/22.
-//  Copyright © 2022 Chris Li. All rights reserved.
-//
-
 import Defaults
 import Foundation
 
