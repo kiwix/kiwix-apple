@@ -93,7 +93,7 @@ struct About: View {
     }
     
     private var buildNumber: some View {
-        Attribute(title: "settings.about.build.title".localized, 
+        Attribute(title: "settings.about.build.title".localized,
                   detail: Bundle.main.infoDictionary?["CFBundleVersion"] as? String)
     }
     
@@ -105,7 +105,7 @@ struct About: View {
     
     private var source: some View {
         Button("settings.about.source.title".localized) {
-            externalLinkURL = URL(string: "https://github.com/kiwix/apple")
+            externalLinkURL = URL(string: "https://github.com/kiwix/kiwix-apple")
         }
     }
     
