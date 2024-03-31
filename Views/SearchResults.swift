@@ -31,9 +31,9 @@ struct SearchResults: View {
         animation: .easeInOut
     ) private var zimFiles: FetchedResults<ZimFile>
     @State private var isClearSearchConfirmationPresented = false
-    
+
     private let openURL = NotificationCenter.default.publisher(for: .openURL)
-    
+
     var body: some View {
         Group {
             if zimFiles.isEmpty {
@@ -61,7 +61,7 @@ struct SearchResults: View {
             dismissSearch()
         }
     }
-    
+
     @ViewBuilder
     var content: some View {
         if viewModel.inProgress {
@@ -96,7 +96,7 @@ struct SearchResults: View {
             }
         }
     }
-    
+
     var sidebar: some View {
         List {
             if !recentSearchTexts.isEmpty {
@@ -134,7 +134,7 @@ struct SearchResults: View {
             }
         }
     }
-    
+
     private var recentSearchHeader: some View {
         HStack {
             Text("search_result.header.text".localized)
@@ -143,7 +143,7 @@ struct SearchResults: View {
                 isClearSearchConfirmationPresented = true
             } label: {
                 Text("search_result.button.clear".localized).font(.caption).fontWeight(.medium)
-            }.confirmationDialog("search_result.clear_dialog.title".localized, 
+            }.confirmationDialog("search_result.clear_dialog.title".localized,
                                  isPresented: $isClearSearchConfirmationPresented) {
                 Button("search_result.clear_dialog.button.all".localized, role: .destructive) {
                     recentSearchTexts.removeAll()
@@ -153,7 +153,7 @@ struct SearchResults: View {
             }
         }
     }
-    
+
     private var searchFilterHeader: some View {
         HStack {
             Text("search_result.filter_hearder.text".localized)

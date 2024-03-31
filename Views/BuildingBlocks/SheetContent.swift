@@ -19,13 +19,13 @@ import SwiftUI
 
 struct SheetContent<Content: View>: View {
     @Environment(\.dismiss) private var dismiss
-    
+
     let content: Content
 
     init(@ViewBuilder content: () -> Content) {
         self.content = content()
     }
-    
+
     var body: some View {
         #if os(macOS)
         content

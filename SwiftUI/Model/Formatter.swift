@@ -24,32 +24,32 @@ enum Formatter {
         formatter.timeStyle = .none
         return formatter
     }()
-    
+
     static let dateMedium: DateFormatter = {
         let formatter = DateFormatter()
         formatter.dateStyle = .medium
         formatter.timeStyle = .none
         return formatter
     }()
-    
+
     static let size: ByteCountFormatter = {
         let formatter = ByteCountFormatter()
         formatter.countStyle = .file
         return formatter
     }()
-    
+
     static let number: NumberFormatter = {
         let formatter = NumberFormatter()
         formatter.numberStyle = .decimal
         return formatter
     }()
-    
+
     static let percent: NumberFormatter = {
         let formatter = NumberFormatter()
         formatter.numberStyle = .percent
         return formatter
     }()
-    
+
     static func largeNumber(_ value: Int64) -> String {
         let sign = ((value < 0) ? "-" : "" )
         let abs = Swift.abs(value)

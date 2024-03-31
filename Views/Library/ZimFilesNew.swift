@@ -34,7 +34,7 @@ struct ZimFilesNew: View {
         animation: .easeInOut
     ) private var zimFiles: FetchedResults<ZimFile>
     @State private var searchText = ""
-    
+
     var body: some View {
         LazyVGrid(
             columns: ([GridItem(.adaptive(minimum: 250, maximum: 500), spacing: 12)]),
@@ -94,7 +94,7 @@ struct ZimFilesNew: View {
             }
         }
     }
-    
+
     private static func buildPredicate(searchText: String) -> NSPredicate {
         var predicates = [
             NSPredicate(format: "languageCode IN %@", Defaults[.libraryLanguageCodes]),

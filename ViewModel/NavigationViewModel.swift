@@ -24,7 +24,7 @@ final class NavigationViewModel: ObservableObject {
     @Published var currentItem: NavigationItem? = .loading
 
     // MARK: - Tab Management
-    
+
     private func makeTab(context: NSManagedObjectContext) -> Tab {
         let tab = Tab(context: context)
         tab.created = Date()
@@ -33,7 +33,7 @@ final class NavigationViewModel: ObservableObject {
         try? context.save()
         return tab
     }
-    
+
     func navigateToMostRecentTab() {
         let context = Database.viewContext
         let fetchRequest = Tab.fetchRequest(sortDescriptors: [NSSortDescriptor(key: "lastOpened", ascending: false)])
@@ -46,7 +46,7 @@ final class NavigationViewModel: ObservableObject {
         }
 
     }
-    
+
     @discardableResult
     func createTab() -> NSManagedObjectID {
         let context = Database.viewContext
@@ -99,14 +99,14 @@ final class NavigationViewModel: ObservableObject {
             }
         }
     }
-    
+
     /// Delete all tabs, and open a new tab
     func deleteAllTabs() {
         Database.performBackgroundTask { context in
             // delete all existing tabs
             let tabs = try? context.fetch(Tab.fetchRequest())
             tabs?.forEach { context.delete($0) }
-            
+
             // create new tab
             let newTab = self.makeTab(context: context)
             Task {

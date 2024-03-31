@@ -21,14 +21,14 @@ import SwiftUI
 struct ZimFileCell: View {
     @ObservedObject var zimFile: ZimFile
     @State var isHovering: Bool = false
-    
+
     let prominent: Prominent
-    
+
     init(_ zimFile: ZimFile, prominent: Prominent) {
         self.zimFile = zimFile
         self.prominent = prominent
     }
-    
+
     var body: some View {
         VStack(spacing: 8) {
             switch prominent {
@@ -86,20 +86,20 @@ struct ZimFileCell: View {
         .modifier(CellBackground(isHovering: isHovering))
         .onHover { self.isHovering = $0 }
     }
-    
+
     static let dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.dateStyle = .medium
         formatter.timeStyle = .none
         return formatter
     }()
-    
+
     static let sizeFormatter: ByteCountFormatter = {
         let formatter = ByteCountFormatter()
         formatter.countStyle = .file
         return formatter
     }()
-    
+
     enum Prominent {
         case name, size
     }
@@ -121,7 +121,7 @@ struct ZimFileCell_Previews: PreviewProvider {
         zimFile.size = 1000000000
         return zimFile
     }()
-    
+
     static var previews: some View {
         Group {
             ZimFileCell(ZimFileCell_Previews.zimFile, prominent: .name)

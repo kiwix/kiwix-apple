@@ -21,13 +21,13 @@ import SwiftUI
 struct GridCommon: ViewModifier {
     @Environment(\.horizontalSizeClass) var horizontalSizeClass
     @Environment(\.verticalSizeClass) var verticalSizeClass
-    
+
     let edges: Edge.Set?
-    
+
     init(edges: Edge.Set? = nil) {
         self.edges = edges
     }
-    
+
     func body(content: Content) -> some View {
         #if os(macOS)
         ScrollView {

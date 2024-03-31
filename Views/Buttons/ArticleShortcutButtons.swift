@@ -24,13 +24,13 @@ struct ArticleShortcutButtons: View {
         sortDescriptors: [NSSortDescriptor(keyPath: \ZimFile.size, ascending: false)],
         predicate: ZimFile.openedPredicate
     ) private var zimFiles: FetchedResults<ZimFile>
-    
+
     let displayMode: DisplayMode
 
     enum DisplayMode {
         case mainArticle, randomArticle, mainAndRandomArticle
     }
-    
+
     var body: some View {
         switch displayMode {
         case .mainArticle:
@@ -42,7 +42,7 @@ struct ArticleShortcutButtons: View {
             randomArticle
         }
     }
-    
+
     private var mainArticle: some View {
         #if os(macOS)
         Button {
@@ -71,7 +71,7 @@ struct ArticleShortcutButtons: View {
         .help("article_shortcut.main.button.help".localized)
         #endif
     }
-    
+
     var randomArticle: some View {
         #if os(macOS)
         Button {

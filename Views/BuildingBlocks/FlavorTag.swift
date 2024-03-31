@@ -19,11 +19,11 @@ import SwiftUI
 
 struct FlavorTag: View {
     let flavor: Flavor
-    
+
     init(_ flavor: Flavor) {
         self.flavor = flavor
     }
-    
+
     var body: some View {
         Text(flavor.description)
             .fontWeight(.medium)
@@ -35,7 +35,7 @@ struct FlavorTag: View {
             .overlay(Capsule(style: .continuous).stroke(Color.gray, lineWidth: 0.5))
             .help(help)
     }
-    
+
     var backgroundColor: Color {
         switch flavor {
         case .max:
@@ -46,7 +46,7 @@ struct FlavorTag: View {
             return .orange
         }
     }
-    
+
     var help: String {
         switch flavor {
         case .max:

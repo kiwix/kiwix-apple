@@ -24,9 +24,9 @@ import Foundation
 import Defaults
 
 struct CategoriesToLanguages {
-    
+
     private let dictionary: [Category: Set<String>] = Defaults[.categoriesToLanguages]
-    
+
     func has(category: Category, inLanguages langCodes: Set<String>) -> Bool {
         guard !langCodes.isEmpty, !dictionary.isEmpty else {
             return true // no languages or category filters provided, do not filter
@@ -36,11 +36,11 @@ struct CategoriesToLanguages {
         }
         return !languages.isDisjoint(with: langCodes)
     }
-    
+
     static func save(_ dictionary: [Category: Set<String>]) {
         Defaults[.categoriesToLanguages] = dictionary
     }
-    
+
     static func allCategories() -> [Category] {
         let categoriesToLanguages = CategoriesToLanguages()
         let contentLanguages = Defaults[.libraryLanguageCodes]

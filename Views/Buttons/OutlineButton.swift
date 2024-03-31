@@ -78,12 +78,12 @@ struct OutlineButton: View {
         }
         #endif
     }
-    
+
     struct OutlineNode: View {
         @ObservedObject var item: OutlineItem
 
         let action: ((OutlineItem) -> Void)?
-        
+
         var body: some View {
             if let children = item.children {
                 DisclosureGroup(isExpanded: $item.isExpanded) {

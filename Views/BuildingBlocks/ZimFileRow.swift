@@ -20,11 +20,11 @@ import SwiftUI
 
 struct ZimFileRow: View {
     @ObservedObject var zimFile: ZimFile
-    
+
     init(_ zimFile: ZimFile) {
         self.zimFile = zimFile
     }
-    
+
     var body: some View {
         HStack {
             Favicon(
@@ -39,7 +39,7 @@ struct ZimFileRow: View {
                     Formatter.size.string(fromByteCount: zimFile.size),
                     {
                         if #available(iOS 15.0, *) {
-                            return "\(zimFile.articleCount.formatted(.number.notation(.compactName)))" + 
+                            return "\(zimFile.articleCount.formatted(.number.notation(.compactName)))" +
                             "zim_file_cell_article_count_suffix".localized
                         } else {
                             return Formatter.largeNumber(zimFile.articleCount)
@@ -67,10 +67,10 @@ struct ZimFileRow_Previews: PreviewProvider {
         zimFile.name = "Wikipedia Zim File Name"
         zimFile.persistentID = ""
         zimFile.size = 1000000000
-        
+
         return zimFile
     }()
-    
+
     static var previews: some View {
         Group {
             ZimFileRow(ZimFileRow_Previews.zimFile)

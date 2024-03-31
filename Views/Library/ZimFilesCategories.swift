@@ -60,7 +60,7 @@ struct ZimFilesCategories: View {
 struct ZimFilesCategory: View {
     @Binding var category: Category
     @State private var searchText = ""
-    
+
     var body: some View {
         if category == .ted || category == .stackExchange || category == .other {
             CategoryList(category: $category, searchText: $searchText)
@@ -68,7 +68,7 @@ struct ZimFilesCategory: View {
             CategoryGrid(category: $category, searchText: $searchText)
         }
     }
-    
+
     static func buildPredicate(category: Category, searchText: String) -> NSPredicate {
         var predicates = [
             NSPredicate(format: "category == %@", category.rawValue),
@@ -89,7 +89,7 @@ private struct CategoryGrid: View {
     @EnvironmentObject private var viewModel: LibraryViewModel
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     @SectionedFetchRequest private var sections: SectionedFetchResults<String, ZimFile>
-    
+
     init(category: Binding<Category>, searchText: Binding<String>) {
         self._category = category
         self._searchText = searchText
@@ -102,7 +102,7 @@ private struct CategoryGrid: View {
             animation: .easeInOut
         )
     }
-    
+
     var body: some View {
         Group {
             if sections.isEmpty {
@@ -150,7 +150,7 @@ private struct CategoryGrid: View {
             sections.nsPredicate = ZimFilesCategory.buildPredicate(category: category, searchText: searchText)
         }
     }
-    
+
     private var gridItem: GridItem {
         if horizontalSizeClass == .regular {
             return GridItem(.adaptive(minimum: 200, maximum: 400), spacing: 12)
@@ -158,13 +158,13 @@ private struct CategoryGrid: View {
             return GridItem(.adaptive(minimum: 175, maximum: 400), spacing: 12)
         }
     }
-    
+
     private struct SectionHeader: View {
         let title: String
         let category: Category
         let imageData: Data?
         let imageURL: URL?
-        
+
         var body: some View {
             Label {
                 Text(title).font(.title3).fontWeight(.semibold)
@@ -181,7 +181,7 @@ private struct CategoryList: View {
     @Default(.libraryLanguageCodes) private var languageCodes
     @EnvironmentObject private var viewModel: LibraryViewModel
     @FetchRequest private var zimFiles: FetchedResults<ZimFile>
-    
+
     init(category: Binding<Category>, searchText: Binding<String>) {
         self._category = category
         self._searchText = searchText
@@ -198,7 +198,7 @@ private struct CategoryList: View {
             animation: .easeInOut
         )
     }
-    
+
     var body: some View {
         Group {
             if zimFiles.isEmpty {

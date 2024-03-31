@@ -22,11 +22,11 @@ extension String {
     var localized: String {
         localizedWithFallback()
     }
-    
+
     func localizedWith(comment: String) -> String {
         localizedWithFallback(comment: comment)
     }
-    
+
     func localizedWithFormat(withArgs: CVarArg...) -> String {
         let format = localizedWithFallback()
         switch withArgs.count {

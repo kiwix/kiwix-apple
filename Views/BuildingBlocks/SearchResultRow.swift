@@ -20,7 +20,7 @@ import SwiftUI
 struct SearchResultRow: View {
     let result: SearchResult
     let zimFile: ZimFile?
-    
+
     var body: some View {
         HStack(alignment: .top, spacing: 0) {
             VStack(alignment: .leading) {
@@ -55,7 +55,7 @@ struct SearchResultRow_Previews: PreviewProvider {
                     """)
         return result
     }()
-    
+
     static var previews: some View {
         SearchResultRow(result: SearchResultRow_Previews.result, zimFile: nil)
             .frame(width: 500)

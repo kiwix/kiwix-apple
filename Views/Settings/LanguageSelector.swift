@@ -112,7 +112,7 @@ struct LanguageSelector: View {
             hiding.sort(by: Languages.compare(lhs:rhs:))
         }
     }
-    
+
     private func show(_ language: Language) {
         Defaults[.libraryLanguageCodes].insert(language.code)
         withAnimation {
@@ -121,7 +121,7 @@ struct LanguageSelector: View {
             showing.sort(by: Languages.compare(lhs:rhs:))
         }
     }
-    
+
     private func hide(_ language: Language) {
         guard Defaults[.libraryLanguageCodes].count > 1 else {
             // we should not remove all languages, it will produce empty results
@@ -138,7 +138,7 @@ struct LanguageSelector: View {
 
 private struct LanguageLabel: View {
     let language: Language
-    
+
     var body: some View {
         HStack {
             Text(language.name).foregroundColor(.primary)
@@ -157,7 +157,7 @@ class Languages {
         count.name = "count"
         count.expression = NSExpression(forFunction: "count:", arguments: [NSExpression(forKeyPath: "languageCode")])
         count.expressionResultType = .integer16AttributeType
-        
+
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "ZimFile")
         // exclude the already downloaded files, they might have invalid language set
         // but we are mainly interested in fetched content
@@ -165,7 +165,7 @@ class Languages {
         fetchRequest.propertiesToFetch = ["languageCode", count]
         fetchRequest.propertiesToGroupBy = ["languageCode"]
         fetchRequest.resultType = .dictionaryResultType
-        
+
         let languages: [Language] = await withCheckedContinuation { continuation in
             let context = Database.shared.container.newBackgroundContext()
             context.perform {
@@ -184,7 +184,7 @@ class Languages {
         }
         return languages
     }
-    
+
     /// Compare two languages based on library language sorting order.
     /// Can be removed once support for iOS 14 drops.
     /// - Parameters:

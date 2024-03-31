@@ -229,7 +229,7 @@ final class BrowserViewModel: NSObject, ObservableObject,
     }
 
     // MARK: - New Tab Creation
-    
+
 #if os(macOS)
     private func createNewTab(url: URL) -> Bool {
         guard let currentWindow = NSApp.keyWindow else { return false }
@@ -245,7 +245,7 @@ final class BrowserViewModel: NSObject, ObservableObject,
         return true
     }
 #endif
-    
+
     // MARK: - WKNavigationDelegate
 
     func webView(
@@ -257,7 +257,7 @@ final class BrowserViewModel: NSObject, ObservableObject,
             decisionHandler(.cancel)
             return
         }
-        
+
 #if os(macOS)
         // detect cmd + click event
         if navigationAction.modifierFlags.contains(.command) {
@@ -267,7 +267,7 @@ final class BrowserViewModel: NSObject, ObservableObject,
             }
         }
 #endif
-        
+
         if url.isKiwixURL, let redirectedURL = ZimFileService.shared.getRedirectedURL(url: url) {
             if webView.url != redirectedURL {
                 DispatchQueue.main.async { webView.load(URLRequest(url: redirectedURL)) }
@@ -379,27 +379,27 @@ final class BrowserViewModel: NSObject, ObservableObject,
             },
             actionProvider: { _ in
                 var actions = [UIAction]()
-                
+
                 // open url
                 actions.append(
-                    UIAction(title: "common.dialog.button.open".localized, 
+                    UIAction(title: "common.dialog.button.open".localized,
                              image: UIImage(systemName: "doc.text")) { _ in
                         webView.load(URLRequest(url: url))
                     }
                 )
                 actions.append(
-                    UIAction(title: "common.dialog.button.open_in_new_tab".localized, 
+                    UIAction(title: "common.dialog.button.open_in_new_tab".localized,
                              image: UIImage(systemName: "doc.badge.plus")) { _ in
                         NotificationCenter.openURL(url, inNewTab: true)
                     }
                 )
-                
+
                 // bookmark
                 let bookmarkAction: UIAction = {
                     let context = Database.viewContext
                     let predicate = NSPredicate(format: "articleURL == %@", url as CVarArg)
                     let request = Bookmark.fetchRequest(predicate: predicate)
-                    
+
                     if let bookmarks = try? context.fetch(request),
                        !bookmarks.isEmpty {
                         return UIAction(title: "common.dialog.button.remove_bookmark".localized,

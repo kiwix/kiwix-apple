@@ -24,7 +24,7 @@ extension SearchOperation {
         // perform index and title search
         guard !searchText.isEmpty else { return }
         performSearch()
-        
+
         // parse and extract search result snippet
         guard !isCancelled else { return }
         let snippetMode = Defaults[.searchResultSnippetMode]
@@ -34,7 +34,7 @@ extension SearchOperation {
             DispatchQueue.global(qos: .userInitiated).async {
                 defer { dispatchGroup.leave() }
                 guard !self.isCancelled else { return }
-                
+
                 switch snippetMode {
                 case .firstParagraph:
                     guard let parser = try? HTMLParser(url: result.url) else { return }
@@ -51,12 +51,12 @@ extension SearchOperation {
             }
         }
         dispatchGroup.wait()
-        
+
         // start sorting search results
         guard !isCancelled else { return }
         let searchText = self.searchText.lowercased()
         let levenshtein = Levenshtein()
-        
+
         // calculate score for all results
         for result in results {
             guard !isCancelled else { break }
@@ -67,7 +67,7 @@ extension SearchOperation {
                 result.score = NSNumber(integerLiteral: distance)
             }
         }
-        
+
         // sort the results
         guard !isCancelled else { return }
         __results.sort { lhs, rhs in
@@ -88,7 +88,7 @@ extension SearchOperation {
 
 private class Levenshtein {
     private(set) var cache = [Key: Int]()
-    
+
     func calculate(_ a: String.SubSequence, _ b: String.SubSequence) -> Int {
         let key = Key(a: String(a), b: String(b))
         if let distance = cache[key] {
@@ -110,7 +110,7 @@ private class Levenshtein {
             return distance
         }
     }
-    
+
     struct Key: Hashable {
         let a: String
         let b: String

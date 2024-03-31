@@ -24,17 +24,17 @@ struct ExternalLinkHandler: ViewModifier {
     @State private var activeAlert: ActiveAlert?
     @State private var activeSheet: ActiveSheet?
     @Binding var externalURL: URL?
-    
+
     enum ActiveAlert {
         case ask(url: URL)
         case notLoading
     }
-    
+
     enum ActiveSheet: Hashable, Identifiable {
         var id: Int { hashValue }
         case safari(url: URL)
     }
-    
+
     func body(content: Content) -> some View {
         content.onChange(of: externalURL) { url in
             guard let url else { return }
@@ -49,7 +49,7 @@ struct ExternalLinkHandler: ViewModifier {
                 activeAlert = .notLoading
             }
         }
-        .alert("external_link_handler.alert.title".localized, 
+        .alert("external_link_handler.alert.title".localized,
                isPresented: $isAlertPresented,
                presenting: activeAlert) { alert in
             if case .ask(let url) = alert {
@@ -77,7 +77,7 @@ struct ExternalLinkHandler: ViewModifier {
         }
         #endif
     }
-    
+
     private func load(url: URL) {
         #if os(macOS)
         NSWorkspace.shared.open(url)

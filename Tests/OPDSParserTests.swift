@@ -27,13 +27,13 @@ final class OPDSParserTests: XCTestCase {
             try OPDSParser().parse(data: content.data(using: .utf8)!)
         )
     }
-    
+
     /// Test OPDSParser.getMetaData returns nil when no metadata available with the given ID.
     func testMetadataNotFound() {
         let zimFileID = UUID(uuidString: "1ec90eab-5724-492b-9529-893959520de4")!
         XCTAssertNil(OPDSParser().getMetaData(id: zimFileID))
     }
-    
+
     /// Test OPDSParser can parse and extract zim file metadata.
     func test() throws {
         let content = """
@@ -64,15 +64,15 @@ final class OPDSParserTests: XCTestCase {
           </entry>
         </feed>
         """
-        
+
         // Parse data
         let parser = OPDSParser()
         XCTAssertNoThrow(try parser.parse(data: content.data(using: .utf8)!))
-        
+
         // check one zim file is populated
         let zimFileID = UUID(uuidString: "1ec90eab-5724-492b-9529-893959520de4")!
         XCTAssertEqual(parser.zimFileIDs, Set([zimFileID]))
-        
+
         // check zim file metadata
         let metadata = try XCTUnwrap(parser.getMetaData(id: zimFileID))
         XCTAssertEqual(metadata.fileID, zimFileID)
@@ -92,7 +92,7 @@ final class OPDSParserTests: XCTestCase {
         XCTAssertEqual(metadata.hasPictures, true)
         XCTAssertEqual(metadata.hasVideos, false)
         XCTAssertEqual(metadata.requiresServiceWorkers, false)
-        
+
         XCTAssertEqual(
             metadata.downloadURL,
             URL(string: "https://download.kiwix.org/zim/wikipedia/wikipedia_en_top_maxi_2023-01.zim.meta4")

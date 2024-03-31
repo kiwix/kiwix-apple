@@ -26,12 +26,12 @@ struct TabsManagerButton: View {
         predicate: ZimFile.openedPredicate
     ) private var zimFiles: FetchedResults<ZimFile>
     @State private var presentedSheet: PresentedSheet?
-    
+
     private enum PresentedSheet: String, Identifiable {
         var id: String { rawValue }
         case tabsManager
     }
-    
+
     var body: some View {
         Menu {
             Section {
@@ -83,7 +83,7 @@ struct TabManager: View {
         sortDescriptors: [SortDescriptor(\Tab.created, order: .reverse)],
         animation: .easeInOut
     ) private var tabs: FetchedResults<Tab>
-    
+
     var body: some View {
         List(tabs) { tab in
             Button {

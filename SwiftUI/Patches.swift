@@ -85,11 +85,11 @@ extension NotificationCenter {
         guard let url else { return }
         NotificationCenter.default.post(name: .openURL, object: nil, userInfo: ["url": url, "inNewTab": inNewTab])
     }
-    
+
     static func openFiles(_ urls: [URL], context: OpenFileContext) {
         NotificationCenter.default.post(name: .openFiles, object: nil, userInfo: ["urls": urls, "context": context])
     }
-    
+
     static func toggleSidebar() {
         NotificationCenter.default.post(name: .toggleSidebar, object: nil, userInfo: nil)
     }

@@ -19,16 +19,16 @@ import SwiftUI
 
 struct Favicon: View {
     @State var imageData: Data?
-    
+
     private let category: Category
     private let imageURL: URL?
-    
+
     init(category: Category, imageData: Data? = nil, imageURL: URL? = nil) {
         self.category = category
         self.imageURL = imageURL
         self._imageData = State(wrappedValue: imageData)
     }
-    
+
     var body: some View {
         ZStack(alignment: .center) {
             Color.white.clipShape(RoundedRectangle(cornerRadius: 3, style: .continuous))
@@ -42,7 +42,7 @@ struct Favicon: View {
             }
         }
     }
-    
+
     @ViewBuilder
     var image: some View {
         #if os(macOS)

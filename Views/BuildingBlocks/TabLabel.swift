@@ -20,7 +20,7 @@ import SwiftUI
 #if os(iOS)
 struct TabLabel: View {
     @ObservedObject var tab: Tab
-    
+
     var body: some View {
         if let zimFile = tab.zimFile, let category = Category(rawValue: zimFile.category) {
             Label {

@@ -64,7 +64,7 @@ struct BrowserTab: View {
             browser.persistState()
         }
     }
-    
+
     struct Content: View {
         @Environment(\.isSearching) private var isSearching
         @EnvironmentObject private var browser: BrowserViewModel

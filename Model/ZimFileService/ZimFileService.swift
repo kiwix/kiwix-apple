@@ -19,12 +19,12 @@
 extension ZimFileService {
     /// Shared ZimFileService instance
     static let shared = ZimFileService.__sharedInstance()
-    
+
     /// IDs of currently opened zim files
     private var fileIDs: [UUID] { get { return __getReaderIdentifiers().compactMap({ $0 as? UUID }) } }
 
     // MARK: - Reader Management
-    
+
     /// Open a zim file from system file URL bookmark data
     /// - Parameter bookmark: url bookmark data of the zim file to open
     /// - Returns: new url bookmark data if the one used to open the zim file is stale
@@ -43,21 +43,21 @@ extension ZimFileService {
             throw ZimFileOpenError.missing
         }
         #endif
-        
+
         __open(url)
         return isStale ? ZimFileService.getFileURLBookmarkData(for: url) : nil
     }
-    
+
     /// Close a zim file
     /// - Parameter fileID: ID of the zim file to close
     func close(fileID: UUID) { __close(fileID) }
-    
+
     // MARK: - Metadata
 
     static func getMetaData(url: URL) -> ZimFileMetaData? {
         __getMetaData(withFileURL: url)
     }
-    
+
     // MARK: - URL System Bookmark
 
     /// System URL bookmark for the ZIM file itself
@@ -79,44 +79,44 @@ extension ZimFileService {
         return try? url.bookmarkData(options: .minimalBookmark)
         #endif
     }
-    
+
     // MARK: - URL Retrieve
-    
+
     func getFileURL(zimFileID: UUID) -> URL? {
         return __getFileURL(zimFileID)
     }
-    
+
     func getRedirectedURL(url: URL) -> URL? {
         guard let zimFileID = url.host,
               let zimFileID = UUID(uuidString: zimFileID),
               let redirectedPath = __getRedirectedPath(zimFileID, contentPath: url.path) else { return nil }
         return URL(zimFileID: zimFileID.uuidString, contentPath: redirectedPath)
     }
-    
+
     func getMainPageURL(zimFileID: UUID? = nil) -> URL? {
         guard let zimFileID = zimFileID ?? fileIDs.randomElement(),
               let path = __getMainPagePath(zimFileID) else { return nil }
         return URL(zimFileID: zimFileID.uuidString, contentPath: path)
     }
-    
+
     func getRandomPageURL(zimFileID: UUID? = nil) -> URL? {
         guard let zimFileID = zimFileID ?? fileIDs.randomElement(),
               let path = __getRandomPagePath(zimFileID) else { return nil }
         return URL(zimFileID: zimFileID.uuidString, contentPath: path)
     }
-    
+
     // MARK: - URL Response
-    
+
     func getURLContent(url: URL) -> URLContent? {
         guard let zimFileID = url.host else { return nil }
         return getURLContent(zimFileID: zimFileID, contentPath: url.path)
     }
-    
+
     func getURLContent(url: URL, start: UInt, end: UInt) -> URLContent? {
         guard let zimFileID = url.host else { return nil }
         return getURLContent(zimFileID: zimFileID, contentPath: url.path, start: start, end: end)
     }
-    
+
     func getURLContent(zimFileID: String, contentPath: String, start: UInt = 0, end: UInt = 0) -> URLContent? {
         guard let zimFileID = UUID(uuidString: zimFileID),
               let content = __getContent(zimFileID, contentPath: contentPath, start: start, end: end),

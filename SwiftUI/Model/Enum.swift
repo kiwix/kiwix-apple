@@ -22,13 +22,13 @@ import Defaults
 
 enum ActiveAlert: String, Identifiable {
     var id: String { rawValue }
-    
+
     case articleFailedToLoad
 }
 
 enum ActiveSheet: Hashable, Identifiable {
     var id: Int { hashValue }
-    
+
     case outline
     case bookmarks
     case library(tabItem: LibraryTabItem? = nil)
@@ -41,7 +41,7 @@ enum Category: String, CaseIterable, Identifiable, LosslessStringConvertible {
     var description: String { rawValue }
 
     var id: String { rawValue }
-    
+
     case wikipedia
     case wikibooks
     case wikinews
@@ -91,7 +91,7 @@ enum Category: String, CaseIterable, Identifiable, LosslessStringConvertible {
             return "enum.category.other".localized
         }
     }
-    
+
     var icon: String {
         switch self {
         case .wikipedia:
@@ -124,9 +124,9 @@ enum Category: String, CaseIterable, Identifiable, LosslessStringConvertible {
 
 enum ExternalLinkLoadingPolicy: String, CaseIterable, Identifiable, Defaults.Serializable {
     case alwaysAsk, alwaysLoad, neverLoad
-    
+
     var id: String { self.rawValue }
-    
+
     var name: String {
         switch self {
         case .alwaysAsk:
@@ -150,11 +150,11 @@ enum Flavor: String, CustomStringConvertible {
     case max = "maxi"
     case noPic = "nopic"
     case mini = "mini"
-    
+
     init?(rawValue: String?) {
         self.init(rawValue: rawValue ?? "")
     }
-    
+
     var description: String {
         switch self {
         case .max:
@@ -169,9 +169,9 @@ enum Flavor: String, CustomStringConvertible {
 
 enum LibraryLanguageSortingMode: String, CaseIterable, Identifiable, Defaults.Serializable {
     case alphabetically, byCounts
-    
+
     var id: String { self.rawValue }
-    
+
     var name: String {
         switch self {
         case .alphabetically:
@@ -184,9 +184,9 @@ enum LibraryLanguageSortingMode: String, CaseIterable, Identifiable, Defaults.Se
 
 enum LibraryTabItem: String, CaseIterable, Identifiable {
     case opened, categories, downloads, new
-    
+
     var id: String { self.rawValue }
-    
+
     var name: String {
         switch self {
         case .opened:
@@ -199,7 +199,7 @@ enum LibraryTabItem: String, CaseIterable, Identifiable {
             return "enum.libray_tab_item.new".localized
         }
     }
-    
+
     var icon: String {
         switch self {
         case .opened:
@@ -246,7 +246,7 @@ enum NavigationItem: Hashable, Identifiable {
             return "enum.navigation_item.settings".localized
         }
     }
-    
+
     var icon: String {
         switch self {
         case .loading:
@@ -275,9 +275,9 @@ enum NavigationItem: Hashable, Identifiable {
 
 enum SearchResultSnippetMode: String, CaseIterable, Identifiable, Defaults.Serializable {
     case disabled, firstParagraph, firstSentence, matches
-    
+
     var id: String { rawValue }
-    
+
     var name: String {
         switch self {
         case .disabled:
@@ -294,6 +294,6 @@ enum SearchResultSnippetMode: String, CaseIterable, Identifiable, Defaults.Seria
 
 enum SheetDisplayMode: String, Identifiable {
     case outline, bookmarks, library, settings
-    
+
     var id: String { rawValue }
 }

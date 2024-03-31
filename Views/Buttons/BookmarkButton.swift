@@ -21,7 +21,7 @@ struct BookmarkButton: View {
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     @EnvironmentObject private var browser: BrowserViewModel
     @State private var isShowingPopOver = false
-    
+
     var body: some View {
         #if os(macOS)
         Button {
@@ -32,7 +32,7 @@ struct BookmarkButton: View {
             }
         } label: {
             Label {
-                Text(browser.articleBookmarked ? 
+                Text(browser.articleBookmarked ?
                      "common.dialog.button.remove_bookmark".localized : "common.dialog.button.add_bookmark".localized)
             } icon: {
                 Image(systemName: browser.articleBookmarked ? "star.fill" : "star")

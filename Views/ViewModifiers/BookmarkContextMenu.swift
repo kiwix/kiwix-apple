@@ -19,9 +19,9 @@ import SwiftUI
 
 struct BookmarkContextMenu: ViewModifier {
     @Environment(\.managedObjectContext) private var managedObjectContext
-    
+
     let bookmark: Bookmark
-    
+
     func body(content: Content) -> some View {
         content.contextMenu {
             Button {

@@ -19,7 +19,7 @@ import SwiftUI
 
 struct Message: View {
     let text: String
-    
+
     var body: some View {
         VStack {
             Spacer()

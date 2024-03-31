@@ -27,7 +27,7 @@ struct Bookmarks: View {
         animation: .easeInOut
     ) private var bookmarks: FetchedResults<Bookmark>
     @State private var searchText = ""
-    
+
     var body: some View {
         LazyVGrid(columns: ([gridItem]), spacing: 12) {
             ForEach(bookmarks) { bookmark in
@@ -69,7 +69,7 @@ struct Bookmarks: View {
             #endif
         }
     }
-    
+
     private var gridItem: GridItem {
         #if os(macOS)
         GridItem(.adaptive(minimum: 250, maximum: 500), spacing: 12)
@@ -77,7 +77,7 @@ struct Bookmarks: View {
         GridItem(.adaptive(minimum: 250, maximum: 500), spacing: 12)
         #endif
     }
-    
+
     private static func buildPredicate(searchText: String) -> NSPredicate? {
         guard !searchText.isEmpty else { return nil }
         return NSCompoundPredicate(orPredicateWithSubpredicates: [

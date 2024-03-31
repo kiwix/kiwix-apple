@@ -19,11 +19,11 @@ import os
 import WebKit
 
 /// Skipping handling for HTTP 206 Partial Content
-/// For video playback, WebKit makes a large amount of requests with small byte range (e.g. 8 bytes) 
+/// For video playback, WebKit makes a large amount of requests with small byte range (e.g. 8 bytes)
 /// to retrieve content of the video.
 /// As a result of the large volume of small requests, CPU usage will be very high,
 /// which can result in app or webpage frozen.
-/// To mitigate, opting for the less "broken" behavior of ignoring Range header 
+/// To mitigate, opting for the less "broken" behavior of ignoring Range header
 /// until WebKit behavior is changed.
 final class KiwixURLSchemeHandler: NSObject, WKURLSchemeHandler {
     static let KiwixScheme = "kiwix"
@@ -75,7 +75,7 @@ final class KiwixURLSchemeHandler: NSObject, WKURLSchemeHandler {
             self?.stopFor(hash)
         }
     }
-    
+
     func webView(_ webView: WKWebView, stop urlSchemeTask: WKURLSchemeTask) {
         stopFor(urlSchemeTask.hash)
     }

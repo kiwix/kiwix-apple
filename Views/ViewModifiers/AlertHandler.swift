@@ -19,9 +19,9 @@ import SwiftUI
 
 struct AlertHandler: ViewModifier {
     @State private var activeAlert: ActiveAlert?
-    
+
     private let alert = NotificationCenter.default.publisher(for: .alert)
-    
+
     func body(content: Content) -> some View {
         content.onReceive(alert) { notification in
             guard let rawValue = notification.userInfo?["rawValue"] as? String else { return }

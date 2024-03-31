@@ -25,7 +25,7 @@ struct Kiwix: App {
     @StateObject private var library = LibraryViewModel()
     @StateObject private var navigation = NavigationViewModel()
     @UIApplicationDelegateAdaptor(AppDelegate.self) private var appDelegate
-    
+
     private let fileMonitor: DirectoryMonitor
 
     init() {
@@ -33,7 +33,7 @@ struct Kiwix: App {
         LibraryOperations.registerBackgroundTask()
         UNUserNotificationCenter.current().delegate = appDelegate
     }
-    
+
     var body: some Scene {
         WindowGroup {
             RootView()
@@ -84,7 +84,7 @@ struct Kiwix: App {
             }
         }
     }
-    
+
     private class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCenterDelegate {
         /// Storing background download completion handler sent to application delegate
         func application(_ application: UIApplication,
@@ -103,7 +103,7 @@ struct Kiwix: App {
             }
             completionHandler()
         }
-        
+
         /// Purge some cached browser view models when receiving memory warning
         func applicationDidReceiveMemoryWarning(_ application: UIApplication) {
             BrowserViewModel.purgeCache()
@@ -113,11 +113,11 @@ struct Kiwix: App {
 
 private struct RootView: UIViewControllerRepresentable {
     @EnvironmentObject private var navigation: NavigationViewModel
-    
+
     func makeUIViewController(context: Context) -> SplitViewController {
         SplitViewController(navigationViewModel: navigation)
     }
-    
+
     func updateUIViewController(_ controller: SplitViewController, context: Context) {
     }
 }

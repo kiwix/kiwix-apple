@@ -37,7 +37,7 @@ struct Kiwix: App {
     init() {
         UNUserNotificationCenter.current().delegate = notificationCenterDelegate
     }
-    
+
     var body: some Scene {
         WindowGroup {
             RootView()
@@ -98,7 +98,7 @@ struct RootView: View {
     @Environment(\.controlActiveState) var controlActiveState
     @StateObject private var browser = BrowserViewModel()
     @StateObject private var navigation = NavigationViewModel()
-    
+
     private let primaryItems: [NavigationItem] = [.reading, .bookmarks]
     private let libraryItems: [NavigationItem] = [.opened, .categories, .downloads, .new]
     private let openURL = NotificationCenter.default.publisher(for: .openURL)

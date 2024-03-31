@@ -20,10 +20,10 @@ import SwiftUI
 
 struct DownloadTaskCell: View {
     @State private var isHovering: Bool = false
-    
+
     let downloadTask: DownloadTask
     let progress: Progress
-    
+
     init(_ downloadTask: DownloadTask) {
         self.downloadTask = downloadTask
         self.progress = Progress(totalUnitCount: downloadTask.totalBytes)
@@ -32,7 +32,7 @@ struct DownloadTaskCell: View {
         self.progress.fileTotalCount = 1
         self.progress.fileOperationKind = .downloading
     }
-    
+
     var body: some View {
         VStack(spacing: 8) {
             if let zimFile = downloadTask.zimFile {
@@ -92,7 +92,7 @@ struct DownloadTaskCell_Previews: PreviewProvider {
         downloadTask.totalBytes = 200
         return downloadTask
     }()
-    
+
     static var previews: some View {
         DownloadTaskCell(DownloadTaskCell_Previews.downloadTask)
             .preferredColorScheme(.light)

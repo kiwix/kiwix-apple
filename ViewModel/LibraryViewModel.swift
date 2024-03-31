@@ -35,11 +35,11 @@ public class LibraryViewModel: ObservableObject {
     private let context: NSManagedObjectContext
     private var insertionCount = 0
     private var deletionCount = 0
-    
+
     @MainActor
     public init(urlSession: URLSession? = nil) {
         self.urlSession = urlSession ?? URLSession.shared
-        
+
         context = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
         context.persistentStoreCoordinator = Database.shared.container.persistentStoreCoordinator
         context.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
@@ -50,11 +50,11 @@ public class LibraryViewModel: ObservableObject {
             state = .complete
         }
     }
-    
+
     public func start(isUserInitiated: Bool) {
         Task { await start(isUserInitiated: isUserInitiated) }
     }
-    
+
     @MainActor
     public func start(isUserInitiated: Bool) async {
         guard state != .inProgress else { return }
@@ -81,7 +81,7 @@ public class LibraryViewModel: ObservableObject {
             }
             // process the feed
             try await process(parser: parser)
-            
+
             // update library last refresh timestamp
             Defaults[.libraryLastRefresh] = Date()
 
@@ -178,7 +178,7 @@ public class LibraryViewModel: ObservableObject {
             }
         }
     }
-    
+
     private func parse(data: Data) async throws -> OPDSParser {
         try await withCheckedThrowingContinuation { continuation in
             DispatchQueue.global().async {
@@ -192,7 +192,7 @@ public class LibraryViewModel: ObservableObject {
             }
         }
     }
-    
+
     private func process(parser: Parser) async throws {
         try await withCheckedThrowingContinuation { continuation in
             context.perform {
@@ -217,7 +217,7 @@ public class LibraryViewModel: ObservableObject {
                     if let result = try self.context.execute(insertRequest) as? NSBatchInsertResult {
                         self.insertionCount = result.result as? Int ?? 0
                     }
-                    
+
                     // delete old zim entries not included in the feed
                     let fetchRequest: NSFetchRequest<NSFetchRequestResult> = ZimFile.fetchRequest()
                     fetchRequest.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
@@ -229,7 +229,7 @@ public class LibraryViewModel: ObservableObject {
                     if let result = try self.context.execute(deleteRequest) as? NSBatchDeleteResult {
                         self.deletionCount = result.result as? Int ?? 0
                     }
-                    
+
                     continuation.resume()
                 } catch {
                     os_log("Error saving OPDS Data: %s", log: Log.OPDS, type: .error, error.localizedDescription)

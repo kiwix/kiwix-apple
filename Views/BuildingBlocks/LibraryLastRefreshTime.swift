@@ -21,7 +21,7 @@ import Defaults
 
 struct LibraryLastRefreshTime: View {
     @Default(.libraryLastRefresh) private var lastRefresh
-    
+
     var body: some View {
         if let lastRefresh = lastRefresh {
             if Date().timeIntervalSince(lastRefresh) < 120 {

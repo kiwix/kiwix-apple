@@ -24,7 +24,7 @@ import Defaults
 struct Library: View {
     @EnvironmentObject private var viewModel: LibraryViewModel
     @SceneStorage("LibraryTabItem") private var tabItem: LibraryTabItem = .opened
-        
+
     private let defaultTabItem: LibraryTabItem?
     private let categories: [Category]
     let dismiss: (() -> Void)?
@@ -34,7 +34,7 @@ struct Library: View {
         self.dismiss = dismiss
         categories = CategoriesToLanguages.allCategories()
     }
-    
+
     var body: some View {
         TabView(selection: $tabItem) {
             ForEach(LibraryTabItem.allCases) { tabItem in
@@ -91,7 +91,7 @@ struct Library_Previews: PreviewProvider {
 /// On macOS, adds a panel to the right of the modified view to show zim file detail.
 struct LibraryZimFileDetailSidePanel: ViewModifier {
     @EnvironmentObject private var viewModel: LibraryViewModel
-    
+
     func body(content: Content) -> some View {
         VStack(spacing: 0) {
             Divider()
@@ -115,7 +115,7 @@ struct LibraryZimFileDetailSidePanel: ViewModifier {
 /// On iOS, converts the modified view to a NavigationLink that goes to the zim file detail.
 struct LibraryZimFileContext: ViewModifier {
     @EnvironmentObject private var viewModel: LibraryViewModel
-    
+
     let zimFile: ZimFile
     let dismiss: (() -> Void)? // iOS only
 
@@ -146,7 +146,7 @@ struct LibraryZimFileContext: ViewModifier {
             Section { supplementaryActions }
         }
     }
-    
+
     @ViewBuilder
     var articleActions: some View {
         Button {
@@ -162,7 +162,7 @@ struct LibraryZimFileContext: ViewModifier {
             Label("library.zim_file_context.random.label".localized, systemImage: "die.face.5")
         }
     }
-    
+
     @ViewBuilder
     var supplementaryActions: some View {
         if let downloadURL = zimFile.downloadURL {

@@ -20,12 +20,12 @@ import SwiftUI
 /// A rounded rect cell displaying preview of an article.
 struct ArticleCell: View {
     @State var isHovering: Bool = false
-    
+
     let title: String
     let snippet: NSAttributedString?
     let zimFile: ZimFile?
     let alwaysShowSnippet: Bool
-    
+
     init(bookmark: Bookmark) {
         self.title = bookmark.title
         if let snippet = bookmark.snippet {
@@ -36,14 +36,14 @@ struct ArticleCell: View {
         self.zimFile = bookmark.zimFile
         self.alwaysShowSnippet = true
     }
-    
+
     init(result: SearchResult, zimFile: ZimFile?) {
         self.title = result.title
         self.snippet = result.snippet
         self.zimFile = zimFile
         self.alwaysShowSnippet = false
     }
-    
+
     var body: some View {
         HStack(alignment: .top) {
             VStack(alignment: .leading, spacing: 0) {
@@ -80,7 +80,7 @@ struct ArticleCell_Previews: PreviewProvider {
                     """)
         return result
     }()
-    
+
     static var previews: some View {
         ArticleCell(result: ArticleCell_Previews.result, zimFile: nil)
             .frame(width: 500, height: 100)

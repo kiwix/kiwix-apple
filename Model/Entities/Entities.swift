@@ -20,15 +20,15 @@ import CoreData
 
 class Bookmark: NSManagedObject, Identifiable {
     var id: URL { articleURL }
-    
+
     @NSManaged var articleURL: URL
     @NSManaged var thumbImageURL: URL?
     @NSManaged var title: String
     @NSManaged var snippet: String?
     @NSManaged var created: Date
-    
+
     @NSManaged var zimFile: ZimFile?
-    
+
     class func fetchRequest(
         predicate: NSPredicate? = nil, sortDescriptors: [NSSortDescriptor] = []
     ) -> NSFetchRequest<Bookmark> {
@@ -48,15 +48,15 @@ class DownloadTask: NSManagedObject, Identifiable {
     @NSManaged var fileID: UUID
     @NSManaged var resumeData: Data?
     @NSManaged var totalBytes: Int64
-    
+
     @NSManaged var zimFile: ZimFile?
-    
+
     class func fetchRequest(predicate: NSPredicate? = nil) -> NSFetchRequest<DownloadTask> {
         let request = super.fetchRequest() as! NSFetchRequest<DownloadTask>
         request.predicate = predicate
         return request
     }
-    
+
     class func fetchRequest(fileID: UUID) -> NSFetchRequest<DownloadTask> {
         let request = super.fetchRequest() as! NSFetchRequest<DownloadTask>
         request.predicate = NSPredicate(format: "fileID == %@", fileID as CVarArg)
@@ -69,7 +69,7 @@ struct Language: Identifiable, Comparable {
     let code: String
     let name: String
     let count: Int
-    
+
     init?(code: String, count: Int) {
         let langCode = Locale.canonicalIdentifier(from: code)
         guard let name = Locale.current.localizedString(forLanguageCode: langCode) else { return nil }
@@ -77,7 +77,7 @@ struct Language: Identifiable, Comparable {
         self.name = name
         self.count = count
     }
-    
+
     static func < (lhs: Language, rhs: Language) -> Bool {
         switch lhs.name.caseInsensitiveCompare(rhs.name) {
         case .orderedAscending:
@@ -96,20 +96,20 @@ class OutlineItem: ObservableObject, Identifiable {
     let text: String
     let level: Int
     private(set) var children: [OutlineItem]?
-    
+
     @Published var isExpanded = true
-    
+
     init(id: String, index: Int, text: String, level: Int) {
         self.id = id
         self.index = index
         self.text = text
         self.level = level
     }
-    
+
     convenience init(index: Int, text: String, level: Int) {
         self.init(id: String(index), index: index, text: text, level: level)
     }
-    
+
     func addChild(_ item: OutlineItem) {
         if children != nil {
             children?.append(item)
@@ -117,7 +117,7 @@ class OutlineItem: ObservableObject, Identifiable {
             children = [item]
         }
     }
-    
+
     @discardableResult
     func removeAllChildren() -> [OutlineItem] {
         defer { children = nil }
@@ -130,9 +130,9 @@ class Tab: NSManagedObject, Identifiable {
     @NSManaged var interactionState: Data?
     @NSManaged var lastOpened: Date
     @NSManaged var title: String?
-    
+
     @NSManaged var zimFile: ZimFile?
-    
+
     class func fetchRequest(
         predicate: NSPredicate? = nil, sortDescriptors: [NSSortDescriptor] = []
     ) -> NSFetchRequest<Tab> {
@@ -141,7 +141,7 @@ class Tab: NSManagedObject, Identifiable {
         request.sortDescriptors = sortDescriptors
         return request
     }
-    
+
     class func fetchRequest(id: UUID) -> NSFetchRequest<Tab> {
         let request = super.fetchRequest() as! NSFetchRequest<Tab>
         request.predicate = NSPredicate(format: "id == %@", id as CVarArg)
@@ -167,7 +167,7 @@ struct URLContent {
 
 final class ZimFile: NSManagedObject, Identifiable {
     var id: UUID { fileID }
-    
+
     @NSManaged var articleCount: Int64
     @NSManaged var category: String
     @NSManaged var created: Date
@@ -190,7 +190,7 @@ final class ZimFile: NSManagedObject, Identifiable {
     @NSManaged var persistentID: String
     @NSManaged var requiresServiceWorkers: Bool
     @NSManaged var size: Int64
-    
+
     @NSManaged var bookmarks: Set<Bookmark>
     @NSManaged var downloadTask: DownloadTask?
     @NSManaged var tabs: Set<Tab>
@@ -212,7 +212,7 @@ final class ZimFile: NSManagedObject, Identifiable {
         Predicate.isDownloaded,
         Predicate.notMissing
     ])
-    
+
     class func fetchRequest(
         predicate: NSPredicate? = nil, sortDescriptors: [NSSortDescriptor] = []
     ) -> NSFetchRequest<ZimFile> {
@@ -221,7 +221,7 @@ final class ZimFile: NSManagedObject, Identifiable {
         request.sortDescriptors = sortDescriptors
         return request
     }
-    
+
     class func fetchRequest(fileID: UUID) -> NSFetchRequest<ZimFile> {
         let request = super.fetchRequest() as! NSFetchRequest<ZimFile>
         request.predicate = NSPredicate(format: "fileID == %@", fileID as CVarArg)

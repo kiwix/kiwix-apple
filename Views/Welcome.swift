@@ -32,7 +32,7 @@ struct Welcome: View {
         animation: .easeInOut
     ) private var zimFiles: FetchedResults<ZimFile>
     @State private var isLibraryPresented = false
-    
+
     var body: some View {
         if zimFiles.isEmpty {
             HStack {
@@ -103,7 +103,7 @@ struct Welcome: View {
             }.modifier(GridCommon(edges: .all))
         }
     }
-    
+
     /// App logo shown in onboarding view
     private var logo: some View {
         VStack(spacing: 6) {
@@ -115,7 +115,7 @@ struct Welcome: View {
             Text(Brand.appName.uppercased()).font(.largeTitle).fontWeight(.bold)
         }
     }
-    
+
     /// Onboarding actions, open a zim file or refresh catalog
     private var actions: some View {
         HStack {

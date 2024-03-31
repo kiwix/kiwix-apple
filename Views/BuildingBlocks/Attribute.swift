@@ -20,7 +20,7 @@ import SwiftUI
 struct Attribute: View {
     let title: String
     let detail: String?
-    
+
     var body: some View {
         HStack {
             Text(title)
@@ -33,7 +33,7 @@ struct Attribute: View {
 struct AttributeBool: View {
     let title: String
     let detail: Bool
-    
+
     var body: some View {
         HStack {
             Text(title)

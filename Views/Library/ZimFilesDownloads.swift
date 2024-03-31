@@ -25,7 +25,7 @@ struct ZimFilesDownloads: View {
         sortDescriptors: [NSSortDescriptor(keyPath: \DownloadTask.created, ascending: false)],
         animation: .easeInOut
     ) private var downloadTasks: FetchedResults<DownloadTask>
-    
+
     var body: some View {
         LazyVGrid(
             columns: ([GridItem(.adaptive(minimum: 250, maximum: 500), spacing: 12)]),

@@ -21,7 +21,7 @@ struct NavigationButtons: View {
     @Environment(\.dismissSearch) private var dismissSearch
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     @EnvironmentObject private var browser: BrowserViewModel
-    
+
     var body: some View {
         if horizontalSizeClass == .regular {
             goBackButton
@@ -32,7 +32,7 @@ struct NavigationButtons: View {
             goForwardButton
         }
     }
-    
+
     var goBackButton: some View {
         Button {
             browser.webView.goBack()
@@ -41,7 +41,7 @@ struct NavigationButtons: View {
             Label("common.button.go_back".localized, systemImage: "chevron.left")
         }.disabled(!browser.canGoBack)
     }
-    
+
     var goForwardButton: some View {
         Button {
             browser.webView.goForward()

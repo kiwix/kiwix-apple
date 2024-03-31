@@ -43,7 +43,7 @@ extension Defaults.Keys {
     static let libraryAutoRefresh = Key<Bool>("libraryAutoRefresh", default: true)
     static let libraryUsingOldISOLangCodes = Key<Bool>("libraryUsingOldISOLangCodes", default: true)
     static let libraryLastRefresh = Key<Date?>("libraryLastRefresh")
-    
+
     static let isFirstLaunch = Key<Bool>("isFirstLaunch", default: true)
     static let downloadUsingCellular = Key<Bool>("downloadUsingCellular", default: false)
     static let backupDocumentDirectory = Key<Bool>("backupDocumentDirectory", default: false)
