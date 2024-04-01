@@ -2,9 +2,9 @@
 
 This is the home for Kiwix apps for Apple iOS and macOS.
 
-[![CodeFactor](https://www.codefactor.io/repository/github/kiwix/apple/badge)](https://www.codefactor.io/repository/github/kiwix/apple)
-[![CI Build Status](https://github.com/kiwix/apple/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/kiwix/apple/actions/workflows/ci.yml?query=branch%3Amain)
-[![CD Build Status](https://github.com/kiwix/apple/actions/workflows/cd.yml/badge.svg?branch=main)](https://github.com/kiwix/apple/actions/workflows/cd?query=branch%3Amain)
+[![CodeFactor](https://www.codefactor.io/repository/github/kiwix/kiwix-apple/badge)](https://www.codefactor.io/repository/github/kiwix/kiwix-apple)
+[![CI Build Status](https://github.com/kiwix/kiwix-apple/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/kiwix/kiwix-apple/actions/workflows/ci.yml?query=branch%3Amain)
+[![CD Build Status](https://github.com/kiwix/kiwix-apple/actions/workflows/cd.yml/badge.svg?branch=main)](https://github.com/kiwix/kiwix-apple/actions/workflows/cd?query=branch%3Amain)
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 <img src="https://img.shields.io/badge/Swift-5.9-orange.svg" alt="Drawing="/>
 
@@ -18,7 +18,7 @@ downloadable for older versions of macOS and iOS on the Mac App Store.
 
 ## Develop
 
-Kiwix developers usually work with latest macOS and Xcode. Check our [Continuous Integration Workflow](https://github.com/kiwix/apple/blob/main/.github/workflows/ci.yml) to find out which Xcode version we use on Github Actions.
+Kiwix developers usually work with latest macOS and Xcode. Check our [Continuous Integration Workflow](https://github.com/kiwix/kiwix-apple/blob/main/.github/workflows/ci.yml) to find out which Xcode version we use on Github Actions.
 
 ### Get started
 
@@ -40,7 +40,7 @@ To compile and run Kiwix from Xcode locally, you will need to:
 * Select appropriate Signing Certificate/Profile.
 
 ### Dependencies installed for you
-Our `Brewfile` will install all the necessary dependencies for you: 
+Our `Brewfile` will install all the necessary dependencies for you:
 - our `CoreKiwix.xcframework` ([libkiwix](https://github.com/kiwix/libkiwix) and [libzim](https://github.com/openzim/libzim)) - the version of which is specified in the `Brewfile`
 - [XcodeGen](https://github.com/yonaskolb/XcodeGen) which will create the project files for you
 
@@ -136,7 +136,7 @@ If all that is done, we should create a PR, incrementing the version number of t
 
 ## Reporting a bug
 
-* Bug reports and features requests should be done [online](https://github.com/kiwix/apple/issues).
+* Bug reports and features requests should be done [online](https://github.com/kiwix/kiwix-apple/issues).
 * Follow [issue reporting good
   practices](https://github.com/kiwix/overview/blob/main/REPORT_BUG.md).
 * On macOS - if requested by a maintainer - pack your Kiwix app
