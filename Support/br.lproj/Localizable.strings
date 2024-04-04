@@ -27,6 +27,7 @@
 "common.tab.list.close" = "Serriñ ar steudenn";
 "common.tab.menu.library" = "Levraoueg";
 "common.tab.menu.settings" = "Arventennoù";
+"common.support.app_name" = "Skoazellañ %@";
 "article_shortcut.main.button.title" = "Pennad pennañ";
 "article_shortcut.main.button.help" = "Diskouez ar pennad pennañ";
 "article_shortcut.random.button.title.mac" = "Pennad dre zegouezh";

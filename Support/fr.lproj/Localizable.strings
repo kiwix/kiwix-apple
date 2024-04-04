@@ -3,6 +3,7 @@
 // Author: Adriendelucca
 // Author: Crochet.david
 // Author: Gomoko
+// Author: Hecatonchire
 // Author: MacOS Weed
 // Author: Stephane
 // Author: Vikoula5
@@ -34,6 +35,7 @@
 "common.tab.list.close" = "Fermer l’onglet";
 "common.tab.menu.library" = "Bibliothèque";
 "common.tab.menu.settings" = "Paramètres";
+"common.support.app_name" = "Soutenez-nous %@";
 "outline_button.outline.title" = "Vue d’ensemble";
 "outline_button.outline.help" = "Afficher la vue d’ensemble de l’article";
 "outline_button.outline.empty.message" = "Aucune vue d’ensemble disponible";
@@ -64,8 +66,7 @@
 "library_refresh_time.never" = "Jamais";
 "zim_file_cell_article_count_suffix" = "articles";
 "zim_file_missing_indicator.help" = "Le fichier Zim est manquant.";
-// Fuzzy
-"library.zim_file_details.side_panel.message" = "Sélectionnez un fichier zim pour voir les détails";
+"library.zim_file_details.side_panel.message" = "Sélectionnez un fichier ZIM pour voir les détails";
 "library.zim_file_context.main_page.label" = "Page principale";
 "library.zim_file_context.random.label" = "Page au hasard";
 "library.zim_file_context.copy_url" = "Copier l’URL";
@@ -92,8 +93,7 @@
 "zim_file.action.unlink.message" = "Tous les articles mis en signet liés à ce fichier ZIM seront supprimés, mais le fichier d'origine restera en place.";
 "zim_file.action.unlink.button.title" = "Délier";
 "zim_file.action.delete.title" = "Supprimer";
-// Fuzzy
-"zim_file.action.delete.message" = "Le fichier zim et tous les articles mis en favoris liés à ce fichier zim seront supprimés.";
+"zim_file.action.delete.message" = "Le fichier ZIM et tous les articles mis en favoris liés à ce fichier ZIM seront supprimés.";
 "zim_file.action.delete.button.title" = "Supprimer";
 "zim_file.action.download.title" = "Télécharger";
 "zim_file.action.download.warning.title" = "Avertissement d’espace";
@@ -140,8 +140,7 @@
 "catalog_settings.auto_refresh.toggle" = "Actualisation automatique";
 "catalog_settings.header.text" = "Catalogue";
 "catalog_settings.footer.text" = "Lorsqu'il est activé, le catalogue de la bibliothèque sera actualisé automatiquement lorsqu'il sera obsolète.";
-// Fuzzy
-"backup_settings.toggle.title" = "Inclure les fichiers zim dans la sauvegarde";
+"backup_settings.toggle.title" = "Inclure les fichiers ZIM dans la sauvegarde";
 "backup_settings.header.text" = "Sauvegarde";
 "backup_settings.footer.text" = "Ne pas appliquer les fichiers ouverts sur place.";
 "settings.miscellaneous.title" = "Divers";
