@@ -23,7 +23,6 @@
 "common.button.yes" = "Ja";
 "common.button.no" = "nein";
 "common.search" = "Suchen";
-"common.support.app_name" = "%@ unterstützen";
 "common.tab.manager.title" = "Tabs-Manager";
 "common.tab.navigation.title" = "Tabs";
 "common.tab.menu.new_tab" = "Neuer Tab";
@@ -32,6 +31,7 @@
 "common.tab.list.close" = "Tab schließen";
 "common.tab.menu.library" = "Bibliothek";
 "common.tab.menu.settings" = "Einstellungen";
+"common.support.app_name" = "%@ unterstützen";
 "outline_button.outline.title" = "Gliederung";
 "outline_button.outline.help" = "Artikelgliederung anzeigen";
 "outline_button.outline.empty.message" = "Keine Gliederung vorhanden";

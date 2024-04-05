@@ -28,6 +28,7 @@
 "common.tab.list.close" = "Затвори јазиче";
 "common.tab.menu.library" = "Библиотека";
 "common.tab.menu.settings" = "Нагодувања";
+"common.support.app_name" = "Поддржете го %@";
 "outline_button.outline.title" = "Преглед";
 "outline_button.outline.help" = "Прикажи преглед на статијата";
 "outline_button.outline.empty.message" = "Прегледот не е достапен";
@@ -58,24 +59,19 @@
 "library_refresh_time.never" = "Никогаш";
 "zim_file_cell_article_count_suffix" = "статии";
 "zim_file_missing_indicator.help" = "ZIM-податотеката недостасува.";
-// Fuzzy
 "library.zim_file_details.side_panel.message" = "Изберете ZIM-податотека за да ги видите поединостите";
 "library.zim_file_context.main_page.label" = "Главна страница";
 "library.zim_file_context.random.label" = "Случајна страница";
 "library.zim_file_context.copy_url" = "Прекопирај URL";
 "library.zim_file_context.copy_id" = "Прекопирај назнака";
-// Fuzzy
 "zim_file_opened.overlay.no-opened.message" = "Нема отворена ZIM-податотека";
 "zim_file_opened.toolbar.show_sidebar.label" = "Прикажи страничник";
 "zim_file_opened.toolbar.open.title" = "Open...";
-// Fuzzy
 "zim_file_opened.toolbar.open.help" = "Отвори ZIM-податотека";
 "zim_file_category.title" = "Категорија";
-// Fuzzy
 "zim_file_category.section.empty.message" = "Нема ZIM-податотека во оваа категорија.";
 "zim_file_downloads.overlay.empty.message" = "Нема задачи за преземање";
 "zim_file_downloads.toolbar.show_sidebar.label" = "Прикажи страничник";
-// Fuzzy
 "zim_file_new_overlay.empty" = "Нема нова ZIM-податотека";
 "zim_file_new_button_refresh" = "Превчитај";
 "zim_file.list.name.text" = "Име";
@@ -87,18 +83,14 @@
 "zim_file.action.reveal_in_finder.title" = "Откриј во пронаоѓач";
 "zim_file.action.toggle_cellular" = "Преземи на мобилен";
 "zim_file.action.unlink.title" = "Тргни врска";
-// Fuzzy
 "zim_file.action.unlink.message" = "Сите обележани статии поврзани со оваа ZIM-податотека ќе бидат избришани, но изворната податотека ќе остане.";
 "zim_file.action.unlink.button.title" = "Тргни врска";
 "zim_file.action.delete.title" = "Избриши";
-// Fuzzy
 "zim_file.action.delete.message" = "ZIM-податотеката и сите обележани статии поврзани со неа ќе бидат избришани.";
 "zim_file.action.delete.button.title" = "Избриши";
 "zim_file.action.download.title" = "Преземи";
 "zim_file.action.download.warning.title" = "Предупредување за простор";
-// Fuzzy
 "zim_file.action.download.warning.message" = "Може да нема доволно место на вашиот уред за оваа ZIM-податотека.";
-// Fuzzy
 "zim_file.action.download.warning.message1" = "Ќе ви преостане помалку од 1 ГБ слободен простор по преземањето на ZIM-податотеката.";
 "zim_file.action.download.button.anyway" = "Сепак преземи";
 "zim_file.base_info.attribute.language" = "Јазик";
@@ -141,7 +133,6 @@
 "catalog_settings.auto_refresh.toggle" = "Автоподнова";
 "catalog_settings.header.text" = "Каталог";
 "catalog_settings.footer.text" = "Кога е овозможен, библиотечниот каталог ќе биде автоматски подновуван кога ќе застари.";
-// Fuzzy
 "backup_settings.toggle.title" = "Вклучи ZIM-податотеки во резервата";
 "backup_settings.header.text" = "Резерва";
 "backup_settings.footer.text" = "Не важи за податотеки отворени на лице место.";
@@ -174,7 +165,6 @@
 "bookmark.overlay.empty.title" = "Нема обележани";
 "bookmark.toolbar.show_sidebar.label" = "Прикажи страничник";
 "browser_tab.toolbar.show_sidebar.label" = "Прикажи страничник";
-// Fuzzy
 "search_result.zimfile.empty.message" = "Нема отворена ZIM-податотека";
 "search_result.zimfile.no_result.message" = "Нема исход";
 "search_result.sidebar.button.remove" = "Отстрани";

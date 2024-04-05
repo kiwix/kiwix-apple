@@ -1,5 +1,6 @@
 // Messages for Russian (русский)
 // Exported from translatewiki.net
+// Author: Dirruw'o
 // Author: Kareyac
 // Author: Okras
 // Author: Pacha Tchernof
@@ -31,6 +32,7 @@
 "common.tab.list.close" = "Закрыть вкладку";
 "common.tab.menu.library" = "Библиотека";
 "common.tab.menu.settings" = "Настройки";
+"common.support.app_name" = "Справка %@";
 "outline_button.outline.title" = "Наброски";
 "outline_button.outline.help" = "Показать структуру статьи";
 "outline_button.outline.empty.message" = "Нет доступных контуров";

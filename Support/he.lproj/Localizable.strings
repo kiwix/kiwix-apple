@@ -28,6 +28,7 @@
 "common.tab.list.close" = "סגירת לשונית";
 "common.tab.menu.library" = "ספרייה";
 "common.tab.menu.settings" = "הגדרות";
+"common.support.app_name" = "תמיכה בפרויקט %@";
 "outline_button.outline.title" = "מתאר";
 "outline_button.outline.help" = "הצגת מתאר הערך";
 "outline_button.outline.empty.message" = "אין מתאר זמין";
