@@ -1,20 +1,29 @@
-//
-//  DownloadTaskCell.swift
-//  Kiwix
-//
-//  Created by Chris Li on 6/9/22.
-//  Copyright © 2022 Chris Li. All rights reserved.
-//
+/*
+65;6800;1c * This file is part of Kiwix for iOS & macOS.
+ *
+ * Kiwix is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * any later version.
+ *
+ * Kiwix is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Kiwix; If not, see https://www.gnu.org/licenses/.
+*/
 
 import CoreData
 import SwiftUI
 
 struct DownloadTaskCell: View {
     @State private var isHovering: Bool = false
-    
+
     let downloadTask: DownloadTask
     let progress: Progress
-    
+
     init(_ downloadTask: DownloadTask) {
         self.downloadTask = downloadTask
         self.progress = Progress(totalUnitCount: downloadTask.totalBytes)
@@ -23,7 +32,7 @@ struct DownloadTaskCell: View {
         self.progress.fileTotalCount = 1
         self.progress.fileOperationKind = .downloading
     }
-    
+
     var body: some View {
         VStack(spacing: 8) {
             if let zimFile = downloadTask.zimFile {
@@ -83,7 +92,7 @@ struct DownloadTaskCell_Previews: PreviewProvider {
         downloadTask.totalBytes = 200
         return downloadTask
     }()
-    
+
     static var previews: some View {
         DownloadTaskCell(DownloadTaskCell_Previews.downloadTask)
             .preferredColorScheme(.light)

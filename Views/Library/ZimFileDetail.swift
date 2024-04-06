@@ -1,10 +1,17 @@
+// This file is part of Kiwix for iOS & macOS.
 //
-//  ZimFileDetail.swift
-//  Kiwix
+// Kiwix is free software; you can redistribute it and/or modify it
+// under the terms of the GNU General Public License as published by
+// the Free Software Foundation; either version 3 of the License, or
+// any later version.
 //
-//  Created by Chris Li on 4/30/22.
-//  Copyright © 2022 Chris Li. All rights reserved.
+// Kiwix is distributed in the hope that it will be useful, but
+// WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+// General Public License for more details.
 //
+// You should have received a copy of the GNU General Public License
+// along with Kiwix; If not, see https://www.gnu.org/licenses/.
 
 import CoreData
 import SwiftUI
@@ -27,7 +34,7 @@ struct ZimFileDetail: View {
         #if os(macOS)
         List {
             Section("zim_file.list.name.text".localized) { Text(zimFile.name).lineLimit(nil) }.collapsible(false)
-            Section("zim_file.list.description.text".localized) { 
+            Section("zim_file.list.description.text".localized) {
                 Text(zimFile.fileDescription).lineLimit(nil)
             }.collapsible(false)
             Section("zim_file.list.actions.text".localized) { actions }.collapsible(false)
@@ -78,7 +85,7 @@ struct ZimFileDetail: View {
         .navigationBarTitleDisplayMode(.inline)
         #endif
     }
-    
+
     @ViewBuilder
     var actions: some View {
         if let downloadTask = zimFile.downloadTask {  // zim file is being downloaded
@@ -116,7 +123,7 @@ struct ZimFileDetail: View {
             downloadAction
         }
     }
-    
+
     var unlinkAction: some View {
         Action(title: "zim_file.action.unlink.title".localized, isDestructive: true) {
             isPresentingUnlinkAlert = true
@@ -134,7 +141,7 @@ struct ZimFileDetail: View {
             )
         }
     }
-    
+
     var deleteAction: some View {
         Action(title: "zim_file.action.delete.title".localized, isDestructive: true) {
             isPresentingDeleteAlert = true
@@ -152,7 +159,7 @@ struct ZimFileDetail: View {
             )
         }
     }
-    
+
     var downloadAction: some View {
         Action(title: "zim_file.action.download.title".localized) {
             if let freeSpace = freeSpace, zimFile.size >= freeSpace - 10^9 {
@@ -177,19 +184,19 @@ struct ZimFileDetail: View {
             )
         }
     }
-    
+
     @ViewBuilder
     var basicInfo: some View {
         Attribute(title: "zim_file.base_info.attribute.language".localized,
                   detail: zimFile.languageCodesListed)
         Attribute(title: "zim_file.base_info.attribute.category".localized,
                   detail: Category(rawValue: zimFile.category)?.name)
-        Attribute(title: "zim_file.base_info.attribute.size".localized, 
+        Attribute(title: "zim_file.base_info.attribute.size".localized,
                   detail: Formatter.size.string(fromByteCount: zimFile.size))
-        Attribute(title: "zim_file.base_info.attribute.created".localized, 
+        Attribute(title: "zim_file.base_info.attribute.created".localized,
                   detail: Formatter.dateMedium.string(from: zimFile.created))
     }
-    
+
     @ViewBuilder
     var boolInfo: some View {
         AttributeBool(title: "zim_file.bool_info.pictures".localized, detail: zimFile.hasPictures)
@@ -200,7 +207,7 @@ struct ZimFileDetail: View {
                           detail: zimFile.requiresServiceWorkers)
         }
     }
-    
+
     @ViewBuilder
     var counts: some View {
         Attribute(
@@ -212,12 +219,12 @@ struct ZimFileDetail: View {
             detail: Formatter.number.string(from: NSNumber(value: zimFile.mediaCount))
         )
     }
-    
+
     @ViewBuilder
     var id: some View {
         Attribute(title: "zim_file.detail.id.title".localized, detail: String(zimFile.fileID.uuidString.prefix(8)))
     }
-    
+
     private var freeSpace: Int64? {
         try? FileManager.default
             .urls(for: .documentDirectory, in: .userDomainMask)
@@ -228,7 +235,7 @@ struct ZimFileDetail: View {
 
 private struct FileLocator: ViewModifier {
     @Binding var isPresenting: Bool
-    
+
     func body(content: Content) -> some View {
         content.fileImporter(
             isPresented: $isPresenting,
@@ -243,7 +250,7 @@ private struct FileLocator: ViewModifier {
 
 private struct DownloadTaskDetail: View {
     @ObservedObject var downloadTask: DownloadTask
-    
+
     var body: some View {
         Action(title: "zim_file.download_task.action.title.cancel".localized, isDestructive: true) {
             DownloadService.shared.cancel(zimFileID: downloadTask.fileID)
@@ -268,7 +275,7 @@ private struct DownloadTaskDetail: View {
             Attribute(title: "zim_file.download_task.action.paused".localized, detail: detail)
         }
     }
-    
+
     var detail: String {
         if let percent = percent {
             return "\(size) - \(percent)"
@@ -276,11 +283,11 @@ private struct DownloadTaskDetail: View {
             return size
         }
     }
-    
+
     var size: String {
         Formatter.size.string(fromByteCount: downloadTask.downloadedBytes)
     }
-    
+
     var percent: String? {
         guard downloadTask.totalBytes > 0 else { return nil }
         let fractionCompleted = NSNumber(value: Double(downloadTask.downloadedBytes) / Double(downloadTask.totalBytes))
@@ -293,7 +300,7 @@ private struct Action: View {
     let isDestructive: Bool
     let alignment: HorizontalAlignment
     let action: (() -> Void)
-    
+
     init(title: String,
          isDestructive: Bool = false,
          alignment: HorizontalAlignment = .center,
@@ -304,7 +311,7 @@ private struct Action: View {
         self.alignment = alignment
         self.action = action
     }
-    
+
     var body: some View {
         Button(action: action, label: {
             HStack {
@@ -349,7 +356,7 @@ struct ZimFileDetail_Previews: PreviewProvider {
         zimFile.size = 1000000000
         return zimFile
     }()
-    
+
     static var previews: some View {
         ZimFileDetail(zimFile: zimFile, dismissParent: nil).frame(width: 300).previewLayout(.sizeThatFits)
     }

@@ -1,10 +1,17 @@
+// This file is part of Kiwix for iOS & macOS.
 //
-//  Database.swift
-//  Kiwix
+// Kiwix is free software; you can redistribute it and/or modify it
+// under the terms of the GNU General Public License as published by
+// the Free Software Foundation; either version 3 of the License, or
+// any later version.
 //
-//  Created by Chris Li on 12/23/21.
-//  Copyright © 2022 Chris Li. All rights reserved.
+// Kiwix is distributed in the hope that it will be useful, but
+// WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+// General Public License for more details.
 //
+// You should have received a copy of the GNU General Public License
+// along with Kiwix; If not, see https://www.gnu.org/licenses/.
 
 import CoreData
 import os
@@ -14,7 +21,7 @@ final class Database {
     private var notificationToken: NSObjectProtocol?
     private var token: NSPersistentHistoryToken?
     private var tokenURL = NSPersistentContainer.defaultDirectoryURL().appendingPathComponent("token.data")
-    
+
     private init() {
         // due to objc++ interop, only the older notification value is working for downloads:
         // https://developer.apple.com/documentation/coredata/nspersistentstoreremotechangenotification?language=objc
@@ -28,21 +35,21 @@ final class Database {
             return try? NSKeyedUnarchiver.unarchivedObject(ofClass: NSPersistentHistoryToken.self, from: data)
         }()
     }
-    
+
     deinit {
         if let token = notificationToken {
             NotificationCenter.default.removeObserver(token)
         }
     }
-    
+
     static var viewContext: NSManagedObjectContext {
         Database.shared.container.viewContext
     }
-    
+
     static func performBackgroundTask(_ block: @escaping (NSManagedObjectContext) -> Void) {
         Database.shared.container.performBackgroundTask(block)
     }
-    
+
     static func performBackgroundTask<T>(_ block: @escaping (NSManagedObjectContext) throws -> T) async rethrows -> T {
         try await Database.shared.container.performBackgroundTask(block)
     }
@@ -78,7 +85,7 @@ final class Database {
         container.viewContext.shouldDeleteInaccessibleFaults = true
         return container
     }()
-    
+
     /// Save image data to zim files.
     func saveImageData(url: URL, completion: @escaping (Data) -> Void) {
         URLSession.shared.dataTask(with: url) { data, response, _ in
@@ -98,7 +105,7 @@ final class Database {
             completion(data)
         }.resume()
     }
-    
+
     /// Merge changes performed on batch requests to view context.
     private func mergeChanges() throws {
         let context = container.newBackgroundContext()
@@ -123,12 +130,12 @@ final class Database {
                     self.token = transaction.token
                 }
             }
-            
+
             // update token
             guard let token = transactions.last?.token else { return }
             let data = try? NSKeyedArchiver.archivedData(withRootObject: token, requiringSecureCoding: true)
             UserDefaults.standard.set(data, forKey: "PersistentHistoryToken")
-            
+
             // purge history
             let sevenDaysAgo = Date(timeIntervalSinceNow: -3600 * 24 * 7)
             let purgeRequest = NSPersistentHistoryChangeRequest.deleteHistory(before: sevenDaysAgo)

@@ -1,10 +1,17 @@
+// This file is part of Kiwix for iOS & macOS.
 //
-//  Settings.swift
-//  Kiwix
+// Kiwix is free software; you can redistribute it and/or modify it
+// under the terms of the GNU General Public License as published by
+// the Free Software Foundation; either version 3 of the License, or
+// any later version.
 //
-//  Created by Chris Li on 10/1/22.
-//  Copyright © 2022 Chris Li. All rights reserved.
+// Kiwix is distributed in the hope that it will be useful, but
+// WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+// General Public License for more details.
 //
+// You should have received a copy of the GNU General Public License
+// along with Kiwix; If not, see https://www.gnu.org/licenses/.
 
 import SwiftUI
 
@@ -15,7 +22,7 @@ struct ReadingSettings: View {
     @Default(.externalLinkLoadingPolicy) private var externalLinkLoadingPolicy
     @Default(.searchResultSnippetMode) private var searchResultSnippetMode
     @Default(.webViewPageZoom) private var webViewPageZoom
-    
+
     var body: some View {
         VStack(spacing: 16) {
             SettingSection(name: "reading_settings.zoom.title".localized) {
@@ -54,7 +61,7 @@ struct ReadingSettings: View {
 struct LibrarySettings: View {
     @Default(.libraryAutoRefresh) private var libraryAutoRefresh
     @EnvironmentObject private var library: LibraryViewModel
-    
+
     var body: some View {
         VStack(spacing: 16) {
             SettingSection(name: "library_settings.catalog.title".localized, alignment: .top) {
@@ -88,7 +95,7 @@ struct SettingSection<Content: View>: View {
     let name: String
     let alignment: VerticalAlignment
     var content: () -> Content
-    
+
     init(
         name: String,
         alignment: VerticalAlignment = .firstTextBaseline,
@@ -98,7 +105,7 @@ struct SettingSection<Content: View>: View {
         self.alignment = alignment
         self.content = content
     }
-    
+
     var body: some View {
         HStack(alignment: alignment) {
             Text("\(name):").frame(width: 100, alignment: .trailing)
@@ -118,11 +125,11 @@ struct Settings: View {
     @Default(.searchResultSnippetMode) private var searchResultSnippetMode
     @Default(.webViewPageZoom) private var webViewPageZoom
     @EnvironmentObject private var library: LibraryViewModel
-    
+
     enum Route {
         case languageSelector, about
     }
-    
+
     var body: some View {
         if FeatureFlags.hasLibrary {
             List {
@@ -143,7 +150,7 @@ struct Settings: View {
             .navigationTitle("settings.navigation.title".localized)
         }
     }
-    
+
     var readingSettings: some View {
         Section("reading_settings.tab.reading".localized) {
             Stepper(value: $webViewPageZoom, in: 0.5...2, step: 0.05) {
@@ -166,7 +173,7 @@ struct Settings: View {
             }
         }
     }
-    
+
     var librarySettings: some View {
         Section {
             NavigationLink {
@@ -181,7 +188,7 @@ struct Settings: View {
             Text("library_settings.new-download-task-description".localized)
         }
     }
-    
+
     var catalogSettings: some View {
         Section {
             HStack {
@@ -207,7 +214,7 @@ struct Settings: View {
             Text("catalog_settings.footer.text".localized)
         }.onChange(of: libraryAutoRefresh) { LibraryOperations.applyLibraryAutoRefreshSetting(isEnabled: $0) }
     }
-    
+
     var backupSettings: some View {
         Section {
             Toggle("backup_settings.toggle.title".localized, isOn: $backupDocumentDirectory)
@@ -217,7 +224,7 @@ struct Settings: View {
             Text("backup_settings.footer.text".localized)
         }.onChange(of: backupDocumentDirectory) { LibraryOperations.applyFileBackupSetting(isEnabled: $0) }
     }
-    
+
     var miscellaneous: some View {
         Section("settings.miscellaneous.title".localized) {
             Button("settings.miscellaneous.button.feedback".localized) {

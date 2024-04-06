@@ -1,9 +1,17 @@
-//  App_iOS.swift
-//  Kiwix
+// This file is part of Kiwix for iOS & macOS.
 //
-//  Created by Chris Li on 7/27/23.
-//  Copyright © 2023 Chris Li. All rights reserved.
+// Kiwix is free software; you can redistribute it and/or modify it
+// under the terms of the GNU General Public License as published by
+// the Free Software Foundation; either version 3 of the License, or
+// any later version.
 //
+// Kiwix is distributed in the hope that it will be useful, but
+// WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+// General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Kiwix; If not, see https://www.gnu.org/licenses/.
 
 import SwiftUI
 import UserNotifications
@@ -15,7 +23,7 @@ struct Kiwix: App {
     @StateObject private var library = LibraryViewModel()
     @StateObject private var navigation = NavigationViewModel()
     @UIApplicationDelegateAdaptor(AppDelegate.self) private var appDelegate
-    
+
     private let fileMonitor: DirectoryMonitor
 
     init() {
@@ -23,7 +31,7 @@ struct Kiwix: App {
         LibraryOperations.registerBackgroundTask()
         UNUserNotificationCenter.current().delegate = appDelegate
     }
-    
+
     var body: some Scene {
         WindowGroup {
             RootView()
@@ -74,7 +82,7 @@ struct Kiwix: App {
             }
         }
     }
-    
+
     private class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCenterDelegate {
         /// Storing background download completion handler sent to application delegate
         func application(_ application: UIApplication,
@@ -93,7 +101,7 @@ struct Kiwix: App {
             }
             completionHandler()
         }
-        
+
         /// Purge some cached browser view models when receiving memory warning
         func applicationDidReceiveMemoryWarning(_ application: UIApplication) {
             BrowserViewModel.purgeCache()
@@ -103,11 +111,11 @@ struct Kiwix: App {
 
 private struct RootView: UIViewControllerRepresentable {
     @EnvironmentObject private var navigation: NavigationViewModel
-    
+
     func makeUIViewController(context: Context) -> SplitViewController {
         SplitViewController(navigationViewModel: navigation)
     }
-    
+
     func updateUIViewController(_ controller: SplitViewController, context: Context) {
     }
 }

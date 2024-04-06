@@ -1,10 +1,17 @@
+// This file is part of Kiwix for iOS & macOS.
 //
-//  ZimFileCell.swift
-//  Kiwix
+// Kiwix is free software; you can redistribute it and/or modify it
+// under the terms of the GNU General Public License as published by
+// the Free Software Foundation; either version 3 of the License, or
+// any later version.
 //
-//  Created by Chris Li on 12/31/21.
-//  Copyright © 2021 Chris Li. All rights reserved.
+// Kiwix is distributed in the hope that it will be useful, but
+// WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+// General Public License for more details.
 //
+// You should have received a copy of the GNU General Public License
+// along with Kiwix; If not, see https://www.gnu.org/licenses/.
 
 import CoreData
 import SwiftUI
@@ -12,14 +19,14 @@ import SwiftUI
 struct ZimFileCell: View {
     @ObservedObject var zimFile: ZimFile
     @State var isHovering: Bool = false
-    
+
     let prominent: Prominent
-    
+
     init(_ zimFile: ZimFile, prominent: Prominent) {
         self.zimFile = zimFile
         self.prominent = prominent
     }
-    
+
     var body: some View {
         VStack(spacing: 8) {
             switch prominent {
@@ -77,20 +84,20 @@ struct ZimFileCell: View {
         .modifier(CellBackground(isHovering: isHovering))
         .onHover { self.isHovering = $0 }
     }
-    
+
     static let dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.dateStyle = .medium
         formatter.timeStyle = .none
         return formatter
     }()
-    
+
     static let sizeFormatter: ByteCountFormatter = {
         let formatter = ByteCountFormatter()
         formatter.countStyle = .file
         return formatter
     }()
-    
+
     enum Prominent {
         case name, size
     }
@@ -112,7 +119,7 @@ struct ZimFileCell_Previews: PreviewProvider {
         zimFile.size = 1000000000
         return zimFile
     }()
-    
+
     static var previews: some View {
         Group {
             ZimFileCell(ZimFileCell_Previews.zimFile, prominent: .name)

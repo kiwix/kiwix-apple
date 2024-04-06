@@ -1,20 +1,27 @@
+// This file is part of Kiwix for iOS & macOS.
 //
-//  KiwixURLSchemeHandler.swift
-//  Kiwix
+// Kiwix is free software; you can redistribute it and/or modify it
+// under the terms of the GNU General Public License as published by
+// the Free Software Foundation; either version 3 of the License, or
+// any later version.
 //
-//  Created by Chris Li on 9/6/17.
-//  Copyright © 2017 Chris Li. All rights reserved.
+// Kiwix is distributed in the hope that it will be useful, but
+// WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+// General Public License for more details.
 //
+// You should have received a copy of the GNU General Public License
+// along with Kiwix; If not, see https://www.gnu.org/licenses/.
 
 import os
 import WebKit
 
 /// Skipping handling for HTTP 206 Partial Content
-/// For video playback, WebKit makes a large amount of requests with small byte range (e.g. 8 bytes) 
+/// For video playback, WebKit makes a large amount of requests with small byte range (e.g. 8 bytes)
 /// to retrieve content of the video.
 /// As a result of the large volume of small requests, CPU usage will be very high,
 /// which can result in app or webpage frozen.
-/// To mitigate, opting for the less "broken" behavior of ignoring Range header 
+/// To mitigate, opting for the less "broken" behavior of ignoring Range header
 /// until WebKit behavior is changed.
 final class KiwixURLSchemeHandler: NSObject, WKURLSchemeHandler {
     static let KiwixScheme = "kiwix"
@@ -66,7 +73,7 @@ final class KiwixURLSchemeHandler: NSObject, WKURLSchemeHandler {
             self?.stopFor(hash)
         }
     }
-    
+
     func webView(_ webView: WKWebView, stop urlSchemeTask: WKURLSchemeTask) {
         stopFor(urlSchemeTask.hash)
     }

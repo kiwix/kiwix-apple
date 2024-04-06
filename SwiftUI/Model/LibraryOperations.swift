@@ -1,10 +1,17 @@
+// This file is part of Kiwix for iOS & macOS.
 //
-//  LibraryOperations.swift
-//  Kiwix
+// Kiwix is free software; you can redistribute it and/or modify it
+// under the terms of the GNU General Public License as published by
+// the Free Software Foundation; either version 3 of the License, or
+// any later version.
 //
-//  Created by Chris Li on 9/12/22.
-//  Copyright © 2022 Chris Li. All rights reserved.
+// Kiwix is distributed in the hope that it will be useful, but
+// WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+// General Public License for more details.
 //
+// You should have received a copy of the GNU General Public License
+// along with Kiwix; If not, see https://www.gnu.org/licenses/.
 
 #if canImport(BackgroundTasks)
 import BackgroundTasks
@@ -16,25 +23,25 @@ import Defaults
 
 struct LibraryOperations {
     private init() {}
-    
+
     static let backgroundTaskIdentifier = "org.kiwix.library_refresh"
-    
+
     // MARK: - Open
-    
+
     /// Open a zim file with url
     /// - Parameter url: url of the zim file
     @discardableResult
     static func open(url: URL, onComplete: (() -> Void)? = nil) -> ZimFileMetaData? {
         guard let metadata = ZimFileService.getMetaData(url: url),
               let fileURLBookmark = ZimFileService.getFileURLBookmarkData(for: url) else { return nil }
-        
+
         // open the file
         do {
             try ZimFileService.shared.open(fileURLBookmark: fileURLBookmark)
         } catch {
             return nil
         }
-        
+
         // upsert zim file in the database
         Database.shared.container.performBackgroundTask { context in
             context.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
@@ -51,16 +58,16 @@ struct LibraryOperations {
                 }
             }
         }
-        
+
         return metadata
     }
-    
+
     /// Reopen zim files from url bookmark data.
     static func reopen(onComplete: (() -> Void)?) {
         var successCount = 0
         let context = Database.shared.container.viewContext
         let request = ZimFile.fetchRequest(predicate: ZimFile.Predicate.isDownloaded)
-        
+
         guard let zimFiles = try? context.fetch(request) else {
             onComplete?()
             return
@@ -83,11 +90,11 @@ struct LibraryOperations {
         if context.hasChanges {
             try? context.save()
         }
-        
+
         os_log("Reopened %d out of %d zim files", log: Log.LibraryOperations, type: .info, successCount, zimFiles.count)
         onComplete?()
     }
-    
+
     /// Scan a directory and open available zim files inside it
     /// - Parameter url: directory to scan
     static func scanDirectory(_ url: URL) {
@@ -101,9 +108,9 @@ struct LibraryOperations {
             LibraryOperations.open(url: fileURL)
         }
     }
-    
+
     // MARK: - Configure
-    
+
     /// Configure a zim file object based on its metadata.
     static func configureZimFile(_ zimFile: ZimFile, metadata: ZimFileMetaData) {
         zimFile.articleCount = metadata.articleCount.int64Value
@@ -121,14 +128,14 @@ struct LibraryOperations {
         zimFile.persistentID = metadata.groupIdentifier
         zimFile.requiresServiceWorkers = metadata.requiresServiceWorkers
         zimFile.size = metadata.size.int64Value
-        
+
         // Only overwrite favicon data and url if there is a new value
         if let url = metadata.downloadURL { zimFile.downloadURL = url }
         if let url = metadata.faviconURL { zimFile.faviconURL = url }
     }
-    
+
     //MARK: - Deletion
-    
+
     /// Unlink a zim file from library, delete associated bookmarks, and delete the file.
     /// - Parameter zimFile: the zim file to delete
     static func delete(zimFileID: UUID) {
@@ -136,7 +143,7 @@ struct LibraryOperations {
         defer { try? FileManager.default.removeItem(at: url) }
         LibraryOperations.unlink(zimFileID: zimFileID)
     }
-    
+
     /// Unlink a zim file from library, delete associated bookmarks, but don't delete the file.
     /// - Parameter zimFile: the zim file to unlink
     static func unlink(zimFileID: UUID) {
@@ -154,9 +161,9 @@ struct LibraryOperations {
             if context.hasChanges { try? context.save() }
         }
     }
-    
+
     // MARK: - Backup
-    
+
     /// Apply iCloud backup setting on zim files in document directory.
     /// - Parameter isEnabled: if file should be included in backup
     static func applyFileBackupSetting(isEnabled: Bool? = nil) {
@@ -185,7 +192,7 @@ struct LibraryOperations {
             )
         } catch {}
     }
-    
+
 #if os(iOS)
     // MARK: - Background Refresh
 
@@ -204,7 +211,7 @@ struct LibraryOperations {
             os_log("Disabling background library refresh.", log: Log.LibraryOperations, type: .info)
         }
     }
-    
+
     static func registerBackgroundTask() {
         BGTaskScheduler.shared.register(
             forTaskWithIdentifier: LibraryOperations.backgroundTaskIdentifier, using: nil

@@ -1,10 +1,17 @@
+// This file is part of Kiwix for iOS & macOS.
 //
-//  Welcome.swift
-//  Kiwix
+// Kiwix is free software; you can redistribute it and/or modify it
+// under the terms of the GNU General Public License as published by
+// the Free Software Foundation; either version 3 of the License, or
+// any later version.
 //
-//  Created by Chris Li on 6/4/22.
-//  Copyright © 2022 Chris Li. All rights reserved.
+// Kiwix is distributed in the hope that it will be useful, but
+// WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+// General Public License for more details.
 //
+// You should have received a copy of the GNU General Public License
+// along with Kiwix; If not, see https://www.gnu.org/licenses/.
 
 import SwiftUI
 
@@ -23,7 +30,7 @@ struct Welcome: View {
         animation: .easeInOut
     ) private var zimFiles: FetchedResults<ZimFile>
     @State private var isLibraryPresented = false
-    
+
     var body: some View {
         if zimFiles.isEmpty {
             HStack {
@@ -94,7 +101,7 @@ struct Welcome: View {
             }.modifier(GridCommon(edges: .all))
         }
     }
-    
+
     /// App logo shown in onboarding view
     private var logo: some View {
         VStack(spacing: 6) {
@@ -106,7 +113,7 @@ struct Welcome: View {
             Text(Brand.appName.uppercased()).font(.largeTitle).fontWeight(.bold)
         }
     }
-    
+
     /// Onboarding actions, open a zim file or refresh catalog
     private var actions: some View {
         HStack {

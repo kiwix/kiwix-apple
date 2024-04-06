@@ -1,10 +1,17 @@
+// This file is part of Kiwix for iOS & macOS.
 //
-//  TabsManagerButton.swift
-//  Kiwix
+// Kiwix is free software; you can redistribute it and/or modify it
+// under the terms of the GNU General Public License as published by
+// the Free Software Foundation; either version 3 of the License, or
+// any later version.
 //
-//  Created by Chris Li on 9/1/23.
-//  Copyright © 2023 Chris Li. All rights reserved.
+// Kiwix is distributed in the hope that it will be useful, but
+// WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+// General Public License for more details.
 //
+// You should have received a copy of the GNU General Public License
+// along with Kiwix; If not, see https://www.gnu.org/licenses/.
 
 import SwiftUI
 
@@ -17,12 +24,12 @@ struct TabsManagerButton: View {
         predicate: ZimFile.openedPredicate
     ) private var zimFiles: FetchedResults<ZimFile>
     @State private var presentedSheet: PresentedSheet?
-    
+
     private enum PresentedSheet: String, Identifiable {
         var id: String { rawValue }
         case tabsManager
     }
-    
+
     var body: some View {
         Menu {
             Section {
@@ -74,7 +81,7 @@ struct TabManager: View {
         sortDescriptors: [SortDescriptor(\Tab.created, order: .reverse)],
         animation: .easeInOut
     ) private var tabs: FetchedResults<Tab>
-    
+
     var body: some View {
         List(tabs) { tab in
             Button {

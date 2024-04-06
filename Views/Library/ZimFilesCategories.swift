@@ -1,10 +1,17 @@
+// This file is part of Kiwix for iOS & macOS.
 //
-//  ZimFilesCategories.swift
-//  Kiwix
+// Kiwix is free software; you can redistribute it and/or modify it
+// under the terms of the GNU General Public License as published by
+// the Free Software Foundation; either version 3 of the License, or
+// any later version.
 //
-//  Created by Chris Li on 8/7/22.
-//  Copyright © 2022 Chris Li. All rights reserved.
+// Kiwix is distributed in the hope that it will be useful, but
+// WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+// General Public License for more details.
 //
+// You should have received a copy of the GNU General Public License
+// along with Kiwix; If not, see https://www.gnu.org/licenses/.
 
 import SwiftUI
 
@@ -51,7 +58,7 @@ struct ZimFilesCategories: View {
 struct ZimFilesCategory: View {
     @Binding var category: Category
     @State private var searchText = ""
-    
+
     var body: some View {
         if category == .ted || category == .stackExchange || category == .other {
             CategoryList(category: $category, searchText: $searchText)
@@ -59,7 +66,7 @@ struct ZimFilesCategory: View {
             CategoryGrid(category: $category, searchText: $searchText)
         }
     }
-    
+
     static func buildPredicate(category: Category, searchText: String) -> NSPredicate {
         var predicates = [
             NSPredicate(format: "category == %@", category.rawValue),
@@ -80,7 +87,7 @@ private struct CategoryGrid: View {
     @EnvironmentObject private var viewModel: LibraryViewModel
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     @SectionedFetchRequest private var sections: SectionedFetchResults<String, ZimFile>
-    
+
     init(category: Binding<Category>, searchText: Binding<String>) {
         self._category = category
         self._searchText = searchText
@@ -93,7 +100,7 @@ private struct CategoryGrid: View {
             animation: .easeInOut
         )
     }
-    
+
     var body: some View {
         Group {
             if sections.isEmpty {
@@ -141,7 +148,7 @@ private struct CategoryGrid: View {
             sections.nsPredicate = ZimFilesCategory.buildPredicate(category: category, searchText: searchText)
         }
     }
-    
+
     private var gridItem: GridItem {
         if horizontalSizeClass == .regular {
             return GridItem(.adaptive(minimum: 200, maximum: 400), spacing: 12)
@@ -149,13 +156,13 @@ private struct CategoryGrid: View {
             return GridItem(.adaptive(minimum: 175, maximum: 400), spacing: 12)
         }
     }
-    
+
     private struct SectionHeader: View {
         let title: String
         let category: Category
         let imageData: Data?
         let imageURL: URL?
-        
+
         var body: some View {
             Label {
                 Text(title).font(.title3).fontWeight(.semibold)
@@ -172,7 +179,7 @@ private struct CategoryList: View {
     @Default(.libraryLanguageCodes) private var languageCodes
     @EnvironmentObject private var viewModel: LibraryViewModel
     @FetchRequest private var zimFiles: FetchedResults<ZimFile>
-    
+
     init(category: Binding<Category>, searchText: Binding<String>) {
         self._category = category
         self._searchText = searchText
@@ -189,7 +196,7 @@ private struct CategoryList: View {
             animation: .easeInOut
         )
     }
-    
+
     var body: some View {
         Group {
             if zimFiles.isEmpty {

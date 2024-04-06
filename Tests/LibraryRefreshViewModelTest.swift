@@ -1,10 +1,17 @@
+// This file is part of Kiwix for iOS & macOS.
 //
-//  LibraryRefreshViewModelTest.swift
-//  Tests
+// Kiwix is free software; you can redistribute it and/or modify it
+// under the terms of the GNU General Public License as published by
+// the Free Software Foundation; either version 3 of the License, or
+// any later version.
 //
-//  Created by Chris Li on 1/16/23.
-//  Copyright © 2023 Chris Li. All rights reserved.
+// Kiwix is distributed in the hope that it will be useful, but
+// WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+// General Public License for more details.
 //
+// You should have received a copy of the GNU General Public License
+// along with Kiwix; If not, see https://www.gnu.org/licenses/.
 
 import CoreData
 import XCTest
@@ -14,11 +21,11 @@ import Defaults
 
 private class HTTPTestingURLProtocol: URLProtocol {
     static var handler: ((URLProtocol) -> Void)? = nil
-    
+
     override class func canInit(with request: URLRequest) -> Bool { true }
     override class func canonicalRequest(for request: URLRequest) -> URLRequest { request }
     override func stopLoading() { }
-    
+
     override func startLoading() {
         if let handler = HTTPTestingURLProtocol.handler {
             handler(self)
@@ -35,7 +42,7 @@ final class LibraryRefreshViewModelTest: XCTestCase {
         let config = URLSessionConfiguration.ephemeral
         config.protocolClasses = [HTTPTestingURLProtocol.self]
         urlSession = URLSession(configuration: config)
-        
+
         HTTPTestingURLProtocol.handler = { urlProtocol in
             let response = HTTPURLResponse(
                 url: URL(string: "https://library.kiwix.org/catalog/v2/entries?count=-1")!,
@@ -51,7 +58,7 @@ final class LibraryRefreshViewModelTest: XCTestCase {
     override func tearDownWithError() throws {
         HTTPTestingURLProtocol.handler = nil
     }
-    
+
     private func makeOPDSData(zimFileID: UUID) -> String {
         """
         <feed xmlns="http://www.w3.org/2005/Atom"
@@ -82,7 +89,7 @@ final class LibraryRefreshViewModelTest: XCTestCase {
         </feed>
         """
     }
-    
+
     /// Test time out fetching library data.
     @MainActor
     func testFetchTimeOut() async {
@@ -141,7 +148,7 @@ final class LibraryRefreshViewModelTest: XCTestCase {
             "Error parsing library data."
         )
     }
-    
+
     /// Test zim file entity is created, and metadata are saved when new zim file becomes available in online catalog.
     @MainActor
     func testNewZimFileAndProperties() async throws {
@@ -156,19 +163,19 @@ final class LibraryRefreshViewModelTest: XCTestCase {
             urlProtocol.client?.urlProtocol(urlProtocol, didReceive: response, cacheStoragePolicy: .notAllowed)
             urlProtocol.client?.urlProtocolDidFinishLoading(urlProtocol)
         }
-        
+
         let viewModel = LibraryViewModel(urlSession: urlSession)
         await viewModel.start(isUserInitiated: true)
-        
+
         // check no error has happened
         XCTAssertNil(viewModel.error)
-        
+
         // check one zim file is in the database
         let context = Database.shared.container.viewContext
         let zimFiles = try context.fetch(ZimFile.fetchRequest())
         XCTAssertEqual(zimFiles.count, 1)
         XCTAssertEqual(zimFiles[0].id, zimFileID)
-        
+
         // check zim file can be retrieved by id, and properties are populated
         let zimFile = try XCTUnwrap(try context.fetch(ZimFile.fetchRequest(fileID: zimFileID)).first)
         XCTAssertEqual(zimFile.id, zimFileID)
@@ -201,7 +208,7 @@ final class LibraryRefreshViewModelTest: XCTestCase {
         XCTAssertEqual(zimFile.requiresServiceWorkers, false)
         XCTAssertEqual(zimFile.size, 6515656704)
     }
-    
+
     /// Test zim file deprecation
     @MainActor
     func testZimFileDeprecation() async throws {
@@ -210,14 +217,14 @@ final class LibraryRefreshViewModelTest: XCTestCase {
         await viewModel.start(isUserInitiated: true)
         let context = Database.shared.container.viewContext
         let zimFile1 = try XCTUnwrap(try context.fetch(ZimFile.fetchRequest()).first)
-        
+
         // refresh library for the second time, which should replace the old zim file with a new one
         await viewModel.start(isUserInitiated: true)
         var zimFiles = try context.fetch(ZimFile.fetchRequest())
         XCTAssertEqual(zimFiles.count, 1)
         let zimFile2 = try XCTUnwrap(zimFiles.first)
         XCTAssertNotEqual(zimFile1.fileID, zimFile2.fileID)
-        
+
         // set fileURLBookmark of zim file 2
         zimFile2.fileURLBookmark = "/Users/tester/Downloads/file_url.zim".data(using: .utf8)
         try context.save()
@@ -225,7 +232,7 @@ final class LibraryRefreshViewModelTest: XCTestCase {
         // refresh library for the third time
         await viewModel.start(isUserInitiated: true)
         zimFiles = try context.fetch(ZimFile.fetchRequest())
-        
+
         // check there are two zim files in the database, and zim file 2 is not deprecated
         XCTAssertEqual(zimFiles.count, 2)
         XCTAssertEqual(zimFiles.filter({ $0.fileID == zimFile2.fileID }).count, 1)

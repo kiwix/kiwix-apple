@@ -1,10 +1,17 @@
+// This file is part of Kiwix for iOS & macOS.
 //
-//  FileImport.swift
-//  Kiwix
+// Kiwix is free software; you can redistribute it and/or modify it
+// under the terms of the GNU General Public License as published by
+// the Free Software Foundation; either version 3 of the License, or
+// any later version.
 //
-//  Created by Chris Li on 8/18/23.
-//  Copyright © 2023 Chris Li. All rights reserved.
+// Kiwix is distributed in the hope that it will be useful, but
+// WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+// General Public License for more details.
 //
+// You should have received a copy of the GNU General Public License
+// along with Kiwix; If not, see https://www.gnu.org/licenses/.
 
 import SwiftUI
 import UniformTypeIdentifiers
@@ -17,15 +24,15 @@ import UniformTypeIdentifiers
 ///     and the multitab implementation on iOS / iPadOS does not support open multiple tabs with an url right now.
 struct OpenFileButton<Label: View>: View {
     @State private var isPresented: Bool = false
-    
+
     let context: OpenFileContext
     let label: Label
-    
+
     init(context: OpenFileContext, @ViewBuilder label: () -> Label) {
         self.context = context
         self.label = label()
     }
-    
+
     var body: some View {
         Button {
             isPresented = false
@@ -50,18 +57,18 @@ struct OpenFileButton<Label: View>: View {
 struct OpenFileHandler: ViewModifier {
     @State private var isAlertPresented = false
     @State private var activeAlert: ActiveAlert?
-    
+
     private let importFiles = NotificationCenter.default.publisher(for: .openFiles)
-    
+
     enum ActiveAlert {
         case unableToOpen(filenames: [String])
     }
-    
+
     func body(content: Content) -> some View {
         content.onReceive(importFiles) { notification in
             guard let urls = notification.userInfo?["urls"] as? [URL],
                   let context = notification.userInfo?["context"] as? OpenFileContext else { return }
-            
+
             // try open zim files
             var openedZimFileIDs = Set<UUID>()
             var invalidURLs = Set<URL>()
@@ -72,7 +79,7 @@ struct OpenFileHandler: ViewModifier {
                     invalidURLs.insert(url)
                 }
             }
-            
+
             // action for zim files that can be opened (e.g. open main page)
             switch context {
             case .command, .file:
@@ -94,13 +101,13 @@ struct OpenFileHandler: ViewModifier {
             default:
                 break
             }
-            
+
             // show alert if there are any files that cannot be opened
             if !invalidURLs.isEmpty {
                 isAlertPresented = true
                 activeAlert = .unableToOpen(filenames: invalidURLs.map({ $0.lastPathComponent }))
             }
-        }.alert("file_import.alert.no_open.title".localized, 
+        }.alert("file_import.alert.no_open.title".localized,
                 isPresented: $isAlertPresented, presenting: activeAlert) { _ in
         } message: { alert in
             switch alert {

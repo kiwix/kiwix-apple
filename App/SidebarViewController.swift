@@ -1,10 +1,17 @@
+// This file is part of Kiwix for iOS & macOS.
 //
-//  SidebarViewController.swift
-//  Kiwix
+// Kiwix is free software; you can redistribute it and/or modify it
+// under the terms of the GNU General Public License as published by
+// the Free Software Foundation; either version 3 of the License, or
+// any later version.
 //
-//  Created by Chris Li on 9/4/23.
-//  Copyright © 2023 Chris Li. All rights reserved.
+// Kiwix is distributed in the hope that it will be useful, but
+// WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+// General Public License for more details.
 //
+// You should have received a copy of the GNU General Public License
+// along with Kiwix; If not, see https://www.gnu.org/licenses/.
 
 #if os(iOS)
 import CoreData
@@ -37,7 +44,7 @@ class SidebarViewController: UICollectionViewController, NSFetchedResultsControl
         sectionNameKeyPath: nil,
         cacheName: nil
     )
-    
+
     enum Section: String, CaseIterable {
         case primary
         case tabs
@@ -52,7 +59,7 @@ class SidebarViewController: UICollectionViewController, NSFetchedResultsControl
             }
         }
     }
-    
+
     init() {
         super.init(collectionViewLayout: UICollectionViewLayout())
         collectionView.collectionViewLayout = UICollectionViewCompositionalLayout { sectionIndex, layoutEnvironment in
@@ -65,11 +72,11 @@ class SidebarViewController: UICollectionViewController, NSFetchedResultsControl
             return section
         }
     }
-    
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     func updateSelection() {
         guard let splitViewController = splitViewController as? SplitViewController,
               let currentItem = splitViewController.navigationViewModel.currentItem,
@@ -77,13 +84,13 @@ class SidebarViewController: UICollectionViewController, NSFetchedResultsControl
               collectionView.indexPathsForSelectedItems?.first != indexPath else { return }
         collectionView.selectItem(at: indexPath, animated: true, scrollPosition: [])
     }
-    
+
     // MARK: - Lifecycle
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         fetchedResultController.delegate = self
-        
+
         // configure view
         navigationItem.title = Brand.appName
         navigationItem.rightBarButtonItem = UIBarButtonItem(
@@ -112,7 +119,7 @@ class SidebarViewController: UICollectionViewController, NSFetchedResultsControl
                 }
             ])
         )
-        
+
         // apply initial snapshot
         var snapshot = NSDiffableDataSourceSnapshot<Section, NavigationItem>()
         snapshot.appendSections(Section.allSections)
@@ -124,19 +131,19 @@ class SidebarViewController: UICollectionViewController, NSFetchedResultsControl
         dataSource.apply(snapshot, animatingDifferences: false)
         try? fetchedResultController.performFetch()
     }
-    
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.navigationBar.prefersLargeTitles = true
     }
-    
+
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         updateSelection()
     }
-    
+
     // MARK: - Delegations
-    
+
     nonisolated func controller(
         _ controller: NSFetchedResultsController<NSFetchRequestResult>,
         didChangeContentWith snapshot: NSDiffableDataSourceSnapshotReference
@@ -165,7 +172,7 @@ class SidebarViewController: UICollectionViewController, NSFetchedResultsControl
             }
         }
     }
-    
+
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         guard let splitViewController = splitViewController as? SplitViewController,
               let navigationItem = dataSource.itemIdentifier(for: indexPath) else { return }
@@ -174,13 +181,13 @@ class SidebarViewController: UICollectionViewController, NSFetchedResultsControl
             splitViewController.hide(.primary)
         }
     }
-    
+
     override func collectionView(_ collectionView: UICollectionView, canFocusItemAt indexPath: IndexPath) -> Bool {
         return false
     }
-    
+
     // MARK: - Collection View Configuration
-    
+
     private func configureCell(cell: UICollectionViewListCell, indexPath: IndexPath, item: NavigationItem) {
         if case let .tab(objectID) = item, let tab = try? Database.viewContext.existingObject(with: objectID) as? Tab {
             if #available(iOS 16.0, *) {
@@ -200,9 +207,9 @@ class SidebarViewController: UICollectionViewController, NSFetchedResultsControl
             config.image = UIImage(systemName: item.icon)
             cell.contentConfiguration = config
         }
-        
+
     }
-    
+
     private func configureHeader(headerView: UICollectionViewListCell, elementKind: String, indexPath: IndexPath) {
         let section = Section.allSections[indexPath.section]
         switch section {
@@ -218,12 +225,12 @@ class SidebarViewController: UICollectionViewController, NSFetchedResultsControl
             headerView.contentConfiguration = nil
         }
     }
-    
+
     private func configureSwipeAction(indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         guard let splitViewController = splitViewController as? SplitViewController,
               let item = dataSource.itemIdentifier(for: indexPath),
               case let .tab(tabID) = item else { return nil }
-        let action = UIContextualAction(style: .destructive, 
+        let action = UIContextualAction(style: .destructive,
                                         title: "sidebar_view.navigation.button.close".localized) { _, _, _ in
             splitViewController.navigationViewModel.deleteTab(tabID: tabID)
         }

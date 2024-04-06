@@ -1,10 +1,17 @@
+// This file is part of Kiwix for iOS & macOS.
 //
-//  SearchOperation.swift
-//  Kiwix
+// Kiwix is free software; you can redistribute it and/or modify it
+// under the terms of the GNU General Public License as published by
+// the Free Software Foundation; either version 3 of the License, or
+// any later version.
 //
-//  Created by Chris Li on 5/9/20.
-//  Copyright © 2020-2022 Chris Li. All rights reserved.
+// Kiwix is distributed in the hope that it will be useful, but
+// WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+// General Public License for more details.
 //
+// You should have received a copy of the GNU General Public License
+// along with Kiwix; If not, see https://www.gnu.org/licenses/.
 
 import Defaults
 
@@ -15,7 +22,7 @@ extension SearchOperation {
         // perform index and title search
         guard !searchText.isEmpty else { return }
         performSearch()
-        
+
         // parse and extract search result snippet
         guard !isCancelled else { return }
         let snippetMode = Defaults[.searchResultSnippetMode]
@@ -25,7 +32,7 @@ extension SearchOperation {
             DispatchQueue.global(qos: .userInitiated).async {
                 defer { dispatchGroup.leave() }
                 guard !self.isCancelled else { return }
-                
+
                 switch snippetMode {
                 case .firstParagraph:
                     guard let parser = try? HTMLParser(url: result.url) else { return }
@@ -42,12 +49,12 @@ extension SearchOperation {
             }
         }
         dispatchGroup.wait()
-        
+
         // start sorting search results
         guard !isCancelled else { return }
         let searchText = self.searchText.lowercased()
         let levenshtein = Levenshtein()
-        
+
         // calculate score for all results
         for result in results {
             guard !isCancelled else { break }
@@ -58,7 +65,7 @@ extension SearchOperation {
                 result.score = NSNumber(integerLiteral: distance)
             }
         }
-        
+
         // sort the results
         guard !isCancelled else { return }
         __results.sort { lhs, rhs in
@@ -79,7 +86,7 @@ extension SearchOperation {
 
 private class Levenshtein {
     private(set) var cache = [Key: Int]()
-    
+
     func calculate(_ a: String.SubSequence, _ b: String.SubSequence) -> Int {
         let key = Key(a: String(a), b: String(b))
         if let distance = cache[key] {
@@ -101,7 +108,7 @@ private class Levenshtein {
             return distance
         }
     }
-    
+
     struct Key: Hashable {
         let a: String
         let b: String

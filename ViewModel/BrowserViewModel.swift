@@ -1,10 +1,17 @@
+// This file is part of Kiwix for iOS & macOS.
 //
-//  BrowserViewModel.swift
-//  Kiwix
+// Kiwix is free software; you can redistribute it and/or modify it
+// under the terms of the GNU General Public License as published by
+// the Free Software Foundation; either version 3 of the License, or
+// any later version.
 //
-//  Created by Chris Li on 6/21/23.
-//  Copyright © 2023 Chris Li. All rights reserved.
+// Kiwix is distributed in the hope that it will be useful, but
+// WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+// General Public License for more details.
 //
+// You should have received a copy of the GNU General Public License
+// along with Kiwix; If not, see https://www.gnu.org/licenses/.
 
 import Combine
 import CoreData
@@ -220,7 +227,7 @@ final class BrowserViewModel: NSObject, ObservableObject,
     }
 
     // MARK: - New Tab Creation
-    
+
 #if os(macOS)
     private func createNewTab(url: URL) -> Bool {
         guard let currentWindow = NSApp.keyWindow else { return false }
@@ -236,7 +243,7 @@ final class BrowserViewModel: NSObject, ObservableObject,
         return true
     }
 #endif
-    
+
     // MARK: - WKNavigationDelegate
 
     func webView(
@@ -248,7 +255,7 @@ final class BrowserViewModel: NSObject, ObservableObject,
             decisionHandler(.cancel)
             return
         }
-        
+
 #if os(macOS)
         // detect cmd + click event
         if navigationAction.modifierFlags.contains(.command) {
@@ -258,7 +265,7 @@ final class BrowserViewModel: NSObject, ObservableObject,
             }
         }
 #endif
-        
+
         if url.isKiwixURL, let redirectedURL = ZimFileService.shared.getRedirectedURL(url: url) {
             if webView.url != redirectedURL {
                 DispatchQueue.main.async { webView.load(URLRequest(url: redirectedURL)) }
@@ -370,27 +377,27 @@ final class BrowserViewModel: NSObject, ObservableObject,
             },
             actionProvider: { _ in
                 var actions = [UIAction]()
-                
+
                 // open url
                 actions.append(
-                    UIAction(title: "common.dialog.button.open".localized, 
+                    UIAction(title: "common.dialog.button.open".localized,
                              image: UIImage(systemName: "doc.text")) { _ in
                         webView.load(URLRequest(url: url))
                     }
                 )
                 actions.append(
-                    UIAction(title: "common.dialog.button.open_in_new_tab".localized, 
+                    UIAction(title: "common.dialog.button.open_in_new_tab".localized,
                              image: UIImage(systemName: "doc.badge.plus")) { _ in
                         NotificationCenter.openURL(url, inNewTab: true)
                     }
                 )
-                
+
                 // bookmark
                 let bookmarkAction: UIAction = {
                     let context = Database.viewContext
                     let predicate = NSPredicate(format: "articleURL == %@", url as CVarArg)
                     let request = Bookmark.fetchRequest(predicate: predicate)
-                    
+
                     if let bookmarks = try? context.fetch(request),
                        !bookmarks.isEmpty {
                         return UIAction(title: "common.dialog.button.remove_bookmark".localized,

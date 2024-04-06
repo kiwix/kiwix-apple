@@ -1,10 +1,17 @@
+// This file is part of Kiwix for iOS & macOS.
 //
-//  NavigationViewModel.swift
-//  Kiwix
+// Kiwix is free software; you can redistribute it and/or modify it
+// under the terms of the GNU General Public License as published by
+// the Free Software Foundation; either version 3 of the License, or
+// any later version.
 //
-//  Created by Chris Li on 7/29/23.
-//  Copyright © 2023 Chris Li. All rights reserved.
+// Kiwix is distributed in the hope that it will be useful, but
+// WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+// General Public License for more details.
 //
+// You should have received a copy of the GNU General Public License
+// along with Kiwix; If not, see https://www.gnu.org/licenses/.
 
 import CoreData
 import WebKit
@@ -15,7 +22,7 @@ final class NavigationViewModel: ObservableObject {
     @Published var currentItem: NavigationItem? = .loading
 
     // MARK: - Tab Management
-    
+
     private func makeTab(context: NSManagedObjectContext) -> Tab {
         let tab = Tab(context: context)
         tab.created = Date()
@@ -24,7 +31,7 @@ final class NavigationViewModel: ObservableObject {
         try? context.save()
         return tab
     }
-    
+
     func navigateToMostRecentTab() {
         let context = Database.viewContext
         let fetchRequest = Tab.fetchRequest(sortDescriptors: [NSSortDescriptor(key: "lastOpened", ascending: false)])
@@ -37,7 +44,7 @@ final class NavigationViewModel: ObservableObject {
         }
 
     }
-    
+
     @discardableResult
     func createTab() -> NSManagedObjectID {
         let context = Database.viewContext
@@ -90,14 +97,14 @@ final class NavigationViewModel: ObservableObject {
             }
         }
     }
-    
+
     /// Delete all tabs, and open a new tab
     func deleteAllTabs() {
         Database.performBackgroundTask { context in
             // delete all existing tabs
             let tabs = try? context.fetch(Tab.fetchRequest())
             tabs?.forEach { context.delete($0) }
-            
+
             // create new tab
             let newTab = self.makeTab(context: context)
             Task {

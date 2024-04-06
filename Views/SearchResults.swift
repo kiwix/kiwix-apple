@@ -1,10 +1,17 @@
+// This file is part of Kiwix for iOS & macOS.
 //
-//  SearchResults.swift
-//  Kiwix
+// Kiwix is free software; you can redistribute it and/or modify it
+// under the terms of the GNU General Public License as published by
+// the Free Software Foundation; either version 3 of the License, or
+// any later version.
 //
-//  Created by Chris Li on 8/19/22.
-//  Copyright © 2022 Chris Li. All rights reserved.
+// Kiwix is distributed in the hope that it will be useful, but
+// WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+// General Public License for more details.
 //
+// You should have received a copy of the GNU General Public License
+// along with Kiwix; If not, see https://www.gnu.org/licenses/.
 
 import SwiftUI
 
@@ -22,9 +29,9 @@ struct SearchResults: View {
         animation: .easeInOut
     ) private var zimFiles: FetchedResults<ZimFile>
     @State private var isClearSearchConfirmationPresented = false
-    
+
     private let openURL = NotificationCenter.default.publisher(for: .openURL)
-    
+
     var body: some View {
         Group {
             if zimFiles.isEmpty {
@@ -52,7 +59,7 @@ struct SearchResults: View {
             dismissSearch()
         }
     }
-    
+
     @ViewBuilder
     var content: some View {
         if viewModel.inProgress {
@@ -87,7 +94,7 @@ struct SearchResults: View {
             }
         }
     }
-    
+
     var sidebar: some View {
         List {
             if !recentSearchTexts.isEmpty {
@@ -125,7 +132,7 @@ struct SearchResults: View {
             }
         }
     }
-    
+
     private var recentSearchHeader: some View {
         HStack {
             Text("search_result.header.text".localized)
@@ -134,7 +141,7 @@ struct SearchResults: View {
                 isClearSearchConfirmationPresented = true
             } label: {
                 Text("search_result.button.clear".localized).font(.caption).fontWeight(.medium)
-            }.confirmationDialog("search_result.clear_dialog.title".localized, 
+            }.confirmationDialog("search_result.clear_dialog.title".localized,
                                  isPresented: $isClearSearchConfirmationPresented) {
                 Button("search_result.clear_dialog.button.all".localized, role: .destructive) {
                     recentSearchTexts.removeAll()
@@ -144,7 +151,7 @@ struct SearchResults: View {
             }
         }
     }
-    
+
     private var searchFilterHeader: some View {
         HStack {
             Text("search_result.filter_hearder.text".localized)

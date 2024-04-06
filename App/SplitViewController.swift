@@ -1,10 +1,17 @@
+// This file is part of Kiwix for iOS & macOS.
 //
-//  SplitViewController.swift
-//  Kiwix
+// Kiwix is free software; you can redistribute it and/or modify it
+// under the terms of the GNU General Public License as published by
+// the Free Software Foundation; either version 3 of the License, or
+// any later version.
 //
-//  Created by Chris Li on 9/4/23.
-//  Copyright © 2023 Chris Li. All rights reserved.
+// Kiwix is distributed in the hope that it will be useful, but
+// WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+// General Public License for more details.
 //
+// You should have received a copy of the GNU General Public License
+// along with Kiwix; If not, see https://www.gnu.org/licenses/.
 
 #if os(iOS)
 import Combine
@@ -16,28 +23,28 @@ final class SplitViewController: UISplitViewController {
     private var navigationItemObserver: AnyCancellable?
     private var openURLObserver: NSObjectProtocol?
     private var toggleSidebarObserver: NSObjectProtocol?
-    
+
     init(navigationViewModel: NavigationViewModel) {
         self.navigationViewModel = navigationViewModel
         super.init(style: .doubleColumn)
     }
-    
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     deinit {
         NotificationCenter.default.removeObserver(self)
     }
-    
+
     // MARK: - Lifecycle
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         if #available(iOS 16.0, *) {} else {
             presentsWithGesture = false
         }
-        
+
         // setup controllers
         setViewController(UINavigationController(rootViewController: CompactViewController()), for: .compact)
         setViewController(SidebarViewController(), for: .primary)
@@ -79,7 +86,7 @@ final class SplitViewController: UISplitViewController {
             }
         }
     }
-    
+
     /// Dismiss any controller that is already presented when horizontal size class is about to change
     override func willTransition(to newCollection: UITraitCollection,
                                  with coordinator: UIViewControllerTransitionCoordinator) {
@@ -87,7 +94,7 @@ final class SplitViewController: UISplitViewController {
         guard newCollection.horizontalSizeClass != traitCollection.horizontalSizeClass else { return }
         presentedViewController?.dismiss(animated: false)
     }
-    
+
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
         guard previousTraitCollection?.horizontalSizeClass != traitCollection.horizontalSizeClass else { return }
@@ -97,7 +104,7 @@ final class SplitViewController: UISplitViewController {
             setSecondaryController()
         }
     }
-    
+
     private func setSecondaryController() {
         switch navigationViewModel.currentItem {
         case .bookmarks:

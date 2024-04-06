@@ -1,10 +1,17 @@
+// This file is part of Kiwix for iOS & macOS.
 //
-//  WebView.swift
-//  Kiwix
+// Kiwix is free software; you can redistribute it and/or modify it
+// under the terms of the GNU General Public License as published by
+// the Free Software Foundation; either version 3 of the License, or
+// any later version.
 //
-//  Created by Chris Li on 11/5/21.
-//  Copyright © 2021 Chris Li. All rights reserved.
+// Kiwix is distributed in the hope that it will be useful, but
+// WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+// General Public License for more details.
 //
+// You should have received a copy of the GNU General Public License
+// along with Kiwix; If not, see https://www.gnu.org/licenses/.
 
 import Combine
 import CoreData
@@ -16,20 +23,20 @@ import Defaults
 #if os(macOS)
 struct WebView: NSViewRepresentable {
     @EnvironmentObject private var browser: BrowserViewModel
-    
+
     func makeNSView(context: Context) -> WKWebView {
         browser.webView
     }
-    
+
     func updateNSView(_ webView: WKWebView, context: Context) { }
-    
+
     func makeCoordinator() -> Coordinator {
         Coordinator(view: self)
     }
-    
+
     class Coordinator {
         private let pageZoomObserver: Defaults.Observation
-        
+
         init(view: WebView) {
             pageZoomObserver = Defaults.observe(.webViewPageZoom) { change in
                 view.browser.webView.pageZoom = change.newValue
@@ -55,7 +62,7 @@ class WebViewController: UIViewController {
     private var topSafeAreaConstraint: NSLayoutConstraint?
     private var layoutSubject = PassthroughSubject<Void, Never>()
     private var layoutCancellable: AnyCancellable?
-    
+
     init(webView: WKWebView) {
         self.webView = webView
         self.pageZoomObserver = Defaults.observe(.webViewPageZoom) { change in
@@ -63,18 +70,18 @@ class WebViewController: UIViewController {
         }
         super.init(nibName: nil, bundle: nil)
     }
-    
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        
+
         webView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(webView)
         webView.alpha = 0
-        
+
         /*
          HACK: Make sure the webview content does not jump after state restoration
          It appears the webview's state restoration does not properly take into account of the content inset.
@@ -102,7 +109,7 @@ class WebViewController: UIViewController {
                 self?.view.topAnchor.constraint(equalTo: webView.topAnchor).isActive = true
             }
     }
-    
+
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         webView.setValue(view.safeAreaInsets, forKey: "_obscuredInsets")
@@ -145,7 +152,7 @@ class WebViewConfiguration: WKWebViewConfiguration {
             return controller
         }()
     }
-    
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }

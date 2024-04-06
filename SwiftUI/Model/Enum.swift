@@ -1,10 +1,17 @@
+// This file is part of Kiwix for iOS & macOS.
 //
-//  Enum.swift
-//  Kiwix
+// Kiwix is free software; you can redistribute it and/or modify it
+// under the terms of the GNU General Public License as published by
+// the Free Software Foundation; either version 3 of the License, or
+// any later version.
 //
-//  Created by Chris Li on 12/25/21.
-//  Copyright © 2021 Chris Li. All rights reserved.
+// Kiwix is distributed in the hope that it will be useful, but
+// WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+// General Public License for more details.
 //
+// You should have received a copy of the GNU General Public License
+// along with Kiwix; If not, see https://www.gnu.org/licenses/.
 
 import CoreData
 import MapKit
@@ -13,13 +20,13 @@ import Defaults
 
 enum ActiveAlert: String, Identifiable {
     var id: String { rawValue }
-    
+
     case articleFailedToLoad
 }
 
 enum ActiveSheet: Hashable, Identifiable {
     var id: Int { hashValue }
-    
+
     case outline
     case bookmarks
     case library(tabItem: LibraryTabItem? = nil)
@@ -32,7 +39,7 @@ enum Category: String, CaseIterable, Identifiable, LosslessStringConvertible {
     var description: String { rawValue }
 
     var id: String { rawValue }
-    
+
     case wikipedia
     case wikibooks
     case wikinews
@@ -82,7 +89,7 @@ enum Category: String, CaseIterable, Identifiable, LosslessStringConvertible {
             return "enum.category.other".localized
         }
     }
-    
+
     var icon: String {
         switch self {
         case .wikipedia:
@@ -115,9 +122,9 @@ enum Category: String, CaseIterable, Identifiable, LosslessStringConvertible {
 
 enum ExternalLinkLoadingPolicy: String, CaseIterable, Identifiable, Defaults.Serializable {
     case alwaysAsk, alwaysLoad, neverLoad
-    
+
     var id: String { self.rawValue }
-    
+
     var name: String {
         switch self {
         case .alwaysAsk:
@@ -141,11 +148,11 @@ enum Flavor: String, CustomStringConvertible {
     case max = "maxi"
     case noPic = "nopic"
     case mini = "mini"
-    
+
     init?(rawValue: String?) {
         self.init(rawValue: rawValue ?? "")
     }
-    
+
     var description: String {
         switch self {
         case .max:
@@ -160,9 +167,9 @@ enum Flavor: String, CustomStringConvertible {
 
 enum LibraryLanguageSortingMode: String, CaseIterable, Identifiable, Defaults.Serializable {
     case alphabetically, byCounts
-    
+
     var id: String { self.rawValue }
-    
+
     var name: String {
         switch self {
         case .alphabetically:
@@ -175,9 +182,9 @@ enum LibraryLanguageSortingMode: String, CaseIterable, Identifiable, Defaults.Se
 
 enum LibraryTabItem: String, CaseIterable, Identifiable {
     case opened, categories, downloads, new
-    
+
     var id: String { self.rawValue }
-    
+
     var name: String {
         switch self {
         case .opened:
@@ -190,7 +197,7 @@ enum LibraryTabItem: String, CaseIterable, Identifiable {
             return "enum.libray_tab_item.new".localized
         }
     }
-    
+
     var icon: String {
         switch self {
         case .opened:
@@ -237,7 +244,7 @@ enum NavigationItem: Hashable, Identifiable {
             return "enum.navigation_item.settings".localized
         }
     }
-    
+
     var icon: String {
         switch self {
         case .loading:
@@ -266,9 +273,9 @@ enum NavigationItem: Hashable, Identifiable {
 
 enum SearchResultSnippetMode: String, CaseIterable, Identifiable, Defaults.Serializable {
     case disabled, firstParagraph, firstSentence, matches
-    
+
     var id: String { rawValue }
-    
+
     var name: String {
         switch self {
         case .disabled:
@@ -285,6 +292,6 @@ enum SearchResultSnippetMode: String, CaseIterable, Identifiable, Defaults.Seria
 
 enum SheetDisplayMode: String, Identifiable {
     case outline, bookmarks, library, settings
-    
+
     var id: String { rawValue }
 }

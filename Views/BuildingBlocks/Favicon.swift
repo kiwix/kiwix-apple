@@ -1,25 +1,32 @@
+// This file is part of Kiwix for iOS & macOS.
 //
-//  Favicon.swift
-//  Kiwix
+// Kiwix is free software; you can redistribute it and/or modify it
+// under the terms of the GNU General Public License as published by
+// the Free Software Foundation; either version 3 of the License, or
+// any later version.
 //
-//  Created by Chris Li on 1/2/22.
-//  Copyright © 2022 Chris Li. All rights reserved.
+// Kiwix is distributed in the hope that it will be useful, but
+// WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+// General Public License for more details.
 //
+// You should have received a copy of the GNU General Public License
+// along with Kiwix; If not, see https://www.gnu.org/licenses/.
 
 import SwiftUI
 
 struct Favicon: View {
     @State var imageData: Data?
-    
+
     private let category: Category
     private let imageURL: URL?
-    
+
     init(category: Category, imageData: Data? = nil, imageURL: URL? = nil) {
         self.category = category
         self.imageURL = imageURL
         self._imageData = State(wrappedValue: imageData)
     }
-    
+
     var body: some View {
         ZStack(alignment: .center) {
             Color.white.clipShape(RoundedRectangle(cornerRadius: 3, style: .continuous))
@@ -33,7 +40,7 @@ struct Favicon: View {
             }
         }
     }
-    
+
     @ViewBuilder
     var image: some View {
         #if os(macOS)
