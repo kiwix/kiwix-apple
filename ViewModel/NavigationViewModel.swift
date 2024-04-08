@@ -20,6 +20,9 @@ import WebKit
 final class NavigationViewModel: ObservableObject {
     // remained optional due to focusedSceneValue conformance
     @Published var currentItem: NavigationItem? = .loading
+    #if os(macOS)
+    var isTerminating: Bool = false
+    #endif
 
     // MARK: - Tab Management
 
@@ -59,7 +62,11 @@ final class NavigationViewModel: ObservableObject {
     func tabIDFor(url: URL?) -> NSManagedObjectID {
         guard let url,
               let coordinator = Database.viewContext.persistentStoreCoordinator,
-              let tabID = coordinator.managedObjectID(forURIRepresentation: url) else {
+              let tabID = coordinator.managedObjectID(forURIRepresentation: url),
+              // make sure it's not went missing
+              let tab = try? Database.viewContext.existingObject(with: tabID) as? Tab,
+              tab.zimFile != nil
+        else {
             return createTab()
         }
         return tabID

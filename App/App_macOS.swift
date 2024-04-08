@@ -21,7 +21,7 @@ import CoreKiwix
 
 #if os(macOS)
 final class AppDelegate: NSObject, NSApplicationDelegate {
-    @MainActor func applicationShouldTerminateAfterLastWindowClosed(_ sender: NSApplication) -> Bool {
+    func applicationShouldTerminateAfterLastWindowClosed(_ sender: NSApplication) -> Bool {
         true
     }
 }
@@ -101,6 +101,7 @@ struct RootView: View {
     private let libraryItems: [NavigationItem] = [.opened, .categories, .downloads, .new]
     private let openURL = NotificationCenter.default.publisher(for: .openURL)
     private let appTerminates = NotificationCenter.default.publisher(for: NSApplication.willTerminateNotification)
+    private let tabCloses = NotificationCenter.default.publisher(for: NSWindow.willCloseNotification)
 
     var body: some View {
         NavigationView {
@@ -185,7 +186,18 @@ struct RootView: View {
             navigation.currentItem = .reading
             browser.load(url: url)
         }
+        .onReceive(tabCloses) { item in
+            guard !navigation.isTerminating else {
+                // tab closed by app termination
+                return
+            }
+            if let tabID = browser.tabID {
+                // tab closed by user
+                navigation.deleteTab(tabID: tabID)
+            }
+        }
         .onReceive(appTerminates) { _ in
+            navigation.isTerminating = true
             browser.persistAllTabIdsFromWindows()
         }.task {
             switch AppType.current {
