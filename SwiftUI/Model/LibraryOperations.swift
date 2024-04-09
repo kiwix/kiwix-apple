@@ -158,6 +158,7 @@ struct LibraryOperations {
                 zimFile.fileURLBookmark = nil
                 zimFile.isMissing = false
             }
+            zimFile.tabs.forEach { context.delete($0) }
             if context.hasChanges { try? context.save() }
         }
     }
