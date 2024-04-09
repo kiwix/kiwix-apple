@@ -186,7 +186,7 @@ struct RootView: View {
             navigation.currentItem = .reading
             browser.load(url: url)
         }
-        .onReceive(tabCloses) { item in
+        .onReceive(tabCloses) { _ in
             guard !navigation.isTerminating else {
                 // tab closed by app termination
                 return
