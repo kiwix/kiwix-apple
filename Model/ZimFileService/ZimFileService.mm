@@ -164,6 +164,21 @@
     }
 }
 
+- (NSNumber* _Nullable)getContentSize:(NSUUID *)zimFileID contentPath:(NSString *)contentPath {
+    if ([contentPath hasPrefix:@"/"]) {
+        contentPath = [contentPath substringFromIndex:1];
+    }
+    zim::Archive *archive = [self archiveBy: zimFileID];
+    if (archive == nil) { return nil; }
+    try {
+        zim::Entry entry = archive->getEntryByPath([contentPath cStringUsingEncoding:NSUTF8StringEncoding]);
+        zim::Item item = entry.getItem(entry.isRedirect());
+        return [NSNumber numberWithUnsignedLongLong:item.getSize()];
+    } catch (std::exception) {
+        return nil;
+    }
+}
+
 - (NSDictionary *)getContent:(NSUUID *)zimFileID contentPath:(NSString *)contentPath
                        start:(NSUInteger)start end:(NSUInteger)end {
     if ([contentPath hasPrefix:@"/"]) {

@@ -272,6 +272,14 @@ final class BrowserViewModel: NSObject, ObservableObject,
             }
             decisionHandler(.cancel)
         } else if url.isKiwixURL {
+            guard ZimFileService.shared.getContentSize(url: url) != nil else {
+                // content is missing
+                decisionHandler(.cancel)
+                NotificationCenter.default.post(
+                    name: .alert, object: nil, userInfo: ["rawValue": ActiveAlert.articleFailedToLoad.rawValue]
+                )
+                return
+            }
             decisionHandler(.allow)
         } else if url.isExternal {
             externalURL = url
@@ -302,6 +310,21 @@ final class BrowserViewModel: NSObject, ObservableObject,
         }
     }
 
+    private var canShowMimeType = true
+
+    func webView(
+        _ webView: WKWebView,
+        decidePolicyFor navigationResponse: WKNavigationResponse,
+        decisionHandler: @escaping (WKNavigationResponsePolicy) -> Void
+    ) {
+        canShowMimeType = navigationResponse.canShowMIMEType
+        guard canShowMimeType else {
+            decisionHandler(.cancel)
+            return
+        }
+        decisionHandler(.allow)
+    }
+
     func webView(_ webView: WKWebView, didFinish _: WKNavigation!) {
         webView.evaluateJavaScript("expandAllDetailTags(); getOutlineItems();")
 #if os(iOS)
@@ -322,6 +345,7 @@ final class BrowserViewModel: NSObject, ObservableObject,
             .urlSchemeHandler(forURLScheme: KiwixURLSchemeHandler.KiwixScheme) as? KiwixURLSchemeHandler)?
             .didFailProvisionalNavigation()
         guard error.code != NSURLErrorCancelled else { return }
+        guard canShowMimeType else { return }
         NotificationCenter.default.post(
             name: .alert, object: nil, userInfo: ["rawValue": ActiveAlert.articleFailedToLoad.rawValue]
         )
