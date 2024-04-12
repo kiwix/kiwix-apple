@@ -345,7 +345,13 @@ final class BrowserViewModel: NSObject, ObservableObject,
             .urlSchemeHandler(forURLScheme: KiwixURLSchemeHandler.KiwixScheme) as? KiwixURLSchemeHandler)?
             .didFailProvisionalNavigation()
         guard error.code != NSURLErrorCancelled else { return }
-        guard canShowMimeType else { return }
+        guard canShowMimeType else {
+            guard let kiwixURL = error.userInfo[NSURLErrorFailingURLErrorKey] else {
+                return
+            }
+            debugPrint("offer to open: \(kiwixURL)")
+            return
+        }
         NotificationCenter.default.post(
             name: .alert, object: nil, userInfo: ["rawValue": ActiveAlert.articleFailedToLoad.rawValue]
         )
