@@ -66,7 +66,7 @@ targetTemplates:
       path: Support/Kiwix.entitlements
       properties:
         com.apple.security.app-sandbox: true
-        com.apple.security.files.user-selected.read-only: true
+        com.apple.security.files.user-selected.read-write: true
         com.apple.security.network.client: true
     dependencies:
       - framework: CoreKiwix.xcframework
@@ -94,7 +94,6 @@ targets:
       - ApplicationTemplate
     entitlements:
       properties:
-        com.apple.security.files.user-selected.read-write: true
         com.apple.security.files.downloads.read-write: true
     settings:
       base:
