@@ -246,6 +246,7 @@ final class BrowserViewModel: NSObject, ObservableObject,
 
     // MARK: - WKNavigationDelegate
 
+    // swiftlint disable:next function_body_length
     func webView(
         _ webView: WKWebView,
         decidePolicyFor navigationAction: WKNavigationAction,
