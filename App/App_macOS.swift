@@ -174,6 +174,7 @@ struct RootView: View {
         .environmentObject(navigation)
         .modifier(AlertHandler())
         .modifier(OpenFileHandler())
+        .modifier(SaveContentHandler())
         .onOpenURL { url in
             if url.isFileURL {
                 NotificationCenter.openFiles([url], context: .file)

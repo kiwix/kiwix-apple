@@ -346,16 +346,15 @@ final class BrowserViewModel: NSObject, ObservableObject,
             .didFailProvisionalNavigation()
         guard error.code != NSURLErrorCancelled else { return }
         guard canShowMimeType else {
-            guard let kiwixURL = error.userInfo[NSURLErrorFailingURLErrorKey] else {
+            guard let kiwixURL = error.userInfo[NSURLErrorFailingURLErrorKey] as? URL else {
                 return
             }
-            debugPrint("offer to open: \(kiwixURL)")
+            NotificationCenter.saveContent(url: kiwixURL)
             return
         }
         NotificationCenter.default.post(
             name: .alert, object: nil, userInfo: ["rawValue": ActiveAlert.articleFailedToLoad.rawValue]
         )
-
     }
 
     // MARK: - WKScriptMessageHandler

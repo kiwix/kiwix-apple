@@ -94,6 +94,7 @@ targets:
       - ApplicationTemplate
     entitlements:
       properties:
+        com.apple.security.files.user-selected.read-write: true
         com.apple.security.files.downloads.read-write: true
     settings:
       base:
