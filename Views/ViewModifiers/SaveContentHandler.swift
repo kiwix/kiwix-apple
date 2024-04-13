@@ -35,6 +35,7 @@ struct SaveContentHandler: ViewModifier {
                    let urlContent = ZimFileService.shared.getURLContent(url: url),
                    let destinationURL = savePanel.url {
                     try? urlContent.data.write(to: destinationURL)
+                    savePanel.close()
                 }
             }
             #endif
