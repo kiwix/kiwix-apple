@@ -26,6 +26,7 @@ struct SaveContentHandler: ViewModifier {
                   url.isKiwixURL else {
                 return
             }
+            #if os(macOS)
             let savePanel = NSSavePanel()
             savePanel.canCreateDirectories = true
             savePanel.nameFieldStringValue = url.lastPathComponent
@@ -36,6 +37,7 @@ struct SaveContentHandler: ViewModifier {
                     try? urlContent.data.write(to: destinationURL)
                 }
             }
+            #endif
         }
     }
 }
