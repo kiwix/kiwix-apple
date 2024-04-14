@@ -52,7 +52,7 @@
     // get a list of archives that are included in search
     typedef std::unordered_map<std::string, zim::Archive> archives_map;
     auto *allArchives = static_cast<archives_map *>([[ZimFileService sharedInstance] getArchives]);
-    
+
     std::vector<zim::Archive> indexSearchArchives = std::vector<zim::Archive>();
     std::vector<zim::Archive> titleSearchArchives = std::vector<zim::Archive>();
     for (NSUUID *zimFileID in self.zimFileIDs) {
@@ -63,9 +63,9 @@
                 indexSearchArchives.push_back(archive);
             }
             titleSearchArchives.push_back(archive);
-        } catch (std::out_of_range) { }
+        } catch (std::exception) { }
     }
-    
+
     // perform index and title search
     [self addIndexSearchResults:indexSearchArchives];
     if (titleSearchArchives.size() > 0) {
