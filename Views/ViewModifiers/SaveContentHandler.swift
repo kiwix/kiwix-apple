@@ -21,7 +21,7 @@ struct SaveContentHandler: ViewModifier {
     private let saveContentToFile = NotificationCenter.default.publisher(for: .saveContent)
     #if os(iOS)
     @State private var kiwixURL: URL?
-    @State private var urlAndContent: (URL, URLContent)? = nil
+    @State private var urlAndContent: (URL, URLContent)?
     #endif
 
     func body(content: Content) -> some View {
@@ -39,16 +39,19 @@ struct SaveContentHandler: ViewModifier {
 #if os(iOS)
         .alert(isPresented: Binding<Bool>.constant($kiwixURL.wrappedValue != nil)) {
             Alert(title: Text("common.export_file.alert.title".localized),
-                  message: Text("common.export_file.alert.description".localizedWithFormat(withArgs: kiwixURL?.lastPathComponent ?? "")),
+                  message: Text("common.export_file.alert.description"
+                        .localizedWithFormat(withArgs: kiwixURL?.lastPathComponent ?? "")
+                  ),
                   primaryButton: .default(Text("common.export_file.alert.button.title")) {
                 if let kiwixURL,
-                    let urlContent = ZimFileService.shared.getURLContent(url: kiwixURL) {
+                   let urlContent = ZimFileService.shared.getURLContent(url: kiwixURL) {
                     urlAndContent = (kiwixURL, urlContent)
                 } else {
                     urlAndContent = nil
                 }
                 kiwixURL = nil
-            }, secondaryButton: .cancel {
+            },
+                  secondaryButton: .cancel {
                 kiwixURL = nil
             }
             )
@@ -95,10 +98,12 @@ struct ActivityViewController: UIViewControllerRepresentable {
 
     var activityItems: [Any]
     @Environment(\.dismiss) var dismissAction
-    func makeUIViewController(context: UIViewControllerRepresentableContext<ActivityViewController>) -> UIActivityViewController {
+    func makeUIViewController(
+        context: UIViewControllerRepresentableContext<ActivityViewController>
+    ) -> UIActivityViewController {
         let controller = UIActivityViewController(activityItems: activityItems, applicationActivities: nil)
         controller.modalPresentationStyle = .pageSheet
-        controller.completionWithItemsHandler = { (activityType, completed, returnedItems, error) in
+        controller.completionWithItemsHandler = { _ in
             self.dismissAction()
         }
         return controller
