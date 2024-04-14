@@ -47,6 +47,9 @@
 "common.tab.menu.library" = "Library";
 "common.tab.menu.settings" = "Settings";
 "common.support.app_name" = "Support %@";
+"common.export_file.alert.title" = "Export file";
+"common.export_file.alert.description" = "Do you want to export the file %@?";
+"common.export_file.alert.button.title" = "Export";
 
 "outline_button.outline.title" = "Outline";
 "outline_button.outline.help" = "Show article outline";

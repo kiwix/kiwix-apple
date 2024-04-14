@@ -20,6 +20,7 @@ struct SaveContentHandler: ViewModifier {
 
     private let saveContentToFile = NotificationCenter.default.publisher(for: .saveContent)
     #if os(iOS)
+    @State private var kiwixURL: URL?
     @State private var urlAndContent: (URL, URLContent)? = nil
     #endif
 
@@ -32,14 +33,26 @@ struct SaveContentHandler: ViewModifier {
             #if os(macOS)
             savePanelFor(url: url)
             #else
-            if let urlContent = ZimFileService.shared.getURLContent(url: url) {
-                urlAndContent = (url, urlContent)
-            } else {
-                urlAndContent = nil
-            }
+            kiwixURL = url
             #endif
         }
 #if os(iOS)
+        .alert(isPresented: Binding<Bool>.constant($kiwixURL.wrappedValue != nil)) {
+            Alert(title: Text("common.export_file.alert.title".localized),
+                  message: Text("common.export_file.alert.description".localizedWithFormat(withArgs: kiwixURL?.lastPathComponent ?? "")),
+                  primaryButton: .default(Text("common.export_file.alert.button.title")) {
+                if let kiwixURL,
+                    let urlContent = ZimFileService.shared.getURLContent(url: kiwixURL) {
+                    urlAndContent = (kiwixURL, urlContent)
+                } else {
+                    urlAndContent = nil
+                }
+                kiwixURL = nil
+            }, secondaryButton: .cancel {
+                kiwixURL = nil
+            }
+            )
+        }
         .sheet(
             isPresented: Binding<Bool>.constant($urlAndContent.wrappedValue != nil),
             onDismiss: {
