@@ -43,7 +43,7 @@ struct Library: View {
                     case .categories:
                         List(categories) { category in
                             NavigationLink {
-                                ZimFilesCategory(category: .constant(category))
+                                ZimFilesCategory(category: .constant(category), dismiss: dismiss)
                                     .navigationTitle(category.name)
                                     .navigationBarTitleDisplayMode(.inline)
                             } label: {
@@ -56,9 +56,9 @@ struct Library: View {
                         .listStyle(.plain)
                         .navigationTitle(NavigationItem.categories.name)
                     case .downloads:
-                        ZimFilesDownloads()
+                        ZimFilesDownloads(dismiss: dismiss)
                     case .new:
-                        ZimFilesNew()
+                        ZimFilesNew(dismiss: dismiss)
                     }
                 }
                 .tag(tabItem)
@@ -117,7 +117,7 @@ struct LibraryZimFileContext: ViewModifier {
     let zimFile: ZimFile
     let dismiss: (() -> Void)? // iOS only
 
-    init(zimFile: ZimFile, dismiss: (() -> Void)? = nil) {
+    init(zimFile: ZimFile, dismiss: (() -> Void)?) {
         self.zimFile = zimFile
         self.dismiss = dismiss
     }

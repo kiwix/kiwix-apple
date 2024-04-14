@@ -32,6 +32,7 @@ struct ZimFilesNew: View {
         animation: .easeInOut
     ) private var zimFiles: FetchedResults<ZimFile>
     @State private var searchText = ""
+    let dismiss: (() -> Void)? // iOS only
 
     var body: some View {
         LazyVGrid(
@@ -41,7 +42,7 @@ struct ZimFilesNew: View {
         ) {
             ForEach(zimFiles) { zimFile in
                 ZimFileCell(zimFile, prominent: .name)
-                    .modifier(LibraryZimFileContext(zimFile: zimFile))
+                    .modifier(LibraryZimFileContext(zimFile: zimFile, dismiss: dismiss))
             }
         }
         .modifier(GridCommon())
@@ -112,7 +113,7 @@ struct ZimFilesNew: View {
 struct ZimFilesNew_Previews: PreviewProvider {
     static var previews: some View {
         NavigationStack {
-            ZimFilesNew()
+            ZimFilesNew(dismiss: nil)
                 .environmentObject(LibraryViewModel())
                 .environment(\.managedObjectContext, Database.viewContext)
         }

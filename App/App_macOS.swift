@@ -160,11 +160,11 @@ struct RootView: View {
             case .opened:
                 ZimFilesOpened(dismiss: nil).modifier(LibraryZimFileDetailSidePanel())
             case .categories:
-                ZimFilesCategories().modifier(LibraryZimFileDetailSidePanel())
+                ZimFilesCategories(dismiss: nil).modifier(LibraryZimFileDetailSidePanel())
             case .downloads:
-                ZimFilesDownloads().modifier(LibraryZimFileDetailSidePanel())
+                ZimFilesDownloads(dismiss: nil).modifier(LibraryZimFileDetailSidePanel())
             case .new:
-                ZimFilesNew().modifier(LibraryZimFileDetailSidePanel())
+                ZimFilesNew(dismiss: nil).modifier(LibraryZimFileDetailSidePanel())
             default:
                 EmptyView()
             }
