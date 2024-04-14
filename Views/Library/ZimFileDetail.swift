@@ -30,6 +30,11 @@ struct ZimFileDetail: View {
     @State private var isPresentingUnlinkAlert = false
     let dismissParent: (() -> Void)? // iOS only
 
+    init(zimFile: ZimFile, dismissParent: (() -> Void)?) {
+        self.zimFile = zimFile
+        self.dismissParent = dismissParent
+    }
+
     var body: some View {
         #if os(macOS)
         List {

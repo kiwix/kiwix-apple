@@ -123,13 +123,13 @@ final class SplitViewController: UISplitViewController {
             let controller = UIHostingController(rootView: ZimFilesOpened(dismiss: nil))
             setViewController(UINavigationController(rootViewController: controller), for: .secondary)
         case .categories:
-            let controller = UIHostingController(rootView: ZimFilesCategories())
+            let controller = UIHostingController(rootView: ZimFilesCategories(dismiss: nil))
             setViewController(UINavigationController(rootViewController: controller), for: .secondary)
         case .downloads:
-            let controller = UIHostingController(rootView: ZimFilesDownloads())
+            let controller = UIHostingController(rootView: ZimFilesDownloads(dismiss: nil))
             setViewController(UINavigationController(rootViewController: controller), for: .secondary)
         case .new:
-            let controller = UIHostingController(rootView: ZimFilesNew())
+            let controller = UIHostingController(rootView: ZimFilesNew(dismiss: nil))
             setViewController(UINavigationController(rootViewController: controller), for: .secondary)
         case .settings:
             let controller = UIHostingController(rootView: Settings())

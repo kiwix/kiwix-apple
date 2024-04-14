@@ -23,6 +23,11 @@ struct ZimFilesDownloads: View {
         sortDescriptors: [NSSortDescriptor(keyPath: \DownloadTask.created, ascending: false)],
         animation: .easeInOut
     ) private var downloadTasks: FetchedResults<DownloadTask>
+    private let dismiss: (() -> Void)?
+
+    init(dismiss: (() -> Void)?) {
+        self.dismiss = dismiss
+    }
 
     var body: some View {
         LazyVGrid(
@@ -32,7 +37,7 @@ struct ZimFilesDownloads: View {
         ) {
             ForEach(downloadTasks) { downloadTask in
                 if let zimFile = downloadTask.zimFile {
-                    DownloadTaskCell(downloadTask).modifier(LibraryZimFileContext(zimFile: zimFile))
+                    DownloadTaskCell(downloadTask).modifier(LibraryZimFileContext(zimFile: zimFile, dismiss: dismiss))
                 }
             }
         }

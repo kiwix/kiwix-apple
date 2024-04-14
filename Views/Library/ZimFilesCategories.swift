@@ -21,14 +21,16 @@ import Defaults
 struct ZimFilesCategories: View {
     @State private var selected: Category
     private var categories: [Category]
+    private let dismiss: (() -> Void)?
 
-    init() {
+    init(dismiss: (() -> Void)?) {
         categories = CategoriesToLanguages.allCategories()
         selected = categories.first ?? .wikipedia
+        self.dismiss = dismiss
     }
 
     var body: some View {
-        ZimFilesCategory(category: $selected)
+        ZimFilesCategory(category: $selected, dismiss: dismiss)
             .modifier(ToolbarRoleBrowser())
             .navigationTitle(NavigationItem.categories.name)
             .toolbar {
@@ -58,12 +60,13 @@ struct ZimFilesCategories: View {
 struct ZimFilesCategory: View {
     @Binding var category: Category
     @State private var searchText = ""
+    let dismiss: (() -> Void)? // iOS only
 
     var body: some View {
         if category == .ted || category == .stackExchange || category == .other {
-            CategoryList(category: $category, searchText: $searchText)
+            CategoryList(category: $category, searchText: $searchText, dismiss: dismiss)
         } else {
-            CategoryGrid(category: $category, searchText: $searchText)
+            CategoryGrid(category: $category, searchText: $searchText, dismiss: dismiss)
         }
     }
 
@@ -87,10 +90,12 @@ private struct CategoryGrid: View {
     @EnvironmentObject private var viewModel: LibraryViewModel
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     @SectionedFetchRequest private var sections: SectionedFetchResults<String, ZimFile>
+    private let dismiss: (() -> Void)? // iOS only
 
-    init(category: Binding<Category>, searchText: Binding<String>) {
+    init(category: Binding<Category>, searchText: Binding<String>, dismiss: (() -> Void)?) {
         self._category = category
         self._searchText = searchText
+        self.dismiss = dismiss
         self._sections = SectionedFetchRequest<String, ZimFile>(
             sectionIdentifier: \.name,
             sortDescriptors: [SortDescriptor(\ZimFile.name), SortDescriptor(\.size, order: .reverse)],
@@ -111,13 +116,13 @@ private struct CategoryGrid: View {
                         if sections.count <= 1 {
                             ForEach(section) { zimFile in
                                 ZimFileCell(zimFile, prominent: .size)
-                                    .modifier(LibraryZimFileContext(zimFile: zimFile))
+                                    .modifier(LibraryZimFileContext(zimFile: zimFile, dismiss: dismiss))
                             }
                         } else {
                             Section {
                                 ForEach(section) { zimFile in
                                     ZimFileCell(zimFile, prominent: .size)
-                                        .modifier(LibraryZimFileContext(zimFile: zimFile))
+                                        .modifier(LibraryZimFileContext(zimFile: zimFile, dismiss: dismiss))
                                 }
                             } header: {
                                 SectionHeader(
@@ -179,10 +184,15 @@ private struct CategoryList: View {
     @Default(.libraryLanguageCodes) private var languageCodes
     @EnvironmentObject private var viewModel: LibraryViewModel
     @FetchRequest private var zimFiles: FetchedResults<ZimFile>
+    private let dismiss: (() -> Void)?
 
-    init(category: Binding<Category>, searchText: Binding<String>) {
+    init(category: Binding<Category>, 
+         searchText: Binding<String>,
+         dismiss: (() -> Void)?
+    ) {
         self._category = category
         self._searchText = searchText
+        self.dismiss = dismiss
         self._zimFiles = FetchRequest<ZimFile>(
             sortDescriptors: [
                 NSSortDescriptor(
@@ -204,7 +214,7 @@ private struct CategoryList: View {
             } else {
                 List(zimFiles, id: \.self, selection: $viewModel.selectedZimFile) { zimFile in
                     ZimFileRow(zimFile)
-                        .modifier(LibraryZimFileContext(zimFile: zimFile))
+                        .modifier(LibraryZimFileContext(zimFile: zimFile, dismiss: dismiss))
                 }
                 #if os(macOS)
                 .listStyle(.inset)
