@@ -175,6 +175,7 @@ struct RootView: View {
         .modifier(AlertHandler())
         .modifier(OpenFileHandler())
         .modifier(SaveContentHandler())
+        .modifier(SharePDFHandler())
         .onOpenURL { url in
             if url.isFileURL {
                 NotificationCenter.openFiles([url], context: .file)
