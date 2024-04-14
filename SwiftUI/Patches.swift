@@ -71,6 +71,7 @@ extension Notification.Name {
     static let alert = Notification.Name("alert")
     static let openFiles = Notification.Name("openFiles")
     static let openURL = Notification.Name("openURL")
+    static let sharePDF = Notification.Name("sharePDF")
     static let toggleSidebar = Notification.Name("toggleSidebar")
 }
 
@@ -86,6 +87,10 @@ extension NotificationCenter {
 
     static func openFiles(_ urls: [URL], context: OpenFileContext) {
         NotificationCenter.default.post(name: .openFiles, object: nil, userInfo: ["urls": urls, "context": context])
+    }
+
+    static func sharePDF(_ data: Data, fileName: String) {
+        NotificationCenter.default.post(name: .sharePDF, object: nil, userInfo: ["data": data, "fileName": fileName])
     }
 
     static func toggleSidebar() {

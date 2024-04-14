@@ -21,7 +21,15 @@ struct ShareButton: View {
 
     var body: some View {
         Button {
-            debugPrint("share this")
+            Task {
+                guard let browserURLName = browser.webView.url?.lastPathComponent else {
+                    return
+                }
+                guard let pdfData = try? await browser.webView.pdf() else {
+                    return
+                }
+                NotificationCenter.sharePDF(pdfData, fileName: browserURLName)
+            }
         } label: {
             Label {
                 Text("Share".localized)
