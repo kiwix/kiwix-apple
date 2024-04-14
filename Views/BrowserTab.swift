@@ -37,6 +37,7 @@ struct BrowserTab: View {
             #endif
             ToolbarItemGroup(placement: .primaryAction) {
                 OutlineButton()
+                ShareButton()
                 BookmarkButton()
                 ArticleShortcutButtons(displayMode: .mainAndRandomArticle)
             }
