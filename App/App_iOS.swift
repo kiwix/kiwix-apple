@@ -41,6 +41,7 @@ struct Kiwix: App {
                 .environmentObject(navigation)
                 .modifier(AlertHandler())
                 .modifier(OpenFileHandler())
+                .modifier(SaveContentHandler())
                 .onChange(of: scenePhase) { newValue in
                     guard newValue == .inactive else { return }
                     try? Database.viewContext.save()
