@@ -15,6 +15,20 @@
 
 import SwiftUI
 
+enum PDFHandler {
+    static func tempFileFrom(pdfData: Data, fileName: String) -> URL? {
+        guard let tempFileName = fileName.split(separator: ".").first?.appending(".pdf") else {
+            return nil
+        }
+        let tempFileURL = URL(temporaryFileWithName: tempFileName)
+        guard (try? pdfData.write(to: tempFileURL)) != nil else {
+            return nil
+        }
+        return tempFileURL
+    }
+}
+
+#if os(iOS)
 /// On receiving pdf content and a file name, it gives the ability to share it
 struct SharePDFHandler: ViewModifier {
 
@@ -27,18 +41,12 @@ struct SharePDFHandler: ViewModifier {
             guard let userInfo = notification.userInfo,
                   let pdfData = userInfo["data"] as? Data,
                   let fileName = userInfo["fileName"] as? String,
-                  let tempFileName = fileName.split(separator: ".").first?.appending(".pdf") else {
-                return
-            }
-
-            let tempFileURL = URL(temporaryFileWithName: tempFileName)
-            guard (try? pdfData.write(to: tempFileURL)) != nil else {
+                  let tempURL = PDFHandler.tempFileFrom(pdfData: pdfData, fileName: fileName) else {
                 temporaryURL = nil
                 return
             }
-            temporaryURL = tempFileURL
+            temporaryURL = tempURL
         }
-        #if os(iOS)
         .sheet(
             isPresented: Binding<Bool>.constant($temporaryURL.wrappedValue != nil),
             onDismiss: {
@@ -47,26 +55,12 @@ struct SharePDFHandler: ViewModifier {
                 }
                 temporaryURL = nil
             }, content: {
-                #if os(iOS)
                 ActivityViewController(activityItems: [temporaryURL].compactMap { $0 })
-                #else
-                NSSharingServicePicker(items: [temporaryURL])
-                #endif
             }
         )
-        #else
-        .background(SharingsPicker(
-            isPresented: Binding<Bool>.constant($temporaryURL.wrappedValue != nil),
-            sharingItems: [temporaryURL].compactMap { $0 },
-            onDismiss: {
-                temporaryURL = nil
-            }
-        ))
-        #endif
     }
 }
 
-#if os(iOS)
 struct ActivityViewController: UIViewControllerRepresentable {
 
     var activityItems: [Any]
@@ -83,53 +77,6 @@ struct ActivityViewController: UIViewControllerRepresentable {
     }
 
     func updateUIViewController(_ uiViewController: UIActivityViewController, context: Context) {
-    }
-}
-
-#endif
-
-#if os(macOS)
-struct SharingsPicker: NSViewRepresentable {
-    @Binding var isPresented: Bool {
-        didSet {
-            if isPresented == false {
-                onDismiss?()
-            }
-        }
-    }
-    var sharingItems: [Any] = []
-    let onDismiss: (() -> Void)?
-
-    func makeNSView(context: Context) -> NSView {
-        NSView()
-    }
-
-    func updateNSView(_ nsView: NSView, context: Context) {
-        if isPresented {
-            let picker = NSSharingServicePicker(items: sharingItems)
-            picker.delegate = context.coordinator
-            DispatchQueue.main.async { // call async, to not to block updates
-                picker.show(relativeTo: .zero, of: nsView, preferredEdge: .minX)
-            }
-        }
-    }
-
-    func makeCoordinator() -> Coordinator {
-        Coordinator(owner: self)
-    }
-
-    class Coordinator: NSObject, NSSharingServicePickerDelegate {
-        let owner: SharingsPicker
-
-        init(owner: SharingsPicker) {
-            self.owner = owner
-        }
-
-        func sharingServicePicker(_ sharingServicePicker: NSSharingServicePicker, didChoose service: NSSharingService?) {
-            sharingServicePicker.delegate = nil   // << cleanup
-            owner.isPresented = false        // << dismiss
-            owner.onDismiss?()
-        }
     }
 }
 #endif
