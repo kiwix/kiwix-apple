@@ -17,6 +17,7 @@
 "common.tab.list.close" = "Tab zoumaachen";
 "common.tab.menu.library" = "Bibliothéik";
 "common.tab.menu.settings" = "Astellungen";
+"common.support.app_name" = "%@ ënnerstëtzen";
 "article_shortcut.main.button.title" = "Haaptartikel";
 "article_shortcut.main.button.help" = "Haaptartikel weisen";
 "article_shortcut.random.button.title.mac" = "Zoufällegen Artikel";
