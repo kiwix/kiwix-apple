@@ -115,6 +115,12 @@ extension ZimFileService {
         return getURLContent(zimFileID: zimFileID, contentPath: url.path, start: start, end: end)
     }
 
+    func getContentSize(url: URL) -> NSNumber? {
+        guard let zimFileID = url.host,
+              let zimFileUUID = UUID(uuidString: zimFileID) else { return nil }
+        return __getContentSize(zimFileUUID, contentPath: url.path)
+    }
+
     func getURLContent(zimFileID: String, contentPath: String, start: UInt = 0, end: UInt = 0) -> URLContent? {
         guard let zimFileID = UUID(uuidString: zimFileID),
               let content = __getContent(zimFileID, contentPath: contentPath, start: start, end: end),
