@@ -145,6 +145,8 @@ private struct CompactView: View {
                             Spacer()
                             BookmarkButton()
                             Spacer()
+                            ShareButton()
+                            Spacer()
                             TabsManagerButton()
                             if FeatureFlags.hasLibrary {
                                 Spacer()
