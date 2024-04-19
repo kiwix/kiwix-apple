@@ -60,23 +60,4 @@ struct SharePDFHandler: ViewModifier {
         )
     }
 }
-
-struct ActivityViewController: UIViewControllerRepresentable {
-
-    var activityItems: [Any]
-    @Environment(\.dismiss) var dismissAction
-    func makeUIViewController(
-        context: UIViewControllerRepresentableContext<ActivityViewController>
-    ) -> UIActivityViewController {
-        let controller = UIActivityViewController(activityItems: activityItems, applicationActivities: nil)
-        controller.modalPresentationStyle = .pageSheet
-        controller.completionWithItemsHandler = { (_, _, _, _) in
-            self.dismissAction()
-        }
-        return controller
-    }
-
-    func updateUIViewController(_ uiViewController: UIActivityViewController, context: Context) {
-    }
-}
 #endif
