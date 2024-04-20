@@ -67,7 +67,9 @@
     }
 
     // perform index and title search
-    [self addIndexSearchResults:indexSearchArchives];
+    try {
+        [self addIndexSearchResults:indexSearchArchives];
+    } catch (std::exception) { }
     if (titleSearchArchives.size() > 0) {
         int count = std::max((35 - (int)[self.results count]) / (int)titleSearchArchives.size(), 5);
         [self addTitleSearchResults:titleSearchArchives count:(int)count];
