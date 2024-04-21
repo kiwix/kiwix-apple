@@ -74,6 +74,9 @@ extension Notification.Name {
     static let sharePDF = Notification.Name("sharePDF")
     static let saveContent = Notification.Name("saveContent")
     static let toggleSidebar = Notification.Name("toggleSidebar")
+    #if os(macOS)
+    static let printable = Notification.Name("printable")
+    #endif
 }
 
 extension UTType {
@@ -96,6 +99,14 @@ extension NotificationCenter {
 
     static func saveContent(url: URL) {
         NotificationCenter.default.post(name: .saveContent, object: nil, userInfo: ["url": url])
+    }
+
+    static func printable(kiwixURL url: URL) {
+        NotificationCenter.default.post(name: .printable, object: nil, userInfo: ["url": url])
+    }
+
+    static func notPrintable() {
+        NotificationCenter.default.post(name: .printable, object: nil, userInfo: nil)
     }
 
     static func toggleSidebar() {
