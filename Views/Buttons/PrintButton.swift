@@ -46,7 +46,7 @@ struct PrintButton: View {
             }
         } label: {
             Label {
-                Text("Print".localized)
+                Text("common.button.print".localized)
             }  icon: {
                 Image(systemName: "printer")
             }
