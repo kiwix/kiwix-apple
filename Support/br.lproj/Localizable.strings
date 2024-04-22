@@ -28,6 +28,9 @@
 "common.tab.menu.library" = "Levraoueg";
 "common.tab.menu.settings" = "Arventennoù";
 "common.support.app_name" = "Skoazellañ %@";
+"common.export_file.alert.title" = "Ezporzhiañ ar restr";
+"common.export_file.alert.description" = "Fellout a ra deoc'h ezporzhiañ ar restr %@?";
+"common.export_file.alert.button.title" = "Ezporzhiañ";
 "article_shortcut.main.button.title" = "Pennad pennañ";
 "article_shortcut.main.button.help" = "Diskouez ar pennad pennañ";
 "article_shortcut.random.button.title.mac" = "Pennad dre zegouezh";
