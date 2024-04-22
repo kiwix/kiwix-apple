@@ -13,7 +13,9 @@
 // You should have received a copy of the GNU General Public License
 // along with Kiwix; If not, see https://www.gnu.org/licenses/.
 
+#if os(macOS)
 import SwiftUI
+import PDFKit
 
 struct PrintButton: View {
 
@@ -38,7 +40,13 @@ struct PrintButton: View {
         Button {
             Task {
                 guard let url = await tempFileURL() else { return }
-                debugPrint("Print url: \(url)")
+                let view = PDFView()
+                let window = NSWindow()
+                view.document = PDFDocument(url: url)
+                window.setContentSize(view.frame.size)
+                window.contentView = view
+                window.center()
+                view.print(with: .shared, autoRotate: true)
             }
         } label: {
             Label {
@@ -50,3 +58,4 @@ struct PrintButton: View {
         .keyboardShortcut("p", modifiers: .command)
     }
 }
+#endif
