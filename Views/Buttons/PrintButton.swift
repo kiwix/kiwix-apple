@@ -40,13 +40,9 @@ struct PrintButton: View {
         Button {
             Task {
                 guard let url = await tempFileURL() else { return }
-                let view = PDFView()
-                let window = NSWindow()
-                view.document = PDFDocument(url: url)
-                window.setContentSize(view.frame.size)
-                window.contentView = view
-                window.center()
-                view.print(with: .shared, autoRotate: true)
+                let pdfDoc = PDFDocument(url: url)
+                let operation = pdfDoc?.printOperation(for: .shared, scalingMode: .pageScaleToFit, autoRotate: true)
+                operation?.run()
             }
         } label: {
             Label {
