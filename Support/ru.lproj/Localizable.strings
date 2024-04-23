@@ -33,6 +33,9 @@
 "common.tab.menu.library" = "Библиотека";
 "common.tab.menu.settings" = "Настройки";
 "common.support.app_name" = "Справка %@";
+"common.export_file.alert.title" = "Экспорт файла";
+"common.export_file.alert.description" = "Вы будете экспортировать файл %@?";
+"common.export_file.alert.button.title" = "Экспорт";
 "outline_button.outline.title" = "Наброски";
 "outline_button.outline.help" = "Показать структуру статьи";
 "outline_button.outline.empty.message" = "Нет доступных контуров";
@@ -63,7 +66,6 @@
 "library_refresh_time.never" = "Никогда";
 "zim_file_cell_article_count_suffix" = "статей";
 "zim_file_missing_indicator.help" = "Zim-файл отсутствует.";
-// Fuzzy
 "library.zim_file_details.side_panel.message" = "Выберите ZIM-файл, чтобы просмотреть подробности.";
 "library.zim_file_context.main_page.label" = "Заглавная страница";
 "library.zim_file_context.random.label" = "Случайная страница";
@@ -88,18 +90,14 @@
 "zim_file.action.reveal_in_finder.title" = "Показать в Finder";
 "zim_file.action.toggle_cellular" = "Загрузка с помощью сотовой связи";
 "zim_file.action.unlink.title" = "Разорвать связь";
-// Fuzzy
 "zim_file.action.unlink.message" = "Все статьи с закладками, связанные с этим ZIM-файлом, будут удалены, но исходный файл останется на месте.";
 "zim_file.action.unlink.button.title" = "Разорвать связь";
 "zim_file.action.delete.title" = "Удалить";
-// Fuzzy
 "zim_file.action.delete.message" = "Zim-файл и все статьи с закладками, связанные с этим ZIM-файлом, будут удалены.";
 "zim_file.action.delete.button.title" = "Удалить";
 "zim_file.action.download.title" = "Скачать";
 "zim_file.action.download.warning.title" = "Космическое предупреждение";
-// Fuzzy
 "zim_file.action.download.warning.message" = "Возможно, на вашем устройстве недостаточно места для этого ZIM-файла.";
-// Fuzzy
 "zim_file.action.download.warning.message1" = "После загрузки файла ZIM останется менее 1 ГБ свободного места.";
 "zim_file.action.download.button.anyway" = "Все равно скачать";
 "zim_file.base_info.attribute.language" = "Язык";

@@ -18,6 +18,9 @@
 "common.tab.menu.library" = "Bibliothéik";
 "common.tab.menu.settings" = "Astellungen";
 "common.support.app_name" = "%@ ënnerstëtzen";
+"common.export_file.alert.title" = "Fichier exportéieren";
+"common.export_file.alert.description" = "Wëllt Dir de Fichier %@ exportéieren?";
+"common.export_file.alert.button.title" = "Exportéieren";
 "article_shortcut.main.button.title" = "Haaptartikel";
 "article_shortcut.main.button.help" = "Haaptartikel weisen";
 "article_shortcut.random.button.title.mac" = "Zoufällegen Artikel";

@@ -29,6 +29,9 @@
 "common.tab.menu.library" = "Библиотека";
 "common.tab.menu.settings" = "Нагодувања";
 "common.support.app_name" = "Поддржете го %@";
+"common.export_file.alert.title" = "Извези податотека";
+"common.export_file.alert.description" = "Дали сакате да ја извезете податотеката %@?";
+"common.export_file.alert.button.title" = "Извези";
 "outline_button.outline.title" = "Преглед";
 "outline_button.outline.help" = "Прикажи преглед на статијата";
 "outline_button.outline.empty.message" = "Прегледот не е достапен";

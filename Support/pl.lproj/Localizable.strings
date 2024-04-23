@@ -53,6 +53,7 @@
 "zim_file_new_overlay.empty" = "Brak nowego pliku zim";
 "zim_file_new_button_refresh" = "Odśwież";
 "zim_file.list.name.text" = "Nazwa";
+"zim_file.list.description.text" = "Opis";
 "zim_file.action.delete.title" = "Usuń";
 // Fuzzy
 "zim_file.action.delete.message" = "Plik zim i wszystkie artykuły dodane do zakładek powiązane z tym plikiem zim zostaną usunięte.";
@@ -66,6 +67,7 @@
 "zim_file.bool_info.pictures" = "Zdjęcia";
 "zim_file.bool_info.videos" = "Filmy";
 "zim_file.bool_info.details" = "Szczegóły";
+"zim_file.detail.id.title" = "ID";
 "zim_file.download_task.action.title.cancel" = "Anuluj";
 "zim_file.download_task.action.try_recover" = "Spróbuj odzyskać";
 "zim_file.download_task.action.failed" = "Błąd";
@@ -93,8 +95,7 @@
 "catalog_settings.auto_refresh.toggle" = "Automatyczne odświeżanie";
 "catalog_settings.header.text" = "Katalog";
 "catalog_settings.footer.text" = "Gdy ta opcja jest włączona, katalog biblioteki będzie automatycznie odświeżany, jeśli będzie nieaktualny.";
-// Fuzzy
-"backup_settings.toggle.title" = "Dołącz pliki zim do kopii zapasowej";
+"backup_settings.toggle.title" = "Dołącz pliki ZIM do kopii zapasowej";
 "backup_settings.header.text" = "Kopia zapasowa";
 "backup_settings.footer.text" = "Nie dotyczy plików otwieranych lokalnie.";
 "settings.miscellaneous.title" = "Różne";

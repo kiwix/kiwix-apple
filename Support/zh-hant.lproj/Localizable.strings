@@ -30,6 +30,9 @@
 "common.tab.menu.library" = "圖書館";
 "common.tab.menu.settings" = "設定";
 "common.support.app_name" = "支援 %@";
+"common.export_file.alert.title" = "匯出檔案";
+"common.export_file.alert.description" = "您要匯出檔案「%@」嗎？";
+"common.export_file.alert.button.title" = "匯出";
 "outline_button.outline.title" = "大綱";
 "outline_button.outline.help" = "顯示條目大綱";
 "outline_button.outline.empty.message" = "沒有可用的大綱";
