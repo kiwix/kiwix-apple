@@ -38,6 +38,9 @@ struct BrowserTab: View {
             ToolbarItemGroup(placement: .primaryAction) {
                 OutlineButton()
                 ShareButton()
+                #if os(macOS)
+                PrintButton()
+                #endif
                 BookmarkButton()
                 ArticleShortcutButtons(displayMode: .mainAndRandomArticle)
             }

@@ -13,9 +13,11 @@
 // You should have received a copy of the GNU General Public License
 // along with Kiwix; If not, see https://www.gnu.org/licenses/.
 
+#if os(macOS)
 import SwiftUI
+import PDFKit
 
-struct ShareButton: View {
+struct PrintButton: View {
 
     @EnvironmentObject private var browser: BrowserViewModel
 
@@ -37,20 +39,19 @@ struct ShareButton: View {
     var body: some View {
         Button {
             Task {
-                #if os(iOS)
-                guard let (pdfData, browserURLName) = await dataAndName() else { return }
-                NotificationCenter.sharePDF(pdfData, fileName: browserURLName)
-                #else
                 guard let url = await tempFileURL() else { return }
-                NSSharingServicePicker(items: [url]).show(relativeTo: .null, of: browser.webView, preferredEdge: .minY)
-                #endif
+                let pdfDoc = PDFDocument(url: url)
+                let operation = pdfDoc?.printOperation(for: .shared, scalingMode: .pageScaleToFit, autoRotate: true)
+                operation?.run()
             }
         } label: {
             Label {
-                Text("common.button.share".localized)
+                Text("common.button.print".localized)
             }  icon: {
-                Image(systemName: "square.and.arrow.up")
+                Image(systemName: "printer")
             }
         }.disabled(browser.zimFileName.isEmpty)
+        .keyboardShortcut("p", modifiers: .command)
     }
 }
+#endif

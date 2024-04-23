@@ -20,6 +20,8 @@
 "common.button.cancel" = "Button label for both the search bar, to dismiss search results, and also a dismiss button label on an alert about opening external links";
 "common.button.yes" = "It is a title in the summary table on macOS: we list the attributes of a ZIM file: does it contain pictures yes/no, does it contain Videos yes/no, Details? yes/no";
 "common.button.no" = "It is a title in the summary table on macOS: we list the attributes of a ZIM file: does it contain pictures yes/no, does it contain Videos yes/no, Details? yes/no";
+"common.button.print" = "Accessibility label for button to print the currently loaded article";
+"common.button.share" = "Accessibility label for share button, to share the currently loaded article with an external app.";
 "common.search" = "The default placeholder text for searchbars, when the search input field is empty";
 "common.tab.manager.title" = "Accessibility label for button tab bar button that opens an overlay menu.";
 "common.tab.navigation.title" = "On iPad it is a title in the sidemenu grouping tabs related buttons";
