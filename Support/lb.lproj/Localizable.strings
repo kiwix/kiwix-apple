@@ -13,6 +13,8 @@
 "common.button.cancel" = "Ofbriechen";
 "common.button.yes" = "Jo";
 "common.button.no" = "neen";
+"common.button.print" = "Drécken";
+"common.button.share" = "Deelen";
 "common.search" = "Sichen";
 "common.tab.list.close" = "Tab zoumaachen";
 "common.tab.menu.library" = "Bibliothéik";

@@ -2,7 +2,11 @@
 // Exported from translatewiki.net
 // Author: Beracy
 // Author: JosefAnthony
+// Author: McDutchie
 
+"library_refresh_error.retrieve.description" = "Ije du enwn ki Domo kwobi dufuñ";
+"library_refresh_error.parse.description" = "Ike doyi ki Domo kwobi dufuñ";
+"library_refresh_error.process.description" = "Ijeñ jucheñ Kuma kpo";
 "common.dialog.button.open" = "Eebi";
 "common.button.go_back" = "Da bi";
 "common.button.go_forward" = "Lo tó gba";

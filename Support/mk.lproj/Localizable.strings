@@ -19,6 +19,8 @@
 "common.button.cancel" = "Откажи";
 "common.button.yes" = "Да";
 "common.button.no" = "Не";
+"common.button.print" = "Испечати";
+"common.button.share" = "Сподели";
 "common.search" = "Пребарај";
 "common.tab.manager.title" = "Управник на јазичиња";
 "common.tab.navigation.title" = "Јазичиња";

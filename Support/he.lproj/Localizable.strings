@@ -1,6 +1,7 @@
 // Messages for Hebrew (עברית)
 // Exported from translatewiki.net
 // Author: Amire80
+// Author: YaronSh
 
 "library_refresh_error.retrieve.description" = "שגיאה באחזור נתוני ספרייה.";
 "library_refresh_error.parse.description" = "שגיאה בפענוח נתוני ספרייה.";
@@ -19,6 +20,8 @@
 "common.button.cancel" = "ביטול";
 "common.button.yes" = "כן";
 "common.button.no" = "לא";
+"common.button.print" = "הדפסה";
+"common.button.share" = "שיתוף";
 "common.search" = "חיפוש";
 "common.tab.manager.title" = "מנהל הלשוניות";
 "common.tab.navigation.title" = "לשוניות";
@@ -29,6 +32,9 @@
 "common.tab.menu.library" = "ספרייה";
 "common.tab.menu.settings" = "הגדרות";
 "common.support.app_name" = "תמיכה בפרויקט %@";
+"common.export_file.alert.title" = "ייצוא קובץ";
+"common.export_file.alert.description" = "לייצא את הקובץ %@?";
+"common.export_file.alert.button.title" = "ייצוא";
 "outline_button.outline.title" = "מתאר";
 "outline_button.outline.help" = "הצגת מתאר הערך";
 "outline_button.outline.empty.message" = "אין מתאר זמין";
