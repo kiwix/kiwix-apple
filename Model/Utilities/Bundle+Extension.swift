@@ -18,9 +18,9 @@ import Foundation
 extension Bundle {
     var isProduction: Bool {
         #if DEBUG
-            return false
+            false
         #else
-            appStoreReceiptURL?.path.contains("sandboxReceipt")
+            appStoreReceiptURL?.path.contains("sandboxReceipt") == true
         #endif
     }
 }
