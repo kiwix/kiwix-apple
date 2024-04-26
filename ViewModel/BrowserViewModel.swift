@@ -96,11 +96,9 @@ final class BrowserViewModel: NSObject, ObservableObject,
     init(tabID: NSManagedObjectID? = nil) {
         self.tabID = tabID
         webView = WKWebView(frame: .zero, configuration: WebViewConfiguration())
-#if DEBUG
-        if #available(iOS 16.4, macOS 13.3, *) {
-            webView.isInspectable = true
+        if !Bundle.main.isProduction, #available(iOS 16.4, macOS 13.3, *) {
+                webView.isInspectable = true
         }
-#endif
         // Bookmark fetching:
         bookmarkFetchedResultsController = NSFetchedResultsController(
             fetchRequest: Bookmark.fetchRequest(), // initially empty
@@ -407,11 +405,9 @@ final class BrowserViewModel: NSObject, ObservableObject,
         let configuration = UIContextMenuConfiguration(
             previewProvider: {
                 let webView = WKWebView(frame: .zero, configuration: WebViewConfiguration())
-                #if DEBUG
-                if #available(iOS 16.4, *) {
-                    webView.isInspectable = true
+                if !Bundle.main.isProduction, #available(iOS 16.4, *) {
+                        webView.isInspectable = true
                 }
-                #endif
                 webView.load(URLRequest(url: url))
                 return WebViewController(webView: webView)
             },
