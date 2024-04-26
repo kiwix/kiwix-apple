@@ -20,6 +20,8 @@
 "common.button.cancel" = "取消";
 "common.button.yes" = "是";
 "common.button.no" = "否";
+"common.button.print" = "列印";
+"common.button.share" = "分享";
 "common.search" = "搜尋";
 "common.tab.manager.title" = "分頁管理器";
 "common.tab.navigation.title" = "分頁";

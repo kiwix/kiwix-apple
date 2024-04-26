@@ -4,6 +4,7 @@
 // Author: Brettchenweber
 // Author: Caro
 // Author: Gremid
+// Author: Justman10000
 
 "library_refresh_error.retrieve.description" = "Fehler beim Abrufen von Bibliotheksdaten.";
 "library_refresh_error.parse.description" = "Fehler beim Lesen von Bibliotheksdaten.";
@@ -22,6 +23,8 @@
 "common.button.cancel" = "Abbrechen";
 "common.button.yes" = "Ja";
 "common.button.no" = "nein";
+"common.button.print" = "Drucken";
+"common.button.share" = "Teilen";
 "common.search" = "Suchen";
 "common.tab.manager.title" = "Tabs-Manager";
 "common.tab.navigation.title" = "Tabs";

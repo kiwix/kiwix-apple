@@ -13,6 +13,8 @@
 "common.button.cancel" = "منسوخ";
 "common.button.yes" = "جیا";
 "common.button.no" = "کو";
+"common.button.print" = "چھاپو";
+"common.button.share" = "شیئر";
 "common.search" = "ڳولو";
 "common.tab.navigation.title" = "ٹیباں";
 "common.tab.menu.new_tab" = "نویں ٹیب";
