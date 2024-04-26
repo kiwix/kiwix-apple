@@ -11,6 +11,8 @@
 "common.button.cancel" = "रद्द करें";
 "common.button.yes" = "हाँ";
 "common.button.no" = "नहीं";
+"common.button.print" = "प्रिंट करें";
+"common.button.share" = "साझा करें";
 "common.tab.menu.close_all" = "सभी टैब्स बंद करें";
 "common.tab.list.close" = "टैब बंद करें";
 "common.tab.menu.library" = "पुस्तकालय";
