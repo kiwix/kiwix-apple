@@ -97,7 +97,7 @@ final class BrowserViewModel: NSObject, ObservableObject,
         self.tabID = tabID
         webView = WKWebView(frame: .zero, configuration: WebViewConfiguration())
 #if DEBUG
-        if #available(macOS 13.3, *) {
+        if #available(iOS 16.4, macOS 13.3, *) {
             webView.isInspectable = true
         }
 #endif
