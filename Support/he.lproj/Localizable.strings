@@ -32,9 +32,9 @@
 "common.tab.menu.library" = "ספרייה";
 "common.tab.menu.settings" = "הגדרות";
 "common.support.app_name" = "תמיכה בפרויקט %@";
-"common.export_file.alert.title" = "ייצוא קובץ";
+"common.export_file.alert.title" = "יצוא קובץ";
 "common.export_file.alert.description" = "לייצא את הקובץ %@?";
-"common.export_file.alert.button.title" = "ייצוא";
+"common.export_file.alert.button.title" = "יצוא";
 "outline_button.outline.title" = "מתאר";
 "outline_button.outline.help" = "הצגת מתאר הערך";
 "outline_button.outline.empty.message" = "אין מתאר זמין";
