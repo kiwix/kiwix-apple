@@ -5,6 +5,7 @@
 // Author: Gomoko
 // Author: Hecatonchire
 // Author: MacOS Weed
+// Author: SleaY
 // Author: Stephane
 // Author: Vikoula5
 // Author: Wladek92
@@ -26,6 +27,8 @@
 "common.button.cancel" = "Annuler";
 "common.button.yes" = "Oui";
 "common.button.no" = "non";
+"common.button.print" = "Imprimer";
+"common.button.share" = "Partager";
 "common.search" = "Rechercher";
 "common.tab.manager.title" = "Gestionnaire d'onglets";
 "common.tab.navigation.title" = "Onglets";
