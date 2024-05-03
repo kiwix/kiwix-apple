@@ -14,6 +14,21 @@
 - UPDATE: Use latest feed from library.kiwix.org (@BPerlakiH #653)
 - DEL: Old Wikimed related code - is now a proper custom app (@BPerlakiH #636)
 - FIX: iOS tab selection after the selected tab is deleted (@BPerlakiH #692)
+- UPDATE: Add background processing and audio capabilities for video playback (@BPerlakiH #738)
+- NEW: Print an article on macOS (@BPerlakiH #736)
+- FIX: Exception handling in corrupted ZIM files (@BPerlakiH #622)
+- NEW: Export and share an article (@BPerlakiH #729)
+- UPDATE: LibKiwix 13.1.0-1 (@BPerlakiH #731)
+- FIX: Dismiss iOS modals (@BPerlakiH #728)
+- FIX: Invalid tab state after unlinking ZIM file on macOS (@BPerlakiH #723)
+- UPDATE: Readme on XCode white space settings (@BPerlakiH #722)
+- UPDATE: File headers and new file template to GPL-3 (@kelson42 @BPerlakiH #719)
+- NEW: Add support menu item on macOS (@DobleV55 @BPerlakiH #705)
+- FIX: Custom apps should request only necessary permissions (@BPerlakiH #712)
+- FIX: UTF-8 encoding for HTTP headers for text/plain type (@BPerlakiH #707)
+- NEW: Remove long press from bookmarks menu item (@BPerlakiH #695)
+- NEW: Re-arrange menu items, remove long press functionality (@BPerlakiH #694)
+- FIX: Tab selection after deleting a tab (@BPerlakiH #693)
 
 ## 3.2
 
