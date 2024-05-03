@@ -88,6 +88,7 @@ targetTemplates:
       - path: SwiftUI
       - path: ViewModel
       - path: Views
+      - path: PrivacyInfo.xcprivacy
 
 targets:
   Kiwix:
