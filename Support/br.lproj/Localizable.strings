@@ -18,6 +18,8 @@
 "common.button.cancel" = "Nullañ";
 "common.button.yes" = "Ya";
 "common.button.no" = "ket";
+"common.button.print" = "Moullañ";
+"common.button.share" = "Rannañ";
 "common.search" = "Klask";
 "common.tab.manager.title" = "Merañ an steudennoù";
 "common.tab.navigation.title" = "Steudennoù";
