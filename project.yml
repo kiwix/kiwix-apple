@@ -88,6 +88,15 @@ targetTemplates:
       - path: SwiftUI
       - path: ViewModel
       - path: Views
+      - path: PrivacyInfo.xcprivacy
+        destinationFilters:
+          - iOS
+      - path: Contents
+        includes:
+          - Resources
+          - Resources/PrivacyInfo.xcprivacy
+        destinationFilters:
+          - macOS
 
 targets:
   Kiwix:
