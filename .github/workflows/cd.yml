@@ -215,7 +215,7 @@ jobs:
       if: env.UPLOAD_TO == 'ftp' && matrix.platform == 'macOS'
       run: |
         mv ${PWD}/kiwix-${VERSION}.dmg ${PWD}/kiwix-desktop-macos_${VERSION}.dmg
-        python .github/upload_file.py --src ${PWD}/kiwix-${VERSION}.dmg --dest ci@master.download.kiwix.org:30022/data/download/${UPLOAD_FOLDER} --ssh-key ${SSH_KEY}
+        python .github/upload_file.py --src ${PWD}/kiwix-desktop-macos_${VERSION}.dmg --dest ci@master.download.kiwix.org:30022/data/download/${UPLOAD_FOLDER} --ssh-key ${SSH_KEY}
         mv ${PWD}/kiwix-desktop-macos_${VERSION}.dmg ${PWD}/kiwix-${VERSION}.dmg
 
     - name: Upload IPA
