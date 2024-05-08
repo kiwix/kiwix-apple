@@ -99,7 +99,7 @@ jobs:
       if: github.event_name == 'release' && matrix.platform == 'macOS'
       run: |
         echo "UPLOAD_TO=ftp" >> $GITHUB_ENV
-        echo "UPLOAD_FOLDER=release/${{ env.VERSION }}" >> $GITHUB_ENV
+        echo "UPLOAD_FOLDER=release/kiwix-desktop-macos" >> $GITHUB_ENV
 
     # Post App Release: skip steps for iOS, by leaving the UPLOAD_TO empty ("")
 
