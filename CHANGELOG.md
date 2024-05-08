@@ -29,7 +29,7 @@
 - NEW: Remove long press from bookmarks menu item (@BPerlakiH #695)
 - NEW: Re-arrange menu items, remove long press functionality (@BPerlakiH #694)
 - FIX: Tab selection after deleting a tab (@BPerlakiH #693)
-- DELETE: Support menut item on macOS (@BPerlakiH #752)
+- DELETE: Support menu item on macOS (@BPerlakiH #752)
 
 ## 3.2
 
