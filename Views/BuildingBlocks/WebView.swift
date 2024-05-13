@@ -127,11 +127,11 @@ extension WKWebView {
 }
 #endif
 
-class WebViewConfiguration: WKWebViewConfiguration {
+final class WebViewConfiguration: WKWebViewConfiguration {
     override init() {
         super.init()
         setURLSchemeHandler(KiwixURLSchemeHandler(), forURLScheme: KiwixURLSchemeHandler.KiwixScheme)
-        if #available(macOS 12.3, *) {
+        if #available(iOS 15.4, macOS 12.3, *) {
             preferences.isElementFullscreenEnabled = true
         }
         userContentController = {
