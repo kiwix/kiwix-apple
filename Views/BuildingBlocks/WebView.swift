@@ -131,6 +131,9 @@ class WebViewConfiguration: WKWebViewConfiguration {
     override init() {
         super.init()
         setURLSchemeHandler(KiwixURLSchemeHandler(), forURLScheme: KiwixURLSchemeHandler.KiwixScheme)
+        if #available(macOS 12.3, *) {
+            preferences.isElementFullscreenEnabled = true
+        }
         userContentController = {
             let controller = WKUserContentController()
             if FeatureFlags.wikipediaDarkUserCSS,
