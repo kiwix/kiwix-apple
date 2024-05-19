@@ -139,7 +139,7 @@ final class KiwixURLSchemeHandler: NSObject, WKURLSchemeHandler {
         var headers = [
             "Accept-Ranges": "bytes",
             "Content-Type": content.httpContentType,
-            "Content-Length": "\(content.rangeSize)",
+            "Content-Length": "\(content.rangeSize)"
         ]
         if let modifiedDate = content.lastModified {
             headers["Last-Modified"] = modifiedDate.formatAsGMT()
