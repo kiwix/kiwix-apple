@@ -117,7 +117,13 @@ final class KiwixURLSchemeHandler: NSObject, WKURLSchemeHandler {
         }
     }
 
-    private func sendHTTP206Response(_ urlSchemeTask: WKURLSchemeTask, url: URL, content: URLContent, start: UInt, end: UInt) {
+    private func sendHTTP206Response(
+        _ urlSchemeTask: WKURLSchemeTask,
+        url: URL,
+        content: URLContent,
+        start: UInt,
+        end: UInt
+    ) {
         var headers = defaultResponseHeaders(for: content)
         headers["Content-Length"] = "\(content.rangeSize)"
         headers["Content-Range"] = content.contentRange(from: start, requestedEnd: end)
@@ -139,7 +145,7 @@ final class KiwixURLSchemeHandler: NSObject, WKURLSchemeHandler {
         var headers = [
             "Accept-Ranges": "bytes",
             "Content-Type": content.httpContentType,
-            "Content-Length": "\(content.rangeSize)",
+            "Content-Length": "\(content.rangeSize)"
         ]
         if let modifiedDate = content.lastModified {
             headers["Last-Modified"] = modifiedDate.formatAsGMT()
