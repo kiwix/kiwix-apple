@@ -30,12 +30,12 @@ let observer = new IntersectionObserver(function(entries) {
 
 // register scroll view to handle heading on top of the page
 window.onscroll = function() {
-	if (document.documentElement.scrollTop <= 0) {
+    if (document.documentElement.scrollTop <= 0) {
         const handler = window.webkit.messageHandlers.headingVisible
         if (handler !== undefined) {
             handler.postMessage({id: headings[0].id})
         }
-	}
+    }
 }
 
 // expand all detail tags
