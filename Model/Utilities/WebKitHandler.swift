@@ -18,27 +18,29 @@ import WebKit
 
 final class KiwixURLSchemeHandler: NSObject, WKURLSchemeHandler {
     static let KiwixScheme = "kiwix"
-    private let queue = DispatchQueue.main
     private let inSync = InSync(label: "org.kiwix.url.scheme.sync")
     private var startedTasks: [Int: Bool] = [:]
 
     // MARK: Life cycle
 
-    private func startFor(_ hash: Int) {
-        inSync.execute {
-            self.startedTasks[hash] = true
+    private func startFor(_ hashValue: Int) async {
+        await withCheckedContinuation { continuation in
+            inSync.execute {
+                self.startedTasks[hashValue] = true
+                continuation.resume()
+            }
         }
     }
 
-    private func isStartedFor(_ hash: Int) -> Bool {
+    private func isStartedFor(_ hashValue: Int) -> Bool {
         return inSync.read {
-            self.startedTasks[hash] != nil
+            self.startedTasks[hashValue] != nil
         }
     }
 
-    private func stopFor(_ hash: Int) {
+    private func stopFor(_ hashValue: Int) {
         inSync.execute {
-            self.startedTasks.removeValue(forKey: hash)
+            self.startedTasks.removeValue(forKey: hashValue)
         }
     }
 
@@ -57,22 +59,19 @@ final class KiwixURLSchemeHandler: NSObject, WKURLSchemeHandler {
     }
 
     func webView(_ webView: WKWebView, start urlSchemeTask: WKURLSchemeTask) {
-        let hash = urlSchemeTask.hash
-        guard isStartedFor(hash) == false else { return }
-        startFor(hash)
-        queue.async { [weak self] in
-            Task { [weak self] in
-                await self?.handle(task: urlSchemeTask)
-            }
+        guard isStartedFor(urlSchemeTask.hash) == false else { return }
+        Task {
+            await startFor(urlSchemeTask.hash)
+            await handle(task: urlSchemeTask)
         }
     }
 
+    @MainActor
     private func handle(task urlSchemeTask: WKURLSchemeTask) async {
         let request = urlSchemeTask.request
-        let hash = urlSchemeTask.hash
         guard let url = request.url, url.isKiwixURL else {
             urlSchemeTask.didFailWithError(URLError(.unsupportedURL))
-            stopFor(hash)
+            stopFor(urlSchemeTask.hash)
             return
         }
         var start: UInt = 0
@@ -95,7 +94,7 @@ final class KiwixURLSchemeHandler: NSObject, WKURLSchemeHandler {
         }
         guard let content = await readContent(for: url, start: start, end: end) else {
             sendHTTP404Response(urlSchemeTask, url: url)
-            stopFor(hash)
+            stopFor(urlSchemeTask.hash)
             return
         }
         if isVideo {
@@ -103,7 +102,6 @@ final class KiwixURLSchemeHandler: NSObject, WKURLSchemeHandler {
         } else {
             sendHTTP200Response(urlSchemeTask, url: url, content: content)
         }
-        stopFor(hash)
     }
 
     // MARK: Reading content
@@ -118,7 +116,7 @@ final class KiwixURLSchemeHandler: NSObject, WKURLSchemeHandler {
     }
 
     // MARK: Success responses
-
+    @MainActor
     private func sendHTTP200Response(_ urlSchemeTask: WKURLSchemeTask, url: URL, content: URLContent) {
         guard isStartedFor(urlSchemeTask.hash) else { return }
         var headers = defaultResponseHeaders(for: content)
@@ -131,8 +129,10 @@ final class KiwixURLSchemeHandler: NSObject, WKURLSchemeHandler {
         } else {
             urlSchemeTask.didFailWithError(URLError(.badServerResponse, userInfo: ["url": url]))
         }
+        stopFor(urlSchemeTask.hash)
     }
 
+    @MainActor
     private func sendHTTP206Response(
         _ urlSchemeTask: WKURLSchemeTask,
         url: URL,
@@ -140,7 +140,9 @@ final class KiwixURLSchemeHandler: NSObject, WKURLSchemeHandler {
         start: UInt,
         end: UInt
     ) {
-        guard isStartedFor(urlSchemeTask.hash) else { return }
+        guard isStartedFor(urlSchemeTask.hash) else {
+            return
+        }
         var headers = defaultResponseHeaders(for: content)
         headers["Content-Length"] = "\(content.rangeSize)"
         headers["Content-Range"] = content.contentRange(from: start, requestedEnd: end)
@@ -152,6 +154,7 @@ final class KiwixURLSchemeHandler: NSObject, WKURLSchemeHandler {
         } else {
             urlSchemeTask.didFailWithError(URLError(.badServerResponse, userInfo: ["url": url]))
         }
+        stopFor(urlSchemeTask.hash)
     }
 
     // MARK: Default headers sent back
@@ -173,6 +176,7 @@ final class KiwixURLSchemeHandler: NSObject, WKURLSchemeHandler {
 
     // MARK: Error responses
 
+    @MainActor
     private func sendHTTP400Response(_ urlSchemeTask: WKURLSchemeTask, url: URL) {
         os_log(
             "Resource not found for url: %s.",
@@ -180,14 +184,17 @@ final class KiwixURLSchemeHandler: NSObject, WKURLSchemeHandler {
             type: .info,
             url.absoluteString
         )
+        guard isStartedFor(urlSchemeTask.hash) else { return }
         if let response = HTTPURLResponse(url: url, statusCode: 400, httpVersion: nil, headerFields: nil) {
             urlSchemeTask.didReceive(response)
             urlSchemeTask.didFinish()
         } else {
             urlSchemeTask.didFailWithError(URLError(.badServerResponse, userInfo: ["url": url]))
         }
+        stopFor(urlSchemeTask.hash)
     }
 
+    @MainActor
     private func sendHTTP404Response(_ urlSchemeTask: WKURLSchemeTask, url: URL) {
         guard isStartedFor(urlSchemeTask.hash) else { return }
         if let response = HTTPURLResponse(url: url, statusCode: 404, httpVersion: "HTTP/1.1", headerFields: nil) {
@@ -196,5 +203,6 @@ final class KiwixURLSchemeHandler: NSObject, WKURLSchemeHandler {
         } else {
             urlSchemeTask.didFailWithError(URLError(.badServerResponse, userInfo: ["url": url]))
         }
+        stopFor(urlSchemeTask.hash)
     }
 }
