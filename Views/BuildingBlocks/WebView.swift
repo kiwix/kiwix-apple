@@ -88,7 +88,6 @@ class WebViewController: UIViewController {
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        compactViewNavigationController = parent?.navigationController ?? UINavigationController()
         webView.scrollView.delegate = self
         webView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(webView)
@@ -120,6 +119,12 @@ class WebViewController: UIViewController {
                 self?.topSafeAreaConstraint?.isActive = false
                 self?.view.topAnchor.constraint(equalTo: webView.topAnchor).isActive = true
             }
+        
+        if parent?.navigationController != nil {
+            compactViewNavigationController = parent?.navigationController
+        } else {
+            debugPrint("compactViewNavigationController not set")
+        }
     }
 
     override func viewDidLayoutSubviews() {
@@ -143,8 +148,11 @@ extension WebViewController: UIScrollViewDelegate {
         }
         
         if scrollView.isDragging {
-            isScrollingDown ?
-            hideBars(on: navigationController) : showBars(on: navigationController)
+            if isScrollingDown {
+                hideBars(on: navigationController)
+            } else {
+                showBars(on: navigationController)
+            }
         }
     }
     
