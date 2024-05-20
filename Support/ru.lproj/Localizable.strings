@@ -5,6 +5,7 @@
 // Author: Okras
 // Author: Pacha Tchernof
 // Author: Rofiatmustapha12
+// Author: Smavrina
 
 "library_refresh_error.retrieve.description" = "Ошибка получения данных библиотеки.";
 "library_refresh_error.parse.description" = "Ошибка анализа данных библиотеки.";
@@ -15,14 +16,16 @@
 "common.dialog.button.open_in_new_tab" = "Открыть в новой вкладке";
 "common.dialog.button.add_bookmark" = "Добавить закладку";
 "common.dialog.button.remove_bookmark" = "Удалить закладку";
-"common.dialog.button.show_bookmarks" = "Нет Закладок";
-"common.dialog.button.bookmark" = "Закладки";
+"common.dialog.button.show_bookmarks" = "Показать закладки";
+"common.dialog.button.bookmark" = "Закладка";
 "common.button.go_back" = "Назад";
-"common.button.go_forward" = "Иди вперед";
+"common.button.go_forward" = "Вперед";
 "common.button.done" = "Готово";
 "common.button.cancel" = "Отмена";
 "common.button.yes" = "Да";
 "common.button.no" = "нет";
+"common.button.print" = "Печать";
+"common.button.share" = "Поделиться";
 "common.search" = "Поиск";
 "common.tab.manager.title" = "Менеджер вкладок";
 "common.tab.navigation.title" = "Вкладки";
@@ -36,9 +39,9 @@
 "common.export_file.alert.title" = "Экспорт файла";
 "common.export_file.alert.description" = "Вы будете экспортировать файл %@?";
 "common.export_file.alert.button.title" = "Экспорт";
-"outline_button.outline.title" = "Наброски";
-"outline_button.outline.help" = "Показать структуру статьи";
-"outline_button.outline.empty.message" = "Нет доступных контуров";
+"outline_button.outline.title" = "Содержание";
+"outline_button.outline.help" = "Показать содержание статьи";
+"outline_button.outline.empty.message" = "Нет доступных содержаний";
 "bookmark_button.show.help" = "Показать закладки. Длительное нажатие, чтобы добавить в закладки текущую статью или удалить ее из закладок.";
 "article_shortcut.main.button.title" = "Основная статья";
 "article_shortcut.main.button.help" = "Показать основную статью";
@@ -52,7 +55,7 @@
 "external_link_handler.alert.button.load.link" = "Загрузить ссылку";
 "external_link_handler.alert.ask.description" = "Нажата внешняя ссылка. Вы хотите загрузить ссылку?";
 "external_link_handler.alert.not_loading.description" = "Внешняя ссылка прослушивается. Однако ваши текущие настройки не позволяют его загрузить.";
-"file_import.alert.no_open.title" = "Невозможно открыть файл zim";
+"file_import.alert.no_open.title" = "Невозможно открыть файл";
 "file_import.alert.no_open.message" = "%@ невозможно открыть.";
 "article_cell.no_snippet.label" = "Нет фрагмента";
 "attribute.detail.unknown" = "Неизвестно";
@@ -85,18 +88,18 @@
 "zim_file.list.description.text" = "Описание";
 "zim_file.list.actions.text" = "Действия";
 "zim_file.list.info.text" = "Информация";
-"zim_file.action.locate.title" = "Обнаружить";
+"zim_file.action.locate.title" = "Найти";
 "zim_file.action.open_main_page.title" = "Открыть главную страницу";
 "zim_file.action.reveal_in_finder.title" = "Показать в Finder";
-"zim_file.action.toggle_cellular" = "Загрузка с помощью сотовой связи";
-"zim_file.action.unlink.title" = "Разорвать связь";
+"zim_file.action.toggle_cellular" = "Загрузка через мобильный интернет";
+"zim_file.action.unlink.title" = "Отсоединить";
 "zim_file.action.unlink.message" = "Все статьи с закладками, связанные с этим ZIM-файлом, будут удалены, но исходный файл останется на месте.";
-"zim_file.action.unlink.button.title" = "Разорвать связь";
+"zim_file.action.unlink.button.title" = "Отсоединить";
 "zim_file.action.delete.title" = "Удалить";
 "zim_file.action.delete.message" = "Zim-файл и все статьи с закладками, связанные с этим ZIM-файлом, будут удалены.";
 "zim_file.action.delete.button.title" = "Удалить";
 "zim_file.action.download.title" = "Скачать";
-"zim_file.action.download.warning.title" = "Космическое предупреждение";
+"zim_file.action.download.warning.title" = "Предупреждение о свободном пространстве";
 "zim_file.action.download.warning.message" = "Возможно, на вашем устройстве недостаточно места для этого ZIM-файла.";
 "zim_file.action.download.warning.message1" = "После загрузки файла ZIM останется менее 1 ГБ свободного места.";
 "zim_file.action.download.button.anyway" = "Все равно скачать";
@@ -109,7 +112,7 @@
 "zim_file.bool_info.details" = "Подробности";
 "zim_file.bool_info.require_service_workers" = "Требуются сервисные работники";
 "zim_file.counts.article_count" = "Количество статей";
-"zim_file.counts.article.media_count" = "Количество СМИ";
+"zim_file.counts.article.media_count" = "Количество медиа";
 "zim_file.detail.id.title" = "ID";
 "zim_file.download_task.action.title.cancel" = "Отмена";
 "zim_file.download_task.action.try_recover" = "Попробуйте восстановить";
@@ -132,10 +135,10 @@
 "library_settings.languages.title" = "Языки";
 "library_settings.tab.library.title" = "Библиотека";
 "settings.navigation.title" = "Настройки";
-"library_settings.toggle.cellular" = "Загрузка с помощью сотовой связи";
+"library_settings.toggle.cellular" = "Загрузка через мобильный интернет";
 "library_settings.new-download-task-description" = "Изменение будет применяться только к новым задачам загрузки.";
 "catalog_settings.last_refresh.text" = "Последнее обновление";
-"catalog_settings.refreshing.text" = "Освежающий...";
+"catalog_settings.refreshing.text" = "Обновление...";
 "catalog_settings.refresh_now.button" = "Обновить сейчас";
 "catalog_settings.auto_refresh.toggle" = "Автообновление";
 "catalog_settings.header.text" = "Каталог";
@@ -150,9 +153,9 @@
 "settings.selected_language.title" = "Языки";
 "language_selector.name.title" = "Имя";
 "language_selector.count.table.title" = "Количество";
-"language_selector.no_language.title" = "Основные языки";
-"language_selector.showing.header" = "Показаны:";
-"language_selector.hiding.header" = "Пешие прогулки";
+"language_selector.no_language.title" = "Нет языка";
+"language_selector.showing.header" = "Показано";
+"language_selector.hiding.header" = "Скрыто";
 "language_selector.navitation.title" = "Язык";
 "language_selector.toolbar.sorting" = "Сортировка";
 "settings.about.title" = "О приложении";
@@ -167,7 +170,7 @@
 "settings.about.build.title" = "Сборка";
 "settings.about.our_website.button" = "Наш сайт";
 "settings.about.source.title" = "Источник";
-"settings.about.button.license" = "GNU General Public License v2.0";
+"settings.about.button.license" = "GNU General Public License v3";
 "bookmark.navigation.title" = "Закладки";
 "bookmark.overlay.empty.title" = "Нет Закладок";
 "bookmark.toolbar.show_sidebar.label" = "Показать боковую панель";
@@ -207,24 +210,24 @@
 "enum.category.wiktionary" = "Викисловарь";
 "enum.category.vikidia" = "Викидия";
 "enum.category.other" = "Другое";
-"enum.external_link_loading_policy.always_ask" = "Всегда спрашивай";
+"enum.external_link_loading_policy.always_ask" = "Всегда спрашивать";
 "enum.external_link_loading_policy.always_load" = "Всегда загружать";
-"enum.external_link_loading_policy.never_load" = "Никогда не загружайте";
+"enum.external_link_loading_policy.never_load" = "Никогда не загружать";
 "enum.flavor.max" = "макс.";
 "enum.flavor.no_pic" = "нет картинки";
 "enum.flavor.mini" = "мини";
-"enum.library_language_sorting_model.a-z" = "AZ";
+"enum.library_language_sorting_model.a-z" = "A-Z";
 "enum.library_language_sorting_model.by_count" = "По количеству";
-"enum.libray_tab_item.opened" = "Открыта";
+"enum.libray_tab_item.opened" = "Открыто";
 "enum.libray_tab_item.categories" = "Категории";
-"enum.libray_tab_item.downloads" = "Скачать";
-"enum.libray_tab_item.new" = "Новый";
+"enum.libray_tab_item.downloads" = "Загрузки";
+"enum.libray_tab_item.new" = "Новое";
 "enum.navigation_item.loading" = "Загружается";
 "enum.navigation_item.reading" = "Чтение";
 "enum.navigation_item.bookmarks" = "Закладки";
 "enum.navigation_item.map" = "Карта";
 "enum.navigation_item.new_tab" = "Новая вкладка";
-"enum.navigation_item.opened" = "Открыта";
+"enum.navigation_item.opened" = "Открыто";
 "enum.navigation_item.categories" = "Категории";
 "enum.navigation_item.new" = "Новый";
 "enum.navigation_item.downloads" = "Скачать";
@@ -232,4 +235,4 @@
 "enum.search_result_snippet_mode.disabled" = "Выключен";
 "enum.search_result_snippet_mode.paragraph" = "Формат абзаца";
 "enum.search_result_snippet_mode.sentence" = "Первое предложение";
-"enum.search_result_snippet_mode.matches" = "Патчи";
+"enum.search_result_snippet_mode.matches" = "Совпадения";
