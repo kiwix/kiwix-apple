@@ -62,7 +62,9 @@ class WebViewController: UIViewController {
     private var topSafeAreaConstraint: NSLayoutConstraint?
     private var layoutSubject = PassthroughSubject<Void, Never>()
     private var layoutCancellable: AnyCancellable?
-
+    private var currentScrollViewOffset: CGFloat = 0.0
+    private var compactViewNavigationController: UINavigationController?
+    
     init(webView: WKWebView) {
         self.webView = webView
         self.pageZoomObserver = Defaults.observe(.webViewPageZoom) { change in
@@ -74,10 +76,20 @@ class WebViewController: UIViewController {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        UIDevice.current.beginGeneratingDeviceOrientationNotifications()
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(self.onOrientationChange),
+                                               name: UIDevice.orientationDidChangeNotification,
+                                               object: nil)
+    }
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-
+        compactViewNavigationController = parent?.navigationController ?? UINavigationController()
+        webView.scrollView.delegate = self
         webView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(webView)
         webView.alpha = 0
@@ -114,6 +126,60 @@ class WebViewController: UIViewController {
         super.viewDidLayoutSubviews()
         webView.setValue(view.safeAreaInsets, forKey: "_obscuredInsets")
         layoutSubject.send()
+    }
+}
+
+// MARK: - UIScrollViewDelegate
+
+extension WebViewController: UIScrollViewDelegate {
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        guard let navigationController = compactViewNavigationController else {
+            debugPrint("compactViewNavigationController not set")
+            return
+        }
+        
+        var isScrollingDown: Bool {
+            scrollView.contentOffset.y > currentScrollViewOffset
+        }
+        
+        if scrollView.isDragging {
+            isScrollingDown ?
+            hideBars(on: navigationController) : showBars(on: navigationController)
+        }
+    }
+    
+    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+        currentScrollViewOffset = scrollView.contentOffset.y
+    }
+    
+    func hideBars(on navigationController: UINavigationController) {
+        navigationController.setNavigationBarHidden(true, animated: true)
+        navigationController.setToolbarHidden(true, animated: true)
+    }
+    
+    func showBars(on navigationController: UINavigationController) {
+        navigationController.setNavigationBarHidden(false, animated: true)
+        navigationController.setToolbarHidden(false, animated: true)
+    }
+}
+
+// MARK: - Screen orientation change
+
+extension WebViewController {
+    @objc func onOrientationChange() {
+        guard let navigationController = compactViewNavigationController else {
+            debugPrint("compactViewNavigationController not set")
+            return
+        }
+        
+        switch UIDevice.current.orientation {
+        case .landscapeLeft:
+            showBars(on: navigationController)
+        case .landscapeRight:
+            showBars(on: navigationController)
+        default:
+            showBars(on: navigationController)
+        }
     }
 }
 
