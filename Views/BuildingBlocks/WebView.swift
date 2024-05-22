@@ -17,8 +17,8 @@ import Combine
 import CoreData
 import SwiftUI
 import WebKit
-
 import Defaults
+import os
 
 #if os(macOS)
 struct WebView: NSViewRepresentable {
@@ -76,19 +76,9 @@ class WebViewController: UIViewController {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        UIDevice.current.beginGeneratingDeviceOrientationNotifications()
-        NotificationCenter.default.addObserver(self,
-                                               selector: #selector(self.onOrientationChange),
-                                               name: UIDevice.orientationDidChangeNotification,
-                                               object: nil)
-    }
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        webView.scrollView.delegate = self
         webView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(webView)
         webView.alpha = 0
@@ -119,12 +109,7 @@ class WebViewController: UIViewController {
                 self?.topSafeAreaConstraint?.isActive = false
                 self?.view.topAnchor.constraint(equalTo: webView.topAnchor).isActive = true
             }
-        
-        if parent?.navigationController != nil {
-            compactViewNavigationController = parent?.navigationController
-        } else {
-            debugPrint("compactViewNavigationController not set")
-        }
+        configureImmersiveReading()
     }
 
     override func viewDidLayoutSubviews() {
@@ -135,11 +120,22 @@ class WebViewController: UIViewController {
 }
 
 // MARK: - UIScrollViewDelegate
-
 extension WebViewController: UIScrollViewDelegate {
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        if TargetDevice.currentDevice == .iPhone {
+            configureBars(on: scrollView)
+        }
+    }
+    
+    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+        if TargetDevice.currentDevice == .iPhone {
+            currentScrollViewOffset = scrollView.contentOffset.y
+        }
+    }
+    
+    private func configureBars(on scrollView: UIScrollView) {
         guard let navigationController = compactViewNavigationController else {
-            debugPrint("compactViewNavigationController not set")
+            os_log("compactViewNavigationController not set", log: Log.WebView, type: .debug)
             return
         }
         
@@ -154,10 +150,6 @@ extension WebViewController: UIScrollViewDelegate {
                 showBars(on: navigationController)
             }
         }
-    }
-    
-    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
-        currentScrollViewOffset = scrollView.contentOffset.y
     }
     
     func hideBars(on navigationController: UINavigationController) {
@@ -176,7 +168,7 @@ extension WebViewController: UIScrollViewDelegate {
 extension WebViewController {
     @objc func onOrientationChange() {
         guard let navigationController = compactViewNavigationController else {
-            debugPrint("compactViewNavigationController not set")
+            os_log("compactViewNavigationController not set", log: Log.WebView, type: .debug)
             return
         }
         
@@ -187,6 +179,30 @@ extension WebViewController {
             showBars(on: navigationController)
         default:
             showBars(on: navigationController)
+        }
+    }
+    
+    private func configureImmersiveReading() {
+        if TargetDevice.currentDevice == .iPhone {
+            configureDeviceOrientationNotifications()
+            configureNavigationController()
+        }
+        
+        func configureDeviceOrientationNotifications() {
+            UIDevice.current.beginGeneratingDeviceOrientationNotifications()
+            NotificationCenter.default.addObserver(self,
+                                                   selector: #selector(self.onOrientationChange),
+                                                   name: UIDevice.orientationDidChangeNotification,
+                                                   object: nil)
+        }
+        
+        func configureNavigationController() {
+            webView.scrollView.delegate = self
+            if parent?.navigationController != nil {
+                compactViewNavigationController = parent?.navigationController
+            } else {
+                os_log("compactViewNavigationController not set", log: Log.WebView, type: .debug)
+            }
         }
     }
 }
