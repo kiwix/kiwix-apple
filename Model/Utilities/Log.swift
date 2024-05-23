@@ -25,5 +25,4 @@ struct Log {
     static let OPDS = OSLog(subsystem: subsystem, category: "OPDS")
     static let URLSchemeHandler = OSLog(subsystem: subsystem, category: "URLSchemeHandler")
     static let Branding = OSLog(subsystem: subsystem, category: "Branding")
-    static let WebView = OSLog(subsystem: subsystem, category: "WebView")
 }
