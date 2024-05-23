@@ -14,31 +14,26 @@
 // along with Kiwix; If not, see https://www.gnu.org/licenses/.
 
 import Foundation
+#if os(iOS)
 import UIKit
+#endif
 
-enum TargetDevice {
-    case nativeMac
-    case iPad
+enum Device {
+    case mac
     case iPhone
-    case iWatch
-    
-    public static var currentDevice: Self {
-        var currentDeviceModel = UIDevice.current.model
-        #if targetEnvironment(macCatalyst)
-        currentDeviceModel = "nativeMac"
-        #elseif os(watchOS)
-        currentDeviceModel = "watchOS"
+    case iPad
+
+    public static var current: Self {
+        #if os(macOS)
+        mac
+        #else
+        switch UIDevice.current.userInterfaceIdiom {
+        case .pad: return iPad
+        case .phone: return iPhone
+        default:
+            assertionFailure("unrecognised device type: \(UIDevice.current)")
+            return iPhone
+        }
         #endif
-        
-        if currentDeviceModel.starts(with: "iPhone") {
-            return .iPhone
-        }
-        if currentDeviceModel.starts(with: "iPad") {
-            return .iPad
-        }
-        if currentDeviceModel.starts(with: "watchOS") {
-            return .iWatch
-        }
-        return .nativeMac
     }
 }
