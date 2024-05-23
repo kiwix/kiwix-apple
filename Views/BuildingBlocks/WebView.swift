@@ -18,7 +18,6 @@ import CoreData
 import SwiftUI
 import WebKit
 import Defaults
-import os
 
 #if os(macOS)
 struct WebView: NSViewRepresentable {
