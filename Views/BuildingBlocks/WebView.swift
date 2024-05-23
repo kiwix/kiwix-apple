@@ -55,19 +55,24 @@ struct WebView: UIViewControllerRepresentable {
     func updateUIViewController(_ controller: WebViewController, context: Context) { }
 }
 
-class WebViewController: UIViewController {
+final class WebViewController: UIViewController {
     private let webView: WKWebView
     private let pageZoomObserver: Defaults.Observation
     private var webViewURLObserver: NSKeyValueObservation?
     private var lastOFfset: CGFloat = 0.0
-    
+    private var topConstraint: NSLayoutConstraint?
+    private var urlObserver: NSKeyValueObservation?
+
     init(webView: WKWebView) {
         self.webView = webView
-        self.pageZoomObserver = Defaults.observe(.webViewPageZoom) { change in
+        pageZoomObserver = Defaults.observe(.webViewPageZoom) { change in
             webView.adjustTextSize(pageZoom: change.newValue)
         }
         super.init(nibName: nil, bundle: nil)
-        self.webView.scrollView.delegate = self
+        webView.scrollView.delegate = self
+        urlObserver = webView.observe(\.url, options: [.initial, .new]) { [weak self] _, _ in
+            self?.showBars()
+        }
         webView.setValue(true, forKey: "_haveSetObscuredInsets")
     }
 
@@ -84,30 +89,29 @@ class WebViewController: UIViewController {
         super.viewDidLoad()
         webView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(webView)
+        topConstraint = webView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor)
         NSLayoutConstraint.activate([
             view.leftAnchor.constraint(equalTo: webView.leftAnchor),
             view.bottomAnchor.constraint(equalTo: webView.bottomAnchor),
             view.rightAnchor.constraint(equalTo: webView.rightAnchor),
-            view.safeAreaLayoutGuide.topAnchor.constraint(equalTo: webView.topAnchor)
-        ])
+            topConstraint
+        ].compactMap { $0 })
     }
 
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        debugPrint("WebView::viewDidLayoutSubviews")
+    override func viewWillTransition(to size: CGSize, with coordinator: any UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+        showBars()
     }
 }
 
 // MARK: - UIScrollViewDelegate
 extension WebViewController: UIScrollViewDelegate {
     func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
-        if Device.current == .iPhone {
-            lastOFfset = scrollView.contentOffset.y
-        }
+        lastOFfset = scrollView.contentOffset.y
     }
 
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        if Device.current == .iPhone, scrollView.isDragging {
+        if scrollView.isDragging {
             let isScrollingDown: Bool = scrollView.contentOffset.y > lastOFfset
             if isScrollingDown {
                 hideBars()
@@ -125,15 +129,19 @@ extension WebViewController: UIScrollViewDelegate {
 // MARK: - Toggle bars
 extension WebViewController {
     private func hideBars() {
-        view.safeAreaLayoutGuide.topAnchor.constraint(equalTo: webView.topAnchor).isActive = false
-        view.topAnchor.constraint(equalTo: webView.topAnchor).isActive = true
+        guard Device.current == .iPhone else { return }
+        topConstraint?.isActive = false
+        topConstraint = webView.topAnchor.constraint(equalTo: view.topAnchor)
+        topConstraint?.isActive = true
         parent?.navigationController?.setNavigationBarHidden(true, animated: true)
         parent?.navigationController?.setToolbarHidden(true, animated: true)
     }
 
     func showBars() {
-        view.safeAreaLayoutGuide.topAnchor.constraint(equalTo: webView.topAnchor).isActive = true
-        view.topAnchor.constraint(equalTo: webView.topAnchor).isActive = false
+        guard Device.current == .iPhone else { return }
+        topConstraint?.isActive = false
+        topConstraint = webView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor)
+        topConstraint?.isActive = true
         parent?.navigationController?.setNavigationBarHidden(false, animated: true)
         parent?.navigationController?.setToolbarHidden(false, animated: true)
     }
