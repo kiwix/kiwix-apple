@@ -103,14 +103,15 @@ final class KiwixURLSchemeHandler: NSObject, WKURLSchemeHandler {
     // MARK: Success responses
     @MainActor
     private func sendHTTP200Response(_ urlSchemeTask: WKURLSchemeTask, url: URL, content: URLContent) {
-        guard isStartedFor(urlSchemeTask.hash) else { return }
         let headers = ["Content-Type": content.httpContentType,
                        "Content-Length": "\(content.size)"]
         if let response = HTTPURLResponse(url: url, statusCode: 200, httpVersion: "HTTP/1.1", headerFields: headers) {
+            guard isStartedFor(urlSchemeTask.hash) else { return }
             urlSchemeTask.didReceive(response)
             urlSchemeTask.didReceive(content.data)
             urlSchemeTask.didFinish()
         } else {
+            guard isStartedFor(urlSchemeTask.hash) else { return }
             urlSchemeTask.didFailWithError(URLError(.badServerResponse, userInfo: ["url": url]))
         }
         stopFor(urlSchemeTask.hash)
