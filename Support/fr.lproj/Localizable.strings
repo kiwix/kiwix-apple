@@ -5,6 +5,7 @@
 // Author: Gomoko
 // Author: Hecatonchire
 // Author: MacOS Weed
+// Author: McDutchie
 // Author: SleaY
 // Author: Stephane
 // Author: Vikoula5
@@ -39,6 +40,9 @@
 "common.tab.menu.library" = "Bibliothèque";
 "common.tab.menu.settings" = "Paramètres";
 "common.support.app_name" = "Soutenez-nous %@";
+"common.export_file.alert.title" = "Exporter le fichier";
+"common.export_file.alert.description" = "Voulez-vous exporter le fichier %@ ?";
+"common.export_file.alert.button.title" = "Exporter";
 "outline_button.outline.title" = "Vue d’ensemble";
 "outline_button.outline.help" = "Afficher la vue d’ensemble de l’article";
 "outline_button.outline.empty.message" = "Aucune vue d’ensemble disponible";
@@ -125,7 +129,7 @@
 "reading_settings.zoom.title" = "Zoom de la page";
 "reading_settings.zoom.reset.button" = "Réinitialiser";
 "reading_settings.external_link.title" = "Lien externe";
-"reading_settings.search_snippet.title" = "Rechercher l’extrait";
+"reading_settings.search_snippet.title" = "Extrait de recherche";
 "reading_settings.tab.reading" = "Lecture";
 "library_settings.catalog.title" = "Catalogue";
 "library_settings.button.refresh_now" = "Rafraîchir maintenant";
