@@ -17,7 +17,6 @@ import Combine
 import CoreData
 import SwiftUI
 import WebKit
-
 import Defaults
 
 #if os(macOS)
@@ -55,65 +54,95 @@ struct WebView: UIViewControllerRepresentable {
     func updateUIViewController(_ controller: WebViewController, context: Context) { }
 }
 
-class WebViewController: UIViewController {
+final class WebViewController: UIViewController {
     private let webView: WKWebView
     private let pageZoomObserver: Defaults.Observation
     private var webViewURLObserver: NSKeyValueObservation?
-    private var topSafeAreaConstraint: NSLayoutConstraint?
-    private var layoutSubject = PassthroughSubject<Void, Never>()
-    private var layoutCancellable: AnyCancellable?
+    private var lastOFfset: CGFloat = 0.0
+    private var topConstraint: NSLayoutConstraint?
+    private var urlObserver: NSKeyValueObservation?
 
     init(webView: WKWebView) {
         self.webView = webView
-        self.pageZoomObserver = Defaults.observe(.webViewPageZoom) { change in
+        pageZoomObserver = Defaults.observe(.webViewPageZoom) { change in
             webView.adjustTextSize(pageZoom: change.newValue)
         }
         super.init(nibName: nil, bundle: nil)
+        webView.scrollView.delegate = self
+        urlObserver = webView.observe(\.url, options: [.initial, .new]) { [weak self] _, _ in
+            self?.showBars()
+        }
+        webView.setValue(true, forKey: "_haveSetObscuredInsets")
     }
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
+    override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
+        webView.setValue(view.safeAreaInsets, forKey: "_obscuredInsets")
+    }
 
+    override func viewDidLoad() {
+        super.viewDidLoad()
         webView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(webView)
-        webView.alpha = 0
-
-        /*
-         HACK: Make sure the webview content does not jump after state restoration
-         It appears the webview's state restoration does not properly take into account of the content inset.
-         To mitigate, first pin the webview's top against safe area top anchor, after all viewDidLayoutSubviews calls,
-         pin the webview's top against view's top anchor, so that content does not appears to move up.
-         HACK: when view resize, the webview might become zoomed in. To mitigate, set zoom scale to 1.
-         */
+        topConstraint = webView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor)
         NSLayoutConstraint.activate([
             view.leftAnchor.constraint(equalTo: webView.leftAnchor),
             view.bottomAnchor.constraint(equalTo: webView.bottomAnchor),
-            view.rightAnchor.constraint(equalTo: webView.rightAnchor)
-        ])
-        topSafeAreaConstraint = view.safeAreaLayoutGuide.topAnchor.constraint(equalTo: webView.topAnchor)
-        topSafeAreaConstraint?.isActive = true
-        layoutCancellable = layoutSubject
-            .debounce(for: .seconds(0.15), scheduler: RunLoop.main)
-            .sink { [weak self] _ in
-                guard let view = self?.view,
-                      let webView = self?.webView,
-                      view.subviews.contains(webView) else { return }
-                webView.alpha = 1
-                webView.scrollView.zoomScale = 1
-                guard self?.topSafeAreaConstraint?.isActive == true else { return }
-                self?.topSafeAreaConstraint?.isActive = false
-                self?.view.topAnchor.constraint(equalTo: webView.topAnchor).isActive = true
-            }
+            view.rightAnchor.constraint(equalTo: webView.rightAnchor),
+            topConstraint
+        ].compactMap { $0 })
     }
 
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        webView.setValue(view.safeAreaInsets, forKey: "_obscuredInsets")
-        layoutSubject.send()
+    override func viewWillTransition(to size: CGSize, with coordinator: any UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+        showBars()
+    }
+}
+
+// MARK: - UIScrollViewDelegate
+extension WebViewController: UIScrollViewDelegate {
+    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+        lastOFfset = scrollView.contentOffset.y
+    }
+
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        if scrollView.isDragging {
+            let isScrollingDown: Bool = scrollView.contentOffset.y > lastOFfset
+            if isScrollingDown {
+                hideBars()
+            } else {
+                showBars()
+            }
+        }
+    }
+
+    func scrollViewDidScrollToTop(_ scrollView: UIScrollView) {
+        showBars()
+    }
+}
+
+// MARK: - Toggle bars
+extension WebViewController {
+    private func hideBars() {
+        guard Device.current == .iPhone else { return }
+        topConstraint?.isActive = false
+        topConstraint = webView.topAnchor.constraint(equalTo: view.topAnchor)
+        topConstraint?.isActive = true
+        parent?.navigationController?.setNavigationBarHidden(true, animated: true)
+        parent?.navigationController?.setToolbarHidden(true, animated: true)
+    }
+
+    func showBars() {
+        guard Device.current == .iPhone else { return }
+        topConstraint?.isActive = false
+        topConstraint = webView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor)
+        topConstraint?.isActive = true
+        parent?.navigationController?.setNavigationBarHidden(false, animated: true)
+        parent?.navigationController?.setToolbarHidden(false, animated: true)
     }
 }
 
