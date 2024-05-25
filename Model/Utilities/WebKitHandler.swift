@@ -121,11 +121,12 @@ final class KiwixURLSchemeHandler: NSObject, WKURLSchemeHandler {
 
     @MainActor
     private func sendHTTP404Response(_ urlSchemeTask: WKURLSchemeTask, url: URL) {
-        guard isStartedFor(urlSchemeTask.hash) else { return }
         if let response = HTTPURLResponse(url: url, statusCode: 404, httpVersion: "HTTP/1.1", headerFields: nil) {
+            guard isStartedFor(urlSchemeTask.hash) else { return }
             urlSchemeTask.didReceive(response)
             urlSchemeTask.didFinish()
         } else {
+            guard isStartedFor(urlSchemeTask.hash) else { return }
             urlSchemeTask.didFailWithError(URLError(.badServerResponse, userInfo: ["url": url]))
         }
         stopFor(urlSchemeTask.hash)
