@@ -8,6 +8,7 @@
 // Author: McDutchie
 // Author: SleaY
 // Author: Stephane
+// Author: Urhixidur
 // Author: Vikoula5
 // Author: Wladek92
 
@@ -125,7 +126,7 @@
 "zim_file.download_task.action.downloading" = "Téléchargement...";
 "zim_file.download_task.action.resume" = "Reprendre";
 "zim_file.download_task.action.paused" = "Pause";
-"service_worker_warning.label.description" = "Les fichiers Zim nécessitant des travailleurs de service ne sont pas supportés.";
+"service_worker_warning.label.description" = "Les fichiers Zim nécessitant des travailleurs de service ne sont pas pris en charge.";
 "reading_settings.zoom.title" = "Zoom de la page";
 "reading_settings.zoom.reset.button" = "Réinitialiser";
 "reading_settings.external_link.title" = "Lien externe";
