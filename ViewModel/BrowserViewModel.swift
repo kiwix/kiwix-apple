@@ -393,6 +393,24 @@ final class BrowserViewModel: NSObject, ObservableObject,
         _ = createNewTab(url: newUrl)
         return nil
     }
+#else
+    func webView(
+        _ webView: WKWebView,
+        createWebViewWith configuration: WKWebViewConfiguration,
+        for navigationAction: WKNavigationAction,
+        windowFeatures: WKWindowFeatures
+    ) -> WKWebView? {
+        guard let newURL = navigationAction.request.url else { return nil }
+        if let frame = navigationAction.targetFrame, frame.isMainFrame {
+            return nil
+        }
+        guard newURL.isExternal == false else {
+            externalURL = newURL
+            return nil
+        }
+        webView.load(navigationAction.request)
+        return nil
+    }
 #endif
 
 #if os(iOS)
