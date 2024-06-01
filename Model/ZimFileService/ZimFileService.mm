@@ -165,15 +165,21 @@
 }
 
 - (NSNumber* _Nullable)getContentSize:(NSUUID *)zimFileID contentPath:(NSString *)contentPath {
-    if ([contentPath hasPrefix:@"/"]) {
-        contentPath = [contentPath substringFromIndex:1];
-    }
-    zim::Archive *archive = [self archiveBy: zimFileID];
-    if (archive == nil) { return nil; }
     try {
-        zim::Entry entry = archive->getEntryByPath([contentPath cStringUsingEncoding:NSUTF8StringEncoding]);
-        zim::Item item = entry.getItem(entry.isRedirect());
+        zim::Item item = [self itemIn:zimFileID contentPath:contentPath];
         return [NSNumber numberWithUnsignedLongLong:item.getSize()];
+    } catch (std::exception) {
+        return nil;
+    }
+}
+
+- (NSDictionary *)getMetaData:(NSUUID *)zimFileID contentPath:(NSString *)contentPath {
+    try {
+        zim::Item item = [self itemIn:zimFileID contentPath:contentPath];
+        return @{
+            @"mime": [NSString stringWithUTF8String:item.getMimetype().c_str()],
+            @"size": [NSNumber numberWithUnsignedLongLong:item.getSize()]
+        };
     } catch (std::exception) {
         return nil;
     }
@@ -181,15 +187,8 @@
 
 - (NSDictionary *)getContent:(NSUUID *)zimFileID contentPath:(NSString *)contentPath
                        start:(NSUInteger)start end:(NSUInteger)end {
-    if ([contentPath hasPrefix:@"/"]) {
-        contentPath = [contentPath substringFromIndex:1];
-    }
-
-    zim::Archive *archive = [self archiveBy: zimFileID];
-    if (archive == nil) { return nil; }
     try {
-        zim::Entry entry = archive->getEntryByPath([contentPath cStringUsingEncoding:NSUTF8StringEncoding]);
-        zim::Item item = entry.getItem(entry.isRedirect());
+        zim::Item item = [self itemIn:zimFileID contentPath:contentPath];
         zim::Blob blob;
         if (start == 0 && end == 0) {
             blob = item.getData();
@@ -210,6 +209,19 @@
     }
 }
 
+- (NSDictionary *_Nullable) getDirectAccess: (NSUUID *)zimFileID contentPath:(NSString *)contentPath {
+    try {
+        zim::Item item = [self itemIn:zimFileID contentPath: contentPath];
+        zim::Item::DirectAccessInfo info = item.getDirectAccessInformation();
+        return @{
+            @"path": [NSString stringWithUTF8String: info.first.c_str()],
+            @"offset": [NSNumber numberWithUnsignedLong: info.second]
+        };
+    } catch(std::exception) {
+        return nil;
+    }
+}
+
 # pragma mark - private
 
 /// Converts the UUID to a C representation
@@ -224,6 +236,16 @@
         return nil;
     }
     return &(found->second);
+}
+
+- (zim::Item) itemIn: (NSUUID *)zimFileID contentPath:(NSString *)contentPath {
+    if ([contentPath hasPrefix:@"/"]) {
+        contentPath = [contentPath substringFromIndex:1];
+    }
+    zim::Archive *archive = [self archiveBy: zimFileID];
+    if (archive == nil) { throw std::exception(); }
+    zim::Entry entry = archive->getEntryByPath([contentPath cStringUsingEncoding:NSUTF8StringEncoding]);
+    return entry.getItem(entry.isRedirect());
 }
 
 @end

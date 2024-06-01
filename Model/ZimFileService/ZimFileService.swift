@@ -19,7 +19,7 @@ extension ZimFileService {
     static let shared = ZimFileService.__sharedInstance()
 
     /// IDs of currently opened zim files
-    private var fileIDs: [UUID] { get { return __getReaderIdentifiers().compactMap({ $0 as? UUID }) } }
+    private var fileIDs: [UUID] { __getReaderIdentifiers().compactMap({ $0 as? UUID }) }
 
     // MARK: - Reader Management
 
@@ -121,15 +121,34 @@ extension ZimFileService {
         return __getContentSize(zimFileUUID, contentPath: url.path)
     }
 
+    func getDirectAccessInfo(url: URL) -> DirectAccessInfo? {
+        guard let zimFileID = url.host,
+              let zimFileUUID = UUID(uuidString: zimFileID),
+              let directAccess = __getDirectAccess(zimFileUUID, contentPath: url.path),
+              let path: String = directAccess["path"] as? String,
+              let offset: UInt = directAccess["offset"] as? UInt
+        else {
+            return nil
+        }
+        return DirectAccessInfo(path: path, offset: offset)
+    }
+
+    func getContentMetaData(url: URL) -> URLContentMetaData? {
+        guard let zimFileID = url.host,
+              let zimFileUUID = UUID(uuidString: zimFileID),
+              let content = __getMetaData(zimFileUUID, contentPath: url.path),
+              let mime = content["mime"] as? String,
+              let size = content["size"] as? UInt else { return nil }
+        return URLContentMetaData(mime: mime, size: size)
+    }
+
     func getURLContent(zimFileID: String, contentPath: String, start: UInt = 0, end: UInt = 0) -> URLContent? {
         guard let zimFileID = UUID(uuidString: zimFileID),
               let content = __getContent(zimFileID, contentPath: contentPath, start: start, end: end),
               let data = content["data"] as? Data,
-              let mime = content["mime"] as? String,
               let start = content["start"] as? UInt,
-              let end = content["end"] as? UInt,
-              let size = content["size"] as? UInt else { return nil }
-        return URLContent(data: data, mime: mime, start: start, end: end, size: size)
+              let end = content["end"] as? UInt else { return nil }
+        return URLContent(data: data, start: start, end: end)
     }
 }
 
