@@ -81,52 +81,115 @@ final class KiwixURLSchemeHandler: NSObject, WKURLSchemeHandler {
             stopFor(urlSchemeTask.hash)
             return
         }
-        guard let content = await readContent(for: url) else {
+        guard let metaData = await contentMetaData(for: url) else {
             sendHTTP404Response(urlSchemeTask, url: url)
             return
         }
-        sendHTTP200Response(urlSchemeTask, url: url, content: content)
 
-    }
-
-    // MARK: Reading content
-
-    private func readContent(for url: URL, start: UInt = 0, end: UInt = 0) async -> URLContent? {
-        return await withCheckedContinuation { continuation in
-            Task.detached(priority: .utility) {
-                let content = ZimFileService.shared.getURLContent(url: url, start: start, end: end)
-                continuation.resume(returning: content)
-            }
-        }
-    }
-
-    // MARK: Success responses
-    @MainActor
-    private func sendHTTP200Response(_ urlSchemeTask: WKURLSchemeTask, url: URL, content: URLContent) {
-        let headers = ["Content-Type": content.httpContentType,
-                       "Content-Length": "\(content.size)"]
-        if let response = HTTPURLResponse(url: url, statusCode: 200, httpVersion: "HTTP/1.1", headerFields: headers) {
-            guard isStartedFor(urlSchemeTask.hash) else { return }
-            urlSchemeTask.didReceive(response)
-            urlSchemeTask.didReceive(content.data)
-            urlSchemeTask.didFinish()
+        let dataProvider: any DataProvider<URLContent>
+        let ranges: [ClosedRange<UInt>] // the list of ranges we should use to stream data
+        if metaData.isMediaType, let directAccess = await directAccessInfo(for: url) {
+            dataProvider = ZimDirectContentProvider(directAccess: directAccess,
+                                                    contentSize: metaData.size)
+            ranges = ByteRanges.rangesFor(
+                contentLength: metaData.size,
+                rangeSize: 2097152 // 2MB
+            )
         } else {
+            dataProvider = ZimContentProvider(for: url)
+            // currently using the full range (from 0 to content size)
+            // this means we read the content in one piece
+            // once https://github.com/openzim/libzim/issues/886 is fixed
+            // we can stream compressed data "in chunks" as well
+            // to be done as part of: https://github.com/kiwix/kiwix-apple/issues/784
+            ranges = [0...metaData.size] // it's the full range
+        }
+
+        guard let dataStream = DataStream(dataProvider: dataProvider, ranges: ranges)
+        else {
+            sendHTTP404Response(urlSchemeTask, url: url)
+            return
+        }
+        
+        // send the headers
+        guard isStartedFor(urlSchemeTask.hash) else { return }
+        guard let responseHeaders = http200Response(urlSchemeTask, url: url, metaData: metaData) else {
+            urlSchemeTask.didFailWithError(URLError(.badServerResponse, userInfo: ["url": url]))
+            stopFor(urlSchemeTask.hash)
+            return
+        }
+        urlSchemeTask.didReceive(responseHeaders)
+
+        // send the data
+        do {
+            try await writeContent(to: urlSchemeTask, from: dataStream)
+            guard isStartedFor(urlSchemeTask.hash) else { return }
+            urlSchemeTask.didFinish()
+        } catch {
             guard isStartedFor(urlSchemeTask.hash) else { return }
             urlSchemeTask.didFailWithError(URLError(.badServerResponse, userInfo: ["url": url]))
         }
         stopFor(urlSchemeTask.hash)
     }
 
+    // MARK: Reading content
+
+    private func contentMetaData(for url: URL) async -> URLContentMetaData? {
+        return await withCheckedContinuation { continuation in
+            Task.detached(priority: .utility) {
+                let metaData = ZimFileService.shared.getContentMetaData(url: url)
+                continuation.resume(returning: metaData)
+            }
+        }
+    }
+
+    private func directAccessInfo(for url: URL) async -> DirectAccessInfo? {
+        return await withCheckedContinuation { continuation in
+            Task.detached(priority: .utility) {
+                let directAccess = ZimFileService.shared.getDirectAccessInfo(url: url)
+                continuation.resume(returning: directAccess)
+            }
+        }
+    }
+
+    // MARK: Writing content
+    private func writeContent(
+        to urlSchemeTask: WKURLSchemeTask,
+        from dataStream: DataStream<URLContent>
+    ) async throws {
+        for try await urlContent in dataStream {
+            await MainActor.run {
+                guard isStartedFor(urlSchemeTask.hash) else { return }
+                urlSchemeTask.didReceive(urlContent.data)
+            }
+        }
+    }
+
+    // MARK: Success responses
+    private func http200Response(
+        _ urlSchemeTask: WKURLSchemeTask,
+        url: URL,
+        metaData: URLContentMetaData
+    ) -> HTTPURLResponse? {
+        let headers = ["Content-Type": metaData.httpContentType,
+                       "Content-Length": "\(metaData.size)"]
+        return HTTPURLResponse(
+            url: url,
+            statusCode: 200,
+            httpVersion: "HTTP/1.1",
+            headerFields: headers
+        )
+    }
+
     // MARK: Error responses
 
     @MainActor
     private func sendHTTP404Response(_ urlSchemeTask: WKURLSchemeTask, url: URL) {
+        guard isStartedFor(urlSchemeTask.hash) else { return }
         if let response = HTTPURLResponse(url: url, statusCode: 404, httpVersion: "HTTP/1.1", headerFields: nil) {
-            guard isStartedFor(urlSchemeTask.hash) else { return }
             urlSchemeTask.didReceive(response)
             urlSchemeTask.didFinish()
         } else {
-            guard isStartedFor(urlSchemeTask.hash) else { return }
             urlSchemeTask.didFailWithError(URLError(.badServerResponse, userInfo: ["url": url]))
         }
         stopFor(urlSchemeTask.hash)

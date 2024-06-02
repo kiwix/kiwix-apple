@@ -30,6 +30,7 @@ class Bookmark: NSManagedObject, Identifiable {
     class func fetchRequest(
         predicate: NSPredicate? = nil, sortDescriptors: [NSSortDescriptor] = []
     ) -> NSFetchRequest<Bookmark> {
+        // swiftlint:disable:next force_cast
         let request = super.fetchRequest() as! NSFetchRequest<Bookmark>
         request.predicate = predicate
         request.sortDescriptors = sortDescriptors
@@ -50,12 +51,14 @@ class DownloadTask: NSManagedObject, Identifiable {
     @NSManaged var zimFile: ZimFile?
 
     class func fetchRequest(predicate: NSPredicate? = nil) -> NSFetchRequest<DownloadTask> {
+        // swiftlint:disable:next force_cast
         let request = super.fetchRequest() as! NSFetchRequest<DownloadTask>
         request.predicate = predicate
         return request
     }
 
     class func fetchRequest(fileID: UUID) -> NSFetchRequest<DownloadTask> {
+        // swiftlint:disable:next force_cast
         let request = super.fetchRequest() as! NSFetchRequest<DownloadTask>
         request.predicate = NSPredicate(format: "fileID == %@", fileID as CVarArg)
         return request
@@ -134,6 +137,7 @@ class Tab: NSManagedObject, Identifiable {
     class func fetchRequest(
         predicate: NSPredicate? = nil, sortDescriptors: [NSSortDescriptor] = []
     ) -> NSFetchRequest<Tab> {
+        // swiftlint:disable:next force_cast
         let request = super.fetchRequest() as! NSFetchRequest<Tab>
         request.predicate = predicate
         request.sortDescriptors = sortDescriptors
@@ -141,25 +145,50 @@ class Tab: NSManagedObject, Identifiable {
     }
 
     class func fetchRequest(id: UUID) -> NSFetchRequest<Tab> {
+        // swiftlint:disable:next force_cast
         let request = super.fetchRequest() as! NSFetchRequest<Tab>
         request.predicate = NSPredicate(format: "id == %@", id as CVarArg)
         return request
     }
 }
 
-struct URLContent {
-    let data: Data
+struct URLContentMetaData {
     let mime: String
-    let start: UInt
-    let end: UInt
     let size: UInt
-
     var httpContentType: String {
         if mime == "text/plain" {
             return "text/plain;charset=UTf-8"
         } else {
             return mime
         }
+    }
+
+    var isMediaType: Bool {
+        mime.hasPrefix("video/") || mime.hasPrefix("audio/")
+    }
+}
+
+struct URLContent {
+    let data: Data
+    let start: UInt
+    let end: UInt
+}
+
+struct DirectAccessInfo {
+    let path: String
+    let offset: UInt
+
+    /// Optional init
+    /// @see: ``zim::Item.getDirectAccessInformation()``
+    /// - Parameters:
+    ///   - path: filename path - cannot be empty
+    ///   - offset: where the reading should start in the file
+    init?(path: String, offset: UInt) {
+        guard !path.isEmpty else {
+            return nil
+        }
+        self.path = path
+        self.offset = offset
     }
 }
 
@@ -214,6 +243,7 @@ final class ZimFile: NSManagedObject, Identifiable {
     class func fetchRequest(
         predicate: NSPredicate? = nil, sortDescriptors: [NSSortDescriptor] = []
     ) -> NSFetchRequest<ZimFile> {
+        // swiftlint:disable:next force_cast
         let request = super.fetchRequest() as! NSFetchRequest<ZimFile>
         request.predicate = predicate
         request.sortDescriptors = sortDescriptors
@@ -221,6 +251,7 @@ final class ZimFile: NSManagedObject, Identifiable {
     }
 
     class func fetchRequest(fileID: UUID) -> NSFetchRequest<ZimFile> {
+        // swiftlint:disable:next force_cast
         let request = super.fetchRequest() as! NSFetchRequest<ZimFile>
         request.predicate = NSPredicate(format: "fileID == %@", fileID as CVarArg)
         return request

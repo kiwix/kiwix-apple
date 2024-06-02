@@ -44,5 +44,7 @@
 - (NSNumber *_Nullable)getContentSize:(NSUUID *_Nonnull)zimFileID contentPath:(NSString *_Nonnull)contentPath NS_REFINED_FOR_SWIFT;
 - (NSDictionary *_Nullable)getContent:(NSUUID *_Nonnull)zimFileID contentPath:(NSString *_Nonnull)contentPath
                            start:(NSUInteger)start end:(NSUInteger)end NS_REFINED_FOR_SWIFT;
+- (NSDictionary *_Nullable)getMetaData:(NSUUID *_Nonnull)zimFileID contentPath:(NSString *_Nonnull)contentPath  NS_REFINED_FOR_SWIFT;
+- (NSDictionary *_Nullable)getDirectAccess: (NSUUID *_Nonnull)zimFileID contentPath:(NSString *_Nonnull)contentPath NS_REFINED_FOR_SWIFT;
 
 @end
