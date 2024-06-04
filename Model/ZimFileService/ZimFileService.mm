@@ -198,8 +198,7 @@
             blob = item.getData(start, fmin(item.getSize() - start, end - start + 1));
         }
         return @{
-            @"data": [NSData dataWithBytes:item.getData().data() length:blob.size()],
-            @"mime": [NSString stringWithUTF8String:item.getMimetype().c_str()],
+            @"data": [NSData dataWithBytes: blob.data() length:blob.size()],
             @"start": [NSNumber numberWithUnsignedLongLong:start],
             @"end": [NSNumber numberWithUnsignedLongLong:start + blob.size() - 1],
             @"size": [NSNumber numberWithUnsignedLongLong:item.getSize()]
