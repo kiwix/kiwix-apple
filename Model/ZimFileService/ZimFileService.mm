@@ -200,8 +200,7 @@
         return @{
             @"data": [NSData dataWithBytes: blob.data() length:blob.size()],
             @"start": [NSNumber numberWithUnsignedLongLong:start],
-            @"end": [NSNumber numberWithUnsignedLongLong:start + blob.size() - 1],
-            @"size": [NSNumber numberWithUnsignedLongLong:item.getSize()]
+            @"end": [NSNumber numberWithUnsignedLongLong:start + blob.size() - 1]
         };
     } catch (std::exception) {
         return nil;
