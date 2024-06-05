@@ -86,27 +86,7 @@ final class KiwixURLSchemeHandler: NSObject, WKURLSchemeHandler {
             return
         }
 
-        let dataProvider: any DataProvider<URLContent>
-        let ranges: [ClosedRange<UInt>] // the list of ranges we should use to stream data
-        if metaData.isMediaType, let directAccess = await directAccessInfo(for: url) {
-            dataProvider = ZimDirectContentProvider(directAccess: directAccess,
-                                                    contentSize: metaData.size)
-            ranges = ByteRanges.rangesFor(
-                contentLength: metaData.size,
-                rangeSize: 2097152 // 2MB
-            )
-        } else {
-            dataProvider = ZimContentProvider(for: url)
-            // currently using the full range (from 0 to content size)
-            // this means we read the content in one piece
-            // once https://github.com/openzim/libzim/issues/886 is fixed
-            // we can stream compressed data "in chunks" as well
-            // to be done as part of: https://github.com/kiwix/kiwix-apple/issues/784
-            ranges = [0...metaData.size] // it's the full range
-        }
-
-        guard let dataStream = DataStream(dataProvider: dataProvider, ranges: ranges)
-        else {
+        guard let dataStream = await dataStream(for: url, metaData: metaData) else {
             sendHTTP404Response(urlSchemeTask, url: url)
             return
         }
@@ -133,6 +113,32 @@ final class KiwixURLSchemeHandler: NSObject, WKURLSchemeHandler {
     }
 
     // MARK: Reading content
+
+    private func dataStream(for url: URL, metaData: URLContentMetaData) async -> DataStream<URLContent>? {
+        let dataProvider: any DataProvider<URLContent>
+        let ranges: [ClosedRange<UInt>] // the list of ranges we should use to stream data
+        let size2MB: UInt = 2097152 // 2MB
+        if metaData.isMediaType, let directAccess = await directAccessInfo(for: url) {
+            dataProvider = ZimDirectContentProvider(directAccess: directAccess,
+                                                    contentSize: metaData.size)
+            ranges = ByteRanges.rangesFor(
+                contentLength: metaData.size,
+                rangeSize: size2MB
+            )
+        } else {
+            dataProvider = ZimContentProvider(for: url)
+            // if the data is larger than 2MB, read it "in chunks"
+            if metaData.size > size2MB {
+                ranges = ByteRanges.rangesFor(
+                    contentLength: metaData.size,
+                    rangeSize: size2MB
+                )
+            } else { // use the full range and read it in one go
+                ranges = [0...metaData.size]
+            }
+        }
+        return DataStream(dataProvider: dataProvider, ranges: ranges)
+    }
 
     private func contentMetaData(for url: URL) async -> URLContentMetaData? {
         return await withCheckedContinuation { continuation in
