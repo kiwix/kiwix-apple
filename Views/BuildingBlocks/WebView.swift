@@ -23,11 +23,21 @@ import Defaults
 struct WebView: NSViewRepresentable {
     @EnvironmentObject private var browser: BrowserViewModel
 
-    func makeNSView(context: Context) -> WKWebView {
-        browser.webView
+    func makeNSView(context: Context) -> NSView {
+        let nsView = NSView()
+        nsView.translatesAutoresizingMaskIntoConstraints = false
+        browser.webView.translatesAutoresizingMaskIntoConstraints = false
+        nsView.addSubview(browser.webView)
+        NSLayoutConstraint.activate([
+            browser.webView.leadingAnchor.constraint(equalTo: nsView.leadingAnchor),
+            browser.webView.trailingAnchor.constraint(equalTo: nsView.trailingAnchor),
+            browser.webView.topAnchor.constraint(equalTo: nsView.topAnchor),
+            browser.webView.bottomAnchor.constraint(equalTo: nsView.bottomAnchor)
+        ])
+        return nsView
     }
 
-    func updateNSView(_ webView: WKWebView, context: Context) { }
+    func updateNSView(_ nsView: NSView, context: Context) { }
 
     func makeCoordinator() -> Coordinator {
         Coordinator(view: self)
