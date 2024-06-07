@@ -27,7 +27,7 @@ extension URL {
     }
 
     var isExternal: Bool {
-        ["http", "https"].contains(scheme)
+        ["http", "https", "mailto"].contains(scheme)
     }
 
     // swiftlint:disable:next force_try
