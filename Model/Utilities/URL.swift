@@ -48,6 +48,9 @@ extension URL {
     var isKiwixURL: Bool { schemeType == .kiwix }
     var isGeoURL: Bool { schemeType == .geo }
 
+    /// Returns the path, that should be used to resolve articles in ZIM files.
+    /// It makes sure that trailing slash is preserved,
+    /// and leading slash is removed.
     var contentPath: String {
         [scheme, "://", host, "/"]
             .compactMap { $0 }
