@@ -20,7 +20,8 @@ final class URLContentPathTests: XCTestCase {
 
     private let testURLs = [
         URL(string: "kiwix://6E4F3D4A-2F8A-789A-3B88-212219F4FB27/irp.fas.org/doddir/milmed/index.html")!,
-        URL(string: "kiwix://861C031F-DAFB-9688-4DB4-8F1199FE2926/mesquartierschinois.wordpress.com/")!
+        URL(string: "kiwix://861C031F-DAFB-9688-4DB4-8F1199FE2926/mesquartierschinois.wordpress.com/")!,
+        URL(string: "kiwix://861C031F-DAFB-9688-4DB4-8F1199FE2926/widgets.wp.com/likes/master.html%3Fver%3D20240530#ver=20240530&lang=fr&lang_ver=1713167421&origin=https://mesquartierschinois.wordpress.com")!
     ]
 
     func test_no_leading_slash() {
@@ -37,7 +38,8 @@ final class URLContentPathTests: XCTestCase {
     func test_value() {
         XCTAssertEqual(testURLs.map { $0.contentPath }, [
             "irp.fas.org/doddir/milmed/index.html",
-            "mesquartierschinois.wordpress.com/"
+            "mesquartierschinois.wordpress.com/",
+            "widgets.wp.com/likes/master.html?ver=20240530"
         ])
     }
 

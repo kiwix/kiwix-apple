@@ -52,11 +52,18 @@ extension URL {
     /// It makes sure that trailing slash is preserved,
     /// and leading slash is removed.
     var contentPath: String {
-        [scheme, "://", host, "/"]
-            .compactMap { $0 }
-            .reduce(absoluteString) { partialResult, prefix in
-                partialResult.removingPrefix(prefix)
-            }
+        if #available(macOS 13.0, iOS 16.0, *) {
+            return path(percentEncoded: false).removingPrefix("/")
+        } else {
+            var path: String = [scheme, "://", host, "/"]
+                .compactMap { $0 }
+                .reduce(absoluteString) { partialResult, prefix in
+                    partialResult.removingPrefix(prefix)
+                }
+            path = path.removingPercentEncoding ?? path
+            path = (try? path.replacingRegex(matching: "#.*", with: "")) ?? path
+            return path
+        }
     }
 
     // swiftlint:disable:next force_try

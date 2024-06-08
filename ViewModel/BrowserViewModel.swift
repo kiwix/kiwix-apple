@@ -18,6 +18,7 @@ import CoreData
 import CoreLocation
 import WebKit
 import Defaults
+import os
 
 import OrderedCollections
 import CoreKiwix
@@ -281,11 +282,22 @@ final class BrowserViewModel: NSObject, ObservableObject,
             decisionHandler(.cancel)
         } else if url.isKiwixURL {
             guard ZimFileService.shared.getContentSize(url: url) != nil else {
-                // content is missing
-                decisionHandler(.cancel)
-                NotificationCenter.default.post(
-                    name: .alert, object: nil, userInfo: ["rawValue": ActiveAlert.articleFailedToLoad.rawValue]
+                os_log(
+                    "Missing content at url: %@ => %@",
+                    log: Log.URLSchemeHandler,
+                    type: .error,
+                    url.absoluteString,
+                    url.contentPath
                 )
+                decisionHandler(.cancel)
+                if navigationAction.request.mainDocumentURL == url {
+                    // only show alerts for missing main document
+                    NotificationCenter.default.post(
+                        name: .alert,
+                        object: nil,
+                        userInfo: ["rawValue": ActiveAlert.articleFailedToLoad.rawValue]
+                    )
+                }
                 return
             }
             decisionHandler(.allow)
