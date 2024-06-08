@@ -21,15 +21,11 @@ enum URLSchemeType {
     case external
 
     init(scheme: String?) {
-        guard let scheme else {
-            self = .external
-            return
-        }
-        if scheme.caseInsensitiveCompare("kiwix") == .orderedSame {
+        if scheme?.caseInsensitiveCompare("kiwix") == .orderedSame {
             self = .kiwix
             return
         }
-        if scheme.caseInsensitiveCompare("geo") == .orderedSame {
+        if scheme?.caseInsensitiveCompare("geo") == .orderedSame {
             self = .geo
             return
         }
