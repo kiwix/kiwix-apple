@@ -288,7 +288,7 @@ final class BrowserViewModel: NSObject, ObservableObject,
         } else if url.isExternal {
             externalURL = url
             decisionHandler(.cancel)
-        } else if url.scheme == "geo" {
+        } else if url.isGeoURL {
             if FeatureFlags.map {
                 let _: CLLocation? = {
                     let parts = url.absoluteString.replacingOccurrences(of: "geo:", with: "").split(separator: ",")
