@@ -48,6 +48,14 @@ extension URL {
     var isKiwixURL: Bool { schemeType == .kiwix }
     var isGeoURL: Bool { schemeType == .geo }
 
+    var contentPath: String {
+        [scheme, "://", host, "/"]
+            .compactMap { $0 }
+            .reduce(absoluteString) { partialResult, prefix in
+                partialResult.removingPrefix(prefix)
+            }
+    }
+
     // swiftlint:disable:next force_try
     static let documentDirectory = try! FileManager.default.url(
         for: .documentDirectory,

@@ -57,6 +57,11 @@ extension String {
         )
     }
 
+    func removingPrefix(_ value: String) -> String {
+        guard hasPrefix(value) else { return self }
+        return String(dropFirst(value.count))
+    }
+
     func replacingRegex(
         matching pattern: String,
         findingOptions: NSRegularExpression.Options = .caseInsensitive,
