@@ -84,11 +84,7 @@ final class CompactViewController: UIHostingController<AnyView>, UISearchControl
 
     func willPresentSearchController(_ searchController: UISearchController) {
         navigationController?.setToolbarHidden(true, animated: true)
-        if #available(iOS 16.0, *) {
-            trailingNavItemGroups = navigationItem.trailingItemGroups
-        } else {
-            rightNavItem = navigationItem.rightBarButtonItem
-        }
+        trailingNavItemGroups = navigationItem.trailingItemGroups
         navigationItem.setRightBarButton(
             UIBarButtonItem(
                 title: "common.button.cancel".localized,
@@ -101,12 +97,8 @@ final class CompactViewController: UIHostingController<AnyView>, UISearchControl
     }
     @objc func onSearchCancelled() {
         searchController.isActive = false
-        if #available(iOS 16.0, *) {
-            navigationItem.setRightBarButtonItems(nil, animated: false)
-            navigationItem.trailingItemGroups = trailingNavItemGroups
-        } else {
-            navigationItem.setRightBarButtonItems([rightNavItem].compactMap { $0 }, animated: true)
-        }
+        navigationItem.setRightBarButtonItems(nil, animated: false)
+        navigationItem.trailingItemGroups = trailingNavItemGroups
     }
 
     func willDismissSearchController(_ searchController: UISearchController) {

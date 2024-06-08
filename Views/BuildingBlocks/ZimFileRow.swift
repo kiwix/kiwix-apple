@@ -36,12 +36,8 @@ struct ZimFileRow: View {
                     Formatter.dateShort.string(from: zimFile.created),
                     Formatter.size.string(fromByteCount: zimFile.size),
                     {
-                        if #available(iOS 15.0, *) {
-                            return "\(zimFile.articleCount.formatted(.number.notation(.compactName)))" +
-                            "zim_file_cell_article_count_suffix".localized
-                        } else {
-                            return Formatter.largeNumber(zimFile.articleCount)
-                        }
+                        "\(zimFile.articleCount.formatted(.number.notation(.compactName)))" +
+                        "zim_file_cell_article_count_suffix".localized
                     }()
                 ].joined(separator: ", ")).font(.caption)
             }

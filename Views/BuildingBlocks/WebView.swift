@@ -171,9 +171,7 @@ final class WebViewConfiguration: WKWebViewConfiguration {
         super.init()
         setURLSchemeHandler(KiwixURLSchemeHandler(), forURLScheme: KiwixURLSchemeHandler.KiwixScheme)
         #if os(macOS)
-        if #available(macOS 12.3, *) {
-            preferences.isElementFullscreenEnabled = true
-        }
+        preferences.isElementFullscreenEnabled = true
         #endif
         userContentController = {
             let controller = WKUserContentController()

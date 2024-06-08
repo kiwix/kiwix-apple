@@ -25,11 +25,7 @@ struct SearchResultRow: View {
                 Text(result.title).fontWeight(.medium)
                 if let snippet = result.snippet {
                     Group {
-                        if #available(iOS 15, *) {
-                            Text(AttributedString(snippet))
-                        } else {
-                            Text(snippet.string)
-                        }
+                        Text(AttributedString(snippet))
                     }.font(.caption).lineLimit(4).multilineTextAlignment(.leading)
                 }
             }

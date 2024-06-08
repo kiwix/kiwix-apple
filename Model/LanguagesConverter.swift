@@ -30,11 +30,6 @@ enum LanguagesConverter {
     }
 
     static func convertToAlpha3(from alpha2: String) -> String? {
-        if #available(iOS 16, macOS 13, *) {
-            return Locale.LanguageCode(alpha2).identifier(.alpha3)
-        } else {
-            // Fallback on earlier versions
-            return AlphaCodesLookUpTable.alpha2ToAlpha3[alpha2]
-        }
+        Locale.LanguageCode(alpha2).identifier(.alpha3)
     }
 }

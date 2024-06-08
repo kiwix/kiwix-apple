@@ -72,8 +72,9 @@ struct Language: Identifiable, Comparable {
     let count: Int
 
     init?(code: String, count: Int) {
-        let langCode = Locale.canonicalIdentifier(from: code)
-        guard let name = Locale.current.localizedString(forLanguageCode: langCode) else { return nil }
+//        let langCode = Locale.canonicalIdentifier(from: code)
+        guard let name = Locale.current.localizedString(forIdentifier: code) else { return nil }
+        debugPrint("Language.code: \(code) => name: \(name)")
         self.code = code
         self.name = name
         self.count = count
@@ -225,8 +226,7 @@ final class ZimFile: NSManagedObject, Identifiable {
 
     var languageCodesListed: String {
         return languageCode.split(separator: ",").compactMap { code -> String? in
-            let langCode = Locale.canonicalIdentifier(from: String(code))
-            return Locale.current.localizedString(forLanguageCode: langCode)
+            return Locale.current.localizedString(forIdentifier: String(code))
         }.joined(separator: ",")
     }
 

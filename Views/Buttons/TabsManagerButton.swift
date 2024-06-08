@@ -85,14 +85,7 @@ struct TabManager: View {
     var body: some View {
         List(tabs) { tab in
             Button {
-                if #available(iOS 16.0, *) {
-                    navigation.currentItem = NavigationItem.tab(objectID: tab.objectID)
-                } else {
-                    dismiss()
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                        navigation.currentItem = NavigationItem.tab(objectID: tab.objectID)
-                    }
-                }
+                navigation.currentItem = NavigationItem.tab(objectID: tab.objectID)
             } label: {
                 TabLabel(tab: tab)
             }

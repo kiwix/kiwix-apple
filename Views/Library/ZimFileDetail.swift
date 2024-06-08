@@ -67,11 +67,7 @@ struct ZimFileDetail: View {
                 Text(zimFile.fileDescription).lineLimit(nil)
             }
             Section {
-                if #available(iOS 16.0, *) {
-                    actions.alignmentGuide(.listRowSeparatorLeading) { $0[.leading] }
-                } else {
-                    actions
-                }
+                actions.alignmentGuide(.listRowSeparatorLeading) { $0[.leading] }
             }
             Section { basicInfo }
             Section {
