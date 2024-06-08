@@ -72,9 +72,7 @@ struct Language: Identifiable, Comparable {
     let count: Int
 
     init?(code: String, count: Int) {
-//        let langCode = Locale.canonicalIdentifier(from: code)
         guard let name = Locale.current.localizedString(forIdentifier: code) else { return nil }
-        debugPrint("Language.code: \(code) => name: \(name)")
         self.code = code
         self.name = name
         self.count = count
