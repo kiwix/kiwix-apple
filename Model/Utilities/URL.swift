@@ -18,7 +18,7 @@ import Foundation
 enum URLSchemeType {
     case kiwix
     case geo
-    case external
+    case unsupported
 
     init(scheme: String?) {
         if scheme?.caseInsensitiveCompare("kiwix") == .orderedSame {
@@ -29,7 +29,7 @@ enum URLSchemeType {
             self = .geo
             return
         }
-        self = .external
+        self = .unsupported
     }
 }
 
@@ -44,7 +44,7 @@ extension URL {
         URLSchemeType(scheme: scheme)
     }
 
-    var isExternal: Bool { schemeType == .external }
+    var isUnsupported: Bool { schemeType == .unsupported }
     var isKiwixURL: Bool { schemeType == .kiwix }
     var isGeoURL: Bool { schemeType == .geo }
 

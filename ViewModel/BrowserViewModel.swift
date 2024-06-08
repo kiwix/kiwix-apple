@@ -285,7 +285,7 @@ final class BrowserViewModel: NSObject, ObservableObject,
                 return
             }
             decisionHandler(.allow)
-        } else if url.isExternal {
+        } else if url.isUnsupported {
             externalURL = url
             decisionHandler(.cancel)
         } else if url.isGeoURL {
@@ -385,7 +385,7 @@ final class BrowserViewModel: NSObject, ObservableObject,
         guard let newUrl = navigationAction.request.url else { return nil }
 
         // open external link in default browser
-        guard newUrl.isExternal == false else {
+        guard newUrl.isUnsupported == false else {
             externalURL = newUrl
             return nil
         }
@@ -404,7 +404,7 @@ final class BrowserViewModel: NSObject, ObservableObject,
         if let frame = navigationAction.targetFrame, frame.isMainFrame {
             return nil
         }
-        guard newURL.isExternal == false else {
+        guard newURL.isUnsupported == false else {
             externalURL = newURL
             return nil
         }
