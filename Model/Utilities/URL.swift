@@ -48,6 +48,13 @@ extension URL {
     var isKiwixURL: Bool { schemeType == .kiwix }
     var isGeoURL: Bool { schemeType == .geo }
 
+    /// Returns the path, that should be used to resolve articles in ZIM files.
+    /// It makes sure that trailing slash is preserved,
+    /// and leading slash is removed.
+    var contentPath: String {
+        path(percentEncoded: false).removingPrefix("/")
+    }
+
     // swiftlint:disable:next force_try
     static let documentDirectory = try! FileManager.default.url(
         for: .documentDirectory,

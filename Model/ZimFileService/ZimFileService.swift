@@ -87,7 +87,7 @@ extension ZimFileService {
     func getRedirectedURL(url: URL) -> URL? {
         guard let zimFileID = url.host,
               let zimFileID = UUID(uuidString: zimFileID),
-              let redirectedPath = __getRedirectedPath(zimFileID, contentPath: url.path) else { return nil }
+              let redirectedPath = __getRedirectedPath(zimFileID, contentPath: url.contentPath) else { return nil }
         return URL(zimFileID: zimFileID.uuidString, contentPath: redirectedPath)
     }
 
@@ -107,24 +107,24 @@ extension ZimFileService {
 
     func getURLContent(url: URL) -> URLContent? {
         guard let zimFileID = url.host else { return nil }
-        return getURLContent(zimFileID: zimFileID, contentPath: url.path)
+        return getURLContent(zimFileID: zimFileID, contentPath: url.contentPath)
     }
 
     func getURLContent(url: URL, start: UInt, end: UInt) -> URLContent? {
         guard let zimFileID = url.host else { return nil }
-        return getURLContent(zimFileID: zimFileID, contentPath: url.path, start: start, end: end)
+        return getURLContent(zimFileID: zimFileID, contentPath: url.contentPath, start: start, end: end)
     }
 
     func getContentSize(url: URL) -> NSNumber? {
         guard let zimFileID = url.host,
               let zimFileUUID = UUID(uuidString: zimFileID) else { return nil }
-        return __getContentSize(zimFileUUID, contentPath: url.path)
+        return __getContentSize(zimFileUUID, contentPath: url.contentPath)
     }
 
     func getDirectAccessInfo(url: URL) -> DirectAccessInfo? {
         guard let zimFileID = url.host,
               let zimFileUUID = UUID(uuidString: zimFileID),
-              let directAccess = __getDirectAccess(zimFileUUID, contentPath: url.path),
+              let directAccess = __getDirectAccess(zimFileUUID, contentPath: url.contentPath),
               let path: String = directAccess["path"] as? String,
               let offset: UInt = directAccess["offset"] as? UInt
         else {
@@ -136,7 +136,7 @@ extension ZimFileService {
     func getContentMetaData(url: URL) -> URLContentMetaData? {
         guard let zimFileID = url.host,
               let zimFileUUID = UUID(uuidString: zimFileID),
-              let content = __getMetaData(zimFileUUID, contentPath: url.path),
+              let content = __getMetaData(zimFileUUID, contentPath: url.contentPath),
               let mime = content["mime"] as? String,
               let size = content["size"] as? UInt,
               let title = content["title"] as? String else { return nil }
