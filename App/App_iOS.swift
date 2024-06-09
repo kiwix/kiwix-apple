@@ -50,7 +50,7 @@ struct Kiwix: App {
                 .onOpenURL { url in
                     if url.isFileURL {
                         NotificationCenter.openFiles([url], context: .file)
-                    } else if url.scheme == "kiwix" {
+                    } else if url.isKiwixURL {
                         NotificationCenter.openURL(url)
                     }
                 }

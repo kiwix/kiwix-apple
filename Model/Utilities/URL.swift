@@ -15,6 +15,24 @@
 
 import Foundation
 
+enum URLSchemeType {
+    case kiwix
+    case geo
+    case unsupported
+
+    init(scheme: String?) {
+        if scheme?.caseInsensitiveCompare("kiwix") == .orderedSame {
+            self = .kiwix
+            return
+        }
+        if scheme?.caseInsensitiveCompare("geo") == .orderedSame {
+            self = .geo
+            return
+        }
+        self = .unsupported
+    }
+}
+
 extension URL {
     init?(zimFileID: String, contentPath: String) {
         let baseURLString = "kiwix://" + zimFileID
@@ -22,13 +40,13 @@ extension URL {
         self.init(string: encoded, relativeTo: URL(string: baseURLString))
     }
 
-    var isKiwixURL: Bool {
-        return scheme?.caseInsensitiveCompare("kiwix") == .orderedSame
+    var schemeType: URLSchemeType {
+        URLSchemeType(scheme: scheme)
     }
 
-    var isExternal: Bool {
-        ["http", "https"].contains(scheme)
-    }
+    var isUnsupported: Bool { schemeType == .unsupported }
+    var isKiwixURL: Bool { schemeType == .kiwix }
+    var isGeoURL: Bool { schemeType == .geo }
 
     // swiftlint:disable:next force_try
     static let documentDirectory = try! FileManager.default.url(
