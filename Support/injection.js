@@ -69,7 +69,7 @@ function refreshVideoState() {
     if (document.pictureInPictureElement != null) {
         return;
     }
-    $("video").each(function(_) {
+    $("video").each(function() {
         if (this.paused && this.currentTime > 0) {
             this.play();
             this.pause();
