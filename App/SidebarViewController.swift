@@ -190,16 +190,8 @@ class SidebarViewController: UICollectionViewController, NSFetchedResultsControl
 
     private func configureCell(cell: UICollectionViewListCell, indexPath: IndexPath, item: NavigationItem) {
         if case let .tab(objectID) = item, let tab = try? Database.viewContext.existingObject(with: objectID) as? Tab {
-            if #available(iOS 16.0, *) {
-                cell.contentConfiguration = UIHostingConfiguration {
-                    TabLabel(tab: tab)
-                }
-            } else {
-                var config = cell.defaultContentConfiguration()
-                config.text = tab.title ?? item.name
-                config.textProperties.numberOfLines = 1
-                config.image = UIImage(systemName: item.icon)
-                cell.contentConfiguration = config
+            cell.contentConfiguration = UIHostingConfiguration {
+                TabLabel(tab: tab)
             }
         } else {
             var config = cell.defaultContentConfiguration()

@@ -22,7 +22,6 @@ final class SplitViewController: UISplitViewController {
     let navigationViewModel: NavigationViewModel
     private var navigationItemObserver: AnyCancellable?
     private var openURLObserver: NSObjectProtocol?
-    private var toggleSidebarObserver: NSObjectProtocol?
 
     init(navigationViewModel: NavigationViewModel) {
         self.navigationViewModel = navigationViewModel
@@ -41,9 +40,6 @@ final class SplitViewController: UISplitViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        if #available(iOS 16.0, *) {} else {
-            presentsWithGesture = false
-        }
 
         // setup controllers
         setViewController(UINavigationController(rootViewController: CompactViewController()), for: .compact)
@@ -72,17 +68,6 @@ final class SplitViewController: UISplitViewController {
             } else {
                 guard let tabID = self?.navigationViewModel.createTab() else { return }
                 BrowserViewModel.getCached(tabID: tabID).load(url: url)
-            }
-        }
-        toggleSidebarObserver = NotificationCenter.default.addObserver(
-            forName: .toggleSidebar, object: nil, queue: nil
-        ) { [weak self] _ in
-            if #available(iOS 16.0, *) {} else {
-                if self?.displayMode == .secondaryOnly {
-                    self?.show(.primary)
-                } else {
-                    self?.hide(.primary)
-                }
             }
         }
     }

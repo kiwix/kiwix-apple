@@ -140,12 +140,7 @@ public class LibraryViewModel: ObservableObject {
         // the device language is on the list of languages from the feed
         // If all that fails: fallback to English, where most of the content is
         let fallbackToEnglish = "eng"
-        let deviceLang: String?
-        if #available(iOS 16, macOS 13, *) {
-            deviceLang = Locale.current.language.languageCode?.identifier(.alpha3)
-        } else {
-            deviceLang = Locale.current.languageCode
-        }
+        let deviceLang = Locale.current.language.languageCode?.identifier(.alpha3)
         // convert it to a set, so we can use the same validation function
         let deviceLangSet = Set<String>([deviceLang].compactMap { $0 })
         let validDefaults = LanguagesConverter.convert(codes: deviceLangSet, validCodes: validCodes)

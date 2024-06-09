@@ -69,11 +69,7 @@ extension URL {
 
     init(temporaryFileWithName fileName: String) {
         let directory = FileManager.default.temporaryDirectory
-        if #available(macOS 13.0, iOS 16.0, *) {
-            self = directory.appending(path: fileName)
-        } else {
-            self = directory.appendingPathComponent(fileName)
-        }
+        self = directory.appending(path: fileName)
     }
 
     func toTemporaryFileURL() -> URL? {

@@ -96,10 +96,6 @@ struct SaveContentHandler: ViewModifier {
 extension URL {
     fileprivate func tempFileURL() -> URL? {
         let directory = FileManager.default.temporaryDirectory
-        if #available(macOS 13.0, iOS 16.0, *) {
-            return directory.appending(path: lastPathComponent)
-        } else {
-            return directory.appendingPathComponent(lastPathComponent)
-        }
+        return directory.appending(path: lastPathComponent)
     }
 }
