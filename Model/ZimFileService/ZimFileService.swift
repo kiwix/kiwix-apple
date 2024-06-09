@@ -138,8 +138,9 @@ extension ZimFileService {
               let zimFileUUID = UUID(uuidString: zimFileID),
               let content = __getMetaData(zimFileUUID, contentPath: url.path),
               let mime = content["mime"] as? String,
-              let size = content["size"] as? UInt else { return nil }
-        return URLContentMetaData(mime: mime, size: size)
+              let size = content["size"] as? UInt,
+              let title = content["title"] as? String else { return nil }
+        return URLContentMetaData(mime: mime, size: size, zimTitle: title)
     }
 
     func getURLContent(zimFileID: String, contentPath: String, start: UInt = 0, end: UInt = 0) -> URLContent? {

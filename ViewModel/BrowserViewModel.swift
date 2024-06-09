@@ -164,7 +164,11 @@ final class BrowserViewModel: NSObject, ObservableObject,
         }()
 
         // update view model
-        articleTitle = title
+        if title.isEmpty {
+            articleTitle = ZimFileService.shared.getContentMetaData(url: url)?.zimTitle ?? ""
+        } else {
+            articleTitle = title
+        }
         zimFileName = zimFile?.name ?? ""
         Task {
             await MainActor.run {
@@ -177,7 +181,7 @@ final class BrowserViewModel: NSObject, ObservableObject,
 
         // update tab data
         if let tab = try? Database.viewContext.existingObject(with: currentTabID) as? Tab {
-            tab.title = title
+            tab.title = articleTitle
             tab.zimFile = zimFile
         }
     }
@@ -408,7 +412,7 @@ final class BrowserViewModel: NSObject, ObservableObject,
             externalURL = newURL
             return nil
         }
-        webView.load(navigationAction.request)
+        NotificationCenter.openURL(newURL, inNewTab: true)
         return nil
     }
 #endif

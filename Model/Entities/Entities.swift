@@ -155,6 +155,7 @@ class Tab: NSManagedObject, Identifiable {
 struct URLContentMetaData {
     let mime: String
     let size: UInt
+    let zimTitle: String
     var httpContentType: String {
         if mime == "text/plain" {
             return "text/plain;charset=UTf-8"
