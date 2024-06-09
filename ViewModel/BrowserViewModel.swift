@@ -238,6 +238,16 @@ final class BrowserViewModel: NSObject, ObservableObject,
         }
     }
 
+    // MARK: - Video fixes
+    @MainActor
+    func refreshVideoState() {
+        Task {
+            await MainActor.run {
+                webView.evaluateJavaScript("refreshVideoState();")
+            }
+        }
+    }
+
     // MARK: - New Tab Creation
 
 #if os(macOS)
