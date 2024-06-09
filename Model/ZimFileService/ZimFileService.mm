@@ -178,7 +178,8 @@
         zim::Item item = [self itemIn:zimFileID contentPath:contentPath];
         return @{
             @"mime": [NSString stringWithUTF8String:item.getMimetype().c_str()],
-            @"size": [NSNumber numberWithUnsignedLongLong:item.getSize()]
+            @"size": [NSNumber numberWithUnsignedLongLong:item.getSize()],
+            @"title": [NSString stringWithUTF8String:item.getTitle().c_str()]
         };
     } catch (std::exception) {
         return nil;
