@@ -81,7 +81,10 @@ struct About: View {
         }
         .navigationTitle("settings.about.title".localized)
         .navigationBarTitleDisplayMode(.inline)
-        .sheet(item: $externalLinkURL) { SafariView(url: $0) }
+        .onChange(of: externalLinkURL) { url in
+            guard let url = url else { return }
+            UIApplication.shared.open(url)
+        }
         .task { await getDependencies() }
         #endif
     }
