@@ -20,7 +20,6 @@ import Defaults
 struct ExternalLinkHandler: ViewModifier {
     @State private var isAlertPresented = false
     @State private var activeAlert: ActiveAlert?
-    @State private var activeSheet: ActiveSheet?
     @Binding var externalURL: URL?
 
     enum ActiveAlert {
@@ -67,20 +66,13 @@ struct ExternalLinkHandler: ViewModifier {
                 Text("external_link_handler.alert.not_loading.description".localized)
             }
         }
-        #if os(iOS)
-        .sheet(item: $activeSheet) { sheet in
-            if case .safari(let url) = sheet {
-                SafariView(url: url)
-            }
-        }
-        #endif
     }
 
     private func load(url: URL) {
         #if os(macOS)
         NSWorkspace.shared.open(url)
         #elseif os(iOS)
-        activeSheet = .safari(url: url)
+        UIApplication.shared.open(url)
         #endif
     }
 }
