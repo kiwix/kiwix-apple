@@ -155,6 +155,8 @@ struct URLContentMetaData {
     let mime: String
     let size: UInt
     let zimTitle: String
+    let lastModified: Date?
+
     var httpContentType: String {
         if mime == "text/plain" {
             return "text/plain;charset=UTf-8"
@@ -166,12 +168,37 @@ struct URLContentMetaData {
     var isMediaType: Bool {
         mime.hasPrefix("video/") || mime.hasPrefix("audio/")
     }
+
+    /// Currently using the same eTag value for everything that is the same ZIM file
+    /// since all those resources were created and stored at file creation
+    var eTag: String? {
+        guard let lastModified else { return nil }
+        return "\"\(lastModified.timeIntervalSince1970)\""
+    }
+}
+
+extension ClosedRange<UInt> {
+    var fullRangeSize: UInt {
+        upperBound - lowerBound + 1
+    }
 }
 
 struct URLContent {
     let data: Data
     let start: UInt
     let end: UInt
+
+    func contentRange(
+        from requestedStart: UInt,
+        requestedEnd: UInt,
+        with metaData: URLContentMetaData
+    ) -> String {
+        if requestedStart == 0, requestedEnd == 0 {
+            return "bytes \(start)-\(end)/\(metaData.size)"
+        } else {
+            return "bytes \(requestedStart)-\(requestedEnd)/\(metaData.size)"
+        }
+    }
 }
 
 struct DirectAccessInfo {
