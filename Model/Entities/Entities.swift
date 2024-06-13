@@ -187,11 +187,15 @@ struct URLContentMetaData {
         guard let lastModified else { return nil }
         return "\"\(lastModified.timeIntervalSince1970)\""
     }
+
+    func contentRange(for requestedRange: ClosedRange<UInt>) -> String {
+        "bytes \(requestedRange.lowerBound)-\(requestedRange.upperBound)/\(size)"
+    }
 }
 
 extension ClosedRange<UInt> {
     var fullRangeSize: UInt {
-        upperBound - lowerBound + 1
+        upperBound - lowerBound
     }
 }
 
@@ -199,18 +203,6 @@ struct URLContent {
     let data: Data
     let start: UInt
     let end: UInt
-
-    func contentRange(
-        from requestedStart: UInt,
-        requestedEnd: UInt,
-        with metaData: URLContentMetaData
-    ) -> String {
-        if requestedStart == 0, requestedEnd == 0 {
-            return "bytes \(start)-\(end)/\(metaData.size)"
-        } else {
-            return "bytes \(requestedStart)-\(requestedEnd)/\(metaData.size)"
-        }
-    }
 }
 
 struct DirectAccessInfo {
