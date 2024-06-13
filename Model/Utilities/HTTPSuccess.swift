@@ -57,6 +57,7 @@ enum HTTPSuccess {
     ) -> HTTPURLResponse? {
         var headers = defaultResponseHeaders(for: metaData)
         headers["Content-Length"] = "\(requestedRange.fullRangeSize)"
+        headers["Content-Range"] = metaData.contentRange(for: requestedRange)
         return HTTPURLResponse(
             url: url,
             statusCode: 206,
@@ -69,6 +70,7 @@ enum HTTPSuccess {
         var headers = [
             "Accept-Ranges": "bytes",
             "Content-Type": metaData.httpContentType,
+            "Date": Date().formatAsGMT()
         ]
         if let modifiedDate = metaData.lastModified {
             headers["Last-Modified"] = modifiedDate.formatAsGMT()

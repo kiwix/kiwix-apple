@@ -138,7 +138,7 @@ final class KiwixURLSchemeHandler: NSObject, WKURLSchemeHandler {
             throw RangeRequestError.invalidRange
         }
         let rangeEnd = parts.count == 3 ? UInt(parts[2]) ?? 0 : 0
-        return rangeStart...rangeEnd
+        return rangeStart...rangeEnd+1
     }
 
     // MARK: Reading content
