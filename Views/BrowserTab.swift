@@ -63,6 +63,7 @@ struct BrowserTab: View {
             browser.updateLastOpened()
         }
         .onDisappear {
+            browser.onDisappear()
             browser.persistState()
         }
     }

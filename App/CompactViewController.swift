@@ -203,6 +203,7 @@ private struct Content: View {
             browser.updateLastOpened()
         }
         .onDisappear {
+            browser.onDisappear()
             browser.persistState()
         }
         .toolbar {
