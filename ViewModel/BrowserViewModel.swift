@@ -192,6 +192,10 @@ final class BrowserViewModel: NSObject, ObservableObject,
         tab.lastOpened = Date()
     }
 
+    func onDisappear() {
+        webView.pauseAllMediaPlayback()
+    }
+
     func persistState() {
         guard let tabID,
               let tab = try? Database.viewContext.existingObject(with: tabID) as? Tab else {
