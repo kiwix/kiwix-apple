@@ -25,6 +25,7 @@ struct ZimFilesOpened: View {
         animation: .easeInOut
     ) private var zimFiles: FetchedResults<ZimFile>
     @State private var isFileImporterPresented = false
+    @EnvironmentObject private var viewModel: LibraryViewModel
     let dismiss: (() -> Void)? // iOS only
 
     var body: some View {
@@ -45,6 +46,9 @@ struct ZimFilesOpened: View {
             if zimFiles.isEmpty {
                 Message(text: "zim_file_opened.overlay.no-opened.message".localized)
             }
+        }
+        .onChange(of: zimFiles.count) { _ in
+            viewModel.selectedZimFile = zimFiles.first // makes sure we also nil out, if all ZIMs were unlinked 
         }
         // not using OpenFileButton here, because it does not work on iOS/iPadOS 15 when this view is in a modal
         .fileImporter(
