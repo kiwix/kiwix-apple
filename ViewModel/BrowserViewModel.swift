@@ -192,6 +192,10 @@ final class BrowserViewModel: NSObject, ObservableObject,
         tab.lastOpened = Date()
     }
 
+    func onDisappear() {
+        webView.pauseAllMediaPlayback()
+    }
+
     func persistState() {
         guard let tabID,
               let tab = try? Database.viewContext.existingObject(with: tabID) as? Tab else {
@@ -230,6 +234,16 @@ final class BrowserViewModel: NSObject, ObservableObject,
                 await MainActor.run {
                     url = webView.url
                 }
+            }
+        }
+    }
+
+    // MARK: - Video fixes
+    @MainActor
+    func refreshVideoState() {
+        Task {
+            await MainActor.run {
+                webView.evaluateJavaScript("refreshVideoState();")
             }
         }
     }

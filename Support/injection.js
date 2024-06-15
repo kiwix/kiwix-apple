@@ -63,3 +63,16 @@ function scrollToHeading(id) {
 	element = document.getElementById(id)
 	element.scrollIntoView({block: 'start', inline: 'start', behavior: 'smooth'})
 }
+
+function refreshVideoState() {
+    // make sure it's not in picture in picture mode:
+    if (document.pictureInPictureElement != null) {
+        return;
+    }
+    $("video").each(function() {
+        if (this.paused && this.currentTime > 0) {
+            this.play();
+            this.pause();
+        }
+    });
+}
