@@ -61,6 +61,7 @@ struct BrowserTab: View {
         }
         .onAppear {
             browser.updateLastOpened()
+            browser.refreshVideoState()
         }
         .onDisappear {
             browser.onDisappear()
