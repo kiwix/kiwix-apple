@@ -129,12 +129,13 @@ struct LibraryOperations {
         zimFile.requiresServiceWorkers = metadata.requiresServiceWorkers
         zimFile.size = metadata.size.int64Value
 
-        // Only overwrite favicon data and url if there is a new value
-        if let url = metadata.downloadURL { zimFile.downloadURL = url }
-        if let url = metadata.faviconURL { zimFile.faviconURL = url }
+        // Overwrite these, only if there are new values
+        if let faviconURL = metadata.faviconURL { zimFile.faviconURL = faviconURL }
+        if let faviconData = metadata.faviconData { zimFile.faviconData = faviconData }
+        if let downloadURL = metadata.downloadURL { zimFile.downloadURL = downloadURL }
     }
 
-    //MARK: - Deletion
+    // MARK: - Deletion
 
     /// Unlink a zim file from library, delete associated bookmarks, and delete the file.
     /// - Parameter zimFile: the zim file to delete
