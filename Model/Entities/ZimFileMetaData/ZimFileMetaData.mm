@@ -112,6 +112,9 @@
 - (NSData * _Nullable)getFaviconDataFromBook:(kiwix::Book *)book {
     try {
         std::string dataString = book->getIllustrations().at(0)->getData();
+        if(dataString.length() == 0) {
+            return nil;
+        }
         NSData *favIconData = [NSData dataWithBytes: dataString.data() length: dataString.length()];
         return favIconData;
     } catch (std::exception) {
