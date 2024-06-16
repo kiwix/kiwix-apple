@@ -95,7 +95,7 @@
 
 "zim_file_missing_indicator.help" = "Zim file is missing.";
 
-"library.zim_file_details.side_panel.message" = "Select a ZIM file to see detail";
+"library.zim_file_details.side_panel.message" = "Select a ZIM file to see details";
 "library.zim_file_context.main_page.label" = "Main Page";
 "library.zim_file_context.random.label" = "Random Page";
 "library.zim_file_context.copy_url" = "Copy URL";
