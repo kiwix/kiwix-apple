@@ -67,6 +67,7 @@
 "library_refresh_time.never" = "Aldrig";
 "zim_file_cell_article_count_suffix" = "artiklar";
 "zim_file_missing_indicator.help" = "Zim-fil saknas.";
+// Fuzzy
 "library.zim_file_details.side_panel.message" = "Välj en ZIM-fil för att se information";
 "library.zim_file_context.main_page.label" = "Huvudsida";
 "library.zim_file_context.random.label" = "Slumpsida";

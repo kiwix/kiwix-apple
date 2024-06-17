@@ -65,6 +65,7 @@
 "library_refresh_time.never" = "מעולם לא";
 "zim_file_cell_article_count_suffix" = "ערכים";
 "zim_file_missing_indicator.help" = "קובץ ה־zim חסר.";
+// Fuzzy
 "library.zim_file_details.side_panel.message" = "נא לבחור קובץ ZIM כדי לראות פרטים";
 "library.zim_file_context.main_page.label" = "עמוד ראשי";
 "library.zim_file_context.random.label" = "דף אקראי";

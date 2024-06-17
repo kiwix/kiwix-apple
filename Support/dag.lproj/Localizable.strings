@@ -55,6 +55,7 @@
 "library_refresh_time.never" = "Abada";
 "zim_file_cell_article_count_suffix" = "Lahabaya";
 "zim_file_missing_indicator.help" = "Zim fasara nyɛla din kani.";
+// Fuzzy
 "library.zim_file_details.side_panel.message" = "Piimi zim fasara n- nya bayana";
 "library.zim_file_context.main_page.label" = "Yaɣili kpani";
 "library.zim_file_context.random.label" = "Gahim piigi yaɣili";
