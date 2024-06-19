@@ -159,7 +159,6 @@ final class BrowserViewModel: NSObject, ObservableObject,
         }
     }
 
-
     /// Get the webpage in a binary format
     /// - Returns: PDF of the current page (if text type) or binary data of the content
     func pdfData() async -> Data? {
