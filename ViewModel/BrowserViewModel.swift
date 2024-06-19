@@ -68,6 +68,7 @@ final class BrowserViewModel: NSObject, ObservableObject,
         }
     }
     @Published var externalURL: URL?
+    private var metaData: URLContentMetaData?
 
     private(set) var tabID: NSManagedObjectID? {
         didSet {
@@ -158,15 +159,27 @@ final class BrowserViewModel: NSObject, ObservableObject,
         }
     }
 
+    /// Get the webpage in a binary format
+    /// - Returns: PDF of the current page (if text type) or binary data of the content
+    func pdfData() async -> Data? {
+        if metaData?.isTextType == true {
+            return try? await webView.pdf()
+        } else if let url = await webView.url {
+            return ZimFileService.shared.getURLContent(url: url)?.data
+        }
+        return nil
+    }
+
     private func didUpdate(title: String, url: URL) {
         let zimFile: ZimFile? = {
             guard let zimFileID = UUID(uuidString: url.host ?? "") else { return nil }
             return try? Database.viewContext.fetch(ZimFile.fetchRequest(fileID: zimFileID)).first
         }()
 
+        metaData = ZimFileService.shared.getContentMetaData(url: url)
         // update view model
         if title.isEmpty {
-            articleTitle = ZimFileService.shared.getContentMetaData(url: url)?.zimTitle ?? ""
+            articleTitle = metaData?.zimTitle ?? ""
         } else {
             articleTitle = title
         }
@@ -268,7 +281,7 @@ final class BrowserViewModel: NSObject, ObservableObject,
 
     // MARK: - WKNavigationDelegate
 
-    // swiftlint:disable:next function_body_length
+    // swiftlint:disable:next function_body_length cyclomatic_complexity
     func webView(
         _ webView: WKWebView,
         decidePolicyFor navigationAction: WKNavigationAction,

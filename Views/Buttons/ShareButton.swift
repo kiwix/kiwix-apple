@@ -23,7 +23,7 @@ struct ShareButton: View {
         guard let browserURLName = browser.webView.url?.lastPathComponent else {
             return nil
         }
-        guard let pdfData = try? await browser.webView.pdf() else {
+        guard let pdfData = await browser.pdfData() else {
             return nil
         }
         return (pdfData, browserURLName)
