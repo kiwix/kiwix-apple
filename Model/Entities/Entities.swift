@@ -166,6 +166,10 @@ struct URLContentMetaData {
     var isMediaType: Bool {
         mime.hasPrefix("video/") || mime.hasPrefix("audio/")
     }
+
+    var isTextType: Bool {
+        mime.hasPrefix("text/")
+    }
 }
 
 struct URLContent {
