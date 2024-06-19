@@ -64,6 +64,7 @@
 "library_refresh_time.never" = "Никогаш";
 "zim_file_cell_article_count_suffix" = "статии";
 "zim_file_missing_indicator.help" = "ZIM-податотеката недостасува.";
+// Fuzzy
 "library.zim_file_details.side_panel.message" = "Изберете ZIM-податотека за да ги видите поединостите";
 "library.zim_file_context.main_page.label" = "Главна страница";
 "library.zim_file_context.random.label" = "Случајна страница";
