@@ -95,6 +95,7 @@ final class BrowserViewModel: NSObject, ObservableObject,
     // MARK: - Lifecycle
 
     @MainActor
+    // swiftlint:disable:next function_body_length
     init(tabID: NSManagedObjectID? = nil) {
         self.tabID = tabID
         webView = WKWebView(frame: .zero, configuration: WebViewConfiguration())
@@ -279,7 +280,7 @@ final class BrowserViewModel: NSObject, ObservableObject,
 
     // MARK: - WKNavigationDelegate
 
-    // swiftlint:disable:next function_body_length
+    // swiftlint:disable:next function_body_length cyclomatic_complexity
     func webView(
         _ webView: WKWebView,
         decidePolicyFor navigationAction: WKNavigationAction,
