@@ -67,7 +67,6 @@
 "library_refresh_time.never" = "从不";
 "zim_file_cell_article_count_suffix" = "条目";
 "zim_file_missing_indicator.help" = "Zim 文件丢失";
-// Fuzzy
 "library.zim_file_details.side_panel.message" = "选择一个 ZIM 文件以查看详细信息";
 "library.zim_file_context.main_page.label" = "首页";
 "library.zim_file_context.random.label" = "随机页面";
