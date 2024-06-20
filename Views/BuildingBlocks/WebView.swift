@@ -68,9 +68,11 @@ final class WebViewController: UIViewController {
     private let webView: WKWebView
     private let pageZoomObserver: Defaults.Observation
     private var webViewURLObserver: NSKeyValueObservation?
-    private var lastOFfset: CGFloat = 0.0
+    private var lastOffset: CGFloat = 0.0
     private var topConstraint: NSLayoutConstraint?
+    private var bottomConstraint: NSLayoutConstraint?
     private var urlObserver: NSKeyValueObservation?
+    private var animStart: Double = 0
 
     init(webView: WKWebView) {
         self.webView = webView
@@ -82,7 +84,6 @@ final class WebViewController: UIViewController {
         urlObserver = webView.observe(\.url, options: [.initial, .new]) { [weak self] _, _ in
             self?.showBars()
         }
-        webView.setValue(true, forKey: "_haveSetObscuredInsets")
     }
 
     required init?(coder: NSCoder) {
@@ -98,12 +99,15 @@ final class WebViewController: UIViewController {
         super.viewDidLoad()
         webView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(webView)
-        topConstraint = webView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor)
+        if Device.current == .iPad {
+            topConstraint = webView.topAnchor.constraint(equalTo: view.topAnchor)
+            bottomConstraint = webView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+        }
         NSLayoutConstraint.activate([
             view.leftAnchor.constraint(equalTo: webView.leftAnchor),
-            view.bottomAnchor.constraint(equalTo: webView.bottomAnchor),
             view.rightAnchor.constraint(equalTo: webView.rightAnchor),
-            topConstraint
+            topConstraint,
+            bottomConstraint
         ].compactMap { $0 })
     }
 
@@ -116,12 +120,12 @@ final class WebViewController: UIViewController {
 // MARK: - UIScrollViewDelegate
 extension WebViewController: UIScrollViewDelegate {
     func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
-        lastOFfset = scrollView.contentOffset.y
+        lastOffset = scrollView.contentOffset.y
     }
 
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         if scrollView.isDragging {
-            let isScrollingDown: Bool = scrollView.contentOffset.y > lastOFfset
+            let isScrollingDown: Bool = scrollView.contentOffset.y > lastOffset
             if isScrollingDown {
                 hideBars()
             } else {
@@ -139,18 +143,32 @@ extension WebViewController: UIScrollViewDelegate {
 extension WebViewController {
     private func hideBars() {
         guard Device.current == .iPhone else { return }
+        guard (CACurrentMediaTime() - animStart) > UINavigationController.hideShowBarDuration else {
+            return
+        }
+        animStart = CACurrentMediaTime()
         topConstraint?.isActive = false
+        bottomConstraint?.isActive = false
         topConstraint = webView.topAnchor.constraint(equalTo: view.topAnchor)
+        bottomConstraint = webView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         topConstraint?.isActive = true
+        bottomConstraint?.isActive = true
         parent?.navigationController?.setNavigationBarHidden(true, animated: true)
         parent?.navigationController?.setToolbarHidden(true, animated: true)
     }
 
     func showBars() {
         guard Device.current == .iPhone else { return }
+        guard (CACurrentMediaTime() - animStart) > UINavigationController.hideShowBarDuration else {
+            return
+        }
+        animStart = CACurrentMediaTime()
         topConstraint?.isActive = false
+        bottomConstraint?.isActive = false
         topConstraint = webView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor)
+        bottomConstraint = webView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
         topConstraint?.isActive = true
+        bottomConstraint?.isActive = true
         parent?.navigationController?.setNavigationBarHidden(false, animated: true)
         parent?.navigationController?.setToolbarHidden(false, animated: true)
     }
