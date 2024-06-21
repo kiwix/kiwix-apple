@@ -31,10 +31,17 @@ let observer = new IntersectionObserver(function(entries) {
 // register scroll view to handle heading on top of the page
 window.onscroll = function() {
 	if (document.documentElement.scrollTop <= 0) {
+<<<<<<< HEAD
 		const headingVisible = window.webkit.messageHandlers.headingVisible
 		if(headingVisible !== undefined && headingVisible.postMessage !== undefined) {
 			headingVisible.postMessage({id: headings[0].id})
 		}
+=======
+        const headingVisible = window.webkit.messageHandlers.headingVisible
+        if(headingVisible !== undefined && headingVisible.postMessage !== undefined) {
+            headingVisible.postMessage({id: headings[0].id})
+        }
+>>>>>>> 0ecd722 (Fix custom js)
 	}
 }
 
