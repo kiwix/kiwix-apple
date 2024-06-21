@@ -32,16 +32,22 @@ let observer = new IntersectionObserver(function(entries) {
 window.onscroll = function() {
 	if (document.documentElement.scrollTop <= 0) {
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> a542436 (Format)
 		const headingVisible = window.webkit.messageHandlers.headingVisible
 		if(headingVisible !== undefined && headingVisible.postMessage !== undefined) {
 			headingVisible.postMessage({id: headings[0].id})
 		}
+<<<<<<< HEAD
 =======
         const headingVisible = window.webkit.messageHandlers.headingVisible
         if(headingVisible !== undefined && headingVisible.postMessage !== undefined) {
             headingVisible.postMessage({id: headings[0].id})
         }
 >>>>>>> 0ecd722 (Fix custom js)
+=======
+>>>>>>> a542436 (Format)
 	}
 }
 
