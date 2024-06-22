@@ -125,6 +125,21 @@ You can now launch the build from Xcode and use the iOS simulator or
 your macOS target. At this point the xcframework is not signed.
 
 
+### Debug webviews
+
+In development builds (run from Xcode) it is possible to debug the
+web-views via Safari development menu.
+
+If Kiwix iOS runs on a device (iPhone or iPad), you need to connect
+the device to your macOS device via an USB cable.
+
+If Kiwix for macOS or iOS runs in simulator it will work out of the box
+in this regard.
+
+For a detailed explanation of the web-development mode, please see
+Apple's documentation:
+https://developer.apple.com/documentation/safari-developer-tools/inspecting-ios
+
 ## Deployment
 
 ### Nightly to FTP
