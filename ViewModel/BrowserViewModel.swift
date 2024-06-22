@@ -608,15 +608,20 @@ final class BrowserViewModel: NSObject, ObservableObject,
             let bookmark = Bookmark(context: context)
             bookmark.articleURL = url
             bookmark.created = Date()
-            if let parser = try? HTMLParser(url: url) {
-                bookmark.title = parser.title ?? ""
-                bookmark.snippet = parser.getFirstSentence(languageCode: nil)?.string
-                guard let zimFileID = UUID(uuidString: url.host ?? ""),
-                      let zimFile = try? context.fetch(ZimFile.fetchRequest(fileID: zimFileID)).first else { return }
-                bookmark.zimFile = zimFile
+            guard let zimFileID = UUID(uuidString: url.host ?? ""),
+                  let zimFile = try? context.fetch(ZimFile.fetchRequest(fileID: zimFileID)).first,
+                  let metaData = ZimFileService.shared.getContentMetaData(url: url) else { return }
+
+            bookmark.zimFile = zimFile
+            if metaData.isTextType,
+               let parser = try? HTMLParser(url: url) {
+                bookmark.title = parser.title ?? metaData.zimTitle
                 if let imagePath = parser.getFirstImagePath() {
                     bookmark.thumbImageURL = URL(zimFileID: zimFileID.uuidString, contentPath: imagePath)
                 }
+                bookmark.snippet = parser.getFirstSentence(languageCode: nil)?.string
+            } else {
+                bookmark.title = metaData.zimTitle
             }
             try? context.save()
         }
