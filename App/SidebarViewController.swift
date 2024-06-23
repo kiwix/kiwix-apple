@@ -160,9 +160,7 @@ class SidebarViewController: UICollectionViewController, NSFetchedResultsControl
                     to: .tabs,
                     animatingDifferences: dataSource.snapshot(for: .tabs).items.count > 0
                 ) {
-                    // [iOS 15] when a tab is selected, reload it to refresh title and icon
-                    guard #unavailable(iOS 16),
-                          let indexPath = self.collectionView.indexPathsForSelectedItems?.first,
+                    guard let indexPath = self.collectionView.indexPathsForSelectedItems?.first,
                           let item = self.dataSource.itemIdentifier(for: indexPath),
                           case .tab = item else { return }
                     var snapshot = self.dataSource.snapshot()
@@ -190,9 +188,21 @@ class SidebarViewController: UICollectionViewController, NSFetchedResultsControl
 
     private func configureCell(cell: UICollectionViewListCell, indexPath: IndexPath, item: NavigationItem) {
         if case let .tab(objectID) = item, let tab = try? Database.viewContext.existingObject(with: objectID) as? Tab {
-            cell.contentConfiguration = UIHostingConfiguration {
-                TabLabel(tab: tab)
+            var config = cell.defaultContentConfiguration()
+            config.text = tab.title ?? "common.tab.menu.new_tab".localized
+            if let zimFile = tab.zimFile, let category = Category(rawValue: zimFile.category) {
+                config.textProperties.numberOfLines = 1
+                if let imgData = zimFile.faviconData {
+                    config.image = UIImage(data: imgData)
+                } else {
+                    config.image = UIImage(named: category.icon)
+                }
+                config.imageProperties.maximumSize = CGSize(width: 22, height: 22)
+                config.imageProperties.cornerRadius = 3
+            } else {
+                config.image = UIImage(systemName: "square")
             }
+            cell.contentConfiguration = config
         } else {
             var config = cell.defaultContentConfiguration()
             config.text = item.name
