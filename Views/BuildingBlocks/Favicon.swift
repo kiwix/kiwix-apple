@@ -28,10 +28,7 @@ struct Favicon: View {
     }
 
     var body: some View {
-        ZStack(alignment: .center) {
-            Color.white.clipShape(RoundedRectangle(cornerRadius: 3, style: .continuous))
-            image.scaledToFit().cornerRadius(2).padding(1)
-        }
+        image.scaledToFit().cornerRadius(3)
         .aspectRatio(1, contentMode: .fit)
         .onAppear {
             guard let imageURL = imageURL, imageData == nil else { return }
