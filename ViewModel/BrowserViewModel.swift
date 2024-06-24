@@ -297,6 +297,7 @@ final class BrowserViewModel: NSObject, ObservableObject,
         decidePolicyFor navigationAction: WKNavigationAction,
         decisionHandler: @escaping (WKNavigationActionPolicy) -> Void
     ) {
+        debugPrint("BrowserViewModel.decidePolicyFor: \(navigationAction) | \(navigationAction.request.) | attribution: \(navigationAction.request.attribution) | allHTTPHeaderFields: \(navigationAction.request.allHTTPHeaderFields) | mainDocumentURL: \(navigationAction.request.mainDocumentURL?.absoluteString)")
         guard let url = navigationAction.request.url else {
             decisionHandler(.cancel)
             return
@@ -379,6 +380,7 @@ final class BrowserViewModel: NSObject, ObservableObject,
             decisionHandler(.cancel)
             return
         }
+        debugPrint("BrowserViewModel.navigationResponse: \(navigationResponse)")
         decisionHandler(.allow)
     }
 
@@ -461,6 +463,7 @@ final class BrowserViewModel: NSObject, ObservableObject,
             externalURL = newURL
             return nil
         }
+        debugPrint("BrowserViewModel.createWebViewWith navigationAction: \(navigationAction)")
         NotificationCenter.openURL(newURL, inNewTab: true)
         return nil
     }
