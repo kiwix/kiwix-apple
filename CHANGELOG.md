@@ -1,4 +1,34 @@
+## 3.5.0
+
 ## 3.4.0
+  - FIX: 
+    - Empty screen after re-opening ZIM home page (@BPerlakiH #834)
+    - tab reconfiguration, improve the look of icons (@BPerlakiH #832)
+    - bookmark titles for non html content (@BPerlakiH #826)
+    - javascript console errors (@BPerlakiH #825)
+    - html offset and animation issues (@BPerlakiH #823)
+    - exporting PDF content (@BPerlakiH #820)
+    - ZIM fav icons of opened files (not added via catalog download) (@BPerlakiH #811)
+    - macOS tab update after unlinkning a ZIM file (@BPerlakiH #810)
+    - video display is black after resuming app on iOS (@BPerlakiH #801)
+    - stop video when a tab is closed (@BPerlakiH #806)
+    - mailto links for iOS (@BPerlakiH #802 #792)
+    - support ZIM entries ending in "/" (@BPerlakiH #797)
+    - open links in new tab (@BPerlakiH #800 #783)
+    - macOS webView full-screen mode (@BPerlakiH #791)
+    - video full screen mode for macOS (@BPerlakiH #763)
+    - CI/CD target FTP folder for release (@rgaudin #757)
+  - NEW: 
+    - stream data in chunks for compressed data via libzim (@BPerlakiH #790)
+    - stream uncompressed data in chunks (@BPerlakiH #778 #774)
+    - full screen reading mode for iOS (@TheRealAnt @BPerlakiH #771 #764)
+  - UPDATE: 
+    - Translations (#833, #821, #813, #777, #770, #761)
+    - to libkiwix 13.1.0-4 (@BPerlakiH #836)
+    - readme on how to debug webviews (@BPerlakiH #822)
+    - video readme (@BPerlakiH #812)
+    - minimum version to mac 13 and iOS 16 (@BPerlakiH #796 #794)
+    - Release notes (@BPerlakiH #758)
 
 ## 3.3.0
 
@@ -7,30 +37,30 @@
 - NEW: Introduce ability to build custom apps (@BPerlakiH #550 #554 #555 #565 #573 #576 #584 #595)
 - NEW: Build nightlies (@rgaudin #560)
 - NEW: Migrate bookmarks - in custom apps (@BPerlakiH #688)
-- FIX: Multiple fixes around 'wicked' download (@BPerlakiH #563 #686)
-- FIX: Default language content filtering (@BPerlakiH #652)
-- FIX: Stop display empty categories (@BPerlakiH #657)
-- FIX: One search crashing scenario (@BPerlakiH #637)
+  - Multiple fixes around 'wicked' download (@BPerlakiH #563 #686)
+  - Default language content filtering (@BPerlakiH #652)
+  - Stop display empty categories (@BPerlakiH #657)
+  - One search crashing scenario (@BPerlakiH #637)
 - UPDATE: Introduce libkiwix 13 support (@rgaudin #534)
 - UPDATE: Improved README file (@kelson42 #533 #683 @BPerlakiH #658)
 - UPDATE: Use latest feed from library.kiwix.org (@BPerlakiH #653)
 - DEL: Old Wikimed related code - is now a proper custom app (@BPerlakiH #636)
-- FIX: iOS tab selection after the selected tab is deleted (@BPerlakiH #692)
+  - iOS tab selection after the selected tab is deleted (@BPerlakiH #692)
 - UPDATE: Add background processing and audio capabilities for video playback (@BPerlakiH #738)
 - NEW: Print an article on macOS (@BPerlakiH #736)
-- FIX: Exception handling in corrupted ZIM files (@BPerlakiH #622)
+  - Exception handling in corrupted ZIM files (@BPerlakiH #622)
 - NEW: Export and share an article (@BPerlakiH #729)
 - UPDATE: LibKiwix 13.1.0-1 (@BPerlakiH #731)
-- FIX: Dismiss iOS modals (@BPerlakiH #728)
-- FIX: Invalid tab state after unlinking ZIM file on macOS (@BPerlakiH #723)
+  - Dismiss iOS modals (@BPerlakiH #728)
+  - Invalid tab state after unlinking ZIM file on macOS (@BPerlakiH #723)
 - UPDATE: Readme on XCode white space settings (@BPerlakiH #722)
 - UPDATE: File headers and new file template to GPL-3 (@kelson42 @BPerlakiH #719)
 - NEW: Add support menu item on macOS (@DobleV55 @BPerlakiH #705)
-- FIX: Custom apps should request only necessary permissions (@BPerlakiH #712)
-- FIX: UTF-8 encoding for HTTP headers for text/plain type (@BPerlakiH #707)
+  - Custom apps should request only necessary permissions (@BPerlakiH #712)
+  - UTF-8 encoding for HTTP headers for text/plain type (@BPerlakiH #707)
 - NEW: Remove long press from bookmarks menu item (@BPerlakiH #695)
 - NEW: Re-arrange menu items, remove long press functionality (@BPerlakiH #694)
-- FIX: Tab selection after deleting a tab (@BPerlakiH #693)
+  - Tab selection after deleting a tab (@BPerlakiH #693)
 - DELETE: Support menu item on macOS (@BPerlakiH #752)
 
 ## 3.2
@@ -133,8 +163,8 @@ Technical:
 - Link Preview: tap and hold on a link to see preview of the article (not available on iOS 12)
 - UI updates in app settings  (not available on iOS 12)
 - Remove support for iOS 11 (We are committed to support last three major OS)
-- Fix: library related crashings 
-- Fix: zim file icon transluency
+  - library related crashings 
+  - zim file icon transluency
 
 Technical:
 
@@ -164,7 +194,7 @@ Technical:
 
 - bookmark snippets are now using the first sentence (iOS 12 and above) or the first paragraph (iOS 11)
 - small tweaks of sidebar and outline for a better UX
-- fix: now use zim file title as bookmark title when the article doesn't have a title
+  - now use zim file title as bookmark title when the article doesn't have a title
 
 ## 1.13.3
 
@@ -219,17 +249,17 @@ Other New Stuff:
 
 Bug fixes:
 
-- fix: swipe back gesture was not working due to conflict with gesture to show sidebar
-- fix: favicon would disappear for existing zim files after library manual refresh
-- fix: sometimes the search filters fails to update when a zim file has been added or removed
-- fix: Incorrect alphabetical ordering for library lanugage selector
+  - swipe back gesture was not working due to conflict with gesture to show sidebar
+  - favicon would disappear for existing zim files after library manual refresh
+  - sometimes the search filters fails to update when a zim file has been added or removed
+  - Incorrect alphabetical ordering for library lanugage selector
 
 ## 1.11.1 (May 7, 2020)
 
-- fix: font size not applied after article is loaded
-- fix: snippet text color is too dark to read in dark mode
-- fix: sometimes the font size setting prview becomes too tall
-- fix: app launching issue for iOS 11 & 12 users
+  - font size not applied after article is loaded
+  - snippet text color is too dark to read in dark mode
+  - sometimes the font size setting prview becomes too tall
+  - app launching issue for iOS 11 & 12 users
 - new: integration with OPDS API for library catalog refreshing
 
 
@@ -249,7 +279,7 @@ Better Files app integration:
 
 ## 1.9.7 (Jul 7, 2019)
 
-- fix: memory usage issue when performing searches
+  - memory usage issue when performing searches
 - maintance updates:
   - swift 5.2, version bump of libkiwix, realm and SwiftyUserDefaults
   - removed third party library ProcedureKit, now use Foundation.OperationQueue to handle async tasks
@@ -268,8 +298,8 @@ Better Files app integration:
 ## 1.9.1 (June 10, 2018)
 - Use Realm in replace of CoreData as database
 - Added Wiktionary, Wikiquote and Wikisource categories
-- Fix: unable to detect embedded index in some situations
-- Fix: unable to cancel erroneous download tasks
+  - unable to detect embedded index in some situations
+  - unable to cancel erroneous download tasks
 
 ## 1.9.0 (May 09, 2018)
 
