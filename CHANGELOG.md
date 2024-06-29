@@ -2,31 +2,31 @@
 
 ## 3.4.0
 
-  - UPDATE: Translations (#833, #821, #813, #777, #770, #761)
   - FIX: Empty screen after re-opening ZIM home page (@BPerlakiH #834)
-  - UPDATE: to libkiwix 13.1.0-4 (@BPerlakiH #836)
   - FIX: tab reconfiguration, improve the look of icons (@BPerlakiH #832)
-  - UPDATE: readme on how to debug webviews (@BPerlakiH #822)
   - FIX: bookmark titles for non html content (@BPerlakiH #826)
   - FIX: javascript console errors (@BPerlakiH #825)
   - FIX: html offset and animation issues (@BPerlakiH #823)
   - FIX: exporting PDF content (@BPerlakiH #820)
-  - UPDATE: video readme (@BPerlakiH #812)
   - FIX: ZIM fav icons of opened files (not added via catalog download) (@BPerlakiH #811)
   - FIX: macOS tab update after unlinkning a ZIM file (@BPerlakiH #810)
   - FIX: video display is black after resuming app on iOS (@BPerlakiH #801)
   - FIX: stop video when a tab is closed (@BPerlakiH #806)
   - FIX: mailto links for iOS (@BPerlakiH #802 #792)
-  - UPDATE: minimum version to mac 13 and iOS 16 (@BPerlakiH #796 #794)
   - FIX: support ZIM entries ending in "/" (@BPerlakiH #797)
   - FIX: open links in new tab (@BPerlakiH #800 #783)
   - FIX: macOS webView full-screen mode (@BPerlakiH #791)
+  - FIX: video full screen mode for macOS (@BPerlakiH #763)
+  - FIX: CI/CD target FTP folder for release (@rgaudin #757)
   - NEW: stream data in chunks for compressed data via libzim (@BPerlakiH #790)
   - NEW: stream uncompressed data in chunks (@BPerlakiH #778 #774)
   - NEW: full screen reading mode for iOS (@TheRealAnt @BPerlakiH #771 #764)
-  - FIX: video full screen mode for macOS (@BPerlakiH #763)
+  - UPDATE: Translations (#833, #821, #813, #777, #770, #761)
+  - UPDATE: to libkiwix 13.1.0-4 (@BPerlakiH #836)
+  - UPDATE: readme on how to debug webviews (@BPerlakiH #822)
+  - UPDATE: video readme (@BPerlakiH #812)
+  - UPDATE: minimum version to mac 13 and iOS 16 (@BPerlakiH #796 #794)
   - UPDATE: Release notes (@BPerlakiH #758)
-  - FIX: CI/CD target FTP folder for release (@rgaudin #757)
 
 ## 3.3.0
 
