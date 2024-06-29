@@ -68,109 +68,147 @@ final class WebViewController: UIViewController {
     private let webView: WKWebView
     private let pageZoomObserver: Defaults.Observation
     private var webViewURLObserver: NSKeyValueObservation?
-    private var lastOffset: CGFloat = 0.0
-    private var topConstraint: NSLayoutConstraint?
-    private var bottomConstraint: NSLayoutConstraint?
-    private var urlObserver: NSKeyValueObservation?
-    private var animStart: Double = 0
-
+    private var topSafeAreaConstraint: NSLayoutConstraint?
+    private var layoutSubject = PassthroughSubject<Void, Never>()
+    private var layoutCancellable: AnyCancellable?
+    private var currentScrollViewOffset: CGFloat = 0.0
+    private var compactViewNavigationController: UINavigationController?
+    
     init(webView: WKWebView) {
         self.webView = webView
         pageZoomObserver = Defaults.observe(.webViewPageZoom) { change in
             webView.adjustTextSize(pageZoom: change.newValue)
         }
         super.init(nibName: nil, bundle: nil)
-        webView.scrollView.delegate = self
-        urlObserver = webView.observe(\.url, options: [.initial, .new]) { [weak self] _, _ in
-            self?.showBars()
-        }
     }
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
-    override func viewWillLayoutSubviews() {
-        super.viewWillLayoutSubviews()
-        webView.setValue(view.safeAreaInsets, forKey: "_obscuredInsets")
-    }
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
         webView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(webView)
-        if Device.current == .iPad {
-            topConstraint = webView.topAnchor.constraint(equalTo: view.topAnchor)
-            bottomConstraint = webView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
-        }
+        webView.alpha = 0
+
+        /*
+         HACK: Make sure the webview content does not jump after state restoration
+         It appears the webview's state restoration does not properly take into account of the content inset.
+         To mitigate, first pin the webview's top against safe area top anchor, after all viewDidLayoutSubviews calls,
+         pin the webview's top against view's top anchor, so that content does not appears to move up.
+         HACK: when view resize, the webview might become zoomed in. To mitigate, set zoom scale to 1.
+         */
         NSLayoutConstraint.activate([
             view.leftAnchor.constraint(equalTo: webView.leftAnchor),
-            view.rightAnchor.constraint(equalTo: webView.rightAnchor),
-            topConstraint,
-            bottomConstraint
-        ].compactMap { $0 })
+            view.bottomAnchor.constraint(equalTo: webView.bottomAnchor),
+            view.rightAnchor.constraint(equalTo: webView.rightAnchor)
+        ])
+        topSafeAreaConstraint = view.safeAreaLayoutGuide.topAnchor.constraint(equalTo: webView.topAnchor)
+        topSafeAreaConstraint?.isActive = true
+        layoutCancellable = layoutSubject
+            .debounce(for: .seconds(0.15), scheduler: RunLoop.main)
+            .sink { [weak self] _ in
+                guard let view = self?.view,
+                      let webView = self?.webView,
+                      view.subviews.contains(webView) else { return }
+                webView.alpha = 1
+                webView.scrollView.zoomScale = 1
+                guard self?.topSafeAreaConstraint?.isActive == true else { return }
+                self?.topSafeAreaConstraint?.isActive = false
+                self?.view.topAnchor.constraint(equalTo: webView.topAnchor).isActive = true
+            }
+        configureImmersiveReading()
     }
 
-    override func viewWillTransition(to size: CGSize, with coordinator: any UIViewControllerTransitionCoordinator) {
-        super.viewWillTransition(to: size, with: coordinator)
-        showBars()
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        webView.setValue(view.safeAreaInsets, forKey: "_obscuredInsets")
+        layoutSubject.send()
     }
 }
 
 // MARK: - UIScrollViewDelegate
 extension WebViewController: UIScrollViewDelegate {
-    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
-        lastOffset = scrollView.contentOffset.y
-    }
-
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        if Device.current == .iPhone {
+            configureBars(on: scrollView)
+        }
+    }
+    
+    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+        if Device.current == .iPhone {
+            currentScrollViewOffset = scrollView.contentOffset.y
+        }
+    }
+    
+    private func configureBars(on scrollView: UIScrollView) {
+        guard let navigationController = compactViewNavigationController else {
+            return
+        }
+        
+        var isScrollingDown: Bool {
+            scrollView.contentOffset.y > currentScrollViewOffset
+        }
+        
         if scrollView.isDragging {
-            let isScrollingDown: Bool = scrollView.contentOffset.y > lastOffset
             if isScrollingDown {
-                hideBars()
+                hideBars(on: navigationController)
             } else {
-                showBars()
+                showBars(on: navigationController)
             }
         }
     }
-
-    func scrollViewDidScrollToTop(_ scrollView: UIScrollView) {
-        showBars()
+    
+    func hideBars(on navigationController: UINavigationController) {
+        navigationController.setNavigationBarHidden(true, animated: true)
+        navigationController.setToolbarHidden(true, animated: true)
+    }
+    
+    func showBars(on navigationController: UINavigationController) {
+        navigationController.setNavigationBarHidden(false, animated: true)
+        navigationController.setToolbarHidden(false, animated: true)
     }
 }
 
-// MARK: - Toggle bars
-extension WebViewController {
-    private func hideBars() {
-        guard Device.current == .iPhone else { return }
-        guard (CACurrentMediaTime() - animStart) > UINavigationController.hideShowBarDuration else {
-            return
-        }
-        animStart = CACurrentMediaTime()
-        topConstraint?.isActive = false
-        bottomConstraint?.isActive = false
-        topConstraint = webView.topAnchor.constraint(equalTo: view.topAnchor)
-        bottomConstraint = webView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
-        topConstraint?.isActive = true
-        bottomConstraint?.isActive = true
-        parent?.navigationController?.setNavigationBarHidden(true, animated: true)
-        parent?.navigationController?.setToolbarHidden(true, animated: true)
-    }
+// MARK: - Screen orientation change
 
-    func showBars() {
-        guard Device.current == .iPhone else { return }
-        guard (CACurrentMediaTime() - animStart) > UINavigationController.hideShowBarDuration else {
+extension WebViewController {
+    @objc func onOrientationChange() {
+        guard let navigationController = compactViewNavigationController else {
             return
         }
-        animStart = CACurrentMediaTime()
-        topConstraint?.isActive = false
-        bottomConstraint?.isActive = false
-        topConstraint = webView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor)
-        bottomConstraint = webView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
-        topConstraint?.isActive = true
-        bottomConstraint?.isActive = true
-        parent?.navigationController?.setNavigationBarHidden(false, animated: true)
-        parent?.navigationController?.setToolbarHidden(false, animated: true)
+        
+        switch UIDevice.current.orientation {
+        case .landscapeLeft:
+            showBars(on: navigationController)
+        case .landscapeRight:
+            showBars(on: navigationController)
+        default:
+            showBars(on: navigationController)
+        }
+    }
+    
+    private func configureImmersiveReading() {
+        if Device.current == .iPhone {
+            configureDeviceOrientationNotifications()
+            configureNavigationController()
+        }
+        
+        func configureDeviceOrientationNotifications() {
+            UIDevice.current.beginGeneratingDeviceOrientationNotifications()
+            NotificationCenter.default.addObserver(self,
+                                                   selector: #selector(self.onOrientationChange),
+                                                   name: UIDevice.orientationDidChangeNotification,
+                                                   object: nil)
+        }
+        
+        func configureNavigationController() {
+            webView.scrollView.delegate = self
+            if parent?.navigationController != nil {
+                compactViewNavigationController = parent?.navigationController
+            }
+        }
     }
 }
 
