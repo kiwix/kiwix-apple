@@ -41,7 +41,7 @@ struct Kiwix: App {
                 .environmentObject(navigation)
                 .modifier(AlertHandler())
                 .modifier(OpenFileHandler())
-                .modifier(SharePDFHandler())
+                .modifier(FileExportHandler())
                 .modifier(SaveContentHandler())
                 .onChange(of: scenePhase) { newValue in
                     guard newValue == .inactive else { return }

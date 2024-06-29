@@ -33,7 +33,7 @@ struct PrintButton: View {
 
     private func tempFileURL() async -> URL? {
         guard let (pdfData, browserURLName) = await dataAndName() else { return nil }
-        return PDFHandler.tempFileFrom(pdfData: pdfData, fileName: browserURLName)
+        return FileExporter.tempFileFrom(exportData: .init(data: pdfData, fileName: browserURLName))
     }
 
     var body: some View {

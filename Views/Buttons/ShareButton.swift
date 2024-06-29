@@ -19,27 +19,28 @@ struct ShareButton: View {
 
     @EnvironmentObject private var browser: BrowserViewModel
 
-    private func dataAndName() async -> (Data, String)? {
-        guard let browserURLName = browser.webView.url?.lastPathComponent else {
+    /// - Returns: Returns the browser data, fileName and extension
+    private func dataNameAndExtension() async -> FileExportData? {
+        guard let fileName = browser.webView.url?.lastPathComponent else {
             return nil
         }
-        guard let pdfData = await browser.pdfData() else {
+        guard let (pageData, fileExtension) = await browser.pageDataWithExtension() else {
             return nil
         }
-        return (pdfData, browserURLName)
+        return FileExportData(data: pageData, fileName: fileName, fileExtension: fileExtension)
     }
 
     private func tempFileURL() async -> URL? {
-        guard let (pdfData, browserURLName) = await dataAndName() else { return nil }
-        return PDFHandler.tempFileFrom(pdfData: pdfData, fileName: browserURLName)
+        guard let exportData = await dataNameAndExtension() else { return nil }
+        return FileExporter.tempFileFrom(exportData: exportData)
     }
 
     var body: some View {
         Button {
             Task {
                 #if os(iOS)
-                guard let (pdfData, browserURLName) = await dataAndName() else { return }
-                NotificationCenter.sharePDF(pdfData, fileName: browserURLName)
+                guard let exportData = await dataNameAndExtension() else { return }
+                NotificationCenter.shareFileData(exportData)
                 #else
                 guard let url = await tempFileURL() else { return }
                 NSSharingServicePicker(items: [url]).show(relativeTo: .null, of: browser.webView, preferredEdge: .minY)

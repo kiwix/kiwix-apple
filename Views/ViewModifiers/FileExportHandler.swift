@@ -15,33 +15,19 @@
 
 import SwiftUI
 
-enum PDFHandler {
-    static func tempFileFrom(pdfData: Data, fileName: String) -> URL? {
-        guard let tempFileName = fileName.split(separator: ".").first?.appending(".pdf") else {
-            return nil
-        }
-        let tempFileURL = URL(temporaryFileWithName: tempFileName)
-        guard (try? pdfData.write(to: tempFileURL)) != nil else {
-            return nil
-        }
-        return tempFileURL
-    }
-}
-
 #if os(iOS)
-/// On receiving pdf content and a file name, it gives the ability to share it
-struct SharePDFHandler: ViewModifier {
+/// On receiving FileExportData, it gives the ability to share it
+struct FileExportHandler: ViewModifier {
 
-    private let sharePDF = NotificationCenter.default.publisher(for: .sharePDF)
+    private let shareFileData = NotificationCenter.default.publisher(for: .shareFileData)
     @State private var temporaryURL: URL?
 
     func body(content: Content) -> some View {
-        content.onReceive(sharePDF) { notification in
+        content.onReceive(shareFileData) { notification in
 
             guard let userInfo = notification.userInfo,
-                  let pdfData = userInfo["data"] as? Data,
-                  let fileName = userInfo["fileName"] as? String,
-                  let tempURL = PDFHandler.tempFileFrom(pdfData: pdfData, fileName: fileName) else {
+                  let exportData = userInfo["data"] as? FileExportData,
+                  let tempURL = FileExporter.tempFileFrom(exportData: exportData) else {
                 temporaryURL = nil
                 return
             }

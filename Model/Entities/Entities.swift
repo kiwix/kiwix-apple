@@ -15,6 +15,7 @@
 
 import Combine
 import CoreData
+import UniformTypeIdentifiers
 
 class Bookmark: NSManagedObject, Identifiable {
     var id: URL { articleURL }
@@ -169,6 +170,13 @@ struct URLContentMetaData {
 
     var isTextType: Bool {
         mime.hasPrefix("text/")
+    }
+
+    var exportFileExtension: String? {
+        if isTextType {
+            return "pdf"
+        }
+        return UTType(mimeType: mime)?.preferredFilenameExtension
     }
 }
 
