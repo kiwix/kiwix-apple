@@ -64,7 +64,6 @@
 "library_refresh_time.never" = "Nunquam";
 "zim_file_cell_article_count_suffix" = "articulos";
 "zim_file_missing_indicator.help" = "Le file Zim manca.";
-// Fuzzy
 "library.zim_file_details.side_panel.message" = "Selige un file ZIM pro vider detalios";
 "library.zim_file_context.main_page.label" = "Pagina principal";
 "library.zim_file_context.random.label" = "Pagina aleatori";
