@@ -181,9 +181,12 @@
             @"size": [NSNumber numberWithUnsignedLongLong:item.getSize()],
             @"title": [NSString stringWithUTF8String:item.getTitle().c_str()]
         };
+    } catch (zim::ZimFileFormatError) {
+        return nil;
     } catch (std::exception) {
         return nil;
     }
+
 }
 
 - (NSDictionary *)getContent:(NSUUID *)zimFileID contentPath:(NSString *)contentPath
