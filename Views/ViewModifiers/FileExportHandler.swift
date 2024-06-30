@@ -19,11 +19,11 @@ import SwiftUI
 /// On receiving FileExportData, it gives the ability to share it
 struct FileExportHandler: ViewModifier {
 
-    private let shareFileData = NotificationCenter.default.publisher(for: .shareFileData)
+    private let exportFileData = NotificationCenter.default.publisher(for: .exportFileData)
     @State private var temporaryURL: URL?
 
     func body(content: Content) -> some View {
-        content.onReceive(shareFileData) { notification in
+        content.onReceive(exportFileData) { notification in
 
             guard let userInfo = notification.userInfo,
                   let exportData = userInfo["data"] as? FileExportData,

@@ -40,7 +40,7 @@ struct ShareButton: View {
             Task {
                 #if os(iOS)
                 guard let exportData = await dataNameAndExtension() else { return }
-                NotificationCenter.shareFileData(exportData)
+                NotificationCenter.exportFileData(exportData)
                 #else
                 guard let url = await tempFileURL() else { return }
                 NSSharingServicePicker(items: [url]).show(relativeTo: .null, of: browser.webView, preferredEdge: .minY)
