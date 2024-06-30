@@ -15,7 +15,7 @@
 
 import SwiftUI
 
-struct ShareButton: View {
+struct ExportButton: View {
 
     @EnvironmentObject private var browser: BrowserViewModel
 
