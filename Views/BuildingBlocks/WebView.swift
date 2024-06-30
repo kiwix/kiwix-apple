@@ -97,7 +97,6 @@ final class WebViewController: UIViewController {
          It appears the webview's state restoration does not properly take into account of the content inset.
          To mitigate, first pin the webview's top against safe area top anchor, after all viewDidLayoutSubviews calls,
          pin the webview's top against view's top anchor, so that content does not appears to move up.
-         HACK: when view resize, the webview might become zoomed in. To mitigate, set zoom scale to 1.
          */
         NSLayoutConstraint.activate([
             view.leftAnchor.constraint(equalTo: webView.leftAnchor),
@@ -113,7 +112,6 @@ final class WebViewController: UIViewController {
                       let webView = self?.webView,
                       view.subviews.contains(webView) else { return }
                 webView.alpha = 1
-                webView.scrollView.zoomScale = 1
                 guard self?.topSafeAreaConstraint?.isActive == true else { return }
                 self?.topSafeAreaConstraint?.isActive = false
                 self?.view.topAnchor.constraint(equalTo: webView.topAnchor).isActive = true
