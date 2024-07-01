@@ -71,7 +71,7 @@ extension Notification.Name {
     static let alert = Notification.Name("alert")
     static let openFiles = Notification.Name("openFiles")
     static let openURL = Notification.Name("openURL")
-    static let sharePDF = Notification.Name("sharePDF")
+    static let exportFileData = Notification.Name("exportFileData")
     static let saveContent = Notification.Name("saveContent")
     static let toggleSidebar = Notification.Name("toggleSidebar")
 }
@@ -90,8 +90,8 @@ extension NotificationCenter {
         NotificationCenter.default.post(name: .openFiles, object: nil, userInfo: ["urls": urls, "context": context])
     }
 
-    static func sharePDF(_ data: Data, fileName: String) {
-        NotificationCenter.default.post(name: .sharePDF, object: nil, userInfo: ["data": data, "fileName": fileName])
+    static func exportFileData(_ data: FileExportData) {
+        NotificationCenter.default.post(name: .exportFileData, object: nil, userInfo: ["data": data])
     }
 
     static func saveContent(url: URL) {

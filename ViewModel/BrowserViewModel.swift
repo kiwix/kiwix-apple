@@ -161,11 +161,21 @@ final class BrowserViewModel: NSObject, ObservableObject,
 
     /// Get the webpage in a binary format
     /// - Returns: PDF of the current page (if text type) or binary data of the content
-    func pdfData() async -> Data? {
-        if metaData?.isTextType == true {
-            return try? await webView.pdf()
-        } else if let url = await webView.url {
-            return ZimFileService.shared.getURLContent(url: url)?.data
+    /// and the file extension, if known
+    func pageDataWithExtension() async -> (Data, String?)? {
+        if metaData?.isTextType == true,
+           let pdfData = try? await webView.pdf() {
+            return (pdfData, metaData?.exportFileExtension)
+        } else if let url = await webView.url,
+                  let contentData = ZimFileService.shared.getURLContent(url: url)?.data {
+            let pathExtesion = url.pathExtension
+            let fileExtension: String?
+            if !pathExtesion.isEmpty {
+                fileExtension = pathExtesion
+            } else {
+                fileExtension = metaData?.exportFileExtension
+            }
+            return (contentData, fileExtension)
         }
         return nil
     }

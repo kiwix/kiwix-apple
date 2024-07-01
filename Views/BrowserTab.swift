@@ -37,7 +37,7 @@ struct BrowserTab: View {
             #endif
             ToolbarItemGroup(placement: .primaryAction) {
                 OutlineButton()
-                ShareButton()
+                ExportButton()
                 #if os(macOS)
                 PrintButton()
                 #endif
