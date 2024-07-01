@@ -72,10 +72,11 @@ function refreshVideoState() {
     if (document.pictureInPictureElement != null) {
         return;
     }
-    $("video").each(function() {
-        if (this.paused && this.currentTime > 0) {
-            this.play();
-            this.pause();
+	
+    document.querySelectorAll("video").forEach((video) => {
+        if (video.paused && video.currentTime > 0) {
+            video.play();
+            video.pause();
         }
     });
 }
