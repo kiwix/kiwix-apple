@@ -137,6 +137,8 @@ final class BrowserViewModel: NSObject, ObservableObject,
         canGoBackObserver = webView.observe(\.canGoBack, options: .initial) { [weak self] webView, _ in
             Task { [weak self] in
                 await MainActor.run { [weak self] in
+
+                    debugPrint("WebView.canGoBack: \(webView.canGoBack) | back: \(webView.backForwardList.backItem?.url) | current: \(webView.backForwardList.currentItem?.url)")
                     self?.canGoBack = webView.canGoBack
                 }
             }
@@ -295,28 +297,37 @@ final class BrowserViewModel: NSObject, ObservableObject,
     func webView(
         _ webView: WKWebView,
         decidePolicyFor navigationAction: WKNavigationAction,
-        decisionHandler: @escaping (WKNavigationActionPolicy) -> Void
-    ) {
+        preferences: WKWebpagePreferences
+    ) async -> (WKNavigationActionPolicy, WKWebpagePreferences) {
         guard let url = navigationAction.request.url else {
-            decisionHandler(.cancel)
-            return
+            return (.cancel, preferences)
         }
+
+        skippingResponse = false
+        guard !navigationAction.isRedirect else {
+            skippingResponse = true
+            debugPrint("BrowserViewModel.navigationAction .cancel for: \(navigationAction.request.url)")
+            return (.cancel, preferences)
+        }
+        debugPrint("BrowserViewModel.navigationAction .allow for: \(navigationAction.request.url)")
+
 
 #if os(macOS)
         // detect cmd + click event
         if navigationAction.modifierFlags.contains(.command) {
             if createNewTab(url: url) {
-                decisionHandler(.cancel)
-                return
+                return (.cancel, preferences)
             }
         }
 #endif
 
         if url.isKiwixURL, let redirectedURL = ZimFileService.shared.getRedirectedURL(url: url) {
-            if webView.url != redirectedURL {
-                DispatchQueue.main.async { webView.load(URLRequest(url: redirectedURL)) }
+            if await webView.url != redirectedURL {
+                await MainActor.run {
+                    _ = webView.load(URLRequest(url: redirectedURL))
+                }
             }
-            decisionHandler(.cancel)
+            return (.cancel, preferences)
         } else if url.isKiwixURL {
             guard ZimFileService.shared.getContentSize(url: url) != nil else {
                 os_log(
@@ -326,7 +337,6 @@ final class BrowserViewModel: NSObject, ObservableObject,
                     url.absoluteString,
                     url.contentPath
                 )
-                decisionHandler(.cancel)
                 if navigationAction.request.mainDocumentURL == url {
                     // only show alerts for missing main document
                     NotificationCenter.default.post(
@@ -335,12 +345,12 @@ final class BrowserViewModel: NSObject, ObservableObject,
                         userInfo: ["rawValue": ActiveAlert.articleFailedToLoad.rawValue]
                     )
                 }
-                return
+                return (.cancel, preferences)
             }
-            decisionHandler(.allow)
+            return (.allow, preferences)
         } else if url.isUnsupported {
             externalURL = url
-            decisionHandler(.cancel)
+            return (.cancel, preferences)
         } else if url.isGeoURL {
             if FeatureFlags.map {
                 let _: CLLocation? = {
@@ -361,13 +371,14 @@ final class BrowserViewModel: NSObject, ObservableObject,
 #endif
                 }
             }
-            decisionHandler(.cancel)
+            return (.cancel, preferences)
         } else {
-            decisionHandler(.cancel)
+            return (.cancel, preferences)
         }
     }
 
     private var canShowMimeType = true
+    private var skippingResponse = false
 
     func webView(
         _ webView: WKWebView,
@@ -375,13 +386,14 @@ final class BrowserViewModel: NSObject, ObservableObject,
         decisionHandler: @escaping (WKNavigationResponsePolicy) -> Void
     ) {
         canShowMimeType = navigationResponse.canShowMIMEType
+
         guard canShowMimeType else {
             decisionHandler(.cancel)
             return
         }
-        guard navigationResponse.response.url != webView.url else {
+        if skippingResponse {
             debugPrint("BrowserViewModel.navigationResponse .cancel for: \(navigationResponse.response.url)")
-            return
+            decisionHandler(.cancel)
         }
         debugPrint("BrowserViewModel.navigationResponse .allow for: \(navigationResponse.response.url)")
         decisionHandler(.allow)
@@ -398,10 +410,14 @@ final class BrowserViewModel: NSObject, ObservableObject,
 
     func webView(
         _ webView: WKWebView,
-        didFailProvisionalNavigation _: WKNavigation!,
+        didFailProvisionalNavigation navigation: WKNavigation!,
         withError error: Error
     ) {
         let error = error as NSError
+        guard !skippingResponse else {
+            debugPrint("BrowserViewModel.didFailProvisionalNavigation skippingResponse: \(navigation)")
+            return
+        }
         webView.stopLoading()
         (webView.configuration
             .urlSchemeHandler(forURLScheme: KiwixURLSchemeHandler.KiwixScheme) as? KiwixURLSchemeHandler)?
@@ -414,6 +430,7 @@ final class BrowserViewModel: NSObject, ObservableObject,
             NotificationCenter.saveContent(url: kiwixURL)
             return
         }
+
         NotificationCenter.default.post(
             name: .alert, object: nil, userInfo: ["rawValue": ActiveAlert.articleFailedToLoad.rawValue]
         )
