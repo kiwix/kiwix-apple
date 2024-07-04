@@ -297,8 +297,8 @@ final class BrowserViewModel: NSObject, ObservableObject,
         decidePolicyFor navigationAction: WKNavigationAction,
         decisionHandler: @escaping (WKNavigationActionPolicy) -> Void
     ) {
-        debugPrint("BrowserViewModel.decidePolicyFor: \(navigationAction) | \(navigationAction.request.) | attribution: \(navigationAction.request.attribution) | allHTTPHeaderFields: \(navigationAction.request.allHTTPHeaderFields) | mainDocumentURL: \(navigationAction.request.mainDocumentURL?.absoluteString)")
-        guard let url = navigationAction.request.url else {
+        guard let url = navigationAction.request.url, 
+                !navigationAction.isRedirect else {
             decisionHandler(.cancel)
             return
         }
@@ -376,11 +376,12 @@ final class BrowserViewModel: NSObject, ObservableObject,
         decisionHandler: @escaping (WKNavigationResponsePolicy) -> Void
     ) {
         canShowMimeType = navigationResponse.canShowMIMEType
-        guard canShowMimeType else {
+        guard canShowMimeType, navigationResponse.response.url != webView.url else {
+            debugPrint("BrowserViewModel.navigationResponse .cancel for: \(navigationResponse.response.url)")
             decisionHandler(.cancel)
             return
         }
-        debugPrint("BrowserViewModel.navigationResponse: \(navigationResponse)")
+        debugPrint("BrowserViewModel.navigationResponse .allow for: \(navigationResponse.response.url)")
         decisionHandler(.allow)
     }
 
