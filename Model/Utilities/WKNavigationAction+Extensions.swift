@@ -17,11 +17,15 @@ import Foundation
 import WebKit
 
 extension WKNavigationAction {
-    var isRedirect: Bool {
+
+    /// Checks if the navigation action was a web redirect,
+    /// and returns the sourceURL if so
+    var redirectedURLFrom: URL? {
         guard let targetURL = request.url,
-              sourceFrame != nil,
-              let sourceURL = sourceFrame.request.url else { return false }
+              sourceFrame != nil, // !important an API error in WebKit, this can actually be nil
+              let sourceURL = sourceFrame.request.url else { return nil }
         let targetRoot = targetURL.absoluteString.split(separator: "#").first.map { String($0) }
-        return targetRoot == sourceURL.absoluteString
+        guard targetRoot == sourceURL.absoluteString else { return nil }
+        return sourceURL
     }
 }

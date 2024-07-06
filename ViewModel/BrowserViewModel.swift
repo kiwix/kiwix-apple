@@ -135,11 +135,9 @@ final class BrowserViewModel: NSObject, ObservableObject,
 
         // setup web view property observers
         canGoBackObserver = webView.observe(\.canGoBack, options: .initial) { [weak self] webView, _ in
-            Task { [weak self] in
+            Task { [weak self]  in
                 await MainActor.run { [weak self] in
-
-                    debugPrint("WebView.canGoBack: \(webView.canGoBack) | back: \(webView.backForwardList.backItem?.url) | current: \(webView.backForwardList.currentItem?.url)")
-                    self?.canGoBack = webView.canGoBack
+                    self?.updateCanGoBack()
                 }
             }
         }
@@ -159,6 +157,22 @@ final class BrowserViewModel: NSObject, ObservableObject,
             guard let title, let url else { return }
             self?.didUpdate(title: title, url: url)
         }
+    }
+
+    @MainActor private func updateCanGoBack() {
+        guard !backListSkipping.isEmpty,
+              let currentURL = webView.url else {
+            canGoBack = webView.canGoBack
+            return
+        }
+        let backURLs: [URL] = webView.backForwardList.backList.map { item in
+            item.url
+        }
+        canGoBack = BackListURLs.filteredCanGoBack(
+            backURLs: backURLs,
+            current: currentURL,
+            skipList: backListSkipping
+        )
     }
 
     /// Get the webpage in a binary format
@@ -276,7 +290,7 @@ final class BrowserViewModel: NSObject, ObservableObject,
     // MARK: - New Tab Creation
 
 #if os(macOS)
-    private func createNewTab(url: URL) -> Bool {
+    @MainActor private func createNewTab(url: URL) -> Bool {
         guard let currentWindow = NSApp.keyWindow else { return false }
         guard let windowController = currentWindow.windowController else { return false }
         // store the new url in a static way
@@ -294,32 +308,28 @@ final class BrowserViewModel: NSObject, ObservableObject,
     // MARK: - WKNavigationDelegate
 
     // swiftlint:disable:next function_body_length cyclomatic_complexity
-    func webView(
-        _ webView: WKWebView,
-        decidePolicyFor navigationAction: WKNavigationAction,
-        preferences: WKWebpagePreferences
-    ) async -> (WKNavigationActionPolicy, WKWebpagePreferences) {
+    func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction) async -> WKNavigationActionPolicy {
         guard let url = navigationAction.request.url else {
-            return (.cancel, preferences)
+            return .cancel
         }
-
-        skippingResponse = false
-        guard !navigationAction.isRedirect else {
-            skippingResponse = true
-            debugPrint("BrowserViewModel.navigationAction .cancel for: \(navigationAction.request.url)")
-            return (.cancel, preferences)
-        }
-        debugPrint("BrowserViewModel.navigationAction .allow for: \(navigationAction.request.url)")
-
 
 #if os(macOS)
         // detect cmd + click event
         if navigationAction.modifierFlags.contains(.command) {
-            if createNewTab(url: url) {
-                return (.cancel, preferences)
+            if await createNewTab(url: url) {
+                return .cancel
             }
         }
 #endif
+        // detect webpage redirect to baseURL#something
+        if let redirectedFromURL = navigationAction.redirectedURLFrom {
+            await MainActor.run {
+                backListSkipping[url] = redirectedFromURL
+                updateCanGoBack()
+            }
+            debugPrint("BrowserViewModel.navigationAction skipped old: \(redirectedFromURL) due to redirection to: \(url)")
+        }
+        debugPrint("BrowserViewModel.navigationAction .allow for: \(url)")
 
         if url.isKiwixURL, let redirectedURL = ZimFileService.shared.getRedirectedURL(url: url) {
             if await webView.url != redirectedURL {
@@ -327,7 +337,7 @@ final class BrowserViewModel: NSObject, ObservableObject,
                     _ = webView.load(URLRequest(url: redirectedURL))
                 }
             }
-            return (.cancel, preferences)
+            return .cancel
         } else if url.isKiwixURL {
             guard ZimFileService.shared.getContentSize(url: url) != nil else {
                 os_log(
@@ -339,18 +349,20 @@ final class BrowserViewModel: NSObject, ObservableObject,
                 )
                 if navigationAction.request.mainDocumentURL == url {
                     // only show alerts for missing main document
-                    NotificationCenter.default.post(
-                        name: .alert,
-                        object: nil,
-                        userInfo: ["rawValue": ActiveAlert.articleFailedToLoad.rawValue]
-                    )
+                    await MainActor.run {
+                        NotificationCenter.default.post(
+                            name: .alert,
+                            object: nil,
+                            userInfo: ["rawValue": ActiveAlert.articleFailedToLoad.rawValue]
+                        )
+                    }
                 }
-                return (.cancel, preferences)
+                return .cancel
             }
-            return (.allow, preferences)
+            return .allow
         } else if url.isUnsupported {
             externalURL = url
-            return (.cancel, preferences)
+            return .cancel
         } else if url.isGeoURL {
             if FeatureFlags.map {
                 let _: CLLocation? = {
@@ -371,32 +383,26 @@ final class BrowserViewModel: NSObject, ObservableObject,
 #endif
                 }
             }
-            return (.cancel, preferences)
+            return .cancel
         } else {
-            return (.cancel, preferences)
+            return .cancel
         }
     }
 
     private var canShowMimeType = true
-    private var skippingResponse = false
+    
+    /// Skip list: which urls (keys) should not go back, as they were redirect (from: values)
+    @MainActor private var backListSkipping: [URL: URL] = [:]
 
     func webView(
         _ webView: WKWebView,
-        decidePolicyFor navigationResponse: WKNavigationResponse,
-        decisionHandler: @escaping (WKNavigationResponsePolicy) -> Void
-    ) {
+        decidePolicyFor navigationResponse: WKNavigationResponse
+    ) async -> WKNavigationResponsePolicy {
         canShowMimeType = navigationResponse.canShowMIMEType
-
         guard canShowMimeType else {
-            decisionHandler(.cancel)
-            return
+            return .cancel
         }
-        if skippingResponse {
-            debugPrint("BrowserViewModel.navigationResponse .cancel for: \(navigationResponse.response.url)")
-            decisionHandler(.cancel)
-        }
-        debugPrint("BrowserViewModel.navigationResponse .allow for: \(navigationResponse.response.url)")
-        decisionHandler(.allow)
+        return .allow
     }
 
     func webView(_ webView: WKWebView, didFinish _: WKNavigation!) {
@@ -414,10 +420,6 @@ final class BrowserViewModel: NSObject, ObservableObject,
         withError error: Error
     ) {
         let error = error as NSError
-        guard !skippingResponse else {
-            debugPrint("BrowserViewModel.didFailProvisionalNavigation skippingResponse: \(navigation)")
-            return
-        }
         webView.stopLoading()
         (webView.configuration
             .urlSchemeHandler(forURLScheme: KiwixURLSchemeHandler.KiwixScheme) as? KiwixURLSchemeHandler)?
@@ -458,14 +460,14 @@ final class BrowserViewModel: NSObject, ObservableObject,
     ) -> WKWebView? {
         guard navigationAction.targetFrame == nil else { return nil }
         guard let newUrl = navigationAction.request.url else { return nil }
-
         // open external link in default browser
         guard newUrl.isUnsupported == false else {
             externalURL = newUrl
             return nil
         }
-
-        _ = createNewTab(url: newUrl)
+        Task { @MainActor [weak self] in
+            _ = self?.createNewTab(url: newUrl)
+        }
         return nil
     }
 #else
