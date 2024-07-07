@@ -212,6 +212,13 @@ private struct Content: View {
                        systemImage: "die.face.5",
                        action: { browser.loadRandomArticle() })
                 .disabled(zimFiles.isEmpty)
+                Button("common.search".localized,
+                       systemImage: "magnifyingglass",
+                       action: {
+                    browser.webView.isFindInteractionEnabled = true
+                    browser.webView.findInteraction?.presentFindNavigator(showingReplace: false)
+                    }
+                ).disabled(browser.webView.url == nil)
             }
         }
     }
