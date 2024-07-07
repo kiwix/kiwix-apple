@@ -49,14 +49,6 @@ final class BrowserViewModel: NSObject, ObservableObject,
 
     // MARK: - Properties
 
-    @MainActor @Published var contentSearchText: String = "" {
-        didSet {
-            Task {
-                let results = try? await webView.find(contentSearchText)
-                debugPrint("result: \(results)")
-            }
-        }
-    }
     @Published private(set) var canGoBack = false
     @Published private(set) var canGoForward = false
     @Published private(set) var articleTitle: String = ""
@@ -165,7 +157,6 @@ final class BrowserViewModel: NSObject, ObservableObject,
             guard let title, let url else { return }
             self?.didUpdate(title: title, url: url)
         }
-
     }
 
     /// Get the webpage in a binary format

@@ -88,7 +88,9 @@ struct BrowserTab: View {
                     } else {
                         WebView().ignoresSafeArea()
                             .overlay(alignment: .bottomTrailing) {
-                                ContentSearchBar(text: $browser.contentSearchText)
+                                ContentSearchBar(
+                                    model: ContentSearchViewModel(findInWebPage: browser.webView.find(_:configuration:))
+                                )
                             }
                     }
                 }

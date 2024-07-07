@@ -18,13 +18,13 @@ import SwiftUI
 
 struct ContentSearchBar: View {
 
-    @Binding private var searchText: String
+    @ObservedObject private var viewModel: ContentSearchViewModel
 
     @State private var isActivated: Bool = false
     @FocusState private var focusedState: Bool
 
-    init(text: Binding<String>) {
-        _searchText = text
+    init(model: ContentSearchViewModel) {
+        viewModel = model
     }
 
     var body: some View {
@@ -46,14 +46,18 @@ struct ContentSearchBar: View {
                 .font(.system(size: 18))
         }
         .buttonStyle(PlainButtonStyle())
-        .padding(32)
+        .padding(24)
     }
 
     private var field: some View {
         HStack {
             searchImage
-            TextField("common.search".localized, text: $searchText)
+            TextField("common.search".localized, text: $viewModel.contentSearchText)
                 .textFieldStyle(.roundedBorder)
+            HStack(spacing: 2) {
+                leftButton
+                rightButton
+            }
             closeButton
         }
         .padding(8)
@@ -68,9 +72,27 @@ struct ContentSearchBar: View {
             .foregroundColor(.primary)
     }
 
+    private var leftButton: some View {
+        Button {
+            Task { await viewModel.findPrevious() }
+        } label: {
+            Image(systemName: "arrowshape.left").foregroundColor(.primary)
+        }
+        .keyboardShortcut("g", modifiers: EventModifiers(arrayLiteral: .command, .shift))
+    }
+
+    private var rightButton: some View {
+        Button {
+            Task { await viewModel.findNext() }
+        } label: {
+            Image(systemName: "arrowshape.right").foregroundColor(.primary)
+        }
+        .keyboardShortcut("g")
+    }
+
     private var closeButton: some View {
         Button {
-            searchText = ""
+            viewModel.reset()
             isActivated = false
         } label: {
             Image(systemName: "xmark.circle.fill").foregroundColor(.primary)
