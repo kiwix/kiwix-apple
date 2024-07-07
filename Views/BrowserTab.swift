@@ -43,13 +43,7 @@ struct BrowserTab: View {
                 #endif
                 BookmarkButton()
                 #if os(iOS)
-                Button("common.search".localized,
-                       systemImage: "text.magnifyingglass",
-                       action: {
-                    browser.webView.isFindInteractionEnabled = true
-                    browser.webView.findInteraction?.presentFindNavigator(showingReplace: false)
-                    }
-                ).disabled(browser.webView.url == nil)
+                ContentSearchButton(webView: browser.webView)
                 #endif
                 ArticleShortcutButtons(displayMode: .mainAndRandomArticle)
             }
