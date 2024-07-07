@@ -13,6 +13,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Kiwix; If not, see https://www.gnu.org/licenses/.
 
+#if os(macOS)
 import Foundation
 import SwiftUI
 
@@ -100,3 +101,4 @@ struct ContentSearchBar: View {
     }
 
 }
+#endif

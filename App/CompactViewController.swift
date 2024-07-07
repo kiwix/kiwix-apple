@@ -213,11 +213,11 @@ private struct Content: View {
                        action: { browser.loadRandomArticle() })
                 .disabled(zimFiles.isEmpty)
                 Button("common.search".localized,
-                       systemImage: "magnifyingglass",
+                       systemImage: "text.magnifyingglass",
                        action: {
                     browser.webView.isFindInteractionEnabled = true
                     browser.webView.findInteraction?.presentFindNavigator(showingReplace: false)
-                    }
+                }
                 ).disabled(browser.webView.url == nil)
             }
         }
