@@ -43,7 +43,7 @@ struct ContentSearchBar: View {
             isActivated = true
             focusedState = true
         } label: {
-            Image(systemName: "magnifyingglass")
+            Image(systemName: "text.magnifyingglass")
                 .font(.system(size: 18))
         }
         .buttonStyle(PlainButtonStyle())
