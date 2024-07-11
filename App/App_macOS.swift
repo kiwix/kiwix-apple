@@ -176,10 +176,11 @@ struct RootView: View {
                 // for which the system opens a new window,
                 // this part of the code, will be called on all possible windows, we need this though,
                 // otherwise it won't fire on app start, where we might not have a fully configured window yet.
-                // We need to filter it down the the last window (which is usually not the key window yet at this point),
+                // We need to filter it down the the last window 
+                // (which is usually not the key window yet at this point),
                 // and load the content only within that
                 Task {
-                    if windowTracker.isLastWindow(){
+                    if windowTracker.isLastWindow() {
                         browser.load(url: url)
                     }
                 }
