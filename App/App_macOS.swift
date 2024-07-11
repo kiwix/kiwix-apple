@@ -182,6 +182,9 @@ struct RootView: View {
                 Task {
                     if windowTracker.isLastWindow() {
                         browser.load(url: url)
+                        // if the app was opened by clicking on a ZIM,
+                        // we should switch from loading state to reading
+                        navigation.currentItem = .reading
                     }
                 }
                 return
@@ -206,9 +209,8 @@ struct RootView: View {
         }.task {
             switch AppType.current {
             case .kiwix:
-                LibraryOperations.reopen {
-                    navigation.currentItem = .reading
-                }
+                await LibraryOperations.reopen()
+                navigation.currentItem = .reading
                 LibraryOperations.scanDirectory(URL.documentDirectory)
                 LibraryOperations.applyFileBackupSetting()
                 DownloadService.shared.restartHeartbeatIfNeeded()
