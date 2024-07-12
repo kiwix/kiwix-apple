@@ -46,8 +46,8 @@ settings:
 
 packages:
   Fuzi:
-    url: https://github.com/cezheng/Fuzi
-    majorVersion: 3.0.0
+    url: https://github.com/BPerlakiH/Fuzi
+    branch: master
   Defaults:
     url: https://github.com/sindresorhus/Defaults
     majorVersion: 6.0.0
