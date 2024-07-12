@@ -42,6 +42,9 @@ struct BrowserTab: View {
                 PrintButton()
                 #endif
                 BookmarkButton()
+                #if os(iOS)
+                ContentSearchButton(webView: browser.webView)
+                #endif
                 ArticleShortcutButtons(displayMode: .mainAndRandomArticle)
             }
         }
@@ -87,6 +90,13 @@ struct BrowserTab: View {
                         Welcome()
                     } else {
                         WebView().ignoresSafeArea()
+                        #if os(macOS)
+                            .overlay(alignment: .bottomTrailing) {
+                                ContentSearchBar(
+                                    model: ContentSearchViewModel(findInWebPage: browser.webView.find(_:configuration:))
+                                )
+                            }
+                        #endif
                     }
                 }
             }

@@ -212,6 +212,7 @@ private struct Content: View {
                        systemImage: "die.face.5",
                        action: { browser.loadRandomArticle() })
                 .disabled(zimFiles.isEmpty)
+                ContentSearchButton(webView: browser.webView)
             }
         }
     }
