@@ -96,6 +96,7 @@ struct RootView: View {
     @Environment(\.controlActiveState) var controlActiveState
     @StateObject private var browser = BrowserViewModel()
     @StateObject private var navigation = NavigationViewModel()
+    @StateObject private var windowTracker = WindowTracker()
 
     private let primaryItems: [NavigationItem] = [.reading, .bookmarks]
     private let libraryItems: [NavigationItem] = [.opened, .categories, .downloads, .new]
@@ -169,7 +170,23 @@ struct RootView: View {
             }
         }
         .onReceive(openURL) { notification in
-            guard controlActiveState == .key, let url = notification.userInfo?["url"] as? URL else { return }
+            guard let url = notification.userInfo?["url"] as? URL else { return }
+            if notification.userInfo?["isFileContext"] as? Bool == true {
+                // handle the opened ZIM file from Finder
+                // for which the system opens a new window,
+                // this part of the code, will be called on all possible windows, we need this though,
+                // otherwise it won't fire on app start, where we might not have a fully configured window yet.
+                // We need to filter it down the the last window 
+                // (which is usually not the key window yet at this point),
+                // and load the content only within that
+                Task {
+                    if windowTracker.isLastWindow() {
+                        browser.load(url: url)
+                    }
+                }
+                return
+            }
+            guard controlActiveState == .key else { return }
             navigation.currentItem = .reading
             browser.load(url: url)
         }
@@ -203,6 +220,9 @@ struct RootView: View {
                     }
                 }
             }
+        }
+        .withHostingWindow { [windowTracker] hostWindow in
+            windowTracker.current = hostWindow
         }
     }
 }
