@@ -272,7 +272,7 @@ enum NavigationItem: Hashable, Identifiable {
 }
 
 enum SearchResultSnippetMode: String, CaseIterable, Identifiable, Defaults.Serializable {
-    case disabled, firstParagraph, firstSentence, matches
+    case disabled, matches
 
     var id: String { rawValue }
 
@@ -280,10 +280,6 @@ enum SearchResultSnippetMode: String, CaseIterable, Identifiable, Defaults.Seria
         switch self {
         case .disabled:
             return "enum.search_result_snippet_mode.disabled".localized
-        case .firstParagraph:
-            return "enum.search_result_snippet_mode.paragraph".localized
-        case .firstSentence:
-            return "enum.search_result_snippet_mode.sentence".localized
         case .matches:
             return "enum.search_result_snippet_mode.matches".localized
         }
