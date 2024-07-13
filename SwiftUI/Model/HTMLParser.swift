@@ -37,11 +37,11 @@ class HTMLParser {
     }
 
     convenience init(html: String) throws {
-        self.init(document: try HTMLDocument(string: html))
+        self.init(document: try HTMLDocument(string: html, parseOptions: []))
     }
 
     convenience init(data: Data) throws {
-        self.init(document: try HTMLDocument(data: data))
+        self.init(document: try HTMLDocument(data: data, parseOptions: []))
     }
 
     convenience init(url: URL) throws {

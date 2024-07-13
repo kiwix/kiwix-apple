@@ -20,7 +20,7 @@ final class HtmlParserTests: XCTestCase {
 
     func testFailsWithNoData() throws {
         XCTAssertThrowsError(
-            _ = try HTMLParser(data: "".data(using: .utf8)!)
+            _ = try HTMLParser(data: "".data(using: .unicode)!)
         )
     }
 
