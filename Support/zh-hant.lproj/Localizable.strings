@@ -229,6 +229,4 @@
 "enum.navigation_item.downloads" = "下載";
 "enum.navigation_item.settings" = "設定";
 "enum.search_result_snippet_mode.disabled" = "已停用";
-"enum.search_result_snippet_mode.paragraph" = "第一段";
-"enum.search_result_snippet_mode.sentence" = "第一句";
 "enum.search_result_snippet_mode.matches" = "相符";

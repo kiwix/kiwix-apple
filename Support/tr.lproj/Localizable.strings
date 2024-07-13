@@ -233,6 +233,4 @@
 "enum.navigation_item.downloads" = "İndirilenler";
 "enum.navigation_item.settings" = "Ayarlar";
 "enum.search_result_snippet_mode.disabled" = "Devre dışı";
-"enum.search_result_snippet_mode.paragraph" = "İlk Paragraf";
-"enum.search_result_snippet_mode.sentence" = "İlk Cümle";
 "enum.search_result_snippet_mode.matches" = "Eşleşmeler";

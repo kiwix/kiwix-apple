@@ -168,6 +168,4 @@
 "enum.navigation_item.new" = "Nei";
 "enum.navigation_item.settings" = "Astellungen";
 "enum.search_result_snippet_mode.disabled" = "Desaktivéiert";
-"enum.search_result_snippet_mode.paragraph" = "Éischten Abschnitt";
-"enum.search_result_snippet_mode.sentence" = "Éischte Saz";
 "enum.search_result_snippet_mode.matches" = "Treffer";

@@ -207,6 +207,4 @@
 "enum.navigation_item.downloads" = "Deebu";
 "enum.navigation_item.settings" = "Bintaɣindisi";
 "enum.search_result_snippet_mode.disabled" = "Zaɣisibu";
-"enum.search_result_snippet_mode.paragraph" = "Tuuli kuliga";
-"enum.search_result_snippet_mode.sentence" = "Tuuli yɛtɔɣili";
 "enum.search_result_snippet_mode.matches" = "Manchisi";

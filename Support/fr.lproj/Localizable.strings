@@ -238,6 +238,4 @@
 "enum.navigation_item.downloads" = "Téléchargements";
 "enum.navigation_item.settings" = "Paramètres";
 "enum.search_result_snippet_mode.disabled" = "Désactivé";
-"enum.search_result_snippet_mode.paragraph" = "Premier paragraphe";
-"enum.search_result_snippet_mode.sentence" = "Première phrase";
 "enum.search_result_snippet_mode.matches" = "Correspondances";

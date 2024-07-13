@@ -228,6 +228,4 @@
 "enum.navigation_item.downloads" = "Преземања";
 "enum.navigation_item.settings" = "Нагодувања";
 "enum.search_result_snippet_mode.disabled" = "Оневозможено";
-"enum.search_result_snippet_mode.paragraph" = "Прв пасус";
-"enum.search_result_snippet_mode.sentence" = "Прва реченица";
 "enum.search_result_snippet_mode.matches" = "Совпаѓања";

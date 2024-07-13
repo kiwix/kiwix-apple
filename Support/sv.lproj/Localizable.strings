@@ -231,6 +231,4 @@
 "enum.navigation_item.downloads" = "Nedladdningar";
 "enum.navigation_item.settings" = "Inställningar";
 "enum.search_result_snippet_mode.disabled" = "Inaktiverad";
-"enum.search_result_snippet_mode.paragraph" = "Första stycket";
-"enum.search_result_snippet_mode.sentence" = "Första meningen";
 "enum.search_result_snippet_mode.matches" = "Matchningar";

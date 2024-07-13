@@ -225,6 +225,4 @@
 "enum.navigation_item.downloads" = "Prenosi";
 "enum.navigation_item.settings" = "Nastavitve";
 "enum.search_result_snippet_mode.disabled" = "Onemogočeno";
-"enum.search_result_snippet_mode.paragraph" = "Prvi odstavek";
-"enum.search_result_snippet_mode.sentence" = "Prvi stavek";
 "enum.search_result_snippet_mode.matches" = "Ujemanja";
