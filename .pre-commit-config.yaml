@@ -10,3 +10,10 @@ repos:
         language: system
         always_run: true
         stages: [post-checkout, post-merge, post-rewrite]
+      - id: spm_dependencies
+        name: Resolve SPM dependencies
+        description: "Resolve SPM dependencies"
+        entry: xcodebuild -resolvePackageDependencies
+        language: system
+        always_run: true
+        stages: [post-checkout, post-merge, post-rewrite]
