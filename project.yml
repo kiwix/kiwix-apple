@@ -45,9 +45,6 @@ settings:
       VALIDATE_PRODUCT: YES
 
 packages:
-  Fuzi:
-    url: https://github.com/cezheng/Fuzi
-    majorVersion: 3.0.0
   Defaults:
     url: https://github.com/sindresorhus/Defaults
     majorVersion: 6.0.0
@@ -75,7 +72,6 @@ targetTemplates:
       - sdk: WebKit.framework
       - sdk: NotificationCenter.framework
       - sdk: QuickLook.framework
-      - package: Fuzi
       - package: Defaults
       - package: OrderedCollections
     sources: 
