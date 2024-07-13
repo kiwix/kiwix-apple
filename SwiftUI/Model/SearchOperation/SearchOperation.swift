@@ -53,11 +53,11 @@ extension SearchOperation {
         // start sorting search results
         guard !isCancelled else { return }
         let searchText = self.searchText.lowercased()
-        let levenshtein = Levenshtein()
 
         // calculate score for all results
         for result in results {
             guard !isCancelled else { break }
+            let levenshtein = Levenshtein()
             let distance = levenshtein.calculate(result.title.lowercased()[...], searchText[...])
             if let probability = result.probability?.doubleValue {
                 result.score = NSNumber(floatLiteral: Double(distance) * Foundation.log(7.5576 - 6.4524 * probability))
