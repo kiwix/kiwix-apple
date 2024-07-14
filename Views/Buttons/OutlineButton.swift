@@ -15,8 +15,6 @@
 
 import SwiftUI
 
-import SwiftUIBackports
-
 struct OutlineButton: View {
     @Environment(\.dismissSearch) private var dismissSearch
     @EnvironmentObject private var browser: BrowserViewModel
