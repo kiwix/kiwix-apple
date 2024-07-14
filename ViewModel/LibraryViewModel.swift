@@ -39,7 +39,6 @@ enum LibraryState {
     }
 }
 
-
 final class LibraryViewModel: ObservableObject {
     @Published var selectedZimFile: ZimFile?
     @MainActor @Published private(set) var error: Error?
