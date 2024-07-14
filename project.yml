@@ -51,9 +51,6 @@ packages:
   Defaults:
     url: https://github.com/sindresorhus/Defaults
     majorVersion: 6.0.0
-  SwiftUIBackports:
-    url: https://github.com/shaps80/SwiftUIBackports.git
-    majorVersion: 1.0.0
   OrderedCollections:
     url: https://github.com/apple/swift-collections.git
     majorVersion: 1.0.4
@@ -80,7 +77,6 @@ targetTemplates:
       - sdk: QuickLook.framework
       - package: Fuzi
       - package: Defaults
-      - package: SwiftUIBackports
       - package: OrderedCollections
     sources: 
       - path: App
