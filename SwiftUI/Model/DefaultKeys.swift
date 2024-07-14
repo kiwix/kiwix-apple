@@ -24,7 +24,7 @@ extension Defaults.Keys {
         "externalLinkLoadingPolicy", default: Brand.defaultExternalLinkPolicy
     )
     static let searchResultSnippetMode = Key<SearchResultSnippetMode>(
-        "searchResultSnippetModeV2", default: Brand.defaultSearchSnippetMode
+        "searchResultSnippetMode", default: Brand.defaultSearchSnippetMode
     )
 //
 //    // UI
