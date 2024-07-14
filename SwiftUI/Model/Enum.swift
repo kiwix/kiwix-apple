@@ -271,6 +271,11 @@ enum NavigationItem: Hashable, Identifiable {
     }
 }
 
+/// Note: The cases were reduced from:
+/// `case disabled, firstParagraph, firstSentence, matches`
+/// which (due to enum values) accurately migrating our users, as of our intents
+/// DO NOT change the order of the cases, as that might cause migration problems from version 3.4.0
+/// see: https://github.com/kiwix/kiwix-apple/issues/853
 enum SearchResultSnippetMode: String, CaseIterable, Identifiable, Defaults.Serializable {
     case disabled, matches
 
