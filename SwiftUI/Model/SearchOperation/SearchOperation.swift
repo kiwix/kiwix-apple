@@ -83,11 +83,11 @@ extension SearchOperation {
     }
 }
 
-private class Levenshtein {
+final class Levenshtein {
     private(set) var cache = [Key: Int]()
 
     func calculate(_ a: String.SubSequence, _ b: String.SubSequence) -> Int {
-        let key = Key(a: String(a), b: String(b))
+        let key = Key(a: a, b: b)
         if let distance = cache[key] {
             return distance
         } else {
@@ -109,7 +109,7 @@ private class Levenshtein {
     }
 
     struct Key: Hashable {
-        let a: String
-        let b: String
+        let a: String.SubSequence
+        let b: String.SubSequence
     }
 }
