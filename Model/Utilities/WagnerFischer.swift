@@ -18,25 +18,23 @@ import Foundation
 /// @see: https://en.wikipedia.org/wiki/Wagner–Fischer_algorithm
 enum WagnerFischer {
 
-    // swiflint:disable:next identifier_name
-    static func distance(_ a: String.SubSequence, _ b: String.SubSequence) -> Int {
-        let empty = [Int](repeating: 0, count: b.count)
-        var last = [Int](0...b.count)
+    static func distance(_ valueA: String.SubSequence, _ valueB: String.SubSequence) -> Int {
+        let empty = [Int](repeating: 0, count: valueB.count)
+        var last = [Int](0...valueB.count)
 
-        for (i, char1) in a.enumerated() {
-            var cur = [i + 1] + empty
-            for (j, char2) in b.enumerated() {
+        for (indexA, charA) in valueA.enumerated() {
+            var current = [indexA + 1] + empty
+            for (indexB, charB) in valueB.enumerated() {
                 let currentDistance: Int
-                if char1 == char2 {
-                    currentDistance = last[j]
+                if charA == charB {
+                    currentDistance = last[indexB]
                 } else {
-                    currentDistance = min(last[j], last[j + 1], cur[j]) + 1
+                    currentDistance = min(last[indexB], last[indexB + 1], current[indexB]) + 1
                 }
-                cur[j + 1] = currentDistance
+                current[indexB + 1] = currentDistance
             }
-            last = cur
+            last = current
         }
         return last.last!
     }
-    // swiflint:enable identifier_name
 }
