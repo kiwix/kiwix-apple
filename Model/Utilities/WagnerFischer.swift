@@ -17,8 +17,10 @@ import Foundation
 
 /// @see: https://en.wikipedia.org/wiki/Wagner–Fischer_algorithm
 enum WagnerFischer {
+
+    // swiflint:disable:next identifier_name
     static func distance(_ a: String.SubSequence, _ b: String.SubSequence) -> Int {
-        let empty = [Int](repeating:0, count: b.count)
+        let empty = [Int](repeating: 0, count: b.count)
         var last = [Int](0...b.count)
 
         for (i, char1) in a.enumerated() {
@@ -34,7 +36,7 @@ enum WagnerFischer {
             }
             last = cur
         }
-        // swiftlint:disable:next force_cast
         return last.last!
     }
+    // swiflint:enable identifier_name
 }
