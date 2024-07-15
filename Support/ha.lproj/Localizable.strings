@@ -227,6 +227,4 @@
 "enum.navigation_item.downloads" = "Saukewa";
 "enum.navigation_item.settings" = "Saituttuka";
 "enum.search_result_snippet_mode.disabled" = "An kashe";
-"enum.search_result_snippet_mode.paragraph" = "Sakin Farko";
-"enum.search_result_snippet_mode.sentence" = "Hukuncin Farko";
 "enum.search_result_snippet_mode.matches" = "Matches";

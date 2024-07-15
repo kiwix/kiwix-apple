@@ -233,6 +233,4 @@
 "enum.navigation_item.downloads" = "Скачать";
 "enum.navigation_item.settings" = "Настройки";
 "enum.search_result_snippet_mode.disabled" = "Выключен";
-"enum.search_result_snippet_mode.paragraph" = "Формат абзаца";
-"enum.search_result_snippet_mode.sentence" = "Первое предложение";
 "enum.search_result_snippet_mode.matches" = "Совпадения";

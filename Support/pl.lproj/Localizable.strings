@@ -167,5 +167,3 @@
 "enum.navigation_item.downloads" = "Pobierz";
 "enum.navigation_item.settings" = "Ustawienia";
 "enum.search_result_snippet_mode.disabled" = "Wyłączony";
-"enum.search_result_snippet_mode.paragraph" = "Pierwszy paragraf";
-"enum.search_result_snippet_mode.sentence" = "Pierwsze zdanie";

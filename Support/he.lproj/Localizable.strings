@@ -228,6 +228,4 @@
 "enum.navigation_item.downloads" = "הורדות";
 "enum.navigation_item.settings" = "הגדרות";
 "enum.search_result_snippet_mode.disabled" = "כבוי";
-"enum.search_result_snippet_mode.paragraph" = "פסקה ראשונה";
-"enum.search_result_snippet_mode.sentence" = "משפט ראשון";
 "enum.search_result_snippet_mode.matches" = "התאמות";

@@ -131,5 +131,3 @@
 "enum.navigation_item.downloads" = "ڈاؤن لوڈ";
 "enum.navigation_item.settings" = "ترتیباں";
 "enum.search_result_snippet_mode.disabled" = "غیر فعال تھی ڳیا";
-"enum.search_result_snippet_mode.paragraph" = "پہلا پیرا";
-"enum.search_result_snippet_mode.sentence" = "پہلا جملہ";

@@ -63,7 +63,7 @@ enum Brand {
             // for custom apps, where we do not show this in settings, it should be disabled by default
             return .disabled
         }
-        return .firstSentence
+        return .matches
     }
 }
 

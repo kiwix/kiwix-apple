@@ -237,6 +237,4 @@
 "enum.navigation_item.downloads" = "Nbudata";
 "enum.navigation_item.settings" = "Ntọala";
 "enum.search_result_snippet_mode.disabled" = "Agbanyụrụ";
-"enum.search_result_snippet_mode.paragraph" = "Nkeji mbụ";
-"enum.search_result_snippet_mode.sentence" = "Ahịrịokwu mbụ";
 "enum.search_result_snippet_mode.matches" = "Ndị ndaba";
