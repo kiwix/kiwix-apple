@@ -276,6 +276,4 @@
 "enum.navigation_item.downloads" = "Downloads";
 "enum.navigation_item.settings" = "Settings";
 "enum.search_result_snippet_mode.disabled" = "Disabled";
-"enum.search_result_snippet_mode.paragraph" = "First Paragraph";
-"enum.search_result_snippet_mode.sentence" = "First Sentence";
 "enum.search_result_snippet_mode.matches" = "Matches";

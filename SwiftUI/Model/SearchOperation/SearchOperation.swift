@@ -34,15 +34,14 @@ extension SearchOperation {
                 guard !self.isCancelled else { return }
 
                 switch snippetMode {
-                case .firstParagraph:
-                    guard let parser = try? HTMLParser(url: result.url) else { return }
-                    result.snippet = parser.getFirstParagraph()
-                case .firstSentence:
-                    guard let parser = try? HTMLParser(url: result.url) else { return }
-                    result.snippet = parser.getFirstSentence(languageCode: nil)
                 case .matches:
-                    guard let html = result.htmlSnippet else { return }
-                    result.snippet = HTMLParser.parseBodyFragment(html)
+                    guard let html = result.htmlSnippet,
+                          let data = html.data(using: .utf8) else { return }
+                    result.snippet = try? NSAttributedString(
+                        data: data,
+                        options: [.documentType: NSAttributedString.DocumentType.html],
+                        documentAttributes: nil
+                    )
                 case .disabled:
                     break
                 }

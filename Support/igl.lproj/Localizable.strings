@@ -64,6 +64,4 @@
 "enum.navigation_item.downloads" = "Downloadu";
 "enum.navigation_item.settings" = "Eñoche";
 "enum.search_result_snippet_mode.disabled" = "Nyo ló";
-"enum.search_result_snippet_mode.paragraph" = "Óla ubia nei";
-"enum.search_result_snippet_mode.sentence" = "Óla ejio dudu";
 "enum.search_result_snippet_mode.matches" = "A chana";
