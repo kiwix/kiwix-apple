@@ -14,20 +14,39 @@
 // along with Kiwix; If not, see https://www.gnu.org/licenses/.
 
 import CoreData
+import Combine
+import Defaults
 import os
 
-import Defaults
-
-public enum LibraryState {
+enum LibraryState {
     case initial
     case inProgress
     case complete
 }
 
-public class LibraryViewModel: ObservableObject {
+/// Makes sure that the process value is stored in a single state
+/// regardless of the amount of instances we have for LibraryViewModel
+@MainActor final class LibraryProcess: ObservableObject {
+    static let shared = LibraryProcess()
+    @Published var state: LibraryState
+
+    private init() {
+        if Defaults[.libraryLastRefresh] == nil {
+            state = .initial
+        } else {
+            state = .complete
+        }
+    }
+}
+
+final class LibraryViewModel: ObservableObject {
     @Published var selectedZimFile: ZimFile?
-    @MainActor @Published public private(set) var error: Error?
-    @MainActor @Published public private(set) var state: LibraryState
+    @MainActor @Published private(set) var error: Error?
+    /// Note: due to multiple instances of LibraryViewModel,
+    /// this `state` should not be changed directly, modify the `process.state` instead
+    @MainActor @Published var state: LibraryState
+    @MainActor private let process: LibraryProcess
+    private var cancellables = Set<AnyCancellable>()
 
     private let urlSession: URLSession
     private let context: NSManagedObjectContext
@@ -35,28 +54,28 @@ public class LibraryViewModel: ObservableObject {
     private var deletionCount = 0
 
     @MainActor
-    public init(urlSession: URLSession? = nil) {
+    init(urlSession: URLSession? = nil) {
         self.urlSession = urlSession ?? URLSession.shared
 
         context = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
         context.persistentStoreCoordinator = Database.shared.container.persistentStoreCoordinator
         context.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
         context.undoManager = nil
-        if Defaults[.libraryLastRefresh] == nil {
-            state = .initial
-        } else {
-            state = .complete
-        }
+        process = LibraryProcess.shared
+        state = process.state
+        process.$state.sink { [weak self] newState in
+            self?.state = newState
+        }.store(in: &cancellables)
     }
 
-    public func start(isUserInitiated: Bool) {
+    func start(isUserInitiated: Bool) {
         Task { await start(isUserInitiated: isUserInitiated) }
     }
 
     @MainActor
-    public func start(isUserInitiated: Bool) async {
-        guard state != .inProgress else { return }
-        let oldState = state
+    func start(isUserInitiated: Bool) async {
+        guard process.state != .inProgress else { return }
+        let oldState = process.state
         do {
             // decide if refresh should proceed
             let lastRefresh: Date? = Defaults[.libraryLastRefresh]
@@ -64,11 +83,11 @@ public class LibraryViewModel: ObservableObject {
             let isStale = (lastRefresh?.timeIntervalSinceNow ?? -3600) <= -3600
             guard isUserInitiated || (hasAutoRefresh && isStale) else { return }
 
-            state = .inProgress
+            process.state = .inProgress
 
             // refresh library
             guard let data = try await fetchData() else {
-                state = oldState
+                process.state = oldState
                 return
             }
             let parser = try await parse(data: data)
@@ -90,14 +109,14 @@ public class LibraryViewModel: ObservableObject {
 
             // reset error
             error = nil
-            state = .complete
+            process.state = .complete
 
             // logging
             os_log("Refresh finished -- addition: %d, deletion: %d, total: %d",
                    log: Log.OPDS, type: .default, insertionCount, deletionCount, parser.zimFileIDs.count)
         } catch {
             self.error = error
-            state = oldState
+            process.state = oldState
         }
     }
 
@@ -174,14 +193,12 @@ public class LibraryViewModel: ObservableObject {
 
     private func parse(data: Data) async throws -> OPDSParser {
         try await withCheckedThrowingContinuation { continuation in
-            DispatchQueue.global().async {
-                let parser = OPDSParser()
-                do {
-                    try parser.parse(data: data)
-                    continuation.resume(returning: parser)
-                } catch {
-                    continuation.resume(throwing: error)
-                }
+            let parser = OPDSParser()
+            do {
+                try parser.parse(data: data)
+                continuation.resume(returning: parser)
+            } catch {
+                continuation.resume(throwing: error)
             }
         }
     }
