@@ -52,12 +52,11 @@ extension SearchOperation {
         // start sorting search results
         guard !isCancelled else { return }
         let searchText = self.searchText.lowercased()
-        let levenshtein = Levenshtein()
 
         // calculate score for all results
         for result in results {
             guard !isCancelled else { break }
-            let distance = levenshtein.calculate(result.title.lowercased()[...], searchText[...])
+            let distance = WagnerFischer.distance(result.title.lowercased()[...], searchText[...])
             if let probability = result.probability?.doubleValue {
                 result.score = NSNumber(floatLiteral: Double(distance) * Foundation.log(7.5576 - 6.4524 * probability))
             } else {
@@ -80,36 +79,5 @@ extension SearchOperation {
                 return .orderedSame
             }
         }
-    }
-}
-
-private class Levenshtein {
-    private(set) var cache = [Key: Int]()
-
-    func calculate(_ a: String.SubSequence, _ b: String.SubSequence) -> Int {
-        let key = Key(a: String(a), b: String(b))
-        if let distance = cache[key] {
-            return distance
-        } else {
-            let distance: Int = {
-                if a.count == 0 || b.count == 0 {
-                    return abs(a.count - b.count)
-                } else if a.last == b.last {
-                    return calculate(a[..<a.index(before: a.endIndex)], b[..<b.index(before: b.endIndex)])
-                } else {
-                    let add = calculate(a, b[..<b.index(before: b.endIndex)])
-                    let replace = calculate(a[..<a.index(before: a.endIndex)], b[..<b.index(before: b.endIndex)])
-                    let delete = calculate(a[..<a.index(before: a.endIndex)], b)
-                    return min(add, replace, delete) + 1
-                }
-            }()
-            cache[key] = distance
-            return distance
-        }
-    }
-
-    struct Key: Hashable {
-        let a: String
-        let b: String
     }
 }
