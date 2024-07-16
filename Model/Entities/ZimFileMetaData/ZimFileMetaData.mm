@@ -70,6 +70,53 @@
     return self;
 }
 
+- (nonnull instancetype)initWithFileID:(NSUUID * _Nonnull)fileID
+                       groupIdentifier:(NSString * _Nonnull)groupIdentifier
+                                 title:(NSString * _Nonnull)title
+                       fileDescription:(NSString * _Nonnull)fileDescription
+                         languageCodes:(NSString * _Nonnull)languageCodes
+                              category:(NSString * _Nonnull)category
+                          creationDate:(NSDate * _Nonnull)creationDate
+                                  size:(NSNumber * _Nonnull)size
+                          articleCount:(NSNumber * _Nonnull)articleCount
+                            mediaCount:(NSNumber * _Nonnull)mediaCount
+                               creator:(NSString * _Nonnull)creator
+                             publisher:(NSString * _Nonnull)publisher
+                           downloadURL:(NSURL * _Nullable)downloadURL
+                            faviconURL:(NSURL * _Nullable)faviconURL
+                           faviconData:(NSData * _Nullable)faviconData
+                                flavor:(NSString * _Nullable)flavor
+                            hasDetails:(BOOL)hasDetails
+                           hasPictures:(BOOL)hasPictures
+                             hasVideos:(BOOL)hasVideos
+                requiresServiceWorkers:(BOOL)requiresServiceWorkers {
+
+    self = [super init];
+    if (self) {
+        _fileID = fileID;
+        _groupIdentifier = groupIdentifier;
+        _title = title;
+        _fileDescription = fileDescription;
+        _languageCodes = languageCodes;
+        _category = category;
+        _creationDate = creationDate;
+        _size = size;
+        _articleCount = articleCount;
+        _mediaCount = mediaCount;
+        _creator = creator;
+        _publisher = publisher;
+        _downloadURL = downloadURL;
+        _faviconURL = faviconURL;
+        _faviconData = faviconData;
+        _flavor = flavor;
+        _hasDetails = hasDetails;
+        _hasPictures = hasPictures;
+        _hasVideos = hasVideos;
+        _requiresServiceWorkers = requiresServiceWorkers;
+    }
+    return self;
+}
+
 - (NSString *)getLanguageCodesFromBook:(kiwix::Book *)book {
     NSString* string = [NSString stringWithUTF8String:book->getCommaSeparatedLanguages().c_str()];
     NSArray* components = [string componentsSeparatedByString: @","];

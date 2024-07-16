@@ -46,4 +46,25 @@
 // methods
 - (nullable instancetype)initWithBook:(nonnull void *)book;
 
+- (nonnull instancetype)initWithFileID:(NSUUID * _Nonnull)fileID
+                        groupIdentifier:(NSString * _Nonnull)groupIdentifier
+                                  title:(NSString * _Nonnull)title
+                        fileDescription:(NSString * _Nonnull)fileDescription
+                          languageCodes:(NSString * _Nonnull)languageCodes
+                               category:(NSString * _Nonnull)category
+                           creationDate:(NSDate * _Nonnull)creationDate
+                                   size:(NSNumber * _Nonnull)size
+                           articleCount:(NSNumber * _Nonnull)articleCount
+                             mediaCount:(NSNumber * _Nonnull)mediaCount
+                                creator:(NSString * _Nonnull)creator
+                              publisher:(NSString * _Nonnull)publisher
+                            downloadURL:(NSURL * _Nullable)downloadURL
+                             faviconURL:(NSURL * _Nullable)faviconURL
+                            faviconData:(NSData * _Nullable)faviconData
+                                 flavor:(NSString * _Nullable)flavor
+                             hasDetails:(BOOL)hasDetails
+                            hasPictures:(BOOL)hasPictures
+                              hasVideos:(BOOL)hasVideos
+                 requiresServiceWorkers:(BOOL)requiresServiceWorkers;
+
 @end

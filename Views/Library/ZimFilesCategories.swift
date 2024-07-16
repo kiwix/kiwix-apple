@@ -70,10 +70,14 @@ struct ZimFilesCategory: View {
         }
     }
 
-    static func buildPredicate(category: Category, searchText: String) -> NSPredicate {
+    static func buildPredicate(
+        category: Category,
+        searchText: String,
+        languageCodes: Set<String> = Defaults[.libraryLanguageCodes]
+    ) -> NSPredicate {
         var predicates = [
             NSPredicate(format: "category == %@", category.rawValue),
-            NSPredicate(format: "languageCode IN %@", Defaults[.libraryLanguageCodes]),
+            NSPredicate(format: "languageCode IN %@", languageCodes),
             NSPredicate(format: "requiresServiceWorkers == false")
         ]
         if !searchText.isEmpty {
