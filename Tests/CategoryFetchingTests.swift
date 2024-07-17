@@ -20,31 +20,122 @@ import SwiftUI
 
 final class CategoryFetchingTests: XCTestCase {
 
-    func testSingleZIMIsFilteredOutByLanguage() throws {
+    override func setUpWithError() throws {
+        try resetDB()
+    }
+
+    func testFilteredOutByLanguage() throws {
         // insert a zimFile
         let context = Database.viewContext
         let zimFile = ZimFile(context: context)
-        let metadata = ZimFileMetaData.mock(languageCodes: "en", category: Category.other.rawValue)
+        let metadata = ZimFileMetaData.mock(languageCodes: "eng",
+                                            category: Category.other.rawValue)
         LibraryOperations.configureZimFile(zimFile, metadata: metadata)
         try? context.save()
         let request = NSFetchRequest<ZimFile>(entityName: ZimFile.entity().name!)
-        request.predicate = ZimFilesCategory.buildPredicate(category: .other, searchText: "", languageCodes: Set(["xx"]))
+        request.predicate = ZimFilesCategory.buildPredicate(
+            category: .other,
+            searchText: "",
+            languageCodes: Set(["x"])
+        )
         let results = try! context.fetch(request)
         XCTAssertTrue(results.isEmpty)
     }
 
-    func testSingleZIMCanBeFoundByLanguage() throws {
+    func testCanBeFoundByLanguage() throws {
         // insert a zimFile
         let context = Database.viewContext
         let zimFile = ZimFile(context: context)
-        let metadata = ZimFileMetaData.mock(languageCodes: "en", category: Category.other.rawValue)
+        let metadata = ZimFileMetaData.mock(languageCodes: "eng",
+                                            category: Category.other.rawValue)
         LibraryOperations.configureZimFile(zimFile, metadata: metadata)
         try? context.save()
         let request = NSFetchRequest<ZimFile>(entityName: ZimFile.entity().name!)
-        request.predicate = ZimFilesCategory.buildPredicate(category: .other, searchText: "", languageCodes: Set(["en"]))
+        request.predicate = ZimFilesCategory.buildPredicate(
+            category: .other,
+            searchText: "",
+            languageCodes: Set(["eng"])
+        )
         let results = try! context.fetch(request)
         XCTAssertEqual(results.count, 1)
     }
+
+    func testCanBeFoundByMultipleUserLanguages() throws {
+        // insert a zimFile
+        let context = Database.viewContext
+        let zimFile = ZimFile(context: context)
+        let metadata = ZimFileMetaData.mock(languageCodes: "fra",
+                                            category: Category.other.rawValue)
+        LibraryOperations.configureZimFile(zimFile, metadata: metadata)
+        try? context.save()
+        let request = NSFetchRequest<ZimFile>(entityName: ZimFile.entity().name!)
+        request.predicate = ZimFilesCategory.buildPredicate(
+            category: .other,
+            searchText: "",
+            languageCodes: Set(["eng","deu","fra","ita","por"])
+        )
+        let results = try! context.fetch(request)
+        XCTAssertEqual(results.count, 1)
+    }
+
+    func testCanBeFoundHavingMultiLanguagesWithASingleUserLanguage() throws {
+        // insert a zimFile
+        let context = Database.viewContext
+        let zimFile = ZimFile(context: context)
+        let metadata = ZimFileMetaData.mock(languageCodes: "eng,fra,deu,nld,spa,ita,por,pol,ara,vie,kor",
+                                            category: Category.other.rawValue)
+        LibraryOperations.configureZimFile(zimFile, metadata: metadata)
+        try? context.save()
+        let request = NSFetchRequest<ZimFile>(entityName: ZimFile.entity().name!)
+        request.predicate = ZimFilesCategory.buildPredicate(
+            category: .other,
+            searchText: "",
+            languageCodes: Set(["spa"])
+        )
+        let results = try! context.fetch(request)
+        XCTAssertEqual(results.count, 1)
+    }
+
+    func testCanBeFoundHavingMultiLanguageMatches() throws {
+        // insert a zimFile
+        let context = Database.viewContext
+        let zimFile = ZimFile(context: context)
+        let metadata = ZimFileMetaData.mock(languageCodes: "eng,fra,deu,nld,spa,ita,por,pol,ara,vie,kor",
+                                            category: Category.other.rawValue)
+        LibraryOperations.configureZimFile(zimFile, metadata: metadata)
+        try? context.save()
+        let request = NSFetchRequest<ZimFile>(entityName: ZimFile.entity().name!)
+        request.predicate = ZimFilesCategory.buildPredicate(
+            category: .other,
+            searchText: "",
+            languageCodes: Set(["nld","por","fra"])
+        )
+        let results = try! context.fetch(request)
+        XCTAssertEqual(results.count, 1)
+    }
+
+    func testFilteredOutByMultiToMultiLanguageMissMatch() throws {
+        // insert a zimFile
+        let context = Database.viewContext
+        let zimFile = ZimFile(context: context)
+        let metadata = ZimFileMetaData.mock(languageCodes: "eng,fra,deu,nld,spa,ita",
+                                            category: Category.other.rawValue)
+        LibraryOperations.configureZimFile(zimFile, metadata: metadata)
+        try? context.save()
+        let request = NSFetchRequest<ZimFile>(entityName: ZimFile.entity().name!)
+        request.predicate = ZimFilesCategory.buildPredicate(
+            category: .other,
+            searchText: "",
+            languageCodes: Set(["por","pol","ara","vie","kor"])
+        )
+        let results = try! context.fetch(request)
+        XCTAssertTrue(results.isEmpty)
+    }
+
+    private func resetDB() throws {
+        _ = try Database.viewContext.execute(NSBatchDeleteRequest(fetchRequest: NSFetchRequest(entityName: ZimFile.entity().name!)))
+    }
+
 
 }
 

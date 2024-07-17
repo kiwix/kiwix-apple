@@ -75,9 +75,13 @@ struct ZimFilesCategory: View {
         searchText: String,
         languageCodes: Set<String> = Defaults[.libraryLanguageCodes]
     ) -> NSPredicate {
+        let langPredicates = languageCodes.map { langCode -> NSPredicate in
+            let regex = String(format: "(.*,)?%@(,.*)?", langCode)
+            return NSPredicate(format: "languageCode MATCHES %@", regex)
+        }
         var predicates = [
             NSPredicate(format: "category == %@", category.rawValue),
-            NSPredicate(format: "languageCode IN %@", languageCodes),
+            NSCompoundPredicate(orPredicateWithSubpredicates: langPredicates),
             NSPredicate(format: "requiresServiceWorkers == false")
         ]
         if !searchText.isEmpty {
