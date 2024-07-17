@@ -18,6 +18,7 @@ import XCTest
 import SwiftUI
 @testable import Kiwix
 
+// swiftlint:disable force_try
 final class CategoryFetchingTests: XCTestCase {
 
     override func setUpWithError() throws {
@@ -133,7 +134,11 @@ final class CategoryFetchingTests: XCTestCase {
     }
 
     private func resetDB() throws {
-        _ = try Database.viewContext.execute(NSBatchDeleteRequest(fetchRequest: NSFetchRequest(entityName: ZimFile.entity().name!)))
+        _ = try Database.viewContext.execute(
+            NSBatchDeleteRequest(
+                fetchRequest: NSFetchRequest(entityName: ZimFile.entity().name!)
+            )
+        )
     }
 
 }
@@ -183,3 +188,4 @@ private extension ZimFileMetaData {
         )
     }
 }
+// swiftlint:enable force_try
