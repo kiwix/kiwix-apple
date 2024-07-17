@@ -72,7 +72,7 @@ final class CategoryFetchingTests: XCTestCase {
         request.predicate = ZimFilesCategory.buildPredicate(
             category: .other,
             searchText: "",
-            languageCodes: Set(["eng","deu","fra","ita","por"])
+            languageCodes: Set(["eng", "deu", "fra", "ita", "por"])
         )
         let results = try! context.fetch(request)
         XCTAssertEqual(results.count, 1)
@@ -108,7 +108,7 @@ final class CategoryFetchingTests: XCTestCase {
         request.predicate = ZimFilesCategory.buildPredicate(
             category: .other,
             searchText: "",
-            languageCodes: Set(["nld","por","fra"])
+            languageCodes: Set(["nld", "por", "fra"])
         )
         let results = try! context.fetch(request)
         XCTAssertEqual(results.count, 1)
@@ -126,7 +126,7 @@ final class CategoryFetchingTests: XCTestCase {
         request.predicate = ZimFilesCategory.buildPredicate(
             category: .other,
             searchText: "",
-            languageCodes: Set(["por","pol","ara","vie","kor"])
+            languageCodes: Set(["por", "pol", "ara", "vie", "kor"])
         )
         let results = try! context.fetch(request)
         XCTAssertTrue(results.isEmpty)
@@ -135,7 +135,6 @@ final class CategoryFetchingTests: XCTestCase {
     private func resetDB() throws {
         _ = try Database.viewContext.execute(NSBatchDeleteRequest(fetchRequest: NSFetchRequest(entityName: ZimFile.entity().name!)))
     }
-
 
 }
 
