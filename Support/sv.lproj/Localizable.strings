@@ -62,7 +62,7 @@
 "flavor_tag.help.max" = "förutom stora mediafiler som video/ljud";
 "flavor_tag.help.no_pic" = "de flesta bilderna har tagits bort";
 "flavor_tag.help.mini" = "endast en delmängd av texten är tillgänglig, förmodligen det första avsnittet";
-"library_refresh_time.last" = "Precis nu";
+"library_refresh_time.last" = "Alldeles nyss";
 "library_refresh_time.never" = "Aldrig";
 "zim_file_cell_article_count_suffix" = "artiklar";
 "zim_file_missing_indicator.help" = "Zim-fil saknas.";

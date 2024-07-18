@@ -63,7 +63,6 @@
 "library_refresh_time.never" = "Никогаш";
 "zim_file_cell_article_count_suffix" = "статии";
 "zim_file_missing_indicator.help" = "ZIM-податотеката недостасува.";
-// Fuzzy
 "library.zim_file_details.side_panel.message" = "Изберете ZIM-податотека за да ги видите поединостите";
 "library.zim_file_context.main_page.label" = "Главна страница";
 "library.zim_file_context.random.label" = "Случајна страница";
@@ -171,7 +170,7 @@
 "bookmark.toolbar.show_sidebar.label" = "Прикажи страничник";
 "browser_tab.toolbar.show_sidebar.label" = "Прикажи страничник";
 "search_result.zimfile.empty.message" = "Нема отворена ZIM-податотека";
-"search_result.zimfile.no_result.message" = "Нема исход";
+"search_result.zimfile.no_result.message" = "Не најдов ништо";
 "search_result.sidebar.button.remove" = "Отстрани";
 "search_result.header.text" = "Скорешни пребарувања";
 "search_result.button.clear" = "Исчисти";
