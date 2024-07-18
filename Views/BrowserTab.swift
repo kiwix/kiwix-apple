@@ -43,7 +43,7 @@ struct BrowserTab: View {
                 #endif
                 BookmarkButton()
                 #if os(iOS)
-                ContentSearchButton(webView: browser.webView)
+                ContentSearchButton()
                 #endif
                 ArticleShortcutButtons(displayMode: .mainAndRandomArticle)
             }
