@@ -24,6 +24,14 @@ struct ReadingSettings: View {
     @Default(.webViewPageZoom) private var webViewPageZoom
 
     var body: some View {
+        let isSnippet = Binding {
+            switch searchResultSnippetMode {
+            case .matches: return true
+            case .disabled: return false
+            }
+        } set: { isOn in
+            searchResultSnippetMode = isOn ? .matches : .disabled
+        }
         VStack(spacing: 16) {
             SettingSection(name: "reading_settings.zoom.title".localized) {
                 HStack {
@@ -45,11 +53,7 @@ struct ReadingSettings: View {
             }
             if FeatureFlags.showSearchSnippetInSettings {
                 SettingSection(name: "reading_settings.search_snippet.title".localized) {
-                    Picker(selection: $searchResultSnippetMode) {
-                        ForEach(SearchResultSnippetMode.allCases) { snippetMode in
-                            Text(snippetMode.name).tag(snippetMode)
-                        }
-                    } label: { }
+                    Toggle(" ", isOn: isSnippet)
                 }
             }
         }
@@ -152,7 +156,15 @@ struct Settings: View {
     }
 
     var readingSettings: some View {
-        Section("reading_settings.tab.reading".localized) {
+        let isSnippet = Binding {
+            switch searchResultSnippetMode {
+            case .matches: return true
+            case .disabled: return false
+            }
+        } set: { isOn in
+            searchResultSnippetMode = isOn ? .matches : .disabled
+        }
+        return Section("reading_settings.tab.reading".localized) {
             Stepper(value: $webViewPageZoom, in: 0.5...2, step: 0.05) {
                 Text("reading_settings.zoom.title".localized +
                      ": \(Formatter.percent.string(from: NSNumber(value: webViewPageZoom)) ?? "")")
@@ -165,11 +177,7 @@ struct Settings: View {
                 }
             }
             if FeatureFlags.showSearchSnippetInSettings {
-                Picker("reading_settings.search_snippet.title".localized, selection: $searchResultSnippetMode) {
-                    ForEach(SearchResultSnippetMode.allCases) { snippetMode in
-                        Text(snippetMode.name).tag(snippetMode)
-                    }
-                }
+                Toggle("reading_settings.search_snippet.title".localized, isOn: isSnippet)
             }
         }
     }
