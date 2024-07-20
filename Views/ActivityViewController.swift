@@ -25,7 +25,6 @@ struct ActivityViewController: UIViewControllerRepresentable {
         context: UIViewControllerRepresentableContext<ActivityViewController>
     ) -> UIActivityViewController {
         let controller = UIActivityViewController(activityItems: activityItems, applicationActivities: nil)
-        controller.modalPresentationStyle = .pageSheet
         controller.completionWithItemsHandler = { (_, _, _, _) in
             self.dismissAction()
         }
