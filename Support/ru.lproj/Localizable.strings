@@ -68,7 +68,6 @@
 "library_refresh_time.never" = "Никогда";
 "zim_file_cell_article_count_suffix" = "статей";
 "zim_file_missing_indicator.help" = "Zim-файл отсутствует.";
-// Fuzzy
 "library.zim_file_details.side_panel.message" = "Выберите ZIM-файл, чтобы просмотреть подробности.";
 "library.zim_file_context.main_page.label" = "Заглавная страница";
 "library.zim_file_context.random.label" = "Случайная страница";

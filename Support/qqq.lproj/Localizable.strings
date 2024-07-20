@@ -47,7 +47,6 @@
 "external_link_handler.alert.not_loading.description" = "Alternative description for external link alert.";
 "file_import.alert.no_open.title" = "Alert title when user fails to open a local file";
 "file_import.alert.no_open.message" = "%@ is one or more filenames.";
-"article_cell.no_snippet.label" = "Search result cells contain the title and a snippet of each found article, if there's no spippet for a given search result this is the fallback text used.";
 "attribute.detail.unknown" = "We list the attributes of each ZIM file: pictures yes/no, etc. If the attribute name is missing eg. 'pictures', this is the fallback text used";
 "download_task_cell.status.failed" = "The title reporting the status of the current ZIM file download";
 "download_task_cell.status.downloading" = "The title reporting the status of the current ZIM file download";
