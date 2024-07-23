@@ -165,8 +165,7 @@ class Languages {
         fetchRequest.resultType = .dictionaryResultType
 
         let languages: [Language] = await withCheckedContinuation { continuation in
-            let context = Database.shared.container.newBackgroundContext()
-            context.perform {
+            Database.shared.performBackgroundTask { context in
                 guard let results = try? context.fetch(fetchRequest) else {
                     continuation.resume(returning: [])
                     return

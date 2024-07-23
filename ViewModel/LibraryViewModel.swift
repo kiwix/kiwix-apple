@@ -49,18 +49,12 @@ final class LibraryViewModel: ObservableObject {
     private var cancellables = Set<AnyCancellable>()
 
     private let urlSession: URLSession
-    private let context: NSManagedObjectContext
     private var insertionCount = 0
     private var deletionCount = 0
 
     @MainActor
     init(urlSession: URLSession? = nil) {
         self.urlSession = urlSession ?? URLSession.shared
-
-        context = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
-        context.persistentStoreCoordinator = Database.shared.container.persistentStoreCoordinator
-        context.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
-        context.undoManager = nil
         process = LibraryProcess.shared
         state = process.state
         process.$state.sink { [weak self] newState in
@@ -204,11 +198,15 @@ final class LibraryViewModel: ObservableObject {
     }
 
     private func process(parser: Parser) async throws {
-        try await withCheckedThrowingContinuation { continuation in
-            context.perform {
+        try await withCheckedThrowingContinuation { [weak self] continuation -> Void in
+            Database.shared.performBackgroundTask { [weak self] context in
+                guard let self else {
+                    continuation.resume()
+                    return
+                }
                 do {
                     // insert new zim files
-                    let existing = try self.context.fetch(ZimFile.fetchRequest()).map { $0.fileID }
+                    let existing = try context.fetch(ZimFile.fetchRequest()).map { $0.fileID }
                     var zimFileIDs = parser.zimFileIDs.subtracting(existing)
                     let insertRequest = NSBatchInsertRequest(
                         entity: ZimFile.entity(),
@@ -224,7 +222,7 @@ final class LibraryViewModel: ObservableObject {
                         }
                     )
                     insertRequest.resultType = .count
-                    if let result = try self.context.execute(insertRequest) as? NSBatchInsertResult {
+                    if let result = try context.execute(insertRequest) as? NSBatchInsertResult {
                         self.insertionCount = result.result as? Int ?? 0
                     }
 
@@ -236,10 +234,9 @@ final class LibraryViewModel: ObservableObject {
                     ])
                     let deleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
                     deleteRequest.resultType = .resultTypeCount
-                    if let result = try self.context.execute(deleteRequest) as? NSBatchDeleteResult {
+                    if let result = try context.execute(deleteRequest) as? NSBatchDeleteResult {
                         self.deletionCount = result.result as? Int ?? 0
                     }
-
                     continuation.resume()
                 } catch {
                     os_log("Error saving OPDS Data: %s", log: Log.OPDS, type: .error, error.localizedDescription)

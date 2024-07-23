@@ -39,7 +39,7 @@ struct Kiwix: App {
     var body: some Scene {
         WindowGroup {
             RootView()
-                .environment(\.managedObjectContext, Database.shared.container.viewContext)
+                .environment(\.managedObjectContext, Database.shared.viewContext)
                 .environmentObject(libraryRefreshViewModel)
         }.commands {
             SidebarCommands()
@@ -149,7 +149,9 @@ struct RootView: View {
             case .categories:
                 ZimFilesCategories(dismiss: nil).modifier(LibraryZimFileDetailSidePanel())
             case .downloads:
-                ZimFilesDownloads(dismiss: nil).modifier(LibraryZimFileDetailSidePanel())
+                ZimFilesDownloads(dismiss: nil)
+                    .environment(\.managedObjectContext, Database.shared.viewContext)
+                    .modifier(LibraryZimFileDetailSidePanel())
             case .new:
                 ZimFilesNew(dismiss: nil).modifier(LibraryZimFileDetailSidePanel())
             default:
@@ -214,10 +216,8 @@ struct RootView: View {
                 DownloadService.shared.restartHeartbeatIfNeeded()
             case let .custom(zimFileURL):
                 LibraryOperations.open(url: zimFileURL) {
-                    Task {
-                        await ZimMigration.forCustomApps()
-                        navigation.currentItem = .reading
-                    }
+                    ZimMigration.forCustomApps()
+                    navigation.currentItem = .reading
                 }
             }
         }

@@ -111,7 +111,10 @@ final class SplitViewController: UISplitViewController {
             let controller = UIHostingController(rootView: ZimFilesCategories(dismiss: nil))
             setViewController(UINavigationController(rootViewController: controller), for: .secondary)
         case .downloads:
-            let controller = UIHostingController(rootView: ZimFilesDownloads(dismiss: nil))
+            let controller = UIHostingController(
+                rootView: ZimFilesDownloads(dismiss: nil)
+                    .environment(\.managedObjectContext, Database.shared.viewContext)
+            )
             setViewController(UINavigationController(rootViewController: controller), for: .secondary)
         case .new:
             let controller = UIHostingController(rootView: ZimFilesNew(dismiss: nil))

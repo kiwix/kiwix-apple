@@ -36,7 +36,7 @@ final class NavigationViewModel: ObservableObject {
     }
 
     func navigateToMostRecentTab() {
-        let context = Database.viewContext
+        let context = Database.shared.viewContext
         let fetchRequest = Tab.fetchRequest(sortDescriptors: [NSSortDescriptor(key: "lastOpened", ascending: false)])
         fetchRequest.fetchLimit = 1
         let tab = (try? context.fetch(fetchRequest).first) ?? self.makeTab(context: context)
@@ -50,7 +50,7 @@ final class NavigationViewModel: ObservableObject {
 
     @discardableResult
     func createTab() -> NSManagedObjectID {
-        let context = Database.viewContext
+        let context = Database.shared.viewContext
         let tab = self.makeTab(context: context)
         #if !os(macOS)
         currentItem = NavigationItem.tab(objectID: tab.objectID)
@@ -61,10 +61,10 @@ final class NavigationViewModel: ObservableObject {
     @MainActor
     func tabIDFor(url: URL?) -> NSManagedObjectID {
         guard let url,
-              let coordinator = Database.viewContext.persistentStoreCoordinator,
+              let coordinator = Database.shared.viewContext.persistentStoreCoordinator,
               let tabID = coordinator.managedObjectID(forURIRepresentation: url),
               // make sure it's not went missing
-              let tab = try? Database.viewContext.existingObject(with: tabID) as? Tab,
+              let tab = try? Database.shared.viewContext.existingObject(with: tabID) as? Tab,
               tab.zimFile != nil
         else {
             return createTab()
@@ -75,7 +75,7 @@ final class NavigationViewModel: ObservableObject {
     /// Delete a single tab, and select another tab
     /// - Parameter tabID: ID of the tab to delete
     func deleteTab(tabID: NSManagedObjectID) {
-        Database.performBackgroundTask { context in
+        Database.shared.performBackgroundTask { context in
             let sortByCreation = [NSSortDescriptor(key: "created", ascending: false)]
             guard let tabs: [Tab] = try? context.fetch(Tab.fetchRequest(predicate: nil,
                                                                         sortDescriptors: sortByCreation)),
@@ -107,7 +107,7 @@ final class NavigationViewModel: ObservableObject {
 
     /// Delete all tabs, and open a new tab
     func deleteAllTabs() {
-        Database.performBackgroundTask { context in
+        Database.shared.performBackgroundTask { context in
             // delete all existing tabs
             let tabs = try? context.fetch(Tab.fetchRequest())
             tabs?.forEach { context.delete($0) }
