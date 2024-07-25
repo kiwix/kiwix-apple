@@ -49,7 +49,7 @@ private final class DownloadProgress {
 final class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegate, URLSessionDownloadDelegate {
     static let shared = DownloadService()
 
-    private let queue = DispatchQueue(label: "downloads")
+    private let queue = DispatchQueue(label: "downloads", qos: .background)
     private let progress = DownloadProgress()
     @MainActor private var heartbeat: Timer?
     var backgroundCompletionHandler: (() -> Void)?
@@ -82,24 +82,22 @@ final class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegat
 
     /// Start heartbeat, which will update database every 0.25 second
     @MainActor private func startHeartbeat() {
-//        DispatchQueue.main.async {
-            guard self.heartbeat == nil else { return }
-            self.heartbeat = Timer.scheduledTimer(withTimeInterval: 2, repeats: true) { [weak self] _ in
-                Database.shared.performBackgroundTask { [weak self] context in
-                    context.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
-                    if let progressValues = self?.progress.values() {
-                        for (zimFileID, downloadedBytes) in progressValues {
-                            let predicate = NSPredicate(format: "fileID == %@", zimFileID as CVarArg)
-                            let request = DownloadTask.fetchRequest(predicate: predicate)
-                            guard let downloadTask = try? context.fetch(request).first else { return }
-                            downloadTask.downloadedBytes = downloadedBytes
-                        }
-                        try? context.save()
+        guard self.heartbeat == nil else { return }
+        self.heartbeat = Timer.scheduledTimer(withTimeInterval: 0.25, repeats: true) { [weak self] _ in
+            Database.shared.performBackgroundTask { [weak self] context in
+                context.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
+                if let progressValues = self?.progress.values() {
+                    for (zimFileID, downloadedBytes) in progressValues {
+                        let predicate = NSPredicate(format: "fileID == %@", zimFileID as CVarArg)
+                        let request = DownloadTask.fetchRequest(predicate: predicate)
+                        guard let downloadTask = try? context.fetch(request).first else { return }
+                        downloadTask.downloadedBytes = downloadedBytes
                     }
+                    try? context.save()
                 }
             }
-            os_log("Heartbeat started.", log: Log.DownloadService, type: .info)
-//        }
+        }
+        os_log("Heartbeat started.", log: Log.DownloadService, type: .info)
     }
 
     /// Stop heartbeat, which stops periodical database update
@@ -173,7 +171,7 @@ final class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegat
 
     /// Resume a zim file download task and start heartbeat
     /// - Parameter zimFileID: identifier of the zim file
-    func resume(zimFileID: UUID) {
+    @MainActor func resume(zimFileID: UUID) {
         requestNotificationAuthorization()
         Database.shared.performBackgroundTask { context in
             context.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
@@ -219,7 +217,7 @@ final class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegat
 
     // MARK: - Notification
 
-    private func requestNotificationAuthorization() {
+    @MainActor private func requestNotificationAuthorization() {
         UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound]) { _, _ in }
     }
 

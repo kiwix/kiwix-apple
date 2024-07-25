@@ -149,9 +149,7 @@ struct RootView: View {
             case .categories:
                 ZimFilesCategories(dismiss: nil).modifier(LibraryZimFileDetailSidePanel())
             case .downloads:
-                ZimFilesDownloads(dismiss: nil)
-                    .environment(\.managedObjectContext, Database.shared.viewContext)
-                    .modifier(LibraryZimFileDetailSidePanel())
+                ZimFilesDownloads(dismiss: nil).modifier(LibraryZimFileDetailSidePanel())
             case .new:
                 ZimFilesNew(dismiss: nil).modifier(LibraryZimFileDetailSidePanel())
             default:
