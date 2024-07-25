@@ -18,47 +18,36 @@ import os
 
 final class Database {
     static let shared = Database()
-    private var notificationToken: NSObjectProtocol?
-    private var token: NSPersistentHistoryToken?
-    private var tokenURL = NSPersistentContainer.defaultDirectoryURL().appendingPathComponent("token.data")
+    private let container: NSPersistentContainer
+    private let backgroundContext: NSManagedObjectContext
+    private let backgroundQueue = DispatchQueue(label: "database.background.queue",
+                                                qos: .utility)
 
     private init() {
-        // due to objc++ interop, only the older notification value is working for downloads:
-        // https://developer.apple.com/documentation/coredata/nspersistentstoreremotechangenotification?language=objc
-        let storeChange: NSNotification.Name = .init(rawValue: "NSPersistentStoreRemoteChangeNotification")
-        notificationToken = NotificationCenter.default.addObserver(
-            forName: storeChange, object: nil, queue: nil) { _ in
-            try? self.mergeChanges()
+        container = Self.createContainer()
+        backgroundContext = container.newBackgroundContext()
+        backgroundContext.persistentStoreCoordinator = container.persistentStoreCoordinator
+        backgroundContext.automaticallyMergesChangesFromParent = true
+        backgroundContext.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
+        backgroundContext.undoManager = nil
+        backgroundContext.shouldDeleteInaccessibleFaults = true
+    }
+
+    var viewContext: NSManagedObjectContext {
+        container.viewContext
+    }
+
+    func performBackgroundTask(_ block: @escaping (NSManagedObjectContext) -> Void) {
+        backgroundQueue.sync { [self] in
+            backgroundContext.perform { [self] in
+                block(backgroundContext)
+            }
         }
-        token = {
-            guard let data = UserDefaults.standard.data(forKey: "PersistentHistoryToken") else { return nil }
-            return try? NSKeyedUnarchiver.unarchivedObject(ofClass: NSPersistentHistoryToken.self, from: data)
-        }()
-    }
-
-    deinit {
-        if let token = notificationToken {
-            NotificationCenter.default.removeObserver(token)
-        }
-    }
-
-    static var viewContext: NSManagedObjectContext {
-        Database.shared.container.viewContext
-    }
-
-    static func performBackgroundTask(_ block: @escaping (NSManagedObjectContext) -> Void) {
-        Database.shared.container.performBackgroundTask(block)
-    }
-
-    static func performBackgroundTask<T>(_ block: @escaping (NSManagedObjectContext) throws -> T) async rethrows -> T {
-        try await Database.shared.container.performBackgroundTask(block)
     }
 
     /// A persistent container to set up the Core Data stack.
-    lazy var container: NSPersistentContainer = {
-        /// - Tag: persistentContainer
+    private static func createContainer() -> NSPersistentContainer {
         let container = NSPersistentContainer(name: "DataModel")
-
         guard let description = container.persistentStoreDescriptions.first else {
             fatalError("Failed to retrieve a persistent store description.")
         }
@@ -75,27 +64,25 @@ final class Database {
             }
         }
 
-        // This sample refreshes UI by consuming store changes via persistent history tracking.
         /// - Tag: viewContextMergeParentChanges
-        container.viewContext.automaticallyMergesChangesFromParent = false
+        container.viewContext.automaticallyMergesChangesFromParent = true
         container.viewContext.name = "viewContext"
         /// - Tag: viewContextMergePolicy
         container.viewContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
         container.viewContext.undoManager = nil
         container.viewContext.shouldDeleteInaccessibleFaults = true
         return container
-    }()
+    }
 
     /// Save image data to zim files.
     func saveImageData(url: URL, completion: @escaping (Data) -> Void) {
-        URLSession.shared.dataTask(with: url) { data, response, _ in
+        URLSession.shared.dataTask(with: url) { [self] data, response, _ in
             guard let response = response as? HTTPURLResponse,
                   response.statusCode == 200,
                   let mimeType = response.mimeType,
                   mimeType.contains("image"),
                   let data = data else { return }
-            let context = self.container.newBackgroundContext()
-            context.perform {
+            performBackgroundTask { [data] context in
                 let predicate = NSPredicate(format: "faviconURL == %@", url as CVarArg)
                 let request = ZimFile.fetchRequest(predicate: predicate)
                 guard let zimFile = try? context.fetch(request).first else { return }
@@ -104,42 +91,5 @@ final class Database {
             }
             completion(data)
         }.resume()
-    }
-
-    /// Merge changes performed on batch requests to view context.
-    private func mergeChanges() throws {
-        let context = container.newBackgroundContext()
-        context.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
-        context.undoManager = nil
-        context.perform {
-            // fetch and merge changes
-            let fetchRequest = NSPersistentHistoryChangeRequest.fetchHistory(after: self.token)
-            guard let result = try? context.execute(fetchRequest) as? NSPersistentHistoryResult else {
-                os_log("no persistent history found after token: \(self.token)")
-                self.token = nil
-                return
-            }
-            guard let transactions = result.result as? [NSPersistentHistoryTransaction] else {
-                os_log("no transactions in persistent history found after token: \(self.token)")
-                self.token = nil
-                return
-            }
-            self.container.viewContext.performAndWait {
-                transactions.forEach { transaction in
-                    self.container.viewContext.mergeChanges(fromContextDidSave: transaction.objectIDNotification())
-                    self.token = transaction.token
-                }
-            }
-
-            // update token
-            guard let token = transactions.last?.token else { return }
-            let data = try? NSKeyedArchiver.archivedData(withRootObject: token, requiringSecureCoding: true)
-            UserDefaults.standard.set(data, forKey: "PersistentHistoryToken")
-
-            // purge history
-            let sevenDaysAgo = Date(timeIntervalSinceNow: -3600 * 24 * 7)
-            let purgeRequest = NSPersistentHistoryChangeRequest.deleteHistory(before: sevenDaysAgo)
-            _ = try? context.execute(purgeRequest)
-        }
     }
 }

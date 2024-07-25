@@ -171,7 +171,7 @@ final class LibraryRefreshViewModelTest: XCTestCase {
         XCTAssertNil(viewModel.error)
 
         // check one zim file is in the database
-        let context = Database.shared.container.viewContext
+        let context = Database.shared.viewContext
         let zimFiles = try context.fetch(ZimFile.fetchRequest())
         XCTAssertEqual(zimFiles.count, 1)
         XCTAssertEqual(zimFiles[0].id, zimFileID)
@@ -215,7 +215,7 @@ final class LibraryRefreshViewModelTest: XCTestCase {
         // refresh library for the first time, which should create one zim file
         let viewModel = LibraryViewModel(urlSession: urlSession)
         await viewModel.start(isUserInitiated: true)
-        let context = Database.shared.container.viewContext
+        let context = Database.shared.viewContext
         let zimFile1 = try XCTUnwrap(try context.fetch(ZimFile.fetchRequest()).first)
 
         // refresh library for the second time, which should replace the old zim file with a new one

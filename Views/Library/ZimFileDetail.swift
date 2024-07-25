@@ -179,7 +179,10 @@ struct ZimFileDetail: View {
                     }
                 }()),
                 primaryButton: .default(Text("zim_file.action.download.button.anyway".localized)) {
-                    DownloadService.shared.start(zimFileID: zimFile.id, allowsCellularAccess: false)
+                    DownloadService.shared.start(
+                        zimFileID: zimFile.id,
+                        allowsCellularAccess: false
+                    )
                 },
                 secondaryButton: .cancel()
             )

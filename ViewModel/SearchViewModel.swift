@@ -34,7 +34,7 @@ class SearchViewModel: NSObject, ObservableObject, NSFetchedResultsControllerDel
         let predicate = NSPredicate(format: "includedInSearch == true AND fileURLBookmark != nil")
         fetchedResultsController = NSFetchedResultsController(
             fetchRequest: ZimFile.fetchRequest(predicate: predicate),
-            managedObjectContext: Database.shared.container.viewContext,
+            managedObjectContext: Database.shared.viewContext,
             sectionNameKeyPath: nil,
             cacheName: nil
         )

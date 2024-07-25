@@ -104,7 +104,7 @@ final class BrowserViewModel: NSObject, ObservableObject,
         // Bookmark fetching:
         bookmarkFetchedResultsController = NSFetchedResultsController(
             fetchRequest: Bookmark.fetchRequest(), // initially empty
-            managedObjectContext: Database.viewContext,
+            managedObjectContext: Database.shared.viewContext,
             sectionNameKeyPath: nil,
             cacheName: nil
         )
@@ -183,7 +183,7 @@ final class BrowserViewModel: NSObject, ObservableObject,
     private func didUpdate(title: String, url: URL) {
         let zimFile: ZimFile? = {
             guard let zimFileID = UUID(uuidString: url.host ?? "") else { return nil }
-            return try? Database.viewContext.fetch(ZimFile.fetchRequest(fileID: zimFileID)).first
+            return try? Database.shared.viewContext.fetch(ZimFile.fetchRequest(fileID: zimFileID)).first
         }()
 
         metaData = ZimFileService.shared.getContentMetaData(url: url)
@@ -204,14 +204,14 @@ final class BrowserViewModel: NSObject, ObservableObject,
         tabID = currentTabID
 
         // update tab data
-        if let tab = try? Database.viewContext.existingObject(with: currentTabID) as? Tab {
+        if let tab = try? Database.shared.viewContext.existingObject(with: currentTabID) as? Tab {
             tab.title = articleTitle
             tab.zimFile = zimFile
         }
     }
 
     func updateLastOpened() {
-        guard let tabID, let tab = try? Database.viewContext.existingObject(with: tabID) as? Tab else { return }
+        guard let tabID, let tab = try? Database.shared.viewContext.existingObject(with: tabID) as? Tab else { return }
         tab.lastOpened = Date()
     }
 
@@ -221,11 +221,11 @@ final class BrowserViewModel: NSObject, ObservableObject,
 
     func persistState() {
         guard let tabID,
-              let tab = try? Database.viewContext.existingObject(with: tabID) as? Tab else {
+              let tab = try? Database.shared.viewContext.existingObject(with: tabID) as? Tab else {
             return
         }
         tab.interactionState = webView.interactionState as? Data
-        try? Database.viewContext.save()
+        try? Database.shared.viewContext.save()
     }
 
     // MARK: - Content Loading
@@ -251,7 +251,7 @@ final class BrowserViewModel: NSObject, ObservableObject,
     }
 
     private func restoreBy(tabID: NSManagedObjectID) {
-        if let tab = try? Database.viewContext.existingObject(with: tabID) as? Tab {
+        if let tab = try? Database.shared.viewContext.existingObject(with: tabID) as? Tab {
             webView.interactionState = tab.interactionState
             Task {
                 await MainActor.run {
@@ -501,7 +501,7 @@ final class BrowserViewModel: NSObject, ObservableObject,
 
                 // bookmark
                 let bookmarkAction: UIAction = {
-                    let context = Database.viewContext
+                    let context = Database.shared.viewContext
                     let predicate = NSPredicate(format: "articleURL == %@", url as CVarArg)
                     let request = Bookmark.fetchRequest(predicate: predicate)
 
@@ -596,7 +596,7 @@ final class BrowserViewModel: NSObject, ObservableObject,
 
     private func createNewTabID() -> NSManagedObjectID {
         if let tabID { return tabID }
-        let context = Database.viewContext
+        let context = Database.shared.viewContext
         let tab = Tab(context: context)
         tab.created = Date()
         tab.lastOpened = Date()
@@ -615,7 +615,7 @@ final class BrowserViewModel: NSObject, ObservableObject,
     func createBookmark(url: URL? = nil) {
         guard let url = url ?? webView.url else { return }
         let title = webView.title
-        Database.performBackgroundTask { context in
+        Database.shared.performBackgroundTask { context in
             let bookmark = Bookmark(context: context)
             bookmark.articleURL = url
             bookmark.created = Date()
@@ -631,7 +631,7 @@ final class BrowserViewModel: NSObject, ObservableObject,
 
     func deleteBookmark(url: URL? = nil) {
         guard let url = url ?? webView.url else { return }
-        Database.performBackgroundTask { context in
+        Database.shared.performBackgroundTask { context in
             let request = Bookmark.fetchRequest(predicate: NSPredicate(format: "articleURL == %@", url as CVarArg))
             guard let bookmark = try? context.fetch(request).first else { return }
             context.delete(bookmark)

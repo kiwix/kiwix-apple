@@ -27,7 +27,7 @@ final class CategoryFetchingTests: XCTestCase {
 
     func testFilteredOutByLanguage() throws {
         // insert a zimFile
-        let context = Database.viewContext
+        let context = Database.shared.viewContext
         let zimFile = ZimFile(context: context)
         let metadata = ZimFileMetaData.mock(languageCodes: "eng",
                                             category: Category.other.rawValue)
@@ -45,7 +45,7 @@ final class CategoryFetchingTests: XCTestCase {
 
     func testCanBeFoundByLanguage() throws {
         // insert a zimFile
-        let context = Database.viewContext
+        let context = Database.shared.viewContext
         let zimFile = ZimFile(context: context)
         let metadata = ZimFileMetaData.mock(languageCodes: "eng",
                                             category: Category.other.rawValue)
@@ -63,7 +63,7 @@ final class CategoryFetchingTests: XCTestCase {
 
     func testCanBeFoundByMultipleUserLanguages() throws {
         // insert a zimFile
-        let context = Database.viewContext
+        let context = Database.shared.viewContext
         let zimFile = ZimFile(context: context)
         let metadata = ZimFileMetaData.mock(languageCodes: "fra",
                                             category: Category.other.rawValue)
@@ -81,7 +81,7 @@ final class CategoryFetchingTests: XCTestCase {
 
     func testCanBeFoundHavingMultiLanguagesWithASingleUserLanguage() throws {
         // insert a zimFile
-        let context = Database.viewContext
+        let context = Database.shared.viewContext
         let zimFile = ZimFile(context: context)
         let metadata = ZimFileMetaData.mock(languageCodes: "eng,fra,deu,nld,spa,ita,por,pol,ara,vie,kor",
                                             category: Category.other.rawValue)
@@ -99,7 +99,7 @@ final class CategoryFetchingTests: XCTestCase {
 
     func testCanBeFoundHavingMultiLanguageMatches() throws {
         // insert a zimFile
-        let context = Database.viewContext
+        let context = Database.shared.viewContext
         let zimFile = ZimFile(context: context)
         let metadata = ZimFileMetaData.mock(languageCodes: "eng,fra,deu,nld,spa,ita,por,pol,ara,vie,kor",
                                             category: Category.other.rawValue)
@@ -117,7 +117,7 @@ final class CategoryFetchingTests: XCTestCase {
 
     func testFilteredOutByMultiToMultiLanguageMissMatch() throws {
         // insert a zimFile
-        let context = Database.viewContext
+        let context = Database.shared.viewContext
         let zimFile = ZimFile(context: context)
         let metadata = ZimFileMetaData.mock(languageCodes: "eng,fra,deu,nld,spa,ita",
                                             category: Category.other.rawValue)
@@ -134,7 +134,7 @@ final class CategoryFetchingTests: XCTestCase {
     }
 
     private func resetDB() throws {
-        _ = try Database.viewContext.execute(
+        _ = try Database.shared.viewContext.execute(
             NSBatchDeleteRequest(
                 fetchRequest: NSFetchRequest(entityName: ZimFile.entity().name!)
             )

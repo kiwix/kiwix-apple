@@ -33,9 +33,9 @@ enum ZimMigration {
         sortDescriptors: Self.sortDescriptors
     )
 
-    static func forCustomApps() async {
+    static func forCustomApps() {
         guard FeatureFlags.hasLibrary == false else { return }
-        await Database.shared.container.performBackgroundTask { context in
+        Database.shared.performBackgroundTask { context in
             guard var zimFiles = try? requestLatestZimFile.execute(),
                   zimFiles.count > 1,
                   let latest = zimFiles.popLast() else {
@@ -77,17 +77,16 @@ enum ZimMigration {
         if context.hasChanges { try? context.save() }
     }
 
+    @MainActor
     private static func latestZimFileHost() async -> String {
-        if let newHost = await Self.newHost { return newHost }
+        if let newHost = Self.newHost { return newHost }
         // if it wasn't set before, set and return by the last ZimFile in DB:
-        guard let zimFile = try? Database.viewContext.fetch(requestLatestZimFile).first else {
+        guard let zimFile = try? Database.shared.viewContext.fetch(requestLatestZimFile).first else {
             fatalError("we should have at least 1 zim file for a custom app")
         }
         let newHost = zimFile.fileID.uuidString
         // save the new host for later
-        await MainActor.run {
-            Self.newHost = newHost
-        }
+        Self.newHost = newHost
         return newHost
     }
 }

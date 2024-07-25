@@ -57,6 +57,7 @@ struct Library: View {
                         .navigationTitle(NavigationItem.categories.name)
                     case .downloads:
                         ZimFilesDownloads(dismiss: dismiss)
+                            .environment(\.managedObjectContext, Database.shared.viewContext)
                     case .new:
                         ZimFilesNew(dismiss: dismiss)
                     }
@@ -79,7 +80,7 @@ struct Library_Previews: PreviewProvider {
         NavigationStack {
             Library(dismiss: nil)
                 .environmentObject(LibraryViewModel())
-                .environment(\.managedObjectContext, Database.viewContext)
+                .environment(\.managedObjectContext, Database.shared.viewContext)
         }
     }
 }

@@ -39,7 +39,7 @@ struct Kiwix: App {
     var body: some Scene {
         WindowGroup {
             RootView()
-                .environment(\.managedObjectContext, Database.shared.container.viewContext)
+                .environment(\.managedObjectContext, Database.shared.viewContext)
                 .environmentObject(libraryRefreshViewModel)
         }.commands {
             SidebarCommands()
@@ -214,10 +214,8 @@ struct RootView: View {
                 DownloadService.shared.restartHeartbeatIfNeeded()
             case let .custom(zimFileURL):
                 LibraryOperations.open(url: zimFileURL) {
-                    Task {
-                        await ZimMigration.forCustomApps()
-                        navigation.currentItem = .reading
-                    }
+                    ZimMigration.forCustomApps()
+                    navigation.currentItem = .reading
                 }
             }
         }

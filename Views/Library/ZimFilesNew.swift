@@ -115,7 +115,7 @@ struct ZimFilesNew_Previews: PreviewProvider {
         NavigationStack {
             ZimFilesNew(dismiss: nil)
                 .environmentObject(LibraryViewModel())
-                .environment(\.managedObjectContext, Database.viewContext)
+                .environment(\.managedObjectContext, Database.shared.viewContext)
         }
     }
 }

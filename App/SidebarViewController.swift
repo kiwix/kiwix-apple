@@ -40,7 +40,7 @@ class SidebarViewController: UICollectionViewController, NSFetchedResultsControl
     }()
     private let fetchedResultController = NSFetchedResultsController(
         fetchRequest: Tab.fetchRequest(sortDescriptors: [NSSortDescriptor(key: "created", ascending: false)]),
-        managedObjectContext: Database.viewContext,
+        managedObjectContext: Database.shared.viewContext,
         sectionNameKeyPath: nil,
         cacheName: nil
     )
@@ -187,7 +187,8 @@ class SidebarViewController: UICollectionViewController, NSFetchedResultsControl
     // MARK: - Collection View Configuration
 
     private func configureCell(cell: UICollectionViewListCell, indexPath: IndexPath, item: NavigationItem) {
-        if case let .tab(objectID) = item, let tab = try? Database.viewContext.existingObject(with: objectID) as? Tab {
+        if case let .tab(objectID) = item,
+            let tab = try? Database.shared.viewContext.existingObject(with: objectID) as? Tab {
             var config = cell.defaultContentConfiguration()
             config.text = tab.title ?? "common.tab.menu.new_tab".localized
             if let zimFile = tab.zimFile, let category = Category(rawValue: zimFile.category) {
