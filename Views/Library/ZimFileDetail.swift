@@ -283,10 +283,14 @@ private struct DownloadTaskDetail: View {
                 }
                 Attribute(title: "zim_file.download_task.action.paused".localized, detail: detail)
             }
-        }.onReceive(downloadTask.publisher(for: \.fileID)
-            .combineLatest(DownloadService.shared.progress.publisher, { (fileID: UUID, states: [UUID: DownloadState]) -> DownloadState? in
-                            states[fileID]
-            })) { [self] (state: DownloadState?) in
+        }.onReceive(
+            downloadTask.publisher(for: \.fileID)
+                .combineLatest(DownloadService.shared.progress.publisher,
+                               {
+                                   (fileID: UUID, states: [UUID: DownloadState]) -> DownloadState? in
+                                   states[fileID]
+                               })
+        ) { [self] (state: DownloadState?) in
                 if let state {
                     self.downloadState = state
                 }

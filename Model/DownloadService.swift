@@ -64,7 +64,6 @@ final class DownloadTasksPublisher {
         }
     }
 
-
     func updateFor(uuid: UUID, downloaded: Int64, total: Int64) {
         if let state = states[uuid] {
             states[uuid] = state.updatedWith(downloaded: downloaded, total: total)
