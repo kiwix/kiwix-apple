@@ -285,16 +285,14 @@ private struct DownloadTaskDetail: View {
             }
         }.onReceive(
             downloadTask.publisher(for: \.fileID)
-                .combineLatest(DownloadService.shared.progress.publisher,
-                               {
-                                   (fileID: UUID, states: [UUID: DownloadState]) -> DownloadState? in
-                                   states[fileID]
-                               })
-        ) { [self] (state: DownloadState?) in
-                if let state {
-                    self.downloadState = state
+                .combineLatest(DownloadService.shared.progress.publisher, {
+                    (fileID: UUID, states: [UUID: DownloadState]) -> DownloadState? in
+                    states[fileID]
+                })) { [self] (state: DownloadState?) in
+                    if let state {
+                        self.downloadState = state
+                    }
                 }
-            }
     }
 
     var detail: String {
