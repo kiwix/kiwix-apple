@@ -22,7 +22,7 @@ import CoreData
 import UserNotifications
 import os
 
-struct DownloadState {
+struct DownloadState: Codable {
     let downloaded: Int64
     let total: Int64
     let resumeData: Data?
@@ -52,18 +52,18 @@ struct DownloadState {
 @MainActor
 final class DownloadTasksPublisher {
 
-    let publisher = PassthroughSubject<[UUID: DownloadState], Never>()
+    let publisher: CurrentValueSubject<[UUID: DownloadState], Never>
     private var states = [UUID: DownloadState]()
 
     init() {
-        if let storedStates = UserDefaults.standard.object(forKey: "downloadStates") as? [UUID: DownloadState] {
+        publisher = CurrentValueSubject(states)
+        if let jsonData = UserDefaults.standard.object(forKey: "downloadStates") as? Data,
+           let storedStates = try? JSONDecoder().decode([UUID: DownloadState].self, from: jsonData) {
             states = storedStates
+            publisher.send(states)
         }
     }
 
-    deinit {
-
-    }
 
     func updateFor(uuid: UUID, downloaded: Int64, total: Int64) {
         if let state = states[uuid] {
@@ -91,7 +91,9 @@ final class DownloadTasksPublisher {
         if let state = states[uuid] {
             states[uuid] = state.updatedWith(resumeData: resumeData)
             publisher.send(states)
-            UserDefaults.standard.setValue(states, forKey: "downloadStates")
+            if let jsonStates = try? JSONEncoder().encode(states) {
+                UserDefaults.standard.setValue(jsonStates, forKey: "downloadStates")
+            }
         } else {
             assertionFailure("there should be a download task for: \(uuid)")
         }
