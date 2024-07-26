@@ -286,13 +286,15 @@ private struct DownloadTaskDetail: View {
         }.onReceive(
             downloadTask.publisher(for: \.fileID)
                 .combineLatest(DownloadService.shared.progress.publisher, {
+                    // swiftlint:disable:next closure_parameter_position
                     (fileID: UUID, states: [UUID: DownloadState]) -> DownloadState? in
-                    states[fileID]
-                })) { [self] (state: DownloadState?) in
-                    if let state {
-                        self.downloadState = state
-                    }
-                }
+                        states[fileID]
+                })
+        ) { [self] (state: DownloadState?) in
+            if let state {
+                self.downloadState = state
+            }
+        }
     }
 
     var detail: String {
