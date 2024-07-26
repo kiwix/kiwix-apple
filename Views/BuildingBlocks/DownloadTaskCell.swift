@@ -30,12 +30,12 @@ struct DownloadTaskCell: View {
 
     var body: some View {
         let progress: Progress = {
-            let p = Progress(totalUnitCount: downloadState.total)
-            p.completedUnitCount = downloadState.downloaded
-            p.kind = .file
-            p.fileTotalCount = 1
-            p.fileOperationKind = .downloading
-            return p
+            let prog = Progress(totalUnitCount: downloadState.total)
+            prog.completedUnitCount = downloadState.downloaded
+            prog.kind = .file
+            prog.fileTotalCount = 1
+            prog.fileOperationKind = .downloading
+            return prog
         }()
         VStack(spacing: 8) {
             if let zimFile = downloadTask.zimFile {
