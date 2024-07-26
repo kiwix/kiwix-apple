@@ -17,23 +17,26 @@
 
 import CoreData
 import SwiftUI
+import Combine
 
 struct DownloadTaskCell: View {
     @State private var isHovering: Bool = false
+    @State private var downloadState = DownloadState(downloaded: 0, total: 1, resumeData: nil)
 
     let downloadTask: DownloadTask
-    let progress: Progress
-
     init(_ downloadTask: DownloadTask) {
         self.downloadTask = downloadTask
-        self.progress = Progress(totalUnitCount: downloadTask.totalBytes)
-        self.progress.completedUnitCount = downloadTask.downloadedBytes
-        self.progress.kind = .file
-        self.progress.fileTotalCount = 1
-        self.progress.fileOperationKind = .downloading
     }
 
     var body: some View {
+        let progress = {
+            let progress = Progress(totalUnitCount: downloadState.total)
+            progress.completedUnitCount = downloadState.downloaded
+            progress.kind = .file
+            progress.fileTotalCount = 1
+            progress.fileOperationKind = .downloading
+            return progress
+        }()
         VStack(spacing: 8) {
             if let zimFile = downloadTask.zimFile {
                 HStack {
@@ -51,14 +54,14 @@ struct DownloadTaskCell: View {
             VStack(alignment: .leading, spacing: 4) {
                 if downloadTask.error != nil {
                     Text("download_task_cell.status.failed".localized)
-                } else if downloadTask.resumeData == nil {
+                } else if downloadState.resumeData == nil {
                     Text("download_task_cell.status.downloading".localized)
                 } else {
                     Text("download_task_cell.status.paused".localized)
                 }
                 ProgressView(
-                    value: Float(downloadTask.downloadedBytes),
-                    total: Float(downloadTask.totalBytes)
+                    value: Float(downloadState.downloaded),
+                    total: Float(downloadState.total)
                 )
                 Text(progress.localizedAdditionalDescription).animation(.none, value: progress)
             }.font(.caption).foregroundColor(.secondary)
@@ -66,6 +69,11 @@ struct DownloadTaskCell: View {
         .padding()
         .modifier(CellBackground(isHovering: isHovering))
         .onHover { self.isHovering = $0 }
+        .onReceive(DownloadService.shared.progress.publisher) { states in
+            if let state = states[downloadTask.fileID] {
+                self.downloadState = state
+            }
+        }
     }
 }
 
@@ -88,8 +96,6 @@ struct DownloadTaskCell_Previews: PreviewProvider {
     static let downloadTask: DownloadTask = {
         let downloadTask = DownloadTask(context: context)
         downloadTask.zimFile = zimFile
-        downloadTask.downloadedBytes = 100
-        downloadTask.totalBytes = 200
         return downloadTask
     }()
 

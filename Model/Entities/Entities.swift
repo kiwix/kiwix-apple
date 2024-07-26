@@ -41,12 +41,8 @@ class DownloadTask: NSManagedObject, Identifiable {
     var id: UUID { fileID }
 
     @NSManaged var created: Date
-    @NSManaged var downloadedBytes: Int64
     @NSManaged var error: String?
     @NSManaged var fileID: UUID
-    @NSManaged var resumeData: Data?
-    @NSManaged var totalBytes: Int64
-
     @NSManaged var zimFile: ZimFile?
 
     class func fetchRequest(predicate: NSPredicate? = nil) -> NSFetchRequest<DownloadTask> {

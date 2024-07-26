@@ -13,6 +13,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Kiwix; If not, see https://www.gnu.org/licenses/.
 
+import Combine
 import CoreData
 import SwiftUI
 import UniformTypeIdentifiers
@@ -254,30 +255,42 @@ private struct FileLocator: ViewModifier {
 
 private struct DownloadTaskDetail: View {
     @ObservedObject var downloadTask: DownloadTask
+    @EnvironmentObject var viewModel: LibraryViewModel
+    @State private var downloadState = DownloadState(downloaded: 0, total: 1, resumeData: nil)
 
     var body: some View {
-        Action(title: "zim_file.download_task.action.title.cancel".localized, isDestructive: true) {
-            DownloadService.shared.cancel(zimFileID: downloadTask.fileID)
-        }
-        if let error = downloadTask.error {
-            if downloadTask.resumeData != nil {
-                Action(title: "zim_file.download_task.action.try_recover".localized) {
+        VStack {
+            Action(title: "zim_file.download_task.action.title.cancel".localized, isDestructive: true) {
+                DownloadService.shared.cancel(zimFileID: downloadTask.fileID)
+                viewModel.selectedZimFile = nil
+            }
+            if let error = downloadTask.error {
+                if downloadState.resumeData != nil {
+                    Action(title: "zim_file.download_task.action.try_recover".localized) {
+                        DownloadService.shared.resume(zimFileID: downloadTask.fileID)
+                    }
+                }
+                Attribute(title: "zim_file.download_task.action.failed".localized, detail: detail)
+                Text(error)
+            } else if downloadState.resumeData == nil {
+                Action(title: "zim_file.download_task.action.pause".localized) {
+                    DownloadService.shared.pause(zimFileID: downloadTask.fileID)
+                }
+                Attribute(title: "zim_file.download_task.action.downloading".localized, detail: detail)
+            } else {
+                Action(title: "zim_file.download_task.action.resume".localized) {
                     DownloadService.shared.resume(zimFileID: downloadTask.fileID)
                 }
+                Attribute(title: "zim_file.download_task.action.paused".localized, detail: detail)
             }
-            Attribute(title: "zim_file.download_task.action.failed".localized, detail: detail)
-            Text(error)
-        } else if downloadTask.resumeData == nil {
-            Action(title: "zim_file.download_task.action.pause".localized) {
-                DownloadService.shared.pause(zimFileID: downloadTask.fileID)
+        }.onReceive(downloadTask.publisher(for: \.fileID)
+            .combineLatest(DownloadService.shared.progress.publisher, { (fileID: UUID, states: [UUID: DownloadState]) -> DownloadState? in
+                            states[fileID]
+            })) { [self] (state: DownloadState?) in
+                if let state {
+                    self.downloadState = state
+                }
             }
-            Attribute(title: "zim_file.download_task.action.downloading".localized, detail: detail)
-        } else {
-            Action(title: "zim_file.download_task.action.resume".localized) {
-                DownloadService.shared.resume(zimFileID: downloadTask.fileID)
-            }
-            Attribute(title: "zim_file.download_task.action.paused".localized, detail: detail)
-        }
     }
 
     var detail: String {
@@ -289,12 +302,12 @@ private struct DownloadTaskDetail: View {
     }
 
     var size: String {
-        Formatter.size.string(fromByteCount: downloadTask.downloadedBytes)
+        Formatter.size.string(fromByteCount: downloadState.downloaded)
     }
 
     var percent: String? {
-        guard downloadTask.totalBytes > 0 else { return nil }
-        let fractionCompleted = NSNumber(value: Double(downloadTask.downloadedBytes) / Double(downloadTask.totalBytes))
+        guard downloadState.total > 0 else { return nil }
+        let fractionCompleted = NSNumber(value: Double(downloadState.downloaded) / Double(downloadState.total))
         return Formatter.percent.string(from: fractionCompleted)
     }
 }
