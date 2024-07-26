@@ -259,7 +259,7 @@ private struct DownloadTaskDetail: View {
     @State private var downloadState = DownloadState(downloaded: 0, total: 1, resumeData: nil)
 
     var body: some View {
-        VStack {
+        Group {
             Action(title: "zim_file.download_task.action.title.cancel".localized, isDestructive: true) {
                 DownloadService.shared.cancel(zimFileID: downloadTask.fileID)
                 viewModel.selectedZimFile = nil

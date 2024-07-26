@@ -141,8 +141,7 @@ final class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegat
     ///   - allowsCellularAccess: if using cellular data is allowed
     @MainActor func start(zimFileID: UUID, allowsCellularAccess: Bool) {
         requestNotificationAuthorization()
-        Database.shared.performBackgroundTask { [weak self] context in
-            guard let self else { return }
+        Database.shared.performBackgroundTask { [self] context in
             context.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
             let fetchRequest = ZimFile.fetchRequest(fileID: zimFileID)
             guard let zimFile = try? context.fetch(fetchRequest).first,
@@ -179,11 +178,11 @@ final class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegat
     /// Pause a zim file download task
     /// - Parameter zimFileID: identifier of the zim file
     func pause(zimFileID: UUID) {
-        session.getTasksWithCompletionHandler { [weak progress] _, _, downloadTasks in
+        session.getTasksWithCompletionHandler { [progress] _, _, downloadTasks in
             guard let task = downloadTasks.filter({ $0.taskDescription == zimFileID.uuidString }).first else { return }
-            task.cancel { [weak progress] resumeData in
-                Task { @MainActor [weak progress] in
-                    progress?.updateFor(uuid: zimFileID, withResumeData: resumeData)
+            task.cancel { [progress] resumeData in
+                Task { @MainActor [progress] in
+                    progress.updateFor(uuid: zimFileID, withResumeData: resumeData)
                 }
             }
         }
@@ -197,7 +196,7 @@ final class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegat
         guard let resumeData = progress.resumeDataFor(uuid: zimFileID) else { return }
         progress.updateFor(uuid: zimFileID, withResumeData: nil)
 
-        Database.shared.performBackgroundTask { [resumeData] context in
+        Database.shared.performBackgroundTask { [self, resumeData] context in
             context.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
 
             let request = DownloadTask.fetchRequest(fileID: zimFileID)
@@ -282,11 +281,11 @@ final class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegat
 
        // Save the error description and resume data if there are new result data
         let resumeData = error.userInfo[NSURLSessionDownloadTaskResumeData] as? Data
-        Task { @MainActor [weak progress] in
+        Task { @MainActor [progress] in
             // The result data equality check is used as a trick to distinguish user pausing 
             // the download task vs failure.
             // When pausing, the same resume data would have already been saved when the delegate is called.
-            guard let progress, progress.resumeDataFor(uuid: zimFileID) != resumeData else {
+            guard progress.resumeDataFor(uuid: zimFileID) != resumeData else {
                 return
             }
             progress.updateFor(uuid: zimFileID, withResumeData: resumeData)
@@ -317,10 +316,10 @@ final class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegat
                     totalBytesExpectedToWrite: Int64) {
         guard let taskDescription = downloadTask.taskDescription,
               let zimFileID = UUID(uuidString: taskDescription) else { return }
-        Task { @MainActor [weak progress] in
-            progress?.updateFor(uuid: zimFileID,
-                                downloaded: totalBytesWritten,
-                                total: totalBytesExpectedToWrite)
+        Task { @MainActor [progress] in
+            progress.updateFor(uuid: zimFileID,
+                               downloaded: totalBytesWritten,
+                               total: totalBytesExpectedToWrite)
         }
     }
 
