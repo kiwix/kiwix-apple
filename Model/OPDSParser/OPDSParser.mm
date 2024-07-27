@@ -42,6 +42,9 @@
 - (BOOL)parseData:(nonnull NSData *)data {
     try {
         NSString *content = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+        if (content == nil) {
+            return false;
+        }
         std::shared_ptr<kiwix::Manager> manager = std::make_shared<kiwix::Manager>(self.library);
         return manager->readOpds([content cStringUsingEncoding:NSUTF8StringEncoding],
                                  [@"https://library.kiwix.org" cStringUsingEncoding:NSUTF8StringEncoding]);

@@ -26,6 +26,17 @@ final class OPDSParserTests: XCTestCase {
         )
     }
 
+    func testNonCompatibleDataWithUT8() throws {
+        let content = "any data"
+        let incompatibleEncodings: [String.Encoding] = [.unicode, .utf16, .utf32]
+        try incompatibleEncodings.forEach { encoding in
+            XCTAssertThrowsError(
+                try OPDSParser().parse(data: content.data(using: encoding)!),
+                "parsing with enconding \(encoding.description) should fail"
+            )
+        }
+    }
+
     /// Test OPDSParser.getMetaData returns nil when no metadata available with the given ID.
     func testMetadataNotFound() {
         let zimFileID = UUID(uuidString: "1ec90eab-5724-492b-9529-893959520de4")!
