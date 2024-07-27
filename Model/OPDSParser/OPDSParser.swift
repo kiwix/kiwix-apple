@@ -25,7 +25,8 @@ extension OPDSParser: Parser {
     }
 
     func parse(data: Data) throws {
-        if !self.__parseData(data) {
+        guard String(data: data, encoding: .utf8) != nil,
+              self.__parseData(data) else {
             throw LibraryRefreshError.parse
         }
     }
