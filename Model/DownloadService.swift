@@ -17,40 +17,92 @@
 //  DownloadService.swift
 //  Kiwix
 
+import Combine
 import CoreData
 import UserNotifications
 import os
 
-private final class DownloadProgress {
-    private var dictionary = [UUID: Int64]()
-    private let inSync = InSync(label: "org.kiwix.downloadProgress")
+struct DownloadState: Codable {
+    let downloaded: Int64
+    let total: Int64
+    let resumeData: Data?
 
-    func updateFor(uuid: UUID, totalBytes: Int64) {
-        inSync.execute { [weak self] in
-            self?.dictionary[uuid] = totalBytes
+    init(downloaded: Int64, total: Int64, resumeData: Data?) {
+        guard total >= downloaded, total > 0 else {
+            assertionFailure("invalid download progress values: downloaded \(downloaded) total: \(total)")
+            self.downloaded = downloaded
+            self.total = downloaded
+            self.resumeData = resumeData
+            return
+        }
+        self.downloaded = downloaded
+        self.total = total
+        self.resumeData = resumeData
+    }
+
+    func updatedWith(downloaded: Int64, total: Int64) -> DownloadState {
+        DownloadState(downloaded: downloaded, total: total, resumeData: resumeData)
+    }
+
+    func updatedWith(resumeData: Data?) -> DownloadState {
+        DownloadState(downloaded: downloaded, total: total, resumeData: resumeData)
+    }
+}
+
+@MainActor
+final class DownloadTasksPublisher {
+
+    let publisher: CurrentValueSubject<[UUID: DownloadState], Never>
+    private var states = [UUID: DownloadState]()
+
+    init() {
+        publisher = CurrentValueSubject(states)
+        if let jsonData = UserDefaults.standard.object(forKey: "downloadStates") as? Data,
+           let storedStates = try? JSONDecoder().decode([UUID: DownloadState].self, from: jsonData) {
+            states = storedStates
+            publisher.send(states)
         }
     }
 
-    func values() -> [UUID: Int64] {
-        inSync.read { dictionary }
+    func updateFor(uuid: UUID, downloaded: Int64, total: Int64) {
+        if let state = states[uuid] {
+            states[uuid] = state.updatedWith(downloaded: downloaded, total: total)
+        } else {
+            states[uuid] = DownloadState(downloaded: downloaded, total: total, resumeData: nil)
+        }
+        publisher.send(states)
     }
 
     func resetFor(uuid: UUID) {
-        inSync.execute { [weak self] in
-            self?.dictionary.removeValue(forKey: uuid)
-        }
+        states.removeValue(forKey: uuid)
+        publisher.send(states)
     }
 
     func isEmpty() -> Bool {
-        inSync.read { dictionary.isEmpty }
+        states.isEmpty
+    }
+
+    func resumeDataFor(uuid: UUID) -> Data? {
+        states[uuid]?.resumeData
+    }
+
+    func updateFor(uuid: UUID, withResumeData resumeData: Data?) {
+        if let state = states[uuid] {
+            states[uuid] = state.updatedWith(resumeData: resumeData)
+            publisher.send(states)
+            if let jsonStates = try? JSONEncoder().encode(states) {
+                UserDefaults.standard.setValue(jsonStates, forKey: "downloadStates")
+            }
+        } else {
+            assertionFailure("there should be a download task for: \(uuid)")
+        }
     }
 }
 
 final class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegate, URLSessionDownloadDelegate {
     static let shared = DownloadService()
-
     private let queue = DispatchQueue(label: "downloads", qos: .background)
-    private let progress = DownloadProgress()
+    @MainActor let progress = DownloadTasksPublisher()
     @MainActor private var heartbeat: Timer?
     var backgroundCompletionHandler: (() -> Void)?
     private lazy var session: URLSession = {
@@ -67,45 +119,18 @@ final class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegat
 
     /// Restart heartbeat if there are unfinished download task
     func restartHeartbeatIfNeeded() {
-        session.getTasksWithCompletionHandler { _, _, downloadTasks in
+        session.getTasksWithCompletionHandler { [weak self] _, _, downloadTasks in
             guard downloadTasks.count > 0 else { return }
             for task in downloadTasks {
                 guard let taskDescription = task.taskDescription,
                       let zimFileID = UUID(uuidString: taskDescription) else { return }
-                self.progress.updateFor(uuid: zimFileID, totalBytes: task.countOfBytesReceived)
-            }
-            Task { @MainActor in
-                self.startHeartbeat()
-            }
-        }
-    }
-
-    /// Start heartbeat, which will update database every 0.25 second
-    @MainActor private func startHeartbeat() {
-        guard self.heartbeat == nil else { return }
-        self.heartbeat = Timer.scheduledTimer(withTimeInterval: 0.25, repeats: true) { [weak self] _ in
-            Database.shared.performBackgroundTask { [weak self] context in
-                context.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
-                if let progressValues = self?.progress.values() {
-                    for (zimFileID, downloadedBytes) in progressValues {
-                        let predicate = NSPredicate(format: "fileID == %@", zimFileID as CVarArg)
-                        let request = DownloadTask.fetchRequest(predicate: predicate)
-                        guard let downloadTask = try? context.fetch(request).first else { return }
-                        downloadTask.downloadedBytes = downloadedBytes
-                    }
-                    try? context.save()
+                Task { @MainActor [weak self] in
+                    self?.progress.updateFor(uuid: zimFileID, 
+                                             downloaded: task.countOfBytesReceived,
+                                             total: task.countOfBytesExpectedToReceive)
                 }
             }
         }
-        os_log("Heartbeat started.", log: Log.DownloadService, type: .info)
-    }
-
-    /// Stop heartbeat, which stops periodical database update
-    @MainActor private func stopHeartbeat() {
-        guard self.heartbeat != nil else { return }
-        self.heartbeat?.invalidate()
-        self.heartbeat = nil
-        os_log("Heartbeat stopped.", log: Log.DownloadService, type: .info)
     }
 
     // MARK: - Download Actions
@@ -116,7 +141,7 @@ final class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegat
     ///   - allowsCellularAccess: if using cellular data is allowed
     @MainActor func start(zimFileID: UUID, allowsCellularAccess: Bool) {
         requestNotificationAuthorization()
-        Database.shared.performBackgroundTask { context in
+        Database.shared.performBackgroundTask { [self] context in
             context.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
             let fetchRequest = ZimFile.fetchRequest(fileID: zimFileID)
             guard let zimFile = try? context.fetch(fetchRequest).first,
@@ -124,7 +149,6 @@ final class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegat
             let downloadTask = DownloadTask(context: context)
             downloadTask.created = Date()
             downloadTask.fileID = zimFileID
-            downloadTask.totalBytes = zimFile.size
             downloadTask.zimFile = zimFile
             try? context.save()
 
@@ -138,7 +162,6 @@ final class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegat
             task.taskDescription = zimFileID.uuidString
             task.resume()
         }
-        startHeartbeat()
     }
 
     /// Cancel a zim file download task
@@ -155,15 +178,11 @@ final class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegat
     /// Pause a zim file download task
     /// - Parameter zimFileID: identifier of the zim file
     func pause(zimFileID: UUID) {
-        session.getTasksWithCompletionHandler { _, _, downloadTasks in
+        session.getTasksWithCompletionHandler { [progress] _, _, downloadTasks in
             guard let task = downloadTasks.filter({ $0.taskDescription == zimFileID.uuidString }).first else { return }
-            task.cancel { resumeData in
-                Database.shared.performBackgroundTask { context in
-                    context.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
-                    let request = DownloadTask.fetchRequest(fileID: zimFileID)
-                    guard let downloadTask = try? context.fetch(request).first else { return }
-                    downloadTask.resumeData = resumeData
-                    try? context.save()
+            task.cancel { [progress] resumeData in
+                Task { @MainActor [progress] in
+                    progress.updateFor(uuid: zimFileID, withResumeData: resumeData)
                 }
             }
         }
@@ -173,30 +192,31 @@ final class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegat
     /// - Parameter zimFileID: identifier of the zim file
     @MainActor func resume(zimFileID: UUID) {
         requestNotificationAuthorization()
-        Database.shared.performBackgroundTask { context in
+
+        guard let resumeData = progress.resumeDataFor(uuid: zimFileID) else { return }
+        progress.updateFor(uuid: zimFileID, withResumeData: nil)
+
+        Database.shared.performBackgroundTask { [self, resumeData] context in
             context.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
 
             let request = DownloadTask.fetchRequest(fileID: zimFileID)
-            guard let downloadTask = try? context.fetch(request).first,
-                  let resumeData = downloadTask.resumeData else { return }
+            guard let downloadTask = try? context.fetch(request).first else { return }
 
             let task = self.session.downloadTask(withResumeData: resumeData)
             task.taskDescription = zimFileID.uuidString
             task.resume()
 
             downloadTask.error = nil
-            downloadTask.resumeData = nil
             try? context.save()
-
-            Task { @MainActor in
-                self.startHeartbeat()
-            }
         }
     }
 
     // MARK: - Database
 
     private func deleteDownloadTask(zimFileID: UUID) {
+        Task { @MainActor [weak progress] in
+            progress?.resetFor(uuid: zimFileID)
+        }
         Database.shared.performBackgroundTask { context in
             context.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
             do {
@@ -246,12 +266,6 @@ final class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegat
     func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?) {
         guard let taskDescription = task.taskDescription,
               let zimFileID = UUID(uuidString: taskDescription) else { return }
-        progress.resetFor(uuid: zimFileID)
-        if progress.isEmpty() {
-            Task { @MainActor in
-                stopHeartbeat()
-            }
-        }
 
         // download finished successfully if there's no error
         guard let error = error as NSError? else {
@@ -265,23 +279,27 @@ final class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegat
             return
         }
 
-        /*
-         Save the error description and resume data if there are new resule data
-         Note: The result data equality check is used as a trick to distinguish user pausing the download task vs
-         failure. When pausing, the same resume data would have already been saved when the delegate is called.
-        */
-        Database.shared.performBackgroundTask { context in
-            context.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
-            let request = DownloadTask.fetchRequest(fileID: zimFileID)
-            let resumeData = error.userInfo[NSURLSessionDownloadTaskResumeData] as? Data
-            guard let downloadTask = try? context.fetch(request).first,
-                  downloadTask.resumeData != resumeData else { return }
-            downloadTask.error = error.localizedDescription
-            downloadTask.resumeData = resumeData
-            try? context.save()
+       // Save the error description and resume data if there are new result data
+        let resumeData = error.userInfo[NSURLSessionDownloadTaskResumeData] as? Data
+        Task { @MainActor [progress] in
+            // The result data equality check is used as a trick to distinguish user pausing 
+            // the download task vs failure.
+            // When pausing, the same resume data would have already been saved when the delegate is called.
+            guard progress.resumeDataFor(uuid: zimFileID) != resumeData else {
+                return
+            }
+            progress.updateFor(uuid: zimFileID, withResumeData: resumeData)
+
+            Database.shared.performBackgroundTask { context in
+                context.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
+                let request = DownloadTask.fetchRequest(fileID: zimFileID)
+                guard let downloadTask = try? context.fetch(request).first else { return }
+                downloadTask.error = error.localizedDescription
+                try? context.save()
+            }
         }
         os_log(
-            "Download finished with error. File ID: %s. Error",
+            "Download finished for File ID: %s. with: %s",
             log: Log.DownloadService,
             type: .error,
             zimFileID.uuidString,
@@ -298,7 +316,11 @@ final class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegat
                     totalBytesExpectedToWrite: Int64) {
         guard let taskDescription = downloadTask.taskDescription,
               let zimFileID = UUID(uuidString: taskDescription) else { return }
-        progress.updateFor(uuid: zimFileID, totalBytes: totalBytesWritten)
+        Task { @MainActor [progress] in
+            progress.updateFor(uuid: zimFileID,
+                               downloaded: totalBytesWritten,
+                               total: totalBytesExpectedToWrite)
+        }
     }
 
     func urlSession(_ session: URLSession,
