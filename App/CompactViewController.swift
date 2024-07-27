@@ -130,31 +130,31 @@ private struct CompactView: View {
                 .id(tabID)
                 .toolbar {
                     ToolbarItemGroup(placement: .bottomBar) {
-                        HStack {
-                            NavigationButtons()
-                            Spacer()
-                            OutlineButton()
-                            Spacer()
-                            BookmarkButton()
-                            Spacer()
-                            ExportButton()
-                            Spacer()
-                            TabsManagerButton()
-                            if FeatureFlags.hasLibrary {
-                                Spacer()
-                                Button {
-                                    presentedSheet = .library
-                                } label: {
-                                    Label("common.tab.menu.library".localized, systemImage: "folder")
-                                }
-                            }
-                            Spacer()
+                        Spacer()
+                        NavigationButtons()
+                        Spacer()
+                        OutlineButton()
+                        Spacer()
+                        BookmarkButton()
+                        Spacer()
+                        ExportButton()
+                        Spacer()
+                        TabsManagerButton()
+                        Spacer()
+                        if FeatureFlags.hasLibrary {
                             Button {
-                                presentedSheet = .settings
+                                presentedSheet = .library
                             } label: {
-                                Label("common.tab.menu.settings".localized, systemImage: "gear")
+                                Label("common.tab.menu.library".localized, systemImage: "folder")
                             }
+                            Spacer()
                         }
+                        Button {
+                            presentedSheet = .settings
+                        } label: {
+                            Label("common.tab.menu.settings".localized, systemImage: "gear")
+                        }
+                        Spacer()
                     }
                 }
                 .environmentObject(BrowserViewModel.getCached(tabID: tabID))
