@@ -28,7 +28,8 @@ final class OPDSParserTests: XCTestCase {
 
     func testNonCompatibleDataWithUT8() throws {
         let content = "any data"
-        try String.Encoding.nonUTF8CompatibleCases.forEach { encoding in
+        let incompatibleEncodings: [String.Encoding] = [.unicode, .utf16, .utf32]
+        try incompatibleEncodings.forEach { encoding in
             XCTAssertThrowsError(
                 try OPDSParser().parse(data: content.data(using: encoding)!),
                 "parsing with enconding \(encoding.description) should fail"
@@ -111,16 +112,4 @@ final class OPDSParserTests: XCTestCase {
         )
         XCTAssertEqual(metadata.flavor, "maxi")
     }
-}
-
-private extension String.Encoding {
-    static var nonUTF8CompatibleCases: [String.Encoding] {
-        [
-         .unicode,
-         .utf16,
-         .utf32
-        ]
-    }
-    
-
 }
