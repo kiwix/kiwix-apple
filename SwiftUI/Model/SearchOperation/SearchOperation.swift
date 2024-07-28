@@ -39,7 +39,7 @@ extension SearchOperation {
                           let data = html.data(using: .utf8) else { return }
                     result.snippet = try? NSAttributedString(
                         data: data,
-                        options: [.documentType: NSAttributedString.DocumentType.html],
+                        options: [.documentType: NSAttributedString.DocumentType.html, .characterEncoding: String.Encoding.utf8.rawValue],
                         documentAttributes: nil
                     )
                 case .disabled:
