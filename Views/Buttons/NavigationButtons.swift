@@ -21,14 +21,9 @@ struct NavigationButtons: View {
     @EnvironmentObject private var browser: BrowserViewModel
 
     var body: some View {
-        if horizontalSizeClass == .regular {
-            goBackButton
-            goForwardButton
-        } else {
-            goBackButton
-            Spacer()
-            goForwardButton
-        }
+        goBackButton
+        Spacer()
+        goForwardButton
     }
 
     var goBackButton: some View {
