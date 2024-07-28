@@ -16,6 +16,7 @@
 import Foundation
 
 enum CSSUnit: String {
+    // swiftlint:disable:next identifier_name
     case em
 }
 
