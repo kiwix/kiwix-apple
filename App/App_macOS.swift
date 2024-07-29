@@ -197,6 +197,7 @@ struct RootView: View {
             }
             if let tabID = browser.tabID {
                 // tab closed by user
+                browser.onDisappear()
                 navigation.deleteTab(tabID: tabID)
             }
         }
