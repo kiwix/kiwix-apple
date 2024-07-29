@@ -16,7 +16,7 @@ Most recent versions of Kiwix support the three latest major versions of the
 OSes (either iOS or macOS). Older versions of Kiwix being still
 downloadable for older versions of macOS and iOS on the Mac App Store.
 
-== Known bugs ==
+## Known bugs
 
 * ZIM files including video content work only properly from Kiwix
   version `3.4.0`, from iOS/iPadOs `17.0` and from macOS `14.0`. With
