@@ -81,6 +81,14 @@ final class KiwixURLSchemeHandler: NSObject, WKURLSchemeHandler {
             stopFor(urlSchemeTask.hash)
             return
         }
+        // blocking any video or ogv javascript files to be loaded
+        let fileName = url.lastPathComponent
+        if fileName.hasSuffix(".js"),
+           (fileName.contains("video") || fileName.contains("ogv")) {
+            urlSchemeTask.didFailWithError(URLError(.resourceUnavailable))
+            stopFor(urlSchemeTask.hash)
+        }
+
         guard let metaData = await contentMetaData(for: url) else {
             sendHTTP404Response(urlSchemeTask, url: url)
             return
