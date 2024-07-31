@@ -25,19 +25,20 @@ struct WebView: NSViewRepresentable {
 
     func makeNSView(context: Context) -> NSView {
         let nsView = NSView()
-        nsView.translatesAutoresizingMaskIntoConstraints = false
-        browser.webView.translatesAutoresizingMaskIntoConstraints = false
-        nsView.addSubview(browser.webView)
-        NSLayoutConstraint.activate([
-            browser.webView.leadingAnchor.constraint(equalTo: nsView.leadingAnchor),
-            browser.webView.trailingAnchor.constraint(equalTo: nsView.trailingAnchor),
-            browser.webView.topAnchor.constraint(equalTo: nsView.topAnchor),
-            browser.webView.bottomAnchor.constraint(equalTo: nsView.bottomAnchor)
-        ])
+        let webView = browser.webView
+        // auto-layout is not working with videojs,
+        // when the video is paused in full screen
+        webView.translatesAutoresizingMaskIntoConstraints = true
+        webView.autoresizingMask = [.width, .height]
+        nsView.addSubview(webView)
         return nsView
     }
 
-    func updateNSView(_ nsView: NSView, context: Context) { }
+    func updateNSView(_ nsView: NSView, context: Context) {
+        // without this, after closing video full screen
+        // a newly opened webview's frame is wrongly sized
+        browser.webView.frame = nsView.bounds
+    }
 
     func makeCoordinator() -> Coordinator {
         Coordinator(view: self)
