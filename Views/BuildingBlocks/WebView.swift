@@ -26,7 +26,7 @@ struct WebView: NSViewRepresentable {
     func makeNSView(context: Context) -> NSView {
         let nsView = NSView()
         let webView = browser.webView
-        // auto-layout is not working with videojs,
+        // auto-layout is not working
         // when the video is paused in full screen
         webView.translatesAutoresizingMaskIntoConstraints = true
         webView.autoresizingMask = [.width, .height]
