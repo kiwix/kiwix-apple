@@ -158,7 +158,10 @@ final class KiwixURLSchemeHandler: NSObject, WKURLSchemeHandler {
     /// - Parameter metaData: the URLContentMetaData from the ZIM file content
     /// - Returns: If the data is larger than 2MB, it returns the "chunks" that should be read,
     /// otherwise returns the full range 0...metaData.size
-    private func rangesForDataStreaming(_ metaData: URLContentMetaData, requestedRange: ClosedRange<UInt>?) -> [ClosedRange<UInt>] {
+    private func rangesForDataStreaming(
+        _ metaData: URLContentMetaData,
+        requestedRange: ClosedRange<UInt>?
+    ) -> [ClosedRange<UInt>] {
         let size2MB: UInt = 2_097_152 // 2MB
         if let requested = requestedRange {
             return ByteRanges.rangesFor(

@@ -54,7 +54,15 @@ final class ByteRangesTests: XCTestCase {
         XCTAssertEqual(ByteRanges.rangesFor(contentLength: 3, rangeSize: 2, start: 16), [16...17, 18...18])
         XCTAssertEqual(ByteRanges.rangesFor(contentLength: 4, rangeSize: 2, start: 16), [16...17, 18...19])
         XCTAssertEqual(ByteRanges.rangesFor(contentLength: 7, rangeSize: 3, start: 3), [3...5, 6...8, 9...9])
-        XCTAssertEqual(ByteRanges.rangesFor(contentLength: 32, rangeSize: 8, start: 16), [16...23, 24...31, 32...39, 40...47])
+        XCTAssertEqual(
+            ByteRanges.rangesFor(contentLength: 32, rangeSize: 8, start: 16),
+            [
+                16...23,
+                24...31,
+                32...39,
+                40...47
+            ]
+        )
     }
 
     func test_veryLarge_rangeSize_results_in_one_range() {
