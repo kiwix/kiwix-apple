@@ -150,6 +150,8 @@ struct URLContentMetaData {
     let mime: String
     let size: UInt
     let zimTitle: String
+    let lastModified: Date?
+
     var httpContentType: String {
         if mime == "text/plain" {
             return "text/plain;charset=UTf-8"
@@ -171,6 +173,23 @@ struct URLContentMetaData {
             return "pdf"
         }
         return UTType(mimeType: mime)?.preferredFilenameExtension
+    }
+
+    /// Currently using the same eTag value for everything that is the same ZIM file
+    /// since all those resources were created and stored at file creation
+    var eTag: String? {
+        guard let lastModified else { return nil }
+        return "\"\(lastModified.timeIntervalSince1970)\""
+    }
+
+    func contentRange(for requestedRange: ClosedRange<UInt>) -> String {
+        "bytes \(requestedRange.lowerBound)-\(requestedRange.upperBound)/\(size)"
+    }
+}
+
+extension ClosedRange<UInt> {
+    var fullRangeSize: UInt {
+        upperBound - lowerBound
     }
 }
 
