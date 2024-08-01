@@ -35,7 +35,6 @@ enum HTTPSuccess {
         }
     }
 
-
     private static func http200Response(
         url: URL,
         metaData: URLContentMetaData
