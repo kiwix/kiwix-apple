@@ -25,50 +25,45 @@ import WebKit
 /// until WebKit behavior is changed.
 final class KiwixURLSchemeHandler: NSObject, WKURLSchemeHandler {
     static let KiwixScheme = "kiwix"
-    private let inSync = InSync(label: "org.kiwix.url.scheme.sync")
-    private var startedTasks: [Int: Bool] = [:]
+    @MainActor private var startedTasks: [Int: Bool] = [:]
 
     // MARK: Life cycle
 
-    private func startFor(_ hashValue: Int) async {
-        await withCheckedContinuation { continuation in
-            inSync.execute {
-                self.startedTasks[hashValue] = true
-                continuation.resume()
-            }
-        }
+    @MainActor
+    private func startFor(_ hashValue: Int) {
+        startedTasks[hashValue] = true
     }
 
+    @MainActor
     private func isStartedFor(_ hashValue: Int) -> Bool {
-        return inSync.read {
-            self.startedTasks[hashValue] != nil
-        }
+        startedTasks[hashValue] != nil
     }
 
+    @MainActor
     private func stopFor(_ hashValue: Int) {
-        inSync.execute {
-            self.startedTasks.removeValue(forKey: hashValue)
-        }
+        startedTasks.removeValue(forKey: hashValue)
     }
 
+    @MainActor
     private func stopAll() {
-        inSync.execute {
-            self.startedTasks.removeAll()
-        }
+        startedTasks.removeAll()
     }
 
+    @MainActor
     func webView(_ webView: WKWebView, stop urlSchemeTask: WKURLSchemeTask) {
         stopFor(urlSchemeTask.hash)
     }
 
+    @MainActor
     func didFailProvisionalNavigation() {
         stopAll()
     }
 
+    @MainActor
     func webView(_ webView: WKWebView, start urlSchemeTask: WKURLSchemeTask) {
         guard isStartedFor(urlSchemeTask.hash) == false else { return }
-        Task {
-            await startFor(urlSchemeTask.hash)
+        startFor(urlSchemeTask.hash)
+        Task { @MainActor in
             await handle(task: urlSchemeTask)
         }
     }
