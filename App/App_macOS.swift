@@ -190,7 +190,12 @@ struct RootView: View {
             navigation.currentItem = .reading
             browser.load(url: url)
         }
-        .onReceive(tabCloses) { _ in
+        .onReceive(tabCloses) { publisher in
+            guard windowTracker.current == publisher.object as? NSWindow else {
+                // when exiting full screen video, we get the same notification
+                // but that's not comming from our window
+                return
+            }
             guard !navigation.isTerminating else {
                 // tab closed by app termination
                 return
