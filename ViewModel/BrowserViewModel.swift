@@ -397,10 +397,12 @@ final class BrowserViewModel: NSObject, ObservableObject,
         withError error: Error
     ) {
         let error = error as NSError
-        webView.stopLoading()
-        (webView.configuration
-            .urlSchemeHandler(forURLScheme: KiwixURLSchemeHandler.KiwixScheme) as? KiwixURLSchemeHandler)?
-            .didFailProvisionalNavigation()
+        Task { @MainActor in
+            webView.stopLoading()
+            (webView.configuration
+                .urlSchemeHandler(forURLScheme: KiwixURLSchemeHandler.KiwixScheme) as? KiwixURLSchemeHandler)?
+                .didFailProvisionalNavigation()
+        }
         guard error.code != NSURLErrorCancelled else { return }
         guard canShowMimeType else {
             guard let kiwixURL = error.userInfo[NSURLErrorFailingURLErrorKey] as? URL else {
