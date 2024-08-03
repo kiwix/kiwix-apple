@@ -164,22 +164,36 @@ class Languages {
         fetchRequest.propertiesToGroupBy = ["languageCode"]
         fetchRequest.resultType = .dictionaryResultType
 
-        let languages: [Language] = await withCheckedContinuation { continuation in
+        let languages: [(String, Int)] = await withCheckedContinuation { continuation in
             Database.shared.performBackgroundTask { context in
                 guard let results = try? context.fetch(fetchRequest) else {
                     continuation.resume(returning: [])
                     return
                 }
-                let language: [Language] = results.compactMap { result in
+                let language: [(String, Int)] = results.compactMap { result in
                     guard let result = result as? NSDictionary,
                           let languageCode = result["languageCode"] as? String,
                           let count = result["count"] as? Int else { return nil }
-                    return Language(code: languageCode, count: count)
+                    return (languageCode, count)
                 }
                 continuation.resume(returning: language)
             }
         }
-        return languages
+        let languagesMulti = languages.filter { $0.0.contains(",") }
+        let languagesSingle = languages.filter { !$0.0.contains(",") }
+        var languagesMap = Dictionary(uniqueKeysWithValues: languagesSingle)
+        for lang in languagesMulti {
+            let codes = lang.0
+            for codeSubstring in Set(codes.split(separator: ",")) {
+                let code = String(codeSubstring)
+                languagesMap[code] = (languagesMap[code] ?? 0) + 1
+            }
+        }
+        let languagesList : [Language] = languagesMap.enumerated().compactMap {
+            let elem = $0.element
+            return Language(code: elem.key, count: elem.value)
+        }
+        return languagesList
     }
 
     /// Compare two languages based on library language sorting order.
