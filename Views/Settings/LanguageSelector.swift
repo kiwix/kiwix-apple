@@ -189,7 +189,7 @@ class Languages {
                 languagesMap[code] = (languagesMap[code] ?? 0) + 1
             }
         }
-        let languagesList : [Language] = languagesMap.enumerated().compactMap {
+        let languagesList: [Language] = languagesMap.enumerated().compactMap {
             let elem = $0.element
             return Language(code: elem.key, count: elem.value)
         }
