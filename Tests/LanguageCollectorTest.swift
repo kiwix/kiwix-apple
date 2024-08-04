@@ -25,6 +25,8 @@ final class LanguageCollectorTest: XCTestCase {
 
     func testInvalidEntriesIgnored() {
         let collector = LanguageCollector()
+        collector.addLanguages(codes: "", count: 1)
+        XCTAssertTrue(collector.languages().isEmpty)
         collector.addLanguages(codes: "invalid", count: 1)
         XCTAssertTrue(collector.languages().isEmpty)
         collector.addLanguages(codes: "more,invalid,entries", count: 2)
@@ -42,7 +44,7 @@ final class LanguageCollectorTest: XCTestCase {
         XCTAssertTrue(collector.languages().isEmpty)
     }
 
-    func testAddingSingleLanguages() {
+    func testAddingSingleLanguage() {
         let collector = LanguageCollector()
         collector.addLanguages(codes: "eng", count: 1)
         XCTAssertEqual(collector.languages().count, 1)
@@ -51,14 +53,14 @@ final class LanguageCollectorTest: XCTestCase {
         XCTAssertEqual(collector.languages().first!.count, 1)
     }
 
-    func testRepeatedLanguagesCodesAreIgnored() {
+    func testRepeatedLanguageCodesAreIgnored() {
         let collector = LanguageCollector()
         collector.addLanguages(codes: "eng,eng", count: 1)
         XCTAssertEqual(collector.languages().count, 1)
         XCTAssertEqual(collector.languages().first!.count, 1)
     }
 
-    func testAddingMultipleLanguagesWithCountOne() {
+    func testAddingMultipleLanguages() {
         let collector = LanguageCollector()
         collector.addLanguages(codes: "fra,eng", count: 1)
         XCTAssertEqual(collector.languages().count, 2)
@@ -68,13 +70,13 @@ final class LanguageCollectorTest: XCTestCase {
     func testAddingMultiLanguagesWithVariousCounts() {
         let collector = LanguageCollector()
         collector.addLanguages(codes: "fra,eng", count: 1)
-        collector.addLanguages(codes: "spa,por,fra", count: 1)
+        collector.addLanguages(codes: "spa,por,fra", count: 2)
         XCTAssertEqual(collector.languages().count, 4)
         XCTAssertEqual(collector.languages(), [
             Language(code: "eng", count: 1)!,
-            Language(code: "fra", count: 2)!,
-            Language(code: "por", count: 1)!,
-            Language(code: "spa", count: 1)!
+            Language(code: "fra", count: 3)!,
+            Language(code: "por", count: 2)!,
+            Language(code: "spa", count: 2)!
         ])
     }
 }
