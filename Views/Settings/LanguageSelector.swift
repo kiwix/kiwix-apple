@@ -182,11 +182,10 @@ class Languages {
         let languagesMulti = languages.filter { $0.0.contains(",") }
         let languagesSingle = languages.filter { !$0.0.contains(",") }
         var languagesMap = Dictionary(uniqueKeysWithValues: languagesSingle)
-        for lang in languagesMulti {
-            let codes = lang.0
+        for (codes, count) in languagesMulti {
             for codeSubstring in Set(codes.split(separator: ",")) {
                 let code = String(codeSubstring)
-                languagesMap[code] = (languagesMap[code] ?? 0) + 1
+                languagesMap[code] = (languagesMap[code] ?? 0) + count
             }
         }
         let languagesList: [Language] = languagesMap.enumerated().compactMap {
