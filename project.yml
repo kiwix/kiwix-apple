@@ -131,5 +131,7 @@ schemes:
         - UnitTests
       commandLineArguments:
             testing: true
-      
+      gatherCoverageData: true
+      coverageTargets:
+        - Kiwix
       
