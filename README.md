@@ -5,6 +5,7 @@ This is the home for Kiwix apps for Apple iOS and macOS.
 [![CodeFactor](https://www.codefactor.io/repository/github/kiwix/kiwix-apple/badge)](https://www.codefactor.io/repository/github/kiwix/kiwix-apple)
 [![CI Build Status](https://github.com/kiwix/kiwix-apple/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/kiwix/kiwix-apple/actions/workflows/ci.yml?query=branch%3Amain)
 [![CD Build Status](https://github.com/kiwix/kiwix-apple/actions/workflows/cd.yml/badge.svg?branch=main)](https://github.com/kiwix/kiwix-apple/actions/workflows/cd?query=branch%3Amain)
+[![Codecov](https://codecov.io/gh/kiwix/kiwix-apple/branch/main/graph/badge.svg)](https://codecov.io/gh/kiwix/kiwix-apple)
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 <img src="https://img.shields.io/badge/Swift-5.9-orange.svg" alt="Drawing="/>
 
