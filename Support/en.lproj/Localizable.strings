@@ -22,6 +22,7 @@
 
 "download_service.complete.title" = "Download Completed";
 "download_service.complete.description" = "%@ has been downloaded successfully.";
+"download_service.failed.description" = "Unable to download this file.";
 
 "common.dialog.button.open" = "Open";
 "common.dialog.button.open_in_new_tab" = "Open in New Tab";
