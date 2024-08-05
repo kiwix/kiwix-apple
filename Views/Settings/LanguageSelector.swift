@@ -170,13 +170,15 @@ class Languages {
                     continuation.resume(returning: [])
                     return
                 }
-                let language: [Language] = results.compactMap { result in
-                    guard let result = result as? NSDictionary,
-                          let languageCode = result["languageCode"] as? String,
-                          let count = result["count"] as? Int else { return nil }
-                    return Language(code: languageCode, count: count)
+                let collector = LanguageCollector()
+                for result in results {
+                    if let result = result as? NSDictionary,
+                       let languageCodes = result["languageCode"] as? String,
+                       let count = result["count"] as? Int {
+                        collector.addLanguages(codes: languageCodes, count: count)
+                    }
                 }
-                continuation.resume(returning: language)
+                continuation.resume(returning: collector.languages())
             }
         }
         return languages
