@@ -103,7 +103,12 @@ struct ZimFilesNew: View {
             predicates.append(NSPredicate(format: "created > %@", aMonthAgo as CVarArg))
         }
         if !searchText.isEmpty {
-            predicates.append(NSPredicate(format: "name CONTAINS[cd] %@", searchText))
+            predicates.append(
+                NSCompoundPredicate(orPredicateWithSubpredicates: [
+                    NSPredicate(format: "name CONTAINS[cd] %@", searchText),
+                    NSPredicate(format: "fileDescription CONTAINS[cd] %@", searchText)
+                ])
+            )
         }
         return NSCompoundPredicate(andPredicateWithSubpredicates: predicates)
     }
