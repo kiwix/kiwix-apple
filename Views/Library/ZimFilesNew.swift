@@ -99,7 +99,7 @@ struct ZimFilesNew: View {
             NSPredicate(format: "languageCode IN %@", Defaults[.libraryLanguageCodes]),
             NSPredicate(format: "requiresServiceWorkers == false")
         ]
-        if let aMonthAgo = Calendar.current.date(byAdding: .month, value: -1, to: Date()) {
+        if let aMonthAgo = Calendar.current.date(byAdding: .month, value: -3, to: Date()) {
             predicates.append(NSPredicate(format: "created > %@", aMonthAgo as CVarArg))
         }
         if !searchText.isEmpty {
