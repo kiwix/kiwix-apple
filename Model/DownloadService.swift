@@ -269,17 +269,29 @@ final class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegat
 
     func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?) {
         guard let taskDescription = task.taskDescription,
-              let zimFileID = UUID(uuidString: taskDescription) else { return }
+              let zimFileID = UUID(uuidString: taskDescription),
+              let httpResponse = task.response as? HTTPURLResponse else { return }
 
         // download finished successfully if there's no error
+        // and the status code is 200
         guard let error = error as NSError? else {
             self.deleteDownloadTask(zimFileID: zimFileID)
-            os_log(
-                "Download finished successfully. File ID: %s.",
-                log: Log.DownloadService,
-                type: .info,
-                zimFileID.uuidString
-            )
+            if httpResponse.statusCode == 200 {
+                os_log(
+                    "Download finished successfully. File ID: %s.",
+                    log: Log.DownloadService,
+                    type: .info,
+                    zimFileID.uuidString
+                )
+            } else {
+                os_log(
+                    "Download was unsuccessful. File ID: %s. status code: %i",
+                    log: Log.DownloadService,
+                    type: .info,
+                    zimFileID.uuidString,
+                    httpResponse.statusCode
+                )
+            }
             return
         }
 
@@ -330,6 +342,20 @@ final class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegat
     func urlSession(_ session: URLSession,
                     downloadTask: URLSessionDownloadTask,
                     didFinishDownloadingTo location: URL) {
+
+        guard let httpResponse = downloadTask.response as? HTTPURLResponse else { return }
+
+        guard httpResponse.statusCode == 200 else {
+            Task { @MainActor in
+                NotificationCenter.default.post(
+                    name: .alert,
+                    object: nil,
+                    userInfo: ["rawValue": ActiveAlert.downloadFailed.rawValue]
+                )
+            }
+            return
+        }
+
         // determine which directory should the file be moved to
         #if os(macOS)
         let searchPath = FileManager.SearchPathDirectory.downloadsDirectory

@@ -22,6 +22,7 @@ enum ActiveAlert: String, Identifiable {
     var id: String { rawValue }
 
     case articleFailedToLoad
+    case downloadFailed
 }
 
 enum ActiveSheet: Hashable, Identifiable {
