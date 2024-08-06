@@ -256,7 +256,10 @@ private struct FileLocator: ViewModifier {
 private struct DownloadTaskDetail: View {
     @ObservedObject var downloadTask: DownloadTask
     @EnvironmentObject var viewModel: LibraryViewModel
-    @State private var downloadState = DownloadState(downloaded: 0, total: 1, resumeData: nil)
+    @State private var downloadState = DownloadState.empty()
+    private var downloadFileID: UUID? {
+        viewModel.selectedZimFile?.fileID
+    }
 
     var body: some View {
         Group {
@@ -283,16 +286,12 @@ private struct DownloadTaskDetail: View {
                 }
                 Attribute(title: "zim_file.download_task.action.paused".localized, detail: detail)
             }
-        }.onReceive(
-            downloadTask.publisher(for: \.fileID)
-                .combineLatest(DownloadService.shared.progress.publisher, {
-                    // swiftlint:disable:next closure_parameter_position
-                    (fileID: UUID, states: [UUID: DownloadState]) -> DownloadState? in
-                        states[fileID]
-                })
-        ) { [self] (state: DownloadState?) in
-            if let state {
-                self.downloadState = state
+        }.onReceive(DownloadService.shared.progress.publisher) { [self] (states: [UUID: DownloadState]) in
+            if let downloadFileID,
+               let state = states[downloadFileID] {
+                downloadState = state
+            } else {
+                downloadState = .empty()
             }
         }
     }
