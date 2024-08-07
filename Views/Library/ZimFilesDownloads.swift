@@ -37,7 +37,7 @@ struct ZimFilesDownloads: View {
         ) {
             ForEach(downloadTasks) { downloadTask in
                 if let zimFile = downloadTask.zimFile {
-                    DownloadTaskCell(downloadTask).modifier(LibraryZimFileContext(zimFile: zimFile, dismiss: dismiss))
+                    DownloadTaskCell(zimFile).modifier(LibraryZimFileContext(zimFile: zimFile, dismiss: dismiss))
                 }
             }
         }
