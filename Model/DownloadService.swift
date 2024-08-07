@@ -221,8 +221,8 @@ final class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegat
         Task { @MainActor [weak progress] in
             progress?.resetFor(uuid: zimFileID)
         }
-        let context = Database.shared.viewContext
-        context.perform {
+        Database.shared.performBackgroundTask { context in
+            context.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
             do {
                 let request = DownloadTask.fetchRequest(fileID: zimFileID)
                 guard let downloadTask = try context.fetch(request).first else { return }
