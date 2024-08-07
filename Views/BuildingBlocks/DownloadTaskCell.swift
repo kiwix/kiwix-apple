@@ -23,9 +23,9 @@ struct DownloadTaskCell: View {
     @State private var isHovering: Bool = false
     @State private var downloadState = DownloadState(downloaded: 0, total: 1, resumeData: nil)
 
-    let downloadTask: DownloadTask
-    init(_ downloadTask: DownloadTask) {
-        self.downloadTask = downloadTask
+    let downloadZimFile: ZimFile
+    init(_ downloadZimFile: ZimFile) {
+        self.downloadZimFile = downloadZimFile
     }
 
     var body: some View {
@@ -38,21 +38,17 @@ struct DownloadTaskCell: View {
             return prog
         }()
         VStack(spacing: 8) {
-            if let zimFile = downloadTask.zimFile {
-                HStack {
-                    Text(zimFile.name).fontWeight(.semibold).foregroundColor(.primary).lineLimit(1)
-                    Spacer()
-                    Favicon(
-                        category: Category(rawValue: zimFile.category) ?? .other,
-                        imageData: zimFile.faviconData,
-                        imageURL: zimFile.faviconURL
-                    ).frame(height: 20)
-                }
-            } else {
-                Text(downloadTask.fileID.uuidString)
+            HStack {
+                Text(downloadZimFile.name).fontWeight(.semibold).foregroundColor(.primary).lineLimit(1)
+                Spacer()
+                Favicon(
+                    category: Category(rawValue: downloadZimFile.category) ?? .other,
+                    imageData: downloadZimFile.faviconData,
+                    imageURL: downloadZimFile.faviconURL
+                ).frame(height: 20)
             }
             VStack(alignment: .leading, spacing: 4) {
-                if downloadTask.error != nil {
+                if downloadZimFile.downloadTask?.error != nil {
                     Text("download_task_cell.status.failed".localized)
                 } else if downloadState.resumeData == nil {
                     Text("download_task_cell.status.downloading".localized)
@@ -70,7 +66,7 @@ struct DownloadTaskCell: View {
         .modifier(CellBackground(isHovering: isHovering))
         .onHover { self.isHovering = $0 }
         .onReceive(DownloadService.shared.progress.publisher) { states in
-            if let state = states[downloadTask.fileID] {
+            if let state = states[downloadZimFile.fileID] {
                 self.downloadState = state
             }
         }
@@ -91,6 +87,7 @@ struct DownloadTaskCell_Previews: PreviewProvider {
         zimFile.name = "Wikipedia"
         zimFile.persistentID = ""
         zimFile.size = 1000000000
+        zimFile.downloadTask = downloadTask
         return zimFile
     }()
     static let downloadTask: DownloadTask = {
@@ -100,12 +97,12 @@ struct DownloadTaskCell_Previews: PreviewProvider {
     }()
 
     static var previews: some View {
-        DownloadTaskCell(DownloadTaskCell_Previews.downloadTask)
+        DownloadTaskCell(zimFile)
             .preferredColorScheme(.light)
             .padding()
             .frame(width: 300, height: 125)
             .previewLayout(.sizeThatFits)
-        DownloadTaskCell(DownloadTaskCell_Previews.downloadTask)
+        DownloadTaskCell(zimFile)
             .preferredColorScheme(.dark)
             .padding()
             .frame(width: 300, height: 125)
