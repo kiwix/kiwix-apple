@@ -90,7 +90,7 @@ struct ZimFileDetail: View {
 
     @ViewBuilder
     var actions: some View {
-        if let _ = zimFile.downloadTask {  // zim file is being downloaded
+        if zimFile.downloadTask != nil {  // zim file is being downloaded
             DownloadTaskDetail(downloadZimFile: zimFile)
         } else if zimFile.isMissing {  // zim file was opened, but is now missing
             Action(title: "zim_file.action.locate.title".localized) { isPresentingFileLocator = true }
