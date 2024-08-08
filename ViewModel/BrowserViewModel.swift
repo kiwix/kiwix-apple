@@ -395,9 +395,15 @@ final class BrowserViewModel: NSObject, ObservableObject,
         decisionHandler(.allow)
     }
 
+    @MainActor
     func webView(_ webView: WKWebView, didFinish _: WKNavigation!) {
         webView.evaluateJavaScript("expandAllDetailTags(); getOutlineItems();")
 #if os(iOS)
+        // on iOS 17 on the iPhone, the video starts with a black screen
+        // if there's a poster attribute
+        if #available(iOS 17, *), Device.current == .iPhone {
+            webView.evaluateJavaScript("removeVideoPosterOniOS17();")
+        }
         webView.adjustTextSize()
 #else
         persistState()
