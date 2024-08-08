@@ -80,3 +80,9 @@ function refreshVideoState() {
         }
     });
 }
+
+function removeVideoPosters() {
+    document.querySelectorAll("video").forEach((video) => {
+        video.attributes.removeNamedItem("poster");
+    });
+}
