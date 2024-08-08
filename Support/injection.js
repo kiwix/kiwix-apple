@@ -81,10 +81,7 @@ function refreshVideoState() {
     });
 }
 
-// for iOS 17 we need to remove the poster
-// to solve the issue with the video play starting
-// in a full black screen
-function removeVideoPosterOniOS17() {
+function removeVideoPosters() {
     document.querySelectorAll("video").forEach((video) => {
         video.attributes.removeNamedItem("poster");
     });
