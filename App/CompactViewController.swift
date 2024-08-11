@@ -143,55 +143,55 @@ private struct CompactView: View {
                     // do nothing
                 }
             })
-            .id(tabID)
-            .toolbar {
-                ToolbarItemGroup(placement: .bottomBar) {
-                    Spacer()
-                    NavigationButtons()
-                    Spacer()
-                    OutlineButton()
-                    Spacer()
-                    BookmarkButton()
-                    Spacer()
-                    ExportButton()
-                    Spacer()
-                    TabsManagerButton()
-                    Spacer()
-                    if FeatureFlags.hasLibrary {
+                .id(tabID)
+                .toolbar {
+                    ToolbarItemGroup(placement: .bottomBar) {
+                        Spacer()
+                        NavigationButtons()
+                        Spacer()
+                        OutlineButton()
+                        Spacer()
+                        BookmarkButton()
+                        Spacer()
+                        ExportButton()
+                        Spacer()
+                        TabsManagerButton()
+                        Spacer()
+                        if FeatureFlags.hasLibrary {
+                            Button {
+                                presentedSheet = .library(nil)
+                            } label: {
+                                Label("common.tab.menu.library".localized, systemImage: "folder")
+                            }
+                            Spacer()
+                        }
                         Button {
-                            presentedSheet = .library(nil)
+                            presentedSheet = .settings
                         } label: {
-                            Label("common.tab.menu.library".localized, systemImage: "folder")
+                            Label("common.tab.menu.settings".localized, systemImage: "gear")
                         }
                         Spacer()
                     }
-                    Button {
-                        presentedSheet = .settings
-                    } label: {
-                        Label("common.tab.menu.settings".localized, systemImage: "gear")
-                    }
-                    Spacer()
                 }
-            }
-            .environmentObject(BrowserViewModel.getCached(tabID: tabID))
-            .sheet(item: $presentedSheet) { presentedSheet in
-                switch presentedSheet {
-                case .library(let tabItem):
-                    Library(dismiss: dismiss, tabItem: tabItem)
-                case .settings:
-                    NavigationView {
-                        Settings().toolbar {
-                            ToolbarItem(placement: .navigationBarLeading) {
-                                Button {
-                                    self.presentedSheet = nil
-                                } label: {
-                                    Text("common.button.done".localized).fontWeight(.semibold)
+                .environmentObject(BrowserViewModel.getCached(tabID: tabID))
+                .sheet(item: $presentedSheet) { presentedSheet in
+                    switch presentedSheet {
+                    case .library(let tabItem):
+                        Library(dismiss: dismiss, tabItem: tabItem)
+                    case .settings:
+                        NavigationView {
+                            Settings().toolbar {
+                                ToolbarItem(placement: .navigationBarLeading) {
+                                    Button {
+                                        self.presentedSheet = nil
+                                    } label: {
+                                        Text("common.button.done".localized).fontWeight(.semibold)
+                                    }
                                 }
                             }
                         }
                     }
                 }
-            }
         }
     }
 }
