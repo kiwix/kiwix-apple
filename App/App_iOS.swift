@@ -28,7 +28,6 @@ struct Kiwix: App {
 
     init() {
         fileMonitor = DirectoryMonitor(url: URL.documentDirectory) { LibraryOperations.scanDirectory($0) }
-        LibraryOperations.registerBackgroundTask()
         UNUserNotificationCenter.current().delegate = appDelegate
     }
 
@@ -63,7 +62,6 @@ struct Kiwix: App {
                         }
                         LibraryOperations.scanDirectory(URL.documentDirectory)
                         LibraryOperations.applyFileBackupSetting()
-                        LibraryOperations.applyLibraryAutoRefreshSetting()
                         DownloadService.shared.restartHeartbeatIfNeeded()
                     case let .custom(zimFileURL):
                         LibraryOperations.open(url: zimFileURL) {

@@ -220,7 +220,7 @@ struct Settings: View {
             Text("catalog_settings.header.text".localized)
         } footer: {
             Text("catalog_settings.footer.text".localized)
-        }.onChange(of: libraryAutoRefresh) { LibraryOperations.applyLibraryAutoRefreshSetting(isEnabled: $0) }
+        }
     }
 
     var backupSettings: some View {
