@@ -29,7 +29,8 @@ struct Welcome: View {
         predicate: ZimFile.openedPredicate,
         animation: .easeInOut
     ) private var zimFiles: FetchedResults<ZimFile>
-    @State private var isLibraryPresented = false
+    /// Used only for iPhone
+    let showLibrary: (() -> Void)?
 
     var body: some View {
         if zimFiles.isEmpty {
@@ -59,15 +60,10 @@ struct Welcome: View {
                 if horizontalSizeClass == .regular {
                     navigation.currentItem = .categories
                 } else {
-                    isLibraryPresented = true
+                    showLibrary?()
                 }
                 #endif
             }
-            #if os(iOS)
-            .sheet(isPresented: $isLibraryPresented) {
-                Library(dismiss: { isLibraryPresented = false }, tabItem: .categories)
-            }
-            #endif
         } else {
             LazyVGrid(
                 columns: ([GridItem(.adaptive(minimum: 250, maximum: 500), spacing: 12)]),
@@ -152,7 +148,7 @@ struct Welcome: View {
 
 struct WelcomeView_Previews: PreviewProvider {
     static var previews: some View {
-        Welcome().environmentObject(LibraryViewModel()).preferredColorScheme(.light).padding()
-        Welcome().environmentObject(LibraryViewModel()).preferredColorScheme(.dark).padding()
+        Welcome(showLibrary: nil).environmentObject(LibraryViewModel()).preferredColorScheme(.light).padding()
+        Welcome(showLibrary: nil).environmentObject(LibraryViewModel()).preferredColorScheme(.dark).padding()
     }
 }

@@ -115,9 +115,18 @@ private struct CompactView: View {
     @EnvironmentObject private var navigation: NavigationViewModel
     @State private var presentedSheet: PresentedSheet?
 
-    private enum PresentedSheet: String, Identifiable {
-        var id: String { rawValue }
-        case library, settings
+    private enum PresentedSheet: Identifiable {
+        case library(LibraryTabItem?)
+        case settings
+
+        var id: String {
+            switch self {
+            case let .library(libraryItem):
+                return "library-\(String(describing: libraryItem))"
+            case .settings:
+                return "settings"
+            }
+        }
     }
 
     private func dismiss() {
@@ -126,7 +135,14 @@ private struct CompactView: View {
 
     var body: some View {
         if case let .tab(tabID) = navigation.currentItem {
-            Content()
+            Content(showLibrary: {
+                if presentedSheet == nil {
+                    presentedSheet = .library(.categories)
+                } else {
+                    // there's a sheet already presented by the user
+                    // do nothing
+                }
+            })
                 .id(tabID)
                 .toolbar {
                     ToolbarItemGroup(placement: .bottomBar) {
@@ -143,7 +159,7 @@ private struct CompactView: View {
                         Spacer()
                         if FeatureFlags.hasLibrary {
                             Button {
-                                presentedSheet = .library
+                                presentedSheet = .library(nil)
                             } label: {
                                 Label("common.tab.menu.library".localized, systemImage: "folder")
                             }
@@ -160,8 +176,8 @@ private struct CompactView: View {
                 .environmentObject(BrowserViewModel.getCached(tabID: tabID))
                 .sheet(item: $presentedSheet) { presentedSheet in
                     switch presentedSheet {
-                    case .library:
-                        Library(dismiss: dismiss)
+                    case .library(let tabItem):
+                        Library(dismiss: dismiss, tabItem: tabItem)
                     case .settings:
                         NavigationView {
                             Settings().toolbar {
@@ -186,11 +202,12 @@ private struct Content: View {
         sortDescriptors: [NSSortDescriptor(keyPath: \ZimFile.size, ascending: false)],
         predicate: ZimFile.openedPredicate
     ) private var zimFiles: FetchedResults<ZimFile>
+    let showLibrary: () -> Void
 
     var body: some View {
         Group {
             if browser.url == nil {
-                Welcome()
+                Welcome(showLibrary: showLibrary)
             } else {
                 WebView().ignoresSafeArea()
             }
