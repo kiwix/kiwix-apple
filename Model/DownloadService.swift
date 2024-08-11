@@ -27,6 +27,10 @@ struct DownloadState: Codable {
     let total: Int64
     let resumeData: Data?
 
+    static func empty() -> DownloadState {
+        .init(downloaded: 0, total: 1, resumeData: nil)
+    }
+
     init(downloaded: Int64, total: Int64, resumeData: Data?) {
         guard total >= downloaded, total > 0 else {
             assertionFailure("invalid download progress values: downloaded \(downloaded) total: \(total)")

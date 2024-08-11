@@ -90,8 +90,8 @@ struct ZimFileDetail: View {
 
     @ViewBuilder
     var actions: some View {
-        if let downloadTask = zimFile.downloadTask {  // zim file is being downloaded
-            DownloadTaskDetail(downloadTask: downloadTask)
+        if zimFile.downloadTask != nil {  // zim file is being downloaded
+            DownloadTaskDetail(downloadZimFile: zimFile)
         } else if zimFile.isMissing {  // zim file was opened, but is now missing
             Action(title: "zim_file.action.locate.title".localized) { isPresentingFileLocator = true }
             unlinkAction
@@ -254,47 +254,45 @@ private struct FileLocator: ViewModifier {
 }
 
 private struct DownloadTaskDetail: View {
-    @ObservedObject var downloadTask: DownloadTask
+    @ObservedObject var downloadZimFile: ZimFile
     @EnvironmentObject var viewModel: LibraryViewModel
-    @State private var downloadState = DownloadState(downloaded: 0, total: 1, resumeData: nil)
+    @State private var downloadState = DownloadState.empty()
 
     var body: some View {
         Group {
             Action(title: "zim_file.download_task.action.title.cancel".localized, isDestructive: true) {
-                DownloadService.shared.cancel(zimFileID: downloadTask.fileID)
+                DownloadService.shared.cancel(zimFileID: downloadZimFile.fileID)
                 viewModel.selectedZimFile = nil
             }
-            if let error = downloadTask.error {
+            if let error = downloadZimFile.downloadTask?.error {
                 if downloadState.resumeData != nil {
                     Action(title: "zim_file.download_task.action.try_recover".localized) {
-                        DownloadService.shared.resume(zimFileID: downloadTask.fileID)
+                        DownloadService.shared.resume(zimFileID: downloadZimFile.fileID)
                     }
                 }
                 Attribute(title: "zim_file.download_task.action.failed".localized, detail: detail)
                 Text(error)
             } else if downloadState.resumeData == nil {
                 Action(title: "zim_file.download_task.action.pause".localized) {
-                    DownloadService.shared.pause(zimFileID: downloadTask.fileID)
+                    DownloadService.shared.pause(zimFileID: downloadZimFile.fileID)
                 }
                 Attribute(title: "zim_file.download_task.action.downloading".localized, detail: detail)
             } else {
                 Action(title: "zim_file.download_task.action.resume".localized) {
-                    DownloadService.shared.resume(zimFileID: downloadTask.fileID)
+                    DownloadService.shared.resume(zimFileID: downloadZimFile.fileID)
                 }
                 Attribute(title: "zim_file.download_task.action.paused".localized, detail: detail)
             }
         }.onReceive(
-            downloadTask.publisher(for: \.fileID)
-                .combineLatest(DownloadService.shared.progress.publisher, {
-                    // swiftlint:disable:next closure_parameter_position
-                    (fileID: UUID, states: [UUID: DownloadState]) -> DownloadState? in
-                        states[fileID]
-                })
-        ) { [self] (state: DownloadState?) in
-            if let state {
-                self.downloadState = state
-            }
-        }
+            DownloadService.shared.progress.publisher
+                .compactMap { [self] (states: [UUID: DownloadState]) -> DownloadState? in
+                    return states[downloadZimFile.fileID]
+                }, perform: { [self] (state: DownloadState?) in
+                    if let state {
+                        self.downloadState = state
+                    }
+                }
+        )
     }
 
     var detail: String {
