@@ -115,9 +115,18 @@ private struct CompactView: View {
     @EnvironmentObject private var navigation: NavigationViewModel
     @State private var presentedSheet: PresentedSheet?
 
-    private enum PresentedSheet: String, Identifiable {
-        var id: String { rawValue }
-        case library, settings
+    private enum PresentedSheet: Identifiable {
+        case library(LibraryTabItem?)
+        case settings
+
+        var id: String {
+            switch self {
+            case let .library(libraryItem):
+                return "library-\(String(describing: libraryItem))"
+            case .settings:
+                return "settings"
+            }
+        }
     }
 
     private func dismiss() {
@@ -126,56 +135,63 @@ private struct CompactView: View {
 
     var body: some View {
         if case let .tab(tabID) = navigation.currentItem {
-            Content()
-                .id(tabID)
-                .toolbar {
-                    ToolbarItemGroup(placement: .bottomBar) {
-                        Spacer()
-                        NavigationButtons()
-                        Spacer()
-                        OutlineButton()
-                        Spacer()
-                        BookmarkButton()
-                        Spacer()
-                        ExportButton()
-                        Spacer()
-                        TabsManagerButton()
-                        Spacer()
-                        if FeatureFlags.hasLibrary {
-                            Button {
-                                presentedSheet = .library
-                            } label: {
-                                Label("common.tab.menu.library".localized, systemImage: "folder")
-                            }
-                            Spacer()
-                        }
+            Content(showLibrary: {
+                if presentedSheet == nil {
+                    presentedSheet = .library(.categories)
+                } else {
+                    // there's a sheet already presented by the user
+                    // do nothing
+                }
+            })
+            .id(tabID)
+            .toolbar {
+                ToolbarItemGroup(placement: .bottomBar) {
+                    Spacer()
+                    NavigationButtons()
+                    Spacer()
+                    OutlineButton()
+                    Spacer()
+                    BookmarkButton()
+                    Spacer()
+                    ExportButton()
+                    Spacer()
+                    TabsManagerButton()
+                    Spacer()
+                    if FeatureFlags.hasLibrary {
                         Button {
-                            presentedSheet = .settings
+                            presentedSheet = .library(nil)
                         } label: {
-                            Label("common.tab.menu.settings".localized, systemImage: "gear")
+                            Label("common.tab.menu.library".localized, systemImage: "folder")
                         }
                         Spacer()
                     }
+                    Button {
+                        presentedSheet = .settings
+                    } label: {
+                        Label("common.tab.menu.settings".localized, systemImage: "gear")
+                    }
+                    Spacer()
                 }
-                .environmentObject(BrowserViewModel.getCached(tabID: tabID))
-                .sheet(item: $presentedSheet) { presentedSheet in
-                    switch presentedSheet {
-                    case .library:
-                        Library(dismiss: dismiss)
-                    case .settings:
-                        NavigationView {
-                            Settings().toolbar {
-                                ToolbarItem(placement: .navigationBarLeading) {
-                                    Button {
-                                        self.presentedSheet = nil
-                                    } label: {
-                                        Text("common.button.done".localized).fontWeight(.semibold)
-                                    }
+            }
+            .environmentObject(BrowserViewModel.getCached(tabID: tabID))
+            .sheet(item: $presentedSheet) { presentedSheet in
+                switch presentedSheet {
+                case .library(let tabItem):
+                    Library(dismiss: dismiss, tabItem: tabItem)
+                case .settings:
+                    NavigationView {
+                        Settings().toolbar {
+                            ToolbarItem(placement: .navigationBarLeading) {
+                                Button {
+                                    self.presentedSheet = nil
+                                } label: {
+                                    Text("common.button.done".localized).fontWeight(.semibold)
                                 }
                             }
                         }
                     }
                 }
+            }
         }
     }
 }
@@ -186,11 +202,12 @@ private struct Content: View {
         sortDescriptors: [NSSortDescriptor(keyPath: \ZimFile.size, ascending: false)],
         predicate: ZimFile.openedPredicate
     ) private var zimFiles: FetchedResults<ZimFile>
+    let showLibrary: () -> Void
 
     var body: some View {
         Group {
             if browser.url == nil {
-                Welcome()
+                Welcome(showLibrary: showLibrary)
             } else {
                 WebView().ignoresSafeArea()
             }

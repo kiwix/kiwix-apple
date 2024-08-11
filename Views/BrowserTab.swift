@@ -15,6 +15,7 @@
 
 import SwiftUI
 
+/// This is macOS and iPad only specific, not used on iPhone
 struct BrowserTab: View {
     @EnvironmentObject private var browser: BrowserViewModel
     @StateObject private var search = SearchViewModel()
@@ -87,7 +88,7 @@ struct BrowserTab: View {
                             .environment(\.horizontalSizeClass, proxy.size.width > 750 ? .regular : .compact)
                             #endif
                     } else if browser.url == nil && FeatureFlags.hasLibrary {
-                        Welcome()
+                        Welcome(showLibrary: nil)
                     } else {
                         WebView().ignoresSafeArea()
                         #if os(macOS)
