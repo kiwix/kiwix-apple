@@ -52,6 +52,8 @@ struct ZimFilesCategories: View {
                         }
                     }
                 }
+            }.onAppear {
+                LibraryViewModel().start(isUserInitiated: false)
             }
     }
 }
@@ -117,7 +119,11 @@ private struct CategoryGrid: View {
     var body: some View {
         Group {
             if sections.isEmpty {
-                Message(text: "zim_file_category.section.empty.message".localized)
+                if viewModel.state == .inProgress {
+                    Message(text: "zim_file_catalog.fetching.message".localized)
+                } else {
+                    Message(text: "zim_file_category.section.empty.message".localized)
+                }
             } else {
                 LazyVGrid(columns: ([gridItem]), alignment: .leading, spacing: 12) {
                     ForEach(sections) { section in
@@ -218,7 +224,11 @@ private struct CategoryList: View {
     var body: some View {
         Group {
             if zimFiles.isEmpty {
-                Message(text: "zim_file_category.section.empty.message".localized)
+                if viewModel.state == .inProgress {
+                    Message(text: "zim_file_catalog.fetching.message".localized)
+                } else {
+                    Message(text: "zim_file_category.section.empty.message".localized)
+                }
             } else {
                 List(zimFiles, id: \.self, selection: $viewModel.selectedZimFile) { zimFile in
                     ZimFileRow(zimFile)

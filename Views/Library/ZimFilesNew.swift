@@ -60,7 +60,11 @@ struct ZimFilesNew: View {
         }
         .overlay {
             if zimFiles.isEmpty {
-                Message(text: "zim_file_new_overlay.empty".localized)
+                if viewModel.state == .inProgress {
+                    Message(text: "zim_file_catalog.fetching.message".localized)
+                } else {
+                    Message(text: "zim_file_new_overlay.empty".localized)
+                }
             }
         }
         .toolbar {

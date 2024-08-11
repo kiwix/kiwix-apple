@@ -107,6 +107,7 @@
 "zim_file_opened.toolbar.open.help" = "Open a ZIM file";
 "zim_file_category.title" = "Category";
 
+"zim_file_catalog.fetching.message" = "Fetching Catalog ...";
 "zim_file_category.section.empty.message" = "No ZIM file under this category.";
 "zim_file_downloads.overlay.empty.message" = "No download tasks";
 "zim_file_downloads.toolbar.show_sidebar.label" = "Show Sidebar";
