@@ -43,8 +43,18 @@ struct Kiwix: App {
                 .modifier(FileExportHandler())
                 .modifier(SaveContentHandler())
                 .onChange(of: scenePhase) { newValue in
-                    guard newValue == .inactive else { return }
-                    try? Database.shared.viewContext.save()
+                    switch newValue {
+                    case .inactive:
+                        try? Database.shared.viewContext.save()
+                    case .active:
+                        if FeatureFlags.hasLibrary {
+                            library.start(isUserInitiated: false)
+                        }
+                    case .background:
+                        break
+                    @unknown default:
+                        break
+                    }
                 }
                 .onOpenURL { url in
                     if url.isFileURL {
@@ -66,7 +76,7 @@ struct Kiwix: App {
                     case let .custom(zimFileURL):
                         LibraryOperations.open(url: zimFileURL) {
                             Task {
-                                await ZimMigration.forCustomApps()
+                                ZimMigration.forCustomApps()
                                 navigation.navigateToMostRecentTab()
                             }
                         }
