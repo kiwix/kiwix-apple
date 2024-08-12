@@ -58,7 +58,7 @@
 "outline_button.outline.help" = "Show article outline";
 "outline_button.outline.empty.message" = "No outline available";
 
-"bookmark_button.show.help" = "Show bookmarks. Long press to bookmark or unbookmark the current article.";
+"bookmark_button.show.help" = "Show the bookmark sheet, where the current article can be added or removed from bookmarks.";
 
 "article_shortcut.main.button.title" = "Main Article";
 "article_shortcut.main.button.help" = "Show main article";

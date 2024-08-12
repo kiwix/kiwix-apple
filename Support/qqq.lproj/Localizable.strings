@@ -33,7 +33,7 @@
 "outline_button.outline.title" = "Button label on macOS for topbar browser button";
 "outline_button.outline.help" = "Accessibility label on macOS for topbar browser button";
 "outline_button.outline.empty.message" = "Title within an overlay menu, when there's no outline available for the current article loaded";
-"bookmark_button.show.help" = "Accessibility label of the tab bar button on iOS for bookmarks behaviour.";
+"bookmark_button.show.help" = "Accessibility label of the tab bar button on iOS for showing the bookmarks sheet.";
 "article_shortcut.main.button.title" = "Fallback button title leading to the Main Article of the ZIM File";
 "article_shortcut.main.button.help" = "Accessibility label for button";
 "article_shortcut.random.button.title.mac" = "Fallback button title on the topbar navigation";
