@@ -28,7 +28,6 @@ struct Kiwix: App {
 
     init() {
         fileMonitor = DirectoryMonitor(url: URL.documentDirectory) { LibraryOperations.scanDirectory($0) }
-        LibraryOperations.registerBackgroundTask()
         UNUserNotificationCenter.current().delegate = appDelegate
     }
 
@@ -44,8 +43,18 @@ struct Kiwix: App {
                 .modifier(FileExportHandler())
                 .modifier(SaveContentHandler())
                 .onChange(of: scenePhase) { newValue in
-                    guard newValue == .inactive else { return }
-                    try? Database.shared.viewContext.save()
+                    switch newValue {
+                    case .inactive:
+                        try? Database.shared.viewContext.save()
+                    case .active:
+                        if FeatureFlags.hasLibrary {
+                            library.start(isUserInitiated: false)
+                        }
+                    case .background:
+                        break
+                    @unknown default:
+                        break
+                    }
                 }
                 .onOpenURL { url in
                     if url.isFileURL {
@@ -63,12 +72,11 @@ struct Kiwix: App {
                         }
                         LibraryOperations.scanDirectory(URL.documentDirectory)
                         LibraryOperations.applyFileBackupSetting()
-                        LibraryOperations.applyLibraryAutoRefreshSetting()
                         DownloadService.shared.restartHeartbeatIfNeeded()
                     case let .custom(zimFileURL):
                         LibraryOperations.open(url: zimFileURL) {
                             Task {
-                                await ZimMigration.forCustomApps()
+                                ZimMigration.forCustomApps()
                                 navigation.navigateToMostRecentTab()
                             }
                         }

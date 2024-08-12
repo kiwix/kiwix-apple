@@ -22,6 +22,14 @@ enum LibraryState {
     case initial
     case inProgress
     case complete
+
+    static func defaultState() -> LibraryState {
+        if Defaults[.libraryLastRefresh] == nil {
+            return .initial
+        } else {
+            return .complete
+        }
+    }
 }
 
 /// Makes sure that the process value is stored in a single state
@@ -30,12 +38,8 @@ enum LibraryState {
     static let shared = LibraryProcess()
     @Published var state: LibraryState
 
-    private init() {
-        if Defaults[.libraryLastRefresh] == nil {
-            state = .initial
-        } else {
-            state = .complete
-        }
+    init(defaultState: LibraryState = .defaultState()) {
+        state = defaultState
     }
 }
 
@@ -53,9 +57,9 @@ final class LibraryViewModel: ObservableObject {
     private var deletionCount = 0
 
     @MainActor
-    init(urlSession: URLSession? = nil) {
+    init(urlSession: URLSession? = nil, processFactory: @MainActor () -> LibraryProcess = { .shared }) {
         self.urlSession = urlSession ?? URLSession.shared
-        process = LibraryProcess.shared
+        self.process = processFactory()
         state = process.state
         process.$state.sink { [weak self] newState in
             self?.state = newState

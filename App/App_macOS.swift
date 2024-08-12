@@ -34,6 +34,9 @@ struct Kiwix: App {
 
     init() {
         UNUserNotificationCenter.current().delegate = notificationCenterDelegate
+        if FeatureFlags.hasLibrary {
+            LibraryViewModel().start(isUserInitiated: false)
+        }
     }
 
     var body: some Scene {
