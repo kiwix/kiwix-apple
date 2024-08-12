@@ -208,6 +208,11 @@ final class BrowserViewModel: NSObject, ObservableObject,
             tab.title = articleTitle
             tab.zimFile = zimFile
         }
+        #if os(macOS)
+        Task { @MainActor in
+            disableVideoContextMenu()
+        }
+        #endif
     }
 
     func updateLastOpened() {
@@ -270,6 +275,14 @@ final class BrowserViewModel: NSObject, ObservableObject,
             }
         }
     }
+
+    #if os(macOS)
+    /// Disable the right-click context menu on video components
+    @MainActor
+    func disableVideoContextMenu() {
+        webView.evaluateJavaScript("disableVideoContextMenu();")
+    }
+    #endif
 
     // MARK: - New Tab Creation
 
