@@ -50,7 +50,7 @@ struct FlavorTag: View {
         case .max:
             return "flavor_tag.help.max".localized
         case .noPic:
-            return "flavor-no-pic-description".localized
+            return "flavor_tag.help.no_pic".localized
         case .mini:
             return "flavor_tag.help.mini".localized
         }
