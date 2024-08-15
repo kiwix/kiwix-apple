@@ -47,6 +47,7 @@
 "outline_button.outline.title" = "Vue d’ensemble";
 "outline_button.outline.help" = "Afficher la vue d’ensemble de l’article";
 "outline_button.outline.empty.message" = "Aucune vue d’ensemble disponible";
+// Fuzzy
 "bookmark_button.show.help" = "Afficher les signets. Appuyez longuement pour ajouter ou supprimer l'article actuel dans vos favoris.";
 "article_shortcut.main.button.title" = "Article principal";
 "article_shortcut.main.button.help" = "Afficher l'article principal";

@@ -40,6 +40,7 @@
 "outline_button.outline.title" = "Översikt";
 "outline_button.outline.help" = "Visa artikelöversikt";
 "outline_button.outline.empty.message" = "Ingen översikt tillgänglig";
+// Fuzzy
 "bookmark_button.show.help" = "Visa bokmärken. Tryck länge för att bokmärka eller ta bort bokmärke för aktuell artikel.";
 "article_shortcut.main.button.title" = "Huvudartikel";
 "article_shortcut.main.button.help" = "Visa huvudartikel";
@@ -66,7 +67,6 @@
 "library_refresh_time.never" = "Aldrig";
 "zim_file_cell_article_count_suffix" = "artiklar";
 "zim_file_missing_indicator.help" = "Zim-fil saknas.";
-// Fuzzy
 "library.zim_file_details.side_panel.message" = "Välj en ZIM-fil för att se information";
 "library.zim_file_context.main_page.label" = "Huvudsida";
 "library.zim_file_context.random.label" = "Slumpsida";

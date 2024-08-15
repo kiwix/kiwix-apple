@@ -40,6 +40,7 @@
 "outline_button.outline.title" = "大纲";
 "outline_button.outline.help" = "显示文章大纲";
 "outline_button.outline.empty.message" = "暂无概要";
+// Fuzzy
 "bookmark_button.show.help" = "显示书签。长按可添加或取消当前文章的书签。";
 "article_shortcut.main.button.title" = "主条目";
 "article_shortcut.main.button.help" = "显示主条目";

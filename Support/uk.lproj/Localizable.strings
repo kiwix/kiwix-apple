@@ -29,6 +29,7 @@
 "common.export_file.alert.title" = "Експортувати файл";
 "common.export_file.alert.description" = "Ви бажаєте експортувати файл %@?";
 "common.export_file.alert.button.title" = "Експортувати";
+// Fuzzy
 "bookmark_button.show.help" = "Показати закладки. Натисніть і утримуйте, щоб додати або видалити закладку поточної статті.";
 "article_shortcut.main.button.title" = "Основна стаття";
 "article_shortcut.main.button.help" = "Показати основну статтю";
@@ -72,6 +73,7 @@
 "zim_file.list.info.text" = "Інформація";
 "zim_file.action.locate.title" = "Знайти";
 "zim_file.action.open_main_page.title" = "Відкрити головну сторінку";
+"zim_file.action.reveal_in_finder.title" = "Показати у Finder";
 "zim_file.action.toggle_cellular" = "Завантажити використовуючи стільникові дані";
 "zim_file.action.unlink.message" = "Усі закладки, пов’язані з цим файлом ZIM, будуть видалені, але оригінальний файл залишиться на місці.";
 "zim_file.action.delete.title" = "Видалити";
@@ -127,6 +129,8 @@
 "settings.selected_language.title" = "Мови";
 "language_selector.name.title" = "Назва";
 "language_selector.count.table.title" = "Кількість";
+"language_selector.showing.header" = "Показуються";
+"language_selector.hiding.header" = "Приховуються";
 "language_selector.navitation.title" = "Мова";
 "language_selector.toolbar.sorting" = "Сортування";
 "settings.about.title" = "Про застосунок";
@@ -187,6 +191,7 @@
 "enum.flavor.mini" = "міні";
 "enum.library_language_sorting_model.a-z" = "А-Я";
 "enum.library_language_sorting_model.by_count" = "За кількістю";
+"enum.libray_tab_item.opened" = "Відкрито";
 "enum.libray_tab_item.categories" = "Категорії";
 "enum.libray_tab_item.downloads" = "Завантаження";
 "enum.libray_tab_item.new" = "Нове";
@@ -195,6 +200,7 @@
 "enum.navigation_item.bookmarks" = "Закладки";
 "enum.navigation_item.new_tab" = "Нова вкладка";
 "enum.navigation_item.categories" = "Категорії";
+"enum.navigation_item.new" = "Нове";
 "enum.navigation_item.downloads" = "Завантаження";
 "enum.navigation_item.settings" = "Налаштування";
 "enum.search_result_snippet_mode.disabled" = "Вимкнено";

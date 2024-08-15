@@ -8,6 +8,7 @@
 "library_refresh_error.process.description" = "處理圖書館資料時發生錯誤。";
 "download_service.complete.title" = "下載完成";
 "download_service.complete.description" = "已成功下載%@。";
+"download_service.failed.description" = "無法下載此檔案。";
 "common.dialog.button.open" = "開啟";
 "common.dialog.button.open_in_new_tab" = "在新分頁開啟";
 "common.dialog.button.add_bookmark" = "新增書籤";
@@ -38,6 +39,7 @@
 "outline_button.outline.title" = "大綱";
 "outline_button.outline.help" = "顯示條目大綱";
 "outline_button.outline.empty.message" = "沒有可用的大綱";
+// Fuzzy
 "bookmark_button.show.help" = "顯示書籤。長壓可為目前條目加入/取消加入到書籤。";
 "article_shortcut.main.button.title" = "主條目";
 "article_shortcut.main.button.help" = "顯示主條目";
@@ -74,6 +76,7 @@
 "zim_file_opened.toolbar.open.title" = "開啟…";
 "zim_file_opened.toolbar.open.help" = "開啟一個 ZIM 檔案";
 "zim_file_category.title" = "分類";
+"zim_file_catalog.fetching.message" = "正在抓取目錄…";
 "zim_file_category.section.empty.message" = "此分類下沒有 ZIM 檔案。";
 "zim_file_downloads.overlay.empty.message" = "沒有下載任務";
 "zim_file_downloads.toolbar.show_sidebar.label" = "顯示側邊欄";
