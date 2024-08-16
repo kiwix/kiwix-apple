@@ -197,6 +197,7 @@ private struct CompactView: View {
 }
 
 private struct Content: View {
+    @Environment(\.scenePhase) private var scenePhase
     @EnvironmentObject private var browser: BrowserViewModel
     @FetchRequest(
         sortDescriptors: [NSSortDescriptor(keyPath: \ZimFile.size, ascending: false)],
@@ -230,6 +231,11 @@ private struct Content: View {
                        action: { browser.loadRandomArticle() })
                 .disabled(zimFiles.isEmpty)
                 ContentSearchButton()
+            }
+        }
+        .onChange(of: scenePhase) { newValue in
+            if case .active = newValue {
+                browser.refreshVideoState()
             }
         }
     }
