@@ -95,6 +95,7 @@ function fixVideoElements() {
             if(attributes.getNamedItem('poster')) {
                 attributes.removeNamedItem('poster');
             }
+            video.setAttribute('playsinline', '');
         });
     }
 
