@@ -403,7 +403,7 @@ final class BrowserViewModel: NSObject, ObservableObject,
         // on iOS 17 on the iPhone, the video starts with a black screen
         // if there's a poster attribute
         if #available(iOS 17, *), Device.current == .iPhone {
-            webView.evaluateJavaScript("removeVideoPosters();")
+            webView.evaluateJavaScript("fixVideoElements();")
         }
         webView.adjustTextSize()
 #else

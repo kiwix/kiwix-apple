@@ -87,7 +87,7 @@ function disableVideoContextMenu() {
     });
 }
 
-function removeVideoPosters() {
+function fixVideoElements() {
 
     function fixVideoAttributes(element) {
         element.querySelectorAll("video").forEach((video) => {
