@@ -1,4 +1,46 @@
-## 3.4.1
+## 3.5.1
+
+## 3.5.0
+  - NEW:
+    - Implement „Find in page" (@BPerlakiH #849 #872)
+    - Support range requests for video content (@BPerlakiH @rgaudin #894)
+    - Integrate Codecov to the CI (@BPerlakiH #907)
+    - Download error feedback (@BPerlakiH #912)
+  - UPDATE:
+    - Remove bookmark image and snippets (@BPerlakiH #830)
+    - Change search snippets settings to be a toggle (@BPerlakiH #873)
+    - Resolve Swift Package Dependencies Automatically on checkout (@BPerlakiH #864)
+    - Remove BackPorts dependency (@BPerlakiH #867)
+    - Search in descriptions of ZIM files as well (@BPerlakiH #904 #910)
+    - Auto update of library, remove iOS background processing (@BPerlakiH #926)
+  - FIX:
+    - After resuming iOS app video displayed black (@BPerlakiH #801 #846)
+    - ZIM metadata „illustration“ is not read properly (@BPerlakiH #811)
+    - Export of a PDF fails iOS (@BPerlakiH #820 #840)
+    - Content default positioning is not always correct (@BPerlakiH #841)
+    - Nightly CD build (@BPerlakiH #845)
+    - Double-clicking on a ZIM in mac finder opens a new Kiwix window (@BPerlakiH #860)
+    - Crash Library Parsing (@BPerlakiH #868)
+    - Crash by removing html parsed snippets (@BPerlakiH #865)
+    - Search crash and improve efficiency (@BPerlakiH #862)
+    - Pop over crash by removing modal style (@BPerlakiH #876)
+    - Multiple language ZIM files to show up (@BPerlakiH #870)
+    - UTF-8 checking before parsing library data (@BPerlakiH #884)
+    - DB Crash with Single background contex (@BPerlakiH #879)
+    - Fix DB leading to mac UI crash on listing downloads (@BPerlakiH #882)
+    - iOS Accessibility of icons when large text is set (@BPerlakiH #886)
+    - mac video fullscreen sizing when paused (@BPerlakiH #893)
+    - mac video sound kept playing after tab is closed (@BPerlakiH #891)
+    - WebKitHandler concurrency fix (@BPerlakiH #896)
+    - mac window closing should stop video (@BPerlakiH #899)
+    - Library language count for multi-language ZIM files (@HiroyasuNishiyama @BPerlakiH #906)
+    - mac Video playing right click problems (@BPerlakiH #918)
+    - video starting with a black screen on iOS 17 iPhone (@BPerlakiH #924)
+    - iPhone backgrounding makes the inline video black (@BPerlakiH #937)
+    - On fresh install opening a ZIM file directly after download crashes the app on iPad (@BPerlakiH #921)
+    - iOS double sheet for Library (@BPerlakiH 925)
+    - Translation issues with help buttons (@HiroyasuNishiyama @BPerlakiH #929 #930)
+    - iOS Add space in article count label (@BPerlakiH #932)
 
 ## 3.4.0
   - FIX: 
