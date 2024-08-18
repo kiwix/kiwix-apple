@@ -89,19 +89,19 @@ function disableVideoContextMenu() {
 
 function removeVideoPosters() {
 
-    function removePosterAttributes(element) {
+    function fixVideoAttributes(element) {
         element.querySelectorAll("video").forEach((video) => {
             const attributes = video.attributes
             if(attributes.getNamedItem('poster')) {
-                attributes.removeNamedItem("poster");
+                attributes.removeNamedItem('poster');
             }
         });
     }
 
-    // remove from the current document
-    removePosterAttributes(document);
+    // fix in the currently loaded DOM
+    fixVideoAttributes(document);
 
-    // observe the dom, if video content is added, fix that as well
+    // observe the DOM, if video content is added, fix that as well
     var observeDOM = (function() {
         var MutationObserver = window.MutationObserver || window.WebKitMutationObserver;
 
@@ -126,7 +126,7 @@ function removeVideoPosters() {
             if (mutation.type === 'childList' & mutation.addedNodes.length) {
                 for (const addedNode of mutation.addedNodes) {
                     if(addedNode.querySelectorAll) {
-                        removePosterAttributes(addedNode);
+                        fixVideoAttributes(addedNode);
                     }
                 }
             }

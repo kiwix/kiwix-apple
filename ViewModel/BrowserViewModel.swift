@@ -114,6 +114,7 @@ final class BrowserViewModel: NSObject, ObservableObject,
 
         // configure web view
         webView.allowsBackForwardNavigationGestures = true
+        webView.configuration.allowsInlineMediaPlayback = true
         webView.configuration.defaultWebpagePreferences.preferredContentMode = .mobile // for font adjustment to work
         webView.configuration.userContentController.removeScriptMessageHandler(forName: "headings")
         webView.configuration.userContentController.add(self, name: "headings")
