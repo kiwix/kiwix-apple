@@ -86,3 +86,50 @@ function disableVideoContextMenu() {
         video.addEventListener("contextmenu", function(e) { e.preventDefault(); }, false);
     });
 }
+
+function fixVideoElements() {
+
+    function fixVideoAttributes(element) {
+        element.querySelectorAll("video").forEach((video) => {
+            const attributes = video.attributes
+            if(attributes.getNamedItem('poster')) {
+                attributes.removeNamedItem('poster');
+            }
+        });
+    }
+
+    // fix in the currently loaded DOM
+    fixVideoAttributes(document);
+
+    // observe the DOM, if video content is added, fix that as well
+    var observeDOM = (function() {
+        var MutationObserver = window.MutationObserver || window.WebKitMutationObserver;
+
+        return function(obj, callback) {
+            if (!obj || obj.nodeType !== 1) {
+                return;
+            }
+
+            if (MutationObserver) {
+                // define a new observer
+                var mutationObserver = new MutationObserver(callback);
+                // have the observer observe for changes in children
+                mutationObserver.observe(obj, {attributes: false, childList: true, subtree: true});
+                return mutationObserver;
+            }
+        }
+    })();
+
+    // Observe the body DOM element:
+    observeDOM(document.querySelector('body'), function(mutationList) {
+        for (const mutation of mutationList) {
+            if (mutation.type === 'childList' & mutation.addedNodes.length) {
+                for (const addedNode of mutation.addedNodes) {
+                    if(addedNode.querySelectorAll) {
+                        fixVideoAttributes(addedNode);
+                    }
+                }
+            }
+        }
+    });
+}
