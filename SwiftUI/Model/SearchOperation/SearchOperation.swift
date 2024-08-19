@@ -16,21 +16,23 @@
 import Defaults
 
 extension SearchOperation {
-    var results: [SearchResult] { get { __results.array as? [SearchResult] ?? [] } }
+    var results: [SearchResult] { __results.array as? [SearchResult] ?? [] }
 
     open override func main() {
         // perform index and title search
         guard !searchText.isEmpty else { return }
         performSearch()
 
-        // parse and extract search result snippet
         guard !isCancelled else { return }
-        let snippetMode = Defaults[.searchResultSnippetMode]
-        for result in results {
-            guard !self.isCancelled else { return }
+        // reduce to unique results by id
+        let uniqueDict = Dictionary(grouping: results, by: { $0.id })
+        let values = uniqueDict.compactMapValues { $0.first }.values
+        __results = NSMutableOrderedSet(array: Array(values) )
 
-            switch snippetMode {
-            case .matches:
+        // parse and extract search result snippet
+        if case .matches = Defaults[.searchResultSnippetMode] {
+            for result in results {
+                guard !self.isCancelled else { return }
                 guard let html = result.htmlSnippet,
                       let data = html.data(using: .utf8) else { return }
                 result.snippet = try? NSAttributedString(
@@ -39,8 +41,6 @@ extension SearchOperation {
                               .characterEncoding: String.Encoding.utf8.rawValue],
                     documentAttributes: nil
                 )
-            case .disabled:
-                break
             }
         }
 
@@ -50,7 +50,7 @@ extension SearchOperation {
 
         // calculate score for all results
         for result in results {
-            guard !isCancelled else { break }
+            guard !isCancelled else { return }
             let distance = WagnerFischer.distance(result.title.lowercased()[...], searchText[...])
             if let probability = result.probability?.doubleValue {
                 result.score = NSNumber(floatLiteral: Double(distance) * Foundation.log(7.5576 - 6.4524 * probability))
