@@ -99,7 +99,7 @@ targets:
         com.apple.security.files.downloads.read-write: true
     settings:
       base:
-        MARKETING_VERSION: "3.5.0"
+        MARKETING_VERSION: "3.5.1"
         PRODUCT_BUNDLE_IDENTIFIER: self.Kiwix
         INFOPLIST_KEY_CFBundleDisplayName: Kiwix
         INFOPLIST_FILE: Support/Info.plist
