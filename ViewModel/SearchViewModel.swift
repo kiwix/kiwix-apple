@@ -15,7 +15,7 @@
 
 import Combine
 import CoreData
-import QuartzCore
+
 import Defaults
 
 class SearchViewModel: NSObject, ObservableObject, NSFetchedResultsControllerDelegate {
@@ -71,7 +71,6 @@ class SearchViewModel: NSObject, ObservableObject, NSFetchedResultsControllerDel
     }
 
     private func updateSearchResults(_ searchText: String, _ zimFileIDs: Set<UUID>) {
-        let start = CACurrentMediaTime()
         queue.cancelAllOperations()
         let operation = SearchOperation(searchText: searchText, zimFileIDs: zimFileIDs)
         operation.extractMatchingSnippet = Defaults[.searchResultSnippetMode] == .matches
@@ -80,8 +79,6 @@ class SearchViewModel: NSObject, ObservableObject, NSFetchedResultsControllerDel
             DispatchQueue.main.sync {
                 self?.results = operation.results
                 self?.inProgress = false
-                let end = CACurrentMediaTime() - start
-                debugPrint("searching for \"\(searchText)\" took: \(end)")
             }
         }
         queue.addOperation(operation)
