@@ -23,7 +23,6 @@ extension SearchOperation {
         guard !searchText.isEmpty else { return }
         performSearch()
 
-        guard !isCancelled else { return }
         // reduce to unique results by id
         let uniqueDict = Dictionary(grouping: results, by: { $0.id })
         let values = uniqueDict.compactMapValues { $0.first }.values
@@ -32,7 +31,6 @@ extension SearchOperation {
         // parse and extract search result snippet
         if case .matches = Defaults[.searchResultSnippetMode] {
             for result in results {
-                guard !self.isCancelled else { return }
                 guard let html = result.htmlSnippet,
                       let data = html.data(using: .utf8) else { return }
                 result.snippet = try? NSAttributedString(
@@ -45,8 +43,7 @@ extension SearchOperation {
         }
 
         // start sorting search results
-        guard !isCancelled else { return }
-        let searchText = self.searchText.lowercased()
+        let searchText = searchText.lowercased()
 
         // calculate score for all results
         for result in results {
