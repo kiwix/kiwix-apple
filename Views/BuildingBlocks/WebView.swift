@@ -227,6 +227,9 @@ final class WebViewConfiguration: WKWebViewConfiguration {
         setURLSchemeHandler(KiwixURLSchemeHandler(), forURLScheme: KiwixURLSchemeHandler.KiwixScheme)
         #if os(macOS)
         preferences.isElementFullscreenEnabled = true
+        #else
+        allowsInlineMediaPlayback = true
+        mediaTypesRequiringUserActionForPlayback = []
         #endif
         userContentController = {
             let controller = WKUserContentController()
