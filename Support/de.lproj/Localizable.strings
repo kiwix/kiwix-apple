@@ -38,6 +38,7 @@
 "outline_button.outline.title" = "Gliederung";
 "outline_button.outline.help" = "Artikelgliederung anzeigen";
 "outline_button.outline.empty.message" = "Keine Gliederung vorhanden";
+// Fuzzy
 "bookmark_button.show.help" = "Lesezeichen anzeigen. Gedrückt halten, um Lesezeichen für den aktuellen Artikel zu setzen oder zu entfernen.";
 "article_shortcut.main.button.title" = "Hauptartikel";
 "article_shortcut.main.button.help" = "Hauptartikel anzeigen";

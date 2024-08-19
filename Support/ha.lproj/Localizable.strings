@@ -36,6 +36,7 @@
 "outline_button.outline.title" = "Bayani";
 "outline_button.outline.help" = "Nuna jigon labarin";
 "outline_button.outline.empty.message" = "Babu wani tsari da ke akwai";
+// Fuzzy
 "bookmark_button.show.help" = "Nuna alamun shafi. Dogon danna don alamar shafi ko cire alamar labarin na yanzu.";
 "article_shortcut.main.button.title" = "Babban Labari";
 "article_shortcut.main.button.help" = "Nuna babban labarin";

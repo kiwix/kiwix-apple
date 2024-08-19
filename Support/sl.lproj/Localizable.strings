@@ -31,6 +31,7 @@
 "outline_button.outline.title" = "Oris";
 "outline_button.outline.help" = "Prikaži oris članka";
 "outline_button.outline.empty.message" = "Oris ni na voljo";
+// Fuzzy
 "bookmark_button.show.help" = "Prikaži zaznamke. Dolgo pritisnite, da dodate ali odstranite zaznamek trenutnega članka.";
 "article_shortcut.main.button.title" = "Glavni članek";
 "article_shortcut.main.button.help" = "Prikaži glavni članek";

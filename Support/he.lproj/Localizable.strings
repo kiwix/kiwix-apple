@@ -8,6 +8,7 @@
 "library_refresh_error.process.description" = "שגיאה בעיבוד נתוני ספרייה.";
 "download_service.complete.title" = "ההורדה הושלמה";
 "download_service.complete.description" = "%@ הורד בהצלחה.";
+"download_service.failed.description" = "לא ניתן להוריד את הקובץ הזה.";
 "common.dialog.button.open" = "פתיחה";
 "common.dialog.button.open_in_new_tab" = "פתיחה בלשונית חדשה";
 "common.dialog.button.add_bookmark" = "הוספת סימנייה";
@@ -38,7 +39,7 @@
 "outline_button.outline.title" = "מתאר";
 "outline_button.outline.help" = "הצגת מתאר הערך";
 "outline_button.outline.empty.message" = "אין מתאר זמין";
-"bookmark_button.show.help" = "הצגת לשוניות. לחיצה ארוכה תוסיף את הערך הנוכחי לסימניות או תסיר אותו משם.";
+"bookmark_button.show.help" = "הצגת גיליון הסימניות, שבו ניתן להוסיף את הערך הנוכחי לסימניות או להסיר אותו מהן.";
 "article_shortcut.main.button.title" = "הערך הראשי";
 "article_shortcut.main.button.help" = "הצגת הערך הראשי";
 "article_shortcut.random.button.title.mac" = "ערך אקראי";
@@ -74,6 +75,7 @@
 "zim_file_opened.toolbar.open.title" = "פתיחה...";
 "zim_file_opened.toolbar.open.help" = "פתיחת קובץ ZIM";
 "zim_file_category.title" = "קטגוריה";
+"zim_file_catalog.fetching.message" = "הקטלוג יורד...";
 "zim_file_category.section.empty.message" = "אין קובץ ZIM בקטגוריה הזאת.";
 "zim_file_downloads.overlay.empty.message" = "אין משימות הורדה";
 "zim_file_downloads.toolbar.show_sidebar.label" = "הצגת סרגל צד";

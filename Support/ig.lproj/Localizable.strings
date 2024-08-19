@@ -36,6 +36,7 @@
 "outline_button.outline.title" = "Nkọwapụta";
 "outline_button.outline.help" = "Gosi ndepụta isiakụkọ";
 "outline_button.outline.empty.message" = "Enweghị nkọwapụta isiokwu dị";
+// Fuzzy
 "bookmark_button.show.help" = "Gosi akara akwụkwọ. ịpị Ogologo oge iji  hụba  akwụkwọ ama maọbụ wepụ akara akwụkwọ edemede nke ugbu a.";
 "article_shortcut.main.button.title" = "Isi ederede";
 "article_shortcut.main.button.help" = "Gosi isi ederede";

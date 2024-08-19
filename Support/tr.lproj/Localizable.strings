@@ -32,6 +32,7 @@
 "outline_button.outline.title" = "Özet";
 "outline_button.outline.help" = "Makale özetini göster";
 "outline_button.outline.empty.message" = "Özet bulunamadı";
+// Fuzzy
 "bookmark_button.show.help" = "Yer işaretlerini göster. Geçerli makaleye yer işareti koymak veya yer işaretini kaldırmak için uzun basın.";
 "article_shortcut.main.button.title" = "Ana Makale";
 "article_shortcut.main.button.help" = "Ana makaleyi göster";

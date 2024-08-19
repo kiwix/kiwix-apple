@@ -42,6 +42,7 @@
 "outline_button.outline.title" = "Содержание";
 "outline_button.outline.help" = "Показать содержание статьи";
 "outline_button.outline.empty.message" = "Нет доступных содержаний";
+// Fuzzy
 "bookmark_button.show.help" = "Показать закладки. Длительное нажатие, чтобы добавить в закладки текущую статью или удалить ее из закладок.";
 "article_shortcut.main.button.title" = "Основная статья";
 "article_shortcut.main.button.help" = "Показать основную статью";

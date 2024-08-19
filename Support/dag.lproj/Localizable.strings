@@ -32,6 +32,7 @@
 "outline_button.outline.title" = "Ŋmahiŋgbana";
 "outline_button.outline.help" = "Wuhimi lahabali ŋmahiŋgbana";
 "outline_button.outline.empty.message" = "Ŋmahiŋgbana kani";
+// Fuzzy
 "bookmark_button.show.help" = "Wuhimi buku'dalima. Dihi yuugi n-ti buku'daliŋ bee ka buku'daliŋ saha ŋɔ lahabali.";
 "article_shortcut.main.button.title" = "Lahabali kpani";
 "article_shortcut.main.button.help" = "Wuhimi lahabali kpani";

@@ -37,6 +37,7 @@
 "outline_button.outline.title" = "Schizzo";
 "outline_button.outline.help" = "Monstrar schizzo del articulo";
 "outline_button.outline.empty.message" = "Necun schizzo disponibile";
+// Fuzzy
 "bookmark_button.show.help" = "Monstrar marcapaginas. Preme longemente pro adder o retirar iste articulo al marcapaginas.";
 "article_shortcut.main.button.title" = "Articulo principal";
 "article_shortcut.main.button.help" = "Monstrar articulo principal";
