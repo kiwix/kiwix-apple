@@ -26,29 +26,23 @@ extension SearchOperation {
         // parse and extract search result snippet
         guard !isCancelled else { return }
         let snippetMode = Defaults[.searchResultSnippetMode]
-        let dispatchGroup = DispatchGroup()
         for result in results {
-            dispatchGroup.enter()
-            DispatchQueue.global(qos: .userInitiated).async {
-                defer { dispatchGroup.leave() }
-                guard !self.isCancelled else { return }
+            guard !self.isCancelled else { return }
 
-                switch snippetMode {
-                case .matches:
-                    guard let html = result.htmlSnippet,
-                          let data = html.data(using: .utf8) else { return }
-                    result.snippet = try? NSAttributedString(
-                        data: data,
-                        options: [.documentType: NSAttributedString.DocumentType.html,
-                                  .characterEncoding: String.Encoding.utf8.rawValue],
-                        documentAttributes: nil
-                    )
-                case .disabled:
-                    break
-                }
+            switch snippetMode {
+            case .matches:
+                guard let html = result.htmlSnippet,
+                      let data = html.data(using: .utf8) else { return }
+                result.snippet = try? NSAttributedString(
+                    data: data,
+                    options: [.documentType: NSAttributedString.DocumentType.html,
+                              .characterEncoding: String.Encoding.utf8.rawValue],
+                    documentAttributes: nil
+                )
+            case .disabled:
+                break
             }
         }
-        dispatchGroup.wait()
 
         // start sorting search results
         guard !isCancelled else { return }
