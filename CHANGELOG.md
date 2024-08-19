@@ -41,6 +41,7 @@
     - iOS double sheet for Library (@BPerlakiH 925)
     - Translation issues with help buttons (@HiroyasuNishiyama @BPerlakiH #929 #930)
     - iOS Add space in article count label (@BPerlakiH #932)
+    - Blank search results (@BPerlakiH #943)
 
 ## 3.4.0
   - FIX: 
