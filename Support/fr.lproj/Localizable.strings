@@ -3,6 +3,7 @@
 // Author: Adriendelucca
 // Author: Crochet.david
 // Author: Gomoko
+// Author: Goombiis
 // Author: Hecatonchire
 // Author: MacOS Weed
 // Author: McDutchie
@@ -17,6 +18,7 @@
 "library_refresh_error.process.description" = "Erreur lors du traitement des données de la bibliothèque.";
 "download_service.complete.title" = "Téléchargement terminé";
 "download_service.complete.description" = "%@ A été téléchargé avec succès.";
+"download_service.failed.description" = "Impossible de télécharger ce fichier.";
 "common.dialog.button.open" = "Ouvrir";
 "common.dialog.button.open_in_new_tab" = "Ouvrir dans un nouvel onglet";
 "common.dialog.button.add_bookmark" = "Ajouter un marque-page";
