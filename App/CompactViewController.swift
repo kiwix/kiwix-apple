@@ -104,6 +104,7 @@ final class CompactViewController: UIHostingController<AnyView>, UISearchControl
     func willDismissSearchController(_ searchController: UISearchController) {
         navigationController?.setToolbarHidden(false, animated: true)
         searchViewModel.searchText = ""
+        navigationItem.trailingItemGroups = trailingNavItemGroups
     }
 
     func updateSearchResults(for searchController: UISearchController) {
