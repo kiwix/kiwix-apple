@@ -75,7 +75,7 @@
 "zim_file_opened.toolbar.open.title" = "פתיחה...";
 "zim_file_opened.toolbar.open.help" = "פתיחת קובץ ZIM";
 "zim_file_category.title" = "קטגוריה";
-"zim_file_catalog.fetching.message" = "הקטלוג יורד...";
+"zim_file_catalog.fetching.message" = "הקטלוג מאוחזר...";
 "zim_file_category.section.empty.message" = "אין קובץ ZIM בקטגוריה הזאת.";
 "zim_file_downloads.overlay.empty.message" = "אין משימות הורדה";
 "zim_file_downloads.toolbar.show_sidebar.label" = "הצגת סרגל צד";

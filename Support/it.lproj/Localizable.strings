@@ -25,8 +25,7 @@
 "common.tab.list.close" = "Chiudi scheda";
 "common.tab.menu.library" = "Libreria";
 "common.tab.menu.settings" = "Impostazioni";
-// Fuzzy
-"bookmark_button.show.help" = "Mostra preferiti. Premi a lungo per aggiungere o rimuovere dai preferiti la voce corrente.";
+"bookmark_button.show.help" = "Mostra il foglio dei segnalibri, dove la voce attuale può essere aggiunta o rimossa dai segnalibri.";
 "article_shortcut.random.button.title.ios" = "Una pagina a caso";
 "article_shortcut.random.button.help" = "Una voce a caso";
 "alert_handler.alert.failed.title" = "Impossibile caricare la voce richiesta.";
