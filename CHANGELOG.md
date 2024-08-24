@@ -1,4 +1,7 @@
 ## 3.5.1
+- FIX:
+  - Leaving or entering PIP pause the video (@BPerlakiH #948)
+  - Fix search bar inconsistencies on iPhone (@BPerlakiH #947)
 
 ## 3.5.0
   - NEW:

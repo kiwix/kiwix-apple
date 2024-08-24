@@ -68,7 +68,7 @@ struct BrowserTab: View {
             browser.refreshVideoState()
         }
         .onDisappear {
-            browser.onDisappear()
+            browser.pauseVideoWhenNotInPIP()
             browser.persistState()
         }
     }

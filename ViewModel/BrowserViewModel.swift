@@ -220,10 +220,6 @@ final class BrowserViewModel: NSObject, ObservableObject,
         tab.lastOpened = Date()
     }
 
-    func onDisappear() {
-        webView.pauseAllMediaPlayback()
-    }
-
     func persistState() {
         guard let tabID,
               let tab = try? Database.shared.viewContext.existingObject(with: tabID) as? Tab else {
@@ -267,11 +263,19 @@ final class BrowserViewModel: NSObject, ObservableObject,
     }
 
     // MARK: - Video fixes
+    func pauseVideoWhenNotInPIP() {
+        // webView.pauseAllMediaPlayback() is not good enough
+        // as that pauses in Picture in Picture mode as well.
+        // Detecting PiP on a AVPictureInPictureController created by WKWebView
+        // is currently non-trivial from the swift side
+        webView.evaluateJavaScript("pauseVideoWhenNotInPIP();")
+    }
+
     @MainActor
     func refreshVideoState() {
-        Task {
-            await MainActor.run {
-                webView.evaluateJavaScript("refreshVideoState();")
+        Task { [weak webView] in
+            await MainActor.run { [weak webView] in
+                webView?.evaluateJavaScript("refreshVideoState();")
             }
         }
     }

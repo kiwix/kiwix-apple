@@ -174,7 +174,9 @@ class SidebarViewController: UICollectionViewController, NSFetchedResultsControl
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         guard let splitViewController = splitViewController as? SplitViewController,
               let navigationItem = dataSource.itemIdentifier(for: indexPath) else { return }
-        splitViewController.navigationViewModel.currentItem = navigationItem
+        if splitViewController.navigationViewModel.currentItem != navigationItem {
+            splitViewController.navigationViewModel.currentItem = navigationItem
+        }
         if splitViewController.displayMode == .oneOverSecondary {
             splitViewController.hide(.primary)
         }
