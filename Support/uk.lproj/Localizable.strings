@@ -18,6 +18,7 @@
 "common.button.print" = "Роздрукувати";
 "common.button.share" = "Поділитися";
 "common.search" = "Пошук";
+"common.tab.manager.title" = "Менеджер вкладок";
 "common.tab.navigation.title" = "Вкладки";
 "common.tab.menu.new_tab" = "Нова вкладка";
 "common.tab.menu.close_this" = "Закрити цю вкладку";
@@ -45,6 +46,7 @@
 "file_import.alert.no_open.title" = "Не вдалося відкрити файл";
 "file_import.alert.no_open.message" = "%@ неможливо відкрити.";
 "attribute.detail.unknown" = "Невідомо";
+"download_task_cell.status.failed" = "Не вдалося";
 "download_task_cell.status.downloading" = "Завантаження…";
 "download_task_cell.status.paused" = "Призупинено";
 "flavor_tag.help.max" = "усе, крім великих медіафайлів, таких як відео/аудіо";
@@ -139,7 +141,7 @@
 "settings.about.dependencies.name" = "Назва";
 "settings.about.dependencies.license" = "Ліцензія";
 "settings.about.dependencies.version" = "Версія";
-"settings.about.description" = "Kiwix — це офлайн-читач онлайн-контенту, як-от Wikipedia, Project Gutenberg або TED Talks. Він робить знання доступними для людей, які не мають або мають обмежений доступ до Інтернету. Програмне забезпечення і вміст є безкоштовними для використання будь-ким.";
+"settings.about.description" = "Kiwix — це офлайн-читач онлайн-контенту, як-от Вікіпедія, Project Gutenberg або TED Talks. Він робить знання доступними для людей, які не мають або мають обмежений доступ до Інтернету. Програмне забезпечення і вміст є безкоштовними для використання будь-ким.";
 "settings.about.license-description" = "Ця програма випущена згідно з умовами GNU General Public License версії 3.";
 "settings.about.appverion.title" = "Версія";
 "settings.about.build.title" = "Збірка";
@@ -199,6 +201,7 @@
 "enum.navigation_item.reading" = "Читання";
 "enum.navigation_item.bookmarks" = "Закладки";
 "enum.navigation_item.new_tab" = "Нова вкладка";
+"enum.navigation_item.opened" = "Відкрито";
 "enum.navigation_item.categories" = "Категорії";
 "enum.navigation_item.new" = "Нове";
 "enum.navigation_item.downloads" = "Завантаження";
