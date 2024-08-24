@@ -205,7 +205,7 @@ struct RootView: View {
             }
             if let tabID = browser.tabID {
                 // tab closed by user
-                browser.onDisappear()
+                browser.pauseVideoWhenNotInPIP()
                 navigation.deleteTab(tabID: tabID)
             }
         }

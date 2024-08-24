@@ -67,6 +67,16 @@ function scrollToHeading(id) {
 	element.scrollIntoView({block: 'start', inline: 'start', behavior: 'smooth'})
 }
 
+function pauseVideoWhenNotInPIP() {
+    // make sure it's not in picture in picture mode:
+    if (document.pictureInPictureElement != null) {
+        return;
+    }
+    document.querySelectorAll("video").forEach((video) => {
+        video.pause();
+    });
+}
+
 function refreshVideoState() {
     // make sure it's not in picture in picture mode:
     if (document.pictureInPictureElement != null) {

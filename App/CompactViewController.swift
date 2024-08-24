@@ -21,6 +21,7 @@
 import Combine
 import SwiftUI
 import UIKit
+import CoreData
 
 final class CompactViewController: UIHostingController<AnyView>, UISearchControllerDelegate, UISearchResultsUpdating {
     private let searchViewModel: SearchViewModel
@@ -136,7 +137,7 @@ private struct CompactView: View {
 
     var body: some View {
         if case let .tab(tabID) = navigation.currentItem {
-            Content(showLibrary: {
+            Content(tabID: tabID, showLibrary: {
                 if presentedSheet == nil {
                     presentedSheet = .library(.categories)
                 } else {
@@ -204,6 +205,7 @@ private struct Content: View {
         sortDescriptors: [NSSortDescriptor(keyPath: \ZimFile.size, ascending: false)],
         predicate: ZimFile.openedPredicate
     ) private var zimFiles: FetchedResults<ZimFile>
+    let tabID: NSManagedObjectID?
     let showLibrary: () -> Void
 
     var body: some View {
@@ -222,8 +224,15 @@ private struct Content: View {
             browser.updateLastOpened()
         }
         .onDisappear {
-            browser.onDisappear()
-            browser.persistState()
+            // since the browser is comming from @Environment,
+            // by the time we get to .onDisappear,
+            // it will reference not this, but the new Tab we switched to.
+            // Therefore we need to find this browser again by tabID
+            if let tabID {
+                let thisBrowser = BrowserViewModel.getCached(tabID: tabID)
+                thisBrowser.pauseVideoWhenNotInPIP()
+                thisBrowser.persistState()
+            }
         }
         .toolbar {
             ToolbarItemGroup(placement: .primaryAction) {
