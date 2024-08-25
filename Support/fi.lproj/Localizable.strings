@@ -99,8 +99,6 @@
 "search_result.sidebar.button.remove" = "Poista";
 "search_result.header.text" = "Viimeisin haku";
 "search_result.button.clear" = "Tyhjennä";
-"search_result.clear_dialog.title" = "Tyhjennä viimeisimmät haut";
-"search_result.clear_dialog.button.all" = "Tyhjennä kaikki";
 "search_result.filter_hearder.button.all" = "Kaikki";
 "welcome.main_page.title" = "Etusivu";
 "welcome.grid.bookmarks.title" = "Kirjanmerkit";

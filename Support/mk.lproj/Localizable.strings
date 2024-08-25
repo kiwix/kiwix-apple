@@ -176,9 +176,6 @@
 "search_result.sidebar.button.remove" = "Отстрани";
 "search_result.header.text" = "Скорешни пребарувања";
 "search_result.button.clear" = "Исчисти";
-"search_result.clear_dialog.title" = "Исчисти скорешни пребарувања";
-"search_result.clear_dialog.button.all" = "Исчисти сè";
-"search_result.clear_dialog.description" = "Ќе бидат отстранети сите скорешни пребарувања од историјата.";
 "search_result.filter_hearder.text" = "Вклучено во пребарувањето";
 "search_result.filter_hearder.button.none" = "Ништо";
 "search_result.filter_hearder.button.all" = "Сите";

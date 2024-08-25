@@ -175,9 +175,6 @@
 "search_result.sidebar.button.remove" = "Cire";
 "search_result.header.text" = "Bincike na baya-baya:";
 "search_result.button.clear" = "Share";
-"search_result.clear_dialog.title" = "Share binciken baya-bayan nan";
-"search_result.clear_dialog.button.all" = "Share Duk";
-"search_result.clear_dialog.description" = "Za a cire duk tarihin binciken kwanan nan.";
 "search_result.filter_hearder.text" = "Kunshe cikin Bincike";
 "search_result.filter_hearder.button.none" = "Babu";
 "search_result.filter_hearder.button.all" = "Duka";

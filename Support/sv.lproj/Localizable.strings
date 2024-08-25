@@ -178,9 +178,6 @@
 "search_result.sidebar.button.remove" = "Ta bort";
 "search_result.header.text" = "Senaste sökning";
 "search_result.button.clear" = "Rensa";
-"search_result.clear_dialog.title" = "Rensa senaste sökningar";
-"search_result.clear_dialog.button.all" = "Rensa allt";
-"search_result.clear_dialog.description" = "All senaste sökhistorik kommer att tas bort.";
 "search_result.filter_hearder.text" = "Inkluderas i sökning";
 "search_result.filter_hearder.button.none" = "Ingen";
 "search_result.filter_hearder.button.all" = "Alla";

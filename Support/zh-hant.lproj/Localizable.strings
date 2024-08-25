@@ -178,9 +178,6 @@
 "search_result.sidebar.button.remove" = "移除";
 "search_result.header.text" = "最近搜尋";
 "search_result.button.clear" = "清除";
-"search_result.clear_dialog.title" = "清除最近搜尋";
-"search_result.clear_dialog.button.all" = "全部清除";
-"search_result.clear_dialog.description" = "將會移除全部的最近搜尋歷史。";
 "search_result.filter_hearder.text" = "包含在搜尋中";
 "search_result.filter_hearder.button.none" = "無";
 "search_result.filter_hearder.button.all" = "全部";

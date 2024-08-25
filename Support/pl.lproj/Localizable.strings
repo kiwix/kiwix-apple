@@ -129,8 +129,6 @@
 "search_result.sidebar.button.remove" = "Usuń";
 "search_result.header.text" = "Ostatnie wyszukiwanie";
 "search_result.button.clear" = "Wyczyść";
-"search_result.clear_dialog.title" = "Wyczyść ostatnie wyszukiwania";
-"search_result.clear_dialog.button.all" = "Wyczyść wszystko";
 "search_result.filter_hearder.button.none" = "Żadne";
 "search_result.filter_hearder.button.all" = "Wszystkie";
 "welcome.main_page.title" = "Strona główna";

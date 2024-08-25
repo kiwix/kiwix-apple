@@ -175,9 +175,6 @@
 "search_result.sidebar.button.remove" = "Remover";
 "search_result.header.text" = "Recerca recente";
 "search_result.button.clear" = "Rader";
-"search_result.clear_dialog.title" = "Rader le recercas recente";
-"search_result.clear_dialog.button.all" = "Rader totes";
-"search_result.clear_dialog.description" = "Tote le historia de recercas recente essera eliminate.";
 "search_result.filter_hearder.text" = "Includite in recerca";
 "search_result.filter_hearder.button.none" = "Necun";
 "search_result.filter_hearder.button.all" = "Totes";

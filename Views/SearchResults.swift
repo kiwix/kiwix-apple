@@ -28,7 +28,6 @@ struct SearchResults: View {
         predicate: ZimFile.Predicate.isDownloaded,
         animation: .easeInOut
     ) private var zimFiles: FetchedResults<ZimFile>
-    @State private var isClearSearchConfirmationPresented = false
 
     private let openURL = NotificationCenter.default.publisher(for: .openURL)
 
@@ -138,16 +137,9 @@ struct SearchResults: View {
             Text("search_result.header.text".localized)
             Spacer()
             Button {
-                isClearSearchConfirmationPresented = true
+                recentSearchTexts.removeAll()
             } label: {
                 Text("search_result.button.clear".localized).font(.caption).fontWeight(.medium)
-            }.confirmationDialog("search_result.clear_dialog.title".localized,
-                                 isPresented: $isClearSearchConfirmationPresented) {
-                Button("search_result.clear_dialog.button.all".localized, role: .destructive) {
-                    recentSearchTexts.removeAll()
-                }
-            } message: {
-                Text("search_result.clear_dialog.description".localized)
             }
         }
     }
