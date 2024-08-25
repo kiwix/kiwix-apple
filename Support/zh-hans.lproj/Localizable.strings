@@ -178,9 +178,6 @@
 "search_result.sidebar.button.remove" = "移除";
 "search_result.header.text" = "最近搜索";
 "search_result.button.clear" = "清除";
-"search_result.clear_dialog.title" = "清除最近搜索";
-"search_result.clear_dialog.button.all" = "全部清除";
-"search_result.clear_dialog.description" = "所有最近的搜索历史记录将被删除。";
 "search_result.filter_hearder.text" = "包含在搜索中";
 "search_result.filter_hearder.button.none" = "无";
 "search_result.filter_hearder.button.all" = "全部";

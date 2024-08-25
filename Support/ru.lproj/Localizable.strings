@@ -180,9 +180,6 @@
 "search_result.sidebar.button.remove" = "Удалить";
 "search_result.header.text" = "Недавний поиск";
 "search_result.button.clear" = "Очистить";
-"search_result.clear_dialog.title" = "Очистить список последних поисковых запросов";
-"search_result.clear_dialog.button.all" = "Очистить все";
-"search_result.clear_dialog.description" = "Вся недавняя история поиска будет удалена.";
 "search_result.filter_hearder.text" = "Включено в поиск";
 "search_result.filter_hearder.button.none" = "Нет";
 "search_result.filter_hearder.button.all" = "Все";

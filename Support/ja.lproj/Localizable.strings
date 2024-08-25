@@ -178,9 +178,6 @@
 "search_result.sidebar.button.remove" = "削除";
 "search_result.header.text" = "最近の検索";
 "search_result.button.clear" = "消去";
-"search_result.clear_dialog.title" = "最近の検索を消去";
-"search_result.clear_dialog.button.all" = "すべてクリア";
-"search_result.clear_dialog.description" = "最近の検索履歴が全て削除されます。";
 "search_result.filter_hearder.text" = "検索対象";
 "search_result.filter_hearder.button.none" = "無し";
 "search_result.filter_hearder.button.all" = "全て";

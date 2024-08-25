@@ -185,9 +185,6 @@
 "search_result.sidebar.button.remove" = "Wepụ";
 "search_result.header.text" = "Ọchụchọ na nso nso a";
 "search_result.button.clear" = "Kpochapụ";
-"search_result.clear_dialog.title" = "Kpochapụ ọchụchọ ndị na-adịbeghị anya";
-"search_result.clear_dialog.button.all" = "Kpochapụ ihe niile";
-"search_result.clear_dialog.description" = "A ga-ewepụ akụkọ ọchụchọ niile na nso nso a.";
 "search_result.filter_hearder.text" = "Agụnyere na Ọchụchọ";
 "search_result.filter_hearder.button.none" = "Efù";
 "search_result.filter_hearder.button.all" = "Haníle";

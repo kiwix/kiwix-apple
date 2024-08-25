@@ -157,9 +157,6 @@
 "search_result.sidebar.button.remove" = "Видалити";
 "search_result.header.text" = "Недавні пошукові запити";
 "search_result.button.clear" = "Очистити";
-"search_result.clear_dialog.title" = "Очистити історію пошуку";
-"search_result.clear_dialog.button.all" = "Видалити все";
-"search_result.clear_dialog.description" = "Усю недавню історію пошуку буде видалено.";
 "search_result.filter_hearder.text" = "Включено в пошук";
 "search_result.filter_hearder.button.none" = "Жоден";
 "search_result.filter_hearder.button.all" = "Усі";

@@ -177,9 +177,6 @@
 "search_result.sidebar.button.remove" = "הסרה";
 "search_result.header.text" = "חיפוש אחרון";
 "search_result.button.clear" = "ניקוי";
-"search_result.clear_dialog.title" = "ניקוי החיפושים האחרונים";
-"search_result.clear_dialog.button.all" = "ניקוי הכול";
-"search_result.clear_dialog.description" = "כל היסטוריית החיפושים האחרונה תוסר.";
 "search_result.filter_hearder.text" = "כלול בחיפוש";
 "search_result.filter_hearder.button.none" = "אין";
 "search_result.filter_hearder.button.all" = "הכול";
