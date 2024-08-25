@@ -41,10 +41,8 @@ struct MigrationService {
 
     func migrateAll(using userDefaults: UserDefaulting = UserDefaults.standard) -> Bool {
         var allSucceeded = true
-        for migration in migrations {
-            if migration.migrate(userDefaults) == false {
-                allSucceeded = false
-            }
+        for migration in migrations where migration.migrate(userDefaults) == false {
+            allSucceeded = false
         }
         return allSucceeded
     }

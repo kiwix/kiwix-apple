@@ -87,7 +87,7 @@ final class MigrationServiceTests: XCTestCase {
 private final class MockUserDefaults: UserDefaulting {
     private var values: [String: Bool]
 
-    init(values: [String : Bool] = [:]) {
+    init(values: [String: Bool] = [:]) {
         self.values = values
     }
 
