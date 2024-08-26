@@ -161,9 +161,6 @@
 "search_result.sidebar.button.remove" = "Yihi";
 "search_result.header.text" = "Saha ŋɔ vihigu";
 "search_result.button.clear" = "Yihi";
-"search_result.clear_dialog.title" = "Yihimi saha ŋɔ vihisi";
-"search_result.clear_dialog.button.all" = "Yihimi zaa";
-"search_result.clear_dialog.description" = "Saha ŋɔ vihigu taarihi nyɛla din yɛn yihi.";
 "search_result.filter_hearder.text" = "Pahila vihigu ni";
 "search_result.filter_hearder.button.none" = "Baabiɛla";
 "search_result.filter_hearder.button.all" = "Zaa";

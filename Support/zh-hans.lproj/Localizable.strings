@@ -3,6 +3,7 @@
 // Author: Dream Star.cn
 // Author: Kichin
 // Author: Vibrance
+// Author: XtexChooser
 // Author: 沈澄心
 
 "library_refresh_error.retrieve.description" = "检索图书馆数据时发生错误。";
@@ -10,6 +11,7 @@
 "library_refresh_error.process.description" = "处理图书馆数据时发生错误。";
 "download_service.complete.title" = "下载完成";
 "download_service.complete.description" = "已成功下载%@";
+"download_service.failed.description" = "无法下载此文件。";
 "common.dialog.button.open" = "打开";
 "common.dialog.button.open_in_new_tab" = "在新标签页中打开";
 "common.dialog.button.add_bookmark" = "添加书签";
@@ -40,8 +42,7 @@
 "outline_button.outline.title" = "大纲";
 "outline_button.outline.help" = "显示文章大纲";
 "outline_button.outline.empty.message" = "暂无概要";
-// Fuzzy
-"bookmark_button.show.help" = "显示书签。长按可添加或取消当前文章的书签。";
+"bookmark_button.show.help" = "显示书签表，长按可添加或移除当前文章的书签。";
 "article_shortcut.main.button.title" = "主条目";
 "article_shortcut.main.button.help" = "显示主条目";
 "article_shortcut.random.button.title.mac" = "随机条目";
@@ -77,6 +78,7 @@
 "zim_file_opened.toolbar.open.title" = "打开...";
 "zim_file_opened.toolbar.open.help" = "打开 ZIM 文件";
 "zim_file_category.title" = "分类";
+"zim_file_catalog.fetching.message" = "正在获取目录…";
 "zim_file_category.section.empty.message" = "该类别下没有 ZIM 文件。";
 "zim_file_downloads.overlay.empty.message" = "没有下载任务";
 "zim_file_downloads.toolbar.show_sidebar.label" = "显示侧边栏";

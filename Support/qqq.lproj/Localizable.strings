@@ -171,9 +171,6 @@
 "search_result.sidebar.button.remove" = "Button text on search results, to remove former results";
 "search_result.header.text" = "Title for listing the recent search results";
 "search_result.button.clear" = "Button title for clearing the recent search results";
-"search_result.clear_dialog.title" = "Clear Recent Searches";
-"search_result.clear_dialog.button.all" = "Clear All";
-"search_result.clear_dialog.description" = "Warning popup title on attempting to clear search results";
 "search_result.filter_hearder.text" = "Title for section listing all the ZIM files we should search in";
 "search_result.filter_hearder.button.none" = "Button title to toggle ZIM files selected for searching in";
 "search_result.filter_hearder.button.all" = "Button title to toggle ZIM files selected for searching in";
