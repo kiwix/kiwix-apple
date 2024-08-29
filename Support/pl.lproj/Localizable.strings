@@ -14,6 +14,8 @@
 "common.button.cancel" = "Anuluj";
 "common.button.yes" = "Tak";
 "common.button.no" = "nie";
+"common.button.print" = "Drukuj";
+"common.button.share" = "Udostępnij";
 "common.search" = "Szukaj";
 "common.tab.manager.title" = "Menedżer zakładek";
 "common.tab.navigation.title" = "Zakładki";
@@ -23,6 +25,9 @@
 "common.tab.list.close" = "Zamknij zakładkę";
 "common.tab.menu.library" = "Biblioteka";
 "common.tab.menu.settings" = "Ustawienia";
+"common.support.app_name" = "Wsparcie %@";
+"common.export_file.alert.title" = "Eksportuj plik";
+"common.export_file.alert.button.title" = "Eksportuj";
 "bookmark_context_menu.view.title" = "Podgląd";
 "bookmark_context_menu.remove.title" = "Usuń";
 "external_link_handler.alert.title" = "Link zewnętrzny";

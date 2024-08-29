@@ -39,8 +39,7 @@
 "outline_button.outline.title" = "大綱";
 "outline_button.outline.help" = "顯示條目大綱";
 "outline_button.outline.empty.message" = "沒有可用的大綱";
-// Fuzzy
-"bookmark_button.show.help" = "顯示書籤。長壓可為目前條目加入/取消加入到書籤。";
+"bookmark_button.show.help" = "顯示書籤表，可在此從書籤加入/移除目前的條目。";
 "article_shortcut.main.button.title" = "主條目";
 "article_shortcut.main.button.help" = "顯示主條目";
 "article_shortcut.random.button.title.mac" = "隨機條目";
