@@ -1,3 +1,6 @@
+## 3.6.0
+
+
 ## 3.5.1
 - FIX:
   - Leaving or entering PIP pause the video (@BPerlakiH #948)
