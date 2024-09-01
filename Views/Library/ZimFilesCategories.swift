@@ -119,9 +119,12 @@ private struct CategoryGrid: View {
     var body: some View {
         Group {
             if sections.isEmpty {
-                if viewModel.state == .inProgress {
+                switch viewModel.state {
+                case .inProgress:
                     Message(text: "zim_file_catalog.fetching.message".localized)
-                } else {
+                case .error:
+                    Message(text: "library_refresh_error.retrieve.description".localized, color: .red)
+                case .initial, .complete:
                     Message(text: "zim_file_category.section.empty.message".localized)
                 }
             } else {
@@ -224,9 +227,12 @@ private struct CategoryList: View {
     var body: some View {
         Group {
             if zimFiles.isEmpty {
-                if viewModel.state == .inProgress {
+                switch viewModel.state {
+                case .inProgress:
                     Message(text: "zim_file_catalog.fetching.message".localized)
-                } else {
+                case .error:
+                    Message(text: "library_refresh_error.retrieve.description".localized, color: .red)
+                case .initial, .complete:
                     Message(text: "zim_file_category.section.empty.message".localized)
                 }
             } else {

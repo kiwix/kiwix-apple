@@ -77,8 +77,13 @@ struct LibrarySettings: View {
                         ProgressView().progressViewStyle(.circular).scaleEffect(0.5).frame(height: 1)
                     }
                     Spacer()
-                    Text("library_settings.last_refresh.text".localized + ":").foregroundColor(.secondary)
-                    LibraryLastRefreshTime().foregroundColor(.secondary)
+                    if library.state == .error {
+                        Text("library_refresh_error.retrieve.description".localized).foregroundColor(.red)
+                    } else {
+                        Text("library_settings.last_refresh.text".localized + ":").foregroundColor(.secondary)
+                        LibraryLastRefreshTime().foregroundColor(.secondary)
+                    }
+
                 }
                 VStack(alignment: .leading) {
                     Toggle("library_settings.auto_refresh.toggle".localized, isOn: $libraryAutoRefresh)
@@ -200,9 +205,13 @@ struct Settings: View {
     var catalogSettings: some View {
         Section {
             HStack {
-                Text("catalog_settings.last_refresh.text".localized)
-                Spacer()
-                LibraryLastRefreshTime().foregroundColor(.secondary)
+                if library.state == .error {
+                    Text("library_refresh_error.retrieve.description".localized).foregroundColor(.red)
+                } else {
+                    Text("catalog_settings.last_refresh.text".localized)
+                    Spacer()
+                    LibraryLastRefreshTime().foregroundColor(.secondary)
+                }
             }
             if library.state == .inProgress {
                 HStack {

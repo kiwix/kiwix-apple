@@ -16,14 +16,20 @@
 import SwiftUI
 
 struct Message: View {
-    let text: String
+    private let text: String
+    private let foregroundColor: Color
+
+    init(text: String, color: Color = .secondary) {
+        self.text = text
+        foregroundColor = color
+    }
 
     var body: some View {
         VStack {
             Spacer()
             HStack {
                 Spacer()
-                Text(text).font(.title2).foregroundColor(.secondary)
+                Text(text).font(.title2).foregroundColor(foregroundColor)
                 Spacer()
             }
             Spacer()

@@ -41,6 +41,9 @@ struct Welcome: View {
                     logo
                     Divider()
                     actions
+                    Text("library_refresh_error.retrieve.description".localized)
+                        .foregroundColor(.red)
+                        .opacity(library.state == .error ? 1 : 0)
                     Spacer()
                 }
                 #if os(macOS)
@@ -53,7 +56,7 @@ struct Welcome: View {
             .padding()
             .ignoresSafeArea()
             .onChange(of: library.state) { state in
-                guard state != .inProgress else { return }
+                guard state == .complete else { return }
                 #if os(macOS)
                 navigation.currentItem = .categories
                 #elseif os(iOS)

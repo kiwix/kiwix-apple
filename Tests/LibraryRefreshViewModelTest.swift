@@ -45,7 +45,7 @@ final class LibraryRefreshViewModelTest: XCTestCase {
 
         HTTPTestingURLProtocol.handler = { urlProtocol in
             let response = HTTPURLResponse(
-                url: URL(string: "https://library.kiwix.org/catalog/v2/entries?count=-1")!,
+                url: LibraryViewModel.catalogURL,
                 statusCode: 200, httpVersion: nil, headerFields: [:]
             )!
             let data = self.makeOPDSData(zimFileID: UUID()).data(using: .utf8)!
@@ -112,7 +112,7 @@ final class LibraryRefreshViewModelTest: XCTestCase {
     func testFetchBadStatusCode() async {
         HTTPTestingURLProtocol.handler = { urlProtocol in
             let response = HTTPURLResponse(
-                url: URL(string: "https://library.kiwix.org/catalog/v2/entries?count=-1")!,
+                url: LibraryViewModel.catalogURL,
                 statusCode: 404, httpVersion: nil, headerFields: [:]
             )!
             urlProtocol.client?.urlProtocol(urlProtocol, didReceive: response, cacheStoragePolicy: .notAllowed)
@@ -134,7 +134,7 @@ final class LibraryRefreshViewModelTest: XCTestCase {
     func testInvalidOPDSData() async {
         HTTPTestingURLProtocol.handler = { urlProtocol in
             let response = HTTPURLResponse(
-                url: URL(string: "https://library.kiwix.org/catalog/v2/entries?count=-1")!,
+                url: LibraryViewModel.catalogURL,
                 statusCode: 200, httpVersion: nil, headerFields: [:]
             )!
             urlProtocol.client?.urlProtocol(urlProtocol, didLoad: "Invalid OPDS Data".data(using: .utf8)!)
@@ -158,7 +158,7 @@ final class LibraryRefreshViewModelTest: XCTestCase {
         let zimFileID = UUID()
         HTTPTestingURLProtocol.handler = { urlProtocol in
             let response = HTTPURLResponse(
-                url: URL(string: "https://library.kiwix.org/catalog/v2/entries?count=-1")!,
+                url: LibraryViewModel.catalogURL,
                 statusCode: 200, httpVersion: nil, headerFields: [:]
             )!
             let data = self.makeOPDSData(zimFileID: zimFileID).data(using: .utf8)!
