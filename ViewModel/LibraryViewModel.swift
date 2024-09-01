@@ -45,7 +45,6 @@ enum LibraryState {
 }
 
 final class LibraryViewModel: ObservableObject {
-    static let catalogURL = URL(string: "https://library.kiwix.org/catalog/v2/entries?count=-1")!
     @Published var selectedZimFile: ZimFile?
     @MainActor @Published private(set) var error: Error?
     /// Note: due to multiple instances of LibraryViewModel,
@@ -57,6 +56,8 @@ final class LibraryViewModel: ObservableObject {
     private let urlSession: URLSession
     private var insertionCount = 0
     private var deletionCount = 0
+    
+    private static let catalogURL = URL(string: "https://library.kiwix.org/catalog/v2/entries?count=-1")!
 
     @MainActor
     init(urlSession: URLSession? = nil, processFactory: @MainActor () -> LibraryProcess = { .shared }) {
