@@ -45,6 +45,6 @@ final class BookmarkMigrationTests: XCTestCase {
 
     func test_scheme_change() {
         let url = URL(string: "kiwix://64C3EA1A-5161-2B94-1F50-606DA5EC0035/wb/Saftladen")!
-        XCTAssertEqual(url.updateScheme(to: "zim"), URL(string: "zim://64C3EA1A-5161-2B94-1F50-606DA5EC0035/wb/Saftladen")!)
+        XCTAssertEqual(url.updatedToZIMSheme(), URL(string: "zim://64C3EA1A-5161-2B94-1F50-606DA5EC0035/wb/Saftladen")!)
     }
 }
