@@ -27,7 +27,7 @@
         if (![path hasPrefix:@"/"]) { path = [@"/" stringByAppendingString:path]; }
         
         NSURLComponents *components = [[NSURLComponents alloc] init];
-        components.scheme = @"kiwix";
+        components.scheme = @"zim";
         components.host = [zimFileID UUIDString];
         components.path = path;
         self.url = [components URL];

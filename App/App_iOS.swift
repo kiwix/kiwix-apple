@@ -29,6 +29,13 @@ struct Kiwix: App {
     init() {
         fileMonitor = DirectoryMonitor(url: URL.documentDirectory) { LibraryOperations.scanDirectory($0) }
         UNUserNotificationCenter.current().delegate = appDelegate
+        // MARK: - migrations
+        if !ProcessInfo.processInfo.arguments.contains("testing") {
+            let migrations = MigrationService(migrations: [
+                Migrations.schemeToZIM(using: Database.shared.viewContext)
+            ])
+            _ = migrations.migrateAll()
+        }
     }
 
     var body: some Scene {
@@ -59,7 +66,7 @@ struct Kiwix: App {
                 .onOpenURL { url in
                     if url.isFileURL {
                         NotificationCenter.openFiles([url], context: .file)
-                    } else if url.isKiwixURL {
+                    } else if url.isZIMURL {
                         NotificationCenter.openURL(url)
                     }
                 }

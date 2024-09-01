@@ -254,9 +254,13 @@ final class BrowserViewModel: NSObject, ObservableObject,
     private func restoreBy(tabID: NSManagedObjectID) {
         if let tab = try? Database.shared.viewContext.existingObject(with: tabID) as? Tab {
             webView.interactionState = tab.interactionState
-            Task {
-                await MainActor.run {
-                    url = webView.url
+            Task { [weak self] in
+                await MainActor.run { [weak self] in
+                    // migrate the tab urls on demand to ZIM scheme
+                    self?.url = self?.webView.url?.updatedToZIMSheme()
+                    if let webURL = self?.webView.url, webURL.isKiwixURL {
+                        self?.load(url: webURL.updatedToZIMSheme())
+                    }
                 }
             }
         }
@@ -314,7 +318,7 @@ final class BrowserViewModel: NSObject, ObservableObject,
         decidePolicyFor navigationAction: WKNavigationAction,
         decisionHandler: @escaping (WKNavigationActionPolicy) -> Void
     ) {
-        guard let url = navigationAction.request.url else {
+        guard let url = navigationAction.request.url?.updatedToZIMSheme() else {
             decisionHandler(.cancel)
             return
         }
@@ -329,12 +333,12 @@ final class BrowserViewModel: NSObject, ObservableObject,
         }
 #endif
 
-        if url.isKiwixURL, let redirectedURL = ZimFileService.shared.getRedirectedURL(url: url) {
+        if url.isZIMURL, let redirectedURL = ZimFileService.shared.getRedirectedURL(url: url) {
             if webView.url != redirectedURL {
                 DispatchQueue.main.async { webView.load(URLRequest(url: redirectedURL)) }
             }
             decisionHandler(.cancel)
-        } else if url.isKiwixURL {
+        } else if url.isZIMURL {
             guard ZimFileService.shared.getContentSize(url: url) != nil else {
                 os_log(
                     "Missing content at url: %@ => %@",
@@ -423,7 +427,7 @@ final class BrowserViewModel: NSObject, ObservableObject,
         Task { @MainActor in
             webView.stopLoading()
             (webView.configuration
-                .urlSchemeHandler(forURLScheme: KiwixURLSchemeHandler.KiwixScheme) as? KiwixURLSchemeHandler)?
+                .urlSchemeHandler(forURLScheme: KiwixURLSchemeHandler.ZIMScheme) as? KiwixURLSchemeHandler)?
                 .didFailProvisionalNavigation()
         }
         guard error.code != NSURLErrorCancelled else { return }
@@ -497,7 +501,7 @@ final class BrowserViewModel: NSObject, ObservableObject,
         contextMenuConfigurationForElement elementInfo: WKContextMenuElementInfo,
         completionHandler: @escaping (UIContextMenuConfiguration?) -> Void
     ) {
-        guard let url = elementInfo.linkURL, url.isKiwixURL else { completionHandler(nil); return }
+        guard let url = elementInfo.linkURL, url.isZIMURL else { completionHandler(nil); return }
         let configuration = UIContextMenuConfiguration(
             previewProvider: {
                 let webView = WKWebView(frame: .zero, configuration: WebViewConfiguration())
