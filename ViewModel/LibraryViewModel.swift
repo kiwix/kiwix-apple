@@ -22,6 +22,7 @@ enum LibraryState {
     case initial
     case inProgress
     case complete
+    case error
 
     static func defaultState() -> LibraryState {
         if Defaults[.libraryLastRefresh] == nil {
@@ -55,6 +56,8 @@ final class LibraryViewModel: ObservableObject {
     private let urlSession: URLSession
     private var insertionCount = 0
     private var deletionCount = 0
+    
+    private static let catalogURL = URL(string: "https://library.kiwix.org/catalog/v2/entries?count=-1")!
 
     @MainActor
     init(urlSession: URLSession? = nil, processFactory: @MainActor () -> LibraryProcess = { .shared }) {
@@ -85,7 +88,6 @@ final class LibraryViewModel: ObservableObject {
 
             // refresh library
             guard let data = try await fetchData() else {
-                process.state = oldState
                 return
             }
             let parser = try await parse(data: data)
@@ -114,7 +116,7 @@ final class LibraryViewModel: ObservableObject {
                    log: Log.OPDS, type: .default, insertionCount, deletionCount, parser.zimFileIDs.count)
         } catch {
             self.error = error
-            process.state = oldState
+            process.state = .error
         }
     }
 
@@ -169,9 +171,8 @@ final class LibraryViewModel: ObservableObject {
     }
 
     private func fetchData() async throws -> Data? {
-        guard let url = URL(string: "https://library.kiwix.org/catalog/v2/entries?count=-1") else { return nil }
         do {
-            let request = URLRequest(url: url, timeoutInterval: 20)
+            let request = URLRequest(url: Self.catalogURL, timeoutInterval: 20)
             let (data, response) = try await self.urlSession.data(for: request)
             guard let response = response as? HTTPURLResponse else { return nil }
             guard response.statusCode == 200 else {
