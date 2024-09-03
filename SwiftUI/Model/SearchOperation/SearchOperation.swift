@@ -45,7 +45,7 @@ extension SearchOperation {
                 ) {
                     #if os(iOS)
                     let stringWithColor = NSMutableAttributedString(attributedString: stringWithoutColor),
-                        range = NSRange(location:0, length: stringWithColor.length)
+                        range = NSRange(location: 0, length: stringWithColor.length)
                     stringWithColor.addAttribute(.foregroundColor, value: UIColor.label, range: range)
                     result.snippet = stringWithColor
                     #else
