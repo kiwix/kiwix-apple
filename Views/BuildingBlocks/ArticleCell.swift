@@ -42,7 +42,9 @@ struct ArticleCell: View {
                 Spacer().frame(height: 2)
                 Group {
                     if let snippet = snippet {
-                        Text(AttributedString(snippet)).lineLimit(4)
+                        Text(AttributedString(snippet)
+                            .settingAttributes(AttributeContainer([.foregroundColor: Color.primary])))
+                            .lineLimit(4)
                     }
                 }.font(.caption).multilineTextAlignment(.leading)
                 Spacer(minLength: 0)
