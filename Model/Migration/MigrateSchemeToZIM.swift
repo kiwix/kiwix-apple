@@ -16,8 +16,7 @@
 import Foundation
 import CoreData
 
-enum Migrations {
-
+extension Migrations {
     /// Change the bookmarks articleURLs from "kiwix://..." to "zim://..."
     /// - Parameter context: DataBase context
     /// - Returns: Migration - general struct

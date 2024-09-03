@@ -230,10 +230,7 @@ struct RootView: View {
             }
             // MARK: - migrations
             if !ProcessInfo.processInfo.arguments.contains("testing") {
-                let migrations = MigrationService(migrations: [
-                    Migrations.schemeToZIM(using: Database.shared.viewContext)
-                ])
-                _ = migrations.migrateAll()
+                _ = MigrationService().migrateAll()
             }
         }
         .withHostingWindow { [windowTracker] hostWindow in

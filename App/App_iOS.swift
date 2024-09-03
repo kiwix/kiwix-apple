@@ -31,10 +31,7 @@ struct Kiwix: App {
         UNUserNotificationCenter.current().delegate = appDelegate
         // MARK: - migrations
         if !ProcessInfo.processInfo.arguments.contains("testing") {
-            let migrations = MigrationService(migrations: [
-                Migrations.schemeToZIM(using: Database.shared.viewContext)
-            ])
-            _ = migrations.migrateAll()
+            _ = MigrationService().migrateAll()
         }
     }
 
