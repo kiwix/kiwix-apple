@@ -21,6 +21,22 @@ import UIKit
 extension SearchOperation {
     var results: [SearchResult] { __results.array as? [SearchResult] ?? [] }
 
+    private func sortResults() {
+        __results.sort { lhs, rhs in
+            guard let lhs = lhs as? SearchResult,
+                  let rhs = rhs as? SearchResult,
+                  let lhsScore = lhs.score?.doubleValue,
+                  let rhsScore = rhs.score?.doubleValue else { return .orderedSame }
+            if lhsScore != rhsScore {
+                return lhsScore < rhsScore ? .orderedAscending : .orderedDescending
+            } else if let lhsSnippet = lhs.snippet, let rhsSnippet = rhs.snippet {
+                return lhsSnippet.length > rhsSnippet.length ? .orderedAscending : .orderedDescending
+            } else {
+                return .orderedSame
+            }
+        }
+    }
+
     open override func main() {
         // perform index and title search
         guard !searchText.isEmpty else { return }
@@ -71,18 +87,6 @@ extension SearchOperation {
 
         // sort the results
         guard !isCancelled else { return }
-        __results.sort { lhs, rhs in
-            guard let lhs = lhs as? SearchResult,
-                  let rhs = rhs as? SearchResult,
-                  let lhsScore = lhs.score?.doubleValue,
-                  let rhsScore = rhs.score?.doubleValue else { return .orderedSame }
-            if lhsScore != rhsScore {
-                return lhsScore < rhsScore ? .orderedAscending : .orderedDescending
-            } else if let lhsSnippet = lhs.snippet, let rhsSnippet = rhs.snippet {
-                return lhsSnippet.length > rhsSnippet.length ? .orderedAscending : .orderedDescending
-            } else {
-                return .orderedSame
-            }
-        }
+        sortResults()
     }
 }
