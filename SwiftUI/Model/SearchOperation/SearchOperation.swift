@@ -14,6 +14,7 @@
 // along with Kiwix; If not, see https://www.gnu.org/licenses/.
 
 import Defaults
+import SwiftUI
 
 extension SearchOperation {
     var results: [SearchResult] { __results.array as? [SearchResult] ?? [] }
@@ -33,12 +34,18 @@ extension SearchOperation {
             for result in results {
                 guard let html = result.htmlSnippet,
                       let data = html.data(using: .utf8) else { return }
-                result.snippet = try? NSAttributedString(
+                result.snippet = nil
+                if let stringWithoutColor = try? NSAttributedString(
                     data: data,
                     options: [.documentType: NSAttributedString.DocumentType.html,
                               .characterEncoding: String.Encoding.utf8.rawValue],
                     documentAttributes: nil
-                )
+                ) {
+                    let stringWithColor = NSMutableAttributedString(attributedString: stringWithoutColor),
+                        range = NSRange(location:0, length: stringWithColor.length)
+                    stringWithColor.addAttribute(.foregroundColor, value: UIColor.label, range: range)
+                    result.snippet = stringWithColor
+                }
             }
         }
 
