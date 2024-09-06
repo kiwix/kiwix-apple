@@ -21,6 +21,7 @@ final class URLContentPathTests: XCTestCase {
     private let testURLs = [
         URL(string: "zim://6E4F3D4A-2F8A-789A-3B88-212219F4FB27/irp.fas.org/doddir/milmed/index.html")!,
         URL(string: "zim://861C031F-DAFB-9688-4DB4-8F1199FE2926/mesquartierschinois.wordpress.com/")!,
+        // swiftlint:disable:next line_length
         URL(string: "zim://861C031F-DAFB-9688-4DB4-8F1199FE2926/widgets.wp.com/likes/master.html%3Fver%3D20240530#ver=20240530&lang=fr&lang_ver=1713167421&origin=https://mesquartierschinois.wordpress.com")!
     ]
 
