@@ -28,7 +28,7 @@
 			<string>Viewer</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>kiwix</string>
+				<string>zim</string>
 			</array>
 		</dict>
 	</array>
