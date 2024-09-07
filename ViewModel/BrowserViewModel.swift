@@ -597,13 +597,6 @@ final class BrowserViewModel: NSObject, ObservableObject,
     }
 
     // PERSISTENCE:
-    func persistAllTabIdsFromWindows() {
-        let urls = NSApplication.shared.windows.compactMap { window in
-            window.accessibilityURL()
-        }
-        UserDefaults.standard[.windowURLs] = urls
-    }
-
     private func storeTabIDInCurrentWindow() {
         guard let tabID,
               let windowNumber,

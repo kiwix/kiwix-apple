@@ -194,6 +194,7 @@ struct RootView: View {
             browser.load(url: url)
         }
         .onReceive(tabCloses) { publisher in
+            // closing one window either by CMD+W || red(X) close button
             guard windowTracker.current == publisher.object as? NSWindow else {
                 // when exiting full screen video, we get the same notification
                 // but that's not comming from our window
@@ -210,8 +211,8 @@ struct RootView: View {
             }
         }
         .onReceive(appTerminates) { _ in
+            // CMD+Q -> Quit Kiwix, this also closes the last window
             navigation.isTerminating = true
-            browser.persistAllTabIdsFromWindows()
         }.task {
             switch AppType.current {
             case .kiwix:
