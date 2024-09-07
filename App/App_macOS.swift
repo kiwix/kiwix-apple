@@ -216,12 +216,18 @@ struct RootView: View {
         }.task {
             switch AppType.current {
             case .kiwix:
+                let perfLib = Performance()
                 LibraryOperations.reopen {
                     navigation.currentItem = .reading
+                    perfLib.measure("LibraryOperations.reopen")
                 }
+                let perf = Performance()
                 LibraryOperations.scanDirectory(URL.documentDirectory)
+                perf.measure("scanDirectory")
                 LibraryOperations.applyFileBackupSetting()
+                perf.measure("applyFileBackupSetting")
                 DownloadService.shared.restartHeartbeatIfNeeded()
+                perf.measure("restartHeartbeatIfNeeded")
             case let .custom(zimFileURL):
                 LibraryOperations.open(url: zimFileURL) {
                     ZimMigration.forCustomApps()

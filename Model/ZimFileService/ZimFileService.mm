@@ -14,7 +14,7 @@
 // along with Kiwix; If not, see https://www.gnu.org/licenses/.
 
 #include <unordered_map>
-
+#import <QuartzCore/QuartzCore.h>
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wdocumentation"
 #include "kiwix/book.h"
@@ -27,6 +27,7 @@
 
 #import "ZimFileService.h"
 #import "ZimFileMetaData.h"
+#import "PerformanceObjC.h"
 
 @interface ZimFileService ()
 
@@ -68,26 +69,13 @@
 
 #pragma mark - Reader Management
 
-- (void)open:(NSURL *)url {
+- (void)store:(NSURL *)url with:(NSUUID *)zimFileID {
     try {
         // if url does not ends with "zim", skip it
         NSString *pathExtension = [[url pathExtension] lowercaseString];
         if (![pathExtension isEqualToString:@"zim"]) {
             return;
         }
-
-        // if we have previously added this url, skip it
-        if ([[self.fileURLs allKeysForObject:url] count] > 0) {
-            return;
-        }
-
-        // add the archive
-        [url startAccessingSecurityScopedResource];
-        zim::Archive archive = zim::Archive([url fileSystemRepresentation]);
-        self.archives->insert(std::make_pair(std::string(archive.getUuid()), archive));
-
-        // store file URL
-        NSUUID *zimFileID = [[NSUUID alloc] initWithUUIDBytes:(unsigned char *)archive.getUuid().data];
         self.fileURLs[zimFileID] = url;
     } catch (std::exception) {
         NSLog(@"Error opening zim file.");
@@ -230,12 +218,34 @@
 }
 
 - (zim::Archive *_Nullable) archiveBy: (NSUUID *_Nonnull) zimFileID {
+    zim::Archive *found = [self findArchiveBy:zimFileID];
+    if(found == nil) {
+        NSURL *url = self.fileURLs[zimFileID];
+        if (url == nil) {
+            return nil;
+        }
+        [self insertIntoArchives:url with:zimFileID];
+    }
+    return [self findArchiveBy: zimFileID];
+}
+
+- (zim::Archive *_Nullable) findArchiveBy: (NSUUID *_Nonnull) zimFileID {
     std::string zimFileID_C = [self zimfileID_C: zimFileID];
     auto found = self.archives->find(zimFileID_C);
     if (found == self.archives->end()) {
         return nil;
     }
     return &(found->second);
+}
+
+- (void) insertIntoArchives: (NSURL *_Nonnull) url with: (NSUUID *_Nonnull) zimFileID {
+    try {
+        [url startAccessingSecurityScopedResource];
+        zim::Archive archive = zim::Archive([url fileSystemRepresentation]); // takes the longest time
+        self.archives->insert(std::make_pair(std::string(archive.getUuid()), archive));
+    } catch (std::exception) {
+        NSLog(@"cannot insert archive with: %@, %@", url.absoluteString, zimFileID.UUIDString);
+    }
 }
 
 - (zim::Item) itemIn: (NSUUID *)zimFileID contentPath:(NSString *)contentPath {

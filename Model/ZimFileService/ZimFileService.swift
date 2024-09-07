@@ -27,7 +27,7 @@ extension ZimFileService {
     /// - Parameter bookmark: url bookmark data of the zim file to open
     /// - Returns: new url bookmark data if the one used to open the zim file is stale
     @discardableResult
-    func open(fileURLBookmark data: Data) throws -> Data? {
+    func open(fileURLBookmark data: Data, for uuid: UUID) throws -> Data? {
         // resolve url
         var isStale: Bool = false
         #if os(macOS)
@@ -41,8 +41,7 @@ extension ZimFileService {
             throw ZimFileOpenError.missing
         }
         #endif
-
-        __open(url)
+        __store(url, with: uuid)
         return isStale ? ZimFileService.getFileURLBookmarkData(for: url) : nil
     }
 

@@ -35,7 +35,7 @@ struct LibraryOperations {
 
         // open the file
         do {
-            try ZimFileService.shared.open(fileURLBookmark: fileURLBookmark)
+            try ZimFileService.shared.open(fileURLBookmark: fileURLBookmark, for: metadata.fileID)
         } catch {
             return nil
         }
@@ -73,7 +73,7 @@ struct LibraryOperations {
         zimFiles.forEach { zimFile in
             guard let data = zimFile.fileURLBookmark else { return }
             do {
-                if let data = try ZimFileService.shared.open(fileURLBookmark: data) {
+                if let data = try ZimFileService.shared.open(fileURLBookmark: data, for: zimFile.fileID) {
                     zimFile.fileURLBookmark = data
                 }
                 zimFile.isMissing = false

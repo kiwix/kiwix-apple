@@ -76,7 +76,6 @@ final class LibraryViewModel: ObservableObject {
     @MainActor
     func start(isUserInitiated: Bool) async {
         guard process.state != .inProgress else { return }
-        let oldState = process.state
         do {
             // decide if refresh should proceed
             let lastRefresh: Date? = Defaults[.libraryLastRefresh]
