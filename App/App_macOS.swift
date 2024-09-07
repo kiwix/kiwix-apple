@@ -136,13 +136,8 @@ struct RootView: View {
             case .reading:
                 BrowserTab().environmentObject(browser)
                     .withHostingWindow { window in
-                        if let windowNumber = window?.windowNumber {
-                            browser.restoreByWindowNumber(windowNumber: windowNumber,
-                                                          urlToTabIdConverter: navigation.tabIDFor(url:))
-                        } else {
-                            if FeatureFlags.hasLibrary == false {
-                                browser.loadMainArticle()
-                            }
+                        if FeatureFlags.hasLibrary == false {
+                            browser.loadMainArticle()
                         }
                     }
             case .bookmarks:
@@ -169,7 +164,7 @@ struct RootView: View {
             if url.isFileURL {
                 NotificationCenter.openFiles([url], context: .file)
             } else if url.isKiwixURL {
-                NotificationCenter.openURL(url)
+                NotificationCenter.openURL(url, inNewTab: true)
             }
         }
         .onReceive(openURL) { notification in
@@ -193,7 +188,8 @@ struct RootView: View {
             navigation.currentItem = .reading
             browser.load(url: url)
         }
-        .onReceive(tabCloses) { publisher in
+        .onReceive(tabCloses) { publisher in 
+            // closing one window either by CMD+W || red(X) close button
             guard windowTracker.current == publisher.object as? NSWindow else {
                 // when exiting full screen video, we get the same notification
                 // but that's not comming from our window
@@ -210,8 +206,8 @@ struct RootView: View {
             }
         }
         .onReceive(appTerminates) { _ in
+            // CMD+Q -> Quit Kiwix, this also closes the last window
             navigation.isTerminating = true
-            browser.persistAllTabIdsFromWindows()
         }.task {
             switch AppType.current {
             case .kiwix:
