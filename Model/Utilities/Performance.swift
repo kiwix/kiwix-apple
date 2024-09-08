@@ -16,6 +16,7 @@
 import Foundation
 import QuartzCore
 
+#if DEBUG
 final class Performance {
 
     private let id: UUID
@@ -34,3 +35,4 @@ final class Performance {
         start = CACurrentMediaTime()
     }
 }
+#endif

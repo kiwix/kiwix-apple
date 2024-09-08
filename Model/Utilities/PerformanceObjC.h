@@ -16,6 +16,8 @@
 #import <Foundation/Foundation.h>
 #import <QuartzCore/QuartzCore.h>
 
+#if DEBUG
+
 @interface PerformanceObjC : NSObject
 
 @property (nonatomic, strong, readonly) NSUUID *id;
@@ -52,3 +54,5 @@
 }
 
 @end
+
+#endif
