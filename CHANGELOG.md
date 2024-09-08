@@ -1,3 +1,5 @@
+## 3.6.0
+
 ## 3.5.2
 - FIX:
   - Opening ZIM file from macOS Finder (@BPerlakiH #968)
