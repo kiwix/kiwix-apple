@@ -27,7 +27,6 @@
 
 #import "ZimFileService.h"
 #import "ZimFileMetaData.h"
-#import "PerformanceObjC.h"
 
 @interface ZimFileService ()
 
