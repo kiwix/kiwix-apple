@@ -28,7 +28,7 @@ enum RangeRequestError: Error {
 /// To mitigate, opting for the less "broken" behavior of ignoring Range header
 /// until WebKit behavior is changed.
 final class KiwixURLSchemeHandler: NSObject, WKURLSchemeHandler {
-    static let KiwixScheme = "kiwix"
+    static let ZIMScheme = "zim"
     @MainActor private var startedTasks: [Int: Bool] = [:]
 
     // MARK: Life cycle
@@ -75,7 +75,7 @@ final class KiwixURLSchemeHandler: NSObject, WKURLSchemeHandler {
     @MainActor
     private func handle(task urlSchemeTask: WKURLSchemeTask) async {
         let request = urlSchemeTask.request
-        guard let url = request.url, url.isKiwixURL else {
+        guard let url = request.url?.updatedToZIMSheme(), url.isZIMURL else {
             urlSchemeTask.didFailWithError(URLError(.unsupportedURL))
             stopFor(urlSchemeTask.hash)
             return

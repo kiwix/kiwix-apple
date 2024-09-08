@@ -16,11 +16,16 @@
 import Foundation
 
 enum URLSchemeType {
+    case zim
     case kiwix
     case geo
     case unsupported
 
     init(scheme: String?) {
+        if scheme?.caseInsensitiveCompare("zim") == .orderedSame {
+            self = .zim
+            return
+        }
         if scheme?.caseInsensitiveCompare("kiwix") == .orderedSame {
             self = .kiwix
             return
@@ -35,7 +40,7 @@ enum URLSchemeType {
 
 extension URL {
     init?(zimFileID: String, contentPath: String) {
-        let baseURLString = "kiwix://" + zimFileID
+        let baseURLString = "zim://" + zimFileID
         guard let encoded = contentPath.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) else {return nil}
         self.init(string: encoded, relativeTo: URL(string: baseURLString))
     }
@@ -45,6 +50,7 @@ extension URL {
     }
 
     var isUnsupported: Bool { schemeType == .unsupported }
+    var isZIMURL: Bool { schemeType == .zim }
     var isKiwixURL: Bool { schemeType == .kiwix }
     var isGeoURL: Bool { schemeType == .geo }
 
@@ -74,5 +80,15 @@ extension URL {
 
     func toTemporaryFileURL() -> URL? {
         URL(temporaryFileWithName: lastPathComponent)
+    }
+
+    /// If it's an old ``kiwix://`` url comming from a pre-migration tab
+    /// - Returns: the ``zim://`` url or the original one if it cannot be changed
+    func updatedToZIMSheme() -> URL {
+        guard isKiwixURL, var components = URLComponents(url: self, resolvingAgainstBaseURL: false) else {
+            return self
+        }
+        components.scheme = "zim"
+        return components.url ?? self
     }
 }

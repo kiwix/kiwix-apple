@@ -168,7 +168,7 @@ struct RootView: View {
         .onOpenURL { url in
             if url.isFileURL {
                 NotificationCenter.openFiles([url], context: .file)
-            } else if url.isKiwixURL {
+            } else if url.isZIMURL {
                 NotificationCenter.openURL(url)
             }
         }
@@ -227,6 +227,10 @@ struct RootView: View {
                     ZimMigration.forCustomApps()
                     navigation.currentItem = .reading
                 }
+            }
+            // MARK: - migrations
+            if !ProcessInfo.processInfo.arguments.contains("testing") {
+                _ = MigrationService().migrateAll()
             }
         }
         .withHostingWindow { [windowTracker] hostWindow in

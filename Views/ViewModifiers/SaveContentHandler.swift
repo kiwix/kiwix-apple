@@ -27,7 +27,7 @@ struct SaveContentHandler: ViewModifier {
     func body(content: Content) -> some View {
         content.onReceive(saveContentToFile) { notification in
             guard let url = notification.userInfo?["url"] as? URL,
-                  url.isKiwixURL else {
+                  url.isZIMURL else {
                 return
             }
             #if os(macOS)

@@ -224,7 +224,7 @@ extension WKWebView {
 final class WebViewConfiguration: WKWebViewConfiguration {
     override init() {
         super.init()
-        setURLSchemeHandler(KiwixURLSchemeHandler(), forURLScheme: KiwixURLSchemeHandler.KiwixScheme)
+        setURLSchemeHandler(KiwixURLSchemeHandler(), forURLScheme: KiwixURLSchemeHandler.ZIMScheme)
         #if os(macOS)
         preferences.isElementFullscreenEnabled = true
         #else
