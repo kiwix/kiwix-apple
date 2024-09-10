@@ -84,11 +84,13 @@ struct SaveContentHandler: ViewModifier {
         savePanel.canCreateDirectories = true
         savePanel.nameFieldStringValue = url.lastPathComponent
         savePanel.begin { (response: NSApplication.ModalResponse) in
-            if case .OK = response,
-               let urlContent = ZimFileService.shared.getURLContent(url: url),
-               let destinationURL = savePanel.url {
-                try? urlContent.data.write(to: destinationURL)
-                savePanel.close()
+            Task { @MainActor in
+                if case .OK = response,
+                   let urlContent = await ZimFileService.shared.getURLContent(url: url),
+                   let destinationURL = savePanel.url {
+                    try? urlContent.data.write(to: destinationURL)
+                    savePanel.close()
+                }
             }
         }
     }

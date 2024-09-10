@@ -107,20 +107,16 @@ struct ZimFileDetail: View {
             unlinkAction
         } else if zimFile.fileURLBookmark != nil {  // zim file is opened
             Action(title: "zim_file.action.open_main_page.title".localized) {
-                Task {
-                    guard let url = await ZimFileService.shared.getMainPageURL(zimFileID: zimFile.fileID) else { return }
-                    NotificationCenter.openURL(url, inNewTab: true)
-                    #if os(iOS)
-                    dismissParent?()
-                    #endif
-                }
+                guard let url = await ZimFileService.shared.getMainPageURL(zimFileID: zimFile.fileID) else { return }
+                NotificationCenter.openURL(url, inNewTab: true)
+                #if os(iOS)
+                dismissParent?()
+                #endif
             }
             #if os(macOS)
             Action(title: "zim_file.action.reveal_in_finder.title".localized) {
-                Task {
-                    guard let url = await ZimFileService.shared.getFileURL(zimFileID: zimFile.id) else { return }
-                    NSWorkspace.shared.activateFileViewerSelecting([url])
-                }
+                guard let url = await ZimFileService.shared.getFileURL(zimFileID: zimFile.id) else { return }
+                NSWorkspace.shared.activateFileViewerSelecting([url])
             }
             unlinkAction
             #elseif os(iOS)
@@ -333,30 +329,36 @@ private struct DownloadTaskDetail: View {
 private struct Action: View {
     let title: String
     let isDestructive: Bool
-    let alignment: HorizontalAlignment
-    let action: (() -> Void)
+    let action: @MainActor () async -> Void
 
     init(title: String,
          isDestructive: Bool = false,
-         alignment: HorizontalAlignment = .center,
-         action: @escaping (() -> Void) = {}
+         action: @MainActor @escaping () async -> Void = {}
     ) {
         self.title = title
         self.isDestructive = isDestructive
-        self.alignment = alignment
         self.action = action
     }
 
     var body: some View {
-        Button(action: action, label: {
-            HStack {
-                if alignment != .leading { Spacer() }
-                Text(title)
-                    .fontWeight(.medium)
-                    .foregroundColor(isDestructive ? .red : nil)
-                if alignment != .trailing { Spacer() }
-            }
-        })
+        AsyncButton(action: action, label: {
+            label(title: title)
+        }).asyncButtonStyle(.ellipsis)
+//        AsyncButtonView(action: action, label: {
+//            label(title: title)
+//        }, loading: {
+//            label(title: "loading".localized)
+//        })
+    }
+
+    @ViewBuilder private func label(title: String) -> some View {
+        HStack {
+            Spacer()
+            Text(title)
+                .fontWeight(.medium)
+                .foregroundColor(isDestructive ? .red : nil)
+            Spacer()
+        }
     }
 }
 
