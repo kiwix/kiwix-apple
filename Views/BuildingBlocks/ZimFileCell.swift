@@ -19,12 +19,14 @@ import SwiftUI
 struct ZimFileCell: View {
     @ObservedObject var zimFile: ZimFile
     @State var isHovering: Bool = false
+    let isLoading: Bool
 
     let prominent: Prominent
 
-    init(_ zimFile: ZimFile, prominent: Prominent) {
+    init(_ zimFile: ZimFile, prominent: Prominent, isLoading: Bool = false) {
         self.zimFile = zimFile
         self.prominent = prominent
+        self.isLoading = isLoading
     }
 
     var body: some View {
@@ -79,7 +81,8 @@ struct ZimFileCell: View {
             }
         }
         .padding()
-        .modifier(CellBackground(isHovering: isHovering))
+        .modifier(CellBackground(isHovering: isHovering || isLoading))
+        .modifier(LoadingOverlay(isLoading: isLoading))
         .onHover { self.isHovering = $0 }
     }
 
@@ -115,12 +118,21 @@ struct ZimFileCell_Previews: PreviewProvider {
         zimFile.name = "Wikipedia"
         zimFile.persistentID = ""
         zimFile.size = 1000000000
+        zimFile.isMissing = true
+        zimFile.flavor = "maxi"
         return zimFile
     }()
 
     static var previews: some View {
         Group {
             ZimFileCell(ZimFileCell_Previews.zimFile, prominent: .name)
+                .preferredColorScheme(.light)
+                .padding()
+                .frame(width: 300, height: 100)
+                .previewLayout(.sizeThatFits)
+            ZimFileCell(ZimFileCell_Previews.zimFile, 
+                        prominent: .name,
+                        isLoading: true)
                 .preferredColorScheme(.light)
                 .padding()
                 .frame(width: 300, height: 100)

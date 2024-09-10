@@ -86,11 +86,13 @@ struct Kiwix: App {
         func userNotificationCenter(_ center: UNUserNotificationCenter,
                                     didReceive response: UNNotificationResponse,
                                     withCompletionHandler completionHandler: @escaping () -> Void) {
-            if let zimFileID = UUID(uuidString: response.notification.request.identifier),
-               let mainPageURL = ZimFileService.shared.getMainPageURL(zimFileID: zimFileID) {
-                NSWorkspace.shared.open(mainPageURL)
+            Task {
+                if let zimFileID = UUID(uuidString: response.notification.request.identifier),
+                   let mainPageURL = await ZimFileService.shared.getMainPageURL(zimFileID: zimFileID) {
+                    NSWorkspace.shared.open(mainPageURL)
+                }
+                await MainActor.run { completionHandler() }
             }
-            completionHandler()
         }
     }
 }
@@ -216,17 +218,15 @@ struct RootView: View {
         }.task {
             switch AppType.current {
             case .kiwix:
-                LibraryOperations.reopen {
-                    navigation.currentItem = .reading
-                }
+                await LibraryOperations.reopen()
+                navigation.currentItem = .reading
                 LibraryOperations.scanDirectory(URL.documentDirectory)
                 LibraryOperations.applyFileBackupSetting()
                 DownloadService.shared.restartHeartbeatIfNeeded()
             case let .custom(zimFileURL):
-                LibraryOperations.open(url: zimFileURL) {
-                    ZimMigration.forCustomApps()
-                    navigation.currentItem = .reading
-                }
+                await LibraryOperations.open(url: zimFileURL)
+                ZimMigration.forCustomApps()
+                navigation.currentItem = .reading
             }
             // MARK: - migrations
             if !ProcessInfo.processInfo.arguments.contains("testing") {

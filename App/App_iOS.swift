@@ -71,19 +71,15 @@ struct Kiwix: App {
                     switch AppType.current {
                     case .kiwix:
                         fileMonitor.start()
-                        LibraryOperations.reopen {
-                            navigation.navigateToMostRecentTab()
-                        }
+                        await LibraryOperations.reopen()
+                        navigation.navigateToMostRecentTab()
                         LibraryOperations.scanDirectory(URL.documentDirectory)
                         LibraryOperations.applyFileBackupSetting()
                         DownloadService.shared.restartHeartbeatIfNeeded()
                     case let .custom(zimFileURL):
-                        LibraryOperations.open(url: zimFileURL) {
-                            Task {
-                                ZimMigration.forCustomApps()
-                                navigation.navigateToMostRecentTab()
-                            }
-                        }
+                        await LibraryOperations.open(url: zimFileURL)
+                        ZimMigration.forCustomApps()
+                        navigation.navigateToMostRecentTab()
                     }
                 }
         }

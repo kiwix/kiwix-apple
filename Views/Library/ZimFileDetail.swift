@@ -29,6 +29,7 @@ struct ZimFileDetail: View {
     @State private var isPresentingDownloadAlert = false
     @State private var isPresentingFileLocator = false
     @State private var isPresentingUnlinkAlert = false
+    @State private var isInDocumentsDirectory = false
     let dismissParent: (() -> Void)? // iOS only
 
     init(zimFile: ZimFile, dismissParent: (() -> Void)?) {
@@ -85,6 +86,15 @@ struct ZimFileDetail: View {
         .modifier(FileLocator(isPresenting: $isPresentingFileLocator))
         .navigationTitle(zimFile.name)
         .navigationBarTitleDisplayMode(.inline)
+        .task {
+            if let zimFileName = await ZimFileService.shared.getFileURL(zimFileID: zimFile.fileID)?.lastPathComponent,
+               let documentDirectoryURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first,
+               FileManager.default.fileExists(atPath: documentDirectoryURL.appendingPathComponent(zimFileName).path) {
+                isInDocumentsDirectory = true
+            } else {
+                isInDocumentsDirectory = false
+            }
+        }
         #endif
     }
 
@@ -97,22 +107,24 @@ struct ZimFileDetail: View {
             unlinkAction
         } else if zimFile.fileURLBookmark != nil {  // zim file is opened
             Action(title: "zim_file.action.open_main_page.title".localized) {
-                guard let url = ZimFileService.shared.getMainPageURL(zimFileID: zimFile.fileID) else { return }
-                NotificationCenter.openURL(url, inNewTab: true)
-                #if os(iOS)
-                dismissParent?()
-                #endif
+                Task {
+                    guard let url = await ZimFileService.shared.getMainPageURL(zimFileID: zimFile.fileID) else { return }
+                    NotificationCenter.openURL(url, inNewTab: true)
+                    #if os(iOS)
+                    dismissParent?()
+                    #endif
+                }
             }
             #if os(macOS)
             Action(title: "zim_file.action.reveal_in_finder.title".localized) {
-                guard let url = ZimFileService.shared.getFileURL(zimFileID: zimFile.id) else { return }
-                NSWorkspace.shared.activateFileViewerSelecting([url])
+                Task {
+                    guard let url = await ZimFileService.shared.getFileURL(zimFileID: zimFile.id) else { return }
+                    NSWorkspace.shared.activateFileViewerSelecting([url])
+                }
             }
             unlinkAction
             #elseif os(iOS)
-            if let zimFileName = ZimFileService.shared.getFileURL(zimFileID: zimFile.fileID)?.lastPathComponent,
-               let documentDirectoryURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first,
-               FileManager.default.fileExists(atPath: documentDirectoryURL.appendingPathComponent(zimFileName).path) {
+            if isInDocumentsDirectory {
                 deleteAction
             } else {
                 unlinkAction
@@ -134,10 +146,12 @@ struct ZimFileDetail: View {
                 title: Text("zim_file.action.unlink.title".localized + " " + zimFile.name),
                 message: Text("zim_file.action.unlink.message".localized),
                 primaryButton: .destructive(Text("zim_file.action.unlink.button.title".localized)) {
-                    LibraryOperations.unlink(zimFileID: zimFile.fileID)
-                    #if os(iOS)
-                    dismiss()
-                    #endif
+                    Task {
+                        await LibraryOperations.unlink(zimFileID: zimFile.fileID)
+                        #if os(iOS)
+                        dismiss()
+                        #endif
+                    }
                 },
                 secondaryButton: .cancel()
             )
@@ -152,10 +166,12 @@ struct ZimFileDetail: View {
                 title: Text("zim_file.action.delete.title".localized + " " + zimFile.name),
                 message: Text("zim_file.action.delete.message".localized),
                 primaryButton: .destructive(Text("zim_file.action.delete.button.title".localized)) {
-                    LibraryOperations.delete(zimFileID: zimFile.fileID)
-                    #if os(iOS)
-                    dismiss()
-                    #endif
+                    Task {
+                        await LibraryOperations.delete(zimFileID: zimFile.fileID)
+                        #if os(iOS)
+                        dismiss()
+                        #endif
+                    }
                 },
                 secondaryButton: .cancel()
             )
@@ -248,7 +264,7 @@ private struct FileLocator: ViewModifier {
             allowsMultipleSelection: false
         ) { result in
             guard case let .success(urls) = result, let url = urls.first else { return }
-            LibraryOperations.open(url: url)
+            Task { await LibraryOperations.open(url: url) }
         }
     }
 }

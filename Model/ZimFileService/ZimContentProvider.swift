@@ -27,12 +27,7 @@ struct ZimContentProvider: DataProvider {
     }
 
     func data(from start: UInt, to end: UInt) async -> URLContent? {
-        return await withCheckedContinuation { continuation in
-            Task.detached(priority: .utility) {
-                let content = ZimFileService.shared.getURLContent(url: url, start: start, end: end)
-                continuation.resume(returning: content)
-            }
-        }
+        await ZimFileService.shared.getURLContent(url: url, start: start, end: end)
     }
 }
 

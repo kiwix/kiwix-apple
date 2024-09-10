@@ -167,7 +167,7 @@ final class BrowserViewModel: NSObject, ObservableObject,
            let pdfData = try? await webView.pdf() {
             return (pdfData, metaData?.exportFileExtension)
         } else if let url = await webView.url,
-                  let contentData = ZimFileService.shared.getURLContent(url: url)?.data {
+                  let contentData = await ZimFileService.shared.getURLContent(url: url)?.data {
             let pathExtesion = url.pathExtension
             let fileExtension: String?
             if !pathExtesion.isEmpty {
@@ -186,33 +186,29 @@ final class BrowserViewModel: NSObject, ObservableObject,
             return try? Database.shared.viewContext.fetch(ZimFile.fetchRequest(fileID: zimFileID)).first
         }()
 
-        metaData = ZimFileService.shared.getContentMetaData(url: url)
-        // update view model
-        if title.isEmpty {
-            articleTitle = metaData?.zimTitle ?? ""
-        } else {
-            articleTitle = title
-        }
-        zimFileName = zimFile?.name ?? ""
-        Task {
-            await MainActor.run {
-                self.url = url
-            }
-        }
-
-        let currentTabID: NSManagedObjectID = tabID ?? createNewTabID()
-        tabID = currentTabID
-
-        // update tab data
-        if let tab = try? Database.shared.viewContext.existingObject(with: currentTabID) as? Tab {
-            tab.title = articleTitle
-            tab.zimFile = zimFile
-        }
-        #if os(macOS)
         Task { @MainActor in
+            metaData = await ZimFileService.shared.getContentMetaData(url: url)
+            if title.isEmpty {
+                articleTitle = metaData?.zimTitle ?? ""
+            } else {
+                articleTitle = title
+            }
+            // update view model
+            zimFileName = zimFile?.name ?? ""
+            self.url = url
+
+            let currentTabID: NSManagedObjectID = tabID ?? createNewTabID()
+            tabID = currentTabID
+
+            // update tab data
+            if let tab = try? Database.shared.viewContext.existingObject(with: currentTabID) as? Tab {
+                tab.title = articleTitle
+                tab.zimFile = zimFile
+            }
+            #if os(macOS)
             disableVideoContextMenu()
+            #endif
         }
-        #endif
     }
 
     func updateLastOpened() {
@@ -240,15 +236,23 @@ final class BrowserViewModel: NSObject, ObservableObject,
     @MainActor
     func loadRandomArticle(zimFileID: UUID? = nil) {
         let zimFileID = zimFileID ?? UUID(uuidString: webView.url?.host ?? "")
-        guard let url = ZimFileService.shared.getRandomPageURL(zimFileID: zimFileID) else { return }
-        load(url: url)
+        Task { @ZimActor [weak self] in
+            guard let url = ZimFileService.shared.getRandomPageURL(zimFileID: zimFileID) else { return }
+            await MainActor.run { [weak self] in
+                self?.load(url: url)
+            }
+        }
     }
 
     @MainActor
     func loadMainArticle(zimFileID: UUID? = nil) {
         let zimFileID = zimFileID ?? UUID(uuidString: webView.url?.host ?? "")
-        guard let url = ZimFileService.shared.getMainPageURL(zimFileID: zimFileID) else { return }
-        load(url: url)
+        Task { @ZimActor [weak self] in
+            guard let url = ZimFileService.shared.getMainPageURL(zimFileID: zimFileID) else { return }
+            await MainActor.run { [weak self] in
+                self?.load(url: url)
+            }
+        }
     }
 
     private func restoreBy(tabID: NSManagedObjectID) {
@@ -313,33 +317,30 @@ final class BrowserViewModel: NSObject, ObservableObject,
     // MARK: - WKNavigationDelegate
 
     // swiftlint:disable:next function_body_length cyclomatic_complexity
-    func webView(
+    @MainActor func webView(
         _ webView: WKWebView,
-        decidePolicyFor navigationAction: WKNavigationAction,
-        decisionHandler: @escaping (WKNavigationActionPolicy) -> Void
-    ) {
+        decidePolicyFor navigationAction: WKNavigationAction
+    ) async -> WKNavigationActionPolicy {
         guard let url = navigationAction.request.url?.updatedToZIMSheme() else {
-            decisionHandler(.cancel)
-            return
+            return .cancel
         }
 
 #if os(macOS)
         // detect cmd + click event
         if navigationAction.modifierFlags.contains(.command) {
             if createNewTab(url: url) {
-                decisionHandler(.cancel)
-                return
+                return .cancel
             }
         }
 #endif
 
-        if url.isZIMURL, let redirectedURL = ZimFileService.shared.getRedirectedURL(url: url) {
+        if url.isZIMURL, let redirectedURL = await ZimFileService.shared.getRedirectedURL(url: url) {
             if webView.url != redirectedURL {
-                DispatchQueue.main.async { webView.load(URLRequest(url: redirectedURL)) }
+                webView.load(URLRequest(url: redirectedURL))
             }
-            decisionHandler(.cancel)
+            return .cancel
         } else if url.isZIMURL {
-            guard ZimFileService.shared.getContentSize(url: url) != nil else {
+            guard await ZimFileService.shared.getContentSize(url: url) != nil else {
                 os_log(
                     "Missing content at url: %@ => %@",
                     log: Log.URLSchemeHandler,
@@ -347,7 +348,6 @@ final class BrowserViewModel: NSObject, ObservableObject,
                     url.absoluteString,
                     url.contentPath
                 )
-                decisionHandler(.cancel)
                 if navigationAction.request.mainDocumentURL == url {
                     // only show alerts for missing main document
                     NotificationCenter.default.post(
@@ -356,12 +356,12 @@ final class BrowserViewModel: NSObject, ObservableObject,
                         userInfo: ["rawValue": ActiveAlert.articleFailedToLoad.rawValue]
                     )
                 }
-                return
+                return .cancel
             }
-            decisionHandler(.allow)
+            return .allow
         } else if url.isUnsupported {
             externalURL = url
-            decisionHandler(.cancel)
+            return .cancel
         } else if url.isGeoURL {
             if FeatureFlags.map {
                 let _: CLLocation? = {
@@ -378,13 +378,13 @@ final class BrowserViewModel: NSObject, ObservableObject,
 #if os(macOS)
                     NSWorkspace.shared.open(url)
 #elseif os(iOS)
-                    UIApplication.shared.open(url)
+                    await UIApplication.shared.open(url)
 #endif
                 }
             }
-            decisionHandler(.cancel)
+            return .cancel
         } else {
-            decisionHandler(.cancel)
+            return .cancel
         }
     }
 
@@ -545,7 +545,7 @@ final class BrowserViewModel: NSObject, ObservableObject,
                             title: "common.dialog.button.bookmark".localized,
                             image: UIImage(systemName: "star")
                         ) { [weak self] _ in
-                            self?.createBookmark(url: url)
+                            Task { @MainActor [weak self] in self?.createBookmark(url: url) }
                         }
                     }
                 }()
@@ -634,20 +634,23 @@ final class BrowserViewModel: NSObject, ObservableObject,
         articleBookmarked = !snapshot.itemIdentifiers.isEmpty
     }
 
+    @MainActor 
     func createBookmark(url: URL? = nil) {
-        guard let url = url ?? webView.url else { return }
+        guard let url = url ?? webView.url,
+              let zimFileID = UUID(uuidString: url.host ?? "") else { return }
         let title = webView.title
-        Database.shared.performBackgroundTask { context in
-            let bookmark = Bookmark(context: context)
-            bookmark.articleURL = url
-            bookmark.created = Date()
-            guard let zimFileID = UUID(uuidString: url.host ?? ""),
-                  let zimFile = try? context.fetch(ZimFile.fetchRequest(fileID: zimFileID)).first,
-                  let metaData = ZimFileService.shared.getContentMetaData(url: url) else { return }
+        Task { @ZimActor in
+            guard let metaData = ZimFileService.shared.getContentMetaData(url: url) else { return }
+            Database.shared.performBackgroundTask { context in
+                let bookmark = Bookmark(context: context)
+                bookmark.articleURL = url
+                bookmark.created = Date()
+                guard let zimFile = try? context.fetch(ZimFile.fetchRequest(fileID: zimFileID)).first else { return }
 
-            bookmark.zimFile = zimFile
-            bookmark.title = title ?? metaData.zimTitle
-            try? context.save()
+                bookmark.zimFile = zimFile
+                bookmark.title = title ?? metaData.zimTitle
+                try? context.save()
+            }
         }
     }
 

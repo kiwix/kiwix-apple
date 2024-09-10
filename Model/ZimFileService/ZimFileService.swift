@@ -14,7 +14,7 @@
 // along with Kiwix; If not, see https://www.gnu.org/licenses/.
 
 /// A service to interact with zim files
-extension ZimFileService {
+@ZimActor extension ZimFileService {
     /// Shared ZimFileService instance
     static let shared = ZimFileService.__sharedInstance()
 

@@ -15,16 +15,6 @@
 
 import Foundation
 
-final actor ZimFileActor {
-
-    static let shared = ZimFileActor()
-    private let service = ZimFileService.shared
-
-    func getMainPageURL(zimFileID: UUID? = nil,
-                        startLoading: @MainActor () -> Void = {}) async -> URL? {
-        await startLoading()
-        let url = service.getMainPageURL(zimFileID: zimFileID)
-        return url
-    }
-
+@globalActor actor ZimActor {
+    static let shared = ZimActor()
 }

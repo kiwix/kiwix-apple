@@ -245,7 +245,7 @@ final class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegat
         UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound]) { _, _ in }
     }
 
-    private func scheduleDownloadCompleteNotification(zimFileID: UUID) {
+    @MainActor private func scheduleDownloadCompleteNotification(zimFileID: UUID) {
         let center = UNUserNotificationCenter.current()
         center.getNotificationSettings { settings in
             guard settings.authorizationStatus != .denied else { return }
@@ -373,10 +373,13 @@ final class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegat
         try? FileManager.default.moveItem(at: location, to: destination)
 
         // open the file
-        LibraryOperations.open(url: destination)
-
-        // schedule notification
-        scheduleDownloadCompleteNotification(zimFileID: zimFileID)
+        Task { @ZimActor in
+            await LibraryOperations.open(url: destination)
+            await MainActor.run {
+                // schedule notification
+                scheduleDownloadCompleteNotification(zimFileID: zimFileID)
+            }
+        }
     }
 
     // MARK: - URLSessionDelegate

@@ -69,46 +69,48 @@ struct OpenFileHandler: ViewModifier {
             guard let urls = notification.userInfo?["urls"] as? [URL],
                   let context = notification.userInfo?["context"] as? OpenFileContext else { return }
 
-            // try open zim files
-            var openedZimFileIDs = Set<UUID>()
-            var invalidURLs = Set<URL>()
-            for url in urls {
-                if let metadata = LibraryOperations.open(url: url) {
-                    openedZimFileIDs.insert(metadata.fileID)
-                } else {
-                    invalidURLs.insert(url)
-                }
-            }
-
-            // action for zim files that can be opened (e.g. open main page)
-            switch context {
-            case .command, .file:
-                openedZimFileIDs.forEach { fileID in
-                    guard let url = ZimFileService.shared.getMainPageURL(zimFileID: fileID) else { return }
-                    #if os(macOS)
-                    if .command == context {
-                        NotificationCenter.openURL(url, inNewTab: true)
-                    } else if .file == context {
-                        // Note: inNewTab:true/false has no meaning here, the system will open a new window anyway
-                        NotificationCenter.openURL(url, inNewTab: true, isFileContext: true)
+            Task { @MainActor in
+                // try open zim files
+                var openedZimFileIDs = Set<UUID>()
+                var invalidURLs = Set<URL>()
+                for url in urls {
+                    if let metadata = await LibraryOperations.open(url: url) {
+                        openedZimFileIDs.insert(metadata.fileID)
+                    } else {
+                        invalidURLs.insert(url)
                     }
-                    #elseif os(iOS)
-                    NotificationCenter.openURL(url, inNewTab: true)
-                    #endif
                 }
-            case .onBoarding:
-                openedZimFileIDs.forEach { fileID in
-                    guard let url = ZimFileService.shared.getMainPageURL(zimFileID: fileID) else { return }
-                    NotificationCenter.openURL(url)
-                }
-            default:
-                break
-            }
 
-            // show alert if there are any files that cannot be opened
-            if !invalidURLs.isEmpty {
-                isAlertPresented = true
-                activeAlert = .unableToOpen(filenames: invalidURLs.map({ $0.lastPathComponent }))
+                // action for zim files that can be opened (e.g. open main page)
+                switch context {
+                case .command, .file:
+                    for fileID in openedZimFileIDs {
+                        guard let url = await ZimFileService.shared.getMainPageURL(zimFileID: fileID) else { return }
+                        #if os(macOS)
+                        if .command == context {
+                            NotificationCenter.openURL(url, inNewTab: true)
+                        } else if .file == context {
+                            // Note: inNewTab:true/false has no meaning here, the system will open a new window anyway
+                            NotificationCenter.openURL(url, inNewTab: true, isFileContext: true)
+                        }
+                        #elseif os(iOS)
+                        NotificationCenter.openURL(url, inNewTab: true)
+                        #endif
+                    }
+                case .onBoarding:
+                    for fileID in openedZimFileIDs {
+                        guard let url = await ZimFileService.shared.getMainPageURL(zimFileID: fileID) else { return }
+                        NotificationCenter.openURL(url)
+                    }
+                default:
+                    break
+                }
+
+                // show alert if there are any files that cannot be opened
+                if !invalidURLs.isEmpty {
+                    isAlertPresented = true
+                    activeAlert = .unableToOpen(filenames: invalidURLs.map({ $0.lastPathComponent }))
+                }
             }
         }.alert("file_import.alert.no_open.title".localized,
                 isPresented: $isAlertPresented, presenting: activeAlert) { _ in

@@ -43,13 +43,15 @@ struct SaveContentHandler: ViewModifier {
                         .localizedWithFormat(withArgs: kiwixURL?.lastPathComponent ?? "")
                   ),
                   primaryButton: .default(Text("common.export_file.alert.button.title".localized)) {
-                if let kiwixURL,
-                   let urlContent = ZimFileService.shared.getURLContent(url: kiwixURL) {
-                    urlAndContent = (kiwixURL, urlContent)
-                } else {
-                    urlAndContent = nil
+                Task { @MainActor in
+                    if let kiwixURL,
+                       let urlContent = await ZimFileService.shared.getURLContent(url: kiwixURL) {
+                        urlAndContent = (kiwixURL, urlContent)
+                    } else {
+                        urlAndContent = nil
+                    }
+                    kiwixURL = nil
                 }
-                kiwixURL = nil
             },
                   secondaryButton: .cancel {
                 kiwixURL = nil

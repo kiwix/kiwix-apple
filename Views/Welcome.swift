@@ -75,22 +75,16 @@ struct Welcome: View {
             ) {
                 GridSection(title: "welcome.main_page.title".localized) {
                     ForEach(zimFiles) { zimFile in
-                        AsyncButton {
-                            guard let url = await ZimFileActor.shared
+                        AsyncButtonView {
+                            guard let url = await ZimFileService.shared
                                 .getMainPageURL(zimFileID: zimFile.fileID) else { return }
                             browser.load(url: url)
                         } label: {
                             ZimFileCell(zimFile, prominent: .name)
+                        } loading: {
+                            ZimFileCell(zimFile, prominent: .name, isLoading: true)
                         }
                         .buttonStyle(.plain)
-                        .asyncButtonStyle(.ellipsis)
-//                        Button {
-//                            guard let url = ZimFileService.shared
-//                                .getMainPageURL(zimFileID: zimFile.fileID) else { return }
-//                            browser.load(url: url)
-//                        } label: {
-//                            ZimFileCell(zimFile, prominent: .name)
-//                        }.buttonStyle(.plain)
                     }
                 }
                 if !bookmarks.isEmpty {
