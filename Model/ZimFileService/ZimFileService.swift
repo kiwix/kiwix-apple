@@ -13,6 +13,10 @@
 // You should have received a copy of the GNU General Public License
 // along with Kiwix; If not, see https://www.gnu.org/licenses/.
 
+@globalActor actor ZimActor {
+    static let shared = ZimActor()
+}
+
 /// A service to interact with zim files
 @ZimActor extension ZimFileService {
     /// Shared ZimFileService instance
