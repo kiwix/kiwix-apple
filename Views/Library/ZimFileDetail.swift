@@ -342,18 +342,14 @@ private struct Action: View {
 
     var body: some View {
         AsyncButton(action: action, label: {
-            label(title: title)
+            HStack {
+                Spacer()
+                Text(title)
+                    .fontWeight(.medium)
+                    .foregroundColor(isDestructive ? .red : nil)
+                Spacer()
+            }
         })
-    }
-
-    @ViewBuilder private func label(title: String) -> some View {
-        HStack {
-            Spacer()
-            Text(title)
-                .fontWeight(.medium)
-                .foregroundColor(isDestructive ? .red : nil)
-            Spacer()
-        }
     }
 }
 
