@@ -71,16 +71,9 @@ struct AsyncButton<S: View>: View {
         } label: {
             if task != nil {
                 label
-                    .opacity(0)
+                    .opacity(0.25)
                     .overlay {
-                        if #available(iOS 17.0, macOS 14.0, *) {
-                            Image(systemName: "ellipsis")
-                                .symbolEffect(.variableColor.iterative.dimInactiveLayers, options: .repeating, value: true)
-                                .font(.title)
-                        } else {
-                            Image(systemName: "ellipsis")
-                                .font(.title)
-                        }
+                        ProgressView()
                     }
                     .animation(.default, value: true)
             } else {
@@ -125,8 +118,6 @@ extension EnvironmentValues {
             try? await Task.sleep(for: .seconds(3))
         } label: {
             Text("Try me!")
-                .font(.system(size: 18))
-                .padding(6)
         }
         .asyncButtonStyle(.ellipsis)
     }.frame(minWidth: 200, minHeight: 400)
