@@ -344,11 +344,6 @@ private struct Action: View {
         AsyncButton(action: action, label: {
             label(title: title)
         })
-//        AsyncButtonView(action: action, label: {
-//            label(title: title)
-//        }, loading: {
-//            label(title: "loading".localized)
-//        })
     }
 
     @ViewBuilder private func label(title: String) -> some View {
