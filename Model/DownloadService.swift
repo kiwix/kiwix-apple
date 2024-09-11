@@ -246,7 +246,7 @@ final class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegat
         UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound]) { _, _ in }
     }
 
-    @MainActor private func scheduleDownloadCompleteNotification(zimFileID: UUID) {
+    private func scheduleDownloadCompleteNotification(zimFileID: UUID) {
         let center = UNUserNotificationCenter.current()
         center.getNotificationSettings { settings in
             guard settings.authorizationStatus != .denied else { return }
@@ -376,10 +376,8 @@ final class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegat
         // open the file
         Task { @ZimActor in
             await LibraryOperations.open(url: destination)
-            await MainActor.run {
-                // schedule notification
-                scheduleDownloadCompleteNotification(zimFileID: zimFileID)
-            }
+            // schedule notification
+            scheduleDownloadCompleteNotification(zimFileID: zimFileID)
         }
     }
 
