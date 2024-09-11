@@ -347,7 +347,7 @@ final class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegat
 
         guard let httpResponse = downloadTask.response as? HTTPURLResponse else { return }
 
-        guard httpResponse.statusCode == 200 else {
+        guard (200..<300).contains(httpResponse.statusCode) else {
             Task { @MainActor in
                 NotificationCenter.default.post(
                     name: .alert,
