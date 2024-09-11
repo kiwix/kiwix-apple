@@ -105,11 +105,13 @@ struct Kiwix: App {
         func userNotificationCenter(_ center: UNUserNotificationCenter,
                                     didReceive response: UNNotificationResponse,
                                     withCompletionHandler completionHandler: @escaping () -> Void) {
-            if let zimFileID = UUID(uuidString: response.notification.request.identifier),
-               let mainPageURL = ZimFileService.shared.getMainPageURL(zimFileID: zimFileID) {
-                NotificationCenter.openURL(mainPageURL, inNewTab: true)
+            Task { @MainActor in
+                if let zimFileID = UUID(uuidString: response.notification.request.identifier),
+                   let mainPageURL = await ZimFileService.shared.getMainPageURL(zimFileID: zimFileID) {
+                    NotificationCenter.openURL(mainPageURL, inNewTab: true)
+                }
+                completionHandler()
             }
-            completionHandler()
         }
 
         /// Purge some cached browser view models when receiving memory warning
