@@ -16,9 +16,10 @@
 import Foundation
 import SwiftUI
 
-struct AsyncButton<S: View>: View {
+struct AsyncButtonView<S: View>: View {
     private let action: @MainActor () async -> Void
     private let label: S
+    private let loading: S
 
     @State private var task: Task<Void, Never>?
 
@@ -33,30 +34,18 @@ struct AsyncButton<S: View>: View {
             }
         } label: {
             if task != nil {
-                label
-                    .opacity(0.25)
-                    .overlay {
-                        ProgressView()
-                    }
-                    .animation(.default, value: true)
+                loading
             } else {
                 label
             }
         }
     }
 
-    init(action: @MainActor @escaping () async -> Void, @ViewBuilder label: @escaping () -> S) {
+    init(action: @MainActor @escaping () async -> Void,
+         @ViewBuilder label: @escaping () -> S,
+         @ViewBuilder loading: @escaping () -> S) {
         self.action = action
         self.label = label()
+        self.loading = loading()
     }
-}
-
-#Preview {
-    Group {
-        AsyncButton {
-            try? await Task.sleep(for: .seconds(3))
-        } label: {
-            Text("Try me!")
-        }
-    }.frame(minWidth: 200, minHeight: 400)
 }
