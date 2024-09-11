@@ -150,16 +150,16 @@ struct LibraryZimFileContext: ViewModifier {
     var articleActions: some View {
         AsyncButton {
             guard let url = await ZimFileService.shared.getMainPageURL(zimFileID: zimFile.fileID) else { return }
-            await MainActor.run { NotificationCenter.openURL(url, inNewTab: true) }
+            NotificationCenter.openURL(url, inNewTab: true)
         } label: {
             Label("library.zim_file_context.main_page.label".localized, systemImage: "house")
-        }.asyncButtonStyle(.ellipsis)
+        }
         AsyncButton {
             guard let url = await ZimFileService.shared.getRandomPageURL(zimFileID: zimFile.fileID) else { return }
-            await MainActor.run { NotificationCenter.openURL(url, inNewTab: true) }
+            NotificationCenter.openURL(url, inNewTab: true)
         } label: {
             Label("library.zim_file_context.random.label".localized, systemImage: "die.face.5")
-        }.asyncButtonStyle(.ellipsis)
+        }
     }
 
     @ViewBuilder

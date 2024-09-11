@@ -54,8 +54,6 @@ struct AsyncButtonView<S: View>: View {
 struct AsyncButton<S: View>: View {
     private let action: @MainActor () async -> Void
     private let label: S
-    @Environment(\.asyncButtonStyle)
-    private var asyncButtonStyle
 
     @State private var task: Task<Void, Never>?
 
@@ -82,35 +80,11 @@ struct AsyncButton<S: View>: View {
         }
     }
 
-    init(action: @escaping () async -> Void, @ViewBuilder label: @escaping () -> S) {
+    init(action: @MainActor @escaping () async -> Void, @ViewBuilder label: @escaping () -> S) {
         self.action = action
         self.label = label()
     }
 }
-
-extension View {
-    public func asyncButtonStyle<S: AsyncButtonStyle>(_ style: S) -> some View {
-        environment(\.asyncButtonStyle, style)
-    }
-}
-
-// MARK: SwiftUI Environment
-
-struct AsyncButtonStyleKey: EnvironmentKey {
-    static let defaultValue: any AsyncButtonStyle = .ellipsis
-}
-
-extension EnvironmentValues {
-    var asyncButtonStyle: any AsyncButtonStyle {
-        get {
-            return self[AsyncButtonStyleKey.self]
-        }
-        set {
-            self[AsyncButtonStyleKey.self] = newValue
-        }
-    }
-}
-
 
 #Preview {
     Group {
@@ -119,6 +93,5 @@ extension EnvironmentValues {
         } label: {
             Text("Try me!")
         }
-        .asyncButtonStyle(.ellipsis)
     }.frame(minWidth: 200, minHeight: 400)
 }
