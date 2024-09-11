@@ -74,6 +74,7 @@ final class DownloadTasksPublisher {
         } else {
             states[uuid] = DownloadState(downloaded: downloaded, total: total, resumeData: nil)
         }
+        debugPrint("updateFor: \(uuid) downloaded: \(downloaded)")
         publisher.send(states)
     }
 

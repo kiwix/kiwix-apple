@@ -14,7 +14,6 @@
 // along with Kiwix; If not, see https://www.gnu.org/licenses/.
 
 #include <unordered_map>
-#import <QuartzCore/QuartzCore.h>
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wdocumentation"
 #include "kiwix/book.h"
