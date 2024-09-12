@@ -52,11 +52,12 @@ final class CompactViewController: UIHostingController<AnyView>, UISearchControl
 
         navigationItemObserver = navigation.$currentItem
             .receive(on: DispatchQueue.main)
-            .first()
             .sink(receiveValue: { [weak self] currentItem in
                 if currentItem != .loading {
                     self?.navigationController?.isToolbarHidden = false
                     self?.navigationController?.isNavigationBarHidden = false
+                    // listen to only the first change from .loading to something else
+                    self?.navigationItemObserver?.cancel()
                 }
             })
 
