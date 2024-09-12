@@ -42,7 +42,7 @@ final class SplitViewController: UISplitViewController {
         super.viewDidLoad()
 
         // setup controllers
-        setViewController(UINavigationController(rootViewController: CompactViewController()), for: .compact)
+        setViewController(UINavigationController(rootViewController: CompactViewController(navigation: navigationViewModel)), for: .compact)
         setViewController(SidebarViewController(), for: .primary)
         setSecondaryController()
 

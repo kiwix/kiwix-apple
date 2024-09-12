@@ -31,8 +31,11 @@ final class CompactViewController: UIHostingController<AnyView>, UISearchControl
 
     private var trailingNavItemGroups: [UIBarButtonItemGroup] = []
     private var rightNavItem: UIBarButtonItem?
+    private let navigation: NavigationViewModel
+    private var navigationItemObserver: AnyCancellable?
 
-    init() {
+    init(navigation: NavigationViewModel) {
+        self.navigation = navigation
         searchViewModel = SearchViewModel()
         let searchResult = SearchResults().environmentObject(searchViewModel)
         searchController = UISearchController(searchResultsController: UIHostingController(rootView: searchResult))
@@ -47,8 +50,22 @@ final class CompactViewController: UIHostingController<AnyView>, UISearchControl
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        navigationItemObserver = navigation.$currentItem
+            .receive(on: DispatchQueue.main)
+            .first()
+            .sink(receiveValue: { [weak self] currentItem in
+                if currentItem != .loading {
+                    self?.navigationController?.isToolbarHidden = false
+                    self?.navigationController?.isNavigationBarHidden = false
+                }
+            })
+
+        // the .loading initial state:
+        navigationController?.isToolbarHidden = true
+        navigationController?.isNavigationBarHidden = true
+        // eof .loading initial state
+
         definesPresentationContext = true
-        navigationController?.isToolbarHidden = false
         navigationController?.toolbar.scrollEdgeAppearance = {
             let apperance = UIToolbarAppearance()
             apperance.configureWithDefaultBackground()
@@ -136,7 +153,9 @@ private struct CompactView: View {
     }
 
     var body: some View {
-        if case let .tab(tabID) = navigation.currentItem {
+        if case .loading = navigation.currentItem {
+            LoadingView()
+        } else if case let .tab(tabID) = navigation.currentItem {
             Content(tabID: tabID, showLibrary: {
                 if presentedSheet == nil {
                     presentedSheet = .library(.categories)
