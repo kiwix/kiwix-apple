@@ -639,8 +639,8 @@ final class BrowserViewModel: NSObject, ObservableObject,
         guard let url = url ?? webView.url,
               let zimFileID = UUID(uuidString: url.host ?? "") else { return }
         let title = webView.title
-        Task { @ZimActor in
-            guard let metaData = ZimFileService.shared.getContentMetaData(url: url) else { return }
+        Task {
+            guard let metaData = await ZimFileService.shared.getContentMetaData(url: url) else { return }
             Database.shared.performBackgroundTask { context in
                 let bookmark = Bookmark(context: context)
                 bookmark.articleURL = url
