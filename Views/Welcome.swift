@@ -34,7 +34,9 @@ struct Welcome: View {
 
     var body: some View {
         if zimFiles.isEmpty {
-            LoadingView().ignoresSafeArea()
+            ZStack {
+                LogoView()
+            }.ignoresSafeArea()
 //            ZStack {
 //                LoadingView()
 //                HStack {
