@@ -32,7 +32,7 @@ extension SearchOperation {
         if case .matches = Defaults[.searchResultSnippetMode] {
             for result in results {
                 guard let html = result.htmlSnippet,
-                      let data = html.data(using: .utf8) else { return }
+                      let data = html.data(using: .utf8) else { continue }
                 result.snippet = try? NSAttributedString(
                     data: data,
                     options: [.documentType: NSAttributedString.DocumentType.html,
