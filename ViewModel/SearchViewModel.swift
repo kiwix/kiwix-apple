@@ -75,7 +75,7 @@ final class SearchViewModel: NSObject, ObservableObject, NSFetchedResultsControl
     @ZimActor
     private func updateSearchResults(_ searchText: String, _ zimFileIDs: Set<UUID>) {
         queue.cancelAllOperations()
-        /// This is run at app start, and opens the archive of all searchable ZIM files
+        // This is run at app start, and opens the archive of all searchable ZIM files
         for zimFileID in zimFileIDs {
             _ = ZimFileService.shared.openArchive(zimFileID: zimFileID)
         }
