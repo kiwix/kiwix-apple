@@ -37,6 +37,7 @@ struct AsyncButton<S: View>: View {
                     .opacity(0.25)
                     .overlay {
                         ProgressView()
+                            .controlSize(.small)
                     }
                     .animation(.default, value: true)
             } else {
