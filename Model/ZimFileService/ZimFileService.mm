@@ -223,8 +223,10 @@
             return nil;
         }
         [self insertIntoArchives:url with:zimFileID];
+        return [self findArchiveBy: zimFileID];
+    } else {
+        return found;
     }
-    return [self findArchiveBy: zimFileID];
 }
 
 - (zim::Archive *_Nullable) findArchiveBy: (NSUUID *_Nonnull) zimFileID {

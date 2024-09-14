@@ -22,7 +22,7 @@
     /// Shared ZimFileService instance
     static let shared = ZimFileService.__sharedInstance()
 
-    /// IDs of currently opened zim files
+    /// IDs of current local zim files (not necessaraly with opened Archive)
     private var fileIDs: [UUID] { __getReaderIdentifiers().compactMap({ $0 as? UUID }) }
 
     // MARK: - Reader Management
