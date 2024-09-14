@@ -17,7 +17,15 @@ import SwiftUI
 
 struct LoadingView: View {
     var body: some View {
-        Text("enum.navigation_item.loading".localized)
+        GeometryReader { geometry in
+            Image("kiwix-full")
+                .frame(width: geometry.size.width * 0.618, height: geometry.size.height * 0.618)
+                .aspectRatio(contentMode: .fit)
+                .position(
+                    x: geometry.size.width * 0.5,
+                    y: geometry.size.height * 0.5
+                )
+            }.ignoresSafeArea()
     }
 }
 

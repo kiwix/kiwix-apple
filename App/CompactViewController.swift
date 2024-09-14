@@ -231,7 +231,7 @@ private struct Content: View {
     var body: some View {
         Group {
             if browser.url == nil {
-                Welcome(showLibrary: showLibrary)
+                Welcome(showLibrary: showLibrary).ignoresSafeArea()
             } else {
                 WebView().ignoresSafeArea()
             }

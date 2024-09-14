@@ -34,39 +34,42 @@ struct Welcome: View {
 
     var body: some View {
         if zimFiles.isEmpty {
-            HStack {
-                Spacer()
-                VStack(spacing: 20) {
-                    Spacer()
-                    logo
-                    Divider()
-                    actions
-                    Text("library_refresh_error.retrieve.description".localized)
-                        .foregroundColor(.red)
-                        .opacity(library.state == .error ? 1 : 0)
-                    Spacer()
-                }
-                #if os(macOS)
-                .frame(maxWidth: 300)
-                #elseif os(iOS)
-                .frame(maxWidth: 600)
-                #endif
-                Spacer()
-            }
-            .padding()
-            .ignoresSafeArea()
-            .onChange(of: library.state) { state in
-                guard state == .complete else { return }
-                #if os(macOS)
-                navigation.currentItem = .categories
-                #elseif os(iOS)
-                if horizontalSizeClass == .regular {
-                    navigation.currentItem = .categories
-                } else {
-                    showLibrary?()
-                }
-                #endif
-            }
+            LoadingView().ignoresSafeArea()
+//            ZStack {
+//                LoadingView()
+//                HStack {
+//                    Spacer()
+//                    VStack(spacing: 20) {
+//                        Spacer(minLength: 200)
+//                        Divider()
+//                        actions
+//                        Text("library_refresh_error.retrieve.description".localized)
+//                            .foregroundColor(.red)
+//                            .opacity(library.state == .error ? 1 : 0)
+//                        Spacer()
+//                    }
+//    #if os(macOS)
+//                    .frame(maxWidth: 300)
+//    #elseif os(iOS)
+//                    .frame(maxWidth: 600)
+//    #endif
+//                    Spacer()
+//                }
+//                .padding()
+//                .ignoresSafeArea()
+//                .onChange(of: library.state) { state in
+//                    guard state == .complete else { return }
+//    #if os(macOS)
+//                    navigation.currentItem = .categories
+//    #elseif os(iOS)
+//                    if horizontalSizeClass == .regular {
+//                        navigation.currentItem = .categories
+//                    } else {
+//                        showLibrary?()
+//                    }
+//    #endif
+//                }
+//        }
         } else {
             LazyVGrid(
                 columns: ([GridItem(.adaptive(minimum: 250, maximum: 500), spacing: 12)]),
@@ -112,7 +115,7 @@ struct Welcome: View {
                 .aspectRatio(1, contentMode: .fit)
                 .frame(width: 60, height: 60)
                 .background(RoundedRectangle(cornerRadius: 10, style: .continuous).foregroundColor(.white))
-            Text(Brand.appName.uppercased()).font(.largeTitle).fontWeight(.bold)
+//            Text(Brand.appName.uppercased()).font(.largeTitle).fontWeight(.bold)
         }
     }
 
