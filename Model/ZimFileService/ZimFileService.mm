@@ -80,6 +80,13 @@
     }
 }
 
+- (NSUUID *_Nullable)open:(NSUUID *)zimFileID {
+    if ([self archiveBy:zimFileID] == nil) {
+        return nil;
+    }
+    return zimFileID;
+}
+
 - (void)close:(NSUUID *)zimFileID {
     self.archives->erase([self zimfileID_C: zimFileID]);
     [self.fileURLs[zimFileID] stopAccessingSecurityScopedResource];
@@ -91,6 +98,7 @@
 }
 
 - (nonnull void *) getArchives {
+    NSLog(@"archives: %zu",  self.archives->size());
     return self.archives;
 }
 

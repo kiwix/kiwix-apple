@@ -49,6 +49,10 @@
         return isStale ? ZimFileService.getFileURLBookmarkData(for: url) : nil
     }
 
+    func openArchive(zimFileID: UUID) -> UUID? {
+        __open(zimFileID)
+    }
+
     /// Close a zim file
     /// - Parameter fileID: ID of the zim file to close
     func close(fileID: UUID) { __close(fileID) }

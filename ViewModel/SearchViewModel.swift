@@ -26,6 +26,7 @@ final class SearchViewModel: NSObject, ObservableObject, NSFetchedResultsControl
 
     private let fetchedResultsController: NSFetchedResultsController<ZimFile>
     private var searchSubscriber: AnyCancellable?
+    @ZimActor
     private let queue = OperationQueue()
 
     override init() {
@@ -59,7 +60,9 @@ final class SearchViewModel: NSObject, ObservableObject, NSFetchedResultsControl
             .debounce(for: 0.2, scheduler: DispatchQueue.global())
             .receive(on: DispatchQueue.main, options: nil)
             .sink { [unowned self] searchText, zimFiles in
-                self.updateSearchResults(searchText, Set(zimFiles.keys))
+                Task { @ZimActor [weak self] in
+                    self?.updateSearchResults(searchText, Set(zimFiles.keys))
+                }
             }
     }
 
@@ -69,13 +72,19 @@ final class SearchViewModel: NSObject, ObservableObject, NSFetchedResultsControl
         } ?? [:]
     }
 
+    @ZimActor
     private func updateSearchResults(_ searchText: String, _ zimFileIDs: Set<UUID>) {
         queue.cancelAllOperations()
+        debugPrint("getArchives before: \(ZimFileService.shared.getArchives())")
+        for zimFileID in zimFileIDs {
+            _ = ZimFileService.shared.openArchive(zimFileID: zimFileID)
+        }
+        debugPrint("getArchives after: \(ZimFileService.shared.getArchives())")
         let operation = SearchOperation(searchText: searchText, zimFileIDs: zimFileIDs)
         operation.extractMatchingSnippet = Defaults[.searchResultSnippetMode] == .matches
         operation.completionBlock = { [weak self] in
             guard !operation.isCancelled else { return }
-            DispatchQueue.main.sync {
+            Task { @MainActor [weak self] in
                 self?.results = operation.results
                 self?.inProgress = false
             }
