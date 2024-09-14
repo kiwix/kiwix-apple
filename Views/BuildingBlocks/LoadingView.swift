@@ -15,7 +15,7 @@
 
 import SwiftUI
 
-struct LoadingView: View {
+struct LogoView: View {
     var body: some View {
         GeometryReader { geometry in
             Image("kiwix-full")
@@ -26,6 +26,33 @@ struct LoadingView: View {
                     y: geometry.size.height * 0.5
                 )
             }.ignoresSafeArea()
+    }
+}
+
+struct LoadingProgressView: View {
+    var body: some View {
+        GeometryReader { geometry in
+            ProgressView()
+                .progressViewStyle(.circular)
+                .tint(Color.primary)
+                .frame(
+                    width: geometry.size.width * 0.618,
+                    height: geometry.size.height * 0.191
+                )
+                .position(
+                    x: geometry.size.width * 0.5,
+                    y: geometry.size.height * 0.809
+                )
+        }
+    }
+}
+
+struct LoadingView: View {
+    var body: some View {
+        ZStack {
+            LogoView()
+            LoadingProgressView()
+        }.ignoresSafeArea()
     }
 }
 
