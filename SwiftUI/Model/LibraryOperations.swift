@@ -86,8 +86,10 @@ struct LibraryOperations {
                 zimFile.isMissing = false
             }
         }
-        if context.hasChanges {
-            try? context.save()
+        Task { @MainActor in
+            if context.hasChanges {
+                try? context.save()
+            }
         }
         os_log("Reopened %d out of %d zim files", log: Log.LibraryOperations, type: .info, successCount, zimFiles.count)
     }
