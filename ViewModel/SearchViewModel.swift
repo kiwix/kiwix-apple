@@ -75,11 +75,10 @@ final class SearchViewModel: NSObject, ObservableObject, NSFetchedResultsControl
     @ZimActor
     private func updateSearchResults(_ searchText: String, _ zimFileIDs: Set<UUID>) {
         queue.cancelAllOperations()
-        debugPrint("getArchives before: \(ZimFileService.shared.getArchives())")
+        /// This is run at app start, and opens the archive of all searchable ZIM files
         for zimFileID in zimFileIDs {
             _ = ZimFileService.shared.openArchive(zimFileID: zimFileID)
         }
-        debugPrint("getArchives after: \(ZimFileService.shared.getArchives())")
         let operation = SearchOperation(searchText: searchText, zimFileIDs: zimFileIDs)
         operation.extractMatchingSnippet = Defaults[.searchResultSnippetMode] == .matches
         operation.completionBlock = { [weak self] in
