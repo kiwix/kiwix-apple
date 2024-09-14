@@ -18,8 +18,10 @@ import SwiftUI
 struct LogoView: View {
     var body: some View {
         GeometryReader { geometry in
-            Image("kiwix-full")
-                .frame(width: geometry.size.width * 0.618, height: geometry.size.height * 0.618)
+            Image(Brand.loadingLogoImage)
+                .frame(
+                    width: geometry.size.width * 0.618,
+                    height: geometry.size.height * 0.3820)
                 .aspectRatio(contentMode: .fit)
                 .position(
                     x: geometry.size.width * 0.5,
