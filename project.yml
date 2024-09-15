@@ -105,6 +105,7 @@ targets:
           - "**/qqq.lproj"
           - "**/igl.lproj"
           - "**/dag.lproj"
+          - SplashScreenKiwix.storyboard
       - path: Support/SplashScreenKiwix.storyboard
         destinationFilters:
           - iOS
