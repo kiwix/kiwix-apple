@@ -26,6 +26,24 @@
 #import "SearchResult.h"
 #import "ZimFileService.h"
 
+@interface NSURL (PathManipulation)
+- (NSURL * _Nonnull) withTrailingSlash;
+@end
+
+@implementation NSURL (PathManipulation)
+- (NSURL * _Nonnull) withTrailingSlash {
+    if ([self.absoluteString hasSuffix:@"/"]) {
+        return self;
+    } else {
+        NSString *lastPath = [self.lastPathComponent stringByAppendingString:@"/"];
+        NSURL* withoutLastPath = [self URLByDeletingLastPathComponent];
+        return [withoutLastPath URLByAppendingPathComponent: lastPath];
+    }
+}
+
+@end
+
+
 @interface SearchOperation ()
 
 @property (assign) std::string searchText_C;
@@ -42,6 +60,7 @@
         self.searchText_C = [searchText cStringUsingEncoding:NSUTF8StringEncoding];
         self.zimFileIDs = zimFileIDs;
         self.results = [[NSMutableOrderedSet alloc] initWithCapacity:35];
+        self.foundURLs = [[NSMutableSet alloc] initWithCapacity:35];
         self.qualityOfService = NSQualityOfServiceUserInitiated;
     }
     return self;
@@ -104,8 +123,9 @@
             NSString *html = [NSString stringWithCString:result.getSnippet().c_str() encoding:NSUTF8StringEncoding];
             searchResult.htmlSnippet = html;
         }
-        
-        if (searchResult != nil) { [self.results addObject:searchResult]; }
+        if (searchResult != nil) {
+            [self addResult: searchResult];
+        }
     }
 }
 
@@ -125,11 +145,22 @@
             if (title.length > 0) {
                 SearchResult *searchResult = [[SearchResult alloc] initWithZimFileID:zimFileID path:path title:title];
                 if (searchResult != nil) {
-                    [self.results addObject:searchResult];
+                    [self addResult: searchResult];
                 }
             }
         }
     }
+}
+
+-(void) addResult: (SearchResult *_Nonnull) searchResult {
+    // only for comparison add a trailing slash to the URL (if not there yet)
+    NSURL *url = [searchResult.url withTrailingSlash];
+    if ([self.foundURLs containsObject: url]) {
+        return; // duplicate
+    }
+    [self.foundURLs addObject: url]; // store the url for comparison
+    // store the result itself, without any modification to the original url
+    [self.results addObject: searchResult];
 }
 
 @end
