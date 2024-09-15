@@ -98,13 +98,14 @@
         }
         SearchResult *searchResult = [[SearchResult alloc] initWithZimFileID:zimFileID path:path title:title];
         searchResult.probability = [[NSNumber alloc] initWithFloat:result.getScore() / 100];
-        
+        searchResult.index = result->getIndex();
+
         // optionally, add snippet
         if (self.extractMatchingSnippet) {
             NSString *html = [NSString stringWithCString:result.getSnippet().c_str() encoding:NSUTF8StringEncoding];
             searchResult.htmlSnippet = html;
         }
-        
+
         if (searchResult != nil) { [self.results addObject:searchResult]; }
     }
 }
@@ -115,11 +116,25 @@
 - (void)addTitleSearchResults:(std::vector<zim::Archive>)archives count:(int)count {
     for (zim::Archive archive: archives) {
         if (self.isCancelled) { break; }
-        
+        auto initial_count = [self.results count];
+
         NSUUID *zimFileID = [[NSUUID alloc] initWithUUIDBytes:(unsigned char *)archive.getUuid().data];
         auto results = zim::SuggestionSearcher(archive).suggest(self.searchText_C).getResults(0, count);
         for (auto result = results.begin(); result != results.end(); result++) {
             if (self.isCancelled) { break; }
+            zim::entry_index_type index = result.getEntry().getIndex();
+            SearchResult *dup = nil;
+            for (auto idx = 0; idx < initial_count; idx++) {
+                SearchResult *existing = [self.results objectAtIndex: idx];
+                if (existing.index == index) {
+                    dup = existing;
+                    break;
+                }
+            }
+            if (dup != nil) {
+                dup.probability = nil;  // adjust for score
+                continue;
+            }
             NSString *path = [NSString stringWithCString:result->getPath().c_str() encoding:NSUTF8StringEncoding];
             NSString *title = [NSString stringWithCString:result->getTitle().c_str() encoding:NSUTF8StringEncoding];
             if (title.length > 0) {

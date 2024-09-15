@@ -24,6 +24,7 @@
 @property (nonatomic, strong, nullable) NSAttributedString *snippet;
 @property (nonatomic, strong, nullable) NSNumber *probability;
 @property (nonatomic, strong, nullable) NSNumber *score;
+@property (nonatomic, assign) uint32_t index;   // zim::entry_index_type
 
 - (nullable instancetype)initWithZimFileID:(nonnull NSUUID *)zimFileID
                                       path:(nonnull NSString *)path
