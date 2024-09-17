@@ -76,10 +76,10 @@
         std::string zimFileID_C = [[[zimFileID UUIDString] lowercaseString] cStringUsingEncoding:NSUTF8StringEncoding];
         try {
             auto archive = allArchives->at(zimFileID_C);
-            [self addTitleSearchResults:archive count: 25];
             if (archive.hasFulltextIndex()) {
                 [self addIndexSearchResults:archive count: 25];
             }
+            [self addTitleSearchResults:archive count: 25];
         } catch (std::exception &e) {
             NSLog(@"perform search exception: %s", e.what());
         }
