@@ -46,7 +46,7 @@ enum AppType {
 enum Brand {
     static let appName: String = Config.value(for: .displayName) ?? "Kiwix"
     static let appStoreId: String = Config.value(for: .appStoreID) ?? "id997079563"
-    static let loadingLogoImage: String = "kiwix-full"
+    static let loadingLogoImage: String = "welcomeLogo"
     static let aboutText: String = Config.value(for: .aboutText) ?? "settings.about.description".localized
     static let aboutWebsite: String = Config.value(for: .aboutWebsite) ?? "https://www.kiwix.org"
 
