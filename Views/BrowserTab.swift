@@ -17,6 +17,7 @@ import SwiftUI
 
 /// This is macOS and iPad only specific, not used on iPhone
 struct BrowserTab: View {
+    @Environment(\.scenePhase) private var scenePhase
     @EnvironmentObject private var browser: BrowserViewModel
     @StateObject private var search = SearchViewModel()
 
@@ -55,6 +56,11 @@ struct BrowserTab: View {
         .focusedSceneValue(\.canGoForward, browser.canGoForward)
         .modifier(ExternalLinkHandler(externalURL: $browser.externalURL))
         .searchable(text: $search.searchText, placement: .toolbar, prompt: "common.search".localized)
+        .onChange(of: scenePhase) { newValue in
+            if case .active = newValue {
+                browser.refreshVideoState()
+            }
+        }
         .modify { view in
             #if os(macOS)
             view.navigationTitle(browser.articleTitle.isEmpty ? Brand.appName : browser.articleTitle)
@@ -65,7 +71,6 @@ struct BrowserTab: View {
         }
         .onAppear {
             browser.updateLastOpened()
-            browser.refreshVideoState()
         }
         .onDisappear {
             browser.pauseVideoWhenNotInPIP()
