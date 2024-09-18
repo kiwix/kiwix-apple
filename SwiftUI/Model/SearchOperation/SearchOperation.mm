@@ -26,6 +26,24 @@
 #import "SearchResult.h"
 #import "ZimFileService.h"
 
+@interface NSURL (PathManipulation)
+- (NSURL * _Nonnull) withTrailingSlash;
+@end
+
+@implementation NSURL (PathManipulation)
+- (NSURL * _Nonnull) withTrailingSlash {
+    if ([self.absoluteString hasSuffix:@"/"]) {
+        return self;
+    } else {
+        NSString *lastPath = [self.lastPathComponent stringByAppendingString:@"/"];
+        NSURL* withoutLastPath = [self URLByDeletingLastPathComponent];
+        return [withoutLastPath URLByAppendingPathComponent: lastPath];
+    }
+}
+
+@end
+
+
 @interface SearchOperation ()
 
 @property (assign) std::string searchText_C;
@@ -42,6 +60,7 @@
         self.searchText_C = [searchText cStringUsingEncoding:NSUTF8StringEncoding];
         self.zimFileIDs = zimFileIDs;
         self.results = [[NSMutableOrderedSet alloc] initWithCapacity:35];
+        self.foundURLs = [[NSMutableSet alloc] initWithCapacity:35];
         self.qualityOfService = NSQualityOfServiceUserInitiated;
     }
     return self;
@@ -53,83 +72,93 @@
     typedef std::unordered_map<std::string, zim::Archive> archives_map;
     auto *allArchives = static_cast<archives_map *>([[ZimFileService sharedInstance] getArchives]);
 
-    std::vector<zim::Archive> indexSearchArchives = std::vector<zim::Archive>();
-    std::vector<zim::Archive> titleSearchArchives = std::vector<zim::Archive>();
     for (NSUUID *zimFileID in self.zimFileIDs) {
         std::string zimFileID_C = [[[zimFileID UUIDString] lowercaseString] cStringUsingEncoding:NSUTF8StringEncoding];
         try {
             auto archive = allArchives->at(zimFileID_C);
             if (archive.hasFulltextIndex()) {
-                indexSearchArchives.push_back(archive);
+                [self addIndexSearchResults:archive count: 25];
             }
-            titleSearchArchives.push_back(archive);
-        } catch (std::exception) { }
-    }
-
-    // perform index and title search
-    try {
-        [self addIndexSearchResults:indexSearchArchives];
-    } catch (std::exception) { }
-    if (titleSearchArchives.size() > 0) {
-        int count = std::max((35 - (int)[self.results count]) / (int)titleSearchArchives.size(), 5);
-        [self addTitleSearchResults:titleSearchArchives count:(int)count];
+            [self addTitleSearchResults:archive count: 25];
+        } catch (std::exception &e) {
+            NSLog(@"perform search exception: %s", e.what());
+        }
     }
 }
 
 /// Add search results based on search index.
-/// @param archives archives to retrieve search results from
-- (void)addIndexSearchResults:(std::vector<zim::Archive>)archives {
+/// @param archive to retrieve search results from
+/// @param count number of articles to retrieve
+- (void)addIndexSearchResults:(zim::Archive)archive count:(int)count {
     // initialize and start full text search
     if (self.isCancelled) { return; }
-    if (archives.empty()) { return; }
-    zim::Searcher searcher = zim::Searcher(archives);
-    zim::SearchResultSet resultSet = searcher.search(zim::Query(self.searchText_C)).getResults(0, 25);
-    
-    // retrieve full text search results
-    for (auto result = resultSet.begin(); result != resultSet.end(); result++) {
-        if (self.isCancelled) { break; }
-        
-        zim::Item item = result->getItem(result->isRedirect());
-        NSUUID *zimFileID = [[NSUUID alloc] initWithUUIDBytes:(unsigned char *)result.getZimId().data];
-        NSString *path = [NSString stringWithCString:item.getPath().c_str() encoding:NSUTF8StringEncoding];
-        NSString *title = [NSString stringWithCString:item.getTitle().c_str() encoding:NSUTF8StringEncoding];
-        if (title.length == 0) {
-            title = path; // display the path as a fallback
+    try {
+        std::vector<zim::Archive> archives = std::vector<zim::Archive>();
+        archives.push_back(archive);
+        zim::Searcher searcher = zim::Searcher(archives);
+        zim::SearchResultSet resultSet = searcher.search(zim::Query(self.searchText_C)).getResults(0, count);
+
+        // retrieve full text search results
+        for (auto result = resultSet.begin(); result != resultSet.end(); result++) {
+            if (self.isCancelled) { break; }
+
+            zim::Item item = result->getItem(result->isRedirect());
+            NSUUID *zimFileID = [[NSUUID alloc] initWithUUIDBytes:(unsigned char *)result.getZimId().data];
+            NSString *path = [NSString stringWithCString:item.getPath().c_str() encoding:NSUTF8StringEncoding];
+            NSString *title = [NSString stringWithCString:item.getTitle().c_str() encoding:NSUTF8StringEncoding];
+            if (title.length == 0) {
+                title = path; // display the path as a fallback
+            }
+            SearchResult *searchResult = [[SearchResult alloc] initWithZimFileID:zimFileID path:path title:title];
+            searchResult.probability = [[NSNumber alloc] initWithFloat:result.getScore() / 100];
+
+            // optionally, add snippet
+            if (self.extractMatchingSnippet) {
+                NSString *html = [NSString stringWithCString:result.getSnippet().c_str() encoding:NSUTF8StringEncoding];
+                searchResult.htmlSnippet = html;
+            }
+            if (searchResult != nil) {
+                [self addResult: searchResult];
+            }
         }
-        SearchResult *searchResult = [[SearchResult alloc] initWithZimFileID:zimFileID path:path title:title];
-        searchResult.probability = [[NSNumber alloc] initWithFloat:result.getScore() / 100];
-        
-        // optionally, add snippet
-        if (self.extractMatchingSnippet) {
-            NSString *html = [NSString stringWithCString:result.getSnippet().c_str() encoding:NSUTF8StringEncoding];
-            searchResult.htmlSnippet = html;
-        }
-        
-        if (searchResult != nil) { [self.results addObject:searchResult]; }
+    } catch (std::exception &e) {
+        NSLog(@"index search error: %s", e.what());
     }
 }
 
 /// Add search results based on matching article titles with search text.
-/// @param archives archives to retrieve search results from
-/// @param count number of articles to retrieve for each archive
-- (void)addTitleSearchResults:(std::vector<zim::Archive>)archives count:(int)count {
-    for (zim::Archive archive: archives) {
-        if (self.isCancelled) { break; }
-        
+/// @param archive to retrieve search results from
+/// @param count number of articles to retrieve
+- (void)addTitleSearchResults:(zim::Archive) archive count:(int)count {
+    if (self.isCancelled) { return; }
+    try {
         NSUUID *zimFileID = [[NSUUID alloc] initWithUUIDBytes:(unsigned char *)archive.getUuid().data];
         auto results = zim::SuggestionSearcher(archive).suggest(self.searchText_C).getResults(0, count);
         for (auto result = results.begin(); result != results.end(); result++) {
-            if (self.isCancelled) { break; }
+            if (self.isCancelled) { return; }
             NSString *path = [NSString stringWithCString:result->getPath().c_str() encoding:NSUTF8StringEncoding];
             NSString *title = [NSString stringWithCString:result->getTitle().c_str() encoding:NSUTF8StringEncoding];
             if (title.length > 0) {
                 SearchResult *searchResult = [[SearchResult alloc] initWithZimFileID:zimFileID path:path title:title];
                 if (searchResult != nil) {
-                    [self.results addObject:searchResult];
+                    [self addResult: searchResult];
                 }
             }
         }
+    } catch (std::exception &e) {
+        NSLog(@"title search error: %s", e.what());
     }
+}
+
+-(void) addResult: (SearchResult *_Nonnull) searchResult {
+    // only for comparison add a trailing slash to the URL (if not there yet)
+    NSURL *url = [searchResult.url withTrailingSlash];
+    if ([self.foundURLs containsObject: url]) {
+        return; // duplicate
+    }
+    [self.foundURLs addObject: url]; // store the url for comparison
+    // store the result itself, without any modification to the original url
+    [self.results addObject: searchResult];
 }
 
 @end
