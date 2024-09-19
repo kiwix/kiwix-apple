@@ -1,6 +1,7 @@
 // Messages for French (français)
 // Exported from translatewiki.net
 // Author: Adriendelucca
+// Author: Benoit74
 // Author: Crochet.david
 // Author: Gomoko
 // Author: Goombiis
@@ -49,8 +50,7 @@
 "outline_button.outline.title" = "Vue d’ensemble";
 "outline_button.outline.help" = "Afficher la vue d’ensemble de l’article";
 "outline_button.outline.empty.message" = "Aucune vue d’ensemble disponible";
-// Fuzzy
-"bookmark_button.show.help" = "Afficher les signets. Appuyez longuement pour ajouter ou supprimer l'article actuel dans vos favoris.";
+"bookmark_button.show.help" = "Afficher la feuille de signets, où l'article actuel peut être ajouté ou supprimé des signets.";
 "article_shortcut.main.button.title" = "Article principal";
 "article_shortcut.main.button.help" = "Afficher l'article principal";
 "article_shortcut.random.button.title.mac" = "Article au hasard";
@@ -86,6 +86,7 @@
 "zim_file_opened.toolbar.open.title" = "Ouvrir...";
 "zim_file_opened.toolbar.open.help" = "Ouvrir un fichier ZIM";
 "zim_file_category.title" = "Catégorie";
+"zim_file_catalog.fetching.message" = "Récupération du catalogue...";
 "zim_file_category.section.empty.message" = "Aucun fichier ZIM dans cette catégorie.";
 "zim_file_downloads.overlay.empty.message" = "Aucune tâche de téléchargement";
 "zim_file_downloads.toolbar.show_sidebar.label" = "Afficher la barre latérale";
