@@ -26,7 +26,8 @@
 
 #pragma mark - Reader Management
 
-- (void)open:(NSURL *_Nonnull)url NS_REFINED_FOR_SWIFT;
+- (void)store:(NSURL *_Nonnull)url with:(NSUUID *_Nonnull)zimFileID NS_REFINED_FOR_SWIFT;
+- (NSUUID *_Nullable)open:(NSUUID *_Nonnull)zimFileID NS_REFINED_FOR_SWIFT;
 - (void)close:(NSUUID *_Nonnull)zimFileID NS_REFINED_FOR_SWIFT;
 - (NSArray *_Nonnull)getReaderIdentifiers NS_REFINED_FOR_SWIFT;
 - (nonnull void *) getArchives;

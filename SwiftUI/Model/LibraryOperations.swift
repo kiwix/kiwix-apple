@@ -29,13 +29,13 @@ struct LibraryOperations {
     /// Open a zim file with url
     /// - Parameter url: url of the zim file
     @discardableResult
-    static func open(url: URL, onComplete: (() -> Void)? = nil) -> ZimFileMetaData? {
-        guard let metadata = ZimFileService.getMetaData(url: url),
-              let fileURLBookmark = ZimFileService.getFileURLBookmarkData(for: url) else { return nil }
+    static func open(url: URL, onComplete: (() -> Void)? = nil) async -> ZimFileMetaData? {
+        guard let metadata = await ZimFileService.getMetaData(url: url),
+              let fileURLBookmark = await ZimFileService.getFileURLBookmarkData(for: url) else { return nil }
 
         // open the file
         do {
-            try ZimFileService.shared.open(fileURLBookmark: fileURLBookmark)
+            try await ZimFileService.shared.open(fileURLBookmark: fileURLBookmark, for: metadata.fileID)
         } catch {
             return nil
         }
@@ -61,19 +61,20 @@ struct LibraryOperations {
     }
 
     /// Reopen zim files from url bookmark data.
-    static func reopen(onComplete: (() -> Void)?) {
+    static func reopen() async {
         var successCount = 0
         let context = Database.shared.viewContext
         let request = ZimFile.fetchRequest(predicate: ZimFile.Predicate.isDownloaded)
 
         guard let zimFiles = try? context.fetch(request) else {
-            onComplete?()
             return
         }
-        zimFiles.forEach { zimFile in
+
+        for zimFile in zimFiles {
             guard let data = zimFile.fileURLBookmark else { return }
+
             do {
-                if let data = try ZimFileService.shared.open(fileURLBookmark: data) {
+                if let data = try await ZimFileService.shared.open(fileURLBookmark: data, for: zimFile.fileID) {
                     zimFile.fileURLBookmark = data
                 }
                 zimFile.isMissing = false
@@ -85,12 +86,12 @@ struct LibraryOperations {
                 zimFile.isMissing = false
             }
         }
-        if context.hasChanges {
-            try? context.save()
+        Task { @MainActor in
+            if context.hasChanges {
+                try? context.save()
+            }
         }
-
         os_log("Reopened %d out of %d zim files", log: Log.LibraryOperations, type: .info, successCount, zimFiles.count)
-        onComplete?()
     }
 
     /// Scan a directory and open available zim files inside it
@@ -102,8 +103,10 @@ struct LibraryOperations {
             options: [.skipsHiddenFiles, .skipsPackageDescendants, .skipsSubdirectoryDescendants]
         ).filter({ $0.pathExtension == "zim"}) else { return }
         os_log("Discovered %d probable zim files.", log: Log.LibraryOperations, type: .info, fileURLs.count)
-        for fileURL in fileURLs {
-            LibraryOperations.open(url: fileURL)
+        Task {
+            for fileURL in fileURLs {
+                await LibraryOperations.open(url: fileURL)
+            }
         }
     }
 
@@ -137,7 +140,7 @@ struct LibraryOperations {
 
     /// Unlink a zim file from library, delete associated bookmarks, and delete the file.
     /// - Parameter zimFile: the zim file to delete
-    static func delete(zimFileID: UUID) {
+    @ZimActor static func delete(zimFileID: UUID) {
         guard let url = ZimFileService.shared.getFileURL(zimFileID: zimFileID) else { return }
         defer { try? FileManager.default.removeItem(at: url) }
         LibraryOperations.unlink(zimFileID: zimFileID)
@@ -145,7 +148,7 @@ struct LibraryOperations {
 
     /// Unlink a zim file from library, delete associated bookmarks, but don't delete the file.
     /// - Parameter zimFile: the zim file to unlink
-    static func unlink(zimFileID: UUID) {
+    @ZimActor static func unlink(zimFileID: UUID) {
         ZimFileService.shared.close(fileID: zimFileID)
         Database.shared.performBackgroundTask { context in
             context.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump

@@ -13,12 +13,16 @@
 // You should have received a copy of the GNU General Public License
 // along with Kiwix; If not, see https://www.gnu.org/licenses/.
 
+@globalActor actor ZimActor {
+    static let shared = ZimActor()
+}
+
 /// A service to interact with zim files
-extension ZimFileService {
+@ZimActor extension ZimFileService {
     /// Shared ZimFileService instance
     static let shared = ZimFileService.__sharedInstance()
 
-    /// IDs of currently opened zim files
+    /// IDs of current local zim files (not necessaraly with opened Archive)
     private var fileIDs: [UUID] { __getReaderIdentifiers().compactMap({ $0 as? UUID }) }
 
     // MARK: - Reader Management
@@ -27,7 +31,7 @@ extension ZimFileService {
     /// - Parameter bookmark: url bookmark data of the zim file to open
     /// - Returns: new url bookmark data if the one used to open the zim file is stale
     @discardableResult
-    func open(fileURLBookmark data: Data) throws -> Data? {
+    func open(fileURLBookmark data: Data, for uuid: UUID) throws -> Data? {
         // resolve url
         var isStale: Bool = false
         #if os(macOS)
@@ -41,9 +45,12 @@ extension ZimFileService {
             throw ZimFileOpenError.missing
         }
         #endif
-
-        __open(url)
+        __store(url, with: uuid)
         return isStale ? ZimFileService.getFileURLBookmarkData(for: url) : nil
+    }
+
+    func openArchive(zimFileID: UUID) -> UUID? {
+        __open(zimFileID)
     }
 
     /// Close a zim file

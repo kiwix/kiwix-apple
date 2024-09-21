@@ -30,3 +30,18 @@ struct ToolbarRoleBrowser: ViewModifier {
         #endif
     }
 }
+
+struct LoadingOverlay: ViewModifier {
+    let isLoading: Bool
+
+    func body(content: Content) -> some View {
+        if isLoading {
+            content
+                .overlay(content: {
+                    ProgressView()
+                })
+        } else {
+            content
+        }
+    }
+}

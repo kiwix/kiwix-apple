@@ -175,21 +175,11 @@ final class KiwixURLSchemeHandler: NSObject, WKURLSchemeHandler {
     }
 
     private func contentMetaData(for url: URL) async -> URLContentMetaData? {
-        return await withCheckedContinuation { continuation in
-            Task.detached(priority: .utility) {
-                let metaData = ZimFileService.shared.getContentMetaData(url: url)
-                continuation.resume(returning: metaData)
-            }
-        }
+        await ZimFileService.shared.getContentMetaData(url: url)
     }
 
     private func directAccessInfo(for url: URL) async -> DirectAccessInfo? {
-        return await withCheckedContinuation { continuation in
-            Task.detached(priority: .utility) {
-                let directAccess = ZimFileService.shared.getDirectAccessInfo(url: url)
-                continuation.resume(returning: directAccess)
-            }
-        }
+        await ZimFileService.shared.getDirectAccessInfo(url: url)
     }
 
     // MARK: Writing content

@@ -43,13 +43,15 @@ struct SaveContentHandler: ViewModifier {
                         .localizedWithFormat(withArgs: kiwixURL?.lastPathComponent ?? "")
                   ),
                   primaryButton: .default(Text("common.export_file.alert.button.title".localized)) {
-                if let kiwixURL,
-                   let urlContent = ZimFileService.shared.getURLContent(url: kiwixURL) {
-                    urlAndContent = (kiwixURL, urlContent)
-                } else {
-                    urlAndContent = nil
+                Task { @MainActor in
+                    if let kiwixURL,
+                       let urlContent = await ZimFileService.shared.getURLContent(url: kiwixURL) {
+                        urlAndContent = (kiwixURL, urlContent)
+                    } else {
+                        urlAndContent = nil
+                    }
+                    kiwixURL = nil
                 }
-                kiwixURL = nil
             },
                   secondaryButton: .cancel {
                 kiwixURL = nil
@@ -82,11 +84,13 @@ struct SaveContentHandler: ViewModifier {
         savePanel.canCreateDirectories = true
         savePanel.nameFieldStringValue = url.lastPathComponent
         savePanel.begin { (response: NSApplication.ModalResponse) in
-            if case .OK = response,
-               let urlContent = ZimFileService.shared.getURLContent(url: url),
-               let destinationURL = savePanel.url {
-                try? urlContent.data.write(to: destinationURL)
-                savePanel.close()
+            Task { @MainActor in
+                if case .OK = response,
+                   let urlContent = await ZimFileService.shared.getURLContent(url: url),
+                   let destinationURL = savePanel.url {
+                    try? urlContent.data.write(to: destinationURL)
+                    savePanel.close()
+                }
             }
         }
     }

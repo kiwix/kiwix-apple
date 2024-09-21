@@ -149,7 +149,9 @@ final class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegat
             context.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
             let fetchRequest = ZimFile.fetchRequest(fileID: zimFileID)
             guard let zimFile = try? context.fetch(fetchRequest).first,
-                  var url = zimFile.downloadURL else { return }
+                  var url = zimFile.downloadURL else {
+                return
+            }
             let downloadTask = DownloadTask(context: context)
             downloadTask.created = Date()
             downloadTask.fileID = zimFileID
@@ -273,10 +275,10 @@ final class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegat
               let httpResponse = task.response as? HTTPURLResponse else { return }
 
         // download finished successfully if there's no error
-        // and the status code is 200
+        // and the status code is in the 200 < 300 range
         guard let error = error as NSError? else {
             self.deleteDownloadTask(zimFileID: zimFileID)
-            if httpResponse.statusCode == 200 {
+            if (200..<300).contains(httpResponse.statusCode) {
                 os_log(
                     "Download finished successfully. File ID: %s.",
                     log: Log.DownloadService,
@@ -345,7 +347,7 @@ final class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegat
 
         guard let httpResponse = downloadTask.response as? HTTPURLResponse else { return }
 
-        guard httpResponse.statusCode == 200 else {
+        guard (200..<300).contains(httpResponse.statusCode) else {
             Task { @MainActor in
                 NotificationCenter.default.post(
                     name: .alert,
@@ -373,10 +375,11 @@ final class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegat
         try? FileManager.default.moveItem(at: location, to: destination)
 
         // open the file
-        LibraryOperations.open(url: destination)
-
-        // schedule notification
-        scheduleDownloadCompleteNotification(zimFileID: zimFileID)
+        Task { @ZimActor in
+            await LibraryOperations.open(url: destination)
+            // schedule notification
+            scheduleDownloadCompleteNotification(zimFileID: zimFileID)
+        }
     }
 
     // MARK: - URLSessionDelegate
