@@ -126,6 +126,8 @@ struct SettingSection<Content: View>: View {
 
 #elseif os(iOS)
 
+import PassKit
+
 struct Settings: View {
     @Default(.backupDocumentDirectory) private var backupDocumentDirectory
     @Default(.downloadUsingCellular) private var downloadUsingCellular
@@ -134,6 +136,8 @@ struct Settings: View {
     @Default(.searchResultSnippetMode) private var searchResultSnippetMode
     @Default(.webViewPageZoom) private var webViewPageZoom
     @EnvironmentObject private var library: LibraryViewModel
+
+    private let payment = Payment()
 
     enum Route {
         case languageSelector, about
@@ -244,6 +248,23 @@ struct Settings: View {
 
     var miscellaneous: some View {
         Section("settings.miscellaneous.title".localized) {
+            if PKPaymentAuthorizationController.canMakePayments(
+                usingNetworks: Payment.supportedNetworks,
+                capabilities: Payment.capabilities
+            ) {
+                HStack {
+                    Spacer()
+                    PayWithApplePayButton(
+                        .donate,
+                        request: payment.donationRequest(),
+                        onPaymentAuthorizationChange: payment.onPaymentAuthPhase(phase:),
+                        onMerchantSessionRequested: payment.onMerchantSessionUpdate
+                    )
+                    .frame(width: 200, height: 38)
+                    .padding(2)
+                    Spacer()
+                }
+            }
             Button("settings.miscellaneous.button.feedback".localized) {
                 UIApplication.shared.open(URL(string: "mailto:feedback@kiwix.org")!)
             }
