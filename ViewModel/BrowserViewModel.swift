@@ -19,8 +19,6 @@ import CoreLocation
 import WebKit
 import Defaults
 import os
-
-import OrderedCollections
 import CoreKiwix
 
 // swiftlint:disable file_length
@@ -28,23 +26,27 @@ import CoreKiwix
 final class BrowserViewModel: NSObject, ObservableObject,
                               WKNavigationDelegate, WKScriptMessageHandler, WKUIDelegate,
                               NSFetchedResultsControllerDelegate {
-    private static var cache = OrderedDictionary<NSManagedObjectID, BrowserViewModel>()
+    @MainActor
+    private static var cache: OrderedCache<NSManagedObjectID, BrowserViewModel>?
 
     @MainActor
     static func getCached(tabID: NSManagedObjectID) -> BrowserViewModel {
-        let viewModel = cache[tabID] ?? BrowserViewModel(tabID: tabID)
-        cache.removeValue(forKey: tabID)
-        cache[tabID] = viewModel
+        if let cachedModel = cache?.findBy(key: tabID) {
+            return cachedModel
+        }
+        if cache == nil {
+            cache = .init()
+        }
+        let viewModel = BrowserViewModel(tabID: tabID)
+        cache?.removeValue(forKey: tabID)
+        cache?.setValue(viewModel, forKey: tabID)
         return viewModel
     }
 
     static func purgeCache() {
-        guard cache.count > 10 else { return }
-        let range = 0 ..< cache.count - 5
-        cache.values[range].forEach { viewModel in
-            viewModel.persistState()
+        Task { @MainActor in
+            cache?.removeOlderThan(Date.now.advanced(by: -360)) // 6 minutes
         }
-        cache.removeSubrange(range)
     }
 
     // MARK: - Properties
