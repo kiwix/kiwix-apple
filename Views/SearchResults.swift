@@ -100,9 +100,7 @@ struct SearchResults: View {
                 Section {
                     ForEach(recentSearchTexts.prefix(6), id: \.self) { searchText in
                         Button(searchText) {
-                            DispatchQueue.main.async {
-                                viewModel.searchText = searchText
-                            }
+                            viewModel.searchText = searchText
                         }.swipeActions {
                             Button("search_result.sidebar.button.remove".localized, role: .destructive) {
                                 recentSearchTexts.removeAll { $0 == searchText }

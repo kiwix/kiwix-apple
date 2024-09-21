@@ -445,12 +445,11 @@ final class BrowserViewModel: NSObject, ObservableObject,
 
     // MARK: - WKScriptMessageHandler
 
+    @MainActor
     func userContentController(_: WKUserContentController, didReceive message: WKScriptMessage) {
         if message.name == "headings", let headings = message.body as? [[String: String]] {
-            DispatchQueue.global(qos: .userInitiated).async {
-                self.generateOutlineList(headings: headings)
-                self.generateOutlineTree(headings: headings)
-            }
+            self.generateOutlineList(headings: headings)
+            self.generateOutlineTree(headings: headings)
         }
     }
 
@@ -674,7 +673,7 @@ final class BrowserViewModel: NSObject, ObservableObject,
 
     /// Convert flattened heading element data to a list of OutlineItems.
     /// - Parameter headings: list of heading element data retrieved from webview
-    private func generateOutlineList(headings: [[String: String]]) {
+    @MainActor private func generateOutlineList(headings: [[String: String]]) {
         let allLevels = headings.compactMap { Int($0["tag"]?.suffix(1) ?? "") }
         let offset = allLevels.filter { $0 == 1 }.count == 1 ? 2 : allLevels.min() ?? 0
         let outlineItems: [OutlineItem] = headings.enumerated().compactMap { index, heading in
@@ -684,14 +683,12 @@ final class BrowserViewModel: NSObject, ObservableObject,
                   let level = Int(tag.suffix(1)) else { return nil }
             return OutlineItem(id: id, index: index, text: text, level: max(level - offset, 0))
         }
-        DispatchQueue.main.async {
-            self.outlineItems = outlineItems
-        }
+        self.outlineItems = outlineItems
     }
 
     /// Convert flattened heading element data to a tree of OutlineItems.
     /// - Parameter headings: list of heading element data retrieved from webview
-    private func generateOutlineTree(headings: [[String: String]]) {
+    @MainActor private func generateOutlineTree(headings: [[String: String]]) {
         let root = OutlineItem(index: -1, text: "", level: 0)
         var stack: [OutlineItem] = [root]
         var all = [String: OutlineItem]()
@@ -725,13 +722,9 @@ final class BrowserViewModel: NSObject, ObservableObject,
         // if there is only one h1, flatten one level
         if let rootChildren = root.children, rootChildren.count == 1, let rootFirstChild = rootChildren.first {
             let children = rootFirstChild.removeAllChildren()
-            DispatchQueue.main.async {
-                self.outlineItemTree = [rootFirstChild] + children
-            }
+            self.outlineItemTree = [rootFirstChild] + children
         } else {
-            DispatchQueue.main.async {
-                self.outlineItemTree = root.children ?? []
-            }
+            self.outlineItemTree = root.children ?? []
         }
     }
 

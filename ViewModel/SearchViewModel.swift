@@ -57,8 +57,7 @@ final class SearchViewModel: NSObject, ObservableObject, NSFetchedResultsControl
                 self.inProgress = true
                 return (searchText, zimFiles)
             }
-            .debounce(for: 0.2, scheduler: DispatchQueue.global())
-            .receive(on: DispatchQueue.main, options: nil)
+            .debounce(for: 0.2, scheduler: DispatchQueue.main)
             .sink { [unowned self] searchText, zimFiles in
                 Task { @ZimActor [weak self] in
                     self?.updateSearchResults(searchText, Set(zimFiles.keys))

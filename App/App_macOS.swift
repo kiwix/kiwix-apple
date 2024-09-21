@@ -252,7 +252,7 @@ struct HostingWindowFinder: NSViewRepresentable {
     var callback: (NSWindow?) -> Void
     func makeNSView(context: Context) -> NSView {
         let view = NSView()
-        DispatchQueue.main.async { [weak view] in
+        Task { @MainActor [weak view] in
             self.callback(view?.window)
         }
         return view

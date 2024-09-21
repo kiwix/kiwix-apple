@@ -108,7 +108,7 @@ final class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegat
     private let queue = DispatchQueue(label: "downloads", qos: .background)
     @MainActor let progress = DownloadTasksPublisher()
     @MainActor private var heartbeat: Timer?
-    var backgroundCompletionHandler: (() -> Void)?
+    var backgroundCompletionHandler: (@MainActor () -> Void)?
     private lazy var session: URLSession = {
         let configuration = URLSessionConfiguration.background(withIdentifier: "org.kiwix.background")
         configuration.allowsCellularAccess = true
@@ -385,8 +385,8 @@ final class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegat
     // MARK: - URLSessionDelegate
 
     func urlSessionDidFinishEvents(forBackgroundURLSession session: URLSession) {
-        DispatchQueue.main.async {
-            self.backgroundCompletionHandler?()
+        Task { @MainActor [weak self] in
+            self?.backgroundCompletionHandler?()
         }
     }
 }
