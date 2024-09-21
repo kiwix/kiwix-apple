@@ -16,7 +16,7 @@
 import Foundation
 
 @MainActor
-final class OrderedCache<Key: Hashable, Value>  {
+final class OrderedCache<Key: Hashable, Value> {
 
     private struct ValueDated<V> {
         let value: V
@@ -41,7 +41,7 @@ final class OrderedCache<Key: Hashable, Value>  {
     }
 
     func removeOlderThan(_ pastDate: Date) {
-        dict = dict.filter { (key: Key, value: ValueDated<Value>) in
+        dict = dict.filter { (_, value: ValueDated<Value>) in
             value.date >= pastDate
         }
     }
