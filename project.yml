@@ -69,6 +69,7 @@ targetTemplates:
       - sdk: WebKit.framework
       - sdk: NotificationCenter.framework
       - sdk: QuickLook.framework
+      - sdk: PassKit.framework
       - sdk: SystemConfiguration.framework
       - package: Defaults
     sources: 
