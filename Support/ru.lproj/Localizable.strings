@@ -2,6 +2,7 @@
 // Exported from translatewiki.net
 // Author: Dirruw'o
 // Author: Kareyac
+// Author: Lutece398
 // Author: Okras
 // Author: Pacha Tchernof
 // Author: Rofiatmustapha12
@@ -12,6 +13,7 @@
 "library_refresh_error.process.description" = "Ошибка обработки данных библиотеки.";
 "download_service.complete.title" = "Загрузка завершена";
 "download_service.complete.description" = "%@ успешно загружен.";
+"download_service.failed.description" = "Невозможно загрузить этот файл.";
 "common.dialog.button.open" = "Открыть";
 "common.dialog.button.open_in_new_tab" = "Открыть в новой вкладке";
 "common.dialog.button.add_bookmark" = "Добавить закладку";
@@ -37,13 +39,12 @@
 "common.tab.menu.settings" = "Настройки";
 "common.support.app_name" = "Справка %@";
 "common.export_file.alert.title" = "Экспорт файла";
-"common.export_file.alert.description" = "Вы будете экспортировать файл %@?";
+"common.export_file.alert.description" = "Вы хотите экспортировать файл %@?";
 "common.export_file.alert.button.title" = "Экспорт";
 "outline_button.outline.title" = "Содержание";
 "outline_button.outline.help" = "Показать содержание статьи";
 "outline_button.outline.empty.message" = "Нет доступных содержаний";
-// Fuzzy
-"bookmark_button.show.help" = "Показать закладки. Длительное нажатие, чтобы добавить в закладки текущую статью или удалить ее из закладок.";
+"bookmark_button.show.help" = "Показать лист закладок, где текущую статью можно добавить или удалить из закладок.";
 "article_shortcut.main.button.title" = "Основная статья";
 "article_shortcut.main.button.help" = "Показать основную статью";
 "article_shortcut.random.button.title.mac" = "Случайная статья";
@@ -55,7 +56,7 @@
 "external_link_handler.alert.title" = "Внешняя ссылка";
 "external_link_handler.alert.button.load.link" = "Загрузить ссылку";
 "external_link_handler.alert.ask.description" = "Нажата внешняя ссылка. Вы хотите загрузить ссылку?";
-"external_link_handler.alert.not_loading.description" = "Внешняя ссылка прослушивается. Однако ваши текущие настройки не позволяют его загрузить.";
+"external_link_handler.alert.not_loading.description" = "Внешняя ссылка нажата. Однако ваши текущие настройки не позволяют загрузить ее.";
 "file_import.alert.no_open.title" = "Невозможно открыть файл";
 "file_import.alert.no_open.message" = "%@ невозможно открыть.";
 "attribute.detail.unknown" = "Неизвестно";
@@ -79,6 +80,7 @@
 "zim_file_opened.toolbar.open.title" = "Открыть...";
 "zim_file_opened.toolbar.open.help" = "Открыть ZIM-файл";
 "zim_file_category.title" = "Категория";
+"zim_file_catalog.fetching.message" = "Загрузка каталога...";
 "zim_file_category.section.empty.message" = "В этой категории нет ZIM-файла.";
 "zim_file_downloads.overlay.empty.message" = "Нет задач по загрузке";
 "zim_file_downloads.toolbar.show_sidebar.label" = "Показать боковую панель";
@@ -164,7 +166,7 @@
 "settings.about.dependencies.name" = "Имя";
 "settings.about.dependencies.license" = "Лицензия";
 "settings.about.dependencies.version" = "Версия";
-"settings.about.description" = "Kiwix — это оффлайн-читатель онлайн-контента, такого как Wikipedia, Project Gutenberg или TED Talks. Это делает знания доступными для людей, у которых нет или ограничен доступ к Интернету. Программное обеспечение, а также контент могут свободно использоваться кем угодно.";
+"settings.about.description" = "Kiwix — это оффлайн-читатель онлайн-контента, такого как Википедия, Проект «Гутенберг» или TED Talks. Это делает знания доступными для людей, у которых нет или ограничен доступ к Интернету. Программное обеспечение, а также контент могут свободно использоваться кем угодно.";
 "settings.about.license-description" = "Это приложение выпущено на условиях Стандартной общественной лицензии GNU версии 3.";
 "settings.about.appverion.title" = "Версия";
 "settings.about.build.title" = "Сборка";
@@ -172,7 +174,7 @@
 "settings.about.source.title" = "Источник";
 "settings.about.button.license" = "GNU General Public License v3";
 "bookmark.navigation.title" = "Закладки";
-"bookmark.overlay.empty.title" = "Нет Закладок";
+"bookmark.overlay.empty.title" = "Нет закладок";
 "bookmark.toolbar.show_sidebar.label" = "Показать боковую панель";
 "browser_tab.toolbar.show_sidebar.label" = "Показать боковую панель";
 "search_result.zimfile.empty.message" = "Нет открытого ZIM-файла";
