@@ -17,12 +17,8 @@ import SwiftUI
 import UniformTypeIdentifiers
 
 /// Button that presents a file importer.
-/// Note 1: On iOS/iPadOS 15, fileimporter's isPresented binding is not reset to false 
-///     if user swipe to dismiss the sheet.
-///     In order to mitigate the issue, the binding is set to false then true with a 0.1s delay.
-/// Note 2: Does not work on iOS / iPadOS via commands.
-/// Note 3: Does not allow multiple selection, because we want a new tab to be opened with main page
-///     when file is opened,
+/// Note 1: Does not work on iOS / iPadOS via commands.
+/// Note 2: Does not allow multiple selection, because we want a new tab to be opened with main page when file is opened,
 ///     and the multitab implementation on iOS / iPadOS does not support open multiple tabs with an url right now.
 struct OpenFileButton<Label: View>: View {
     @State private var isPresented: Bool = false
@@ -37,10 +33,7 @@ struct OpenFileButton<Label: View>: View {
 
     var body: some View {
         Button {
-            isPresented = false
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                isPresented = true
-            }
+            isPresented = true
         } label: { label }
         .fileImporter(
             isPresented: $isPresented,

@@ -73,12 +73,6 @@ struct ZimFilesOpened: View {
             #endif
             ToolbarItem {
                 Button {
-                    // On iOS/iPadOS 15, fileimporter's isPresented binding is not reset to false if user swipe to dismiss
-                    // the sheet. In order to mitigate the issue, the binding is set to false then true with a 0.1s delay.
-                    isFileImporterPresented = false
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                        isFileImporterPresented = true
-                    }
                     isFileImporterPresented = true
                 } label: {
                     Label("zim_file_opened.toolbar.open.title".localized, systemImage: "plus")
