@@ -48,9 +48,6 @@ packages:
   Defaults:
     url: https://github.com/sindresorhus/Defaults
     majorVersion: 6.0.0
-  OrderedCollections:
-    url: https://github.com/apple/swift-collections.git
-    majorVersion: 1.0.4
 
 targetTemplates:
   ApplicationTemplate:
@@ -73,7 +70,6 @@ targetTemplates:
       - sdk: NotificationCenter.framework
       - sdk: QuickLook.framework
       - package: Defaults
-      - package: OrderedCollections
     sources: 
       - path: App
       - path: Model
