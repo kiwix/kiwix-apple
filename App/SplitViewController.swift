@@ -22,10 +22,21 @@ final class SplitViewController: UISplitViewController {
     let navigationViewModel: NavigationViewModel
     private var navigationItemObserver: AnyCancellable?
     private var openURLObserver: NSObjectProtocol?
+    private var hasZimFiles: Bool
 
-    init(navigationViewModel: NavigationViewModel) {
+    init(
+        navigationViewModel: NavigationViewModel,
+        hasZimFiles: Bool
+    ) {
         self.navigationViewModel = navigationViewModel
+        self.hasZimFiles = hasZimFiles
         super.init(style: .doubleColumn)
+
+        if hasZimFiles {
+            preferredDisplayMode = .automatic
+        } else {
+            preferredDisplayMode = .secondaryOnly
+        }
     }
 
     required init?(coder: NSCoder) {
@@ -58,12 +69,15 @@ final class SplitViewController: UISplitViewController {
         navigationItemObserver = navigationViewModel.$currentItem
             .receive(on: DispatchQueue.main)  // needed to postpones sink after navigationViewModel.currentItem updates
             .dropFirst()
-            .sink { [weak self] _ in
+            .sink { [weak self] currentItem in
                 if let sidebarViewController = self?.viewController(for: .primary) as? SidebarViewController {
                     sidebarViewController.updateSelection()
                 }
                 if self?.traitCollection.horizontalSizeClass == .regular {
                     self?.setSecondaryController()
+                }
+                if self?.hasZimFiles == true, currentItem != .loading {
+                    self?.preferredDisplayMode = .automatic
                 }
             }
         openURLObserver = NotificationCenter.default.addObserver(
