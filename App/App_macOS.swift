@@ -110,7 +110,7 @@ struct RootView: View {
     private let tabCloses = NotificationCenter.default.publisher(for: NSWindow.willCloseNotification)
 
     var body: some View {
-        NavigationView {
+        NavigationSplitView {
             List(selection: $navigation.currentItem) {
                 ForEach(primaryItems, id: \.self) { navigationItem in
                     Label(navigationItem.name, systemImage: navigationItem.icon)
@@ -124,14 +124,7 @@ struct RootView: View {
                 }
             }
             .frame(minWidth: 150)
-            .toolbar {
-                Button {
-                    guard let responder = NSApp.keyWindow?.firstResponder else { return }
-                    responder.tryToPerform(#selector(NSSplitViewController.toggleSidebar(_:)), with: nil)
-                } label: {
-                    Image(systemName: "sidebar.leading")
-                }.help("app_macos_navigation.show_sidebar".localized)
-            }
+        } detail: {
             switch navigation.currentItem {
             case .loading:
                 LoadingView()
