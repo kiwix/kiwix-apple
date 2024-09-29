@@ -37,6 +37,9 @@ struct Welcome: View {
             ZStack {
                 LogoView()
                 welcomeContent
+                if library.state == .inProgress {
+                    LoadingView()
+                }
             }.ignoresSafeArea()
         } else {
             LazyVGrid(
@@ -82,7 +85,6 @@ struct Welcome: View {
                 VStack(spacing: 20) {
                     Spacer()
                         .frame(height: geometry.size.height * 0.618)
-                    Divider()
                     actions
                     Text("library_refresh_error.retrieve.description".localized)
                         .foregroundColor(.red)
@@ -114,7 +116,7 @@ struct Welcome: View {
 
     /// Onboarding actions, open a zim file or refresh catalog
     private var actions: some View {
-        HStack {
+        VStack {
             OpenFileButton(context: .onBoarding) {
                 HStack {
                     Spacer()
@@ -128,14 +130,7 @@ struct Welcome: View {
                 HStack {
                     Spacer()
                     if library.state == .inProgress {
-                        #if os(macOS)
-                        Text("welcome.button.status.fetching.text".localized)
-                        #elseif os(iOS)
-                        HStack(spacing: 6) {
-                            ProgressView().frame(maxHeight: 10)
-                            Text("welcome.button.status.fetching.text".localized)
-                        }
-                        #endif
+                        Text("welcome.button.status.fetching_catalog.text".localized)
                     } else {
                         Text("welcome.button.status.fetch_catalog.text".localized)
                     }
