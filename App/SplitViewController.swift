@@ -42,12 +42,7 @@ final class SplitViewController: UISplitViewController {
         super.viewDidLoad()
 
         // setup controllers
-        setViewController(
-            UINavigationController(
-                rootViewController: CompactViewController(navigation: navigationViewModel)
-            ),
-            for: .compact
-        )
+        setViewController(UINavigationController(rootViewController: CompactViewController()), for: .compact)
         setViewController(SidebarViewController(), for: .primary)
         setSecondaryController()
 
@@ -129,8 +124,7 @@ final class SplitViewController: UISplitViewController {
             setViewController(UINavigationController(rootViewController: controller), for: .secondary)
         case .loading:
             let controller = UIHostingController(rootView: LoadingView())
-            let navController = UINavigationController(rootViewController: controller)
-            setViewController(navController, for: .secondary)
+            setViewController(UINavigationController(rootViewController: controller), for: .secondary)
         default:
             let controller = UIHostingController(rootView: Text("vc-not-implemented"))
             setViewController(UINavigationController(rootViewController: controller), for: .secondary)
