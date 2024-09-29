@@ -41,6 +41,9 @@ final class SplitViewController: UISplitViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        // start with collapsed state for .loading
+        preferredDisplayMode = .secondaryOnly
+
         // setup controllers
         setViewController(
             UINavigationController(
