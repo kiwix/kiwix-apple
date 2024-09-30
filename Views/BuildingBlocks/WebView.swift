@@ -130,15 +130,11 @@ final class WebViewController: UIViewController {
 // MARK: - UIScrollViewDelegate
 extension WebViewController: UIScrollViewDelegate {
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        if Device.current == .iPhone {
-            configureBars(on: scrollView)
-        }
+        configureBars(on: scrollView)
     }
     
     func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
-        if Device.current == .iPhone {
-            currentScrollViewOffset = scrollView.contentOffset.y
-        }
+        currentScrollViewOffset = scrollView.contentOffset.y
     }
     
     private func configureBars(on scrollView: UIScrollView) {
@@ -166,7 +162,9 @@ extension WebViewController: UIScrollViewDelegate {
     
     func showBars(on navigationController: UINavigationController) {
         navigationController.setNavigationBarHidden(false, animated: true)
-        navigationController.setToolbarHidden(false, animated: true)
+        if Device.current == .iPhone {
+            navigationController.setToolbarHidden(false, animated: true)
+        }
     }
 }
 
@@ -189,11 +187,9 @@ extension WebViewController {
     }
     
     private func configureImmersiveReading() {
-        if Device.current == .iPhone {
-            configureDeviceOrientationNotifications()
-            configureNavigationController()
-        }
-        
+        configureDeviceOrientationNotifications()
+        configureNavigationController()
+
         func configureDeviceOrientationNotifications() {
             UIDevice.current.beginGeneratingDeviceOrientationNotifications()
             NotificationCenter.default.addObserver(self,
