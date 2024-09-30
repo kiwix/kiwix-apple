@@ -31,12 +31,6 @@ final class SplitViewController: UISplitViewController {
         self.navigationViewModel = navigationViewModel
         self.hasZimFiles = hasZimFiles
         super.init(style: .doubleColumn)
-
-        if hasZimFiles {
-            preferredDisplayMode = .automatic
-        } else {
-            preferredDisplayMode = .secondaryOnly
-        }
     }
 
     required init?(coder: NSCoder) {
