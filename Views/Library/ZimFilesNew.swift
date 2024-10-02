@@ -61,7 +61,7 @@ struct ZimFilesNew: View {
         .overlay {
             if zimFiles.isEmpty {
                 switch viewModel.state {
-                case .inProgress:
+                case .inProgress, .initialProgress:
                     Message(text: "zim_file_catalog.fetching.message".localized)
                 case .error:
                     Message(text: "library_refresh_error.retrieve.description".localized, color: .red)
