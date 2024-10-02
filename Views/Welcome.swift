@@ -37,8 +37,11 @@ struct Welcome: View {
             ZStack {
                 LogoView()
                 welcomeContent
+                if library.state == .initialProgress {
+                    LoadingMessageView(message: "welcome.button.status.fetching_catalog.text".localized)
+                }
                 if library.state == .inProgress {
-                    LoadingView()
+                    LoadingProgressView()
                 }
             }.ignoresSafeArea()
         } else {
@@ -80,18 +83,13 @@ struct Welcome: View {
 
     private var welcomeContent: some View {
         GeometryReader { geometry in
-            HStack {
-                Spacer()
-                VStack(spacing: 20) {
-                    Spacer()
-                        .frame(height: geometry.size.height * 0.618)
-                    actions
-                    Text("library_refresh_error.retrieve.description".localized)
-                        .foregroundColor(.red)
-                        .opacity(library.state == .error ? 1 : 0)
-                    Spacer()
-                }
-                .padding()
+            actions
+                .position(
+                    x: geometry.size.width * 0.5,
+                    y: geometry.size.height * 0.5 + 138
+                    // (140 logo height + 96 buttons height ) / 2 + 20 distance
+                )
+                .opacity( [.initial, .initialProgress].contains(library.state) ? 0 : 1 )
 #if os(macOS)
                 .frame(maxWidth: 300)
 #elseif os(iOS)
@@ -109,8 +107,14 @@ struct Welcome: View {
                     }
 #endif
                 }
-                Spacer()
-            }
+            Text("library_refresh_error.retrieve.description".localized)
+                .foregroundColor(.red)
+                .opacity(library.state == .error ? 1 : 0)
+                .position(
+                    x: geometry.size.width * 0.5,
+                    y: geometry.size.height * 0.5 + 138 + 96 / 2 + 20
+                )
+
         }
     }
 

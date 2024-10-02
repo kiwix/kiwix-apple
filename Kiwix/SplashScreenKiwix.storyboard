@@ -25,14 +25,23 @@
                                 <accessibility key="accessibilityConfiguration">
                                     <accessibilityTraits key="traits" image="YES" notEnabled="YES"/>
                                 </accessibility>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="140" id="vtl-H0-fnU"/>
+                                </constraints>
                             </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Loading Application..." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qEE-oI-yVD">
+                                <rect key="frame" x="114.66666666666669" y="553.66666666666663" width="164" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="gOr-0c-AYj" firstAttribute="width" relation="lessThanOrEqual" secondItem="Ze5-6b-2t3" secondAttribute="width" multiplier="0.618" id="G29-6Y-oWb"/>
+                            <constraint firstItem="qEE-oI-yVD" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="HVV-dV-2mF"/>
                             <constraint firstItem="gOr-0c-AYj" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="MYi-uf-geF"/>
+                            <constraint firstItem="qEE-oI-yVD" firstAttribute="centerY" secondItem="gOr-0c-AYj" secondAttribute="centerY" constant="138" id="Yh8-Xe-erv"/>
                             <constraint firstItem="gOr-0c-AYj" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="ohB-Hm-56e"/>
-                            <constraint firstItem="gOr-0c-AYj" firstAttribute="height" relation="lessThanOrEqual" secondItem="Ze5-6b-2t3" secondAttribute="height" multiplier="0.382" id="zTu-F5-CRx"/>
                         </constraints>
                     </view>
                 </viewController>

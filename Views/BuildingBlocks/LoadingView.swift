@@ -19,14 +19,26 @@ struct LogoView: View {
     var body: some View {
         GeometryReader { geometry in
             Image(Brand.loadingLogoImage)
-                .frame(maxWidth: geometry.size.width * 0.618,
-                       maxHeight: geometry.size.height * 0.3820)
+                .frame(height: 140)
                 .aspectRatio(contentMode: .fit)
                 .position(
                     x: geometry.size.width * 0.5,
                     y: geometry.size.height * 0.5
                 )
             }.ignoresSafeArea()
+    }
+}
+
+struct LoadingMessageView: View {
+    let message: String
+    var body: some View {
+        GeometryReader { geometry in
+            Text(message)
+                .position(
+                    x: geometry.size.width * 0.5,
+                    y: geometry.size.height * 0.5 + 138
+                )
+        }
     }
 }
 
@@ -52,7 +64,7 @@ struct LoadingView: View {
     var body: some View {
         ZStack {
             LogoView()
-            LoadingProgressView()
+            LoadingMessageView(message: "welcome.loading.data.text".localized)
         }.ignoresSafeArea()
     }
 }
