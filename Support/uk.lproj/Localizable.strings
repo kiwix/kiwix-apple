@@ -77,7 +77,9 @@
 "zim_file.action.open_main_page.title" = "Відкрити головну сторінку";
 "zim_file.action.reveal_in_finder.title" = "Показати у Finder";
 "zim_file.action.toggle_cellular" = "Завантажити використовуючи стільникові дані";
+"zim_file.action.unlink.title" = "Відв'язати";
 "zim_file.action.unlink.message" = "Усі закладки, пов’язані з цим файлом ZIM, будуть видалені, але оригінальний файл залишиться на місці.";
+"zim_file.action.unlink.button.title" = "Відв'язати";
 "zim_file.action.delete.title" = "Видалити";
 "zim_file.action.delete.message" = "Файл ZIM і всі закладки, пов’язані з цим файлом ZIM, будуть видалені.";
 "zim_file.action.delete.button.title" = "Видалити";
@@ -106,6 +108,7 @@
 "reading_settings.zoom.title" = "Масштаб сторінки";
 "reading_settings.zoom.reset.button" = "Скинути";
 "reading_settings.external_link.title" = "Зовнішні посилання";
+"reading_settings.search_snippet.title" = "Фрагмент пошуку";
 "reading_settings.tab.reading" = "Читання";
 "library_settings.catalog.title" = "Каталог";
 "library_settings.button.refresh_now" = "Оновити зараз";
@@ -115,7 +118,8 @@
 "library_settings.languages.title" = "Мови";
 "library_settings.tab.library.title" = "Бібліотека";
 "settings.navigation.title" = "Налаштування";
-"library_settings.toggle.cellular" = "Завантажити використовуючи стільникові дані";
+"library_settings.toggle.cellular" = "Завантажувати використовуючи стільникові дані";
+"library_settings.new-download-task-description" = "Зміни застосовуватимуться лише до нових завантажень.";
 "catalog_settings.last_refresh.text" = "Останнє оновлення";
 "catalog_settings.refreshing.text" = "Оновлення...";
 "catalog_settings.refresh_now.button" = "Оновити зараз";
