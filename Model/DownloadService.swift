@@ -273,11 +273,9 @@ final class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegat
         guard let taskDescription = task.taskDescription,
               let zimFileID = UUID(uuidString: taskDescription),
               let httpResponse = task.response as? HTTPURLResponse else { return }
-
         // download finished successfully if there's no error
         // and the status code is in the 200 < 300 range
         guard let error = error as NSError? else {
-            self.deleteDownloadTask(zimFileID: zimFileID)
             if (200..<300).contains(httpResponse.statusCode) {
                 os_log(
                     "Download finished successfully. File ID: %s.",
@@ -293,6 +291,7 @@ final class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegat
                     zimFileID.uuidString,
                     httpResponse.statusCode
                 )
+                self.deleteDownloadTask(zimFileID: zimFileID)
             }
             return
         }
@@ -344,7 +343,6 @@ final class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegat
     func urlSession(_ session: URLSession,
                     downloadTask: URLSessionDownloadTask,
                     didFinishDownloadingTo location: URL) {
-
         guard let httpResponse = downloadTask.response as? HTTPURLResponse else { return }
 
         guard (200..<300).contains(httpResponse.statusCode) else {
@@ -367,7 +365,7 @@ final class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegat
 
         // move file
         guard let directory = FileManager.default.urls(for: searchPath, in: .userDomainMask).first,
-            let zimFileID = UUID(uuidString: downloadTask.taskDescription ?? "") else {return}
+            let zimFileID = UUID(uuidString: downloadTask.taskDescription ?? "") else { return }
         let fileName = downloadTask.response?.suggestedFilename
             ?? downloadTask.originalRequest?.url?.lastPathComponent
             ?? zimFileID.uuidString + ".zim"
@@ -379,6 +377,7 @@ final class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegat
             await LibraryOperations.open(url: destination)
             // schedule notification
             scheduleDownloadCompleteNotification(zimFileID: zimFileID)
+            deleteDownloadTask(zimFileID: zimFileID)
         }
     }
 
