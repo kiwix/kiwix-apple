@@ -122,7 +122,9 @@ final class WebViewController: UIViewController {
 
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        webView.setValue(view.safeAreaInsets, forKey: "_obscuredInsets")
+        if #unavailable(iOS 18.0) {
+            webView.setValue(view.safeAreaInsets, forKey: "_obscuredInsets")
+        }
         layoutSubject.send()
     }
 }
