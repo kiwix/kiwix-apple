@@ -118,7 +118,7 @@ python3 -m venv .venv
 source .venv/bin/activate
 pip install -e .
 
-kiwix-build --target-platform apple_all_static libkiwix
+kiwix-build --config apple_all_static libkiwix
 # assuming your kiwix-build and apple folder at at same level
 cp -r BUILD_apple_all_static/INSTALL/lib/CoreKiwix.xcframework ../apple/
 ```
