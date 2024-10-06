@@ -15,7 +15,6 @@
 
 import SwiftUI
 
-
 /// Helper struct to calculate sizes and positions related to Brand logo
 /// The logo:
 /// - it should not be wider than half of the screen or 300
