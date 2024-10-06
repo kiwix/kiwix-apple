@@ -39,8 +39,8 @@
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="aq8-ue-tYD" firstAttribute="height" relation="lessThanOrEqual" secondItem="Ze5-6b-2t3" secondAttribute="height" id="9Pt-YU-B66"/>
-                            <constraint firstItem="aq8-ue-tYD" firstAttribute="height" secondItem="Ze5-6b-2t3" secondAttribute="height" multiplier="0.5" priority="750" id="S68-g2-nFH"/>
+                            <constraint firstItem="aq8-ue-tYD" firstAttribute="height" secondItem="Ze5-6b-2t3" secondAttribute="height" constant="-232" id="9Pt-YU-B66"/>
+                            <constraint firstItem="aq8-ue-tYD" firstAttribute="height" secondItem="Ze5-6b-2t3" secondAttribute="height" multiplier="0.5" id="S68-g2-nFH"/>
                             <constraint firstItem="aq8-ue-tYD" firstAttribute="width" secondItem="Ze5-6b-2t3" secondAttribute="width" multiplier="0.5" id="TF7-1V-ah2"/>
                             <constraint firstItem="aq8-ue-tYD" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="m7x-hm-LnP"/>
                             <constraint firstItem="aq8-ue-tYD" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="tmp-PG-GZz"/>
@@ -48,6 +48,18 @@
                         <variation key="default">
                             <mask key="constraints">
                                 <exclude reference="TF7-1V-ah2"/>
+                                <exclude reference="S68-g2-nFH"/>
+                                <exclude reference="9Pt-YU-B66"/>
+                            </mask>
+                        </variation>
+                        <variation key="heightClass=compact">
+                            <mask key="constraints">
+                                <include reference="9Pt-YU-B66"/>
+                            </mask>
+                        </variation>
+                        <variation key="heightClass=regular">
+                            <mask key="constraints">
+                                <include reference="S68-g2-nFH"/>
                             </mask>
                         </variation>
                         <variation key="widthClass=compact">

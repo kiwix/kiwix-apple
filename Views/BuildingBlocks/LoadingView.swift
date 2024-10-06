@@ -16,13 +16,12 @@
 import SwiftUI
 
 /// Helper struct to calculate sizes and positions related to Brand logo
+/// Note: these rules are also enforced on SplashScreens
 /// The logo:
-/// - it should be half of the screen for compact width
-/// otherwise 300 (regular width)
-/// - it should not be taller than half of the screen
-/// - it should make vertical space for one row of buttons below it including spaces,
-/// which currently is total screen height - 232, this is used on the splash screen as well!
-/// This is especially important on iPhone in landscape mode (vertical compact mode)
+/// - in compact width: is half of the screen
+/// - in regular width: 300
+/// - in compact height (iPhone landscape): total - 232 - to make space for one row of buttons below including spaces
+/// - in regular height: half of the screen
 /// The 2 buttons (open file / fetch catalog):
 /// - they are displayed in 2 rows, matching the width of the logo
 /// - on iPhone landscape they are displayed in 1 row, matching the full width - spacing
