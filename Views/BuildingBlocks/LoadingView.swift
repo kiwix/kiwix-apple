@@ -26,19 +26,17 @@ enum LogoCalc {
     private static let spacing: CGFloat = 20
     private static let errorMsgHeight: CGFloat = 22
 
-    static func sizeWithin(_ geometry: CGSize) -> CGSize {
-
+    static func sizeWithin(_ geometry: CGSize, originalImageSize: CGSize) -> CGSize {
         let height = min(geometry.height * 0.5,
                          // 2 * 116 = 232 this is used on the splash screen as well
                          geometry.height - 2 * minButtonSpace)
         let width = max(geometry.width * 0.5, 0)
         let size = CGSize(width: width, height: height)
-        debugPrint("Size Within : \(geometry) is: \(size)")
-        return size
+        return Resizer.fit(originalImageSize, into: size)
     }
 
-    static func errorTextCenterYIn(_ geometry: CGSize, isCompact: Bool) -> CGFloat {
-        let logoSize = sizeWithin(geometry)
+    static func errorTextCenterYIn(_ geometry: CGSize, originalImageSize: CGSize, isCompact: Bool) -> CGFloat {
+        let logoSize = sizeWithin(geometry, originalImageSize: originalImageSize)
         if isCompact { // put the error to the top of the screen
             return (geometry.height - logoSize.height - errorMsgHeight) * 0.5 - spacing
         } else {
@@ -46,8 +44,8 @@ enum LogoCalc {
         }
     }
 
-    static func buttonCenterYIn(_ geometry: CGSize, isCompact: Bool) -> CGFloat {
-        let logoSize = sizeWithin(geometry)
+    static func buttonCenterYIn(_ geometry: CGSize, originalImageSize: CGSize, isCompact: Bool) -> CGFloat {
+        let logoSize = sizeWithin(geometry, originalImageSize: originalImageSize)
         if isCompact { // one row of buttons (HStack)
             return (geometry.height + logoSize.height + oneRowOfButtonsHeight) * 0.5 + spacing
         } else { // two row of buttons (VStack)
@@ -55,11 +53,11 @@ enum LogoCalc {
         }
     }
 
-    static func buttonsWidthIn(_ geometry: CGSize, isCompact: Bool) -> CGFloat {
+    static func buttonsWidthIn(_ geometry: CGSize, originalImageSize: CGSize, isCompact: Bool) -> CGFloat {
         if isCompact {
             return geometry.width - 2 * spacing
         } else {
-            return sizeWithin(geometry).width // 2 column buttons, match the logo width
+            return sizeWithin(geometry, originalImageSize: originalImageSize).width // 2 column buttons, match the logo width
         }
     }
 }
@@ -67,7 +65,7 @@ enum LogoCalc {
 struct LogoView: View {
     var body: some View {
         GeometryReader { geometry in
-            let logoSize = LogoCalc.sizeWithin(geometry.size)
+            let logoSize = LogoCalc.sizeWithin(geometry.size, originalImageSize: Brand.loadingLogoSize)
             Image(Brand.loadingLogoImage)
                 .resizable()
                 .scaledToFit()
@@ -87,7 +85,9 @@ struct LoadingMessageView: View {
     var body: some View {
         GeometryReader { geometry in
             let isCompact = horizontalSizeClass == .compact
-            let buttonCenterY = LogoCalc.buttonCenterYIn(geometry.size, isCompact: isCompact)
+            let buttonCenterY = LogoCalc.buttonCenterYIn(geometry.size,
+                                                         originalImageSize: Brand.loadingLogoSize,
+                                                         isCompact: isCompact)
             Text(message)
                 .position(
                     x: geometry.size.width * 0.5,
