@@ -18,7 +18,7 @@ import SwiftUI
 import UniformTypeIdentifiers
 import UserNotifications
 
-extension URL: @retroactive Identifiable {
+extension URL: Identifiable {
     public var id: String {
         self.absoluteString
     }

@@ -19,7 +19,8 @@ import SwiftUI
 /// The logo:
 /// - it should not be wider than half of the screen or 300
 /// - it should not be taller than half of the screen
-/// - it should make vertical space for one row of buttons below it including spaces
+/// - it should make vertical space for one row of buttons below it including spaces,
+/// which currently is total screen height - 232, this is used on the splash screen as well!
 /// This is especially important on iPhone in landscape mode (vertical compact mode)
 /// The 2 buttons (open file / fetch catalog):
 /// - they are displayed in 2 rows, matching the width of the logo
@@ -36,7 +37,7 @@ struct LogoCalc {
         static let maxLogoWidth: CGFloat = 300
         ///   44 height for the row of buttons,
         /// + 20 spacing above and below (x2)
-        /// + 32 for bottom bar
+        /// + 32 for bottom navbar
         static let minButtonSpace: CGFloat = oneRowOfButtonsHeight + spacing * 2 + 32 // 116
         static let oneRowOfButtonsHeight: CGFloat = 44
         static let twoRowsOfButtonsHeight: CGFloat = 96
@@ -64,9 +65,9 @@ struct LogoCalc {
         // in order to get back the actually displayed size of the fitted image.
         // This way we can place the buttons right below it
         // and not below the frame in was fitted into
-        // |----------------|
-        // |[ actual height]|
-        // |----------------| <- the frame height
+        // |---------------|
+        // |[actual height]|
+        // |---------------| <- the frame height
         return Resizer.fit(originalImage, into: size)
     }
 
