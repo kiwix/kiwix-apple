@@ -17,7 +17,8 @@ import SwiftUI
 
 /// Helper struct to calculate sizes and positions related to Brand logo
 /// The logo:
-/// - it should not be wider than half of the screen or 300
+/// - it should be half of the screen for compact width
+/// otherwise 300 (regular width)
 /// - it should not be taller than half of the screen
 /// - it should make vertical space for one row of buttons below it including spaces,
 /// which currently is total screen height - 232, this is used on the splash screen as well!
@@ -47,19 +48,30 @@ struct LogoCalc {
 
     private let geometry: CGSize
     private let originalImage: CGSize
-    private let isCompact: Bool
+    private let isVerticalCompact: Bool
+    private let isHorizontalCompact: Bool
 
-    init(geometry: CGSize, originalImageSize: CGSize, isVerticalCompact: Bool) {
+    init(
+        geometry: CGSize,
+        originalImageSize: CGSize,
+        horizontal: UserInterfaceSizeClass?,
+        vertical: UserInterfaceSizeClass?
+    ) {
         self.geometry = geometry
         self.originalImage = originalImageSize
-        self.isCompact = isVerticalCompact
+        isHorizontalCompact = horizontal == .compact
+        isVerticalCompact = vertical == .compact
     }
 
     var logoSize: CGSize {
         let height = min(geometry.height * 0.5,
                          // 2 * 116 = 232 this is used on the splash screen as well
                          geometry.height - 2 * Const.minButtonSpace)
-        let width = min(geometry.width * 0.5, Const.maxLogoWidth)
+        let width = if isHorizontalCompact {
+            geometry.width * 0.5
+        } else {
+            Const.maxLogoWidth
+        }
         let size = CGSize(width: width, height: height)
         // we need to "fit" the original image size into the size we got
         // in order to get back the actually displayed size of the fitted image.
@@ -72,7 +84,7 @@ struct LogoCalc {
     }
 
     var errorTextCenterY: CGFloat {
-        if isCompact { // put the error to the top of the screen
+        if isVerticalCompact { // put the error to the top of the screen
             return (geometry.height - logoSize.height - Const.errorMsgHeight) * 0.5
             - Const.spacing
         } else {
@@ -82,7 +94,7 @@ struct LogoCalc {
     }
 
     var buttonCenterY: CGFloat {
-        if isCompact { // one row of buttons (HStack)
+        if isVerticalCompact { // one row of buttons (HStack)
             return (geometry.height + logoSize.height + Const.oneRowOfButtonsHeight) * 0.5 + Const.spacing
         } else { // two row of buttons (VStack)
             return (geometry.height + logoSize.height + Const.twoRowsOfButtonsHeight) * 0.5 + Const.spacing
@@ -90,7 +102,7 @@ struct LogoCalc {
     }
 
     var buttonsWidth: CGFloat {
-        if isCompact {
+        if isVerticalCompact {
             return geometry.width - 2 * Const.spacing
         } else {
             return logoSize.width // 2 column buttons, match the logo width
@@ -99,12 +111,14 @@ struct LogoCalc {
 }
 
 struct LogoView: View {
+    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     @Environment(\.verticalSizeClass) private var verticalSizeClass
     var body: some View {
         GeometryReader { geometry in
             let logoCalc = LogoCalc(geometry: geometry.size,
                                     originalImageSize: Brand.loadingLogoSize,
-                                    isVerticalCompact: verticalSizeClass == .compact)
+                                    horizontal: horizontalSizeClass,
+                                    vertical: verticalSizeClass)
             let logoSize = logoCalc.logoSize
             Image(Brand.loadingLogoImage)
                 .resizable()
@@ -119,6 +133,7 @@ struct LogoView: View {
 }
 
 struct LoadingMessageView: View {
+    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     @Environment(\.verticalSizeClass) private var verticalSizeClass
 
     let message: String
@@ -126,7 +141,8 @@ struct LoadingMessageView: View {
         GeometryReader { geometry in
             let logoCalc = LogoCalc(geometry: geometry.size,
                                     originalImageSize: Brand.loadingLogoSize,
-                                    isVerticalCompact: verticalSizeClass == .compact)
+                                    horizontal: horizontalSizeClass,
+                                    vertical: verticalSizeClass)
             Text(message)
                 .position(
                     x: geometry.size.width * 0.5,

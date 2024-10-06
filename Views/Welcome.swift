@@ -87,7 +87,8 @@ struct Welcome: View {
             let logoCalc = LogoCalc(
                 geometry: geometry.size,
                 originalImageSize: Brand.loadingLogoSize,
-                isVerticalCompact: verticalSizeClass == .compact
+                horizontal: horizontalSizeClass,
+                vertical: verticalSizeClass
             )
             actions
                 .position(
