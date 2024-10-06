@@ -15,57 +15,97 @@
 
 import SwiftUI
 
-enum LogoCalc {
 
-    ///   44 height for the row of buttons,
-    /// + 20 spacing above and below (x2)
-    /// + 32 for bottom bar
-    private static let minButtonSpace: CGFloat = oneRowOfButtonsHeight + spacing * 2 + 32 // 116
-    private static let oneRowOfButtonsHeight: CGFloat = 44
-    private static let twoRowsOfButtonsHeight: CGFloat = 96
-    private static let spacing: CGFloat = 20
-    private static let errorMsgHeight: CGFloat = 22
+/// Helper struct to calculate sizes and positions related to Brand logo
+/// The logo:
+/// - it should not be wider than half of the screen or 300
+/// - it should not be taller than half of the screen
+/// - it should make vertical space for one row of buttons below it including spaces
+/// This is especially important on iPhone in landscape mode (vertical compact mode)
+/// The 2 buttons (open file / fetch catalog):
+/// - they are displayed in 2 rows, matching the width of the logo
+/// - on iPhone landscape they are displayed in 1 row, matching the full width - spacing
+/// The loading messages:
+/// - they are vertically aligned into the center place, where the buttons will be displayed
+/// Error message:
+/// - displayed below the buttons, with equal vertical spacing
+/// - on iPhone in landscape, it is displayed above the logo (due to lack of space below the logo)
+///
+struct LogoCalc {
 
-    static func sizeWithin(_ geometry: CGSize, originalImageSize: CGSize) -> CGSize {
+    private enum Const {
+        static let maxLogoWidth: CGFloat = 300
+        ///   44 height for the row of buttons,
+        /// + 20 spacing above and below (x2)
+        /// + 32 for bottom bar
+        static let minButtonSpace: CGFloat = oneRowOfButtonsHeight + spacing * 2 + 32 // 116
+        static let oneRowOfButtonsHeight: CGFloat = 44
+        static let twoRowsOfButtonsHeight: CGFloat = 96
+        static let spacing: CGFloat = 20
+        static let errorMsgHeight: CGFloat = 22
+    }
+
+    private let geometry: CGSize
+    private let originalImage: CGSize
+    private let isCompact: Bool
+
+    init(geometry: CGSize, originalImageSize: CGSize, isVerticalCompact: Bool) {
+        self.geometry = geometry
+        self.originalImage = originalImageSize
+        self.isCompact = isVerticalCompact
+    }
+
+    var logoSize: CGSize {
         let height = min(geometry.height * 0.5,
                          // 2 * 116 = 232 this is used on the splash screen as well
-                         geometry.height - 2 * minButtonSpace)
-        let width = max(geometry.width * 0.5, 0)
+                         geometry.height - 2 * Const.minButtonSpace)
+        let width = min(geometry.width * 0.5, Const.maxLogoWidth)
         let size = CGSize(width: width, height: height)
-        return Resizer.fit(originalImageSize, into: size)
+        // we need to "fit" the original image size into the size we got
+        // in order to get back the actually displayed size of the fitted image.
+        // This way we can place the buttons right below it
+        // and not below the frame in was fitted into
+        // |----------------|
+        // |[ actual height]|
+        // |----------------| <- the frame height
+        return Resizer.fit(originalImage, into: size)
     }
 
-    static func errorTextCenterYIn(_ geometry: CGSize, originalImageSize: CGSize, isCompact: Bool) -> CGFloat {
-        let logoSize = sizeWithin(geometry, originalImageSize: originalImageSize)
+    var errorTextCenterY: CGFloat {
         if isCompact { // put the error to the top of the screen
-            return (geometry.height - logoSize.height - errorMsgHeight) * 0.5 - spacing
+            return (geometry.height - logoSize.height - Const.errorMsgHeight) * 0.5
+            - Const.spacing
         } else {
-            return (geometry.height + logoSize.height + errorMsgHeight) * 0.5 + spacing + twoRowsOfButtonsHeight + spacing
+            return (geometry.height + logoSize.height + Const.errorMsgHeight) * 0.5
+            + Const.spacing + Const.twoRowsOfButtonsHeight + Const.spacing
         }
     }
 
-    static func buttonCenterYIn(_ geometry: CGSize, originalImageSize: CGSize, isCompact: Bool) -> CGFloat {
-        let logoSize = sizeWithin(geometry, originalImageSize: originalImageSize)
+    var buttonCenterY: CGFloat {
         if isCompact { // one row of buttons (HStack)
-            return (geometry.height + logoSize.height + oneRowOfButtonsHeight) * 0.5 + spacing
+            return (geometry.height + logoSize.height + Const.oneRowOfButtonsHeight) * 0.5 + Const.spacing
         } else { // two row of buttons (VStack)
-            return (geometry.height + logoSize.height + twoRowsOfButtonsHeight) * 0.5 + spacing
+            return (geometry.height + logoSize.height + Const.twoRowsOfButtonsHeight) * 0.5 + Const.spacing
         }
     }
 
-    static func buttonsWidthIn(_ geometry: CGSize, originalImageSize: CGSize, isCompact: Bool) -> CGFloat {
+    var buttonsWidth: CGFloat {
         if isCompact {
-            return geometry.width - 2 * spacing
+            return geometry.width - 2 * Const.spacing
         } else {
-            return sizeWithin(geometry, originalImageSize: originalImageSize).width // 2 column buttons, match the logo width
+            return logoSize.width // 2 column buttons, match the logo width
         }
     }
 }
 
 struct LogoView: View {
+    @Environment(\.verticalSizeClass) private var verticalSizeClass
     var body: some View {
         GeometryReader { geometry in
-            let logoSize = LogoCalc.sizeWithin(geometry.size, originalImageSize: Brand.loadingLogoSize)
+            let logoCalc = LogoCalc(geometry: geometry.size,
+                                    originalImageSize: Brand.loadingLogoSize,
+                                    isVerticalCompact: verticalSizeClass == .compact)
+            let logoSize = logoCalc.logoSize
             Image(Brand.loadingLogoImage)
                 .resizable()
                 .scaledToFit()
@@ -79,19 +119,20 @@ struct LogoView: View {
 }
 
 struct LoadingMessageView: View {
-    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
+    @Environment(\.verticalSizeClass) private var verticalSizeClass
 
     let message: String
     var body: some View {
         GeometryReader { geometry in
-            let isCompact = horizontalSizeClass == .compact
-            let buttonCenterY = LogoCalc.buttonCenterYIn(geometry.size,
-                                                         originalImageSize: Brand.loadingLogoSize,
-                                                         isCompact: isCompact)
+            let logoCalc = LogoCalc(geometry: geometry.size,
+                                    originalImageSize: Brand.loadingLogoSize,
+                                    isVerticalCompact: verticalSizeClass == .compact)
             Text(message)
                 .position(
                     x: geometry.size.width * 0.5,
-                    y: buttonCenterY
+                    // we want the loading message vertically centered to the buttons
+                    // that will appear
+                    y: logoCalc.buttonCenterY
                 )
         }
     }
