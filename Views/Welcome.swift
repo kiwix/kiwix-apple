@@ -17,6 +17,7 @@ import SwiftUI
 
 struct Welcome: View {
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
+    @Environment(\.verticalSizeClass) private var verticalSizeClass
     @EnvironmentObject private var browser: BrowserViewModel
     @EnvironmentObject private var library: LibraryViewModel
     @EnvironmentObject private var navigation: NavigationViewModel
@@ -83,18 +84,18 @@ struct Welcome: View {
 
     private var welcomeContent: some View {
         GeometryReader { geometry in
+            let isCompact = verticalSizeClass == .compact
+            let logoSize = LogoCalc.sizeWithin(geometry.size)
+            let actionsY = LogoCalc.buttonCenterYIn(
+                geometry.size,
+                isCompact: isCompact
+            )
             actions
                 .position(
                     x: geometry.size.width * 0.5,
-                    y: geometry.size.height * 0.5 + 138
-                    // (140 logo height + 96 buttons height ) / 2 + 20 distance
-                )
+                    y: actionsY)
                 .opacity( [.initial, .initialProgress].contains(library.state) ? 0 : 1 )
-#if os(macOS)
-                .frame(maxWidth: 300)
-#elseif os(iOS)
-                .frame(maxWidth: 600)
-#endif
+                .frame(maxWidth: LogoCalc.buttonsWidthIn(geometry.size, isCompact: isCompact))
                 .onChange(of: library.state) { state in
                     guard state == .complete else { return }
 #if os(macOS)
@@ -112,36 +113,53 @@ struct Welcome: View {
                 .opacity(library.state == .error ? 1 : 0)
                 .position(
                     x: geometry.size.width * 0.5,
-                    y: geometry.size.height * 0.5 + 138 + 96 / 2 + 20
+                    y: LogoCalc.errorTextCenterYIn(geometry.size, isCompact: isCompact)
                 )
-
         }
     }
 
     /// Onboarding actions, open a zim file or refresh catalog
     private var actions: some View {
-        VStack {
-            OpenFileButton(context: .onBoarding) {
-                HStack {
-                    Spacer()
-                    Text("welcome.actions.open_file".localized)
-                    Spacer()
-                }.padding(6)
-            }
-            Button {
-                library.start(isUserInitiated: true)
-            } label: {
-                HStack {
-                    Spacer()
-                    if library.state == .inProgress {
-                        Text("welcome.button.status.fetching_catalog.text".localized)
-                    } else {
-                        Text("welcome.button.status.fetch_catalog.text".localized)
-                    }
-                    Spacer()
-                }.padding(6)
-            }.disabled(library.state == .inProgress)
+        if verticalSizeClass == .compact { // iPhone landscape
+            AnyView(HStack {
+                openFileButton
+                catalogButton
+            })
+        } else {
+            AnyView(VStack {
+                openFileButton
+                catalogButton
+            })
         }
+    }
+
+    private var openFileButton: some View {
+        OpenFileButton(context: .onBoarding) {
+            HStack {
+                Spacer()
+                Text("welcome.actions.open_file".localized)
+                Spacer()
+            }.padding(6)
+        }
+        .font(.subheadline)
+        .buttonStyle(.bordered)
+    }
+
+    private var catalogButton: some View {
+        Button {
+            library.start(isUserInitiated: true)
+        } label: {
+            HStack {
+                Spacer()
+                if library.state == .inProgress {
+                    Text("welcome.button.status.fetching_catalog.text".localized)
+                } else {
+                    Text("welcome.button.status.fetch_catalog.text".localized)
+                }
+                Spacer()
+            }.padding(6)
+        }
+        .disabled(library.state == .inProgress)
         .font(.subheadline)
         .buttonStyle(.bordered)
     }

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="32700.99.1234" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="01J-lp-oVM">
-    <device id="retina6_12" orientation="portrait" appearance="light"/>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="23094" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="01J-lp-oVM">
+    <device id="retina4_0" orientation="landscape" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22685"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23084"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -17,37 +17,26 @@
                         <viewControllerLayoutGuide type="bottom" id="5aq-KH-MQP"/>
                     </layoutGuides>
                     <view key="view" userInteractionEnabled="NO" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="Ze5-6b-2t3">
-                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <rect key="frame" x="0.0" y="0.0" width="568" height="320"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="welcomeLogo" adjustsImageSizeForAccessibilityContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="gOr-0c-AYj" userLabel="KiwixLogo">
-                                <rect key="frame" x="100.66666666666669" y="356" width="192" height="140"/>
-                                <accessibility key="accessibilityConfiguration">
-                                    <accessibilityTraits key="traits" image="YES" notEnabled="YES"/>
-                                </accessibility>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="140" id="vtl-H0-fnU"/>
-                                </constraints>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="welcomeLogo" adjustsImageSizeForAccessibilityContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="aq8-ue-tYD" userLabel="Logo">
+                                <rect key="frame" x="142" y="80" width="284" height="160"/>
                             </imageView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Loading Application..." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qEE-oI-yVD">
-                                <rect key="frame" x="114.66666666666669" y="553.66666666666663" width="164" height="21"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="qEE-oI-yVD" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="HVV-dV-2mF"/>
-                            <constraint firstItem="gOr-0c-AYj" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="MYi-uf-geF"/>
-                            <constraint firstItem="qEE-oI-yVD" firstAttribute="centerY" secondItem="gOr-0c-AYj" secondAttribute="centerY" constant="138" id="Yh8-Xe-erv"/>
-                            <constraint firstItem="gOr-0c-AYj" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="ohB-Hm-56e"/>
+                            <constraint firstItem="aq8-ue-tYD" firstAttribute="height" relation="lessThanOrEqual" secondItem="Ze5-6b-2t3" secondAttribute="height" id="9Pt-YU-B66"/>
+                            <constraint firstItem="aq8-ue-tYD" firstAttribute="height" secondItem="Ze5-6b-2t3" secondAttribute="height" multiplier="0.5" priority="750" id="S68-g2-nFH"/>
+                            <constraint firstItem="aq8-ue-tYD" firstAttribute="width" secondItem="Ze5-6b-2t3" secondAttribute="width" multiplier="0.5" id="TF7-1V-ah2"/>
+                            <constraint firstItem="aq8-ue-tYD" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="m7x-hm-LnP"/>
+                            <constraint firstItem="aq8-ue-tYD" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="tmp-PG-GZz"/>
                         </constraints>
                     </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="iYj-Kq-Ea1" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="53" y="375"/>
+            <point key="canvasLocation" x="52.761627906976742" y="375"/>
         </scene>
     </scenes>
     <resources>
