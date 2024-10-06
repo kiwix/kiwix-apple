@@ -79,11 +79,13 @@ final class SplitViewController: UISplitViewController {
         ) { [weak self] notification in
             guard let url = notification.userInfo?["url"] as? URL else { return }
             let inNewTab = notification.userInfo?["inNewTab"] as? Bool ?? false
-            if !inNewTab, case let .tab(tabID) = self?.navigationViewModel.currentItem {
-                BrowserViewModel.getCached(tabID: tabID).load(url: url)
-            } else {
-                guard let tabID = self?.navigationViewModel.createTab() else { return }
-                BrowserViewModel.getCached(tabID: tabID).load(url: url)
+            Task { @MainActor in
+                if !inNewTab, case let .tab(tabID) = self?.navigationViewModel.currentItem {
+                    BrowserViewModel.getCached(tabID: tabID).load(url: url)
+                } else {
+                    guard let tabID = self?.navigationViewModel.createTab() else { return }
+                    BrowserViewModel.getCached(tabID: tabID).load(url: url)
+                }
             }
         }
     }

@@ -84,19 +84,18 @@ struct Welcome: View {
 
     private var welcomeContent: some View {
         GeometryReader { geometry in
-            let isCompact = verticalSizeClass == .compact
-            let logoSize = LogoCalc.sizeWithin(geometry.size, originalImageSize: Brand.loadingLogoSize)
-            let actionsY = LogoCalc.buttonCenterYIn(
-                geometry.size,
+            let logoCalc = LogoCalc(
+                geometry: geometry.size,
                 originalImageSize: Brand.loadingLogoSize,
-                isCompact: isCompact
+                isVerticalCompact: verticalSizeClass == .compact
             )
+            let logoSize = logoCalc.logoSize
             actions
                 .position(
                     x: geometry.size.width * 0.5,
-                    y: actionsY)
+                    y: logoCalc.buttonCenterY)
                 .opacity( [.initial, .initialProgress].contains(library.state) ? 0 : 1 )
-                .frame(maxWidth: LogoCalc.buttonsWidthIn(geometry.size, originalImageSize: Brand.loadingLogoSize, isCompact: isCompact))
+                .frame(maxWidth: logoCalc.buttonsWidth)
                 .onChange(of: library.state) { state in
                     guard state == .complete else { return }
 #if os(macOS)
@@ -114,7 +113,7 @@ struct Welcome: View {
                 .opacity(library.state == .error ? 1 : 0)
                 .position(
                     x: geometry.size.width * 0.5,
-                    y: LogoCalc.errorTextCenterYIn(geometry.size, originalImageSize: Brand.loadingLogoSize, isCompact: isCompact)
+                    y: logoCalc.errorTextCenterY
                 )
         }
     }
