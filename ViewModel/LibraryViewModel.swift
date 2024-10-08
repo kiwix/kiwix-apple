@@ -20,7 +20,6 @@ import os
 
 enum LibraryState {
     case initial
-    case initialProgress // fresh installs first progress only
     case inProgress
     case complete
     case error
@@ -66,11 +65,7 @@ final class LibraryViewModel: ObservableObject {
         self.process = processFactory()
         state = process.state
         process.$state.sink { [weak self] newState in
-            if self?.state == .initial && newState == .inProgress {
-                self?.state = .initialProgress
-            } else {
-                self?.state = newState
-            }
+            self?.state = newState
         }.store(in: &cancellables)
     }
 
