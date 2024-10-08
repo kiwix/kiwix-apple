@@ -34,7 +34,11 @@ import SwiftUI
 struct LogoCalc {
 
     private enum Const {
+        #if os(iOS)
         static let maxLogoWidth: CGFloat = 300
+        #else
+        static let maxLogoWidth: CGFloat = 192
+        #endif
         ///   44 height for the row of buttons,
         /// + 20 spacing above and below (x2)
         /// + 32 for bottom navbar
