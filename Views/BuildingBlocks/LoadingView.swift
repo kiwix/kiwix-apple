@@ -39,10 +39,18 @@ struct LogoCalc {
         #else
         static let maxLogoWidth: CGFloat = 192
         #endif
-        ///   44 height for the row of buttons,
-        /// + 20 spacing above and below (x2)
-        /// + 32 for bottom navbar
-        static let minButtonSpace: CGFloat = oneRowOfButtonsHeight + spacing * 2 + 32 // 116
+
+        ///  50 top bar
+        ///  20 spacing above logo
+        ///  Logo itself
+        ///  20 between logo and buttons
+        ///  44 height for the row of buttons
+        ///  20 spacing below buttons
+        ///  32 for bottom navbar
+        ///  ---------
+        ///  186 > it's also used on the splash screen
+        static let minNonLogoSpace: CGFloat = barHeights + oneRowOfButtonsHeight + 3 * spacing
+        static let barHeights: CGFloat = 50 + 32
         static let oneRowOfButtonsHeight: CGFloat = 44
         static let twoRowsOfButtonsHeight: CGFloat = 96
         static let spacing: CGFloat = 20
@@ -68,8 +76,8 @@ struct LogoCalc {
 
     var logoSize: CGSize {
         let height = min(geometry.height * 0.5,
-                         // 2 * 116 = 232 this is used on the splash screen as well
-                         geometry.height - 2 * Const.minButtonSpace)
+                         // 186 the same is set on the splash screen as well
+                         geometry.height - Const.minNonLogoSpace)
         let width = if isHorizontalCompact {
             geometry.width * 0.5
         } else {
@@ -86,22 +94,25 @@ struct LogoCalc {
         return Resizer.fit(originalImage, into: size)
     }
 
+    var logoCenterY: CGFloat {
+        let offset = if isVerticalCompact {
+            Const.oneRowOfButtonsHeight + Const.spacing
+        } else {
+            Const.twoRowsOfButtonsHeight + Const.spacing
+        }
+        return (geometry.height - offset) * 0.5
+    }
+
     var errorTextCenterY: CGFloat {
         if isVerticalCompact { // put the error to the top of the screen
-            return (geometry.height - logoSize.height - Const.errorMsgHeight) * 0.5
-            - Const.spacing
+            return logoCenterY - logoSize.height * 0.5 - Const.errorMsgHeight * 0.5 - Const.spacing
         } else {
-            return (geometry.height + logoSize.height + Const.errorMsgHeight) * 0.5
-            + Const.spacing + Const.twoRowsOfButtonsHeight + Const.spacing
+            return buttonCenterY + Const.twoRowsOfButtonsHeight * 0.5 + Const.spacing + Const.errorMsgHeight * 0.5
         }
     }
 
     var buttonCenterY: CGFloat {
-        if isVerticalCompact { // one row of buttons (HStack)
-            return (geometry.height + logoSize.height + Const.oneRowOfButtonsHeight) * 0.5 + Const.spacing
-        } else { // two row of buttons (VStack)
-            return (geometry.height + logoSize.height + Const.twoRowsOfButtonsHeight) * 0.5 + Const.spacing
-        }
+        (geometry.height + logoSize.height) * 0.5
     }
 
     var buttonsWidth: CGFloat {
@@ -129,7 +140,7 @@ struct LogoView: View {
                 .frame(width: logoSize.width, height: logoSize.height)
                 .position(
                     x: geometry.size.width * 0.5,
-                    y: geometry.size.height * 0.5
+                    y: logoCalc.logoCenterY
                 )
             }.ignoresSafeArea()
     }
