@@ -182,7 +182,7 @@ enum LibraryLanguageSortingMode: String, CaseIterable, Identifiable, Defaults.Se
 }
 
 enum LibraryTabItem: String, CaseIterable, Identifiable {
-    case opened, categories, downloads, new
+    case categories, new, downloads, opened
 
     var id: String { self.rawValue }
 

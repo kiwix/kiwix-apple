@@ -135,17 +135,11 @@ private struct CompactView: View {
     @EnvironmentObject private var navigation: NavigationViewModel
     @State private var presentedSheet: PresentedSheet?
 
-    private enum PresentedSheet: Identifiable {
-        case library(LibraryTabItem?)
+    private enum PresentedSheet: String, Identifiable {
+        case library
         case settings
-
         var id: String {
-            switch self {
-            case let .library(libraryItem):
-                return "library-\(String(describing: libraryItem))"
-            case .settings:
-                return "settings"
-            }
+            rawValue
         }
     }
 
@@ -159,7 +153,7 @@ private struct CompactView: View {
         } else if case let .tab(tabID) = navigation.currentItem {
             Content(tabID: tabID, showLibrary: {
                 if presentedSheet == nil {
-                    presentedSheet = .library(.categories)
+                    presentedSheet = .library
                 } else {
                     // there's a sheet already presented by the user
                     // do nothing
@@ -181,7 +175,7 @@ private struct CompactView: View {
                         Spacer()
                         if FeatureFlags.hasLibrary {
                             Button {
-                                presentedSheet = .library(nil)
+                                presentedSheet = .library
                             } label: {
                                 Label("common.tab.menu.library".localized, systemImage: "folder")
                             }
@@ -198,8 +192,8 @@ private struct CompactView: View {
                 .environmentObject(BrowserViewModel.getCached(tabID: tabID))
                 .sheet(item: $presentedSheet) { presentedSheet in
                     switch presentedSheet {
-                    case .library(let tabItem):
-                        Library(dismiss: dismiss, tabItem: tabItem)
+                    case .library:
+                        Library(dismiss: dismiss)
                     case .settings:
                         NavigationView {
                             Settings().toolbar {

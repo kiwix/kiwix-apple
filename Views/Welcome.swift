@@ -15,6 +15,7 @@
 
 import SwiftUI
 import Combine
+import Defaults
 
 struct Welcome: View {
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
@@ -22,7 +23,7 @@ struct Welcome: View {
     @EnvironmentObject private var browser: BrowserViewModel
     @EnvironmentObject private var library: LibraryViewModel
     @EnvironmentObject private var navigation: NavigationViewModel
-    @State private var isCatalogReady: Bool = false
+    @Default(.hasSeenCategories) private var hasSeenCategories
     @FetchRequest(
         sortDescriptors: [NSSortDescriptor(keyPath: \Bookmark.created, ascending: false)],
         animation: .easeInOut
@@ -40,14 +41,8 @@ struct Welcome: View {
             ZStack {
                 LogoView()
                 welcomeContent
-                    .onAppear {
-                        // setup the initial state
-                        if isCatalogReady == false {
-                            isCatalogReady = [.error, .complete].contains(library.state)
-                        }
-                    }
                 if library.state == .inProgress {
-                    if isCatalogReady {
+                    if hasSeenCategories {
                         LoadingProgressView()
                     } else {
                         LoadingMessageView(message: "welcome.button.status.fetching_catalog.text".localized)
@@ -103,16 +98,9 @@ struct Welcome: View {
                 .position(
                     x: geometry.size.width * 0.5,
                     y: logoCalc.buttonCenterY)
-                .opacity(isCatalogReady ? 1 : 0)
+                .opacity(hasSeenCategories ? 1 : 0)
                 .frame(maxWidth: logoCalc.buttonsWidth)
                 .onChange(of: library.state) { state in
-                    if isCatalogReady == false {
-                        // omit the .complete state by intention
-                        // we don't want the buttons to appear
-                        // after the library is loaded and we are
-                        // still leaving the welcome screen
-                        isCatalogReady = state == .error
-                    }
                     guard state == .complete else { return }
 #if os(macOS)
                     navigation.currentItem = .categories
