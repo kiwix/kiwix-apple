@@ -120,7 +120,7 @@ private struct CategoryGrid: View {
         Group {
             if sections.isEmpty {
                 switch viewModel.state {
-                case .inProgress, .initialProgress:
+                case .inProgress:
                     Message(text: "zim_file_catalog.fetching.message".localized)
                 case .error:
                     Message(text: "library_refresh_error.retrieve.description".localized, color: .red)
@@ -228,7 +228,7 @@ private struct CategoryList: View {
         Group {
             if zimFiles.isEmpty {
                 switch viewModel.state {
-                case .inProgress, .initialProgress:
+                case .inProgress:
                     Message(text: "zim_file_catalog.fetching.message".localized)
                 case .error:
                     Message(text: "library_refresh_error.retrieve.description".localized, color: .red)
