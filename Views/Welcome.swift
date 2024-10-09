@@ -41,6 +41,13 @@ struct Welcome: View {
             ZStack {
                 LogoView()
                 welcomeContent
+                    .onAppear {
+                        if !hasSeenCategories, library.state == .complete {
+                            // safety path for upgrading user with no ZIM files, but fetched categories
+                            // to make sure we do display the buttons
+                            hasSeenCategories = true
+                        }
+                    }
                 if library.state == .inProgress {
                     if hasSeenCategories {
                         LoadingProgressView()
