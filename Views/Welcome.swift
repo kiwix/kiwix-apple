@@ -108,6 +108,9 @@ struct Welcome: View {
                 .opacity(hasSeenCategories ? 1 : 0)
                 .frame(maxWidth: logoCalc.buttonsWidth)
                 .onChange(of: library.state) { state in
+                    if state == .error {
+                        hasSeenCategories = true
+                    }
                     guard state == .complete else { return }
 #if os(macOS)
                     navigation.currentItem = .categories

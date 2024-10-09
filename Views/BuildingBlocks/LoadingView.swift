@@ -43,13 +43,15 @@ struct LogoCalc {
         ///  50 top bar
         ///  20 spacing above logo
         ///  Logo itself
-        ///  20 between logo and buttons
-        ///  44 height for the row of buttons
+        ///  20 spacing between logo and buttons
+        ///  44 height for the one row of buttons
         ///  20 spacing below buttons
+        ///  22 for error message
+        ///  20 spacing below error message
         ///  32 for bottom navbar
         ///  ---------
-        ///  186 > it's also used on the splash screen
-        static let minNonLogoSpace: CGFloat = barHeights + oneRowOfButtonsHeight + 3 * spacing
+        ///  228 > it's also used on the splash screen
+        static let minNonLogoSpace: CGFloat = barHeights + oneRowOfButtonsHeight + 4 * spacing + errorMsgHeight
         static let barHeights: CGFloat = 50 + 32
         static let oneRowOfButtonsHeight: CGFloat = 44
         static let twoRowsOfButtonsHeight: CGFloat = 96
@@ -104,11 +106,12 @@ struct LogoCalc {
     }
 
     var errorTextCenterY: CGFloat {
-        if isVerticalCompact { // put the error to the top of the screen
-            return logoCenterY - logoSize.height * 0.5 - Const.errorMsgHeight * 0.5 - Const.spacing
+        let buttonsHeight = if isVerticalCompact {
+            Const.oneRowOfButtonsHeight
         } else {
-            return buttonCenterY + Const.twoRowsOfButtonsHeight * 0.5 + Const.spacing + Const.errorMsgHeight * 0.5
+            Const.twoRowsOfButtonsHeight
         }
+        return buttonCenterY + buttonsHeight * 0.5 + Const.spacing + Const.errorMsgHeight * 0.5
     }
 
     var buttonCenterY: CGFloat {

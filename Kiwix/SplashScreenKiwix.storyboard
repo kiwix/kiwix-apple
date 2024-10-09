@@ -21,7 +21,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="welcomeLogo" adjustsImageSizeForAccessibilityContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="aq8-ue-tYD" userLabel="Logo">
-                                <rect key="frame" x="142" y="61" width="284" height="134"/>
+                                <rect key="frame" x="142" y="82" width="284" height="92"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="300" id="zyG-3z-VNV"/>
                                 </constraints>
@@ -45,7 +45,7 @@
                             <constraint firstItem="aq8-ue-tYD" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" constant="-58" id="tmp-PG-GZz">
                                 <variation key="heightClass=compact" constant="-32"/>
                             </constraint>
-                            <constraint firstItem="aq8-ue-tYD" firstAttribute="height" secondItem="Ze5-6b-2t3" secondAttribute="height" constant="-186" id="yNt-tV-blG"/>
+                            <constraint firstItem="aq8-ue-tYD" firstAttribute="height" secondItem="Ze5-6b-2t3" secondAttribute="height" constant="-228" id="yNt-tV-blG"/>
                         </constraints>
                         <variation key="default">
                             <mask key="constraints">
