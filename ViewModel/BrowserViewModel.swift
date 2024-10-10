@@ -562,7 +562,7 @@ final class BrowserViewModel: NSObject, ObservableObject,
     // MARK: - TabID management via NSWindow for macOS
 
 #if os(macOS)
-    private (set) var windowNumber: Int?
+    private(set) var windowNumber: Int?
 
     // RESTORATION
     func restoreByWindowNumber(

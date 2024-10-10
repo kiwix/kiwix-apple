@@ -26,11 +26,8 @@ extension Defaults.Keys {
     static let searchResultSnippetMode = Key<SearchResultSnippetMode>(
         "searchResultSnippetMode", default: Brand.defaultSearchSnippetMode
     )
-//
-//    // UI
-//    static let sideBarDisplayMode = Key<SideBarDisplayMode>("sideBarDisplayMode", default: .automatic)
-//
-//    // search
+
+    // search
     static let recentSearchTexts = Key<[String]>("recentSearchTexts", default: [])
 
     // library
@@ -47,6 +44,7 @@ extension Defaults.Keys {
     static let backupDocumentDirectory = Key<Bool>("backupDocumentDirectory", default: false)
 
     static let categoriesToLanguages = Key<[Category: Set<String>]>("categoriesToLanguages", default: [:])
+    static let hasSeenCategories = Key<Bool>("hasSeenCategories", default: false)
 
     #if os(macOS)
     // window management:

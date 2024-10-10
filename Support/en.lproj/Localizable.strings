@@ -223,7 +223,8 @@
 "welcome.main_page.title" = "Main Page";
 "welcome.grid.bookmarks.title" = "Bookmarks";
 "welcome.actions.open_file" = "Open File";
-"welcome.button.status.fetching.text" = "Fetching...";
+"welcome.loading.data.text" = "Loading Data...";
+"welcome.button.status.fetching_catalog.text" = "Fetching Catalog...";
 "welcome.button.status.fetch_catalog.text" = "Fetch Catalog";
 
 "commands.button.actual_size" = "Actual Size";

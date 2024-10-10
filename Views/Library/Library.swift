@@ -21,14 +21,12 @@ import Defaults
 /// Tabbed library view on iOS & iPadOS
 struct Library: View {
     @EnvironmentObject private var viewModel: LibraryViewModel
-    @SceneStorage("LibraryTabItem") private var tabItem: LibraryTabItem = .opened
-
-    private let defaultTabItem: LibraryTabItem?
+    @SceneStorage("LibraryTabItem") private var tabItem: LibraryTabItem = .categories
+    @Default(.hasSeenCategories) private var hasSeenCategories
     private let categories: [Category]
     let dismiss: (() -> Void)?
 
-    init(dismiss: (() -> Void)?, tabItem: LibraryTabItem? = nil) {
-        self.defaultTabItem = tabItem
+    init(dismiss: (() -> Void)?) {
         self.dismiss = dismiss
         categories = CategoriesToLanguages.allCategories()
     }
@@ -38,8 +36,6 @@ struct Library: View {
             ForEach(LibraryTabItem.allCases) { tabItem in
                 SheetContent {
                     switch tabItem {
-                    case .opened:
-                        ZimFilesOpened(dismiss: dismiss)
                     case .categories:
                         List(categories) { category in
                             NavigationLink {
@@ -55,6 +51,8 @@ struct Library: View {
                         }
                         .listStyle(.plain)
                         .navigationTitle(NavigationItem.categories.name)
+                    case .opened:
+                        ZimFilesOpened(dismiss: dismiss)
                     case .downloads:
                         ZimFilesDownloads(dismiss: dismiss)
                             .environment(\.managedObjectContext, Database.shared.viewContext)
@@ -66,10 +64,9 @@ struct Library: View {
                 .tabItem { Label(tabItem.name, systemImage: tabItem.icon) }
             }
         }.onAppear {
-            if let defaultTabItem = defaultTabItem {
-                tabItem = defaultTabItem
-            }
             viewModel.start(isUserInitiated: false)
+        }.onDisappear {
+            hasSeenCategories = true
         }
     }
 }

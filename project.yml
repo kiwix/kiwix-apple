@@ -33,7 +33,6 @@ settings:
     ENABLE_HARDENED_RUNTIME[sdk=macosx*]: YES
     APP_STORE_ID: $(APP_STORE_ID)
     INFOPLIST_KEY_UILaunchScreen_Generation: YES
-    INFOPLIST_KEY_UILaunchStoryboardName: LaunchKiwix.storyboard
 
   configs:
     debug:
@@ -99,12 +98,16 @@ targets:
         PRODUCT_BUNDLE_IDENTIFIER: self.Kiwix
         INFOPLIST_KEY_CFBundleDisplayName: Kiwix
         INFOPLIST_FILE: Support/Info.plist
+        INFOPLIST_KEY_UILaunchStoryboardName: SplashScreenKiwix.storyboard
     sources:
       - path: Support
         excludes: 
           - "**/qqq.lproj"
           - "**/igl.lproj"
           - "**/dag.lproj"
+      - path: Kiwix/SplashScreenKiwix.storyboard
+        destinationFilters:
+          - iOS
   UnitTests:
     type: bundle.unit-test
     supportedDestinations: [iOS, macOS]

@@ -14,12 +14,16 @@
 // along with Kiwix; If not, see https://www.gnu.org/licenses/.
 
 import SwiftUI
+import Combine
+import Defaults
 
 struct Welcome: View {
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
+    @Environment(\.verticalSizeClass) private var verticalSizeClass
     @EnvironmentObject private var browser: BrowserViewModel
     @EnvironmentObject private var library: LibraryViewModel
     @EnvironmentObject private var navigation: NavigationViewModel
+    @Default(.hasSeenCategories) private var hasSeenCategories
     @FetchRequest(
         sortDescriptors: [NSSortDescriptor(keyPath: \Bookmark.created, ascending: false)],
         animation: .easeInOut
@@ -34,39 +38,24 @@ struct Welcome: View {
 
     var body: some View {
         if zimFiles.isEmpty {
-            HStack {
-                Spacer()
-                VStack(spacing: 20) {
-                    Spacer()
-                    logo
-                    Divider()
-                    actions
-                    Text("library_refresh_error.retrieve.description".localized)
-                        .foregroundColor(.red)
-                        .opacity(library.state == .error ? 1 : 0)
-                    Spacer()
+            ZStack {
+                LogoView()
+                welcomeContent
+                    .onAppear {
+                        if !hasSeenCategories, library.state == .complete {
+                            // safety path for upgrading user with no ZIM files, but fetched categories
+                            // to make sure we do display the buttons
+                            hasSeenCategories = true
+                        }
+                    }
+                if library.state == .inProgress {
+                    if hasSeenCategories {
+                        LoadingProgressView()
+                    } else {
+                        LoadingMessageView(message: "welcome.button.status.fetching_catalog.text".localized)
+                    }
                 }
-                #if os(macOS)
-                .frame(maxWidth: 300)
-                #elseif os(iOS)
-                .frame(maxWidth: 600)
-                #endif
-                Spacer()
-            }
-            .padding()
-            .ignoresSafeArea()
-            .onChange(of: library.state) { state in
-                guard state == .complete else { return }
-                #if os(macOS)
-                navigation.currentItem = .categories
-                #elseif os(iOS)
-                if horizontalSizeClass == .regular {
-                    navigation.currentItem = .categories
-                } else {
-                    showLibrary?()
-                }
-                #endif
-            }
+            }.ignoresSafeArea()
         } else {
             LazyVGrid(
                 columns: ([GridItem(.adaptive(minimum: 250, maximum: 500), spacing: 12)]),
@@ -104,49 +93,87 @@ struct Welcome: View {
         }
     }
 
-    /// App logo shown in onboarding view
-    private var logo: some View {
-        VStack(spacing: 6) {
-            Image(Brand.welcomeLogoImageName)
-                .resizable()
-                .aspectRatio(1, contentMode: .fit)
-                .frame(width: 60, height: 60)
-                .background(RoundedRectangle(cornerRadius: 10, style: .continuous).foregroundColor(.white))
-            Text(Brand.appName.uppercased()).font(.largeTitle).fontWeight(.bold)
+    private var welcomeContent: some View {
+        GeometryReader { geometry in
+            let logoCalc = LogoCalc(
+                geometry: geometry.size,
+                originalImageSize: Brand.loadingLogoSize,
+                horizontal: horizontalSizeClass,
+                vertical: verticalSizeClass
+            )
+            actions
+                .position(
+                    x: geometry.size.width * 0.5,
+                    y: logoCalc.buttonCenterY)
+                .opacity(hasSeenCategories ? 1 : 0)
+                .frame(maxWidth: logoCalc.buttonsWidth)
+                .onChange(of: library.state) { state in
+                    if state == .error {
+                        hasSeenCategories = true
+                    }
+                    guard state == .complete else { return }
+#if os(macOS)
+                    navigation.currentItem = .categories
+#elseif os(iOS)
+                    if horizontalSizeClass == .regular {
+                        navigation.currentItem = .categories
+                    } else {
+                        showLibrary?()
+                    }
+#endif
+                }
+            Text("library_refresh_error.retrieve.description".localized)
+                .foregroundColor(.red)
+                .opacity(library.state == .error ? 1 : 0)
+                .position(
+                    x: geometry.size.width * 0.5,
+                    y: logoCalc.errorTextCenterY
+                )
         }
     }
 
     /// Onboarding actions, open a zim file or refresh catalog
     private var actions: some View {
-        HStack {
-            OpenFileButton(context: .onBoarding) {
-                HStack {
-                    Spacer()
-                    Text("welcome.actions.open_file".localized)
-                    Spacer()
-                }.padding(6)
-            }
-            Button {
-                library.start(isUserInitiated: true)
-            } label: {
-                HStack {
-                    Spacer()
-                    if library.state == .inProgress {
-                        #if os(macOS)
-                        Text("welcome.button.status.fetching.text".localized)
-                        #elseif os(iOS)
-                        HStack(spacing: 6) {
-                            ProgressView().frame(maxHeight: 10)
-                            Text("welcome.button.status.fetching.text".localized)
-                        }
-                        #endif
-                    } else {
-                        Text("welcome.button.status.fetch_catalog.text".localized)
-                    }
-                    Spacer()
-                }.padding(6)
-            }.disabled(library.state == .inProgress)
+        if verticalSizeClass == .compact { // iPhone landscape
+            AnyView(HStack {
+                openFileButton
+                catalogButton
+            })
+        } else {
+            AnyView(VStack {
+                openFileButton
+                catalogButton
+            })
         }
+    }
+
+    private var openFileButton: some View {
+        OpenFileButton(context: .onBoarding) {
+            HStack {
+                Spacer()
+                Text("welcome.actions.open_file".localized)
+                Spacer()
+            }.padding(6)
+        }
+        .font(.subheadline)
+        .buttonStyle(.bordered)
+    }
+
+    private var catalogButton: some View {
+        Button {
+            library.start(isUserInitiated: true)
+        } label: {
+            HStack {
+                Spacer()
+                if library.state == .inProgress {
+                    Text("welcome.button.status.fetching_catalog.text".localized)
+                } else {
+                    Text("welcome.button.status.fetch_catalog.text".localized)
+                }
+                Spacer()
+            }.padding(6)
+        }
+        .disabled(library.state == .inProgress)
         .font(.subheadline)
         .buttonStyle(.bordered)
     }

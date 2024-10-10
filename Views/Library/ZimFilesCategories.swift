@@ -20,6 +20,7 @@ import Defaults
 /// A grid of zim files under each category.
 struct ZimFilesCategories: View {
     @State private var selected: Category
+    @Default(.hasSeenCategories) private var hasSeenCategories
     private var categories: [Category]
     private let dismiss: (() -> Void)?
 
@@ -54,6 +55,9 @@ struct ZimFilesCategories: View {
                 }
             }.onAppear {
                 LibraryViewModel().start(isUserInitiated: false)
+            }
+            .onDisappear {
+                hasSeenCategories = true
             }
     }
 }

@@ -22,9 +22,14 @@ final class SplitViewController: UISplitViewController {
     let navigationViewModel: NavigationViewModel
     private var navigationItemObserver: AnyCancellable?
     private var openURLObserver: NSObjectProtocol?
+    private var hasZimFiles: Bool
 
-    init(navigationViewModel: NavigationViewModel) {
+    init(
+        navigationViewModel: NavigationViewModel,
+        hasZimFiles: Bool
+    ) {
         self.navigationViewModel = navigationViewModel
+        self.hasZimFiles = hasZimFiles
         super.init(style: .doubleColumn)
     }
 
@@ -41,8 +46,16 @@ final class SplitViewController: UISplitViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        // start with collapsed state for .loading
+        preferredDisplayMode = .secondaryOnly
+
         // setup controllers
-        setViewController(UINavigationController(rootViewController: CompactViewController()), for: .compact)
+        setViewController(
+            UINavigationController(
+                rootViewController: CompactViewController(navigation: navigationViewModel)
+            ),
+            for: .compact
+        )
         setViewController(SidebarViewController(), for: .primary)
         setSecondaryController()
 
@@ -50,12 +63,15 @@ final class SplitViewController: UISplitViewController {
         navigationItemObserver = navigationViewModel.$currentItem
             .receive(on: DispatchQueue.main)  // needed to postpones sink after navigationViewModel.currentItem updates
             .dropFirst()
-            .sink { [weak self] _ in
+            .sink { [weak self] currentItem in
                 if let sidebarViewController = self?.viewController(for: .primary) as? SidebarViewController {
                     sidebarViewController.updateSelection()
                 }
                 if self?.traitCollection.horizontalSizeClass == .regular {
                     self?.setSecondaryController()
+                }
+                if self?.hasZimFiles == true, currentItem != .loading {
+                    self?.preferredDisplayMode = .automatic
                 }
             }
         openURLObserver = NotificationCenter.default.addObserver(
@@ -63,11 +79,13 @@ final class SplitViewController: UISplitViewController {
         ) { [weak self] notification in
             guard let url = notification.userInfo?["url"] as? URL else { return }
             let inNewTab = notification.userInfo?["inNewTab"] as? Bool ?? false
-            if !inNewTab, case let .tab(tabID) = self?.navigationViewModel.currentItem {
-                BrowserViewModel.getCached(tabID: tabID).load(url: url)
-            } else {
-                guard let tabID = self?.navigationViewModel.createTab() else { return }
-                BrowserViewModel.getCached(tabID: tabID).load(url: url)
+            Task { @MainActor in
+                if !inNewTab, case let .tab(tabID) = self?.navigationViewModel.currentItem {
+                    BrowserViewModel.getCached(tabID: tabID).load(url: url)
+                } else {
+                    guard let tabID = self?.navigationViewModel.createTab() else { return }
+                    BrowserViewModel.getCached(tabID: tabID).load(url: url)
+                }
             }
         }
     }
