@@ -97,6 +97,8 @@ final class BrowserViewModel: NSObject, ObservableObject, BrowserViewModelCleara
     let webView: WKWebView
     let tabID: NSManagedObjectID
     private var isLoadingObserver: NSKeyValueObservation?
+    private let closeZimPublisher = NotificationCenter.default.publisher(for: .closeZIM)
+    private var cancellables = Set<AnyCancellable>()
     private var canGoBackObserver: NSKeyValueObservation?
     private var canGoForwardObserver: NSKeyValueObservation?
     private var titleURLObserver: AnyCancellable?
@@ -176,6 +178,24 @@ final class BrowserViewModel: NSObject, ObservableObject, BrowserViewModelCleara
                 }
             }
         }
+        closeZimPublisher.sink { [weak self] notification in
+            guard let zimIdToClose = notification.userInfo?["zimId"] as? UUID else {
+                return
+            }
+            guard let url = self?.url, url.isZIMURL,
+                  let currentHost = url.host(),
+                  let currentZimId = UUID(uuidString: currentHost),
+                  zimIdToClose == currentZimId else {
+                return
+            }
+            Task {
+                await self?.webView.closeAllMediaPresentations()
+                #if os(macOS)
+                self?.webView.window?.close()
+                #endif
+            }
+        }.store(in: &cancellables)
+
     }
 
     @MainActor

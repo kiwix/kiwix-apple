@@ -144,7 +144,9 @@ struct ZimFileDetail: View {
                 message: Text("zim_file.action.unlink.message".localized),
                 primaryButton: .destructive(Text("zim_file.action.unlink.button.title".localized)) {
                     Task {
+                        let tabIds = zimFile.tabs.map { $0.objectID }
                         await LibraryOperations.unlink(zimFileID: zimFile.fileID)
+                        closeZIM(zimFileId: zimFile.fileID)
                         #if os(iOS)
                         dismiss()
                         #endif
@@ -153,6 +155,11 @@ struct ZimFileDetail: View {
                 secondaryButton: .cancel()
             )
         }
+    }
+
+    @MainActor
+    func closeZIM(zimFileId: UUID) {
+        NotificationCenter.closeZIM(zimFileId)
     }
 
     var deleteAction: some View {
@@ -165,6 +172,7 @@ struct ZimFileDetail: View {
                 primaryButton: .destructive(Text("zim_file.action.delete.button.title".localized)) {
                     Task {
                         await LibraryOperations.delete(zimFileID: zimFile.fileID)
+                        closeZIM(zimFileId: zimFile.fileID)
                         #if os(iOS)
                         dismiss()
                         #endif
