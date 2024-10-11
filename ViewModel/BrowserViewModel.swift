@@ -87,6 +87,8 @@ final class BrowserViewModel: NSObject, ObservableObject,
     }
 #endif
     let webView: WKWebView
+    private let closeZimPublisher = NotificationCenter.default.publisher(for: .closeZIM)
+    private var cancellables = Set<AnyCancellable>()
     private var canGoBackObserver: NSKeyValueObservation?
     private var canGoForwardObserver: NSKeyValueObservation?
     private var titleURLObserver: AnyCancellable?
@@ -159,6 +161,24 @@ final class BrowserViewModel: NSObject, ObservableObject,
             guard let title, let url else { return }
             self?.didUpdate(title: title, url: url)
         }
+        closeZimPublisher.sink { [weak self] notification in
+            guard let zimIdToClose = notification.userInfo?["zimId"] as? UUID else {
+                return
+            }
+            guard let url = self?.url, url.isZIMURL,
+                  let currentHost = url.host(),
+                  let currentZimId = UUID(uuidString: currentHost),
+                  zimIdToClose == currentZimId else {
+                return
+            }
+            Task {
+                await self?.webView.closeAllMediaPresentations()
+                #if os(macOS)
+                self?.webView.window?.close()
+                #endif
+            }
+        }.store(in: &cancellables)
+
     }
 
     /// Get the webpage in a binary format
