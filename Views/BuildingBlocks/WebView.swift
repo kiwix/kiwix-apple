@@ -74,11 +74,14 @@ final class WebViewController: UIViewController {
     private var layoutCancellable: AnyCancellable?
     private var currentScrollViewOffset: CGFloat = 0.0
     private var compactViewNavigationController: UINavigationController?
-    
+    private static let webkitPaddingJS: String = Javascript.webkitPadding(size: 1, unit: .em)
+
     init(webView: WKWebView) {
         self.webView = webView
         pageZoomObserver = Defaults.observe(.webViewPageZoom) { change in
             webView.adjustTextSize(pageZoom: change.newValue)
+            // adjust padding, as with large zoom in the content is too close to the sides
+            webView.evaluateJavaScript(Self.webkitPaddingJS, completionHandler: nil)
         }
         super.init(nibName: nil, bundle: nil)
     }
