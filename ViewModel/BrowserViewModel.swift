@@ -51,6 +51,7 @@ final class BrowserViewModel: NSObject, ObservableObject,
 
     // MARK: - Properties
 
+    @Published private(set) var isLoading: Bool?
     @Published private(set) var canGoBack = false
     @Published private(set) var canGoForward = false
     @Published private(set) var articleTitle: String = ""
@@ -87,6 +88,7 @@ final class BrowserViewModel: NSObject, ObservableObject,
     }
 #endif
     let webView: WKWebView
+    private var isLoadingObserver: NSKeyValueObservation?
     private var canGoBackObserver: NSKeyValueObservation?
     private var canGoForwardObserver: NSKeyValueObservation?
     private var titleURLObserver: AnyCancellable?
@@ -158,6 +160,14 @@ final class BrowserViewModel: NSObject, ObservableObject,
         .sink { [weak self] title, url in
             guard let title, let url else { return }
             self?.didUpdate(title: title, url: url)
+        }
+
+        isLoadingObserver = webView.observe(\.isLoading, options: .new) { [weak self] webView, change in
+            Task { @MainActor in
+                if change.newValue != self?.isLoading {
+                    self?.isLoading = change.newValue
+                }
+            }
         }
     }
 

@@ -39,20 +39,24 @@ struct Welcome: View {
     var body: some View {
         if zimFiles.isEmpty || !FeatureFlags.hasLibrary {
             ZStack {
-                LogoView()
-                welcomeContent
-                    .onAppear {
-                        if !hasSeenCategories, library.state == .complete {
-                            // safety path for upgrading user with no ZIM files, but fetched categories
-                            // to make sure we do display the buttons
-                            hasSeenCategories = true
+                if !FeatureFlags.hasLibrary && browser.isLoading != false {
+                    LoadingView()
+                } else {
+                    LogoView()
+                    welcomeContent
+                        .onAppear {
+                            if !hasSeenCategories, library.state == .complete {
+                                // safety path for upgrading user with no ZIM files, but fetched categories
+                                // to make sure we do display the buttons
+                                hasSeenCategories = true
+                            }
                         }
-                    }
-                if library.state == .inProgress {
-                    if hasSeenCategories {
-                        LoadingProgressView()
-                    } else {
-                        LoadingMessageView(message: "welcome.button.status.fetching_catalog.text".localized)
+                    if library.state == .inProgress {
+                        if hasSeenCategories {
+                            LoadingProgressView()
+                        } else {
+                            LoadingMessageView(message: "welcome.button.status.fetching_catalog.text".localized)
+                        }
                     }
                 }
             }.ignoresSafeArea()

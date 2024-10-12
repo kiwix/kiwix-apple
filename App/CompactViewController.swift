@@ -219,15 +219,21 @@ private struct Content: View {
         sortDescriptors: [NSSortDescriptor(keyPath: \ZimFile.size, ascending: false)],
         predicate: ZimFile.openedPredicate
     ) private var zimFiles: FetchedResults<ZimFile>
+    @State var isInitialLoad: Bool = true
     let tabID: NSManagedObjectID?
     let showLibrary: () -> Void
 
     var body: some View {
         Group {
-            if browser.url == nil {
+            if browser.url == nil || (!FeatureFlags.hasLibrary && isInitialLoad) {
                 Welcome(showLibrary: showLibrary)
             } else {
                 WebView().ignoresSafeArea()
+                    .overlay {
+                        if browser.isLoading == true {
+                            LoadingProgressView()
+                        }
+                    }
             }
         }
         .focusedSceneValue(\.browserViewModel, browser)
@@ -260,6 +266,11 @@ private struct Content: View {
         .onChange(of: scenePhase) { newValue in
             if case .active = newValue {
                 browser.refreshVideoState()
+            }
+        }
+        .onChange(of: browser.isLoading) { isLoading in
+            if isLoading == false { // wait for the first full webpage load
+                isInitialLoad = false
             }
         }
     }
