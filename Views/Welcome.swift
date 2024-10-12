@@ -37,7 +37,7 @@ struct Welcome: View {
     let showLibrary: (() -> Void)?
 
     var body: some View {
-        if zimFiles.isEmpty {
+        if zimFiles.isEmpty || !FeatureFlags.hasLibrary {
             ZStack {
                 LogoView()
                 welcomeContent
@@ -56,7 +56,7 @@ struct Welcome: View {
                     }
                 }
             }.ignoresSafeArea()
-        } else {
+        } else if FeatureFlags.hasLibrary {
             LazyVGrid(
                 columns: ([GridItem(.adaptive(minimum: 250, maximum: 500), spacing: 12)]),
                 alignment: .leading,
