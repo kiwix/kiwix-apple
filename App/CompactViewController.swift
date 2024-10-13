@@ -22,6 +22,7 @@ import Combine
 import SwiftUI
 import UIKit
 import CoreData
+import Defaults
 
 final class CompactViewController: UIHostingController<AnyView>, UISearchControllerDelegate, UISearchResultsUpdating {
     private let searchViewModel: SearchViewModel
@@ -223,6 +224,10 @@ private struct Content<LaunchModel>: View where LaunchModel: LaunchProtocol {
         predicate: ZimFile.openedPredicate
     ) private var zimFiles: FetchedResults<ZimFile>
     @State var isInitialLoad: Bool = true
+    
+    /// this is still hacky a bit, as the change from here re-validates the view
+    /// which triggers the model to be revalidated
+    @Default(.hasSeenCategories) private var hasSeenCategories
     let tabID: NSManagedObjectID?
     let showLibrary: () -> Void
     @ObservedObject var model: LaunchModel

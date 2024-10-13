@@ -82,21 +82,25 @@ final class CatalogLaunchViewModel: LaunchViewModelBase {
                      browser: BrowserViewModel) {
         self.init(libraryState: library.$state,
                   browserIsLoading: browser.$isLoading,
-                  hasSeenCategories: { Defaults[.hasSeenCategories] })
+                  hasSeenCategories: Default(.hasSeenCategories).publisher
+        )
     }
 
     init(libraryState: Published<LibraryState>.Publisher,
          browserIsLoading: Published<Bool?>.Publisher,
-         hasSeenCategories: @escaping () -> Bool) {
+         hasSeenCategories: Published<Bool>.Publisher
+    ) {
         super.init()
 
         hasZIMFiles.combineLatest(
             libraryState,
-            browserIsLoading
+            browserIsLoading,
+            hasSeenCategories
         ).sink { [weak self] (
             hasZIMs: Bool,
             libState: LibraryState,
-            isBrowserLoading: Bool?
+            isBrowserLoading: Bool?,
+            hasSeenCategories: Bool
         ) in
             guard let self else { return }
 
@@ -107,13 +111,13 @@ final class CatalogLaunchViewModel: LaunchViewModelBase {
 
             // MARK: browser must be empty as there are no ZIMs:
             case (_, false, .inProgress):
-                if hasSeenCategories() {
+                if hasSeenCategories {
                     updateTo(.catalog(.welcome(isCatalogLoading: true)))
                 } else {
                     updateTo(.catalog(.fetching))
                 }
             case (_, false, .complete):
-                if hasSeenCategories() {
+                if hasSeenCategories {
                     updateTo(.catalog(.welcome(isCatalogLoading: false)))
                 } else {
                     updateTo(.catalog(.fetching))
