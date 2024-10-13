@@ -59,6 +59,7 @@ final class BrowserViewModel: NSObject, ObservableObject,
     @Published private(set) var articleBookmarked = false
     @Published private(set) var outlineItems = [OutlineItem]()
     @Published private(set) var outlineItemTree = [OutlineItem]()
+    @MainActor @Published private(set) var hasURL: Bool = false
     @MainActor @Published private(set) var url: URL? {
         didSet {
             if !FeatureFlags.hasLibrary, url == nil {
@@ -68,6 +69,7 @@ final class BrowserViewModel: NSObject, ObservableObject,
                 bookmarkFetchedResultsController.fetchRequest.predicate = Self.bookmarksPredicateFor(url: url)
                 try? bookmarkFetchedResultsController.performFetch()
             }
+            hasURL = url != nil
         }
     }
     @Published var externalURL: URL?
