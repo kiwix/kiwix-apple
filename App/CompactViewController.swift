@@ -133,6 +133,7 @@ final class CompactViewController: UIHostingController<AnyView>, UISearchControl
 
 private struct CompactView: View {
     @EnvironmentObject private var navigation: NavigationViewModel
+    @EnvironmentObject private var library: LibraryViewModel
     @State private var presentedSheet: PresentedSheet?
 
     private enum PresentedSheet: String, Identifiable {
@@ -151,6 +152,7 @@ private struct CompactView: View {
         if case .loading = navigation.currentItem {
             LoadingView()
         } else if case let .tab(tabID) = navigation.currentItem {
+            let browser = BrowserViewModel.getCached(tabID: tabID)
             Content(tabID: tabID, showLibrary: {
                 if presentedSheet == nil {
                     presentedSheet = .library
@@ -158,7 +160,7 @@ private struct CompactView: View {
                     // there's a sheet already presented by the user
                     // do nothing
                 }
-            })
+            }, model: FeatureFlags.hasLibrary ? CatalogLaunchViewModel(library: library, browser: browser) : NoCatalogLaunchViewModel(browser: browser) )
                 .id(tabID)
                 .toolbar {
                     ToolbarItemGroup(placement: .bottomBar) {
@@ -189,7 +191,7 @@ private struct CompactView: View {
                         Spacer()
                     }
                 }
-                .environmentObject(BrowserViewModel.getCached(tabID: tabID))
+                .environmentObject(browser)
                 .sheet(item: $presentedSheet) { presentedSheet in
                     switch presentedSheet {
                     case .library:
@@ -212,9 +214,10 @@ private struct CompactView: View {
     }
 }
 
-private struct Content: View {
+private struct Content<LaunchModel>: View where LaunchModel: LaunchProtocol {
     @Environment(\.scenePhase) private var scenePhase
     @EnvironmentObject private var browser: BrowserViewModel
+    @EnvironmentObject private var library: LibraryViewModel
     @FetchRequest(
         sortDescriptors: [NSSortDescriptor(keyPath: \ZimFile.size, ascending: false)],
         predicate: ZimFile.openedPredicate
@@ -222,9 +225,21 @@ private struct Content: View {
     @State var isInitialLoad: Bool = true
     let tabID: NSManagedObjectID?
     let showLibrary: () -> Void
+    @ObservedObject var model: LaunchModel
 
     var body: some View {
         Group {
+            let _ = model.updateWith(hasZimFiles: !zimFiles.isEmpty)
+            let _ = debugPrint("model.state: \(model.state)")
+//            switch model.state {
+//
+//                case .loadingData:
+//                    Text("Loading data...")
+//                case .catalog(.list):
+//                    Text("Catalog list")
+//                default:
+//                    Text("")
+//            }
             if browser.url == nil || (!FeatureFlags.hasLibrary && isInitialLoad) {
                 Welcome(showLibrary: showLibrary)
             } else {
@@ -242,6 +257,10 @@ private struct Content: View {
         .modifier(ExternalLinkHandler(externalURL: $browser.externalURL))
         .onAppear {
             browser.updateLastOpened()
+        }
+        .task {
+            debugPrint("library: \(library)")
+            debugPrint("")
         }
         .onDisappear {
             // since the browser is comming from @Environment,

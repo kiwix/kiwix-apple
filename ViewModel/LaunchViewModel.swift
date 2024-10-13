@@ -30,15 +30,15 @@ enum CatalogSequence: Equatable {
     case welcome(isCatalogLoading: Bool)
 }
 
-protocol LaunchViewModelProtocol {
-    var state: Published<LaunchSequence>.Publisher { get }
+protocol LaunchProtocol: ObservableObject {
+    var state: LaunchSequence { get }
+    func updateWith(hasZimFiles: Bool)
 }
 
 // MARK: No Library (custom apps)
 
 /// Keeps us int the .loadingData state,
 /// while the main page is not fully loaded for the first time
-@MainActor
 final class NoCatalogLaunchViewModel: LaunchViewModelBase {
 
     private var wasLoaded = false
@@ -67,23 +67,25 @@ final class NoCatalogLaunchViewModel: LaunchViewModelBase {
             }
         }.store(in: &cancellables)
     }
+
+    override func updateWith(hasZimFiles: Bool) {
+        // to be ignored
+    }
 }
 
 // MARK: With Catalog Library
-@MainActor
 final class CatalogLaunchViewModel: LaunchViewModelBase {
 
-    convenience init(hasZIMFiles: Published<Bool>.Publisher,
-                     library: LibraryViewModel,
+    private var hasZIMFiles = CurrentValueSubject<Bool, Never>(false)
+
+    convenience init(library: LibraryViewModel,
                      browser: BrowserViewModel) {
-        self.init(hasZIMFiles: hasZIMFiles,
-                  libraryState: library.$state,
+        self.init(libraryState: library.$state,
                   browserIsLoading: browser.$isLoading,
                   hasSeenCategories: { Defaults[.hasSeenCategories] })
     }
 
-    init(hasZIMFiles: Published<Bool>.Publisher,
-         libraryState: Published<LibraryState>.Publisher,
+    init(libraryState: Published<LibraryState>.Publisher,
          browserIsLoading: Published<Bool?>.Publisher,
          hasSeenCategories: @escaping () -> Bool) {
         super.init()
@@ -110,7 +112,12 @@ final class CatalogLaunchViewModel: LaunchViewModelBase {
                 } else {
                     updateTo(.catalog(.fetching))
                 }
-            case (_, false, .complete): updateTo(.catalog(.welcome(isCatalogLoading: false)))
+            case (_, false, .complete):
+                if hasSeenCategories() {
+                    updateTo(.catalog(.welcome(isCatalogLoading: false)))
+                } else {
+                    updateTo(.catalog(.fetching))
+                }
             case (_, false, .error): updateTo(.catalog(.error))
 
             // MARK: has zims and opens a new empty tab
@@ -122,15 +129,22 @@ final class CatalogLaunchViewModel: LaunchViewModelBase {
             }
         }.store(in: &cancellables)
     }
+
+    override func updateWith(hasZimFiles: Bool) {
+        hasZIMFiles.send(hasZimFiles)
+    }
 }
 
-class LaunchViewModelBase: LaunchViewModelProtocol {
-    var state: Published<LaunchSequence>.Publisher { $currentState }
+class LaunchViewModelBase: LaunchProtocol, ObservableObject {
+    var state: LaunchSequence = .loadingData
     var cancellables = Set<AnyCancellable>()
-    @Published private var currentState: LaunchSequence = .loadingData
 
     func updateTo(_ newState: LaunchSequence) {
-        guard newState != currentState else { return }
-        currentState = newState
+        guard newState != state else { return }
+        state = newState
+    }
+
+    func updateWith(hasZimFiles: Bool) {
+        fatalError("should be overriden")
     }
 }
