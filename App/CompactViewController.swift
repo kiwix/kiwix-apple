@@ -155,10 +155,7 @@ private struct CompactView: View {
         } else if case let .tab(tabID) = navigation.currentItem {
             let browser = BrowserViewModel.getCached(tabID: tabID)
             let model = if FeatureFlags.hasLibrary {
-                CatalogLaunchViewModel(library: library,
-                                       browser: browser,
-                                       hasSeenCategories: Defaults.publisher(.hasSeenCategories)
-                )
+                CatalogLaunchViewModel(library: library, browser: browser)
             } else {
                 NoCatalogLaunchViewModel(browser: browser)
             }
@@ -242,7 +239,8 @@ private struct Content<LaunchModel>: View where LaunchModel: LaunchProtocol {
 
     var body: some View {
         Group {
-            let _ = model.updateWith(hasZimFiles: !zimFiles.isEmpty)
+            let _ = model.updateWith(hasZimFiles: !zimFiles.isEmpty,
+                                     hasSeenCategories: hasSeenCategories)
             let _ = debugPrint("model.state: \(model.state)")
             if browser.url == nil || (!FeatureFlags.hasLibrary && isInitialLoad) {
                 Welcome(showLibrary: showLibrary)

@@ -32,7 +32,7 @@ enum CatalogSequence: Equatable {
 
 protocol LaunchProtocol: ObservableObject {
     var state: LaunchSequence { get }
-    func updateWith(hasZimFiles: Bool)
+    func updateWith(hasZimFiles: Bool, hasSeenCategories: Bool)
 }
 
 // MARK: No Library (custom apps)
@@ -68,7 +68,7 @@ final class NoCatalogLaunchViewModel: LaunchViewModelBase {
         }.store(in: &cancellables)
     }
 
-    override func updateWith(hasZimFiles: Bool) {
+    override func updateWith(hasZimFiles: Bool, hasSeenCategories: Bool) {
         // to be ignored on purpose
     }
 }
@@ -77,26 +77,21 @@ final class NoCatalogLaunchViewModel: LaunchViewModelBase {
 final class CatalogLaunchViewModel: LaunchViewModelBase {
 
     private var hasZIMFiles = CurrentValueSubject<Bool, Never>(false)
+    private var hasSeenCategoriesOnce = CurrentValueSubject<Bool, Never>(false)
 
     convenience init(library: LibraryViewModel,
-                     browser: BrowserViewModel,
-                     hasSeenCategories: AnyPublisher<Defaults.KeyChange<Bool>, Never>
-    ) {
-        self.init(libraryState: library.$state,
-                  browserIsLoading: browser.$isLoading,
-                  hasSeenCategories: hasSeenCategories.map(\.newValue))
+                     browser: BrowserViewModel) {
+        self.init(libraryState: library.$state, browserIsLoading: browser.$isLoading)
     }
 
     init(libraryState: Published<LibraryState>.Publisher,
-         browserIsLoading: Published<Bool?>.Publisher,
-         hasSeenCategories: Publishers.Map<AnyPublisher<Defaults.KeyChange<Bool>, Never>, Bool>
-    ) {
+         browserIsLoading: Published<Bool?>.Publisher) {
         super.init()
 
         hasZIMFiles.combineLatest(
             libraryState,
             browserIsLoading,
-            hasSeenCategories
+            hasSeenCategoriesOnce
         ).sink { [weak self] (
             hasZIMs: Bool,
             libState: LibraryState,
@@ -135,8 +130,9 @@ final class CatalogLaunchViewModel: LaunchViewModelBase {
         }.store(in: &cancellables)
     }
 
-    override func updateWith(hasZimFiles: Bool) {
+    override func updateWith(hasZimFiles: Bool, hasSeenCategories: Bool) {
         hasZIMFiles.send(hasZimFiles)
+        hasSeenCategoriesOnce.send(hasSeenCategories)
     }
 }
 
@@ -149,7 +145,7 @@ class LaunchViewModelBase: LaunchProtocol, ObservableObject {
         state = newState
     }
 
-    func updateWith(hasZimFiles: Bool) {
+    func updateWith(hasZimFiles: Bool, hasSeenCategories: Bool) {
         fatalError("should be overriden")
     }
 }
