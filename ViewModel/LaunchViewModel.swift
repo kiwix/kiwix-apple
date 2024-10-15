@@ -69,7 +69,7 @@ final class NoCatalogLaunchViewModel: LaunchViewModelBase {
     }
 
     override func updateWith(hasZimFiles: Bool) {
-        // to be ignored
+        // to be ignored on purpose
     }
 }
 
@@ -79,16 +79,17 @@ final class CatalogLaunchViewModel: LaunchViewModelBase {
     private var hasZIMFiles = CurrentValueSubject<Bool, Never>(false)
 
     convenience init(library: LibraryViewModel,
-                     browser: BrowserViewModel) {
+                     browser: BrowserViewModel,
+                     hasSeenCategories: AnyPublisher<Defaults.KeyChange<Bool>, Never>
+    ) {
         self.init(libraryState: library.$state,
                   browserIsLoading: browser.$isLoading,
-                  hasSeenCategories: Default(.hasSeenCategories).publisher
-        )
+                  hasSeenCategories: hasSeenCategories.map(\.newValue))
     }
 
     init(libraryState: Published<LibraryState>.Publisher,
          browserIsLoading: Published<Bool?>.Publisher,
-         hasSeenCategories: Published<Bool>.Publisher
+         hasSeenCategories: Publishers.Map<AnyPublisher<Defaults.KeyChange<Bool>, Never>, Bool>
     ) {
         super.init()
 

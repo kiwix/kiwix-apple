@@ -154,6 +154,14 @@ private struct CompactView: View {
             LoadingView()
         } else if case let .tab(tabID) = navigation.currentItem {
             let browser = BrowserViewModel.getCached(tabID: tabID)
+            let model = if FeatureFlags.hasLibrary {
+                CatalogLaunchViewModel(library: library,
+                                       browser: browser,
+                                       hasSeenCategories: Defaults.publisher(.hasSeenCategories)
+                )
+            } else {
+                NoCatalogLaunchViewModel(browser: browser)
+            }
             Content(tabID: tabID, showLibrary: {
                 if presentedSheet == nil {
                     presentedSheet = .library
@@ -161,7 +169,7 @@ private struct CompactView: View {
                     // there's a sheet already presented by the user
                     // do nothing
                 }
-            }, model: FeatureFlags.hasLibrary ? CatalogLaunchViewModel(library: library, browser: browser) : NoCatalogLaunchViewModel(browser: browser) )
+            }, model: model)
                 .id(tabID)
                 .toolbar {
                     ToolbarItemGroup(placement: .bottomBar) {
@@ -236,15 +244,6 @@ private struct Content<LaunchModel>: View where LaunchModel: LaunchProtocol {
         Group {
             let _ = model.updateWith(hasZimFiles: !zimFiles.isEmpty)
             let _ = debugPrint("model.state: \(model.state)")
-//            switch model.state {
-//
-//                case .loadingData:
-//                    Text("Loading data...")
-//                case .catalog(.list):
-//                    Text("Catalog list")
-//                default:
-//                    Text("")
-//            }
             if browser.url == nil || (!FeatureFlags.hasLibrary && isInitialLoad) {
                 Welcome(showLibrary: showLibrary)
             } else {
