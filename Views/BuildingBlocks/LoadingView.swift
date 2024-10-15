@@ -189,7 +189,16 @@ struct LoadingProgressView: View {
     }
 }
 
-struct LoadingView: View {
+struct FetchingCatalogView: View {
+    var body: some View {
+        ZStack {
+            LogoView()
+            LoadingMessageView(message: "welcome.button.status.fetching_catalog.text".localized)
+        }.ignoresSafeArea()
+    }
+}
+
+struct LoadingDataView: View {
     var body: some View {
         ZStack {
             LogoView()
@@ -199,5 +208,5 @@ struct LoadingView: View {
 }
 
 #Preview {
-    LoadingView()
+    LoadingDataView()
 }

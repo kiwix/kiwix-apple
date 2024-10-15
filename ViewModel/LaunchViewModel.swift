@@ -25,9 +25,14 @@ enum LaunchSequence: Equatable {
 
 enum CatalogSequence: Equatable {
     case fetching
-    case error
     case list
-    case welcome(isCatalogLoading: Bool)
+    case welcome(WelcomeViewState)
+}
+
+enum WelcomeViewState: Equatable {
+    case loading
+    case error
+    case complete
 }
 
 protocol LaunchProtocol: ObservableObject {
@@ -108,17 +113,21 @@ final class CatalogLaunchViewModel: LaunchViewModelBase {
             // MARK: browser must be empty as there are no ZIMs:
             case (_, false, .inProgress):
                 if hasSeenCategories {
-                    updateTo(.catalog(.welcome(isCatalogLoading: true)))
+                    updateTo(.catalog(.welcome(.loading)))
                 } else {
                     updateTo(.catalog(.fetching))
                 }
             case (_, false, .complete):
                 if hasSeenCategories {
-                    updateTo(.catalog(.welcome(isCatalogLoading: false)))
+                    updateTo(.catalog(.welcome(.complete)))
                 } else {
                     updateTo(.catalog(.fetching))
                 }
-            case (_, false, .error): updateTo(.catalog(.error))
+            case (_, false, .error):
+                // safety path to display the welcome buttons
+                // in case of a fetch error, the user can try again
+                hasSeenCategoriesOnce.send(true)
+                updateTo(.catalog(.welcome(.error)))
 
             // MARK: has zims and opens a new empty tab
             case (.none, true, _): updateTo(.catalog(.list))

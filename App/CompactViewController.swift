@@ -151,7 +151,7 @@ private struct CompactView: View {
 
     var body: some View {
         if case .loading = navigation.currentItem {
-            LoadingView()
+            LoadingDataView()
         } else if case let .tab(tabID) = navigation.currentItem {
             let browser = BrowserViewModel.getCached(tabID: tabID)
             let model = if FeatureFlags.hasLibrary {
@@ -242,15 +242,26 @@ private struct Content<LaunchModel>: View where LaunchModel: LaunchProtocol {
             let _ = model.updateWith(hasZimFiles: !zimFiles.isEmpty,
                                      hasSeenCategories: hasSeenCategories)
             let _ = debugPrint("model.state: \(model.state)")
-            if browser.url == nil || (!FeatureFlags.hasLibrary && isInitialLoad) {
-                Welcome(showLibrary: showLibrary)
-            } else {
-                WebView().ignoresSafeArea()
+            switch model.state {
+            case .loadingData:
+                LoadingDataView()
+            case .webPage(let isLoading):
+                WebView()
+                    .ignoresSafeArea()
                     .overlay {
-                        if browser.isLoading == true {
+                        if isLoading {
                             LoadingProgressView()
                         }
                     }
+            case .catalog(let catalogSequence):
+                switch catalogSequence {
+                case .fetching:
+                    FetchingCatalogView()
+                case .list:
+                    LocalLibraryList()
+                case .welcome(let welcomeViewState):
+                    WelcomeCatalog(viewState: welcomeViewState, showLibrary: showLibrary)
+                }
             }
         }
         .focusedSceneValue(\.browserViewModel, browser)

@@ -17,13 +17,9 @@ import SwiftUI
 import Combine
 import Defaults
 
-struct Welcome: View {
-    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
-    @Environment(\.verticalSizeClass) private var verticalSizeClass
+
+struct LocalLibraryList: View {
     @EnvironmentObject private var browser: BrowserViewModel
-    @EnvironmentObject private var library: LibraryViewModel
-    @EnvironmentObject private var navigation: NavigationViewModel
-    @Default(.hasSeenCategories) private var hasSeenCategories
     @FetchRequest(
         sortDescriptors: [NSSortDescriptor(keyPath: \Bookmark.created, ascending: false)],
         animation: .easeInOut
@@ -33,68 +29,60 @@ struct Welcome: View {
         predicate: ZimFile.openedPredicate,
         animation: .easeInOut
     ) private var zimFiles: FetchedResults<ZimFile>
+
+    var body: some View {
+        LazyVGrid(
+            columns: ([GridItem(.adaptive(minimum: 250, maximum: 500), spacing: 12)]),
+            alignment: .leading,
+            spacing: 12
+        ) {
+            GridSection(title: "welcome.main_page.title".localized) {
+                ForEach(zimFiles) { zimFile in
+                    AsyncButtonView {
+                        guard let url = await ZimFileService.shared
+                            .getMainPageURL(zimFileID: zimFile.fileID) else { return }
+                        browser.load(url: url)
+                    } label: {
+                        ZimFileCell(zimFile, prominent: .name)
+                    } loading: {
+                        ZimFileCell(zimFile, prominent: .name, isLoading: true)
+                    }
+                    .buttonStyle(.plain)
+                }
+            }
+            if !bookmarks.isEmpty {
+                GridSection(title: "welcome.grid.bookmarks.title".localized) {
+                    ForEach(bookmarks.prefix(6)) { bookmark in
+                        Button {
+                            browser.load(url: bookmark.articleURL)
+                        } label: {
+                            ArticleCell(bookmark: bookmark)
+                        }
+                        .buttonStyle(.plain)
+                        .modifier(BookmarkContextMenu(bookmark: bookmark))
+                    }
+                }
+            }
+        }.modifier(GridCommon(edges: .all))
+    }
+}
+
+struct WelcomeCatalog: View {
+    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
+    @Environment(\.verticalSizeClass) private var verticalSizeClass
+    @EnvironmentObject private var navigation: NavigationViewModel
+    @EnvironmentObject private var library: LibraryViewModel
+    @Default(.hasSeenCategories) private var hasSeenCategories
+    let viewState: WelcomeViewState
+
     /// Used only for iPhone
     let showLibrary: (() -> Void)?
 
     var body: some View {
-        if zimFiles.isEmpty || !FeatureFlags.hasLibrary {
-            ZStack {
-                if !FeatureFlags.hasLibrary && browser.isLoading != false {
-                    LoadingView()
-                } else {
-                    LogoView()
-                    welcomeContent
-                        .onAppear {
-                            if !hasSeenCategories, library.state == .complete {
-                                // safety path for upgrading user with no ZIM files, but fetched categories
-                                // to make sure we do display the buttons
-                                hasSeenCategories = true
-                            }
-                        }
-                    if library.state == .inProgress {
-                        if hasSeenCategories {
-                            LoadingProgressView()
-                        } else {
-                            LoadingMessageView(message: "welcome.button.status.fetching_catalog.text".localized)
-                        }
-                    }
-                }
-            }.ignoresSafeArea()
-        } else if FeatureFlags.hasLibrary {
-            LazyVGrid(
-                columns: ([GridItem(.adaptive(minimum: 250, maximum: 500), spacing: 12)]),
-                alignment: .leading,
-                spacing: 12
-            ) {
-                GridSection(title: "welcome.main_page.title".localized) {
-                    ForEach(zimFiles) { zimFile in
-                        AsyncButtonView {
-                            guard let url = await ZimFileService.shared
-                                .getMainPageURL(zimFileID: zimFile.fileID) else { return }
-                            browser.load(url: url)
-                        } label: {
-                            ZimFileCell(zimFile, prominent: .name)
-                        } loading: {
-                            ZimFileCell(zimFile, prominent: .name, isLoading: true)
-                        }
-                        .buttonStyle(.plain)
-                    }
-                }
-                if !bookmarks.isEmpty {
-                    GridSection(title: "welcome.grid.bookmarks.title".localized) {
-                        ForEach(bookmarks.prefix(6)) { bookmark in
-                            Button {
-                                browser.load(url: bookmark.articleURL)
-                            } label: {
-                                ArticleCell(bookmark: bookmark)
-                            }
-                            .buttonStyle(.plain)
-                            .modifier(BookmarkContextMenu(bookmark: bookmark))
-                        }
-                    }
-                }
-            }.modifier(GridCommon(edges: .all))
-        }
+        ZStack {
+            LogoView()
+            welcomeContent
+        }.ignoresSafeArea()
     }
 
     private var welcomeContent: some View {
@@ -109,7 +97,6 @@ struct Welcome: View {
                 .position(
                     x: geometry.size.width * 0.5,
                     y: logoCalc.buttonCenterY)
-                .opacity(hasSeenCategories ? 1 : 0)
                 .frame(maxWidth: logoCalc.buttonsWidth)
                 .onChange(of: library.state) { state in
                     if state == .error {
@@ -126,27 +113,28 @@ struct Welcome: View {
                     }
 #endif
                 }
-            Text("library_refresh_error.retrieve.description".localized)
-                .foregroundColor(.red)
-                .opacity(library.state == .error ? 1 : 0)
-                .position(
-                    x: geometry.size.width * 0.5,
-                    y: logoCalc.errorTextCenterY
-                )
+            if viewState == .error {
+                Text("library_refresh_error.retrieve.description".localized)
+                    .foregroundColor(.red)
+                    .position(
+                        x: geometry.size.width * 0.5,
+                        y: logoCalc.errorTextCenterY
+                    )
+            }
         }
     }
 
-    /// Onboarding actions, open a zim file or refresh catalog
+    /// Onboarding actions, open a zim file or refetch catalog
     private var actions: some View {
         if verticalSizeClass == .compact { // iPhone landscape
             AnyView(HStack {
                 openFileButton
-                catalogButton
+                fetchCatalogButton
             })
         } else {
             AnyView(VStack {
                 openFileButton
-                catalogButton
+                fetchCatalogButton
             })
         }
     }
@@ -163,7 +151,7 @@ struct Welcome: View {
         .buttonStyle(.bordered)
     }
 
-    private var catalogButton: some View {
+    private var fetchCatalogButton: some View {
         Button {
             library.start(isUserInitiated: true)
         } label: {
@@ -182,10 +170,55 @@ struct Welcome: View {
         .buttonStyle(.bordered)
     }
 }
+//
+//struct Welcome: View {
+//    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
+//    @Environment(\.verticalSizeClass) private var verticalSizeClass
+//    @EnvironmentObject private var browser: BrowserViewModel
+//    @EnvironmentObject private var library: LibraryViewModel
+//    @EnvironmentObject private var navigation: NavigationViewModel
+//    @Default(.hasSeenCategories) private var hasSeenCategories
+//
+//    /// Used only for iPhone
+//    let showLibrary: (() -> Void)?
+//
+//    var body: some View {
+//        if zimFiles.isEmpty || !FeatureFlags.hasLibrary {
+//            ZStack {
+//                if !FeatureFlags.hasLibrary && browser.isLoading != false {
+//                    LoadingView()
+//                } else {
+//                    LogoView()
+//                    welcomeContent
+//                        .onAppear {
+//                            if !hasSeenCategories, library.state == .complete {
+//                                // safety path for upgrading user with no ZIM files, but fetched categories
+//                                // to make sure we do display the buttons
+//                                hasSeenCategories = true
+//                            }
+//                        }
+//                    if library.state == .inProgress {
+//                        if hasSeenCategories {
+//                            LoadingProgressView()
+//                        } else {
+//                            LoadingMessageView(message: "welcome.button.status.fetching_catalog.text".localized)
+//                        }
+//                    }
+//                }
+//            }.ignoresSafeArea()
+//        } else if FeatureFlags.hasLibrary {
+//
+//        }
+//    }
+//
+//
+//}
 
 struct WelcomeView_Previews: PreviewProvider {
     static var previews: some View {
-        Welcome(showLibrary: nil).environmentObject(LibraryViewModel()).preferredColorScheme(.light).padding()
-        Welcome(showLibrary: nil).environmentObject(LibraryViewModel()).preferredColorScheme(.dark).padding()
+        WelcomeCatalog(viewState: .loading,
+                       showLibrary: nil).environmentObject(LibraryViewModel()).preferredColorScheme(.light).padding()
+        WelcomeCatalog(viewState: .error,
+                       showLibrary: nil).environmentObject(LibraryViewModel()).preferredColorScheme(.dark).padding()
     }
 }
