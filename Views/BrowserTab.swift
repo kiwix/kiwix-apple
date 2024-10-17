@@ -101,8 +101,9 @@ struct BrowserTab: View {
         @ObservedObject var model: LaunchModel
 
         var body: some View {
+            // swiftlint:disable:next redundant_discardable_let
             let _ = model.updateWith(hasZimFiles: !zimFiles.isEmpty,
-                                     hasSeenCategories: hasSeenCategories)
+                             hasSeenCategories: hasSeenCategories)
             GeometryReader { proxy in
                 Group {
                     if isSearching {
@@ -127,7 +128,9 @@ struct BrowserTab: View {
 #if os(macOS)
                                 .overlay(alignment: .bottomTrailing) {
                                     ContentSearchBar(
-                                        model: ContentSearchViewModel(findInWebPage: browser.webView.find(_:configuration:))
+                                        model: ContentSearchViewModel(
+                                            findInWebPage: browser.webView.find(_:configuration:)
+                                        )
                                     )
                                 }
 #endif

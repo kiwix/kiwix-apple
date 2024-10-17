@@ -240,9 +240,9 @@ private struct Content<LaunchModel>: View where LaunchModel: LaunchProtocol {
 
     var body: some View {
         Group {
+            // swiftlint:disable:next redundant_discardable_let
             let _ = model.updateWith(hasZimFiles: !zimFiles.isEmpty,
                                      hasSeenCategories: hasSeenCategories)
-            let _ = debugPrint("model.state: \(model.state)")
             switch model.state {
             case .loadingData:
                 LoadingDataView()

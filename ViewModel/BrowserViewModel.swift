@@ -101,8 +101,7 @@ final class BrowserViewModel: NSObject, ObservableObject,
     // MARK: - Lifecycle
 
     // swiftlint:disable:next function_body_length
-    @MainActor
-    init(tabID: NSManagedObjectID? = nil) {
+    @MainActor init(tabID: NSManagedObjectID? = nil) {
         self.tabID = tabID
         webView = WKWebView(frame: .zero, configuration: WebViewConfiguration())
         if !Bundle.main.isProduction, #available(iOS 16.4, macOS 13.3, *) {

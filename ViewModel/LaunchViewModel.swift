@@ -66,7 +66,7 @@ final class NoCatalogLaunchViewModel: LaunchViewModelBase {
     init(browserIsLoading: Published<Bool?>.Publisher) {
         super.init()
         browserIsLoading.sink { [weak self] (isLoading: Bool?) in
-            guard let self else { return }
+            guard let self = self else { return }
             switch isLoading {
             case .none:
                 updateTo(.loadingData)
@@ -99,6 +99,7 @@ final class CatalogLaunchViewModel: LaunchViewModelBase {
         self.init(libraryState: library.$state, browserIsLoading: browser.$isLoading)
     }
 
+    // swiftlint:disable closure_parameter_position
     init(libraryState: Published<LibraryState>.Publisher,
          browserIsLoading: Published<Bool?>.Publisher) {
         super.init()
@@ -107,8 +108,13 @@ final class CatalogLaunchViewModel: LaunchViewModelBase {
             libraryState,
             browserIsLoading,
             hasSeenCategoriesOnce
-        ).sink { [weak self] (hasZIMs: Bool, libState: LibraryState, isBrowserLoading: Bool?, hasSeenCategories: Bool) in
-            guard let self else { return }
+        ).sink { [weak self] (
+            hasZIMs: Bool,
+            libState: LibraryState,
+            isBrowserLoading: Bool?,
+            hasSeenCategories: Bool
+        ) in
+            guard let self = self else { return }
 
             switch (isBrowserLoading, hasZIMs, libState) {
 
@@ -143,6 +149,7 @@ final class CatalogLaunchViewModel: LaunchViewModelBase {
             }
         }.store(in: &cancellables)
     }
+    // swiftlint:enable closure_parameter_position
 
     override func updateWith(hasZimFiles: Bool, hasSeenCategories: Bool) {
         hasZIMFiles.send(hasZimFiles)
