@@ -56,7 +56,7 @@ protocol LaunchProtocol: ObservableObject {
 /// while the main page is not fully loaded for the first time
 final class NoCatalogLaunchViewModel: LaunchViewModelBase {
 
-    private var wasLoaded = false
+    private static var wasLoaded = false
 
     convenience init(browser: BrowserViewModel) {
         self.init(browserIsLoading: browser.$isLoading)
@@ -71,13 +71,13 @@ final class NoCatalogLaunchViewModel: LaunchViewModelBase {
             case .none:
                 updateTo(.loadingData)
             case .some(true):
-                if !wasLoaded {
+                if !Self.wasLoaded {
                     updateTo(.loadingData)
                 } else {
                     updateTo(.webPage(isLoading: true))
                 }
             case .some(false):
-                wasLoaded = true
+                Self.wasLoaded = true
                 updateTo(.webPage(isLoading: false))
             }
         }.store(in: &cancellables)
