@@ -184,7 +184,6 @@
 "welcome.main_page.title" = "メインページ";
 "welcome.grid.bookmarks.title" = "ブックマーク";
 "welcome.actions.open_file" = "ファイルを開く";
-"welcome.button.status.fetching.text" = "取得中...";
 "welcome.button.status.fetch_catalog.text" = "カタログの取得";
 "commands.button.actual_size" = "実際のサイズ";
 "comments.button.zoom_in" = "ズームイン";
