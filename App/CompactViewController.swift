@@ -304,6 +304,7 @@ private struct Content<LaunchModel>: View where LaunchModel: LaunchProtocol {
     }
 
     private func showTheLibrary() {
+        guard model.state.shouldShowCatalog else { return }
         #if os(macOS)
         navigation.currentItem = .categories
         #else

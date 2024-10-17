@@ -21,6 +21,16 @@ enum LaunchSequence: Equatable {
     case loadingData
     case webPage(isLoading: Bool)
     case catalog(CatalogSequence)
+
+    var shouldShowCatalog: Bool {
+        switch self {
+        case .loadingData: return true
+        case .webPage(_): return false
+        case .catalog(.fetching): return true
+        case .catalog(.welcome(_)): return true
+        case .catalog(.list): return false
+        }
+    }
 }
 
 enum CatalogSequence: Equatable {

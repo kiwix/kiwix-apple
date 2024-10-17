@@ -150,6 +150,7 @@ struct BrowserTab: View {
         }
 
         private func showTheLibrary() {
+            guard model.state.shouldShowCatalog else { return }
             navigation.currentItem = .categories
         }
     }
