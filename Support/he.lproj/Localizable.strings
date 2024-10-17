@@ -183,7 +183,8 @@
 "welcome.main_page.title" = "עמוד ראשי";
 "welcome.grid.bookmarks.title" = "סימניות";
 "welcome.actions.open_file" = "פתיחת קובץ";
-"welcome.button.status.fetching.text" = "מתבצע אחזור...";
+"welcome.loading.data.text" = "טענית נתונים...";
+"welcome.button.status.fetching_catalog.text" = "הקטלוג מאוחזר...";
 "welcome.button.status.fetch_catalog.text" = "אחזור קטלוג";
 "commands.button.actual_size" = "גודל אמיתי";
 "comments.button.zoom_in" = "התקרבות";

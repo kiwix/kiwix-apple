@@ -194,7 +194,6 @@
 "welcome.main_page.title" = "Page principale";
 "welcome.grid.bookmarks.title" = "Signets";
 "welcome.actions.open_file" = "Ouvrir le fichier";
-"welcome.button.status.fetching.text" = "Récupération…";
 "welcome.button.status.fetch_catalog.text" = "Récupérer le catalogue";
 "commands.button.actual_size" = "Taille réelle";
 "comments.button.zoom_in" = "Zoom avant";

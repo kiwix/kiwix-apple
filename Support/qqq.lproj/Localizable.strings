@@ -177,7 +177,6 @@
 "welcome.main_page.title" = "Default new browser tab title on iOS. the downloaded ZIM files are listed below this title";
 "welcome.grid.bookmarks.title" = "Welcome page section title";
 "welcome.actions.open_file" = "Welcome page button title";
-"welcome.button.status.fetching.text" = "Welcome page progress text for fetching...";
 "welcome.button.status.fetch_catalog.text" = "Welcome page button title";
 "commands.button.actual_size" = "MacOS command menu item";
 "comments.button.zoom_in" = "MacOS command menu item";
