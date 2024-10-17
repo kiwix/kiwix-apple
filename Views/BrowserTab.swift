@@ -100,7 +100,6 @@ struct BrowserTab: View {
         @Default(.hasSeenCategories) private var hasSeenCategories
         @ObservedObject var model: LaunchModel
 
-
         var body: some View {
             let _ = model.updateWith(hasZimFiles: !zimFiles.isEmpty,
                                      hasSeenCategories: hasSeenCategories)

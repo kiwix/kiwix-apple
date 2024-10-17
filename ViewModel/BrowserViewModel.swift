@@ -100,6 +100,7 @@ final class BrowserViewModel: NSObject, ObservableObject,
 
     // MARK: - Lifecycle
 
+    // swiftlint:disable:next function_body_length
     @MainActor
     init(tabID: NSManagedObjectID? = nil) {
         self.tabID = tabID
@@ -164,7 +165,7 @@ final class BrowserViewModel: NSObject, ObservableObject,
             self?.didUpdate(title: title, url: url)
         }
 
-        isLoadingObserver = webView.observe(\.isLoading, options: .new) { [weak self] webView, change in
+        isLoadingObserver = webView.observe(\.isLoading, options: .new) { [weak self] _, change in
             Task { @MainActor in
                 if change.newValue != self?.isLoading {
                     self?.isLoading = change.newValue
