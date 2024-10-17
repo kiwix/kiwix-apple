@@ -127,7 +127,7 @@ struct RootView: View {
         } detail: {
             switch navigation.currentItem {
             case .loading:
-                LoadingView()
+                LoadingDataView()
             case .reading:
                 BrowserTab().environmentObject(browser)
                     .withHostingWindow { window in

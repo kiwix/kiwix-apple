@@ -51,6 +51,7 @@ final class BrowserViewModel: NSObject, ObservableObject,
 
     // MARK: - Properties
 
+    @Published private(set) var isLoading: Bool?
     @Published private(set) var canGoBack = false
     @Published private(set) var canGoForward = false
     @Published private(set) var articleTitle: String = ""
@@ -58,6 +59,7 @@ final class BrowserViewModel: NSObject, ObservableObject,
     @Published private(set) var articleBookmarked = false
     @Published private(set) var outlineItems = [OutlineItem]()
     @Published private(set) var outlineItemTree = [OutlineItem]()
+    @MainActor @Published private(set) var hasURL: Bool = false
     @MainActor @Published private(set) var url: URL? {
         didSet {
             if !FeatureFlags.hasLibrary, url == nil {
@@ -67,6 +69,7 @@ final class BrowserViewModel: NSObject, ObservableObject,
                 bookmarkFetchedResultsController.fetchRequest.predicate = Self.bookmarksPredicateFor(url: url)
                 try? bookmarkFetchedResultsController.performFetch()
             }
+            hasURL = url != nil
         }
     }
     @Published var externalURL: URL?
@@ -87,6 +90,7 @@ final class BrowserViewModel: NSObject, ObservableObject,
     }
 #endif
     let webView: WKWebView
+    private var isLoadingObserver: NSKeyValueObservation?
     private var canGoBackObserver: NSKeyValueObservation?
     private var canGoForwardObserver: NSKeyValueObservation?
     private var titleURLObserver: AnyCancellable?
@@ -96,8 +100,8 @@ final class BrowserViewModel: NSObject, ObservableObject,
 
     // MARK: - Lifecycle
 
-    @MainActor
-    init(tabID: NSManagedObjectID? = nil) {
+    // swiftlint:disable:next function_body_length
+    @MainActor init(tabID: NSManagedObjectID? = nil) {
         self.tabID = tabID
         webView = WKWebView(frame: .zero, configuration: WebViewConfiguration())
         if !Bundle.main.isProduction, #available(iOS 16.4, macOS 13.3, *) {
@@ -158,6 +162,14 @@ final class BrowserViewModel: NSObject, ObservableObject,
         .sink { [weak self] title, url in
             guard let title, let url else { return }
             self?.didUpdate(title: title, url: url)
+        }
+
+        isLoadingObserver = webView.observe(\.isLoading, options: .new) { [weak self] _, change in
+            Task { @MainActor [weak self] in
+                if change.newValue != self?.isLoading {
+                    self?.isLoading = change.newValue
+                }
+            }
         }
     }
 
