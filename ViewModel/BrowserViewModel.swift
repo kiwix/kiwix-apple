@@ -165,7 +165,7 @@ final class BrowserViewModel: NSObject, ObservableObject,
         }
 
         isLoadingObserver = webView.observe(\.isLoading, options: .new) { [weak self] _, change in
-            Task { @MainActor in
+            Task { @MainActor [weak self] in
                 if change.newValue != self?.isLoading {
                     self?.isLoading = change.newValue
                 }
