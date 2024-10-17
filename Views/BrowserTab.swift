@@ -104,7 +104,6 @@ struct BrowserTab: View {
         var body: some View {
             let _ = model.updateWith(hasZimFiles: !zimFiles.isEmpty,
                                      hasSeenCategories: hasSeenCategories)
-            let _ = debugPrint("model.state: \(model.state)")
             GeometryReader { proxy in
                 Group {
                     if isSearching {
