@@ -87,7 +87,10 @@ struct BrowserTab: View {
 
     private struct Content<LaunchModel>: View where LaunchModel: LaunchProtocol {
         @Environment(\.isSearching) private var isSearching
+        @Environment(\.horizontalSizeClass) private var horizontalSizeClass
         @EnvironmentObject private var browser: BrowserViewModel
+        @EnvironmentObject private var library: LibraryViewModel
+        @EnvironmentObject private var navigation: NavigationViewModel
         @FetchRequest(
             sortDescriptors: [NSSortDescriptor(keyPath: \ZimFile.size, ascending: false)],
             predicate: ZimFile.openedPredicate
@@ -135,11 +138,19 @@ struct BrowserTab: View {
                         case .catalog(.list):
                             LocalLibraryList()
                         case .catalog(.welcome(let welcomeViewState)):
-                            WelcomeCatalog(viewState: welcomeViewState, showLibrary: nil)
+                            WelcomeCatalog(viewState: welcomeViewState)
                         }
                     }
                 }
             }
+            .onChange(of: library.state) { state in
+                guard state == .complete else { return }
+                showTheLibrary()
+            }
+        }
+
+        private func showTheLibrary() {
+            navigation.currentItem = .categories
         }
     }
 }

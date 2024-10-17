@@ -222,12 +222,15 @@ private struct CompactView: View {
 
 private struct Content<LaunchModel>: View where LaunchModel: LaunchProtocol {
     @Environment(\.scenePhase) private var scenePhase
+    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     @EnvironmentObject private var browser: BrowserViewModel
     @EnvironmentObject private var library: LibraryViewModel
+    @EnvironmentObject private var navigation: NavigationViewModel
     @FetchRequest(
         sortDescriptors: [NSSortDescriptor(keyPath: \ZimFile.size, ascending: false)],
         predicate: ZimFile.openedPredicate
     ) private var zimFiles: FetchedResults<ZimFile>
+    
     /// this is still hacky a bit, as the change from here re-validates the view
     /// which triggers the model to be revalidated
     @Default(.hasSeenCategories) private var hasSeenCategories
@@ -258,7 +261,7 @@ private struct Content<LaunchModel>: View where LaunchModel: LaunchProtocol {
                 case .list:
                     LocalLibraryList()
                 case .welcome(let welcomeViewState):
-                    WelcomeCatalog(viewState: welcomeViewState, showLibrary: showLibrary)
+                    WelcomeCatalog(viewState: welcomeViewState)
                 }
             }
         }
@@ -268,10 +271,6 @@ private struct Content<LaunchModel>: View where LaunchModel: LaunchProtocol {
         .modifier(ExternalLinkHandler(externalURL: $browser.externalURL))
         .onAppear {
             browser.updateLastOpened()
-        }
-        .task {
-            debugPrint("library: \(library)")
-            debugPrint("")
         }
         .onDisappear {
             // since the browser is comming from @Environment,
@@ -298,6 +297,22 @@ private struct Content<LaunchModel>: View where LaunchModel: LaunchProtocol {
                 browser.refreshVideoState()
             }
         }
+        .onChange(of: library.state) { state in
+            guard state == .complete else { return }
+            showTheLibrary()
+        }
+    }
+
+    private func showTheLibrary() {
+        #if os(macOS)
+        navigation.currentItem = .categories
+        #else
+        if horizontalSizeClass == .regular {
+            navigation.currentItem = .categories
+        } else {
+            showLibrary()
+        }
+        #endif
     }
 }
 #endif

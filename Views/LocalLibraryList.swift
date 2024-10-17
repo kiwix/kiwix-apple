@@ -17,6 +17,7 @@ import SwiftUI
 import Combine
 import Defaults
 
+/// Displays a grid of available local ZIM files. Used on new tab.
 struct LocalLibraryList: View {
     @EnvironmentObject private var browser: BrowserViewModel
     @FetchRequest(

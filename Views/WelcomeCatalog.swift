@@ -17,16 +17,13 @@ import SwiftUI
 import Combine
 import Defaults
 
+/// Displays the Logo and 2 buttons open file | fetch catalog.
+/// Used on new tab, when no ZIM files are available
 struct WelcomeCatalog: View {
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     @Environment(\.verticalSizeClass) private var verticalSizeClass
-    @EnvironmentObject private var navigation: NavigationViewModel
     @EnvironmentObject private var library: LibraryViewModel
-    @Default(.hasSeenCategories) private var hasSeenCategories
     let viewState: WelcomeViewState
-
-    /// Used only for iPhone
-    let showLibrary: (() -> Void)?
 
     var body: some View {
         ZStack {
@@ -48,21 +45,6 @@ struct WelcomeCatalog: View {
                     x: geometry.size.width * 0.5,
                     y: logoCalc.buttonCenterY)
                 .frame(maxWidth: logoCalc.buttonsWidth)
-                .onChange(of: library.state) { state in
-                    if state == .error {
-                        hasSeenCategories = true
-                    }
-                    guard state == .complete else { return }
-#if os(macOS)
-                    navigation.currentItem = .categories
-#elseif os(iOS)
-                    if horizontalSizeClass == .regular {
-                        navigation.currentItem = .categories
-                    } else {
-                        showLibrary?()
-                    }
-#endif
-                }
             if viewState == .error {
                 Text("library_refresh_error.retrieve.description".localized)
                     .foregroundColor(.red)
@@ -107,7 +89,7 @@ struct WelcomeCatalog: View {
         } label: {
             HStack {
                 Spacer()
-                if library.state == .inProgress {
+                if viewState == .loading {
                     Text("welcome.button.status.fetching_catalog.text".localized)
                 } else {
                     Text("welcome.button.status.fetch_catalog.text".localized)
@@ -115,60 +97,15 @@ struct WelcomeCatalog: View {
                 Spacer()
             }.padding(6)
         }
-        .disabled(library.state == .inProgress)
+        .disabled(viewState == .loading)
         .font(.subheadline)
         .buttonStyle(.bordered)
     }
 }
-//
-//struct Welcome: View {
-//    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
-//    @Environment(\.verticalSizeClass) private var verticalSizeClass
-//    @EnvironmentObject private var browser: BrowserViewModel
-//    @EnvironmentObject private var library: LibraryViewModel
-//    @EnvironmentObject private var navigation: NavigationViewModel
-//    @Default(.hasSeenCategories) private var hasSeenCategories
-//
-//    /// Used only for iPhone
-//    let showLibrary: (() -> Void)?
-//
-//    var body: some View {
-//        if zimFiles.isEmpty || !FeatureFlags.hasLibrary {
-//            ZStack {
-//                if !FeatureFlags.hasLibrary && browser.isLoading != false {
-//                    LoadingView()
-//                } else {
-//                    LogoView()
-//                    welcomeContent
-//                        .onAppear {
-//                            if !hasSeenCategories, library.state == .complete {
-//                                // safety path for upgrading user with no ZIM files, but fetched categories
-//                                // to make sure we do display the buttons
-//                                hasSeenCategories = true
-//                            }
-//                        }
-//                    if library.state == .inProgress {
-//                        if hasSeenCategories {
-//                            LoadingProgressView()
-//                        } else {
-//                            LoadingMessageView(message: "welcome.button.status.fetching_catalog.text".localized)
-//                        }
-//                    }
-//                }
-//            }.ignoresSafeArea()
-//        } else if FeatureFlags.hasLibrary {
-//
-//        }
-//    }
-//
-//
-//}
 
 struct WelcomeView_Previews: PreviewProvider {
     static var previews: some View {
-        WelcomeCatalog(viewState: .loading,
-                       showLibrary: nil).environmentObject(LibraryViewModel()).preferredColorScheme(.light).padding()
-        WelcomeCatalog(viewState: .error,
-                       showLibrary: nil).environmentObject(LibraryViewModel()).preferredColorScheme(.dark).padding()
+        WelcomeCatalog(viewState: .loading).environmentObject(LibraryViewModel()).preferredColorScheme(.light).padding()
+        WelcomeCatalog(viewState: .error).environmentObject(LibraryViewModel()).preferredColorScheme(.dark).padding()
     }
 }
