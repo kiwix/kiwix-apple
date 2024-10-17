@@ -156,11 +156,13 @@ These are AppStore builds, which are uploaded to TestFlight, using the current a
 
 ### On-demand TestFlight
 
-It is also possible to create TestFlight builds on-demand, by pushing a git tag starting with "testflight" to the repo. This will run the same process as the "weekly" build (we just do not need to wait a whole week).
+It is also possible to create TestFlight builds on-demand, by pushing a git tag named "testflight" to the repo. Please note we are overwriting the very same tag for consequent testflight releases. This will run the same process as the "weekly" build (we just do not need to wait a whole week).
 
 ### Releasing to AppStore and FTP
 
-Once we are happy with the quality of the app in TestFlight, we can send it for approval to Apple. Once approved by Apple, we can release them to the AppStore. At the same time, we do want to release our macOS app via FTP as well. For this, we run our "Post App Release" workflow, which can be triggered by creating a Github Release, based on the git commit used for the TestFlight apps (the ones that were approved by Apple). The specific commit that triggered the (now approved) TestFlight app, can be found under Github Actions. This Github Release (based on this specific commit) will rebuild the macOS application and upload it to FTP to the release folder. Again, the purpose of this is to make the very same macOS app - which was released to the AppStore  - also available via FTP.
+Once we are happy with the quality of the app in TestFlight, we can send it for approval to Apple. Once approved by Apple, we can release them to the AppStore. At the same time, we do want to release our macOS app via FTP as well. For this, we run our "Post App Release" workflow, which can be triggered by creating a Github Release, based on the git commit used for the TestFlight apps (the ones that were approved by Apple). The specific commit that triggered the (now approved) TestFlight app, can be found under Github Actions.
+Based on this commit we should create a new tag with the release (semantic) version, and use this tag for GitHub Release.
+This Github Release will rebuild the macOS application and upload it to FTP to the release folder. Again, the purpose of this is to make the very same macOS app - which was released to the AppStore  - also available via FTP.
 
 ### Last step
 
