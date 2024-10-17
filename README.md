@@ -163,6 +163,7 @@ It is also possible to create TestFlight builds on-demand, by pushing a git tag 
 Once we are happy with the quality of the app in TestFlight, we can send it for approval to Apple. Once approved by Apple, we can release them to the AppStore. At the same time, we do want to release our macOS app via FTP as well. For this, we run our "Post App Release" workflow, which can be triggered by creating a Github Release, based on the git commit used for the TestFlight apps (the ones that were approved by Apple). The specific commit that triggered the (now approved) TestFlight app, can be found under Github Actions.
 Based on this commit we should create a new tag with the release (semantic) version, and use this tag for GitHub Release.
 This Github Release will rebuild the macOS application and upload it to FTP to the release folder. Again, the purpose of this is to make the very same macOS app - which was released to the AppStore  - also available via FTP.
+In case the app is rejected by Apple in a way that requires a new build to fix the issue, a new patch version should be created, and re-submitted to App Store.
 
 ### Last step
 
