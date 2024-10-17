@@ -25,9 +25,9 @@ enum LaunchSequence: Equatable {
     var shouldShowCatalog: Bool {
         switch self {
         case .loadingData: return true
-        case .webPage(_): return false
+        case .webPage: return false
         case .catalog(.fetching): return true
-        case .catalog(.welcome(_)): return true
+        case .catalog(.welcome): return true
         case .catalog(.list): return false
         }
     }
@@ -107,12 +107,7 @@ final class CatalogLaunchViewModel: LaunchViewModelBase {
             libraryState,
             browserIsLoading,
             hasSeenCategoriesOnce
-        ).sink { [weak self] (
-            hasZIMs: Bool,
-            libState: LibraryState,
-            isBrowserLoading: Bool?,
-            hasSeenCategories: Bool
-        ) in
+        ).sink { [weak self] (hasZIMs: Bool, libState: LibraryState, isBrowserLoading: Bool?, hasSeenCategories: Bool) in
             guard let self else { return }
 
             switch (isBrowserLoading, hasZIMs, libState) {
