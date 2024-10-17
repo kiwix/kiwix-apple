@@ -228,8 +228,6 @@ private struct Content<LaunchModel>: View where LaunchModel: LaunchProtocol {
         sortDescriptors: [NSSortDescriptor(keyPath: \ZimFile.size, ascending: false)],
         predicate: ZimFile.openedPredicate
     ) private var zimFiles: FetchedResults<ZimFile>
-    @State var isInitialLoad: Bool = true
-    
     /// this is still hacky a bit, as the change from here re-validates the view
     /// which triggers the model to be revalidated
     @Default(.hasSeenCategories) private var hasSeenCategories
@@ -298,11 +296,6 @@ private struct Content<LaunchModel>: View where LaunchModel: LaunchProtocol {
         .onChange(of: scenePhase) { newValue in
             if case .active = newValue {
                 browser.refreshVideoState()
-            }
-        }
-        .onChange(of: browser.isLoading) { isLoading in
-            if isLoading == false { // wait for the first full webpage load
-                isInitialLoad = false
             }
         }
     }

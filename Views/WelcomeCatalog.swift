@@ -17,56 +17,6 @@ import SwiftUI
 import Combine
 import Defaults
 
-
-struct LocalLibraryList: View {
-    @EnvironmentObject private var browser: BrowserViewModel
-    @FetchRequest(
-        sortDescriptors: [NSSortDescriptor(keyPath: \Bookmark.created, ascending: false)],
-        animation: .easeInOut
-    ) private var bookmarks: FetchedResults<Bookmark>
-    @FetchRequest(
-        sortDescriptors: [NSSortDescriptor(keyPath: \ZimFile.size, ascending: false)],
-        predicate: ZimFile.openedPredicate,
-        animation: .easeInOut
-    ) private var zimFiles: FetchedResults<ZimFile>
-
-    var body: some View {
-        LazyVGrid(
-            columns: ([GridItem(.adaptive(minimum: 250, maximum: 500), spacing: 12)]),
-            alignment: .leading,
-            spacing: 12
-        ) {
-            GridSection(title: "welcome.main_page.title".localized) {
-                ForEach(zimFiles) { zimFile in
-                    AsyncButtonView {
-                        guard let url = await ZimFileService.shared
-                            .getMainPageURL(zimFileID: zimFile.fileID) else { return }
-                        browser.load(url: url)
-                    } label: {
-                        ZimFileCell(zimFile, prominent: .name)
-                    } loading: {
-                        ZimFileCell(zimFile, prominent: .name, isLoading: true)
-                    }
-                    .buttonStyle(.plain)
-                }
-            }
-            if !bookmarks.isEmpty {
-                GridSection(title: "welcome.grid.bookmarks.title".localized) {
-                    ForEach(bookmarks.prefix(6)) { bookmark in
-                        Button {
-                            browser.load(url: bookmark.articleURL)
-                        } label: {
-                            ArticleCell(bookmark: bookmark)
-                        }
-                        .buttonStyle(.plain)
-                        .modifier(BookmarkContextMenu(bookmark: bookmark))
-                    }
-                }
-            }
-        }.modifier(GridCommon(edges: .all))
-    }
-}
-
 struct WelcomeCatalog: View {
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     @Environment(\.verticalSizeClass) private var verticalSizeClass
