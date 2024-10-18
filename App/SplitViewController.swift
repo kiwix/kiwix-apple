@@ -141,7 +141,7 @@ final class SplitViewController: UISplitViewController {
             let controller = UIHostingController(rootView: Settings())
             setViewController(UINavigationController(rootViewController: controller), for: .secondary)
         case .loading:
-            let controller = UIHostingController(rootView: LoadingView())
+            let controller = UIHostingController(rootView: LoadingDataView())
             setViewController(UINavigationController(rootViewController: controller), for: .secondary)
         default:
             let controller = UIHostingController(rootView: Text("vc-not-implemented"))

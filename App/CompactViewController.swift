@@ -22,6 +22,7 @@ import Combine
 import SwiftUI
 import UIKit
 import CoreData
+import Defaults
 
 final class CompactViewController: UIHostingController<AnyView>, UISearchControllerDelegate, UISearchResultsUpdating {
     private let searchViewModel: SearchViewModel
@@ -133,6 +134,7 @@ final class CompactViewController: UIHostingController<AnyView>, UISearchControl
 
 private struct CompactView: View {
     @EnvironmentObject private var navigation: NavigationViewModel
+    @EnvironmentObject private var library: LibraryViewModel
     @State private var presentedSheet: PresentedSheet?
 
     private enum PresentedSheet: String, Identifiable {
@@ -149,8 +151,14 @@ private struct CompactView: View {
 
     var body: some View {
         if case .loading = navigation.currentItem {
-            LoadingView()
+            LoadingDataView()
         } else if case let .tab(tabID) = navigation.currentItem {
+            let browser = BrowserViewModel.getCached(tabID: tabID)
+            let model = if FeatureFlags.hasLibrary {
+                CatalogLaunchViewModel(library: library, browser: browser)
+            } else {
+                NoCatalogLaunchViewModel(browser: browser)
+            }
             Content(tabID: tabID, showLibrary: {
                 if presentedSheet == nil {
                     presentedSheet = .library
@@ -158,7 +166,7 @@ private struct CompactView: View {
                     // there's a sheet already presented by the user
                     // do nothing
                 }
-            })
+            }, model: model)
                 .id(tabID)
                 .toolbar {
                     ToolbarItemGroup(placement: .bottomBar) {
@@ -189,7 +197,7 @@ private struct CompactView: View {
                         Spacer()
                     }
                 }
-                .environmentObject(BrowserViewModel.getCached(tabID: tabID))
+                .environmentObject(browser)
                 .sheet(item: $presentedSheet) { presentedSheet in
                     switch presentedSheet {
                     case .library:
@@ -212,22 +220,49 @@ private struct CompactView: View {
     }
 }
 
-private struct Content: View {
+private struct Content<LaunchModel>: View where LaunchModel: LaunchProtocol {
     @Environment(\.scenePhase) private var scenePhase
+    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     @EnvironmentObject private var browser: BrowserViewModel
+    @EnvironmentObject private var library: LibraryViewModel
+    @EnvironmentObject private var navigation: NavigationViewModel
     @FetchRequest(
         sortDescriptors: [NSSortDescriptor(keyPath: \ZimFile.size, ascending: false)],
         predicate: ZimFile.openedPredicate
     ) private var zimFiles: FetchedResults<ZimFile>
+    
+    /// this is still hacky a bit, as the change from here re-validates the view
+    /// which triggers the model to be revalidated
+    @Default(.hasSeenCategories) private var hasSeenCategories
     let tabID: NSManagedObjectID?
     let showLibrary: () -> Void
+    @ObservedObject var model: LaunchModel
 
     var body: some View {
         Group {
-            if browser.url == nil {
-                Welcome(showLibrary: showLibrary)
-            } else {
-                WebView().ignoresSafeArea()
+            // swiftlint:disable:next redundant_discardable_let
+            let _ = model.updateWith(hasZimFiles: !zimFiles.isEmpty,
+                                     hasSeenCategories: hasSeenCategories)
+            switch model.state {
+            case .loadingData:
+                LoadingDataView()
+            case .webPage(let isLoading):
+                WebView()
+                    .ignoresSafeArea()
+                    .overlay {
+                        if isLoading {
+                            LoadingProgressView()
+                        }
+                    }
+            case .catalog(let catalogSequence):
+                switch catalogSequence {
+                case .fetching:
+                    FetchingCatalogView()
+                case .list:
+                    LocalLibraryList()
+                case .welcome(let welcomeViewState):
+                    WelcomeCatalog(viewState: welcomeViewState)
+                }
             }
         }
         .focusedSceneValue(\.browserViewModel, browser)
@@ -262,6 +297,23 @@ private struct Content: View {
                 browser.refreshVideoState()
             }
         }
+        .onChange(of: library.state) { state in
+            guard state == .complete else { return }
+            showTheLibrary()
+        }
+    }
+
+    private func showTheLibrary() {
+        guard model.state.shouldShowCatalog else { return }
+        #if os(macOS)
+        navigation.currentItem = .categories
+        #else
+        if horizontalSizeClass == .regular {
+            navigation.currentItem = .categories
+        } else {
+            showLibrary()
+        }
+        #endif
     }
 }
 #endif

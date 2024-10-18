@@ -14,18 +14,25 @@
 // along with Kiwix; If not, see https://www.gnu.org/licenses/.
 
 import SwiftUI
+import Defaults
 
 /// This is macOS and iPad only specific, not used on iPhone
 struct BrowserTab: View {
     @Environment(\.scenePhase) private var scenePhase
     @EnvironmentObject private var browser: BrowserViewModel
+    @EnvironmentObject private var library: LibraryViewModel
     @StateObject private var search = SearchViewModel()
 
     var body: some View {
-        Content().toolbar {
-            #if os(macOS)
+        let model = if FeatureFlags.hasLibrary {
+            CatalogLaunchViewModel(library: library, browser: browser)
+        } else {
+            NoCatalogLaunchViewModel(browser: browser)
+        }
+        Content(model: model).toolbar {
+#if os(macOS)
             ToolbarItemGroup(placement: .navigation) { NavigationButtons() }
-            #elseif os(iOS)
+#elseif os(iOS)
             ToolbarItemGroup(placement: .navigationBarLeading) {
                 if #unavailable(iOS 16) {
                     Button {
@@ -36,17 +43,17 @@ struct BrowserTab: View {
                 }
                 NavigationButtons()
             }
-            #endif
+#endif
             ToolbarItemGroup(placement: .primaryAction) {
                 OutlineButton()
                 ExportButton()
-                #if os(macOS)
+#if os(macOS)
                 PrintButton()
-                #endif
+#endif
                 BookmarkButton()
-                #if os(iOS)
+#if os(iOS)
                 ContentSearchButton()
-                #endif
+#endif
                 ArticleShortcutButtons(displayMode: .mainAndRandomArticle)
             }
         }
@@ -62,12 +69,12 @@ struct BrowserTab: View {
             }
         }
         .modify { view in
-            #if os(macOS)
+#if os(macOS)
             view.navigationTitle(browser.articleTitle.isEmpty ? Brand.appName : browser.articleTitle)
                 .navigationSubtitle(browser.zimFileName)
-            #elseif os(iOS)
+#elseif os(iOS)
             view
-            #endif
+#endif
         }
         .onAppear {
             browser.updateLastOpened()
@@ -78,11 +85,25 @@ struct BrowserTab: View {
         }
     }
 
-    struct Content: View {
+    private struct Content<LaunchModel>: View where LaunchModel: LaunchProtocol {
         @Environment(\.isSearching) private var isSearching
+        @Environment(\.horizontalSizeClass) private var horizontalSizeClass
         @EnvironmentObject private var browser: BrowserViewModel
+        @EnvironmentObject private var library: LibraryViewModel
+        @EnvironmentObject private var navigation: NavigationViewModel
+        @FetchRequest(
+            sortDescriptors: [NSSortDescriptor(keyPath: \ZimFile.size, ascending: false)],
+            predicate: ZimFile.openedPredicate
+        ) private var zimFiles: FetchedResults<ZimFile>
+        /// this is still hacky a bit, as the change from here re-validates the view
+        /// which triggers the model to be revalidated
+        @Default(.hasSeenCategories) private var hasSeenCategories
+        @ObservedObject var model: LaunchModel
 
         var body: some View {
+            // swiftlint:disable:next redundant_discardable_let
+            let _ = model.updateWith(hasZimFiles: !zimFiles.isEmpty,
+                             hasSeenCategories: hasSeenCategories)
             GeometryReader { proxy in
                 Group {
                     if isSearching {
@@ -92,20 +113,46 @@ struct BrowserTab: View {
                             #elseif os(iOS)
                             .environment(\.horizontalSizeClass, proxy.size.width > 750 ? .regular : .compact)
                             #endif
-                    } else if browser.url == nil && FeatureFlags.hasLibrary {
-                        Welcome(showLibrary: nil)
                     } else {
-                        WebView().ignoresSafeArea()
-                        #if os(macOS)
-                            .overlay(alignment: .bottomTrailing) {
-                                ContentSearchBar(
-                                    model: ContentSearchViewModel(findInWebPage: browser.webView.find(_:configuration:))
-                                )
-                            }
-                        #endif
+                        switch model.state {
+                        case .loadingData:
+                            LoadingDataView()
+                        case .webPage(let isLoading):
+                            WebView()
+                                .ignoresSafeArea()
+                                .overlay {
+                                    if isLoading {
+                                        LoadingProgressView()
+                                    }
+                                }
+#if os(macOS)
+                                .overlay(alignment: .bottomTrailing) {
+                                    ContentSearchBar(
+                                        model: ContentSearchViewModel(
+                                            findInWebPage: browser.webView.find(_:configuration:)
+                                        )
+                                    )
+                                }
+#endif
+                        case .catalog(.fetching):
+                            FetchingCatalogView()
+                        case .catalog(.list):
+                            LocalLibraryList()
+                        case .catalog(.welcome(let welcomeViewState)):
+                            WelcomeCatalog(viewState: welcomeViewState)
+                        }
                     }
                 }
             }
+            .onChange(of: library.state) { state in
+                guard state == .complete else { return }
+                showTheLibrary()
+            }
+        }
+
+        private func showTheLibrary() {
+            guard model.state.shouldShowCatalog else { return }
+            navigation.currentItem = .categories
         }
     }
 }
