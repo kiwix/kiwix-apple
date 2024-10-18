@@ -68,6 +68,7 @@ targetTemplates:
       - sdk: WebKit.framework
       - sdk: NotificationCenter.framework
       - sdk: QuickLook.framework
+      - sdk: SystemConfiguration.framework
       - package: Defaults
     sources: 
       - path: App
