@@ -15,7 +15,7 @@ on:
   - cron: '00 2 * * 1' # WEEKLY @ 02:00 on Monday
   push:
     tags:
-      - testflight**   # TestFlight Tag
+      - testflight   # TestFlight Tag
   release:
     types: [published]   # Post App Release
 
