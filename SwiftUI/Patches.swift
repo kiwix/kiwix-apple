@@ -71,6 +71,7 @@ extension Notification.Name {
     static let alert = Notification.Name("alert")
     static let openFiles = Notification.Name("openFiles")
     static let openURL = Notification.Name("openURL")
+    static let closeZIM = Notification.Name("closeZIM")
     static let exportFileData = Notification.Name("exportFileData")
     static let saveContent = Notification.Name("saveContent")
     static let toggleSidebar = Notification.Name("toggleSidebar")
@@ -91,6 +92,12 @@ extension NotificationCenter {
                 "isFileContext": isFileContext
             ]
         )
+    }
+
+    static func closeZIM(_ zimId: UUID) {
+        NotificationCenter.default.post(name: .closeZIM,
+                                        object: nil,
+                                        userInfo: ["zimId": zimId])
     }
 
     static func openFiles(_ urls: [URL], context: OpenFileContext) {
