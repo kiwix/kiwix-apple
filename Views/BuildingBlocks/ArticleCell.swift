@@ -17,7 +17,7 @@ import SwiftUI
 
 /// A rounded rect cell displaying preview of an article.
 struct ArticleCell: View {
-    @State var isHovering: Bool = false
+    @State private var isHovering: Bool = false
 
     let title: String
     let snippet: NSAttributedString?
