@@ -146,28 +146,50 @@ https://developer.apple.com/documentation/safari-developer-tools/inspecting-ios
 
 ### Nightly to FTP
 
-Each night 01:32 am CET, we build our iOS and macOS apps.
-These are developer signed builds, notarized (a process required to install them outside of the app store) and uploaded to our FTP nightly folder. The files are versioned using the current date.
+Each night at 01:32 am CET, we build the Kiwix iOS and macOS apps.  These
+are developer signed builds, notarized (a process required to install
+them outside of the app store) and uploaded to our [nightly
+folder](https://download.kiwix.org/nightly/). The files are versioned
+using the current date.
 
 ### Weekly to TestFlight
 
-Mondays at 02:00 am CET, we build our apps, but only if there were code changes within the last week (any git commits to main).
-These are AppStore builds, which are uploaded to TestFlight, using the current app version from code (see `project.yml`).
+Each Monday at 02:00 am CET, if there were code changes within the
+last week (any git commits to main), we publish Kiwix for iOS and
+macOS to [Testflight](https://testflight.apple.com/).  These are
+AppStore builds, using the current app version from code (see
+`project.yml`).
 
 ### On-demand TestFlight
 
-It is also possible to create TestFlight builds on-demand, by pushing a git tag named "testflight" to the repo. Please note we are overwriting the very same tag for consequent testflight releases. This will run the same process as the "weekly" build (we just do not need to wait a whole week).
+It is also possible to trigger
+[Testflight](https://testflight.apple.com/) builds - on-demand - by
+tagging `testflight` any revision of the code base. You reuse the very
+same tag for consequent testflight releases. This will run the same
+process as the "weekly" Testflight (we just do not need to wait up to
+Monday).
 
 ### Releasing to AppStore and FTP
 
-Once we are happy with the quality of the app in TestFlight, we can send it for approval to Apple. Once approved by Apple, we can release them to the AppStore. At the same time, we do want to release our macOS app via FTP as well. For this, we run our "Post App Release" workflow, which can be triggered by creating a Github Release, based on the git commit used for the TestFlight apps (the ones that were approved by Apple). The specific commit that triggered the (now approved) TestFlight app, can be found under Github Actions.
-Based on this commit we should create a new tag with the release (semantic) version, and use this tag for GitHub Release.
-This Github Release will rebuild the macOS application and upload it to FTP to the release folder. Again, the purpose of this is to make the very same macOS app - which was released to the AppStore  - also available via FTP.
-In case the app is rejected by Apple in a way that requires a new build to fix the issue, a new patch version should be created, and re-submitted to App Store.
+Once satisfied with the quality of the app in TestFlight, we can
+proceed with the Kiwix release process.
+
+The release process is triggered by a by [GitHub
+Release](https://github.com/kiwix/kiwix-apple/releases). Only the
+version released (to Testflight) that way can be then sent to
+approval to Apple. Once approved by Apple, we can release them to the
+AppStore. At the same time, will publish the macOS DMG to our [file
+server](https://download.kiwix.org/release/kiwix-macos/).
+
+In case the app is rejected by Apple in a way that requires a new
+build to fix the issue, a new patch release should be prepared and
+released... and re-submitted to App Store.
 
 ### Last step
 
-If all that is done, we should create a PR, incrementing the version number of the project (see: `project.yml`), and the deployment cycle can start again.
+If all that is done, we should create a PR, incrementing the version
+number of the project (see: `project.yml`), and the deployment cycle
+can start again.
 
 ## Reporting a bug
 
