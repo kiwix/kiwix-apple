@@ -16,7 +16,7 @@
 import SwiftUI
 
 struct Favicon: View {
-    @State var imageData: Data?
+    @State private var imageData: Data?
 
     private let category: Category
     private let imageURL: URL?
