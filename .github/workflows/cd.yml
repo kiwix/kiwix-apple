@@ -11,13 +11,13 @@ name: CD
 # |-----------------|---------|------------------------|----------------|------------------|
 on:
   schedule:
-  - cron: '32 1 * * *' # NIGHTLY @ 01:32
-  - cron: '00 2 * * 1' # WEEKLY @ 02:00 on Monday
+  - cron: '32 1 * * *' # Nightly download.kiwix.org @ 01:32
+  - cron: '00 2 * * 1' # Weekly testflight          @ 02:00 on Monday
   push:
     tags:
-      - testflight   # TestFlight Tag
+      - testflight     # On-demand TestFlight
   release:
-    types: [published]   # Post App Release
+    types: [published] # Release
 
 env:
   KEYCHAIN: /Users/runner/build.keychain-db
