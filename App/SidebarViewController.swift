@@ -150,9 +150,11 @@ class SidebarViewController: UICollectionViewController, NSFetchedResultsControl
         _ controller: NSFetchedResultsController<NSFetchRequestResult>,
         didChangeContentWith snapshot: NSDiffableDataSourceSnapshotReference
     ) {
-        let tabs = snapshot.itemIdentifiers
+        let tabIds = snapshot.itemIdentifiers
             .compactMap { $0 as? NSManagedObjectID }
-            .map { NavigationItem.tab(objectID: $0) }
+        // clear out all the browserViewModells of tabs no longer in use
+        BrowserViewModel.keepOnlyTabsByIds(Set(tabIds))
+        let tabs = tabIds.map { NavigationItem.tab(objectID: $0) }
         var tabsSnapshot = NSDiffableDataSourceSectionSnapshot<NavigationItem>()
         guard !tabs.isEmpty else {
             // make sure we do not end up with no tabs at all

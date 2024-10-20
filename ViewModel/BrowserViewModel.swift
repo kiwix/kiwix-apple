@@ -49,6 +49,16 @@ final class BrowserViewModel: NSObject, ObservableObject,
         }
     }
 
+    nonisolated static func keepOnlyTabsByIds(_ ids: Set<NSManagedObjectID>) {
+        Task { @MainActor in
+            if let cache {
+                for browser in cache.removeNotMatchingWith(keys: ids) {
+                    await browser.destroy()
+                }
+            }
+        }
+    }
+
     // MARK: - Properties
 
     @Published private(set) var isLoading: Bool?
@@ -171,6 +181,21 @@ final class BrowserViewModel: NSObject, ObservableObject,
                 }
             }
         }
+    }
+
+    @MainActor
+    func destroy() async {
+        await webView.setAllMediaPlaybackSuspended(true)
+        await webView.closeAllMediaPresentations()
+        bookmarkFetchedResultsController.delegate = nil
+        canGoBackObserver?.invalidate()
+        canGoForwardObserver?.invalidate()
+        titleURLObserver?.cancel()
+        isLoadingObserver?.invalidate()
+        webView.navigationDelegate = nil
+        webView.uiDelegate = nil
+        webView.scrollView.delegate = nil
+        webView.stopLoading()
     }
 
     /// Get the webpage in a binary format
