@@ -153,7 +153,7 @@ class SidebarViewController: UICollectionViewController, NSFetchedResultsControl
         let tabs = snapshot.itemIdentifiers
             .compactMap { $0 as? NSManagedObjectID }
             .map { NavigationItem.tab(objectID: $0) }
-        var snapshot = NSDiffableDataSourceSectionSnapshot<NavigationItem>()
+        var tabsSnapshot = NSDiffableDataSourceSectionSnapshot<NavigationItem>()
         guard !tabs.isEmpty else {
             // make sure we do not end up with no tabs at all
             Task { @MainActor in
@@ -164,20 +164,20 @@ class SidebarViewController: UICollectionViewController, NSFetchedResultsControl
             }
             return
         }
-        snapshot.append(tabs)
-        Task { [snapshot] in
-            await MainActor.run { [snapshot] in
+        tabsSnapshot.append(tabs)
+        Task { [tabsSnapshot] in
+            await MainActor.run { [tabsSnapshot] in
                 dataSource.apply(
-                    snapshot,
+                    tabsSnapshot,
                     to: .tabs,
                     animatingDifferences: dataSource.snapshot(for: .tabs).items.count > 0
                 ) {
                     guard let indexPath = self.collectionView.indexPathsForSelectedItems?.first,
                           let item = self.dataSource.itemIdentifier(for: indexPath),
                           case .tab = item else { return }
-                    var snapshot = self.dataSource.snapshot()
-                    snapshot.reconfigureItems([item])
-                    self.dataSource.apply(snapshot, animatingDifferences: true)
+                    var sourceSnapshot = self.dataSource.snapshot()
+                    sourceSnapshot.reconfigureItems([item])
+                    self.dataSource.apply(sourceSnapshot, animatingDifferences: true)
                 }
             }
         }
