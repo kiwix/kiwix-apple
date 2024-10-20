@@ -235,9 +235,13 @@ final class BrowserViewModel: NSObject, ObservableObject,
             tabID = currentTabID
 
             // update tab data
-            if let tab = try? Database.shared.viewContext.existingObject(with: currentTabID) as? Tab {
+            let context = Database.shared.viewContext
+            if let tab = try? context.existingObject(with: currentTabID) as? Tab {
                 tab.title = articleTitle
                 tab.zimFile = zimFile
+            }
+            if context.hasChanges {
+                try? context.save()
             }
             #if os(macOS)
             disableVideoContextMenu()
