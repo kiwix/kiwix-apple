@@ -84,6 +84,7 @@
 "search_result.filter_hearder.button.none" = "Nessuno";
 "welcome.main_page.title" = "Pagina principale";
 "welcome.actions.open_file" = "Apri file";
+"welcome.loading.data.text" = "Caricamento dati...";
 "commands.button.actual_size" = "Dimensione effettiva";
 "comments.button.zoom_out" = "Zoom indietro";
 "app_macos_commands.open_file" = "Apri...";
