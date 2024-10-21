@@ -188,7 +188,7 @@
 "welcome.main_page.title" = "Заглавная страница";
 "welcome.grid.bookmarks.title" = "Закладки";
 "welcome.actions.open_file" = "Открыть файл";
-"welcome.button.status.fetching.text" = "Получение…";
+"welcome.loading.data.text" = "Загрузка данных…";
 "welcome.button.status.fetch_catalog.text" = "Получить каталог";
 "commands.button.actual_size" = "Фактический размер";
 "comments.button.zoom_in" = "Приблизить";

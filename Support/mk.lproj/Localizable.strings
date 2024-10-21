@@ -182,7 +182,8 @@
 "welcome.main_page.title" = "Главна страница";
 "welcome.grid.bookmarks.title" = "Обележани";
 "welcome.actions.open_file" = "Отвори податотека";
-"welcome.button.status.fetching.text" = "Се презема...";
+"welcome.loading.data.text" = "Вчитувам податоци...";
+"welcome.button.status.fetching_catalog.text" = "Го добивам каталогот...";
 "welcome.button.status.fetch_catalog.text" = "Дај каталог";
 "commands.button.actual_size" = "Вистинска големина";
 "comments.button.zoom_in" = "Приближи";
