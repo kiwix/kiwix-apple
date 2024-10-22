@@ -54,7 +54,7 @@ struct TabsManagerButton: View {
         .sheet(item: $presentedSheet) { presentedSheet in
             switch presentedSheet {
             case .tabsManager:
-                NavigationView {
+                NavigationStack {
                     TabManager().toolbar {
                         ToolbarItem(placement: .navigationBarLeading) {
                             Button {

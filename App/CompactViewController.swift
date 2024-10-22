@@ -203,7 +203,7 @@ private struct CompactView: View {
                     case .library:
                         Library(dismiss: dismiss)
                     case .settings:
-                        NavigationView {
+                        NavigationStack {
                             Settings().toolbar {
                                 ToolbarItem(placement: .navigationBarLeading) {
                                     Button {
