@@ -43,7 +43,7 @@ struct OutlineButton: View {
         .disabled(browser.outlineItems.isEmpty)
         .help("outline_button.outline.help".localized)
         .popover(isPresented: $isShowingOutline) {
-            NavigationView {
+            NavigationStack {
                 Group {
                     if browser.outlineItemTree.isEmpty {
                         Message(text: "outline_button.outline.empty.message".localized)

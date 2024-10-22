@@ -69,7 +69,7 @@ struct BookmarkButton: View {
         }
         .help("bookmark_button.show.help".localized)
         .popover(isPresented: $isShowingPopOver) {
-            NavigationView {
+            NavigationStack {
                 Bookmarks().navigationBarTitleDisplayMode(.inline).toolbar {
                     ToolbarItem(placement: .navigationBarLeading) {
                         Button {
