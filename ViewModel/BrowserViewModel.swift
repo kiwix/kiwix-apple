@@ -194,7 +194,9 @@ final class BrowserViewModel: NSObject, ObservableObject,
         isLoadingObserver?.invalidate()
         webView.navigationDelegate = nil
         webView.uiDelegate = nil
+        #if os(iOS)
         webView.scrollView.delegate = nil
+        #endif
         webView.stopLoading()
     }
 
