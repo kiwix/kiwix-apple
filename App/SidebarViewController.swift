@@ -152,20 +152,10 @@ class SidebarViewController: UICollectionViewController, NSFetchedResultsControl
     ) {
         let tabIds = snapshot.itemIdentifiers
             .compactMap { $0 as? NSManagedObjectID }
-        // clear out all the browserViewModells of tabs no longer in use
+        // clear out all the browserViewModels of tabs no longer in use
         BrowserViewModel.keepOnlyTabsByIds(Set(tabIds))
         let tabs = tabIds.map { NavigationItem.tab(objectID: $0) }
         var tabsSnapshot = NSDiffableDataSourceSectionSnapshot<NavigationItem>()
-        guard !tabs.isEmpty else {
-            // make sure we do not end up with no tabs at all
-            Task { @MainActor in
-                // this triggers the DB, that triggers fetch results
-                // and we will end up running this function again,
-                // but with 1 new tab
-                navigationViewModel?.createTab()
-            }
-            return
-        }
         tabsSnapshot.append(tabs)
         Task { [tabsSnapshot] in
             await MainActor.run { [tabsSnapshot] in

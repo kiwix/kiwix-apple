@@ -161,6 +161,17 @@ struct LibraryOperations {
                 zimFile.isMissing = false
             }
             zimFile.tabs.forEach { context.delete($0) }
+
+            // make sure we won't end up without any tabs
+            if let tabs = try? Tab.fetchRequest().execute() {
+                if tabs.count == 0 {
+                    let tab = Tab(context: context)
+                    tab.created = Date()
+                    tab.lastOpened = Date()
+                    try? context.obtainPermanentIDs(for: [tab])
+                }
+            }
+
             if context.hasChanges { try? context.save() }
         }
     }
