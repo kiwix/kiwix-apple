@@ -152,8 +152,6 @@ class SidebarViewController: UICollectionViewController, NSFetchedResultsControl
     ) {
         let tabIds = snapshot.itemIdentifiers
             .compactMap { $0 as? NSManagedObjectID }
-        // clear out all the browserViewModels of tabs no longer in use
-        BrowserViewModel.keepOnlyTabsByIds(Set(tabIds))
         let tabs = tabIds.map { NavigationItem.tab(objectID: $0) }
         var tabsSnapshot = NSDiffableDataSourceSectionSnapshot<NavigationItem>()
         tabsSnapshot.append(tabs)
