@@ -60,4 +60,19 @@ final class OrderedCacheTests: XCTestCase {
         XCTAssertEqual(cache.findBy(key: "one"), 1)
     }
 
+    @MainActor
+    func testRemoveByNotMatchingKeys() {
+        let cache = OrderedCache<String, Int>()
+        cache.setValue(101, forKey: "one_zero_one")
+        cache.setValue(1, forKey: "one")
+        cache.setValue(202, forKey: "two_zero_two")
+        let removed = cache.removeNotMatchingWith(keys: Set<String>(["some", "one", "else"]))
+        XCTAssertEqual(cache.count, 1)
+        XCTAssertNil(cache.findBy(key: "zero"))
+        XCTAssertEqual(cache.findBy(key: "one"), 1)
+        XCTAssertEqual(removed.count, 2)
+        XCTAssertTrue(removed.contains(101))
+        XCTAssertTrue(removed.contains(202))
+    }
+
 }

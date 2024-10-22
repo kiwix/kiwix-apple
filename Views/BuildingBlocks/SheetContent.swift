@@ -28,7 +28,7 @@ struct SheetContent<Content: View>: View {
         #if os(macOS)
         content
         #elseif os(iOS)
-        NavigationView {
+        NavigationStack {
             content.toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
                     Button {

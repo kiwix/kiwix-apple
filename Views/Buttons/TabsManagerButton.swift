@@ -19,10 +19,6 @@ import SwiftUI
 struct TabsManagerButton: View {
     @EnvironmentObject private var browser: BrowserViewModel
     @EnvironmentObject private var navigation: NavigationViewModel
-    @FetchRequest(
-        sortDescriptors: [NSSortDescriptor(keyPath: \ZimFile.size, ascending: false)],
-        predicate: ZimFile.openedPredicate
-    ) private var zimFiles: FetchedResults<ZimFile>
     @State private var presentedSheet: PresentedSheet?
 
     private enum PresentedSheet: String, Identifiable {
@@ -58,7 +54,7 @@ struct TabsManagerButton: View {
         .sheet(item: $presentedSheet) { presentedSheet in
             switch presentedSheet {
             case .tabsManager:
-                NavigationView {
+                NavigationStack {
                     TabManager().toolbar {
                         ToolbarItem(placement: .navigationBarLeading) {
                             Button {
@@ -83,7 +79,7 @@ struct TabManager: View {
     ) private var tabs: FetchedResults<Tab>
 
     var body: some View {
-        List(tabs) { tab in
+        List(tabs, id: \.self) { tab in
             Button {
                 navigation.currentItem = NavigationItem.tab(objectID: tab.objectID)
             } label: {

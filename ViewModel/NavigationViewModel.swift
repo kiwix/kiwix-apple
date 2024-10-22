@@ -83,9 +83,12 @@ final class NavigationViewModel: ObservableObject {
                 return
             }
             let newlySelectedTab: Tab?
-            // select a closeBy tab if the currently selected tab is to be deleted
             if case let .tab(selectedTabID) = self.currentItem, selectedTabID == tabID {
+                // select a closeBy tab if the currently selected tab is to be deleted
                 newlySelectedTab = tabs.closeBy(toWhere: { $0.objectID == tabID }) ?? self.makeTab(context: context)
+            } else if tabs.count == 1 {
+                // we are deleting the last tab and the selection is somewhere else
+                newlySelectedTab = self.makeTab(context: context)
             } else {
                 newlySelectedTab = nil // the current selection should remain
             }

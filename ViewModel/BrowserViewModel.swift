@@ -49,6 +49,16 @@ final class BrowserViewModel: NSObject, ObservableObject,
         }
     }
 
+    nonisolated static func keepOnlyTabsByIds(_ ids: Set<NSManagedObjectID>) {
+        Task { @MainActor in
+            if let cache {
+                for browser in cache.removeNotMatchingWith(keys: ids) {
+                    await browser.destroy()
+                }
+            }
+        }
+    }
+
     // MARK: - Properties
 
     @Published private(set) var isLoading: Bool?
@@ -173,6 +183,23 @@ final class BrowserViewModel: NSObject, ObservableObject,
         }
     }
 
+    @MainActor
+    func destroy() async {
+        await webView.setAllMediaPlaybackSuspended(true)
+        await webView.closeAllMediaPresentations()
+        bookmarkFetchedResultsController.delegate = nil
+        canGoBackObserver?.invalidate()
+        canGoForwardObserver?.invalidate()
+        titleURLObserver?.cancel()
+        isLoadingObserver?.invalidate()
+        webView.navigationDelegate = nil
+        webView.uiDelegate = nil
+        #if os(iOS)
+        webView.scrollView.delegate = nil
+        #endif
+        webView.stopLoading()
+    }
+
     /// Get the webpage in a binary format
     /// - Returns: PDF of the current page (if text type) or binary data of the content
     /// and the file extension, if known
@@ -215,9 +242,13 @@ final class BrowserViewModel: NSObject, ObservableObject,
             tabID = currentTabID
 
             // update tab data
-            if let tab = try? Database.shared.viewContext.existingObject(with: currentTabID) as? Tab {
+            let context = Database.shared.viewContext
+            if let tab = try? context.existingObject(with: currentTabID) as? Tab {
                 tab.title = articleTitle
                 tab.zimFile = zimFile
+            }
+            if context.hasChanges {
+                try? context.save()
             }
             #if os(macOS)
             disableVideoContextMenu()
