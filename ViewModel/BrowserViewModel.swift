@@ -254,6 +254,9 @@ final class BrowserViewModel: NSObject, ObservableObject, BrowserViewModelCleara
                 tab.title = articleTitle
                 tab.zimFile = zimFile
             }
+            if context.hasChanges {
+                try? context.save()
+            }
             #if os(macOS)
             disableVideoContextMenu()
             #endif
