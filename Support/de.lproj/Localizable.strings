@@ -1,6 +1,5 @@
 // Messages for German (Deutsch)
 // Exported from translatewiki.net
-// Author: Amire80
 // Author: Brettchenweber
 // Author: Caro
 // Author: Gremid
@@ -190,7 +189,6 @@
 "welcome.main_page.title" = "Hauptseite";
 "welcome.grid.bookmarks.title" = "Lesezeichen";
 "welcome.actions.open_file" = "Datei öffnen";
-"welcome.button.status.fetching.text" = "Abrufen...";
 "welcome.button.status.fetch_catalog.text" = "Katalog abrufen";
 "commands.button.actual_size" = "Tatsächliche Größe";
 "comments.button.zoom_in" = "Vergrößern";

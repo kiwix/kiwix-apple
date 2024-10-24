@@ -7,6 +7,7 @@
 "library_refresh_error.process.description" = "Error durante le processamento del datos del bibliotheca.";
 "download_service.complete.title" = "Discargamento complete";
 "download_service.complete.description" = "%@ ha essite discargate con successo.";
+"download_service.failed.description" = "Non pote discargar iste file.";
 "common.dialog.button.open" = "Aperir";
 "common.dialog.button.open_in_new_tab" = "Aperir in un nove scheda";
 "common.dialog.button.add_bookmark" = "Adder marcapagina";
@@ -62,7 +63,7 @@
 "library_refresh_time.last" = "Justo ora";
 "library_refresh_time.never" = "Nunquam";
 "zim_file_cell_article_count_suffix" = "articulos";
-"zim_file_missing_indicator.help" = "Le file Zim manca.";
+"zim_file_missing_indicator.help" = "Le file ZIM manca.";
 "library.zim_file_details.side_panel.message" = "Selige un file ZIM pro vider detalios";
 "library.zim_file_context.main_page.label" = "Pagina principal";
 "library.zim_file_context.random.label" = "Pagina aleatori";
@@ -73,6 +74,7 @@
 "zim_file_opened.toolbar.open.title" = "Aperir…";
 "zim_file_opened.toolbar.open.help" = "Aperir un file ZIM";
 "zim_file_category.title" = "Categoria";
+"zim_file_catalog.fetching.message" = "Obtention del catalogo…";
 "zim_file_category.section.empty.message" = "Necun file ZIM in iste categoria.";
 "zim_file_downloads.overlay.empty.message" = "Necun discargamento";
 "zim_file_downloads.toolbar.show_sidebar.label" = "Monstrar barra lateral";
@@ -180,7 +182,8 @@
 "welcome.main_page.title" = "Pagina principal";
 "welcome.grid.bookmarks.title" = "Marcapaginas";
 "welcome.actions.open_file" = "Aperir file";
-"welcome.button.status.fetching.text" = "Obtention…";
+"welcome.loading.data.text" = "Carga datos…";
+"welcome.button.status.fetching_catalog.text" = "Obtention del catalogo…";
 "welcome.button.status.fetch_catalog.text" = "Obtener catalogo";
 "commands.button.actual_size" = "Dimension real";
 "comments.button.zoom_in" = "Zoom avante";
