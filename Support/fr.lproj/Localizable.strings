@@ -7,6 +7,7 @@
 // Author: Goombiis
 // Author: Hecatonchire
 // Author: MacOS Weed
+// Author: Mahabarata
 // Author: McDutchie
 // Author: SleaY
 // Author: Stephane
@@ -194,7 +195,8 @@
 "welcome.main_page.title" = "Page principale";
 "welcome.grid.bookmarks.title" = "Signets";
 "welcome.actions.open_file" = "Ouvrir le fichier";
-"welcome.button.status.fetching.text" = "Récupération…";
+"welcome.loading.data.text" = "Chargement des données...";
+"welcome.button.status.fetching_catalog.text" = "Récupération du catalogue...";
 "welcome.button.status.fetch_catalog.text" = "Récupérer le catalogue";
 "commands.button.actual_size" = "Taille réelle";
 "comments.button.zoom_in" = "Zoom avant";
