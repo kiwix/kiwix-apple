@@ -272,6 +272,11 @@ final class BrowserViewModel: NSObject, ObservableObject,
     private func restoreBy(tabID: NSManagedObjectID) {
         if let tab = try? Database.shared.viewContext.existingObject(with: tabID) as? Tab {
             webView.interactionState = tab.interactionState
+            if webView.url != nil {
+                // make sure category(.list) is not displayed
+                // while restoring a tab
+                isLoading = true
+            }
             Task { [weak self] in
                 await MainActor.run { [weak self] in
                     // migrate the tab urls on demand to ZIM scheme
