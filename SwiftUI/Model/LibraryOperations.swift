@@ -160,7 +160,9 @@ struct LibraryOperations {
                 zimFile.fileURLBookmark = nil
                 zimFile.isMissing = false
             }
-            zimFile.tabs.forEach { context.delete($0) }
+            zimFile.tabs.forEach {
+                context.delete($0)
+            }
 
             if let tabs = try? Tab.fetchRequest().execute() {
                 let tabIds = tabs.map { $0.objectID }

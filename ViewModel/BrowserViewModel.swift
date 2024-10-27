@@ -89,21 +89,7 @@ final class BrowserViewModel: NSObject, ObservableObject, BrowserViewModelCleara
     @Published var externalURL: URL?
     private var metaData: URLContentMetaData?
 
-    private(set) var tabID: NSManagedObjectID? {
-        didSet {
-#if os(macOS)
-            debugPrint("BrowserViewModel tabID: \(tabID)")
-            if let tabID, tabID != oldValue {
-                storeTabIDInCurrentWindow()
-            }
-#endif
-        }
-    }
-#if os(macOS)
-    private var windowURLs: [URL] {
-        UserDefaults.standard[.windowURLs]
-    }
-#endif
+    private(set) var tabID: NSManagedObjectID?
     let webView: WKWebView
     private var isLoadingObserver: NSKeyValueObservation?
     private var canGoBackObserver: NSKeyValueObservation?
@@ -208,10 +194,10 @@ final class BrowserViewModel: NSObject, ObservableObject, BrowserViewModelCleara
 
     @MainActor
     func clear() async {
-        debugPrint("BrowserViewModel.clear()")
         await webView.setAllMediaPlaybackSuspended(true)
         await webView.closeAllMediaPresentations()
         webView.stopLoading()
+        await webView.setAllMediaPlaybackSuspended(false)
         url = nil
         articleTitle = ""
         zimFileName = ""
@@ -623,64 +609,6 @@ final class BrowserViewModel: NSObject, ObservableObject, BrowserViewModelCleara
             }
         )
         completionHandler(configuration)
-    }
-#endif
-
-    // MARK: - TabID management via NSWindow for macOS
-
-#if os(macOS)
-    private(set) var windowNumber: Int?
-
-    // RESTORATION
-    func restoreByWindowNumber(
-        windowNumber currentNumber: Int,
-        urlToTabIdConverter: @MainActor @escaping (URL?) -> NSManagedObjectID
-    ) {
-        windowNumber = currentNumber
-        let windows = NSApplication.shared.windows
-        let tabURL: URL?
-
-        guard let currentWindow = windowBy(number: currentNumber),
-              let index = windows.firstIndex(of: currentWindow) else { return }
-
-        // find the url for this window in user defaults, by pure index
-        if 0 <= index,
-           index < windowURLs.count {
-            tabURL = windowURLs[index]
-        } else {
-            tabURL = nil
-        }
-        Task {
-            await MainActor.run {
-                let tabID = urlToTabIdConverter(tabURL) // if url is nil it will create a new tab
-                self.tabID = tabID
-                restoreBy(tabID: tabID)
-            }
-        }
-    }
-
-    private func indexOf(windowNumber number: Int, in windows: [NSWindow]) -> Int? {
-        let windowNumbers = windows.map { $0.windowNumber }
-        guard windowNumbers.contains(number),
-              let index = windowNumbers.firstIndex(of: number) else {
-            return nil
-        }
-        return index
-    }
-
-    // PERSISTENCE:
-    private func storeTabIDInCurrentWindow() {
-        guard let tabID,
-              let windowNumber,
-              let currentWindow = windowBy(number: windowNumber) else {
-            return
-        }
-        let url = tabID.uriRepresentation()
-        currentWindow.setAccessibilityURL(url)
-    }
-
-    private func windowBy(number: Int) -> NSWindow? {
-        NSApplication.shared.windows.first { $0.windowNumber == number }
     }
 #endif
 
