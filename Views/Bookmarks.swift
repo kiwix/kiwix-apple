@@ -16,6 +16,7 @@
 import SwiftUI
 
 struct Bookmarks: View {
+    @EnvironmentObject private var navigation: NavigationViewModel
     @Environment(\.dismiss) private var dismiss
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     @Environment(\.managedObjectContext) private var managedObjectContext
@@ -30,7 +31,7 @@ struct Bookmarks: View {
         LazyVGrid(columns: ([gridItem]), spacing: 12) {
             ForEach(bookmarks) { bookmark in
                 Button {
-                    NotificationCenter.openURL(bookmark.articleURL)
+                    NotificationCenter.openURL(bookmark.articleURL, navigationID: navigation.uuid)
                     if horizontalSizeClass == .compact {
                         dismiss()
                     }

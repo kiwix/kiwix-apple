@@ -24,6 +24,7 @@ import Defaults
 struct ZimFileDetail: View {
     @Default(.downloadUsingCellular) private var downloadUsingCellular
     @Environment(\.dismiss) var dismiss
+    @EnvironmentObject var navigation: NavigationViewModel
     @ObservedObject var zimFile: ZimFile
     @State private var isPresentingDeleteAlert = false
     @State private var isPresentingDownloadAlert = false
@@ -108,7 +109,7 @@ struct ZimFileDetail: View {
         } else if zimFile.fileURLBookmark != nil {  // zim file is opened
             Action(title: "zim_file.action.open_main_page.title".localized) {
                 guard let url = await ZimFileService.shared.getMainPageURL(zimFileID: zimFile.fileID) else { return }
-                NotificationCenter.openURL(url, inNewTab: true)
+                NotificationCenter.openURL(url, navigationID: navigation.uuid, inNewTab: true)
                 #if os(iOS)
                 dismissParent?()
                 #endif

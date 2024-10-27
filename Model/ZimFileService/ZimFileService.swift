@@ -92,8 +92,7 @@
     }
 
     func getRedirectedURL(url: URL) -> URL? {
-        guard let zimFileID = url.host,
-              let zimFileID = UUID(uuidString: zimFileID),
+        guard let zimFileID = url.zimFileID,
               let redirectedPath = __getRedirectedPath(zimFileID, contentPath: url.contentPath) else { return nil }
         return URL(zimFileID: zimFileID.uuidString, contentPath: redirectedPath)
     }
@@ -123,14 +122,12 @@
     }
 
     func getContentSize(url: URL) -> NSNumber? {
-        guard let zimFileID = url.host,
-              let zimFileUUID = UUID(uuidString: zimFileID) else { return nil }
+        guard let zimFileUUID = url.zimFileID else { return nil }
         return __getContentSize(zimFileUUID, contentPath: url.contentPath)
     }
 
     func getDirectAccessInfo(url: URL) -> DirectAccessInfo? {
-        guard let zimFileID = url.host,
-              let zimFileUUID = UUID(uuidString: zimFileID),
+        guard let zimFileUUID = url.zimFileID,
               let directAccess = __getDirectAccess(zimFileUUID, contentPath: url.contentPath),
               let path: String = directAccess["path"] as? String,
               let offset: UInt = directAccess["offset"] as? UInt
@@ -141,8 +138,7 @@
     }
 
     func getContentMetaData(url: URL) -> URLContentMetaData? {
-        guard let zimFileID = url.host,
-              let zimFileUUID = UUID(uuidString: zimFileID),
+        guard let zimFileUUID = url.zimFileID,
               let content = __getMetaData(zimFileUUID, contentPath: url.contentPath),
               let mime = content["mime"] as? String,
               let size = content["size"] as? UInt,

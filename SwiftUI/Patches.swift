@@ -74,6 +74,9 @@ extension Notification.Name {
     static let exportFileData = Notification.Name("exportFileData")
     static let saveContent = Notification.Name("saveContent")
     static let toggleSidebar = Notification.Name("toggleSidebar")
+    #if os(macOS)
+    static let closeZIM = Notification.Name("closeZIM")
+    #endif
 }
 
 extension UTType {
@@ -81,12 +84,13 @@ extension UTType {
 }
 
 extension NotificationCenter {
-    static func openURL(_ url: URL, inNewTab: Bool = false, isFileContext: Bool = false) {
+    static func openURL(_ url: URL, navigationID: UUID, inNewTab: Bool = false, isFileContext: Bool = false) {
         NotificationCenter.default.post(
             name: .openURL,
             object: nil,
             userInfo: [
                 "url": url,
+                "navigationID": navigationID,
                 "inNewTab": inNewTab,
                 "isFileContext": isFileContext
             ]
@@ -108,4 +112,12 @@ extension NotificationCenter {
     static func toggleSidebar() {
         NotificationCenter.default.post(name: .toggleSidebar, object: nil, userInfo: nil)
     }
+
+    #if os(macOS)
+    static func closeZIM(_ zimId: UUID) {
+        NotificationCenter.default.post(name: .closeZIM,
+                                        object: nil,
+                                        userInfo: ["zimId": zimId])
+    }
+    #endif
 }

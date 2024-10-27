@@ -23,9 +23,10 @@ import CoreKiwix
 
 // swiftlint:disable file_length
 // swiftlint:disable:next type_body_length
-final class BrowserViewModel: NSObject, ObservableObject,
+final class BrowserViewModel: NSObject, ObservableObject, BrowserViewModelClearable,
                               WKNavigationDelegate, WKScriptMessageHandler, WKUIDelegate,
                               NSFetchedResultsControllerDelegate {
+    #if os(iOS)
     @MainActor
     private static var cache: OrderedCache<NSManagedObjectID, BrowserViewModel>?
 
@@ -58,7 +59,8 @@ final class BrowserViewModel: NSObject, ObservableObject,
             }
         }
     }
-
+    #endif
+    
     // MARK: - Properties
 
     @Published private(set) var isLoading: Bool?
@@ -72,6 +74,7 @@ final class BrowserViewModel: NSObject, ObservableObject,
     @MainActor @Published private(set) var hasURL: Bool = false
     @MainActor @Published private(set) var url: URL? {
         didSet {
+            debugPrint("BrowserViewModel url: \(url?.absoluteString)")
             if !FeatureFlags.hasLibrary, url == nil {
                 loadMainArticle()
             }
@@ -82,12 +85,14 @@ final class BrowserViewModel: NSObject, ObservableObject,
             hasURL = url != nil
         }
     }
+    @MainActor var zimFileId: UUID? { url?.zimFileID }
     @Published var externalURL: URL?
     private var metaData: URLContentMetaData?
 
     private(set) var tabID: NSManagedObjectID? {
         didSet {
 #if os(macOS)
+            debugPrint("BrowserViewModel tabID: \(tabID)")
             if let tabID, tabID != oldValue {
                 storeTabIDInCurrentWindow()
             }
@@ -113,6 +118,7 @@ final class BrowserViewModel: NSObject, ObservableObject,
     // swiftlint:disable:next function_body_length
     @MainActor init(tabID: NSManagedObjectID? = nil) {
         self.tabID = tabID
+        debugPrint("BrowserViewModel init(tabID: \(tabID))")
         webView = WKWebView(frame: .zero, configuration: WebViewConfiguration())
         if !Bundle.main.isProduction, #available(iOS 16.4, macOS 13.3, *) {
                 webView.isInspectable = true
@@ -183,10 +189,9 @@ final class BrowserViewModel: NSObject, ObservableObject,
         }
     }
 
+    #if os(iOS)
     @MainActor
     func destroy() async {
-        await webView.setAllMediaPlaybackSuspended(true)
-        await webView.closeAllMediaPresentations()
         bookmarkFetchedResultsController.delegate = nil
         canGoBackObserver?.invalidate()
         canGoForwardObserver?.invalidate()
@@ -197,7 +202,21 @@ final class BrowserViewModel: NSObject, ObservableObject,
         #if os(iOS)
         webView.scrollView.delegate = nil
         #endif
+        await clear()
+    }
+    #endif
+
+    @MainActor
+    func clear() async {
+        debugPrint("BrowserViewModel.clear()")
+        await webView.setAllMediaPlaybackSuspended(true)
+        await webView.closeAllMediaPresentations()
         webView.stopLoading()
+        url = nil
+        articleTitle = ""
+        zimFileName = ""
+        outlineItems = []
+        outlineItemTree = []
     }
 
     /// Get the webpage in a binary format
@@ -223,7 +242,7 @@ final class BrowserViewModel: NSObject, ObservableObject,
 
     private func didUpdate(title: String, url: URL) {
         let zimFile: ZimFile? = {
-            guard let zimFileID = UUID(uuidString: url.host ?? "") else { return nil }
+            guard let zimFileID = url.zimFileID else { return nil }
             return try? Database.shared.viewContext.fetch(ZimFile.fetchRequest(fileID: zimFileID)).first
         }()
 
@@ -280,7 +299,7 @@ final class BrowserViewModel: NSObject, ObservableObject,
 
     @MainActor
     func loadRandomArticle(zimFileID: UUID? = nil) {
-        let zimFileID = zimFileID ?? UUID(uuidString: webView.url?.host ?? "")
+        let zimFileID = zimFileID ?? webView.url?.zimFileID
         Task { @ZimActor [weak self] in
             guard let url = ZimFileService.shared.getRandomPageURL(zimFileID: zimFileID) else { return }
             await MainActor.run { [weak self] in
@@ -291,7 +310,7 @@ final class BrowserViewModel: NSObject, ObservableObject,
 
     @MainActor
     func loadMainArticle(zimFileID: UUID? = nil) {
-        let zimFileID = zimFileID ?? UUID(uuidString: webView.url?.host ?? "")
+        let zimFileID = zimFileID ?? webView.url?.zimFileID
         Task { @ZimActor [weak self] in
             guard let url = ZimFileService.shared.getMainPageURL(zimFileID: zimFileID) else { return }
             await MainActor.run { [weak self] in
@@ -686,7 +705,7 @@ final class BrowserViewModel: NSObject, ObservableObject,
     @MainActor 
     func createBookmark(url: URL? = nil) {
         guard let url = url ?? webView.url,
-              let zimFileID = UUID(uuidString: url.host ?? "") else { return }
+              let zimFileID = url.zimFileID else { return }
         let title = webView.title
         Task {
             guard let metaData = await ZimFileService.shared.getContentMetaData(url: url) else { return }

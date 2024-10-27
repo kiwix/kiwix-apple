@@ -23,6 +23,7 @@ struct SearchResults: View {
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     @Environment(\.managedObjectContext) private var managedObjectContext
     @EnvironmentObject private var viewModel: SearchViewModel
+    @EnvironmentObject private var navigation: NavigationViewModel
     @FetchRequest(
         sortDescriptors: [NSSortDescriptor(keyPath: \ZimFile.size, ascending: false)],
         predicate: ZimFile.Predicate.isDownloaded,
@@ -84,7 +85,7 @@ struct SearchResults: View {
                                 searchTexts.insert(viewModel.searchText, at: 0)
                                 return searchTexts
                             }()
-                            NotificationCenter.openURL(result.url)
+                            NotificationCenter.openURL(result.url, navigationID: navigation.uuid)
                         } label: {
                             ArticleCell(result: result, zimFile: viewModel.zimFiles[result.zimFileID])
                         }.buttonStyle(.plain)

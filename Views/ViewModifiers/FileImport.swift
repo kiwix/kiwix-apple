@@ -49,6 +49,7 @@ struct OpenFileButton<Label: View>: View {
 }
 
 struct OpenFileHandler: ViewModifier {
+    @EnvironmentObject private var navigation: NavigationViewModel
     @State private var isAlertPresented = false
     @State private var activeAlert: ActiveAlert?
 
@@ -82,10 +83,15 @@ struct OpenFileHandler: ViewModifier {
                         guard let url = await ZimFileService.shared.getMainPageURL(zimFileID: fileID) else { return }
                         #if os(macOS)
                         if .command == context {
-                            NotificationCenter.openURL(url, inNewTab: true)
+                            NotificationCenter.openURL(url, navigationID: navigation.uuid, inNewTab: true)
                         } else if .file == context {
                             // Note: inNewTab:true/false has no meaning here, the system will open a new window anyway
-                            NotificationCenter.openURL(url, inNewTab: true, isFileContext: true)
+                            NotificationCenter.openURL(
+                                url,
+                                navigationID: navigation.uuid,
+                                inNewTab: true,
+                                isFileContext: true
+                            )
                         }
                         #elseif os(iOS)
                         NotificationCenter.openURL(url, inNewTab: true)
@@ -94,7 +100,7 @@ struct OpenFileHandler: ViewModifier {
                 case .onBoarding:
                     for fileID in openedZimFileIDs {
                         guard let url = await ZimFileService.shared.getMainPageURL(zimFileID: fileID) else { return }
-                        NotificationCenter.openURL(url)
+                        NotificationCenter.openURL(url, navigationID: navigation.uuid)
                     }
                 default:
                     break

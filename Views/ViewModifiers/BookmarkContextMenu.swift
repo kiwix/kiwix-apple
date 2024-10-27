@@ -19,13 +19,14 @@ import SwiftUI
 
 struct BookmarkContextMenu: ViewModifier {
     @Environment(\.managedObjectContext) private var managedObjectContext
+    @EnvironmentObject private var navigation: NavigationViewModel
 
     let bookmark: Bookmark
 
     func body(content: Content) -> some View {
         content.contextMenu {
             Button {
-                NotificationCenter.openURL(bookmark.articleURL)
+                NotificationCenter.openURL(bookmark.articleURL, navigationID: navigation.uuid)
             } label: {
                 Label("bookmark_context_menu.view.title".localized, systemImage: "doc.richtext")
             }

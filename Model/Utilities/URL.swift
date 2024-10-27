@@ -53,6 +53,10 @@ extension URL {
     var isZIMURL: Bool { schemeType == .zim }
     var isKiwixURL: Bool { schemeType == .kiwix }
     var isGeoURL: Bool { schemeType == .geo }
+    var zimFileID: UUID? {
+        guard isZIMURL || isKiwixURL else { return nil }
+        return UUID(uuidString: host ?? "")
+    }
 
     /// Returns the path, that should be used to resolve articles in ZIM files.
     /// It makes sure that trailing slash is preserved,

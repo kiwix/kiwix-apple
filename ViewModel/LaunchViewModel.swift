@@ -162,6 +162,7 @@ class LaunchViewModelBase: LaunchProtocol, ObservableObject {
     var cancellables = Set<AnyCancellable>()
 
     func updateTo(_ newState: LaunchSequence) {
+        debugPrint("LaunchViewModelBase updateTo: \(newState)")
         guard newState != state else { return }
         state = newState
     }

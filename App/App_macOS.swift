@@ -108,6 +108,8 @@ struct RootView: View {
     private let openURL = NotificationCenter.default.publisher(for: .openURL)
     private let appTerminates = NotificationCenter.default.publisher(for: NSApplication.willTerminateNotification)
     private let tabCloses = NotificationCenter.default.publisher(for: NSWindow.willCloseNotification)
+    private let browserClearModel = BrowserClearViewModel()
+    private let closeZimPublisher = NotificationCenter.default.publisher(for: .closeZIM)
 
     var body: some View {
         NavigationSplitView {
@@ -131,14 +133,14 @@ struct RootView: View {
             case .reading:
                 BrowserTab().environmentObject(browser)
                     .withHostingWindow { window in
-                        if let windowNumber = window?.windowNumber {
-                            browser.restoreByWindowNumber(windowNumber: windowNumber,
-                                                          urlToTabIdConverter: navigation.tabIDFor(url:))
-                        } else {
+//                        if let windowNumber = window?.windowNumber {
+//                            browser.restoreByWindowNumber(windowNumber: windowNumber,
+//                                                          urlToTabIdConverter: navigation.tabIDFor(url:))
+//                        } else {
                             if FeatureFlags.hasLibrary == false {
                                 browser.loadMainArticle()
                             }
-                        }
+//                        }
                     }
             case .bookmarks:
                 Bookmarks()
@@ -156,19 +158,24 @@ struct RootView: View {
         }
         .frame(minWidth: 650, minHeight: 500)
         .focusedSceneValue(\.navigationItem, $navigation.currentItem)
-        .environmentObject(navigation)
         .modifier(AlertHandler())
         .modifier(OpenFileHandler())
         .modifier(SaveContentHandler())
+        .environmentObject(navigation)
         .onOpenURL { url in
             if url.isFileURL {
                 NotificationCenter.openFiles([url], context: .file)
             } else if url.isZIMURL {
-                NotificationCenter.openURL(url)
+                NotificationCenter.openURL(url, navigationID: navigation.uuid)
             }
         }
         .onReceive(openURL) { notification in
-            guard let url = notification.userInfo?["url"] as? URL else { return }
+            debugPrint("received openURL from: \(notification) for: \(navigation.uuid)")
+            guard let url = notification.userInfo?["url"] as? URL,
+                  let navID = notification.userInfo?["navigationID"] as? UUID,
+                  navigation.uuid == navID else {
+                return
+            }
             if notification.userInfo?["isFileContext"] as? Bool == true {
                 // handle the opened ZIM file from Finder
                 // for which the system opens a new window,
@@ -202,8 +209,14 @@ struct RootView: View {
             if let tabID = browser.tabID {
                 // tab closed by user
                 browser.pauseVideoWhenNotInPIP()
+                Task { @MainActor in
+                    await browser.clear()
+                }
                 navigation.deleteTab(tabID: tabID)
             }
+        }
+        .onReceive(closeZimPublisher) { notification in
+            browserClearModel.recievedClearZimFile(notification: notification, forBrowser: browser)
         }
         .onReceive(appTerminates) { _ in
             // CMD+Q -> Quit Kiwix, this also closes the last window
