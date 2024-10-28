@@ -183,7 +183,8 @@
 "welcome.main_page.title" = "主頁";
 "welcome.grid.bookmarks.title" = "書籤";
 "welcome.actions.open_file" = "開啟檔案";
-"welcome.button.status.fetching.text" = "正在取得…";
+"welcome.loading.data.text" = "正在載入資料…";
+"welcome.button.status.fetching_catalog.text" = "正在取得目錄…";
 "welcome.button.status.fetch_catalog.text" = "取得目錄";
 "commands.button.actual_size" = "實際大小";
 "comments.button.zoom_in" = "放大";
