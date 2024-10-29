@@ -91,8 +91,8 @@ final class NoCatalogLaunchViewModel: LaunchViewModelBase {
 // MARK: With Catalog Library
 final class CatalogLaunchViewModel: LaunchViewModelBase {
 
-    private var hasZIMFiles = CurrentValueSubject<Bool, Never>(false)
-    private var hasSeenCategoriesOnce = CurrentValueSubject<Bool, Never>(false)
+    private var hasZIMFiles = PassthroughSubject<Bool, Never>()
+    private var hasSeenCategoriesOnce = PassthroughSubject<Bool, Never>()
 
     convenience init(library: LibraryViewModel,
                      browser: BrowserViewModel) {

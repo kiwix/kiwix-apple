@@ -217,6 +217,10 @@ final class BrowserViewModel: NSObject, ObservableObject, BrowserViewModelCleara
         zimFileName = ""
         outlineItems = []
         outlineItemTree = []
+        // !important to make the webView disappear,
+        // until new content is not starting to load
+        // as complete clear of webView is not possible
+        isLoading = nil
     }
 
     /// Get the webpage in a binary format
