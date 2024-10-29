@@ -20,10 +20,28 @@ import WebKit
 final class NavigationViewModel: ObservableObject {
     let uuid = UUID()
     // remained optional due to focusedSceneValue conformance
-    @Published var currentItem: NavigationItem? = .loading
+    @Published var currentItem: NavigationItem? = .loading {
+        didSet {
+            debugPrint("NavigationViewModel.currentItem: \(currentItem)")
+        }
+    }
     #if os(macOS)
     var isTerminating: Bool = false
+    var currentTabId: NSManagedObjectID {
+        guard let currentTabIdValue else {
+            let newTabId = createTab()
+            currentTabIdValue = newTabId
+            return newTabId
+        }
+        return currentTabIdValue
+    }
+
+    private var currentTabIdValue: NSManagedObjectID?
     #endif
+
+    init() {
+        debugPrint("NavigationViewModel init()")
+    }
 
     // MARK: - Tab Management
 

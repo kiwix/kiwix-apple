@@ -217,7 +217,7 @@ enum NavigationItem: Hashable, Identifiable {
     var id: Int { hashValue }
 
     case loading
-    case reading, bookmarks, map(location: CLLocation?), tab(objectID: NSManagedObjectID)
+    case bookmarks, map(location: CLLocation?), tab(objectID: NSManagedObjectID)
     case opened, categories, new, downloads
     case settings
 
@@ -225,14 +225,16 @@ enum NavigationItem: Hashable, Identifiable {
         switch self {
         case .loading:
             return "enum.navigation_item.loading".localized
-        case .reading:
-            return "enum.navigation_item.reading".localized
         case .bookmarks:
             return "enum.navigation_item.bookmarks".localized
         case .map:
             return "enum.navigation_item.map".localized
         case .tab:
+            #if os(macOS)
+            return "enum.navigation_item.reading".localized
+            #else
             return "enum.navigation_item.new_tab".localized
+            #endif
         case .opened:
             return "enum.navigation_item.opened".localized
         case .categories:
@@ -250,14 +252,16 @@ enum NavigationItem: Hashable, Identifiable {
         switch self {
         case .loading:
             return "loading"
-        case .reading:
-            return "book"
         case .bookmarks:
             return "star"
         case .map:
             return "map"
         case .tab:
+            #if os(macOS)
+            return "book"
+            #else
             return "square"
+            #endif
         case .opened:
             return "folder"
         case .categories:

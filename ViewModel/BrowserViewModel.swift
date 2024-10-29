@@ -26,7 +26,7 @@ import CoreKiwix
 final class BrowserViewModel: NSObject, ObservableObject, BrowserViewModelClearable,
                               WKNavigationDelegate, WKScriptMessageHandler, WKUIDelegate,
                               NSFetchedResultsControllerDelegate {
-    #if os(iOS)
+
     @MainActor
     private static var cache: OrderedCache<NSManagedObjectID, BrowserViewModel>?
 
@@ -59,7 +59,6 @@ final class BrowserViewModel: NSObject, ObservableObject, BrowserViewModelCleara
             }
         }
     }
-    #endif
     
     // MARK: - Properties
 
@@ -189,7 +188,6 @@ final class BrowserViewModel: NSObject, ObservableObject, BrowserViewModelCleara
         }
     }
 
-    #if os(iOS)
     @MainActor
     func destroy() async {
         bookmarkFetchedResultsController.delegate = nil
@@ -204,7 +202,6 @@ final class BrowserViewModel: NSObject, ObservableObject, BrowserViewModelCleara
         #endif
         await clear()
     }
-    #endif
 
     @MainActor
     func clear() async {
