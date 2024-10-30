@@ -1,6 +1,5 @@
 // Messages for Swedish (svenska)
 // Exported from translatewiki.net
-// Author: Amire80
 // Author: Rofiatmustapha12
 // Author: Sabelöga
 // Author: WikiPhoenix
@@ -184,7 +183,6 @@
 "welcome.main_page.title" = "Huvudsida";
 "welcome.grid.bookmarks.title" = "Bokmärken";
 "welcome.actions.open_file" = "Öppna fil";
-"welcome.button.status.fetching.text" = "Hämtar...";
 "welcome.button.status.fetch_catalog.text" = "Hämtningskatalog";
 "commands.button.actual_size" = "Egentlig storlek";
 "comments.button.zoom_in" = "Zooma in";

@@ -186,7 +186,8 @@
 "welcome.main_page.title" = "首页";
 "welcome.grid.bookmarks.title" = "书签";
 "welcome.actions.open_file" = "打开文件";
-"welcome.button.status.fetching.text" = "正在获取...";
+"welcome.loading.data.text" = "正在加载数据……";
+"welcome.button.status.fetching_catalog.text" = "正在获取目录…";
 "welcome.button.status.fetch_catalog.text" = "获取目录";
 "commands.button.actual_size" = "实际大小";
 "comments.button.zoom_in" = "放大";

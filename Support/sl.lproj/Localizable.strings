@@ -179,7 +179,6 @@
 "welcome.main_page.title" = "Glavna stran";
 "welcome.grid.bookmarks.title" = "Zaznamki";
 "welcome.actions.open_file" = "Odpri datoteko";
-"welcome.button.status.fetching.text" = "Pridobivanje ...";
 "welcome.button.status.fetch_catalog.text" = "Pridobi katalog";
 "commands.button.actual_size" = "Dejanska velikost";
 "comments.button.zoom_in" = "Približaj";

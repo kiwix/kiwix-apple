@@ -1,0 +1,65 @@
+// Messages for Brazilian Portuguese (português do Brasil)
+// Exported from translatewiki.net
+// Author: Klgor1803
+// Author: Obiru
+
+"library_refresh_error.retrieve.description" = "Erro ao recuperar dados da biblioteca.";
+"library_refresh_error.parse.description" = "Erro ao analisar dados da biblioteca.";
+"library_refresh_error.process.description" = "Erro ao processar dados da biblioteca.";
+"download_service.complete.title" = "Download Completo";
+"download_service.failed.description" = "Não foi possível baixar este arquivo.";
+"common.dialog.button.open" = "Abrir";
+"common.dialog.button.open_in_new_tab" = "Abrir em uma nova guia";
+"common.dialog.button.add_bookmark" = "Adicionar Marcação";
+"common.dialog.button.remove_bookmark" = "Remover Marcação";
+"common.dialog.button.show_bookmarks" = "Mostrar Marcações";
+"common.dialog.button.bookmark" = "Marcação";
+"common.button.go_back" = "Voltar";
+"common.button.go_forward" = "Avançar";
+"common.button.done" = "Concluído";
+"common.button.cancel" = "Cancelar";
+"common.button.yes" = "Sim";
+"common.button.no" = "não";
+"common.button.print" = "Imprimir";
+"common.button.share" = "Compartilhar";
+"common.search" = "Buscar";
+"common.tab.manager.title" = "Gerenciador de Guias";
+"common.tab.navigation.title" = "Guias";
+"common.tab.menu.new_tab" = "Nova Guia";
+"common.tab.menu.close_this" = "Fechar Essa Guia";
+"common.tab.menu.close_all" = "Fechar Todas As Guias";
+"common.tab.list.close" = "Fechar Guia";
+"common.tab.menu.library" = "Biblioteca";
+"common.tab.menu.settings" = "Configurações";
+"common.support.app_name" = "Apoie %@";
+"common.export_file.alert.title" = "Exportar arquivo";
+"common.export_file.alert.description" = "Você deseja exportar o arquivo %@?";
+"common.export_file.alert.button.title" = "Exportar";
+"outline_button.outline.title" = "Contorno";
+"article_shortcut.main.button.title" = "Artigo Principal";
+"article_shortcut.random.button.title.mac" = "Artigo Aleatório";
+"article_shortcut.random.button.title.ios" = "Página Aleatória";
+"article_shortcut.random.button.help" = "Mostrar um artigo aleatório";
+"bookmark_context_menu.view.title" = "Visualizar";
+"bookmark_context_menu.remove.title" = "Remover";
+"external_link_handler.alert.title" = "Link externo";
+"external_link_handler.alert.button.load.link" = "Carregar o link";
+"file_import.alert.no_open.message" = "%@ não pôde ser aberto.";
+"attribute.detail.unknown" = "Desconhecido";
+"download_task_cell.status.failed" = "Falhou";
+"download_task_cell.status.downloading" = "Baixando...";
+"download_task_cell.status.paused" = "Pausado";
+"library_refresh_time.never" = "Nunca";
+"zim_file_cell_article_count_suffix" = "artigos";
+"zim_file_missing_indicator.help" = "Está faltando o arquivo zim.";
+"library.zim_file_details.side_panel.message" = "Selecione um arquivo ZIM para ver mais detalhes";
+"library.zim_file_context.main_page.label" = "Página principal";
+"library.zim_file_context.random.label" = "Página Aleatória";
+"library.zim_file_context.copy_url" = "Copiar URL";
+"library.zim_file_context.copy_id" = "Copiar ID";
+"zim_file_opened.toolbar.open.title" = "Abrir...";
+"zim_file_opened.toolbar.open.help" = "Abrir arquivo ZIM";
+"zim_file_category.title" = "Categoria";
+"zim_file_new_button_refresh" = "Atualizar";
+"zim_file.list.name.text" = "Nome";
+"zim_file.list.description.text" = "Descrição";
