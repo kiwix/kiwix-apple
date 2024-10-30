@@ -108,7 +108,6 @@ struct RootView: View {
     private let openURL = NotificationCenter.default.publisher(for: .openURL)
     private let appTerminates = NotificationCenter.default.publisher(for: NSApplication.willTerminateNotification)
     private let tabCloses = NotificationCenter.default.publisher(for: NSWindow.willCloseNotification)
-    private let browserClearModel = BrowserClearViewModel()
     /// Close other tabs then the ones received
     private let keepOnlyTabs = NotificationCenter.default.publisher(for: .keepOnlyTabs)
 

@@ -23,7 +23,7 @@ import CoreKiwix
 
 // swiftlint:disable file_length
 // swiftlint:disable:next type_body_length
-final class BrowserViewModel: NSObject, ObservableObject, BrowserViewModelClearable,
+final class BrowserViewModel: NSObject, ObservableObject,
                               WKNavigationDelegate, WKScriptMessageHandler, WKUIDelegate,
                               NSFetchedResultsControllerDelegate {
 
