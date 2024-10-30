@@ -109,7 +109,6 @@ final class BrowserViewModel: NSObject, ObservableObject, BrowserViewModelCleara
     // swiftlint:disable:next function_body_length
     @MainActor init(tabID: NSManagedObjectID) {
         self.tabID = tabID
-        debugPrint("BrowserViewModel init(tabID: \(tabID))")
         webView = WKWebView(frame: .zero, configuration: WebViewConfiguration())
         if !Bundle.main.isProduction, #available(iOS 16.4, macOS 13.3, *) {
                 webView.isInspectable = true

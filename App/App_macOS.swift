@@ -30,7 +30,6 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
 struct Kiwix: App {
     @NSApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     @StateObject private var libraryRefreshViewModel = LibraryViewModel()
-    @StateObject private var navigation = NavigationViewModel()
     private let notificationCenterDelegate = NotificationCenterDelegate()
 
     init() {
@@ -45,7 +44,6 @@ struct Kiwix: App {
             RootView()
                 .environment(\.managedObjectContext, Database.shared.viewContext)
                 .environmentObject(libraryRefreshViewModel)
-                .environmentObject(navigation)
         }.commands {
             SidebarCommands()
             CommandGroup(replacing: .importExport) {
@@ -67,7 +65,6 @@ struct Kiwix: App {
                 PageZoomCommands()
                 Divider()
                 SidebarNavigationCommands()
-                    .environmentObject(navigation)
                 Divider()
             }
         }
@@ -102,7 +99,7 @@ struct Kiwix: App {
 
 struct RootView: View {
     @Environment(\.controlActiveState) var controlActiveState
-    @EnvironmentObject private var navigation: NavigationViewModel
+    @StateObject private var navigation = NavigationViewModel()
     @StateObject private var windowTracker = WindowTracker()
     @State private var currentTabId: NSManagedObjectID?
 
@@ -112,7 +109,12 @@ struct RootView: View {
     private let appTerminates = NotificationCenter.default.publisher(for: NSApplication.willTerminateNotification)
     private let tabCloses = NotificationCenter.default.publisher(for: NSWindow.willCloseNotification)
     private let browserClearModel = BrowserClearViewModel()
-    private let closeZimPublisher = NotificationCenter.default.publisher(for: .closeZIM)
+    /// Close other tabs then the ones received
+    private let keepOnlyTabs = NotificationCenter.default.publisher(for: .keepOnlyTabs)
+
+    init() {
+        debugPrint("RootView init")
+    }
 
     var body: some View {
         NavigationSplitView {
@@ -220,10 +222,11 @@ struct RootView: View {
             }
             navigation.deleteTab(tabID: tabID)
         }
-        .onReceive(closeZimPublisher) { notification in
-            let tabID = navigation.currentTabId
-            let browser = BrowserViewModel.getCached(tabID: tabID)
-            browserClearModel.recievedClearZimFile(notification: notification, forBrowser: browser)
+        .onReceive(keepOnlyTabs) { notification in
+            guard let tabsToKeep = notification.userInfo?["tabIds"] as? Set<NSManagedObjectID> else {
+                return
+            }
+            navigation.keepOnlyTabsBy(tabIds: tabsToKeep)
         }
         .onReceive(appTerminates) { _ in
             // CMD+Q -> Quit Kiwix, this also closes the last window

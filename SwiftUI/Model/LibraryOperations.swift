@@ -164,11 +164,10 @@ struct LibraryOperations {
 
             if let tabs = try? Tab.fetchRequest().execute() {
                 let tabIds = tabs.map { $0.objectID }
-                #if os(iOS)
                 // clear out all the browserViewModels of tabs no longer in use
                 BrowserViewModel.keepOnlyTabsByIds(Set(tabIds))
-                #endif
 
+                #if os(iOS)
                 // make sure we won't end up without any tabs
                 if tabs.count == 0 {
                     let tab = Tab(context: context)
@@ -176,13 +175,12 @@ struct LibraryOperations {
                     tab.lastOpened = Date()
                     try? context.obtainPermanentIDs(for: [tab])
                 }
+                #else
+                if context.hasChanges { try? context.save() }
+                NotificationCenter.keepOnlyTabs(Set(tabIds))
+                #endif
             }
-
             if context.hasChanges { try? context.save() }
-            
-            #if os(macOS)
-            NotificationCenter.closeZIM(zimFileID)
-            #endif
         }
     }
 

@@ -90,10 +90,9 @@ struct PageZoomCommands: View {
 /// Only used on macOS
 struct SidebarNavigationCommands: View {
     @FocusedBinding(\.navigationItem) var navigationItem: NavigationItem??
-    @EnvironmentObject var navigation: NavigationViewModel
 
     var body: some View {
-        buildButtons([.tab(objectID: navigation.currentTabId), .bookmarks], modifiers: [.command])
+        buildButtons([.bookmarks], modifiers: [.command])
         if FeatureFlags.hasLibrary {
             Divider()
             buildButtons([.opened, .categories, .downloads, .new], modifiers: [.command, .control])

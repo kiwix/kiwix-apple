@@ -143,6 +143,23 @@ final class NavigationViewModel: ObservableObject {
             }
         }
     }
+
+    #if os(macOS)
+    /// On closing a ZIM, this clears out the currentTabId if needed
+    /// Effectively recreating BrowserViewModel and the wkwebview
+    /// from scratch
+    /// - Parameter tabIds: the ones that should remain
+    func keepOnlyTabsBy(tabIds: Set<NSManagedObjectID>) {
+        guard let currentId = currentTabIdValue,
+              !tabIds.contains(currentId) else {
+            return
+        }
+        debugPrint("NavigationViewModel.keepOnlyTabsBy: \(tabIds)")
+        // setting it to nil ensures a new tab (and webview) will be created
+        // on accessing the public currentTabId
+        currentTabIdValue = nil
+    }
+    #endif
 }
 
 extension Array {

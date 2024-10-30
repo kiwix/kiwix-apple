@@ -75,7 +75,7 @@ extension Notification.Name {
     static let saveContent = Notification.Name("saveContent")
     static let toggleSidebar = Notification.Name("toggleSidebar")
     #if os(macOS)
-    static let closeZIM = Notification.Name("closeZIM")
+    static let keepOnlyTabs = Notification.Name("keepOnlyTabs")
     #endif
 }
 
@@ -114,10 +114,10 @@ extension NotificationCenter {
     }
 
     #if os(macOS)
-    static func closeZIM(_ zimId: UUID) {
-        NotificationCenter.default.post(name: .closeZIM,
+    static func keepOnlyTabs(_ tabIds: Set<NSManagedObjectID>) {
+        NotificationCenter.default.post(name: .keepOnlyTabs,
                                         object: nil,
-                                        userInfo: ["zimId": zimId])
+                                        userInfo: ["tabIds": tabIds])
     }
     #endif
 }
