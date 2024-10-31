@@ -129,7 +129,7 @@ final class Tab: NSManagedObject, Identifiable {
 
     @NSManaged var zimFile: ZimFile?
 
-    class func fetchRequest(
+    static func fetchRequest(
         predicate: NSPredicate? = nil, sortDescriptors: [NSSortDescriptor] = []
     ) -> NSFetchRequest<Tab> {
         // swiftlint:disable:next force_cast
@@ -139,7 +139,7 @@ final class Tab: NSManagedObject, Identifiable {
         return request
     }
 
-    class func fetchRequest(id: UUID) -> NSFetchRequest<Tab> {
+    static func fetchRequest(id: UUID) -> NSFetchRequest<Tab> {
         // swiftlint:disable:next force_cast
         let request = super.fetchRequest() as! NSFetchRequest<Tab>
         request.predicate = NSPredicate(format: "id == %@", id as CVarArg)
@@ -265,7 +265,7 @@ final class ZimFile: NSManagedObject, Identifiable {
         Predicate.notMissing
     ])
 
-    class func fetchRequest(
+    static func fetchRequest(
         predicate: NSPredicate? = nil, sortDescriptors: [NSSortDescriptor] = []
     ) -> NSFetchRequest<ZimFile> {
         // swiftlint:disable:next force_cast
@@ -275,7 +275,7 @@ final class ZimFile: NSManagedObject, Identifiable {
         return request
     }
 
-    class func fetchRequest(fileID: UUID) -> NSFetchRequest<ZimFile> {
+    static func fetchRequest(fileID: UUID) -> NSFetchRequest<ZimFile> {
         // swiftlint:disable:next force_cast
         let request = super.fetchRequest() as! NSFetchRequest<ZimFile>
         request.predicate = NSPredicate(format: "fileID == %@", fileID as CVarArg)

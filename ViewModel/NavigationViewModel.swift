@@ -20,11 +20,7 @@ import WebKit
 final class NavigationViewModel: ObservableObject {
     let uuid = UUID()
     // remained optional due to focusedSceneValue conformance
-    @Published var currentItem: NavigationItem? = .loading {
-        didSet {
-            debugPrint("NavigationViewModel.currentItem: \(currentItem)")
-        }
-    }
+    @Published var currentItem: NavigationItem? = .loading
     #if os(macOS)
     var isTerminating: Bool = false
     
@@ -161,7 +157,6 @@ final class NavigationViewModel: ObservableObject {
               !tabIds.contains(currentId) else {
             return
         }
-        debugPrint("NavigationViewModel.keepOnlyTabsBy: \(tabIds)")
         // setting it to nil ensures a new tab (and webview) will be created
         // on accessing the public currentTabId
         currentTabIdValue = nil

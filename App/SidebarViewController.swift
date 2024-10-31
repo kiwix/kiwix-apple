@@ -33,7 +33,7 @@ class SidebarViewController: UICollectionViewController, NSFetchedResultsControl
             collectionView, indexPath, item in
             collectionView.dequeueConfiguredReusableCell(using: cellRegistration, for: indexPath, item: item)
         }
-        dataSource.supplementaryViewProvider = { collectionView, elementKind, indexPath in
+        dataSource.supplementaryViewProvider = { collectionView, _, indexPath in
             collectionView.dequeueConfiguredReusableSupplementary(using: headerRegistration, for: indexPath)
         }
         return dataSource
@@ -66,7 +66,7 @@ class SidebarViewController: UICollectionViewController, NSFetchedResultsControl
 
     init() {
         super.init(collectionViewLayout: UICollectionViewLayout())
-        collectionView.collectionViewLayout = UICollectionViewCompositionalLayout { sectionIndex, layoutEnvironment in
+        collectionView.collectionViewLayout = UICollectionViewCompositionalLayout { _, layoutEnvironment in
             var config = UICollectionLayoutListConfiguration(appearance: .sidebar)
             config.headerMode = .supplementary
             config.trailingSwipeActionsConfigurationProvider = { [unowned self] indexPath in

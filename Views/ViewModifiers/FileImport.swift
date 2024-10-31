@@ -18,7 +18,8 @@ import UniformTypeIdentifiers
 
 /// Button that presents a file importer.
 /// Note 1: Does not work on iOS / iPadOS via commands.
-/// Note 2: Does not allow multiple selection, because we want a new tab to be opened with main page when file is opened,
+/// Note 2: Does not allow multiple selection,
+///     because we want a new tab to be opened with main page when file is opened,
 ///     and the multitab implementation on iOS / iPadOS does not support open multiple tabs with an url right now.
 struct OpenFileButton<Label: View>: View {
     @State private var isPresented: Bool = false
@@ -86,11 +87,7 @@ struct OpenFileHandler: ViewModifier {
                             NotificationCenter.openURL(url, inNewTab: true)
                         } else if .file == context {
                             // Note: inNewTab:true/false has no meaning here, the system will open a new window anyway
-                            NotificationCenter.openURL(
-                                url,
-                                inNewTab: true,
-                                isFileContext: true
-                            )
+                            NotificationCenter.openURL(url, inNewTab: true, isFileContext: true)
                         }
                         #elseif os(iOS)
                         NotificationCenter.openURL(url, inNewTab: true)

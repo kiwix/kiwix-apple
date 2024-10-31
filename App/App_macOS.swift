@@ -113,7 +113,10 @@ struct RootView: View {
     var body: some View {
         NavigationSplitView {
             List(selection: $navigation.currentItem) {
-                ForEach([NavigationItem.tab(objectID: navigation.currentTabId)] + primaryItems, id: \.self) { navigationItem in
+                ForEach(
+                    [NavigationItem.tab(objectID: navigation.currentTabId)] + primaryItems,
+                    id: \.self
+                ) { navigationItem in
                     Label(navigationItem.name, systemImage: navigationItem.icon)
                 }
                 if FeatureFlags.hasLibrary {
@@ -132,15 +135,10 @@ struct RootView: View {
             case .tab(let tabID):
                 let browser = BrowserViewModel.getCached(tabID: tabID)
                 BrowserTab().environmentObject(browser)
-                    .withHostingWindow { [weak browser] window in
-//                        if let windowNumber = window?.windowNumber {
-//                            browser.restoreByWindowNumber(windowNumber: windowNumber,
-//                                                          urlToTabIdConverter: navigation.tabIDFor(url:))
-//                        } else {
-                            if FeatureFlags.hasLibrary == false {
-                                browser?.loadMainArticle()
-                            }
-//                        }
+                    .withHostingWindow { [weak browser] _ in
+                        if FeatureFlags.hasLibrary == false {
+                            browser?.loadMainArticle()
+                        }
                     }
             case .bookmarks:
                 Bookmarks()
@@ -170,11 +168,7 @@ struct RootView: View {
             }
         }
         .onReceive(openURL) { notification in
-            debugPrint("received openURL from: \(notification) for: \(navigation.uuid)")
             guard let url = notification.userInfo?["url"] as? URL else {
-                // TODO: double check if we need a new solution based on tabID ?
-//                  let navID = notification.userInfo?["navigationID"] as? UUID,
-//                  navigation.uuid == navID else {
                 return
             }
             if notification.userInfo?["isFileContext"] as? Bool == true {

@@ -73,7 +73,6 @@ final class BrowserViewModel: NSObject, ObservableObject,
     @MainActor @Published private(set) var hasURL: Bool = false
     @MainActor @Published private(set) var url: URL? {
         didSet {
-            debugPrint("BrowserViewModel url: \(url?.absoluteString)")
             if !FeatureFlags.hasLibrary, url == nil {
                 loadMainArticle()
             }
@@ -87,7 +86,6 @@ final class BrowserViewModel: NSObject, ObservableObject,
     @MainActor var zimFileId: UUID? { url?.zimFileID }
     @Published var externalURL: URL?
     private var metaData: URLContentMetaData?
-
 
 #if os(macOS)
     private var windowURLs: [URL] {
@@ -188,7 +186,6 @@ final class BrowserViewModel: NSObject, ObservableObject,
 
     @MainActor
     func clear() async {
-        debugPrint("BrowserViewModel.clear()")
         await webView.setAllMediaPlaybackSuspended(true)
         await webView.closeAllMediaPresentations()
         webView.stopLoading()
@@ -575,7 +572,7 @@ final class BrowserViewModel: NSObject, ObservableObject,
                 return WebViewController(webView: webView)
             },
             actionProvider: { [weak self] _ in
-                guard let self else { return UIMenu(children: []) }
+                guard let self = self else { return UIMenu(children: []) }
                 var actions = [UIAction]()
 
                 // open url
@@ -588,7 +585,7 @@ final class BrowserViewModel: NSObject, ObservableObject,
                 actions.append(
                     UIAction(title: "common.dialog.button.open_in_new_tab".localized,
                              image: UIImage(systemName: "doc.badge.plus")) { [weak self] _ in
-                                 guard let self else { return }
+                                 guard let self = self else { return }
                                  NotificationCenter.openURL(url, inNewTab: true)
                     }
                 )
