@@ -97,7 +97,7 @@ struct OpenFileHandler: ViewModifier {
                         NotificationCenter.openURL(url, inNewTab: true)
                         #endif
                     }
-                case .onBoarding:
+                case .welcomeScreen:
                     for fileID in openedZimFileIDs {
                         guard let url = await ZimFileService.shared.getMainPageURL(zimFileID: fileID) else { return }
                         NotificationCenter.openURL(url, navigationID: navigation.uuid)

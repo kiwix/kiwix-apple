@@ -135,7 +135,8 @@ struct RootView: View {
             case .loading:
                 LoadingDataView()
             case .tab(let tabID):
-                let browser = BrowserViewModel.getCached(tabID: tabID)
+                let navigationID = navigation.uuid
+                let browser = BrowserViewModel.getCached(tabID: tabID, navigationID: navigationID)
                 BrowserTab().environmentObject(browser)
                     .withHostingWindow { [weak browser] window in
 //                        if let windowNumber = window?.windowNumber {
@@ -191,7 +192,10 @@ struct RootView: View {
                 // and load the content only within that
                 Task { @MainActor [weak navigation] in
                     if windowTracker.isLastWindow(), let navigation {
-                        BrowserViewModel.getCached(tabID: navigation.currentTabId).load(url: url)
+                        BrowserViewModel.getCached(
+                            tabID: navigation.currentTabId,
+                            navigationID: navigation.uuid
+                        ).load(url: url)
                     }
                 }
                 return
@@ -199,7 +203,7 @@ struct RootView: View {
             guard controlActiveState == .key else { return }
             let tabID = navigation.currentTabId
             navigation.currentItem = .tab(objectID: tabID)
-            BrowserViewModel.getCached(tabID: tabID).load(url: url)
+            BrowserViewModel.getCached(tabID: tabID, navigationID: navigation.uuid).load(url: url)
         }
         .onReceive(tabCloses) { publisher in
             // closing one window either by CMD+W || red(X) close button
@@ -213,7 +217,7 @@ struct RootView: View {
                 return
             }
             let tabID = navigation.currentTabId
-            let browser = BrowserViewModel.getCached(tabID: tabID)
+            let browser = BrowserViewModel.getCached(tabID: tabID, navigationID: navigation.uuid)
             // tab closed by user
             browser.pauseVideoWhenNotInPIP()
             Task { @MainActor [weak browser] in

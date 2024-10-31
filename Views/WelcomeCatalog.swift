@@ -72,7 +72,7 @@ struct WelcomeCatalog: View {
     }
 
     private var openFileButton: some View {
-        OpenFileButton(context: .onBoarding) {
+        OpenFileButton(context: .welcomeScreen) {
             HStack {
                 Spacer()
                 Text("welcome.actions.open_file".localized)

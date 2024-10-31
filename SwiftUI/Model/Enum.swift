@@ -141,7 +141,7 @@ enum ExternalLinkLoadingPolicy: String, CaseIterable, Identifiable, Defaults.Ser
 enum OpenFileContext: String {
     case command
     case file
-    case onBoarding
+    case welcomeScreen
     case library
 }
 

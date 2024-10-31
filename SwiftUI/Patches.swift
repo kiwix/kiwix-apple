@@ -84,17 +84,28 @@ extension UTType {
 }
 
 extension NotificationCenter {
+    #if os(iOS)
+    @MainActor
+    static func openURL(_ url: URL, navigationID: UUID? = nil, inNewTab: Bool = false, isFileContext: Bool = false) {
+        _openURL(url, navigationID: navigationID, inNewTab: inNewTab, isFileContext: isFileContext)
+    }
+    #else
+    @MainActor
     static func openURL(_ url: URL, navigationID: UUID, inNewTab: Bool = false, isFileContext: Bool = false) {
-        NotificationCenter.default.post(
-            name: .openURL,
-            object: nil,
-            userInfo: [
-                "url": url,
-                "navigationID": navigationID,
-                "inNewTab": inNewTab,
-                "isFileContext": isFileContext
-            ]
-        )
+        _openURL(url, navigationID: navigationID, inNewTab: inNewTab, isFileContext: isFileContext)
+    }
+    #endif
+    @MainActor
+    static private func _openURL(_ url: URL, navigationID: UUID?, inNewTab: Bool = false, isFileContext: Bool = false) {
+        var userInfo: [String: Any] = [
+            "url": url,
+            "inNewTab": inNewTab,
+            "isFileContext": isFileContext
+        ]
+        if let navigationID {
+            userInfo["navigationID"] = navigationID
+        }
+        NotificationCenter.default.post(name: .openURL, object: nil, userInfo: userInfo)
     }
 
     static func openFiles(_ urls: [URL], context: OpenFileContext) {
@@ -114,7 +125,7 @@ extension NotificationCenter {
     }
 
     #if os(macOS)
-    static func keepOnlyTabs(_ tabIds: Set<NSManagedObjectID>) {
+    @MainActor static func keepOnlyTabs(_ tabIds: Set<NSManagedObjectID>) {
         NotificationCenter.default.post(name: .keepOnlyTabs,
                                         object: nil,
                                         userInfo: ["tabIds": tabIds])

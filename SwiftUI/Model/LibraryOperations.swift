@@ -177,7 +177,9 @@ struct LibraryOperations {
                 }
                 #else
                 if context.hasChanges { try? context.save() }
-                NotificationCenter.keepOnlyTabs(Set(tabIds))
+                Task { @MainActor in
+                    NotificationCenter.keepOnlyTabs(Set(tabIds))
+                }
                 #endif
             }
             if context.hasChanges { try? context.save() }
