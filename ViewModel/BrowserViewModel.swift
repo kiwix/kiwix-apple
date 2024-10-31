@@ -518,6 +518,7 @@ final class BrowserViewModel: NSObject, ObservableObject,
     // MARK: - WKUIDelegate
 
 #if os(macOS)
+    @MainActor
     func webView(
         _: WKWebView,
         createWebViewWith _: WKWebViewConfiguration,
