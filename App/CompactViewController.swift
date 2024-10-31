@@ -153,7 +153,7 @@ private struct CompactView: View {
         if case .loading = navigation.currentItem {
             LoadingDataView()
         } else if case let .tab(tabID) = navigation.currentItem {
-            let browser = BrowserViewModel.getCached(tabID: tabID, navigationID: navigation.uuid)
+            let browser = BrowserViewModel.getCached(tabID: tabID)
             let model = if FeatureFlags.hasLibrary {
                 CatalogLaunchViewModel(library: library, browser: browser)
             } else {
@@ -278,7 +278,7 @@ private struct Content<LaunchModel>: View where LaunchModel: LaunchProtocol {
             // it will reference not this, but the new Tab we switched to.
             // Therefore we need to find this browser again by tabID
             if let tabID {
-                let thisBrowser = BrowserViewModel.getCached(tabID: tabID, navigationID: navigation.uuid)
+                let thisBrowser = BrowserViewModel.getCached(tabID: tabID)
                 thisBrowser.pauseVideoWhenNotInPIP()
                 thisBrowser.persistState()
             }

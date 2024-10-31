@@ -101,7 +101,6 @@ struct RootView: View {
     @Environment(\.controlActiveState) var controlActiveState
     @StateObject private var navigation = NavigationViewModel()
     @StateObject private var windowTracker = WindowTracker()
-    @State private var currentTabId: NSManagedObjectID?
 
     private let primaryItems: [NavigationItem] = [.bookmarks]
     private let libraryItems: [NavigationItem] = [.opened, .categories, .downloads, .new]
@@ -110,10 +109,6 @@ struct RootView: View {
     private let tabCloses = NotificationCenter.default.publisher(for: NSWindow.willCloseNotification)
     /// Close other tabs then the ones received
     private let keepOnlyTabs = NotificationCenter.default.publisher(for: .keepOnlyTabs)
-
-    init() {
-        debugPrint("RootView init")
-    }
 
     var body: some View {
         NavigationSplitView {
@@ -135,8 +130,7 @@ struct RootView: View {
             case .loading:
                 LoadingDataView()
             case .tab(let tabID):
-                let navigationID = navigation.uuid
-                let browser = BrowserViewModel.getCached(tabID: tabID, navigationID: navigationID)
+                let browser = BrowserViewModel.getCached(tabID: tabID)
                 BrowserTab().environmentObject(browser)
                     .withHostingWindow { [weak browser] window in
 //                        if let windowNumber = window?.windowNumber {
@@ -172,14 +166,15 @@ struct RootView: View {
             if url.isFileURL {
                 NotificationCenter.openFiles([url], context: .file)
             } else if url.isZIMURL {
-                NotificationCenter.openURL(url, navigationID: navigation.uuid)
+                NotificationCenter.openURL(url)
             }
         }
         .onReceive(openURL) { notification in
             debugPrint("received openURL from: \(notification) for: \(navigation.uuid)")
-            guard let url = notification.userInfo?["url"] as? URL,
-                  let navID = notification.userInfo?["navigationID"] as? UUID,
-                  navigation.uuid == navID else {
+            guard let url = notification.userInfo?["url"] as? URL else {
+                // TODO: double check if we need a new solution based on tabID ?
+//                  let navID = notification.userInfo?["navigationID"] as? UUID,
+//                  navigation.uuid == navID else {
                 return
             }
             if notification.userInfo?["isFileContext"] as? Bool == true {
@@ -192,10 +187,7 @@ struct RootView: View {
                 // and load the content only within that
                 Task { @MainActor [weak navigation] in
                     if windowTracker.isLastWindow(), let navigation {
-                        BrowserViewModel.getCached(
-                            tabID: navigation.currentTabId,
-                            navigationID: navigation.uuid
-                        ).load(url: url)
+                        BrowserViewModel.getCached(tabID: navigation.currentTabId).load(url: url)
                     }
                 }
                 return
@@ -203,7 +195,7 @@ struct RootView: View {
             guard controlActiveState == .key else { return }
             let tabID = navigation.currentTabId
             navigation.currentItem = .tab(objectID: tabID)
-            BrowserViewModel.getCached(tabID: tabID, navigationID: navigation.uuid).load(url: url)
+            BrowserViewModel.getCached(tabID: tabID).load(url: url)
         }
         .onReceive(tabCloses) { publisher in
             // closing one window either by CMD+W || red(X) close button
@@ -217,7 +209,7 @@ struct RootView: View {
                 return
             }
             let tabID = navigation.currentTabId
-            let browser = BrowserViewModel.getCached(tabID: tabID, navigationID: navigation.uuid)
+            let browser = BrowserViewModel.getCached(tabID: tabID)
             // tab closed by user
             browser.pauseVideoWhenNotInPIP()
             Task { @MainActor [weak browser] in

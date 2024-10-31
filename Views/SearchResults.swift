@@ -85,7 +85,7 @@ struct SearchResults: View {
                                 searchTexts.insert(viewModel.searchText, at: 0)
                                 return searchTexts
                             }()
-                            NotificationCenter.openURL(result.url, navigationID: navigation.uuid)
+                            NotificationCenter.openURL(result.url)
                         } label: {
                             ArticleCell(result: result, zimFile: viewModel.zimFiles[result.zimFileID])
                         }.buttonStyle(.plain)

@@ -83,12 +83,11 @@ struct OpenFileHandler: ViewModifier {
                         guard let url = await ZimFileService.shared.getMainPageURL(zimFileID: fileID) else { return }
                         #if os(macOS)
                         if .command == context {
-                            NotificationCenter.openURL(url, navigationID: navigation.uuid, inNewTab: true)
+                            NotificationCenter.openURL(url, inNewTab: true)
                         } else if .file == context {
                             // Note: inNewTab:true/false has no meaning here, the system will open a new window anyway
                             NotificationCenter.openURL(
                                 url,
-                                navigationID: navigation.uuid,
                                 inNewTab: true,
                                 isFileContext: true
                             )
@@ -100,7 +99,7 @@ struct OpenFileHandler: ViewModifier {
                 case .welcomeScreen:
                     for fileID in openedZimFileIDs {
                         guard let url = await ZimFileService.shared.getMainPageURL(zimFileID: fileID) else { return }
-                        NotificationCenter.openURL(url, navigationID: navigation.uuid)
+                        NotificationCenter.openURL(url)
                     }
                 default:
                     break

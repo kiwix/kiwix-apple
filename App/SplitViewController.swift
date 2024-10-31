@@ -80,12 +80,10 @@ final class SplitViewController: UISplitViewController {
             guard let url = notification.userInfo?["url"] as? URL else { return }
             let inNewTab = notification.userInfo?["inNewTab"] as? Bool ?? false
             Task { @MainActor [weak self] in
-                guard let navigation = self?.navigationViewModel else { return }
-                let navigationID = navigation.uuid
                 if !inNewTab, case let .tab(tabID) = self?.navigationViewModel.currentItem {
-                    BrowserViewModel.getCached(tabID: tabID, navigationID: navigationID).load(url: url)
+                    BrowserViewModel.getCached(tabID: tabID).load(url: url)
                 } else if let tabID = self?.navigationViewModel.createTab() {
-                    BrowserViewModel.getCached(tabID: tabID, navigationID: navigationID).load(url: url)
+                    BrowserViewModel.getCached(tabID: tabID).load(url: url)
                 }
             }
         }
@@ -115,9 +113,8 @@ final class SplitViewController: UISplitViewController {
             let controller = UIHostingController(rootView: Bookmarks())
             setViewController(UINavigationController(rootViewController: controller), for: .secondary)
         case .tab(let tabID):
-            let navigationID = navigationViewModel.uuid
             let view = BrowserTab()
-                .environmentObject(BrowserViewModel.getCached(tabID: tabID, navigationID: navigationID))
+                .environmentObject(BrowserViewModel.getCached(tabID: tabID))
             let controller = UIHostingController(rootView: view)
             controller.navigationItem.scrollEdgeAppearance = {
                 let apperance = UINavigationBarAppearance()

@@ -26,7 +26,7 @@ struct BookmarkContextMenu: ViewModifier {
     func body(content: Content) -> some View {
         content.contextMenu {
             Button {
-                NotificationCenter.openURL(bookmark.articleURL, navigationID: navigation.uuid)
+                NotificationCenter.openURL(bookmark.articleURL)
             } label: {
                 Label("bookmark_context_menu.view.title".localized, systemImage: "doc.richtext")
             }

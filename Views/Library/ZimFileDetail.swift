@@ -109,7 +109,7 @@ struct ZimFileDetail: View {
         } else if zimFile.fileURLBookmark != nil {  // zim file is opened
             Action(title: "zim_file.action.open_main_page.title".localized) {
                 guard let url = await ZimFileService.shared.getMainPageURL(zimFileID: zimFile.fileID) else { return }
-                NotificationCenter.openURL(url, navigationID: navigation.uuid, inNewTab: true)
+                NotificationCenter.openURL(url, inNewTab: true)
                 #if os(iOS)
                 dismissParent?()
                 #endif

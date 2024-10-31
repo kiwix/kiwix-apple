@@ -31,14 +31,14 @@ final class BrowserViewModel: NSObject, ObservableObject,
     private static var cache: OrderedCache<NSManagedObjectID, BrowserViewModel>?
 
     @MainActor
-    static func getCached(tabID: NSManagedObjectID, navigationID: UUID) -> BrowserViewModel {
+    static func getCached(tabID: NSManagedObjectID) -> BrowserViewModel {
         if let cachedModel = cache?.findBy(key: tabID) {
             return cachedModel
         }
         if cache == nil {
             cache = .init()
         }
-        let viewModel = BrowserViewModel(tabID: tabID, navigationID: navigationID)
+        let viewModel = BrowserViewModel(tabID: tabID)
         cache?.removeValue(forKey: tabID)
         cache?.setValue(viewModel, forKey: tabID)
         return viewModel
@@ -96,25 +96,17 @@ final class BrowserViewModel: NSObject, ObservableObject,
 #endif
     let webView: WKWebView
     let tabID: NSManagedObjectID
-    let navigationID: UUID
     private var isLoadingObserver: NSKeyValueObservation?
     private var canGoBackObserver: NSKeyValueObservation?
     private var canGoForwardObserver: NSKeyValueObservation?
     private var titleURLObserver: AnyCancellable?
     private let bookmarkFetchedResultsController: NSFetchedResultsController<Bookmark>
-    /// A temporary placeholder for the url that should be opened in a new tab, set on macOS only
-    static var urlForNewTab: URL? {
-        didSet {
-            debugPrint("BrowserViewModel static urlForNewTab: \(urlForNewTab?.absoluteString)")
-        }
-    }
 
     // MARK: - Lifecycle
 
     // swiftlint:disable:next function_body_length
-    @MainActor private init(tabID: NSManagedObjectID, navigationID: UUID) {
+    @MainActor private init(tabID: NSManagedObjectID) {
         self.tabID = tabID
-        self.navigationID = navigationID
         webView = WKWebView(frame: .zero, configuration: WebViewConfiguration())
         if !Bundle.main.isProduction, #available(iOS 16.4, macOS 13.3, *) {
                 webView.isInspectable = true
@@ -139,11 +131,6 @@ final class BrowserViewModel: NSObject, ObservableObject,
         webView.uiDelegate = self
 
         restoreBy(tabID: tabID)
-
-        if let urlForNewTab = Self.urlForNewTab {
-            url = urlForNewTab
-            load(url: urlForNewTab)
-        }
 
         // get outline items if something is already loaded
         if webView.url != nil {
@@ -363,16 +350,29 @@ final class BrowserViewModel: NSObject, ObservableObject,
     // MARK: - New Tab Creation
 
 #if os(macOS)
-    private func createNewTab(url: URL) -> Bool {
-        guard let currentWindow = NSApp.keyWindow else { return false }
-        guard let windowController = currentWindow.windowController else { return false }
-        // store the new url in a static way
-        BrowserViewModel.urlForNewTab = url
-        // this creates a new BrowserViewModel
+    private func createNewWindow(with url: URL) -> Bool {
+        guard let currentWindow = NSApp.keyWindow,
+              let windowController = currentWindow.windowController else { return false }
+        let context = Database.shared.viewContext
+        // create a new Tab DB object, and a new BrowserViewModel (which creates a new WKWebView)
+        // and pre-load the url into that
+        let newTab = NavigationViewModel.makeTab(context: context)
+        let newTabID = newTab.objectID
+        BrowserViewModel.getCached(tabID: newTabID).load(url: url)
+
+        // store the tabID statically, so that the new window can pick it up
+        NavigationViewModel.tabIDToUseOnNewTab = newTabID
+
         windowController.newWindowForTab(self)
-        // now reset the static url to nil, as the new BrowserViewModel already has it
-        BrowserViewModel.urlForNewTab = nil
-        guard let newWindow = NSApp.keyWindow, currentWindow != newWindow else { return false }
+        guard let newWindow = NSApp.keyWindow, currentWindow != newWindow else {
+            // rather impossible case, but rolling back everything from above
+            NavigationViewModel.tabIDToUseOnNewTab = nil
+            context.delete(newTab)
+            if context.hasChanges {
+                try? context.save()
+            }
+            return false
+        }
         currentWindow.addTabbedWindow(newWindow, ordered: .above)
         return true
     }
@@ -392,7 +392,7 @@ final class BrowserViewModel: NSObject, ObservableObject,
 #if os(macOS)
         // detect cmd + click event
         if navigationAction.modifierFlags.contains(.command) {
-            if createNewTab(url: url) {
+            if createNewWindow(with: url) {
                 return .cancel
             }
         }
@@ -535,7 +535,7 @@ final class BrowserViewModel: NSObject, ObservableObject,
             return nil
         }
 
-        _ = createNewTab(url: newUrl)
+        _ = createNewWindow(with: newUrl)
         return nil
     }
 #else
@@ -553,7 +553,7 @@ final class BrowserViewModel: NSObject, ObservableObject,
             externalURL = newURL
             return nil
         }
-        NotificationCenter.openURL(newURL, navigationID: navigationID, inNewTab: true)
+        NotificationCenter.openURL(newURL, inNewTab: true)
         return nil
     }
 #endif
@@ -575,7 +575,7 @@ final class BrowserViewModel: NSObject, ObservableObject,
                 return WebViewController(webView: webView)
             },
             actionProvider: { [weak self] _ in
-                guard let self else { return nil }
+                guard let self else { return UIMenu(children: []) }
                 var actions = [UIAction]()
 
                 // open url
@@ -589,12 +589,12 @@ final class BrowserViewModel: NSObject, ObservableObject,
                     UIAction(title: "common.dialog.button.open_in_new_tab".localized,
                              image: UIImage(systemName: "doc.badge.plus")) { [weak self] _ in
                                  guard let self else { return }
-                                 NotificationCenter.openURL(url, navigationID: self.navigationID, inNewTab: true)
+                                 NotificationCenter.openURL(url, inNewTab: true)
                     }
                 )
 
                 // bookmark
-                let bookmarkAction: UIAction = {
+                let bookmarkAction: UIAction = { [weak self] in
                     let context = Database.shared.viewContext
                     let predicate = NSPredicate(format: "articleURL == %@", url as CVarArg)
                     let request = Bookmark.fetchRequest(predicate: predicate)
