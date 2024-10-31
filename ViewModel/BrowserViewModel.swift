@@ -347,6 +347,7 @@ final class BrowserViewModel: NSObject, ObservableObject,
     // MARK: - New Tab Creation
 
 #if os(macOS)
+    @MainActor
     private func createNewWindow(with url: URL) -> Bool {
         guard let currentWindow = NSApp.keyWindow,
               let windowController = currentWindow.windowController else { return false }
@@ -536,6 +537,7 @@ final class BrowserViewModel: NSObject, ObservableObject,
         return nil
     }
 #else
+    @MainActor
     func webView(
         _ webView: WKWebView,
         createWebViewWith configuration: WKWebViewConfiguration,
@@ -550,7 +552,6 @@ final class BrowserViewModel: NSObject, ObservableObject,
             externalURL = newURL
             return nil
         }
-        NotificationCenter.openURL(newURL, inNewTab: true)
         return nil
     }
 #endif
@@ -572,21 +573,23 @@ final class BrowserViewModel: NSObject, ObservableObject,
                 return WebViewController(webView: webView)
             },
             actionProvider: { [weak self] _ in
-                guard let self = self else { return UIMenu(children: []) }
+                guard let self else { return UIMenu(children: []) }
                 var actions = [UIAction]()
 
                 // open url
                 actions.append(
                     UIAction(title: "common.dialog.button.open".localized,
-                             image: UIImage(systemName: "doc.text")) { _ in
-                        webView.load(URLRequest(url: url))
+                             image: UIImage(systemName: "doc.text")) { [weak self] _ in
+                                 self?.webView.load(URLRequest(url: url))
                     }
                 )
                 actions.append(
                     UIAction(title: "common.dialog.button.open_in_new_tab".localized,
                              image: UIImage(systemName: "doc.badge.plus")) { [weak self] _ in
-                                 guard let self = self else { return }
-                                 NotificationCenter.openURL(url, inNewTab: true)
+                                 guard let self else { return }
+                                 Task { @MainActor in
+                                     NotificationCenter.openURL(url, inNewTab: true)
+                                 }
                     }
                 )
 
