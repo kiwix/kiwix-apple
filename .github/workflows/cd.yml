@@ -1,6 +1,6 @@
 name: CD
 
-# | Platform        | Nightly | Weekly (if diff HEAD)  | TestFlight Tag | Post App Release |
+# | Platform        | Nightly | Weekly (if diff HEAD)  | TestFlight Tag | Release          |
 # |-----------------|---------|------------------------|----------------|------------------|
 # | macOS           | ftp     | app-store              | app-store      | ftp              |
 # | iOS             | ftp     | app-store              | app-store      | -                |

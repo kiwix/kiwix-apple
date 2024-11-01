@@ -174,7 +174,7 @@ Monday).
 Once satisfied with the quality of the app in TestFlight, we can
 proceed with the Kiwix release process.
 
-The release process is triggered by a by [GitHub
+The release process is triggered by a [GitHub
 Release](https://github.com/kiwix/kiwix-apple/releases). Only the
 version released (to Testflight) that way can be then sent to
 approval to Apple. Once approved by Apple, we can release them to the
