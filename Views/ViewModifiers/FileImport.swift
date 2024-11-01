@@ -18,7 +18,8 @@ import UniformTypeIdentifiers
 
 /// Button that presents a file importer.
 /// Note 1: Does not work on iOS / iPadOS via commands.
-/// Note 2: Does not allow multiple selection, because we want a new tab to be opened with main page when file is opened,
+/// Note 2: Does not allow multiple selection,
+///     because we want a new tab to be opened with main page when file is opened,
 ///     and the multitab implementation on iOS / iPadOS does not support open multiple tabs with an url right now.
 struct OpenFileButton<Label: View>: View {
     @State private var isPresented: Bool = false
@@ -49,6 +50,7 @@ struct OpenFileButton<Label: View>: View {
 }
 
 struct OpenFileHandler: ViewModifier {
+    @EnvironmentObject private var navigation: NavigationViewModel
     @State private var isAlertPresented = false
     @State private var activeAlert: ActiveAlert?
 
@@ -91,7 +93,7 @@ struct OpenFileHandler: ViewModifier {
                         NotificationCenter.openURL(url, inNewTab: true)
                         #endif
                     }
-                case .onBoarding:
+                case .welcomeScreen:
                     for fileID in openedZimFileIDs {
                         guard let url = await ZimFileService.shared.getMainPageURL(zimFileID: fileID) else { return }
                         NotificationCenter.openURL(url)

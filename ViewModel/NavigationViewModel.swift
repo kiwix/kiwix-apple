@@ -18,15 +18,37 @@ import WebKit
 
 @MainActor
 final class NavigationViewModel: ObservableObject {
+    let uuid = UUID()
     // remained optional due to focusedSceneValue conformance
     @Published var currentItem: NavigationItem? = .loading
     #if os(macOS)
     var isTerminating: Bool = false
+    
+    /// Used to store temporarily the value of the tabID for a newly opened window
+    static var tabIDToUseOnNewTab: NSManagedObjectID?
+
+    var currentTabId: NSManagedObjectID {
+        guard let currentTabIdValue else {
+            let newTabId: NSManagedObjectID
+            // when opening a new tab, use a preconfigured tabID
+            if let tabIDToUseOnNewTab = Self.tabIDToUseOnNewTab {
+                newTabId = tabIDToUseOnNewTab
+                Self.tabIDToUseOnNewTab = nil
+            } else {
+                newTabId = createTab()
+            }
+            currentTabIdValue = newTabId
+            return newTabId
+        }
+        return currentTabIdValue
+    }
+
+    private var currentTabIdValue: NSManagedObjectID?
     #endif
 
     // MARK: - Tab Management
 
-    private func makeTab(context: NSManagedObjectContext) -> Tab {
+    static func makeTab(context: NSManagedObjectContext) -> Tab {
         let tab = Tab(context: context)
         tab.created = Date()
         tab.lastOpened = Date()
@@ -39,7 +61,7 @@ final class NavigationViewModel: ObservableObject {
         let context = Database.shared.viewContext
         let fetchRequest = Tab.fetchRequest(sortDescriptors: [NSSortDescriptor(key: "lastOpened", ascending: false)])
         fetchRequest.fetchLimit = 1
-        let tab = (try? context.fetch(fetchRequest).first) ?? self.makeTab(context: context)
+        let tab = (try? context.fetch(fetchRequest).first) ?? Self.makeTab(context: context)
         Task {
             await MainActor.run {
                 currentItem = NavigationItem.tab(objectID: tab.objectID)
@@ -51,7 +73,7 @@ final class NavigationViewModel: ObservableObject {
     @discardableResult
     func createTab() -> NSManagedObjectID {
         let context = Database.shared.viewContext
-        let tab = self.makeTab(context: context)
+        let tab = Self.makeTab(context: context)
         #if !os(macOS)
         currentItem = NavigationItem.tab(objectID: tab.objectID)
         #endif
@@ -83,9 +105,12 @@ final class NavigationViewModel: ObservableObject {
                 return
             }
             let newlySelectedTab: Tab?
-            // select a closeBy tab if the currently selected tab is to be deleted
             if case let .tab(selectedTabID) = self.currentItem, selectedTabID == tabID {
-                newlySelectedTab = tabs.closeBy(toWhere: { $0.objectID == tabID }) ?? self.makeTab(context: context)
+                // select a closeBy tab if the currently selected tab is to be deleted
+                newlySelectedTab = tabs.closeBy(toWhere: { $0.objectID == tabID }) ?? Self.makeTab(context: context)
+            } else if tabs.count == 1 {
+                // we are deleting the last tab and the selection is somewhere else
+                newlySelectedTab = Self.makeTab(context: context)
             } else {
                 newlySelectedTab = nil // the current selection should remain
             }
@@ -113,7 +138,7 @@ final class NavigationViewModel: ObservableObject {
             tabs?.forEach { context.delete($0) }
 
             // create new tab
-            let newTab = self.makeTab(context: context)
+            let newTab = Self.makeTab(context: context)
             Task {
                 await MainActor.run {
                     self.currentItem = NavigationItem.tab(objectID: newTab.objectID)
@@ -121,6 +146,22 @@ final class NavigationViewModel: ObservableObject {
             }
         }
     }
+
+    #if os(macOS)
+    /// On closing a ZIM, this clears out the currentTabId if needed
+    /// Effectively recreating BrowserViewModel and the wkwebview
+    /// from scratch
+    /// - Parameter tabIds: the ones that should remain
+    func keepOnlyTabsBy(tabIds: Set<NSManagedObjectID>) {
+        guard let currentId = currentTabIdValue,
+              !tabIds.contains(currentId) else {
+            return
+        }
+        // setting it to nil ensures a new tab (and webview) will be created
+        // on accessing the public currentTabId
+        currentTabIdValue = nil
+    }
+    #endif
 }
 
 extension Array {

@@ -46,6 +46,13 @@ final class OrderedCache<Key: Hashable, Value> {
         }
     }
 
+    func removeNotMatchingWith(keys: Set<Key>) -> [Value] {
+        let removableKeys = Set(dict.keys).subtracting(keys)
+        return removableKeys.compactMap { key in
+            dict.removeValue(forKey: key)?.value
+        }
+    }
+
     func setValue(_ value: Value, forKey key: Key, dated: Date = Date.now) {
         dict[key] = ValueDated(value: value, date: dated)
     }

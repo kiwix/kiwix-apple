@@ -24,6 +24,7 @@ import Defaults
 struct ZimFileDetail: View {
     @Default(.downloadUsingCellular) private var downloadUsingCellular
     @Environment(\.dismiss) var dismiss
+    @EnvironmentObject var navigation: NavigationViewModel
     @ObservedObject var zimFile: ZimFile
     @State private var isPresentingDeleteAlert = false
     @State private var isPresentingDownloadAlert = false

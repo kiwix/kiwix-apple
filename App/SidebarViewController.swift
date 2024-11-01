@@ -33,7 +33,7 @@ class SidebarViewController: UICollectionViewController, NSFetchedResultsControl
             collectionView, indexPath, item in
             collectionView.dequeueConfiguredReusableCell(using: cellRegistration, for: indexPath, item: item)
         }
-        dataSource.supplementaryViewProvider = { collectionView, elementKind, indexPath in
+        dataSource.supplementaryViewProvider = { collectionView, _, indexPath in
             collectionView.dequeueConfiguredReusableSupplementary(using: headerRegistration, for: indexPath)
         }
         return dataSource
@@ -44,6 +44,10 @@ class SidebarViewController: UICollectionViewController, NSFetchedResultsControl
         sectionNameKeyPath: nil,
         cacheName: nil
     )
+
+    private var navigationViewModel: NavigationViewModel? {
+        (splitViewController as? SplitViewController)?.navigationViewModel
+    }
 
     enum Section: String, CaseIterable {
         case primary
@@ -62,7 +66,7 @@ class SidebarViewController: UICollectionViewController, NSFetchedResultsControl
 
     init() {
         super.init(collectionViewLayout: UICollectionViewLayout())
-        collectionView.collectionViewLayout = UICollectionViewCompositionalLayout { sectionIndex, layoutEnvironment in
+        collectionView.collectionViewLayout = UICollectionViewCompositionalLayout { _, layoutEnvironment in
             var config = UICollectionLayoutListConfiguration(appearance: .sidebar)
             config.headerMode = .supplementary
             config.trailingSwipeActionsConfigurationProvider = { [unowned self] indexPath in
@@ -78,8 +82,8 @@ class SidebarViewController: UICollectionViewController, NSFetchedResultsControl
     }
 
     func updateSelection() {
-        guard let splitViewController = splitViewController as? SplitViewController,
-              let currentItem = splitViewController.navigationViewModel.currentItem,
+        guard let navigationViewModel,
+              let currentItem = navigationViewModel.currentItem,
               let indexPath = dataSource.indexPath(for: currentItem),
               collectionView.indexPathsForSelectedItems?.first != indexPath else { return }
         collectionView.selectItem(at: indexPath, animated: true, scrollPosition: [])
@@ -96,8 +100,7 @@ class SidebarViewController: UICollectionViewController, NSFetchedResultsControl
         navigationItem.rightBarButtonItem = UIBarButtonItem(
             image: UIImage(systemName: "plus.square"),
             primaryAction: UIAction { [unowned self] _ in
-                guard let splitViewController = splitViewController as? SplitViewController else { return }
-                splitViewController.navigationViewModel.createTab()
+                navigationViewModel?.createTab()
             },
             menu: UIMenu(children: [
                 UIAction(
@@ -105,17 +108,16 @@ class SidebarViewController: UICollectionViewController, NSFetchedResultsControl
                     image: UIImage(systemName: "xmark.square"),
                     attributes: .destructive
                 ) { [unowned self] _ in
-                    guard let splitViewController = splitViewController as? SplitViewController,
-                          case let .tab(tabID) = splitViewController.navigationViewModel.currentItem else { return }
-                    splitViewController.navigationViewModel.deleteTab(tabID: tabID)
+                    guard let navigationViewModel,
+                          case let .tab(tabID) = navigationViewModel.currentItem else { return }
+                    navigationViewModel.deleteTab(tabID: tabID)
                 },
                 UIAction(
                     title: "sidebar_view.navigation.button.close_all".localized,
                     image: UIImage(systemName: "xmark.square.fill"),
                     attributes: .destructive
                 ) { [unowned self] _ in
-                    guard let splitViewController = splitViewController as? SplitViewController else { return }
-                    splitViewController.navigationViewModel.deleteAllTabs()
+                    navigationViewModel?.deleteAllTabs()
                 }
             ])
         )
@@ -148,34 +150,35 @@ class SidebarViewController: UICollectionViewController, NSFetchedResultsControl
         _ controller: NSFetchedResultsController<NSFetchRequestResult>,
         didChangeContentWith snapshot: NSDiffableDataSourceSnapshotReference
     ) {
-        let tabs = snapshot.itemIdentifiers
+        let tabIds = snapshot.itemIdentifiers
             .compactMap { $0 as? NSManagedObjectID }
-            .map { NavigationItem.tab(objectID: $0) }
-        var snapshot = NSDiffableDataSourceSectionSnapshot<NavigationItem>()
-        snapshot.append(tabs)
-        Task { [snapshot] in
-            await MainActor.run { [snapshot] in
+        let tabs = tabIds.map { NavigationItem.tab(objectID: $0) }
+        var tabsSnapshot = NSDiffableDataSourceSectionSnapshot<NavigationItem>()
+        tabsSnapshot.append(tabs)
+        Task { [tabsSnapshot] in
+            await MainActor.run { [tabsSnapshot] in
                 dataSource.apply(
-                    snapshot,
+                    tabsSnapshot,
                     to: .tabs,
                     animatingDifferences: dataSource.snapshot(for: .tabs).items.count > 0
                 ) {
                     guard let indexPath = self.collectionView.indexPathsForSelectedItems?.first,
                           let item = self.dataSource.itemIdentifier(for: indexPath),
                           case .tab = item else { return }
-                    var snapshot = self.dataSource.snapshot()
-                    snapshot.reconfigureItems([item])
-                    self.dataSource.apply(snapshot, animatingDifferences: true)
+                    var sourceSnapshot = self.dataSource.snapshot()
+                    sourceSnapshot.reconfigureItems([item])
+                    self.dataSource.apply(sourceSnapshot, animatingDifferences: true)
                 }
             }
         }
     }
 
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        guard let splitViewController = splitViewController as? SplitViewController,
+        guard let splitViewController,
+              let navigationViewModel,
               let navigationItem = dataSource.itemIdentifier(for: indexPath) else { return }
-        if splitViewController.navigationViewModel.currentItem != navigationItem {
-            splitViewController.navigationViewModel.currentItem = navigationItem
+        if navigationViewModel.currentItem != navigationItem {
+            navigationViewModel.currentItem = navigationItem
         }
         if splitViewController.displayMode == .oneOverSecondary {
             splitViewController.hide(.primary)
@@ -232,12 +235,13 @@ class SidebarViewController: UICollectionViewController, NSFetchedResultsControl
     }
 
     private func configureSwipeAction(indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-        guard let splitViewController = splitViewController as? SplitViewController,
+        guard let navigationViewModel,
               let item = dataSource.itemIdentifier(for: indexPath),
               case let .tab(tabID) = item else { return nil }
+        let title = "sidebar_view.navigation.button.close".localized
         let action = UIContextualAction(style: .destructive,
-                                        title: "sidebar_view.navigation.button.close".localized) { _, _, _ in
-            splitViewController.navigationViewModel.deleteTab(tabID: tabID)
+                                        title: title) { [weak navigationViewModel] _, _, _ in
+            navigationViewModel?.deleteTab(tabID: tabID)
         }
         action.image = UIImage(systemName: "xmark")
         return UISwipeActionsConfiguration(actions: [action])

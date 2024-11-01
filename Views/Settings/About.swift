@@ -158,6 +158,6 @@ private struct Dependency: Identifiable {
     #if os(macOS)
     TabView { About() }
     #elseif os(iOS)
-    NavigationView { About() }
+    NavigationStack { About() }
     #endif
 }

@@ -19,6 +19,7 @@ import SwiftUI
 
 struct BookmarkContextMenu: ViewModifier {
     @Environment(\.managedObjectContext) private var managedObjectContext
+    @EnvironmentObject private var navigation: NavigationViewModel
 
     let bookmark: Bookmark
 

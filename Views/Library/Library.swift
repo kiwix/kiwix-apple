@@ -111,6 +111,7 @@ struct LibraryZimFileDetailSidePanel: ViewModifier {
 /// On iOS, converts the modified view to a NavigationLink that goes to the zim file detail.
 struct LibraryZimFileContext: ViewModifier {
     @EnvironmentObject private var viewModel: LibraryViewModel
+    @EnvironmentObject private var navigation: NavigationViewModel
 
     let zimFile: ZimFile
     let dismiss: (() -> Void)? // iOS only

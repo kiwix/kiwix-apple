@@ -74,6 +74,9 @@ extension Notification.Name {
     static let exportFileData = Notification.Name("exportFileData")
     static let saveContent = Notification.Name("saveContent")
     static let toggleSidebar = Notification.Name("toggleSidebar")
+    #if os(macOS)
+    static let keepOnlyTabs = Notification.Name("keepOnlyTabs")
+    #endif
 }
 
 extension UTType {
@@ -81,6 +84,7 @@ extension UTType {
 }
 
 extension NotificationCenter {
+    @MainActor
     static func openURL(_ url: URL, inNewTab: Bool = false, isFileContext: Bool = false) {
         NotificationCenter.default.post(
             name: .openURL,
@@ -108,4 +112,12 @@ extension NotificationCenter {
     static func toggleSidebar() {
         NotificationCenter.default.post(name: .toggleSidebar, object: nil, userInfo: nil)
     }
+
+    #if os(macOS)
+    @MainActor static func keepOnlyTabs(_ tabIds: Set<NSManagedObjectID>) {
+        NotificationCenter.default.post(name: .keepOnlyTabs,
+                                        object: nil,
+                                        userInfo: ["tabIds": tabIds])
+    }
+    #endif
 }

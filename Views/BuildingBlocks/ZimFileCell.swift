@@ -18,7 +18,7 @@ import SwiftUI
 
 struct ZimFileCell: View {
     @ObservedObject var zimFile: ZimFile
-    @State var isHovering: Bool = false
+    @State private var isHovering: Bool = false
     let isLoading: Bool
 
     let prominent: Prominent

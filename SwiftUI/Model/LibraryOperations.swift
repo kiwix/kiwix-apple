@@ -161,6 +161,27 @@ struct LibraryOperations {
                 zimFile.isMissing = false
             }
             zimFile.tabs.forEach { context.delete($0) }
+
+            if let tabs = try? Tab.fetchRequest().execute() {
+                let tabIds = tabs.map { $0.objectID }
+                // clear out all the browserViewModels of tabs no longer in use
+                BrowserViewModel.keepOnlyTabsByIds(Set(tabIds))
+
+                #if os(iOS)
+                // make sure we won't end up without any tabs
+                if tabs.count == 0 {
+                    let tab = Tab(context: context)
+                    tab.created = Date()
+                    tab.lastOpened = Date()
+                    try? context.obtainPermanentIDs(for: [tab])
+                }
+                #else
+                if context.hasChanges { try? context.save() }
+                Task { @MainActor in
+                    NotificationCenter.keepOnlyTabs(Set(tabIds))
+                }
+                #endif
+            }
             if context.hasChanges { try? context.save() }
         }
     }

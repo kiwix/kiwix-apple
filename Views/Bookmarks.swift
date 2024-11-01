@@ -16,6 +16,7 @@
 import SwiftUI
 
 struct Bookmarks: View {
+    @EnvironmentObject private var navigation: NavigationViewModel
     @Environment(\.dismiss) private var dismiss
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     @Environment(\.managedObjectContext) private var managedObjectContext

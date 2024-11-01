@@ -92,7 +92,7 @@ struct SidebarNavigationCommands: View {
     @FocusedBinding(\.navigationItem) var navigationItem: NavigationItem??
 
     var body: some View {
-        buildButtons([.reading, .bookmarks], modifiers: [.command])
+        buildButtons([.bookmarks], modifiers: [.command])
         if FeatureFlags.hasLibrary {
             Divider()
             buildButtons([.opened, .categories, .downloads, .new], modifiers: [.command, .control])

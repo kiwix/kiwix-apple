@@ -99,20 +99,24 @@ struct Kiwix: App {
 
 struct RootView: View {
     @Environment(\.controlActiveState) var controlActiveState
-    @StateObject private var browser = BrowserViewModel()
     @StateObject private var navigation = NavigationViewModel()
     @StateObject private var windowTracker = WindowTracker()
 
-    private let primaryItems: [NavigationItem] = [.reading, .bookmarks]
+    private let primaryItems: [NavigationItem] = [.bookmarks]
     private let libraryItems: [NavigationItem] = [.opened, .categories, .downloads, .new]
     private let openURL = NotificationCenter.default.publisher(for: .openURL)
     private let appTerminates = NotificationCenter.default.publisher(for: NSApplication.willTerminateNotification)
     private let tabCloses = NotificationCenter.default.publisher(for: NSWindow.willCloseNotification)
+    /// Close other tabs then the ones received
+    private let keepOnlyTabs = NotificationCenter.default.publisher(for: .keepOnlyTabs)
 
     var body: some View {
         NavigationSplitView {
             List(selection: $navigation.currentItem) {
-                ForEach(primaryItems, id: \.self) { navigationItem in
+                ForEach(
+                    [NavigationItem.tab(objectID: navigation.currentTabId)] + primaryItems,
+                    id: \.self
+                ) { navigationItem in
                     Label(navigationItem.name, systemImage: navigationItem.icon)
                 }
                 if FeatureFlags.hasLibrary {
@@ -128,16 +132,12 @@ struct RootView: View {
             switch navigation.currentItem {
             case .loading:
                 LoadingDataView()
-            case .reading:
+            case .tab(let tabID):
+                let browser = BrowserViewModel.getCached(tabID: tabID)
                 BrowserTab().environmentObject(browser)
-                    .withHostingWindow { window in
-                        if let windowNumber = window?.windowNumber {
-                            browser.restoreByWindowNumber(windowNumber: windowNumber,
-                                                          urlToTabIdConverter: navigation.tabIDFor(url:))
-                        } else {
-                            if FeatureFlags.hasLibrary == false {
-                                browser.loadMainArticle()
-                            }
+                    .withHostingWindow { [weak browser] _ in
+                        if FeatureFlags.hasLibrary == false {
+                            browser?.loadMainArticle()
                         }
                     }
             case .bookmarks:
@@ -156,10 +156,10 @@ struct RootView: View {
         }
         .frame(minWidth: 650, minHeight: 500)
         .focusedSceneValue(\.navigationItem, $navigation.currentItem)
-        .environmentObject(navigation)
         .modifier(AlertHandler())
         .modifier(OpenFileHandler())
         .modifier(SaveContentHandler())
+        .environmentObject(navigation)
         .onOpenURL { url in
             if url.isFileURL {
                 NotificationCenter.openFiles([url], context: .file)
@@ -168,7 +168,9 @@ struct RootView: View {
             }
         }
         .onReceive(openURL) { notification in
-            guard let url = notification.userInfo?["url"] as? URL else { return }
+            guard let url = notification.userInfo?["url"] as? URL else {
+                return
+            }
             if notification.userInfo?["isFileContext"] as? Bool == true {
                 // handle the opened ZIM file from Finder
                 // for which the system opens a new window,
@@ -177,16 +179,17 @@ struct RootView: View {
                 // We need to filter it down the the last window 
                 // (which is usually not the key window yet at this point),
                 // and load the content only within that
-                Task {
-                    if windowTracker.isLastWindow() {
-                        browser.load(url: url)
+                Task { @MainActor [weak navigation] in
+                    if windowTracker.isLastWindow(), let navigation {
+                        BrowserViewModel.getCached(tabID: navigation.currentTabId).load(url: url)
                     }
                 }
                 return
             }
             guard controlActiveState == .key else { return }
-            navigation.currentItem = .reading
-            browser.load(url: url)
+            let tabID = navigation.currentTabId
+            navigation.currentItem = .tab(objectID: tabID)
+            BrowserViewModel.getCached(tabID: tabID).load(url: url)
         }
         .onReceive(tabCloses) { publisher in
             // closing one window either by CMD+W || red(X) close button
@@ -199,11 +202,20 @@ struct RootView: View {
                 // tab closed by app termination
                 return
             }
-            if let tabID = browser.tabID {
-                // tab closed by user
-                browser.pauseVideoWhenNotInPIP()
-                navigation.deleteTab(tabID: tabID)
+            let tabID = navigation.currentTabId
+            let browser = BrowserViewModel.getCached(tabID: tabID)
+            // tab closed by user
+            browser.pauseVideoWhenNotInPIP()
+            Task { @MainActor [weak browser] in
+                await browser?.clear()
             }
+            navigation.deleteTab(tabID: tabID)
+        }
+        .onReceive(keepOnlyTabs) { notification in
+            guard let tabsToKeep = notification.userInfo?["tabIds"] as? Set<NSManagedObjectID> else {
+                return
+            }
+            navigation.keepOnlyTabsBy(tabIds: tabsToKeep)
         }
         .onReceive(appTerminates) { _ in
             // CMD+Q -> Quit Kiwix, this also closes the last window
@@ -212,14 +224,14 @@ struct RootView: View {
             switch AppType.current {
             case .kiwix:
                 await LibraryOperations.reopen()
-                navigation.currentItem = .reading
+                navigation.currentItem = .tab(objectID: navigation.currentTabId)
                 LibraryOperations.scanDirectory(URL.documentDirectory)
                 LibraryOperations.applyFileBackupSetting()
                 DownloadService.shared.restartHeartbeatIfNeeded()
             case let .custom(zimFileURL):
                 await LibraryOperations.open(url: zimFileURL)
                 ZimMigration.forCustomApps()
-                navigation.currentItem = .reading
+                navigation.currentItem = .tab(objectID: navigation.currentTabId)
             }
             // MARK: - migrations
             if !ProcessInfo.processInfo.arguments.contains("testing") {
