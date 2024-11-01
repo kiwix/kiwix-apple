@@ -47,11 +47,9 @@ enum Brand {
     static let appName: String = Config.value(for: .displayName) ?? "Kiwix"
     static let appStoreId: String = Config.value(for: .appStoreID) ?? "id997079563"
     static let loadingLogoImage: String = "welcomeLogo"
-    static let loadingLogoWidth: Int = Config.value(for: .logoWidth) ?? 192
-    static let loadingLogoHeight: Int = Config.value(for: .logoHeight) ?? 140
-    static var loadingLogoSize: CGSize {
-        CGSize(width: loadingLogoWidth, height: loadingLogoHeight)
-    }
+    // swiftlint:disable:next force_cast
+    static var loadingLogoSize: CGSize = ImageInfo.sizeOf(imageName: loadingLogoImage)!
+
     static let aboutText: String = Config.value(for: .aboutText) ?? "settings.about.description".localized
     static let aboutWebsite: String = Config.value(for: .aboutWebsite) ?? "https://www.kiwix.org"
 
