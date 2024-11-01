@@ -1,7 +1,7 @@
 {
   "images" : [
     {
-      "filename" : "vertical-logo-light.svg",
+      "filename" : "vertical-logo-light-g 1.svg",
       "idiom" : "universal"
     },
     {
@@ -11,7 +11,7 @@
           "value" : "light"
         }
       ],
-      "filename" : "vertical-logo-light 1.svg",
+      "filename" : "vertical-logo-light-g.svg",
       "idiom" : "universal"
     },
     {
@@ -21,7 +21,7 @@
           "value" : "dark"
         }
       ],
-      "filename" : "vertical-logo-dark.svg",
+      "filename" : "vertical-logo-dark-g.svg",
       "idiom" : "universal"
     }
   ],
