@@ -28,9 +28,14 @@ struct SupportKiwixButton: View {
                 Image(systemName: "heart.fill")
                     .foregroundStyle(.red)
                 Text("Support Kiwix")
-            }.padding(6)
+            }
+            #if os(macOS)
+            .padding(6)
+            #endif
         }
         .buttonStyle(BorderlessButtonStyle())
+        #if os(macOS)
         .padding()
+        #endif
     }
 }
