@@ -33,6 +33,7 @@ struct Kiwix: App {
     @StateObject private var libraryRefreshViewModel = LibraryViewModel()
     private let notificationCenterDelegate = NotificationCenterDelegate()
     private var amountSelected = PassthroughSubject<SelectedAmount?, Never>()
+    @State private var selectedAmount: SelectedAmount?
     @StateObject var formReset = FormReset()
 
     init() {
@@ -83,30 +84,43 @@ struct Kiwix: App {
             .frame(width: 550, height: 400)
         }
         Window("Donate", id: "donation") {
-            PaymentForm(amountSelected: amountSelected)
-                .frame(width: 320, height: 320)
-                .onReceive(NotificationCenter.default.publisher(for: NSWindow.willCloseNotification)) { notification in
-                    if let window = notification.object as? NSWindow,
-                       window.identifier?.rawValue == "donation" {
-                        debugPrint("closing donation")
-                        formReset.reset()
+            Group {
+                if let selectedAmount {
+                    PaymentSummary(selectedAmount: selectedAmount) {
+                        // after upgrading to macOS 14, use:
+                        // @Environment(\.dismissWindow) var dismissWindow
+                        // and call:
+                        // dismissWindow(id: "donation")
+                        NSApplication.shared.windows.first { window in
+                            window.identifier?.rawValue == "donation"
+                        }?.close()
                     }
+                } else {
+                    PaymentForm(amountSelected: amountSelected)
+                        .frame(width: 320, height: 320)
                 }
-                .environmentObject(formReset)
-                .onReceive(amountSelected) { amount in
-                    debugPrint("amountSelected: \(amount)")
-                    // after upgrading to macOS 14, use:
-                    // @Environment(\.dismissWindow) var dismissWindow
-                    // and call:
-                    // dismissWindow(id: "donation")
-                    NSApplication.shared.windows.first { window in
-                        window.identifier?.rawValue == "donation"
-                    }?.close()
+            }
+            .onReceive(amountSelected) { amount in
+                selectedAmount = amount
+            }
+            .onReceive(NotificationCenter.default.publisher(for: NSWindow.willCloseNotification)) { notification in
+                if let window = notification.object as? NSWindow,
+                   window.identifier?.rawValue == "donation" {
+                    debugPrint("closing donation")
+                    formReset.reset()
+                    selectedAmount = nil
                 }
+            }
+            .environmentObject(formReset)
+//                .onReceive(amountSelected) { amount in
+//                    debugPrint("amountSelected: \(amount)")
+//
+//                }
         }
-        .windowResizability(.contentSize)
+        .windowResizability(.contentMinSize)
         .windowStyle(.titleBar)
         .commandsRemoved()
+        .defaultSize(width: 320, height: 400)
     }
 
     private class NotificationCenterDelegate: NSObject, UNUserNotificationCenterDelegate {
@@ -138,7 +152,6 @@ struct RootView: View {
     private let tabCloses = NotificationCenter.default.publisher(for: NSWindow.willCloseNotification)
     /// Close other tabs then the ones received
     private let keepOnlyTabs = NotificationCenter.default.publisher(for: .keepOnlyTabs)
-    private let payment = Payment()
 
     var body: some View {
         NavigationSplitView {
@@ -157,6 +170,7 @@ struct RootView: View {
                     }
                 }
             }
+            .frame(minWidth: 160)
             .safeAreaInset(edge: .bottom) {
                 SupportKiwixButton {
                     openWindow(id: "donation")
@@ -170,7 +184,6 @@ struct RootView: View {
 //                    .frame(width: 200, height: 30, alignment: .center)
 //                    .padding()
             }
-            .frame(minWidth: 160)
         } detail: {
             switch navigation.currentItem {
             case .loading:

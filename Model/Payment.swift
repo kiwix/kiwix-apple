@@ -19,6 +19,8 @@ import SwiftUI
 
 struct Payment {
 
+    let onComplete: () -> Void
+
     static let merchantId = "merchant.org.kiwix"
     static let supportedNetworks: [PKPaymentNetwork] = [.masterCard, .visa, .discover, .amex, .chinaUnionPay, .electron, .girocard, .mada]
     static let capabilities: PKMerchantCapability = [.threeDSecure, .credit, .debit, .emv]
@@ -78,6 +80,7 @@ struct Payment {
         case .willAuthorize:
             break
         case .didAuthorize(let payment, let resultHandler):
+            debugPrint("payment success: \(payment)")
 //            server.process(with: payment) { serverResult in
 //                guard case .success = serverResult else {
 //                    // handle error
@@ -85,12 +88,13 @@ struct Payment {
 //                    return
 //                }
 //                // handle success
-//                let result = PKPaymentAuthorizationResult(status: .success, errors: nil)
-//                resultHandler(result)
+                let result = PKPaymentAuthorizationResult(status: .success, errors: nil)
+                resultHandler(result)
+            onComplete()
 //            }
             break
         case .didFinish:
-            break
+            onComplete()
         @unknown default:
             break
         }
