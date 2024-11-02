@@ -35,21 +35,24 @@ struct PaymentForm: View {
     var body: some View {
         #if os(iOS)
         HStack {
-            Button("Cancel", action: {
-                dismiss()
-            })
-            .padding()
-            .buttonStyle(BorderlessButtonStyle())
+            Spacer()
+            Text("Donate")
+                .font(.title)
+                .padding()
             Spacer()
         }
-
-        let pickerTitle = "Donate"
-        #else
-        let pickerTitle = ""
+        .overlay(alignment: .topTrailing) {
+            Button("", systemImage: "x.circle.fill") {
+                dismiss()
+            }
+            .font(.title2)
+            .foregroundStyle(.secondary)
+            .padding()
+        }
         #endif
 
         VStack {
-            Picker(pickerTitle, selection: $isMonthly) {
+            Picker("", selection: $isMonthly) {
                 Label("One time", systemImage: "heart.circle").tag(false)
                 Label("Monthly", systemImage: "arrow.clockwise.heart").tag(true)
             }.pickerStyle(.segmented)
@@ -63,13 +66,8 @@ struct PaymentForm: View {
         .onReceive(formReset.objectWillChange) { _ in
             reset()
         }
-        #else
-        .onReceive(amountSelected) { amount in
-            if amount != nil {
-                dismiss()
-            }
-        }
         #endif
+
     }
 }
 

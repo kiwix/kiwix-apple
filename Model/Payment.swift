@@ -20,7 +20,7 @@ import SwiftUI
 struct Payment {
 
     static let merchantId = "merchant.org.kiwix"
-    static let supportedNetworks: [PKPaymentNetwork] = [.masterCard, .visa, .discover, .amex, .chinaUnionPay, .electron, .girocard]
+    static let supportedNetworks: [PKPaymentNetwork] = [.masterCard, .visa, .discover, .amex, .chinaUnionPay, .electron, .girocard, .mada]
     static let capabilities: PKMerchantCapability = [.threeDSecure, .credit, .debit, .emv]
     static let currencyCodes = ["USD", "EUR", "CHF"]
     static let defaultCurrencyCode = "USD"
@@ -36,6 +36,18 @@ struct Payment {
         .init(value:  8, isAverage: true),
         .init(value: 10)
     ]
+
+    static func paymentButtonType() -> PayWithApplePayButtonLabel? {
+        if PKPaymentAuthorizationController.canMakePayments() {
+            return PayWithApplePayButtonLabel.donate
+        }
+        if PKPaymentAuthorizationController.canMakePayments(
+            usingNetworks: Payment.supportedNetworks,
+            capabilities: Payment.capabilities) {
+            return PayWithApplePayButtonLabel.setUp
+        }
+        return nil
+    }
 
     func donationRequest(for selectedAmount: SelectedAmount) -> PKPaymentRequest {
         let request = PKPaymentRequest()

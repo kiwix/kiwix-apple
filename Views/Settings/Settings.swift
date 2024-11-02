@@ -131,6 +131,7 @@ import Combine
 
 struct Settings: View {
     private var amountSelected = PassthroughSubject<SelectedAmount?, Never>()
+    @State private var selectedAmount: SelectedAmount?
     @State private var showDonationPopUp: Bool = false
     func openDonation() {
         showDonationPopUp = true
@@ -170,15 +171,20 @@ struct Settings: View {
                 .navigationTitle("settings.navigation.title".localized)
             }
         }
-        .sheet(isPresented: $showDonationPopUp) {
-            NavigationStack {
-                PaymentForm(amountSelected: amountSelected)
+        .sheet(isPresented: $showDonationPopUp, onDismiss: {
+            selectedAmount = nil
+        }) {
+            Group {
+                if let selectedAmount {
+                    PaymentSummary(selectedAmount: selectedAmount)
+                } else {
+                    PaymentForm(amountSelected: amountSelected)
+                }
             }
             .presentationDetents([.fraction(0.6128)])
-        }
-        .onReceive(amountSelected) { amount in
-            // TODO: close the window / view and trigger apple pay
-            debugPrint("selected: \(String(describing: amount))")
+            .onReceive(amountSelected) { value in
+                selectedAmount = value
+            }
         }
     }
 
@@ -266,26 +272,10 @@ struct Settings: View {
 
     var miscellaneous: some View {
         Section("settings.miscellaneous.title".localized) {
-            if PKPaymentAuthorizationController.canMakePayments(
-                usingNetworks: Payment.supportedNetworks,
-                capabilities: Payment.capabilities
-            ) {
+            if Payment.paymentButtonType() != nil {
                 SupportKiwixButton {
                     openDonation()
                 }
-
-//                HStack {
-//                    Spacer()
-//                    PayWithApplePayButton(
-//                        .donate,
-//                        request: payment.donationRequest(),
-//                        onPaymentAuthorizationChange: payment.onPaymentAuthPhase(phase:),
-//                        onMerchantSessionRequested: payment.onMerchantSessionUpdate
-//                    )
-//                    .frame(width: 200, height: 38)
-//                    .padding(2)
-//                    Spacer()
-//                }
             }
             Button("settings.miscellaneous.button.feedback".localized) {
                 UIApplication.shared.open(URL(string: "mailto:feedback@kiwix.org")!)
