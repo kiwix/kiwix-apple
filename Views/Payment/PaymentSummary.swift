@@ -19,7 +19,12 @@ import PassKit
 struct PaymentSummary: View {
 
     let selectedAmount: SelectedAmount
-    private let payment = Payment()
+    private let payment: Payment
+
+    init(selectedAmount: SelectedAmount, onComplete: @escaping () -> Void) {
+        self.selectedAmount = selectedAmount
+        payment = Payment(onComplete: onComplete)
+    }
 
     var body: some View {
         VStack {
@@ -44,7 +49,7 @@ struct PaymentSummary: View {
                 .frame(width: 186, height: 44)
                 .padding()
             } else {
-                Text("We are sorry to see, that your device does not support Apple Pay.")
+                Text("We are sorry, your device does not support Apple Pay.")
                     .foregroundStyle(.red)
                     .font(.callout)
             }
@@ -53,5 +58,5 @@ struct PaymentSummary: View {
 }
 
 #Preview {
-    PaymentSummary(selectedAmount: SelectedAmount(value: 34, currency: "CHF", isMonthly: true))
+    PaymentSummary(selectedAmount: SelectedAmount(value: 34, currency: "CHF", isMonthly: true), onComplete: {})
 }
