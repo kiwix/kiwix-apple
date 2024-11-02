@@ -22,6 +22,20 @@ struct Payment {
     static let merchantId = "merchant.org.kiwix"
     static let supportedNetworks: [PKPaymentNetwork] = [.masterCard, .visa, .discover, .amex, .chinaUnionPay, .electron, .girocard]
     static let capabilities: PKMerchantCapability = [.threeDSecure, .credit, .debit, .emv]
+    static let currencyCodes = ["USD", "EUR", "CHF"]
+    static let defaultCurrencyCode = "USD"
+
+    static let oneTimes: [AmountOption] = [
+        .init(value: 10),
+        .init(value: 34, isAverage: true),
+        .init(value: 50)
+    ]
+
+    static let monthlies: [AmountOption] = [
+        .init(value:  5),
+        .init(value:  8, isAverage: true),
+        .init(value: 10)
+    ]
 
     func donationRequest() -> PKPaymentRequest {
         let request = PKPaymentRequest()
