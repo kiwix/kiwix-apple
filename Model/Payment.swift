@@ -37,15 +37,25 @@ struct Payment {
         .init(value: 10)
     ]
 
-    func donationRequest() -> PKPaymentRequest {
+    func donationRequest(for selectedAmount: SelectedAmount) -> PKPaymentRequest {
         let request = PKPaymentRequest()
         request.merchantIdentifier = Self.merchantId
         request.merchantCapabilities = Self.capabilities
         request.countryCode = "CH"
-        request.currencyCode = "USD"
+        request.currencyCode = selectedAmount.currency
         request.supportedNetworks = Self.supportedNetworks
+        let recurring: PKRecurringPaymentRequest? = if selectedAmount.isMonthly {
+            PKRecurringPaymentRequest(paymentDescription: "Support Kiwix",
+                                      regularBilling: .init(label: "Monthly support for Kiwix",
+                                                            amount: NSDecimalNumber(value: selectedAmount.value),
+                                                            type: .final),
+                                      managementURL: URL(string: "https://www.kiwix.org")!)
+        } else {
+            nil
+        }
+        request.recurringPaymentRequest = recurring
         request.paymentSummaryItems = [
-            PKPaymentSummaryItem(label: "Kiwix", amount: 15, type: .final)
+            PKPaymentSummaryItem(label: "Kiwix", amount: NSDecimalNumber(value: selectedAmount.value), type: .final)
         ]
         return request
     }

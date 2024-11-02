@@ -127,8 +127,14 @@ struct SettingSection<Content: View>: View {
 #elseif os(iOS)
 
 import PassKit
+import Combine
 
 struct Settings: View {
+    private var amountSelected = PassthroughSubject<SelectedAmount?, Never>()
+    @State private var showDonationPopUp: Bool = false
+    func openDonation() {
+        showDonationPopUp = true
+    }
     @Default(.backupDocumentDirectory) private var backupDocumentDirectory
     @Default(.downloadUsingCellular) private var downloadUsingCellular
     @Default(.externalLinkLoadingPolicy) private var externalLinkLoadingPolicy
@@ -144,23 +150,35 @@ struct Settings: View {
     }
 
     var body: some View {
-        if FeatureFlags.hasLibrary {
-            List {
-                readingSettings
-                librarySettings
-                catalogSettings
-                backupSettings
-                miscellaneous
+        Group {
+            if FeatureFlags.hasLibrary {
+                List {
+                    readingSettings
+                    librarySettings
+                    catalogSettings
+                    backupSettings
+                    miscellaneous
+                }
+                .modifier(ToolbarRoleBrowser())
+                .navigationTitle("settings.navigation.title".localized)
+            } else {
+                List {
+                    readingSettings
+                    miscellaneous
+                }
+                .modifier(ToolbarRoleBrowser())
+                .navigationTitle("settings.navigation.title".localized)
             }
-            .modifier(ToolbarRoleBrowser())
-            .navigationTitle("settings.navigation.title".localized)
-        } else {
-            List {
-                readingSettings
-                miscellaneous
+        }
+        .sheet(isPresented: $showDonationPopUp) {
+            NavigationStack {
+                PaymentForm(amountSelected: amountSelected)
             }
-            .modifier(ToolbarRoleBrowser())
-            .navigationTitle("settings.navigation.title".localized)
+            .presentationDetents([.fraction(0.6128)])
+        }
+        .onReceive(amountSelected) { amount in
+            // TODO: close the window / view and trigger apple pay
+            debugPrint("selected: \(String(describing: amount))")
         }
     }
 
@@ -252,18 +270,22 @@ struct Settings: View {
                 usingNetworks: Payment.supportedNetworks,
                 capabilities: Payment.capabilities
             ) {
-                HStack {
-                    Spacer()
-                    PayWithApplePayButton(
-                        .donate,
-                        request: payment.donationRequest(),
-                        onPaymentAuthorizationChange: payment.onPaymentAuthPhase(phase:),
-                        onMerchantSessionRequested: payment.onMerchantSessionUpdate
-                    )
-                    .frame(width: 200, height: 38)
-                    .padding(2)
-                    Spacer()
+                SupportKiwixButton {
+                    openDonation()
                 }
+
+//                HStack {
+//                    Spacer()
+//                    PayWithApplePayButton(
+//                        .donate,
+//                        request: payment.donationRequest(),
+//                        onPaymentAuthorizationChange: payment.onPaymentAuthPhase(phase:),
+//                        onMerchantSessionRequested: payment.onMerchantSessionUpdate
+//                    )
+//                    .frame(width: 200, height: 38)
+//                    .padding(2)
+//                    Spacer()
+//                }
             }
             Button("settings.miscellaneous.button.feedback".localized) {
                 UIApplication.shared.open(URL(string: "mailto:feedback@kiwix.org")!)
