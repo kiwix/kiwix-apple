@@ -32,6 +32,8 @@ struct Kiwix: App {
     @NSApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     @StateObject private var libraryRefreshViewModel = LibraryViewModel()
     private let notificationCenterDelegate = NotificationCenterDelegate()
+    private var amountSelected = PassthroughSubject<SelectedAmount?, Never>()
+    @StateObject var formReset = FormReset()
 
     init() {
         UNUserNotificationCenter.current().delegate = notificationCenterDelegate
@@ -80,6 +82,31 @@ struct Kiwix: App {
             }
             .frame(width: 550, height: 400)
         }
+        Window("Donate", id: "donation") {
+            PaymentForm(amountSelected: amountSelected)
+                .frame(width: 320, height: 320)
+                .onReceive(NotificationCenter.default.publisher(for: NSWindow.willCloseNotification)) { notification in
+                    if let window = notification.object as? NSWindow,
+                       window.identifier?.rawValue == "donation" {
+                        debugPrint("closing donation")
+                        formReset.reset()
+                    }
+                }
+                .environmentObject(formReset)
+                .onReceive(amountSelected) { amount in
+                    debugPrint("amountSelected: \(amount)")
+                    // after upgrading to macOS 14, use:
+                    // @Environment(\.dismissWindow) var dismissWindow
+                    // and call:
+                    // dismissWindow(id: "donation")
+                    NSApplication.shared.windows.first { window in
+                        window.identifier?.rawValue == "donation"
+                    }?.close()
+                }
+        }
+        .windowResizability(.contentSize)
+        .windowStyle(.titleBar)
+        .commandsRemoved()
     }
 
     private class NotificationCenterDelegate: NSObject, UNUserNotificationCenterDelegate {
@@ -99,6 +126,7 @@ struct Kiwix: App {
 }
 
 struct RootView: View {
+    @Environment(\.openWindow) var openWindow
     @Environment(\.controlActiveState) var controlActiveState
     @StateObject private var navigation = NavigationViewModel()
     @StateObject private var windowTracker = WindowTracker()
@@ -134,17 +162,20 @@ struct RootView: View {
                     usingNetworks: Payment.supportedNetworks,
                     capabilities: Payment.capabilities
                 ) {
-                    PayWithApplePayButton(
-                        .donate,
-                        request: payment.donationRequest(),
-                        onPaymentAuthorizationChange: payment.onPaymentAuthPhase(phase:),
-                        onMerchantSessionRequested: payment.onMerchantSessionUpdate
-                    )
-                    .frame(width: 200, height: 30, alignment: .center)
-                    .padding()
+                    SupportKiwixButton {
+                        openWindow(id: "donation")
+                    }
+//                    PayWithApplePayButton(
+//                        .donate,
+//                        request: payment.donationRequest(),
+//                        onPaymentAuthorizationChange: payment.onPaymentAuthPhase(phase:),
+//                        onMerchantSessionRequested: payment.onMerchantSessionUpdate
+//                    )
+//                    .frame(width: 200, height: 30, alignment: .center)
+//                    .padding()
                 }
             }
-            .frame(minWidth: 150)
+            .frame(minWidth: 160)
         } detail: {
             switch navigation.currentItem {
             case .loading:
