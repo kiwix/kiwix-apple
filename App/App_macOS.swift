@@ -158,13 +158,9 @@ struct RootView: View {
                 }
             }
             .safeAreaInset(edge: .bottom) {
-                if PKPaymentAuthorizationController.canMakePayments(
-                    usingNetworks: Payment.supportedNetworks,
-                    capabilities: Payment.capabilities
-                ) {
-                    SupportKiwixButton {
-                        openWindow(id: "donation")
-                    }
+                SupportKiwixButton {
+                    openWindow(id: "donation")
+                }
 //                    PayWithApplePayButton(
 //                        .donate,
 //                        request: payment.donationRequest(),
@@ -173,7 +169,6 @@ struct RootView: View {
 //                    )
 //                    .frame(width: 200, height: 30, alignment: .center)
 //                    .padding()
-                }
             }
             .frame(minWidth: 160)
         } detail: {
