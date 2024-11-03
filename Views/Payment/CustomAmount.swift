@@ -73,7 +73,7 @@ struct CustomAmount: View {
                 }
                 .buttonStyle(BorderedProminentButtonStyle())
                 .padding()
-                .disabled( customAmount == nil || (customAmount ?? 0) <= 0)
+                .disabled( customAmount == nil || (customAmount ?? 0) < Payment.minimumAmount)
             }
             Spacer()
         }
@@ -91,4 +91,3 @@ private enum FocusedField: String {
 #Preview {
     CustomAmount(selected: PassthroughSubject<SelectedAmount?, Never>(), isMonthly: true)
 }
-

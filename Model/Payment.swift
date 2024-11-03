@@ -16,16 +16,18 @@
 import Foundation
 import PassKit
 import SwiftUI
+import Combine
 
 struct Payment {
 
-    let onComplete: () -> Void
+    let completeSubject = PassthroughSubject<Bool, Never>()
 
     static let merchantId = "merchant.org.kiwix"
     static let supportedNetworks: [PKPaymentNetwork] = [.masterCard, .visa, .discover, .amex, .chinaUnionPay, .electron, .girocard, .mada]
     static let capabilities: PKMerchantCapability = [.threeDSecure, .credit, .debit, .emv]
     static let currencyCodes = ["USD", "EUR", "CHF"]
     static let defaultCurrencyCode = "USD"
+    static let minimumAmount: Double = 5
 
     static let oneTimes: [AmountOption] = [
         .init(value: 10),
@@ -90,11 +92,11 @@ struct Payment {
 //                // handle success
                 let result = PKPaymentAuthorizationResult(status: .success, errors: nil)
                 resultHandler(result)
-            onComplete()
+            completeSubject.send(true)
 //            }
             break
         case .didFinish:
-            onComplete()
+            completeSubject.send(false)
         @unknown default:
             break
         }
