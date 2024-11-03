@@ -83,7 +83,7 @@ struct Kiwix: App {
             }
             .frame(width: 550, height: 400)
         }
-        Window("Donate", id: "donation") {
+        Window("payment.donate.title".localized, id: "donation") {
             Group {
                 if let selectedAmount {
                     PaymentSummary(selectedAmount: selectedAmount) {
@@ -106,16 +106,11 @@ struct Kiwix: App {
             .onReceive(NotificationCenter.default.publisher(for: NSWindow.willCloseNotification)) { notification in
                 if let window = notification.object as? NSWindow,
                    window.identifier?.rawValue == "donation" {
-                    debugPrint("closing donation")
                     formReset.reset()
                     selectedAmount = nil
                 }
             }
             .environmentObject(formReset)
-//                .onReceive(amountSelected) { amount in
-//                    debugPrint("amountSelected: \(amount)")
-//
-//                }
         }
         .windowResizability(.contentMinSize)
         .windowStyle(.titleBar)
@@ -175,14 +170,6 @@ struct RootView: View {
                 SupportKiwixButton {
                     openWindow(id: "donation")
                 }
-//                    PayWithApplePayButton(
-//                        .donate,
-//                        request: payment.donationRequest(),
-//                        onPaymentAuthorizationChange: payment.onPaymentAuthPhase(phase:),
-//                        onMerchantSessionRequested: payment.onMerchantSessionUpdate
-//                    )
-//                    .frame(width: 200, height: 30, alignment: .center)
-//                    .padding()
             }
         } detail: {
             switch navigation.currentItem {

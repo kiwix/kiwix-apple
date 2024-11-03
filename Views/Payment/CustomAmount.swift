@@ -34,7 +34,7 @@ struct CustomAmount: View {
             Spacer()
             List {
                 HStack {
-                    TextField("Custom amount",
+                    TextField("payment.textfield.custom_amount.label".localized,
                               value: $customAmount,
                               format: .number.precision(.fractionLength(2)))
                     .focused($focusedField, equals: .customAmount)
@@ -69,7 +69,7 @@ struct CustomAmount: View {
                         )
                     }
                 } label: {
-                    Text("Confirm")
+                    Text("payment.confirm.button.title")
                 }
                 .buttonStyle(BorderedProminentButtonStyle())
                 .padding()

@@ -22,7 +22,9 @@ struct Payment {
 
     let completeSubject = PassthroughSubject<Bool, Never>()
 
+    // TODO: handle custom apps
     static let merchantId = "merchant.org.kiwix"
+    static let paymentSubscriptionManagingURL = "https://www.kiwix.org"
     static let supportedNetworks: [PKPaymentNetwork] = [
         .masterCard,
         .visa,
@@ -70,37 +72,30 @@ struct Payment {
         request.currencyCode = selectedAmount.currency
         request.supportedNetworks = Self.supportedNetworks
         let recurring: PKRecurringPaymentRequest? = if selectedAmount.isMonthly {
-            PKRecurringPaymentRequest(paymentDescription: "Support Kiwix",
-                                      regularBilling: .init(label: "Monthly support for Kiwix",
+            PKRecurringPaymentRequest(paymentDescription: "payment.description.label".localized,
+                                      regularBilling: .init(label: "payment.monthly_support.label".localized,
                                                             amount: NSDecimalNumber(value: selectedAmount.value),
                                                             type: .final),
-                                      managementURL: URL(string: "https://www.kiwix.org")!)
+                                      managementURL: URL(string: Self.paymentSubscriptionManagingURL)!)
         } else {
             nil
         }
         request.recurringPaymentRequest = recurring
         request.paymentSummaryItems = [
-            PKPaymentSummaryItem(label: "Kiwix", amount: NSDecimalNumber(value: selectedAmount.value), type: .final)
+            PKPaymentSummaryItem(
+                label: "payment.summary.title".localized,
+                amount: NSDecimalNumber(value: selectedAmount.value),
+                type: .final
+            )
         ]
         return request
     }
 
     func onPaymentAuthPhase(phase: PayWithApplePayButtonPaymentAuthorizationPhase) {
-        debugPrint("onPaymentAuthPhase: \(phase)")
         switch phase {
         case .willAuthorize:
             break
         case .didAuthorize(let payment, let resultHandler):
-            debugPrint("payment success: \(payment)")
-//            server.process(with: payment) { serverResult in
-//                guard case .success = serverResult else {
-//                // handle error
-//                resultHandler(
-//                    PKPaymentAuthorizationResult(status: .failure, errors: Error())
-//                )
-//                return
-//            }
-            // handle success
             let result = PKPaymentAuthorizationResult(status: .success, errors: nil)
             resultHandler(result)
         case .didFinish:

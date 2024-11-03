@@ -36,7 +36,7 @@ struct PaymentForm: View {
         #if os(iOS)
         HStack {
             Spacer()
-            Text("Donate")
+            Text("payment.donate.title".localized)
                 .font(.title)
                 .padding()
             Spacer()
@@ -53,8 +53,8 @@ struct PaymentForm: View {
 
         VStack {
             Picker("", selection: $isMonthly) {
-                Label("One time", systemImage: "heart.circle").tag(false)
-                Label("Monthly", systemImage: "arrow.clockwise.heart").tag(true)
+                Label("payment.selection.option.one_time".localized, systemImage: "heart.circle").tag(false)
+                Label("payment.selection.option.monthly".localized, systemImage: "arrow.clockwise.heart").tag(true)
             }.pickerStyle(.segmented)
                 .padding([.leading, .trailing, .bottom])
 
@@ -62,7 +62,7 @@ struct PaymentForm: View {
         }
         #if os(macOS)
         .padding()
-        .navigationTitle("Donate")
+        .navigationTitle("payment.donate.title".localized)
         .onReceive(formReset.objectWillChange) { _ in
             reset()
         }

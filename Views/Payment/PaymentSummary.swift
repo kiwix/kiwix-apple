@@ -33,14 +33,14 @@ struct PaymentSummary: View {
 
     var body: some View {
         VStack {
-            Text("Support Kiwix")
+            Text("payment.summary_page.title".localized)
                 .font(.largeTitle)
                 .padding()
             if selectedAmount.isMonthly {
-                Text("Monthly").font(.title)
+                Text("payment.selection.option.monthly".localized).font(.title)
                     .padding()
             } else {
-                Text("One-time").font(.title)
+                Text("payment.selection.option.one_time".localized).font(.title)
                     .padding()
             }
             Text(selectedAmount.value.formatted(.currency(code: selectedAmount.currency))).font(.title).bold()
@@ -54,7 +54,7 @@ struct PaymentSummary: View {
                 .frame(width: 186, height: 44)
                 .padding()
             } else {
-                Text("We are sorry, your device does not support Apple Pay.")
+                Text("payment.support_fallback_message".localized)
                     .foregroundStyle(.red)
                     .font(.callout)
             }
