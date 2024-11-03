@@ -22,7 +22,6 @@ struct Payment {
 
     let completeSubject = PassthroughSubject<Bool, Never>()
 
-    // TODO: handle custom apps
     static let merchantId = "merchant.org.kiwix"
     static let paymentSubscriptionManagingURL = "https://www.kiwix.org"
     static let supportedNetworks: [PKPaymentNetwork] = [
