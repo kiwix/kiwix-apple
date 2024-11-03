@@ -40,7 +40,7 @@ struct ListOfAmounts: View {
             #endif
         } else {
             listing()
-                // doesn't need reset, since this is the default state
+            // doesn't need reset, since this is the default state
         }
     }
 
@@ -50,7 +50,11 @@ struct ListOfAmounts: View {
 
     private func listing() -> some View {
         let items = isMonthly ? Payment.monthlies : Payment.oneTimes
-        let averageText: String = isMonthly ? "Average monthly donation" : "Last year's average"
+        let averageText: String = if isMonthly {
+            "payment.selection.average_monthly_donation.subtitle".localized
+        } else {
+            "payment.selection.last_year_average.subtitle".localized
+        }
         let defaultCurrency: String = Payment.defaultCurrencyCode
         return List {
             ForEach(items) { amount in
@@ -80,7 +84,7 @@ struct ListOfAmounts: View {
             Button(action: {
                 listState = .customAmount
             }, label: {
-                Text("Custom amount")
+                Text("payment.selection.custom_amount".localized)
             })
             .padding(6)
         }
