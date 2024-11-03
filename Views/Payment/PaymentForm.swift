@@ -45,8 +45,8 @@ struct PaymentForm: View {
             Button("", systemImage: "x.circle.fill") {
                 dismiss()
             }
-            .font(.title2)
-            .foregroundStyle(.secondary)
+            .font(.title)
+            .foregroundStyle(.tertiary)
             .padding()
         }
         #endif

@@ -15,15 +15,20 @@
 
 import SwiftUI
 import PassKit
+import Combine
 
 struct PaymentSummary: View {
 
-    let selectedAmount: SelectedAmount
+    @Environment(\.dismiss) var dismiss
+
+    private let selectedAmount: SelectedAmount
     private let payment: Payment
+    private let onComplete: () -> Void
 
     init(selectedAmount: SelectedAmount, onComplete: @escaping () -> Void) {
         self.selectedAmount = selectedAmount
-        payment = Payment(onComplete: onComplete)
+        self.onComplete = onComplete
+        payment = Payment()
     }
 
     var body: some View {
@@ -53,6 +58,8 @@ struct PaymentSummary: View {
                     .foregroundStyle(.red)
                     .font(.callout)
             }
+        }.onReceive(payment.completeSubject) { value in
+            dismiss()
         }
     }
 }

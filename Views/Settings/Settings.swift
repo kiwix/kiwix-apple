@@ -144,8 +144,6 @@ struct Settings: View {
     @Default(.webViewPageZoom) private var webViewPageZoom
     @EnvironmentObject private var library: LibraryViewModel
 
-    private let payment = Payment()
-
     enum Route {
         case languageSelector, about
     }
@@ -176,12 +174,14 @@ struct Settings: View {
         }) {
             Group {
                 if let selectedAmount {
-                    PaymentSummary(selectedAmount: selectedAmount)
+                    PaymentSummary(selectedAmount: selectedAmount) {
+//                        selectedAmount = nil
+                    }
                 } else {
                     PaymentForm(amountSelected: amountSelected)
                 }
             }
-            .presentationDetents([.fraction(0.6128)])
+            .presentationDetents([.fraction(0.65)])
             .onReceive(amountSelected) { value in
                 selectedAmount = value
             }

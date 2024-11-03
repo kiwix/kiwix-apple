@@ -51,7 +51,7 @@ struct ListOfAmounts: View {
     private func listing() -> some View {
         let items = isMonthly ? Payment.monthlies : Payment.oneTimes
         let averageText: String = isMonthly ? "Average monthly donation" : "Last year's average"
-        let defaultCurrency: String = "USD"
+        let defaultCurrency: String = Payment.defaultCurrencyCode
         return List {
             ForEach(items) { amount in
                 Button(action: {
