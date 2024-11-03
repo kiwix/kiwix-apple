@@ -94,7 +94,7 @@ struct Payment {
         switch phase {
         case .willAuthorize:
             break
-        case .didAuthorize(let payment, let resultHandler):
+        case .didAuthorize(_, let resultHandler):
             let result = PKPaymentAuthorizationResult(status: .success, errors: nil)
             resultHandler(result)
         case .didFinish:
