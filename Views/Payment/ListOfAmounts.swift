@@ -54,9 +54,17 @@ struct ListOfAmounts: View {
         let defaultCurrency: String = Payment.defaultCurrencyCode
         return List {
             ForEach(items) { amount in
-                Button(action: {
-                    amountSelected.send(SelectedAmount(value: amount.value, currency: defaultCurrency, isMonthly: isMonthly))
-                }, label: {
+                Button(
+                    action: {
+                        amountSelected.send(
+                            SelectedAmount(
+                                value: amount.value,
+                                currency: defaultCurrency,
+                                isMonthly: isMonthly
+                            )
+                        )
+                    },
+                    label: {
                     VStack(alignment: .leading, spacing: 4) {
                         Text(amount.value, format: .currency(code: defaultCurrency))
                             .frame(alignment: .leading)

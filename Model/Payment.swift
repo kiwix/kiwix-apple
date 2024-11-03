@@ -23,7 +23,16 @@ struct Payment {
     let completeSubject = PassthroughSubject<Bool, Never>()
 
     static let merchantId = "merchant.org.kiwix"
-    static let supportedNetworks: [PKPaymentNetwork] = [.masterCard, .visa, .discover, .amex, .chinaUnionPay, .electron, .girocard, .mada]
+    static let supportedNetworks: [PKPaymentNetwork] = [
+        .masterCard,
+        .visa,
+        .discover,
+        .amex,
+        .chinaUnionPay,
+        .electron,
+        .girocard,
+        .mada
+    ]
     static let capabilities: PKMerchantCapability = [.threeDSecure, .credit, .debit, .emv]
     static let currencyCodes = ["USD", "EUR", "CHF"]
     static let defaultCurrencyCode = "USD"
@@ -36,8 +45,8 @@ struct Payment {
     ]
 
     static let monthlies: [AmountOption] = [
-        .init(value:  5),
-        .init(value:  8, isAverage: true),
+        .init(value: 5),
+        .init(value: 8, isAverage: true),
         .init(value: 10)
     ]
 
@@ -85,18 +94,17 @@ struct Payment {
             debugPrint("payment success: \(payment)")
 //            server.process(with: payment) { serverResult in
 //                guard case .success = serverResult else {
-//                    // handle error
-//                    resultHandler(PKPaymentAuthorizationResult(status: .failure, errors: Error()))
-//                    return
-//                }
-//                // handle success
-                let result = PKPaymentAuthorizationResult(status: .success, errors: nil)
-                resultHandler(result)
-            completeSubject.send(true)
+//                // handle error
+//                resultHandler(
+//                    PKPaymentAuthorizationResult(status: .failure, errors: Error())
+//                )
+//                return
 //            }
-            break
+            // handle success
+            let result = PKPaymentAuthorizationResult(status: .success, errors: nil)
+            resultHandler(result)
         case .didFinish:
-            completeSubject.send(false)
+            completeSubject.send(true)
         @unknown default:
             break
         }

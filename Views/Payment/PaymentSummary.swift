@@ -58,8 +58,9 @@ struct PaymentSummary: View {
                     .foregroundStyle(.red)
                     .font(.callout)
             }
-        }.onReceive(payment.completeSubject) { value in
+        }.onReceive(payment.completeSubject) { _ in
             dismiss()
+            onComplete()
         }
     }
 }
