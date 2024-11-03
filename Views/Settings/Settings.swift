@@ -171,11 +171,11 @@ struct Settings: View {
         }
         .sheet(isPresented: $showDonationPopUp, onDismiss: {
             selectedAmount = nil
-        }) {
+        }, content: {
             Group {
                 if let selectedAmount {
                     PaymentSummary(selectedAmount: selectedAmount) {
-//                        selectedAmount = nil
+                        showDonationPopUp = false
                     }
                 } else {
                     PaymentForm(amountSelected: amountSelected)
@@ -185,7 +185,7 @@ struct Settings: View {
             .onReceive(amountSelected) { value in
                 selectedAmount = value
             }
-        }
+        })
     }
 
     var readingSettings: some View {
