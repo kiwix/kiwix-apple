@@ -47,9 +47,9 @@ packages:
   Defaults:
     url: https://github.com/sindresorhus/Defaults
     majorVersion: 6.0.0
-  Stripe:
-    url: https://github.com/stripe/stripe-ios-spm
-    majorVersion: 24.0.0
+  # Stripe:
+  #   url: https://github.com/stripe/stripe-ios-spm
+  #   majorVersion: 24.0.0
 
 targetTemplates:
   ApplicationTemplate:
@@ -75,9 +75,9 @@ targetTemplates:
       - sdk: PassKit.framework
       - sdk: SystemConfiguration.framework
       - package: Defaults
-      - package: Stripe
-        destinationFilters:
-          - iOS
+      # - package: Stripe
+      #   destinationFilters:
+      #     - iOS
     sources: 
       - path: App
       - path: Model
