@@ -58,7 +58,7 @@ runs:
 
     - name: Set Xcode version (16.0.0)
       shell: bash
-      https://github.com/actions/runner-images/blob/main/images/macos/macos-14-Readme.md
+      # https://github.com/actions/runner-images/blob/main/images/macos/macos-14-Readme.md
       run: sudo xcode-select -s /Applications/Xcode_16.app
 
     - name: Create Keychain
