@@ -59,6 +59,7 @@ targetTemplates:
         com.apple.security.files.user-selected.read-write: true
         com.apple.security.network.client: true
         com.apple.security.print: true
+        com.apple.developer.in-app-payments: [merchant.org.kiwix.apple]
     dependencies:
       - framework: CoreKiwix.xcframework
         embed: false
@@ -68,6 +69,7 @@ targetTemplates:
       - sdk: WebKit.framework
       - sdk: NotificationCenter.framework
       - sdk: QuickLook.framework
+      - sdk: PassKit.framework
       - sdk: SystemConfiguration.framework
       - package: Defaults
     sources: 
