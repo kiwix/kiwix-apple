@@ -1,6 +1,6 @@
 name: Kiwix
 options:
-  xcodeVersion: 16.1
+  xcodeVersion: 16.0
   deploymentTarget: # the three latest major versions should be supported
       iOS: 16.0
       macOS: 13.0
