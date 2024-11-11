@@ -19,11 +19,15 @@ import Combine
 import Defaults
 import CoreKiwix
 import PassKit
+import StripeApplePay
 
 #if os(macOS)
 final class AppDelegate: NSObject, NSApplicationDelegate {
     func applicationShouldTerminateAfterLastWindowClosed(_ sender: NSApplication) -> Bool {
         true
+    }
+    func applicationDidFinishLaunching(_ notification: Notification) {
+        StripeAPI.defaultPublishableKey = Payment.stripePublicKey
     }
 }
 

@@ -17,22 +17,23 @@ import Foundation
 import PassKit
 import SwiftUI
 import Combine
+import StripeApplePay
 
 struct Payment {
 
     let completeSubject = PassthroughSubject<Bool, Never>()
 
     static let merchantId = "merchant.org.kiwix.apple"
+    static let stripePublicKey = "pk_test_oglo2v3Wc7ibH2oQe5oUDkhi"
     static let paymentSubscriptionManagingURL = "https://www.kiwix.org"
     static let supportedNetworks: [PKPaymentNetwork] = [
+        .amex,
+        .discover,
+        .electron,
+        .mada,
+        .maestro,
         .masterCard,
         .visa,
-        .discover,
-        .amex,
-        .chinaUnionPay,
-        .electron,
-        .girocard,
-        .mada
     ]
     static let capabilities: PKMerchantCapability = [.threeDSecure, .credit, .debit, .emv]
     static let currencyCodes = ["USD", "EUR", "CHF"]
@@ -70,6 +71,7 @@ struct Payment {
         request.countryCode = "CH"
         request.currencyCode = selectedAmount.currency
         request.supportedNetworks = Self.supportedNetworks
+        request.requiredBillingContactFields = [.postalAddress]
         let recurring: PKRecurringPaymentRequest? = if selectedAmount.isMonthly {
             PKRecurringPaymentRequest(paymentDescription: "payment.description.label".localized,
                                       regularBilling: .init(label: "payment.monthly_support.label".localized,
@@ -94,7 +96,13 @@ struct Payment {
         switch phase {
         case .willAuthorize:
             break
-        case .didAuthorize(_, let resultHandler):
+        case .didAuthorize(let payment, let resultHandler):
+            // call our server to get payment / setup intent and return the client.secret
+            // async http call...
+            let stripe = STPApplePaySimple()
+            stripe.complete(payment: payment,
+                            returnURLPath: nil, // TODO: update the return path for confirmations
+                            usingClientSecretProvider: )
             let result = PKPaymentAuthorizationResult(status: .success, errors: nil)
             resultHandler(result)
         case .didFinish:
