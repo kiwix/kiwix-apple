@@ -97,8 +97,8 @@ struct Kiwix: App {
 
     private class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCenterDelegate {
         func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
-//            StripeAPI.defaultPublishableKey = "pk_test_51AROWSJX9HHJ5bycpEUP9dK39tXufyuWogSUdeweyZEXy3LC7M8yc5d9NlQ96fRCVL0BlAu7Nqt4V7N5xZjJnrkp005fDiTMIr"
-            StripeAPI.defaultPublishableKey = "pk_test_oglo2v3Wc7ibH2oQe5oUDkhi"
+            //            StripeAPI.defaultPublishableKey = "pk_test_51AROWSJX9HHJ5bycpEUP9dK39tXufyuWogSUdeweyZEXy3LC7M8yc5d9NlQ96fRCVL0BlAu7Nqt4V7N5xZjJnrkp005fDiTMIr"
+            StripeAPI.defaultPublishableKey = Payment.stripePublicKey
             return true
         }
 
