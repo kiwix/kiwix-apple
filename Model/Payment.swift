@@ -18,6 +18,7 @@ import PassKit
 import SwiftUI
 import Combine
 import StripeApplePay
+import os
 
 struct Payment {
 
@@ -106,12 +107,14 @@ struct Payment {
     func onPaymentAuthPhase(selectedAmount: SelectedAmount, phase: PayWithApplePayButtonPaymentAuthorizationPhase) {
         switch phase {
         case .willAuthorize:
+            os_log("onPaymentAuthPhase: .willAuthorize")
             break
         case .didAuthorize(let payment, let resultHandler):
+            os_log("onPaymentAuthPhase: .didAuthorize")
             // call our server to get payment / setup intent and return the client.secret
             // async http call...
             Task { [resultHandler] in
-                
+
                 let paymentServer = StripeKiwix(endPoint: URL(string: "http://192.168.100.7:4242")!,
                                                 payment: payment)
                 do {
@@ -128,8 +131,10 @@ struct Payment {
                 resultHandler(result)
             }
         case .didFinish:
+            os_log("onPaymentAuthPhase: .didFinish")
             completeSubject.send(true)
         @unknown default:
+            os_log("onPaymentAuthPhase: @unknown default")
             break
         }
     }
