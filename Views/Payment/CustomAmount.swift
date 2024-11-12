@@ -73,7 +73,7 @@ struct CustomAmount: View {
                 }
                 .buttonStyle(BorderedProminentButtonStyle())
                 .padding()
-                .disabled( customAmount == nil || (customAmount ?? 0) < Payment.minimumAmount)
+                .disabled( !Payment.isInValidRange(amount: customAmount) )
             }
             Spacer()
         }

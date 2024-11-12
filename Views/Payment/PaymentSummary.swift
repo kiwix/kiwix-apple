@@ -48,7 +48,12 @@ struct PaymentSummary: View {
                 PayWithApplePayButton(
                     buttonLabel,
                     request: payment.donationRequest(for: selectedAmount),
-                    onPaymentAuthorizationChange: payment.onPaymentAuthPhase(phase:),
+                    onPaymentAuthorizationChange: {
+                        phase in payment.onPaymentAuthPhase(
+                            selectedAmount: selectedAmount,
+                            phase: phase
+                        )
+                    },
                     onMerchantSessionRequested: payment.onMerchantSessionUpdate
                 )
                 .frame(width: 186, height: 44)
