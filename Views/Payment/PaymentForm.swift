@@ -79,6 +79,13 @@ struct SelectedAmount {
     let value: Double
     let currency: String
     let isMonthly: Bool
+
+    init(value: Double, currency: String, isMonthly: Bool) {
+        // make sure we won't go over Stripe's max amount
+        self.value = min(value, Double(StripeKiwix.maxAmount) * 100.0)
+        self.currency = currency
+        self.isMonthly = isMonthly
+    }
 }
 
 struct AmountOption: Identifiable {

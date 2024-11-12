@@ -24,7 +24,6 @@ struct Payment {
     let completeSubject = PassthroughSubject<Bool, Never>()
 
     static let merchantId = "merchant.org.kiwix.apple"
-    static let stripePublicKey = "pk_test_oglo2v3Wc7ibH2oQe5oUDkhi"
     static let paymentSubscriptionManagingURL = "https://www.kiwix.org"
     static let supportedNetworks: [PKPaymentNetwork] = [
         .amex,
@@ -36,9 +35,21 @@ struct Payment {
         .visa,
     ]
     static let capabilities: PKMerchantCapability = [.threeDSecure, .credit, .debit, .emv]
+
+    /// NOTE: consider that these currencies support double precision, eg: 5.25 USD.
+    /// Revisit `SelectedAmount`, and `SelectedPaymentAmount`
+    /// before adding a zero-decimal currency such as: ¥100
     static let currencyCodes = ["USD", "EUR", "CHF"]
     static let defaultCurrencyCode = "USD"
-    static let minimumAmount: Double = 5
+    private static let minimumAmount: Double = 5
+    /// The Sripe `amount` value supports up to eight digits
+    /// (e.g., a value of 99999999 for a USD charge of $999,999.99).
+    /// see: https://docs.stripe.com/api/payment_intents/object#payment_intent_object-amount
+    static let maximumAmount: Int = 99999999
+    static func isInValidRange(amount: Double?) -> Bool {
+        guard let amount else { return false }
+        return minimumAmount <= amount && amount <= Double(maximumAmount)*100.0
+    }
 
     static let oneTimes: [AmountOption] = [
         .init(value: 10),
@@ -92,19 +103,30 @@ struct Payment {
         return request
     }
 
-    func onPaymentAuthPhase(phase: PayWithApplePayButtonPaymentAuthorizationPhase) {
+    func onPaymentAuthPhase(selectedAmount: SelectedAmount, phase: PayWithApplePayButtonPaymentAuthorizationPhase) {
         switch phase {
         case .willAuthorize:
             break
         case .didAuthorize(let payment, let resultHandler):
             // call our server to get payment / setup intent and return the client.secret
             // async http call...
-            let stripe = STPApplePaySimple()
-            stripe.complete(payment: payment,
-                            returnURLPath: nil, // TODO: update the return path for confirmations
-                            usingClientSecretProvider: )
-            let result = PKPaymentAuthorizationResult(status: .success, errors: nil)
-            resultHandler(result)
+            Task { [resultHandler] in
+                
+                let paymentServer = StripeKiwix(endPoint: URL(string: "http://192.168.100.7:4242")!,
+                                                payment: payment)
+                do {
+                    let publicKey = try await paymentServer.publishableKey()
+                    StripeAPI.defaultPublishableKey = publicKey
+                } catch (let serverError) {
+                    resultHandler(.init(status: .failure, errors: [serverError]))
+                    return
+                }
+                let stripe = StripeApplePaySimple()
+                let result = await stripe.complete(payment: payment,
+                                                   returnURLPath: nil, // TODO: update the return path for confirmations
+                                                   usingClientSecretProvider: { await paymentServer.clientSecretForPayment(selectedAmount: selectedAmount) } )
+                resultHandler(result)
+            }
         case .didFinish:
             completeSubject.send(true)
         @unknown default:
