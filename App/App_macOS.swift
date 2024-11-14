@@ -105,7 +105,6 @@ struct RootView: View {
     private let primaryItems: [NavigationItem] = [.bookmarks]
     private let libraryItems: [NavigationItem] = [.opened, .categories, .downloads, .new]
     private let openURL = NotificationCenter.default.publisher(for: .openURL)
-    private let appTerminates = NotificationCenter.default.publisher(for: NSApplication.willTerminateNotification)
     private let tabCloses = NotificationCenter.default.publisher(for: NSWindow.willCloseNotification)
     /// Close other tabs then the ones received
     private let keepOnlyTabs = NotificationCenter.default.publisher(for: .keepOnlyTabs)
@@ -198,10 +197,6 @@ struct RootView: View {
                 // but that's not comming from our window
                 return
             }
-            guard !navigation.isTerminating else {
-                // tab closed by app termination
-                return
-            }
             let tabID = navigation.currentTabId
             let browser = BrowserViewModel.getCached(tabID: tabID)
             // tab closed by user
@@ -217,10 +212,7 @@ struct RootView: View {
             }
             navigation.keepOnlyTabsBy(tabIds: tabsToKeep)
         }
-        .onReceive(appTerminates) { _ in
-            // CMD+Q -> Quit Kiwix, this also closes the last window
-            navigation.isTerminating = true
-        }.task {
+        .task {
             switch AppType.current {
             case .kiwix:
                 await LibraryOperations.reopen()
