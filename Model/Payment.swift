@@ -24,6 +24,7 @@ struct Payment {
 
     let completeSubject = PassthroughSubject<Bool, Never>()
 
+    static let merchantSessionURL = URL(string: "https://apple-pay-gateway.apple.com" )!
     static let merchantId = "merchant.org.kiwix.apple"
     static let paymentSubscriptionManagingURL = "https://www.kiwix.org"
     static let supportedNetworks: [PKPaymentNetwork] = [
@@ -141,6 +142,25 @@ struct Payment {
 
     @available(macOS 13.0, *)
     func onMerchantSessionUpdate() async -> PKPaymentRequestMerchantSessionUpdate {
-        .init(status: .success, merchantSession: nil)
+        var request = URLRequest(url: Self.merchantSessionURL)
+        request.httpMethod = "GET"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        do {
+            let (data, response) = try await URLSession.shared.data(for: request)
+            guard let httpResponse = response as? HTTPURLResponse,
+                  (200..<300).contains(httpResponse.statusCode),
+                  let dict = try JSONSerialization.jsonObject(with: data, options: .allowFragments) as? [String: Any] else {
+                throw MerchantSessionError.invalidStatus
+            }
+            let session = PKPaymentMerchantSession(dictionary: dict)
+            return .init(status: .success, merchantSession: session)
+        } catch (let error) {
+            os_log("Merchant session not established: %@", type: .debug, error.localizedDescription)
+            return .init(status: .failure, merchantSession: nil)
+        }
     }
+}
+
+private enum MerchantSessionError: Error {
+    case invalidStatus
 }
