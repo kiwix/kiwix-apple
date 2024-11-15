@@ -384,7 +384,7 @@ final class BrowserViewModel: NSObject, ObservableObject,
         decidePolicyFor navigationAction: WKNavigationAction
     ) async -> WKNavigationActionPolicy {
         guard navigationAction.targetFrame?.isMainFrame == true else {
-            // Allow to load iFrame content
+            // Allow to load iFrame content via src-doc instead of external src
             return .allow
         }
         guard let url = navigationAction.request.url?.updatedToZIMSheme() else {
