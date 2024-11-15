@@ -53,7 +53,7 @@ struct StripeKiwix {
             }
             let json = try JSONDecoder().decode(ClientSecretKey.self, from: data)
             return .success(json.clientSecret)
-        } catch (let serverError) {
+        } catch let serverError {
             return .failure(serverError)
         }
     }
