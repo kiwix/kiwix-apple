@@ -84,7 +84,7 @@ struct Payment {
         request.countryCode = "CH"
         request.currencyCode = selectedAmount.currency
         request.supportedNetworks = Self.supportedNetworks
-        request.requiredBillingContactFields = [.postalAddress]
+        request.requiredBillingContactFields = [.emailAddress]
         let recurring: PKRecurringPaymentRequest? = if selectedAmount.isMonthly {
             PKRecurringPaymentRequest(paymentDescription: "payment.description.label".localized,
                                       regularBilling: .init(label: "payment.monthly_support.label".localized,
