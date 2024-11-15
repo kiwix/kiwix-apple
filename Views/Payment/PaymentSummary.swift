@@ -49,10 +49,8 @@ struct PaymentSummary: View {
                     buttonLabel,
                     request: payment.donationRequest(for: selectedAmount),
                     onPaymentAuthorizationChange: {
-                        phase in payment.onPaymentAuthPhase(
-                            selectedAmount: selectedAmount,
-                            phase: phase
-                        )
+                        phase in payment.onPaymentAuthPhase(selectedAmount: selectedAmount,
+                                                            phase: phase)
                     },
                     onMerchantSessionRequested: payment.onMerchantSessionUpdate
                 )

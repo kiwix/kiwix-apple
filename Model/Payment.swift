@@ -34,7 +34,7 @@ struct Payment {
         .mada,
         .maestro,
         .masterCard,
-        .visa,
+        .visa
     ]
     static let capabilities: PKMerchantCapability = [.threeDSecure, .credit, .debit, .emv]
 
@@ -109,11 +109,9 @@ struct Payment {
         switch phase {
         case .willAuthorize:
             os_log("onPaymentAuthPhase: .willAuthorize")
-            break
         case .didAuthorize(let payment, let resultHandler):
             os_log("onPaymentAuthPhase: .didAuthorize")
             // call our server to get payment / setup intent and return the client.secret
-            // async http call...
             Task { [resultHandler] in
 
                 let paymentServer = StripeKiwix(endPoint: URL(string: "http://192.168.100.7:4242")!,
@@ -121,14 +119,17 @@ struct Payment {
                 do {
                     let publicKey = try await paymentServer.publishableKey()
                     StripeAPI.defaultPublishableKey = publicKey
-                } catch (let serverError) {
+                } catch let serverError {
                     resultHandler(.init(status: .failure, errors: [serverError]))
                     return
                 }
                 let stripe = StripeApplePaySimple()
                 let result = await stripe.complete(payment: payment,
-                                                   returnURLPath: nil, // TODO: update the return path for confirmations
-                                                   usingClientSecretProvider: { await paymentServer.clientSecretForPayment(selectedAmount: selectedAmount) } )
+                                                   returnURLPath: nil,
+                                                   // TODO: update the return path for confirmations
+                                                   usingClientSecretProvider: {
+                    await paymentServer.clientSecretForPayment(selectedAmount: selectedAmount)
+                })
                 resultHandler(result)
             }
         case .didFinish:
@@ -136,7 +137,6 @@ struct Payment {
             completeSubject.send(true)
         @unknown default:
             os_log("onPaymentAuthPhase: @unknown default")
-            break
         }
     }
 
@@ -149,12 +149,13 @@ struct Payment {
             let (data, response) = try await URLSession.shared.data(for: request)
             guard let httpResponse = response as? HTTPURLResponse,
                   (200..<300).contains(httpResponse.statusCode),
-                  let dict = try JSONSerialization.jsonObject(with: data, options: .allowFragments) as? [String: Any] else {
+                  let dict = try JSONSerialization.jsonObject(with: data,
+                                                              options: .allowFragments) as? [String: Any] else {
                 throw MerchantSessionError.invalidStatus
             }
             let session = PKPaymentMerchantSession(dictionary: dict)
             return .init(status: .success, merchantSession: session)
-        } catch (let error) {
+        } catch let error {
             os_log("Merchant session not established: %@", type: .debug, error.localizedDescription)
             return .init(status: .failure, merchantSession: nil)
         }
