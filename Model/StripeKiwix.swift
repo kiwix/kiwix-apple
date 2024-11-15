@@ -36,13 +36,13 @@ struct StripeKiwix {
             throw StripeError.serverError
         }
         let json = try JSONDecoder().decode(PublishableKey.self, from: data)
-        return json.publishableKey
+        return json.publishable_key
     }
 
     func clientSecretForPayment(selectedAmount: SelectedAmount) async -> Result<String, Error> {
         do {
             // TODO: for monthly this should create a setup-intent !
-            var request = URLRequest(url: endPoint.appending(path: "create-payment-intent"))
+            var request = URLRequest(url: endPoint.appending(path: "payment-intent"))
             request.httpMethod = "POST"
             request.setValue("application/json", forHTTPHeaderField: "Content-Type")
             request.httpBody = try JSONEncoder().encode(SelectedPaymentAmount(from: selectedAmount))
@@ -52,7 +52,7 @@ struct StripeKiwix {
                 throw StripeError.serverError
             }
             let json = try JSONDecoder().decode(ClientSecretKey.self, from: data)
-            return .success(json.clientSecret)
+            return .success(json.secret)
         } catch let serverError {
             return .failure(serverError)
         }
@@ -62,13 +62,13 @@ struct StripeKiwix {
 /// Response structure for GET {endPoint}/config
 /// {"publishableKey":"pk_test_..."}
 private struct PublishableKey: Decodable {
-    let publishableKey: String
+    let publishable_key: String
 }
 
 /// Response structure for POST {endPoint}/create-payment-intent
 /// {"clientSecret":"pi_..."}
 private struct ClientSecretKey: Decodable {
-    let clientSecret: String
+    let secret: String
 }
 
 private struct SelectedPaymentAmount: Encodable {

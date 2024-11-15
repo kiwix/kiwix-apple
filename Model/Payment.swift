@@ -114,7 +114,7 @@ struct Payment {
             // call our server to get payment / setup intent and return the client.secret
             Task { [resultHandler] in
 
-                let paymentServer = StripeKiwix(endPoint: URL(string: "http://192.168.100.7:4242")!,
+                let paymentServer = StripeKiwix(endPoint: URL(string: "https://api.donation.kiwix.org/v1/stripe")!,
                                                 payment: payment)
                 do {
                     let publicKey = try await paymentServer.publishableKey()
