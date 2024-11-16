@@ -22,6 +22,7 @@ final class NavigationViewModel: ObservableObject {
     // remained optional due to focusedSceneValue conformance
     @Published var currentItem: NavigationItem? = .loading
     #if os(macOS)
+    var isTerminating: Bool = false
     
     /// Used to store temporarily the value of the tabID for a newly opened window
     static var tabIDToUseOnNewTab: NSManagedObjectID?
