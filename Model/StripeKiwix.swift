@@ -35,8 +35,10 @@ struct StripeKiwix {
               (200..<300).contains(httpResponse.statusCode) else {
             throw StripeError.serverError
         }
-        let json = try JSONDecoder().decode(PublishableKey.self, from: data)
-        return json.publishable_key
+        let decoder = JSONDecoder()
+        decoder.keyDecodingStrategy = .convertFromSnakeCase
+        let json = try decoder.decode(PublishableKey.self, from: data)
+        return json.publishableKey
     }
 
     func clientSecretForPayment(selectedAmount: SelectedAmount) async -> Result<String, Error> {
@@ -60,13 +62,13 @@ struct StripeKiwix {
 }
 
 /// Response structure for GET {endPoint}/config
-/// {"publishableKey":"pk_test_..."}
+/// {"publishable_key":"pk_test_..."}
 private struct PublishableKey: Decodable {
-    let publishable_key: String
+    let publishableKey: String
 }
 
 /// Response structure for POST {endPoint}/create-payment-intent
-/// {"clientSecret":"pi_..."}
+/// {"secret":"pi_..."}
 private struct ClientSecretKey: Decodable {
     let secret: String
 }
