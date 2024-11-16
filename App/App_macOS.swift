@@ -162,6 +162,8 @@ struct RootView: View {
         .environmentObject(navigation)
         .onOpenURL { url in
             if url.isFileURL {
+                let browser = BrowserViewModel.getCached(tabID: navigation.currentTabId)
+                browser.forceLoadingState()
                 NotificationCenter.openFiles([url], context: .file)
             } else if url.isZIMURL {
                 NotificationCenter.openURL(url)
