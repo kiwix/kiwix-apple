@@ -171,6 +171,7 @@ struct RootView: View {
                 return
             }
             if notification.userInfo?["isFileContext"] as? Bool == true {
+                debugPrint("Received open file: \(url.absoluteString)")
                 // handle the opened ZIM file from Finder
                 // for which the system opens a new window,
                 // this part of the code, will be called on all possible windows, we need this though,
