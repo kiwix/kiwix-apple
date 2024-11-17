@@ -133,6 +133,7 @@ struct Settings: View {
     private var amountSelected = PassthroughSubject<SelectedAmount?, Never>()
     @State private var selectedAmount: SelectedAmount?
     @State private var showDonationPopUp: Bool = false
+    @State private var showThankYou: Bool = false
     func openDonation() {
         showDonationPopUp = true
     }
@@ -174,9 +175,11 @@ struct Settings: View {
         }, content: {
             Group {
                 if let selectedAmount {
-                    PaymentSummary(selectedAmount: selectedAmount) {
+                    PaymentSummary(selectedAmount: selectedAmount, onComplete: {
                         showDonationPopUp = false
-                    }
+                    }, onSuccess: {
+                        showThankYou = true
+                    })
                 } else {
                     PaymentForm(amountSelected: amountSelected)
                 }
@@ -185,6 +188,12 @@ struct Settings: View {
             .onReceive(amountSelected) { value in
                 selectedAmount = value
             }
+        })
+        .sheet(isPresented: $showThankYou, onDismiss: {
+            showThankYou = false
+        }, content: {
+            PaymentThankYou()
+                .presentationDetents([.fraction(0.33)])
         })
     }
 

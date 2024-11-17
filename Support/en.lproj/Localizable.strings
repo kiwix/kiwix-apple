@@ -292,3 +292,5 @@
 "payment.selection.option.one_time" = "One time";
 "payment.selection.option.monthly" = "Monthly";
 "payment.support_fallback_message" = "We are sorry, your device does not support Apple Pay.";
+"payment.success.title" = "Thank you so much for your donation.";
+"payment.success.description" = "Your generosity means everything to us.";
