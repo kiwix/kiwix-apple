@@ -23,6 +23,7 @@ import os
 struct Payment {
 
     let completeSubject = PassthroughSubject<Bool, Never>()
+    let successSubject = PassthroughSubject<Void, Never>()
 
     static let merchantSessionURL = URL(string: "https://apple-pay-gateway.apple.com" )!
     static let merchantId = "merchant.org.kiwix.apple"
@@ -131,6 +132,11 @@ struct Payment {
                     await paymentServer.clientSecretForPayment(selectedAmount: selectedAmount)
                 })
                 resultHandler(result)
+                if result.status == .success {
+                    Task { @MainActor in
+                        successSubject.send(())
+                    }
+                }
             }
         case .didFinish:
             os_log("onPaymentAuthPhase: .didFinish")

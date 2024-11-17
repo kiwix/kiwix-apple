@@ -24,10 +24,14 @@ struct PaymentSummary: View {
     private let selectedAmount: SelectedAmount
     private let payment: Payment
     private let onComplete: () -> Void
+    private let onSuccess: () -> Void
 
-    init(selectedAmount: SelectedAmount, onComplete: @escaping () -> Void) {
+    init(selectedAmount: SelectedAmount,
+         onComplete: @escaping () -> Void,
+         onSuccess: @escaping () -> Void) {
         self.selectedAmount = selectedAmount
         self.onComplete = onComplete
+        self.onSuccess = onSuccess
         payment = Payment()
     }
 
@@ -65,9 +69,18 @@ struct PaymentSummary: View {
             dismiss()
             onComplete()
         }
+        .onReceive(payment.successSubject) {
+            onSuccess()
+        }
     }
 }
 
 #Preview {
-    PaymentSummary(selectedAmount: SelectedAmount(value: 34, currency: "CHF", isMonthly: true), onComplete: {})
+    PaymentSummary(
+        selectedAmount: SelectedAmount(value: 34,
+                                       currency: "CHF",
+                                       isMonthly: true),
+        onComplete: {},
+        onSuccess: {}
+    )
 }
