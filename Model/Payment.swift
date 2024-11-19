@@ -21,9 +21,20 @@ import StripeApplePay
 import os
 
 struct Payment {
+    
+    /// Decides if the Thank You pop up should be shown
+    /// - Returns: `True` only once
+    @MainActor
+    static func shouldShowThanks() -> Bool {
+        // make sure `true` is "read only once"
+        let value = Self.showThanks
+        Self.showThanks = false
+        return value
+    }
+    @MainActor
+    static private var showThanks: Bool = false
 
-    let completeSubject = PassthroughSubject<Bool, Never>()
-    let successSubject = PassthroughSubject<Void, Never>()
+    let completeSubject = PassthroughSubject<Void, Never>()
 
     static let merchantSessionURL = URL(string: "https://apple-pay-gateway.apple.com" )!
     static let merchantId = "merchant.org.kiwix.apple"
@@ -106,15 +117,15 @@ struct Payment {
         return request
     }
 
-    func onPaymentAuthPhase(selectedAmount: SelectedAmount, phase: PayWithApplePayButtonPaymentAuthorizationPhase) {
+    func onPaymentAuthPhase(selectedAmount: SelectedAmount,
+                            phase: PayWithApplePayButtonPaymentAuthorizationPhase) {
         switch phase {
         case .willAuthorize:
             os_log("onPaymentAuthPhase: .willAuthorize")
         case .didAuthorize(let payment, let resultHandler):
             os_log("onPaymentAuthPhase: .didAuthorize")
             // call our server to get payment / setup intent and return the client.secret
-            Task { [resultHandler] in
-
+            Task { @MainActor [resultHandler] in
                 let paymentServer = StripeKiwix(endPoint: URL(string: "https://api.donation.kiwix.org/v1/stripe")!,
                                                 payment: payment)
                 do {
@@ -131,19 +142,19 @@ struct Payment {
                                                    usingClientSecretProvider: {
                     await paymentServer.clientSecretForPayment(selectedAmount: selectedAmount)
                 })
+                // calling any UI refreshing state / subject from here
+                // will block the UI in the payment state for ever
+                // therefore it's defered via static showThanks
+                Self.showThanks = result.status == .success
                 resultHandler(result)
-                if result.status == .success {
-                    Task { @MainActor in
-                        successSubject.send(())
-                    }
-                }
             }
         case .didFinish:
             os_log("onPaymentAuthPhase: .didFinish")
-            completeSubject.send(true)
+            completeSubject.send(())
         @unknown default:
             os_log("onPaymentAuthPhase: @unknown default")
         }
+
     }
 
     @available(macOS 13.0, *)

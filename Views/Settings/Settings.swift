@@ -130,10 +130,16 @@ import PassKit
 import Combine
 
 struct Settings: View {
+
+    enum DonationPopupState {
+        case selection
+        case selectedAmount(SelectedAmount)
+        case thankYou
+    }
+
     private var amountSelected = PassthroughSubject<SelectedAmount?, Never>()
-    @State private var selectedAmount: SelectedAmount?
     @State private var showDonationPopUp: Bool = false
-    @State private var showThankYou: Bool = false
+    @State private var donationPopUpState: DonationPopupState = .selection
     func openDonation() {
         showDonationPopUp = true
     }
@@ -171,30 +177,45 @@ struct Settings: View {
             }
         }
         .sheet(isPresented: $showDonationPopUp, onDismiss: {
-            selectedAmount = nil
-        }, content: {
+            if Payment.shouldShowThanks() {
+                Task {
+                    // we need to close the sheet in order to dismiss ApplePay,
+                    // and we need to re-open it again with a delay to show thank you state
+                    // Swift UI cannot yet handle multiple sheets
+                    try? await Task.sleep(for: .milliseconds(100))
+                    await MainActor.run {
+                        showDonationPopUp = true
+                        donationPopUpState = .thankYou
+                    }
+                }
+            } else {
+                // reset
+                donationPopUpState = .selection
+            }
+        }) {
             Group {
-                if let selectedAmount {
+                switch donationPopUpState {
+                case .selection:
+                    PaymentForm(amountSelected: amountSelected)
+                        .presentationDetents([.fraction(0.65)])
+                case .selectedAmount(let selectedAmount):
                     PaymentSummary(selectedAmount: selectedAmount, onComplete: {
                         showDonationPopUp = false
-                    }, onSuccess: {
-                        showThankYou = true
                     })
-                } else {
-                    PaymentForm(amountSelected: amountSelected)
+                        .presentationDetents([.fraction(0.65)])
+                case .thankYou:
+                    PaymentThankYou()
+                        .presentationDetents([.fraction(0.33)])
                 }
             }
-            .presentationDetents([.fraction(0.65)])
             .onReceive(amountSelected) { value in
-                selectedAmount = value
+                if let amount = value {
+                    donationPopUpState = .selectedAmount(amount)
+                } else {
+                    donationPopUpState = .selection
+                }
             }
-        })
-        .sheet(isPresented: $showThankYou, onDismiss: {
-            showThankYou = false
-        }, content: {
-            PaymentThankYou()
-                .presentationDetents([.fraction(0.33)])
-        })
+        }
     }
 
     var readingSettings: some View {
