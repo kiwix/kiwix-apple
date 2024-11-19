@@ -19,24 +19,19 @@ import SwiftUI
 struct PaymentThankYou: View {
 
     @Environment(\.dismiss) var dismiss
+    #if os(iOS)
     @Environment(\.verticalSizeClass) var verticalSizeClass: UserInterfaceSizeClass?
+    #endif
 
     var body: some View {
         Group {
+            #if os(iOS)
             // iPhone Landscape
             if verticalSizeClass == .compact {
                 // needs a close button
-                HStack(alignment: .top) {
-                    Spacer()
-                    Button("", systemImage: "x.circle.fill") {
-                        dismiss()
-                    }
-                    .font(.title2)
-                    .foregroundStyle(.secondary)
-                    .padding()
-                    .buttonStyle(BorderlessButtonStyle())
-                }
+                closeButton
             }
+            #endif
             VStack(spacing: 16) {
                 Text("payment.success.title".localized)
                     .font(.title)
@@ -44,6 +39,20 @@ struct PaymentThankYou: View {
                     .font(.headline)
             }
             .multilineTextAlignment(.center)
+        }
+    }
+
+    @ViewBuilder
+    var closeButton: some View {
+        HStack(alignment: .top) {
+            Spacer()
+            Button("", systemImage: "x.circle.fill") {
+                dismiss()
+            }
+            .font(.title2)
+            .foregroundStyle(.secondary)
+            .padding()
+            .buttonStyle(BorderlessButtonStyle())
         }
     }
 }

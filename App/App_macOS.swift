@@ -30,6 +30,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
 @main
 struct Kiwix: App {
     @NSApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
+    @Environment(\.openWindow) var openWindow
     @StateObject private var libraryRefreshViewModel = LibraryViewModel()
     private let notificationCenterDelegate = NotificationCenterDelegate()
     private var amountSelected = PassthroughSubject<SelectedAmount?, Never>()
@@ -86,15 +87,12 @@ struct Kiwix: App {
         Window("payment.donate.title".localized, id: "donation") {
             Group {
                 if let selectedAmount {
-                    PaymentSummary(selectedAmount: selectedAmount) {
-                        // after upgrading to macOS 14, use:
-                        // @Environment(\.dismissWindow) var dismissWindow
-                        // and call:
-                        // dismissWindow(id: "donation")
-                        NSApplication.shared.windows.first { window in
-                            window.identifier?.rawValue == "donation"
-                        }?.close()
-                    }
+                    PaymentSummary(selectedAmount: selectedAmount, onComplete: {
+                        closeDonation()
+                        if Payment.shouldShowThanks() {
+                            openWindow(id: "donation-thank-you")
+                        }
+                    })
                 } else {
                     PaymentForm(amountSelected: amountSelected)
                         .frame(width: 320, height: 320)
@@ -116,6 +114,24 @@ struct Kiwix: App {
         .windowStyle(.titleBar)
         .commandsRemoved()
         .defaultSize(width: 320, height: 400)
+
+        Window("", id: "donation-thank-you") {
+            PaymentThankYou()
+                .padding()
+        }
+        .windowResizability(.contentMinSize)
+        .commandsRemoved()
+        .defaultSize(width: 320, height: 198)
+    }
+
+    private func closeDonation() {
+        // after upgrading to macOS 14, use:
+        // @Environment(\.dismissWindow) var dismissWindow
+        // and call:
+        // dismissWindow(id: "donation")
+        NSApplication.shared.windows.first { window in
+            window.identifier?.rawValue == "donation"
+        }?.close()
     }
 
     private class NotificationCenterDelegate: NSObject, UNUserNotificationCenterDelegate {

@@ -23,15 +23,12 @@ struct PaymentSummary: View {
 
     private let selectedAmount: SelectedAmount
     private let payment: Payment
-    private let onComplete: () -> Void
-    private let onSuccess: () -> Void
+    private let onComplete: @MainActor () -> Void
 
     init(selectedAmount: SelectedAmount,
-         onComplete: @escaping () -> Void,
-         onSuccess: @escaping () -> Void) {
+         onComplete: @escaping @MainActor () -> Void) {
         self.selectedAmount = selectedAmount
         self.onComplete = onComplete
-        self.onSuccess = onSuccess
         payment = Payment()
     }
 
@@ -65,12 +62,9 @@ struct PaymentSummary: View {
                     .foregroundStyle(.red)
                     .font(.callout)
             }
-        }.onReceive(payment.completeSubject) { _ in
-            dismiss()
+        }.onReceive(payment.completeSubject) {
+            debugPrint("PaymentSummary::payment.completeSubject")
             onComplete()
-        }
-        .onReceive(payment.successSubject) {
-            onSuccess()
         }
     }
 }
@@ -80,7 +74,6 @@ struct PaymentSummary: View {
         selectedAmount: SelectedAmount(value: 34,
                                        currency: "CHF",
                                        isMonthly: true),
-        onComplete: {},
-        onSuccess: {}
+        onComplete: {}
     )
 }
