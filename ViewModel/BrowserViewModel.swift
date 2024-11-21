@@ -221,6 +221,10 @@ final class BrowserViewModel: NSObject, ObservableObject,
         return nil
     }
 
+    func forceLoadingState() {
+        isLoading = true
+    }
+
     private func didUpdate(title: String, url: URL) {
         let zimFile: ZimFile? = {
             guard let zimFileID = url.zimFileID else { return nil }
