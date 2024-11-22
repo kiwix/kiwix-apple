@@ -143,10 +143,11 @@ struct Payment {
                     await paymentServer.clientSecretForPayment(selectedAmount: selectedAmount)
                 })
                 // calling any UI refreshing state / subject from here
-                // will block the UI in the payment state for ever
+                // will block the UI in the payment state forever
                 // therefore it's defered via static showThanks
                 Self.showThanks = result.status == .success
                 resultHandler(result)
+                os_log("onPaymentAuthPhase: .didAuthorize: \(result.status == .success)")
             }
         case .didFinish:
             os_log("onPaymentAuthPhase: .didFinish")
