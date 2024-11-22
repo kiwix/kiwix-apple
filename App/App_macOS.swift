@@ -182,11 +182,11 @@ struct RootView: View {
                 }
             }
             .frame(minWidth: 160)
-            .safeAreaInset(edge: .bottom) {
-                SupportKiwixButton {
-                    openWindow(id: "donation")
-                }
-            }
+//            .safeAreaInset(edge: .bottom) {
+//                SupportKiwixButton {
+//                    openWindow(id: "donation")
+//                }
+//            }
         } detail: {
             switch navigation.currentItem {
             case .loading:
