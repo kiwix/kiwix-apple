@@ -202,7 +202,7 @@ struct Settings: View {
                     PaymentSummary(selectedAmount: selectedAmount, onComplete: {
                         showDonationPopUp = false
                     })
-                        .presentationDetents([.fraction(0.65)])
+                    .presentationDetents([.fraction(0.65)])
                 case .thankYou:
                     PaymentThankYou()
                         .presentationDetents([.fraction(0.33)])
@@ -215,8 +215,8 @@ struct Settings: View {
                     donationPopUpState = .selection
                 }
             }
-        }
-    })
+        })
+    }
 
     var readingSettings: some View {
         let isSnippet = Binding {
