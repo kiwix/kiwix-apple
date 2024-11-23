@@ -135,10 +135,11 @@ struct Payment {
                     resultHandler(.init(status: .failure, errors: [serverError]))
                     return
                 }
+                // we should update the return path for confirmations
+                // see: https://github.com/kiwix/kiwix-apple/issues/1032
                 let stripe = StripeApplePaySimple()
                 let result = await stripe.complete(payment: payment,
                                                    returnURLPath: nil,
-                                                   // TODO: update the return path for confirmations
                                                    usingClientSecretProvider: {
                     await paymentServer.clientSecretForPayment(selectedAmount: selectedAmount)
                 })

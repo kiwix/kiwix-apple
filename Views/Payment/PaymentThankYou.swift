@@ -60,4 +60,3 @@ struct PaymentThankYou: View {
 #Preview {
     PaymentThankYou()
 }
-
