@@ -192,7 +192,7 @@ struct Settings: View {
                 // reset
                 donationPopUpState = .selection
             }
-        }) {
+        }, content: {
             Group {
                 switch donationPopUpState {
                 case .selection:
@@ -216,7 +216,7 @@ struct Settings: View {
                 }
             }
         }
-    }
+    })
 
     var readingSettings: some View {
         let isSnippet = Binding {
