@@ -213,7 +213,7 @@ final class LibraryViewModel: ObservableObject {
     }
 
     private func process(parser: Parser) async throws {
-        try await withCheckedThrowingContinuation { [weak self] continuation -> Void in
+        try await withCheckedThrowingContinuation { [weak self] continuation in
             Database.shared.performBackgroundTask { [weak self] context in
                 guard let self else {
                     continuation.resume()
