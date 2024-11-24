@@ -138,6 +138,7 @@ jobs:
       run: echo "${{ secrets.APPLE_STORE_AUTH_KEY }}" | base64 --decode -o ${{ env.APPLE_STORE_AUTH_KEY_PATH }}
 
     - name: Build xcarchive
+      if: contains(env.UPLOAD_TO, matrix.destination)
       uses: ./.github/actions/xcbuild
       with:
         action: archive
@@ -187,6 +188,7 @@ jobs:
         plutil -insert method -string $EXPORT_METHOD ./export.plist
 
     - name: Upload Archive to Apple (App Store or Notarization)
+      if: contains(env.UPLOAD_TO, matrix.destination)
       env:
         VERSION: ${{ env.VERSION }}
       run: python .github/retry-if-retcode.py --sleep 60 --attempts 5 --retcode 70 xcrun xcodebuild -exportArchive -archivePath $PWD/Kiwix-$VERSION.xcarchive -exportPath $PWD/export/ -exportOptionsPlist export.plist -allowProvisioningUpdates ${{ env.APPLE_AUTH_PARAMS }}
