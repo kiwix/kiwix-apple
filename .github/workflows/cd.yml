@@ -2,8 +2,8 @@ name: CD
 
 # | Platform        | Nightly | Weekly (if diff HEAD)  | TestFlight Tag | Release          |
 # |-----------------|---------|------------------------|----------------|------------------|
-# | macOS           | ftp     | app-store              | app-store      | ftp              |
-# | iOS             | ftp     | app-store              | app-store      | -                |
+# | macOS           | ftp     | app-store              | app-store      | app-store, ftp   |
+# | iOS             | ftp     | app-store              | app-store      | app-store        |
 # |-----------------|---------|------------------------|----------------|------------------|
 # | VERSION         | Date    | get from project.yml   | project.yml    | project.yml      |
 # |-----------------|---------|------------------------|----------------|------------------|
@@ -29,7 +29,7 @@ env:
   # conditionally updated later:
   EXPORT_METHOD: "app-store"
   EXTRA_XCODEBUILD: ""
-  UPLOAD_TO: "" # !important
+  UPLOAD_TO: "" # !important this filters down the matrix combinations
   VERSION: ""
   SIGNING_CERTIFICATE: ""
   SIGNING_CERTIFICATE_P12_PASSWORD: ""
@@ -40,6 +40,7 @@ jobs:
       fail-fast: false
       matrix:
         platform: [iOS, macOS]
+        destination: [app-store, ftp]
     runs-on: macos-13
 
     steps:
@@ -84,61 +85,57 @@ jobs:
         version = str(datetime.date.today())
         with open(os.getenv("GITHUB_ENV"), "a") as fh:
           fh.write(f"VERSION={version}\n")
-          fh.write(f"UPLOAD_TO=ftp\n")
+          fh.write(f"UPLOAD_TO=(\"ftp\")\n")
           fh.write(f"UPLOAD_FOLDER=nightly/{version}\n")
 
     - name: Weekly setup
       if: github.event_name == 'schedule' && github.event.schedule == '00 2 * * 1' && env.HAS_CHANGED_LAST_WEEK == 'yes'
-      run: echo "UPLOAD_TO=app-store" >> $GITHUB_ENV
+      run: echo 'UPLOAD_TO=("app-store")' >> $GITHUB_ENV
 
     - name: Testflight tag setup
       if: github.event_name == 'push'
-      run: echo "UPLOAD_TO=app-store" >> $GITHUB_ENV
+      run: echo 'UPLOAD_TO=("app-store")' >> $GITHUB_ENV
 
-    - name: Post App Release macOS setup
-      if: github.event_name == 'release' && matrix.platform == 'macOS'
+    - name: Release setup
+      if: github.event_name == 'release'
       run: |
-        echo "UPLOAD_TO=ftp" >> $GITHUB_ENV
+        echo 'UPLOAD_TO=("app-store" "ftp")' >> $GITHUB_ENV
         echo "UPLOAD_FOLDER=release/kiwix-macos" >> $GITHUB_ENV
 
-    # Post App Release: skip steps for iOS, by leaving the UPLOAD_TO empty ("")
-
     - name: Set iOS extra xcode params
-      if: matrix.platform == 'iOS'
+      if: matrix.platform == 'iOS' && contains(env.UPLOAD_TO, matrix.destination)
       run: echo "EXTRA_XCODEBUILD=-sdk iphoneos ${{ env.APPLE_AUTH_PARAMS }}" >> $GITHUB_ENV
 
     - name: Set macOS FTP export method
-      if: matrix.platform == 'macOS' && env.UPLOAD_TO == 'ftp'
+      if: matrix.platform == 'macOS' && contains(env.UPLOAD_TO, matrix.destination)
       run: echo "EXPORT_METHOD=developer-id" >> $GITHUB_ENV
 
     - name: Use Developer ID Certificate
-      if: env.UPLOAD_TO == 'ftp' && matrix.platform == 'macOS'
+      if: matrix.platform == 'macOS' && matrix.destination == 'ftp' && contains(env.UPLOAD_TO, matrix.destination)
       run: |
         echo "SIGNING_CERTIFICATE=${{ secrets.APPLE_DEVELOPER_ID_SIGNING_CERTIFICATE }}" >> $GITHUB_ENV
         echo "SIGNING_CERTIFICATE_P12_PASSWORD=${{ secrets.APPLE_DEVELOPER_ID_SIGNING_P12_PASSWORD }}" >> $GITHUB_ENV
         echo "SIGNING_IDENTITY=${{ secrets.APPLE_DEVELOPER_ID_SIGNING_IDENTITY }}" >> $GITHUB_ENV
 
     - name: Use Apple Development Certificate
-      if: env.UPLOAD_TO == 'ftp' && matrix.platform == 'iOS'
+      if: matrix.platform == 'iOS' && matrix.destination == 'ftp' && contains(env.UPLOAD_TO, matrix.destination)
       run: |
         echo "SIGNING_CERTIFICATE=${{ secrets.APPLE_DEVELOPMENT_SIGNING_CERTIFICATE }}" >> $GITHUB_ENV
         echo "SIGNING_CERTIFICATE_P12_PASSWORD=${{ secrets.APPLE_DEVELOPMENT_SIGNING_P12_PASSWORD }}" >> $GITHUB_ENV
         echo "SIGNING_IDENTITY=${{ secrets.APPLE_DEVELOPMENT_SIGNING_IDENTITY }}" >> $GITHUB_ENV
 
     - name: Use Apple Distribution Certificate
-      if: env.UPLOAD_TO == 'app-store'
+      if: matrix.destination == 'app-store' && contains(env.UPLOAD_TO, matrix.destination)
       run: |
         echo "SIGNING_CERTIFICATE=${{ secrets.APPLE_DISTRIBUTION_SIGNING_CERTIFICATE }}" >> $GITHUB_ENV
         echo "SIGNING_CERTIFICATE_P12_PASSWORD=${{ secrets.APPLE_DISTRIBUTION_SIGNING_P12_PASSWORD }}" >> $GITHUB_ENV
         echo "SIGNING_IDENTITY=${{ secrets.APPLE_DEVELOPMENT_SIGNING_IDENTITY }}" >> $GITHUB_ENV
 
     - name: Decode Apple Store Key
-      if: env.UPLOAD_TO != ''
       run: echo "${{ secrets.APPLE_STORE_AUTH_KEY }}" | base64 --decode -o ${{ env.APPLE_STORE_AUTH_KEY_PATH }}
 
     - name: Build xcarchive
       uses: ./.github/actions/xcbuild
-      if: env.UPLOAD_TO != ''
       with:
         action: archive
         xc-destination: generic/platform=${{ matrix.platform }}
@@ -153,7 +150,7 @@ jobs:
         EXTRA_XCODEBUILD: ${{ env.EXTRA_XCODEBUILD }}
 
     - name: Add altool credentials to Keychain
-      if: env.UPLOAD_TO == 'ftp'
+      if: matrix.destination == 'ftp' && contains(env.UPLOAD_TO, matrix.destination)
       env:
         APPLE_SIGNING_ALTOOL_USERNAME: ${{ secrets.APPLE_SIGNING_ALTOOL_USERNAME }}
         APPLE_SIGNING_ALTOOL_PASSWORD: ${{ secrets.APPLE_SIGNING_ALTOOL_PASSWORD }}
@@ -170,7 +167,7 @@ jobs:
             $KEYCHAIN_PROFILE
 
     - name: Prepare export for IPA
-      if: matrix.platform == 'iOS' && env.UPLOAD_TO == 'ftp'
+      if: matrix.platform == 'iOS' && matrix.destination == 'ftp' && contains(env.UPLOAD_TO, matrix.destination)
       run: |
         plutil -create xml1 ./export.plist
         plutil -insert method -string ad-hoc ./export.plist
@@ -179,26 +176,24 @@ jobs:
 
     - name: Prepare export for not IPA
       # else statement for Prepare export for IPA
-      # excluding UPLOAD_TO == '', which means skip upload
       # [(macOS, ftp), (macOS, app-store), (iOS, app-store)]
-      if: matrix.platform != 'iOS' || env.UPLOAD_TO == 'app-store'
+      if: (matrix.platform == 'macOS' || matrix.destination == 'app-store') && contains(env.UPLOAD_TO, matrix.destination)
       run: |
         plutil -create xml1 ./export.plist
         plutil -insert destination -string upload ./export.plist
         plutil -insert method -string $EXPORT_METHOD ./export.plist
 
     - name: Upload Archive to Apple (App Store or Notarization)
-      if: env.UPLOAD_TO != ''
       env:
         VERSION: ${{ env.VERSION }}
       run: python .github/retry-if-retcode.py --sleep 60 --attempts 5 --retcode 70 xcrun xcodebuild -exportArchive -archivePath $PWD/Kiwix-$VERSION.xcarchive -exportPath $PWD/export/ -exportOptionsPlist export.plist -allowProvisioningUpdates ${{ env.APPLE_AUTH_PARAMS }}
 
     - name: Export notarized App from archive
-      if: matrix.platform == 'macOS' && env.UPLOAD_TO == 'ftp'
+      if: matrix.platform == 'macOS' && matrix.destination == 'ftp' && contains(env.UPLOAD_TO, matrix.destination)
       run: python .github/retry-if-retcode.py --sleep 60 --attempts 20 --retcode 65 xcrun xcodebuild -exportNotarizedApp -archivePath $PWD/Kiwix-$VERSION.xcarchive -exportPath $PWD/export/ -allowProvisioningUpdates ${{ env.APPLE_AUTH_PARAMS }}
 
     - name: Create and Notarize DMG
-      if: matrix.platform == 'macOS' && env.UPLOAD_TO == 'ftp'
+      if: matrix.platform == 'macOS' && matrix.destination == 'ftp' && contains(env.UPLOAD_TO, matrix.destination)
       run: |
         pip install dmgbuild
         dmgbuild -s .github/dmg-settings.py -Dapp=$PWD/export/Kiwix.app -Dbg=.github/dmg-bg.png "Kiwix-$VERSION" $PWD/kiwix-$VERSION.dmg
@@ -206,20 +201,20 @@ jobs:
         xcrun stapler staple $PWD/kiwix-$VERSION.dmg
 
     - name: Add SSH_KEY to filesystem
-      if: env.UPLOAD_TO == 'ftp'
+      if: matrix.destination == 'ftp' && contains(env.UPLOAD_TO, matrix.destination)
       run: |
         echo "${{ secrets.SSH_KEY }}" > $SSH_KEY
         chmod 600 $SSH_KEY
 
     - name: Upload DMG
-      if: env.UPLOAD_TO == 'ftp' && matrix.platform == 'macOS'
+      if: matrix.platform == 'macOS' && matrix.destination == 'ftp' && contains(env.UPLOAD_TO, matrix.destination)
       run: |
         mv ${PWD}/kiwix-${VERSION}.dmg ${PWD}/kiwix-macos_${VERSION}.dmg
         python .github/upload_file.py --src ${PWD}/kiwix-macos_${VERSION}.dmg --dest ci@master.download.kiwix.org:30022/data/download/${UPLOAD_FOLDER} --ssh-key ${SSH_KEY}
         mv ${PWD}/kiwix-macos_${VERSION}.dmg ${PWD}/kiwix-${VERSION}.dmg
 
     - name: Upload IPA
-      if: env.UPLOAD_TO == 'ftp' && matrix.platform == 'iOS'
+      if: matrix.platform == 'iOS' && matrix.destination == 'ftp' && contains(env.UPLOAD_TO, matrix.destination)
       run: |
         mv ${PWD}/export/Kiwix.ipa ${PWD}/export/kiwix-${VERSION}.ipa
         python .github/upload_file.py --src ${PWD}/export/kiwix-${VERSION}.ipa --dest ci@master.download.kiwix.org:30022/data/download/${UPLOAD_FOLDER} --ssh-key ${SSH_KEY}
