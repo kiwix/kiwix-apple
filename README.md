@@ -175,11 +175,12 @@ Once satisfied with the quality of the app in TestFlight, we can
 proceed with the Kiwix release process.
 
 The release process is triggered by a [GitHub
-Release](https://github.com/kiwix/kiwix-apple/releases). Only the
-version released (to Testflight) that way can be then sent to
-approval to Apple. Once approved by Apple, we can release them to the
-AppStore. At the same time, will publish the macOS DMG to our [file
-server](https://download.kiwix.org/release/kiwix-macos/).
+Release](https://github.com/kiwix/kiwix-apple/releases). This process
+creates new testflight builds, and only these should be sent to
+approval to Apple. The same release process also creates and publishes the
+macOS DMG to our [file server](https://download.kiwix.org/release/kiwix-macos/).
+Once the app is approved by Apple, they can be made available to the public
+on the App Store.
 
 In case the app is rejected by Apple in a way that requires a new
 build to fix the issue, a new patch release should be prepared and
