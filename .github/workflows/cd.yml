@@ -1,14 +1,14 @@
 name: CD
 
-# | Platform        | Nightly | Weekly (if diff HEAD)  | TestFlight Tag | Release          |
-# |-----------------|---------|------------------------|----------------|------------------|
-# | macOS           | ftp     | app-store              | app-store      | app-store, ftp   |
-# | iOS             | ftp     | app-store              | app-store      | app-store        |
-# |-----------------|---------|------------------------|----------------|------------------|
-# | VERSION         | Date    | get from project.yml   | project.yml    | project.yml      |
-# |-----------------|---------|------------------------|----------------|------------------|
-# | UPLOAD_FOLDER   | nightly | -                      | -              | release          |
-# |-----------------|---------|------------------------|----------------|------------------|
+# | Platform        | Nightly | Weekly (if diff HEAD)  | TestFlight Tag | Release             |
+# |-----------------|---------|------------------------|----------------|---------------------|
+# | macOS           | ftp     | app-store              | app-store      | app-store, ftp      |
+# | iOS             | ftp     | app-store              | app-store      | app-store           |
+# |-----------------|---------|------------------------|----------------|---------------------|
+# | VERSION         | Date    | get from project.yml   | project.yml    | project.yml         |
+# |-----------------|---------|------------------------|----------------|---------------------|
+# | UPLOAD_FOLDER   | nightly | -                      | -              | release/kiwix-macos |
+# |-----------------|---------|------------------------|----------------|---------------------|
 on:
   schedule:
   - cron: '32 1 * * *' # Nightly download.kiwix.org @ 01:32
@@ -31,6 +31,7 @@ env:
   EXTRA_XCODEBUILD: ""
   UPLOAD_TO: "" # !important this filters down the matrix combinations
   VERSION: ""
+  HAS_CHANGED_LAST_WEEK: "no"
   SIGNING_CERTIFICATE: ""
   SIGNING_CERTIFICATE_P12_PASSWORD: ""
 
@@ -96,8 +97,13 @@ jobs:
       if: github.event_name == 'push'
       run: echo 'UPLOAD_TO=("app-store")' >> $GITHUB_ENV
 
-    - name: Release setup
-      if: github.event_name == 'release'
+
+    - name: Release setup for iOS
+      if: github.event_name == 'release' && matrix.platform == 'iOS'
+      run: echo 'UPLOAD_TO=("app-store")' >> $GITHUB_ENV
+
+    - name: Release setup for macOS
+      if: github.event_name == 'release' && matrix.platform == 'macOS'
       run: |
         echo 'UPLOAD_TO=("app-store" "ftp")' >> $GITHUB_ENV
         echo "UPLOAD_FOLDER=release/kiwix-macos" >> $GITHUB_ENV
@@ -106,13 +112,10 @@ jobs:
       if: matrix.platform == 'iOS' && contains(env.UPLOAD_TO, matrix.destination)
       run: echo "EXTRA_XCODEBUILD=-sdk iphoneos ${{ env.APPLE_AUTH_PARAMS }}" >> $GITHUB_ENV
 
-    - name: Set macOS FTP export method
-      if: matrix.platform == 'macOS' && contains(env.UPLOAD_TO, matrix.destination)
-      run: echo "EXPORT_METHOD=developer-id" >> $GITHUB_ENV
-
-    - name: Use Developer ID Certificate
+    - name: Set macOS FTP export method, and Developer ID Certificate
       if: matrix.platform == 'macOS' && matrix.destination == 'ftp' && contains(env.UPLOAD_TO, matrix.destination)
       run: |
+        echo "EXPORT_METHOD=developer-id" >> $GITHUB_ENV
         echo "SIGNING_CERTIFICATE=${{ secrets.APPLE_DEVELOPER_ID_SIGNING_CERTIFICATE }}" >> $GITHUB_ENV
         echo "SIGNING_CERTIFICATE_P12_PASSWORD=${{ secrets.APPLE_DEVELOPER_ID_SIGNING_P12_PASSWORD }}" >> $GITHUB_ENV
         echo "SIGNING_IDENTITY=${{ secrets.APPLE_DEVELOPER_ID_SIGNING_IDENTITY }}" >> $GITHUB_ENV
@@ -188,13 +191,10 @@ jobs:
         VERSION: ${{ env.VERSION }}
       run: python .github/retry-if-retcode.py --sleep 60 --attempts 5 --retcode 70 xcrun xcodebuild -exportArchive -archivePath $PWD/Kiwix-$VERSION.xcarchive -exportPath $PWD/export/ -exportOptionsPlist export.plist -allowProvisioningUpdates ${{ env.APPLE_AUTH_PARAMS }}
 
-    - name: Export notarized App from archive
-      if: matrix.platform == 'macOS' && matrix.destination == 'ftp' && contains(env.UPLOAD_TO, matrix.destination)
-      run: python .github/retry-if-retcode.py --sleep 60 --attempts 20 --retcode 65 xcrun xcodebuild -exportNotarizedApp -archivePath $PWD/Kiwix-$VERSION.xcarchive -exportPath $PWD/export/ -allowProvisioningUpdates ${{ env.APPLE_AUTH_PARAMS }}
-
-    - name: Create and Notarize DMG
+    - name: Export notarized App from archive, Create and Notarize DMG
       if: matrix.platform == 'macOS' && matrix.destination == 'ftp' && contains(env.UPLOAD_TO, matrix.destination)
       run: |
+        python .github/retry-if-retcode.py --sleep 60 --attempts 20 --retcode 65 xcrun xcodebuild -exportNotarizedApp -archivePath $PWD/Kiwix-$VERSION.xcarchive -exportPath $PWD/export/ -allowProvisioningUpdates ${{ env.APPLE_AUTH_PARAMS }}
         pip install dmgbuild
         dmgbuild -s .github/dmg-settings.py -Dapp=$PWD/export/Kiwix.app -Dbg=.github/dmg-bg.png "Kiwix-$VERSION" $PWD/kiwix-$VERSION.dmg
         xcrun notarytool submit --keychain $KEYCHAIN --keychain-profile $KEYCHAIN_PROFILE --wait $PWD/kiwix-$VERSION.dmg
