@@ -52,6 +52,10 @@ jobs:
     - name: Install python dependencies
       run: pip install pyyaml==6.0.1
 
+    - name: Remove Apple Pay capability for macOS
+      if: matrix.platform == 'macOS'
+      run: sed -i '' '/in-app-payments/d' project.yml
+
     - name: Set VERSION from code
       shell: python
       run: |
