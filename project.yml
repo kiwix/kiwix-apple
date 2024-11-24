@@ -98,6 +98,7 @@ targets:
     entitlements:
       properties:
         com.apple.security.files.downloads.read-write: true
+        com.apple.developer.in-app-payments: [merchant.org.kiwix.apple]
     settings:
       base:
         MARKETING_VERSION: "3.6.0"
