@@ -90,26 +90,26 @@ jobs:
         version = str(datetime.date.today())
         with open(os.getenv("GITHUB_ENV"), "a") as fh:
           fh.write(f"VERSION={version}\n")
-          fh.write(f"UPLOAD_TO=(\"ftp\")\n")
+          fh.write(f"UPLOAD_TO=\"ftp\"\n")
           fh.write(f"UPLOAD_FOLDER=nightly/{version}\n")
 
     - name: Weekly setup
       if: github.event_name == 'schedule' && github.event.schedule == '00 2 * * 1' && env.HAS_CHANGED_LAST_WEEK == 'yes'
-      run: echo 'UPLOAD_TO=("app-store")' >> $GITHUB_ENV
+      run: echo 'UPLOAD_TO="app-store"' >> $GITHUB_ENV
 
     - name: Testflight tag setup
       if: github.event_name == 'push'
-      run: echo 'UPLOAD_TO=("app-store")' >> $GITHUB_ENV
+      run: echo 'UPLOAD_TO="app-store"' >> $GITHUB_ENV
 
 
     - name: Release setup for iOS
       if: github.event_name == 'release' && matrix.platform == 'iOS'
-      run: echo 'UPLOAD_TO=("app-store")' >> $GITHUB_ENV
+      run: echo 'UPLOAD_TO="app-store"' >> $GITHUB_ENV
 
     - name: Release setup for macOS
       if: github.event_name == 'release' && matrix.platform == 'macOS'
       run: |
-        echo 'UPLOAD_TO=("app-store" "ftp")' >> $GITHUB_ENV
+        echo 'UPLOAD_TO="app-store ftp"' >> $GITHUB_ENV
         echo "UPLOAD_FOLDER=release/kiwix-macos" >> $GITHUB_ENV
 
     - name: Set iOS extra xcode params
