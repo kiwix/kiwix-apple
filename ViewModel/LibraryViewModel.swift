@@ -178,14 +178,14 @@ final class LibraryViewModel: ObservableObject {
             let (data, response) = try await self.urlSession.data(for: request)
             guard let response = response as? HTTPURLResponse else { return nil }
             switch response.statusCode {
-            case 200..<300:
+            case 200:
                 if let eTag = response.allHeaderFields["Etag"] as? String {
                     Defaults[.libraryETag] = eTag
                 }
                 // OK to process further
                 os_log("Retrieved OPDS Data, size: %llu bytes", log: Log.OPDS, type: .info, data.count)
                 return data
-            case 300..<400:
+            case 304:
                 return nil // already downloaded
             default:
                 throw LibraryRefreshError.retrieve(description: "HTTP Status \(response.statusCode).")
