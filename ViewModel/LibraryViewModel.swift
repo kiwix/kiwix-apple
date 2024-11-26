@@ -87,6 +87,8 @@ final class LibraryViewModel: ObservableObject {
 
             // refresh library
             guard let data = try await fetchData() else {
+                error = nil
+                process.state = .complete
                 return
             }
             let parser = try await parse(data: data)
@@ -171,14 +173,23 @@ final class LibraryViewModel: ObservableObject {
 
     private func fetchData() async throws -> Data? {
         do {
-            let request = URLRequest(url: Self.catalogURL, timeoutInterval: 20)
+            var request = URLRequest(url: Self.catalogURL, timeoutInterval: 20)
+            request.allHTTPHeaderFields = ["If-None-Match": Defaults[.libraryETag]]
             let (data, response) = try await self.urlSession.data(for: request)
             guard let response = response as? HTTPURLResponse else { return nil }
-            guard response.statusCode == 200 else {
+            switch response.statusCode {
+            case 200:
+                if let eTag = response.allHeaderFields["Etag"] as? String {
+                    Defaults[.libraryETag] = eTag
+                }
+                // OK to process further
+                os_log("Retrieved OPDS Data, size: %llu bytes", log: Log.OPDS, type: .info, data.count)
+                return data
+            case 304:
+                return nil // already downloaded
+            default:
                 throw LibraryRefreshError.retrieve(description: "HTTP Status \(response.statusCode).")
             }
-            os_log("Retrieved OPDS Data, size: %llu bytes", log: Log.OPDS, type: .info, data.count)
-            return data
         } catch {
             os_log("Error retrieving OPDS Data: %s", log: Log.OPDS, type: .error)
             if let error = error as? LibraryRefreshError {
@@ -202,7 +213,7 @@ final class LibraryViewModel: ObservableObject {
     }
 
     private func process(parser: Parser) async throws {
-        try await withCheckedThrowingContinuation { [weak self] continuation -> Void in
+        try await withCheckedThrowingContinuation { [weak self] continuation in
             Database.shared.performBackgroundTask { [weak self] context in
                 guard let self else {
                     continuation.resume()

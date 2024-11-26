@@ -32,6 +32,7 @@ extension Defaults.Keys {
 
     // library
     static let libraryLanguageCodes = Key<Set<String>>("libraryLanguageCodes", default: Set())
+    static let libraryETag = Key<String>("libraryETag", default: "")
     static let libraryLanguageSortingMode = Key<LibraryLanguageSortingMode>(
         "libraryLanguageSortingMode", default: LibraryLanguageSortingMode.byCounts
     )
