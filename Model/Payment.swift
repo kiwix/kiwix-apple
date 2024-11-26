@@ -32,7 +32,7 @@ import os
 /// https://github.com/stripe/stripe-ios/tree/master/Example/AppClipExample
 ///
 /// Whereas the Stripe SDK is based on the older
-/// PKPaymentAuthorizationController
+/// PKPaymentAuthorizationController (before PayWithApplePayButton was available)
 /// https://developer.apple.com/documentation/passkit_apple_pay_and_wallet/apple_pay#2870963
 ///
 /// The Stripe SDK has been brought up to date (with 2022 WWDC changes)
