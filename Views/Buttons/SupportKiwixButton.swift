@@ -33,8 +33,8 @@ struct SupportKiwixButton: View {
             .padding(6)
             #endif
         }
-        .buttonStyle(BorderlessButtonStyle())
         #if os(macOS)
+        .buttonStyle(BorderlessButtonStyle())
         .padding()
         #endif
     }
