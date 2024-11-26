@@ -38,7 +38,7 @@ struct PaymentForm: View {
             Spacer()
             Text("payment.donate.title".localized)
                 .font(.title)
-                .padding()
+                .padding(.init(top: 12, leading: 0, bottom: 8, trailing: 0))
             Spacer()
         }
         .overlay(alignment: .topTrailing) {
