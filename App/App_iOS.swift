@@ -17,7 +17,6 @@ import SwiftUI
 import UserNotifications
 
 #if os(iOS)
-
 @main
 struct Kiwix: App {
     @Environment(\.scenePhase) private var scenePhase
@@ -95,7 +94,6 @@ struct Kiwix: App {
     }
 
     private class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCenterDelegate {
-        
         /// Storing background download completion handler sent to application delegate
         func application(_ application: UIApplication,
                          handleEventsForBackgroundURLSession identifier: String,
