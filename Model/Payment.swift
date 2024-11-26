@@ -20,6 +20,25 @@ import Combine
 import StripeApplePay
 import os
 
+/// Payment processing based on:
+/// Apple-Pay button:
+/// https://developer.apple.com/documentation/passkit_apple_pay_and_wallet/apple_pay#2872687
+/// as described in: What’s new in Wallet and Apple Pay from WWDC 2022
+/// (https://developer.apple.com/videos/play/wwdc2022/10041/)
+///
+/// Combined with Stripe's lightweight Apple Pay framework
+/// https://github.com/stripe/stripe-ios/blob/master/StripeApplePay/README.md
+/// based on the App Clip example project:
+/// https://github.com/stripe/stripe-ios/tree/master/Example/AppClipExample
+///
+/// Whereas the Stripe SDK is based on the older
+/// PKPaymentAuthorizationController
+/// https://developer.apple.com/documentation/passkit_apple_pay_and_wallet/apple_pay#2870963
+///
+/// The Stripe SDK has been brought up to date (with 2022 WWDC changes)
+/// and modified to be compatible with macOS as well, see SPM dependencies
+/// https://github.com/CodeLikeW/stripe-apple-pay
+/// https://github.com/CodeLikeW/stripe-core
 struct Payment {
     
     /// Decides if the Thank You pop up should be shown
@@ -77,6 +96,10 @@ struct Payment {
         .init(value: 10)
     ]
 
+    /// Checks Apple Pay capabilities, and returns the button label accrodingly
+    /// Setup button if no cards added yet,
+    /// nil if Apple Pay is not supported
+    /// or donation button, if all is OK
     static func paymentButtonType() -> PayWithApplePayButtonLabel? {
         if PKPaymentAuthorizationController.canMakePayments() {
             return PayWithApplePayButtonLabel.donate
