@@ -60,12 +60,28 @@ struct Payment {
     static let paymentSubscriptionManagingURL = "https://www.kiwix.org"
     static let supportedNetworks: [PKPaymentNetwork] = [
         .amex,
+        .bancomat,
+        .bancontact,
+        .cartesBancaires,
+        .chinaUnionPay,
+        .dankort,
         .discover,
+        .eftpos,
         .electron,
+        .elo,
+        .girocard,
+        .interac,
+        .idCredit,
+        .JCB,
         .mada,
         .maestro,
         .masterCard,
-        .visa
+        .mir,
+        .privateLabel,
+        .quicPay,
+        .suica,
+        .visa,
+        .vPay
     ]
     static let capabilities: PKMerchantCapability = [.threeDSecure, .credit, .debit, .emv]
 
