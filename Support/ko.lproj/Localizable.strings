@@ -36,6 +36,8 @@
 "common.export_file.alert.description" = "%@ 파일을 내보내시겠습니까?";
 "common.export_file.alert.button.title" = "내보내기";
 "outline_button.outline.title" = "개요";
+"outline_button.outline.help" = "문서 개요 표시";
+"outline_button.outline.empty.message" = "개요가 없습니다";
 "article_shortcut.random.button.title.mac" = "임의의 일반 문서";
 "article_shortcut.random.button.title.ios" = "임의의 문서";
 "article_shortcut.random.button.help" = "임의의 문서 표시";
