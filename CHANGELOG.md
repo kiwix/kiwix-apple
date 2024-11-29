@@ -1,4 +1,20 @@
 ## 3.6.0
+  - NEW:
+    - App launch sequence (@BPerlakiH #1019, #1014, #1008)
+  - UPDATE:
+    - Kiwix logo icons (@BPerlakiH #1021, #1017)
+    - Optimised Catalog fetching (@BPerlakiH #1034)
+    - Hiding navigation bar for full screen reading on iPad (@BPerlakiH #995)
+    - Improved book opening and start up time (@BPerlakiH #974, #987, #1000)
+    - LibKiwix version 14.0.0 (@BPerlakiH #1004)
+    - URL scheme change from kiwix:// to zim:// (@BPerlakiH #961)
+  - FIX:
+    - Reader support for iFrames with srcdoc attribute (@BPerlakiH #1028)
+    - Deleting ZIM file should close the opened tab (@BPerlakiH #1005, #999)
+    - Large downloads do not show completion in UI (@BPerlakiH #998)
+    - Duplicate entries in search results (@HiroyasuNishiyama @BPerlakiH #980)
+    - Video continues to play briefly when backgrounding / foregrounding (@BPerlakiH #982)
+    - Opening external ZIM file (@BPerlakiH #968, #1030)
 
 ## 3.5.2
 - FIX:
