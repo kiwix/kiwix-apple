@@ -277,3 +277,22 @@
 "enum.navigation_item.settings" = "Settings";
 "enum.search_result_snippet_mode.disabled" = "Disabled";
 "enum.search_result_snippet_mode.matches" = "Matches";
+
+"payment.donate.title" = "Donate";
+"payment.description.label" = "Support Kiwix";
+"payment.summary_page.title" = "Support Kiwix";
+"payment.support_button.label" = "Support Kiwix";
+"payment.monthly_support.label" = "Monthly support for Kiwix";
+"payment.summary.title" = "Kiwix";
+"payment.textfield.custom_amount.label" = "Custom amount";
+"payment.confirm.button.title" = "Confirm";
+"payment.selection.average_monthly_donation.subtitle" = "Average monthly donation";
+"payment.selection.last_year_average.subtitle" = "Last year's average";
+"payment.selection.custom_amount" = "Custom amount";
+"payment.selection.option.one_time" = "One time";
+"payment.selection.option.monthly" = "Monthly";
+"payment.support_fallback_message" = "We are sorry, your device does not support Apple Pay.";
+"payment.success.title" = "Thank you so much for your donation.";
+"payment.success.description" = "Your generosity means everything to us.";
+"payment.error.title" = "Well that's awkward.";
+"payment.error.description" = "There has been an issue with your payment. Please try again.";

@@ -126,7 +126,24 @@ struct SettingSection<Content: View>: View {
 
 #elseif os(iOS)
 
+import PassKit
+import Combine
+
 struct Settings: View {
+
+    enum DonationPopupState {
+        case selection
+        case selectedAmount(SelectedAmount)
+        case thankYou
+        case error
+    }
+
+    private var amountSelected = PassthroughSubject<SelectedAmount?, Never>()
+    @State private var showDonationPopUp: Bool = false
+    @State private var donationPopUpState: DonationPopupState = .selection
+    func openDonation() {
+        showDonationPopUp = true
+    }
     @Default(.backupDocumentDirectory) private var backupDocumentDirectory
     @Default(.downloadUsingCellular) private var downloadUsingCellular
     @Default(.externalLinkLoadingPolicy) private var externalLinkLoadingPolicy
@@ -140,24 +157,77 @@ struct Settings: View {
     }
 
     var body: some View {
-        if FeatureFlags.hasLibrary {
-            List {
-                readingSettings
-                librarySettings
-                catalogSettings
-                backupSettings
-                miscellaneous
+        Group {
+            if FeatureFlags.hasLibrary {
+                List {
+                    readingSettings
+                    librarySettings
+                    catalogSettings
+                    backupSettings
+                    miscellaneous
+                }
+                .modifier(ToolbarRoleBrowser())
+                .navigationTitle("settings.navigation.title".localized)
+            } else {
+                List {
+                    readingSettings
+                    miscellaneous
+                }
+                .modifier(ToolbarRoleBrowser())
+                .navigationTitle("settings.navigation.title".localized)
             }
-            .modifier(ToolbarRoleBrowser())
-            .navigationTitle("settings.navigation.title".localized)
-        } else {
-            List {
-                readingSettings
-                miscellaneous
-            }
-            .modifier(ToolbarRoleBrowser())
-            .navigationTitle("settings.navigation.title".localized)
         }
+        .sheet(isPresented: $showDonationPopUp, onDismiss: {
+            let result = Payment.showResult()
+            switch result {
+            case .none:
+                // reset
+                donationPopUpState = .selection
+                return
+            case .some(let finalResult):
+                Task {
+                    // we need to close the sheet in order to dismiss ApplePay,
+                    // and we need to re-open it again with a delay to show thank you state
+                    // Swift UI cannot yet handle multiple sheets
+                    try? await Task.sleep(for: .milliseconds(100))
+                    await MainActor.run {
+                        switch finalResult {
+                        case .thankYou:
+                            donationPopUpState = .thankYou
+                        case .error:
+                            donationPopUpState = .error
+                        }
+                        showDonationPopUp = true
+                    }
+                }
+            }
+        }, content: {
+            Group {
+                switch donationPopUpState {
+                case .selection:
+                    PaymentForm(amountSelected: amountSelected)
+                        .presentationDetents([.fraction(0.65)])
+                case .selectedAmount(let selectedAmount):
+                    PaymentSummary(selectedAmount: selectedAmount, onComplete: {
+                        showDonationPopUp = false
+                    })
+                    .presentationDetents([.fraction(0.65)])
+                case .thankYou:
+                    PaymentResultPopUp(state: .thankYou)
+                        .presentationDetents([.fraction(0.33)])
+                case .error:
+                    PaymentResultPopUp(state: .error)
+                        .presentationDetents([.fraction(0.33)])
+                }
+            }
+            .onReceive(amountSelected) { value in
+                if let amount = value {
+                    donationPopUpState = .selectedAmount(amount)
+                } else {
+                    donationPopUpState = .selection
+                }
+            }
+        })
     }
 
     var readingSettings: some View {
@@ -244,6 +314,11 @@ struct Settings: View {
 
     var miscellaneous: some View {
         Section("settings.miscellaneous.title".localized) {
+            if Payment.paymentButtonType() != nil {
+                SupportKiwixButton {
+                    openDonation()
+                }
+            }
             Button("settings.miscellaneous.button.feedback".localized) {
                 UIApplication.shared.open(URL(string: "mailto:feedback@kiwix.org")!)
             }

@@ -47,6 +47,9 @@ packages:
   Defaults:
     url: https://github.com/sindresorhus/Defaults
     majorVersion: 6.0.0
+  StripeApplePay:
+    url: https://github.com/CodeLikeW/stripe-apple-pay
+    majorVersion: 24.0.0
 
 targetTemplates:
   ApplicationTemplate:
@@ -68,8 +71,10 @@ targetTemplates:
       - sdk: WebKit.framework
       - sdk: NotificationCenter.framework
       - sdk: QuickLook.framework
+      - sdk: PassKit.framework
       - sdk: SystemConfiguration.framework
       - package: Defaults
+      - package: StripeApplePay
     sources: 
       - path: App
       - path: Model
@@ -93,6 +98,7 @@ targets:
     entitlements:
       properties:
         com.apple.security.files.downloads.read-write: true
+        com.apple.developer.in-app-payments: [merchant.org.kiwix.apple]
     settings:
       base:
         MARKETING_VERSION: "3.6.0"

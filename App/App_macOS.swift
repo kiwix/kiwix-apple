@@ -18,6 +18,7 @@ import UserNotifications
 import Combine
 import Defaults
 import CoreKiwix
+import PassKit
 
 #if os(macOS)
 final class AppDelegate: NSObject, NSApplicationDelegate {
@@ -29,8 +30,12 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
 @main
 struct Kiwix: App {
     @NSApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
+    @Environment(\.openWindow) var openWindow
     @StateObject private var libraryRefreshViewModel = LibraryViewModel()
     private let notificationCenterDelegate = NotificationCenterDelegate()
+    private var amountSelected = PassthroughSubject<SelectedAmount?, Never>()
+    @State private var selectedAmount: SelectedAmount?
+    @StateObject var formReset = FormReset()
 
     init() {
         UNUserNotificationCenter.current().delegate = notificationCenterDelegate
@@ -79,6 +84,66 @@ struct Kiwix: App {
             }
             .frame(width: 550, height: 400)
         }
+        Window("payment.donate.title".localized, id: "donation") {
+            Group {
+                if let selectedAmount {
+                    PaymentSummary(selectedAmount: selectedAmount, onComplete: {
+                        closeDonation()
+                        switch Payment.showResult() {
+                        case .none: break
+                        case .thankYou:
+                            openWindow(id: "donation-thank-you")
+                        case .error:
+                            openWindow(id: "donation-error")
+                        }
+                    })
+                } else {
+                    PaymentForm(amountSelected: amountSelected)
+                        .frame(width: 320, height: 320)
+                }
+            }
+            .onReceive(amountSelected) { amount in
+                selectedAmount = amount
+            }
+            .onReceive(NotificationCenter.default.publisher(for: NSWindow.willCloseNotification)) { notification in
+                if let window = notification.object as? NSWindow,
+                   window.identifier?.rawValue == "donation" {
+                    formReset.reset()
+                    selectedAmount = nil
+                }
+            }
+            .environmentObject(formReset)
+        }
+        .windowResizability(.contentMinSize)
+        .windowStyle(.titleBar)
+        .commandsRemoved()
+        .defaultSize(width: 320, height: 400)
+
+        Window("", id: "donation-thank-you") {
+            PaymentResultPopUp(state: .thankYou)
+                .padding()
+        }
+        .windowResizability(.contentMinSize)
+        .commandsRemoved()
+        .defaultSize(width: 320, height: 198)
+
+        Window("", id: "donation-error") {
+            PaymentResultPopUp(state: .error)
+                .padding()
+        }
+        .windowResizability(.contentMinSize)
+        .commandsRemoved()
+        .defaultSize(width: 320, height: 198)
+    }
+
+    private func closeDonation() {
+        // after upgrading to macOS 14, use:
+        // @Environment(\.dismissWindow) var dismissWindow
+        // and call:
+        // dismissWindow(id: "donation")
+        NSApplication.shared.windows.first { window in
+            window.identifier?.rawValue == "donation"
+        }?.close()
     }
 
     private class NotificationCenterDelegate: NSObject, UNUserNotificationCenterDelegate {
@@ -98,6 +163,7 @@ struct Kiwix: App {
 }
 
 struct RootView: View {
+    @Environment(\.openWindow) var openWindow
     @Environment(\.controlActiveState) var controlActiveState
     @StateObject private var navigation = NavigationViewModel()
     @StateObject private var windowTracker = WindowTracker()
@@ -127,7 +193,12 @@ struct RootView: View {
                     }
                 }
             }
-            .frame(minWidth: 150)
+            .frame(minWidth: 160)
+//            .safeAreaInset(edge: .bottom) {
+//                SupportKiwixButton {
+//                    openWindow(id: "donation")
+//                }
+//            }
         } detail: {
             switch navigation.currentItem {
             case .loading:
