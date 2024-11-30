@@ -135,6 +135,7 @@ struct Settings: View {
         case selection
         case selectedAmount(SelectedAmount)
         case thankYou
+        case error
     }
 
     private var amountSelected = PassthroughSubject<SelectedAmount?, Never>()
@@ -177,20 +178,28 @@ struct Settings: View {
             }
         }
         .sheet(isPresented: $showDonationPopUp, onDismiss: {
-            if Payment.shouldShowThanks() {
+            let result = Payment.showResult()
+            switch result {
+            case .none:
+                // reset
+                donationPopUpState = .selection
+                return
+            case .some(let finalResult):
                 Task {
                     // we need to close the sheet in order to dismiss ApplePay,
                     // and we need to re-open it again with a delay to show thank you state
                     // Swift UI cannot yet handle multiple sheets
                     try? await Task.sleep(for: .milliseconds(100))
                     await MainActor.run {
+                        switch finalResult {
+                        case .thankYou:
+                            donationPopUpState = .thankYou
+                        case .error:
+                            donationPopUpState = .error
+                        }
                         showDonationPopUp = true
-                        donationPopUpState = .thankYou
                     }
                 }
-            } else {
-                // reset
-                donationPopUpState = .selection
             }
         }, content: {
             Group {
@@ -204,7 +213,10 @@ struct Settings: View {
                     })
                     .presentationDetents([.fraction(0.65)])
                 case .thankYou:
-                    PaymentThankYou()
+                    PaymentResultPopUp(state: .thankYou)
+                        .presentationDetents([.fraction(0.33)])
+                case .error:
+                    PaymentResultPopUp(state: .error)
                         .presentationDetents([.fraction(0.33)])
                 }
             }

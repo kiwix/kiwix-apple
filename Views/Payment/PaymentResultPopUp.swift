@@ -16,12 +16,19 @@
 import Foundation
 import SwiftUI
 
-struct PaymentThankYou: View {
+struct PaymentResultPopUp: View {
 
     @Environment(\.dismiss) var dismiss
     #if os(iOS)
     @Environment(\.verticalSizeClass) var verticalSizeClass: UserInterfaceSizeClass?
     #endif
+
+    let state: State
+
+    enum State {
+        case thankYou
+        case error
+    }
 
     var body: some View {
         Group {
@@ -33,10 +40,19 @@ struct PaymentThankYou: View {
             }
             #endif
             VStack(spacing: 16) {
-                Text("payment.success.title".localized)
-                    .font(.title)
-                Text("payment.success.description".localized)
-                    .font(.headline)
+                switch state {
+                case .thankYou:
+                    Text("payment.success.title".localized)
+                        .font(.title)
+                    Text("payment.success.description".localized)
+                        .font(.headline)
+                case .error:
+                    Text("payment.error.title".localized)
+                        .font(.title)
+                    Text("payment.error.description".localized)
+                        .font(.headline)
+                }
+
             }
             .multilineTextAlignment(.center)
         }
@@ -58,5 +74,5 @@ struct PaymentThankYou: View {
 }
 
 #Preview {
-    PaymentThankYou()
+    PaymentResultPopUp(state: .thankYou)
 }
