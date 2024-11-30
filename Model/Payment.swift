@@ -56,7 +56,7 @@ struct Payment {
         return value
     }
     @MainActor
-    static private var finalResult: Payment.FinalResult? = nil
+    static private var finalResult: Payment.FinalResult?
 
     let completeSubject = PassthroughSubject<Void, Never>()
 
