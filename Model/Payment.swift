@@ -60,6 +60,7 @@ struct Payment {
 
     let completeSubject = PassthroughSubject<Void, Never>()
 
+    static let kiwixPaymentServer = URL(string: "https://api.donation.kiwix.org/v1/stripe")!
     static let merchantSessionURL = URL(string: "https://apple-pay-gateway.apple.com" )!
     static let merchantId = "merchant.org.kiwix.apple"
     static let paymentSubscriptionManagingURL = "https://www.kiwix.org"
@@ -140,6 +141,7 @@ struct Payment {
         request.countryCode = "CH"
         request.currencyCode = selectedAmount.currency
         request.supportedNetworks = Self.supportedNetworks
+        request.merchantCapabilities = .threeDSecure
         request.requiredBillingContactFields = [.emailAddress]
         let recurring: PKRecurringPaymentRequest? = if selectedAmount.isMonthly {
             PKRecurringPaymentRequest(paymentDescription: "payment.description.label".localized,
@@ -170,7 +172,7 @@ struct Payment {
             os_log("onPaymentAuthPhase: .didAuthorize")
             // call our server to get payment / setup intent and return the client.secret
             Task { @MainActor [resultHandler] in
-                let paymentServer = StripeKiwix(endPoint: URL(string: "https://api.donation.kiwix.org/v1/stripe")!,
+                let paymentServer = StripeKiwix(endPoint: Self.kiwixPaymentServer,
                                                 payment: payment)
                 do {
                     let publicKey = try await paymentServer.publishableKey()
@@ -213,23 +215,13 @@ struct Payment {
 
     @available(macOS 13.0, *)
     func onMerchantSessionUpdate() async -> PKPaymentRequestMerchantSessionUpdate {
-        var request = URLRequest(url: Self.merchantSessionURL)
-        request.httpMethod = "GET"
-        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        do {
-            let (data, response) = try await URLSession.shared.data(for: request)
-            guard let httpResponse = response as? HTTPURLResponse,
-                  (200..<300).contains(httpResponse.statusCode),
-                  let dict = try JSONSerialization.jsonObject(with: data,
-                                                              options: .allowFragments) as? [String: Any] else {
-                throw MerchantSessionError.invalidStatus
+        guard let session = await StripeKiwix.stripeSession(endPoint: Self.kiwixPaymentServer) else {
+            await MainActor.run {
+                Self.finalResult = .error
             }
-            let session = PKPaymentMerchantSession(dictionary: dict)
-            return .init(status: .success, merchantSession: session)
-        } catch let error {
-            os_log("Merchant session not established: %@", type: .debug, error.localizedDescription)
             return .init(status: .failure, merchantSession: nil)
         }
+        return .init(status: .success, merchantSession: session)
     }
 }
 

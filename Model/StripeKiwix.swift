@@ -15,6 +15,7 @@
 
 import Foundation
 import PassKit
+import os
 
 struct StripeKiwix {
     
@@ -60,6 +61,30 @@ struct StripeKiwix {
             return .failure(serverError)
         }
     }
+
+    static func stripeSession(endPoint: URL) async -> PKPaymentMerchantSession? {
+        do {
+            var request = URLRequest(url: endPoint.appending(path: "payment-session"))
+            request.httpMethod = "POST"
+            request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+            let encoder = JSONEncoder()
+            encoder.keyEncodingStrategy = .convertToSnakeCase
+            request.httpBody = try encoder.encode(SessionParams())
+            let (data, response) = try await URLSession.shared.data(for: request)
+            guard let httpResponse = response as? HTTPURLResponse,
+                  (200..<300).contains(httpResponse.statusCode) else {
+                throw StripeError.serverError
+            }
+            guard let dictionary = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] else {
+                os_log("Merchant session not established: unable to decode server response", type: .debug)
+                return nil
+            }
+            return PKPaymentMerchantSession(dictionary: dictionary)
+        } catch let serverError {
+            os_log("Merchant session not established: %@", type: .debug, serverError.localizedDescription)
+            return nil
+        }
+    }
 }
 
 /// Response structure for GET {endPoint}/config
@@ -87,4 +112,7 @@ private struct SelectedPaymentAmount: Encodable {
         currency = selectedAmount.currency
         assert(Payment.currencyCodes.contains(currency))
     }
+}
+private struct SessionParams: Encodable {
+    let validationUrl = "apple-pay-gateway-cert.apple.com"
 }
