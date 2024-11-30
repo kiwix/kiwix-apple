@@ -40,18 +40,23 @@ import os
 /// https://github.com/CodeLikeW/stripe-apple-pay
 /// https://github.com/CodeLikeW/stripe-core
 struct Payment {
-    
-    /// Decides if the Thank You pop up should be shown
-    /// - Returns: `True` only once
+
+    enum FinalResult {
+        case thankYou
+        case error
+    }
+
+    /// Decides if the Thank You / Error pop up should be shown
+    /// - Returns: `FinalResult` only once
     @MainActor
-    static func shouldShowThanks() -> Bool {
+    static func showResult() -> FinalResult? {
         // make sure `true` is "read only once"
-        let value = Self.showThanks
-        Self.showThanks = false
+        let value = Self.finalResult
+        Self.finalResult = nil
         return value
     }
     @MainActor
-    static private var showThanks: Bool = false
+    static private var finalResult: Payment.FinalResult? = nil
 
     let completeSubject = PassthroughSubject<Void, Never>()
 
@@ -171,6 +176,7 @@ struct Payment {
                     let publicKey = try await paymentServer.publishableKey()
                     StripeAPI.defaultPublishableKey = publicKey
                 } catch let serverError {
+                    Self.finalResult = .error
                     resultHandler(.init(status: .failure, errors: [serverError]))
                     return
                 }
@@ -184,8 +190,15 @@ struct Payment {
                 })
                 // calling any UI refreshing state / subject from here
                 // will block the UI in the payment state forever
-                // therefore it's defered via static showThanks
-                Self.showThanks = result.status == .success
+                // therefore it's defered via static finalResult
+                switch result.status {
+                case .success:
+                    Self.finalResult = .thankYou
+                case .failure:
+                    Self.finalResult = .error
+                default:
+                    Self.finalResult = nil
+                }
                 resultHandler(result)
                 os_log("onPaymentAuthPhase: .didAuthorize: \(result.status == .success)")
             }

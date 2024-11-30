@@ -89,8 +89,12 @@ struct Kiwix: App {
                 if let selectedAmount {
                     PaymentSummary(selectedAmount: selectedAmount, onComplete: {
                         closeDonation()
-                        if Payment.shouldShowThanks() {
+                        switch Payment.showResult() {
+                        case .none: break
+                        case .thankYou:
                             openWindow(id: "donation-thank-you")
+                        case .error:
+                            openWindow(id: "donation-error")
                         }
                     })
                 } else {
@@ -116,7 +120,15 @@ struct Kiwix: App {
         .defaultSize(width: 320, height: 400)
 
         Window("", id: "donation-thank-you") {
-            PaymentThankYou()
+            PaymentResultPopUp(state: .thankYou)
+                .padding()
+        }
+        .windowResizability(.contentMinSize)
+        .commandsRemoved()
+        .defaultSize(width: 320, height: 198)
+
+        Window("", id: "donation-error") {
+            PaymentResultPopUp(state: .error)
                 .padding()
         }
         .windowResizability(.contentMinSize)
