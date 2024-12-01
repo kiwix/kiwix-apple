@@ -60,7 +60,8 @@ struct Payment {
 
     let completeSubject = PassthroughSubject<Void, Never>()
 
-    static let kiwixPaymentServer = URL(string: "https://api.donation.kiwix.org/v1/stripe")!
+//    static let kiwixPaymentServer = URL(string: "https://api.donation.kiwix.org/v1/stripe")!
+    static let kiwixPaymentServer = URL(string: "http://192.168.100.42:4242")!
     static let merchantSessionURL = URL(string: "https://apple-pay-gateway.apple.com" )!
     static let merchantId = "merchant.org.kiwix.apple"
     static let paymentSubscriptionManagingURL = "https://www.kiwix.org"
