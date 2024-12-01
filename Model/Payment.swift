@@ -61,10 +61,11 @@ struct Payment {
     let completeSubject = PassthroughSubject<Void, Never>()
 
 //    static let kiwixPaymentServer = URL(string: "https://api.donation.kiwix.org/v1/stripe")!
-    static let kiwixPaymentServer = URL(string: "http://192.168.100.42:4242")!
+    static let kiwixPaymentServer = URL(string: "http://192.168.100.50:4242")!
     static let merchantSessionURL = URL(string: "https://apple-pay-gateway.apple.com" )!
     static let merchantId = "merchant.org.kiwix.apple"
     static let paymentSubscriptionManagingURL = "https://www.kiwix.org"
+    static let paymentSubscriptionTokenCallbackURL = URL(string: "http://192.168.100.50:4242/token")!
     static let supportedNetworks: [PKPaymentNetwork] = [
         .amex,
         .bancomat,
@@ -90,7 +91,7 @@ struct Payment {
         .visa,
         .vPay
     ]
-    static let capabilities: PKMerchantCapability = [.threeDSecure, .credit, .debit, .emv]
+    static let capabilities: PKMerchantCapability = .threeDSecure
 
     /// NOTE: consider that these currencies support double precision, eg: 5.25 USD.
     /// Revisit `SelectedAmount`, and `SelectedPaymentAmount`
@@ -138,29 +139,13 @@ struct Payment {
     func donationRequest(for selectedAmount: SelectedAmount) -> PKPaymentRequest {
         let request = PKPaymentRequest()
         request.merchantIdentifier = Self.merchantId
-        request.merchantCapabilities = Self.capabilities
-        request.countryCode = "CH"
+        request.countryCode = Locale.Region.switzerland.identifier
         request.currencyCode = selectedAmount.currency
         request.supportedNetworks = Self.supportedNetworks
-        request.merchantCapabilities = .threeDSecure
+        request.merchantCapabilities = Self.capabilities
         request.requiredBillingContactFields = [.emailAddress]
-        let recurring: PKRecurringPaymentRequest? = if selectedAmount.isMonthly {
-            PKRecurringPaymentRequest(paymentDescription: "payment.description.label".localized,
-                                      regularBilling: .init(label: "payment.monthly_support.label".localized,
-                                                            amount: NSDecimalNumber(value: selectedAmount.value),
-                                                            type: .final),
-                                      managementURL: URL(string: Self.paymentSubscriptionManagingURL)!)
-        } else {
-            nil
-        }
-        request.recurringPaymentRequest = recurring
-        request.paymentSummaryItems = [
-            PKPaymentSummaryItem(
-                label: "payment.summary.title".localized,
-                amount: NSDecimalNumber(value: selectedAmount.value),
-                type: .final
-            )
-        ]
+        request.recurringPaymentRequest = recurringPayment(for: selectedAmount)
+        request.paymentSummaryItems = summartItems(for: selectedAmount)
         return request
     }
 
@@ -223,6 +208,40 @@ struct Payment {
             return .init(status: .failure, merchantSession: nil)
         }
         return .init(status: .success, merchantSession: session)
+    }
+
+    private func recurringPayment(for selectedAmount: SelectedAmount) -> PKRecurringPaymentRequest? {
+        guard selectedAmount.isMonthly else { return nil }
+        let payRequest = PKRecurringPaymentRequest(
+            paymentDescription: "payment.description.label".localized,
+            regularBilling: .init(
+                label: "payment.monthly_support.label".localized,
+                amount: NSDecimalNumber(value: selectedAmount.value),
+                type: .final
+            ),
+            managementURL: URL(string: Self.paymentSubscriptionManagingURL)!
+        )
+        payRequest.regularBilling.intervalUnit = .month
+        payRequest.tokenNotificationURL = Self.paymentSubscriptionTokenCallbackURL
+        return payRequest
+    }
+
+    private func summartItems(for selectedAmount: SelectedAmount) -> [PKPaymentSummaryItem] {
+        let item: PKPaymentSummaryItem
+        if selectedAmount.isMonthly {
+            let recurringItem = PKRecurringPaymentSummaryItem(label: "payment.monthly_support.label".localized,
+                                                 amount: NSDecimalNumber(value: selectedAmount.value),
+                                                 type: .final)
+            recurringItem.startDate = Date() // starts now
+            recurringItem.intervalUnit = .month
+            recurringItem.endDate = nil // never ending
+            item = recurringItem
+        } else {
+            item = PKPaymentSummaryItem(label: "payment.summary.title".localized,
+                                        amount: NSDecimalNumber(value: selectedAmount.value),
+                                        type: .final)
+        }
+        return [item]
     }
 }
 

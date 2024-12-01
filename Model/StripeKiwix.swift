@@ -44,9 +44,8 @@ struct StripeKiwix {
 
     func clientSecretForPayment(selectedAmount: SelectedAmount) async -> Result<String, Error> {
         do {
-            // for monthly we should create a setup-intent:
-            // see: https://github.com/kiwix/kiwix-apple/issues/1032
-            var request = URLRequest(url: endPoint.appending(path: "payment-intent"))
+            let requestPath = "payment-intent" // selectedAmount.isMonthly ? "setup-intent" : "payment-intent"
+            var request = URLRequest(url: endPoint.appending(path: requestPath))
             request.httpMethod = "POST"
             request.setValue("application/json", forHTTPHeaderField: "Content-Type")
             request.httpBody = try JSONEncoder().encode(SelectedPaymentAmount(from: selectedAmount))
