@@ -130,3 +130,7 @@
 "enum.navigation_item.downloads" = "ڈاؤن لوڈ";
 "enum.navigation_item.settings" = "ترتیباں";
 "enum.search_result_snippet_mode.disabled" = "غیر فعال تھی ڳیا";
+"payment.donate.title" = "عطیہ ݙیوو";
+"payment.summary.title" = "کیویکس";
+"payment.confirm.button.title" = "تصدیق";
+"payment.selection.option.monthly" = "ماہانہ";

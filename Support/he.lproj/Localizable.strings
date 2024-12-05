@@ -229,3 +229,8 @@
 "enum.navigation_item.settings" = "הגדרות";
 "enum.search_result_snippet_mode.disabled" = "כבוי";
 "enum.search_result_snippet_mode.matches" = "התאמות";
+"payment.donate.title" = "לתרום";
+"payment.description.label" = "לתמוך בקיוויקס";
+"payment.summary_page.title" = "לתמוך בקיוויקס";
+"payment.support_button.label" = "לתמוך בקיוויקס";
+"payment.monthly_support.label" = "תמיכה חודשית בקיוויקס";
