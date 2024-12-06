@@ -41,10 +41,6 @@ jobs:
         if: matrix.platform == 'iOS'
         run: echo "EXTRA_XCODEBUILD=-sdk iphoneos ${{ env.APPLE_AUTH_PARAMS }}" >> $GITHUB_ENV
 
-      - name: Remove Apple Pay capability for macOS
-        if: matrix.platform == 'macOS'
-        run: sed -i '' '/in-app-payments/d' project.yml
-
       - name: Build
         uses: ./.github/actions/xcbuild
         with:
