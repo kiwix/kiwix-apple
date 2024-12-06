@@ -89,7 +89,7 @@ struct Payment {
         .visa,
         .vPay
     ]
-    static let capabilities: PKMerchantCapability = [.threeDSecure, .credit, .debit, .emv]
+    static let capabilities: PKMerchantCapability = .threeDSecure
 
     /// NOTE: consider that these currencies support double precision, eg: 5.25 USD.
     /// Revisit `SelectedAmount`, and `SelectedPaymentAmount`
@@ -141,7 +141,6 @@ struct Payment {
         request.countryCode = "CH"
         request.currencyCode = selectedAmount.currency
         request.supportedNetworks = Self.supportedNetworks
-        request.merchantCapabilities = .threeDSecure
         request.requiredBillingContactFields = [.emailAddress]
         let recurring: PKRecurringPaymentRequest? = if selectedAmount.isMonthly {
             PKRecurringPaymentRequest(paymentDescription: "payment.description.label".localized,
