@@ -87,7 +87,7 @@ struct OpenFileHandler: ViewModifier {
                             NotificationCenter.openURL(url, inNewTab: true)
                         } else if .file == context {
                             // Note: inNewTab:true/false has no meaning here, the system will open a new window anyway
-                            NotificationCenter.openURL(url, inNewTab: true, isFileContext: true)
+                            NotificationCenter.openURL(url, inNewTab: true, context: .file)
                         }
                         #elseif os(iOS)
                         NotificationCenter.openURL(url, inNewTab: true)
