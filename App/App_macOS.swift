@@ -245,23 +245,23 @@ struct RootView: View {
             guard let url = notification.userInfo?["url"] as? URL else {
                 return
             }
-            switch (notification.userInfo?["context"] as? OpenURLContext) {
-                case .file, .deepLink:
-                    // handle the opened ZIM file from Finder / DeepLink
-                    // for which the system opens a new window,
-                    // this part of the code, will be called on all possible windows, we need this though,
-                    // otherwise it won't fire on app start, where we might not have a fully configured window yet.
-                    // We need to filter it down the the last window
-                    // (which is usually not the key window yet at this point),
-                    // and load the content only within that
-                    Task { @MainActor [weak navigation] in
-                        if windowTracker.isLastWindow(), let navigation {
-                            BrowserViewModel.getCached(tabID: navigation.currentTabId).load(url: url)
-                        }
+            switch notification.userInfo?["context"] as? OpenURLContext {
+            case .file, .deepLink:
+                // handle the opened ZIM file from Finder / DeepLink
+                // for which the system opens a new window,
+                // this part of the code, will be called on all possible windows, we need this though,
+                // otherwise it won't fire on app start, where we might not have a fully configured window yet.
+                // We need to filter it down the the last window
+                // (which is usually not the key window yet at this point),
+                // and load the content only within that
+                Task { @MainActor [weak navigation] in
+                    if windowTracker.isLastWindow(), let navigation {
+                        BrowserViewModel.getCached(tabID: navigation.currentTabId).load(url: url)
                     }
-                    return
+                }
+                return
                 
-                case .none:
+            case .none:
                 break
             }
             guard controlActiveState == .key else { return }
