@@ -208,11 +208,6 @@ struct RootView: View {
             case .tab(let tabID):
                 let browser = BrowserViewModel.getCached(tabID: tabID)
                 BrowserTab().environmentObject(browser)
-                    .withHostingWindow { [weak browser] _ in
-                        if FeatureFlags.hasLibrary == false {
-                            browser?.loadMainArticle()
-                        }
-                    }
             case .bookmarks:
                 Bookmarks()
             case .opened:
