@@ -90,7 +90,7 @@ extension NotificationCenter {
         inNewTab: Bool = false,
         context: OpenURLContext? = nil
     ) {
-        var userInfo: [AnyHashable : Any] = [
+        var userInfo: [AnyHashable: Any] = [
             "url": url,
             "inNewTab": inNewTab
         ]
