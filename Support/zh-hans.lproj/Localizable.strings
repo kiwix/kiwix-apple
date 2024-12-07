@@ -2,6 +2,7 @@
 // Exported from translatewiki.net
 // Author: Dream Star.cn
 // Author: Kichin
+// Author: TFX202X
 // Author: Vibrance
 // Author: XtexChooser
 // Author: 沈澄心
@@ -232,3 +233,21 @@
 "enum.navigation_item.settings" = "设置";
 "enum.search_result_snippet_mode.disabled" = "已停用";
 "enum.search_result_snippet_mode.matches" = "相符";
+"payment.donate.title" = "捐款";
+"payment.description.label" = "支持Kiwix";
+"payment.summary_page.title" = "支持Kiwix";
+"payment.support_button.label" = "支持Kiwix";
+"payment.monthly_support.label" = "Kiwix的每月支持";
+"payment.summary.title" = "Kiwix";
+"payment.textfield.custom_amount.label" = "自定义金额";
+"payment.confirm.button.title" = "确认";
+"payment.selection.average_monthly_donation.subtitle" = "平均每月捐款";
+"payment.selection.last_year_average.subtitle" = "去年的平均水平";
+"payment.selection.custom_amount" = "自定义金额";
+"payment.selection.option.one_time" = "单次";
+"payment.selection.option.monthly" = "每月";
+"payment.support_fallback_message" = "很抱歉，您的设备不支持Apple Pay。";
+"payment.success.title" = "非常感谢您的捐赠。";
+"payment.success.description" = "您的慷慨对于我们来说意味着一切。";
+"payment.error.title" = "嗯，这很尴尬。";
+"payment.error.description" = "您的付款出现问题。请重试。";

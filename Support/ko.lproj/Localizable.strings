@@ -1,5 +1,6 @@
 // Messages for Korean (한국어)
 // Exported from translatewiki.net
+// Author: Suleiman the Magnificent Television
 // Author: Ykhwong
 
 "library_refresh_error.retrieve.description" = "라이브러리 데이터를 검색하는 중 오류가 발생했습니다.";
@@ -200,3 +201,14 @@
 "enum.navigation_item.downloads" = "다운로드";
 "enum.navigation_item.settings" = "설정";
 "enum.search_result_snippet_mode.disabled" = "비활성화됨";
+"payment.donate.title" = "기부";
+"payment.description.label" = "Kiwix 지원하기";
+"payment.summary_page.title" = "Kiwix 지원하기";
+"payment.support_button.label" = "Kiwix 지원하기";
+"payment.monthly_support.label" = "Kiwix에 대한 월별 지원";
+"payment.textfield.custom_amount.label" = "사용자 지정 금액";
+"payment.confirm.button.title" = "확인";
+"payment.selection.last_year_average.subtitle" = "작년 평균";
+"payment.selection.custom_amount" = "사용자 지정 금액";
+"payment.support_fallback_message" = "죄송합니다. 귀하의 장치는 Apple Pay를 지원하지 않습니다.";
+"payment.success.title" = "기부에 진심으로 감사드립니다.";

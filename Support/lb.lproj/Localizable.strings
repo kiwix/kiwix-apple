@@ -169,3 +169,10 @@
 "enum.navigation_item.settings" = "Astellungen";
 "enum.search_result_snippet_mode.disabled" = "Desaktivéiert";
 "enum.search_result_snippet_mode.matches" = "Treffer";
+"payment.description.label" = "Kiwix ënnerstëtzen";
+"payment.summary_page.title" = "Kiwix ënnerstëtzen";
+"payment.support_button.label" = "Kiwix ënnerstëtzen";
+"payment.summary.title" = "Kiwix";
+"payment.confirm.button.title" = "Confirméieren";
+"payment.selection.option.monthly" = "All Mount";
+"payment.success.title" = "Villmools Merci fir Ären Don.";
