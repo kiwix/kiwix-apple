@@ -123,6 +123,9 @@ struct Payment {
     /// nil if Apple Pay is not supported
     /// or donation button, if all is OK
     static func paymentButtonType() -> PayWithApplePayButtonLabel? {
+        // only kiwix app is supporting donations atm.
+        guard case .kiwix = AppType.current else { return nil }
+        
         if PKPaymentAuthorizationController.canMakePayments() {
             return PayWithApplePayButtonLabel.donate
         }

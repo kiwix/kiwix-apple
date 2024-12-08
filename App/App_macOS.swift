@@ -195,8 +195,10 @@ struct RootView: View {
             }
             .frame(minWidth: 160)
             .safeAreaInset(edge: .bottom) {
-                SupportKiwixButton {
-                    openWindow(id: "donation")
+                if Payment.paymentButtonType() != nil {
+                    SupportKiwixButton {
+                        openWindow(id: "donation")
+                    }
                 }
             }
         } detail: {
