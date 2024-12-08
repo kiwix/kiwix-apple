@@ -58,9 +58,15 @@ jobs:
         if: matrix.platform == 'iOS'
         run: xcodebuild test -scheme Kiwix -destination 'platform=iOS Simulator,name=iPhone 15 Plus'
 
+      - name: Prepare running unit tests on macOS
+        if: matrix.platform == 'macOS'
+        run: |
+          sed -i '' '/in-app-payments/d' project.yml
+          xcodegen
+
       - name: Run Unit Tests on macOS
         if: matrix.platform == 'macOS'
-        run: xcodebuild test -scheme Kiwix -destination 'platform=macOS' ${EXTRA_XCODEBUILD}
+        run: xcodebuild test -scheme Kiwix -destination 'platform=macOS'
 
       - name: Upload code coverage
         uses: codecov/codecov-action@v4.2.0
