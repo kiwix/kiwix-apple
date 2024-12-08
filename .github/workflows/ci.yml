@@ -34,12 +34,15 @@ jobs:
           ref: ${{ github.event.pull_request.head.sha || github.ref }}
 
       - name: Add Apple Store Key
-        if: matrix.platform == 'iOS'
         run: echo "${{ secrets.APPLE_STORE_AUTH_KEY }}" | base64 --decode -o ${{ env.APPLE_STORE_AUTH_KEY_PATH}}
 
-      - name: Set EXTRA_XCODEBUILD
+      - name: Set EXTRA_XCODEBUILD for iOS
         if: matrix.platform == 'iOS'
         run: echo "EXTRA_XCODEBUILD=-sdk iphoneos ${{ env.APPLE_AUTH_PARAMS }}" >> $GITHUB_ENV
+
+      - name: Set EXTRA_XCODEBUILD for macOS
+        if: matrix.platform == 'macOS'
+        run: echo "EXTRA_XCODEBUILD=${{ env.APPLE_AUTH_PARAMS }}" >> $GITHUB_ENV
 
       - name: Build
         uses: ./.github/actions/xcbuild
