@@ -85,15 +85,22 @@ extension UTType {
 
 extension NotificationCenter {
     @MainActor
-    static func openURL(_ url: URL, inNewTab: Bool = false, isFileContext: Bool = false) {
+    static func openURL(
+        _ url: URL,
+        inNewTab: Bool = false,
+        context: OpenURLContext? = nil
+    ) {
+        var userInfo: [AnyHashable: Any] = [
+            "url": url,
+            "inNewTab": inNewTab
+        ]
+        if let context {
+            userInfo["context"] = context
+        }
         NotificationCenter.default.post(
             name: .openURL,
             object: nil,
-            userInfo: [
-                "url": url,
-                "inNewTab": inNewTab,
-                "isFileContext": isFileContext
-            ]
+            userInfo: userInfo
         )
     }
 
