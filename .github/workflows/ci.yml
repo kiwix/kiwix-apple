@@ -60,7 +60,7 @@ jobs:
 
       - name: Run Unit Tests on macOS
         if: matrix.platform == 'macOS'
-        run: xcodebuild test -scheme Kiwix -destination 'platform=macOS'
+        run: xcodebuild test -scheme Kiwix -destination 'platform=macOS' ${EXTRA_XCODEBUILD}
 
       - name: Upload code coverage
         uses: codecov/codecov-action@v4.2.0
