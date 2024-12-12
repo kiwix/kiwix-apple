@@ -230,23 +230,28 @@ struct RootView: View {
         .environmentObject(navigation)
         .onOpenURL { url in
             if url.isFileURL {
+                // from opening an external file
                 let browser = BrowserViewModel.getCached(tabID: navigation.currentTabId)
                 browser.forceLoadingState()
                 NotificationCenter.openFiles([url], context: .file)
             } else if url.isZIMURL {
-                NotificationCenter.openURL(url)
+                // from deeplinks
+                let browser = BrowserViewModel.getCached(tabID: navigation.currentTabId)
+                browser.forceLoadingState()
+                NotificationCenter.openURL(url, context: .deepLink)
             }
         }
         .onReceive(openURL) { notification in
             guard let url = notification.userInfo?["url"] as? URL else {
                 return
             }
-            if notification.userInfo?["isFileContext"] as? Bool == true {
-                // handle the opened ZIM file from Finder
+            switch notification.userInfo?["context"] as? OpenURLContext {
+            case .file, .deepLink:
+                // handle the opened ZIM file from Finder / DeepLink
                 // for which the system opens a new window,
                 // this part of the code, will be called on all possible windows, we need this though,
                 // otherwise it won't fire on app start, where we might not have a fully configured window yet.
-                // We need to filter it down the the last window 
+                // We need to filter it down the the last window
                 // (which is usually not the key window yet at this point),
                 // and load the content only within that
                 Task { @MainActor [weak navigation] in
@@ -255,6 +260,9 @@ struct RootView: View {
                     }
                 }
                 return
+                
+            case .none:
+                break
             }
             guard controlActiveState == .key else { return }
             let tabID = navigation.currentTabId

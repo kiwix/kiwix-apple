@@ -138,6 +138,11 @@ enum ExternalLinkLoadingPolicy: String, CaseIterable, Identifiable, Defaults.Ser
     }
 }
 
+enum OpenURLContext: String {
+    case deepLink
+    case file
+}
+
 enum OpenFileContext: String {
     case command
     case file
