@@ -1,3 +1,11 @@
+# 3.7.0
+  - NEW:
+    - Support Kiwix with Apple Pay donation (@BPerlakiH @rgaudin #1022, #1045, #1046, #1049)
+  - UPDATE:
+    - Localisations (@translatewiki #1043, #1051)
+  -FIX:
+    - Opening deeplinks (@BPerlakiH #1048)
+
 ## 3.6.0
   - NEW:
     - App launch sequence (@BPerlakiH #1019, #1014, #1008)
