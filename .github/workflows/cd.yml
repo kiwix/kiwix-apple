@@ -112,8 +112,8 @@ jobs:
       if: matrix.platform == 'iOS' && contains(env.UPLOAD_TO, matrix.destination)
       run: echo "EXTRA_XCODEBUILD=-sdk iphoneos ${{ env.APPLE_AUTH_PARAMS }}" >> $GITHUB_ENV
 
-    - name: Set EXTRA_XCODEBUILD for macOS
-      if: matrix.platform == 'macOS' && contains(env.UPLOAD_TO, matrix.destination)
+    - name: Set EXTRA_XCODEBUILD for macOS AppStore
+      if: matrix.platform == 'macOS' && matrix.destination == 'app-store'
       run: echo "EXTRA_XCODEBUILD=${{ env.APPLE_AUTH_PARAMS }}" >> $GITHUB_ENV
 
     - name: Set macOS FTP export method, and Developer ID Certificate
