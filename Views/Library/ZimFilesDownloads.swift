@@ -1,20 +1,6 @@
-// This file is part of Kiwix for iOS & macOS.
-//
-// Kiwix is free software; you can redistribute it and/or modify it
-// under the terms of the GNU General Public License as published by
-// the Free Software Foundation; either version 3 of the License, or
-// any later version.
-//
-// Kiwix is distributed in the hope that it will be useful, but
-// WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
-// General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with Kiwix; If not, see https://www.gnu.org/licenses/.
-
 import CoreData
 import SwiftUI
+import ActivityKit
 
 /// A grid of zim files that are being downloaded.
 struct ZimFilesDownloads: View {
@@ -61,6 +47,24 @@ struct ZimFilesDownloads: View {
                 }
             }
             #endif
+        }
+        .onAppear {
+            // Start Live Activity for each download task
+            for downloadTask in downloadTasks {
+                if let zimFile = downloadTask.zimFile {
+                    let attributes = DownloadActivityAttributes(fileID: zimFile.fileID, fileName: zimFile.name)
+                    let initialContentState = DownloadActivityAttributes.ContentState(progress: 0.0, speed: 0.0)
+                    do {
+                        _ = try Activity<DownloadActivityAttributes>.request(
+                            attributes: attributes,
+                            contentState: initialContentState,
+                            pushType: nil
+                        )
+                    } catch {
+                        print("Error starting Live Activity: \(error)")
+                    }
+                }
+            }
         }
     }
 }

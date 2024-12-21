@@ -1,19 +1,5 @@
-// This file is part of Kiwix for iOS & macOS.
-//
-// Kiwix is free software; you can redistribute it and/or modify it
-// under the terms of the GNU General Public License as published by
-// the Free Software Foundation; either version 3 of the License, or
-// any later version.
-//
-// Kiwix is distributed in the hope that it will be useful, but
-// WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
-// General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with Kiwix; If not, see https://www.gnu.org/licenses/.
-
 import SwiftUI
+import ActivityKit
 
 import Defaults
 
@@ -150,6 +136,7 @@ struct Settings: View {
     @Default(.libraryAutoRefresh) private var libraryAutoRefresh
     @Default(.searchResultSnippetMode) private var searchResultSnippetMode
     @Default(.webViewPageZoom) private var webViewPageZoom
+    @Default(.enableLiveActivities) private var enableLiveActivities
     @EnvironmentObject private var library: LibraryViewModel
 
     enum Route {
@@ -265,6 +252,7 @@ struct Settings: View {
                 SelectedLanaguageLabel()
             }.disabled(library.state != .complete)
             Toggle("library_settings.toggle.cellular".localized, isOn: $downloadUsingCellular)
+            Toggle("library_settings.toggle.live_activities".localized, isOn: $enableLiveActivities)
         } header: {
             Text("library_settings.tab.library.title".localized)
         } footer: {

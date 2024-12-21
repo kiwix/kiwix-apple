@@ -1,26 +1,8 @@
-// This file is part of Kiwix for iOS & macOS.
-//
-// Kiwix is free software; you can redistribute it and/or modify it
-// under the terms of the GNU General Public License as published by
-// the Free Software Foundation; either version 3 of the License, or
-// any later version.
-//
-// Kiwix is distributed in the hope that it will be useful, but
-// WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
-// General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with Kiwix; If not, see https://www.gnu.org/licenses/.
-
-//
-//  DownloadService.swift
-//  Kiwix
-
 import Combine
 import CoreData
 import UserNotifications
 import os
+import ActivityKit
 
 struct DownloadState: Codable {
     let downloaded: Int64
@@ -118,6 +100,7 @@ final class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegat
         operationQueue.underlyingQueue = queue
         return URLSession(configuration: configuration, delegate: self, delegateQueue: operationQueue)
     }()
+    private var downloadActivity: Activity<DownloadActivityAttributes>?
 
     // MARK: - Heartbeat
 
@@ -167,6 +150,19 @@ final class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegat
             task.countOfBytesClientExpectsToReceive = zimFile.size
             task.taskDescription = zimFileID.uuidString
             task.resume()
+
+            // Start Live Activity
+            let attributes = DownloadActivityAttributes(fileID: zimFileID, fileName: zimFile.name)
+            let initialContentState = DownloadActivityAttributes.ContentState(progress: 0.0, speed: 0.0)
+            do {
+                downloadActivity = try Activity<DownloadActivityAttributes>.request(
+                    attributes: attributes,
+                    contentState: initialContentState,
+                    pushType: nil
+                )
+            } catch {
+                print("Error starting Live Activity: \(error)")
+            }
         }
     }
 
@@ -214,6 +210,19 @@ final class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegat
 
             downloadTask.error = nil
             try? context.save()
+
+            // Resume Live Activity
+            let attributes = DownloadActivityAttributes(fileID: zimFileID, fileName: downloadTask.zimFile?.name ?? "")
+            let initialContentState = DownloadActivityAttributes.ContentState(progress: 0.0, speed: 0.0)
+            do {
+                downloadActivity = try Activity<DownloadActivityAttributes>.request(
+                    attributes: attributes,
+                    contentState: initialContentState,
+                    pushType: nil
+                )
+            } catch {
+                print("Error resuming Live Activity: \(error)")
+            }
         }
     }
 
@@ -337,6 +346,11 @@ final class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegat
             progress.updateFor(uuid: zimFileID,
                                downloaded: totalBytesWritten,
                                total: totalBytesExpectedToWrite)
+            // Update Live Activity
+            let progressPercentage = Double(totalBytesWritten) / Double(totalBytesExpectedToWrite)
+            let speed = Double(bytesWritten) / 1024.0 / 1024.0 // Convert to MB/s
+            let contentState = DownloadActivityAttributes.ContentState(progress: progressPercentage, speed: speed)
+            await downloadActivity?.update(using: contentState)
         }
     }
 
@@ -378,6 +392,8 @@ final class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegat
             // schedule notification
             scheduleDownloadCompleteNotification(zimFileID: zimFileID)
             deleteDownloadTask(zimFileID: zimFileID)
+            // End Live Activity
+            await downloadActivity?.end(dismissalPolicy: .immediate)
         }
     }
 

@@ -18,6 +18,7 @@
 import CoreData
 import SwiftUI
 import Combine
+import ActivityKit
 
 struct DownloadTaskCell: View {
     @State private var isHovering: Bool = false
@@ -68,6 +69,20 @@ struct DownloadTaskCell: View {
         .onReceive(DownloadService.shared.progress.publisher) { states in
             if let state = states[downloadZimFile.fileID] {
                 self.downloadState = state
+            }
+        }
+        .onAppear {
+            // Start Live Activity
+            let attributes = DownloadActivityAttributes(fileID: downloadZimFile.fileID, fileName: downloadZimFile.name)
+            let initialContentState = DownloadActivityAttributes.ContentState(progress: 0.0, speed: 0.0)
+            do {
+                _ = try Activity<DownloadActivityAttributes>.request(
+                    attributes: attributes,
+                    contentState: initialContentState,
+                    pushType: nil
+                )
+            } catch {
+                print("Error starting Live Activity: \(error)")
             }
         }
     }

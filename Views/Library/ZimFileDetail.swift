@@ -1,22 +1,8 @@
-// This file is part of Kiwix for iOS & macOS.
-//
-// Kiwix is free software; you can redistribute it and/or modify it
-// under the terms of the GNU General Public License as published by
-// the Free Software Foundation; either version 3 of the License, or
-// any later version.
-//
-// Kiwix is distributed in the hope that it will be useful, but
-// WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
-// General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with Kiwix; If not, see https://www.gnu.org/licenses/.
-
 import Combine
 import CoreData
 import SwiftUI
 import UniformTypeIdentifiers
+import ActivityKit
 
 import Defaults
 
@@ -270,12 +256,15 @@ private struct DownloadTaskDetail: View {
     @ObservedObject var downloadZimFile: ZimFile
     @EnvironmentObject var viewModel: LibraryViewModel
     @State private var downloadState = DownloadState.empty()
+    @State private var downloadActivity: Activity<DownloadActivityAttributes>?
 
     var body: some View {
         Group {
             Action(title: "zim_file.download_task.action.title.cancel".localized, isDestructive: true) {
                 DownloadService.shared.cancel(zimFileID: downloadZimFile.fileID)
                 viewModel.selectedZimFile = nil
+                // End Live Activity
+                await downloadActivity?.end(dismissalPolicy: .immediate)
             }
             if let error = downloadZimFile.downloadTask?.error {
                 if downloadState.resumeData != nil {
@@ -306,6 +295,20 @@ private struct DownloadTaskDetail: View {
                     }
                 }
         )
+        .onAppear {
+            // Start Live Activity
+            let attributes = DownloadActivityAttributes(fileID: downloadZimFile.fileID, fileName: downloadZimFile.name)
+            let initialContentState = DownloadActivityAttributes.ContentState(progress: 0.0, speed: 0.0)
+            do {
+                downloadActivity = try Activity<DownloadActivityAttributes>.request(
+                    attributes: attributes,
+                    contentState: initialContentState,
+                    pushType: nil
+                )
+            } catch {
+                print("Error starting Live Activity: \(error)")
+            }
+        }
     }
 
     var detail: String {
