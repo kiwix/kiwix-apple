@@ -3,14 +3,19 @@
 // Author: Daries1
 
 "library_refresh_error.retrieve.description" = "Помилка отримання даних бібліотеки.";
+"library_refresh_error.parse.description" = "Помилка парсування даних бібліотеки.";
+"library_refresh_error.process.description" = "Помилка обробки даних бібліотеки.";
 "download_service.complete.title" = "Завантаження завершено";
 "download_service.complete.description" = "%@ було успішно завантажено.";
+"download_service.failed.description" = "Не вдалось завантажити цей файл.";
 "common.dialog.button.open" = "Відкрити";
 "common.dialog.button.open_in_new_tab" = "Відкрити в новій вкладці";
 "common.dialog.button.add_bookmark" = "Додати в закладки";
 "common.dialog.button.remove_bookmark" = "Видалити закладку";
 "common.dialog.button.show_bookmarks" = "Показати закладки";
 "common.dialog.button.bookmark" = "Закладки";
+"common.button.go_back" = "Назад";
+"common.button.go_forward" = "Вперед";
 "common.button.done" = "Готово";
 "common.button.cancel" = "Скасувати";
 "common.button.yes" = "Так";
@@ -167,6 +172,7 @@
 "welcome.main_page.title" = "Головна сторінка";
 "welcome.grid.bookmarks.title" = "Закладки";
 "welcome.actions.open_file" = "Відкрити файл";
+"welcome.loading.data.text" = "Завантаження даних…";
 "commands.button.actual_size" = "Фактичний розмір";
 "comments.button.zoom_in" = "Приблизити";
 "comments.button.zoom_out" = "Віддалити";
@@ -209,3 +215,14 @@
 "enum.navigation_item.settings" = "Налаштування";
 "enum.search_result_snippet_mode.disabled" = "Вимкнено";
 "enum.search_result_snippet_mode.matches" = "Збіги";
+"payment.donate.title" = "Пожертвувати";
+"payment.description.label" = "Підтримати Kiwix";
+"payment.summary_page.title" = "Підтримати Kiwix";
+"payment.support_button.label" = "Підтримати Kiwix";
+"payment.summary.title" = "Kiwix";
+"payment.confirm.button.title" = "Підтвердити";
+"payment.selection.option.one_time" = "Одноразова";
+"payment.selection.option.monthly" = "Щомісячно";
+"payment.support_fallback_message" = "На жаль, ваш пристрій не підтримує Apple Pay.";
+"payment.success.title" = "Дякуємо за вашу пожертву.";
+"payment.error.title" = "Незручно вийшло.";

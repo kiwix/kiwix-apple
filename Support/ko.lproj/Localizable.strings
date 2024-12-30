@@ -39,6 +39,7 @@
 "outline_button.outline.title" = "개요";
 "outline_button.outline.help" = "문서 개요 표시";
 "outline_button.outline.empty.message" = "개요가 없습니다";
+"bookmark_button.show.help" = "현재 문서를 북마크에 추가하거나 제거할 수 있는 북마크 시트를 표시합니다.";
 "article_shortcut.random.button.title.mac" = "임의의 일반 문서";
 "article_shortcut.random.button.title.ios" = "임의의 문서";
 "article_shortcut.random.button.help" = "임의의 문서 표시";
@@ -147,6 +148,7 @@
 "settings.about.dependencies.name" = "이름";
 "settings.about.dependencies.license" = "라이선스";
 "settings.about.dependencies.version" = "버전";
+"settings.about.description" = "키윅스는 위키백과, 프로젝트 구텐베르크 또는 TED 토크와 같은 온라인 콘텐츠를 위한 오프라인 리더입니다. 인터넷에 접속할 수 없거나 제한된 사람들에게 지식을 제공합니다. 소프트웨어와 콘텐츠는 누구나 무료로 사용할 수 있습니다.";
 "settings.about.license-description" = "이 앱은 GNU 일반 공중 사용 허가서 버전 3의 이용 조항에 따라 출시되었습니다.";
 "settings.about.appverion.title" = "버전";
 "settings.about.build.title" = "빌드";
