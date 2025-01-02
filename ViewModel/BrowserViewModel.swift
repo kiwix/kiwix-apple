@@ -561,6 +561,7 @@ final class BrowserViewModel: NSObject, ObservableObject,
             externalURL = newURL
             return nil
         }
+        NotificationCenter.openURL(newURL, inNewTab: true)
         return nil
     }
 #endif
