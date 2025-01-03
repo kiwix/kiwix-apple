@@ -87,9 +87,29 @@ final class LibraryViewModel: ObservableObject {
 
             // refresh library
             guard let data = try await fetchData() else {
-                error = nil
-                process.state = .complete
-                return
+                // this is the case when we have no new data (304 http)
+                // but we still need to refresh the memory only stored
+                // zimfile categories to languages dictionary
+                if CategoriesToLanguages.allCategories().count < 2 {
+                    let context =  Database.shared.viewContext
+                    if let zimFiles: [ZimFile] = try? context.fetch(ZimFile.fetchRequest()) {
+                        saveCategoryAvailableInLanguages(fromDBZimFiles: zimFiles)
+                        // populate library language code if there isn't one set already
+                        await setDefaultContentFilterLanguage()
+                        
+                        error = nil
+                        process.state = .complete
+                        return
+                    } else {
+                        error = LibraryRefreshError.process
+                        process.state = .error
+                        return
+                    }
+                } else {
+                    error = nil
+                    process.state = .complete
+                    return
+                }
             }
             let parser = try await parse(data: data)
             // delete all old ISO Lang Code entries if needed, by passing in an empty parser
@@ -135,6 +155,22 @@ final class LibraryViewModel: ObservableObject {
                 }
                 dictionary[category] = allLanguagesForCategory
             }
+        }
+        CategoriesToLanguages.save(dictionary)
+    }
+    
+    private func saveCategoryAvailableInLanguages(fromDBZimFiles zimFiles: [ZimFile]) {
+        var dictionary: [Category: Set<String>] = [:]
+        for zimFile in zimFiles {
+            let category = Category(rawValue: zimFile.category) ?? .other
+            let allLanguagesForCategory: Set<String>
+            let categoryLanguages: Set<String> = Set<String>(zimFile.languageCode.components(separatedBy: ","))
+            if let existingLanguages = dictionary[category] {
+                allLanguagesForCategory = existingLanguages.union(categoryLanguages)
+            } else {
+                allLanguagesForCategory = categoryLanguages
+            }
+            dictionary[category] = allLanguagesForCategory
         }
         CategoriesToLanguages.save(dictionary)
     }
