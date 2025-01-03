@@ -66,13 +66,6 @@ runs:
       env:
         KEYCHAIN: ${{ inputs.KEYCHAIN }}
         KEYCHAIN_PASSWORD: ${{ inputs.KEYCHAIN_PASSWORD }}
-        KEYCHAIN_PROFILE: ${{ inputs.KEYCHAIN_PROFILE }}
-        CERTIFICATE_PATH: /tmp/cert.p12
-        APPLE_DEVELOPER_CERTIFICATE_PATH: /tmp/dev-cert.p12
-        SIGNING_CERTIFICATE: ${{ inputs.SIGNING_CERTIFICATE }}
-        SIGNING_CERTIFICATE_P12_PASSWORD: ${{ inputs.SIGNING_CERTIFICATE_P12_PASSWORD }}
-        APPLE_DEVELOPER_ID_SIGNING_CERTIFICATE: ${{ inputs.APPLE_DEVELOPER_ID_SIGNING_CERTIFICATE }}
-        APPLE_DEVELOPER_ID_SIGNING_P12_PASSWORD: ${{ inputs.APPLE_DEVELOPER_ID_SIGNING_P12_PASSWORD }}
       run: |
         security create-keychain -p $KEYCHAIN_PASSWORD $KEYCHAIN
         security default-keychain -s $KEYCHAIN
@@ -116,7 +109,6 @@ runs:
 
     - name: Build with Xcode
       env:
-        FRAMEWORK_SEARCH_PATHS: ${{ env.PWD }}
         ACTION: ${{ inputs.action }}
         VERSION: ${{ inputs.version }}
         XC_WORKSPACE: ${{ inputs.XC_WORKSPACE }}
