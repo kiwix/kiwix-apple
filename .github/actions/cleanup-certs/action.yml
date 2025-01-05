@@ -1,0 +1,17 @@
+name: Clean up certificates in Keychain
+description: Remove installed certifiactes in existing keychain
+
+inputs:
+  KEYCHAIN:
+    required: true
+
+runs:
+  using: composite
+  steps:
+    - name: Clean up keychain and provisioning profile
+      shell: bash
+      env:
+        KEYCHAIN: ${{ inputs.KEYCHAIN }}
+      if: ${{ always() }}
+      run: |
+        security delete-keychain $KEYCHAIN

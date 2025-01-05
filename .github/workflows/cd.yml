@@ -182,6 +182,8 @@ jobs:
       # else statement for Prepare export for IPA
       # [(macOS, ftp), (macOS, app-store), (iOS, app-store)]
       if: (matrix.platform == 'macOS' || matrix.destination == 'app-store') && contains(env.UPLOAD_TO, matrix.destination)
+      env:
+        EXPORT_METHOD: ${env.EXPORT_METHOD}
       run: |
         plutil -create xml1 ./export.plist
         plutil -insert destination -string upload ./export.plist
@@ -220,3 +222,8 @@ jobs:
       run: |
         mv ${PWD}/export/Kiwix.ipa ${PWD}/export/kiwix-${VERSION}.ipa
         python .github/upload_file.py --src ${PWD}/export/kiwix-${VERSION}.ipa --dest ci@master.download.kiwix.org:30022/data/download/${UPLOAD_FOLDER} --ssh-key ${SSH_KEY}
+
+    - name: Clean up certificates
+      uses: ./.github/actions/cleanup-certs
+      with:
+        KEYCHAIN: ${{ env.KEYCHAIN }}
