@@ -97,6 +97,7 @@ class SidebarViewController: UICollectionViewController, NSFetchedResultsControl
 
         // configure view
         navigationItem.title = Brand.appName
+        navigationItem.largeTitleDisplayMode = .never
         navigationItem.rightBarButtonItem = UIBarButtonItem(
             image: UIImage(systemName: "plus.square"),
             primaryAction: UIAction { [unowned self] _ in
