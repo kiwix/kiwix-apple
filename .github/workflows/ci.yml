@@ -21,7 +21,7 @@ on:
   push:
 
 env:
-  KEYCHAIN: /Users/runner/build.keychain-db
+  KEYCHAIN: ""
   KEYCHAIN_PASSWORD: mysecretpassword
   KEYCHAIN_PROFILE: build-profile
   SSH_KEY: /tmp/id_rsa
@@ -55,6 +55,9 @@ jobs:
 
     - name: Install python dependencies
       run: pip install pyyaml==6.0.1
+
+    - name: Set KEYCHAIN value
+      run: echo 'KEYCHAIN="/Users/runner/build-${matrix.platform}-${matrix.destination}.keychain-db"' >> $GITHUB_ENV
 
     - name: Set VERSION from code
       shell: python
@@ -156,7 +159,6 @@ jobs:
         DEPLOYMENT_SIGNING_CERTIFICATE_P12_PASSWORD: ${{ env.SIGNING_CERTIFICATE_P12_PASSWORD }}
         KEYCHAIN: ${{ env.KEYCHAIN }}
         KEYCHAIN_PASSWORD: ${{ env.KEYCHAIN_PASSWORD }}
-        KEYCHAIN_PROFILE: ${{ env.KEYCHAIN_PROFILE }}
         EXTRA_XCODEBUILD: ${{ env.EXTRA_XCODEBUILD }}
 
     - name: Add altool credentials to Keychain

@@ -20,14 +20,10 @@ inputs:
   DEPLOYMENT_SIGNING_CERTIFICATE_P12_PASSWORD:
     required: false
   KEYCHAIN:
-    required: false
-    default: /Users/runner/build.keychain-db
+    required: true
   KEYCHAIN_PASSWORD:
     required: false
     default: mysecretpassword
-  KEYCHAIN_PROFILE:
-    required: false
-    default: build-profile
   XC_WORKSPACE:
     required: false
     default: Kiwix.xcodeproj/project.xcworkspace/
