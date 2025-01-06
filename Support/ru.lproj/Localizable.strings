@@ -233,3 +233,11 @@
 "enum.navigation_item.settings" = "Настройки";
 "enum.search_result_snippet_mode.disabled" = "Выключен";
 "enum.search_result_snippet_mode.matches" = "Совпадения";
+"payment.description.label" = "Поддержать Kiwix";
+"payment.summary_page.title" = "Поддержать Kiwix";
+"payment.support_button.label" = "Поддержать Kiwix";
+"payment.monthly_support.label" = "Ежемесячная поддержка Kiwix";
+"payment.summary.title" = "Kiwix";
+"payment.confirm.button.title" = "Подтвердить";
+"payment.selection.option.one_time" = "Единожды";
+"payment.selection.option.monthly" = "Ежемесячно";
