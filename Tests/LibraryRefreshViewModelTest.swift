@@ -146,7 +146,7 @@ final class LibraryRefreshViewModelTest: XCTestCase {
                 url: URL.mock(),
                 statusCode: 200, httpVersion: nil, headerFields: [:]
             )!
-            urlProtocol.client?.urlProtocol(urlProtocol, didLoad: "Invalid OPDS Data".data(using: .utf8)!)
+            urlProtocol.client?.urlProtocol(urlProtocol, didLoad: Data("Invalid OPDS Data".utf8))
             urlProtocol.client?.urlProtocol(urlProtocol, didReceive: response, cacheStoragePolicy: .notAllowed)
             urlProtocol.client?.urlProtocolDidFinishLoading(urlProtocol)
         }
@@ -256,7 +256,7 @@ final class LibraryRefreshViewModelTest: XCTestCase {
         XCTAssertNotEqual(zimFile1.fileID, zimFile2.fileID)
 
         // set fileURLBookmark of zim file 2
-        zimFile2.fileURLBookmark = "/Users/tester/Downloads/file_url.zim".data(using: .utf8)
+        zimFile2.fileURLBookmark = Data("/Users/tester/Downloads/file_url.zim".utf8)
         try context.save()
 
         // refresh library for the third time
