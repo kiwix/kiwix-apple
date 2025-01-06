@@ -30,12 +30,3 @@ final class UDefaults: NSObject, Defaulting {
         }
     }
 }
-
-/*
- static subscript<Value: Serializable>(key: Key<Value>) -> Value {
-     get { key.suite[key] }
-     set {
-         key.suite[key] = newValue
-     }
- }
- */
