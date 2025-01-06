@@ -24,8 +24,11 @@ struct ZimFilesCategories: View {
     private var categories: [Category]
     private let dismiss: (() -> Void)?
 
-    init(dismiss: (() -> Void)?) {
-        categories = CategoriesToLanguages.allCategories()
+    init(
+        dismiss: (() -> Void)?,
+        categories: [Category] = CategoriesToLanguages().allCategories()
+    ) {
+        self.categories = categories
         selected = categories.first ?? .wikipedia
         self.dismiss = dismiss
     }

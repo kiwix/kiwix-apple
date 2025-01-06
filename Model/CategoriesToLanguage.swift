@@ -46,10 +46,9 @@ struct CategoriesToLanguages: CategoriesProtocol {
     }
 
     func allCategories() -> [Category] {
-        let categoriesToLanguages = CategoriesToLanguages()
         let contentLanguages = defaults[.libraryLanguageCodes]
         return Category.allCases.filter { (category: Category) in
-            categoriesToLanguages.has(category: category, inLanguages: contentLanguages)
+            has(category: category, inLanguages: contentLanguages)
         }
     }
 }

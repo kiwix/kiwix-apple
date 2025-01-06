@@ -15,27 +15,27 @@
 
 import Foundation
 import Defaults
+@testable import Kiwix
 
-public protocol Defaulting: NSObjectProtocol {
-    subscript<Value: Defaults.Serializable>(key: Defaults.Key<Value>) -> Value { get set }
-}
-
-final class UDefaults: NSObject, Defaulting {
+final class TestDefaults: NSObject, Defaulting {
+    
+    var dict: [Defaults.AnyKey: any DefaultsSerializable] = [:]
+    
+    func setup() {
+        self[.categoriesToLanguages] = [:]
+        self[.libraryAutoRefresh] = false
+        self[.libraryETag] = ""
+        self[.libraryUsingOldISOLangCodes] = false
+        self[.libraryLanguageCodes] = Set<String>()
+    }
+    
     subscript<Value>(key: Defaults.Key<Value>) -> Value where Value: DefaultsSerializable {
         get {
-            Defaults[key]
+            // swiftlint:disable:next force_cast
+            dict[key] as! Value
         }
         set {
-            Defaults[key] = newValue
+            dict[key] = newValue
         }
     }
 }
-
-/*
- static subscript<Value: Serializable>(key: Key<Value>) -> Value {
-     get { key.suite[key] }
-     set {
-         key.suite[key] = newValue
-     }
- }
- */
