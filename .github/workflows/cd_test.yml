@@ -18,7 +18,7 @@ on:
   #     - testflight     # On-demand TestFlight
   # release:
   #   types: [published] # Release
-  workflow_dispatch:
+  push:
 
 env:
   KEYCHAIN: /Users/runner/build.keychain-db
