@@ -57,7 +57,10 @@ jobs:
       run: pip install pyyaml==6.0.1
 
     - name: Set KEYCHAIN value
-      run: echo 'KEYCHAIN="/Users/runner/build-${matrix.platform}-${matrix.destination}.keychain-db"' >> $GITHUB_ENV
+      env: 
+        PLATFORM: matrix.platform
+        DESTINATION: matrix.destination
+      run: echo 'KEYCHAIN="/Users/runner/build-${PLATFORM}-${DESTINATION}.keychain-db"' >> $GITHUB_ENV
 
     - name: Set VERSION from code
       shell: python
