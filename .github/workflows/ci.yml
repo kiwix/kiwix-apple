@@ -58,8 +58,8 @@ jobs:
 
     - name: Set KEYCHAIN value
       env: 
-        PLATFORM: matrix.platform
-        DESTINATION: matrix.destination
+        PLATFORM: ${{ matrix.platform }}
+        DESTINATION: ${{ matrix.destination }}
       run: echo 'KEYCHAIN="/Users/runner/build-${PLATFORM}-${DESTINATION}.keychain-db"' >> $GITHUB_ENV
 
     - name: Set VERSION from code
