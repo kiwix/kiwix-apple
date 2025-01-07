@@ -200,12 +200,15 @@ jobs:
       if: contains(env.UPLOAD_TO, matrix.destination)
       env:
         VERSION: ${{ env.VERSION }}
+        APPLE_AUTH_PARAMS: ${{ env.APPLE_AUTH_PARAMS }}
       run: python .github/retry-if-retcode.py --sleep 60 --attempts 5 --retcode 70 xcrun xcodebuild -exportArchive -archivePath $PWD/Kiwix-$VERSION.xcarchive -exportPath $PWD/export/ -exportOptionsPlist export.plist -allowProvisioningUpdates $APPLE_AUTH_PARAMS
 
     - name: Export notarized App from archive, Create and Notarize DMG
       if: matrix.platform == 'macOS' && matrix.destination == 'ftp' && contains(env.UPLOAD_TO, matrix.destination)
+      env:
+        APPLE_AUTH_PARAMS: ${{ env.APPLE_AUTH_PARAMS }}
       run: |
-        python .github/retry-if-retcode.py --sleep 60 --attempts 20 --retcode 65 xcrun xcodebuild -exportNotarizedApp -archivePath $PWD/Kiwix-$VERSION.xcarchive -exportPath $PWD/export/ $APPLE_AUTH_PARAMS
+        python .github/retry-if-retcode.py --sleep 60 --attempts 20 --retcode 65 xcrun xcodebuild -exportNotarizedApp -archivePath $PWD/Kiwix-$VERSION.xcarchive -exportPath $PWD/export/ -allowProvisioningUpdates $APPLE_AUTH_PARAMS
         pip install dmgbuild
         dmgbuild -s .github/dmg-settings.py -Dapp=$PWD/export/Kiwix.app -Dbg=.github/dmg-bg.png "Kiwix-$VERSION" $PWD/kiwix-$VERSION.dmg
         xcrun notarytool submit --keychain $KEYCHAIN --keychain-profile $KEYCHAIN_PROFILE --wait $PWD/kiwix-$VERSION.dmg $APPLE_AUTH_PARAMS
