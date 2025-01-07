@@ -128,6 +128,7 @@ jobs:
       if: matrix.platform == 'macOS' && matrix.destination == 'ftp' && contains(env.UPLOAD_TO, matrix.destination)
       run: |
         echo "EXPORT_METHOD=developer-id" >> $GITHUB_ENV
+        echo "EXTRA_XCODEBUILD=${{ env.APPLE_AUTH_PARAMS }}" >> $GITHUB_ENV
         echo "SIGNING_CERTIFICATE=${{ secrets.APPLE_DEVELOPER_ID_SIGNING_CERTIFICATE }}" >> $GITHUB_ENV
         echo "SIGNING_CERTIFICATE_P12_PASSWORD=${{ secrets.APPLE_DEVELOPER_ID_SIGNING_P12_PASSWORD }}" >> $GITHUB_ENV
 
