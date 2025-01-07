@@ -200,7 +200,7 @@ jobs:
       if: contains(env.UPLOAD_TO, matrix.destination)
       env:
         VERSION: ${{ env.VERSION }}
-      run: python .github/retry-if-retcode.py --sleep 60 --attempts 5 --retcode 70 xcrun xcodebuild -exportArchive -archivePath $PWD/Kiwix-$VERSION.xcarchive -exportPath $PWD/export/ -exportOptionsPlist export.plist $APPLE_AUTH_PARAMS
+      run: python .github/retry-if-retcode.py --sleep 60 --attempts 5 --retcode 70 xcrun xcodebuild -exportArchive -archivePath $PWD/Kiwix-$VERSION.xcarchive -exportPath $PWD/export/ -exportOptionsPlist export.plist -allowProvisioningUpdates $APPLE_AUTH_PARAMS
 
     - name: Export notarized App from archive, Create and Notarize DMG
       if: matrix.platform == 'macOS' && matrix.destination == 'ftp' && contains(env.UPLOAD_TO, matrix.destination)
