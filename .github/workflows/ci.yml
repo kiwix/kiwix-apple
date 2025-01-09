@@ -136,7 +136,7 @@ jobs:
 
     - name: Enable Development Cert for everything apart from macOS FTP
       if: matrix.platform != 'macOS' || matrix.destination != 'ftp'
-      run: echo "DEV_CERTIFICATE=${{ secrets.APPLE_DEVELOPER_ID_SIGNING_CERTIFICATE}}" >> &GITHUB_ENV
+      run: echo "DEV_CERTIFICATE=${{ secrets.APPLE_DEVELOPER_ID_SIGNING_CERTIFICATE}}" >> $GITHUB_ENV
 
     - name: Use Apple Development Certificate
       if: matrix.platform == 'iOS' && matrix.destination == 'ftp' && contains(env.UPLOAD_TO, matrix.destination)
