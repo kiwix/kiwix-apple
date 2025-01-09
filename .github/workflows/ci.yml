@@ -1,75 +1,224 @@
-name: CI
+name: CD_test
 
+# | Platform        | Nightly | Weekly (if diff HEAD)  | TestFlight Tag | Release             |
+# |-----------------|---------|------------------------|----------------|---------------------|
+# | macOS           | ftp     | app-store              | app-store      | app-store, ftp      |
+# | iOS             | ftp     | app-store              | app-store      | app-store           |
+# |-----------------|---------|------------------------|----------------|---------------------|
+# | VERSION         | Date    | get from project.yml   | project.yml    | project.yml         |
+# |-----------------|---------|------------------------|----------------|---------------------|
+# | UPLOAD_FOLDER   | nightly | -                      | -              | release/kiwix-macos |
+# |-----------------|---------|------------------------|----------------|---------------------|
 on:
-  pull_request_target:
-  workflow_dispatch:
+  # schedule:
+  # - cron: '32 1 * * *' # Nightly download.kiwix.org @ 01:32
+  # - cron: '00 2 * * 1' # Weekly testflight          @ 02:00 on Monday
+  # push:
+  #   tags:
+  #     - testflight     # On-demand TestFlight
+  # release:
+  #   types: [published] # Release
   push:
-    branches:
-      - main
+
+env:
+  KEYCHAIN: /Users/runner/build.keychain-db
+  KEYCHAIN_PASSWORD: mysecretpassword
+  KEYCHAIN_PROFILE: build-profile
+  SSH_KEY: /tmp/id_rsa
+  APPLE_STORE_AUTH_KEY_PATH: /tmp/authkey.p8
+  APPLE_AUTH_PARAMS: "-authenticationKeyPath /tmp/authkey.p8 -authenticationKeyID ${{ secrets.APPLE_STORE_AUTH_KEY_ID }} -authenticationKeyIssuerID ${{ secrets.APPLE_STORE_AUTH_KEY_ISSUER_ID }}"
+  # conditionally updated later:
+  EXPORT_METHOD: "app-store"
+  EXTRA_XCODEBUILD: ""
+  UPLOAD_TO: "" # !important this filters down the matrix combinations
+  VERSION: ""
+  HAS_CHANGED_LAST_WEEK: "no"
+  SIGNING_CERTIFICATE: ""
+  SIGNING_CERTIFICATE_P12_PASSWORD: ""
 
 jobs:
-  authorize:
-    # sets environment based on origin of PR: internal (non-existent) for own-repo or external (requires reviewer to run) for external repos
-    environment: ${{ github.event_name == 'pull_request_target' && github.event.pull_request.head.repo.full_name != github.repository && 'external' || 'internal' }}
-    runs-on: ubuntu-22.04
-    steps:
-      - run: true
-  build:
-    needs: authorize
-    runs-on: macos-13
-    env:
-      EXTRA_XCODEBUILD: ""
-      APPLE_STORE_AUTH_KEY_PATH: /tmp/authkey.p8
-      APPLE_AUTH_PARAMS: "-authenticationKeyPath /tmp/authkey.p8 -authenticationKeyID ${{ secrets.APPLE_STORE_AUTH_KEY_ID }} -authenticationKeyIssuerID ${{ secrets.APPLE_STORE_AUTH_KEY_ISSUER_ID }}"
+  build_and_deploy:
     strategy:
       fail-fast: false
       matrix:
-        platform: [macOS, iOS]
+        platform: [iOS, macOS]
+        destination: [app-store, ftp]
+    runs-on: macos-13
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-        with:
-          # /!\ important: this checks out code from the HEAD of the PR instead of the main branch (for pull_request_target)
-          ref: ${{ github.event.pull_request.head.sha || github.ref }}
 
-      - name: Add Apple Store Key
-        run: echo "${{ secrets.APPLE_STORE_AUTH_KEY }}" | base64 --decode -o ${{ env.APPLE_STORE_AUTH_KEY_PATH}}
+    - name: Checkout code
+      uses: actions/checkout@v4
 
-      - name: Set EXTRA_XCODEBUILD for iOS
-        if: matrix.platform == 'iOS'
-        run: echo "EXTRA_XCODEBUILD=-sdk iphoneos ${{ env.APPLE_AUTH_PARAMS }}" >> $GITHUB_ENV
+    - name: Install python dependencies
+      run: pip install pyyaml==6.0.1
 
-      - name: Set EXTRA_XCODEBUILD for macOS
-        if: matrix.platform == 'macOS'
-        run: echo "EXTRA_XCODEBUILD=${{ env.APPLE_AUTH_PARAMS }}" >> $GITHUB_ENV
+    - name: Remove Apple Pay capability for macOS FTP
+      if: matrix.platform == 'macOS' && matrix.destination == 'ftp'
+      run: sed -i '' '/in-app-payments/d' project.yml
 
-      - name: Build
-        uses: ./.github/actions/xcbuild
-        with:
-          action: build
-          xc-destination: generic/platform=${{ matrix.platform }}
-          version: CI
-          APPLE_DEVELOPMENT_SIGNING_CERTIFICATE: ${{ secrets.APPLE_DEVELOPMENT_SIGNING_CERTIFICATE }}
-          APPLE_DEVELOPMENT_SIGNING_P12_PASSWORD: ${{ secrets.APPLE_DEVELOPMENT_SIGNING_P12_PASSWORD }}
-          EXTRA_XCODEBUILD: ${{ env.EXTRA_XCODEBUILD }}
+    - name: Set VERSION from code
+      shell: python
+      run: |
+        import yaml
+        import os
+        with open("project.yml") as yml_file:
+          project = yaml.safe_load(yml_file)
+        version = project['targets']['Kiwix']['settings']['base']['MARKETING_VERSION']
+        with open(os.getenv("GITHUB_ENV"), "a") as fh:
+            fh.write(f"VERSION={version}\n")
 
-      - name: Run Unit Tests on iOS
-        if: matrix.platform == 'iOS'
-        run: xcodebuild test -scheme Kiwix -destination 'platform=iOS Simulator,name=iPhone 15 Plus'
+    - name: Get the date of last change
+      run: echo "DATE_OF_LAST_CHANGE=`git log -1 --format=%ct`" >> $GITHUB_ENV
 
-      - name: Remove in-app-payments capability for unit tests on macOS
-        if: matrix.platform == 'macOS'
-        run: |
-          sed -i '' '/in-app-payments/d' project.yml
-          xcodegen
+    - name: Check for code changes in the last week
+      shell: python
+      run: |
+        import datetime
+        import os
+        now = datetime.datetime.now()
+        last_change = datetime.datetime.fromtimestamp(int(os.getenv("DATE_OF_LAST_CHANGE")))
+        value = "yes" if (now - last_change).days < 7 else "no"
+        with open(os.getenv("GITHUB_ENV"), "a") as fh:
+          fh.write(f"HAS_CHANGED_LAST_WEEK={value}\n")
 
-      - name: Run Unit Tests on macOS
-        if: matrix.platform == 'macOS'
-        run: xcodebuild test -scheme Kiwix -destination 'platform=macOS'
+    # - name: Nightly setup # use ftp and overrwrite VERSION with current date
+    #   if: github.event_name == 'schedule' && github.event.schedule == '32 1 * * *'
+    #   shell: python
+    #   run: |
+    #     import datetime
+    #     import os
+    #     version = str(datetime.date.today())
+    #     with open(os.getenv("GITHUB_ENV"), "a") as fh:
+    #       fh.write(f"VERSION={version}\n")
+    #       fh.write(f"UPLOAD_TO=\"ftp\"\n")
+    #       fh.write(f"UPLOAD_FOLDER=nightly/{version}\n")
 
-      - name: Upload code coverage
-        uses: codecov/codecov-action@v4.2.0
-        env:
-          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+    # - name: Weekly setup
+    #   if: github.event_name == 'schedule' && github.event.schedule == '00 2 * * 1' && env.HAS_CHANGED_LAST_WEEK == 'yes'
+    #   run: echo 'UPLOAD_TO="app-store"' >> $GITHUB_ENV
 
+    # - name: Testflight tag setup
+    #   if: github.event_name == 'push'
+    #   run: echo 'UPLOAD_TO="app-store"' >> $GITHUB_ENV
+
+    - name: Release setup for iOS
+      # if: github.event_name == 'release' && matrix.platform == 'iOS'
+      if: matrix.platform == 'iOS'
+      run: echo 'UPLOAD_TO="app-store"' >> $GITHUB_ENV
+
+    - name: Release setup for macOS
+      # if: github.event_name == 'release' && matrix.platform == 'macOS'
+      if: matrix.platform == 'macOS'
+      run: |
+        echo 'UPLOAD_TO="app-store ftp"' >> $GITHUB_ENV
+        echo "UPLOAD_FOLDER=release/kiwix-macos" >> $GITHUB_ENV
+
+    - name: Set iOS extra xcode params
+      if: matrix.platform == 'iOS' && contains(env.UPLOAD_TO, matrix.destination)
+      run: echo "EXTRA_XCODEBUILD=-sdk iphoneos ${{ env.APPLE_AUTH_PARAMS }}" >> $GITHUB_ENV
+
+    - name: Set macOS FTP export method, and Developer ID Certificate
+      if: matrix.platform == 'macOS' && matrix.destination == 'ftp' && contains(env.UPLOAD_TO, matrix.destination)
+      run: |
+        echo "EXPORT_METHOD=developer-id" >> $GITHUB_ENV
+        echo "SIGNING_CERTIFICATE=${{ secrets.APPLE_DEVELOPER_ID_SIGNING_CERTIFICATE }}" >> $GITHUB_ENV
+        echo "SIGNING_CERTIFICATE_P12_PASSWORD=${{ secrets.APPLE_DEVELOPER_ID_SIGNING_P12_PASSWORD }}" >> $GITHUB_ENV
+
+    - name: Use Apple Development Certificate
+      if: matrix.platform == 'iOS' && matrix.destination == 'ftp' && contains(env.UPLOAD_TO, matrix.destination)
+      run: |
+        echo "SIGNING_CERTIFICATE=${{ secrets.APPLE_DEVELOPMENT_SIGNING_CERTIFICATE }}" >> $GITHUB_ENV
+        echo "SIGNING_CERTIFICATE_P12_PASSWORD=${{ secrets.APPLE_DEVELOPMENT_SIGNING_P12_PASSWORD }}" >> $GITHUB_ENV
+
+    - name: Use Apple Distribution Certificate
+      if: matrix.destination == 'app-store' && contains(env.UPLOAD_TO, matrix.destination)
+      run: |
+        echo "SIGNING_CERTIFICATE=${{ secrets.APPLE_DISTRIBUTION_SIGNING_CERTIFICATE }}" >> $GITHUB_ENV
+        echo "SIGNING_CERTIFICATE_P12_PASSWORD=${{ secrets.APPLE_DISTRIBUTION_SIGNING_P12_PASSWORD }}" >> $GITHUB_ENV
+
+    - name: Decode Apple Store Key
+      run: echo "${{ secrets.APPLE_STORE_AUTH_KEY }}" | base64 --decode -o ${{ env.APPLE_STORE_AUTH_KEY_PATH }}
+
+    - name: Build xcarchive
+      if: contains(env.UPLOAD_TO, matrix.destination)
+      uses: ./.github/actions/xcbuild
+      with:
+        action: archive
+        xc-destination: generic/platform=${{ matrix.platform }}
+        version: ${{ env.VERSION }}
+        APPLE_DEVELOPMENT_SIGNING_CERTIFICATE: ${{ secrets.APPLE_DEVELOPMENT_SIGNING_CERTIFICATE }}
+        APPLE_DEVELOPMENT_SIGNING_P12_PASSWORD: ${{ secrets.APPLE_DEVELOPMENT_SIGNING_P12_PASSWORD }}
+        DEPLOYMENT_SIGNING_CERTIFICATE: ${{ env.SIGNING_CERTIFICATE }}
+        DEPLOYMENT_SIGNING_CERTIFICATE_P12_PASSWORD: ${{ env.SIGNING_CERTIFICATE_P12_PASSWORD }}
+        KEYCHAIN: ${{ env.KEYCHAIN }}
+        KEYCHAIN_PASSWORD: ${{ env.KEYCHAIN_PASSWORD }}
+        EXTRA_XCODEBUILD: ${{ env.EXTRA_XCODEBUILD }}
+
+    - name: Add altool credentials to Keychain
+      if: matrix.destination == 'ftp' && contains(env.UPLOAD_TO, matrix.destination)
+      env:
+        APPLE_SIGNING_ALTOOL_USERNAME: ${{ secrets.APPLE_SIGNING_ALTOOL_USERNAME }}
+        APPLE_SIGNING_ALTOOL_PASSWORD: ${{ secrets.APPLE_SIGNING_ALTOOL_PASSWORD }}
+        APPLE_SIGNING_TEAM: ${{ secrets.APPLE_SIGNING_TEAM }}
+      run: |
+        security find-identity -v $KEYCHAIN
+        security unlock-keychain -p $KEYCHAIN_PASSWORD $KEYCHAIN
+        xcrun notarytool store-credentials \
+            --apple-id "${APPLE_SIGNING_ALTOOL_USERNAME}" \
+            --password "${APPLE_SIGNING_ALTOOL_PASSWORD}" \
+            --team-id "${APPLE_SIGNING_TEAM}" \
+            --validate \
+            --keychain $KEYCHAIN \
+            $KEYCHAIN_PROFILE
+
+    - name: Prepare export for IPA
+      if: matrix.platform == 'iOS' && matrix.destination == 'ftp' && contains(env.UPLOAD_TO, matrix.destination)
+      run: |
+        plutil -create xml1 ./export.plist
+        plutil -insert method -string ad-hoc ./export.plist
+        plutil -insert provisioningProfiles -dictionary ./export.plist
+        plutil -replace provisioningProfiles -json '{ "self.Kiwix" : "iOS Team Provisioning Profile" }' ./export.plist
+
+    - name: Prepare export for not IPA
+      # else statement for Prepare export for IPA
+      # [(macOS, ftp), (macOS, app-store), (iOS, app-store)]
+      if: (matrix.platform == 'macOS' || matrix.destination == 'app-store') && contains(env.UPLOAD_TO, matrix.destination)
+      run: |
+        plutil -create xml1 ./export.plist
+        plutil -insert destination -string upload ./export.plist
+        plutil -insert method -string $EXPORT_METHOD ./export.plist
+
+    - name: Upload Archive to Apple (App Store or Notarization)
+      if: contains(env.UPLOAD_TO, matrix.destination)
+      env:
+        VERSION: ${{ env.VERSION }}
+      run: python .github/retry-if-retcode.py --sleep 60 --attempts 5 --retcode 70 xcrun xcodebuild -exportArchive -archivePath $PWD/Kiwix-$VERSION.xcarchive -exportPath $PWD/export/ -exportOptionsPlist export.plist -allowProvisioningUpdates ${{ env.APPLE_AUTH_PARAMS }}
+
+    - name: Export notarized App from archive, Create and Notarize DMG
+      if: matrix.platform == 'macOS' && matrix.destination == 'ftp' && contains(env.UPLOAD_TO, matrix.destination)
+      run: |
+        python .github/retry-if-retcode.py --sleep 60 --attempts 20 --retcode 65 xcrun xcodebuild -exportNotarizedApp -archivePath $PWD/Kiwix-$VERSION.xcarchive -exportPath $PWD/export/ -allowProvisioningUpdates ${{ env.APPLE_AUTH_PARAMS }}
+        pip install dmgbuild
+        dmgbuild -s .github/dmg-settings.py -Dapp=$PWD/export/Kiwix.app -Dbg=.github/dmg-bg.png "Kiwix-$VERSION" $PWD/kiwix-$VERSION.dmg
+        xcrun notarytool submit --keychain $KEYCHAIN --keychain-profile $KEYCHAIN_PROFILE --wait $PWD/kiwix-$VERSION.dmg
+        xcrun stapler staple $PWD/kiwix-$VERSION.dmg
+
+    - name: Add SSH_KEY to filesystem
+      if: matrix.destination == 'ftp' && contains(env.UPLOAD_TO, matrix.destination)
+      run: |
+        echo "${{ secrets.SSH_KEY }}" > $SSH_KEY
+        chmod 600 $SSH_KEY
+
+    # - name: Upload DMG
+    #   if: matrix.platform == 'macOS' && matrix.destination == 'ftp' && contains(env.UPLOAD_TO, matrix.destination)
+    #   run: |
+    #     mv ${PWD}/kiwix-${VERSION}.dmg ${PWD}/kiwix-macos_${VERSION}.dmg
+    #     python .github/upload_file.py --src ${PWD}/kiwix-macos_${VERSION}.dmg --dest ci@master.download.kiwix.org:30022/data/download/${UPLOAD_FOLDER} --ssh-key ${SSH_KEY}
+    #     mv ${PWD}/kiwix-macos_${VERSION}.dmg ${PWD}/kiwix-${VERSION}.dmg
+
+    # - name: Upload IPA
+    #   if: matrix.platform == 'iOS' && matrix.destination == 'ftp' && contains(env.UPLOAD_TO, matrix.destination)
+    #   run: |
+    #     mv ${PWD}/export/Kiwix.ipa ${PWD}/export/kiwix-${VERSION}.ipa
+    #     python .github/upload_file.py --src ${PWD}/export/kiwix-${VERSION}.ipa --dest ci@master.download.kiwix.org:30022/data/download/${UPLOAD_FOLDER} --ssh-key ${SSH_KEY}
