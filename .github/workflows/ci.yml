@@ -26,19 +26,20 @@ env:
   SSH_KEY: /tmp/id_rsa
   APPLE_STORE_AUTH_KEY_PATH: /tmp/authkey.p8
   APPLE_AUTH_PARAMS: "-authenticationKeyPath /tmp/authkey.p8 -authenticationKeyID ${{ secrets.APPLE_STORE_AUTH_KEY_ID }} -authenticationKeyIssuerID ${{ secrets.APPLE_STORE_AUTH_KEY_ISSUER_ID }}"
-  # conditionally updated later:
-  KEYCHAIN: ""
-  DEV_CERTIFICATE: ""
-  EXPORT_METHOD: "app-store"
-  EXTRA_XCODEBUILD: ""
-  UPLOAD_TO: "" # !important this filters down the matrix combinations
-  VERSION: ""
-  HAS_CHANGED_LAST_WEEK: "no"
-  SIGNING_CERTIFICATE: ""
-  SIGNING_CERTIFICATE_P12_PASSWORD: ""
-
+  
 jobs:
   build_and_deploy:
+    env:
+    # conditionally updated later:
+      KEYCHAIN: ""
+      DEV_CERTIFICATE: ""
+      EXPORT_METHOD: "app-store"
+      EXTRA_XCODEBUILD: ""
+      UPLOAD_TO: "" # !important this filters down the matrix combinations
+      VERSION: ""
+      HAS_CHANGED_LAST_WEEK: "no"
+      SIGNING_CERTIFICATE: ""
+      SIGNING_CERTIFICATE_P12_PASSWORD: ""
     permissions:
       contents: read
       pull-requests: write
@@ -132,7 +133,6 @@ jobs:
         echo "EXTRA_XCODEBUILD=${{ env.APPLE_AUTH_PARAMS }}" >> $GITHUB_ENV
         echo "SIGNING_CERTIFICATE=${{ secrets.APPLE_DEVELOPER_ID_SIGNING_CERTIFICATE }}" >> $GITHUB_ENV
         echo "SIGNING_CERTIFICATE_P12_PASSWORD=${{ secrets.APPLE_DEVELOPER_ID_SIGNING_P12_PASSWORD }}" >> $GITHUB_ENV
-
 
     - name: Enable Development Cert for everything apart from macOS FTP
       if: matrix.platform != 'macOS' || matrix.destination != 'ftp'
