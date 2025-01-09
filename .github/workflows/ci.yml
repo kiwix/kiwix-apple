@@ -21,13 +21,14 @@ on:
   push:
 
 env:
-  KEYCHAIN: ""
   KEYCHAIN_PASSWORD: mysecretpassword
   KEYCHAIN_PROFILE: build-profile
   SSH_KEY: /tmp/id_rsa
   APPLE_STORE_AUTH_KEY_PATH: /tmp/authkey.p8
   APPLE_AUTH_PARAMS: "-authenticationKeyPath /tmp/authkey.p8 -authenticationKeyID ${{ secrets.APPLE_STORE_AUTH_KEY_ID }} -authenticationKeyIssuerID ${{ secrets.APPLE_STORE_AUTH_KEY_ISSUER_ID }}"
   # conditionally updated later:
+  KEYCHAIN: ""
+  DEV_CERTIFICATE: ""
   EXPORT_METHOD: "app-store"
   EXTRA_XCODEBUILD: ""
   UPLOAD_TO: "" # !important this filters down the matrix combinations
@@ -132,6 +133,11 @@ jobs:
         echo "SIGNING_CERTIFICATE=${{ secrets.APPLE_DEVELOPER_ID_SIGNING_CERTIFICATE }}" >> $GITHUB_ENV
         echo "SIGNING_CERTIFICATE_P12_PASSWORD=${{ secrets.APPLE_DEVELOPER_ID_SIGNING_P12_PASSWORD }}" >> $GITHUB_ENV
 
+
+    - name: Enable Development Cert for everything apart from macOS FTP
+      if: matrix.platform != 'macOS' || matrix.destination != 'ftp'
+      run: echo "DEV_CERTIFICATE=${{ secrets.APPLE_DEVELOPER_ID_SIGNING_CERTIFICATE}}" >> &GITHUB_ENV
+
     - name: Use Apple Development Certificate
       if: matrix.platform == 'iOS' && matrix.destination == 'ftp' && contains(env.UPLOAD_TO, matrix.destination)
       run: |
@@ -154,7 +160,7 @@ jobs:
         action: archive
         xc-destination: generic/platform=${{ matrix.platform }}
         version: ${{ env.VERSION }}
-        APPLE_DEVELOPMENT_SIGNING_CERTIFICATE: ${{ secrets.APPLE_DEVELOPMENT_SIGNING_CERTIFICATE }}
+        APPLE_DEVELOPMENT_SIGNING_CERTIFICATE: ${{ env.DEV_CERTIFICATE }}
         APPLE_DEVELOPMENT_SIGNING_P12_PASSWORD: ${{ secrets.APPLE_DEVELOPMENT_SIGNING_P12_PASSWORD }}
         DEPLOYMENT_SIGNING_CERTIFICATE: ${{ env.SIGNING_CERTIFICATE }}
         DEPLOYMENT_SIGNING_CERTIFICATE_P12_PASSWORD: ${{ env.SIGNING_CERTIFICATE_P12_PASSWORD }}
