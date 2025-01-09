@@ -52,6 +52,10 @@ jobs:
     - name: Install python dependencies
       run: pip install pyyaml==6.0.1
 
+    - name: Remove Apple Pay capability for macOS
+      if: matrix.platform == 'macOS' && matrix.destination == 'ftp'
+      run: sed -i '' '/in-app-payments/d' project.yml
+
     - name: Set VERSION from code
       shell: python
       run: |
@@ -110,10 +114,6 @@ jobs:
     - name: Set iOS extra xcode params
       if: matrix.platform == 'iOS' && contains(env.UPLOAD_TO, matrix.destination)
       run: echo "EXTRA_XCODEBUILD=-sdk iphoneos ${{ env.APPLE_AUTH_PARAMS }}" >> $GITHUB_ENV
-
-    - name: Set EXTRA_XCODEBUILD for macOS AppStore
-      if: matrix.platform == 'macOS' && matrix.destination == 'app-store'
-      run: echo "EXTRA_XCODEBUILD=${{ env.APPLE_AUTH_PARAMS }}" >> $GITHUB_ENV
 
     - name: Set macOS FTP export method, and Developer ID Certificate
       if: matrix.platform == 'macOS' && matrix.destination == 'ftp' && contains(env.UPLOAD_TO, matrix.destination)
