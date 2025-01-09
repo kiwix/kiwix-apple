@@ -105,7 +105,8 @@ jobs:
     - name: Release setup for iOS
       # if: github.event_name == 'release' && matrix.platform == 'iOS'
       if: matrix.platform == 'iOS'
-      run: echo 'UPLOAD_TO="app-store"' >> $GITHUB_ENV
+      run: |
+        echo 'UPLOAD_TO="app-store"' >> $GITHUB_ENV
 
     - name: Release setup for macOS
       # if: github.event_name == 'release' && matrix.platform == 'macOS'
@@ -117,6 +118,10 @@ jobs:
     - name: Set iOS extra xcode params
       if: matrix.platform == 'iOS' && contains(env.UPLOAD_TO, matrix.destination)
       run: echo "EXTRA_XCODEBUILD=-sdk iphoneos ${{ env.APPLE_AUTH_PARAMS }}" >> $GITHUB_ENV
+
+    - name: Set macOS extra xcode params
+      if: matrix.platform == 'macOS' && contains(env.UPLOAD_TO, matrix.destination)
+      run: echo "EXTRA_XCODEBUILD=${{ env.APPLE_AUTH_PARAMS }}" >> $GITHUB_ENV
 
     - name: Set macOS FTP export method, and Developer ID Certificate
       if: matrix.platform == 'macOS' && matrix.destination == 'ftp' && contains(env.UPLOAD_TO, matrix.destination)
