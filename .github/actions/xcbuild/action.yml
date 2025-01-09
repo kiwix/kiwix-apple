@@ -69,7 +69,7 @@ runs:
         security unlock-keychain -p $KEYCHAIN_PASSWORD $KEYCHAIN
 
     - name: Add Apple Development certificate to Keychain
-      if: inputs.APPLE_DEVELOPMENT_SIGNING_CERTIFICATE != ""
+      if: ${{ inputs.APPLE_DEVELOPMENT_SIGNING_CERTIFICATE != "" }}
       uses: ./.github/actions/install-cert
       with:
         SIGNING_CERTIFICATE: ${{ inputs.APPLE_DEVELOPMENT_SIGNING_CERTIFICATE }}
