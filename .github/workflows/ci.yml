@@ -9,6 +9,13 @@ name: CD_test
 # |-----------------|---------|------------------------|----------------|---------------------|
 # | UPLOAD_FOLDER   | nightly | -                      | -              | release/kiwix-macos |
 # |-----------------|---------|------------------------|----------------|---------------------|
+
+# Signing certificates:
+# - iOS/macOS + app-store: Apple Distribution
+# - iOS + FTP: Apple Development
+# - macOS + FTP: Developer ID
+
+
 on:
   # schedule:
   # - cron: '32 1 * * *' # Nightly download.kiwix.org @ 01:32
@@ -52,6 +59,11 @@ jobs:
 
     - name: Install python dependencies
       run: pip install pyyaml==6.0.1
+
+    # https://developer.apple.com/help/account/reference/supported-capabilities-macos
+    - name: Remove In App Purchase capability for macOS FTP (Developer ID signing)
+      if: matrix.platform == 'macOS' && matrix.destination == 'ftp'
+      run: sed -i '' '/in-app-payments/d' project.yml
 
     - name: Set VERSION from code
       shell: python
