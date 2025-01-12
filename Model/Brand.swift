@@ -51,9 +51,10 @@ enum Brand {
 
     static let aboutText: String = Config.value(for: .aboutText) ?? "settings.about.description".localized
     static let aboutWebsite: String = Config.value(for: .aboutWebsite) ?? "https://www.kiwix.org"
-    // currently only used by Kiwix brand
-    // if this is missing from project.yml we fall back to true
-    // and hide the support for donation (for macOS FTP)
+    // currently only used under the Kiwix brand
+    // if this is set to true in Support/Info.plist the support/donation button is hidden (for macOS FTP)
+    // if not set, we fall back to false, and display the support/donation button
+    // for non Kiwix brands, it has no effect
     static let hideDonation: Bool = Config.value(for: .hideDonation) ?? false
 
     static var defaultExternalLinkPolicy: ExternalLinkLoadingPolicy {
