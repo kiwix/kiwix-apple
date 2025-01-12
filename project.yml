@@ -98,7 +98,7 @@ targets:
     entitlements:
       properties:
         com.apple.security.files.downloads.read-write: true
-        com.apple.developer.in-app-payments: [merchant.org.kiwix.apple]
+        com.apple.developer.in-app-payments: [merchant.org.kiwix.apple] # this line is removed for macOS FTP
     settings:
       base:
         MARKETING_VERSION: "3.7.0"
@@ -106,6 +106,7 @@ targets:
         INFOPLIST_KEY_CFBundleDisplayName: Kiwix
         INFOPLIST_FILE: Support/Info.plist
         INFOPLIST_KEY_UILaunchStoryboardName: SplashScreenKiwix.storyboard
+        SUPPORT_DONATION_VISIBLE: true # this line is removed for macOS FTP, where the donation pop up is hidden (not supported)
     sources:
       - path: Support
         excludes: 

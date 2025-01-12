@@ -51,6 +51,10 @@ enum Brand {
 
     static let aboutText: String = Config.value(for: .aboutText) ?? "settings.about.description".localized
     static let aboutWebsite: String = Config.value(for: .aboutWebsite) ?? "https://www.kiwix.org"
+    // currently only used by Kiwix brand
+    // if this is missing from project.yml we fall back to true
+    // and hide the support for donation (for macOS FTP)
+    static let supportDonationVisible: Bool = Config.value(for: .supportDonationVisible) ?? false
 
     static var defaultExternalLinkPolicy: ExternalLinkLoadingPolicy {
         guard let policyString: String = Config.value(for: .externalLinkDefaultPolicy),
@@ -81,6 +85,7 @@ enum Config: String {
     case showSearchSnippetInSettings = "SETTINGS_SHOW_SEARCH_SNIPPET"
     case aboutText = "CUSTOM_ABOUT_TEXT"
     case aboutWebsite = "CUSTOM_ABOUT_WEBSITE"
+    case supportDonationVisible = "SUPPORT_DONATION_VISIBLE"
 
     static func value<T>(for key: Config) -> T? where T: LosslessStringConvertible {
         guard let object = Bundle.main.object(forInfoDictionaryKey: key.rawValue) else {
