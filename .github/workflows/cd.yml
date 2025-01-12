@@ -61,7 +61,9 @@ jobs:
     # https://developer.apple.com/help/account/reference/supported-capabilities-macos
     - name: Remove In App Purchase capability for macOS FTP (Developer ID signing)
       if: matrix.platform == 'macOS' && matrix.destination == 'ftp'
-      run: sed -i '' '/in-app-payments/d' project.yml
+      run: |
+        sed -i '' '/in-app-payments/d' project.yml
+        plutil -insert HIDE_DONATION -bool true Support/Info.plist
 
     - name: Set VERSION from code
       shell: python

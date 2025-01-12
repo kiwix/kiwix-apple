@@ -106,7 +106,6 @@ targets:
         INFOPLIST_KEY_CFBundleDisplayName: Kiwix
         INFOPLIST_FILE: Support/Info.plist
         INFOPLIST_KEY_UILaunchStoryboardName: SplashScreenKiwix.storyboard
-        SUPPORT_DONATION_VISIBLE: true # this line is removed for macOS FTP, where the donation pop up is hidden (not supported)
     sources:
       - path: Support
         excludes: 

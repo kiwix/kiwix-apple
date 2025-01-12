@@ -196,7 +196,7 @@ struct RootView: View {
             }
             .frame(minWidth: 160)
             .safeAreaInset(edge: .bottom) {
-                if Payment.paymentButtonType() != nil && Brand.supportDonationVisible {
+                if Payment.paymentButtonType() != nil && Brand.hideDonation != true {
                     SupportKiwixButton {
                         openWindow(id: "donation")
                     }

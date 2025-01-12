@@ -54,7 +54,7 @@ enum Brand {
     // currently only used by Kiwix brand
     // if this is missing from project.yml we fall back to true
     // and hide the support for donation (for macOS FTP)
-    static let supportDonationVisible: Bool = Config.value(for: .supportDonationVisible) ?? false
+    static let hideDonation: Bool = Config.value(for: .hideDonation) ?? false
 
     static var defaultExternalLinkPolicy: ExternalLinkLoadingPolicy {
         guard let policyString: String = Config.value(for: .externalLinkDefaultPolicy),
@@ -85,7 +85,7 @@ enum Config: String {
     case showSearchSnippetInSettings = "SETTINGS_SHOW_SEARCH_SNIPPET"
     case aboutText = "CUSTOM_ABOUT_TEXT"
     case aboutWebsite = "CUSTOM_ABOUT_WEBSITE"
-    case supportDonationVisible = "SUPPORT_DONATION_VISIBLE"
+    case hideDonation = "HIDE_DONATION"
 
     static func value<T>(for key: Config) -> T? where T: LosslessStringConvertible {
         guard let object = Bundle.main.object(forInfoDictionaryKey: key.rawValue) else {
