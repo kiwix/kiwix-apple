@@ -126,10 +126,6 @@ targets:
       path: Support/Kiwix-unitTest.entitlements
       properties:
         com.apple.security.app-sandbox: false
-        com.apple.security.files.user-selected.read-write: true
-        com.apple.security.files.downloads.read-write: true
-        com.apple.security.network.client: true
-        com.apple.security.print: true
         # from macOS 14, sandbox and unit test are not working together on CI
         # a pop up appears that needs user acceptance
         # see: https://developer.apple.com/documentation/security/accessing-files-from-the-macos-app-sandbox
