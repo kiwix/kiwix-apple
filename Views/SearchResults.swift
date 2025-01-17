@@ -94,7 +94,7 @@ struct SearchResults: View {
                                 let prev = results.index(before: index)
                                 self.searchFocus = results[prev].id
                             } else if direction == .down,
-                                      index < results.endIndex {
+                                      index < results.endIndex - 1 {
                                 let prev = results.index(after: index)
                                 self.searchFocus = results[prev].id
                             }
