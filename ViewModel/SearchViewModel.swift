@@ -19,7 +19,6 @@ import CoreData
 import Defaults
 
 final class SearchViewModel: NSObject, ObservableObject, NSFetchedResultsControllerDelegate {
-    @Default(.recentSearchTexts) private var recentSearchTexts
     @Published var searchText: String = ""  // text in the search field
     @Published private(set) var zimFiles: [UUID: ZimFile]  // ID of zim files that are included in search
     @Published private(set) var inProgress = false
