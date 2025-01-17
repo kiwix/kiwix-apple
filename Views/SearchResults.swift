@@ -29,6 +29,7 @@ struct SearchResults: View {
         predicate: ZimFile.Predicate.isDownloaded,
         animation: .easeInOut
     ) private var zimFiles: FetchedResults<ZimFile>
+    @FocusState.Binding var searchFocus: Int?
 
     private let openURL = NotificationCenter.default.publisher(for: .openURL)
 
@@ -78,20 +79,77 @@ struct SearchResults: View {
             ScrollView {
                 LazyVGrid(columns: [GridItem(.flexible(minimum: 300, maximum: 700), alignment: .center)]) {
                     ForEach(viewModel.results) { result in
-                        Button {
-                            recentSearchTexts = {
-                                var searchTexts = Defaults[.recentSearchTexts]
-                                searchTexts.removeAll(where: { $0 == viewModel.searchText })
-                                searchTexts.insert(viewModel.searchText, at: 0)
-                                return searchTexts
-                            }()
-                            NotificationCenter.openURL(result.url)
-                        } label: {
-                            ArticleCell(result: result, zimFile: viewModel.zimFiles[result.zimFileID])
-                        }.buttonStyle(.plain)
+                        SearchResultButton(searchFocus: $searchFocus,
+                                           searchText: viewModel.searchText,
+                                           result: result,
+                                           zimFile: viewModel.zimFiles[result.zimFileID])
                     }
                 }.padding()
+                    .onMoveCommand { direction in
+                        let results = viewModel.results
+                        if let searchFocus = self.searchFocus,
+                           let index = results.firstIndex(where: {searchFocus == $0.id}){
+                            if direction == .up,
+                               index > results.startIndex {
+                                let prev = results.index(before: index)
+                                self.searchFocus = results[prev].id
+                            } else if direction == .down,
+                                      index < results.endIndex {
+                                let prev = results.index(after: index)
+                                self.searchFocus = results[prev].id
+                            }
+                        } else {
+                            self.searchFocus = results.first?.id
+                        }
+                    }
             }
+        }
+    }
+    
+    private static var openSearchResult: (_ result: SearchResult, _ searchText: String) -> Void
+    = { result, searchText in
+        var searchTexts = Defaults[.recentSearchTexts]
+        searchTexts.removeAll(where: { $0 == searchText })
+        searchTexts.insert(searchText, at: 0)
+        Defaults[.recentSearchTexts] = searchTexts
+        
+        NotificationCenter.openURL(result.url)
+    }
+
+    private struct SearchResultButton : View {
+        @FocusState.Binding var searchFocus: Int?
+        var searchText: String
+        var result: SearchResult
+        var zimFile: ZimFile?
+        
+        var body: some View {
+            
+            if #available(macOS 14.0, *) {
+                SearchResultButtonBase(searchText: searchText, result: result, zimFile: zimFile)
+                    .focusable()
+                    .focused($searchFocus, equals: result.id)
+                    .onKeyPress(.return) {
+                        openSearchResult(result, searchText)
+                        return .handled
+                    }
+            } else {
+                SearchResultButtonBase(searchText: searchText, result: result, zimFile: zimFile)
+            }
+                
+        }
+    }
+
+    private struct SearchResultButtonBase : View {
+        var searchText: String
+        var result: SearchResult
+        var zimFile: ZimFile?
+
+        var body: some View {
+            Button {
+                openSearchResult(result, searchText)
+            } label: {
+                ArticleCell(result: result, zimFile: zimFile)
+            } .buttonStyle(.plain)
         }
     }
 

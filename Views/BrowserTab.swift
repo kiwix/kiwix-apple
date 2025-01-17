@@ -22,6 +22,7 @@ struct BrowserTab: View {
     @EnvironmentObject private var browser: BrowserViewModel
     @EnvironmentObject private var library: LibraryViewModel
     @StateObject private var search = SearchViewModel()
+    @FocusState private var searchFocus: Int?
 
     var body: some View {
         let model = if FeatureFlags.hasLibrary {
@@ -29,7 +30,7 @@ struct BrowserTab: View {
         } else {
             NoCatalogLaunchViewModel(browser: browser)
         }
-        Content(model: model).toolbar {
+        Content(model: model, searchFocus: $searchFocus).toolbar {
 #if os(macOS)
             ToolbarItemGroup(placement: .navigation) { NavigationButtons() }
 #elseif os(iOS)
@@ -55,6 +56,14 @@ struct BrowserTab: View {
                 ContentSearchButton()
 #endif
                 ArticleShortcutButtons(displayMode: .mainAndRandomArticle)
+                
+#if os(macOS)
+                Button(action: {
+                    searchFocus = searchFocus ?? search.results.first?.id
+                }) {}
+                    .opacity(0)
+                    .keyboardShortcut(.return, modifiers: [])
+#endif
             }
         }
         .environmentObject(search)
@@ -99,6 +108,7 @@ struct BrowserTab: View {
         /// which triggers the model to be revalidated
         @Default(.hasSeenCategories) private var hasSeenCategories
         @ObservedObject var model: LaunchModel
+        @FocusState.Binding var searchFocus: Int?
 
         var body: some View {
             // swiftlint:disable:next redundant_discardable_let
@@ -107,7 +117,7 @@ struct BrowserTab: View {
             GeometryReader { proxy in
                 Group {
                     if isSearching {
-                        SearchResults()
+                        SearchResults(searchFocus: $searchFocus)
                             #if os(macOS)
                             .environment(\.horizontalSizeClass, proxy.size.width > 650 ? .regular : .compact)
                             #elseif os(iOS)
