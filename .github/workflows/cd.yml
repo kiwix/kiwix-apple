@@ -9,6 +9,12 @@ name: CD
 # |-----------------|---------|------------------------|----------------|---------------------|
 # | UPLOAD_FOLDER   | nightly | -                      | -              | release/kiwix-macos |
 # |-----------------|---------|------------------------|----------------|---------------------|
+
+# Signing certificates:
+# - iOS/macOS + app-store: Apple Distribution
+# - iOS + FTP: Apple Development
+# - macOS + FTP: Developer ID
+
 on:
   schedule:
   - cron: '32 1 * * *' # Nightly download.kiwix.org @ 01:32
@@ -51,6 +57,13 @@ jobs:
 
     - name: Install python dependencies
       run: pip install pyyaml==6.0.1
+
+    # https://developer.apple.com/help/account/reference/supported-capabilities-macos
+    - name: Remove In App Purchase capability for macOS FTP (Developer ID signing)
+      if: matrix.platform == 'macOS' && matrix.destination == 'ftp'
+      run: |
+        sed -i '' '/in-app-payments/d' project.yml
+        plutil -insert HIDE_DONATION -bool true Support/Info.plist
 
     - name: Set VERSION from code
       shell: python
@@ -111,8 +124,8 @@ jobs:
       if: matrix.platform == 'iOS' && contains(env.UPLOAD_TO, matrix.destination)
       run: echo "EXTRA_XCODEBUILD=-sdk iphoneos ${{ env.APPLE_AUTH_PARAMS }}" >> $GITHUB_ENV
 
-    - name: Set EXTRA_XCODEBUILD for macOS AppStore
-      if: matrix.platform == 'macOS' && matrix.destination == 'app-store'
+    - name: Set macOS extra xcode params
+      if: matrix.platform == 'macOS' && contains(env.UPLOAD_TO, matrix.destination)
       run: echo "EXTRA_XCODEBUILD=${{ env.APPLE_AUTH_PARAMS }}" >> $GITHUB_ENV
 
     - name: Set macOS FTP export method, and Developer ID Certificate
@@ -150,7 +163,6 @@ jobs:
         DEPLOYMENT_SIGNING_CERTIFICATE_P12_PASSWORD: ${{ env.SIGNING_CERTIFICATE_P12_PASSWORD }}
         KEYCHAIN: ${{ env.KEYCHAIN }}
         KEYCHAIN_PASSWORD: ${{ env.KEYCHAIN_PASSWORD }}
-        KEYCHAIN_PROFILE: ${{ env.KEYCHAIN_PROFILE }}
         EXTRA_XCODEBUILD: ${{ env.EXTRA_XCODEBUILD }}
 
     - name: Add altool credentials to Keychain

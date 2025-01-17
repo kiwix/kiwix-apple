@@ -25,9 +25,6 @@ inputs:
   KEYCHAIN_PASSWORD:
     required: false
     default: mysecretpassword
-  KEYCHAIN_PROFILE:
-    required: false
-    default: build-profile
   XC_WORKSPACE:
     required: false
     default: Kiwix.xcodeproj/project.xcworkspace/

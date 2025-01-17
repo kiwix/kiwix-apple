@@ -80,6 +80,7 @@ struct Kiwix: App {
                        let search = item as? NSSearchToolbarItem { search.beginSearchInteraction() }
                 }.keyboardShortcut("f", modifiers: [.command, .shift])
             }
+            CommandGroup(replacing: .help) {}
         }
         Settings {
             TabView {
@@ -203,7 +204,7 @@ struct RootView: View {
             }
             .frame(minWidth: 160)
             .safeAreaInset(edge: .bottom) {
-                if Payment.paymentButtonType() != nil {
+                if Payment.paymentButtonType() != nil && Brand.hideDonation != true {
                     SupportKiwixButton {
                         openWindow(id: "donation")
                     }
