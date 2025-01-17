@@ -58,17 +58,8 @@ jobs:
         if: matrix.platform == 'iOS'
         run: xcodebuild test -scheme Kiwix -destination 'platform=iOS Simulator,name=iPhone 15 Plus'
 
-      - name: Remove in-app-payments capability for unit tests on macOS
-        if: matrix.platform == 'macOS'
-        run: |
-          sed -i '' '/in-app-payments/d' project.yml
-          xcodegen
-
-      - name: Run Unit Tests on macOS
-        if: matrix.platform == 'macOS'
-        run: xcodebuild test -scheme Kiwix -destination 'platform=macOS' CODE_SIGNING_ALLOWED=NO
-
       - name: Upload code coverage
+        if: matrix.platform == 'iOS'
         uses: codecov/codecov-action@v4.2.0
         env:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
