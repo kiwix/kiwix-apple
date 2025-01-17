@@ -72,6 +72,7 @@ struct Kiwix: App {
                 SidebarNavigationCommands()
                 Divider()
             }
+            CommandGroup(replacing: .help) {}
         }
         Settings {
             TabView {
