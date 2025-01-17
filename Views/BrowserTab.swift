@@ -58,9 +58,7 @@ struct BrowserTab: View {
                 ArticleShortcutButtons(displayMode: .mainAndRandomArticle)
                 
 #if os(macOS)
-                Button(action: {
-                    searchFocus = searchFocus ?? search.results.first?.id
-                }) {}
+                Button(action: { searchFocus = searchFocus ?? search.results.first?.id }, label: {})
                     .opacity(0)
                     .keyboardShortcut(.return, modifiers: [])
 #endif

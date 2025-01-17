@@ -88,7 +88,7 @@ struct SearchResults: View {
                     .onMoveCommand { direction in
                         let results = viewModel.results
                         if let searchFocus = self.searchFocus,
-                           let index = results.firstIndex(where: {searchFocus == $0.id}){
+                           let index = results.firstIndex(where: {searchFocus == $0.id}) {
                             if direction == .up,
                                index > results.startIndex {
                                 let prev = results.index(before: index)
@@ -116,7 +116,7 @@ struct SearchResults: View {
         NotificationCenter.openURL(result.url)
     }
 
-    private struct SearchResultButton : View {
+    private struct SearchResultButton: View {
         @FocusState.Binding var searchFocus: Int?
         var searchText: String
         var result: SearchResult
@@ -139,7 +139,7 @@ struct SearchResults: View {
         }
     }
 
-    private struct SearchResultButtonBase : View {
+    private struct SearchResultButtonBase: View {
         var searchText: String
         var result: SearchResult
         var zimFile: ZimFile?

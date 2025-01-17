@@ -75,9 +75,8 @@ struct Kiwix: App {
             CommandGroup(after: .textEditing) {
                 Button("Search") {
                     if let toolbar = NSApp.keyWindow?.toolbar,
-                       let search = toolbar.items.first(where: { $0.itemIdentifier.rawValue == "com.apple.SwiftUI.search" }) as? NSSearchToolbarItem {
-                        search.beginSearchInteraction()
-                    }
+                       let item = toolbar.items.first( where: { $0.itemIdentifier.rawValue == "com.apple.SwiftUI.search" } ),
+                       let search = item as? NSSearchToolbarItem { search.beginSearchInteraction() }
                 }.keyboardShortcut("f", modifiers: [.command, .shift])
             }
         }
