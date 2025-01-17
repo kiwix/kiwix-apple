@@ -36,7 +36,7 @@ enum ActiveSheet: Hashable, Identifiable {
     case safari(url: URL)
 }
 
-enum Category: String, CaseIterable, Identifiable, LosslessStringConvertible {
+enum Category: String, CaseIterable, Identifiable, LosslessStringConvertible, Hashable {
     var description: String { rawValue }
 
     var id: String { rawValue }

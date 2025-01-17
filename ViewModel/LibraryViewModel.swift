@@ -15,7 +15,6 @@
 
 import CoreData
 import Combine
-import Defaults
 import os
 
 enum LibraryState {
@@ -24,8 +23,8 @@ enum LibraryState {
     case complete
     case error
 
-    static func defaultState() -> LibraryState {
-        if Defaults[.libraryLastRefresh] == nil {
+    static func defaultState(defaults: Defaulting = UDefaults()) -> LibraryState {
+        if defaults[.libraryLastRefresh] == nil {
             return .initial
         } else {
             return .complete
@@ -52,6 +51,8 @@ final class LibraryViewModel: ObservableObject {
     @MainActor @Published var state: LibraryState
     @MainActor private let process: LibraryProcess
     private var cancellables = Set<AnyCancellable>()
+    private let defaults: Defaulting
+    private let categories: CategoriesProtocol
 
     private let urlSession: URLSession
     private var insertionCount = 0
@@ -60,9 +61,16 @@ final class LibraryViewModel: ObservableObject {
     private static let catalogURL = URL(string: "https://library.kiwix.org/catalog/v2/entries?count=-1")!
 
     @MainActor
-    init(urlSession: URLSession? = nil, processFactory: @MainActor () -> LibraryProcess = { .shared }) {
+    init(
+        urlSession: URLSession? = nil,
+        processFactory: @MainActor () -> LibraryProcess = { .shared },
+        defaults: Defaulting = UDefaults(),
+        categories: CategoriesProtocol = CategoriesToLanguages(withDefaults: UDefaults())
+    ) {
         self.urlSession = urlSession ?? URLSession.shared
         self.process = processFactory()
+        self.defaults = defaults
+        self.categories = categories
         state = process.state
         process.$state.sink { [weak self] newState in
             self?.state = newState
@@ -78,8 +86,8 @@ final class LibraryViewModel: ObservableObject {
         guard process.state != .inProgress else { return }
         do {
             // decide if refresh should proceed
-            let lastRefresh: Date? = Defaults[.libraryLastRefresh]
-            let hasAutoRefresh: Bool = Defaults[.libraryAutoRefresh]
+            let lastRefresh: Date? = defaults[.libraryLastRefresh]
+            let hasAutoRefresh: Bool = defaults[.libraryAutoRefresh]
             let isStale = (lastRefresh?.timeIntervalSinceNow ?? -3600) <= -3600
             guard isUserInitiated || (hasAutoRefresh && isStale) else { return }
 
@@ -90,7 +98,7 @@ final class LibraryViewModel: ObservableObject {
                 // this is the case when we have no new data (304 http)
                 // but we still need to refresh the memory only stored
                 // zimfile categories to languages dictionary
-                if CategoriesToLanguages.allCategories().count < 2 {
+                if categories.allCategories().count < 2 {
                     let context =  Database.shared.viewContext
                     if let zimFiles: [ZimFile] = try? context.fetch(ZimFile.fetchRequest()) {
                         saveCategoryAvailableInLanguages(fromDBZimFiles: zimFiles)
@@ -113,15 +121,15 @@ final class LibraryViewModel: ObservableObject {
             }
             let parser = try await parse(data: data)
             // delete all old ISO Lang Code entries if needed, by passing in an empty parser
-            if Defaults[.libraryUsingOldISOLangCodes] {
+            if defaults[.libraryUsingOldISOLangCodes] {
                 try await process(parser: DeletingParser())
-                Defaults[.libraryUsingOldISOLangCodes] = false
+                defaults[.libraryUsingOldISOLangCodes] = false
             }
             // process the feed
             try await process(parser: parser)
 
             // update library last refresh timestamp
-            Defaults[.libraryLastRefresh] = Date()
+            defaults[.libraryLastRefresh] = Date()
 
             saveCategoryAvailableInLanguages(using: parser)
 
@@ -156,7 +164,7 @@ final class LibraryViewModel: ObservableObject {
                 dictionary[category] = allLanguagesForCategory
             }
         }
-        CategoriesToLanguages.save(dictionary)
+        categories.save(dictionary)
     }
     
     private func saveCategoryAvailableInLanguages(fromDBZimFiles zimFiles: [ZimFile]) {
@@ -172,7 +180,7 @@ final class LibraryViewModel: ObservableObject {
             }
             dictionary[category] = allLanguagesForCategory
         }
-        CategoriesToLanguages.save(dictionary)
+        categories.save(dictionary)
     }
 
     /// The fetched content is filtered by the languages set in settings.
@@ -183,10 +191,10 @@ final class LibraryViewModel: ObservableObject {
         let validCodes = Set<String>(languages.map { $0.code })
         // preserve only valid selections by:
         // converting earlier user selections, and filtering out invalid ones
-        Defaults[.libraryLanguageCodes] = LanguagesConverter.convert(codes: Defaults[.libraryLanguageCodes],
+        defaults[.libraryLanguageCodes] = LanguagesConverter.convert(codes: defaults[.libraryLanguageCodes],
                                                                      validCodes: validCodes)
 
-        guard Defaults[.libraryLanguageCodes].isEmpty else {
+        guard defaults[.libraryLanguageCodes].isEmpty else {
             return // what was earlier set by the user or picked by default is valid
         }
 
@@ -201,22 +209,22 @@ final class LibraryViewModel: ObservableObject {
         let deviceLangSet = Set<String>([deviceLang].compactMap { $0 })
         let validDefaults = LanguagesConverter.convert(codes: deviceLangSet, validCodes: validCodes)
         if validDefaults.isEmpty { // meaning the device language isn't valid (or nil)
-            Defaults[.libraryLanguageCodes] = [fallbackToEnglish]
+            defaults[.libraryLanguageCodes] = [fallbackToEnglish]
         } else {
-            Defaults[.libraryLanguageCodes] = validDefaults
+            defaults[.libraryLanguageCodes] = validDefaults
         }
     }
 
     private func fetchData() async throws -> Data? {
         do {
             var request = URLRequest(url: Self.catalogURL, timeoutInterval: 20)
-            request.allHTTPHeaderFields = ["If-None-Match": Defaults[.libraryETag]]
+            request.allHTTPHeaderFields = ["If-None-Match": defaults[.libraryETag]]
             let (data, response) = try await self.urlSession.data(for: request)
             guard let response = response as? HTTPURLResponse else { return nil }
             switch response.statusCode {
             case 200:
                 if let eTag = response.allHeaderFields["Etag"] as? String {
-                    Defaults[.libraryETag] = eTag
+                    defaults[.libraryETag] = eTag
                 }
                 // OK to process further
                 os_log("Retrieved OPDS Data, size: %llu bytes", log: Log.OPDS, type: .info, data.count)
