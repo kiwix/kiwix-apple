@@ -124,7 +124,7 @@ struct SearchResults: View {
         
         var body: some View {
             
-            if #available(macOS 14.0, *) {
+            if #available(macOS 14.0, iOS 17.0, *) {
                 SearchResultButtonBase(searchText: searchText, result: result, zimFile: zimFile)
                     .focusable()
                     .focused($searchFocus, equals: result.id)
