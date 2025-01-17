@@ -60,6 +60,7 @@ final class LibraryRefreshViewModelTest: XCTestCase {
     }
 
     private func makeOPDSData(zimFileID: UUID) -> String {
+        // swiftlint:disable line_length
         """
         <feed xmlns="http://www.w3.org/2005/Atom"
               xmlns:dc="http://purl.org/dc/terms/"
@@ -88,6 +89,7 @@ final class LibraryRefreshViewModelTest: XCTestCase {
           </entry>
         </feed>
         """
+        // swiftlint:enable line_length
     }
 
     /// Test time out fetching library data.
@@ -96,9 +98,12 @@ final class LibraryRefreshViewModelTest: XCTestCase {
         HTTPTestingURLProtocol.handler = { urlProtocol in
             urlProtocol.client?.urlProtocol(urlProtocol, didFailWithError: URLError(URLError.Code.timedOut))
         }
-
+        let testDefaults = TestDefaults()
+        testDefaults.setup()
         let viewModel = LibraryViewModel(urlSession: urlSession,
-                                         processFactory: { LibraryProcess() })
+                                         processFactory: { LibraryProcess(defaultState: .initial) },
+                                         defaults: testDefaults,
+                                         categories: CategoriesToLanguages(withDefaults: testDefaults))
         await viewModel.start(isUserInitiated: true)
         XCTAssert(viewModel.error is LibraryRefreshError)
         XCTAssertEqual(
@@ -119,8 +124,12 @@ final class LibraryRefreshViewModelTest: XCTestCase {
             urlProtocol.client?.urlProtocolDidFinishLoading(urlProtocol)
         }
 
+        let testDefaults = TestDefaults()
+        testDefaults.setup()
         let viewModel = LibraryViewModel(urlSession: urlSession,
-                                         processFactory: { LibraryProcess() })
+                                         processFactory: { LibraryProcess(defaultState: .initial) },
+                                         defaults: testDefaults,
+                                         categories: CategoriesToLanguages(withDefaults: testDefaults))
         await viewModel.start(isUserInitiated: true)
         XCTAssert(viewModel.error is LibraryRefreshError)
         XCTAssertEqual(
@@ -137,13 +146,17 @@ final class LibraryRefreshViewModelTest: XCTestCase {
                 url: URL.mock(),
                 statusCode: 200, httpVersion: nil, headerFields: [:]
             )!
-            urlProtocol.client?.urlProtocol(urlProtocol, didLoad: "Invalid OPDS Data".data(using: .utf8)!)
+            urlProtocol.client?.urlProtocol(urlProtocol, didLoad: Data("Invalid OPDS Data".utf8))
             urlProtocol.client?.urlProtocol(urlProtocol, didReceive: response, cacheStoragePolicy: .notAllowed)
             urlProtocol.client?.urlProtocolDidFinishLoading(urlProtocol)
         }
 
+        let testDefaults = TestDefaults()
+        testDefaults.setup()
         let viewModel = LibraryViewModel(urlSession: urlSession,
-                                         processFactory: { LibraryProcess() })
+                                         processFactory: { LibraryProcess(defaultState: .initial) },
+                                         defaults: testDefaults,
+                                         categories: CategoriesToLanguages(withDefaults: testDefaults))
         await viewModel.start(isUserInitiated: true)
         XCTExpectFailure("Requires work in dependency to resolve the issue.")
         XCTAssertEqual(
@@ -154,6 +167,7 @@ final class LibraryRefreshViewModelTest: XCTestCase {
 
     /// Test zim file entity is created, and metadata are saved when new zim file becomes available in online catalog.
     @MainActor
+    // swiftlint:disable:next function_body_length
     func testNewZimFileAndProperties() async throws {
         let zimFileID = UUID()
         HTTPTestingURLProtocol.handler = { urlProtocol in
@@ -166,9 +180,12 @@ final class LibraryRefreshViewModelTest: XCTestCase {
             urlProtocol.client?.urlProtocol(urlProtocol, didReceive: response, cacheStoragePolicy: .notAllowed)
             urlProtocol.client?.urlProtocolDidFinishLoading(urlProtocol)
         }
-
+        let testDefaults = TestDefaults()
+        testDefaults.setup()
         let viewModel = LibraryViewModel(urlSession: urlSession,
-                                         processFactory: { LibraryProcess() })
+                                         processFactory: { LibraryProcess(defaultState: .initial) },
+                                         defaults: testDefaults,
+                                         categories: CategoriesToLanguages(withDefaults: testDefaults))
         await viewModel.start(isUserInitiated: true)
 
         // check no error has happened
@@ -185,6 +202,7 @@ final class LibraryRefreshViewModelTest: XCTestCase {
         XCTAssertEqual(zimFile.id, zimFileID)
         XCTAssertEqual(zimFile.articleCount, 50001)
         XCTAssertEqual(zimFile.category, Category.wikipedia.rawValue)
+        // swiftlint:disable:next force_try
         XCTAssertEqual(zimFile.created, try! Date("2023-01-07T00:00:00Z", strategy: .iso8601))
         XCTAssertEqual(
             zimFile.downloadURL,
@@ -211,14 +229,21 @@ final class LibraryRefreshViewModelTest: XCTestCase {
         XCTAssertEqual(zimFile.persistentID, "wikipedia_en_top")
         XCTAssertEqual(zimFile.requiresServiceWorkers, false)
         XCTAssertEqual(zimFile.size, 6515656704)
+        
+        // clean up
+        context.delete(zimFile)
     }
 
     /// Test zim file deprecation
     @MainActor
     func testZimFileDeprecation() async throws {
+        let testDefaults = TestDefaults()
+        testDefaults.setup()
         // refresh library for the first time, which should create one zim file
         let viewModel = LibraryViewModel(urlSession: urlSession,
-                                         processFactory: { LibraryProcess() })
+                                         processFactory: { LibraryProcess(defaultState: .initial) },
+                                         defaults: testDefaults,
+                                         categories: CategoriesToLanguages(withDefaults: testDefaults))
         await viewModel.start(isUserInitiated: true)
         let context = Database.shared.viewContext
         let zimFile1 = try XCTUnwrap(try context.fetch(ZimFile.fetchRequest()).first)
@@ -231,7 +256,7 @@ final class LibraryRefreshViewModelTest: XCTestCase {
         XCTAssertNotEqual(zimFile1.fileID, zimFile2.fileID)
 
         // set fileURLBookmark of zim file 2
-        zimFile2.fileURLBookmark = "/Users/tester/Downloads/file_url.zim".data(using: .utf8)
+        zimFile2.fileURLBookmark = Data("/Users/tester/Downloads/file_url.zim".utf8)
         try context.save()
 
         // refresh library for the third time
@@ -241,6 +266,10 @@ final class LibraryRefreshViewModelTest: XCTestCase {
         // check there are two zim files in the database, and zim file 2 is not deprecated
         XCTAssertEqual(zimFiles.count, 2)
         XCTAssertEqual(zimFiles.filter({ $0.fileID == zimFile2.fileID }).count, 1)
+        
+        // clean up
+        context.delete(zimFile1)
+        context.delete(zimFile2)
     }
 }
 

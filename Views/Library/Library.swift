@@ -26,9 +26,12 @@ struct Library: View {
     private let categories: [Category]
     let dismiss: (() -> Void)?
 
-    init(dismiss: (() -> Void)?) {
+    init(
+        dismiss: (() -> Void)?,
+        categories: [Category] = CategoriesToLanguages().allCategories()
+    ) {
         self.dismiss = dismiss
-        categories = CategoriesToLanguages.allCategories()
+        self.categories = categories
     }
 
     var body: some View {

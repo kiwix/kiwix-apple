@@ -13,17 +13,23 @@
 // You should have received a copy of the GNU General Public License
 // along with Kiwix; If not, see https://www.gnu.org/licenses/.
 
-//
-//  CategoriesToLanguage.swift
-//  Kiwix
-//
-
 import Foundation
-import Defaults
 
-struct CategoriesToLanguages {
+protocol CategoriesProtocol {
+    func has(category: Category, inLanguages langCodes: Set<String>) -> Bool
+    func save(_ dictionary: [Category: Set<String>])
+    func allCategories() -> [Category]
+}
 
-    private let dictionary: [Category: Set<String>] = Defaults[.categoriesToLanguages]
+struct CategoriesToLanguages: CategoriesProtocol {
+    
+    private let defaults: Defaulting
+    private let dictionary: [Category: Set<String>]
+    
+    init(withDefaults defaults: Defaulting = UDefaults()) {
+        self.defaults = defaults
+        self.dictionary = defaults[.categoriesToLanguages]
+    }
 
     func has(category: Category, inLanguages langCodes: Set<String>) -> Bool {
         guard !langCodes.isEmpty, !dictionary.isEmpty else {
@@ -35,15 +41,14 @@ struct CategoriesToLanguages {
         return !languages.isDisjoint(with: langCodes)
     }
 
-    static func save(_ dictionary: [Category: Set<String>]) {
-        Defaults[.categoriesToLanguages] = dictionary
+    func save(_ dictionary: [Category: Set<String>]) {
+        defaults[.categoriesToLanguages] = dictionary
     }
 
-    static func allCategories() -> [Category] {
-        let categoriesToLanguages = CategoriesToLanguages()
-        let contentLanguages = Defaults[.libraryLanguageCodes]
+    func allCategories() -> [Category] {
+        let contentLanguages = defaults[.libraryLanguageCodes]
         return Category.allCases.filter { (category: Category) in
-            categoriesToLanguages.has(category: category, inLanguages: contentLanguages)
+            has(category: category, inLanguages: contentLanguages)
         }
     }
 }

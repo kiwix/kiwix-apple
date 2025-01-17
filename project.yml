@@ -122,6 +122,13 @@ targets:
       PRODUCT_BUNDLE_IDENTIFIER: org.kiwix.Tests
       TEST_HOST: $(BUILT_PRODUCTS_DIR)/Kiwix.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Kiwix
       BUNDLE_LOADER: $(TEST_HOST)
+    entitlements:
+      path: Support/Kiwix-unitTest.entitlements
+      properties:
+        com.apple.security.app-sandbox: false
+        # from macOS 14, sandbox and unit test are not working together on CI
+        # a pop up appears that needs user acceptance
+        # see: https://developer.apple.com/documentation/security/accessing-files-from-the-macos-app-sandbox
     sources:
       - path: Tests
     dependencies:
