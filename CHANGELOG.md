@@ -1,3 +1,16 @@
+# 3.7.1
+  - UPDATE:
+    -Localisations (@translatewiki #1056, #1070)
+    - CI to Xcode 15.2 (@BPerlakiH #1062)
+    - Removed unused parts from CI / CD (@BPerlakiH #1066)
+  - FIX:
+    - Opening deeplinks (@BPerlakiH #1048)
+    - Open new tab via http blank link (@BPerlakiH #1064)
+    - Removed empty help menu from macOS (@BPerlakiH #1078)
+    - Sandbox issue for macOS CI unit tests (@BPerlakiH #1076)
+    - "Flaky" unit-tests (@BPerlakiH #1072)
+    - Removed support / donation for macOS FTP builds, as it's not supported outside of AppStore (@BPerlakiH #1074)
+
 # 3.7.0
   - NEW:
     - Support Kiwix with Apple Pay donation (@BPerlakiH @rgaudin #1022, #1045, #1046, #1049)
