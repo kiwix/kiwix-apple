@@ -38,7 +38,9 @@ final class CompactViewController: UIHostingController<AnyView>, UISearchControl
     init(navigation: NavigationViewModel) {
         self.navigation = navigation
         searchViewModel = SearchViewModel()
-        let searchResult = SearchResults().environmentObject(searchViewModel)
+        // Focus state is only used for keyboard navigation on MacOS
+        let defaultNullFocus = FocusState<Int?>().projectedValue
+        let searchResult = SearchResults(searchFocus: defaultNullFocus).environmentObject(searchViewModel)
         searchController = UISearchController(searchResultsController: UIHostingController(rootView: searchResult))
         super.init(rootView: AnyView(CompactView()))
         searchController.searchResultsUpdater = self

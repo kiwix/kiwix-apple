@@ -22,6 +22,7 @@ struct SearchResults: View {
     @Environment(\.dismissSearch) private var dismissSearch
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     @Environment(\.managedObjectContext) private var managedObjectContext
+    @Environment(\.isSearching) private var isSearching
     @EnvironmentObject private var viewModel: SearchViewModel
     @EnvironmentObject private var navigation: NavigationViewModel
     @FetchRequest(
@@ -29,12 +30,20 @@ struct SearchResults: View {
         predicate: ZimFile.Predicate.isDownloaded,
         animation: .easeInOut
     ) private var zimFiles: FetchedResults<ZimFile>
+    // Keep track of focus to permit keyboard navigation of search results on MacOS
     @FocusState.Binding var searchFocus: Int?
 
     private let openURL = NotificationCenter.default.publisher(for: .openURL)
 
     var body: some View {
         Group {
+            if isSearching, searchFocus == nil {
+                Button(action: {
+                    searchFocus = viewModel.results.first?.id
+                }, label: {})
+//                        .opacity(0)
+                .keyboardShortcut(.downArrow, modifiers: [])
+            }
             if zimFiles.isEmpty {
                 Message(text: "search_result.zimfile.empty.message".localized)
             } else if horizontalSizeClass == .regular {
@@ -76,34 +85,56 @@ struct SearchResults: View {
         } else if viewModel.results.isEmpty {
             Message(text: "search_result.zimfile.no_result.message".localized)
         } else {
-            ScrollView {
-                LazyVGrid(columns: [GridItem(.flexible(minimum: 300, maximum: 700), alignment: .center)]) {
-                    ForEach(viewModel.results) { result in
-                        SearchResultButton(searchFocus: $searchFocus,
-                                           searchText: viewModel.searchText,
-                                           result: result,
-                                           zimFile: viewModel.zimFiles[result.zimFileID])
-                    }
-                }.padding()
-                    .onMoveCommand { direction in
-                        let results = viewModel.results
-                        if let searchFocus = self.searchFocus,
-                           let index = results.firstIndex(where: {searchFocus == $0.id}) {
-                            if direction == .up,
-                               index > results.startIndex {
-                                let prev = results.index(before: index)
-                                self.searchFocus = results[prev].id
-                            } else if direction == .down,
-                                      index < results.endIndex - 1 {
-                                let prev = results.index(after: index)
-                                self.searchFocus = results[prev].id
-                            }
-                        } else {
-                            self.searchFocus = results.first?.id
+            ScrollViewReader { proxy in
+                ScrollView {
+                    LazyVGrid(columns: [GridItem(.flexible(minimum: 300, maximum: 700), alignment: .center)]) {
+                        ForEach(viewModel.results) { result in
+                            SearchResultButton(searchFocus: $searchFocus,
+                                               searchText: viewModel.searchText,
+                                               result: result,
+                                               zimFile: viewModel.zimFiles[result.zimFileID])
+                            .id(result.id)
                         }
-                    }
+                    }.padding()
+    #if os(macOS)
+                        .onMoveCommand { direction in
+                            let results = viewModel.results
+                            if let searchFocus = self.searchFocus,
+                               let index = results.firstIndex(where: {searchFocus == $0.id}) {
+                                if direction == .up {
+                                    guard index > results.startIndex else {
+                                        Self.navigateToSearchBar()
+                                        return
+                                    }
+                                    let prev = results.index(before: index)
+                                    let id = results[prev].id
+                                    proxy.scrollTo(id)
+                                    self.searchFocus = id
+                                } else if direction == .down,
+                                          index < results.endIndex - 1 {
+                                    let next = results.index(after: index)
+                                    let id = results[next].id
+                                    proxy.scrollTo(id)
+                                    self.searchFocus = id
+                                }
+                            } else {
+                                self.searchFocus = results.first?.id
+                            }
+                        }
+    #endif
+                }
             }
         }
+    }
+    
+    static var navigateToSearchBar: () -> Void
+    = {
+#if os(macOS)
+        let searchType = "com.apple.SwiftUI.search"
+        if let toolbar = NSApp.keyWindow?.toolbar,
+           let item = toolbar.items.first(where: { $0.itemIdentifier.rawValue == searchType }),
+           let search = item as? NSSearchToolbarItem { search.beginSearchInteraction() }
+#endif
     }
     
     private static var openSearchResult: (_ result: SearchResult, _ searchText: String) -> Void

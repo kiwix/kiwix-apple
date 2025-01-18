@@ -23,74 +23,81 @@ struct BrowserTab: View {
     @EnvironmentObject private var library: LibraryViewModel
     @StateObject private var search = SearchViewModel()
     @FocusState private var searchFocus: Int?
-
+    
     var body: some View {
         let model = if FeatureFlags.hasLibrary {
             CatalogLaunchViewModel(library: library, browser: browser)
         } else {
             NoCatalogLaunchViewModel(browser: browser)
         }
-        Content(model: model, searchFocus: $searchFocus).toolbar {
-#if os(macOS)
-            ToolbarItemGroup(placement: .navigation) { NavigationButtons() }
-#elseif os(iOS)
-            ToolbarItemGroup(placement: .navigationBarLeading) {
-                if #unavailable(iOS 16) {
-                    Button {
-                        NotificationCenter.toggleSidebar()
-                    } label: {
-                        Label("browser_tab.toolbar.show_sidebar.label".localized, systemImage: "sidebar.left")
-                    }
+        contentWithToolbar(model)
+            .environmentObject(search)
+            .focusedSceneValue(\.browserViewModel, browser)
+            .focusedSceneValue(\.canGoBack, browser.canGoBack)
+            .focusedSceneValue(\.canGoForward, browser.canGoForward)
+            .modifier(ExternalLinkHandler(externalURL: $browser.externalURL))
+            .searchable(text: $search.searchText, placement: .toolbar, prompt: "common.search".localized)
+            .onChange(of: search.searchText) { _ in
+                searchFocus = nil
+            }
+            .onChange(of: scenePhase) { newValue in
+                if case .active = newValue {
+                    browser.refreshVideoState()
                 }
-                NavigationButtons()
             }
-#endif
-            ToolbarItemGroup(placement: .primaryAction) {
-                OutlineButton()
-                ExportButton()
-#if os(macOS)
-                PrintButton()
-#endif
-                BookmarkButton()
-#if os(iOS)
-                ContentSearchButton()
-#endif
-                ArticleShortcutButtons(displayMode: .mainAndRandomArticle)
-                
-#if os(macOS)
-                Button(action: { searchFocus = searchFocus ?? search.results.first?.id }, label: {})
-                    .opacity(0)
-                    .keyboardShortcut(.return, modifiers: [])
-#endif
+            .onAppear {
+                browser.updateLastOpened()
             }
-        }
-        .environmentObject(search)
-        .focusedSceneValue(\.browserViewModel, browser)
-        .focusedSceneValue(\.canGoBack, browser.canGoBack)
-        .focusedSceneValue(\.canGoForward, browser.canGoForward)
-        .modifier(ExternalLinkHandler(externalURL: $browser.externalURL))
-        .searchable(text: $search.searchText, placement: .toolbar, prompt: "common.search".localized)
-        .onChange(of: scenePhase) { newValue in
-            if case .active = newValue {
-                browser.refreshVideoState()
+            .onDisappear {
+                browser.pauseVideoWhenNotInPIP()
+                browser.persistState()
             }
-        }
-        .modify { view in
-#if os(macOS)
-            view.navigationTitle(browser.articleTitle.isEmpty ? Brand.appName : browser.articleTitle)
-                .navigationSubtitle(browser.zimFileName)
-#elseif os(iOS)
-            view
-#endif
-        }
-        .onAppear {
-            browser.updateLastOpened()
-        }
-        .onDisappear {
-            browser.pauseVideoWhenNotInPIP()
-            browser.persistState()
-        }
     }
+
+#if os(iOS)
+    fileprivate func contentWithToolbar(_ model: LaunchViewModelBase) -> some View {
+        Content(model: model, searchFocus: $searchFocus)
+            .toolbar {
+                ToolbarItemGroup(placement: .navigationBarLeading) {
+                    if #unavailable(iOS 16) {
+                        Button {
+                            NotificationCenter.toggleSidebar()
+                        } label: {
+                            Label("browser_tab.toolbar.show_sidebar.label".localized, systemImage: "sidebar.left")
+                        }
+                    }
+                    NavigationButtons()
+                }
+                ToolbarItemGroup(placement: .primaryAction) {
+                    OutlineButton()
+                    ExportButton()
+                    BookmarkButton()
+                    ContentSearchButton() // iOS only
+                    ArticleShortcutButtons(displayMode: .mainAndRandomArticle)
+                }
+            }
+    }
+#endif
+
+#if os(macOS)
+    fileprivate func contentWithToolbar(_ model: LaunchViewModelBase) -> some View {
+        Content(model: model, searchFocus: $searchFocus)
+            .toolbar {
+                ToolbarItemGroup(placement: .navigation) { NavigationButtons() }
+                ToolbarItemGroup(placement: .primaryAction) {
+                    OutlineButton()
+                    ExportButton()
+                    PrintButton() // MacOS only
+                    BookmarkButton()
+                    ArticleShortcutButtons(displayMode: .mainAndRandomArticle)
+                }
+            }
+            .modify { view in
+                view.navigationTitle(browser.articleTitle.isEmpty ? Brand.appName : browser.articleTitle)
+                    .navigationSubtitle(browser.zimFileName)
+            }
+    }
+#endif
 
     private struct Content<LaunchModel>: View where LaunchModel: LaunchProtocol {
         @Environment(\.isSearching) private var isSearching
