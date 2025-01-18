@@ -37,11 +37,17 @@ struct SearchResults: View {
 
     var body: some View {
         Group {
+            // Conditionally show hidden button to enable down key response when
+            // search button is shown.
+            //
+            // Ideally this functionality should be captured in the standard search
+            // suggestions widget but the inbuilt UI for this is very narrow and
+            // the search results very large.
             if isSearching, searchFocus == nil {
                 Button(action: {
                     searchFocus = viewModel.results.first?.id
                 }, label: {})
-//                        .opacity(0)
+                .opacity(0)
                 .keyboardShortcut(.downArrow, modifiers: [])
             }
             if zimFiles.isEmpty {
@@ -130,6 +136,8 @@ struct SearchResults: View {
     static var navigateToSearchBar: () -> Void
     = {
 #if os(macOS)
+        // This probably could be implemented using events instead of searching the view
+        // heirarchy.
         let searchType = "com.apple.SwiftUI.search"
         if let toolbar = NSApp.keyWindow?.toolbar,
            let item = toolbar.items.first(where: { $0.itemIdentifier.rawValue == searchType }),
