@@ -15,30 +15,43 @@
 
 import SwiftUI
 
-struct KeyPressHandler: ViewModifier {
+enum MoveDirection: Sendable {
     
-    let key: KeyEquivalent
-    let action: () -> Void
+    case up
+    case down
+    case left
+    case right
+    
+    #if os(macOS)
+    init?(from direction: MoveCommandDirection) {
+        switch direction {
+        case .up: self = .up
+        case .down: self = .down
+        case .left: self = .left
+        case .right: self = .right
+        @unknown default: return nil
+        }
+    }
+    #endif
+}
+
+struct MoveCommand: ViewModifier {
+    
+    private let action: ((MoveDirection) -> Void)?
+    
+    init(perform action: ((MoveDirection) -> Void)?) {
+        self.action = action
+    }
     
     func body(content: Content) -> some View {
         #if os(macOS)
-        if #available(macOS 14.0, *) {
-            newApi(content: content)
-        } else {
-            content
+        content.onMoveCommand { (direction: MoveCommandDirection) in
+            if let mappedDirection = MoveDirection(from: direction) {
+                action?(mappedDirection)
+            }
         }
         #else
         content
         #endif
-    }
-    
-    @available(macOS 14.0, iOS 17.0, *)
-    private func newApi(content: Content) -> some View {
-        content.onKeyPress(key, action: {
-            Task { await MainActor.run {
-                action()
-            }}
-            return .handled
-        })
     }
 }

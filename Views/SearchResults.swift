@@ -24,7 +24,7 @@ struct SearchResults: View {
     @Environment(\.managedObjectContext) private var managedObjectContext
     @EnvironmentObject private var viewModel: SearchViewModel
     @EnvironmentObject private var navigation: NavigationViewModel
-    @FocusState private var focusedSearchItem: URL?
+    @FocusState private var focusedSearchItem: URL? // macOS only
     @FetchRequest(
         sortDescriptors: [NSSortDescriptor(keyPath: \ZimFile.size, ascending: false)],
         predicate: ZimFile.Predicate.isDownloaded,
@@ -92,23 +92,26 @@ struct SearchResults: View {
                                 ArticleCell(result: result, zimFile: viewModel.zimFiles[result.zimFileID])
                             }
                             .buttonStyle(.plain)
-                            .id(result.url)
-                            .focusable()
-                            .focused($focusedSearchItem, equals: result.url)
-                            .modifier(KeyPressHandler(key: .return, action: {
-                                NotificationCenter.openURL(result.url)
-                            }))
-                            .modifier(KeyPressHandler(key: .escape, action: {
-                                $focusedSearchItem.wrappedValue = nil
-                                dismissSearch()
-                            }))
+                            .modifier(
+                                Focusable( // macOS only
+                                    $focusedSearchItem,
+                                    equals: result.url,
+                                    onReturn: {
+                                        NotificationCenter.openURL(result.url)
+                                    },
+                                    onDismiss: {
+                                        $focusedSearchItem.wrappedValue = nil
+                                        dismissSearch()
+                                    })
+                            )
                         }
                     }.padding()
                 }
                 .onReceive(self.focusedSearchItem.publisher) { focusedURL in
                     scrollReader.scrollTo(focusedURL, anchor: .center)
                 }
-                .onMoveCommand { direction in
+                .modifier(MoveCommand(perform: { direction in
+                    // macOS only
                     if let focusedSearchItem,
                        let index = viewModel.results.firstIndex(where: { $0.url == focusedSearchItem }) {
                         let nextIndex: Int
@@ -121,7 +124,7 @@ struct SearchResults: View {
                             $focusedSearchItem.wrappedValue = viewModel.results[nextIndex].url
                         }
                     }
-                }
+                }))
             }
         }
     }
@@ -160,7 +163,7 @@ struct SearchResults: View {
                 } header: { searchFilterHeader }
             }
         }
-        .focusable(false)
+        .modifier(NotFocusable()) // macOS only
     }
 
     private var recentSearchHeader: some View {
