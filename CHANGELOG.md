@@ -1,3 +1,5 @@
+# 3.8.0
+
 # 3.7.1
   - UPDATE:
     -Localisations (@translatewiki #1056, #1070)
