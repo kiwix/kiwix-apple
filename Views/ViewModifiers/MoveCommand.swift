@@ -17,6 +17,7 @@ import SwiftUI
 
 enum MoveDirection: Sendable {
     
+    // swiftlint:disable:next identifier_name
     case up
     case down
     case left
