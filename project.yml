@@ -13,7 +13,7 @@ settings:
   base:
     DEVELOPMENT_TEAM: L7HWM3SP3L
     GENERATE_INFOPLIST_FILE: YES
-    CURRENT_PROJECT_VERSION: 204
+    CURRENT_PROJECT_VERSION: 205
     ENABLE_USER_SCRIPT_SANDBOXING: NO
     ENABLE_MODULE_VERIFIER: YES
     MODULE_VERIFIER_SUPPORTED_LANGUAGES: "objective-c objective-c++"
@@ -101,7 +101,7 @@ targets:
         com.apple.developer.in-app-payments: [merchant.org.kiwix.apple] # this line is removed for macOS FTP
     settings:
       base:
-        MARKETING_VERSION: "3.7.1"
+        MARKETING_VERSION: "3.8.0"
         PRODUCT_BUNDLE_IDENTIFIER: self.Kiwix
         INFOPLIST_KEY_CFBundleDisplayName: Kiwix
         INFOPLIST_FILE: Support/Info.plist
