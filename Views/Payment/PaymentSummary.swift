@@ -63,7 +63,6 @@ struct PaymentSummary: View {
                     .font(.callout)
             }
         }.onReceive(payment.completeSubject) {
-            debugPrint("PaymentSummary::payment.completeSubject")
             onComplete()
         }
     }

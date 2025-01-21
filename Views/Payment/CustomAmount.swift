@@ -69,7 +69,7 @@ struct CustomAmount: View {
                         )
                     }
                 } label: {
-                    Text("payment.confirm.button.title")
+                    Text("payment.confirm.button.title".localized)
                 }
                 .buttonStyle(BorderedProminentButtonStyle())
                 .padding()
