@@ -101,7 +101,7 @@ targets:
         com.apple.developer.in-app-payments: [merchant.org.kiwix.apple] # this line is removed for macOS FTP
     settings:
       base:
-        MARKETING_VERSION: "3.8.0"
+        MARKETING_VERSION: "3.7.2"
         PRODUCT_BUNDLE_IDENTIFIER: self.Kiwix
         INFOPLIST_KEY_CFBundleDisplayName: Kiwix
         INFOPLIST_FILE: Support/Info.plist
