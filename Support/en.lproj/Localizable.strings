@@ -236,7 +236,6 @@
 "app_macos_navigation.button.library" = "Library";
 "app_macos_navigation.show_sidebar" = "Show Sidebar";
 
-"sidebar_view.navigation.button.close" = "Close This Tab";
 "sidebar_view.navigation.button.close_all" = "Close All Tabs";
 "sidebar_view.navigation.button.close" = "Close";
 
