@@ -35,9 +35,12 @@ class Generate:
         
     def __variables(self, reader):
         vars = list()
-        for key in reader.keys():
-            vars.append(self.__static_let_for(key))
-        return sorted(vars)
+        for key, has_arguments in sorted(reader.keys()):
+            if has_arguments:
+                vars.append(self.__static_func_for(key))
+            else:
+                vars.append(self.__static_let_for(key))
+        return vars
     
     def __code_for(self, variables):
         return """
@@ -48,6 +51,9 @@ enum {} {{
 
     def __static_let_for(self, key):
         return """static let {} = "{}".localized""".format(self.__get_var_name(key), key)
+    
+    def __static_func_for(self, key):
+        return """static func {}(withArgs: CVarArg...) -> String {{ "{}".localizedWithFormat(withArgs) }}""".format(self.__get_var_name(key), key)
 
     def __get_var_name(self, key):
         return re.sub('[^a-z0-9]', '_', key.lower())
@@ -58,19 +64,21 @@ class Reader:
         self.input_file_name = input_file_name
 
     def keys(self):
-        pattern = re.compile(r'"(?P<key>\w.+)" = "(?P<value>\w.+)"')
+        pattern = re.compile(r'"(?P<key>.+)" = "(?P<value>.+)"')
         for line in self.input_file_name:
             match = pattern.match(line)
             if match:
                 groups = match.groupdict()
                 key = groups.get('key')
-                yield key
+                value = groups.get('value')
+                has_arguments = "%@" in value
+                yield key, has_arguments
 
 class Validate:
     def __init__(self, input_file_name, enum_name, search_directory=os.getcwd()):
         reader = Reader(input_file_name)
         vars = list()
-        for key in reader.keys():
+        for key, _ in reader.keys():
             vars.append(key)
         vars = sorted(vars)
         
