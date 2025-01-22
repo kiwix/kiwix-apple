@@ -17,10 +17,11 @@ if command not in ['generate', 'validate']:
     parser.print_help()
     exit()
 
-input_file = "Support/en.lproj/Localizable.strings"
+input_file_name = Path("Support/en.lproj/Localizable.strings")
+comment_file_name = Path("Support/qqq.lproj/Localizable.strings")
 enum_name = "LocalString"
 target_dir = "Support"
-template_file = "StringLocalExtension.swift_temp"
+template_file_name = "StringLocalExtension.swift_temp"
 
 class Generate:
     def __init__(self, input_file_name, template_file, enum_name, target_dir):
@@ -73,17 +74,18 @@ class Reader:
 
     def keys(self):
         pattern = re.compile(r'"(?P<key>.+)"\s{1,}=\s{1,}"(?P<value>.+)"')
-        for line in self.input_file_name:
-            match = pattern.match(line)
-            if match:
-                groups = match.groupdict()
-                key = groups.get('key')
-                value = groups.get('value')
-                has_arguments = "%@" in value
-                yield key, has_arguments
+        with open(self.input_file_name) as input_file:
+            for line in input_file:
+                match = pattern.match(line)
+                if match:
+                    groups = match.groupdict()
+                    key = groups.get('key')
+                    value = groups.get('value')
+                    has_arguments = "%@" in value
+                    yield key, has_arguments
 
 class Validate:
-    def __init__(self, input_file_name, enum_name, search_directory=os.getcwd()):
+    def __init__(self, input_file_name, comment_file_name, enum_name, search_directory=os.getcwd()):
         reader = Reader(input_file_name)
         vars = list()
         for key, _ in reader.keys():
@@ -97,6 +99,7 @@ class Validate:
         for var in vars:
             swift_var = self.__get_var_name(var)
             counter[swift_var] = 0
+        
         for swift_file_name in glob.iglob(os.path.join(search_directory, '**/*.swift'), recursive=True):
             if Path(swift_file_name).name != "{}.swift".format(enum_name):
                 with open(swift_file_name, 'r') as swift_file:
@@ -116,13 +119,23 @@ class Validate:
         if len(unused_swift_vars) > 0:
             print("unused localizations in swift: {}".format(sorted(unused_swift_vars)))
         
+        comment_keys = list()
+        comment_reader = Reader(comment_file_name)
+        for comment_key, _ in comment_reader.keys():
+            assert comment_key in vars, "extra qqq key: {}".format(comment_key)
+            comment_keys.append(comment_key)
+        
+        missing = sorted(set(vars).difference(comment_keys))
+        if len(missing) > 0:
+            print("missing qqq keys: {}".format(missing))
+        
     def __get_var_name(self, key):
         return re.sub('[^a-z0-9]', '_', key.lower())
 
 match command:
     case "generate":
-        Generate(input_file, template_file, enum_name, target_dir)
+        Generate(input_file_name, template_file_name, enum_name, target_dir)
     case "validate":
-        Validate(input_file, enum_name)
+        Validate(input_file_name, comment_file_name, enum_name)
     case _:
         exit(-1)
