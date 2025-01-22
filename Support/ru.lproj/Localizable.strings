@@ -37,7 +37,6 @@
 "common.tab.list.close" = "Закрыть вкладку";
 "common.tab.menu.library" = "Библиотека";
 "common.tab.menu.settings" = "Настройки";
-"common.support.app_name" = "Справка %@";
 "common.export_file.alert.title" = "Экспорт файла";
 "common.export_file.alert.description" = "Вы хотите экспортировать файл %@?";
 "common.export_file.alert.button.title" = "Экспорт";
@@ -68,7 +67,7 @@
 "flavor_tag.help.mini" = "доступна только часть текста, вероятно, первый раздел";
 "library_refresh_time.last" = "Прямо сейчас";
 "library_refresh_time.never" = "Никогда";
-"zim_file_cell_article_count_suffix" = "статей";
+"zim_file_cell.article_count.suffix" = "статей";
 "zim_file_missing_indicator.help" = "Zim-файл отсутствует.";
 "library.zim_file_details.side_panel.message" = "Выберите ZIM-файл, чтобы просмотреть подробности.";
 "library.zim_file_context.main_page.label" = "Заглавная страница";
@@ -85,7 +84,7 @@
 "zim_file_downloads.overlay.empty.message" = "Нет задач по загрузке";
 "zim_file_downloads.toolbar.show_sidebar.label" = "Показать боковую панель";
 "zim_file_new_overlay.empty" = "Нет нового ZIM-файла";
-"zim_file_new_button_refresh" = "Обновить";
+"zim_file_new.button.refresh" = "Обновить";
 "zim_file.list.name.text" = "Имя";
 "zim_file.list.description.text" = "Описание";
 "zim_file.list.actions.text" = "Действия";
@@ -196,7 +195,6 @@
 "app_macos_commands.open_file" = "Открыть...";
 "app_macos_commands.new" = "Новая вкладка";
 "app_macos_navigation.button.library" = "Библиотека";
-"app_macos_navigation.show_sidebar" = "Показать боковую панель";
 "sidebar_view.navigation.button.close" = "Закрыть";
 "sidebar_view.navigation.button.close_all" = "Закрыть все вкладки";
 "enum.category.wikipedia" = "Википедия";

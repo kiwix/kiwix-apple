@@ -42,7 +42,7 @@
 "zim_file_category.title" = "Categoria";
 "zim_file_category.section.empty.message" = "Nessun file ZIM in questa categoria.";
 "zim_file_new_overlay.empty" = "Nessun nuovo file ZIM";
-"zim_file_new_button_refresh" = "Aggiorna";
+"zim_file_new.button.refresh" = "Aggiorna";
 "zim_file.list.name.text" = "Nome";
 "zim_file.list.description.text" = "Descrizione";
 "zim_file.list.actions.text" = "Azioni";

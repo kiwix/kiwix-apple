@@ -57,7 +57,7 @@
 "flavor_tag.help.mini" = "metnin yalnızca bir alt kümesi mevcut, muhtemelen ilk bölüm";
 "library_refresh_time.last" = "Şu anda";
 "library_refresh_time.never" = "Asla";
-"zim_file_cell_article_count_suffix" = "makale";
+"zim_file_cell.article_count.suffix" = "makale";
 "zim_file_missing_indicator.help" = "Zim dosyası eksik.";
 // Fuzzy
 "library.zim_file_details.side_panel.message" = "Ayrıntıları görmek için bir zim dosyası seçin";
@@ -78,7 +78,7 @@
 "zim_file_downloads.toolbar.show_sidebar.label" = "Kenar Çubuğunu Göster";
 // Fuzzy
 "zim_file_new_overlay.empty" = "Yeni zim dosyası yok";
-"zim_file_new_button_refresh" = "Yenile";
+"zim_file_new.button.refresh" = "Yenile";
 "zim_file.list.name.text" = "Ad";
 "zim_file.list.description.text" = "Açıklama";
 "zim_file.list.actions.text" = "Eylemler";
@@ -194,7 +194,6 @@
 "app_macos_commands.open_file" = "Aç...";
 "app_macos_commands.new" = "Yeni Sekme";
 "app_macos_navigation.button.library" = "Kütüphane";
-"app_macos_navigation.show_sidebar" = "Kenar Çubuğunu Göster";
 "sidebar_view.navigation.button.close" = "Kapat";
 "sidebar_view.navigation.button.close_all" = "Tüm Sekmeleri Kapat";
 "enum.category.wikipedia" = "Vikipedi";

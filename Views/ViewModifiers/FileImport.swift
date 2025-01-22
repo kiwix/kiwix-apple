@@ -44,7 +44,7 @@ struct OpenFileButton<Label: View>: View {
             guard case let .success(urls) = result else { return }
             NotificationCenter.openFiles(urls, context: context)
         }
-        .help("import-open-zim-file".localized)
+        .help(LocalString.common_dialog_button_open)
         .keyboardShortcut("o")
     }
 }

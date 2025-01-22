@@ -194,7 +194,7 @@ enum LibraryTabItem: String, CaseIterable, Identifiable {
     var name: String {
         switch self {
         case .opened:
-            return LocalString.enum_libray_tab_item_opened.localized
+            return LocalString.enum_libray_tab_item_opened
         case .categories:
             return LocalString.enum_libray_tab_item_categories
         case .downloads:
@@ -231,7 +231,7 @@ enum NavigationItem: Hashable, Identifiable {
         case .loading:
             return LocalString.enum_navigation_item_loading
         case .bookmarks:
-            return LocalString.enum_navigation_item_bookmarks.localized
+            return LocalString.enum_navigation_item_bookmarks
         case .map:
             return LocalString.enum_navigation_item_map
         case .tab:
@@ -243,7 +243,7 @@ enum NavigationItem: Hashable, Identifiable {
         case .opened:
             return LocalString.enum_navigation_item_opened
         case .categories:
-            return LocalString.enum_navigation_item_categories.localized
+            return LocalString.enum_navigation_item_categories
         case .new:
             return LocalString.enum_navigation_item_new
         case .downloads:

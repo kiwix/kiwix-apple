@@ -218,7 +218,7 @@ struct ZimFileDetail: View {
     @ViewBuilder
     var boolInfo: some View {
         AttributeBool(title: LocalString.zim_file_bool_info_pictures, detail: zimFile.hasPictures)
-        AttributeBool(title: "zim_file.bool_info.videos".localized, detail: zimFile.hasVideos)
+        AttributeBool(title: LocalString.zim_file_bool_info_videos, detail: zimFile.hasVideos)
         AttributeBool(title: LocalString.zim_file_bool_info_details, detail: zimFile.hasDetails)
         if zimFile.requiresServiceWorkers {
             AttributeBool(title: LocalString.zim_file_bool_info_require_service_workers,
@@ -229,7 +229,7 @@ struct ZimFileDetail: View {
     @ViewBuilder
     var counts: some View {
         Attribute(
-            title: LocalString.zim_file_counts_article_count.localized,
+            title: LocalString.zim_file_counts_article_count,
             detail: Formatter.number.string(from: NSNumber(value: zimFile.articleCount))
         )
         Attribute(
@@ -240,7 +240,7 @@ struct ZimFileDetail: View {
 
     @ViewBuilder
     var id: some View {
-        Attribute(title: LocalString.zim_file_detail_id_title.localized, detail: String(zimFile.fileID.uuidString.prefix(8)))
+        Attribute(title: LocalString.zim_file_detail_id_title, detail: String(zimFile.fileID.uuidString.prefix(8)))
     }
 
     private var freeSpace: Int64? {
@@ -289,7 +289,7 @@ private struct DownloadTaskDetail: View {
                 Action(title: LocalString.zim_file_download_task_action_pause) {
                     DownloadService.shared.pause(zimFileID: downloadZimFile.fileID)
                 }
-                Attribute(title: LocalString.zim_file_download_task_action_downloading.localized, detail: detail)
+                Attribute(title: LocalString.zim_file_download_task_action_downloading, detail: detail)
             } else {
                 Action(title: LocalString.zim_file_download_task_action_resume) {
                     DownloadService.shared.resume(zimFileID: downloadZimFile.fileID)

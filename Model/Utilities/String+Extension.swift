@@ -17,42 +17,6 @@ import Foundation
 
 extension String {
 
-    var localized: String {
-        localizedWithFallback()
-    }
-
-    func localizedWithFormat(withArgs: CVarArg...) -> String {
-        let format = localizedWithFallback()
-        switch withArgs.count {
-        case 1: return String.localizedStringWithFormat(format, withArgs[0])
-        case 2: return String.localizedStringWithFormat(format, withArgs[0], withArgs[1])
-        default: return String.localizedStringWithFormat(format, withArgs)
-        }
-    }
-
-    private func localizedWithFallback(
-        bundle: Bundle = Bundle.main,
-        comment: String = ""
-    ) -> String {
-        let englishValue: String
-        if let path = Bundle.main.path(forResource: "en", ofType: "lproj"),
-           let bundle = Bundle(path: path) {
-            englishValue = NSLocalizedString(self, bundle: bundle, comment: comment)
-            if NSLocale.preferredLanguages.first == "en" {
-                return englishValue
-            }
-        } else {
-            englishValue = ""
-        }
-        return NSLocalizedString(
-            self,
-            tableName: nil,
-            bundle: bundle,
-            value: englishValue, // fall back to this, if translation not found
-            comment: comment
-        )
-    }
-
     func removingPrefix(_ value: String) -> String {
         guard hasPrefix(value) else { return self }
         return String(dropFirst(value.count))

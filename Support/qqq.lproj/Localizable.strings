@@ -29,7 +29,6 @@
 "common.tab.list.close" = "Accessibility label for button to close the current tab";
 "common.tab.menu.library" = "On iPad it is a sidemenu title grouping library/ZIM file related buttons. Library: Opened | Categories | Downloads | New";
 "common.tab.menu.settings" = "On iPad it is a sidemenu title leading to application settings page";
-"common.support.app_name" = "Button title, opening the external browser to support the app. The App Name being the argument, eg: Support Kiwix";
 "outline_button.outline.title" = "Button label on macOS for topbar browser button";
 "outline_button.outline.help" = "Accessibility label on macOS for topbar browser button";
 "outline_button.outline.empty.message" = "Title within an overlay menu, when there's no outline available for the current article loaded";
@@ -57,7 +56,7 @@
 "flavor_tag.help.mini" = "Accessibility label for ZIM file results, explaining the different flavours of the same ZIM file (mini|max|nopic)";
 "library_refresh_time.last" = "Just Now";
 "library_refresh_time.never" = "Never";
-"zim_file_cell_article_count_suffix" = "Part of the ZIM file description, when we list ZIM files (as card results), eg: '246K articles', the word articles is added after the number";
+"zim_file_cell.article_count.suffix" = "Part of the ZIM file description, when we list ZIM files (as card results), eg: '246K articles', the word articles is added after the number";
 "zim_file_missing_indicator.help" = "Accessibility label for a warning (!) icon";
 "library.zim_file_details.side_panel.message" = "Default placeholder text for side panel on macOS, when no file is selected.";
 "library.zim_file_context.main_page.label" = "Supplementary action title, when long pressing on a ZIM file";
@@ -74,7 +73,7 @@
 "zim_file_downloads.overlay.empty.message" = "Fallback text for center panel, when downloads are selected from the side menu.";
 "zim_file_downloads.toolbar.show_sidebar.label" = "Accessibility label for side bar toggle button";
 "zim_file_new_overlay.empty" = "Fallback text for listing new ZIM files available for download";
-"zim_file_new_button_refresh" = "Accessibility label for refresh button on the top nav bar to refresh the list of new ZIM files";
+"zim_file_new.button.refresh" = "Accessibility label for refresh button on the top nav bar to refresh the list of new ZIM files";
 "zim_file.list.name.text" = "Title for displaying the details of a ZIM file";
 "zim_file.list.description.text" = "Title for displaying the details of a ZIM file";
 "zim_file.list.actions.text" = "Title for displaying the possible actions to a selected ZIM file. Eg. The 'Download' button is below this.";
@@ -184,7 +183,6 @@
 "app_macos_commands.open_file" = "MacOS command menu item";
 "app_macos_commands.new" = "MacOS command menu item";
 "app_macos_navigation.button.library" = "MacOS command menu item";
-"app_macos_navigation.show_sidebar" = "MacOS command menu item";
 "sidebar_view.navigation.button.close" = "Accessiblity title for navigation button icon";
 "sidebar_view.navigation.button.close_all" = "Accessiblity title for navigation button icon";
 "enum.category.wikipedia" = "{{Optional}}";

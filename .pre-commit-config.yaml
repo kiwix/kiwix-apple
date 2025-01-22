@@ -5,7 +5,7 @@ repos:
     hooks:
       - id: generate_localizations
         name: "Generate localization swift file"
-        entry: python localizations.py Support/en.lproj/Localizable.strings generate
+        entry: python localizations.py generate
         language: python
         always_run: true
         stages: [post-checkout, post-merge, post-rewrite]

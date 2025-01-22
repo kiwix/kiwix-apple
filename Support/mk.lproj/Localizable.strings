@@ -31,7 +31,6 @@
 "common.tab.list.close" = "Затвори јазиче";
 "common.tab.menu.library" = "Библиотека";
 "common.tab.menu.settings" = "Нагодувања";
-"common.support.app_name" = "Поддржете го %@";
 "common.export_file.alert.title" = "Извези податотека";
 "common.export_file.alert.description" = "Дали сакате да ја извезете податотеката %@?";
 "common.export_file.alert.button.title" = "Извези";
@@ -62,7 +61,7 @@
 "flavor_tag.help.mini" = "достапен е само дел од текстот, веројатно првиот";
 "library_refresh_time.last" = "Штотуку";
 "library_refresh_time.never" = "Никогаш";
-"zim_file_cell_article_count_suffix" = "статии";
+"zim_file_cell.article_count.suffix" = "статии";
 "zim_file_missing_indicator.help" = "ZIM-податотеката недостасува.";
 "library.zim_file_details.side_panel.message" = "Изберете ZIM-податотека за да ги видите поединостите";
 "library.zim_file_context.main_page.label" = "Главна страница";
@@ -79,7 +78,7 @@
 "zim_file_downloads.overlay.empty.message" = "Нема задачи за преземање";
 "zim_file_downloads.toolbar.show_sidebar.label" = "Прикажи страничник";
 "zim_file_new_overlay.empty" = "Нема нова ZIM-податотека";
-"zim_file_new_button_refresh" = "Превчитај";
+"zim_file_new.button.refresh" = "Превчитај";
 "zim_file.list.name.text" = "Име";
 "zim_file.list.description.text" = "Опис";
 "zim_file.list.actions.text" = "Дејства";
@@ -191,7 +190,6 @@
 "app_macos_commands.open_file" = "Отвори...";
 "app_macos_commands.new" = "Ново јазиче";
 "app_macos_navigation.button.library" = "Библиотека";
-"app_macos_navigation.show_sidebar" = "Прикажи страничник";
 "sidebar_view.navigation.button.close" = "Затвори";
 "sidebar_view.navigation.button.close_all" = "Затвори ги сите јазичиња";
 "enum.category.wikipedia" = "Википедија";

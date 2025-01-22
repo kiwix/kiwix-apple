@@ -33,7 +33,6 @@
 "common.tab.list.close" = "Tab schließen";
 "common.tab.menu.library" = "Bibliothek";
 "common.tab.menu.settings" = "Einstellungen";
-"common.support.app_name" = "%@ unterstützen";
 "outline_button.outline.title" = "Gliederung";
 "outline_button.outline.help" = "Artikelgliederung anzeigen";
 "outline_button.outline.empty.message" = "Keine Gliederung vorhanden";
@@ -62,7 +61,7 @@
 "flavor_tag.help.mini" = "Es ist nur ein Teil des Textes verfügbar, wahrscheinlich der erste Abschnitt";
 "library_refresh_time.last" = "Soeben";
 "library_refresh_time.never" = "Niemals";
-"zim_file_cell_article_count_suffix" = "Artikel";
+"zim_file_cell.article_count.suffix" = "Artikel";
 "zim_file_missing_indicator.help" = "Zim-Datei fehlt.";
 "library.zim_file_details.side_panel.message" = "Wähle eine ZIM-Datei aus, um Details zu sehen";
 "library.zim_file_context.main_page.label" = "Hauptseite";
@@ -80,7 +79,7 @@
 "zim_file_downloads.toolbar.show_sidebar.label" = "Seitenleiste anzeigen";
 // Fuzzy
 "zim_file_new_overlay.empty" = "Keine neue ZIM-Datei";
-"zim_file_new_button_refresh" = "Aktualisieren";
+"zim_file_new.button.refresh" = "Aktualisieren";
 "zim_file.list.name.text" = "Name";
 "zim_file.list.description.text" = "Beschreibung";
 "zim_file.list.actions.text" = "Aktionen";
@@ -196,7 +195,6 @@
 "app_macos_commands.open_file" = "Öffnen…";
 "app_macos_commands.new" = "Neuer Tab";
 "app_macos_navigation.button.library" = "Bibliothek";
-"app_macos_navigation.show_sidebar" = "Seitenleiste anzeigen";
 "sidebar_view.navigation.button.close" = "Schließen";
 "sidebar_view.navigation.button.close_all" = "Alle Tabs schließen";
 "enum.category.wikipedia" = "Wikipedia";

@@ -29,7 +29,6 @@
 "common.tab.list.close" = "Serriñ ar steudenn";
 "common.tab.menu.library" = "Levraoueg";
 "common.tab.menu.settings" = "Arventennoù";
-"common.support.app_name" = "Skoazellañ %@";
 "common.export_file.alert.title" = "Ezporzhiañ ar restr";
 "common.export_file.alert.description" = "Fellout a ra deoc'h ezporzhiañ ar restr %@?";
 "common.export_file.alert.button.title" = "Ezporzhiañ";
@@ -51,7 +50,7 @@
 "flavor_tag.help.no_pic" = "lamet eo bet darn vrasañ ar skeudennoù";
 "library_refresh_time.last" = "Nevez zo";
 "library_refresh_time.never" = "James";
-"zim_file_cell_article_count_suffix" = "pennadoù";
+"zim_file_cell.article_count.suffix" = "pennadoù";
 "zim_file_missing_indicator.help" = "Ar restr ZIM a vank.";
 "library.zim_file_context.main_page.label" = "Degemer";
 "library.zim_file_context.random.label" = "Pajenn dre zegouezh";
@@ -65,7 +64,7 @@
 "zim_file_category.section.empty.message" = "Restr ZIM ebet er rummad-mañ.";
 "zim_file_downloads.toolbar.show_sidebar.label" = "Diskouez ar varrenn-gostez";
 "zim_file_new_overlay.empty" = "Restr ZIM nevez ebet";
-"zim_file_new_button_refresh" = "Freskaat";
+"zim_file_new.button.refresh" = "Freskaat";
 "zim_file.list.name.text" = "Anv";
 "zim_file.list.description.text" = "Deskrivadur";
 "zim_file.list.actions.text" = "Oberoù";
@@ -144,7 +143,6 @@
 "app_macos_commands.open_file" = "Digeriñ...";
 "app_macos_commands.new" = "Steudenn nevez";
 "app_macos_navigation.button.library" = "Levraoueg";
-"app_macos_navigation.show_sidebar" = "Diskouez ar varrenn-gostez";
 "sidebar_view.navigation.button.close" = "Serriñ";
 "sidebar_view.navigation.button.close_all" = "Serriñ an holl steudennoù";
 "enum.category.wikipedia" = "Wikipedia";

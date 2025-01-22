@@ -54,7 +54,7 @@
 "flavor_tag.help.mini" = "Sabbu ŋɔ bela koŋko nyɛ din be ni, di yi pa shɛli tuuli yaɣili";
 "library_refresh_time.last" = "Kulla saha ŋɔ";
 "library_refresh_time.never" = "Abada";
-"zim_file_cell_article_count_suffix" = "Lahabaya";
+"zim_file_cell.article_count.suffix" = "Lahabaya";
 "zim_file_missing_indicator.help" = "Zim fasara nyɛla din kani.";
 // Fuzzy
 "library.zim_file_details.side_panel.message" = "Piimi zim fasara n- nya bayana";
@@ -71,7 +71,7 @@
 "zim_file_downloads.overlay.empty.message" = "Deebu tuma nima kani";
 "zim_file_downloads.toolbar.show_sidebar.label" = "Wuhimi \"Sidebar\"";
 "zim_file_new_overlay.empty" = "Zim fasara palli kani";
-"zim_file_new_button_refresh" = "Kahigi";
+"zim_file_new.button.refresh" = "Kahigi";
 "zim_file.list.name.text" = "Yuli";
 "zim_file.list.description.text" = "Buɣisibu";
 "zim_file.list.actions.text" = "Niŋsim";

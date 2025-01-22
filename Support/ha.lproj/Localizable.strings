@@ -61,7 +61,7 @@
 "flavor_tag.help.mini" = "Juzu'in rubutu ne kawai yaka samuwa, tayiyu da  farkon sashi";
 "library_refresh_time.last" = "Yanxu yanxu";
 "library_refresh_time.never" = "Ba a taɓa yin hakan ba";
-"zim_file_cell_article_count_suffix" = "Makalu";
+"zim_file_cell.article_count.suffix" = "Makalu";
 "zim_file_missing_indicator.help" = "Fayil ɗin Zim ya ɓace.";
 // Fuzzy
 "library.zim_file_details.side_panel.message" = "Zabi fayil din zim dan ganin cikakken bayani";
@@ -78,7 +78,7 @@
 "zim_file_downloads.overlay.empty.message" = "Babu ayyukan zazzagewa";
 "zim_file_downloads.toolbar.show_sidebar.label" = "Nuna ma'aunin gefe";
 "zim_file_new_overlay.empty" = "Babu sabon fayil ɗin Zim";
-"zim_file_new_button_refresh" = "Wartsake";
+"zim_file_new.button.refresh" = "Wartsake";
 "zim_file.list.name.text" = "Suna";
 "zim_file.list.description.text" = "Bayani";
 "zim_file.list.actions.text" = "Ayyuka";
@@ -188,7 +188,6 @@
 "app_macos_commands.open_file" = "Bude..";
 "app_macos_commands.new" = "Sabon shafi";
 "app_macos_navigation.button.library" = "Laburare";
-"app_macos_navigation.show_sidebar" = "Nuna ma'aunin gefe";
 "sidebar_view.navigation.button.close" = "Kulle";
 "sidebar_view.navigation.button.close_all" = "Rufe duk shafuka";
 "enum.category.wikipedia" = "Wikipedia";

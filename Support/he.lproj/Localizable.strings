@@ -32,7 +32,6 @@
 "common.tab.list.close" = "סגירת לשונית";
 "common.tab.menu.library" = "ספרייה";
 "common.tab.menu.settings" = "הגדרות";
-"common.support.app_name" = "תמיכה בפרויקט %@";
 "common.export_file.alert.title" = "יצוא קובץ";
 "common.export_file.alert.description" = "לייצא את הקובץ %@?";
 "common.export_file.alert.button.title" = "יצוא";
@@ -63,7 +62,7 @@
 "flavor_tag.help.mini" = "רק חלק מהטקסט זמין, כנראה הפרק הראשון";
 "library_refresh_time.last" = "זה עתה";
 "library_refresh_time.never" = "מעולם לא";
-"zim_file_cell_article_count_suffix" = "ערכים";
+"zim_file_cell.article_count.suffix" = "ערכים";
 "zim_file_missing_indicator.help" = "קובץ ה־zim חסר.";
 "library.zim_file_details.side_panel.message" = "נא לבחור קובץ ZIM כדי לראות פרטים";
 "library.zim_file_context.main_page.label" = "עמוד ראשי";
@@ -80,7 +79,7 @@
 "zim_file_downloads.overlay.empty.message" = "אין משימות הורדה";
 "zim_file_downloads.toolbar.show_sidebar.label" = "הצגת סרגל צד";
 "zim_file_new_overlay.empty" = "אין קובץ ZIM חדש";
-"zim_file_new_button_refresh" = "רענון";
+"zim_file_new.button.refresh" = "רענון";
 "zim_file.list.name.text" = "שם";
 "zim_file.list.description.text" = "תיאור";
 "zim_file.list.actions.text" = "פעולות";
@@ -192,7 +191,6 @@
 "app_macos_commands.open_file" = "פתיחה...";
 "app_macos_commands.new" = "לשונית חדשה";
 "app_macos_navigation.button.library" = "ספרייה";
-"app_macos_navigation.show_sidebar" = "הצגת סרגל צד";
 "sidebar_view.navigation.button.close" = "סגירה";
 "sidebar_view.navigation.button.close_all" = "סגירת כל הלשוניות";
 "enum.category.wikipedia" = "ויקיפדיה";

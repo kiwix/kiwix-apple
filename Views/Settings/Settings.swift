@@ -245,7 +245,7 @@ struct Settings: View {
                      ": \(Formatter.percent.string(from: NSNumber(value: webViewPageZoom)) ?? "")")
             }
             if FeatureFlags.showExternalLinkOptionInSettings {
-                Picker(LocalString.reading_settings_external_link_title.localized, selection: $externalLinkLoadingPolicy) {
+                Picker(LocalString.reading_settings_external_link_title, selection: $externalLinkLoadingPolicy) {
                     ForEach(ExternalLinkLoadingPolicy.allCases) { loadingPolicy in
                         Text(loadingPolicy.name).tag(loadingPolicy)
                     }

@@ -23,7 +23,6 @@
 "common.tab.list.close" = "Sulje välilehti";
 "common.tab.menu.library" = "Kirjasto";
 "common.tab.menu.settings" = "Asetukset";
-"common.support.app_name" = "Tue %@";
 "common.export_file.alert.title" = "Vie tiedosto";
 "common.export_file.alert.description" = "Haluatko viedä tiedoston %@?";
 "article_shortcut.main.button.title" = "Pääartikkeli";
@@ -41,7 +40,7 @@
 "download_task_cell.status.downloading" = "Ladataan...";
 "download_task_cell.status.paused" = "Pysäytetty";
 "library_refresh_time.never" = "Ei koskaan";
-"zim_file_cell_article_count_suffix" = "artikkelia";
+"zim_file_cell.article_count.suffix" = "artikkelia";
 "zim_file_missing_indicator.help" = "Zim-tiedosto puuttuu.";
 "library.zim_file_context.main_page.label" = "Etusivu";
 "library.zim_file_context.random.label" = "Satunnainen sivu";
@@ -109,7 +108,6 @@
 "app_macos_commands.open_file" = "Avaa...";
 "app_macos_commands.new" = "Uusi välilehti";
 "app_macos_navigation.button.library" = "Kirjasto";
-"app_macos_navigation.show_sidebar" = "Näytä sivupalkki";
 "sidebar_view.navigation.button.close" = "Sulje";
 "sidebar_view.navigation.button.close_all" = "Sulje kaikki välilehdet";
 "enum.category.wikibooks" = "Wikikirjasto";

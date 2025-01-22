@@ -31,7 +31,6 @@
 "common.tab.list.close" = "Mbylle Skedën";
 "common.tab.menu.library" = "Bibliotekë";
 "common.tab.menu.settings" = "Rregullime";
-"common.support.app_name" = "Përkrahni %@";
 "common.export_file.alert.title" = "Eksportoni kartelë";
 "common.export_file.alert.description" = "Doni të eksportohet kartela %@?";
 "common.export_file.alert.button.title" = "Eksportoje";
@@ -62,7 +61,7 @@
 "flavor_tag.help.mini" = "është i gatshëm vetëm një nëngrup i tekstit, me gjasa ndarja e parë";
 "library_refresh_time.last" = "Mu Tani";
 "library_refresh_time.never" = "Kurrë";
-"zim_file_cell_article_count_suffix" = "artikuj";
+"zim_file_cell.article_count.suffix" = "artikuj";
 "zim_file_missing_indicator.help" = "Mungon kartelë ZIM.";
 "library.zim_file_details.side_panel.message" = "Që të shihni hollësi, përzgjidhni një kartelë ZIM";
 "library.zim_file_context.main_page.label" = "Faqja Kryesore";
@@ -79,7 +78,7 @@
 "zim_file_downloads.overlay.empty.message" = "S’ka akte shkarkimi";
 "zim_file_downloads.toolbar.show_sidebar.label" = "Shfaq Anështyllë";
 "zim_file_new_overlay.empty" = "Pa kartelë të re ZIM";
-"zim_file_new_button_refresh" = "Rifreskoje";
+"zim_file_new.button.refresh" = "Rifreskoje";
 "zim_file.list.name.text" = "Emër";
 "zim_file.list.description.text" = "Përshkrim";
 "zim_file.list.actions.text" = "Veprime";
@@ -189,7 +188,6 @@
 "app_macos_commands.open_file" = "Hapni…";
 "app_macos_commands.new" = "Skedë e Re";
 "app_macos_navigation.button.library" = "Bibliotekë";
-"app_macos_navigation.show_sidebar" = "Shfaq Anështyllë";
 "sidebar_view.navigation.button.close" = "Mbylle";
 "sidebar_view.navigation.button.close_all" = "Mbylli Krejt Skedat";
 "enum.category.wikipedia" = "Wikipedia";

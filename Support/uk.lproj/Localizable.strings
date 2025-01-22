@@ -31,7 +31,6 @@
 "common.tab.list.close" = "Закрити вкладку";
 "common.tab.menu.library" = "Бібліотека";
 "common.tab.menu.settings" = "Налаштування";
-"common.support.app_name" = "Підтримайте %@";
 "common.export_file.alert.title" = "Експортувати файл";
 "common.export_file.alert.description" = "Ви бажаєте експортувати файл %@?";
 "common.export_file.alert.button.title" = "Експортувати";
@@ -58,7 +57,7 @@
 "flavor_tag.help.no_pic" = "більшість зображень було видалено";
 "library_refresh_time.last" = "Щойно";
 "library_refresh_time.never" = "Ніколи";
-"zim_file_cell_article_count_suffix" = "статей";
+"zim_file_cell.article_count.suffix" = "статей";
 "zim_file_missing_indicator.help" = "Файл Zim відсутній.";
 "library.zim_file_details.side_panel.message" = "Оберіть файл ZIM, щоб побачити деталі";
 "library.zim_file_context.main_page.label" = "Головна сторінка";
@@ -73,7 +72,7 @@
 "zim_file_category.section.empty.message" = "У цій категорії немає файлу ZIM.";
 "zim_file_downloads.toolbar.show_sidebar.label" = "Показати бічну панель";
 "zim_file_new_overlay.empty" = "Немає нового файлу ZIM";
-"zim_file_new_button_refresh" = "Оновити";
+"zim_file_new.button.refresh" = "Оновити";
 "zim_file.list.name.text" = "Назва";
 "zim_file.list.description.text" = "Опис";
 "zim_file.list.actions.text" = "Дії";
@@ -179,7 +178,6 @@
 "app_macos_commands.open_file" = "Відкрити...";
 "app_macos_commands.new" = "Нова вкладка";
 "app_macos_navigation.button.library" = "Бібліотека";
-"app_macos_navigation.show_sidebar" = "Показати бічну панель";
 "sidebar_view.navigation.button.close" = "Закрити";
 "sidebar_view.navigation.button.close_all" = "Закрити всі вкладки";
 "enum.category.wikipedia" = "Вікіпедія";

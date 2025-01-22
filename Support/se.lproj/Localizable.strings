@@ -29,7 +29,7 @@
 "download_task_cell.status.failed" = "Ii lihkostuvvan";
 "library_refresh_time.last" = "Juste dal";
 "library_refresh_time.never" = "Ii goassige";
-"zim_file_cell_article_count_suffix" = "artihkkala";
+"zim_file_cell.article_count.suffix" = "artihkkala";
 "zim_file_missing_indicator.help" = "ZIM-fiila váilu.";
 "library.zim_file_context.main_page.label" = "Váldosiidu";
 "library.zim_file_context.random.label" = "Summalis siidu";

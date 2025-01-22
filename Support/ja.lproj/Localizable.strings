@@ -33,7 +33,6 @@
 "common.tab.list.close" = "タブを閉じる";
 "common.tab.menu.library" = "ライブラリ";
 "common.tab.menu.settings" = "設定";
-"common.support.app_name" = "%@を支援";
 "common.export_file.alert.title" = "ファイルをエクスポート";
 "common.export_file.alert.description" = "ファイル%@をエクスポートしますか?";
 "common.export_file.alert.button.title" = "エクスポート";
@@ -64,7 +63,7 @@
 "flavor_tag.help.mini" = "文章の一部のみ(多くの場合最初の段落)が利用可能です。";
 "library_refresh_time.last" = "今すぐ";
 "library_refresh_time.never" = "なし";
-"zim_file_cell_article_count_suffix" = "記事";
+"zim_file_cell.article_count.suffix" = "記事";
 "zim_file_missing_indicator.help" = "ZIMファイルがありません。";
 "library.zim_file_details.side_panel.message" = "詳細を参照したいZIMファイルを選択";
 "library.zim_file_context.main_page.label" = "メインページ";
@@ -81,7 +80,7 @@
 "zim_file_downloads.overlay.empty.message" = "ダウンロード処理はありません";
 "zim_file_downloads.toolbar.show_sidebar.label" = "サイドバーを表示";
 "zim_file_new_overlay.empty" = "新しいZIMファイルはありません";
-"zim_file_new_button_refresh" = "更新";
+"zim_file_new.button.refresh" = "更新";
 "zim_file.list.name.text" = "名前";
 "zim_file.list.description.text" = "概要";
 "zim_file.list.actions.text" = "操作";
@@ -191,7 +190,6 @@
 "app_macos_commands.open_file" = "開く...";
 "app_macos_commands.new" = "新規タブ";
 "app_macos_navigation.button.library" = "ライブラリ";
-"app_macos_navigation.show_sidebar" = "サイドバーを表示";
 "sidebar_view.navigation.button.close" = "閉じる";
 "sidebar_view.navigation.button.close_all" = "すべてのタブを閉じる";
 "enum.category.wikipedia" = "ウィキペディア";

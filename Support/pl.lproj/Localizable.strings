@@ -25,7 +25,6 @@
 "common.tab.list.close" = "Zamknij zakładkę";
 "common.tab.menu.library" = "Biblioteka";
 "common.tab.menu.settings" = "Ustawienia";
-"common.support.app_name" = "Wsparcie %@";
 "common.export_file.alert.title" = "Eksportuj plik";
 "common.export_file.alert.button.title" = "Eksportuj";
 "bookmark_context_menu.view.title" = "Podgląd";
@@ -42,7 +41,7 @@
 "flavor_tag.help.mini" = "dostępny jest tylko podzbiór tekstu, prawdopodobnie pierwsza sekcja";
 "library_refresh_time.last" = "Dopiero co";
 "library_refresh_time.never" = "Nigdy";
-"zim_file_cell_article_count_suffix" = "artykuły";
+"zim_file_cell.article_count.suffix" = "artykuły";
 "zim_file_missing_indicator.help" = "Brak pliku Zim.";
 // Fuzzy
 "library.zim_file_details.side_panel.message" = "Wybierz plik zim, aby zobaczyć szczegóły";
@@ -56,7 +55,7 @@
 "zim_file_downloads.toolbar.show_sidebar.label" = "Pokaż pasek boczny";
 // Fuzzy
 "zim_file_new_overlay.empty" = "Brak nowego pliku zim";
-"zim_file_new_button_refresh" = "Odśwież";
+"zim_file_new.button.refresh" = "Odśwież";
 "zim_file.list.name.text" = "Nazwa";
 "zim_file.list.description.text" = "Opis";
 "zim_file.action.delete.title" = "Usuń";
@@ -144,7 +143,6 @@
 "comments.button.zoom_out" = "Oddal";
 "app_macos_commands.new" = "Nowa zakładka";
 "app_macos_navigation.button.library" = "Biblioteka";
-"app_macos_navigation.show_sidebar" = "Pokaż pasek boczny";
 "sidebar_view.navigation.button.close" = "Zamknij";
 "sidebar_view.navigation.button.close_all" = "Zamknij wszystkie zakładki";
 "enum.category.other" = "Inne";

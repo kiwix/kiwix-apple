@@ -98,12 +98,12 @@ struct About: View {
     }
 
     private var appVersion: some View {
-        Attribute(title: LocalString.settings_about_appverion_title.localized,
+        Attribute(title: LocalString.settings_about_appverion_title,
                   detail: Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String)
     }
 
     private var buildNumber: some View {
-        Attribute(title: LocalString.settings_about_build_title.localized,
+        Attribute(title: LocalString.settings_about_build_title,
                   detail: Bundle.main.infoDictionary?["CFBundleVersion"] as? String)
     }
 

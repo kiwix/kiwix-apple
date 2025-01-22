@@ -56,7 +56,7 @@
 "flavor_tag.help.mini" = "na voljo je samo del besedila, verjetno prvi razdelek";
 "library_refresh_time.last" = "Pravkar";
 "library_refresh_time.never" = "Nikoli";
-"zim_file_cell_article_count_suffix" = "članki";
+"zim_file_cell.article_count.suffix" = "članki";
 "zim_file_missing_indicator.help" = "Datoteka Zim manjka.";
 // Fuzzy
 "library.zim_file_details.side_panel.message" = "Izberite datoteko ZIM za ogled podrobnosti";
@@ -74,7 +74,7 @@
 "zim_file_downloads.toolbar.show_sidebar.label" = "Prikaži stransko vrstico";
 // Fuzzy
 "zim_file_new_overlay.empty" = "Ni novih datotek ZIM";
-"zim_file_new_button_refresh" = "Osveži";
+"zim_file_new.button.refresh" = "Osveži";
 "zim_file.list.name.text" = "Ime";
 "zim_file.list.description.text" = "Opis";
 "zim_file.list.actions.text" = "Dejanja";
@@ -186,7 +186,6 @@
 "app_macos_commands.open_file" = "Odpri ...";
 "app_macos_commands.new" = "Nov zavihek";
 "app_macos_navigation.button.library" = "Knjižnica";
-"app_macos_navigation.show_sidebar" = "Prikaži stransko vrstico";
 "sidebar_view.navigation.button.close" = "Zapri";
 "sidebar_view.navigation.button.close_all" = "Zapri vse zavihke";
 "enum.category.wikipedia" = "Wikipedija";
