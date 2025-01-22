@@ -28,9 +28,9 @@ struct AlertHandler: ViewModifier {
         .alert(item: $activeAlert) { alert in
             switch alert {
             case .articleFailedToLoad:
-                return Alert(title: Text("alert_handler.alert.failed.title".localized))
+                return Alert(title: Text(LocalString.alert_handler_alert_failed_title))
             case .downloadFailed:
-                return Alert(title: Text("download_service.failed.description".localized))
+                return Alert(title: Text(LocalString.download_service_failed_description))
             }
         }
     }

@@ -31,7 +31,7 @@ struct NavigationButtons: View {
             browser.webView.goBack()
             dismissSearch()
         } label: {
-            Label("common.button.go_back".localized, systemImage: "chevron.left")
+            Label(LocalString.common_button_go_back, systemImage: "chevron.left")
         }.disabled(!browser.canGoBack)
     }
 
@@ -40,7 +40,7 @@ struct NavigationButtons: View {
             browser.webView.goForward()
             dismissSearch()
         } label: {
-            Label("common.button.go_forward".localized, systemImage: "chevron.right")
+            Label(LocalString.common_button_go_forward, systemImage: "chevron.right")
         }.disabled(!browser.canGoForward)
     }
 }

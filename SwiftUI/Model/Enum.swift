@@ -65,29 +65,29 @@ enum Category: String, CaseIterable, Identifiable, LosslessStringConvertible, Ha
     var name: String {
         switch self {
         case .wikipedia:
-            return "enum.category.wikipedia".localized
+            return LocalString.enum_category_wikipedia
         case .wikibooks:
-            return "enum.category.wikibooks".localized
+            return LocalString.enum_category_wikibooks
         case .wikinews:
-            return "enum.category.wikinews".localized
+            return LocalString.enum_category_wikinews
         case .wikiquote:
-            return "enum.category.wikiquote".localized
+            return LocalString.enum_category_wikiquote
         case .wikisource:
-            return "enum.category.wikisource".localized
+            return LocalString.enum_category_wikisource
         case .wikiversity:
-            return "enum.category.wikiversity".localized
+            return LocalString.enum_category_wikiversity
         case .wikivoyage:
-            return "enum.category.wikivoyage".localized
+            return LocalString.enum_category_wikivoyage
         case .wiktionary:
-            return "enum.category.wiktionary".localized
+            return LocalString.enum_category_wiktionary
         case .ted:
-            return "enum.category.ted".localized
+            return LocalString.enum_category_ted
         case .vikidia:
-            return "enum.category.vikidia".localized
+            return LocalString.enum_category_vikidia
         case .stackExchange:
-            return "enum.category.stackexchange".localized
+            return LocalString.enum_category_stackexchange
         case .other:
-            return "enum.category.other".localized
+            return LocalString.enum_category_other
         }
     }
 
@@ -129,11 +129,11 @@ enum ExternalLinkLoadingPolicy: String, CaseIterable, Identifiable, Defaults.Ser
     var name: String {
         switch self {
         case .alwaysAsk:
-            return "enum.external_link_loading_policy.always_ask".localized
+            return LocalString.enum_external_link_loading_policy_always_ask
         case .alwaysLoad:
-            return "enum.external_link_loading_policy.always_load".localized
+            return LocalString.enum_external_link_loading_policy_always_load
         case .neverLoad:
-            return "enum.external_link_loading_policy.never_load".localized
+            return LocalString.enum_external_link_loading_policy_never_load
         }
     }
 }
@@ -162,11 +162,11 @@ enum Flavor: String, CustomStringConvertible {
     var description: String {
         switch self {
         case .max:
-            return "enum.flavor.max".localized
+            return LocalString.enum_flavor_max
         case .noPic:
-            return "enum.flavor.no_pic".localized
+            return LocalString.enum_flavor_no_pic
         case .mini:
-            return "enum.flavor.mini".localized
+            return LocalString.enum_flavor_mini
         }
     }
 }
@@ -179,9 +179,9 @@ enum LibraryLanguageSortingMode: String, CaseIterable, Identifiable, Defaults.Se
     var name: String {
         switch self {
         case .alphabetically:
-            return "enum.library_language_sorting_model.a-z".localized
+            return LocalString.enum_library_language_sorting_model_a_z
         case .byCounts:
-            return "enum.library_language_sorting_model.by_count".localized
+            return LocalString.enum_library_language_sorting_model_by_count
         }
     }
 }
@@ -194,13 +194,13 @@ enum LibraryTabItem: String, CaseIterable, Identifiable {
     var name: String {
         switch self {
         case .opened:
-            return "enum.libray_tab_item.opened".localized
+            return LocalString.enum_libray_tab_item_opened.localized
         case .categories:
-            return "enum.libray_tab_item.categories".localized
+            return LocalString.enum_libray_tab_item_categories
         case .downloads:
-            return "enum.libray_tab_item.downloads".localized
+            return LocalString.enum_libray_tab_item_downloads
         case .new:
-            return "enum.libray_tab_item.new".localized
+            return LocalString.enum_libray_tab_item_new
         }
     }
 
@@ -229,27 +229,27 @@ enum NavigationItem: Hashable, Identifiable {
     var name: String {
         switch self {
         case .loading:
-            return "enum.navigation_item.loading".localized
+            return LocalString.enum_navigation_item_loading
         case .bookmarks:
-            return "enum.navigation_item.bookmarks".localized
+            return LocalString.enum_navigation_item_bookmarks.localized
         case .map:
-            return "enum.navigation_item.map".localized
+            return LocalString.enum_navigation_item_map
         case .tab:
             #if os(macOS)
-            return "enum.navigation_item.reading".localized
+            return LocalString.enum_navigation_item_reading
             #else
-            return "enum.navigation_item.new_tab".localized
+            return LocalString.enum_navigation_item_new_tab
             #endif
         case .opened:
-            return "enum.navigation_item.opened".localized
+            return LocalString.enum_navigation_item_opened
         case .categories:
-            return "enum.navigation_item.categories".localized
+            return LocalString.enum_navigation_item_categories.localized
         case .new:
-            return "enum.navigation_item.new".localized
+            return LocalString.enum_navigation_item_new
         case .downloads:
-            return "enum.navigation_item.downloads".localized
+            return LocalString.enum_navigation_item_downloads
         case .settings:
-            return "enum.navigation_item.settings".localized
+            return LocalString.enum_navigation_item_settings
         }
     }
 
@@ -294,9 +294,9 @@ enum SearchResultSnippetMode: String, CaseIterable, Identifiable, Defaults.Seria
     var name: String {
         switch self {
         case .disabled:
-            return "enum.search_result_snippet_mode.disabled".localized
+            return LocalString.enum_search_result_snippet_mode_disabled
         case .matches:
-            return "enum.search_result_snippet_mode.matches".localized
+            return LocalString.enum_search_result_snippet_mode_matches
         }
     }
 }

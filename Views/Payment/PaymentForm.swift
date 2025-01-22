@@ -36,7 +36,7 @@ struct PaymentForm: View {
         #if os(iOS)
         HStack {
             Spacer()
-            Text("payment.donate.title".localized)
+            Text(LocalString.payment_donate_title)
                 .font(.title)
                 .padding(.init(top: 12, leading: 0, bottom: 8, trailing: 0))
             Spacer()
@@ -54,8 +54,8 @@ struct PaymentForm: View {
         VStack {
             // Re-enable as part of: https://github.com/kiwix/kiwix-apple/issues/1032
 //            Picker("", selection: $isMonthly) {
-//                Label("payment.selection.option.one_time".localized, systemImage: "heart.circle").tag(false)
-//                Label("payment.selection.option.monthly".localized, systemImage: "arrow.clockwise.heart").tag(true)
+//                Label(LocalString.payment_selection_option_one_time, systemImage: "heart.circle").tag(false)
+//                Label(LocalString.payment_selection_option_monthly, systemImage: "arrow.clockwise.heart").tag(true)
 //            }.pickerStyle(.segmented)
 //                .padding([.leading, .trailing, .bottom])
 
@@ -63,7 +63,7 @@ struct PaymentForm: View {
         }
         #if os(macOS)
         .padding()
-        .navigationTitle("payment.donate.title".localized)
+        .navigationTitle(LocalString.payment_donate_title)
         .onReceive(formReset.objectWillChange) { _ in
             reset()
         }

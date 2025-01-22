@@ -48,7 +48,7 @@ struct ExportButton: View {
             }
         } label: {
             Label {
-                Text("common.button.share".localized)
+                Text(LocalString.common_button_share)
             }  icon: {
                 Image(systemName: "square.and.arrow.up")
             }

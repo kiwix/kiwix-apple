@@ -32,22 +32,22 @@ struct TabsManagerButton: View {
                 Button {
                     navigation.createTab()
                 } label: {
-                    Label("common.tab.menu.new_tab".localized, systemImage: "plus.square")
+                    Label(LocalString.common_tab_menu_new_tab, systemImage: "plus.square")
                 }
                 Button(role: .destructive) {
                     guard case .tab(let tabID) = navigation.currentItem else { return }
                     navigation.deleteTab(tabID: tabID)
                 } label: {
-                    Label("common.tab.menu.close_this".localized, systemImage: "xmark.square")
+                    Label(LocalString.common_tab_menu_close_this, systemImage: "xmark.square")
                 }
                 Button(role: .destructive) {
                     navigation.deleteAllTabs()
                 } label: {
-                    Label("common.tab.menu.close_all".localized, systemImage: "xmark.square.fill")
+                    Label(LocalString.common_tab_menu_close_all, systemImage: "xmark.square.fill")
                 }
             }
         } label: {
-            Label("common.tab.manager.title".localized, systemImage: "square.stack")
+            Label(LocalString.common_tab_manager_title, systemImage: "square.stack")
         } primaryAction: {
             presentedSheet = .tabsManager
         }
@@ -60,7 +60,7 @@ struct TabsManagerButton: View {
                             Button {
                                 self.presentedSheet = nil
                             } label: {
-                                Text("common.button.done".localized).fontWeight(.semibold)
+                                Text(LocalString.common_button_done).fontWeight(.semibold)
                             }
                         }
                     }
@@ -92,12 +92,12 @@ struct TabManager: View {
                 Button(role: .destructive) {
                     navigation.deleteTab(tabID: tab.objectID)
                 } label: {
-                    Label("common.tab.list.close".localized, systemImage: "xmark")
+                    Label(LocalString.common_tab_list_close, systemImage: "xmark")
                 }
             }
         }
         .listStyle(.plain)
-        .navigationTitle("common.tab.navigation.title".localized)
+        .navigationTitle(LocalString.common_tab_navigation_title)
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             Menu {
@@ -105,15 +105,15 @@ struct TabManager: View {
                     guard case let .tab(tabID) = navigation.currentItem else { return }
                     navigation.deleteTab(tabID: tabID)
                 } label: {
-                    Label("common.tab.menu.close_this".localized, systemImage: "xmark.square")
+                    Label(LocalString.common_tab_menu_close_this, systemImage: "xmark.square")
                 }
                 Button(role: .destructive) {
                     navigation.deleteAllTabs()
                 } label: {
-                    Label("common.tab.menu.close_all".localized, systemImage: "xmark.square.fill")
+                    Label(LocalString.common_tab_menu_close_all, systemImage: "xmark.square.fill")
                 }
             } label: {
-                Label("common.tab.menu.new_tab".localized, systemImage: "plus.square")
+                Label(LocalString.common_tab_menu_new_tab, systemImage: "plus.square")
             } primaryAction: {
                 navigation.createTab()
             }

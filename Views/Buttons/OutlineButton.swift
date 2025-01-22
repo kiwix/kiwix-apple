@@ -30,10 +30,10 @@ struct OutlineButton: View {
                 }
             }
         } label: {
-            Label("outline_button.outline.title".localized, systemImage: "list.bullet")
+            Label(LocalString.outline_button_outline_title, systemImage: "list.bullet")
         }
         .disabled(browser.outlineItems.isEmpty)
-        .help("outline_button.outline.help".localized)
+        .help(LocalString.outline_button_outline_help)
         #elseif os(iOS)
         Button {
             isShowingOutline = true
@@ -41,12 +41,12 @@ struct OutlineButton: View {
             Image(systemName: "list.bullet")
         }
         .disabled(browser.outlineItems.isEmpty)
-        .help("outline_button.outline.help".localized)
+        .help(LocalString.outline_button_outline_help)
         .popover(isPresented: $isShowingOutline) {
             NavigationStack {
                 Group {
                     if browser.outlineItemTree.isEmpty {
-                        Message(text: "outline_button.outline.empty.message".localized)
+                        Message(text: LocalString.outline_button_outline_empty_message)
                     } else {
                         List(browser.outlineItemTree) { item in
                             OutlineNode(item: item) { item in
@@ -64,7 +64,7 @@ struct OutlineButton: View {
                         Button {
                             isShowingOutline = false
                         } label: {
-                            Text("common.button.done".localized).fontWeight(.semibold)
+                            Text(LocalString.common_button_done).fontWeight(.semibold)
                         }
                     }
                 }

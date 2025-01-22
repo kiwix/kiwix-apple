@@ -34,7 +34,7 @@ struct SheetContent<Content: View>: View {
                     Button {
                         dismiss()
                     } label: {
-                        Text("common.button.done".localized).fontWeight(.semibold)
+                        Text(LocalString.common_button_done).fontWeight(.semibold)
                     }
                 }
             }

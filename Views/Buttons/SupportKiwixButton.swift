@@ -27,7 +27,7 @@ struct SupportKiwixButton: View {
             HStack {
                 Image(systemName: "heart.fill")
                     .foregroundStyle(.red)
-                Text("payment.support_button.label".localized)
+                Text(LocalString.payment_support_button_label)
             }
             #if os(macOS)
             .padding(6)

@@ -51,9 +51,9 @@ struct ListOfAmounts: View {
     private func listing() -> some View {
         let items = isMonthly ? Payment.monthlies : Payment.oneTimes
         let averageText: String = if isMonthly {
-            "payment.selection.average_monthly_donation.subtitle".localized
+            LocalString.payment_selection_average_monthly_donation_subtitle
         } else {
-            "payment.selection.last_year_average.subtitle".localized
+            LocalString.payment_selection_last_year_average_subtitle
         }
         let defaultCurrency: String = Payment.defaultCurrencyCode
         return List {
@@ -84,7 +84,7 @@ struct ListOfAmounts: View {
             Button(action: {
                 listState = .customAmount
             }, label: {
-                Text("payment.selection.custom_amount".localized)
+                Text(LocalString.payment_selection_custom_amount)
             })
             .padding(6)
         }

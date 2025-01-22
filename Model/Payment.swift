@@ -146,8 +146,8 @@ struct Payment {
         request.supportedNetworks = Self.supportedNetworks
         request.requiredBillingContactFields = [.emailAddress]
         let recurring: PKRecurringPaymentRequest? = if selectedAmount.isMonthly {
-            PKRecurringPaymentRequest(paymentDescription: "payment.description.label".localized,
-                                      regularBilling: .init(label: "payment.monthly_support.label".localized,
+            PKRecurringPaymentRequest(paymentDescription: LocalString.payment_description_label,
+                                      regularBilling: .init(label: LocalString.payment_monthly_support_label,
                                                             amount: NSDecimalNumber(value: selectedAmount.value),
                                                             type: .final),
                                       managementURL: URL(string: Self.paymentSubscriptionManagingURL)!)
@@ -157,7 +157,7 @@ struct Payment {
         request.recurringPaymentRequest = recurring
         request.paymentSummaryItems = [
             PKPaymentSummaryItem(
-                label: "payment.summary.title".localized,
+                label: LocalString.payment_summary_title,
                 amount: NSDecimalNumber(value: selectedAmount.value),
                 type: .final
             )

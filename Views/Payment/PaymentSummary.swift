@@ -34,14 +34,14 @@ struct PaymentSummary: View {
 
     var body: some View {
         VStack {
-            Text("payment.summary_page.title".localized)
+            Text(LocalString.payment_summary_page_title)
                 .font(.largeTitle)
                 .padding()
             if selectedAmount.isMonthly {
-                Text("payment.selection.option.monthly".localized).font(.title)
+                Text(LocalString.payment_selection_option_monthly).font(.title)
                     .padding()
             } else {
-                Text("payment.selection.option.one_time".localized).font(.title)
+                Text(LocalString.payment_selection_option_one_time).font(.title)
                     .padding()
             }
             Text(selectedAmount.value.formatted(.currency(code: selectedAmount.currency))).font(.title).bold()
@@ -58,7 +58,7 @@ struct PaymentSummary: View {
                 .frame(width: 186, height: 44)
                 .padding()
             } else {
-                Text("payment.support_fallback_message".localized)
+                Text(LocalString.payment_support_fallback_message)
                     .foregroundStyle(.red)
                     .font(.callout)
             }

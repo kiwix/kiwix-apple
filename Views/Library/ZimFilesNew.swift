@@ -58,11 +58,11 @@ struct ZimFilesNew: View {
             if zimFiles.isEmpty {
                 switch viewModel.state {
                 case .inProgress:
-                    Message(text: "zim_file_catalog.fetching.message".localized)
+                    Message(text: LocalString.zim_file_catalog_fetching_message)
                 case .error:
-                    Message(text: "library_refresh_error.retrieve.description".localized, color: .red)
+                    Message(text: LocalString.library_refresh_error_retrieve_description, color: .red)
                 case .initial, .complete:
-                    Message(text: "zim_file_new_overlay.empty".localized)
+                    Message(text: LocalString.zim_file_new_overlay_empty)
                 }
             }
         }
@@ -73,7 +73,7 @@ struct ZimFilesNew: View {
                     Button {
                         NotificationCenter.toggleSidebar()
                     } label: {
-                        Label("zim_file_opened.toolbar.show_sidebar.label".localized,
+                        Label(LocalString.zim_file_opened_toolbar_show_sidebar_label,
                               systemImage: "sidebar.left")
                     }
                 }
@@ -89,7 +89,7 @@ struct ZimFilesNew: View {
                     Button {
                         viewModel.start(isUserInitiated: true)
                     } label: {
-                        Label("zim_file_new_button_refresh".localized,
+                        Label(LocalString.zim_file_new_button_refresh,
                               systemImage: "arrow.triangle.2.circlepath.circle")
                     }
                 }

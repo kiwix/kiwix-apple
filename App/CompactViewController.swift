@@ -84,7 +84,7 @@ final class CompactViewController: UIHostingController<AnyView>, UISearchControl
         searchController.delegate = self
         searchController.hidesNavigationBarDuringPresentation = false
         searchController.showsSearchResultsController = true
-        searchController.searchBar.searchTextField.placeholder = "common.search".localized
+        searchController.searchBar.searchTextField.placeholder = LocalString.common_search
 
         searchTextObserver = searchViewModel.$searchText.sink { [weak self] searchText in
             guard self?.searchController.searchBar.text != searchText else { return }
@@ -107,7 +107,7 @@ final class CompactViewController: UIHostingController<AnyView>, UISearchControl
         trailingNavItemGroups = navigationItem.trailingItemGroups
         navigationItem.setRightBarButton(
             UIBarButtonItem(
-                title: "common.button.cancel".localized,
+                title: LocalString.common_button_cancel,
                 style: .done,
                 target: self,
                 action: #selector(onSearchCancelled)
@@ -185,14 +185,14 @@ private struct CompactView: View {
                             Button {
                                 presentedSheet = .library
                             } label: {
-                                Label("common.tab.menu.library".localized, systemImage: "folder")
+                                Label(LocalString.common_tab_menu_library, systemImage: "folder")
                             }
                             Spacer()
                         }
                         Button {
                             presentedSheet = .settings
                         } label: {
-                            Label("common.tab.menu.settings".localized, systemImage: "gear")
+                            Label(LocalString.common_tab_menu_settings, systemImage: "gear")
                         }
                         Spacer()
                     }
@@ -209,7 +209,7 @@ private struct CompactView: View {
                                     Button {
                                         self.presentedSheet = nil
                                     } label: {
-                                        Text("common.button.done".localized).fontWeight(.semibold)
+                                        Text(LocalString.common_button_done).fontWeight(.semibold)
                                     }
                                 }
                             }
@@ -285,7 +285,7 @@ private struct Content<LaunchModel>: View where LaunchModel: LaunchProtocol {
         }
         .toolbar {
             ToolbarItemGroup(placement: .primaryAction) {
-                Button("article_shortcut.random.button.title.ios".localized,
+                Button(LocalString.article_shortcut_random_button_title_ios,
                        systemImage: "die.face.5",
                        action: { browser.loadRandomArticle() })
                 .disabled(zimFiles.isEmpty)
