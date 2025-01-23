@@ -20,7 +20,6 @@
 import XCTest
 @testable import Kiwix
 
-// swiftlint:disable force_cast
 final class BookmarkMigrationTests: XCTestCase {
 
     func testURLHostChange() throws {
@@ -49,4 +48,3 @@ final class BookmarkMigrationTests: XCTestCase {
         XCTAssertEqual(url.updatedToZIMSheme(), URL(string: "zim://64C3EA1A-5161-2B94-1F50-606DA5EC0035/wb/Saftladen")!)
     }
 }
-// swiftlint:enable force_cast
