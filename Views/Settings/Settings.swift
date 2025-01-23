@@ -43,7 +43,7 @@ struct ReadingSettings: View {
                 }
             }
             if FeatureFlags.showExternalLinkOptionInSettings {
-                SettingSection(name: LocalString.reading_settings_external_link_title.localized) {
+                SettingSection(name: LocalString.reading_settings_external_link_title) {
                     Picker(selection: $externalLinkLoadingPolicy) {
                         ForEach(ExternalLinkLoadingPolicy.allCases) { loadingPolicy in
                             Text(loadingPolicy.name).tag(loadingPolicy)

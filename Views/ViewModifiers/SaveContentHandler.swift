@@ -24,6 +24,7 @@ struct SaveContentHandler: ViewModifier {
     @State private var urlAndContent: (URL, URLContent)?
     #endif
 
+    // swiftlint:disable:next function_body_length
     func body(content: Content) -> some View {
         content.onReceive(saveContentToFile) { notification in
             guard let url = notification.userInfo?["url"] as? URL,

@@ -29,7 +29,7 @@ final class DataStreamTests: XCTestCase {
     }
 
     func test_small_data() async throws {
-        let data = "small test data".data(using: .utf8)!
+        let data = Data("small test data".utf8)
         let dataStream = DataStream(
             dataProvider: MockDataProvider(data: data),
             ranges: ByteRanges.rangesFor(contentLength: UInt(data.count),
@@ -43,7 +43,7 @@ final class DataStreamTests: XCTestCase {
     }
 
     func test_small_data_with_large_rangeSize_returns_in_one_chunk() async throws {
-        let data = "small test data".data(using: .utf8)!
+        let data = Data("small test data".utf8)
         let dataStream = DataStream(
             dataProvider: MockDataProvider(data: data),
             ranges: ByteRanges.rangesFor(contentLength: UInt(data.count),
