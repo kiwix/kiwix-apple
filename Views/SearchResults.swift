@@ -24,6 +24,7 @@ struct SearchResults: View {
     @Environment(\.managedObjectContext) private var managedObjectContext
     @EnvironmentObject private var viewModel: SearchViewModel
     @EnvironmentObject private var navigation: NavigationViewModel
+    @FocusState private var focusedSearchItem: URL? // macOS only
     @FetchRequest(
         sortDescriptors: [NSSortDescriptor(keyPath: \ZimFile.size, ascending: false)],
         predicate: ZimFile.Predicate.isDownloaded,
@@ -75,22 +76,55 @@ struct SearchResults: View {
         } else if viewModel.results.isEmpty {
             Message(text: "search_result.zimfile.no_result.message".localized)
         } else {
-            ScrollView {
-                LazyVGrid(columns: [GridItem(.flexible(minimum: 300, maximum: 700), alignment: .center)]) {
-                    ForEach(viewModel.results) { result in
-                        Button {
-                            recentSearchTexts = {
-                                var searchTexts = Defaults[.recentSearchTexts]
-                                searchTexts.removeAll(where: { $0 == viewModel.searchText })
-                                searchTexts.insert(viewModel.searchText, at: 0)
-                                return searchTexts
-                            }()
-                            NotificationCenter.openURL(result.url)
-                        } label: {
-                            ArticleCell(result: result, zimFile: viewModel.zimFiles[result.zimFileID])
-                        }.buttonStyle(.plain)
+            ScrollViewReader { scrollReader in
+                ScrollView {
+                    LazyVGrid(columns: [GridItem(.flexible(minimum: 300, maximum: 700), alignment: .center)]) {
+                        ForEach(viewModel.results) { result in
+                            Button {
+                                recentSearchTexts = {
+                                    var searchTexts = Defaults[.recentSearchTexts]
+                                    searchTexts.removeAll(where: { $0 == viewModel.searchText })
+                                    searchTexts.insert(viewModel.searchText, at: 0)
+                                    return searchTexts
+                                }()
+                                NotificationCenter.openURL(result.url)
+                            } label: {
+                                ArticleCell(result: result, zimFile: viewModel.zimFiles[result.zimFileID])
+                            }
+                            .buttonStyle(.plain)
+                            .modifier(
+                                Focusable( // macOS only
+                                    $focusedSearchItem,
+                                    equals: result.url,
+                                    onReturn: {
+                                        NotificationCenter.openURL(result.url)
+                                    },
+                                    onDismiss: {
+                                        $focusedSearchItem.wrappedValue = nil
+                                        dismissSearch()
+                                    })
+                            )
+                        }
+                    }.padding()
+                }
+                .onReceive(self.focusedSearchItem.publisher) { focusedURL in
+                    scrollReader.scrollTo(focusedURL, anchor: .center)
+                }
+                .modifier(MoveCommand(perform: { direction in
+                    // macOS only
+                    if let focusedSearchItem,
+                       let index = viewModel.results.firstIndex(where: { $0.url == focusedSearchItem }) {
+                        let nextIndex: Int
+                        switch direction {
+                        case .up: nextIndex = viewModel.results.index(before: index)
+                        case .down: nextIndex = viewModel.results.index(after: index)
+                        default: nextIndex = viewModel.results.startIndex
+                        }
+                        if (viewModel.results.startIndex..<viewModel.results.endIndex).contains(nextIndex) {
+                            $focusedSearchItem.wrappedValue = viewModel.results[nextIndex].url
+                        }
                     }
-                }.padding()
+                }))
             }
         }
     }
@@ -129,6 +163,7 @@ struct SearchResults: View {
                 } header: { searchFilterHeader }
             }
         }
+        .modifier(NotFocusable()) // macOS only
     }
 
     private var recentSearchHeader: some View {
