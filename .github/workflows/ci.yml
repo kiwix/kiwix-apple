@@ -44,6 +44,11 @@ jobs:
         if: matrix.platform == 'macOS'
         run: echo "EXTRA_XCODEBUILD=${{ env.APPLE_AUTH_PARAMS }}" >> $GITHUB_ENV
 
+      - name: Remove in-app-payments capability for unit tests on macOS
+        if: matrix.platform == 'macOS'
+        run: |
+          sed -i '' '/in-app-payments/d' project.yml
+
       - name: Build
         uses: ./.github/actions/xcbuild
         with:
@@ -57,12 +62,6 @@ jobs:
       - name: Run Unit Tests on iOS
         if: matrix.platform == 'iOS'
         run: xcodebuild test -scheme Kiwix -destination 'platform=iOS Simulator,name=iPhone 15 Plus'
-
-      - name: Remove in-app-payments capability for unit tests on macOS
-        if: matrix.platform == 'macOS'
-        run: |
-          sed -i '' '/in-app-payments/d' project.yml
-          xcodegen
 
       - name: Run Unit Tests on macOS
         if: matrix.platform == 'macOS'
