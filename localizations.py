@@ -114,20 +114,18 @@ class Validate:
                         if swift_var in content:
                             counter[swift_var] += 1
                     
-        assert len(matches.keys()) == 0, "localization strings should not be used directly in swift: {}".format(matches)
+        assert len(matches.keys()) == 0, "localization strings cannot not be directly used in swift (use LocalString instead): {}".format(matches)
         unused_swift_vars = {k: v for k, v in counter.items() if v == 0 }.keys()
-        if len(unused_swift_vars) > 0:
-            print("unused localizations in swift: {}".format(sorted(unused_swift_vars)))
+        assert len(unused_swift_vars) == 0, "unused localizations entries (delete them from localizations, and run: python localizations.py generate): {}".format(sorted(unused_swift_vars))
         
         comment_keys = list()
         comment_reader = Reader(comment_file_name)
         for comment_key, _ in comment_reader.keys():
-            assert comment_key in vars, "extra qqq key: {}".format(comment_key)
+            assert comment_key in vars, "extra qqq key found: {}".format(comment_key)
             comment_keys.append(comment_key)
         
         missing = sorted(set(vars).difference(comment_keys))
-        if len(missing) > 0:
-            print("missing qqq keys: {}".format(missing))
+        assert len(missing) == 0, "undocumented keys (please add them to qqq): {}".format(missing)
         
     def __get_var_name(self, key):
         return re.sub('[^a-z0-9]', '_', key.lower())
