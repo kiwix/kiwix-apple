@@ -73,6 +73,9 @@ targetTemplates:
       - sdk: QuickLook.framework
       - sdk: PassKit.framework
       - sdk: SystemConfiguration.framework
+      - sdk: ActivityKit.framework
+        destinationFilters:
+          - iOS
       - package: Defaults
       - package: StripeApplePay
     sources: 
