@@ -46,24 +46,24 @@ struct ExternalLinkHandler: ViewModifier {
                 activeAlert = .notLoading
             }
         }
-        .alert("external_link_handler.alert.title".localized,
+        .alert(LocalString.external_link_handler_alert_title,
                isPresented: $isAlertPresented,
                presenting: activeAlert) { alert in
             if case .ask(let url) = alert {
-                Button("external_link_handler.alert.button.load.link".localized) {
+                Button(LocalString.external_link_handler_alert_button_load_link) {
                     load(url: url)
                     externalURL = nil // important to nil out, so the same link tapped will trigger onChange again
                 }
-                Button("common.button.cancel".localized, role: .cancel) {
+                Button(LocalString.common_button_cancel, role: .cancel) {
                     externalURL = nil // important to nil out, so the same link tapped will trigger onChange again
                 }
             }
         } message: { alert in
             switch alert {
             case .ask:
-                Text("external_link_handler.alert.ask.description".localized)
+                Text(LocalString.external_link_handler_alert_ask_description)
             case .notLoading:
-                Text("external_link_handler.alert.not_loading.description".localized)
+                Text(LocalString.external_link_handler_alert_not_loading_description)
             }
         }
     }

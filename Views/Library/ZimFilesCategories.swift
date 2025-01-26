@@ -44,13 +44,13 @@ struct ZimFilesCategories: View {
                         Button {
                             NotificationCenter.toggleSidebar()
                         } label: {
-                            Label("zim_file_opened.toolbar.show_sidebar.label".localized, systemImage: "sidebar.left")
+                            Label(LocalString.zim_file_opened_toolbar_show_sidebar_label, systemImage: "sidebar.left")
                         }
                     }
                 }
                 #endif
                 ToolbarItem {
-                    Picker("zim_file_category.title".localized, selection: $selected) {
+                    Picker(LocalString.zim_file_category_title, selection: $selected) {
                         ForEach(categories) {
                             Text($0.name).tag($0)
                         }
@@ -128,11 +128,11 @@ private struct CategoryGrid: View {
             if sections.isEmpty {
                 switch viewModel.state {
                 case .inProgress:
-                    Message(text: "zim_file_catalog.fetching.message".localized)
+                    Message(text: LocalString.zim_file_catalog_fetching_message)
                 case .error:
-                    Message(text: "library_refresh_error.retrieve.description".localized, color: .red)
+                    Message(text: LocalString.library_refresh_error_retrieve_description, color: .red)
                 case .initial, .complete:
-                    Message(text: "zim_file_category.section.empty.message".localized)
+                    Message(text: LocalString.zim_file_category_section_empty_message)
                 }
             } else {
                 LazyVGrid(columns: ([gridItem]), alignment: .leading, spacing: 12) {
@@ -236,11 +236,11 @@ private struct CategoryList: View {
             if zimFiles.isEmpty {
                 switch viewModel.state {
                 case .inProgress:
-                    Message(text: "zim_file_catalog.fetching.message".localized)
+                    Message(text: LocalString.zim_file_catalog_fetching_message)
                 case .error:
-                    Message(text: "library_refresh_error.retrieve.description".localized, color: .red)
+                    Message(text: LocalString.library_refresh_error_retrieve_description, color: .red)
                 case .initial, .complete:
-                    Message(text: "zim_file_category.section.empty.message".localized)
+                    Message(text: LocalString.zim_file_category_section_empty_message)
                 }
             } else {
                 List(zimFiles, id: \.self, selection: $viewModel.selectedZimFile) { zimFile in

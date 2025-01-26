@@ -100,7 +100,7 @@ struct LibraryZimFileDetailSidePanel: ViewModifier {
                     if let zimFile = viewModel.selectedZimFile {
                         ZimFileDetail(zimFile: zimFile, dismissParent: nil)
                     } else {
-                        Message(text: "library.zim_file_details.side_panel.message".localized)
+                        Message(text: LocalString.library_zim_file_details_side_panel_message)
                             .background(.thickMaterial)
                     }
                 }.frame(width: 275).background(.ultraThinMaterial)
@@ -153,13 +153,13 @@ struct LibraryZimFileContext: ViewModifier {
             guard let url = await ZimFileService.shared.getMainPageURL(zimFileID: zimFile.fileID) else { return }
             NotificationCenter.openURL(url, inNewTab: true)
         } label: {
-            Label("library.zim_file_context.main_page.label".localized, systemImage: "house")
+            Label(LocalString.library_zim_file_context_main_page_label, systemImage: "house")
         }
         AsyncButton {
             guard let url = await ZimFileService.shared.getRandomPageURL(zimFileID: zimFile.fileID) else { return }
             NotificationCenter.openURL(url, inNewTab: true)
         } label: {
-            Label("library.zim_file_context.random.label".localized, systemImage: "die.face.5")
+            Label(LocalString.library_zim_file_context_random_label, systemImage: "die.face.5")
         }
     }
 
@@ -174,7 +174,7 @@ struct LibraryZimFileContext: ViewModifier {
                 UIPasteboard.general.setValue(downloadURL.absoluteString, forPasteboardType: UTType.url.identifier)
                 #endif
             } label: {
-                Label("library.zim_file_context.copy_url".localized, systemImage: "doc.on.doc")
+                Label(LocalString.library_zim_file_context_copy_url, systemImage: "doc.on.doc")
             }
         }
         Button {
@@ -185,7 +185,7 @@ struct LibraryZimFileContext: ViewModifier {
             UIPasteboard.general.setValue(zimFile.fileID.uuidString, forPasteboardType: UTType.plainText.identifier)
             #endif
         } label: {
-            Label("library.zim_file_context.copy_id".localized, systemImage: "barcode.viewfinder")
+            Label(LocalString.library_zim_file_context_copy_id, systemImage: "barcode.viewfinder")
         }
     }
 }

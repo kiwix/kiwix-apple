@@ -26,7 +26,7 @@
 "library.zim_file_context.main_page.label" = "मुखपृष्ठ";
 "zim_file_opened.toolbar.open.title" = "खोलें...";
 "zim_file_category.title" = "श्रेणी";
-"zim_file_new_button_refresh" = "ताजा करें";
+"zim_file_new.button.refresh" = "ताजा करें";
 "zim_file.list.name.text" = "नाम";
 "zim_file.list.description.text" = "विवरण";
 "zim_file.list.actions.text" = "क्रियाएँ";

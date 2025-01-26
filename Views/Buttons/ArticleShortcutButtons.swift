@@ -47,10 +47,10 @@ struct ArticleShortcutButtons: View {
             browser.loadMainArticle()
             dismissSearch()
         } label: {
-            Label("article_shortcut.main.button.title".localized, systemImage: "house")
+            Label(LocalString.article_shortcut_main_button_title, systemImage: "house")
         }
         .disabled(zimFiles.isEmpty)
-        .help("article_shortcut.main.button.help".localized)
+        .help(LocalString.article_shortcut_main_button_help)
         #elseif os(iOS)
         Menu {
             ForEach(zimFiles) { zimFile in
@@ -60,13 +60,13 @@ struct ArticleShortcutButtons: View {
                 }
             }
         } label: {
-            Label("article_shortcut.main.button.title".localized, systemImage: "house")
+            Label(LocalString.article_shortcut_main_button_title, systemImage: "house")
         } primaryAction: {
             browser.loadMainArticle()
             dismissSearch()
         }
         .disabled(zimFiles.isEmpty)
-        .help("article_shortcut.main.button.help".localized)
+        .help(LocalString.article_shortcut_main_button_help)
         #endif
     }
 
@@ -76,10 +76,10 @@ struct ArticleShortcutButtons: View {
             browser.loadRandomArticle()
             dismissSearch()
         } label: {
-            Label("article_shortcut.random.button.title.mac".localized, systemImage: "die.face.5")
+            Label(LocalString.article_shortcut_random_button_title_mac, systemImage: "die.face.5")
         }
         .disabled(zimFiles.isEmpty)
-        .help("article_shortcut.random.button.help".localized)
+        .help(LocalString.article_shortcut_random_button_help)
         .keyboardShortcut(KeyEquivalent("r"), modifiers: [.command, .option])
 
         #elseif os(iOS)
@@ -91,13 +91,13 @@ struct ArticleShortcutButtons: View {
                 }
             }
         } label: {
-            Label("article_shortcut.random.button.title.ios".localized, systemImage: "die.face.5")
+            Label(LocalString.article_shortcut_random_button_title_ios, systemImage: "die.face.5")
         } primaryAction: {
             browser.loadRandomArticle()
             dismissSearch()
         }
         .disabled(zimFiles.isEmpty)
-        .help("article_shortcut.random.button.help".localized)
+        .help(LocalString.article_shortcut_random_button_help)
         #endif
     }
 }

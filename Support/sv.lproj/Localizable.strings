@@ -32,7 +32,6 @@
 "common.tab.list.close" = "Stäng flik";
 "common.tab.menu.library" = "Bibliotek";
 "common.tab.menu.settings" = "Inställningar";
-"common.support.app_name" = "Stöd %@";
 "common.export_file.alert.title" = "Exportera fil";
 "common.export_file.alert.description" = "Vill du exportera filen %@?";
 "common.export_file.alert.button.title" = "Exportera";
@@ -64,7 +63,7 @@
 "flavor_tag.help.mini" = "endast en delmängd av texten är tillgänglig, förmodligen det första avsnittet";
 "library_refresh_time.last" = "Alldeles nyss";
 "library_refresh_time.never" = "Aldrig";
-"zim_file_cell_article_count_suffix" = "artiklar";
+"zim_file_cell.article_count.suffix" = "artiklar";
 "zim_file_missing_indicator.help" = "Zim-fil saknas.";
 "library.zim_file_details.side_panel.message" = "Välj en ZIM-fil för att se information";
 "library.zim_file_context.main_page.label" = "Huvudsida";
@@ -80,7 +79,7 @@
 "zim_file_downloads.overlay.empty.message" = "Inga nedladdningsuppgifter";
 "zim_file_downloads.toolbar.show_sidebar.label" = "Visa sidofält";
 "zim_file_new_overlay.empty" = "Ingen ny ZIM-fil";
-"zim_file_new_button_refresh" = "Uppdatera";
+"zim_file_new.button.refresh" = "Uppdatera";
 "zim_file.list.name.text" = "Namn";
 "zim_file.list.description.text" = "Beskrivning";
 "zim_file.list.actions.text" = "Åtgärder";
@@ -190,7 +189,6 @@
 "app_macos_commands.open_file" = "Öppna...";
 "app_macos_commands.new" = "Ny flik";
 "app_macos_navigation.button.library" = "Bibliotek";
-"app_macos_navigation.show_sidebar" = "Visa sidofält";
 "sidebar_view.navigation.button.close" = "Stäng";
 "sidebar_view.navigation.button.close_all" = "Stäng alla flikar";
 "enum.category.wikipedia" = "Wikipedia";

@@ -32,7 +32,6 @@
 "common.tab.list.close" = "탭 닫기";
 "common.tab.menu.library" = "라이브러리";
 "common.tab.menu.settings" = "설정";
-"common.support.app_name" = "%@ 지원하기";
 "common.export_file.alert.title" = "파일 내보내기";
 "common.export_file.alert.description" = "%@ 파일을 내보내시겠습니까?";
 "common.export_file.alert.button.title" = "내보내기";
@@ -75,7 +74,7 @@
 "zim_file_downloads.overlay.empty.message" = "다운로드 작업 없음";
 "zim_file_downloads.toolbar.show_sidebar.label" = "사이드바 표시";
 "zim_file_new_overlay.empty" = "새 ZIM 파일 없습니다";
-"zim_file_new_button_refresh" = "새로 고침";
+"zim_file_new.button.refresh" = "새로 고침";
 "zim_file.list.name.text" = "이름";
 "zim_file.list.description.text" = "설명";
 "zim_file.list.actions.text" = "동작";
@@ -178,7 +177,6 @@
 "app_macos_commands.open_file" = "열기...";
 "app_macos_commands.new" = "새 탭";
 "app_macos_navigation.button.library" = "라이브러리";
-"app_macos_navigation.show_sidebar" = "사이드바 표시";
 "sidebar_view.navigation.button.close" = "닫기";
 "sidebar_view.navigation.button.close_all" = "모든 탭 닫기";
 "enum.category.wikipedia" = "위키백과";

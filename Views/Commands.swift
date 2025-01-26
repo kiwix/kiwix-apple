@@ -61,10 +61,10 @@ struct NavigationCommands: View {
     @FocusedValue(\.browserViewModel) var browser: BrowserViewModel?
 
     var body: some View {
-        Button("common.button.go_back".localized) { browser?.webView.goBack() }
+        Button(LocalString.common_button_go_back) { browser?.webView.goBack() }
             .keyboardShortcut("[")
             .disabled(canGoBack != true)
-        Button("common.button.go_forward".localized) { browser?.webView.goForward() }
+        Button(LocalString.common_button_go_forward) { browser?.webView.goForward() }
             .keyboardShortcut("]")
             .disabled(canGoForward != true)
     }
@@ -75,13 +75,13 @@ struct PageZoomCommands: View {
     @FocusedValue(\.browserViewModel) var browser: BrowserViewModel?
 
     var body: some View {
-        Button("commands.button.actual_size".localized) { webViewPageZoom = 1 }
+        Button(LocalString.commands_button_actual_size) { webViewPageZoom = 1 }
             .keyboardShortcut("0")
             .disabled(webViewPageZoom == 1 || browser?.url == nil)
-        Button("comments.button.zoom_in".localized) { webViewPageZoom += 0.1 }
+        Button(LocalString.comments_button_zoom_in) { webViewPageZoom += 0.1 }
             .keyboardShortcut("+")
             .disabled(webViewPageZoom >= 2 || browser?.url == nil)
-        Button("comments.button.zoom_out".localized) { webViewPageZoom -= 0.1 }
+        Button(LocalString.comments_button_zoom_out) { webViewPageZoom -= 0.1 }
             .keyboardShortcut("-")
             .disabled(webViewPageZoom <= 0.5 || browser?.url == nil)
     }

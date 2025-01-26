@@ -36,7 +36,7 @@ struct LocalLibraryList: View {
             alignment: .leading,
             spacing: 12
         ) {
-            GridSection(title: "welcome.main_page.title".localized) {
+            GridSection(title: LocalString.welcome_main_page_title) {
                 ForEach(zimFiles) { zimFile in
                     AsyncButtonView {
                         guard let url = await ZimFileService.shared
@@ -51,7 +51,7 @@ struct LocalLibraryList: View {
                 }
             }
             if !bookmarks.isEmpty {
-                GridSection(title: "welcome.grid.bookmarks.title".localized) {
+                GridSection(title: LocalString.welcome_grid_bookmarks_title) {
                     ForEach(bookmarks.prefix(6)) { bookmark in
                         Button {
                             browser.load(url: bookmark.articleURL)

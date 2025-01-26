@@ -24,6 +24,7 @@ struct SaveContentHandler: ViewModifier {
     @State private var urlAndContent: (URL, URLContent)?
     #endif
 
+    // swiftlint:disable:next function_body_length
     func body(content: Content) -> some View {
         content.onReceive(saveContentToFile) { notification in
             guard let url = notification.userInfo?["url"] as? URL,
@@ -38,11 +39,11 @@ struct SaveContentHandler: ViewModifier {
         }
 #if os(iOS)
         .alert(isPresented: Binding<Bool>.constant($kiwixURL.wrappedValue != nil)) {
-            Alert(title: Text("common.export_file.alert.title".localized),
-                  message: Text("common.export_file.alert.description"
-                        .localizedWithFormat(withArgs: kiwixURL?.lastPathComponent ?? "")
+            Alert(title: Text(LocalString.common_export_file_alert_title),
+                  message: Text(
+                    LocalString.common_export_file_alert_description(withArgs: kiwixURL?.lastPathComponent ?? "")
                   ),
-                  primaryButton: .default(Text("common.export_file.alert.button.title".localized)) {
+                  primaryButton: .default(Text(LocalString.common_export_file_alert_button_title)) {
                 Task { @MainActor in
                     if let kiwixURL,
                        let urlContent = await ZimFileService.shared.getURLContent(url: kiwixURL) {

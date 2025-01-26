@@ -49,11 +49,11 @@ struct DownloadTaskCell: View {
             }
             VStack(alignment: .leading, spacing: 4) {
                 if downloadZimFile.downloadTask?.error != nil {
-                    Text("download_task_cell.status.failed".localized)
+                    Text(LocalString.download_task_cell_status_failed)
                 } else if downloadState.resumeData == nil {
-                    Text("download_task_cell.status.downloading".localized)
+                    Text(LocalString.download_task_cell_status_downloading)
                 } else {
-                    Text("download_task_cell.status.paused".localized)
+                    Text(LocalString.download_task_cell_status_paused)
                 }
                 ProgressView(
                     value: Float(downloadState.downloaded),

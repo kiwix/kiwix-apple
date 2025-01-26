@@ -31,7 +31,7 @@ struct BookmarkButton: View {
         } label: {
             Label {
                 Text(browser.articleBookmarked ?
-                     "common.dialog.button.remove_bookmark".localized : "common.dialog.button.add_bookmark".localized)
+                     LocalString.common_dialog_button_remove_bookmark : LocalString.common_dialog_button_add_bookmark)
             } icon: {
                 Image(systemName: browser.articleBookmarked ? "star.fill" : "star")
                     .renderingMode(browser.articleBookmarked ? .original : .template)
@@ -43,23 +43,23 @@ struct BookmarkButton: View {
                 Button(role: .destructive) {
                     browser.deleteBookmark()
                 } label: {
-                    Label("common.dialog.button.remove_bookmark".localized, systemImage: "star.slash.fill")
+                    Label(LocalString.common_dialog_button_remove_bookmark, systemImage: "star.slash.fill")
                 }
             } else {
                 Button {
                     browser.createBookmark()
                 } label: {
-                    Label("common.dialog.button.add_bookmark".localized, systemImage: "star")
+                    Label(LocalString.common_dialog_button_add_bookmark, systemImage: "star")
                 }
             }
             Button {
                 isShowingPopOver = true
             } label: {
-                Label("common.dialog.button.show_bookmarks".localized, systemImage: "list.star")
+                Label(LocalString.common_dialog_button_show_bookmarks, systemImage: "list.star")
             }
         } label: {
             Label {
-                Text("common.dialog.button.show_bookmarks".localized)
+                Text(LocalString.common_dialog_button_show_bookmarks)
             } icon: {
                 Image(systemName: browser.articleBookmarked ? "star.fill" : "star")
                     .renderingMode(browser.articleBookmarked ? .original : .template)
@@ -67,7 +67,7 @@ struct BookmarkButton: View {
         } primaryAction: {
             isShowingPopOver = true
         }
-        .help("bookmark_button.show.help".localized)
+        .help(LocalString.bookmark_button_show_help)
         .popover(isPresented: $isShowingPopOver) {
             NavigationStack {
                 Bookmarks().navigationBarTitleDisplayMode(.inline).toolbar {
@@ -75,7 +75,7 @@ struct BookmarkButton: View {
                         Button {
                             isShowingPopOver = false
                         } label: {
-                            Text("common.button.done".localized).fontWeight(.semibold)
+                            Text(LocalString.common_button_done).fontWeight(.semibold)
                         }
                     }
                     ToolbarItem(placement: .navigationBarTrailing) {
@@ -89,8 +89,8 @@ struct BookmarkButton: View {
                             Label {
                                 Text(
                                     browser.articleBookmarked ?
-                                    "common.dialog.button.remove_bookmark".localized :
-                                        "common.dialog.button.add_bookmark".localized
+                                    LocalString.common_dialog_button_remove_bookmark :
+                                        LocalString.common_dialog_button_add_bookmark
                                 )
                             } icon: {
                                 Image(systemName: browser.articleBookmarked ? "star.fill" : "star")

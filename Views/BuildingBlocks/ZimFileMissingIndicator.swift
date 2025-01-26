@@ -19,6 +19,6 @@ struct ZimFileMissingIndicator: View {
     var body: some View {
         Image(systemName: "exclamationmark.triangle.fill")
             .renderingMode(.original)
-            .help("zim_file_missing_indicator.help".localized)
+            .help(LocalString.zim_file_missing_indicator_help)
     }
 }

@@ -36,7 +36,7 @@ struct SearchResults: View {
     var body: some View {
         Group {
             if zimFiles.isEmpty {
-                Message(text: "search_result.zimfile.empty.message".localized)
+                Message(text: LocalString.search_result_zimfile_empty_message)
             } else if horizontalSizeClass == .regular {
                 HStack(spacing: 0) {
                     #if os(macOS)
@@ -74,7 +74,7 @@ struct SearchResults: View {
                 Spacer()
             }
         } else if viewModel.results.isEmpty {
-            Message(text: "search_result.zimfile.no_result.message".localized)
+            Message(text: LocalString.search_result_zimfile_no_result_message)
         } else {
             ScrollViewReader { scrollReader in
                 ScrollView {
@@ -137,7 +137,7 @@ struct SearchResults: View {
                         Button(searchText) {
                             viewModel.searchText = searchText
                         }.swipeActions {
-                            Button("search_result.sidebar.button.remove".localized, role: .destructive) {
+                            Button(LocalString.search_result_sidebar_button_remove, role: .destructive) {
                                 recentSearchTexts.removeAll { $0 == searchText }
                             }
                         }
@@ -168,33 +168,33 @@ struct SearchResults: View {
 
     private var recentSearchHeader: some View {
         HStack {
-            Text("search_result.header.text".localized)
+            Text(LocalString.search_result_header_text)
             Spacer()
             Button {
                 recentSearchTexts.removeAll()
             } label: {
-                Text("search_result.button.clear".localized).font(.caption).fontWeight(.medium)
+                Text(LocalString.search_result_button_clear).font(.caption).fontWeight(.medium)
             }
         }
     }
 
     private var searchFilterHeader: some View {
         HStack {
-            Text("search_result.filter_hearder.text".localized)
+            Text(LocalString.search_result_filter_hearder_text)
             Spacer()
             if zimFiles.count == zimFiles.filter({ $0.includedInSearch }).count {
                 Button {
                     zimFiles.forEach { $0.includedInSearch = false }
                     try? managedObjectContext.save()
                 } label: {
-                    Text("search_result.filter_hearder.button.none".localized).font(.caption).fontWeight(.medium)
+                    Text(LocalString.search_result_filter_hearder_button_none).font(.caption).fontWeight(.medium)
                 }
             } else {
                 Button {
                     zimFiles.forEach { $0.includedInSearch = true }
                     try? managedObjectContext.save()
                 } label: {
-                    Text("search_result.filter_hearder.button.all".localized).font(.caption).fontWeight(.medium)
+                    Text(LocalString.search_result_filter_hearder_button_all).font(.caption).fontWeight(.medium)
                 }
             }
         }

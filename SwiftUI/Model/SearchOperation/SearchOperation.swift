@@ -45,6 +45,7 @@ extension SearchOperation {
         // start sorting search results
         let searchText = searchText.lowercased()
 
+        // swiftlint:disable compiler_protocol_init
         // calculate score for all results
         for result in results {
             guard !isCancelled else { return }
@@ -55,6 +56,7 @@ extension SearchOperation {
                 result.score = NSNumber(integerLiteral: distance)
             }
         }
+        // swiftlint:enable compiler_protocol_init
 
         // sort the results
         guard !isCancelled else { return }

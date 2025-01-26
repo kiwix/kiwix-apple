@@ -32,7 +32,6 @@
 "common.tab.list.close" = "關閉分頁";
 "common.tab.menu.library" = "圖書館";
 "common.tab.menu.settings" = "設定";
-"common.support.app_name" = "支援 %@";
 "common.export_file.alert.title" = "匯出檔案";
 "common.export_file.alert.description" = "您要匯出檔案「%@」嗎？";
 "common.export_file.alert.button.title" = "匯出";
@@ -63,7 +62,7 @@
 "flavor_tag.help.mini" = "僅有文字的子集合可用，有可能是第一段落";
 "library_refresh_time.last" = "現在";
 "library_refresh_time.never" = "永不";
-"zim_file_cell_article_count_suffix" = "條目";
+"zim_file_cell.article_count.suffix" = "條目";
 "zim_file_missing_indicator.help" = "遺失 Zim 檔案。";
 "library.zim_file_details.side_panel.message" = "選擇一個 ZIM 檔案以查看詳細資訊";
 "library.zim_file_context.main_page.label" = "主頁";
@@ -80,7 +79,7 @@
 "zim_file_downloads.overlay.empty.message" = "沒有下載任務";
 "zim_file_downloads.toolbar.show_sidebar.label" = "顯示側邊欄";
 "zim_file_new_overlay.empty" = "沒有新的 ZIM 檔案";
-"zim_file_new_button_refresh" = "重整";
+"zim_file_new.button.refresh" = "重整";
 "zim_file.list.name.text" = "名稱";
 "zim_file.list.description.text" = "描述";
 "zim_file.list.actions.text" = "操作";
@@ -192,7 +191,6 @@
 "app_macos_commands.open_file" = "開啟…";
 "app_macos_commands.new" = "新分頁";
 "app_macos_navigation.button.library" = "圖書館";
-"app_macos_navigation.show_sidebar" = "顯示側邊欄";
 "sidebar_view.navigation.button.close" = "關閉";
 "sidebar_view.navigation.button.close_all" = "關閉所有分頁";
 "enum.category.wikipedia" = "維基百科";

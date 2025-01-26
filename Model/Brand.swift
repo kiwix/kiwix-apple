@@ -49,7 +49,7 @@ enum Brand {
     static let loadingLogoImage: String = "welcomeLogo"
     static var loadingLogoSize: CGSize = ImageInfo.sizeOf(imageName: loadingLogoImage)!
 
-    static let aboutText: String = Config.value(for: .aboutText) ?? "settings.about.description".localized
+    static let aboutText: String = Config.value(for: .aboutText) ?? LocalString.settings_about_description
     static let aboutWebsite: String = Config.value(for: .aboutWebsite) ?? "https://www.kiwix.org"
     // currently only used under the Kiwix brand
     // if this is set to true in Support/Info.plist the support/donation button is hidden (for macOS FTP)

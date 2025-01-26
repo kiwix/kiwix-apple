@@ -33,6 +33,9 @@ jobs:
           # /!\ important: this checks out code from the HEAD of the PR instead of the main branch (for pull_request_target)
           ref: ${{ github.event.pull_request.head.sha || github.ref }}
 
+      - name: Validate localizations
+        run: python localizations.py validate
+
       - name: Add Apple Store Key
         run: echo "${{ secrets.APPLE_STORE_AUTH_KEY }}" | base64 --decode -o ${{ env.APPLE_STORE_AUTH_KEY_PATH}}
 

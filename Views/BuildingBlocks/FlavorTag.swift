@@ -48,11 +48,11 @@ struct FlavorTag: View {
     var help: String {
         switch flavor {
         case .max:
-            return "flavor_tag.help.max".localized
+            return LocalString.flavor_tag_help_max
         case .noPic:
-            return "flavor_tag.help.no_pic".localized
+            return LocalString.flavor_tag_help_no_pic
         case .mini:
-            return "flavor_tag.help.mini".localized
+            return LocalString.flavor_tag_help_mini
         }
     }
 }

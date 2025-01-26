@@ -38,8 +38,8 @@ struct LanguageSelector: View {
                     }
                 })
             }.width(14)
-            TableColumn("language_selector.name.title".localized, value: \.name)
-            TableColumn("language_selector.count.table.title".localized, value: \.count) { language in
+            TableColumn(LocalString.language_selector_name_title, value: \.name)
+            TableColumn(LocalString.language_selector_count_table_title, value: \.count) { language in
                 Text(language.count.formatted())
             }
         }
@@ -72,21 +72,21 @@ struct LanguageSelector: View {
         List {
             Section {
                 if showing.isEmpty {
-                    Text("language_selector.no_language.title".localized).foregroundColor(.secondary)
+                    Text(LocalString.language_selector_no_language_title).foregroundColor(.secondary)
                 } else {
                     ForEach(showing) { language in
                         Button { hide(language) } label: { LanguageLabel(language: language) }
                     }
                 }
-            } header: { Text("language_selector.showing.header".localized) }
+            } header: { Text(LocalString.language_selector_showing_header) }
             Section {
                 ForEach(hiding) { language in
                     Button { show(language) } label: { LanguageLabel(language: language) }
                 }
-            } header: { Text("language_selector.hiding.header".localized) }
+            } header: { Text(LocalString.language_selector_hiding_header) }
         }
         .listStyle(.insetGrouped)
-        .navigationTitle("language_selector.navitation.title".localized)
+        .navigationTitle(LocalString.language_selector_navitation_title)
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             Picker(selection: $sortingMode) {
@@ -94,7 +94,7 @@ struct LanguageSelector: View {
                     Text(sortingMode.name).tag(sortingMode)
                 }
             } label: {
-                Label("language_selector.toolbar.sorting".localized, systemImage: "arrow.up.arrow.down")
+                Label(LocalString.language_selector_toolbar_sorting, systemImage: "arrow.up.arrow.down")
             }.pickerStyle(.menu)
         }
         .onAppear {

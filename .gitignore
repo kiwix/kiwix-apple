@@ -82,3 +82,6 @@ Brewfile.lock.json
 # this is CI specific
 Brewfile_CI
 Brewfile_CI.lock.json
+
+# Generated localization swift file:
+Support/LocalString.swift

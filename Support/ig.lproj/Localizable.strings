@@ -61,7 +61,7 @@
 "flavor_tag.help.mini" = "naanị obere akụkụ nke ederede dị, ma eleghị anya ngalaba nke mbụ";
 "library_refresh_time.last" = "Ugbu a";
 "library_refresh_time.never" = "Ọ dịghị mgbe";
-"zim_file_cell_article_count_suffix" = "ederede";
+"zim_file_cell.article_count.suffix" = "ederede";
 "zim_file_missing_indicator.help" = "Zim faịlụ na-efu efu.";
 // Fuzzy
 "library.zim_file_details.side_panel.message" = "Họrọ faịlụ zim ka ịhụ nkọwa ihe ndị ozọ";
@@ -82,7 +82,7 @@
 "zim_file_downloads.toolbar.show_sidebar.label" = "Gosi akụkụ ngwa ọrụ";
 // Fuzzy
 "zim_file_new_overlay.empty" = "Enweghị zim faịlụ ọhụrụ";
-"zim_file_new_button_refresh" = "Tụnyegharia";
+"zim_file_new.button.refresh" = "Tụnyegharia";
 "zim_file.list.name.text" = "Aha";
 "zim_file.list.description.text" = "Nkọwa";
 "zim_file.list.actions.text" = "Omume ihe";
@@ -198,7 +198,6 @@
 "app_macos_commands.open_file" = "Mepee...";
 "app_macos_commands.new" = "Taabụ ọhụrụ";
 "app_macos_navigation.button.library" = "Ọ́bá Akwụkwọ";
-"app_macos_navigation.show_sidebar" = "Gosi Ogwe akụkụ";
 "sidebar_view.navigation.button.close" = "Mechie";
 "sidebar_view.navigation.button.close_all" = "Mechie taabụ niile";
 "enum.category.wikipedia" = "Wikipidịa";

@@ -33,11 +33,11 @@
 "download_task_cell.status.paused" = "جمب ڳیا";
 "library_refresh_time.last" = "ہُݨے ہُݨے";
 "library_refresh_time.never" = "کݙاہیں وی کائناں";
-"zim_file_cell_article_count_suffix" = "مضمون";
+"zim_file_cell.article_count.suffix" = "مضمون";
 "library.zim_file_context.main_page.label" = "پہلا پرت";
 "zim_file_opened.toolbar.open.title" = "کھولو۔۔۔";
 "zim_file_category.title" = "ونکی";
-"zim_file_new_button_refresh" = "تازہ کرو";
+"zim_file_new.button.refresh" = "تازہ کرو";
 "zim_file.list.name.text" = "ناں";
 "zim_file.list.description.text" = "تفصیل";
 "zim_file.list.actions.text" = "عمل";

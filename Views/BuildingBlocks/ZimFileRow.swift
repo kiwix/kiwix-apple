@@ -37,7 +37,7 @@ struct ZimFileRow: View {
                     Formatter.size.string(fromByteCount: zimFile.size),
                     {
                         "\(zimFile.articleCount.formatted(.number.notation(.compactName))) " +
-                        "zim_file_cell_article_count_suffix".localized
+                        LocalString.zim_file_cell_article_count_suffix
                     }()
                 ].joined(separator: ", ")).font(.caption)
             }

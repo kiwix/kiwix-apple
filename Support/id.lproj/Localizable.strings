@@ -31,7 +31,6 @@
 "common.tab.list.close" = "Tutup Tab";
 "common.tab.menu.library" = "Perpustakaan";
 "common.tab.menu.settings" = "Pengaturan";
-"common.support.app_name" = "Dukung %@";
 "common.export_file.alert.title" = "Ekspor berkas";
 "common.export_file.alert.description" = "Apakah Anda ingin mengekspor berkas %@?";
 "common.export_file.alert.button.title" = "Ekspor";
@@ -62,7 +61,7 @@
 "flavor_tag.help.mini" = "hanya sebagian kecil teks yang tersedia, mungkin bagian pertama";
 "library_refresh_time.last" = "Baru Saja";
 "library_refresh_time.never" = "Tidak pernah";
-"zim_file_cell_article_count_suffix" = "artikel";
+"zim_file_cell.article_count.suffix" = "artikel";
 "zim_file_missing_indicator.help" = "Berkas Zim hilang.";
 "library.zim_file_details.side_panel.message" = "Pilih berkas ZIM untuk melihat detailnya";
 "library.zim_file_context.main_page.label" = "Halaman Utama";
@@ -79,7 +78,7 @@
 "zim_file_downloads.overlay.empty.message" = "Tidak ada tugas unduhan";
 "zim_file_downloads.toolbar.show_sidebar.label" = "Tampilkan Bilah Sisi";
 "zim_file_new_overlay.empty" = "Tidak ada berkas ZIM baru";
-"zim_file_new_button_refresh" = "Muat ulang";
+"zim_file_new.button.refresh" = "Muat ulang";
 "zim_file.list.name.text" = "Nama";
 "zim_file.list.description.text" = "Deskripsi";
 "zim_file.list.actions.text" = "Tindakan";
@@ -191,7 +190,6 @@
 "app_macos_commands.open_file" = "Buka...";
 "app_macos_commands.new" = "Tab Baru";
 "app_macos_navigation.button.library" = "Perpustakaan";
-"app_macos_navigation.show_sidebar" = "Tampilkan Bilah Sisi";
 "sidebar_view.navigation.button.close" = "Tutup";
 "sidebar_view.navigation.button.close_all" = "Tutup Semua Tab";
 "enum.category.wikibooks" = "Wikibuku";

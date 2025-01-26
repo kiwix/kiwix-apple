@@ -2,3 +2,5 @@ disabled_rules:
   - trailing_whitespace
 included:
   - Views/Settings/
+excluded:
+  - Support/LocalString.swift

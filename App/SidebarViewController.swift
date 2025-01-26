@@ -105,7 +105,7 @@ class SidebarViewController: UICollectionViewController, NSFetchedResultsControl
             },
             menu: UIMenu(children: [
                 UIAction(
-                    title: "sidebar_view.navigation.button.close".localized,
+                    title: LocalString.sidebar_view_navigation_button_close,
                     image: UIImage(systemName: "xmark.square"),
                     attributes: .destructive
                 ) { [unowned self] _ in
@@ -114,7 +114,7 @@ class SidebarViewController: UICollectionViewController, NSFetchedResultsControl
                     navigationViewModel.deleteTab(tabID: tabID)
                 },
                 UIAction(
-                    title: "sidebar_view.navigation.button.close_all".localized,
+                    title: LocalString.sidebar_view_navigation_button_close_all,
                     image: UIImage(systemName: "xmark.square.fill"),
                     attributes: .destructive
                 ) { [unowned self] _ in
@@ -196,7 +196,7 @@ class SidebarViewController: UICollectionViewController, NSFetchedResultsControl
         if case let .tab(objectID) = item,
             let tab = try? Database.shared.viewContext.existingObject(with: objectID) as? Tab {
             var config = cell.defaultContentConfiguration()
-            config.text = tab.title ?? "common.tab.menu.new_tab".localized
+            config.text = tab.title ?? LocalString.common_tab_menu_new_tab
             if let zimFile = tab.zimFile, let category = Category(rawValue: zimFile.category) {
                 config.textProperties.numberOfLines = 1
                 if let imgData = zimFile.faviconData {
@@ -224,11 +224,11 @@ class SidebarViewController: UICollectionViewController, NSFetchedResultsControl
         switch section {
         case .tabs:
             var config = UIListContentConfiguration.sidebarHeader()
-            config.text = "common.tab.navigation.title".localized
+            config.text = LocalString.common_tab_navigation_title
             headerView.contentConfiguration = config
         case .library:
             var config = UIListContentConfiguration.sidebarHeader()
-            config.text = "common.tab.menu.library".localized
+            config.text = LocalString.common_tab_menu_library
             headerView.contentConfiguration = config
         default:
             headerView.contentConfiguration = nil
@@ -239,7 +239,7 @@ class SidebarViewController: UICollectionViewController, NSFetchedResultsControl
         guard let navigationViewModel,
               let item = dataSource.itemIdentifier(for: indexPath),
               case let .tab(tabID) = item else { return nil }
-        let title = "sidebar_view.navigation.button.close".localized
+        let title = LocalString.sidebar_view_navigation_button_close
         let action = UIContextualAction(style: .destructive,
                                         title: title) { [weak navigationViewModel] _, _, _ in
             navigationViewModel?.deleteTab(tabID: tabID)

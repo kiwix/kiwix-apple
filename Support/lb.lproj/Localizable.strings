@@ -28,7 +28,6 @@
 "common.tab.list.close" = "Tab zoumaachen";
 "common.tab.menu.library" = "Bibliothéik";
 "common.tab.menu.settings" = "Astellungen";
-"common.support.app_name" = "%@ ënnerstëtzen";
 "common.export_file.alert.title" = "Fichier exportéieren";
 "common.export_file.alert.description" = "Wëllt Dir de Fichier %@ exportéieren?";
 "common.export_file.alert.button.title" = "Exportéieren";
@@ -52,7 +51,7 @@
 "flavor_tag.help.mini" = "nëmmen een Deel vum Text ass verfügbar, warscheinlech den éischten Abschnitt";
 "library_refresh_time.last" = "Elo just";
 "library_refresh_time.never" = "Ni";
-"zim_file_cell_article_count_suffix" = "Artikelen";
+"zim_file_cell.article_count.suffix" = "Artikelen";
 "library.zim_file_context.main_page.label" = "Haaptsäit";
 "library.zim_file_context.random.label" = "Zoufälleg Säit";
 "library.zim_file_context.copy_url" = "URL kopéieren";
@@ -62,7 +61,7 @@
 "zim_file_category.title" = "Kategorie";
 "zim_file_category.section.empty.message" = "Keen ZIM-Fichier an dëser Kategorie.";
 "zim_file_new_overlay.empty" = "Keng nei ZIM-Datei";
-"zim_file_new_button_refresh" = "Aktualiséieren";
+"zim_file_new.button.refresh" = "Aktualiséieren";
 "zim_file.list.name.text" = "Numm";
 "zim_file.list.description.text" = "Beschreiwung";
 "zim_file.list.actions.text" = "Aktiounen";

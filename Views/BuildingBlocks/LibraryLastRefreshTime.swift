@@ -23,12 +23,12 @@ struct LibraryLastRefreshTime: View {
     var body: some View {
         if let lastRefresh = lastRefresh {
             if Date().timeIntervalSince(lastRefresh) < 120 {
-                Text("library_refresh_time.last".localized)
+                Text(LocalString.library_refresh_time_last)
             } else {
                 Text(RelativeDateTimeFormatter().localizedString(for: lastRefresh, relativeTo: Date()))
             }
         } else {
-            Text("library_refresh_time.never".localized)
+            Text(LocalString.library_refresh_time_never)
         }
     }
 }

@@ -49,7 +49,6 @@
 "common.tab.list.close" = "Close Tab";
 "common.tab.menu.library" = "Library";
 "common.tab.menu.settings" = "Settings";
-"common.support.app_name" = "Support %@";
 "common.export_file.alert.title" = "Export file";
 "common.export_file.alert.description" = "Do you want to export the file %@?";
 "common.export_file.alert.button.title" = "Export";
@@ -91,7 +90,7 @@
 "library_refresh_time.last" = "Just Now";
 "library_refresh_time.never" = "Never";
 
-"zim_file_cell_article_count_suffix" = "articles";
+"zim_file_cell.article_count.suffix" = "articles";
 
 "zim_file_missing_indicator.help" = "Zim file is missing.";
 
@@ -113,7 +112,7 @@
 "zim_file_downloads.toolbar.show_sidebar.label" = "Show Sidebar";
 
 "zim_file_new_overlay.empty" = "No new ZIM file";
-"zim_file_new_button_refresh" = "Refresh";
+"zim_file_new.button.refresh" = "Refresh";
 
 "zim_file.list.name.text" = "Name";
 "zim_file.list.description.text" = "Description";
@@ -234,9 +233,7 @@
 "app_macos_commands.open_file" = "Open...";
 "app_macos_commands.new" = "New Tab";
 "app_macos_navigation.button.library" = "Library";
-"app_macos_navigation.show_sidebar" = "Show Sidebar";
 
-"sidebar_view.navigation.button.close" = "Close This Tab";
 "sidebar_view.navigation.button.close_all" = "Close All Tabs";
 "sidebar_view.navigation.button.close" = "Close";
 

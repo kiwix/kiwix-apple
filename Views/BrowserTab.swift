@@ -38,7 +38,7 @@ struct BrowserTab: View {
                     Button {
                         NotificationCenter.toggleSidebar()
                     } label: {
-                        Label("browser_tab.toolbar.show_sidebar.label".localized, systemImage: "sidebar.left")
+                        Label(LocalString.browser_tab_toolbar_show_sidebar_label, systemImage: "sidebar.left")
                     }
                 }
                 NavigationButtons()
@@ -62,7 +62,7 @@ struct BrowserTab: View {
         .focusedSceneValue(\.canGoBack, browser.canGoBack)
         .focusedSceneValue(\.canGoForward, browser.canGoForward)
         .modifier(ExternalLinkHandler(externalURL: $browser.externalURL))
-        .searchable(text: $search.searchText, placement: .toolbar, prompt: "common.search".localized)
+        .searchable(text: $search.searchText, placement: .toolbar, prompt: LocalString.common_search)
         .onChange(of: scenePhase) { newValue in
             if case .active = newValue {
                 browser.refreshVideoState()

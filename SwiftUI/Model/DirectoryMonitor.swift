@@ -98,15 +98,16 @@ class DirectoryMonitor {
     }
 
     private func directoryDidReachStasis() {
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + Double(Int64(NSEC_PER_SEC/10)) / Double(NSEC_PER_SEC) , execute: { () -> Void in
-            self.delegate?.directoryContentDidChange(url: self.url)
-            self.onChange?(self.url)
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + Double(Int64(NSEC_PER_SEC/10)) / Double(NSEC_PER_SEC), execute: { [weak self] in
+            guard let url = self?.url else { return }
+            self?.delegate?.directoryContentDidChange(url: url)
+            self?.onChange?(url)
         })
     }
 
     private func waitAndCheckAgain() {
-        queue.asyncAfter(deadline: DispatchTime.now() + Double(Int64(NSEC_PER_SEC/2)) / Double(NSEC_PER_SEC) , execute: { () -> Void in
-            self.checkDirectoryChanges()
+        queue.asyncAfter(deadline: DispatchTime.now() + Double(Int64(NSEC_PER_SEC/2)) / Double(NSEC_PER_SEC), execute: { [weak self] in
+            self?.checkDirectoryChanges()
         })
     }
 

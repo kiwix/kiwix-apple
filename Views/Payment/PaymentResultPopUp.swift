@@ -42,14 +42,14 @@ struct PaymentResultPopUp: View {
             VStack(spacing: 16) {
                 switch state {
                 case .thankYou:
-                    Text("payment.success.title".localized)
+                    Text(LocalString.payment_success_title)
                         .font(.title)
-                    Text("payment.success.description".localized)
+                    Text(LocalString.payment_success_description)
                         .font(.headline)
                 case .error:
-                    Text("payment.error.title".localized)
+                    Text(LocalString.payment_error_title)
                         .font(.title)
-                    Text("payment.error.description".localized)
+                    Text(LocalString.payment_error_description)
                         .font(.headline)
                 }
 

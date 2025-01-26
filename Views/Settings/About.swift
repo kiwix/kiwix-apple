@@ -24,29 +24,29 @@ struct About: View {
     var body: some View {
         #if os(macOS)
         VStack(spacing: 16) {
-            SettingSection(name: "settings.about.title".localized) {
+            SettingSection(name: LocalString.settings_about_title) {
                 about
                 ourWebsite
             }
-            SettingSection(name: "settings.about.release".localized) {
+            SettingSection(name: LocalString.settings_about_release) {
                 release
                 HStack {
                     source
                     license
                 }
             }
-            SettingSection(name: "settings.about.dependencies".localized, alignment: .top) {
+            SettingSection(name: LocalString.settings_about_dependencies, alignment: .top) {
                 Table(dependencies) {
-                    TableColumn("settings.about.dependencies.name".localized, value: \.name)
-                    TableColumn("settings.about.dependencies.license".localized) { dependency in
+                    TableColumn(LocalString.settings_about_dependencies_name, value: \.name)
+                    TableColumn(LocalString.settings_about_dependencies_license) { dependency in
                         Text(dependency.license ?? "")
                     }
-                    TableColumn("settings.about.dependencies.version".localized, value: \.version)
+                    TableColumn(LocalString.settings_about_dependencies_version, value: \.version)
                 }.tableStyle(.bordered(alternatesRowBackgrounds: true))
             }
         }
         .padding()
-        .tabItem { Label("settings.about.title".localized, systemImage: "info.circle") }
+        .tabItem { Label(LocalString.settings_about_title, systemImage: "info.circle") }
         .task { await getDependencies() }
         .onChange(of: externalLinkURL) { url in
             guard let url = url else { return }
@@ -58,14 +58,14 @@ struct About: View {
                 about
                 ourWebsite
             }
-            Section("settings.about.release".localized) {
+            Section(LocalString.settings_about_release) {
                 release
                 appVersion
                 buildNumber
                 source
                 license
             }
-            Section("settings.about.dependencies".localized) {
+            Section(LocalString.settings_about_dependencies) {
                 ForEach(dependencies) { dependency in
                     HStack {
                         Text(dependency.name)
@@ -79,7 +79,7 @@ struct About: View {
                 }
             }
         }
-        .navigationTitle("settings.about.title".localized)
+        .navigationTitle(LocalString.settings_about_title)
         .navigationBarTitleDisplayMode(.inline)
         .onChange(of: externalLinkURL) { url in
             guard let url = url else { return }
@@ -94,33 +94,33 @@ struct About: View {
     }
 
     private var release: some View {
-        Text("settings.about.license-description".localized)
+        Text(LocalString.settings_about_license_description)
     }
 
     private var appVersion: some View {
-        Attribute(title: "settings.about.appverion.title".localized,
+        Attribute(title: LocalString.settings_about_appverion_title,
                   detail: Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String)
     }
 
     private var buildNumber: some View {
-        Attribute(title: "settings.about.build.title".localized,
+        Attribute(title: LocalString.settings_about_build_title,
                   detail: Bundle.main.infoDictionary?["CFBundleVersion"] as? String)
     }
 
     private var ourWebsite: some View {
-        Button("settings.about.our_website.button".localized) {
+        Button(LocalString.settings_about_our_website_button) {
             externalLinkURL = URL(string: "\(Brand.aboutWebsite)")
         }
     }
 
     private var source: some View {
-        Button("settings.about.source.title".localized) {
+        Button(LocalString.settings_about_source_title) {
             externalLinkURL = URL(string: "https://github.com/kiwix/kiwix-apple")
         }
     }
 
     private var license: some View {
-        Button("settings.about.button.license".localized) {
+        Button(LocalString.settings_about_button_license) {
             externalLinkURL = URL(string: "https://www.gnu.org/licenses/gpl-3.0.en.html")
         }
     }

@@ -52,10 +52,10 @@ struct Kiwix: App {
         }.commands {
             SidebarCommands()
             CommandGroup(replacing: .importExport) {
-                OpenFileButton(context: .command) { Text("app_macos_commands.open_file".localized) }
+                OpenFileButton(context: .command) { Text(LocalString.app_macos_commands_open_file) }
             }
             CommandGroup(replacing: .newItem) {
-                Button("app_macos_commands.new".localized) {
+                Button(LocalString.app_macos_commands_new) {
                     guard let currentWindow = NSApp.keyWindow,
                           let controller = currentWindow.windowController else { return }
                     controller.newWindowForTab(nil)
@@ -85,7 +85,7 @@ struct Kiwix: App {
             }
             .frame(width: 550, height: 400)
         }
-        Window("payment.donate.title".localized, id: "donation") {
+        Window(LocalString.payment_donate_title, id: "donation") {
             Group {
                 if let selectedAmount {
                     PaymentSummary(selectedAmount: selectedAmount, onComplete: {
@@ -187,7 +187,7 @@ struct RootView: View {
                     Label(navigationItem.name, systemImage: navigationItem.icon)
                 }
                 if FeatureFlags.hasLibrary {
-                    Section("app_macos_navigation.button.library".localized) {
+                    Section(LocalString.app_macos_navigation_button_library) {
                         ForEach(libraryItems, id: \.self) { navigationItem in
                             Label(navigationItem.name, systemImage: navigationItem.icon)
                         }

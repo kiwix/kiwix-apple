@@ -588,13 +588,13 @@ final class BrowserViewModel: NSObject, ObservableObject,
 
                 // open url
                 actions.append(
-                    UIAction(title: "common.dialog.button.open".localized,
+                    UIAction(title: LocalString.common_dialog_button_open,
                              image: UIImage(systemName: "doc.text")) { [weak self] _ in
                                  self?.webView.load(URLRequest(url: url))
                     }
                 )
                 actions.append(
-                    UIAction(title: "common.dialog.button.open_in_new_tab".localized,
+                    UIAction(title: LocalString.common_dialog_button_open_in_new_tab,
                              image: UIImage(systemName: "doc.badge.plus")) { [weak self] _ in
                                  guard let self else { return }
                                  Task { @MainActor in
@@ -611,13 +611,13 @@ final class BrowserViewModel: NSObject, ObservableObject,
 
                     if let bookmarks = try? context.fetch(request),
                        !bookmarks.isEmpty {
-                        return UIAction(title: "common.dialog.button.remove_bookmark".localized,
+                        return UIAction(title: LocalString.common_dialog_button_remove_bookmark,
                                         image: UIImage(systemName: "star.slash.fill")) { [weak self] _ in
                             self?.deleteBookmark(url: url)
                         }
                     } else {
                         return UIAction(
-                            title: "common.dialog.button.bookmark".localized,
+                            title: LocalString.common_dialog_button_bookmark,
                             image: UIImage(systemName: "star")
                         ) { [weak self] _ in
                             Task { @MainActor [weak self] in self?.createBookmark(url: url) }

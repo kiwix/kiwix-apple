@@ -44,7 +44,7 @@ struct ZimFilesOpened: View {
         .navigationTitle(NavigationItem.opened.name)
         .overlay {
             if zimFiles.isEmpty {
-                Message(text: "zim_file_opened.overlay.no-opened.message".localized)
+                Message(text: LocalString.zim_file_opened_overlay_no_opened_message)
             }
         }
         .onChange(of: zimFiles.count) { _ in
@@ -66,7 +66,7 @@ struct ZimFilesOpened: View {
                     Button {
                         NotificationCenter.toggleSidebar()
                     } label: {
-                        Label("zim_file_opened.toolbar.show_sidebar.label".localized, systemImage: "sidebar.left")
+                        Label(LocalString.zim_file_opened_toolbar_show_sidebar_label, systemImage: "sidebar.left")
                     }
                 }
             }
@@ -75,8 +75,8 @@ struct ZimFilesOpened: View {
                 Button {
                     isFileImporterPresented = true
                 } label: {
-                    Label("zim_file_opened.toolbar.open.title".localized, systemImage: "plus")
-                }.help("zim_file_opened.toolbar.open.help".localized)
+                    Label(LocalString.zim_file_opened_toolbar_open_title, systemImage: "plus")
+                }.help(LocalString.zim_file_opened_toolbar_open_help)
             }
         }
     }

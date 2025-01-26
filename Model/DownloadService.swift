@@ -254,10 +254,10 @@ final class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegat
             Database.shared.performBackgroundTask { context in
                 // configure notification content
                 let content = UNMutableNotificationContent()
-                content.title = "download_service.complete.title".localized
+                content.title = LocalString.download_service_complete_title
                 content.sound = .default
                 if let zimFile = try? context.fetch(ZimFile.fetchRequest(fileID: zimFileID)).first {
-                    content.body = "download_service.complete.description".localizedWithFormat(withArgs: zimFile.name)
+                    content.body = LocalString.download_service_complete_description(withArgs: zimFile.name)
                 }
 
                 // schedule notification

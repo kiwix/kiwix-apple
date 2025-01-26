@@ -46,7 +46,7 @@ struct WelcomeCatalog: View {
                     y: logoCalc.buttonCenterY)
                 .frame(maxWidth: logoCalc.buttonsWidth)
             if viewState == .error {
-                Text("library_refresh_error.retrieve.description".localized)
+                Text(LocalString.library_refresh_error_retrieve_description)
                     .foregroundColor(.red)
                     .position(
                         x: geometry.size.width * 0.5,
@@ -75,7 +75,7 @@ struct WelcomeCatalog: View {
         OpenFileButton(context: .welcomeScreen) {
             HStack {
                 Spacer()
-                Text("welcome.actions.open_file".localized)
+                Text(LocalString.welcome_actions_open_file)
                 Spacer()
             }.padding(6)
         }
@@ -90,9 +90,9 @@ struct WelcomeCatalog: View {
             HStack {
                 Spacer()
                 if viewState == .loading {
-                    Text("welcome.button.status.fetching_catalog.text".localized)
+                    Text(LocalString.welcome_button_status_fetching_catalog_text)
                 } else {
-                    Text("welcome.button.status.fetch_catalog.text".localized)
+                    Text(LocalString.welcome_button_status_fetch_catalog_text)
                 }
                 Spacer()
             }.padding(6)

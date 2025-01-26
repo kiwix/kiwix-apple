@@ -44,7 +44,6 @@
 "common.tab.list.close" = "Fermer l’onglet";
 "common.tab.menu.library" = "Bibliothèque";
 "common.tab.menu.settings" = "Paramètres";
-"common.support.app_name" = "Soutenez-nous %@";
 "common.export_file.alert.title" = "Exporter le fichier";
 "common.export_file.alert.description" = "Voulez-vous exporter le fichier %@ ?";
 "common.export_file.alert.button.title" = "Exporter";
@@ -75,7 +74,7 @@
 "flavor_tag.help.mini" = "seul un sous-ensemble du texte est disponible, probablement la première section";
 "library_refresh_time.last" = "À l’instant";
 "library_refresh_time.never" = "Jamais";
-"zim_file_cell_article_count_suffix" = "articles";
+"zim_file_cell.article_count.suffix" = "articles";
 "zim_file_missing_indicator.help" = "Le fichier Zim est manquant.";
 "library.zim_file_details.side_panel.message" = "Sélectionnez un fichier ZIM pour voir les détails";
 "library.zim_file_context.main_page.label" = "Page principale";
@@ -92,7 +91,7 @@
 "zim_file_downloads.overlay.empty.message" = "Aucune tâche de téléchargement";
 "zim_file_downloads.toolbar.show_sidebar.label" = "Afficher la barre latérale";
 "zim_file_new_overlay.empty" = "Pas de nouveau fichier ZIM";
-"zim_file_new_button_refresh" = "Actualiser";
+"zim_file_new.button.refresh" = "Actualiser";
 "zim_file.list.name.text" = "Nom";
 "zim_file.list.description.text" = "Description";
 "zim_file.list.actions.text" = "Actions";
@@ -204,7 +203,6 @@
 "app_macos_commands.open_file" = "Ouvrir...";
 "app_macos_commands.new" = "Nouvel onglet";
 "app_macos_navigation.button.library" = "Bibliothèque";
-"app_macos_navigation.show_sidebar" = "Afficher la barre latérale";
 "sidebar_view.navigation.button.close" = "Fermer";
 "sidebar_view.navigation.button.close_all" = "Fermer tous les onglets";
 "enum.category.wikipedia" = "Wikipédia";

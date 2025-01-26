@@ -46,7 +46,7 @@ struct ZimFilesDownloads: View {
         .navigationTitle(NavigationItem.downloads.name)
         .overlay {
             if downloadTasks.isEmpty {
-                Message(text: "zim_file_downloads.overlay.empty.message".localized)
+                Message(text: LocalString.zim_file_downloads_overlay_empty_message)
             }
         }
         .toolbar {
@@ -56,7 +56,7 @@ struct ZimFilesDownloads: View {
                     Button {
                         NotificationCenter.toggleSidebar()
                     } label: {
-                        Label("zim_file_downloads.toolbar.show_sidebar.label".localized, systemImage: "sidebar.left")
+                        Label(LocalString.zim_file_downloads_toolbar_show_sidebar_label, systemImage: "sidebar.left")
                     }
                 }
             }

@@ -31,7 +31,6 @@
 "common.tab.list.close" = "Fechar Guia";
 "common.tab.menu.library" = "Biblioteca";
 "common.tab.menu.settings" = "Configurações";
-"common.support.app_name" = "Apoie %@";
 "common.export_file.alert.title" = "Exportar arquivo";
 "common.export_file.alert.description" = "Você deseja exportar o arquivo %@?";
 "common.export_file.alert.button.title" = "Exportar";
@@ -50,7 +49,7 @@
 "download_task_cell.status.downloading" = "Baixando...";
 "download_task_cell.status.paused" = "Pausado";
 "library_refresh_time.never" = "Nunca";
-"zim_file_cell_article_count_suffix" = "artigos";
+"zim_file_cell.article_count.suffix" = "artigos";
 "zim_file_missing_indicator.help" = "Está faltando o arquivo zim.";
 "library.zim_file_details.side_panel.message" = "Selecione um arquivo ZIM para ver mais detalhes";
 "library.zim_file_context.main_page.label" = "Página principal";
@@ -60,6 +59,6 @@
 "zim_file_opened.toolbar.open.title" = "Abrir...";
 "zim_file_opened.toolbar.open.help" = "Abrir arquivo ZIM";
 "zim_file_category.title" = "Categoria";
-"zim_file_new_button_refresh" = "Atualizar";
+"zim_file_new.button.refresh" = "Atualizar";
 "zim_file.list.name.text" = "Nome";
 "zim_file.list.description.text" = "Descrição";

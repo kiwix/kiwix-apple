@@ -193,7 +193,7 @@ struct FetchingCatalogView: View {
     var body: some View {
         ZStack {
             LogoView()
-            LoadingMessageView(message: "welcome.button.status.fetching_catalog.text".localized)
+            LoadingMessageView(message: LocalString.welcome_button_status_fetching_catalog_text)
         }.ignoresSafeArea()
     }
 }
@@ -202,7 +202,7 @@ struct LoadingDataView: View {
     var body: some View {
         ZStack {
             LogoView()
-            LoadingMessageView(message: "welcome.loading.data.text".localized)
+            LoadingMessageView(message: LocalString.welcome_loading_data_text)
         }.ignoresSafeArea()
     }
 }

@@ -22,7 +22,7 @@ struct ContentSearchButton: View {
     @EnvironmentObject private var browser: BrowserViewModel
 
     var body: some View {
-        Button("common.search".localized,
+        Button(LocalString.common_search,
                systemImage: "text.magnifyingglass",
                action: {
             browser.webView.isFindInteractionEnabled = true
