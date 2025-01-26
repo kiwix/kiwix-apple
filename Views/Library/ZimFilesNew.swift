@@ -28,10 +28,12 @@ struct ZimFilesNew: View {
             NSSortDescriptor(keyPath: \ZimFile.name, ascending: true),
             NSSortDescriptor(keyPath: \ZimFile.size, ascending: false)
         ],
-        predicate: ZimFilesNew.buildPredicate(searchText: ""),
         animation: .easeInOut
     ) private var zimFiles: FetchedResults<ZimFile>
     @State private var searchText = ""
+    private var filterPredicate: NSPredicate {
+        ZimFilesNew.buildPredicate(searchText: searchText)
+    }
     let dismiss: (() -> Void)? // iOS only
 
     var body: some View {
@@ -40,7 +42,7 @@ struct ZimFilesNew: View {
             alignment: .leading,
             spacing: 12
         ) {
-            ForEach(zimFiles) { zimFile in
+            ForEach(zimFiles.filter { filterPredicate.evaluate(with: $0) }) { zimFile in
                 ZimFileCell(zimFile, prominent: .name)
                     .modifier(LibraryZimFileContext(zimFile: zimFile, dismiss: dismiss))
             }
@@ -51,12 +53,6 @@ struct ZimFilesNew: View {
         .searchable(text: $searchText)
         .onAppear {
             viewModel.start(isUserInitiated: false)
-        }
-        .onChange(of: languageCodes) { _ in
-            zimFiles.nsPredicate = ZimFilesNew.buildPredicate(searchText: searchText)
-        }
-        .onChange(of: searchText) { searchText in
-            zimFiles.nsPredicate = ZimFilesNew.buildPredicate(searchText: searchText)
         }
         .overlay {
             if zimFiles.isEmpty {
