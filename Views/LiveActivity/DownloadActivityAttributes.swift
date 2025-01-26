@@ -31,8 +31,21 @@ struct DownloadActivityAttributes: ActivityAttributes {
     }
 
     struct DownloadItem: Codable & Hashable {
+        let uuid: UUID
         let description: String
         let progress: Double
+        
+        init(uuid: UUID, description: String, progress: Double) {
+            self.uuid = uuid
+            self.description = description
+            self.progress = progress
+        }
+        
+        init(completedFor uuid: UUID) {
+            self.uuid = uuid
+            self.progress = 1.0
+            self.description = "Completed!" //TODO: update
+        }
     }
 }
 #endif
