@@ -16,32 +16,40 @@
 
 import ActivityKit
 
-struct DownloadActivityAttributes: ActivityAttributes {
+public struct DownloadActivityAttributes: ActivityAttributes {
     
-    let title: String
+    public let title: String
     
-    struct ContentState: Codable & Hashable {
-        let items: [DownloadItem]
-        var totalProgress: Double {
+    public init(title: String) {
+        self.title = title
+    }
+    
+    public struct ContentState: Codable & Hashable {
+        public let items: [DownloadItem]
+        public var totalProgress: Double {
             let sum = items.reduce(Double(0.0), { partialResult, item in
                 partialResult + item.progress
             })
             return sum / Double(items.count)
         }
+        
+        public init(items: [DownloadItem]) {
+            self.items = items
+        }
     }
 
-    struct DownloadItem: Codable & Hashable {
-        let uuid: UUID
-        let description: String
-        let progress: Double
+    public struct DownloadItem: Codable & Hashable {
+        public let uuid: UUID
+        public let description: String
+        public let progress: Double
         
-        init(uuid: UUID, description: String, progress: Double) {
+        public init(uuid: UUID, description: String, progress: Double) {
             self.uuid = uuid
             self.description = description
             self.progress = progress
         }
         
-        init(completedFor uuid: UUID) {
+        public init(completedFor uuid: UUID) {
             self.uuid = uuid
             self.progress = 1.0
             self.description = "Completed!" //TODO: update
