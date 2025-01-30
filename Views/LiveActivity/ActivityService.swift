@@ -12,39 +12,39 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Kiwix; If not, see https://www.gnu.org/licenses/.
-//
-//#if os(iOS)
-//
+
+#if os(iOS)
+
 import Combine
 import ActivityKit
-import KiwixWidgetsExtension
-//
-//@MainActor
-//final class ActivityService {
-//    
-//    private var cancellables = Set<AnyCancellable>()
-//    private var activity: Activity<DownloadActivityAttributes>?
-//    
-//    init(
-//        publisher: @MainActor () ->  CurrentValueSubject<[UUID: DownloadState], Never> = { DownloadService.shared.progress.publisher
-//        }
-//    ) {
-//        publisher().sink { [weak self] (state: [UUID : DownloadState]) in
-//            guard let self else { return }
-//            if state.isEmpty {
-//                stop()
-//            } else {
-//                update(state: state)
-//            }
-//        }.store(in: &cancellables)
-//    }
-//    
-//    private func start(with state: [UUID: DownloadState]) {
-//        let content = ActivityContent(
-//            state: activityState(from: state),
-//            staleDate: nil,
-//            relevanceScore: 0.0
-//        )
+
+@MainActor
+final class ActivityService {
+    
+    private var cancellables = Set<AnyCancellable>()
+    private var activity: Activity<DownloadActivityAttributes>?
+    
+    init(
+        publisher: @MainActor () ->  CurrentValueSubject<[UUID: DownloadState], Never> = { DownloadService.shared.progress.publisher
+        }
+    ) {
+        publisher().sink { [weak self] (state: [UUID : DownloadState]) in
+            guard let self else { return }
+            if state.isEmpty {
+                stop()
+            } else {
+                update(state: state)
+            }
+        }.store(in: &cancellables)
+    }
+    
+    private func start(with state: [UUID: DownloadState]) {
+        let content = ActivityContent(
+            state: activityState(from: state),
+            staleDate: nil,
+            relevanceScore: 0.0
+        )
+        debugPrint("start with: \(state)")
 //        if let activity = try? Activity
 //            .request(
 //                attributes: DownloadActivityAttributes(title: "Downloads"),
@@ -59,9 +59,10 @@ import KiwixWidgetsExtension
 //                }
 //            }
 //        }
-//    }
-//    
-//    private func update(state: [UUID: DownloadState]) {
+    }
+    
+    private func update(state: [UUID: DownloadState]) {
+        debugPrint("update state: \(state)")
 //        guard let activity else {
 //            start(with: state)
 //            return
@@ -74,9 +75,10 @@ import KiwixWidgetsExtension
 //                )
 //            )
 //        }
-//    }
-//    
-//    private func stop() {
+    }
+    
+    private func stop() {
+        debugPrint("stop")
 //        if let activity {
 //            let previousState = activity.content.state
 //            Task {
@@ -86,21 +88,21 @@ import KiwixWidgetsExtension
 //                self.activity = nil
 //            }
 //        }
-//    }
-//    
-//    private func activityState(from state: [UUID: DownloadState]) -> DownloadActivityAttributes.ContentState {
-//        DownloadActivityAttributes.ContentState(
-//            items: state.map { (key: UUID, download: DownloadState)-> DownloadActivityAttributes.DownloadItem in
-//            DownloadActivityAttributes.DownloadItem(uuid: key, description: key.uuidString, progress: Double(download.downloaded/download.total))
-//        })
-//    }
-//    
-//    private func completeState(for previousState: DownloadActivityAttributes.ContentState) -> DownloadActivityAttributes.ContentState {
-//        DownloadActivityAttributes
-//            .ContentState(items: previousState.items.map { item in
-//            DownloadActivityAttributes.DownloadItem(completedFor: item.uuid)
-//        })
-//    }
-//}
-//
-//#endif
+    }
+    
+    private func activityState(from state: [UUID: DownloadState]) -> DownloadActivityAttributes.ContentState {
+        DownloadActivityAttributes.ContentState(
+            items: state.map { (key: UUID, download: DownloadState)-> DownloadActivityAttributes.DownloadItem in
+            DownloadActivityAttributes.DownloadItem(uuid: key, description: key.uuidString, progress: Double(download.downloaded/download.total))
+        })
+    }
+    
+    private func completeState(for previousState: DownloadActivityAttributes.ContentState) -> DownloadActivityAttributes.ContentState {
+        DownloadActivityAttributes
+            .ContentState(items: previousState.items.map { item in
+            DownloadActivityAttributes.DownloadItem(completedFor: item.uuid)
+        })
+    }
+}
+
+#endif

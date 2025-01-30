@@ -2,7 +2,7 @@ name: Kiwix
 options:
   xcodeVersion: 15.2
   deploymentTarget: # the three latest major versions should be supported
-      iOS: 16.0
+      iOS: 16.6
       macOS: 13.0
   generateEmptyDirectories: true
   useTabs: false
@@ -87,6 +87,9 @@ targetTemplates:
       - path: PrivacyInfo.xcprivacy
         destinationFilters:
           - iOS
+      - path: Common
+        destinationFilters:
+          - iOS
       - path: Contents
         includes:
           - Resources
@@ -136,6 +139,16 @@ targets:
       - path: Tests
     dependencies:
       - target: Kiwix
+  Widgets:
+    type: app-extension
+    supportedDestinations: [iOS]
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: self.Kiwix.widgets
+        INFOPLIST_FILE: Widgets/Info.plist
+    sources:
+      - path: Common
+      - path: Widgets
     
 schemes:
   Kiwix:
