@@ -121,6 +121,8 @@ targets:
       - path: Kiwix/SplashScreenKiwix.storyboard
         destinationFilters:
           - iOS
+    dependencies:
+      - target: Widgets
   UnitTests:
     type: bundle.unit-test
     supportedDestinations: [iOS, macOS]
@@ -149,6 +151,9 @@ targets:
     sources:
       - path: Common
       - path: Widgets
+    dependencies:
+      - framework: SwiftUI.framework
+      - framework: WidgetKit.framework
     
 schemes:
   Kiwix:
