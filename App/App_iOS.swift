@@ -32,7 +32,7 @@ struct Kiwix: App {
         // MARK: - live activities
         switch AppType.current {
         case .kiwix:
-            activityService = nil //ActivityService()
+            activityService = ActivityService()
         case .custom:
             activityService = nil
         }
@@ -85,6 +85,7 @@ struct Kiwix: App {
                         LibraryOperations.scanDirectory(URL.documentDirectory)
                         LibraryOperations.applyFileBackupSetting()
                         DownloadService.shared.restartHeartbeatIfNeeded()
+                        activityService?.start()
                     case let .custom(zimFileURL):
                         await LibraryOperations.open(url: zimFileURL)
                         ZimMigration.forCustomApps()

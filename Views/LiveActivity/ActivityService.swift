@@ -17,18 +17,30 @@
 
 import Combine
 import ActivityKit
+import QuartzCore
 
 @MainActor
 final class ActivityService {
     
     private var cancellables = Set<AnyCancellable>()
     private var activity: Activity<DownloadActivityAttributes>?
+    private var lastUpdate = CACurrentMediaTime()
+    private let updateFrequency: Double
+    private let publisher: CurrentValueSubject<[UUID: DownloadState], Never>
+    private var isStarted: Bool = false
     
     init(
         publisher: @MainActor () ->  CurrentValueSubject<[UUID: DownloadState], Never> = { DownloadService.shared.progress.publisher
-        }
+        },
+        updateFrequency: Double = 5
     ) {
-        publisher().sink { [weak self] (state: [UUID : DownloadState]) in
+        assert(updateFrequency > 0)
+        self.updateFrequency = updateFrequency
+        self.publisher = publisher()
+    }
+    
+    func start() {
+        publisher.sink { [weak self] (state: [UUID : DownloadState]) in
             guard let self else { return }
             if state.isEmpty {
                 stop()
@@ -45,55 +57,66 @@ final class ActivityService {
             relevanceScore: 0.0
         )
         debugPrint("start with: \(state)")
-//        if let activity = try? Activity
-//            .request(
-//                attributes: DownloadActivityAttributes(title: "Downloads"),
-//                content: content,
-//                pushType: nil
-//            ) {
-//            Task {
-//                for await activityState in activity.activityStateUpdates {
-//                    if activityState == .dismissed {
-//                        self.activity = nil
-//                    }
-//                }
-//            }
-//        }
+        if let activity = try? Activity
+            .request(
+                attributes: DownloadActivityAttributes(title: "Downloads"),
+                content: content,
+                pushType: nil
+            ) {
+            Task {
+                for await activityState in activity.activityStateUpdates {
+                    if activityState == .dismissed {
+                        self.activity = nil
+                    }
+                }
+            }
+        }
     }
     
     private func update(state: [UUID: DownloadState]) {
+        guard isStarted else {
+            isStarted = true
+            start(with: state)
+            return
+        }
+        let now = CACurrentMediaTime()
+        guard (now - lastUpdate) > updateFrequency else {
+            debugPrint("now - lastUpdate: \(now - lastUpdate)")
+            return
+        }
         debugPrint("update state: \(state)")
-//        guard let activity else {
-//            start(with: state)
-//            return
-//        }
-//        Task {
-//            await activity.update(
-//                ActivityContent<DownloadActivityAttributes.ContentState>(
-//                    state: activityState(from: state),
-//                    staleDate: nil
-//                )
-//            )
-//        }
+        lastUpdate = now
+        Task {
+            await activity?.update(
+                ActivityContent<DownloadActivityAttributes.ContentState>(
+                    state: activityState(from: state),
+                    staleDate: nil
+                )
+            )
+        }
     }
     
     private func stop() {
         debugPrint("stop")
-//        if let activity {
-//            let previousState = activity.content.state
-//            Task {
-//                await activity.end(
-//                    ActivityContent(state: completeState(for: previousState), staleDate: nil),
-//                    dismissalPolicy: .default)
-//                self.activity = nil
-//            }
-//        }
+        if let activity {
+            let previousState = activity.content.state
+            Task {
+                await activity.end(
+                    ActivityContent(state: completeState(for: previousState), staleDate: nil),
+                    dismissalPolicy: .default)
+                self.activity = nil
+            }
+        }
     }
     
     private func activityState(from state: [UUID: DownloadState]) -> DownloadActivityAttributes.ContentState {
         DownloadActivityAttributes.ContentState(
             items: state.map { (key: UUID, download: DownloadState)-> DownloadActivityAttributes.DownloadItem in
-            DownloadActivityAttributes.DownloadItem(uuid: key, description: key.uuidString, progress: Double(download.downloaded/download.total))
+                DownloadActivityAttributes.DownloadItem(
+                    uuid: key,
+                    description: String(key.uuidString.prefix(3)),
+                    progress: Double(download.downloaded/download.total)
+                )
         })
     }
     
