@@ -21,16 +21,17 @@ struct DownloadsLiveActivity: Widget {
     var body: some WidgetConfiguration {
         ActivityConfiguration(for: DownloadActivityAttributes.self) { context in
             // Lock screen/banner UI goes here
-            VStack {
+            HStack {
                 ForEach(context.state.items, id: \.uuid) { item in
-                    HStack {
-                        Text(item.description)
+                    ZStack {
+                        AccessoryWidgetBackground()
+                        ProgressView(inter)
                         ProgressView(value: item.progress)
+                            .progressViewStyle(.circular)
                     }
-                    
                 }
             }
-            .activityBackgroundTint(Color.cyan)
+            .activityBackgroundTint(.clear)
             .activitySystemActionForegroundColor(Color.black)
 
         } dynamicIsland: { context in

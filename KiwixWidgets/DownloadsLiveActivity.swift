@@ -46,9 +46,11 @@ struct DownloadsLiveActivity: Widget {
                 }
                 DynamicIslandExpandedRegion(.trailing) {
                     ProgressView(value: context.state.totalProgress)
+                        .progressViewStyle(.circular)
                 }
                 DynamicIslandExpandedRegion(.bottom) {
                     ProgressView(value: context.state.totalProgress)
+                        .progressViewStyle(.circular)
                 }
             } compactLeading: {
                 ProgressView(value: context.state.totalProgress)
@@ -85,7 +87,7 @@ extension DownloadActivityAttributes.ContentState {
      }
 }
 
-@available(iOS 18.0, *)
+@available(iOS 17.8, *)
 #Preview("Notification", as: .content, using: DownloadActivityAttributes.preview) {
     DownloadsLiveActivity()
 } contentStates: {
