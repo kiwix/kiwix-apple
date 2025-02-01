@@ -21,18 +21,20 @@ struct DownloadsLiveActivity: Widget {
     var body: some WidgetConfiguration {
         ActivityConfiguration(for: DownloadActivityAttributes.self) { context in
             // Lock screen/banner UI goes here
-            HStack {
-                ForEach(context.state.items, id: \.uuid) { item in
-                    ZStack {
-                        AccessoryWidgetBackground()
-                        ProgressView(inter)
-                        ProgressView(value: item.progress)
-                            .progressViewStyle(.circular)
+            Group {
+                HStack {
+                    ForEach(context.state.items, id: \.uuid) { item in
+                        ZStack {
+                            ProgressView(value: item.progress)
+                                .progressViewStyle(CircularProgressGaugeStyle())
+                                .frame(width: 50, height: 50)
+                        }
                     }
                 }
             }
-            .activityBackgroundTint(.clear)
-            .activitySystemActionForegroundColor(Color.black)
+            .backgroundStyle(.black)
+//            .activityBackgroundTint(.clear)
+//            .activitySystemActionForegroundColor(Color.black)
 
         } dynamicIsland: { context in
             DynamicIsland {
@@ -52,9 +54,10 @@ struct DownloadsLiveActivity: Widget {
                     ProgressView(value: context.state.totalProgress)
                 }
             } compactLeading: {
-                ProgressView(value: context.state.totalProgress)
+                KiwixLogo()
             } compactTrailing: {
                 ProgressView(value: context.state.totalProgress)
+                    .progressViewStyle(CircularProgressGaugeStyle())
             } minimal: {
                 ProgressView(value: context.state.totalProgress)
             }
@@ -88,6 +91,14 @@ extension DownloadActivityAttributes.ContentState {
 
 @available(iOS 18.0, *)
 #Preview("Notification", as: .content, using: DownloadActivityAttributes.preview) {
+    DownloadsLiveActivity()
+} contentStates: {
+    DownloadActivityAttributes.ContentState.midProgress
+    DownloadActivityAttributes.ContentState.completed
+}
+
+@available(iOS 18.0, *)
+#Preview("Compact", as: .dynamicIsland(.compact), using: DownloadActivityAttributes.preview) {
     DownloadsLiveActivity()
 } contentStates: {
     DownloadActivityAttributes.ContentState.midProgress

@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "logo_gradient.svg",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}
