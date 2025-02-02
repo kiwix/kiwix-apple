@@ -11,7 +11,7 @@
 // General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with Kiwix; If not, see https://www.gnu.org/licenses/.
+// along with Kiwix; If not, see https://www.gnu.orgllll/llicenses/.
 
 #if os(iOS)
 
@@ -51,21 +51,22 @@ final class ActivityService {
     }
     
     private func start(with state: [UUID: DownloadState]) {
-        let content = ActivityContent(
-            state: activityState(from: state),
-            staleDate: nil,
-            relevanceScore: 0.0
-        )
-        debugPrint("start with: \(state)")
-        if let activity = try? Activity
-            .request(
-                attributes: DownloadActivityAttributes(
-                    downloadingTitle: LocalString.download_task_cell_status_downloading
-                ),
-                content: content,
-                pushType: nil
-            ) {
-            Task {
+        Task {
+            let activityState = await activityState(from: state)
+            let content = ActivityContent(
+                state: activityState,
+                staleDate: nil,
+                relevanceScore: 0.0
+            )
+            debugPrint("start with: \(activityState)")
+            if let activity = try? Activity
+                .request(
+                    attributes: DownloadActivityAttributes(
+                        downloadingTitle: LocalString.download_task_cell_status_downloading
+                    ),
+                    content: content,
+                    pushType: nil
+                ) {
                 for await activityState in activity.activityStateUpdates {
                     if activityState == .dismissed {
                         self.activity = nil
@@ -89,9 +90,10 @@ final class ActivityService {
         debugPrint("update state: \(state)")
         lastUpdate = now
         Task {
+            let activityState = await activityState(from: state)
             await activity?.update(
                 ActivityContent<DownloadActivityAttributes.ContentState>(
-                    state: activityState(from: state),
+                    state: activityState,
                     staleDate: nil
                 )
             )
@@ -104,12 +106,29 @@ final class ActivityService {
         self.isStarted = false
     }
     
-    private func activityState(from state: [UUID: DownloadState]) -> DownloadActivityAttributes.ContentState {
-        DownloadActivityAttributes.ContentState(
+    private func getDownloadTitle(for uuid: UUID) async -> String {
+        await withCheckedContinuation { continuation in
+            Database.shared.performBackgroundTask { context in
+                if let file = try? context.fetch(ZimFile.fetchRequest(fileID: uuid)).first {
+                    continuation.resume(returning: file.name)
+                } else {
+                    continuation.resume(returning: uuid.uuidString)
+                }
+            }
+        }
+    }
+    
+    private func activityState(from state: [UUID: DownloadState]) async -> DownloadActivityAttributes.ContentState {
+        var titles: [UUID: String] = [:]
+        for key in state.keys {
+            titles[key] = await getDownloadTitle(for: key)
+        }
+        
+        return DownloadActivityAttributes.ContentState(
             items: state.map { (key: UUID, download: DownloadState)-> DownloadActivityAttributes.DownloadItem in
                 DownloadActivityAttributes.DownloadItem(
                     uuid: key,
-                    description: String(key.uuidString.prefix(3)),
+                    description: titles[key] ?? key.uuidString,
                     downloaded: download.downloaded,
                     total: download.total)
         })
