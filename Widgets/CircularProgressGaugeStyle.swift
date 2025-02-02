@@ -32,7 +32,6 @@ struct CircularProgressGaugeStyle: ProgressViewStyle {
                 .stroke(Color.white, lineWidth: lineWidth)
                 .rotationEffect(.degrees(-90))
                 .animation(.linear, value: configuration.fractionCompleted)
-                .frame(maxWidth: 30, maxHeight: 30)
         }
     }
 }

@@ -18,10 +18,11 @@ import ActivityKit
 
 public struct DownloadActivityAttributes: ActivityAttributes {
     
-    public let title: String
+    public let downloadingTitle: String
     
-    public init(title: String) {
-        self.title = title
+    /// - Parameter downloadingTitle: it is localised on the app level
+    public init(downloadingTitle: String) {
+        self.downloadingTitle = downloadingTitle
     }
     
     public struct ContentState: Codable & Hashable {
@@ -33,6 +34,21 @@ public struct DownloadActivityAttributes: ActivityAttributes {
             return sum / Double(items.count)
         }
         
+        public var totalSummary: String {
+            let sumOfTotal = items.reduce(0) { result, item in
+                result + item.total
+            }
+            let sumOfDownloaded = items.reduce(0) { result, item in
+                result + item.downloaded
+            }
+            let progress = Progress(totalUnitCount: sumOfTotal)
+            progress.completedUnitCount = sumOfDownloaded
+            progress.kind = .file
+            progress.fileTotalCount = items.count
+            progress.fileOperationKind = .downloading
+            return progress.localizedAdditionalDescription
+        }
+        
         public init(items: [DownloadItem]) {
             self.items = items
         }
@@ -41,18 +57,28 @@ public struct DownloadActivityAttributes: ActivityAttributes {
     public struct DownloadItem: Codable & Hashable {
         public let uuid: UUID
         public let description: String
-        public let progress: Double
-        
-        public init(uuid: UUID, description: String, progress: Double) {
-            self.uuid = uuid
-            self.description = description
-            self.progress = progress
+        public let downloaded: Int64
+        public let total: Int64
+        public var progress: Double {
+            Double(downloaded/total)
+        }
+        public var progressDescription: String {
+            let progress: Progress = {
+                let prog = Progress(totalUnitCount: total)
+                prog.completedUnitCount = downloaded
+                prog.kind = .file
+                prog.fileTotalCount = 1
+                prog.fileOperationKind = .downloading
+                return prog
+            }()
+            return progress.localizedAdditionalDescription
         }
         
-        public init(completedFor uuid: UUID) {
+        public init(uuid: UUID, description: String, downloaded: Int64, total: Int64) {
             self.uuid = uuid
-            self.progress = 1.0
-            self.description = "Completed!" //TODO: update
+            self.description = description
+            self.downloaded = downloaded
+            self.total = total
         }
     }
 }

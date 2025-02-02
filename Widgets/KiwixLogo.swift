@@ -17,11 +17,21 @@ import SwiftUI
 
 struct KiwixLogo: View {
     
+    let maxHeight: CGFloat
+    
+    init(maxHeight: CGFloat = 25) {
+        self.maxHeight = maxHeight
+    }
+    
     var body: some View {
-        ZStack {
-            RoundedRectangle(cornerSize: CGSize(width: 5.0, height: 5.0))
+        ZStack(alignment: .center) {
+            RoundedRectangle(cornerRadius: 10.0)
                 .fill(Color.white)
+                .frame(width: maxHeight, height: maxHeight)
             Image("KiwixLogo")
+                .resizable()
+                .scaledToFit()
+                .frame(width: maxHeight / 1.6182, height: maxHeight / 1.6182)
         }
     }
 }

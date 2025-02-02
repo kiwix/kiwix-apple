@@ -41,17 +41,28 @@ struct DownloadsLiveActivity: Widget {
                 // Expanded UI goes here.  Compose the expanded UI through
                 // various regions, like leading/trailing/center/bottom
                 DynamicIslandExpandedRegion(.leading) {
-                    VStack {
-                        ForEach(context.state.items, id: \.uuid) { item in
-                            Text(item.description)
-                        }
-                    }
+                    Spacer()
+                    KiwixLogo(maxHeight: 50)
+                    Spacer()
                 }
                 DynamicIslandExpandedRegion(.trailing) {
                     ProgressView(value: context.state.totalProgress)
+                        .progressViewStyle(CircularProgressGaugeStyle(lineWidth: 5.7))
+                        .padding(6.0)
                 }
-                DynamicIslandExpandedRegion(.bottom) {
-                    ProgressView(value: context.state.totalProgress)
+                DynamicIslandExpandedRegion(.center) {
+                    VStack(alignment: .leading) {
+                        Text(context.downloadingTitle)
+                            .lineLimit(1)
+                            .multilineTextAlignment(.leading)
+                            .font(.headline)
+                            .bold()
+                        Text(context.state.totalSummary)
+                            .lineLimit(1)
+                            .multilineTextAlignment(.leading)
+                            .font(.caption)
+                            .tint(.secondary)
+                    }
                 }
             } compactLeading: {
                 KiwixLogo()
@@ -60,6 +71,7 @@ struct DownloadsLiveActivity: Widget {
                     .progressViewStyle(CircularProgressGaugeStyle())
             } minimal: {
                 ProgressView(value: context.state.totalProgress)
+                    .progressViewStyle(CircularProgressGaugeStyle())
             }
             .widgetURL(URL(string: "https://www.kiwix.org"))
             .keylineTint(Color.red)
@@ -99,6 +111,22 @@ extension DownloadActivityAttributes.ContentState {
 
 @available(iOS 18.0, *)
 #Preview("Compact", as: .dynamicIsland(.compact), using: DownloadActivityAttributes.preview) {
+    DownloadsLiveActivity()
+} contentStates: {
+    DownloadActivityAttributes.ContentState.midProgress
+    DownloadActivityAttributes.ContentState.completed
+}
+
+@available(iOS 18.0, *)
+#Preview("Minimal", as: .dynamicIsland(.minimal), using: DownloadActivityAttributes.preview) {
+    DownloadsLiveActivity()
+} contentStates: {
+    DownloadActivityAttributes.ContentState.midProgress
+    DownloadActivityAttributes.ContentState.completed
+}
+
+@available(iOS 18.0, *)
+#Preview("Dynamic island", as: .dynamicIsland(.expanded), using: DownloadActivityAttributes.preview) {
     DownloadsLiveActivity()
 } contentStates: {
     DownloadActivityAttributes.ContentState.midProgress

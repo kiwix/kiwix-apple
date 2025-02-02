@@ -59,7 +59,9 @@ final class ActivityService {
         debugPrint("start with: \(state)")
         if let activity = try? Activity
             .request(
-                attributes: DownloadActivityAttributes(title: "Downloads"),
+                attributes: DownloadActivityAttributes(
+                    downloadingTitle: LocalString.download_task_cell_status_downloading
+                ),
                 content: content,
                 pushType: nil
             ) {
@@ -98,15 +100,8 @@ final class ActivityService {
     
     private func stop() {
         debugPrint("stop")
-        if let activity {
-            let previousState = activity.content.state
-            Task {
-                await activity.end(
-                    ActivityContent(state: completeState(for: previousState), staleDate: nil),
-                    dismissalPolicy: .default)
-                self.activity = nil
-            }
-        }
+        self.activity = nil
+        self.isStarted = false
     }
     
     private func activityState(from state: [UUID: DownloadState]) -> DownloadActivityAttributes.ContentState {
@@ -115,15 +110,8 @@ final class ActivityService {
                 DownloadActivityAttributes.DownloadItem(
                     uuid: key,
                     description: String(key.uuidString.prefix(3)),
-                    progress: Double(download.downloaded/download.total)
-                )
-        })
-    }
-    
-    private func completeState(for previousState: DownloadActivityAttributes.ContentState) -> DownloadActivityAttributes.ContentState {
-        DownloadActivityAttributes
-            .ContentState(items: previousState.items.map { item in
-            DownloadActivityAttributes.DownloadItem(completedFor: item.uuid)
+                    downloaded: download.downloaded,
+                    total: download.total)
         })
     }
 }
