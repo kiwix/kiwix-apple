@@ -26,10 +26,10 @@ struct CircularProgressGaugeStyle: ProgressViewStyle {
     func makeBody(configuration: Configuration) -> some View {
         ZStack {
             Circle()
-                .stroke(Color.gray, lineWidth: lineWidth)
+                .stroke(Color.secondary, lineWidth: lineWidth)
             Circle()
                 .trim(from: 0, to: CGFloat(configuration.fractionCompleted ?? 0))
-                .stroke(Color.white, style: StrokeStyle(lineWidth: lineWidth, lineCap: .round, miterLimit: 0))
+                .stroke(Color.primary, style: StrokeStyle(lineWidth: lineWidth, lineCap: .round, miterLimit: 0))
                 .rotationEffect(.degrees(-90))
                 .animation(.linear, value: configuration.fractionCompleted)
         }
