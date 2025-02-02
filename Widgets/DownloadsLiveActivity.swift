@@ -21,20 +21,33 @@ struct DownloadsLiveActivity: Widget {
     var body: some WidgetConfiguration {
         ActivityConfiguration(for: DownloadActivityAttributes.self) { context in
             // Lock screen/banner UI goes here
-            Group {
-                HStack {
-                    ForEach(context.state.items, id: \.uuid) { item in
-                        ZStack {
-                            ProgressView(value: item.progress)
-                                .progressViewStyle(CircularProgressGaugeStyle())
-                                .frame(width: 50, height: 50)
+            VStack {
+                ForEach(context.state.items, id: \.uuid) { item in
+                    HStack {
+                        KiwixLogo(maxHeight: 50)
+                            .padding()
+                        VStack(alignment: .leading) {
+                            Text(item.description)
+                                .lineLimit(1)
+                                .multilineTextAlignment(.leading)
+                                .font(.headline)
+                                .bold()
+                                .colorInvert()
+                            Text(item.progressDescription)
+                                .lineLimit(1)
+                                .multilineTextAlignment(.leading)
+                                .font(.caption)
+                                .tint(.secondary)
+                                .colorInvert()
                         }
+                        Spacer()
+                        ProgressView(value: item.progress)
+                            .progressViewStyle(CircularProgressGaugeStyle(lineWidth: 5.7))
+                            .frame(width: 24, height: 24)
+                            .padding()
                     }
                 }
-            }
-            .backgroundStyle(.black)
-//            .activityBackgroundTint(.clear)
-//            .activitySystemActionForegroundColor(Color.black)
+            }.background(.black)
 
         } dynamicIsland: { context in
             DynamicIsland {
@@ -47,12 +60,12 @@ struct DownloadsLiveActivity: Widget {
                 }
                 DynamicIslandExpandedRegion(.trailing) {
                     ProgressView(value: context.state.totalProgress)
-                        .progressViewStyle(CircularProgressGaugeStyle(lineWidth: 5.7))
+                        .progressViewStyle(CircularProgressGaugeStyle(lineWidth: 11.4))
                         .padding(6.0)
                 }
                 DynamicIslandExpandedRegion(.center) {
                     VStack(alignment: .leading) {
-                        Text(context.downloadingTitle)
+                        Text(context.attributes.downloadingTitle)
                             .lineLimit(1)
                             .multilineTextAlignment(.leading)
                             .font(.headline)
@@ -68,10 +81,13 @@ struct DownloadsLiveActivity: Widget {
                 KiwixLogo()
             } compactTrailing: {
                 ProgressView(value: context.state.totalProgress)
-                    .progressViewStyle(CircularProgressGaugeStyle())
+                    .progressViewStyle(CircularProgressGaugeStyle(lineWidth: 5.7))
+                    .frame(width: 20, height: 20, alignment: .trailing)
+                    
             } minimal: {
                 ProgressView(value: context.state.totalProgress)
-                    .progressViewStyle(CircularProgressGaugeStyle())
+                    .progressViewStyle(CircularProgressGaugeStyle(lineWidth: 5.7))
+                    .frame(width: 24, height: 24)
             }
             .widgetURL(URL(string: "https://www.kiwix.org"))
             .keylineTint(Color.red)
@@ -81,22 +97,22 @@ struct DownloadsLiveActivity: Widget {
 
 extension DownloadActivityAttributes {
     fileprivate static var preview: DownloadActivityAttributes {
-        DownloadActivityAttributes(title: "Downloads")
+        DownloadActivityAttributes(downloadingTitle: "Downloading...")
     }
 }
 
 extension DownloadActivityAttributes.ContentState {
     fileprivate static var midProgress: DownloadActivityAttributes.ContentState {
         DownloadActivityAttributes.ContentState(items: [
-            DownloadActivityAttributes.DownloadItem(uuid: UUID(), description: "First item", progress: 0.5),
-            DownloadActivityAttributes.DownloadItem(uuid: UUID(), description: "2nd item", progress: 0.9)
+            DownloadActivityAttributes.DownloadItem(uuid: UUID(), description: "First item", downloaded: 128, total: 256),
+            DownloadActivityAttributes.DownloadItem(uuid: UUID(), description: "2nd item", downloaded: 90, total: 124)
         ])
      }
      
      fileprivate static var completed: DownloadActivityAttributes.ContentState {
          DownloadActivityAttributes.ContentState(items: [
-            DownloadActivityAttributes.DownloadItem(uuid: UUID(), description: "First item", progress: 1.0),
-             DownloadActivityAttributes.DownloadItem(uuid: UUID(), description: "2nd item", progress: 0.8)
+            DownloadActivityAttributes.DownloadItem(uuid: UUID(), description: "First item", downloaded: 256, total: 256),
+            DownloadActivityAttributes.DownloadItem(uuid: UUID(), description: "2nd item", downloaded: 110, total: 124)
          ])
      }
 }

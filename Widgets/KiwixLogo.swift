@@ -25,7 +25,7 @@ struct KiwixLogo: View {
     
     var body: some View {
         ZStack(alignment: .center) {
-            RoundedRectangle(cornerRadius: 10.0)
+            RoundedRectangle(cornerRadius: maxHeight / 4)
                 .fill(Color.white)
                 .frame(width: maxHeight, height: maxHeight)
             Image("KiwixLogo")

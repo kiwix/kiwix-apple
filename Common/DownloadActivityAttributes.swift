@@ -25,28 +25,31 @@ public struct DownloadActivityAttributes: ActivityAttributes {
         self.downloadingTitle = downloadingTitle
     }
     
+    private static func progressFor(items: [DownloadItem]) -> Progress {
+        let sumOfTotal = items.reduce(0) { result, item in
+            result + item.total
+        }
+        let sumOfDownloaded = items.reduce(0) { result, item in
+            result + item.downloaded
+        }
+        let prog = Progress(totalUnitCount: sumOfTotal)
+        prog.completedUnitCount = sumOfDownloaded
+        prog.kind = .file
+        prog.fileTotalCount = items.count
+        prog.fileOperationKind = .downloading
+        return prog
+    }
+    
     public struct ContentState: Codable & Hashable {
+        
         public let items: [DownloadItem]
+        
         public var totalProgress: Double {
-            let sum = items.reduce(Double(0.0), { partialResult, item in
-                partialResult + item.progress
-            })
-            return sum / Double(items.count)
+            progressFor(items: items).fractionCompleted
         }
         
         public var totalSummary: String {
-            let sumOfTotal = items.reduce(0) { result, item in
-                result + item.total
-            }
-            let sumOfDownloaded = items.reduce(0) { result, item in
-                result + item.downloaded
-            }
-            let progress = Progress(totalUnitCount: sumOfTotal)
-            progress.completedUnitCount = sumOfDownloaded
-            progress.kind = .file
-            progress.fileTotalCount = items.count
-            progress.fileOperationKind = .downloading
-            return progress.localizedAdditionalDescription
+            progressFor(items: items).localizedAdditionalDescription
         }
         
         public init(items: [DownloadItem]) {
@@ -60,18 +63,10 @@ public struct DownloadActivityAttributes: ActivityAttributes {
         public let downloaded: Int64
         public let total: Int64
         public var progress: Double {
-            Double(downloaded/total)
+            progressFor(items: [self]).fractionCompleted
         }
         public var progressDescription: String {
-            let progress: Progress = {
-                let prog = Progress(totalUnitCount: total)
-                prog.completedUnitCount = downloaded
-                prog.kind = .file
-                prog.fileTotalCount = 1
-                prog.fileOperationKind = .downloading
-                return prog
-            }()
-            return progress.localizedAdditionalDescription
+            progressFor(items: [self]).localizedAdditionalDescription
         }
         
         public init(uuid: UUID, description: String, downloaded: Int64, total: Int64) {

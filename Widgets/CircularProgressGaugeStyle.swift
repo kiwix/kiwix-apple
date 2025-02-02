@@ -29,7 +29,7 @@ struct CircularProgressGaugeStyle: ProgressViewStyle {
                 .stroke(Color.gray, lineWidth: lineWidth)
             Circle()
                 .trim(from: 0, to: CGFloat(configuration.fractionCompleted ?? 0))
-                .stroke(Color.white, lineWidth: lineWidth)
+                .stroke(Color.white, style: StrokeStyle(lineWidth: lineWidth, lineCap: .round, miterLimit: 0))
                 .rotationEffect(.degrees(-90))
                 .animation(.linear, value: configuration.fractionCompleted)
         }
