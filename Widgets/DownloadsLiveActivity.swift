@@ -32,13 +32,11 @@ struct DownloadsLiveActivity: Widget {
                                 .multilineTextAlignment(.leading)
                                 .font(.headline)
                                 .bold()
-                                .colorInvert()
                             Text(item.progressDescription)
                                 .lineLimit(1)
                                 .multilineTextAlignment(.leading)
                                 .font(.caption)
                                 .tint(.secondary)
-                                .colorInvert()
                         }
                         Spacer()
                         ProgressView(value: item.progress)
@@ -47,7 +45,7 @@ struct DownloadsLiveActivity: Widget {
                             .padding()
                     }
                 }
-            }.background(.black)
+            }
 
         } dynamicIsland: { context in
             DynamicIsland {

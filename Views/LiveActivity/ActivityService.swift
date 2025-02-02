@@ -32,7 +32,7 @@ final class ActivityService {
     init(
         publisher: @MainActor () ->  CurrentValueSubject<[UUID: DownloadState], Never> = { DownloadService.shared.progress.publisher
         },
-        updateFrequency: Double = 5
+        updateFrequency: Double = 1
     ) {
         assert(updateFrequency > 0)
         self.updateFrequency = updateFrequency
@@ -59,7 +59,7 @@ final class ActivityService {
                 relevanceScore: 0.0
             )
             debugPrint("start with: \(activityState)")
-            if let activity = try? Activity
+            if let localActivity = try? Activity
                 .request(
                     attributes: DownloadActivityAttributes(
                         downloadingTitle: LocalString.download_task_cell_status_downloading
@@ -67,11 +67,16 @@ final class ActivityService {
                     content: content,
                     pushType: nil
                 ) {
-                for await activityState in activity.activityStateUpdates {
+                activity = localActivity
+                for await activityState in localActivity.activityStateUpdates {
                     if activityState == .dismissed {
-                        self.activity = nil
+                        activity = nil
+                        isStarted = false
                     }
                 }
+            } else {
+                activity = nil
+                isStarted = false
             }
         }
     }
@@ -83,15 +88,15 @@ final class ActivityService {
             return
         }
         let now = CACurrentMediaTime()
-        guard (now - lastUpdate) > updateFrequency else {
+        guard let activity, (now - lastUpdate) > updateFrequency else {
             debugPrint("now - lastUpdate: \(now - lastUpdate)")
             return
         }
-        debugPrint("update state: \(state)")
         lastUpdate = now
         Task {
             let activityState = await activityState(from: state)
-            await activity?.update(
+            debugPrint("update state: \(activityState)")
+            await activity.update(
                 ActivityContent<DownloadActivityAttributes.ContentState>(
                     state: activityState,
                     staleDate: nil
