@@ -58,18 +58,16 @@ final class ActivityService {
                 staleDate: nil,
                 relevanceScore: 0.0
             )
-            debugPrint("start with: \(activityState)")
             if let localActivity = try? Activity
                 .request(
-                    attributes: DownloadActivityAttributes(
-                        downloadingTitle: LocalString.download_task_cell_status_downloading
-                    ),
+                    attributes: DownloadActivityAttributes(),
                     content: content,
                     pushType: nil
                 ) {
                 activity = localActivity
                 for await activityState in localActivity.activityStateUpdates {
-                    if activityState == .dismissed {
+                    if [.ended, .dismissed].contains(activityState),
+                       localActivity.id == activity?.id {
                         activity = nil
                         isStarted = false
                     }
@@ -89,13 +87,11 @@ final class ActivityService {
         }
         let now = CACurrentMediaTime()
         guard let activity, (now - lastUpdate) > updateFrequency else {
-            debugPrint("now - lastUpdate: \(now - lastUpdate)")
             return
         }
         lastUpdate = now
         Task {
             let activityState = await activityState(from: state)
-            debugPrint("update state: \(activityState)")
             await activity.update(
                 ActivityContent<DownloadActivityAttributes.ContentState>(
                     state: activityState,
@@ -106,9 +102,11 @@ final class ActivityService {
     }
     
     private func stop() {
-        debugPrint("stop")
-        self.activity = nil
-        self.isStarted = false
+        Task {
+            await activity?.end(nil, dismissalPolicy: .immediate)
+            activity = nil
+            isStarted = false
+        }
     }
     
     private func getDownloadTitle(for uuid: UUID) async -> String {
@@ -130,6 +128,7 @@ final class ActivityService {
         }
         
         return DownloadActivityAttributes.ContentState(
+            downloadingTitle: LocalString.download_task_cell_status_downloading,
             items: state.map { (key: UUID, download: DownloadState)-> DownloadActivityAttributes.DownloadItem in
                 DownloadActivityAttributes.DownloadItem(
                     uuid: key,

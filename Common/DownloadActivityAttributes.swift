@@ -18,13 +18,6 @@ import ActivityKit
 
 public struct DownloadActivityAttributes: ActivityAttributes {
     
-    public let downloadingTitle: String
-    
-    /// - Parameter downloadingTitle: it is localised on the app level
-    public init(downloadingTitle: String) {
-        self.downloadingTitle = downloadingTitle
-    }
-    
     private static func progressFor(items: [DownloadItem]) -> Progress {
         let sumOfTotal = items.reduce(0) { result, item in
             result + item.total
@@ -41,31 +34,41 @@ public struct DownloadActivityAttributes: ActivityAttributes {
     }
     
     public struct ContentState: Codable & Hashable {
+        private let items: [DownloadItem]
+        private let downloadingTitle: String
         
-        public let items: [DownloadItem]
+        /// - Parameter downloadingTitle: it is localised on the app level
+        /// - Parameter items: list of download items and their current state
+        public init(downloadingTitle: String, items: [DownloadItem]) {
+            self.downloadingTitle = downloadingTitle
+            self.items = items
+        }
         
-        public var totalProgress: Double {
+        public var title: String {
+            guard let first = items.first, items.count == 1 else {
+                return downloadingTitle
+            }
+            return first.description
+        }
+        
+        public var progress: Double {
             progressFor(items: items).fractionCompleted
         }
         
-        public var totalSummary: String {
+        public var progressDescription: String {
             progressFor(items: items).localizedAdditionalDescription
-        }
-        
-        public init(items: [DownloadItem]) {
-            self.items = items
         }
     }
 
     public struct DownloadItem: Codable & Hashable {
-        public let uuid: UUID
-        public let description: String
-        public let downloaded: Int64
-        public let total: Int64
-        public var progress: Double {
+        let uuid: UUID
+        let description: String
+        let downloaded: Int64
+        let total: Int64
+        var progress: Double {
             progressFor(items: [self]).fractionCompleted
         }
-        public var progressDescription: String {
+        var progressDescription: String {
             progressFor(items: [self]).localizedAdditionalDescription
         }
         

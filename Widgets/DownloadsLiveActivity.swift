@@ -22,31 +22,29 @@ struct DownloadsLiveActivity: Widget {
         ActivityConfiguration(for: DownloadActivityAttributes.self) { context in
             // Lock screen/banner UI goes here
             VStack {
-                ForEach(context.state.items, id: \.uuid) { item in
-                    HStack {
-                        KiwixLogo(maxHeight: 50)
-                            .padding()
-                        VStack(alignment: .leading) {
-                            Text(item.description)
-                                .lineLimit(1)
-                                .multilineTextAlignment(.leading)
-                                .font(.headline)
-                                .bold()
-                            Text(item.progressDescription)
-                                .lineLimit(1)
-                                .multilineTextAlignment(.leading)
-                                .font(.caption)
-                                .tint(.secondary)
-                        }
-                        Spacer()
-                        ProgressView(value: item.progress)
-                            .progressViewStyle(CircularProgressGaugeStyle(lineWidth: 5.7))
-                            .frame(width: 24, height: 24)
-                            .padding()
+                HStack {
+                    KiwixLogo(maxHeight: 50)
+                        .padding()
+                    VStack(alignment: .leading) {
+                        Text(context.state.title)
+                            .lineLimit(1)
+                            .multilineTextAlignment(.leading)
+                            .font(.headline)
+                            .bold()
+                        Text(context.state.progressDescription)
+                            .lineLimit(1)
+                            .multilineTextAlignment(.leading)
+                            .font(.caption)
+                            .tint(.secondary)
                     }
+                    Spacer()
+                    ProgressView(value: context.state.progress)
+                        .progressViewStyle(CircularProgressGaugeStyle(lineWidth: 5.7))
+                        .frame(width: 24, height: 24)
+                        .padding()
                 }
             }
-
+            
         } dynamicIsland: { context in
             DynamicIsland {
                 // Expanded UI goes here.  Compose the expanded UI through
@@ -57,18 +55,18 @@ struct DownloadsLiveActivity: Widget {
                     Spacer()
                 }
                 DynamicIslandExpandedRegion(.trailing) {
-                    ProgressView(value: context.state.totalProgress)
+                    ProgressView(value: context.state.progress)
                         .progressViewStyle(CircularProgressGaugeStyle(lineWidth: 11.4))
                         .padding(6.0)
                 }
                 DynamicIslandExpandedRegion(.center) {
                     VStack(alignment: .leading) {
-                        Text(context.attributes.downloadingTitle)
+                        Text(context.state.title)
                             .lineLimit(1)
                             .multilineTextAlignment(.leading)
                             .font(.headline)
                             .bold()
-                        Text(context.state.totalSummary)
+                        Text(context.state.progressDescription)
                             .lineLimit(1)
                             .multilineTextAlignment(.leading)
                             .font(.caption)
@@ -78,12 +76,12 @@ struct DownloadsLiveActivity: Widget {
             } compactLeading: {
                 KiwixLogo()
             } compactTrailing: {
-                ProgressView(value: context.state.totalProgress)
+                ProgressView(value: context.state.progress)
                     .progressViewStyle(CircularProgressGaugeStyle(lineWidth: 5.7))
                     .frame(width: 20, height: 20, alignment: .trailing)
-                    
+                
             } minimal: {
-                ProgressView(value: context.state.totalProgress)
+                ProgressView(value: context.state.progress)
                     .progressViewStyle(CircularProgressGaugeStyle(lineWidth: 5.7))
                     .frame(width: 24, height: 24)
             }
@@ -95,24 +93,24 @@ struct DownloadsLiveActivity: Widget {
 
 extension DownloadActivityAttributes {
     fileprivate static var preview: DownloadActivityAttributes {
-        DownloadActivityAttributes(downloadingTitle: "Downloading...")
+        DownloadActivityAttributes()
     }
 }
 
 extension DownloadActivityAttributes.ContentState {
     fileprivate static var midProgress: DownloadActivityAttributes.ContentState {
-        DownloadActivityAttributes.ContentState(items: [
+        DownloadActivityAttributes.ContentState(downloadingTitle: "Downloading...", items: [
             DownloadActivityAttributes.DownloadItem(uuid: UUID(), description: "First item", downloaded: 128, total: 256),
             DownloadActivityAttributes.DownloadItem(uuid: UUID(), description: "2nd item", downloaded: 90, total: 124)
         ])
-     }
-     
-     fileprivate static var completed: DownloadActivityAttributes.ContentState {
-         DownloadActivityAttributes.ContentState(items: [
+    }
+    
+    fileprivate static var completed: DownloadActivityAttributes.ContentState {
+        DownloadActivityAttributes.ContentState(downloadingTitle: "Downloading...", items: [
             DownloadActivityAttributes.DownloadItem(uuid: UUID(), description: "First item", downloaded: 256, total: 256),
             DownloadActivityAttributes.DownloadItem(uuid: UUID(), description: "2nd item", downloaded: 110, total: 124)
-         ])
-     }
+        ])
+    }
 }
 
 @available(iOS 18.0, *)
