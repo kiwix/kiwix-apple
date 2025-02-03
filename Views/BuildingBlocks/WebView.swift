@@ -164,7 +164,7 @@ extension WebViewController: UIScrollViewDelegate {
     
     func showBars(on navigationController: UINavigationController) {
         navigationController.setNavigationBarHidden(false, animated: true)
-        if Device.current == .iPhone {
+        if traitCollection.horizontalSizeClass == .compact {
             navigationController.setToolbarHidden(false, animated: true)
         }
     }
