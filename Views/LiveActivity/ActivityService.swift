@@ -26,22 +26,22 @@ final class ActivityService {
     private var activity: Activity<DownloadActivityAttributes>?
     private var lastUpdate = CACurrentMediaTime()
     private let updateFrequency: Double
-    private let publisher: CurrentValueSubject<[UUID: DownloadState], Never>
+    private let publisher: @MainActor () -> CurrentValueSubject<[UUID: DownloadState], Never>
     private var isStarted: Bool = false
     
     init(
-        publisher: @MainActor () -> CurrentValueSubject<[UUID: DownloadState], Never> = {
+        publisher: @MainActor @escaping () -> CurrentValueSubject<[UUID: DownloadState], Never> = {
             DownloadService.shared.progress.publisher
         },
         updateFrequency: Double = 1
     ) {
         assert(updateFrequency > 0)
         self.updateFrequency = updateFrequency
-        self.publisher = publisher()
+        self.publisher = publisher
     }
     
     func start() {
-        publisher.sink { [weak self] (state: [UUID: DownloadState]) in
+        publisher().sink { [weak self] (state: [UUID: DownloadState]) in
             guard let self else { return }
             if state.isEmpty {
                 stop()
