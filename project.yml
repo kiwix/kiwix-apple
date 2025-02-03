@@ -123,6 +123,8 @@ targets:
           - iOS
     dependencies:
       - target: Widgets
+        destinationFilters:
+          - iOS
   UnitTests:
     type: bundle.unit-test
     supportedDestinations: [iOS, macOS]
