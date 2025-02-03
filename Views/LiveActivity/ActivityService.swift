@@ -30,7 +30,8 @@ final class ActivityService {
     private var isStarted: Bool = false
     
     init(
-        publisher: @MainActor () ->  CurrentValueSubject<[UUID: DownloadState], Never> = { DownloadService.shared.progress.publisher
+        publisher: @MainActor () -> CurrentValueSubject<[UUID: DownloadState], Never> = {
+            DownloadService.shared.progress.publisher
         },
         updateFrequency: Double = 1
     ) {
@@ -40,7 +41,7 @@ final class ActivityService {
     }
     
     func start() {
-        publisher.sink { [weak self] (state: [UUID : DownloadState]) in
+        publisher.sink { [weak self] (state: [UUID: DownloadState]) in
             guard let self else { return }
             if state.isEmpty {
                 stop()
@@ -129,7 +130,7 @@ final class ActivityService {
         
         return DownloadActivityAttributes.ContentState(
             downloadingTitle: LocalString.download_task_cell_status_downloading,
-            items: state.map { (key: UUID, download: DownloadState)-> DownloadActivityAttributes.DownloadItem in
+            items: state.map { (key: UUID, download: DownloadState) -> DownloadActivityAttributes.DownloadItem in
                 DownloadActivityAttributes.DownloadItem(
                     uuid: key,
                     description: titles[key] ?? key.uuidString,

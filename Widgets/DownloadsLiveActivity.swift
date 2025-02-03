@@ -99,17 +99,43 @@ extension DownloadActivityAttributes {
 
 extension DownloadActivityAttributes.ContentState {
     fileprivate static var midProgress: DownloadActivityAttributes.ContentState {
-        DownloadActivityAttributes.ContentState(downloadingTitle: "Downloading...", items: [
-            DownloadActivityAttributes.DownloadItem(uuid: UUID(), description: "First item", downloaded: 128, total: 256),
-            DownloadActivityAttributes.DownloadItem(uuid: UUID(), description: "2nd item", downloaded: 90, total: 124)
-        ])
+        DownloadActivityAttributes.ContentState(
+            downloadingTitle: "Downloading...",
+            items: [
+                DownloadActivityAttributes.DownloadItem(
+                    uuid: UUID(),
+                    description: "First item",
+                    downloaded: 128,
+                    total: 256
+                ),
+                DownloadActivityAttributes.DownloadItem(
+                    uuid: UUID(),
+                    description: "2nd item",
+                    downloaded: 90,
+                    total: 124
+                )
+            ]
+        )
     }
     
     fileprivate static var completed: DownloadActivityAttributes.ContentState {
-        DownloadActivityAttributes.ContentState(downloadingTitle: "Downloading...", items: [
-            DownloadActivityAttributes.DownloadItem(uuid: UUID(), description: "First item", downloaded: 256, total: 256),
-            DownloadActivityAttributes.DownloadItem(uuid: UUID(), description: "2nd item", downloaded: 110, total: 124)
-        ])
+        DownloadActivityAttributes.ContentState(
+            downloadingTitle: "Downloading...",
+            items: [
+                DownloadActivityAttributes.DownloadItem(
+                    uuid: UUID(),
+                    description: "First item",
+                    downloaded: 256,
+                    total: 256
+                ),
+                DownloadActivityAttributes.DownloadItem(
+                    uuid: UUID(),
+                    description: "2nd item",
+                    downloaded: 110,
+                    total: 124
+                )
+            ]
+        )
     }
 }
 
