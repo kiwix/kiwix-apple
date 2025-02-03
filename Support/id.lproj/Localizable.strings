@@ -190,8 +190,8 @@
 "app_macos_commands.open_file" = "Buka...";
 "app_macos_commands.new" = "Tab Baru";
 "app_macos_navigation.button.library" = "Perpustakaan";
-"sidebar_view.navigation.button.close" = "Tutup";
 "sidebar_view.navigation.button.close_all" = "Tutup Semua Tab";
+"sidebar_view.navigation.button.close" = "Tutup";
 "enum.category.wikibooks" = "Wikibuku";
 "enum.category.wikinews" = "Wikiberita";
 "enum.category.wikiquote" = "Wikikutip";

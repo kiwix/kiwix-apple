@@ -108,8 +108,8 @@
 "app_macos_commands.open_file" = "Avaa...";
 "app_macos_commands.new" = "Uusi välilehti";
 "app_macos_navigation.button.library" = "Kirjasto";
-"sidebar_view.navigation.button.close" = "Sulje";
 "sidebar_view.navigation.button.close_all" = "Sulje kaikki välilehdet";
+"sidebar_view.navigation.button.close" = "Sulje";
 "enum.category.wikibooks" = "Wikikirjasto";
 "enum.category.wikinews" = "Wikiuutiset";
 "enum.category.wikiquote" = "Wikisitaatit";

@@ -203,8 +203,8 @@
 "app_macos_commands.open_file" = "Ouvrir...";
 "app_macos_commands.new" = "Nouvel onglet";
 "app_macos_navigation.button.library" = "Bibliothèque";
-"sidebar_view.navigation.button.close" = "Fermer";
 "sidebar_view.navigation.button.close_all" = "Fermer tous les onglets";
+"sidebar_view.navigation.button.close" = "Fermer";
 "enum.category.wikipedia" = "Wikipédia";
 "enum.category.wikibooks" = "Wikibooks";
 "enum.category.wikinews" = "Wikinews";

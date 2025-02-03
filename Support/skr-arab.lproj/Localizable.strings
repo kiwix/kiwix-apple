@@ -102,8 +102,8 @@
 "app_macos_commands.open_file" = "کھولو۔۔۔";
 "app_macos_commands.new" = "نویں ٹیب";
 "app_macos_navigation.button.library" = "لائبریری";
-"sidebar_view.navigation.button.close" = "بند کرو";
 "sidebar_view.navigation.button.close_all" = "سارے ٹیب بند کرو";
+"sidebar_view.navigation.button.close" = "بند کرو";
 "enum.category.wikipedia" = "وکیپیڈیا";
 "enum.category.wikibooks" = "وکی کتاباں";
 "enum.category.wikinews" = "وکی خبراں";

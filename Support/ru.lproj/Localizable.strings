@@ -195,8 +195,8 @@
 "app_macos_commands.open_file" = "Открыть...";
 "app_macos_commands.new" = "Новая вкладка";
 "app_macos_navigation.button.library" = "Библиотека";
-"sidebar_view.navigation.button.close" = "Закрыть";
 "sidebar_view.navigation.button.close_all" = "Закрыть все вкладки";
+"sidebar_view.navigation.button.close" = "Закрыть";
 "enum.category.wikipedia" = "Википедия";
 "enum.category.wikibooks" = "Викиучебник";
 "enum.category.wikinews" = "Викиновости";

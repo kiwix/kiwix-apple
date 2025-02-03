@@ -44,8 +44,8 @@
 "commands.button.actual_size" = "iKon jali";
 "comments.button.zoom_in" = "Che ki de re";
 "app_macos_navigation.button.library" = "U gbo egba";
-"sidebar_view.navigation.button.close" = "Re";
 "sidebar_view.navigation.button.close_all" = "Fa menw ke bi re.";
+"sidebar_view.navigation.button.close" = "Re";
 "enum.category.other" = "Omu ne";
 "enum.external_link_loading_policy.always_ask" = "Tene egba du";
 "enum.external_link_loading_policy.always_load" = "Èki nadu";

@@ -198,8 +198,8 @@
 "app_macos_commands.open_file" = "Mepee...";
 "app_macos_commands.new" = "Taabụ ọhụrụ";
 "app_macos_navigation.button.library" = "Ọ́bá Akwụkwọ";
-"sidebar_view.navigation.button.close" = "Mechie";
 "sidebar_view.navigation.button.close_all" = "Mechie taabụ niile";
+"sidebar_view.navigation.button.close" = "Mechie";
 "enum.category.wikipedia" = "Wikipidịa";
 "enum.category.wikibooks" = "Akwụkwọ Wiki";
 "enum.category.wikinews" = "Akụkọ Wiki";

@@ -191,8 +191,8 @@
 "app_macos_commands.open_file" = "פתיחה...";
 "app_macos_commands.new" = "לשונית חדשה";
 "app_macos_navigation.button.library" = "ספרייה";
-"sidebar_view.navigation.button.close" = "סגירה";
 "sidebar_view.navigation.button.close_all" = "סגירת כל הלשוניות";
+"sidebar_view.navigation.button.close" = "סגירה";
 "enum.category.wikipedia" = "ויקיפדיה";
 "enum.category.wikibooks" = "ויקיספר";
 "enum.category.wikinews" = "ויקיחדשות";
