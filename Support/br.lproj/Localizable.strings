@@ -143,8 +143,8 @@
 "app_macos_commands.open_file" = "Digeriñ...";
 "app_macos_commands.new" = "Steudenn nevez";
 "app_macos_navigation.button.library" = "Levraoueg";
-"sidebar_view.navigation.button.close" = "Serriñ";
 "sidebar_view.navigation.button.close_all" = "Serriñ an holl steudennoù";
+"sidebar_view.navigation.button.close" = "Serriñ";
 "enum.category.wikipedia" = "Wikipedia";
 "enum.category.wikibooks" = "Wikilevrioù";
 "enum.category.wikinews" = "Wikikeloù";

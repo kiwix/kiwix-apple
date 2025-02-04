@@ -136,8 +136,8 @@
 "app_macos_commands.open_file" = "Opmaachen...";
 "app_macos_commands.new" = "Neien Tab";
 "app_macos_navigation.button.library" = "Bibliothéik";
-"sidebar_view.navigation.button.close" = "Zoumaachen";
 "sidebar_view.navigation.button.close_all" = "All Tabs zoumaachen";
+"sidebar_view.navigation.button.close" = "Zoumaachen";
 "enum.category.wikipedia" = "Wikipedia";
 "enum.category.wikibooks" = "Wikibooks";
 "enum.category.wikinews" = "Wikinews";

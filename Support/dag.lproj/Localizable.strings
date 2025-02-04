@@ -174,9 +174,8 @@
 "app_macos_commands.open_file" = "Yooma";
 "app_macos_commands.new" = "Binshɛɣ'kam palli";
 "app_macos_navigation.button.library" = "Karimbu shee";
-"app_macos_navigation.show_sidebar" = "Wuhimi \"Sidebar\"";
-"sidebar_view.navigation.button.close" = "Kpihim";
 "sidebar_view.navigation.button.close_all" = "Kpihimi binshɛɣ'kam zaa";
+"sidebar_view.navigation.button.close" = "Kpihim";
 "enum.category.wikipedia" = "Wikipɛdea";
 "enum.category.wikibooks" = "Wikibuku nima";
 "enum.category.wikinews" = "Wikilahabaya";

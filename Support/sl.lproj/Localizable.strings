@@ -186,8 +186,8 @@
 "app_macos_commands.open_file" = "Odpri ...";
 "app_macos_commands.new" = "Nov zavihek";
 "app_macos_navigation.button.library" = "Knjižnica";
-"sidebar_view.navigation.button.close" = "Zapri";
 "sidebar_view.navigation.button.close_all" = "Zapri vse zavihke";
+"sidebar_view.navigation.button.close" = "Zapri";
 "enum.category.wikipedia" = "Wikipedija";
 "enum.category.wikibooks" = "Wikiknjige";
 "enum.category.wikinews" = "Wikinovice";

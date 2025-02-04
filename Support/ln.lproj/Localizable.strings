@@ -39,8 +39,8 @@
 "commands.button.actual_size" = "Bonene ya solo";
 "app_macos_commands.open_file" = "Kofungola...";
 "app_macos_navigation.button.library" = "Ebómbelo múku";
-"sidebar_view.navigation.button.close" = "Kokanga";
 "sidebar_view.navigation.button.close_all" = "Fungola Ba Tabs Nionso";
+"sidebar_view.navigation.button.close" = "Kokanga";
 "enum.category.wikipedia" = "Wikipedia";
 "enum.category.wikinews" = "Wikinews";
 "enum.category.wikiquote" = "Wikiquote";

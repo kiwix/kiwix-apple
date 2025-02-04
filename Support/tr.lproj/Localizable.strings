@@ -194,8 +194,8 @@
 "app_macos_commands.open_file" = "Aç...";
 "app_macos_commands.new" = "Yeni Sekme";
 "app_macos_navigation.button.library" = "Kütüphane";
-"sidebar_view.navigation.button.close" = "Kapat";
 "sidebar_view.navigation.button.close_all" = "Tüm Sekmeleri Kapat";
+"sidebar_view.navigation.button.close" = "Kapat";
 "enum.category.wikipedia" = "Vikipedi";
 "enum.category.wikibooks" = "Vikikitap";
 "enum.category.wikinews" = "Vikihaber";

@@ -190,8 +190,8 @@
 "app_macos_commands.open_file" = "開く...";
 "app_macos_commands.new" = "新規タブ";
 "app_macos_navigation.button.library" = "ライブラリ";
-"sidebar_view.navigation.button.close" = "閉じる";
 "sidebar_view.navigation.button.close_all" = "すべてのタブを閉じる";
+"sidebar_view.navigation.button.close" = "閉じる";
 "enum.category.wikipedia" = "ウィキペディア";
 "enum.category.wikibooks" = "ウィキブックス";
 "enum.category.wikinews" = "ウィキニュース";

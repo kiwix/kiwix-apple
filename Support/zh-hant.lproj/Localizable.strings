@@ -191,8 +191,8 @@
 "app_macos_commands.open_file" = "開啟…";
 "app_macos_commands.new" = "新分頁";
 "app_macos_navigation.button.library" = "圖書館";
-"sidebar_view.navigation.button.close" = "關閉";
 "sidebar_view.navigation.button.close_all" = "關閉所有分頁";
+"sidebar_view.navigation.button.close" = "關閉";
 "enum.category.wikipedia" = "維基百科";
 "enum.category.wikibooks" = "維基教科書";
 "enum.category.wikinews" = "維基新聞";
