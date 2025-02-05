@@ -74,8 +74,8 @@
 "app_macos_commands.open_file" = "Raba...";
 "app_macos_commands.new" = "Ođđa leavga";
 "app_macos_navigation.button.library" = "Girjerádju";
-"sidebar_view.navigation.button.close" = "Gidde";
 "sidebar_view.navigation.button.close_all" = "Gidde buot leavggaid";
+"sidebar_view.navigation.button.close" = "Gidde";
 "enum.category.wikipedia" = "Wikipedia";
 "enum.category.wikibooks" = "Wikigirjjit";
 "enum.category.wikinews" = "Wikiođđasat";

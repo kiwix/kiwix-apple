@@ -143,8 +143,8 @@
 "comments.button.zoom_out" = "Oddal";
 "app_macos_commands.new" = "Nowa zakładka";
 "app_macos_navigation.button.library" = "Biblioteka";
-"sidebar_view.navigation.button.close" = "Zamknij";
 "sidebar_view.navigation.button.close_all" = "Zamknij wszystkie zakładki";
+"sidebar_view.navigation.button.close" = "Zamknij";
 "enum.category.other" = "Inne";
 "enum.external_link_loading_policy.always_ask" = "Zawsze pytaj";
 "enum.external_link_loading_policy.always_load" = "Zawsze ładuj";

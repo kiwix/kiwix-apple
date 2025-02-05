@@ -1,5 +1,6 @@
 // Messages for Swedish (svenska)
 // Exported from translatewiki.net
+// Author: Larsa
 // Author: Rofiatmustapha12
 // Author: Sabelöga
 // Author: WikiPhoenix
@@ -9,6 +10,7 @@
 "library_refresh_error.process.description" = "Fel vid bearbetning av biblioteksdata.";
 "download_service.complete.title" = "Nedladdning slutfördes";
 "download_service.complete.description" = "%@ har laddats ned.";
+"download_service.failed.description" = "Det gick inte att ladda ner den här filen.";
 "common.dialog.button.open" = "Öppna";
 "common.dialog.button.open_in_new_tab" = "Öppna i ny flik";
 "common.dialog.button.add_bookmark" = "Lägg till bokmärke";
@@ -38,8 +40,7 @@
 "outline_button.outline.title" = "Översikt";
 "outline_button.outline.help" = "Visa artikelöversikt";
 "outline_button.outline.empty.message" = "Ingen översikt tillgänglig";
-// Fuzzy
-"bookmark_button.show.help" = "Visa bokmärken. Tryck länge för att bokmärka eller ta bort bokmärke för aktuell artikel.";
+"bookmark_button.show.help" = "Visa bokmärken, där den nuvarande artikeln kan läggas till eller tas bort från bokmärken.";
 "article_shortcut.main.button.title" = "Huvudartikel";
 "article_shortcut.main.button.help" = "Visa huvudartikel";
 "article_shortcut.random.button.title.mac" = "Slumpartikel";
@@ -75,6 +76,7 @@
 "zim_file_opened.toolbar.open.title" = "Öppna...";
 "zim_file_opened.toolbar.open.help" = "Öppna en ZIM-fil";
 "zim_file_category.title" = "Kategori";
+"zim_file_catalog.fetching.message" = "Hämtar katalog...";
 "zim_file_category.section.empty.message" = "Ingen ZIM-fil under denna kategori.";
 "zim_file_downloads.overlay.empty.message" = "Inga nedladdningsuppgifter";
 "zim_file_downloads.toolbar.show_sidebar.label" = "Visa sidofält";
@@ -182,6 +184,8 @@
 "welcome.main_page.title" = "Huvudsida";
 "welcome.grid.bookmarks.title" = "Bokmärken";
 "welcome.actions.open_file" = "Öppna fil";
+"welcome.loading.data.text" = "Laddar data...";
+"welcome.button.status.fetching_catalog.text" = "Hämtar katalog...";
 "welcome.button.status.fetch_catalog.text" = "Hämtningskatalog";
 "commands.button.actual_size" = "Egentlig storlek";
 "comments.button.zoom_in" = "Zooma in";
@@ -189,8 +193,8 @@
 "app_macos_commands.open_file" = "Öppna...";
 "app_macos_commands.new" = "Ny flik";
 "app_macos_navigation.button.library" = "Bibliotek";
-"sidebar_view.navigation.button.close" = "Stäng";
 "sidebar_view.navigation.button.close_all" = "Stäng alla flikar";
+"sidebar_view.navigation.button.close" = "Stäng";
 "enum.category.wikipedia" = "Wikipedia";
 "enum.category.wikibooks" = "Wikibooks";
 "enum.category.wikinews" = "Wikinews";
@@ -225,3 +229,21 @@
 "enum.navigation_item.settings" = "Inställningar";
 "enum.search_result_snippet_mode.disabled" = "Inaktiverad";
 "enum.search_result_snippet_mode.matches" = "Matchningar";
+"payment.donate.title" = "Donera";
+"payment.description.label" = "Stöd Kiwix";
+"payment.summary_page.title" = "Stöd Kiwix";
+"payment.support_button.label" = "Stöd Kiwix";
+"payment.monthly_support.label" = "Månadsstöd för Kiwix";
+"payment.summary.title" = "Kiwix";
+"payment.textfield.custom_amount.label" = "Anpassat belopp";
+"payment.confirm.button.title" = "Bekräfta";
+"payment.selection.average_monthly_donation.subtitle" = "Genomsnittlig månadsdonation";
+"payment.selection.last_year_average.subtitle" = "Förra årets genomsnitt";
+"payment.selection.custom_amount" = "Anpassat belopp";
+"payment.selection.option.one_time" = "En gång";
+"payment.selection.option.monthly" = "Månadsvis";
+"payment.support_fallback_message" = "Vi beklagar, din enhet stöder inte Apple Pay.";
+"payment.success.title" = "Tack så mycket för din donation.";
+"payment.success.description" = "Din generositet betyder allt för oss.";
+"payment.error.title" = "Det här är stelt.";
+"payment.error.description" = "Det har uppstått ett problem med din betalning. Försök igen.";

@@ -195,8 +195,8 @@
 "app_macos_commands.open_file" = "Öffnen…";
 "app_macos_commands.new" = "Neuer Tab";
 "app_macos_navigation.button.library" = "Bibliothek";
-"sidebar_view.navigation.button.close" = "Schließen";
 "sidebar_view.navigation.button.close_all" = "Alle Tabs schließen";
+"sidebar_view.navigation.button.close" = "Schließen";
 "enum.category.wikipedia" = "Wikipedia";
 "enum.category.wikibooks" = "Wikibooks";
 "enum.category.wikinews" = "Wikinews";

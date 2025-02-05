@@ -188,8 +188,8 @@
 "app_macos_commands.open_file" = "Hapni…";
 "app_macos_commands.new" = "Skedë e Re";
 "app_macos_navigation.button.library" = "Bibliotekë";
-"sidebar_view.navigation.button.close" = "Mbylle";
 "sidebar_view.navigation.button.close_all" = "Mbylli Krejt Skedat";
+"sidebar_view.navigation.button.close" = "Mbylle";
 "enum.category.wikipedia" = "Wikipedia";
 "enum.category.wikibooks" = "Wikibooks";
 "enum.category.wikinews" = "Wikinews";

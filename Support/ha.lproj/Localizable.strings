@@ -188,8 +188,8 @@
 "app_macos_commands.open_file" = "Bude..";
 "app_macos_commands.new" = "Sabon shafi";
 "app_macos_navigation.button.library" = "Laburare";
-"sidebar_view.navigation.button.close" = "Kulle";
 "sidebar_view.navigation.button.close_all" = "Rufe duk shafuka";
+"sidebar_view.navigation.button.close" = "Kulle";
 "enum.category.wikipedia" = "Wikipedia";
 "enum.category.wikibooks" = "WikiLittattafai";
 "enum.category.wikinews" = "WikiLabarai";

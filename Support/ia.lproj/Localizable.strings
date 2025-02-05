@@ -190,8 +190,8 @@
 "app_macos_commands.open_file" = "Aperir…";
 "app_macos_commands.new" = "Nove scheda";
 "app_macos_navigation.button.library" = "Bibliotheca";
-"sidebar_view.navigation.button.close" = "Clauder";
 "sidebar_view.navigation.button.close_all" = "Clauder tote le schedas";
+"sidebar_view.navigation.button.close" = "Clauder";
 "enum.category.wikipedia" = "Wikipedia";
 "enum.category.wikibooks" = "Wikilibros";
 "enum.category.wikinews" = "Wikinovas";

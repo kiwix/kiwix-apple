@@ -195,8 +195,8 @@
 "app_macos_commands.open_file" = "打开...";
 "app_macos_commands.new" = "新建标签页";
 "app_macos_navigation.button.library" = "图书馆";
-"sidebar_view.navigation.button.close" = "关闭";
 "sidebar_view.navigation.button.close_all" = "关闭所有标签页";
+"sidebar_view.navigation.button.close" = "关闭";
 "enum.category.wikipedia" = "维基百科";
 "enum.category.wikibooks" = "维基教科书";
 "enum.category.wikinews" = "维基新闻";

@@ -177,8 +177,8 @@
 "app_macos_commands.open_file" = "열기...";
 "app_macos_commands.new" = "새 탭";
 "app_macos_navigation.button.library" = "라이브러리";
-"sidebar_view.navigation.button.close" = "닫기";
 "sidebar_view.navigation.button.close_all" = "모든 탭 닫기";
+"sidebar_view.navigation.button.close" = "닫기";
 "enum.category.wikipedia" = "위키백과";
 "enum.category.wikibooks" = "위키책";
 "enum.category.wikinews" = "위키뉴스";
