@@ -189,6 +189,7 @@
 "welcome.grid.bookmarks.title" = "Lesezeichen";
 "welcome.actions.open_file" = "Datei öffnen";
 "welcome.button.status.fetch_catalog.text" = "Katalog abrufen";
+"welcome.loading.data.text" = "Laden von Daten...";
 "commands.button.actual_size" = "Tatsächliche Größe";
 "comments.button.zoom_in" = "Vergrößern";
 "comments.button.zoom_out" = "Verkleinern";
