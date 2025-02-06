@@ -25,14 +25,23 @@ struct Kiwix: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) private var appDelegate
 
     private let fileMonitor: DirectoryMonitor
+    private let activityService: ActivityService?
 
     init() {
         fileMonitor = DirectoryMonitor(url: URL.documentDirectory) { LibraryOperations.scanDirectory($0) }
+        // MARK: - live activities
+        switch AppType.current {
+        case .kiwix:
+            activityService = ActivityService()
+        case .custom:
+            activityService = nil
+        }
         UNUserNotificationCenter.current().delegate = appDelegate
         // MARK: - migrations
         if !ProcessInfo.processInfo.arguments.contains("testing") {
             _ = MigrationService().migrateAll()
         }
+        
     }
 
     var body: some Scene {
@@ -76,6 +85,7 @@ struct Kiwix: App {
                         LibraryOperations.scanDirectory(URL.documentDirectory)
                         LibraryOperations.applyFileBackupSetting()
                         DownloadService.shared.restartHeartbeatIfNeeded()
+                        activityService?.start()
                     case let .custom(zimFileURL):
                         await LibraryOperations.open(url: zimFileURL)
                         ZimMigration.forCustomApps()

@@ -75,11 +75,13 @@ final class DownloadTasksPublisher {
             states[uuid] = DownloadState(downloaded: downloaded, total: total, resumeData: nil)
         }
         publisher.send(states)
+        saveState()
     }
 
     func resetFor(uuid: UUID) {
         states.removeValue(forKey: uuid)
         publisher.send(states)
+        saveState()
     }
 
     func isEmpty() -> Bool {
@@ -94,11 +96,15 @@ final class DownloadTasksPublisher {
         if let state = states[uuid] {
             states[uuid] = state.updatedWith(resumeData: resumeData)
             publisher.send(states)
-            if let jsonStates = try? JSONEncoder().encode(states) {
-                UserDefaults.standard.setValue(jsonStates, forKey: "downloadStates")
-            }
+            saveState()
         } else {
             assertionFailure("there should be a download task for: \(uuid)")
+        }
+    }
+    
+    private func saveState() {
+        if let jsonStates = try? JSONEncoder().encode(states) {
+            UserDefaults.standard.setValue(jsonStates, forKey: "downloadStates")
         }
     }
 }
