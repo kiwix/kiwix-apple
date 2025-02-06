@@ -10,6 +10,7 @@
 "library_refresh_error.process.description" = "Fehler beim Verarbeiten von Bibliotheksdaten.";
 "download_service.complete.title" = "Download abgeschlossen";
 "download_service.complete.description" = "%@ wurde erfolgreich heruntergeladen.";
+"download_service.failed.description" = "Diese Datei konnte nicht heruntergeladen werden.";
 "common.dialog.button.open" = "Öffnen";
 "common.dialog.button.open_in_new_tab" = "In neuem Tab öffnen";
 "common.dialog.button.add_bookmark" = "Lesezeichen hinzufügen";
@@ -33,11 +34,13 @@
 "common.tab.list.close" = "Tab schließen";
 "common.tab.menu.library" = "Bibliothek";
 "common.tab.menu.settings" = "Einstellungen";
+"common.export_file.alert.title" = "Datei exportieren";
+"common.export_file.alert.description" = "Möchten Sie die Datei %@ exportieren?";
+"common.export_file.alert.button.title" = "Exportieren";
 "outline_button.outline.title" = "Gliederung";
 "outline_button.outline.help" = "Artikelgliederung anzeigen";
 "outline_button.outline.empty.message" = "Keine Gliederung vorhanden";
-// Fuzzy
-"bookmark_button.show.help" = "Lesezeichen anzeigen. Gedrückt halten, um Lesezeichen für den aktuellen Artikel zu setzen oder zu entfernen.";
+"bookmark_button.show.help" = "Lesezeichen anzeigen, wo der aktuelle Artikel hinzuzufügt oder entfernt werden kann.";
 "article_shortcut.main.button.title" = "Hauptartikel";
 "article_shortcut.main.button.help" = "Hauptartikel anzeigen";
 "article_shortcut.random.button.title.mac" = "Zufälliger Artikel";
@@ -73,11 +76,10 @@
 "zim_file_opened.toolbar.open.title" = "Öffnen…";
 "zim_file_opened.toolbar.open.help" = "Öffne eine ZIM-Datei";
 "zim_file_category.title" = "Kategorie";
-// Fuzzy
+"zim_file_catalog.fetching.message" = "Katalog wird abgerufen ...";
 "zim_file_category.section.empty.message" = "Keine ZIM-Datei in dieser Kategorie.";
 "zim_file_downloads.overlay.empty.message" = "Keine ausstehenden Downloads";
 "zim_file_downloads.toolbar.show_sidebar.label" = "Seitenleiste anzeigen";
-// Fuzzy
 "zim_file_new_overlay.empty" = "Keine neue ZIM-Datei";
 "zim_file_new.button.refresh" = "Aktualisieren";
 "zim_file.list.name.text" = "Name";
@@ -89,18 +91,14 @@
 "zim_file.action.reveal_in_finder.title" = "Im Finder anzeigen";
 "zim_file.action.toggle_cellular" = "Über Mobilfunk herunterladen";
 "zim_file.action.unlink.title" = "Verknüpfung aufheben";
-// Fuzzy
 "zim_file.action.unlink.message" = "Alle mit dieser ZIM-Datei verknüpften Lesezeichen werden gelöscht, die Originaldatei bleibt jedoch erhalten.";
 "zim_file.action.unlink.button.title" = "Verknüpfung aufheben";
 "zim_file.action.delete.title" = "Löschen";
-// Fuzzy
 "zim_file.action.delete.message" = "Die ZIM-Datei und alle mit ihr verknüpften Lesezeichen werden gelöscht.";
 "zim_file.action.delete.button.title" = "Löschen";
 "zim_file.action.download.title" = "Herunterladen";
 "zim_file.action.download.warning.title" = "Speicherplatzwarnung";
-// Fuzzy
 "zim_file.action.download.warning.message" = "Möglicherweise ist auf Ihrem Gerät nicht genügend Speicherplatz für diese ZIM-Datei.";
-// Fuzzy
 "zim_file.action.download.warning.message1" = "Nach dem Herunterladen der ZIM-Datei wäre weniger als 1 GB Speicherplatz frei.";
 "zim_file.action.download.button.anyway" = "Trotzdem herunterladen";
 "zim_file.base_info.attribute.language" = "Sprache";
@@ -143,7 +141,6 @@
 "catalog_settings.auto_refresh.toggle" = "Automatisch aktualisieren";
 "catalog_settings.header.text" = "Katalog";
 "catalog_settings.footer.text" = "Wenn diese Option aktiviert ist, wird ein nicht aktueller Bibliothekskatalog automatisch aktualisiert.";
-// Fuzzy
 "backup_settings.toggle.title" = "Beziehe ZIM-Dateien ins Backup ein";
 "backup_settings.header.text" = "Backup";
 "backup_settings.footer.text" = "Gilt nicht für direkt geöffnete Dateien.";
@@ -176,7 +173,6 @@
 "bookmark.overlay.empty.title" = "Keine Lesezeichen";
 "bookmark.toolbar.show_sidebar.label" = "Seitenleiste anzeigen";
 "browser_tab.toolbar.show_sidebar.label" = "Seitenleiste anzeigen";
-// Fuzzy
 "search_result.zimfile.empty.message" = "Keine geöffnete ZIM-Datei";
 "search_result.zimfile.no_result.message" = "Keine Ergebnisse";
 "search_result.sidebar.button.remove" = "Entfernen";
@@ -188,6 +184,8 @@
 "welcome.main_page.title" = "Hauptseite";
 "welcome.grid.bookmarks.title" = "Lesezeichen";
 "welcome.actions.open_file" = "Datei öffnen";
+"welcome.loading.data.text" = "Daten werden geladen …";
+"welcome.button.status.fetching_catalog.text" = "Katalog wird abgerufen ...";
 "welcome.button.status.fetch_catalog.text" = "Katalog abrufen";
 "commands.button.actual_size" = "Tatsächliche Größe";
 "comments.button.zoom_in" = "Vergrößern";
@@ -231,3 +229,21 @@
 "enum.navigation_item.settings" = "Einstellungen";
 "enum.search_result_snippet_mode.disabled" = "Deaktiviert";
 "enum.search_result_snippet_mode.matches" = "Treffer";
+"payment.donate.title" = "Spenden";
+"payment.description.label" = "Kiwix unterstützen";
+"payment.summary_page.title" = "Kiwix unterstützen";
+"payment.support_button.label" = "Kiwix unterstützen";
+"payment.monthly_support.label" = "Kiwix monatlich unterstützen";
+"payment.summary.title" = "Kiwix";
+"payment.textfield.custom_amount.label" = "Anderer Betrag";
+"payment.confirm.button.title" = "Bestätigen";
+"payment.selection.average_monthly_donation.subtitle" = "Durchschnittliche monatliche Spende";
+"payment.selection.last_year_average.subtitle" = "Durchschnitt des letzten Jahres";
+"payment.selection.custom_amount" = "Anderer Betrag";
+"payment.selection.option.one_time" = "Einmalig";
+"payment.selection.option.monthly" = "Monatlich";
+"payment.support_fallback_message" = "Es tut uns leid, Ihr Gerät unterstützt Apple Pay nicht.";
+"payment.success.title" = "Vielen Dank für Ihre Spende!";
+"payment.success.description" = "Ihre Großzügigkeit bedeutet uns alles.";
+"payment.error.title" = "Nun, das ist peinlich.";
+"payment.error.description" = "Bei Ihrer Zahlung ist ein Problem aufgetreten. Bitte versuchen Sie es erneut.";
