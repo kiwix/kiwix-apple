@@ -148,7 +148,7 @@ targets:
     supportedDestinations: [iOS]
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: self.Kiwix.widgets
+        PRODUCT_BUNDLE_IDENTIFIER: self.Kiwix.ioswidgets
         INFOPLIST_FILE: Widgets/Info.plist
     sources:
       - path: Common
