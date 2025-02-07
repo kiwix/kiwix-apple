@@ -68,7 +68,6 @@
 "library.zim_file_context.main_page.label" = "Isi peeji";
 "library.zim_file_context.random.label" = "Peeji na enweghị usoro";
 "library.zim_file_context.copy_url" = "Kọpịa URL";
-"library.zim_file_context.copy_id" = "Kọia ID";
 // Fuzzy
 "zim_file_opened.overlay.no-opened.message" = "Enweghị faịlụ zim mepere emepe";
 "zim_file_opened.toolbar.show_sidebar.label" = "Gosi  akụkụ ihe ngosi";

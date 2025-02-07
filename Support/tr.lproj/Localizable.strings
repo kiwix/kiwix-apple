@@ -64,7 +64,6 @@
 "library.zim_file_context.main_page.label" = "Anasayfa";
 "library.zim_file_context.random.label" = "Rastgele Sayfa";
 "library.zim_file_context.copy_url" = "URL'yi kopyala";
-"library.zim_file_context.copy_id" = "Kimliği kopyala";
 // Fuzzy
 "zim_file_opened.overlay.no-opened.message" = "Açık zim dosyası yok";
 "zim_file_opened.toolbar.show_sidebar.label" = "Kenar Çubuğunu Göster";

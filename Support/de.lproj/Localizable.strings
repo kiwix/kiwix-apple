@@ -70,7 +70,6 @@
 "library.zim_file_context.main_page.label" = "Hauptseite";
 "library.zim_file_context.random.label" = "Zufällige Seite";
 "library.zim_file_context.copy_url" = "URL kopieren";
-"library.zim_file_context.copy_id" = "ID kopieren";
 "zim_file_opened.overlay.no-opened.message" = "Keine geöffnete ZIM-Datei";
 "zim_file_opened.toolbar.show_sidebar.label" = "Seitenleiste anzeigen";
 "zim_file_opened.toolbar.open.title" = "Öffnen…";

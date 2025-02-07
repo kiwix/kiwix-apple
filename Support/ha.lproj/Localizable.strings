@@ -68,7 +68,6 @@
 "library.zim_file_context.main_page.label" = "Babban Shafi";
 "library.zim_file_context.random.label" = "Shafin bazuwar";
 "library.zim_file_context.copy_url" = "Kwafi URL";
-"library.zim_file_context.copy_id" = "Kawafi ID";
 "zim_file_opened.overlay.no-opened.message" = "Babu buddaden zim fayil";
 "zim_file_opened.toolbar.show_sidebar.label" = "Nuna ma'aunin gefe";
 "zim_file_opened.toolbar.open.title" = "Bude..";

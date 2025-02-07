@@ -69,7 +69,6 @@
 "library.zim_file_context.main_page.label" = "メインページ";
 "library.zim_file_context.random.label" = "おまかせ表示";
 "library.zim_file_context.copy_url" = "URLをコピー";
-"library.zim_file_context.copy_id" = "IDをコピー";
 "zim_file_opened.overlay.no-opened.message" = "オープンしたZIMファイルはありません";
 "zim_file_opened.toolbar.show_sidebar.label" = "サイドバーを表示";
 "zim_file_opened.toolbar.open.title" = "開く...";

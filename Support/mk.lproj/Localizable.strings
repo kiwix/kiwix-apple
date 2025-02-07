@@ -67,7 +67,6 @@
 "library.zim_file_context.main_page.label" = "Главна страница";
 "library.zim_file_context.random.label" = "Случајна страница";
 "library.zim_file_context.copy_url" = "Прекопирај URL";
-"library.zim_file_context.copy_id" = "Прекопирај назнака";
 "zim_file_opened.overlay.no-opened.message" = "Нема отворена ZIM-податотека";
 "zim_file_opened.toolbar.show_sidebar.label" = "Прикажи страничник";
 "zim_file_opened.toolbar.open.title" = "Open...";

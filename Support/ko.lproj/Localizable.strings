@@ -63,7 +63,6 @@
 "library.zim_file_details.side_panel.message" = "상세 내용을 보려면 ZIM 파일을 선택하십시오";
 "library.zim_file_context.random.label" = "임의의 문서";
 "library.zim_file_context.copy_url" = "URL 복사";
-"library.zim_file_context.copy_id" = "ID 복사";
 "zim_file_opened.overlay.no-opened.message" = "열린 ZIM 파일이 없습니다";
 "zim_file_opened.toolbar.show_sidebar.label" = "사이드바 표시";
 "zim_file_opened.toolbar.open.title" = "열기...";

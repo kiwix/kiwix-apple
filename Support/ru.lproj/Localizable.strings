@@ -73,7 +73,6 @@
 "library.zim_file_context.main_page.label" = "Заглавная страница";
 "library.zim_file_context.random.label" = "Случайная страница";
 "library.zim_file_context.copy_url" = "Скопировать URL-адрес";
-"library.zim_file_context.copy_id" = "Копировать идентификатор";
 "zim_file_opened.overlay.no-opened.message" = "Нет открытого ZIM-файла";
 "zim_file_opened.toolbar.show_sidebar.label" = "Показать боковую панель";
 "zim_file_opened.toolbar.open.title" = "Открыть...";

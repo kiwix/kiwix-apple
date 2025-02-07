@@ -68,7 +68,6 @@
 "library.zim_file_context.main_page.label" = "עמוד ראשי";
 "library.zim_file_context.random.label" = "דף אקראי";
 "library.zim_file_context.copy_url" = "העתקת URL";
-"library.zim_file_context.copy_id" = "העתקת מזהה";
 "zim_file_opened.overlay.no-opened.message" = "לא נפתח קובץ ZIM";
 "zim_file_opened.toolbar.show_sidebar.label" = "הצגת סרגל צד";
 "zim_file_opened.toolbar.open.title" = "פתיחה...";

@@ -55,7 +55,6 @@
 "library.zim_file_context.main_page.label" = "Página principal";
 "library.zim_file_context.random.label" = "Página Aleatória";
 "library.zim_file_context.copy_url" = "Copiar URL";
-"library.zim_file_context.copy_id" = "Copiar ID";
 "zim_file_opened.toolbar.open.title" = "Abrir...";
 "zim_file_opened.toolbar.open.help" = "Abrir arquivo ZIM";
 "zim_file_category.title" = "Categoria";

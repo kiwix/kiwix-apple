@@ -72,7 +72,6 @@
 "library.zim_file_context.main_page.label" = "首页";
 "library.zim_file_context.random.label" = "随机页面";
 "library.zim_file_context.copy_url" = "复制URL";
-"library.zim_file_context.copy_id" = "复制 ID";
 "zim_file_opened.overlay.no-opened.message" = "没有打开任何 ZIM 文件";
 "zim_file_opened.toolbar.show_sidebar.label" = "显示侧边栏";
 "zim_file_opened.toolbar.open.title" = "打开...";

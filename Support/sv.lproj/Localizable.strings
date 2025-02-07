@@ -70,7 +70,6 @@
 "library.zim_file_context.main_page.label" = "Huvudsida";
 "library.zim_file_context.random.label" = "Slumpsida";
 "library.zim_file_context.copy_url" = "Kopiera webbadress";
-"library.zim_file_context.copy_id" = "Kopiera ID";
 "zim_file_opened.overlay.no-opened.message" = "Ingen öppnad ZIM-fil";
 "zim_file_opened.toolbar.show_sidebar.label" = "Visa sidofält";
 "zim_file_opened.toolbar.open.title" = "Öppna...";

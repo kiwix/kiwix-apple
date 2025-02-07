@@ -63,7 +63,6 @@
 "library.zim_file_context.main_page.label" = "Glavna stran";
 "library.zim_file_context.random.label" = "Naključna stran";
 "library.zim_file_context.copy_url" = "Kopiraj URL";
-"library.zim_file_context.copy_id" = "Kopiraj ID";
 "zim_file_opened.overlay.no-opened.message" = "Odprta ni nobena datoteka ZIM";
 "zim_file_opened.toolbar.show_sidebar.label" = "Prikaži stransko vrstico";
 "zim_file_opened.toolbar.open.title" = "Odpri ...";

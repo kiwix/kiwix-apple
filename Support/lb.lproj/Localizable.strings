@@ -55,7 +55,6 @@
 "library.zim_file_context.main_page.label" = "Haaptsäit";
 "library.zim_file_context.random.label" = "Zoufälleg Säit";
 "library.zim_file_context.copy_url" = "URL kopéieren";
-"library.zim_file_context.copy_id" = "ID kopéieren";
 "zim_file_opened.toolbar.open.title" = "Opmaachen...";
 "zim_file_opened.toolbar.open.help" = "ZIM-Fichier opmaachen";
 "zim_file_category.title" = "Kategorie";
