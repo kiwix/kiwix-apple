@@ -68,7 +68,6 @@
 "library.zim_file_context.main_page.label" = "Supplementary action title, when long pressing on a ZIM file";
 "library.zim_file_context.random.label" = "Supplementary action title, when long pressing on a ZIM file";
 "library.zim_file_context.copy_url" = "Suplementary action title, when long pressing a ZIM file.";
-"library.zim_file_context.copy_id" = "Supplementary action title, when long pressing on a ZIM file";
 "zim_file_opened.overlay.no-opened.message" = "Default placeholder text for center panel on macOS, when we have no history of opened files";
 "zim_file_opened.toolbar.show_sidebar.label" = "Show Sidebar";
 "zim_file_opened.toolbar.open.title" = "Accesissiblit label of a (+) icon on iOS, in the top right corner, to open a local file";
