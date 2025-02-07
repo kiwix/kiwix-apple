@@ -67,7 +67,6 @@
 "library.zim_file_context.main_page.label" = "Halaman Utama";
 "library.zim_file_context.random.label" = "Halaman Acak";
 "library.zim_file_context.copy_url" = "Salin URL";
-"library.zim_file_context.copy_id" = "Salin ID";
 "zim_file_opened.overlay.no-opened.message" = "Tidak ada berkas ZIM yang dibuka";
 "zim_file_opened.toolbar.show_sidebar.label" = "Tampilkan Bilah Sisi";
 "zim_file_opened.toolbar.open.title" = "Buka...";

@@ -98,7 +98,6 @@
 "library.zim_file_context.main_page.label" = "Main Page";
 "library.zim_file_context.random.label" = "Random Page";
 "library.zim_file_context.copy_url" = "Copy URL";
-"library.zim_file_context.copy_id" = "Copy ID";
 
 "zim_file_opened.overlay.no-opened.message" = "No opened ZIM file";
 "zim_file_opened.toolbar.show_sidebar.label" = "Show Sidebar";

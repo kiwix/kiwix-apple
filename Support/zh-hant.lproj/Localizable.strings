@@ -68,7 +68,6 @@
 "library.zim_file_context.main_page.label" = "主頁";
 "library.zim_file_context.random.label" = "隨機頁面";
 "library.zim_file_context.copy_url" = "複製 URL";
-"library.zim_file_context.copy_id" = "複製 ID";
 "zim_file_opened.overlay.no-opened.message" = "沒有開啟的 ZIM 檔案";
 "zim_file_opened.toolbar.show_sidebar.label" = "顯示側邊欄";
 "zim_file_opened.toolbar.open.title" = "開啟…";

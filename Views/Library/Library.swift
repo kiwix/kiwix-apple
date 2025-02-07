@@ -169,23 +169,13 @@ struct LibraryZimFileContext: ViewModifier {
             Button {
                 #if os(macOS)
                 NSPasteboard.general.clearContents()
-                NSPasteboard.general.setString(downloadURL.absoluteString, forType: .URL)
+                NSPasteboard.general.setString(downloadURL.absoluteString, forType: .string)
                 #elseif os(iOS)
                 UIPasteboard.general.setValue(downloadURL.absoluteString, forPasteboardType: UTType.url.identifier)
                 #endif
             } label: {
                 Label(LocalString.library_zim_file_context_copy_url, systemImage: "doc.on.doc")
             }
-        }
-        Button {
-            #if os(macOS)
-            NSPasteboard.general.clearContents()
-            NSPasteboard.general.setString(zimFile.fileID.uuidString, forType: .string)
-            #elseif os(iOS)
-            UIPasteboard.general.setValue(zimFile.fileID.uuidString, forPasteboardType: UTType.plainText.identifier)
-            #endif
-        } label: {
-            Label(LocalString.library_zim_file_context_copy_id, systemImage: "barcode.viewfinder")
         }
     }
 }

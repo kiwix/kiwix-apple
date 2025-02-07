@@ -67,7 +67,6 @@
 "library.zim_file_context.main_page.label" = "Faqja Kryesore";
 "library.zim_file_context.random.label" = "Faqe Kuturu";
 "library.zim_file_context.copy_url" = "Kopjo URL-në";
-"library.zim_file_context.copy_id" = "Kopjo ID-në";
 "zim_file_opened.overlay.no-opened.message" = "S’ka kartelë ZIM të hapur";
 "zim_file_opened.toolbar.show_sidebar.label" = "Shfaq Anështyllë";
 "zim_file_opened.toolbar.open.title" = "Hapni…";

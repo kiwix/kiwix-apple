@@ -55,7 +55,6 @@
 "library.zim_file_context.main_page.label" = "Degemer";
 "library.zim_file_context.random.label" = "Pajenn dre zegouezh";
 "library.zim_file_context.copy_url" = "Eilañ an URL";
-"library.zim_file_context.copy_id" = "Eilañ an ID";
 "zim_file_opened.overlay.no-opened.message" = "Restr ZIM digor ebet";
 "zim_file_opened.toolbar.show_sidebar.label" = "Diskouez ar varrenn-gostez";
 "zim_file_opened.toolbar.open.title" = "Digeriñ...";
