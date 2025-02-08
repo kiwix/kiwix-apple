@@ -17,6 +17,20 @@ import ActivityKit
 import WidgetKit
 import SwiftUI
 
+struct WidgetBackgroundModifier: ViewModifier {
+    func body(content: Content) -> some View {
+        if #available(iOSApplicationExtension 17.0, *) {
+            content.containerBackground(for: .widget) {
+                Color.widgetBackground
+            }
+            .activityBackgroundTint(Color("WidgetBackground"))
+        } else {
+            content
+                .activityBackgroundTint(Color("WidgetBackground"))
+        }
+    }
+}
+
 struct DownloadsLiveActivity: Widget {
     var body: some WidgetConfiguration {
         ActivityConfiguration(for: DownloadActivityAttributes.self) { context in
@@ -44,6 +58,7 @@ struct DownloadsLiveActivity: Widget {
                         .padding()
                 }
             }
+            .modifier(WidgetBackgroundModifier())
             
         } dynamicIsland: { context in
             DynamicIsland {
@@ -87,7 +102,7 @@ struct DownloadsLiveActivity: Widget {
             }
             .widgetURL(URL(string: "https://www.kiwix.org"))
             .keylineTint(Color.red)
-        }
+        }.containerBackgroundRemovable()
     }
 }
 
