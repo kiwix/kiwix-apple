@@ -17,21 +17,11 @@ import ActivityKit
 import WidgetKit
 import SwiftUI
 
-struct WidgetBackgroundModifier: ViewModifier {
-    func body(content: Content) -> some View {
-        if #available(iOSApplicationExtension 17.0, *) {
-            content.containerBackground(for: .widget) {
-                Color.widgetBackground
-            }
-            .activityBackgroundTint(Color("WidgetBackground"))
-        } else {
-            content
-                .activityBackgroundTint(Color("WidgetBackground"))
-        }
-    }
-}
-
 struct DownloadsLiveActivity: Widget {
+    var isActivityFullScreen: Bool = false
+//    @Environment(\.isActivityFullscreen) var isActivityFullScreen has a bug, when min iOS is 16
+//    https://developer.apple.com/forums/thread/763594
+    
     var body: some WidgetConfiguration {
         ActivityConfiguration(for: DownloadActivityAttributes.self) { context in
             // Lock screen/banner UI goes here
