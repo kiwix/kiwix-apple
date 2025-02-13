@@ -1,3 +1,9 @@
+<a href="https://apps.apple.com/us/app/kiwix/id997079563" target="_blank" align="left">
+  <img src="https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg" alt="Download on the app store" height="40" />
+</a>
+
+-----
+
 # Kiwix for Apple iOS & macOS
 
 Kiwix is an offline reader for Web content, primarily designed to make [Wikipedia](https://www.wikipedia.org/) available offline. It reads archives in the [ZIM](https://openzim.org) file format, a highly compressed open format with additional metadata.
