@@ -61,7 +61,6 @@
 "library.zim_file_context.main_page.label" = "Yaɣili kpani";
 "library.zim_file_context.random.label" = "Gahim piigi yaɣili";
 "library.zim_file_context.copy_url" = "Yaai URL";
-"library.zim_file_context.copy_id" = "Yaai ID";
 "zim_file_opened.overlay.no-opened.message" = "Zim fasara bi yooi";
 "zim_file_opened.toolbar.show_sidebar.label" = "Wuhimi \"sidebar\"";
 "zim_file_opened.toolbar.open.title" = "Yooi...";
