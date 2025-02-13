@@ -21,7 +21,7 @@ public protocol Defaulting: NSObjectProtocol {
 }
 
 final class UDefaults: NSObject, Defaulting {
-    subscript<Value>(key: Defaults.Key<Value>) -> Value where Value: DefaultsSerializable {
+    subscript<Value>(key: Defaults.Key<Value>) -> Value {
         get {
             Defaults[key]
         }
