@@ -89,9 +89,15 @@ struct ZimFileDetail: View {
         .navigationBarTitleDisplayMode(.inline)
         .onReceive(zimFile.publisher(for: \.fileURLBookmark)) { _ in
             Task { @MainActor in
-                if let zimFileName = await ZimFileService.shared.getFileURL(zimFileID: zimFile.fileID)?.lastPathComponent,
-                   let documentDirectoryURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first,
-                   FileManager.default.fileExists(atPath: documentDirectoryURL.appendingPathComponent(zimFileName).path) {
+                if let zimFileName = await ZimFileService.shared.getFileURL(
+                    zimFileID: zimFile.fileID
+                )?.lastPathComponent,
+                   let documentDirectoryURL = FileManager.default.urls(
+                    for: .documentDirectory, in: .userDomainMask
+                   ).first,
+                   FileManager.default.fileExists(
+                    atPath: documentDirectoryURL.appendingPathComponent(zimFileName).path
+                   ) {
                     isInDocumentsDirectory = true
                 } else {
                     isInDocumentsDirectory = false
