@@ -18,7 +18,6 @@ import WidgetKit
 import SwiftUI
 
 struct DownloadsLiveActivity: Widget {
-    var isActivityFullScreen: Bool = false
 //    @Environment(\.isActivityFullscreen) var isActivityFullScreen has a bug, when min iOS is 16
 //    https://developer.apple.com/forums/thread/763594
     
@@ -35,11 +34,18 @@ struct DownloadsLiveActivity: Widget {
                             .multilineTextAlignment(.leading)
                             .font(.headline)
                             .bold()
-                        Text(context.state.progressDescription)
-                            .lineLimit(1)
-                            .multilineTextAlignment(.leading)
-                            .font(.caption)
-                            .tint(.secondary)
+                        HStack {
+                            Text(timerInterval: Date.now...Date(timeInterval: context.state.estimatedTimeLeft, since: .now))
+                                .lineLimit(1)
+                                .multilineTextAlignment(.leading)
+                                .font(.caption)
+                                .tint(.secondary)
+                            Text(context.state.progressDescription)
+                                .lineLimit(1)
+                                .multilineTextAlignment(.leading)
+                                .font(.caption)
+                                .tint(.secondary)
+                        }
                     }
                     Spacer()
                     ProgressView(value: context.state.progress)
@@ -111,13 +117,15 @@ extension DownloadActivityAttributes.ContentState {
                     uuid: UUID(),
                     description: "First item",
                     downloaded: 128,
-                    total: 256
+                    total: 256,
+                    timeRemaining: 3
                 ),
                 DownloadActivityAttributes.DownloadItem(
                     uuid: UUID(),
                     description: "2nd item",
                     downloaded: 90,
-                    total: 124
+                    total: 124,
+                    timeRemaining: 2
                 )
             ]
         )
@@ -131,13 +139,15 @@ extension DownloadActivityAttributes.ContentState {
                     uuid: UUID(),
                     description: "First item",
                     downloaded: 256,
-                    total: 256
+                    total: 256,
+                    timeRemaining: 0
                 ),
                 DownloadActivityAttributes.DownloadItem(
                     uuid: UUID(),
                     description: "2nd item",
                     downloaded: 110,
-                    total: 124
+                    total: 124,
+                    timeRemaining: 2
                 )
             ]
         )
