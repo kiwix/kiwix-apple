@@ -1,6 +1,8 @@
 # Kiwix for Apple iOS & macOS
 
-This is the home for Kiwix apps for Apple iOS and macOS.
+Kiwix is an offline reader for Web content, primarily designed to make [Wikipedia](https://www.wikipedia.org/) available offline. It reads archives in the [ZIM](https://openzim.org) file format, a highly compressed open format with additional metadata.
+
+This is the Apple version of Kiwix, supporting iOS and macOS.
 
 [![CodeFactor](https://www.codefactor.io/repository/github/kiwix/kiwix-apple/badge)](https://www.codefactor.io/repository/github/kiwix/kiwix-apple)
 [![CI Build Status](https://github.com/kiwix/kiwix-apple/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/kiwix/kiwix-apple/actions/workflows/ci.yml?query=branch%3Amain)
@@ -201,6 +203,9 @@ can start again.
   container with the following command (then make it available
   somewhere online): `tar -czvf ~/Documents/self.Kiwix.tgz
   ~/Library/Containers/self.Kiwix`.
+
+## Support
+If you're enjoying using Kiwix, drop a ⭐️ on the repo!
 
 ## License
 
