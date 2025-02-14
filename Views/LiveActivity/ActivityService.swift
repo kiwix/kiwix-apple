@@ -135,6 +135,10 @@ final class ActivityService {
             activity = nil
             isStarted = false
             downloadTimes = [:]
+            // make sure we clean up orphan activities of the same type as well
+            for activity in Activity<DownloadActivityAttributes>.activities {
+                await activity.end(nil, dismissalPolicy: .immediate)
+            }
         }
     }
     
