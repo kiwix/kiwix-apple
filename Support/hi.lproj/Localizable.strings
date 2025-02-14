@@ -1,6 +1,7 @@
 // Messages for Hindi (हिन्दी)
 // Exported from translatewiki.net
 // Author: Abijeet Patro
+// Author: Suyash.dwivedi
 
 "common.dialog.button.open" = "खोलें";
 "common.dialog.button.open_in_new_tab" = "नए टैब में खोलें";
@@ -45,8 +46,10 @@
 "zim_file.download_task.action.resume" = "दुबारा शुरू करें";
 "reading_settings.zoom.reset.button" = "रीसेट करें";
 "reading_settings.tab.reading" = "पढ़ना";
+"library_settings.languages.title" = "भाषाएँ";
 "library_settings.tab.library.title" = "पुस्तकालय";
 "settings.navigation.title" = "सेटिंग्स";
+"library_settings.toggle.cellular" = "सेलुलर का उपयोग करके डाउनलोड करें";
 "settings.miscellaneous.navigation.about" = "विवरण";
 "settings.selected_language.title" = "भाषाएँ";
 "language_selector.name.title" = "नाम";
