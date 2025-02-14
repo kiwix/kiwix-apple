@@ -51,6 +51,10 @@ public struct DownloadActivityAttributes: ActivityAttributes {
             return first.description
         }
         
+        public var estimatedTimeLeft: TimeInterval {
+            items.map(\.timeRemaining).max() ?? 0
+        }
+        
         public var progress: Double {
             progressFor(items: items).fractionCompleted
         }
@@ -65,6 +69,7 @@ public struct DownloadActivityAttributes: ActivityAttributes {
         let description: String
         let downloaded: Int64
         let total: Int64
+        let timeRemaining: TimeInterval
         var progress: Double {
             progressFor(items: [self]).fractionCompleted
         }
@@ -72,11 +77,12 @@ public struct DownloadActivityAttributes: ActivityAttributes {
             progressFor(items: [self]).localizedAdditionalDescription
         }
         
-        public init(uuid: UUID, description: String, downloaded: Int64, total: Int64) {
+        public init(uuid: UUID, description: String, downloaded: Int64, total: Int64, timeRemaining: TimeInterval) {
             self.uuid = uuid
             self.description = description
             self.downloaded = downloaded
             self.total = total
+            self.timeRemaining = timeRemaining
         }
     }
 }
