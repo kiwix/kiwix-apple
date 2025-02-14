@@ -150,7 +150,10 @@ final class ActivityService {
         }
     }
     
-    private func activityState(from state: [UUID: DownloadState], downloadTimes: [UUID: CFTimeInterval]) async -> DownloadActivityAttributes.ContentState {
+    private func activityState(
+        from state: [UUID: DownloadState],
+        downloadTimes: [UUID: CFTimeInterval]
+    ) async -> DownloadActivityAttributes.ContentState {
         var titles: [UUID: String] = [:]
         for key in state.keys {
             titles[key] = await getDownloadTitle(for: key)

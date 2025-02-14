@@ -35,11 +35,16 @@ struct DownloadsLiveActivity: Widget {
                             .font(.headline)
                             .bold()
                         HStack {
-                            Text(timerInterval: Date.now...Date(timeInterval: context.state.estimatedTimeLeft, since: .now))
-                                .lineLimit(1)
-                                .multilineTextAlignment(.leading)
-                                .font(.caption)
-                                .tint(.secondary)
+                            Text(
+                                timerInterval: Date.now...Date(
+                                    timeInterval: context.state.estimatedTimeLeft,
+                                    since: .now
+                                )
+                            )
+                            .lineLimit(1)
+                            .multilineTextAlignment(.leading)
+                            .font(.caption)
+                            .tint(.secondary)
                             Text(context.state.progressDescription)
                                 .lineLimit(1)
                                 .multilineTextAlignment(.leading)
