@@ -72,7 +72,7 @@ final class DownloadTime {
             time = key
             amount = value
         }
-        return mean(averages)
+        return weightedMean(averages)
     }
     
     private func latestSample() -> (CFTimeInterval, Int64)? {
@@ -83,11 +83,14 @@ final class DownloadTime {
         return (lastTime, lastAmount)
     }
     
-    private func mean(_ values: [Double]) -> Double {
-        let sum = values.reduce(0) { partialResult, value in
+    private func weightedMean(_ values: [Double]) -> Double {
+        let weights: [Double] = (0...values.count).map { (Double($0) + 1.0) * 1.2 }
+        let sum = values.enumerated().reduce(1.0) { partialResult, iterator in
+            partialResult + (iterator.element * weights[iterator.offset])
+        }
+        let sumOfWeights = weights.reduce(1.0) { partialResult, value in
             partialResult + value
         }
-        let average = sum / Double(values.count)
-        return average
+        return sum / sumOfWeights
     }
 }

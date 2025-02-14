@@ -35,7 +35,7 @@ final class ActivityService {
         publisher: @MainActor @escaping () -> CurrentValueSubject<[UUID: DownloadState], Never> = {
             DownloadService.shared.progress.publisher
         },
-        updateFrequency: Double = 1,
+        updateFrequency: Double = 10,
         averageDownloadSpeedFromLastSeconds: Double = 30
     ) {
         assert(updateFrequency > 0)
@@ -116,9 +116,6 @@ final class ActivityService {
         
         let now = CACurrentMediaTime()
         for (key, state) in states {
-            if downloadTimes[key] == nil {
-                debugPrint("Creating new downloadTimes for \(key)")
-            }
             let downloadTime: DownloadTime = downloadTimes[key] ?? DownloadTime(
                 considerLastSeconds: averageDownloadSpeedFromLastSeconds,
                 total: state.total
