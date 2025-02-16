@@ -26,17 +26,22 @@ final class ActivityService {
     private var activity: Activity<DownloadActivityAttributes>?
     private var lastUpdate = CACurrentMediaTime()
     private let updateFrequency: Double
+    private let averageDownloadSpeedFromLastSeconds: Double
     private let publisher: @MainActor () -> CurrentValueSubject<[UUID: DownloadState], Never>
     private var isStarted: Bool = false
+    private var downloadTimes: [UUID: DownloadTime] = [:]
     
     init(
         publisher: @MainActor @escaping () -> CurrentValueSubject<[UUID: DownloadState], Never> = {
             DownloadService.shared.progress.publisher
         },
-        updateFrequency: Double = 1
+        updateFrequency: Double = 10,
+        averageDownloadSpeedFromLastSeconds: Double = 30
     ) {
         assert(updateFrequency > 0)
+        assert(averageDownloadSpeedFromLastSeconds > 0)
         self.updateFrequency = updateFrequency
+        self.averageDownloadSpeedFromLastSeconds = averageDownloadSpeedFromLastSeconds
         self.publisher = publisher
     }
     
@@ -51,9 +56,9 @@ final class ActivityService {
         }.store(in: &cancellables)
     }
     
-    private func start(with state: [UUID: DownloadState]) {
+    private func start(with state: [UUID: DownloadState], downloadTimes: [UUID: CFTimeInterval]) {
         Task {
-            let activityState = await activityState(from: state)
+            let activityState = await activityState(from: state, downloadTimes: downloadTimes)
             let content = ActivityContent(
                 state: activityState,
                 staleDate: nil,
@@ -81,9 +86,10 @@ final class ActivityService {
     }
     
     private func update(state: [UUID: DownloadState]) {
+        let downloadTimes: [UUID: CFTimeInterval] = updatedDownloadTimes(from: state)
         guard isStarted else {
             isStarted = true
-            start(with: state)
+            start(with: state, downloadTimes: downloadTimes)
             return
         }
         let now = CACurrentMediaTime()
@@ -92,7 +98,7 @@ final class ActivityService {
         }
         lastUpdate = now
         Task {
-            let activityState = await activityState(from: state)
+            let activityState = await activityState(from: state, downloadTimes: downloadTimes)
             await activity.update(
                 ActivityContent<DownloadActivityAttributes.ContentState>(
                     state: activityState,
@@ -102,11 +108,37 @@ final class ActivityService {
         }
     }
     
+    private func updatedDownloadTimes(from states: [UUID: DownloadState]) -> [UUID: CFTimeInterval] {
+        // remove the ones we should no longer track
+        downloadTimes = downloadTimes.filter({ key, _ in
+            states.keys.contains(key)
+        })
+        
+        let now = CACurrentMediaTime()
+        for (key, state) in states {
+            let downloadTime: DownloadTime = downloadTimes[key] ?? DownloadTime(
+                considerLastSeconds: averageDownloadSpeedFromLastSeconds,
+                total: state.total
+            )
+            downloadTime.update(downloaded: state.downloaded, now: now)
+            downloadTimes[key] = downloadTime
+        }
+        return downloadTimes.reduce(into: [:], { partialResult, time in
+            let (key, value) = time
+            partialResult.updateValue(value.remainingTime(now: now), forKey: key)
+        })
+    }
+    
     private func stop() {
         Task {
             await activity?.end(nil, dismissalPolicy: .immediate)
             activity = nil
             isStarted = false
+            downloadTimes = [:]
+            // make sure we clean up orphan activities of the same type as well
+            for activity in Activity<DownloadActivityAttributes>.activities {
+                await activity.end(nil, dismissalPolicy: .immediate)
+            }
         }
     }
     
@@ -122,7 +154,10 @@ final class ActivityService {
         }
     }
     
-    private func activityState(from state: [UUID: DownloadState]) async -> DownloadActivityAttributes.ContentState {
+    private func activityState(
+        from state: [UUID: DownloadState],
+        downloadTimes: [UUID: CFTimeInterval]
+    ) async -> DownloadActivityAttributes.ContentState {
         var titles: [UUID: String] = [:]
         for key in state.keys {
             titles[key] = await getDownloadTitle(for: key)
@@ -135,7 +170,8 @@ final class ActivityService {
                     uuid: key,
                     description: titles[key] ?? key.uuidString,
                     downloaded: download.downloaded,
-                    total: download.total)
+                    total: download.total,
+                    timeRemaining: downloadTimes[key] ?? 0)
         })
     }
 }

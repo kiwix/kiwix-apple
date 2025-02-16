@@ -1,6 +1,13 @@
 {
   "colors" : [
     {
+      "color" : {
+        "color-space" : "extended-gray",
+        "components" : {
+          "alpha" : "0.360",
+          "white" : "1.000"
+        }
+      },
       "idiom" : "universal"
     }
   ],
