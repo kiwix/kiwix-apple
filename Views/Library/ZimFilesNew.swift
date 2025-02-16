@@ -16,7 +16,7 @@
 import SwiftUI
 import Defaults
 
-final class ZimFilesNewViewModel: ObservableObject {
+private final class ViewModel: ObservableObject {
     
     @Published private(set) var zimFiles: [ZimFile] = []
     
@@ -95,7 +95,7 @@ struct ZimFilesNew: View {
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     @EnvironmentObject var library: LibraryViewModel
     @Default(.libraryLanguageCodes) private var languageCodes
-    @StateObject private var viewModel = ZimFilesNewViewModel()
+    @StateObject private var viewModel = ViewModel()
     @State private var searchText = ""
     let dismiss: (() -> Void)? // iOS only
 
@@ -171,25 +171,6 @@ struct ZimFilesNew: View {
             }
         }
     }
-
-//    private static func buildPredicate(searchText: String) -> NSPredicate {
-//        var predicates = [
-//            NSPredicate(format: "languageCode IN %@", Defaults[.libraryLanguageCodes]),
-//            NSPredicate(format: "requiresServiceWorkers == false")
-//        ]
-//        if let aMonthAgo = Calendar.current.date(byAdding: .month, value: -3, to: Date()) {
-//            predicates.append(NSPredicate(format: "created > %@", aMonthAgo as CVarArg))
-//        }
-//        if !searchText.isEmpty {
-//            predicates.append(
-//                NSCompoundPredicate(orPredicateWithSubpredicates: [
-//                    NSPredicate(format: "name CONTAINS[cd] %@", searchText),
-//                    NSPredicate(format: "fileDescription CONTAINS[cd] %@", searchText)
-//                ])
-//            )
-//        }
-//        return NSCompoundPredicate(andPredicateWithSubpredicates: predicates)
-//    }
 }
 
 @available(macOS 13.0, iOS 16.0, *)
