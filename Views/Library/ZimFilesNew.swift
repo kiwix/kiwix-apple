@@ -14,7 +14,6 @@
 // along with Kiwix; If not, see https://www.gnu.org/licenses/.
 
 import SwiftUI
-
 import Defaults
 
 /// A grid of zim files that are newly available.
@@ -42,9 +41,29 @@ struct ZimFilesNew: View {
             alignment: .leading,
             spacing: 12
         ) {
-            ForEach(zimFiles.filter { filterPredicate.evaluate(with: $0) }) { zimFile in
-                ZimFileCell(zimFile, prominent: .name)
-                    .modifier(LibraryZimFileContext(zimFile: zimFile, dismiss: dismiss))
+            ForEach(zimFiles.filter { filterPredicate.evaluate(with: $0) }, id: \.fileID) { zimFile in
+                Group {
+                #if os(macOS)
+                    Button {
+                        viewModel.selectedZimFile = zimFile
+                    } label: {
+                        ZimFileCell(zimFile, prominent: .name)
+                    }.buttonStyle(.plain)
+                #elseif os(iOS)
+                    NavigationLink {
+                        ZimFileDetail(zimFile: zimFile, dismissParent: dismiss)
+                    } label: {
+                        ZimFileCell(zimFile, prominent: .name)
+                    }
+                #endif
+                }.contextMenu {
+                    if zimFile.fileURLBookmark != nil, !zimFile.isMissing {
+                        Section { ArticleActions(zimFileID: zimFile.fileID) }
+                    }
+                    if let downloadURL = zimFile.downloadURL {
+                        Section { CopyPasteMenu(downloadURL: downloadURL) }
+                    }
+                }
             }
         }
         .modifier(GridCommon())

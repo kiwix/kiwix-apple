@@ -141,40 +141,10 @@ struct LibraryZimFileContext: ViewModifier {
             #endif
         }.contextMenu {
             if zimFile.fileURLBookmark != nil, !zimFile.isMissing {
-                Section { articleActions }
+                Section { ArticleActions(zimFileID: zimFile.fileID) }
             }
-            Section { supplementaryActions }
-        }
-    }
-
-    @ViewBuilder
-    var articleActions: some View {
-        AsyncButton {
-            guard let url = await ZimFileService.shared.getMainPageURL(zimFileID: zimFile.fileID) else { return }
-            NotificationCenter.openURL(url, inNewTab: true)
-        } label: {
-            Label(LocalString.library_zim_file_context_main_page_label, systemImage: "house")
-        }
-        AsyncButton {
-            guard let url = await ZimFileService.shared.getRandomPageURL(zimFileID: zimFile.fileID) else { return }
-            NotificationCenter.openURL(url, inNewTab: true)
-        } label: {
-            Label(LocalString.library_zim_file_context_random_label, systemImage: "die.face.5")
-        }
-    }
-
-    @ViewBuilder
-    var supplementaryActions: some View {
-        if let downloadURL = zimFile.downloadURL {
-            Button {
-                #if os(macOS)
-                NSPasteboard.general.clearContents()
-                NSPasteboard.general.setString(downloadURL.absoluteString, forType: .string)
-                #elseif os(iOS)
-                UIPasteboard.general.setValue(downloadURL.absoluteString, forPasteboardType: UTType.url.identifier)
-                #endif
-            } label: {
-                Label(LocalString.library_zim_file_context_copy_url, systemImage: "doc.on.doc")
+            if let downloadURL = zimFile.downloadURL {
+                Section { CopyPasteMenu(downloadURL: downloadURL) }
             }
         }
     }
