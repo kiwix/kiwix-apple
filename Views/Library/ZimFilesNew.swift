@@ -16,23 +16,88 @@
 import SwiftUI
 import Defaults
 
+
+final class ZimFilesNewViewModel: ObservableObject {
+    
+    @Published private(set) var zimFiles: [ZimFile] = []
+    
+    private var languageCodes = Set<String>()
+    private var searchText: String = ""
+    
+    private let sortDescriptors = [
+        NSSortDescriptor(keyPath: \ZimFile.created, ascending: false),
+        NSSortDescriptor(keyPath: \ZimFile.name, ascending: true),
+        NSSortDescriptor(keyPath: \ZimFile.size, ascending: false)
+    ]
+    
+    func update(languageCodes: Set<String>) {
+        guard languageCodes != self.languageCodes else { return }
+        self.languageCodes = languageCodes
+        Task {
+            await update()
+        }
+    }
+    
+    func update(searchText: String) {
+        guard searchText != self.searchText else { return }
+        self.searchText = searchText
+        Task {
+            await update()
+        }
+    }
+    
+    func update() async {
+        let searchText = self.searchText
+        let languageCodes = self.languageCodes
+        let newZimFiles: [ZimFile] = await withCheckedContinuation { continuation in
+            Database.shared.performBackgroundTask { context in
+                let predicate: NSPredicate = Self.buildPredicate(
+                    searchText: searchText,
+                    languageCodes: languageCodes
+                )
+                if let results = try? context.fetch(
+                    ZimFile.fetchRequest(
+                        predicate: predicate,
+                        sortDescriptors: self.sortDescriptors
+                    )
+                ) {
+                    continuation.resume(returning: results)
+                } else {
+                    continuation.resume(returning: [])
+                }
+            }
+        }
+        await MainActor.run { self.zimFiles = newZimFiles }
+    }
+    
+    private static func buildPredicate(searchText: String, languageCodes: Set<String>) -> NSPredicate {
+        var predicates = [
+            NSPredicate(format: "languageCode IN %@", languageCodes),
+            NSPredicate(format: "requiresServiceWorkers == false")
+        ]
+        if let aMonthAgo = Calendar.current.date(byAdding: .month, value: -3, to: Date()) {
+            predicates.append(NSPredicate(format: "created > %@", aMonthAgo as CVarArg))
+        }
+        if !searchText.isEmpty {
+            predicates.append(
+                NSCompoundPredicate(orPredicateWithSubpredicates: [
+                    NSPredicate(format: "name CONTAINS[cd] %@", searchText),
+                    NSPredicate(format: "fileDescription CONTAINS[cd] %@", searchText)
+                ])
+            )
+        }
+        return NSCompoundPredicate(andPredicateWithSubpredicates: predicates)
+    }
+    
+}
+
 /// A grid of zim files that are newly available.
 struct ZimFilesNew: View {
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
-    @EnvironmentObject var viewModel: LibraryViewModel
+    @EnvironmentObject var library: LibraryViewModel
     @Default(.libraryLanguageCodes) private var languageCodes
-    @FetchRequest(
-        sortDescriptors: [
-            NSSortDescriptor(keyPath: \ZimFile.created, ascending: false),
-            NSSortDescriptor(keyPath: \ZimFile.name, ascending: true),
-            NSSortDescriptor(keyPath: \ZimFile.size, ascending: false)
-        ],
-        animation: .easeInOut
-    ) private var zimFiles: FetchedResults<ZimFile>
+    @StateObject private var viewModel = ZimFilesNewViewModel()
     @State private var searchText = ""
-    private var filterPredicate: NSPredicate {
-        ZimFilesNew.buildPredicate(searchText: searchText)
-    }
     let dismiss: (() -> Void)? // iOS only
 
     var body: some View {
@@ -41,7 +106,7 @@ struct ZimFilesNew: View {
             alignment: .leading,
             spacing: 12
         ) {
-            ForEach(zimFiles.filter { filterPredicate.evaluate(with: $0) }, id: \.fileID) { zimFile in
+            ForEach(viewModel.zimFiles, id: \.fileID) { zimFile in
                 LibraryZimFileContext(
                     content: {
                         ZimFileCell(zimFile, prominent: .name)
@@ -55,11 +120,19 @@ struct ZimFilesNew: View {
         .navigationTitle(NavigationItem.new.name)
         .searchable(text: $searchText)
         .onAppear {
-            viewModel.start(isUserInitiated: false)
+            viewModel.update(searchText: searchText)
+            viewModel.update(languageCodes: languageCodes)
+            library.start(isUserInitiated: false)
+        }
+        .onChange(of: searchText) { newSearchText in
+            viewModel.update(searchText: newSearchText)
+        }
+        .onChange(of: languageCodes) { newLanguageCodes in
+            viewModel.update(languageCodes: newLanguageCodes)
         }
         .overlay {
-            if zimFiles.isEmpty {
-                switch viewModel.state {
+            if viewModel.zimFiles.isEmpty {
+                switch library.state {
                 case .inProgress:
                     Message(text: LocalString.zim_file_catalog_fetching_message)
                 case .error:
@@ -83,14 +156,14 @@ struct ZimFilesNew: View {
             }
             #endif
             ToolbarItem {
-                if viewModel.state == .inProgress {
+                if library.state == .inProgress {
                     ProgressView()
                     #if os(macOS)
                         .scaleEffect(0.5)
                     #endif
                 } else {
                     Button {
-                        viewModel.start(isUserInitiated: true)
+                        library.start(isUserInitiated: true)
                     } label: {
                         Label(LocalString.zim_file_new_button_refresh,
                               systemImage: "arrow.triangle.2.circlepath.circle")
@@ -100,24 +173,24 @@ struct ZimFilesNew: View {
         }
     }
 
-    private static func buildPredicate(searchText: String) -> NSPredicate {
-        var predicates = [
-            NSPredicate(format: "languageCode IN %@", Defaults[.libraryLanguageCodes]),
-            NSPredicate(format: "requiresServiceWorkers == false")
-        ]
-        if let aMonthAgo = Calendar.current.date(byAdding: .month, value: -3, to: Date()) {
-            predicates.append(NSPredicate(format: "created > %@", aMonthAgo as CVarArg))
-        }
-        if !searchText.isEmpty {
-            predicates.append(
-                NSCompoundPredicate(orPredicateWithSubpredicates: [
-                    NSPredicate(format: "name CONTAINS[cd] %@", searchText),
-                    NSPredicate(format: "fileDescription CONTAINS[cd] %@", searchText)
-                ])
-            )
-        }
-        return NSCompoundPredicate(andPredicateWithSubpredicates: predicates)
-    }
+//    private static func buildPredicate(searchText: String) -> NSPredicate {
+//        var predicates = [
+//            NSPredicate(format: "languageCode IN %@", Defaults[.libraryLanguageCodes]),
+//            NSPredicate(format: "requiresServiceWorkers == false")
+//        ]
+//        if let aMonthAgo = Calendar.current.date(byAdding: .month, value: -3, to: Date()) {
+//            predicates.append(NSPredicate(format: "created > %@", aMonthAgo as CVarArg))
+//        }
+//        if !searchText.isEmpty {
+//            predicates.append(
+//                NSCompoundPredicate(orPredicateWithSubpredicates: [
+//                    NSPredicate(format: "name CONTAINS[cd] %@", searchText),
+//                    NSPredicate(format: "fileDescription CONTAINS[cd] %@", searchText)
+//                ])
+//            )
+//        }
+//        return NSCompoundPredicate(andPredicateWithSubpredicates: predicates)
+//    }
 }
 
 @available(macOS 13.0, iOS 16.0, *)
