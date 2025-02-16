@@ -134,7 +134,7 @@ struct LibraryZimFileContext<Content: View>: View {
         Group {
 #if os(macOS)
             Button {
-                viewModel.selectedZimFile = ZimFile
+                viewModel.selectedZimFile = zimFile
             } label: {
                 content
             }.buttonStyle(.plain)
