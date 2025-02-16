@@ -139,14 +139,18 @@ private struct CategoryGrid: View {
                     ForEach(sections) { section in
                         if sections.count <= 1 {
                             ForEach(section) { zimFile in
-                                ZimFileCell(zimFile, prominent: .size)
-                                    .modifier(LibraryZimFileContext(zimFile: zimFile, dismiss: dismiss))
+                                LibraryZimFileContext(
+                                    content: { ZimFileCell(zimFile, prominent: .size) },
+                                    zimFile: zimFile,
+                                    dismiss: dismiss)
                             }
                         } else {
                             Section {
                                 ForEach(section) { zimFile in
-                                    ZimFileCell(zimFile, prominent: .size)
-                                        .modifier(LibraryZimFileContext(zimFile: zimFile, dismiss: dismiss))
+                                    LibraryZimFileContext(
+                                        content: { ZimFileCell(zimFile, prominent: .size) },
+                                        zimFile: zimFile,
+                                        dismiss: dismiss)
                                 }
                             } header: {
                                 SectionHeader(
@@ -244,8 +248,10 @@ private struct CategoryList: View {
                 }
             } else {
                 List(zimFiles, id: \.self, selection: $viewModel.selectedZimFile) { zimFile in
-                    ZimFileRow(zimFile)
-                        .modifier(LibraryZimFileContext(zimFile: zimFile, dismiss: dismiss))
+                    LibraryZimFileContext(
+                        content: { ZimFileRow(zimFile) },
+                        zimFile: zimFile,
+                        dismiss: dismiss)
                 }
                 #if os(macOS)
                 .listStyle(.inset)

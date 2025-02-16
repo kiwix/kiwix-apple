@@ -112,33 +112,39 @@ struct LibraryZimFileDetailSidePanel: ViewModifier {
 
 /// On macOS, converts the modified view to a Button that modifies the currently selected zim file
 /// On iOS, converts the modified view to a NavigationLink that goes to the zim file detail.
-struct LibraryZimFileContext: ViewModifier {
+struct LibraryZimFileContext<Content: View>: View {
     @EnvironmentObject private var viewModel: LibraryViewModel
-    @EnvironmentObject private var navigation: NavigationViewModel
-
-    let zimFile: ZimFile
-    let dismiss: (() -> Void)? // iOS only
-
-    init(zimFile: ZimFile, dismiss: (() -> Void)?) {
+    
+    private let content: Content
+    private let zimFile: ZimFile
+    /// iOS only
+    private let dismiss: (() -> Void)?
+    
+    init(
+        @ViewBuilder content: () -> Content,
+        zimFile: ZimFile,
+        dismiss: (() -> Void)? = nil
+    ) {
+        self.content = content()
         self.zimFile = zimFile
         self.dismiss = dismiss
     }
-
-    func body(content: Content) -> some View {
+    
+    var body: some View {
         Group {
-            #if os(macOS)
+#if os(macOS)
             Button {
-                viewModel.selectedZimFile = zimFile
+                viewModel.selectedZimFile = ZimFile
             } label: {
                 content
             }.buttonStyle(.plain)
-            #elseif os(iOS)
+#elseif os(iOS)
             NavigationLink {
                 ZimFileDetail(zimFile: zimFile, dismissParent: dismiss)
             } label: {
                 content
             }
-            #endif
+#endif
         }.contextMenu {
             if zimFile.fileURLBookmark != nil, !zimFile.isMissing {
                 Section { ArticleActions(zimFileID: zimFile.fileID) }
@@ -148,4 +154,5 @@ struct LibraryZimFileContext: ViewModifier {
             }
         }
     }
+    
 }

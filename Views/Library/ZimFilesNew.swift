@@ -42,28 +42,12 @@ struct ZimFilesNew: View {
             spacing: 12
         ) {
             ForEach(zimFiles.filter { filterPredicate.evaluate(with: $0) }, id: \.fileID) { zimFile in
-                Group {
-                #if os(macOS)
-                    Button {
-                        viewModel.selectedZimFile = zimFile
-                    } label: {
+                LibraryZimFileContext(
+                    content: {
                         ZimFileCell(zimFile, prominent: .name)
-                    }.buttonStyle(.plain)
-                #elseif os(iOS)
-                    NavigationLink {
-                        ZimFileDetail(zimFile: zimFile, dismissParent: dismiss)
-                    } label: {
-                        ZimFileCell(zimFile, prominent: .name)
-                    }
-                #endif
-                }.contextMenu {
-                    if zimFile.fileURLBookmark != nil, !zimFile.isMissing {
-                        Section { ArticleActions(zimFileID: zimFile.fileID) }
-                    }
-                    if let downloadURL = zimFile.downloadURL {
-                        Section { CopyPasteMenu(downloadURL: downloadURL) }
-                    }
-                }
+                    },
+                    zimFile: zimFile,
+                    dismiss: dismiss)
             }
         }
         .modifier(GridCommon())
