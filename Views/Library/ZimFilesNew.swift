@@ -16,7 +16,6 @@
 import SwiftUI
 import Defaults
 
-
 final class ZimFilesNewViewModel: ObservableObject {
     
     @Published private(set) var zimFiles: [ZimFile] = []
