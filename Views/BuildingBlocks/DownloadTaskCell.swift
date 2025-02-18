@@ -63,7 +63,8 @@ struct DownloadTaskCell: View {
             }.font(.caption).foregroundColor(.secondary)
         }
         .padding()
-        .modifier(CellBackground(isHovering: isHovering))
+        .background(CellBackground.colorFor(isHovering: isHovering))
+        .clipShape(CellBackground.clipShapeRectangle)
         .onHover { self.isHovering = $0 }
         .onReceive(DownloadService.shared.progress.publisher) { states in
             if let state = states[downloadZimFile.fileID] {

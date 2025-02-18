@@ -81,7 +81,8 @@ struct ZimFileCell: View {
             }
         }
         .padding()
-        .modifier(CellBackground(isHovering: isHovering || isLoading))
+        .background(CellBackground.colorFor(isHovering: isHovering))
+        .clipShape(CellBackground.clipShapeRectangle)
         .modifier(LoadingOverlay(isLoading: isLoading))
         .onHover { self.isHovering = $0 }
     }

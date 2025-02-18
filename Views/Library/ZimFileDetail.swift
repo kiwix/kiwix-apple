@@ -123,6 +123,9 @@ struct ZimFileDetail: View {
                 #endif
             }
             #if os(macOS)
+            .buttonStyle(.borderedProminent)
+            #endif
+            #if os(macOS)
             Action(title: LocalString.zim_file_action_reveal_in_finder_title) {
                 guard let url = await ZimFileService.shared.getFileURL(zimFileID: zimFile.id) else { return }
                 NSWorkspace.shared.activateFileViewerSelecting([url])
@@ -209,6 +212,9 @@ struct ZimFileDetail: View {
                 secondaryButton: .cancel()
             )
         }
+        #if os(macOS)
+        .buttonStyle(.borderedProminent)
+        #endif
     }
 
     @ViewBuilder
