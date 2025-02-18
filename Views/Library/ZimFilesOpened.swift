@@ -35,8 +35,10 @@ struct ZimFilesOpened: View {
             spacing: 12
         ) {
             ForEach(zimFiles) { zimFile in
-                ZimFileCell(zimFile, prominent: .name).modifier(LibraryZimFileContext(zimFile: zimFile,
-                                                                                      dismiss: self.dismiss))
+                LibraryZimFileContext(
+                    content: { ZimFileCell(zimFile, prominent: .name) },
+                    zimFile: zimFile,
+                    dismiss: dismiss)
             }
         }
         .modifier(GridCommon(edges: .all))

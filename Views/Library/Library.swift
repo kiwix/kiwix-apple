@@ -112,70 +112,47 @@ struct LibraryZimFileDetailSidePanel: ViewModifier {
 
 /// On macOS, converts the modified view to a Button that modifies the currently selected zim file
 /// On iOS, converts the modified view to a NavigationLink that goes to the zim file detail.
-struct LibraryZimFileContext: ViewModifier {
+struct LibraryZimFileContext<Content: View>: View {
     @EnvironmentObject private var viewModel: LibraryViewModel
-    @EnvironmentObject private var navigation: NavigationViewModel
-
-    let zimFile: ZimFile
-    let dismiss: (() -> Void)? // iOS only
-
-    init(zimFile: ZimFile, dismiss: (() -> Void)?) {
+    
+    private let content: Content
+    private let zimFile: ZimFile
+    /// iOS only
+    private let dismiss: (() -> Void)?
+    
+    init(
+        @ViewBuilder content: () -> Content,
+        zimFile: ZimFile,
+        dismiss: (() -> Void)? = nil
+    ) {
+        self.content = content()
         self.zimFile = zimFile
         self.dismiss = dismiss
     }
-
-    func body(content: Content) -> some View {
+    
+    var body: some View {
         Group {
-            #if os(macOS)
+#if os(macOS)
             Button {
                 viewModel.selectedZimFile = zimFile
             } label: {
                 content
             }.buttonStyle(.plain)
-            #elseif os(iOS)
+#elseif os(iOS)
             NavigationLink {
                 ZimFileDetail(zimFile: zimFile, dismissParent: dismiss)
             } label: {
                 content
             }
-            #endif
+#endif
         }.contextMenu {
             if zimFile.fileURLBookmark != nil, !zimFile.isMissing {
-                Section { articleActions }
+                Section { ArticleActions(zimFileID: zimFile.fileID) }
             }
-            Section { supplementaryActions }
-        }
-    }
-
-    @ViewBuilder
-    var articleActions: some View {
-        AsyncButton {
-            guard let url = await ZimFileService.shared.getMainPageURL(zimFileID: zimFile.fileID) else { return }
-            NotificationCenter.openURL(url, inNewTab: true)
-        } label: {
-            Label(LocalString.library_zim_file_context_main_page_label, systemImage: "house")
-        }
-        AsyncButton {
-            guard let url = await ZimFileService.shared.getRandomPageURL(zimFileID: zimFile.fileID) else { return }
-            NotificationCenter.openURL(url, inNewTab: true)
-        } label: {
-            Label(LocalString.library_zim_file_context_random_label, systemImage: "die.face.5")
-        }
-    }
-
-    @ViewBuilder
-    var supplementaryActions: some View {
-        if let downloadURL = zimFile.downloadURL {
-            Button {
-                #if os(macOS)
-                NSPasteboard.general.clearContents()
-                NSPasteboard.general.setString(downloadURL.absoluteString, forType: .string)
-                #elseif os(iOS)
-                UIPasteboard.general.setValue(downloadURL.absoluteString, forPasteboardType: UTType.url.identifier)
-                #endif
-            } label: {
-                Label(LocalString.library_zim_file_context_copy_url, systemImage: "doc.on.doc")
+            if let downloadURL = zimFile.downloadURL {
+                Section { CopyPasteMenu(downloadURL: downloadURL) }
             }
         }
     }
+    
 }

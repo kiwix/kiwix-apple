@@ -35,10 +35,11 @@ struct ZimFilesDownloads: View {
             alignment: .leading,
             spacing: 12
         ) {
-            ForEach(downloadTasks) { downloadTask in
-                if let zimFile = downloadTask.zimFile {
-                    DownloadTaskCell(zimFile).modifier(LibraryZimFileContext(zimFile: zimFile, dismiss: dismiss))
-                }
+            ForEach(downloadTasks.compactMap(\.zimFile)) { zimFile in
+                LibraryZimFileContext(
+                    content: { DownloadTaskCell(zimFile) },
+                    zimFile: zimFile,
+                    dismiss: dismiss)
             }
         }
         .modifier(GridCommon())
