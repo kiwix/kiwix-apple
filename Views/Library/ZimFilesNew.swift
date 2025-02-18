@@ -66,7 +66,11 @@ private final class ViewModel: ObservableObject {
                 }
             }
         }
-        await MainActor.run { self.zimFiles = newZimFiles }
+        await MainActor.run {
+            withAnimation(.easeInOut) {
+                self.zimFiles = newZimFiles
+            }
+        }
     }
     
     private static func buildPredicate(searchText: String, languageCodes: Set<String>) -> NSPredicate {
@@ -112,6 +116,7 @@ struct ZimFilesNew: View {
                     },
                     zimFile: zimFile,
                     dismiss: dismiss)
+                .transition(AnyTransition.opacity)
             }
         }
         .modifier(GridCommon())
