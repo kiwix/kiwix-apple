@@ -14,6 +14,7 @@
 // along with Kiwix; If not, see https://www.gnu.org/licenses/.
 
 import SwiftUI
+import CoreData
 
 struct ZimFileDetail_Previews: PreviewProvider {
     static let context = NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType)
