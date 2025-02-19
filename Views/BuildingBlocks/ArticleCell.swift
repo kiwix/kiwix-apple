@@ -57,12 +57,14 @@ struct ArticleCell: View {
         }
         .foregroundColor(.primary)
         .padding(12)
-        .modifier(CellBackground(isHovering: isHovering))
+        .background(CellBackground.colorFor(isHovering: isHovering))
+        .clipShape(CellBackground.clipShapeRectangle)
         .onHover { self.isHovering = $0 }
     }
 }
 
 struct ArticleCell_Previews: PreviewProvider {
+    
     static let result: SearchResult = {
         let result = SearchResult(zimFileID: UUID(), path: "", title: "Article Title")!
         result.snippet = NSAttributedString(string: """

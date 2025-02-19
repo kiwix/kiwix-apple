@@ -15,35 +15,18 @@
 
 import SwiftUI
 
-struct CellBackground: ViewModifier {
-    @Environment(\.colorScheme) var colorScheme: ColorScheme
-
-    let isHovering: Bool
-
-    func body(content: Content) -> some View {
-        content
-            .background(backgroundColor)
-            .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
+enum CellBackground {
+    #if os(macOS)
+    private static let normal: Color = Color(nsColor: NSColor.controlBackgroundColor)
+    private static let hover: Color = Color(nsColor: NSColor.selectedControlColor)
+    #else
+    private static let normal: Color = .secondaryBackground
+    private static let hover: Color = .tertiaryBackground
+    #endif
+    
+    static func colorFor(isHovering: Bool) -> Color {
+        isHovering ? hover : normal
     }
-
-    private var backgroundColor: Color {
-        switch (colorScheme, isHovering) {
-        case (.dark, true):
-            #if os(macOS)
-            return Color.background
-            #elseif os(iOS)
-            return Color.secondaryBackground
-            #endif
-        case (.dark, false):
-            return Color.tertiaryBackground
-        case (.light, true):
-            return Color(white: 0.9)
-        case (.light, false), (_, _):
-            #if os(macOS)
-            return Color.white
-            #elseif os(iOS)
-            return Color(white: 0.96)
-            #endif
-        }
-    }
+    
+    static let clipShapeRectangle = RoundedRectangle(cornerRadius: 12, style: .continuous)
 }

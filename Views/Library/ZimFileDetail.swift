@@ -123,6 +123,9 @@ struct ZimFileDetail: View {
                 #endif
             }
             #if os(macOS)
+            .buttonStyle(.borderedProminent)
+            #endif
+            #if os(macOS)
             Action(title: LocalString.zim_file_action_reveal_in_finder_title) {
                 guard let url = await ZimFileService.shared.getFileURL(zimFileID: zimFile.id) else { return }
                 NSWorkspace.shared.activateFileViewerSelecting([url])
@@ -209,6 +212,9 @@ struct ZimFileDetail: View {
                 secondaryButton: .cancel()
             )
         }
+        #if os(macOS)
+        .buttonStyle(.borderedProminent)
+        #endif
     }
 
     @ViewBuilder
@@ -369,32 +375,5 @@ private struct ServiceWorkerWarning: View {
         } icon: {
             Image(systemName: "exclamationmark.triangle.fill").renderingMode(.original)
         }
-    }
-}
-
-struct ZimFileDetail_Previews: PreviewProvider {
-    static let context = NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType)
-    static let zimFile: ZimFile = {
-        let zimFile = ZimFile(context: context)
-        zimFile.articleCount = 1000000
-        zimFile.category = "wikipedia"
-        zimFile.created = Date()
-        zimFile.downloadURL = URL(string: "https://www.example.com")
-        zimFile.fileID = UUID()
-        zimFile.fileDescription = "A very long description"
-        zimFile.flavor = "max"
-        zimFile.hasDetails = true
-        zimFile.hasPictures = false
-        zimFile.hasVideos = true
-        zimFile.languageCode = "en"
-        zimFile.mediaCount = 100
-        zimFile.name = "Wikipedia Zim File Name"
-        zimFile.persistentID = ""
-        zimFile.size = 1000000000
-        return zimFile
-    }()
-
-    static var previews: some View {
-        ZimFileDetail(zimFile: zimFile, dismissParent: nil).frame(width: 300).previewLayout(.sizeThatFits)
     }
 }
