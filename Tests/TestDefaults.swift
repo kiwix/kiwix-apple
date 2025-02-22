@@ -19,7 +19,7 @@ import Defaults
 
 final class TestDefaults: NSObject, Defaulting {
     
-    var dict: [Defaults.AnyKey: any DefaultsSerializable] = [:]
+    var dict: [Defaults._AnyKey: AnyObject] = [:]
     
     func setup() {
         self[.categoriesToLanguages] = [:]
@@ -29,13 +29,13 @@ final class TestDefaults: NSObject, Defaulting {
         self[.libraryLanguageCodes] = Set<String>()
     }
     
-    subscript<Value>(key: Defaults.Key<Value>) -> Value where Value: DefaultsSerializable {
+    subscript<Value>(key: Defaults.Key<Value>) -> Value {
         get {
             // swiftlint:disable:next force_cast
             dict[key] as! Value
         }
         set {
-            dict[key] = newValue
+            dict[key] = newValue as AnyObject
         }
     }
 }
