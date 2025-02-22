@@ -58,6 +58,18 @@ runs:
       # https://github.com/actions/runner-images/blob/main/images/macos/macos-13-Readme.md#xcode
       run: sudo xcode-select -s /Applications/Xcode_15.2.0.app
 
+    - name: Use specific iOS SDK
+      env:
+        DEST: ${{ inputs.xc-destination }}
+        IOS_SDK: "18.1"
+      shell: bash
+      run: |
+        if [[ "$DEST" =~ "iOS" ]]; then
+          echo "XC_DEST_OS=;OS=$IOS_SDK" >> $GITHUB_ENV
+        else
+          echo "XC_DEST_OS=" >> $GITHUB_ENV
+        fi
+
     - name: Create Keychain
       shell: bash
       env:
@@ -111,7 +123,7 @@ runs:
         XC_WORKSPACE: ${{ inputs.XC_WORKSPACE }}
         XC_SCHEME: ${{ inputs.XC_SCHEME }}
         XC_CONFIG: ${{ inputs.XC_CONFIG }}
-        XC_DESTINATION: ${{ inputs.xc-destination }}
+        XC_DESTINATION: ${{ inputs.xc-destination }}${{ env.XC_DEST_OS }}
         EXTRA_XCODEBUILD: ${{ inputs.EXTRA_XCODEBUILD }}
       shell: bash
       run: xcrun xcodebuild ${EXTRA_XCODEBUILD} -workspace $XC_WORKSPACE -scheme $XC_SCHEME -destination "$XC_DESTINATION" -configuration $XC_CONFIG -onlyUsePackageVersionsFromResolvedFile -allowProvisioningUpdates -verbose -archivePath $PWD/Kiwix-$VERSION.xcarchive ${ACTION}
