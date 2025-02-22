@@ -116,6 +116,10 @@ runs:
       shell: bash
       run: xcrun xcodebuild -workspace $XC_WORKSPACE -scheme $XC_SCHEME -showBuildSettings
 
+    - name: Show eligible build destinations for the ${{ inputs.XC_SCHEME }}
+      shell: bash
+      run: xcrun xcodebuild -showdestinations -scheme ${{ inputs.XC_SCHEME }}
+
     - name: Build with Xcode
       env:
         ACTION: ${{ inputs.action }}
