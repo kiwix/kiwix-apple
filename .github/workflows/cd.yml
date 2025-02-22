@@ -48,7 +48,7 @@ jobs:
       matrix:
         platform: [iOS, macOS]
         destination: [app-store, ftp]
-    runs-on: macos-13
+    runs-on: macos-14
 
     steps:
 
