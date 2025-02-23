@@ -23,13 +23,15 @@ final class SearchViewModel: NSObject, ObservableObject, NSFetchedResultsControl
     @Published private(set) var zimFiles: [UUID: ZimFile]  // ID of zim files that are included in search
     @Published private(set) var inProgress = false
     @Published private(set) var results = [SearchResult]()
+    
+    static let shared = SearchViewModel()
 
     private let fetchedResultsController: NSFetchedResultsController<ZimFile>
     private var searchSubscriber: AnyCancellable?
     @ZimActor
     private let queue = OperationQueue()
 
-    override init() {
+    override private init() {
         // initialize fetched results controller
         let predicate = NSPredicate(format: "includedInSearch == true AND fileURLBookmark != nil")
         fetchedResultsController = NSFetchedResultsController(
@@ -39,7 +41,7 @@ final class SearchViewModel: NSObject, ObservableObject, NSFetchedResultsControl
             cacheName: nil
         )
 
-        // initilze zim file IDs
+        // initialize zim file IDs
         try? fetchedResultsController.performFetch()
         zimFiles = fetchedResultsController.fetchedObjects?.reduce(into: [:]) { result, zimFile in
             result?[zimFile.fileID] = zimFile

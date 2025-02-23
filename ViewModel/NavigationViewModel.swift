@@ -97,6 +97,7 @@ final class NavigationViewModel: ObservableObject {
     /// Delete a single tab, and select another tab
     /// - Parameter tabID: ID of the tab to delete
     func deleteTab(tabID: NSManagedObjectID) {
+        let currentItemValue = currentItem
         Database.shared.performBackgroundTask { context in
             let sortByCreation = [NSSortDescriptor(key: "created", ascending: false)]
             guard let tabs: [Tab] = try? context.fetch(Tab.fetchRequest(predicate: nil,
@@ -105,7 +106,7 @@ final class NavigationViewModel: ObservableObject {
                 return
             }
             let newlySelectedTab: Tab?
-            if case let .tab(selectedTabID) = self.currentItem, selectedTabID == tabID {
+            if case let .tab(selectedTabID) = currentItemValue, selectedTabID == tabID {
                 // select a closeBy tab if the currently selected tab is to be deleted
                 newlySelectedTab = tabs.closeBy(toWhere: { $0.objectID == tabID }) ?? Self.makeTab(context: context)
             } else if tabs.count == 1 {
