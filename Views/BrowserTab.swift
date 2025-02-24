@@ -21,7 +21,7 @@ struct BrowserTab: View {
     @Environment(\.scenePhase) private var scenePhase
     @EnvironmentObject private var browser: BrowserViewModel
     @EnvironmentObject private var library: LibraryViewModel
-    @StateObject private var search = SearchViewModel()
+    @StateObject private var search = SearchViewModel.shared
 
     var body: some View {
         let model = if FeatureFlags.hasLibrary {

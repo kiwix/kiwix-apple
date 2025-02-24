@@ -259,17 +259,33 @@ final class BrowserViewModel: NSObject, ObservableObject,
 
     @MainActor
     func updateLastOpened() {
-        guard let tab = try? Database.shared.viewContext.existingObject(with: tabID) as? Tab else { return }
-        tab.lastOpened = Date()
+        let currentTabID = tabID
+        Task {
+            Database.shared.performBackgroundTask { context in
+                guard let tab = try? context.existingObject(with: currentTabID) as? Tab else {
+                    return
+                }
+                tab.lastOpened = Date()
+                try? context.save()
+            }
+        }
     }
 
     @MainActor
     func persistState() {
-        guard let tab = try? Database.shared.viewContext.existingObject(with: tabID) as? Tab else {
-            return
+        let webData = webView.interactionState as? Data
+        let currentTabID = tabID
+        Task {
+            Database.shared.performBackgroundTask { context in
+                guard let tab = try? context.existingObject(with: currentTabID) as? Tab else {
+                    return
+                }
+                tab.interactionState = webData
+                if context.hasChanges {
+                    try? context.save()
+                }
+            }
         }
-        tab.interactionState = webView.interactionState as? Data
-        try? Database.shared.viewContext.save()
     }
 
     // MARK: - Content Loading

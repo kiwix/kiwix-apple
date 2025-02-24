@@ -37,7 +37,7 @@ final class CompactViewController: UIHostingController<AnyView>, UISearchControl
 
     init(navigation: NavigationViewModel) {
         self.navigation = navigation
-        searchViewModel = SearchViewModel()
+        searchViewModel = SearchViewModel.shared
         let searchResult = SearchResults().environmentObject(searchViewModel)
         searchController = UISearchController(searchResultsController: UIHostingController(rootView: searchResult))
         super.init(rootView: AnyView(CompactView()))
