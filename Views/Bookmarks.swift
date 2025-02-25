@@ -29,7 +29,7 @@ struct Bookmarks: View {
 
     var body: some View {
         LazyVGrid(columns: ([gridItem]), spacing: 12) {
-            ForEach(bookmarks) { bookmark in
+            ForEach(bookmarks, id: \.self) { bookmark in
                 Button {
                     NotificationCenter.openURL(bookmark.articleURL)
                     if horizontalSizeClass == .compact {
@@ -54,8 +54,8 @@ struct Bookmarks: View {
                 Message(text: LocalString.bookmark_overlay_empty_title)
             }
         }
+#if os(iOS)
         .toolbar {
-            #if os(iOS)
             ToolbarItem(placement: .navigationBarLeading) {
                 if #unavailable(iOS 16), horizontalSizeClass == .regular {
                     Button {
@@ -65,8 +65,8 @@ struct Bookmarks: View {
                     }
                 }
             }
-            #endif
         }
+#endif
     }
 
     private var gridItem: GridItem {
