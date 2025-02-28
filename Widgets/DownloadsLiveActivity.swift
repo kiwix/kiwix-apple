@@ -35,22 +35,8 @@ struct DownloadsLiveActivity: Widget {
             VStack {
                 HStack {
                     VStack(alignment: .leading) {
-                        Text(context.state.title)
-                            .lineLimit(1)
-                            .multilineTextAlignment(.leading)
-                            .font(.headline)
-                            .bold()
-                        ProgressView(timerInterval: timeInterval, countsDown: false, label: {
-                            Text(context.state.progressDescription)
-                                .lineLimit(1)
-                                .font(.caption)
-                                .tint(.secondary)
-                        }, currentValueLabel: {
-                            Text(timerInterval: timeInterval)
-                                .font(.caption)
-                                .tint(.secondary)
-                        })
-                        .tint(Color.primary)
+                        titleFor(context.state.title)
+                        progressFor(state: context.state, timeInterval: timeInterval)
                     }
                     .padding()
                     KiwixLogo(maxHeight: 50)
@@ -67,25 +53,13 @@ struct DownloadsLiveActivity: Widget {
                         timeInterval: context.state.estimatedTimeLeft,
                         since: .now
                     )
+                    
                     VStack(alignment: .leading) {
-                        Text(context.state.title)
-                            .lineLimit(1)
-                            .multilineTextAlignment(.leading)
-                            .font(.headline)
-                            .bold()
-                        ProgressView(timerInterval: timeInterval, countsDown: false, label: {
-                            Text(context.state.progressDescription)
-                                .lineLimit(1)
-                                .font(.caption)
-                                .tint(.secondary)
-                        }, currentValueLabel: {
-                            Text(timerInterval: timeInterval)
-                                .font(.caption)
-                                .tint(.secondary)
-                        })
-                        .tint(Color.primary)
+                        titleFor(context.state.title)
+                        progressFor(state: context.state, timeInterval: timeInterval)
+                        Spacer()
                     }
-                    .padding(.leading)
+                    .padding()
                     .dynamicIsland(verticalPlacement: .belowIfTooWide)
                 }
                 
@@ -109,6 +83,46 @@ struct DownloadsLiveActivity: Widget {
             .keylineTint(Color.red)
         }.containerBackgroundRemovable()
     }
+    
+    @ViewBuilder
+    private func titleFor(_ title: String) -> some View {
+        Text(title)
+            .lineLimit(1)
+            .frame(minWidth: 150, alignment: .leading)
+            .font(.headline)
+            .bold()
+    }
+    
+    @ViewBuilder
+    private func progressText(_ description: String) -> some View {
+        Text(description)
+            .lineLimit(1)
+            .font(.caption)
+            .tint(.secondary)
+    }
+    
+    @ViewBuilder
+    private func progressFor(state: DownloadActivityAttributes.ContentState, timeInterval: ClosedRange<Date>) -> some View {
+        if !state.isAllPaused {
+            ProgressView(timerInterval: timeInterval, countsDown: false, label: {
+                progressText(state.progressDescription)
+            }, currentValueLabel: {
+                Text(timerInterval: timeInterval)
+                    .font(.caption)
+                    .tint(.secondary)
+            })
+            .tint(Color.primary)
+        } else {
+            ProgressView(value: state.progress, label: {
+                progressText(state.progressDescription)
+            }, currentValueLabel: {
+                Label("", systemImage: "pause.fill")
+                    .font(.caption)
+                    .tint(.secondary)
+            })
+            .tint(Color.primary)
+        }
+    }
 }
 
 extension DownloadActivityAttributes {
@@ -127,14 +141,16 @@ extension DownloadActivityAttributes.ContentState {
                     description: "First item",
                     downloaded: 128,
                     total: 256,
-                    timeRemaining: 15
+                    timeRemaining: 15,
+                    isPaused: true
                 ),
                 DownloadActivityAttributes.DownloadItem(
                     uuid: UUID(),
                     description: "2nd item",
                     downloaded: 90,
                     total: 124,
-                    timeRemaining: 2
+                    timeRemaining: 2,
+                    isPaused: true
                 )
             ]
         )
@@ -149,14 +165,16 @@ extension DownloadActivityAttributes.ContentState {
                     description: "First item",
                     downloaded: 256,
                     total: 256,
-                    timeRemaining: 0
+                    timeRemaining: 0,
+                    isPaused: false
                 ),
                 DownloadActivityAttributes.DownloadItem(
                     uuid: UUID(),
                     description: "2nd item",
                     downloaded: 110,
                     total: 124,
-                    timeRemaining: 2
+                    timeRemaining: 2,
+                    isPaused: false
                 )
             ]
         )
