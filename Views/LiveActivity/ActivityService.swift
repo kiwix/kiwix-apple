@@ -49,9 +49,9 @@ final class ActivityService {
         publisher().sink { [weak self] (state: [UUID: DownloadState]) in
             guard let self else { return }
             if state.isEmpty {
-                stop()
+                self.stop()
             } else {
-                update(state: state)
+                self.update(state: state)
             }
         }.store(in: &cancellables)
     }
