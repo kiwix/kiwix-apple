@@ -96,16 +96,21 @@ final class ActivityService {
         guard let activity, (now - lastUpdate) > updateFrequency else {
             return
         }
-        lastUpdate = now
         Task {
             let activityState = await activityState(from: state, downloadTimes: downloadTimes)
-            await activity.update(
-                ActivityContent<DownloadActivityAttributes.ContentState>(
-                    state: activityState,
-                    staleDate: nil
-                )
+            let newContent = ActivityContent<DownloadActivityAttributes.ContentState>(
+                state: activityState,
+                staleDate: nil
             )
+            if #available(iOS 17.2, *) {
+                // important to define a timestamp, this way iOS knows which updates
+                // can be dropped, if too many of them queues up
+                await activity.update(newContent, timestamp: .now)
+            } else {
+                await activity.update(newContent)
+            }
         }
+        lastUpdate = now
     }
     
     private func updatedDownloadTimes(from states: [UUID: DownloadState]) -> [UUID: CFTimeInterval] {
