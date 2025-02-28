@@ -26,6 +26,10 @@ struct DownloadState: Codable {
     let downloaded: Int64
     let total: Int64
     let resumeData: Data?
+    
+    var isPaused: Bool {
+        resumeData != nil
+    }
 
     static func empty() -> DownloadState {
         .init(downloaded: 0, total: 1, resumeData: nil)

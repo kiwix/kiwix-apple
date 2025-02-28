@@ -93,7 +93,14 @@ final class ActivityService {
             return
         }
         let now = CACurrentMediaTime()
-        guard let activity, (now - lastUpdate) > updateFrequency else {
+        // make sure we don't update too frequently
+        // unless there's a pause, we do want immediate update
+        let isTooEarlyToUpdate = if hasAnyPause(in: state) {
+            false
+        } else {
+            (now - lastUpdate) <= updateFrequency
+        }
+        guard let activity, !isTooEarlyToUpdate else {
             return
         }
         Task {
@@ -176,8 +183,17 @@ final class ActivityService {
                     description: titles[key] ?? key.uuidString,
                     downloaded: download.downloaded,
                     total: download.total,
-                    timeRemaining: downloadTimes[key] ?? 0)
+                    timeRemaining: downloadTimes[key] ?? 0,
+                    isPaused: download.isPaused
+                )
         })
+    }
+    
+    private func hasAnyPause(in state: [UUID: DownloadState]) -> Bool {
+        guard !state.isEmpty else { return false }
+        return !state.values.allSatisfy { (download: DownloadState) in
+            download.isPaused == false
+        }
     }
 }
 
