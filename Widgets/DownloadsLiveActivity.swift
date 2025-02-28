@@ -63,28 +63,35 @@ struct DownloadsLiveActivity: Widget {
             DynamicIsland {
                 // Expanded UI
                 DynamicIslandExpandedRegion(.leading) {
-                    Spacer()
-                    KiwixLogo(maxHeight: 50)
-                    Spacer()
-                }
-                DynamicIslandExpandedRegion(.trailing) {
-                    ProgressView(value: context.state.progress)
-                        .progressViewStyle(CircularProgressGaugeStyle(lineWidth: 11.4))
-                        .padding(6.0)
-                }
-                DynamicIslandExpandedRegion(.center) {
+                    let timeInterval = startTime...Date(
+                        timeInterval: context.state.estimatedTimeLeft,
+                        since: .now
+                    )
                     VStack(alignment: .leading) {
                         Text(context.state.title)
                             .lineLimit(1)
                             .multilineTextAlignment(.leading)
                             .font(.headline)
                             .bold()
-                        Text(context.state.progressDescription)
-                            .lineLimit(1)
-                            .multilineTextAlignment(.leading)
-                            .font(.caption)
-                            .tint(.secondary)
+                        ProgressView(timerInterval: timeInterval, countsDown: false, label: {
+                            Text(context.state.progressDescription)
+                                .lineLimit(1)
+                                .font(.caption)
+                                .tint(.secondary)
+                        }, currentValueLabel: {
+                            Text(timerInterval: timeInterval)
+                                .font(.caption)
+                                .tint(.secondary)
+                        })
+                        .tint(Color.primary)
                     }
+                    .padding(.leading)
+                    .dynamicIsland(verticalPlacement: .belowIfTooWide)
+                }
+                
+                DynamicIslandExpandedRegion(.trailing) {
+                    KiwixLogo(maxHeight: 50)
+                        .padding()
                 }
             } compactLeading: {
                 KiwixLogo()
