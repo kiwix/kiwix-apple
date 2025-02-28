@@ -102,7 +102,10 @@ struct DownloadsLiveActivity: Widget {
     }
     
     @ViewBuilder
-    private func progressFor(state: DownloadActivityAttributes.ContentState, timeInterval: ClosedRange<Date>) -> some View {
+    private func progressFor(
+        state: DownloadActivityAttributes.ContentState,
+        timeInterval: ClosedRange<Date>
+    ) -> some View {
         if !state.isAllPaused {
             ProgressView(timerInterval: timeInterval, countsDown: false, label: {
                 progressText(state.progressDescription)

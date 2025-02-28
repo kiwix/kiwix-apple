@@ -86,7 +86,14 @@ public struct DownloadActivityAttributes: ActivityAttributes {
             progressFor(items: [self]).localizedAdditionalDescription
         }
         
-        public init(uuid: UUID, description: String, downloaded: Int64, total: Int64, timeRemaining: TimeInterval, isPaused: Bool) {
+        public init(
+            uuid: UUID,
+            description: String,
+            downloaded: Int64,
+            total: Int64,
+            timeRemaining: TimeInterval,
+            isPaused: Bool
+        ) {
             self.uuid = uuid
             self.description = description
             self.downloaded = downloaded
