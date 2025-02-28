@@ -112,7 +112,7 @@ final class ActivityService {
             if #available(iOS 17.2, *) {
                 // important to define a timestamp, this way iOS knows which updates
                 // can be dropped, if too many of them queues up
-                await activity.update(newContent, timestamp: .now)
+                await activity.update(newContent, timestamp: Date.now)
             } else {
                 await activity.update(newContent)
             }
