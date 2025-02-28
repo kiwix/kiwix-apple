@@ -21,73 +21,51 @@ struct DownloadsLiveActivity: Widget {
 //    @Environment(\.isActivityFullscreen) var isActivityFullScreen has a bug, when min iOS is 16
 //    https://developer.apple.com/forums/thread/763594
     
+    /// A start time from the creation of the activity,
+    /// this way the progress bar is not jumping back to 0
+    private let startTime: Date = .now
+    
     var body: some WidgetConfiguration {
         ActivityConfiguration(for: DownloadActivityAttributes.self) { context in
-            // Lock screen/banner UI goes here
+            // Lock screen/banner UI
+            let timeInterval = startTime...Date(
+                timeInterval: context.state.estimatedTimeLeft,
+                since: .now
+            )
             VStack {
                 HStack {
-                    KiwixLogo(maxHeight: 50)
-                        .padding()
                     VStack(alignment: .leading) {
-                        Text(context.state.title)
-                            .lineLimit(1)
-                            .multilineTextAlignment(.leading)
-                            .font(.headline)
-                            .bold()
-                        HStack {
-                            Text(
-                                timerInterval: Date.now...Date(
-                                    timeInterval: context.state.estimatedTimeLeft,
-                                    since: .now
-                                )
-                            )
-                            .lineLimit(1)
-                            .multilineTextAlignment(.leading)
-                            .font(.caption)
-                            .tint(.secondary)
-                            Text(context.state.progressDescription)
-                                .lineLimit(1)
-                                .multilineTextAlignment(.leading)
-                                .font(.caption)
-                                .tint(.secondary)
-                        }
+                        titleFor(context.state.title)
+                        progressFor(state: context.state, timeInterval: timeInterval)
                     }
-                    Spacer()
-                    ProgressView(value: context.state.progress)
-                        .progressViewStyle(CircularProgressGaugeStyle(lineWidth: 5.7))
-                        .frame(width: 24, height: 24)
-                        .padding()
+                    .padding()
+                    KiwixLogo(maxHeight: 50)
+                        .padding(.trailing)
                 }
             }
             .modifier(WidgetBackgroundModifier())
             
         } dynamicIsland: { context in
             DynamicIsland {
-                // Expanded UI goes here.  Compose the expanded UI through
-                // various regions, like leading/trailing/center/bottom
+                // Expanded UI
                 DynamicIslandExpandedRegion(.leading) {
-                    Spacer()
-                    KiwixLogo(maxHeight: 50)
-                    Spacer()
-                }
-                DynamicIslandExpandedRegion(.trailing) {
-                    ProgressView(value: context.state.progress)
-                        .progressViewStyle(CircularProgressGaugeStyle(lineWidth: 11.4))
-                        .padding(6.0)
-                }
-                DynamicIslandExpandedRegion(.center) {
+                    let timeInterval = startTime...Date(
+                        timeInterval: context.state.estimatedTimeLeft,
+                        since: .now
+                    )
+                    
                     VStack(alignment: .leading) {
-                        Text(context.state.title)
-                            .lineLimit(1)
-                            .multilineTextAlignment(.leading)
-                            .font(.headline)
-                            .bold()
-                        Text(context.state.progressDescription)
-                            .lineLimit(1)
-                            .multilineTextAlignment(.leading)
-                            .font(.caption)
-                            .tint(.secondary)
+                        titleFor(context.state.title)
+                        progressFor(state: context.state, timeInterval: timeInterval)
+                        Spacer()
                     }
+                    .padding()
+                    .dynamicIsland(verticalPlacement: .belowIfTooWide)
+                }
+                
+                DynamicIslandExpandedRegion(.trailing) {
+                    KiwixLogo(maxHeight: 50)
+                        .padding()
                 }
             } compactLeading: {
                 KiwixLogo()
@@ -104,6 +82,49 @@ struct DownloadsLiveActivity: Widget {
             .widgetURL(URL(string: "https://www.kiwix.org"))
             .keylineTint(Color.red)
         }.containerBackgroundRemovable()
+    }
+    
+    @ViewBuilder
+    private func titleFor(_ title: String) -> some View {
+        Text(title)
+            .lineLimit(1)
+            .frame(minWidth: 150, alignment: .leading)
+            .font(.headline)
+            .bold()
+    }
+    
+    @ViewBuilder
+    private func progressText(_ description: String) -> some View {
+        Text(description)
+            .lineLimit(1)
+            .font(.caption)
+            .tint(.secondary)
+    }
+    
+    @ViewBuilder
+    private func progressFor(
+        state: DownloadActivityAttributes.ContentState,
+        timeInterval: ClosedRange<Date>
+    ) -> some View {
+        if !state.isAllPaused {
+            ProgressView(timerInterval: timeInterval, countsDown: false, label: {
+                progressText(state.progressDescription)
+            }, currentValueLabel: {
+                Text(timerInterval: timeInterval)
+                    .font(.caption)
+                    .tint(.secondary)
+            })
+            .tint(Color.primary)
+        } else {
+            ProgressView(value: state.progress, label: {
+                progressText(state.progressDescription)
+            }, currentValueLabel: {
+                Label("", systemImage: "pause.fill")
+                    .font(.caption)
+                    .tint(.secondary)
+            })
+            .tint(Color.primary)
+        }
     }
 }
 
@@ -123,14 +144,16 @@ extension DownloadActivityAttributes.ContentState {
                     description: "First item",
                     downloaded: 128,
                     total: 256,
-                    timeRemaining: 3
+                    timeRemaining: 15,
+                    isPaused: true
                 ),
                 DownloadActivityAttributes.DownloadItem(
                     uuid: UUID(),
                     description: "2nd item",
                     downloaded: 90,
                     total: 124,
-                    timeRemaining: 2
+                    timeRemaining: 2,
+                    isPaused: true
                 )
             ]
         )
@@ -145,14 +168,16 @@ extension DownloadActivityAttributes.ContentState {
                     description: "First item",
                     downloaded: 256,
                     total: 256,
-                    timeRemaining: 0
+                    timeRemaining: 0,
+                    isPaused: false
                 ),
                 DownloadActivityAttributes.DownloadItem(
                     uuid: UUID(),
                     description: "2nd item",
                     downloaded: 110,
                     total: 124,
-                    timeRemaining: 2
+                    timeRemaining: 2,
+                    isPaused: false
                 )
             ]
         )

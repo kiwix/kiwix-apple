@@ -611,8 +611,7 @@ final class BrowserViewModel: NSObject, ObservableObject,
                 )
                 actions.append(
                     UIAction(title: LocalString.common_dialog_button_open_in_new_tab,
-                             image: UIImage(systemName: "doc.badge.plus")) { [weak self] _ in
-                                 guard let self else { return }
+                             image: UIImage(systemName: "doc.badge.plus")) { _ in
                                  Task { @MainActor in
                                      NotificationCenter.openURL(url, inNewTab: true)
                                  }
