@@ -1,8 +1,29 @@
+# 3.9.0
+
 # 3.8.0
+  - NEW:
+    - Live activities for downloads (@BPerlakiH #1096, #1105, #1106, #1114, #1126)
+  - UPDATE:
+    - Localisations (@translatewiki #1095, #1102, #1108)
+    - Keyboard navigation improvements for macOS (@BPerlakiH #1084)
+    - Safety measures for translations (@BPerlakiH #1089)
+    - Change url type to for copy paste on macOS, removed id from context menu (@BPerlakiH #1103)
+    - README.md (@anupulu, @BPerlakiH #1109, #1110)
+    - Github Actions to macOS 14, XCode 16.2 (@BPerlakiH #1120, #1121, #1123, #1127, #1128)
+    - SPM Dependency "Defaults" to 8.2 (@BPerlakiH #1111)
+  - FIX:
+    - Inlining the Kiwix side menu title on iPad (@BPerlakiH #1069)
+    - Localisation for donation button (@BPerlakiH #1087)
+    - CI unit tests on macOS (@BPerlakiH #1082)
+    - Search result persistence when switching apps (@BPerlakiH #1094)
+    - iPad split mode scroll to make bottom bar appear (@BPerlakiH #1098)
+    - ZimFile state in download details right after download (@BPerlakiH #1113)
+    - Scroll performance in Library (@BPerlakiH #1117, #1118)
+    - Side menu performance improvements (@BPerlakiH #1125)
 
 # 3.7.1
   - UPDATE:
-    -Localisations (@translatewiki #1056, #1070)
+    - Localisations (@translatewiki #1056, #1070)
     - CI to Xcode 15.2 (@BPerlakiH #1062)
     - Removed unused parts from CI / CD (@BPerlakiH #1066)
   - FIX:
