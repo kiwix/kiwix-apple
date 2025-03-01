@@ -41,7 +41,7 @@ jobs:
 
       - name: Set EXTRA_XCODEBUILD for iOS
         if: matrix.platform == 'iOS'
-        run: echo "EXTRA_XCODEBUILD=-sdk iphoneos ${{ env.APPLE_AUTH_PARAMS }}" >> $GITHUB_ENV
+        run: echo "EXTRA_XCODEBUILD=-sdk iphoneos18.1 ${{ env.APPLE_AUTH_PARAMS }}" >> $GITHUB_ENV
 
       - name: Set EXTRA_XCODEBUILD for macOS
         if: matrix.platform == 'macOS'
@@ -64,7 +64,7 @@ jobs:
 
       - name: Run Unit Tests on iOS
         if: matrix.platform == 'iOS'
-        run: xcodebuild test -scheme Kiwix -destination 'platform=iOS Simulator,name=iPhone 15 Plus'
+        run: xcodebuild test -scheme Kiwix -destination 'platform=iOS Simulator,name=iPhone 16 Pro'
 
       - name: Run Unit Tests on macOS
         if: matrix.platform == 'macOS'
