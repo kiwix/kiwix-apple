@@ -52,7 +52,15 @@ public struct DownloadActivityAttributes: ActivityAttributes {
         }
         
         public var estimatedTimeLeft: TimeInterval {
-            items.map(\.timeRemaining).max() ?? 0
+            items.filter { (item: DownloadActivityAttributes.DownloadItem) in
+                !item.isPaused
+            }.map(\.timeRemaining).max() ?? 0
+        }
+        
+        public var isAllPaused: Bool {
+            items.allSatisfy { (item: DownloadActivityAttributes.DownloadItem) in
+                item.isPaused
+            }
         }
         
         public var progress: Double {
@@ -70,6 +78,7 @@ public struct DownloadActivityAttributes: ActivityAttributes {
         let downloaded: Int64
         let total: Int64
         let timeRemaining: TimeInterval
+        let isPaused: Bool
         var progress: Double {
             progressFor(items: [self]).fractionCompleted
         }
@@ -77,12 +86,20 @@ public struct DownloadActivityAttributes: ActivityAttributes {
             progressFor(items: [self]).localizedAdditionalDescription
         }
         
-        public init(uuid: UUID, description: String, downloaded: Int64, total: Int64, timeRemaining: TimeInterval) {
+        public init(
+            uuid: UUID,
+            description: String,
+            downloaded: Int64,
+            total: Int64,
+            timeRemaining: TimeInterval,
+            isPaused: Bool
+        ) {
             self.uuid = uuid
             self.description = description
             self.downloaded = downloaded
             self.total = total
             self.timeRemaining = timeRemaining
+            self.isPaused = isPaused
         }
     }
 }
