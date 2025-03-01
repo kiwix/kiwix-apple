@@ -11,7 +11,7 @@
 // General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with Kiwix; If not, see https://www.gnu.orgllll/llicenses/.
+// along with Kiwix; If not, see https://www.gnu.org/licenses/.
 
 #if os(iOS)
 
@@ -49,9 +49,9 @@ final class ActivityService {
         publisher().sink { [weak self] (state: [UUID: DownloadState]) in
             guard let self else { return }
             if state.isEmpty {
-                stop()
+                self.stop()
             } else {
-                update(state: state)
+                self.update(state: state)
             }
         }.store(in: &cancellables)
     }
@@ -93,19 +93,31 @@ final class ActivityService {
             return
         }
         let now = CACurrentMediaTime()
-        guard let activity, (now - lastUpdate) > updateFrequency else {
+        // make sure we don't update too frequently
+        // unless there's a pause, we do want immediate update
+        let isTooEarlyToUpdate = if hasAnyPause(in: state) {
+            false
+        } else {
+            (now - lastUpdate) <= updateFrequency
+        }
+        guard let activity, !isTooEarlyToUpdate else {
             return
         }
-        lastUpdate = now
         Task {
             let activityState = await activityState(from: state, downloadTimes: downloadTimes)
-            await activity.update(
-                ActivityContent<DownloadActivityAttributes.ContentState>(
-                    state: activityState,
-                    staleDate: nil
-                )
+            let newContent = ActivityContent<DownloadActivityAttributes.ContentState>(
+                state: activityState,
+                staleDate: nil
             )
+            if #available(iOS 17.2, *) {
+                // important to define a timestamp, this way iOS knows which updates
+                // can be dropped, if too many of them queues up
+                await activity.update(newContent, timestamp: Date.now)
+            } else {
+                await activity.update(newContent)
+            }
         }
+        lastUpdate = now
     }
     
     private func updatedDownloadTimes(from states: [UUID: DownloadState]) -> [UUID: CFTimeInterval] {
@@ -171,8 +183,17 @@ final class ActivityService {
                     description: titles[key] ?? key.uuidString,
                     downloaded: download.downloaded,
                     total: download.total,
-                    timeRemaining: downloadTimes[key] ?? 0)
+                    timeRemaining: downloadTimes[key] ?? 0,
+                    isPaused: download.isPaused
+                )
         })
+    }
+    
+    private func hasAnyPause(in state: [UUID: DownloadState]) -> Bool {
+        guard !state.isEmpty else { return false }
+        return !state.values.allSatisfy { (download: DownloadState) in
+            download.isPaused == false
+        }
     }
 }
 

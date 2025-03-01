@@ -31,7 +31,7 @@ struct KiwixLogo: View {
             Image("KiwixLogo")
                 .resizable()
                 .scaledToFit()
-                .frame(width: maxHeight / 1.6182, height: maxHeight / 1.6182)
+                .frame(width: maxHeight * 0.75, height: maxHeight * 0.75)
         }
     }
 }
