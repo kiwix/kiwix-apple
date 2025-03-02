@@ -21,16 +21,19 @@ import Defaults
 /// Tabbed library view on iOS & iPadOS
 struct Library: View {
     @EnvironmentObject private var viewModel: LibraryViewModel
-    @SceneStorage("LibraryTabItem") private var tabItem: LibraryTabItem = .categories
+    @EnvironmentObject private var navigation: NavigationViewModel
+    @State private var tabItem: LibraryTabItem
     @Default(.hasSeenCategories) private var hasSeenCategories
     private let categories: [Category]
     let dismiss: (() -> Void)?
 
     init(
         dismiss: (() -> Void)?,
+        tabItem: LibraryTabItem = .categories,
         categories: [Category] = CategoriesToLanguages().allCategories()
     ) {
         self.dismiss = dismiss
+        self.tabItem = tabItem
         self.categories = categories
     }
 
@@ -70,6 +73,8 @@ struct Library: View {
             viewModel.start(isUserInitiated: false)
         }.onDisappear {
             hasSeenCategories = true
+        }.onReceive(navigation.showDownloads) { _ in
+            tabItem = .downloads
         }
     }
 }

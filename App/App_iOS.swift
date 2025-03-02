@@ -73,7 +73,14 @@ struct Kiwix: App {
                     if url.isFileURL {
                         NotificationCenter.openFiles([url], context: .file)
                     } else if url.isZIMURL {
-                        NotificationCenter.openURL(url)
+                        switch url {
+                        case DownloadActivityAttributes.downloadsDeepLink:
+                            if FeatureFlags.hasLibrary {
+                                navigation.showDownloads.send()
+                            }
+                        default:
+                            NotificationCenter.openURL(url)
+                        }
                     }
                 }
                 .task {

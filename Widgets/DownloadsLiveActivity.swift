@@ -66,7 +66,7 @@ struct DownloadsLiveActivity: Widget {
                     .progressViewStyle(CircularProgressGaugeStyle(lineWidth: 5.7))
                     .frame(width: 24, height: 24)
             }
-            .widgetURL(URL(string: "zim://downloads"))
+            .widgetURL(DownloadActivityAttributes.downloadsDeepLink)
             .keylineTint(Color.red)
         }.containerBackgroundRemovable()
     }
