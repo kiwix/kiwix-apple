@@ -1,6 +1,8 @@
 # 3.9.0
 
 # 3.8.0
+  - NEW:
+    - Live activities for downloads (@BPerlakiH #1096, #1105, #1106, #1114, #1126)
   - UPDATE:
     - Localisations (@translatewiki #1095, #1102, #1108)
     - Keyboard navigation improvements for macOS (@BPerlakiH #1084)
