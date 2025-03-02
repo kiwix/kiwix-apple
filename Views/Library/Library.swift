@@ -74,7 +74,9 @@ struct Library: View {
         }.onDisappear {
             hasSeenCategories = true
         }.onReceive(navigation.showDownloads) { _ in
-            tabItem = .downloads
+            if tabItem != .downloads {
+                tabItem = .downloads
+            }
         }
     }
 }

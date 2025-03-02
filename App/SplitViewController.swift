@@ -79,8 +79,9 @@ final class SplitViewController: UISplitViewController {
             .showDownloads
             .receive(on: DispatchQueue.main)
             .sink(receiveValue: { [weak self] _ in
-                if self?.traitCollection.horizontalSizeClass == .regular {
-                    self?.navigationViewModel.currentItem = .downloads
+                if self?.traitCollection.horizontalSizeClass == .regular,
+                   self?.navigationViewModel.currentItem != .downloads {
+                        self?.navigationViewModel.currentItem = .downloads
                 }
                 // the compact one is triggered in CompactViewController
         })
