@@ -35,7 +35,7 @@ final class ActivityService {
         publisher: @MainActor @escaping () -> CurrentValueSubject<[UUID: DownloadState], Never> = {
             DownloadService.shared.progress.publisher
         },
-        updateFrequency: Double = 10,
+        updateFrequency: Double = 2,
         averageDownloadSpeedFromLastSeconds: Double = 30
     ) {
         assert(updateFrequency > 0)
