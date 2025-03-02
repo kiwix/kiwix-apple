@@ -137,11 +137,15 @@ private struct CompactView: View {
     @EnvironmentObject private var library: LibraryViewModel
     @State private var presentedSheet: PresentedSheet?
 
-    private enum PresentedSheet: String, Identifiable {
-        case library
+    private enum PresentedSheet: Identifiable {
+        case library(downloads: Bool)
         case settings
         var id: String {
-            rawValue
+            switch self {
+            case .library(true): return "library-downloads"
+            case .library(false): return "library"
+            case .settings: return "settings"
+            }
         }
     }
 
@@ -161,7 +165,7 @@ private struct CompactView: View {
             }
             Content(tabID: tabID, showLibrary: {
                 if presentedSheet == nil {
-                    presentedSheet = .library
+                    presentedSheet = .library(downloads: false)
                 } else {
                     // there's a sheet already presented by the user
                     // do nothing
@@ -183,7 +187,7 @@ private struct CompactView: View {
                         Spacer()
                         if FeatureFlags.hasLibrary {
                             Button {
-                                presentedSheet = .library
+                                presentedSheet = .library(downloads: false)
                             } label: {
                                 Label(LocalString.common_tab_menu_library, systemImage: "folder")
                             }
@@ -200,8 +204,10 @@ private struct CompactView: View {
                 .environmentObject(browser)
                 .sheet(item: $presentedSheet) { presentedSheet in
                     switch presentedSheet {
-                    case .library:
+                    case .library(downloads: false):
                         Library(dismiss: dismiss)
+                    case .library(downloads: true):
+                        Library(dismiss: dismiss, tabItem: .downloads)
                     case .settings:
                         NavigationStack {
                             Settings().toolbar {
@@ -214,6 +220,16 @@ private struct CompactView: View {
                                 }
                             }
                         }
+                    }
+                }
+                .onReceive(navigation.showDownloads) { _ in
+                    switch presentedSheet {
+                    case .library:
+                        // switching to the downloads tab
+                        // is done within Library
+                        break
+                    case .settings, nil:
+                        presentedSheet = .library(downloads: true)
                     }
                 }
         }

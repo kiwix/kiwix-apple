@@ -18,6 +18,8 @@ import ActivityKit
 
 public struct DownloadActivityAttributes: ActivityAttributes {
     
+    static let downloadsDeepLink = URL(string: "zim://downloads")
+    
     private static func progressFor(items: [DownloadItem]) -> Progress {
         let sumOfTotal = items.reduce(0) { result, item in
             result + item.total

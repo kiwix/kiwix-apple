@@ -21,6 +21,7 @@ import UIKit
 final class SplitViewController: UISplitViewController {
     let navigationViewModel: NavigationViewModel
     private var navigationItemObserver: AnyCancellable?
+    private var showDownloadsObserver: AnyCancellable?
     private var openURLObserver: NSObjectProtocol?
     private var hasZimFiles: Bool
 
@@ -74,6 +75,16 @@ final class SplitViewController: UISplitViewController {
                     self?.preferredDisplayMode = .automatic
                 }
             }
+        showDownloadsObserver = navigationViewModel
+            .showDownloads
+            .receive(on: DispatchQueue.main)
+            .sink(receiveValue: { [weak self] _ in
+                if self?.traitCollection.horizontalSizeClass == .regular {
+                    self?.navigationViewModel.currentItem = .downloads
+                }
+                // the compact one is triggered in CompactViewController
+        })
+        
         openURLObserver = NotificationCenter.default.addObserver(
             forName: .openURL, object: nil, queue: nil
         ) { [weak self] notification in
