@@ -36,6 +36,7 @@ struct DownloadsLiveActivity: Widget {
                 }
             }
             .modifier(WidgetBackgroundModifier())
+            .widgetURL(DownloadActivityAttributes.downloadsDeepLink)
             
         } dynamicIsland: { context in
             DynamicIsland {
