@@ -21,22 +21,14 @@ struct DownloadsLiveActivity: Widget {
 //    @Environment(\.isActivityFullscreen) var isActivityFullScreen has a bug, when min iOS is 16
 //    https://developer.apple.com/forums/thread/763594
     
-    /// A start time from the creation of the activity,
-    /// this way the progress bar is not jumping back to 0
-    private let startTime: Date = .now
-    
     var body: some WidgetConfiguration {
         ActivityConfiguration(for: DownloadActivityAttributes.self) { context in
             // Lock screen/banner UI
-            let timeInterval = startTime...Date(
-                timeInterval: context.state.estimatedTimeLeft,
-                since: .now
-            )
             VStack {
                 HStack {
                     VStack(alignment: .leading) {
                         titleFor(context.state.title)
-                        progressFor(state: context.state, timeInterval: timeInterval)
+                        progressFor(state: context.state)
                     }
                     .padding()
                     KiwixLogo(maxHeight: 50)
@@ -44,19 +36,15 @@ struct DownloadsLiveActivity: Widget {
                 }
             }
             .modifier(WidgetBackgroundModifier())
+            .widgetURL(DownloadActivityAttributes.downloadsDeepLink)
             
         } dynamicIsland: { context in
             DynamicIsland {
                 // Expanded UI
                 DynamicIslandExpandedRegion(.leading) {
-                    let timeInterval = startTime...Date(
-                        timeInterval: context.state.estimatedTimeLeft,
-                        since: .now
-                    )
-                    
                     VStack(alignment: .leading) {
                         titleFor(context.state.title)
-                        progressFor(state: context.state, timeInterval: timeInterval)
+                        progressFor(state: context.state)
                         Spacer()
                     }
                     .padding()
@@ -79,7 +67,7 @@ struct DownloadsLiveActivity: Widget {
                     .progressViewStyle(CircularProgressGaugeStyle(lineWidth: 5.7))
                     .frame(width: 24, height: 24)
             }
-            .widgetURL(URL(string: "https://www.kiwix.org"))
+            .widgetURL(DownloadActivityAttributes.downloadsDeepLink)
             .keylineTint(Color.red)
         }.containerBackgroundRemovable()
     }
@@ -101,11 +89,25 @@ struct DownloadsLiveActivity: Widget {
             .tint(.secondary)
     }
     
+    private func currentTimeInterval(
+        state: DownloadActivityAttributes.ContentState
+    ) -> ClosedRange<Date> {
+        if state.progress < 1 {
+            let timePassed: TimeInterval = state.progress / (1 - state.progress) * state.estimatedTimeLeft
+            return Date(timeInterval: 0 - timePassed, since: .now)...Date(
+                timeInterval: state.estimatedTimeLeft,
+                since: .now
+            )
+        } else {
+            return Date(timeIntervalSinceNow: 0)...Date(timeIntervalSinceNow: 0)
+        }
+    }
+    
     @ViewBuilder
     private func progressFor(
-        state: DownloadActivityAttributes.ContentState,
-        timeInterval: ClosedRange<Date>
+        state: DownloadActivityAttributes.ContentState
     ) -> some View {
+        let timeInterval = currentTimeInterval(state: state)
         if !state.isAllPaused {
             ProgressView(timerInterval: timeInterval, countsDown: false, label: {
                 progressText(state.progressDescription)
@@ -146,14 +148,6 @@ extension DownloadActivityAttributes.ContentState {
                     total: 256,
                     timeRemaining: 15,
                     isPaused: true
-                ),
-                DownloadActivityAttributes.DownloadItem(
-                    uuid: UUID(),
-                    description: "2nd item",
-                    downloaded: 90,
-                    total: 124,
-                    timeRemaining: 2,
-                    isPaused: true
                 )
             ]
         )
@@ -176,7 +170,7 @@ extension DownloadActivityAttributes.ContentState {
                     description: "2nd item",
                     downloaded: 110,
                     total: 124,
-                    timeRemaining: 2,
+                    timeRemaining: 20,
                     isPaused: false
                 )
             ]

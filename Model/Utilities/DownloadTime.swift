@@ -43,11 +43,11 @@ final class DownloadTime {
         }
         let average = averagePerSecond()
         let remainingAmount = totalAmount - latestAmount
-        let remaingTime = Double(remainingAmount) / average - (now - latestTime)
-        guard remaingTime > 0 else {
+        let remainingTime = Double(remainingAmount) / average - (now - latestTime)
+        guard remainingTime > 0 else {
             return 0
         }
-        return remaingTime
+        return remainingTime
     }
     
     private func filterOutSamples(now: CFTimeInterval) {

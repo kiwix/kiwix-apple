@@ -15,12 +15,15 @@
 
 import CoreData
 import WebKit
+import Combine
 
 @MainActor
 final class NavigationViewModel: ObservableObject {
     let uuid = UUID()
     // remained optional due to focusedSceneValue conformance
     @Published var currentItem: NavigationItem? = .loading
+    private(set) var showDownloads = PassthroughSubject<Void, Never>()
+    
     #if os(macOS)
     var isTerminating: Bool = false
     
