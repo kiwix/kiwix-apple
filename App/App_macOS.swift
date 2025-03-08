@@ -167,6 +167,7 @@ struct RootView: View {
     @Environment(\.openWindow) var openWindow
     @Environment(\.controlActiveState) var controlActiveState
     @StateObject private var navigation = NavigationViewModel()
+    @State private var currentNavItem: NavigationItem?
     @StateObject private var windowTracker = WindowTracker()
 
     private let primaryItems: [NavigationItem] = [.bookmarks]
@@ -179,7 +180,7 @@ struct RootView: View {
 
     var body: some View {
         NavigationSplitView {
-            List(selection: $navigation.currentItem) {
+            List(selection: $currentNavItem) {
                 ForEach(
                     [NavigationItem.tab(objectID: navigation.currentTabId)] + primaryItems,
                     id: \.self
@@ -229,6 +230,9 @@ struct RootView: View {
         .modifier(OpenFileHandler())
         .modifier(SaveContentHandler())
         .environmentObject(navigation)
+        .onChange(of: currentNavItem) { newValue in
+            navigation.currentItem = newValue
+        }
         .onOpenURL { url in
             if url.isFileURL {
                 // from opening an external file
@@ -267,7 +271,7 @@ struct RootView: View {
             }
             guard controlActiveState == .key else { return }
             let tabID = navigation.currentTabId
-            navigation.currentItem = .tab(objectID: tabID)
+            currentNavItem = .tab(objectID: tabID)
             BrowserViewModel.getCached(tabID: tabID).load(url: url)
         }
         .onReceive(tabCloses) { publisher in
@@ -303,14 +307,14 @@ struct RootView: View {
             switch AppType.current {
             case .kiwix:
                 await LibraryOperations.reopen()
-                navigation.currentItem = .tab(objectID: navigation.currentTabId)
+                currentNavItem = .tab(objectID: navigation.currentTabId)
                 LibraryOperations.scanDirectory(URL.documentDirectory)
                 LibraryOperations.applyFileBackupSetting()
                 DownloadService.shared.restartHeartbeatIfNeeded()
             case let .custom(zimFileURL):
                 await LibraryOperations.open(url: zimFileURL)
                 ZimMigration.forCustomApps()
-                navigation.currentItem = .tab(objectID: navigation.currentTabId)
+                currentNavItem = .tab(objectID: navigation.currentTabId)
             }
             // MARK: - migrations
             if !ProcessInfo.processInfo.arguments.contains("testing") {
