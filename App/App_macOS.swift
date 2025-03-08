@@ -169,6 +169,7 @@ struct RootView: View {
     @StateObject private var navigation = NavigationViewModel()
     @State private var currentNavItem: NavigationItem?
     @StateObject private var windowTracker = WindowTracker()
+    @State private var paymentButtonLabel: PayWithApplePayButtonLabel?
 
     private let primaryItems: [NavigationItem] = [.bookmarks]
     private let libraryItems: [NavigationItem] = [.opened, .categories, .downloads, .new]
@@ -197,7 +198,7 @@ struct RootView: View {
             }
             .frame(minWidth: 160)
             .safeAreaInset(edge: .bottom) {
-                if Payment.paymentButtonType() != nil && Brand.hideDonation != true {
+                if paymentButtonLabel != nil && Brand.hideDonation != true {
                     SupportKiwixButton {
                         openWindow(id: "donation")
                     }
@@ -316,6 +317,11 @@ struct RootView: View {
                 ZimMigration.forCustomApps()
                 currentNavItem = .tab(objectID: navigation.currentTabId)
             }
+            // MARK: - payment button init
+            if Brand.hideDonation == false {
+                paymentButtonLabel = await Payment.paymentButtonTypeAsync()
+            }
+            
             // MARK: - migrations
             if !ProcessInfo.processInfo.arguments.contains("testing") {
                 _ = MigrationService().migrateAll()
