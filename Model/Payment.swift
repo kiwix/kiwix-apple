@@ -118,8 +118,8 @@ struct Payment {
         .init(value: 10)
     ]
 
-    /// Checks Apple Pay capabilities, and returns the button label accrodingly
-    /// Setup button if no cards added yet,
+    /// Checks Apple Pay capabilities, and returns the button label accordingly
+    /// - Returns: Setup button if no cards added yet,
     /// nil if Apple Pay is not supported
     /// or donation button, if all is OK
     static func paymentButtonType() -> PayWithApplePayButtonLabel? {
@@ -135,6 +135,20 @@ struct Payment {
             return PayWithApplePayButtonLabel.setUp
         }
         return nil
+    }
+    
+    /// Async version of ``paymentButtonType()`` with low priority
+    /// - Returns: Setup button if no cards added yet,
+    /// nil if Apple Pay is not supported
+    /// or donation button, if all is OK
+    static func paymentButtonTypeAsync() async -> PayWithApplePayButtonLabel? {
+        let task = Task<PayWithApplePayButtonLabel?, Never>(priority: .low) {
+            Self.paymentButtonType()
+        }
+        guard let buttonLabel = await task.result.get() else {
+            return nil
+        }
+        return buttonLabel
     }
 
     func donationRequest(for selectedAmount: SelectedAmount) -> PKPaymentRequest {
