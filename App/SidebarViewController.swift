@@ -50,8 +50,8 @@ class SidebarViewController: UICollectionViewController, NSFetchedResultsControl
     }
 
     enum Section: String, CaseIterable {
-        case primary
         case tabs
+        case primary
         case library
         case settings
 
