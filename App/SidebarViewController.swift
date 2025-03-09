@@ -130,7 +130,9 @@ final class SidebarViewController: UICollectionViewController, NSFetchedResultsC
         
         // donations
         if !Brand.hideDonation {
-            let vc = UIHostingController(rootView: SupportKiwixButton(openDonation: {}))
+            let vc = UIHostingController(rootView: SupportKiwixButton(openDonation: {
+                NotificationCenter.openDonations()
+            }))
             if let button = vc.view {
                 button.translatesAutoresizingMaskIntoConstraints = false
                 button.backgroundColor = UIColor.secondarySystemBackground
@@ -148,7 +150,6 @@ final class SidebarViewController: UICollectionViewController, NSFetchedResultsC
                     support.bottomAnchor.constraint(equalTo: view.bottomAnchor),
                     support.heightAnchor.constraint(equalToConstant: 44),
                 ])
-                
             }
         }
 
