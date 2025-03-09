@@ -77,6 +77,9 @@ extension Notification.Name {
     #if os(macOS)
     static let keepOnlyTabs = Notification.Name("keepOnlyTabs")
     #endif
+    #if os(iOS)
+    static let openDonations = Notification.Name("openDonations")
+    #endif
 }
 
 extension UTType {
@@ -125,6 +128,12 @@ extension NotificationCenter {
         NotificationCenter.default.post(name: .keepOnlyTabs,
                                         object: nil,
                                         userInfo: ["tabIds": tabIds])
+    }
+    #endif
+    
+    #if os(iOS)
+    @MainActor static func openDonations() {
+        NotificationCenter.default.post(name: .openDonations, object: nil, userInfo: nil)
     }
     #endif
 }
