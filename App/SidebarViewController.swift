@@ -18,7 +18,7 @@ import CoreData
 import SwiftUI
 import UIKit
 
-class SidebarViewController: UICollectionViewController, NSFetchedResultsControllerDelegate {
+final class SidebarViewController: UICollectionViewController, NSFetchedResultsControllerDelegate {
     private lazy var dataSource = {
         let cellRegistration = UICollectionView.CellRegistration<UICollectionViewListCell, NavigationItem> {
             [unowned self] cell, indexPath, item in
@@ -75,6 +75,10 @@ class SidebarViewController: UICollectionViewController, NSFetchedResultsControl
             let section = NSCollectionLayoutSection.list(using: config, layoutEnvironment: layoutEnvironment)
             return section
         }
+        if !Brand.hideDonation {
+            collectionView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 44, right: 0)
+            collectionView.scrollIndicatorInsets = UIEdgeInsets(top: 0, left: 0, bottom: 44, right: 0)
+        }
     }
 
     required init?(coder: NSCoder) {
@@ -122,6 +126,31 @@ class SidebarViewController: UICollectionViewController, NSFetchedResultsControl
                 }
             ])
         )
+        
+        
+        // donations
+        if !Brand.hideDonation {
+            let vc = UIHostingController(rootView: SupportKiwixButton(openDonation: {}))
+            if let button = vc.view {
+                button.translatesAutoresizingMaskIntoConstraints = false
+                button.backgroundColor = UIColor.secondarySystemBackground
+                let support = UIView()
+                support.backgroundColor = UIColor.secondarySystemBackground
+                support.translatesAutoresizingMaskIntoConstraints = false
+                support.addSubview(button)
+                view.addSubview(support)
+                NSLayoutConstraint.activate([
+                    button.leadingAnchor.constraint(equalTo: support.leadingAnchor),
+                    button.trailingAnchor.constraint(equalTo: support.trailingAnchor),
+                    button.centerYAnchor.constraint(equalTo: support.centerYAnchor),
+                    support.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+                    support.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+                    support.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+                    support.heightAnchor.constraint(equalToConstant: 44),
+                ])
+                
+            }
+        }
 
         // apply initial snapshot
         var snapshot = NSDiffableDataSourceSnapshot<Section, NavigationItem>()

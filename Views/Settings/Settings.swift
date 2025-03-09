@@ -151,6 +151,7 @@ struct Settings: View {
     @Default(.searchResultSnippetMode) private var searchResultSnippetMode
     @Default(.webViewPageZoom) private var webViewPageZoom
     @EnvironmentObject private var library: LibraryViewModel
+    @Environment(\.horizontalSizeClass) var horizontalSizeClass
 
     enum Route {
         case languageSelector, about
@@ -314,7 +315,7 @@ struct Settings: View {
 
     var miscellaneous: some View {
         Section(LocalString.settings_miscellaneous_title) {
-            if Payment.paymentButtonType() != nil {
+            if Payment.paymentButtonType() != nil, horizontalSizeClass != .regular {
                 SupportKiwixButton {
                     openDonation()
                 }
