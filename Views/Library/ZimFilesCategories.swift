@@ -36,7 +36,7 @@ struct ZimFilesCategories: View {
     var body: some View {
         ZimFilesCategory(category: $selected, dismiss: dismiss)
             .modifier(ToolbarRoleBrowser())
-            .navigationTitle(NavigationItem.categories.name)
+            .navigationTitle(MenuItem.categories.name)
             .toolbar {
                 #if os(iOS)
                 ToolbarItem(placement: .navigationBarLeading) {

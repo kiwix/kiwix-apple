@@ -225,21 +225,54 @@ enum NavigationItem: Hashable, Identifiable {
     case bookmarks, map(location: CLLocation?), tab(objectID: NSManagedObjectID)
     case opened, categories, new, downloads
     case settings
+}
 
+enum MenuItem: Hashable {
+    case tab(objectID: NSManagedObjectID)
+    case bookmarks
+    case opened
+    case categories
+    case new
+    case downloads
+    case settings
+    case donation
+    
+    init?(from navigationItem: NavigationItem) {
+        switch navigationItem {
+        case .loading, .map: return nil
+        case .bookmarks: self = .bookmarks
+        case .tab(let objectID): self = .tab(objectID: objectID)
+        case .opened: self = .opened
+        case .categories: self = .categories
+        case .new: self = .new
+        case .downloads: self = .downloads
+        case .settings: self = .settings
+        }
+    }
+    
+    var navigationItem: NavigationItem? {
+        switch self {
+        case .tab(objectID: let objectID): .tab(objectID: objectID)
+        case .bookmarks: .bookmarks
+        case .opened: .opened
+        case .categories: .categories
+        case .new: .new
+        case .downloads: .downloads
+        case .settings: .settings
+        case .donation: nil
+        }
+    }
+    
     var name: String {
         switch self {
-        case .loading:
-            return LocalString.enum_navigation_item_loading
         case .bookmarks:
             return LocalString.enum_navigation_item_bookmarks
-        case .map:
-            return LocalString.enum_navigation_item_map
         case .tab:
-            #if os(macOS)
+#if os(macOS)
             return LocalString.enum_navigation_item_reading
-            #else
+#else
             return LocalString.enum_navigation_item_new_tab
-            #endif
+#endif
         case .opened:
             return LocalString.enum_navigation_item_opened
         case .categories:
@@ -250,17 +283,15 @@ enum NavigationItem: Hashable, Identifiable {
             return LocalString.enum_navigation_item_downloads
         case .settings:
             return LocalString.enum_navigation_item_settings
+        case .donation:
+            return LocalString.payment_support_button_label
         }
     }
-
+    
     var icon: String {
         switch self {
-        case .loading:
-            return "loading"
         case .bookmarks:
             return "star"
-        case .map:
-            return "map"
         case .tab:
             #if os(macOS)
             return "book"
@@ -277,6 +308,16 @@ enum NavigationItem: Hashable, Identifiable {
             return "tray.and.arrow.down"
         case .settings:
             return "gear"
+        case .donation:
+            return "heart.fill"
+        }
+    }
+    var iconForegroundColor: UIColor? {
+        switch self {
+        case .donation:
+            return UIColor.red
+        case .tab, .bookmarks, .opened, .categories, .new, .downloads, .settings:
+            return nil
         }
     }
 }

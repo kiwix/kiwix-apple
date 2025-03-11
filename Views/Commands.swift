@@ -87,6 +87,7 @@ struct PageZoomCommands: View {
     }
 }
 
+#if os(macOS)
 /// Only used on macOS
 struct SidebarNavigationCommands: View {
     @FocusedBinding(\.navigationItem) var navigationItem: NavigationItem??
@@ -109,3 +110,4 @@ struct SidebarNavigationCommands: View {
         }
     }
 }
+#endif
