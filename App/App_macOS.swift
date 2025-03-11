@@ -167,12 +167,12 @@ struct RootView: View {
     @Environment(\.openWindow) var openWindow
     @Environment(\.controlActiveState) var controlActiveState
     @StateObject private var navigation = NavigationViewModel()
-    @State private var currentNavItem: NavigationItem?
+    @State private var currentNavItem: MenuItem?
     @StateObject private var windowTracker = WindowTracker()
     @State private var paymentButtonLabel: PayWithApplePayButtonLabel?
 
-    private let primaryItems: [NavigationItem] = [.bookmarks]
-    private let libraryItems: [NavigationItem] = [.opened, .categories, .downloads, .new]
+    private let primaryItems: [MenuItem] = [.bookmarks]
+    private let libraryItems: [MenuItem] = [.opened, .categories, .downloads, .new]
     private let openURL = NotificationCenter.default.publisher(for: .openURL)
     private let appTerminates = NotificationCenter.default.publisher(for: NSApplication.willTerminateNotification)
     private let tabCloses = NotificationCenter.default.publisher(for: NSWindow.willCloseNotification)
@@ -183,15 +183,15 @@ struct RootView: View {
         NavigationSplitView {
             List(selection: $currentNavItem) {
                 ForEach(
-                    [NavigationItem.tab(objectID: navigation.currentTabId)] + primaryItems,
+                    [MenuItem.tab(objectID: navigation.currentTabId)] + primaryItems,
                     id: \.self
-                ) { navigationItem in
-                    Label(navigationItem.name, systemImage: navigationItem.icon)
+                ) { menuItem in
+                    Label(menuItem.name, systemImage: menuItem.icon)
                 }
                 if FeatureFlags.hasLibrary {
                     Section(LocalString.app_macos_navigation_button_library) {
-                        ForEach(libraryItems, id: \.self) { navigationItem in
-                            Label(navigationItem.name, systemImage: navigationItem.icon)
+                        ForEach(libraryItems, id: \.self) { menuItem in
+                            Label(menuItem.name, systemImage: menuItem.icon)
                         }
                     }
                 }
@@ -232,7 +232,7 @@ struct RootView: View {
         .modifier(SaveContentHandler())
         .environmentObject(navigation)
         .onChange(of: currentNavItem) { newValue in
-            navigation.currentItem = newValue
+            navigation.currentItem = newValue?.navigationItem
         }
         .onOpenURL { url in
             if url.isFileURL {

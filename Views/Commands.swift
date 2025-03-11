@@ -100,10 +100,10 @@ struct SidebarNavigationCommands: View {
         }
     }
 
-    private func buildButtons(_ navigationItems: [NavigationItem], modifiers: EventModifiers = []) -> some View {
+    private func buildButtons(_ navigationItems: [MenuItem], modifiers: EventModifiers = []) -> some View {
         ForEach(Array(navigationItems.enumerated()), id: \.element) { index, item in
             Button(item.name) {
-                navigationItem = item
+                navigationItem = item.navigationItem
             }
             .keyboardShortcut(KeyEquivalent(Character("\(index + 1)")), modifiers: modifiers)
             .disabled(navigationItem == nil)

@@ -312,6 +312,7 @@ enum MenuItem: Hashable {
             return "heart.fill"
         }
     }
+    #if os(iOS)
     var iconForegroundColor: UIColor? {
         switch self {
         case .donation:
@@ -320,6 +321,7 @@ enum MenuItem: Hashable {
             return nil
         }
     }
+    #endif
 }
 
 /// Note: The cases were reduced from:
