@@ -216,10 +216,8 @@
 "enum.libray_tab_item.categories" = "Kategorier";
 "enum.libray_tab_item.downloads" = "Nedladdningar";
 "enum.libray_tab_item.new" = "Nytt";
-"enum.navigation_item.loading" = "Laddar";
 "enum.navigation_item.reading" = "Läser";
 "enum.navigation_item.bookmarks" = "Bokmärken";
-"enum.navigation_item.map" = "Karta";
 "enum.navigation_item.new_tab" = "Ny flik";
 "enum.navigation_item.opened" = "Öppnade";
 "enum.navigation_item.categories" = "Kategorier";

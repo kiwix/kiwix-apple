@@ -211,10 +211,8 @@
 "enum.libray_tab_item.categories" = "Kategori";
 "enum.libray_tab_item.downloads" = "Unduhan";
 "enum.libray_tab_item.new" = "Baru";
-"enum.navigation_item.loading" = "Memuat";
 "enum.navigation_item.reading" = "Membaca";
 "enum.navigation_item.bookmarks" = "Markah";
-"enum.navigation_item.map" = "Peta";
 "enum.navigation_item.new_tab" = "Tab Baru";
 "enum.navigation_item.opened" = "Dibuka";
 "enum.navigation_item.categories" = "Kategori";

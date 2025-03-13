@@ -159,7 +159,6 @@
 "enum.libray_tab_item.new" = "Nei";
 "enum.navigation_item.reading" = "Liesen";
 "enum.navigation_item.bookmarks" = "Lieszeechen";
-"enum.navigation_item.map" = "Kaart";
 "enum.navigation_item.new_tab" = "Neien Tab";
 "enum.navigation_item.opened" = "Opgemaach";
 "enum.navigation_item.categories" = "Kategorien";

@@ -214,10 +214,8 @@
 "enum.libray_tab_item.categories" = "分類";
 "enum.libray_tab_item.downloads" = "下載";
 "enum.libray_tab_item.new" = "新";
-"enum.navigation_item.loading" = "載入中";
 "enum.navigation_item.reading" = "閱讀";
 "enum.navigation_item.bookmarks" = "書籤";
-"enum.navigation_item.map" = "地圖";
 "enum.navigation_item.new_tab" = "新分頁";
 "enum.navigation_item.opened" = "已開啟";
 "enum.navigation_item.categories" = "分類";

@@ -84,9 +84,7 @@
 "enum.category.wiktionary" = "Wikisátnegirji";
 "enum.libray_tab_item.categories" = "Kategoriijat";
 "enum.libray_tab_item.new" = "Ođđa";
-"enum.navigation_item.loading" = "Viežžamin";
 "enum.navigation_item.bookmarks" = "Girjemearkkat";
-"enum.navigation_item.map" = "Kárta";
 "enum.navigation_item.new_tab" = "Ođđa leavga";
 "enum.navigation_item.categories" = "Kategoriijat";
 "enum.navigation_item.new" = "Ođđa";

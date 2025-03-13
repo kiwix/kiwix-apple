@@ -211,10 +211,8 @@
 "enum.libray_tab_item.categories" = "Kategori";
 "enum.libray_tab_item.downloads" = "Shkarkime";
 "enum.libray_tab_item.new" = "E re";
-"enum.navigation_item.loading" = "Po ngarkohet";
 "enum.navigation_item.reading" = "Lexim";
 "enum.navigation_item.bookmarks" = "Faqerojtës";
-"enum.navigation_item.map" = "Hartë";
 "enum.navigation_item.new_tab" = "Skedë e Re";
 "enum.navigation_item.opened" = "Hapur";
 "enum.navigation_item.categories" = "Kategori";

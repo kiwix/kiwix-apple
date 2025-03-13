@@ -191,10 +191,8 @@
 "enum.libray_tab_item.categories" = "Pubu nima";
 "enum.libray_tab_item.downloads" = "Deebu";
 "enum.libray_tab_item.new" = "Palli";
-"enum.navigation_item.loading" = "Ʒili";
 "enum.navigation_item.reading" = "Kariŋ";
 "enum.navigation_item.bookmarks" = "Buku'dalima";
-"enum.navigation_item.map" = "Tiŋgbani";
 "enum.navigation_item.new_tab" = "Binshɛɣ'kam palli";
 "enum.navigation_item.opened" = "Yooma";
 "enum.navigation_item.categories" = "Pubu nima";

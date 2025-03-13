@@ -211,10 +211,8 @@
 "enum.libray_tab_item.categories" = "Bangarori";
 "enum.libray_tab_item.downloads" = "Saukewa";
 "enum.libray_tab_item.new" = "Sabo";
-"enum.navigation_item.loading" = "Ana lodawa";
 "enum.navigation_item.reading" = "Karatu";
 "enum.navigation_item.bookmarks" = "Alamomi";
-"enum.navigation_item.map" = "Taswira";
 "enum.navigation_item.new_tab" = "Sabon shafi";
 "enum.navigation_item.opened" = "An buɗe shi";
 "enum.navigation_item.categories" = "Bangarori";

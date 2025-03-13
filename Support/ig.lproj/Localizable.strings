@@ -221,10 +221,8 @@
 "enum.libray_tab_item.categories" = "Otu";
 "enum.libray_tab_item.downloads" = "Nbudata";
 "enum.libray_tab_item.new" = "Ọhụrụ";
-"enum.navigation_item.loading" = "ọ ka na-ebudata";
 "enum.navigation_item.reading" = "Ọgụgụ";
 "enum.navigation_item.bookmarks" = "Akara Akwụkwọ";
-"enum.navigation_item.map" = "Maapụ";
 "enum.navigation_item.new_tab" = "Taabụ ọhụrụ";
 "enum.navigation_item.opened" = "Mepere";
 "enum.navigation_item.categories" = "Otu";

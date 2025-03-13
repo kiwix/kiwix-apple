@@ -123,7 +123,6 @@
 "enum.external_link_loading_policy.never_load" = "Älä koskaan lataa";
 "enum.library_language_sorting_model.a-z" = "A-Ö";
 "enum.libray_tab_item.new" = "Uusi";
-"enum.navigation_item.loading" = "Ladataan";
 "enum.navigation_item.bookmarks" = "Kirjanmerkit";
 "enum.navigation_item.new_tab" = "Uusi välilehti";
 "enum.navigation_item.opened" = "Avattu";

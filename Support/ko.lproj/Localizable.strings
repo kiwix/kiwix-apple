@@ -193,7 +193,6 @@
 "enum.library_language_sorting_model.a-z" = "A-Z";
 "enum.libray_tab_item.categories" = "분류";
 "enum.libray_tab_item.downloads" = "다운로드";
-"enum.navigation_item.loading" = "불러오는 중";
 "enum.navigation_item.bookmarks" = "북마크";
 "enum.navigation_item.new_tab" = "새 탭";
 "enum.navigation_item.categories" = "분류";

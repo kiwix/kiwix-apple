@@ -216,10 +216,8 @@
 "enum.libray_tab_item.categories" = "Bottom Tab bar item title under Library on iOS";
 "enum.libray_tab_item.downloads" = "Bottom Tab bar item title under Library on iOS";
 "enum.libray_tab_item.new" = "Bottom Tab bar item title under Library on iOS";
-"enum.navigation_item.loading" = "Loading label displayed on application start";
 "enum.navigation_item.reading" = "Side navigation menu item title";
 "enum.navigation_item.bookmarks" = "Side navigation menu item title";
-"enum.navigation_item.map" = "Side navigation menu item title";
 "enum.navigation_item.new_tab" = "Side navigation menu item title";
 "enum.navigation_item.opened" = "Side navigation menu item title";
 "enum.navigation_item.categories" = "Side navigation menu item title";
