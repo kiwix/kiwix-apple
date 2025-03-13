@@ -131,19 +131,6 @@ import Combine
 
 struct Settings: View {
 
-    enum DonationPopupState {
-        case selection
-        case selectedAmount(SelectedAmount)
-        case thankYou
-        case error
-    }
-
-    private var amountSelected = PassthroughSubject<SelectedAmount?, Never>()
-    @State private var showDonationPopUp: Bool = false
-    @State private var donationPopUpState: DonationPopupState = .selection
-    func openDonation() {
-        showDonationPopUp = true
-    }
     @Default(.backupDocumentDirectory) private var backupDocumentDirectory
     @Default(.downloadUsingCellular) private var downloadUsingCellular
     @Default(.externalLinkLoadingPolicy) private var externalLinkLoadingPolicy
@@ -151,9 +138,14 @@ struct Settings: View {
     @Default(.searchResultSnippetMode) private var searchResultSnippetMode
     @Default(.webViewPageZoom) private var webViewPageZoom
     @EnvironmentObject private var library: LibraryViewModel
+    @Environment(\.horizontalSizeClass) var horizontalSizeClass
 
     enum Route {
         case languageSelector, about
+    }
+    
+    func openDonation() {
+        NotificationCenter.openDonations()
     }
 
     var body: some View {
@@ -177,57 +169,6 @@ struct Settings: View {
                 .navigationTitle(LocalString.settings_navigation_title)
             }
         }
-        .sheet(isPresented: $showDonationPopUp, onDismiss: {
-            let result = Payment.showResult()
-            switch result {
-            case .none:
-                // reset
-                donationPopUpState = .selection
-                return
-            case .some(let finalResult):
-                Task {
-                    // we need to close the sheet in order to dismiss ApplePay,
-                    // and we need to re-open it again with a delay to show thank you state
-                    // Swift UI cannot yet handle multiple sheets
-                    try? await Task.sleep(for: .milliseconds(100))
-                    await MainActor.run {
-                        switch finalResult {
-                        case .thankYou:
-                            donationPopUpState = .thankYou
-                        case .error:
-                            donationPopUpState = .error
-                        }
-                        showDonationPopUp = true
-                    }
-                }
-            }
-        }, content: {
-            Group {
-                switch donationPopUpState {
-                case .selection:
-                    PaymentForm(amountSelected: amountSelected)
-                        .presentationDetents([.fraction(0.65)])
-                case .selectedAmount(let selectedAmount):
-                    PaymentSummary(selectedAmount: selectedAmount, onComplete: {
-                        showDonationPopUp = false
-                    })
-                    .presentationDetents([.fraction(0.65)])
-                case .thankYou:
-                    PaymentResultPopUp(state: .thankYou)
-                        .presentationDetents([.fraction(0.33)])
-                case .error:
-                    PaymentResultPopUp(state: .error)
-                        .presentationDetents([.fraction(0.33)])
-                }
-            }
-            .onReceive(amountSelected) { value in
-                if let amount = value {
-                    donationPopUpState = .selectedAmount(amount)
-                } else {
-                    donationPopUpState = .selection
-                }
-            }
-        })
     }
 
     var readingSettings: some View {
@@ -314,7 +255,7 @@ struct Settings: View {
 
     var miscellaneous: some View {
         Section(LocalString.settings_miscellaneous_title) {
-            if Payment.paymentButtonType() != nil {
+            if Payment.paymentButtonType() != nil, horizontalSizeClass != .regular {
                 SupportKiwixButton {
                     openDonation()
                 }

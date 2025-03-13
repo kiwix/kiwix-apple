@@ -213,10 +213,8 @@
 "enum.libray_tab_item.categories" = "Categorias";
 "enum.libray_tab_item.downloads" = "Discargamentos";
 "enum.libray_tab_item.new" = "Nove";
-"enum.navigation_item.loading" = "Cargamento";
 "enum.navigation_item.reading" = "Lectura";
 "enum.navigation_item.bookmarks" = "Marcapaginas";
-"enum.navigation_item.map" = "Carta";
 "enum.navigation_item.new_tab" = "Nove scheda";
 "enum.navigation_item.opened" = "Aperite";
 "enum.navigation_item.categories" = "Categorias";

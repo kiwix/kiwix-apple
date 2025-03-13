@@ -121,7 +121,7 @@ struct ZimFilesNew: View {
         }
         .modifier(GridCommon())
         .modifier(ToolbarRoleBrowser())
-        .navigationTitle(NavigationItem.new.name)
+        .navigationTitle(MenuItem.new.name)
         .searchable(text: $searchText)
         .onAppear {
             viewModel.update(searchText: searchText)

@@ -13,20 +13,21 @@
 // You should have received a copy of the GNU General Public License
 // along with Kiwix; If not, see https://www.gnu.org/licenses/.
 
+#if os(iOS)
 import SwiftUI
+import Combine
 import UserNotifications
 
-#if os(iOS)
 @main
 struct Kiwix: App {
+    
     @Environment(\.scenePhase) private var scenePhase
     @StateObject private var library = LibraryViewModel()
     @StateObject private var navigation = NavigationViewModel()
     @UIApplicationDelegateAdaptor(AppDelegate.self) private var appDelegate
-
     private let fileMonitor: DirectoryMonitor
     private let activityService: ActivityService?
-
+    
     init() {
         fileMonitor = DirectoryMonitor(url: URL.documentDirectory) { LibraryOperations.scanDirectory($0) }
         // MARK: - live activities
@@ -99,6 +100,8 @@ struct Kiwix: App {
                         navigation.navigateToMostRecentTab()
                     }
                 }
+                .modifier(DonationViewModifier())
+                
         }
         .commands {
             CommandGroup(replacing: .undoRedo) {

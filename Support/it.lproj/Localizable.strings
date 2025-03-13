@@ -102,8 +102,6 @@
 "enum.libray_tab_item.opened" = "Aperto";
 "enum.libray_tab_item.categories" = "Categorie";
 "enum.libray_tab_item.new" = "Nuovo";
-"enum.navigation_item.loading" = "Caricamento";
-"enum.navigation_item.map" = "Mappa";
 "enum.navigation_item.new_tab" = "Nuova scheda";
 "enum.navigation_item.opened" = "Aperto";
 "enum.navigation_item.new" = "Nuovo";

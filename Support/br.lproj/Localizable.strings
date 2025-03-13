@@ -163,9 +163,7 @@
 "enum.libray_tab_item.categories" = "Rummadoù";
 "enum.libray_tab_item.downloads" = "Pellgargadurioù";
 "enum.libray_tab_item.new" = "Nevez";
-"enum.navigation_item.loading" = "O kargañ";
 "enum.navigation_item.bookmarks" = "Sinedoù";
-"enum.navigation_item.map" = "Kartenn";
 "enum.navigation_item.new_tab" = "Steudenn nevez";
 "enum.navigation_item.opened" = "Digor";
 "enum.navigation_item.categories" = "Rummadoù";

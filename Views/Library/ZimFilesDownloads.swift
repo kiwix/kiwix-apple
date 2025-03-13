@@ -44,7 +44,7 @@ struct ZimFilesDownloads: View {
         }
         .modifier(GridCommon())
         .modifier(ToolbarRoleBrowser())
-        .navigationTitle(NavigationItem.downloads.name)
+        .navigationTitle(MenuItem.downloads.name)
         .overlay {
             if downloadTasks.isEmpty {
                 Message(text: LocalString.zim_file_downloads_overlay_empty_message)

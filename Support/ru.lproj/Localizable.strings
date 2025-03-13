@@ -218,10 +218,8 @@
 "enum.libray_tab_item.categories" = "Категории";
 "enum.libray_tab_item.downloads" = "Загрузки";
 "enum.libray_tab_item.new" = "Новое";
-"enum.navigation_item.loading" = "Загружается";
 "enum.navigation_item.reading" = "Чтение";
 "enum.navigation_item.bookmarks" = "Закладки";
-"enum.navigation_item.map" = "Карта";
 "enum.navigation_item.new_tab" = "Новая вкладка";
 "enum.navigation_item.opened" = "Открыто";
 "enum.navigation_item.categories" = "Категории";

@@ -216,10 +216,8 @@
 "enum.libray_tab_item.categories" = "Categorías";
 "enum.libray_tab_item.downloads" = "Descargas";
 "enum.libray_tab_item.new" = "Nuevo";
-"enum.navigation_item.loading" = "Cargando…";
 "enum.navigation_item.reading" = "Lectura";
 "enum.navigation_item.bookmarks" = "Marcadores";
-"enum.navigation_item.map" = "Mapa";
 "enum.navigation_item.new_tab" = "Pestaña nueva";
 "enum.navigation_item.opened" = "Abierto";
 "enum.navigation_item.categories" = "Categorías";

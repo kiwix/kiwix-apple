@@ -217,10 +217,8 @@
 "enum.libray_tab_item.categories" = "Kategoriler";
 "enum.libray_tab_item.downloads" = "İndirilenler";
 "enum.libray_tab_item.new" = "Yeni";
-"enum.navigation_item.loading" = "Yükleniyor";
 "enum.navigation_item.reading" = "Okuma";
 "enum.navigation_item.bookmarks" = "Yer İşaretleri";
-"enum.navigation_item.map" = "Harita";
 "enum.navigation_item.new_tab" = "Yeni Sekme";
 "enum.navigation_item.opened" = "Açıldı";
 "enum.navigation_item.categories" = "Kategoriler";

@@ -18,9 +18,9 @@ import CoreData
 import SwiftUI
 import UIKit
 
-class SidebarViewController: UICollectionViewController, NSFetchedResultsControllerDelegate {
+final class SidebarViewController: UICollectionViewController, NSFetchedResultsControllerDelegate {
     private lazy var dataSource = {
-        let cellRegistration = UICollectionView.CellRegistration<UICollectionViewListCell, NavigationItem> {
+        let cellRegistration = UICollectionView.CellRegistration<UICollectionViewListCell, MenuItem> {
             [unowned self] cell, indexPath, item in
             configureCell(cell: cell, indexPath: indexPath, item: item)
         }
@@ -29,7 +29,7 @@ class SidebarViewController: UICollectionViewController, NSFetchedResultsControl
         ) { [unowned self] headerView, elementKind, indexPath in
             configureHeader(headerView: headerView, elementKind: elementKind, indexPath: indexPath)
         }
-        let dataSource = UICollectionViewDiffableDataSource<Section, NavigationItem>(collectionView: collectionView) {
+        let dataSource = UICollectionViewDiffableDataSource<Section, MenuItem>(collectionView: collectionView) {
             collectionView, indexPath, item in
             collectionView.dequeueConfiguredReusableCell(using: cellRegistration, for: indexPath, item: item)
         }
@@ -50,16 +50,22 @@ class SidebarViewController: UICollectionViewController, NSFetchedResultsControl
     }
 
     enum Section: String, CaseIterable {
-        case primary
         case tabs
+        case primary
         case library
         case settings
+        case donation
 
         static var allSections: [Section] {
-            if FeatureFlags.hasLibrary {
+            switch (FeatureFlags.hasLibrary, Brand.hideDonation) {
+            case (true, true):
+                allCases.filter { [.donation].contains($0) }
+            case (false, true):
+                allCases.filter { [.donation, .library].contains($0) }
+            case (true, false):
                 allCases
-            } else {
-                allCases.filter { $0 != .library }
+            case (false, false):
+                allCases.filter { [.library].contains($0) }
             }
         }
     }
@@ -84,7 +90,8 @@ class SidebarViewController: UICollectionViewController, NSFetchedResultsControl
     func updateSelection() {
         guard let navigationViewModel,
               let currentItem = navigationViewModel.currentItem,
-              let indexPath = dataSource.indexPath(for: currentItem),
+              let currentMenuItem = MenuItem(from: currentItem),
+              let indexPath = dataSource.indexPath(for: currentMenuItem),
               collectionView.indexPathsForSelectedItems?.first != indexPath else { return }
         collectionView.selectItem(at: indexPath, animated: true, scrollPosition: [])
     }
@@ -124,13 +131,16 @@ class SidebarViewController: UICollectionViewController, NSFetchedResultsControl
         )
 
         // apply initial snapshot
-        var snapshot = NSDiffableDataSourceSnapshot<Section, NavigationItem>()
+        var snapshot = NSDiffableDataSourceSnapshot<Section, MenuItem>()
         snapshot.appendSections(Section.allSections)
         snapshot.appendItems([.bookmarks], toSection: .primary)
-        if FeatureFlags.hasLibrary {
+        if snapshot.sectionIdentifiers.contains(.library) {
             snapshot.appendItems([.opened, .categories, .downloads, .new], toSection: .library)
         }
         snapshot.appendItems([.settings], toSection: .settings)
+        if snapshot.sectionIdentifiers.contains(.donation) {
+            snapshot.appendItems([.donation], toSection: .donation)
+        }
         dataSource.apply(snapshot, animatingDifferences: false)
         try? fetchedResultController.performFetch()
     }
@@ -153,8 +163,8 @@ class SidebarViewController: UICollectionViewController, NSFetchedResultsControl
     ) {
         let tabIds = snapshot.itemIdentifiers
             .compactMap { $0 as? NSManagedObjectID }
-        let tabs = tabIds.map { NavigationItem.tab(objectID: $0) }
-        var tabsSnapshot = NSDiffableDataSourceSectionSnapshot<NavigationItem>()
+        let tabs = tabIds.map { MenuItem.tab(objectID: $0) }
+        var tabsSnapshot = NSDiffableDataSourceSectionSnapshot<MenuItem>()
         tabsSnapshot.append(tabs)
         Task { [tabsSnapshot] in
             await MainActor.run { [tabsSnapshot] in
@@ -173,11 +183,20 @@ class SidebarViewController: UICollectionViewController, NSFetchedResultsControl
             }
         }
     }
+    
+    override func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
+        guard dataSource.itemIdentifier(for: indexPath) != .donation else {
+            // trigger the donation pop-up, but do not select the menu item itself
+            NotificationCenter.openDonations()
+            return false
+        }
+        return true
+    }
 
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         guard let splitViewController,
               let navigationViewModel,
-              let navigationItem = dataSource.itemIdentifier(for: indexPath) else { return }
+              let navigationItem = dataSource.itemIdentifier(for: indexPath)?.navigationItem else { return }
         if navigationViewModel.currentItem != navigationItem {
             navigationViewModel.currentItem = navigationItem
         }
@@ -192,7 +211,7 @@ class SidebarViewController: UICollectionViewController, NSFetchedResultsControl
 
     // MARK: - Collection View Configuration
 
-    private func configureCell(cell: UICollectionViewListCell, indexPath: IndexPath, item: NavigationItem) {
+    private func configureCell(cell: UICollectionViewListCell, indexPath: IndexPath, item: MenuItem) {
         if case let .tab(objectID) = item,
             let tab = try? Database.shared.viewContext.existingObject(with: objectID) as? Tab {
             var config = cell.defaultContentConfiguration()
@@ -214,9 +233,9 @@ class SidebarViewController: UICollectionViewController, NSFetchedResultsControl
             var config = cell.defaultContentConfiguration()
             config.text = item.name
             config.image = UIImage(systemName: item.icon)
+            config.imageProperties.tintColor = item.iconForegroundColor
             cell.contentConfiguration = config
         }
-
     }
 
     private func configureHeader(headerView: UICollectionViewListCell, elementKind: String, indexPath: IndexPath) {

@@ -209,10 +209,8 @@
 "enum.libray_tab_item.categories" = "Kategorije";
 "enum.libray_tab_item.downloads" = "Prenosi";
 "enum.libray_tab_item.new" = "Novo";
-"enum.navigation_item.loading" = "Nalaganje";
 "enum.navigation_item.reading" = "Branje";
 "enum.navigation_item.bookmarks" = "Zaznamki";
-"enum.navigation_item.map" = "Zemljevid";
 "enum.navigation_item.new_tab" = "Nov zavihek";
 "enum.navigation_item.opened" = "Odprto";
 "enum.navigation_item.categories" = "Kategorije";

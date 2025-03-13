@@ -141,9 +141,7 @@
 "enum.libray_tab_item.categories" = "ਸ਼੍ਰੇਣੀਆਂ";
 "enum.libray_tab_item.downloads" = "ਉਤਾਰੋ/ਲਾਹੋ";
 "enum.libray_tab_item.new" = "ਨਵਾਂ";
-"enum.navigation_item.loading" = "ਲੱਦ ਰਿਹਾ ਐ";
 "enum.navigation_item.reading" = "ਪੜ੍ਹ ਰਿਹਾ ਐ";
-"enum.navigation_item.map" = "ਨਕਸ਼ਾ";
 "enum.navigation_item.opened" = "ਖੋਲ੍ਹਿਆ ਗਿਆ";
 "enum.navigation_item.categories" = "ਸ਼੍ਰੇਣੀਆਂ";
 "enum.navigation_item.new" = "ਨਵਾਂ";

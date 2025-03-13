@@ -213,10 +213,8 @@
 "enum.libray_tab_item.categories" = "Категории";
 "enum.libray_tab_item.downloads" = "Преземања";
 "enum.libray_tab_item.new" = "Ново";
-"enum.navigation_item.loading" = "Вчитувам";
 "enum.navigation_item.reading" = "Читање";
 "enum.navigation_item.bookmarks" = "Обележани";
-"enum.navigation_item.map" = "Карта";
 "enum.navigation_item.new_tab" = "Ново јазиче";
 "enum.navigation_item.opened" = "Отворено";
 "enum.navigation_item.categories" = "Категории";

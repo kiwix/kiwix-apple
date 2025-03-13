@@ -214,10 +214,8 @@
 "enum.libray_tab_item.categories" = "קטגוריות";
 "enum.libray_tab_item.downloads" = "הורדות";
 "enum.libray_tab_item.new" = "חדש";
-"enum.navigation_item.loading" = "טעינה";
 "enum.navigation_item.reading" = "קריאה";
 "enum.navigation_item.bookmarks" = "סימניות";
-"enum.navigation_item.map" = "מפה";
 "enum.navigation_item.new_tab" = "לשונית חדשה";
 "enum.navigation_item.opened" = "פתוחים";
 "enum.navigation_item.categories" = "קטגוריות";

@@ -56,7 +56,7 @@ struct Library: View {
                             }
                         }
                         .listStyle(.plain)
-                        .navigationTitle(NavigationItem.categories.name)
+                        .navigationTitle(MenuItem.categories.name)
                     case .opened:
                         ZimFilesOpened(dismiss: dismiss)
                     case .downloads:

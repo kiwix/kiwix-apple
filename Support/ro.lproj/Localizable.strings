@@ -213,10 +213,8 @@
 "enum.libray_tab_item.categories" = "Categorii";
 "enum.libray_tab_item.downloads" = "Descărcări";
 "enum.libray_tab_item.new" = "Nou";
-"enum.navigation_item.loading" = "Încărcare";
 "enum.navigation_item.reading" = "Lectură";
 "enum.navigation_item.bookmarks" = "Semne de carte";
-"enum.navigation_item.map" = "Hartă";
 "enum.navigation_item.new_tab" = "Filă Nouă";
 "enum.navigation_item.opened" = "Deschis";
 "enum.navigation_item.categories" = "Categorii";

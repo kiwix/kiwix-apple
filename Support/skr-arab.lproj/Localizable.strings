@@ -119,10 +119,8 @@
 "enum.libray_tab_item.categories" = "ونکیاں";
 "enum.libray_tab_item.downloads" = "ڈاؤن لوڈ";
 "enum.libray_tab_item.new" = "نواں";
-"enum.navigation_item.loading" = "لوڈ تھین٘دا پئے";
 "enum.navigation_item.reading" = "پڑھݨ";
 "enum.navigation_item.bookmarks" = "نشانیاں";
-"enum.navigation_item.map" = "نقشہ";
 "enum.navigation_item.new_tab" = "نویں ٹیب";
 "enum.navigation_item.opened" = "کھُل ڳیا";
 "enum.navigation_item.categories" = "ونکیاں";

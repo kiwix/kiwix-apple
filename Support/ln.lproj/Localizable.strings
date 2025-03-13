@@ -59,7 +59,6 @@
 "enum.libray_tab_item.categories" = "Ndéngé";
 "enum.libray_tab_item.downloads" = "Bokɔ́ngɔli";
 "enum.libray_tab_item.new" = "Sika";
-"enum.navigation_item.loading" = "Ezali ko luka";
 "enum.navigation_item.reading" = "Kotanga";
 "enum.navigation_item.bookmarks" = "Makomi ya mikanda";
 "enum.navigation_item.opened" = "Efungolami";

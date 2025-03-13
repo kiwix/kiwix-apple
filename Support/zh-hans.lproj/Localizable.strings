@@ -218,10 +218,8 @@
 "enum.libray_tab_item.categories" = "分类";
 "enum.libray_tab_item.downloads" = "下载";
 "enum.libray_tab_item.new" = "新";
-"enum.navigation_item.loading" = "加载中";
 "enum.navigation_item.reading" = "阅读";
 "enum.navigation_item.bookmarks" = "书签";
-"enum.navigation_item.map" = "地图";
 "enum.navigation_item.new_tab" = "新建标签页";
 "enum.navigation_item.opened" = "已打开";
 "enum.navigation_item.categories" = "分类";

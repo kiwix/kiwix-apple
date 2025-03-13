@@ -80,8 +80,6 @@
 "enum.flavor.max" = "अधिकतम";
 "enum.libray_tab_item.categories" = "श्रेणियाँ";
 "enum.libray_tab_item.new" = "नया";
-"enum.navigation_item.loading" = "लोड हो रहा है…";
-"enum.navigation_item.map" = "नक्शा";
 "enum.navigation_item.new" = "नया";
 "enum.navigation_item.downloads" = "डाउनलोड";
 "enum.search_result_snippet_mode.disabled" = "अक्षम किया गया";

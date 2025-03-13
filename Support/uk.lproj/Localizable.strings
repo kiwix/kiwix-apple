@@ -201,7 +201,6 @@
 "enum.libray_tab_item.categories" = "Категорії";
 "enum.libray_tab_item.downloads" = "Завантаження";
 "enum.libray_tab_item.new" = "Нове";
-"enum.navigation_item.loading" = "Завантаження";
 "enum.navigation_item.reading" = "Читання";
 "enum.navigation_item.bookmarks" = "Закладки";
 "enum.navigation_item.new_tab" = "Нова вкладка";

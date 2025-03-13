@@ -43,7 +43,7 @@ struct ZimFilesOpened: View {
         }
         .modifier(GridCommon(edges: .all))
         .modifier(ToolbarRoleBrowser())
-        .navigationTitle(NavigationItem.opened.name)
+        .navigationTitle(MenuItem.opened.name)
         .overlay {
             if zimFiles.isEmpty {
                 Message(text: LocalString.zim_file_opened_overlay_no_opened_message)
