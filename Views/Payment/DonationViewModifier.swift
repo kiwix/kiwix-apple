@@ -30,7 +30,7 @@ struct DonationViewModifier: ViewModifier {
     @State private var showDonationPopUp: Bool = false
     @State private var donationPopUpState: DonationPopupState = .selection
     
-    
+    // swiftlint:disable:next function_body_length
     func body(content: Content) -> some View {
         content
             .onReceive(openDonations) { _ in
