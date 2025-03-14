@@ -24,6 +24,8 @@ final class SplitViewController: UISplitViewController {
     private var showDownloadsObserver: AnyCancellable?
     private var openURLObserver: NSObjectProtocol?
     private var hasZimFiles: Bool
+    private var isForegrounded: Bool = true
+    var cancellables = Set<AnyCancellable>()
 
     init(
         navigationViewModel: NavigationViewModel,
@@ -99,6 +101,19 @@ final class SplitViewController: UISplitViewController {
                 }
             }
         }
+        observeAppBackgrounding()
+    }
+    
+    private func observeAppBackgrounding() {
+        let notificationCenter = NotificationCenter.default
+        notificationCenter.publisher(for: UIApplication.willEnterForegroundNotification, object: nil)
+            .sink { [weak self] _ in
+                self?.isForegrounded = true
+            }.store(in: &cancellables)
+        notificationCenter.publisher(for: UIApplication.didEnterBackgroundNotification, object: nil)
+            .sink { [weak self] _ in
+                self?.isForegrounded = false
+            }.store(in: &cancellables)
     }
 
     /// Dismiss any controller that is already presented when horizontal size class is about to change
@@ -111,7 +126,8 @@ final class SplitViewController: UISplitViewController {
 
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
-        guard previousTraitCollection?.horizontalSizeClass != traitCollection.horizontalSizeClass else { return }
+        guard isForegrounded,
+              previousTraitCollection?.horizontalSizeClass != traitCollection.horizontalSizeClass else { return }
         if traitCollection.horizontalSizeClass == .compact {
             navigationViewModel.navigateToMostRecentTab()
         } else {
