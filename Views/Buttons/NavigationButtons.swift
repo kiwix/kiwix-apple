@@ -30,7 +30,7 @@ struct NavigationButtons: View {
 
     var goBackButton: some View {
         Button {
-            browser()?.webView2?.goBack()
+            browser()?.webView.goBack()
             dismissSearch()
         } label: {
             Label(LocalString.common_button_go_back, systemImage: "chevron.left")
@@ -39,7 +39,7 @@ struct NavigationButtons: View {
 
     var goForwardButton: some View {
         Button {
-            browser()?.webView2?.goForward()
+            browser()?.webView.goForward()
             dismissSearch()
         } label: {
             Label(LocalString.common_button_go_forward, systemImage: "chevron.right")

@@ -55,6 +55,13 @@ final class BrowserViewModel: NSObject, ObservableObject,
             if let browserViewModel = cache?.findBy(key: id) {
                 await browserViewModel.destroy()
                 cache?.removeValue(forKey: id)
+                let count = cache?.count ?? -1
+                os_log(
+                    "BrowserViewModel.Cache.destroyTabById, remaining tabs: %i",
+                    log: Log.Browser,
+                    type: .debug,
+                    count
+                )
             }
         }
     }
@@ -62,9 +69,16 @@ final class BrowserViewModel: NSObject, ObservableObject,
     nonisolated static func keepOnlyTabsByIds(_ ids: Set<NSManagedObjectID>) {
         Task { @MainActor in
             if let cache {
+                let tabIds = "\(ids)"
                 for browser in cache.removeNotMatchingWith(keys: ids) {
                     await browser.destroy()
                 }
+                os_log(
+                    "BrowserViewModel.Cache.keepOnlyTabsByIds: %s, remaining tabs: %i",
+                    log: Log.Browser,
+                    type: .debug,
+                    tabIds, cache.count
+                )
             }
         }
     }
@@ -101,11 +115,9 @@ final class BrowserViewModel: NSObject, ObservableObject,
         UserDefaults.standard[.windowURLs]
     }
 #endif
-    private var webView: WKWebView?
-    var webView2: WKWebView? {
-        webView
-    }
+    let webView: WKWebView
     let tabID: NSManagedObjectID
+    let tabIDDebug: String
     private var isLoadingObserver: NSKeyValueObservation?
     private var canGoBackObserver: NSKeyValueObservation?
     private var canGoForwardObserver: NSKeyValueObservation?
@@ -117,10 +129,17 @@ final class BrowserViewModel: NSObject, ObservableObject,
     // swiftlint:disable:next function_body_length
     @MainActor private init(tabID: NSManagedObjectID) {
         self.tabID = tabID
+        self.tabIDDebug = "\(tabID)"
+        os_log(
+            "BrowserViewModel.init tabID: %s",
+            log: Log.Browser,
+            type: .debug,
+            tabIDDebug
+        )
         let wkWebView = WKWebView(frame: .zero, configuration: WebViewConfiguration())
         webView = wkWebView
         if !Bundle.main.isProduction, #available(iOS 16.4, macOS 13.3, *) {
-                webView?.isInspectable = true
+                webView.isInspectable = true
         }
         // Bookmark fetching:
         bookmarkFetchedResultsController = NSFetchedResultsController(
@@ -189,21 +208,27 @@ final class BrowserViewModel: NSObject, ObservableObject,
         canGoForwardObserver?.invalidate()
         titleURLObserver?.cancel()
         isLoadingObserver?.invalidate()
-        webView?.configuration.userContentController.removeAllScriptMessageHandlers()
-        webView?.navigationDelegate = nil
-        webView?.uiDelegate = nil
+        webView.configuration.userContentController.removeAllScriptMessageHandlers()
+        webView.navigationDelegate = nil
+        webView.uiDelegate = nil
         #if os(iOS)
-        webView?.scrollView.delegate = nil
+        webView.scrollView.delegate = nil
         #endif
+        os_log(
+            "BrowserViewModel.destroy tabID: %s",
+            log: Log.Browser,
+            type: .debug,
+            tabIDDebug
+        )
         await clear()
+        
     }
 
     @MainActor
     func clear() async {
-        await webView?.setAllMediaPlaybackSuspended(true)
-        await webView?.closeAllMediaPresentations()
-        webView?.stopLoading()
-        webView = nil
+        await webView.setAllMediaPlaybackSuspended(true)
+        await webView.closeAllMediaPresentations()
+        webView.stopLoading()
         url = nil
         articleTitle = ""
         zimFileName = ""
@@ -213,6 +238,21 @@ final class BrowserViewModel: NSObject, ObservableObject,
         // until new content is not starting to load
         // as complete clear of webView is not possible
         isLoading = nil
+        os_log(
+            "BrowserViewModel.clear tabID: %s",
+            log: Log.Browser,
+            type: .debug,
+            tabIDDebug
+        )
+    }
+    
+    deinit {
+        os_log(
+            "BrowserViewModel.deinit tabID: %s",
+            log: Log.Browser,
+            type: .debug,
+            tabIDDebug
+        )
     }
 
     /// Get the webpage in a binary format
@@ -220,9 +260,9 @@ final class BrowserViewModel: NSObject, ObservableObject,
     /// and the file extension, if known
     func pageDataWithExtension() async -> (Data, String?)? {
         if metaData?.isTextType == true,
-           let pdfData = try? await webView?.pdf() {
+           let pdfData = try? await webView.pdf() {
             return (pdfData, metaData?.exportFileExtension)
-        } else if let url = await webView?.url,
+        } else if let url = await webView.url,
                   let contentData = await ZimFileService.shared.getURLContent(url: url)?.data {
             let pathExtesion = url.pathExtension
             let fileExtension: String?
@@ -288,7 +328,7 @@ final class BrowserViewModel: NSObject, ObservableObject,
 
     @MainActor
     func persistState() {
-        let webData = webView?.interactionState as? Data
+        let webData = webView.interactionState as? Data
         let currentTabID = tabID
         Task {
             Database.shared.performBackgroundTask { context in
@@ -306,14 +346,14 @@ final class BrowserViewModel: NSObject, ObservableObject,
     // MARK: - Content Loading
     @MainActor
     func load(url: URL) {
-        guard webView?.url != url else { return }
-        webView?.load(URLRequest(url: url))
+        guard webView.url != url else { return }
+        webView.load(URLRequest(url: url))
         self.url = url
     }
 
     @MainActor
     func loadRandomArticle(zimFileID: UUID? = nil) {
-        let zimFileID = zimFileID ?? webView?.url?.zimFileID
+        let zimFileID = zimFileID ?? webView.url?.zimFileID
         Task { @ZimActor [weak self] in
             guard let url = ZimFileService.shared.getRandomPageURL(zimFileID: zimFileID) else { return }
             await MainActor.run { [weak self] in
@@ -324,7 +364,7 @@ final class BrowserViewModel: NSObject, ObservableObject,
 
     @MainActor
     func loadMainArticle(zimFileID: UUID? = nil) {
-        let zimFileID = zimFileID ?? webView?.url?.zimFileID
+        let zimFileID = zimFileID ?? webView.url?.zimFileID
         Task { @ZimActor [weak self] in
             guard let url = ZimFileService.shared.getMainPageURL(zimFileID: zimFileID) else { return }
             await MainActor.run { [weak self] in
@@ -335,8 +375,8 @@ final class BrowserViewModel: NSObject, ObservableObject,
 
     private func restoreBy(tabID: NSManagedObjectID) {
         if let tab = try? Database.shared.viewContext.existingObject(with: tabID) as? Tab {
-            webView?.interactionState = tab.interactionState
-            if webView?.url != nil {
+            webView.interactionState = tab.interactionState
+            if webView.url != nil {
                 // make sure category(.list) is not displayed
                 // while restoring a tab
                 isLoading = true
@@ -344,8 +384,8 @@ final class BrowserViewModel: NSObject, ObservableObject,
             Task { [weak self] in
                 await MainActor.run { [weak self] in
                     // migrate the tab urls on demand to ZIM scheme
-                    self?.url = self?.webView?.url?.updatedToZIMSheme()
-                    if let webURL = self?.webView?.url, webURL.isKiwixURL {
+                    self?.url = self?.webView.url?.updatedToZIMSheme()
+                    if let webURL = self?.webView.url, webURL.isKiwixURL {
                         self?.load(url: webURL.updatedToZIMSheme())
                     }
                 }
@@ -359,7 +399,7 @@ final class BrowserViewModel: NSObject, ObservableObject,
         // as that pauses in Picture in Picture mode as well.
         // Detecting PiP on a AVPictureInPictureController created by WKWebView
         // is currently non-trivial from the swift side
-        webView?.evaluateJavaScript("pauseVideoWhenNotInPIP();")
+        webView.evaluateJavaScript("pauseVideoWhenNotInPIP();")
     }
 
     @MainActor
@@ -375,7 +415,7 @@ final class BrowserViewModel: NSObject, ObservableObject,
     /// Disable the right-click context menu on video components
     @MainActor
     func disableVideoContextMenu() {
-        webView?.evaluateJavaScript("disableVideoContextMenu();")
+        webView.evaluateJavaScript("disableVideoContextMenu();")
     }
     #endif
 
@@ -621,7 +661,7 @@ final class BrowserViewModel: NSObject, ObservableObject,
                 actions.append(
                     UIAction(title: LocalString.common_dialog_button_open,
                              image: UIImage(systemName: "doc.text")) { [weak self] _ in
-                                 self?.webView?.load(URLRequest(url: url))
+                                 self?.webView.load(URLRequest(url: url))
                     }
                 )
                 actions.append(
@@ -672,9 +712,9 @@ final class BrowserViewModel: NSObject, ObservableObject,
 
     @MainActor 
     func createBookmark(url: URL? = nil) {
-        guard let url = url ?? webView?.url,
+        guard let url = url ?? webView.url,
               let zimFileID = url.zimFileID else { return }
-        let title = webView?.title
+        let title = webView.title
         Task {
             guard let metaData = await ZimFileService.shared.getContentMetaData(url: url) else { return }
             Database.shared.performBackgroundTask { context in
@@ -691,7 +731,7 @@ final class BrowserViewModel: NSObject, ObservableObject,
     }
 
     func deleteBookmark(url: URL? = nil) {
-        guard let url = url ?? webView?.url else { return }
+        guard let url = url ?? webView.url else { return }
         Database.shared.performBackgroundTask { context in
             let request = Bookmark.fetchRequest(predicate: NSPredicate(format: "articleURL == %@", url as CVarArg))
             guard let bookmark = try? context.fetch(request).first else { return }
@@ -705,7 +745,7 @@ final class BrowserViewModel: NSObject, ObservableObject,
     /// Scroll to an outline item
     /// - Parameter outlineItemID: ID of the outline item to scroll to
     func scrollTo(outlineItemID: String) {
-        webView?.evaluateJavaScript("scrollToHeading('\(outlineItemID)')")
+        webView.evaluateJavaScript("scrollToHeading('\(outlineItemID)')")
     }
 
     /// Convert flattened heading element data to a list of OutlineItems.

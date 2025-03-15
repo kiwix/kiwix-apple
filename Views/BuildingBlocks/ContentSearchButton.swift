@@ -25,8 +25,8 @@ struct ContentSearchButton: View {
         Button(LocalString.common_search,
                systemImage: "text.magnifyingglass",
                action: { [weak browser] in
-            browser?.webView2?.isFindInteractionEnabled = true
-            browser?.webView2?.findInteraction?.presentFindNavigator(showingReplace: false)
+            browser?.webView.isFindInteractionEnabled = true
+            browser?.webView.findInteraction?.presentFindNavigator(showingReplace: false)
         }
         ).disabled(browser.url == nil)
     }

@@ -25,7 +25,7 @@ struct WebView: NSViewRepresentable {
 
     func makeNSView(context: Context) -> NSView {
         let nsView = NSView()
-        if let webView = browser.webView2 {
+        if let webView = browser.webView {
             // auto-layout is not working
             // when the video is paused in full screen
             webView.translatesAutoresizingMaskIntoConstraints = true
@@ -38,7 +38,7 @@ struct WebView: NSViewRepresentable {
     func updateNSView(_ nsView: NSView, context: Context) {
         // without this, after closing video full screen
         // a newly opened webview's frame is wrongly sized
-        browser.webView2?.frame = nsView.bounds
+        browser.webView?.frame = nsView.bounds
     }
 
     func makeCoordinator() -> Coordinator {
@@ -49,7 +49,7 @@ struct WebView: NSViewRepresentable {
         private let pageZoomObserver: Defaults.Observation
 
         init(view: WebView) {
-            let webView = view.browser.webView2
+            let webView = view.browser.webView
             pageZoomObserver = Defaults.observe(.webViewPageZoom) { [weak webView] change in
                 webView?.pageZoom = change.newValue
             }
@@ -61,7 +61,7 @@ struct WebView: UIViewControllerRepresentable {
     @ObservedObject var browser: BrowserViewModel
 
     func makeUIViewController(context: Context) -> WebViewController {
-        WebViewController(webView: browser.webView2)
+        WebViewController(webView: browser.webView)
     }
 
     func updateUIViewController(_ controller: WebViewController, context: Context) { }
@@ -87,6 +87,17 @@ final class WebViewController: UIViewController {
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    deinit {
+        pageZoomObserver.invalidate()
+        webViewURLObserver?.invalidate()
+        layoutCancellable?.cancel()
+        NotificationCenter.default.removeObserver(
+            self,
+            name: UIDevice.orientationDidChangeNotification,
+            object: nil
+        )
     }
 
     override func viewDidAppear(_ animated: Bool) {

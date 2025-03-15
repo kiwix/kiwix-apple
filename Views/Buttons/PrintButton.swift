@@ -22,10 +22,10 @@ struct PrintButton: View {
     @ObservedObject private var browser: BrowserViewModel
 
     private func dataAndName() async -> (Data, String)? {
-        guard let browserURLName = browser.webView2?.url?.lastPathComponent else {
+        guard let browserURLName = browser.webView?.url?.lastPathComponent else {
             return nil
         }
-        guard let pdfData = try? await browser.webView2?.pdf() else {
+        guard let pdfData = try? await browser.webView?.pdf() else {
             return nil
         }
         return (pdfData, browserURLName)

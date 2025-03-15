@@ -21,7 +21,7 @@ struct ExportButton: View {
 
     /// - Returns: Returns the browser data, fileName and extension
     private func dataNameAndExtension() async -> FileExportData? {
-        guard let fileName = browser.webView2?.url?.lastPathComponent else {
+        guard let fileName = browser.webView.url?.lastPathComponent else {
             return nil
         }
         guard let (pageData, fileExtension) = await browser.pageDataWithExtension() else {
@@ -42,7 +42,7 @@ struct ExportButton: View {
                 guard let exportData = await dataNameAndExtension() else { return }
                 NotificationCenter.exportFileData(exportData)
                 #else
-                guard let webView = browser?.webView2,
+                guard let webView = browser?.webView,
                       let url = await tempFileURL() else { return }
                 NSSharingServicePicker(items: [url]).show(
                     relativeTo: .null,

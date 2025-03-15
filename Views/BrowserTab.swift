@@ -24,17 +24,19 @@ struct BrowserTab: View {
     @EnvironmentObject private var library: LibraryViewModel
     @StateObject private var search = SearchViewModel.shared
     @ObservedObject private var browser: BrowserViewModel
+    private var model: LaunchViewModelBase {
+        if FeatureFlags.hasLibrary {
+            CatalogLaunchViewModel(library: library, browser: browser)
+        } else {
+            NoCatalogLaunchViewModel(browser: browser)
+        }
+    }
     
     init(currentTabID: NSManagedObjectID) {
         browser = BrowserViewModel.getCached(tabID: currentTabID)
     }
 
     var body: some View {
-        let model = if FeatureFlags.hasLibrary {
-            CatalogLaunchViewModel(library: library, browser: browser)
-        } else {
-            NoCatalogLaunchViewModel(browser: browser)
-        }
         Content(browser: browser, model: model).toolbar {
 #if os(macOS)
             ToolbarItemGroup(placement: .navigation) { NavigationButtons() }
@@ -135,7 +137,7 @@ struct BrowserTab: View {
                                 .overlay(alignment: .bottomTrailing) { [weak browser] in
                                     ContentSearchBar(
                                         model: ContentSearchViewModel(
-                                            findInWebPage: browser?.webView2?.find(_:configuration:)
+                                            findInWebPage: browser?.webView?.find(_:configuration:)
                                         )
                                     )
                                 }
