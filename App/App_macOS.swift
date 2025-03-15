@@ -209,7 +209,7 @@ struct RootView: View {
             case .loading:
                 LoadingDataView()
             case .tab(let tabID):
-                BrowserTab(currentTabID: tabID)
+                BrowserTab(browser: BrowserViewModel.getCached(tabID: tabID))
             case .bookmarks:
                 Bookmarks()
             case .opened:

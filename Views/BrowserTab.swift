@@ -23,17 +23,13 @@ struct BrowserTab: View {
     @Environment(\.scenePhase) private var scenePhase
     @EnvironmentObject private var library: LibraryViewModel
     @StateObject private var search = SearchViewModel.shared
-    @ObservedObject private var browser: BrowserViewModel
+    @ObservedObject var browser: BrowserViewModel
     private var model: LaunchViewModelBase {
         if FeatureFlags.hasLibrary {
             CatalogLaunchViewModel(library: library, browser: browser)
         } else {
             NoCatalogLaunchViewModel(browser: browser)
         }
-    }
-    
-    init(currentTabID: NSManagedObjectID) {
-        browser = BrowserViewModel.getCached(tabID: currentTabID)
     }
 
     var body: some View {
