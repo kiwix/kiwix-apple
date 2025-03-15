@@ -21,24 +21,23 @@ import Defaults
 
 #if os(macOS)
 struct WebView: NSViewRepresentable {
-    @ObservedObject private var browser: BrowserViewModel
+    @ObservedObject var browser: BrowserViewModel
 
     func makeNSView(context: Context) -> NSView {
         let nsView = NSView()
-        if let webView = browser.webView {
-            // auto-layout is not working
-            // when the video is paused in full screen
-            webView.translatesAutoresizingMaskIntoConstraints = true
-            webView.autoresizingMask = [.width, .height]
-            nsView.addSubview(webView)
-        }
+        let webView = browser.webView
+        // auto-layout is not working
+        // when the video is paused in full screen
+        webView.translatesAutoresizingMaskIntoConstraints = true
+        webView.autoresizingMask = [.width, .height]
+        nsView.addSubview(webView)
         return nsView
     }
 
     func updateNSView(_ nsView: NSView, context: Context) {
         // without this, after closing video full screen
         // a newly opened webview's frame is wrongly sized
-        browser.webView?.frame = nsView.bounds
+        browser.webView.frame = nsView.bounds
     }
 
     func makeCoordinator() -> Coordinator {

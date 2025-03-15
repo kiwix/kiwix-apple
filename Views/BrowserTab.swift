@@ -39,7 +39,7 @@ struct BrowserTab: View {
     var body: some View {
         Content(browser: browser, model: model).toolbar {
 #if os(macOS)
-            ToolbarItemGroup(placement: .navigation) { NavigationButtons() }
+            ToolbarItemGroup(placement: .navigation) { NavigationButtons(currentTabId: browser.tabID) }
 #elseif os(iOS)
             ToolbarItemGroup(placement: .navigationBarLeading) {
                 if #unavailable(iOS 16) {
@@ -56,7 +56,7 @@ struct BrowserTab: View {
                 OutlineButton(browser: browser)
                 ExportButton(browser: browser)
 #if os(macOS)
-                PrintButton()
+                PrintButton(browser: browser)
 #endif
                 BookmarkButton(browser: browser)
 #if os(iOS)
@@ -75,9 +75,8 @@ struct BrowserTab: View {
                 browser?.refreshVideoState()
             }
         }
-        .modify { [weak browser] view in
+        .modify { view in
 #if os(macOS)
-            guard let browser else { return }
             view.navigationTitle(browser.articleTitle.isEmpty ? Brand.appName : browser.articleTitle)
                 .navigationSubtitle(browser.zimFileName)
 #elseif os(iOS)
@@ -137,7 +136,7 @@ struct BrowserTab: View {
                                 .overlay(alignment: .bottomTrailing) { [weak browser] in
                                     ContentSearchBar(
                                         model: ContentSearchViewModel(
-                                            findInWebPage: browser?.webView?.find(_:configuration:)
+                                            findInWebPage: browser?.webView.find(_:configuration:)
                                         )
                                     )
                                 }

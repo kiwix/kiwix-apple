@@ -19,13 +19,13 @@ import PDFKit
 
 struct PrintButton: View {
 
-    @ObservedObject private var browser: BrowserViewModel
+    @ObservedObject var browser: BrowserViewModel
 
     private func dataAndName() async -> (Data, String)? {
-        guard let browserURLName = browser.webView?.url?.lastPathComponent else {
+        guard let browserURLName = browser.webView.url?.lastPathComponent else {
             return nil
         }
-        guard let pdfData = try? await browser.webView?.pdf() else {
+        guard let pdfData = try? await browser.webView.pdf() else {
             return nil
         }
         return (pdfData, browserURLName)
