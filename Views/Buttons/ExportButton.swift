@@ -17,11 +17,11 @@ import SwiftUI
 
 struct ExportButton: View {
 
-    @EnvironmentObject private var browser: BrowserViewModel
+    @ObservedObject var browser: BrowserViewModel
 
     /// - Returns: Returns the browser data, fileName and extension
     private func dataNameAndExtension() async -> FileExportData? {
-        guard let fileName = browser.webView.url?.lastPathComponent else {
+        guard let fileName = browser.webView2?.url?.lastPathComponent else {
             return nil
         }
         guard let (pageData, fileExtension) = await browser.pageDataWithExtension() else {
@@ -36,14 +36,19 @@ struct ExportButton: View {
     }
 
     var body: some View {
-        Button {
+        Button { [weak browser] in
             Task {
                 #if os(iOS)
                 guard let exportData = await dataNameAndExtension() else { return }
                 NotificationCenter.exportFileData(exportData)
                 #else
-                guard let url = await tempFileURL() else { return }
-                NSSharingServicePicker(items: [url]).show(relativeTo: .null, of: browser.webView, preferredEdge: .minY)
+                guard let webView = browser?.webView2,
+                      let url = await tempFileURL() else { return }
+                NSSharingServicePicker(items: [url]).show(
+                    relativeTo: .null,
+                    of: webView,
+                    preferredEdge: .minY
+                )
                 #endif
             }
         } label: {

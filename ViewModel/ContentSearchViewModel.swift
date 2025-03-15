@@ -27,9 +27,9 @@ final class ContentSearchViewModel: NSObject, ObservableObject {
     }
 
     /// see: https://developer.apple.com/documentation/webkit/wkwebview/3650493-find
-    private var findInWebPage: (String, WKFindConfiguration) async throws -> WKFindResult
+    private var findInWebPage: ((String, WKFindConfiguration) async throws -> WKFindResult)?
 
-    init(findInWebPage: @escaping (String, WKFindConfiguration) async throws -> WKFindResult) {
+    init(findInWebPage: ((String, WKFindConfiguration) async throws -> WKFindResult)?) {
         self.findInWebPage = findInWebPage
     }
 
@@ -37,14 +37,14 @@ final class ContentSearchViewModel: NSObject, ObservableObject {
         let config = WKFindConfiguration()
         config.backwards = false
         config.wraps = true
-        _ = try? await findInWebPage(contentSearchText, config)
+        _ = try? await findInWebPage?(contentSearchText, config)
     }
 
     func findPrevious() async {
         let config = WKFindConfiguration()
         config.backwards = true
         config.wraps = true
-        _ = try? await findInWebPage(contentSearchText, config)
+        _ = try? await findInWebPage?(contentSearchText, config)
     }
 
     func reset() {

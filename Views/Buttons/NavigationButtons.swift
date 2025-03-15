@@ -14,11 +14,13 @@
 // along with Kiwix; If not, see https://www.gnu.org/licenses/.
 
 import SwiftUI
+import Combine
+import CoreData
 
 struct NavigationButtons: View {
     @Environment(\.dismissSearch) private var dismissSearch
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
-    @EnvironmentObject private var browser: BrowserViewModel
+    var currentTabId: NSManagedObjectID
 
     var body: some View {
         goBackButton
@@ -28,19 +30,23 @@ struct NavigationButtons: View {
 
     var goBackButton: some View {
         Button {
-            browser.webView.goBack()
+            browser()?.webView2?.goBack()
             dismissSearch()
         } label: {
             Label(LocalString.common_button_go_back, systemImage: "chevron.left")
-        }.disabled(!browser.canGoBack)
+        }.disabled(browser()?.canGoBack != true)
     }
 
     var goForwardButton: some View {
         Button {
-            browser.webView.goForward()
+            browser()?.webView2?.goForward()
             dismissSearch()
         } label: {
             Label(LocalString.common_button_go_forward, systemImage: "chevron.right")
-        }.disabled(!browser.canGoForward)
+        }.disabled(browser()?.canGoForward != true)
+    }
+    
+    private func browser() -> BrowserViewModel? {
+        BrowserViewModel.getCached(tabID: currentTabId)
     }
 }

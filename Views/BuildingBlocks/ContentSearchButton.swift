@@ -19,14 +19,14 @@ import WebKit
 
 struct ContentSearchButton: View {
 
-    @EnvironmentObject private var browser: BrowserViewModel
+    @ObservedObject var browser: BrowserViewModel
 
     var body: some View {
         Button(LocalString.common_search,
                systemImage: "text.magnifyingglass",
-               action: {
-            browser.webView.isFindInteractionEnabled = true
-            browser.webView.findInteraction?.presentFindNavigator(showingReplace: false)
+               action: { [weak browser] in
+            browser?.webView2?.isFindInteractionEnabled = true
+            browser?.webView2?.findInteraction?.presentFindNavigator(showingReplace: false)
         }
         ).disabled(browser.url == nil)
     }

@@ -17,16 +17,16 @@ import SwiftUI
 
 struct BookmarkButton: View {
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
-    @EnvironmentObject private var browser: BrowserViewModel
+    @ObservedObject var browser: BrowserViewModel
     @State private var isShowingPopOver = false
 
     var body: some View {
         #if os(macOS)
-        Button {
-            if browser.articleBookmarked {
-                browser.deleteBookmark()
+        Button { [weak browser] in
+            if browser?.articleBookmarked == true {
+                browser?.deleteBookmark()
             } else {
-                browser.createBookmark()
+                browser?.createBookmark()
             }
         } label: {
             Label {
@@ -40,14 +40,14 @@ struct BookmarkButton: View {
         #elseif os(iOS)
         Menu {
             if browser.articleBookmarked {
-                Button(role: .destructive) {
-                    browser.deleteBookmark()
+                Button(role: .destructive) { [weak browser] in
+                    browser?.deleteBookmark()
                 } label: {
                     Label(LocalString.common_dialog_button_remove_bookmark, systemImage: "star.slash.fill")
                 }
             } else {
-                Button {
-                    browser.createBookmark()
+                Button { [weak browser] in
+                    browser?.createBookmark()
                 } label: {
                     Label(LocalString.common_dialog_button_add_bookmark, systemImage: "star")
                 }
@@ -68,7 +68,7 @@ struct BookmarkButton: View {
             isShowingPopOver = true
         }
         .help(LocalString.bookmark_button_show_help)
-        .popover(isPresented: $isShowingPopOver) {
+        .popover(isPresented: $isShowingPopOver) { [weak browser] in
             NavigationStack {
                 Bookmarks().navigationBarTitleDisplayMode(.inline).toolbar {
                     ToolbarItem(placement: .navigationBarLeading) {
@@ -79,24 +79,24 @@ struct BookmarkButton: View {
                         }
                     }
                     ToolbarItem(placement: .navigationBarTrailing) {
-                        Button {
-                            if browser.articleBookmarked {
-                                browser.deleteBookmark()
+                        Button { [weak browser] in
+                            if browser?.articleBookmarked == true {
+                                browser?.deleteBookmark()
                             } else {
-                                browser.createBookmark()
+                                browser?.createBookmark()
                             }
                         } label: {
                             Label {
                                 Text(
-                                    browser.articleBookmarked ?
+                                    browser?.articleBookmarked == true ?
                                     LocalString.common_dialog_button_remove_bookmark :
                                         LocalString.common_dialog_button_add_bookmark
                                 )
                             } icon: {
-                                Image(systemName: browser.articleBookmarked ? "star.fill" : "star")
-                                    .renderingMode(browser.articleBookmarked ? .original : .template)
+                                Image(systemName: browser?.articleBookmarked == true ? "star.fill" : "star")
+                                    .renderingMode(browser?.articleBookmarked == true ? .original : .template)
                             }
-                        }.disabled(browser.url == nil)
+                        }.disabled(browser?.url == nil)
                     }
                 }
             }

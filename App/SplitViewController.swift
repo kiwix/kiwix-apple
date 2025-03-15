@@ -141,8 +141,7 @@ final class SplitViewController: UISplitViewController {
             let controller = UIHostingController(rootView: Bookmarks())
             setViewController(UINavigationController(rootViewController: controller), for: .secondary)
         case .tab(let tabID):
-            let view = BrowserTab()
-                .environmentObject(BrowserViewModel.getCached(tabID: tabID))
+            let view = BrowserTab(currentTabID: tabID)
             let controller = UIHostingController(rootView: view)
             controller.navigationItem.scrollEdgeAppearance = {
                 let apperance = UINavigationBarAppearance()

@@ -17,7 +17,7 @@ import SwiftUI
 
 struct ArticleShortcutButtons: View {
     @Environment(\.dismissSearch) private var dismissSearch
-    @EnvironmentObject private var browser: BrowserViewModel
+    @ObservedObject var browser: BrowserViewModel
     @FetchRequest(
         sortDescriptors: [NSSortDescriptor(keyPath: \ZimFile.size, ascending: false)],
         predicate: ZimFile.openedPredicate

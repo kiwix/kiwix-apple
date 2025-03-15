@@ -21,23 +21,24 @@ import Defaults
 
 #if os(macOS)
 struct WebView: NSViewRepresentable {
-    @EnvironmentObject private var browser: BrowserViewModel
+    @ObservedObject private var browser: BrowserViewModel
 
     func makeNSView(context: Context) -> NSView {
         let nsView = NSView()
-        let webView = browser.webView
-        // auto-layout is not working
-        // when the video is paused in full screen
-        webView.translatesAutoresizingMaskIntoConstraints = true
-        webView.autoresizingMask = [.width, .height]
-        nsView.addSubview(webView)
+        if let webView = browser.webView2 {
+            // auto-layout is not working
+            // when the video is paused in full screen
+            webView.translatesAutoresizingMaskIntoConstraints = true
+            webView.autoresizingMask = [.width, .height]
+            nsView.addSubview(webView)
+        }
         return nsView
     }
 
     func updateNSView(_ nsView: NSView, context: Context) {
         // without this, after closing video full screen
         // a newly opened webview's frame is wrongly sized
-        browser.webView.frame = nsView.bounds
+        browser.webView2?.frame = nsView.bounds
     }
 
     func makeCoordinator() -> Coordinator {
@@ -48,25 +49,26 @@ struct WebView: NSViewRepresentable {
         private let pageZoomObserver: Defaults.Observation
 
         init(view: WebView) {
-            pageZoomObserver = Defaults.observe(.webViewPageZoom) { change in
-                view.browser.webView.pageZoom = change.newValue
+            let webView = view.browser.webView2
+            pageZoomObserver = Defaults.observe(.webViewPageZoom) { [weak webView] change in
+                webView?.pageZoom = change.newValue
             }
         }
     }
 }
 #elseif os(iOS)
 struct WebView: UIViewControllerRepresentable {
-    @EnvironmentObject private var browser: BrowserViewModel
+    @ObservedObject var browser: BrowserViewModel
 
     func makeUIViewController(context: Context) -> WebViewController {
-        WebViewController(webView: browser.webView)
+        WebViewController(webView: browser.webView2)
     }
 
     func updateUIViewController(_ controller: WebViewController, context: Context) { }
 }
 
 final class WebViewController: UIViewController {
-    private let webView: WKWebView
+    private weak var webView: WKWebView?
     private let pageZoomObserver: Defaults.Observation
     private var webViewURLObserver: NSKeyValueObservation?
     private var topSafeAreaConstraint: NSLayoutConstraint?
@@ -75,10 +77,10 @@ final class WebViewController: UIViewController {
     private var currentScrollViewOffset: CGFloat = 0.0
     private var compactViewNavigationController: UINavigationController?
     
-    init(webView: WKWebView) {
+    init(webView: WKWebView?) {
         self.webView = webView
         pageZoomObserver = Defaults.observe(.webViewPageZoom) { change in
-            webView.adjustTextSize(pageZoom: change.newValue)
+            webView?.adjustTextSize(pageZoom: change.newValue)
         }
         super.init(nibName: nil, bundle: nil)
     }
@@ -89,22 +91,26 @@ final class WebViewController: UIViewController {
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        webView.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(webView)
-        webView.alpha = 0
-
-        /*
-         HACK: Make sure the webview content does not jump after state restoration
-         It appears the webview's state restoration does not properly take into account of the content inset.
-         To mitigate, first pin the webview's top against safe area top anchor, after all viewDidLayoutSubviews calls,
-         pin the webview's top against view's top anchor, so that content does not appears to move up.
-         */
-        NSLayoutConstraint.activate([
-            view.leftAnchor.constraint(equalTo: webView.leftAnchor),
-            view.bottomAnchor.constraint(equalTo: webView.bottomAnchor),
-            view.rightAnchor.constraint(equalTo: webView.rightAnchor)
-        ])
-        topSafeAreaConstraint = view.safeAreaLayoutGuide.topAnchor.constraint(equalTo: webView.topAnchor)
+        
+        if let webView {
+            webView.translatesAutoresizingMaskIntoConstraints = false
+            view.addSubview(webView)
+            webView.alpha = 0
+            
+            
+            /*
+             HACK: Make sure the webview content does not jump after state restoration
+             It appears the webview's state restoration does not properly take into account of the content inset.
+             To mitigate, first pin the webview's top against safe area top anchor, after all viewDidLayoutSubviews calls,
+             pin the webview's top against view's top anchor, so that content does not appears to move up.
+             */
+            NSLayoutConstraint.activate([
+                view.leftAnchor.constraint(equalTo: webView.leftAnchor),
+                view.bottomAnchor.constraint(equalTo: webView.bottomAnchor),
+                view.rightAnchor.constraint(equalTo: webView.rightAnchor)
+            ])
+            topSafeAreaConstraint = view.safeAreaLayoutGuide.topAnchor.constraint(equalTo: webView.topAnchor)
+        }
         topSafeAreaConstraint?.isActive = true
         layoutCancellable = layoutSubject
             .debounce(for: .seconds(0.15), scheduler: RunLoop.main)
@@ -123,7 +129,7 @@ final class WebViewController: UIViewController {
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         if #unavailable(iOS 18.0) {
-            webView.setValue(view.safeAreaInsets, forKey: "_obscuredInsets")
+            webView?.setValue(view.safeAreaInsets, forKey: "_obscuredInsets")
         }
         layoutSubject.send()
     }
@@ -201,7 +207,7 @@ extension WebViewController {
         }
         
         func configureNavigationController() {
-            webView.scrollView.delegate = self
+            webView?.scrollView.delegate = self
             if parent?.navigationController != nil {
                 compactViewNavigationController = parent?.navigationController
             }

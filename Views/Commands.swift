@@ -61,10 +61,10 @@ struct NavigationCommands: View {
     @FocusedValue(\.browserViewModel) var browser: BrowserViewModel?
 
     var body: some View {
-        Button(LocalString.common_button_go_back) { browser?.webView.goBack() }
+        Button(LocalString.common_button_go_back) { [weak browser] in browser?.webView2?.goBack() }
             .keyboardShortcut("[")
             .disabled(canGoBack != true)
-        Button(LocalString.common_button_go_forward) { browser?.webView.goForward() }
+        Button(LocalString.common_button_go_forward) { [weak browser] in browser?.webView2?.goForward() }
             .keyboardShortcut("]")
             .disabled(canGoForward != true)
     }

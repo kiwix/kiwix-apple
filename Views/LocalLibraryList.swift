@@ -16,10 +16,11 @@
 import SwiftUI
 import Combine
 import Defaults
+import CoreData
 
 /// Displays a grid of available local ZIM files. Used on new tab.
 struct LocalLibraryList: View {
-    @EnvironmentObject private var browser: BrowserViewModel
+    @ObservedObject var browser: BrowserViewModel
     @FetchRequest(
         sortDescriptors: [NSSortDescriptor(keyPath: \Bookmark.created, ascending: false)],
         animation: .easeInOut
@@ -37,11 +38,11 @@ struct LocalLibraryList: View {
             spacing: 12
         ) {
             GridSection(title: LocalString.welcome_main_page_title) {
-                ForEach(zimFiles) { zimFile in
-                    AsyncButtonView {
+                ForEach(zimFiles) { [weak browser] zimFile in
+                    AsyncButtonView { [weak browser] in
                         guard let url = await ZimFileService.shared
                             .getMainPageURL(zimFileID: zimFile.fileID) else { return }
-                        browser.load(url: url)
+                        browser?.load(url: url)
                     } label: {
                         ZimFileCell(zimFile, prominent: .name)
                     } loading: {

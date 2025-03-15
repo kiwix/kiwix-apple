@@ -163,7 +163,7 @@ private struct CompactView: View {
             } else {
                 NoCatalogLaunchViewModel(browser: browser)
             }
-            Content(tabID: tabID, showLibrary: {
+            Content(browser: browser, tabID: tabID, showLibrary: {
                 if presentedSheet == nil {
                     presentedSheet = .library(downloads: false)
                 } else {
@@ -175,13 +175,13 @@ private struct CompactView: View {
                 .toolbar {
                     ToolbarItemGroup(placement: .bottomBar) {
                         Spacer()
-                        NavigationButtons()
+                        NavigationButtons(currentTabId: tabID)
                         Spacer()
-                        OutlineButton()
+                        OutlineButton(browser: browser)
                         Spacer()
-                        BookmarkButton()
+                        BookmarkButton(browser: browser)
                         Spacer()
-                        ExportButton()
+                        ExportButton(browser: browser)
                         Spacer()
                         TabsManagerButton()
                         Spacer()
@@ -239,7 +239,7 @@ private struct CompactView: View {
 private struct Content<LaunchModel>: View where LaunchModel: LaunchProtocol {
     @Environment(\.scenePhase) private var scenePhase
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
-    @EnvironmentObject private var browser: BrowserViewModel
+    @ObservedObject var browser: BrowserViewModel
     @EnvironmentObject private var library: LibraryViewModel
     @EnvironmentObject private var navigation: NavigationViewModel
     @FetchRequest(
@@ -263,7 +263,7 @@ private struct Content<LaunchModel>: View where LaunchModel: LaunchProtocol {
             case .loadingData:
                 LoadingDataView()
             case .webPage(let isLoading):
-                WebView()
+                WebView(browser: browser)
                     .ignoresSafeArea()
                     .overlay {
                         if isLoading {
@@ -275,7 +275,7 @@ private struct Content<LaunchModel>: View where LaunchModel: LaunchProtocol {
                 case .fetching:
                     FetchingCatalogView()
                 case .list:
-                    LocalLibraryList()
+                    LocalLibraryList(browser: browser)
                 case .welcome(let welcomeViewState):
                     WelcomeCatalog(viewState: welcomeViewState)
                 }
@@ -285,8 +285,8 @@ private struct Content<LaunchModel>: View where LaunchModel: LaunchProtocol {
         .focusedSceneValue(\.canGoBack, browser.canGoBack)
         .focusedSceneValue(\.canGoForward, browser.canGoForward)
         .modifier(ExternalLinkHandler(externalURL: $browser.externalURL))
-        .onAppear {
-            browser.updateLastOpened()
+        .onAppear { [weak browser] in
+            browser?.updateLastOpened()
         }
         .onDisappear {
             // since the browser is comming from @Environment,
@@ -303,14 +303,14 @@ private struct Content<LaunchModel>: View where LaunchModel: LaunchProtocol {
             ToolbarItemGroup(placement: .primaryAction) {
                 Button(LocalString.article_shortcut_random_button_title_ios,
                        systemImage: "die.face.5",
-                       action: { browser.loadRandomArticle() })
+                       action: { [weak browser] in browser?.loadRandomArticle() })
                 .disabled(zimFiles.isEmpty)
-                ContentSearchButton()
+                ContentSearchButton(browser: browser)
             }
         }
-        .onChange(of: scenePhase) { newValue in
+        .onChange(of: scenePhase) { [weak browser] newValue in
             if case .active = newValue {
-                browser.refreshVideoState()
+                browser?.refreshVideoState()
             }
         }
         .onChange(of: library.state) { state in

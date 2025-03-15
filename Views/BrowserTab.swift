@@ -15,13 +15,19 @@
 
 import SwiftUI
 import Defaults
+import WebKit
+import CoreData
 
 /// This is macOS and iPad only specific, not used on iPhone
 struct BrowserTab: View {
     @Environment(\.scenePhase) private var scenePhase
-    @EnvironmentObject private var browser: BrowserViewModel
     @EnvironmentObject private var library: LibraryViewModel
     @StateObject private var search = SearchViewModel.shared
+    @ObservedObject private var browser: BrowserViewModel
+    
+    init(currentTabID: NSManagedObjectID) {
+        browser = BrowserViewModel.getCached(tabID: currentTabID)
+    }
 
     var body: some View {
         let model = if FeatureFlags.hasLibrary {
@@ -29,7 +35,7 @@ struct BrowserTab: View {
         } else {
             NoCatalogLaunchViewModel(browser: browser)
         }
-        Content(model: model).toolbar {
+        Content(browser: browser, model: model).toolbar {
 #if os(macOS)
             ToolbarItemGroup(placement: .navigation) { NavigationButtons() }
 #elseif os(iOS)
@@ -41,54 +47,54 @@ struct BrowserTab: View {
                         Label(LocalString.browser_tab_toolbar_show_sidebar_label, systemImage: "sidebar.left")
                     }
                 }
-                NavigationButtons()
+                NavigationButtons(currentTabId: browser.tabID)
             }
 #endif
             ToolbarItemGroup(placement: .primaryAction) {
-                OutlineButton()
-                ExportButton()
+                OutlineButton(browser: browser)
+                ExportButton(browser: browser)
 #if os(macOS)
                 PrintButton()
 #endif
-                BookmarkButton()
+                BookmarkButton(browser: browser)
 #if os(iOS)
-                ContentSearchButton()
+                ContentSearchButton(browser: browser)
 #endif
-                ArticleShortcutButtons(displayMode: .mainAndRandomArticle)
+                ArticleShortcutButtons(browser: browser, displayMode: .mainAndRandomArticle)
             }
         }
         .environmentObject(search)
-        .focusedSceneValue(\.browserViewModel, browser)
         .focusedSceneValue(\.canGoBack, browser.canGoBack)
         .focusedSceneValue(\.canGoForward, browser.canGoForward)
         .modifier(ExternalLinkHandler(externalURL: $browser.externalURL))
         .searchable(text: $search.searchText, placement: .toolbar, prompt: LocalString.common_search)
-        .onChange(of: scenePhase) { newValue in
+        .onChange(of: scenePhase) { [weak browser] newValue in
             if case .active = newValue {
-                browser.refreshVideoState()
+                browser?.refreshVideoState()
             }
         }
-        .modify { view in
+        .modify { [weak browser] view in
 #if os(macOS)
+            guard let browser else { return }
             view.navigationTitle(browser.articleTitle.isEmpty ? Brand.appName : browser.articleTitle)
                 .navigationSubtitle(browser.zimFileName)
 #elseif os(iOS)
             view
 #endif
         }
-        .onAppear {
-            browser.updateLastOpened()
+        .onAppear { [weak browser] in
+            browser?.updateLastOpened()
         }
-        .onDisappear {
-            browser.pauseVideoWhenNotInPIP()
-            browser.persistState()
+        .onDisappear { [weak browser] in
+            browser?.pauseVideoWhenNotInPIP()
+            browser?.persistState()
         }
     }
 
     private struct Content<LaunchModel>: View where LaunchModel: LaunchProtocol {
         @Environment(\.isSearching) private var isSearching
         @Environment(\.horizontalSizeClass) private var horizontalSizeClass
-        @EnvironmentObject private var browser: BrowserViewModel
+        @ObservedObject var browser: BrowserViewModel
         @EnvironmentObject private var library: LibraryViewModel
         @EnvironmentObject private var navigation: NavigationViewModel
         @FetchRequest(
@@ -118,7 +124,7 @@ struct BrowserTab: View {
                         case .loadingData:
                             LoadingDataView()
                         case .webPage(let isLoading):
-                            WebView()
+                            WebView(browser: browser)
                                 .ignoresSafeArea()
                                 .overlay {
                                     if isLoading {
@@ -126,10 +132,10 @@ struct BrowserTab: View {
                                     }
                                 }
 #if os(macOS)
-                                .overlay(alignment: .bottomTrailing) {
+                                .overlay(alignment: .bottomTrailing) { [weak browser] in
                                     ContentSearchBar(
                                         model: ContentSearchViewModel(
-                                            findInWebPage: browser.webView.find(_:configuration:)
+                                            findInWebPage: browser?.webView2?.find(_:configuration:)
                                         )
                                     )
                                 }
@@ -137,7 +143,7 @@ struct BrowserTab: View {
                         case .catalog(.fetching):
                             FetchingCatalogView()
                         case .catalog(.list):
-                            LocalLibraryList()
+                            LocalLibraryList(browser: browser)
                         case .catalog(.welcome(let welcomeViewState)):
                             WelcomeCatalog(viewState: welcomeViewState)
                         }

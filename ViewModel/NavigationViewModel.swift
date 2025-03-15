@@ -122,6 +122,9 @@ final class NavigationViewModel: ObservableObject {
             // delete tab
             context.delete(tab)
             try? context.save()
+            
+            // destroy the BrowserViewModel
+            BrowserViewModel.destroyTabById(id: tabID)
 
             // update selection if needed
             if let newlySelectedTab {
@@ -139,7 +142,11 @@ final class NavigationViewModel: ObservableObject {
         Database.shared.performBackgroundTask { context in
             // delete all existing tabs
             let tabs = try? context.fetch(Tab.fetchRequest())
-            tabs?.forEach { context.delete($0) }
+            tabs?.forEach {
+                // destroy the BrowserViewModel
+                BrowserViewModel.destroyTabById(id: $0.objectID)
+                context.delete($0)
+            }
 
             // create new tab
             let newTab = Self.makeTab(context: context)
