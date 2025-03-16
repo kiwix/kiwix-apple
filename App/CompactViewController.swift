@@ -175,7 +175,13 @@ private struct CompactView: View {
                 .toolbar {
                     ToolbarItemGroup(placement: .bottomBar) {
                         Spacer()
-                        NavigationButtons()
+                        NavigationButtons(
+                            goBack: { [weak browser] in
+                                browser?.webView.goBack()
+                            },
+                            goForward: { [weak browser] in
+                                browser?.webView.goForward()
+                            })
                         Spacer()
                         OutlineButton()
                         Spacer()
