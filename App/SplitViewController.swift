@@ -101,7 +101,26 @@ final class SplitViewController: UISplitViewController {
                 }
             }
         }
+        observeGoBackAndForward()
         observeAppBackgrounding()
+    }
+    
+    private func observeGoBackAndForward() {
+        let notificationCenter = NotificationCenter.default
+        notificationCenter.publisher(for: .goBack)
+            .sink { [weak self] _ in
+                guard case .tab(let tabID) = self?.navigationViewModel.currentItem else {
+                    return
+                }
+                BrowserViewModel.getCached(tabID: tabID).webView.goBack()
+            }.store(in: &cancellables)
+        notificationCenter.publisher(for: .goForward)
+            .sink { [weak self] _ in
+                guard case .tab(let tabID) = self?.navigationViewModel.currentItem else {
+                    return
+                }
+                BrowserViewModel.getCached(tabID: tabID).webView.goForward()
+            }.store(in: &cancellables)
     }
     
     private func observeAppBackgrounding() {

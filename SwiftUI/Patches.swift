@@ -76,9 +76,9 @@ extension Notification.Name {
     static let toggleSidebar = Notification.Name("toggleSidebar")
     #if os(macOS)
     static let keepOnlyTabs = Notification.Name("keepOnlyTabs")
+    #endif
     static let goBack = Notification.Name("goBack")
     static let goForward = Notification.Name("goForward")
-    #endif
     #if os(iOS)
     static let openDonations = Notification.Name("openDonations")
     #endif

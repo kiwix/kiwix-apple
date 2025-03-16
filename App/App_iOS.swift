@@ -106,7 +106,11 @@ struct Kiwix: App {
         }
         .commands {
             CommandGroup(replacing: .undoRedo) {
-                NavigationCommands()
+                NavigationCommands(goBack: {
+                    NotificationCenter.default.post(name: .goBack, object: nil)
+                }, goForward: {
+                    NotificationCenter.default.post(name: .goForward, object: nil)
+                })
             }
             CommandGroup(replacing: .textFormatting) {
                 PageZoomCommands()
