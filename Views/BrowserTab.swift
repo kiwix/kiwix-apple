@@ -31,7 +31,15 @@ struct BrowserTab: View {
         }
         Content(model: model).toolbar {
 #if os(macOS)
-            ToolbarItemGroup(placement: .navigation) { NavigationButtons() }
+            ToolbarItemGroup(placement: .navigation) {
+                NavigationButtons(
+                    goBack: { [weak browser] in
+                        browser?.webView.goBack()
+                    },
+                    goForward: { [weak browser] in
+                        browser?.webView.goForward()
+                    })
+            }
 #elseif os(iOS)
             ToolbarItemGroup(placement: .navigationBarLeading) {
                 if #unavailable(iOS 16) {
@@ -41,7 +49,13 @@ struct BrowserTab: View {
                         Label(LocalString.browser_tab_toolbar_show_sidebar_label, systemImage: "sidebar.left")
                     }
                 }
-                NavigationButtons()
+                NavigationButtons(
+                    goBack: { [weak browser] in
+                        browser?.webView.goBack()
+                    },
+                    goForward: { [weak browser] in
+                        browser?.webView.goForward()
+                    })
             }
 #endif
             ToolbarItemGroup(placement: .primaryAction) {
