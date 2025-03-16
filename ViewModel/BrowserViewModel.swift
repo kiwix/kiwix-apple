@@ -49,6 +49,15 @@ final class BrowserViewModel: NSObject, ObservableObject,
             cache?.removeOlderThan(Date.now.advanced(by: -360)) // 6 minutes
         }
     }
+    
+    nonisolated static func destroyTabById(id: NSManagedObjectID) {
+        Task { @MainActor in
+            if let browserViewModel = cache?.findBy(key: id) {
+                await browserViewModel.destroy()
+                cache?.removeValue(forKey: id)
+            }
+        }
+    }
 
     nonisolated static func keepOnlyTabsByIds(_ ids: Set<NSManagedObjectID>) {
         Task { @MainActor in
@@ -176,6 +185,7 @@ final class BrowserViewModel: NSObject, ObservableObject,
         canGoForwardObserver?.invalidate()
         titleURLObserver?.cancel()
         isLoadingObserver?.invalidate()
+        webView.configuration.userContentController.removeAllScriptMessageHandlers()
         webView.navigationDelegate = nil
         webView.uiDelegate = nil
         #if os(iOS)
