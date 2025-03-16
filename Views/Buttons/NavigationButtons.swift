@@ -18,6 +18,8 @@ import SwiftUI
 struct NavigationButtons: View {
     @Environment(\.dismissSearch) private var dismissSearch
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
+    @FocusedValue(\.canGoBack) private var canGoBack: Bool?
+    @FocusedValue(\.canGoForward) private var canGoForward: Bool?
     @EnvironmentObject private var browser: BrowserViewModel
 
     var body: some View {
@@ -27,20 +29,20 @@ struct NavigationButtons: View {
     }
 
     var goBackButton: some View {
-        Button { [weak browser] in
-            browser?.webView.goBack()
+        Button {
+            browser.webView.goBack()
             dismissSearch()
         } label: {
             Label(LocalString.common_button_go_back, systemImage: "chevron.left")
-        }.disabled(!browser.canGoBack)
+        }.disabled(canGoBack != true)
     }
 
     var goForwardButton: some View {
-        Button { [weak browser] in
-            browser?.webView.goForward()
+        Button {
+            browser.webView.goForward()
             dismissSearch()
         } label: {
             Label(LocalString.common_button_go_forward, systemImage: "chevron.right")
-        }.disabled(!browser.canGoForward)
+        }.disabled(canGoForward != true)
     }
 }

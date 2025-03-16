@@ -65,7 +65,11 @@ struct Kiwix: App {
                 Divider()
             }
             CommandGroup(after: .toolbar) {
-                NavigationCommands()
+                NavigationCommands(goBack: {
+                    NotificationCenter.default.post(name: .goBack, object: nil)
+                }, goForward: {
+                    NotificationCenter.default.post(name: .goForward, object: nil)
+                })
                 Divider()
                 PageZoomCommands()
                 Divider()
@@ -176,6 +180,8 @@ struct RootView: View {
     private let openURL = NotificationCenter.default.publisher(for: .openURL)
     private let appTerminates = NotificationCenter.default.publisher(for: NSApplication.willTerminateNotification)
     private let tabCloses = NotificationCenter.default.publisher(for: NSWindow.willCloseNotification)
+    private let goBackPublisher = NotificationCenter.default.publisher(for: .goBack)
+    private let goForwardPublisher = NotificationCenter.default.publisher(for: .goForward)
     /// Close other tabs then the ones received
     private let keepOnlyTabs = NotificationCenter.default.publisher(for: .keepOnlyTabs)
 
@@ -304,6 +310,16 @@ struct RootView: View {
         .onReceive(appTerminates) { _ in
             // CMD+Q -> Quit Kiwix, this also closes the last window
             navigation.isTerminating = true
+        }.onReceive(goForwardPublisher) { _ in
+            guard case .tab(let tabID) = navigation.currentItem else {
+                return
+            }
+            BrowserViewModel.getCached(tabID: tabID).webView.goForward()
+        }.onReceive(goBackPublisher) { _ in
+            guard case .tab(let tabID) = navigation.currentItem else {
+                return
+            }
+            BrowserViewModel.getCached(tabID: tabID).webView.goBack()
         }.task {
             switch AppType.current {
             case .kiwix:
