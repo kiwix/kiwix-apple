@@ -185,7 +185,9 @@ final class BrowserViewModel: NSObject, ObservableObject,
         canGoForwardObserver?.invalidate()
         titleURLObserver?.cancel()
         isLoadingObserver?.invalidate()
-        webView.configuration.userContentController.removeAllScriptMessageHandlers()
+        let contentController = webView.configuration.userContentController
+        contentController.removeScriptMessageHandler(forName: "headings")
+        contentController.removeAllUserScripts()
         webView.navigationDelegate = nil
         webView.uiDelegate = nil
         #if os(iOS)

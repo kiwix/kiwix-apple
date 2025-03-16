@@ -59,13 +59,14 @@ struct BrowserTab: View {
         }
         .environmentObject(search)
         .focusedSceneValue(\.browserViewModel, browser)
+        .focusedSceneValue(\.isBrowserURLSet, browser.url != nil)
         .focusedSceneValue(\.canGoBack, browser.canGoBack)
         .focusedSceneValue(\.canGoForward, browser.canGoForward)
         .modifier(ExternalLinkHandler(externalURL: $browser.externalURL))
         .searchable(text: $search.searchText, placement: .toolbar, prompt: LocalString.common_search)
-        .onChange(of: scenePhase) { newValue in
+        .onChange(of: scenePhase) { [weak browser] newValue in
             if case .active = newValue {
-                browser.refreshVideoState()
+                browser?.refreshVideoState()
             }
         }
         .modify { view in
