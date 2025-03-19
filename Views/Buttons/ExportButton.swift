@@ -16,15 +16,20 @@
 import SwiftUI
 
 struct ExportButton: View {
-
-    @EnvironmentObject private var browser: BrowserViewModel
+    
+    #if os(macOS)
+    let relativeToView: NSView
+    #endif
+    let webViewURL: URL?
+    let pageDataWithExtension: () async -> (Data, String?)?
+    let isButtonDisabled: Bool
 
     /// - Returns: Returns the browser data, fileName and extension
     private func dataNameAndExtension() async -> FileExportData? {
-        guard let fileName = browser.webView.url?.lastPathComponent else {
+        guard let fileName = webViewURL?.lastPathComponent else {
             return nil
         }
-        guard let (pageData, fileExtension) = await browser.pageDataWithExtension() else {
+        guard let (pageData, fileExtension) = await pageDataWithExtension() else {
             return nil
         }
         return FileExportData(data: pageData, fileName: fileName, fileExtension: fileExtension)
@@ -43,7 +48,7 @@ struct ExportButton: View {
                 NotificationCenter.exportFileData(exportData)
                 #else
                 guard let url = await tempFileURL() else { return }
-                NSSharingServicePicker(items: [url]).show(relativeTo: .null, of: browser.webView, preferredEdge: .minY)
+                NSSharingServicePicker(items: [url]).show(relativeTo: .null, of: relativeToView, preferredEdge: .minY)
                 #endif
             }
         } label: {
@@ -52,6 +57,6 @@ struct ExportButton: View {
             }  icon: {
                 Image(systemName: "square.and.arrow.up")
             }
-        }.disabled(browser.zimFileName.isEmpty)
+        }.disabled(isButtonDisabled)
     }
 }
