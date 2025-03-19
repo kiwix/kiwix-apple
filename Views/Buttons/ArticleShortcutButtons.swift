@@ -17,13 +17,14 @@ import SwiftUI
 
 struct ArticleShortcutButtons: View {
     @Environment(\.dismissSearch) private var dismissSearch
-    @EnvironmentObject private var browser: BrowserViewModel
     @FetchRequest(
         sortDescriptors: [NSSortDescriptor(keyPath: \ZimFile.size, ascending: false)],
         predicate: ZimFile.openedPredicate
     ) private var zimFiles: FetchedResults<ZimFile>
 
     let displayMode: DisplayMode
+    let loadMainArticle: @MainActor (UUID?) -> Void
+    let loadRandomArticle: @MainActor (UUID?) -> Void
 
     enum DisplayMode {
         case mainArticle, randomArticle, mainAndRandomArticle
@@ -44,7 +45,7 @@ struct ArticleShortcutButtons: View {
     private var mainArticle: some View {
         #if os(macOS)
         Button {
-            browser.loadMainArticle()
+            loadMainArticle(nil)
             dismissSearch()
         } label: {
             Label(LocalString.article_shortcut_main_button_title, systemImage: "house")
@@ -55,14 +56,14 @@ struct ArticleShortcutButtons: View {
         Menu {
             ForEach(zimFiles) { zimFile in
                 Button(zimFile.name) {
-                    browser.loadMainArticle(zimFileID: zimFile.fileID)
+                    loadMainArticle(zimFile.fileID)
                     dismissSearch()
                 }
             }
         } label: {
             Label(LocalString.article_shortcut_main_button_title, systemImage: "house")
         } primaryAction: {
-            browser.loadMainArticle()
+            loadMainArticle(nil)
             dismissSearch()
         }
         .disabled(zimFiles.isEmpty)
@@ -73,7 +74,7 @@ struct ArticleShortcutButtons: View {
     var randomArticle: some View {
         #if os(macOS)
         Button {
-            browser.loadRandomArticle()
+            loadRandomArticle(nil)
             dismissSearch()
         } label: {
             Label(LocalString.article_shortcut_random_button_title_mac, systemImage: "die.face.5")
@@ -86,14 +87,14 @@ struct ArticleShortcutButtons: View {
         Menu {
             ForEach(zimFiles) { zimFile in
                 Button(zimFile.name) {
-                    browser.loadRandomArticle(zimFileID: zimFile.fileID)
+                    loadRandomArticle(zimFile.fileID)
                     dismissSearch()
                 }
             }
         } label: {
             Label(LocalString.article_shortcut_random_button_title_ios, systemImage: "die.face.5")
         } primaryAction: {
-            browser.loadRandomArticle()
+            loadRandomArticle(nil)
             dismissSearch()
         }
         .disabled(zimFiles.isEmpty)

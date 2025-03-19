@@ -17,24 +17,26 @@ import SwiftUI
 
 struct BookmarkButton: View {
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
-    @EnvironmentObject private var browser: BrowserViewModel
     @State private var isShowingPopOver = false
+    let articleBookmarked: Bool
+    let createBookmark: () -> Void
+    let deleteBookmark: () -> Void
 
     var body: some View {
         #if os(macOS)
         Button {
-            if browser.articleBookmarked {
-                browser.deleteBookmark()
+            if articleBookmarked {
+                deleteBookmark()
             } else {
-                browser.createBookmark()
+                createBookmark()
             }
         } label: {
             Label {
-                Text(browser.articleBookmarked ?
+                Text(articleBookmarked ?
                      LocalString.common_dialog_button_remove_bookmark : LocalString.common_dialog_button_add_bookmark)
             } icon: {
-                Image(systemName: browser.articleBookmarked ? "star.fill" : "star")
-                    .renderingMode(browser.articleBookmarked ? .original : .template)
+                Image(systemName: articleBookmarked ? "star.fill" : "star")
+                    .renderingMode(articleBookmarked ? .original : .template)
             }
         }
         #elseif os(iOS)

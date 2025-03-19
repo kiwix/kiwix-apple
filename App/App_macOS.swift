@@ -215,8 +215,7 @@ struct RootView: View {
             case .loading:
                 LoadingDataView()
             case .tab(let tabID):
-                let browser = BrowserViewModel.getCached(tabID: tabID)
-                BrowserTab().environmentObject(browser)
+                BrowserTab(browser: BrowserViewModel.getCached(tabID: tabID))
             case .bookmarks:
                 Bookmarks()
             case .opened:

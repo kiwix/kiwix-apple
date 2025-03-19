@@ -18,10 +18,14 @@ import Defaults
 
 /// This is macOS and iPad only specific, not used on iPhone
 struct BrowserTab: View {
+    @ObservedObject var browser: BrowserViewModel
     @Environment(\.scenePhase) private var scenePhase
-    @EnvironmentObject private var browser: BrowserViewModel
     @EnvironmentObject private var library: LibraryViewModel
     @StateObject private var search = SearchViewModel.shared
+    
+    init(browser: BrowserViewModel) {
+        self.browser = browser
+    }
 
     var body: some View {
         let model = if FeatureFlags.hasLibrary {
@@ -60,15 +64,31 @@ struct BrowserTab: View {
 #endif
             ToolbarItemGroup(placement: .primaryAction) {
                 OutlineButton()
+#if os(iOS)
                 ExportButton()
-#if os(macOS)
+#else
+                ExportButton(
+                    relativeToView: browser.webView,
+                    webViewURL: browser.webView.url,
+                    pageDataWithExtension: browser.pageDataWithExtension,
+                    isButtonDisabled: browser.zimFileName.isEmpty
+                )
                 PrintButton()
 #endif
-                BookmarkButton()
+                BookmarkButton(articleBookmarked: browser.articleBookmarked,
+                               createBookmark: { [weak browser] in browser?.createBookmark() },
+                               deleteBookmark: { [weak browser] in browser?.deleteBookmark() })
 #if os(iOS)
                 ContentSearchButton()
 #endif
-                ArticleShortcutButtons(displayMode: .mainAndRandomArticle)
+                ArticleShortcutButtons(
+                    displayMode: .mainAndRandomArticle,
+                    loadMainArticle: { [weak browser] zimFileID in
+                        browser?.loadMainArticle(zimFileID: zimFileID)
+                    },
+                    loadRandomArticle: { [weak browser] zimFileID in
+                        browser?.loadRandomArticle(zimFileID: zimFileID)
+                    })
             }
         }
         .environmentObject(search)

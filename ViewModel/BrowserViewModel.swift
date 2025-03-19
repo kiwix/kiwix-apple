@@ -75,7 +75,7 @@ final class BrowserViewModel: NSObject, ObservableObject,
     @Published private(set) var canGoBack = false
     @Published private(set) var canGoForward = false
     @Published private(set) var articleTitle: String = ""
-    @Published private(set) var zimFileName: String = ""
+    @Published var zimFileName: String = ""
     @Published private(set) var articleBookmarked = false
     @Published private(set) var outlineItems = [OutlineItem]()
     @Published private(set) var outlineItemTree = [OutlineItem]()
