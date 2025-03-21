@@ -163,7 +163,7 @@ private struct CompactView: View {
             } else {
                 NoCatalogLaunchViewModel(browser: browser)
             }
-            Content(tabID: tabID, showLibrary: {
+            Content(browser: browser, tabID: tabID, showLibrary: {
                 if presentedSheet == nil {
                     presentedSheet = .library(downloads: false)
                 } else {
@@ -185,9 +185,16 @@ private struct CompactView: View {
                         Spacer()
                         OutlineButton(browser: browser)
                         Spacer()
-                        BookmarkButton()
+                        BookmarkButton(articleBookmarked: browser.articleBookmarked,
+                                       isButtonDisabled: browser.zimFileName.isEmpty,
+                                       createBookmark: { [weak browser] in browser?.createBookmark() },
+                                       deleteBookmark: { [weak browser] in browser?.deleteBookmark() })
                         Spacer()
-                        ExportButton()
+                        ExportButton(
+                            webViewURL: browser.webView.url,
+                            pageDataWithExtension: browser.pageDataWithExtension,
+                            isButtonDisabled: browser.zimFileName.isEmpty
+                        )
                         Spacer()
                         TabsManagerButton()
                         Spacer()
@@ -243,9 +250,13 @@ private struct CompactView: View {
 }
 
 private struct Content<LaunchModel>: View where LaunchModel: LaunchProtocol {
+    @ObservedObject var browser: BrowserViewModel
+    let tabID: NSManagedObjectID?
+    let showLibrary: () -> Void
+    @ObservedObject var model: LaunchModel
+    
     @Environment(\.scenePhase) private var scenePhase
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
-    @EnvironmentObject private var browser: BrowserViewModel
     @EnvironmentObject private var library: LibraryViewModel
     @EnvironmentObject private var navigation: NavigationViewModel
     @FetchRequest(
@@ -256,9 +267,6 @@ private struct Content<LaunchModel>: View where LaunchModel: LaunchProtocol {
     /// this is still hacky a bit, as the change from here re-validates the view
     /// which triggers the model to be revalidated
     @Default(.hasSeenCategories) private var hasSeenCategories
-    let tabID: NSManagedObjectID?
-    let showLibrary: () -> Void
-    @ObservedObject var model: LaunchModel
 
     var body: some View {
         Group {
@@ -269,7 +277,7 @@ private struct Content<LaunchModel>: View where LaunchModel: LaunchProtocol {
             case .loadingData:
                 LoadingDataView()
             case .webPage(let isLoading):
-                WebView()
+                WebView(browser: browser)
                     .ignoresSafeArea()
                     .overlay {
                         if isLoading {
@@ -281,13 +289,13 @@ private struct Content<LaunchModel>: View where LaunchModel: LaunchProtocol {
                 case .fetching:
                     FetchingCatalogView()
                 case .list:
-                    LocalLibraryList()
+                    LocalLibraryList(browser: browser)
                 case .welcome(let welcomeViewState):
                     WelcomeCatalog(viewState: welcomeViewState)
                 }
             }
         }
-        .focusedSceneValue(\.browserViewModel, browser)
+//        .focusedSceneValue(\.browserViewModel, browser)
         .focusedSceneValue(\.canGoBack, browser.canGoBack)
         .focusedSceneValue(\.canGoForward, browser.canGoForward)
         .modifier(ExternalLinkHandler(externalURL: $browser.externalURL))

@@ -21,7 +21,7 @@ import Defaults
 
 #if os(macOS)
 struct WebView: NSViewRepresentable {
-    @EnvironmentObject private var browser: BrowserViewModel
+    @ObservedObject var browser: BrowserViewModel
 
     func makeNSView(context: Context) -> NSView {
         let nsView = NSView()
@@ -56,7 +56,7 @@ struct WebView: NSViewRepresentable {
 }
 #elseif os(iOS)
 struct WebView: UIViewControllerRepresentable {
-    @EnvironmentObject private var browser: BrowserViewModel
+    @ObservedObject var browser: BrowserViewModel
 
     func makeUIViewController(context: Context) -> WebViewController {
         WebViewController(webView: browser.webView)

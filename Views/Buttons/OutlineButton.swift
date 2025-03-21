@@ -16,23 +16,33 @@
 import SwiftUI
 
 struct OutlineButton: View {
+    private let items: [OutlineItem]
+    private let itemTree: [OutlineItem]
+    private let scrollTo: (_ itemID: String) -> Void
+    private let articleTitle: String
     @Environment(\.dismissSearch) private var dismissSearch
-    let browser: BrowserViewModel
     @State private var isShowingOutline = false
-
+    
+    init(browser: BrowserViewModel) {
+        items = browser.outlineItems
+        itemTree = browser.outlineItemTree
+        articleTitle = browser.articleTitle
+        scrollTo = browser.scrollTo(outlineItemID:)
+    }
+    
     var body: some View {
         #if os(macOS)
         Menu {
-            ForEach(browser.outlineItems) { item in
-                Button(String(repeating: "    ", count: item.level) + item.text) { [weak browser] in
-                    browser?.scrollTo(outlineItemID: item.id)
+            ForEach(items, id: \.id) { item in
+                Button(String(repeating: "    ", count: item.level) + item.text) {
+                    scrollTo(item.id)
                     dismissSearch()
                 }
             }
         } label: {
             Label(LocalString.outline_button_outline_title, systemImage: "list.bullet")
         }
-        .disabled(browser.outlineItems.isEmpty)
+        .disabled(items.isEmpty)
         .help(LocalString.outline_button_outline_help)
         #elseif os(iOS)
         Button {
@@ -40,24 +50,24 @@ struct OutlineButton: View {
         } label: {
             Image(systemName: "list.bullet")
         }
-        .disabled(browser.outlineItems.isEmpty)
+        .disabled(items.isEmpty)
         .help(LocalString.outline_button_outline_help)
         .popover(isPresented: $isShowingOutline) {
             NavigationStack {
                 Group {
-                    if browser.outlineItemTree.isEmpty {
+                    if itemTree.isEmpty {
                         Message(text: LocalString.outline_button_outline_empty_message)
                     } else {
-                        List(browser.outlineItemTree) { item in
-                            OutlineNode(item: item) { [weak browser] item in
-                                browser?.scrollTo(outlineItemID: item.id)
+                        List(itemTree, id: \.id) { item in
+                            OutlineNode(item: item) { item in
+                                scrollTo(item.id)
                                 isShowingOutline = false
                                 dismissSearch()
                             }
                         }.listStyle(.plain)
                     }
                 }
-                .navigationTitle(browser.articleTitle)
+                .navigationTitle(articleTitle)
                 .navigationBarTitleDisplayMode(.inline)
                 .toolbar {
                     ToolbarItem(placement: .cancellationAction) {
@@ -77,7 +87,6 @@ struct OutlineButton: View {
 
     struct OutlineNode: View {
         @ObservedObject var item: OutlineItem
-
         let action: ((OutlineItem) -> Void)?
 
         var body: some View {

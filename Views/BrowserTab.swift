@@ -33,7 +33,7 @@ struct BrowserTab: View {
         } else {
             NoCatalogLaunchViewModel(browser: browser)
         }
-        Content(model: model).toolbar {
+        Content(browser: browser, model: model).toolbar {
 #if os(macOS)
             ToolbarItemGroup(placement: .navigation) {
                 NavigationButtons(
@@ -65,7 +65,11 @@ struct BrowserTab: View {
             ToolbarItemGroup(placement: .primaryAction) {
                 OutlineButton(browser: browser)
 #if os(iOS)
-                ExportButton()
+                ExportButton(
+                    webViewURL: browser.webView.url,
+                    pageDataWithExtension: browser.pageDataWithExtension,
+                    isButtonDisabled: browser.zimFileName.isEmpty
+                )
 #else
                 ExportButton(
                     relativeToView: browser.webView,
@@ -76,6 +80,7 @@ struct BrowserTab: View {
                 PrintButton(browser: browser)
 #endif
                 BookmarkButton(articleBookmarked: browser.articleBookmarked,
+                               isButtonDisabled: browser.zimFileName.isEmpty,
                                createBookmark: { [weak browser] in browser?.createBookmark() },
                                deleteBookmark: { [weak browser] in browser?.deleteBookmark() })
 #if os(iOS)
@@ -92,7 +97,7 @@ struct BrowserTab: View {
             }
         }
         .environmentObject(search)
-        .focusedSceneValue(\.browserViewModel, browser)
+//        .focusedSceneValue(\.browserViewModel, browser)
         .focusedSceneValue(\.isBrowserURLSet, browser.url != nil)
         .focusedSceneValue(\.canGoBack, browser.canGoBack)
         .focusedSceneValue(\.canGoForward, browser.canGoForward)
@@ -123,7 +128,7 @@ struct BrowserTab: View {
     private struct Content<LaunchModel>: View where LaunchModel: LaunchProtocol {
         @Environment(\.isSearching) private var isSearching
         @Environment(\.horizontalSizeClass) private var horizontalSizeClass
-        @EnvironmentObject private var browser: BrowserViewModel
+        @ObservedObject var browser: BrowserViewModel
         @EnvironmentObject private var library: LibraryViewModel
         @EnvironmentObject private var navigation: NavigationViewModel
         @FetchRequest(
@@ -153,7 +158,7 @@ struct BrowserTab: View {
                         case .loadingData:
                             LoadingDataView()
                         case .webPage(let isLoading):
-                            WebView()
+                            WebView(browser: browser)
                                 .ignoresSafeArea()
                                 .overlay {
                                     if isLoading {
@@ -172,7 +177,7 @@ struct BrowserTab: View {
                         case .catalog(.fetching):
                             FetchingCatalogView()
                         case .catalog(.list):
-                            LocalLibraryList()
+                            LocalLibraryList(browser: browser)
                         case .catalog(.welcome(let welcomeViewState)):
                             WelcomeCatalog(viewState: welcomeViewState)
                         }
