@@ -63,7 +63,7 @@ struct BrowserTab: View {
             }
 #endif
             ToolbarItemGroup(placement: .primaryAction) {
-                OutlineButton()
+                OutlineButton(browser: browser)
 #if os(iOS)
                 ExportButton()
 #else
@@ -73,7 +73,7 @@ struct BrowserTab: View {
                     pageDataWithExtension: browser.pageDataWithExtension,
                     isButtonDisabled: browser.zimFileName.isEmpty
                 )
-                PrintButton()
+                PrintButton(browser: browser)
 #endif
                 BookmarkButton(articleBookmarked: browser.articleBookmarked,
                                createBookmark: { [weak browser] in browser?.createBookmark() },

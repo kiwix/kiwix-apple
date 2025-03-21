@@ -17,15 +17,15 @@ import SwiftUI
 
 struct OutlineButton: View {
     @Environment(\.dismissSearch) private var dismissSearch
-    @EnvironmentObject private var browser: BrowserViewModel
+    let browser: BrowserViewModel
     @State private var isShowingOutline = false
 
     var body: some View {
         #if os(macOS)
         Menu {
             ForEach(browser.outlineItems) { item in
-                Button(String(repeating: "    ", count: item.level) + item.text) {
-                    browser.scrollTo(outlineItemID: item.id)
+                Button(String(repeating: "    ", count: item.level) + item.text) { [weak browser] in
+                    browser?.scrollTo(outlineItemID: item.id)
                     dismissSearch()
                 }
             }
@@ -49,8 +49,8 @@ struct OutlineButton: View {
                         Message(text: LocalString.outline_button_outline_empty_message)
                     } else {
                         List(browser.outlineItemTree) { item in
-                            OutlineNode(item: item) { item in
-                                browser.scrollTo(outlineItemID: item.id)
+                            OutlineNode(item: item) { [weak browser] item in
+                                browser?.scrollTo(outlineItemID: item.id)
                                 isShowingOutline = false
                                 dismissSearch()
                             }
