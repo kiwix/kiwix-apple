@@ -183,7 +183,7 @@ private struct CompactView: View {
                                 browser?.webView.goForward()
                             })
                         Spacer()
-                        OutlineButton()
+                        OutlineButton(browser: browser)
                         Spacer()
                         BookmarkButton()
                         Spacer()

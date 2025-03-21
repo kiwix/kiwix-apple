@@ -19,7 +19,7 @@ import PDFKit
 
 struct PrintButton: View {
 
-    @EnvironmentObject private var browser: BrowserViewModel
+    let browser: BrowserViewModel
 
     private func dataAndName() async -> (Data, String)? {
         guard let browserURLName = browser.webView.url?.lastPathComponent else {
