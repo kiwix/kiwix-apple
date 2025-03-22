@@ -23,8 +23,8 @@ struct BrowserTab: View {
     @EnvironmentObject private var library: LibraryViewModel
     @StateObject private var search = SearchViewModel.shared
     
-    init(browser: BrowserViewModel) {
-        self.browser = browser
+    init(tabID: NSManagedObjectID) {
+        self.browser = BrowserViewModel.getCached(tabID: tabID)
     }
 
     var body: some View {
@@ -67,14 +67,14 @@ struct BrowserTab: View {
 #if os(iOS)
                 ExportButton(
                     webViewURL: browser.webView.url,
-                    pageDataWithExtension: browser.pageDataWithExtension,
+                    pageDataWithExtension: { [weak browser] in await browser?.pageDataWithExtension() },
                     isButtonDisabled: browser.zimFileName.isEmpty
                 )
 #else
                 ExportButton(
                     relativeToView: browser.webView,
                     webViewURL: browser.webView.url,
-                    pageDataWithExtension: browser.pageDataWithExtension,
+                    pageDataWithExtension: { [weak browser] in await browser?.pageDataWithExtension() },
                     isButtonDisabled: browser.zimFileName.isEmpty
                 )
                 PrintButton(browser: browser)
@@ -128,7 +128,7 @@ struct BrowserTab: View {
     private struct Content<LaunchModel>: View where LaunchModel: LaunchProtocol {
         @Environment(\.isSearching) private var isSearching
         @Environment(\.horizontalSizeClass) private var horizontalSizeClass
-        @ObservedObject var browser: BrowserViewModel
+        let browser: BrowserViewModel
         @EnvironmentObject private var library: LibraryViewModel
         @EnvironmentObject private var navigation: NavigationViewModel
         @FetchRequest(
