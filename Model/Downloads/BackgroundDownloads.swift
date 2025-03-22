@@ -25,5 +25,4 @@ enum BackgroundDownloads {
     }
 }
 
-
 #endif

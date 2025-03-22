@@ -124,7 +124,10 @@ struct Kiwix: App {
             DownloadService.shared.backgroundCompletionHandler = completionHandler
         }
         
-        func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
+        func application(
+            _ application: UIApplication,
+            didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil
+        ) -> Bool {
             registerBackgroundTask()
             return true
         }
@@ -141,11 +144,11 @@ struct Kiwix: App {
             guard case .kiwix = AppType.current else { return }
             let isRegistered = BGTaskScheduler.shared.register(
                 forTaskWithIdentifier: BackgroundDownloads.identifier,
-                using: .main) { [self] task in
+                using: .main) { [weak self] _ in
                     // update the live activities, if any
                     ActivityService.shared().start()
                     // reschedule
-                    reScheduleBackgroundDownloadTask()
+                    self?.reScheduleBackgroundDownloadTask()
                 }
             if isRegistered {
                 os_log("BackgroundDownloads registered", log: Log.DownloadService, type: .debug)
@@ -159,11 +162,21 @@ struct Kiwix: App {
                     let date = BackgroundDownloads.nextDate()
                     let request = BGAppRefreshTaskRequest(identifier: BackgroundDownloads.identifier)
                     request.earliestBeginDate = date
-                    os_log("BackgroundDownloads task re-scheduled for: %s", log: Log.DownloadService, type: .debug, date.formatted())
+                    os_log(
+                        "BackgroundDownloads task re-scheduled for: %s",
+                        log: Log.DownloadService,
+                        type: .debug,
+                        date.formatted()
+                    )
 
                     try BGTaskScheduler.shared.submit(request)
                 } catch {
-                    os_log("BackgroundDownloads re-schedule failed: %s", log: Log.DownloadService, type: .error, error.localizedDescription)
+                    os_log(
+                        "BackgroundDownloads re-schedule failed: %s",
+                        log: Log.DownloadService,
+                        type: .error,
+                        error.localizedDescription
+                    )
                 }
             }
 
