@@ -22,6 +22,7 @@ import QuartzCore
 @MainActor
 final class ActivityService {
     
+    private static var instance: ActivityService?
     private var cancellables = Set<AnyCancellable>()
     private var activity: Activity<DownloadActivityAttributes>?
     private var lastUpdate = CACurrentMediaTime()
@@ -31,12 +32,30 @@ final class ActivityService {
     private var isStarted: Bool = false
     private var downloadTimes: [UUID: DownloadTime] = [:]
     
-    init(
+    public static func shared(
         publisher: @MainActor @escaping () -> CurrentValueSubject<[UUID: DownloadState], Never> = {
             DownloadService.shared.progress.publisher
         },
         updateFrequency: Double = 2,
         averageDownloadSpeedFromLastSeconds: Double = 30
+    ) -> ActivityService {
+        if let instance = Self.instance {
+            return instance
+        } else {
+            let instance = ActivityService(
+                publisher: publisher,
+                updateFrequency: updateFrequency,
+                averageDownloadSpeedFromLastSeconds: averageDownloadSpeedFromLastSeconds
+            )
+            Self.instance = instance
+            return instance
+        }
+    }
+    
+    private init(
+        publisher: @MainActor @escaping () -> CurrentValueSubject<[UUID: DownloadState], Never>,
+        updateFrequency: Double,
+        averageDownloadSpeedFromLastSeconds: Double
     ) {
         assert(updateFrequency > 0)
         assert(averageDownloadSpeedFromLastSeconds > 0)
