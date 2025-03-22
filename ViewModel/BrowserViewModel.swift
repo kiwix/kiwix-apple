@@ -602,6 +602,7 @@ final class BrowserViewModel: NSObject, ObservableObject,
 #endif
 
 #if os(iOS)
+    // swiftlint:disable:next function_body_length
     func webView(
         _ webView: WKWebView,
         contextMenuConfigurationForElement elementInfo: WKContextMenuElementInfo,

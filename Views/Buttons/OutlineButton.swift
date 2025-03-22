@@ -28,7 +28,7 @@ struct OutlineButton: View {
         itemTree = browser.outlineItemTree
         articleTitle = browser.articleTitle
         scrollTo = { [weak browser] itemID in
-            browser?.scrollTo(outlineItemID:itemID)
+            browser?.scrollTo(outlineItemID: itemID)
         }
     }
     
