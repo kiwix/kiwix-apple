@@ -144,11 +144,11 @@ struct Kiwix: App {
             guard case .kiwix = AppType.current else { return }
             let isRegistered = BGTaskScheduler.shared.register(
                 forTaskWithIdentifier: BackgroundDownloads.identifier,
-                using: .main) { [weak self] _ in
+                using: .main) { [self] _ in
                     // update the live activities, if any
                     ActivityService.shared().start()
                     // reschedule
-                    self?.reScheduleBackgroundDownloadTask()
+                    reScheduleBackgroundDownloadTask()
                 }
             if isRegistered {
                 os_log("BackgroundDownloads registered", log: Log.DownloadService, type: .debug)
