@@ -85,7 +85,7 @@ struct BrowserTab: View {
                                createBookmark: { [weak browser] in browser?.createBookmark() },
                                deleteBookmark: { [weak browser] in browser?.deleteBookmark() })
 #if os(iOS)
-                ContentSearchButton()
+                ContentSearchButton(browser: browser)
 #endif
                 ArticleShortcutButtons(
                     displayMode: .mainAndRandomArticle,

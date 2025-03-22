@@ -317,9 +317,9 @@ private struct Content<LaunchModel>: View where LaunchModel: LaunchProtocol {
             ToolbarItemGroup(placement: .primaryAction) {
                 Button(LocalString.article_shortcut_random_button_title_ios,
                        systemImage: "die.face.5",
-                       action: { browser.loadRandomArticle() })
+                       action: { [weak browser] in browser?.loadRandomArticle() })
                 .disabled(zimFiles.isEmpty)
-                ContentSearchButton()
+                ContentSearchButton(browser: browser)
             }
         }
         .onChange(of: scenePhase) { newValue in
