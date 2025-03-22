@@ -227,7 +227,6 @@ private struct CompactView: View {
                 Spacer()
             }
         }
-        .environmentObject(browser)
         .sheet(item: $presentedSheet) { presentedSheet in
             switch presentedSheet {
             case .library(downloads: false):
