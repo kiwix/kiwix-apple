@@ -42,11 +42,6 @@ extension FocusedValues {
         get { self[IsBrowserURLSet.self] }
         set { self[IsBrowserURLSet.self] = newValue }
     }
-    
-    var browserViewModel: BrowserViewModelKey.Value? {
-        get { self[BrowserViewModelKey.self] }
-        set { self[BrowserViewModelKey.self] = newValue }
-    }
 
     var canGoBack: CanGoBackKey.Value? {
         get { self[CanGoBackKey.self] }

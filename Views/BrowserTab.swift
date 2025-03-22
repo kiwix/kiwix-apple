@@ -98,7 +98,6 @@ struct BrowserTab: View {
             }
         }
         .environmentObject(search)
-//        .focusedSceneValue(\.browserViewModel, browser)
         .focusedSceneValue(\.isBrowserURLSet, browser.url != nil)
         .focusedSceneValue(\.canGoBack, browser.canGoBack)
         .focusedSceneValue(\.canGoForward, browser.canGoForward)

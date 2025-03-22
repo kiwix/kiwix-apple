@@ -40,7 +40,7 @@ final class CompactViewController: UIHostingController<AnyView>, UISearchControl
         searchViewModel = SearchViewModel.shared
         let searchResult = SearchResults().environmentObject(searchViewModel)
         searchController = UISearchController(searchResultsController: UIHostingController(rootView: searchResult))
-        super.init(rootView: AnyView(CompactView()))
+        super.init(rootView: AnyView(CompactViewWrapper()))
         searchController.searchResultsUpdater = self
     }
 
@@ -132,11 +132,24 @@ final class CompactViewController: UIHostingController<AnyView>, UISearchControl
     }
 }
 
+private struct CompactViewWrapper: View {
+    @EnvironmentObject private var navigation: NavigationViewModel
+    
+    var body: some View {
+        if case .loading = navigation.currentItem {
+            LoadingDataView()
+        } else if case let .tab(tabID) = navigation.currentItem {
+            CompactView(tabID: tabID)
+        }
+    }
+}
+
 private struct CompactView: View {
     @EnvironmentObject private var navigation: NavigationViewModel
     @EnvironmentObject private var library: LibraryViewModel
     @State private var presentedSheet: PresentedSheet?
-
+    @ObservedObject private var browser: BrowserViewModel
+    
     private enum PresentedSheet: Identifiable {
         case library(downloads: Bool)
         case settings
@@ -148,103 +161,102 @@ private struct CompactView: View {
             }
         }
     }
-
+    
+    init(tabID: NSManagedObjectID) {
+        self.browser = BrowserViewModel.getCached(tabID: tabID)
+    }
+    
     private func dismiss() {
         presentedSheet = nil
     }
-
+    
     var body: some View {
-        if case .loading = navigation.currentItem {
-            LoadingDataView()
-        } else if case let .tab(tabID) = navigation.currentItem {
-            let browser = BrowserViewModel.getCached(tabID: tabID)
-            let model = if FeatureFlags.hasLibrary {
-                CatalogLaunchViewModel(library: library, browser: browser)
+        let model = if FeatureFlags.hasLibrary {
+            CatalogLaunchViewModel(library: library, browser: browser)
+        } else {
+            NoCatalogLaunchViewModel(browser: browser)
+        }
+        Content(browser: browser, tabID: browser.tabID, showLibrary: {
+            if presentedSheet == nil {
+                presentedSheet = .library(downloads: false)
             } else {
-                NoCatalogLaunchViewModel(browser: browser)
+                // there's a sheet already presented by the user
+                // do nothing
             }
-            Content(browser: browser, tabID: tabID, showLibrary: {
-                if presentedSheet == nil {
-                    presentedSheet = .library(downloads: false)
-                } else {
-                    // there's a sheet already presented by the user
-                    // do nothing
+        }, model: model)
+        .id(browser.tabID)
+        .toolbar {
+            ToolbarItemGroup(placement: .bottomBar) {
+                Spacer()
+                NavigationButtons(
+                    goBack: { [weak browser] in
+                        browser?.webView.goBack()
+                    },
+                    goForward: { [weak browser] in
+                        browser?.webView.goForward()
+                    })
+                Spacer()
+                OutlineButton(browser: browser)
+                Spacer()
+                BookmarkButton(articleBookmarked: browser.articleBookmarked,
+                               isButtonDisabled: browser.zimFileName.isEmpty,
+                               createBookmark: { [weak browser] in browser?.createBookmark() },
+                               deleteBookmark: { [weak browser] in browser?.deleteBookmark() })
+                Spacer()
+                ExportButton(
+                    webViewURL: browser.webView.url,
+                    pageDataWithExtension: browser.pageDataWithExtension,
+                    isButtonDisabled: browser.zimFileName.isEmpty
+                )
+                Spacer()
+                TabsManagerButton()
+                Spacer()
+                if FeatureFlags.hasLibrary {
+                    Button {
+                        presentedSheet = .library(downloads: false)
+                    } label: {
+                        Label(LocalString.common_tab_menu_library, systemImage: "folder")
+                    }
+                    Spacer()
                 }
-            }, model: model)
-                .id(tabID)
-                .toolbar {
-                    ToolbarItemGroup(placement: .bottomBar) {
-                        Spacer()
-                        NavigationButtons(
-                            goBack: { [weak browser] in
-                                browser?.webView.goBack()
-                            },
-                            goForward: { [weak browser] in
-                                browser?.webView.goForward()
-                            })
-                        Spacer()
-                        OutlineButton(browser: browser)
-                        Spacer()
-                        BookmarkButton(articleBookmarked: browser.articleBookmarked,
-                                       isButtonDisabled: browser.zimFileName.isEmpty,
-                                       createBookmark: { [weak browser] in browser?.createBookmark() },
-                                       deleteBookmark: { [weak browser] in browser?.deleteBookmark() })
-                        Spacer()
-                        ExportButton(
-                            webViewURL: browser.webView.url,
-                            pageDataWithExtension: browser.pageDataWithExtension,
-                            isButtonDisabled: browser.zimFileName.isEmpty
-                        )
-                        Spacer()
-                        TabsManagerButton()
-                        Spacer()
-                        if FeatureFlags.hasLibrary {
+                Button {
+                    presentedSheet = .settings
+                } label: {
+                    Label(LocalString.common_tab_menu_settings, systemImage: "gear")
+                }
+                Spacer()
+            }
+        }
+        .environmentObject(browser)
+        .sheet(item: $presentedSheet) { presentedSheet in
+            switch presentedSheet {
+            case .library(downloads: false):
+                Library(dismiss: dismiss)
+            case .library(downloads: true):
+                Library(dismiss: dismiss, tabItem: .downloads)
+            case .settings:
+                NavigationStack {
+                    Settings().toolbar {
+                        ToolbarItem(placement: .navigationBarLeading) {
                             Button {
-                                presentedSheet = .library(downloads: false)
+                                self.presentedSheet = nil
                             } label: {
-                                Label(LocalString.common_tab_menu_library, systemImage: "folder")
-                            }
-                            Spacer()
-                        }
-                        Button {
-                            presentedSheet = .settings
-                        } label: {
-                            Label(LocalString.common_tab_menu_settings, systemImage: "gear")
-                        }
-                        Spacer()
-                    }
-                }
-                .environmentObject(browser)
-                .sheet(item: $presentedSheet) { presentedSheet in
-                    switch presentedSheet {
-                    case .library(downloads: false):
-                        Library(dismiss: dismiss)
-                    case .library(downloads: true):
-                        Library(dismiss: dismiss, tabItem: .downloads)
-                    case .settings:
-                        NavigationStack {
-                            Settings().toolbar {
-                                ToolbarItem(placement: .navigationBarLeading) {
-                                    Button {
-                                        self.presentedSheet = nil
-                                    } label: {
-                                        Text(LocalString.common_button_done).fontWeight(.semibold)
-                                    }
-                                }
+                                Text(LocalString.common_button_done).fontWeight(.semibold)
                             }
                         }
                     }
                 }
-                .onReceive(navigation.showDownloads) { _ in
-                    switch presentedSheet {
-                    case .library:
-                        // switching to the downloads tab
-                        // is done within Library
-                        break
-                    case .settings, nil:
-                        presentedSheet = .library(downloads: true)
-                    }
-                }
+            }
+        }
+        .onReceive(navigation.showDownloads) { _ in
+            switch presentedSheet {
+            case .library:
+                // switching to the downloads tab
+                // is done within Library
+                break
+            case .settings, nil:
+                presentedSheet = .library(downloads: true)
+            }
         }
     }
 }
@@ -295,22 +307,17 @@ private struct Content<LaunchModel>: View where LaunchModel: LaunchProtocol {
                 }
             }
         }
-//        .focusedSceneValue(\.browserViewModel, browser)
+        .focusedSceneValue(\.isBrowserURLSet, browser.url != nil)
         .focusedSceneValue(\.canGoBack, browser.canGoBack)
         .focusedSceneValue(\.canGoForward, browser.canGoForward)
         .modifier(ExternalLinkHandler(externalURL: $browser.externalURL))
-        .onAppear {
-            browser.updateLastOpened()
+        .onAppear { [weak browser] in
+            browser?.updateLastOpened()
         }
-        .onDisappear {
-            // since the browser is comming from @Environment,
-            // by the time we get to .onDisappear,
-            // it will reference not this, but the new Tab we switched to.
-            // Therefore we need to find this browser again by tabID
-            if let tabID {
-                let thisBrowser = BrowserViewModel.getCached(tabID: tabID)
-                thisBrowser.pauseVideoWhenNotInPIP()
-                thisBrowser.persistState()
+        .onDisappear { [weak browser] in
+            if tabID != nil {
+                browser?.pauseVideoWhenNotInPIP()
+                browser?.persistState()
             }
         }
         .toolbar {
