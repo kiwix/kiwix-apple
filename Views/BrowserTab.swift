@@ -15,6 +15,7 @@
 
 import SwiftUI
 import Defaults
+import CoreData
 
 /// This is macOS and iPad only specific, not used on iPhone
 struct BrowserTab: View {
