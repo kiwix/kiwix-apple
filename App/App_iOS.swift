@@ -103,6 +103,13 @@ struct Kiwix: App {
                     }
                 }
                 .modifier(DonationViewModifier())
+                .onReceive(
+                    NotificationCenter.default.publisher(
+                        for: UIApplication.didEnterBackgroundNotification
+                    )
+                ) { _ in
+                    appDelegate.reScheduleBackgroundDownloadTask()
+                }
                 
         }
         .commands {
@@ -133,22 +140,16 @@ struct Kiwix: App {
         }
         
         // Background download task
-        func applicationDidFinishLaunching(_ application: UIApplication) {
-            registerBackgroundTask()
-        }
-        func applicationDidEnterBackground(_ application: UIApplication) {
-            registerBackgroundTask()
-        }
-            
-        private func registerBackgroundTask() {
+        func registerBackgroundTask() {
             guard case .kiwix = AppType.current else { return }
             let isRegistered = BGTaskScheduler.shared.register(
                 forTaskWithIdentifier: BackgroundDownloads.identifier,
-                using: .main) { [self] _ in
+                using: .main) { [self] task in
                     // update the live activities, if any
                     ActivityService.shared().start()
                     // reschedule
                     reScheduleBackgroundDownloadTask()
+                    task.setTaskCompleted(success: true)
                 }
             if isRegistered {
                 os_log("BackgroundDownloads registered", log: Log.DownloadService, type: .debug)
@@ -157,28 +158,29 @@ struct Kiwix: App {
             }
         }
         
-        private func reScheduleBackgroundDownloadTask() {
-                do {
-                    let date = BackgroundDownloads.nextDate()
-                    let request = BGAppRefreshTaskRequest(identifier: BackgroundDownloads.identifier)
-                    request.earliestBeginDate = date
-                    os_log(
-                        "BackgroundDownloads task re-scheduled for: %s",
-                        log: Log.DownloadService,
-                        type: .debug,
-                        date.formatted()
-                    )
-
-                    try BGTaskScheduler.shared.submit(request)
-                } catch {
-                    os_log(
-                        "BackgroundDownloads re-schedule failed: %s",
-                        log: Log.DownloadService,
-                        type: .error,
-                        error.localizedDescription
-                    )
-                }
+        func reScheduleBackgroundDownloadTask() {
+            guard case .kiwix = AppType.current else { return }
+            do {
+                let date = BackgroundDownloads.nextDate()
+                let request = BGAppRefreshTaskRequest(identifier: BackgroundDownloads.identifier)
+                request.earliestBeginDate = date
+                os_log(
+                    "BackgroundDownloads task re-scheduled for: %s",
+                    log: Log.DownloadService,
+                    type: .debug,
+                    date.formatted()
+                )
+                
+                try BGTaskScheduler.shared.submit(request)
+            } catch {
+                os_log(
+                    "BackgroundDownloads re-schedule failed: %s",
+                    log: Log.DownloadService,
+                    type: .error,
+                    error.localizedDescription
+                )
             }
+        }
 
         /// Handling file download complete notification
         func userNotificationCenter(_ center: UNUserNotificationCenter,
