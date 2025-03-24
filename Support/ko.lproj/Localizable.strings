@@ -1,6 +1,7 @@
 // Messages for Korean (한국어)
 // Exported from translatewiki.net
 // Author: Suleiman the Magnificent Television
+// Author: YeBoy371
 // Author: Ykhwong
 
 "library_refresh_error.retrieve.description" = "라이브러리 데이터를 검색하는 중 오류가 발생했습니다.";
@@ -39,6 +40,7 @@
 "outline_button.outline.help" = "문서 개요 표시";
 "outline_button.outline.empty.message" = "개요가 없습니다";
 "bookmark_button.show.help" = "현재 문서를 북마크에 추가하거나 제거할 수 있는 북마크 시트를 표시합니다.";
+"article_shortcut.main.button.help" = "더 많은 글 보기";
 "article_shortcut.random.button.title.mac" = "임의의 일반 문서";
 "article_shortcut.random.button.title.ios" = "임의의 문서";
 "article_shortcut.random.button.help" = "임의의 문서 표시";
@@ -61,6 +63,7 @@
 "library_refresh_time.never" = "없음";
 "zim_file_missing_indicator.help" = "Zim 파일이 없습니다.";
 "library.zim_file_details.side_panel.message" = "상세 내용을 보려면 ZIM 파일을 선택하십시오";
+"library.zim_file_context.main_page.label" = "대문";
 "library.zim_file_context.random.label" = "임의의 문서";
 "library.zim_file_context.copy_url" = "URL 복사";
 "zim_file_opened.overlay.no-opened.message" = "열린 ZIM 파일이 없습니다";
@@ -79,6 +82,7 @@
 "zim_file.list.actions.text" = "동작";
 "zim_file.list.info.text" = "정보";
 "zim_file.action.locate.title" = "위치 지정";
+"zim_file.action.open_main_page.title" = "대문 열기";
 "zim_file.action.reveal_in_finder.title" = "파인더에서 보기";
 "zim_file.action.toggle_cellular" = "휴대 전화를 이용하여 다운로드";
 "zim_file.action.unlink.title" = "링크 해제";
@@ -165,6 +169,7 @@
 "search_result.filter_hearder.text" = "검색에 포함";
 "search_result.filter_hearder.button.none" = "없음";
 "search_result.filter_hearder.button.all" = "모두";
+"welcome.main_page.title" = "대문";
 "welcome.grid.bookmarks.title" = "북마크";
 "welcome.actions.open_file" = "파일 열기";
 "welcome.loading.data.text" = "데이터를 불러오는 중...";
