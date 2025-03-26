@@ -111,17 +111,7 @@ final class ActivityService {
             start(with: state, downloadTimes: downloadTimes)
             return
         }
-        let now = CACurrentMediaTime()
-        // make sure we don't update too frequently
-        // unless there's a pause, we do want immediate update
-        let isTooEarlyToUpdate = if hasAnyPause(in: state) {
-            false
-        } else {
-            (now - lastUpdate) <= updateFrequency
-        }
-        guard let activity, !isTooEarlyToUpdate else {
-            return
-        }
+        guard let activity else { return }
         Task {
             let activityState = await activityState(from: state, downloadTimes: downloadTimes)
             let newContent = ActivityContent<DownloadActivityAttributes.ContentState>(
@@ -136,7 +126,6 @@ final class ActivityService {
                 await activity.update(newContent)
             }
         }
-        lastUpdate = now
     }
     
     private func updatedDownloadTimes(from states: [UUID: DownloadState]) -> [UUID: CFTimeInterval] {
