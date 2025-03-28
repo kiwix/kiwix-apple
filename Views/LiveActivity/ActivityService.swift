@@ -18,6 +18,7 @@
 import Combine
 import ActivityKit
 import QuartzCore
+import os
 
 @MainActor
 final class ActivityService {
@@ -25,8 +26,6 @@ final class ActivityService {
     private static var instance: ActivityService?
     private var cancellables = Set<AnyCancellable>()
     private var activity: Activity<DownloadActivityAttributes>?
-    private var lastUpdate = CACurrentMediaTime()
-    private let updateFrequency: Double
     private let averageDownloadSpeedFromLastSeconds: Double
     private let publisher: @MainActor () -> CurrentValueSubject<[UUID: DownloadState], Never>
     private var isStarted: Bool = false
@@ -36,7 +35,6 @@ final class ActivityService {
         publisher: @MainActor @escaping () -> CurrentValueSubject<[UUID: DownloadState], Never> = {
             DownloadService.shared.progress.publisher
         },
-        updateFrequency: Double = 2,
         averageDownloadSpeedFromLastSeconds: Double = 30
     ) -> ActivityService {
         if let instance = Self.instance {
@@ -44,7 +42,6 @@ final class ActivityService {
         } else {
             let instance = ActivityService(
                 publisher: publisher,
-                updateFrequency: updateFrequency,
                 averageDownloadSpeedFromLastSeconds: averageDownloadSpeedFromLastSeconds
             )
             Self.instance = instance
@@ -54,12 +51,9 @@ final class ActivityService {
     
     private init(
         publisher: @MainActor @escaping () -> CurrentValueSubject<[UUID: DownloadState], Never>,
-        updateFrequency: Double,
         averageDownloadSpeedFromLastSeconds: Double
     ) {
-        assert(updateFrequency > 0)
         assert(averageDownloadSpeedFromLastSeconds > 0)
-        self.updateFrequency = updateFrequency
         self.averageDownloadSpeedFromLastSeconds = averageDownloadSpeedFromLastSeconds
         self.publisher = publisher
     }
@@ -73,6 +67,19 @@ final class ActivityService {
                 self.update(state: state)
             }
         }.store(in: &cancellables)
+    }
+    
+    func forceUpdate() {
+        let state = publisher().value
+        if state.isEmpty {
+            stop()
+        } else {
+            update(state: state)
+        }
+        os_log("ActivityService.forceUpdate",
+               log: Log.DownloadService,
+               type: .debug,
+               state.description)
     }
     
     private func start(with state: [UUID: DownloadState], downloadTimes: [UUID: CFTimeInterval]) {
@@ -111,17 +118,7 @@ final class ActivityService {
             start(with: state, downloadTimes: downloadTimes)
             return
         }
-        let now = CACurrentMediaTime()
-        // make sure we don't update too frequently
-        // unless there's a pause, we do want immediate update
-        let isTooEarlyToUpdate = if hasAnyPause(in: state) {
-            false
-        } else {
-            (now - lastUpdate) <= updateFrequency
-        }
-        guard let activity, !isTooEarlyToUpdate else {
-            return
-        }
+        guard let activity else { return }
         Task {
             let activityState = await activityState(from: state, downloadTimes: downloadTimes)
             let newContent = ActivityContent<DownloadActivityAttributes.ContentState>(
@@ -136,7 +133,6 @@ final class ActivityService {
                 await activity.update(newContent)
             }
         }
-        lastUpdate = now
     }
     
     private func updatedDownloadTimes(from states: [UUID: DownloadState]) -> [UUID: CFTimeInterval] {

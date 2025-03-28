@@ -21,7 +21,7 @@ enum BackgroundDownloads {
     static let identifier = "org.kiwix.downloads_to_liveactivity"
     
     static func nextDate() -> Date {
-        .now + 2 // after 2 seconds
+        .now + 3 // after 3 seconds
     }
 }
 

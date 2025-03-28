@@ -108,25 +108,20 @@ struct DownloadsLiveActivity: Widget {
         state: DownloadActivityAttributes.ContentState
     ) -> some View {
         let timeInterval = currentTimeInterval(state: state)
-        if !state.isAllPaused {
-            ProgressView(timerInterval: timeInterval, countsDown: false, label: {
-                progressText(state.progressDescription)
-            }, currentValueLabel: {
+        ProgressView(value: state.progress, label: {
+            progressText(state.progressDescription)
+        }, currentValueLabel: {
+            if !state.isAllPaused {
                 Text(timerInterval: timeInterval)
                     .font(.caption)
                     .tint(.secondary)
-            })
-            .tint(Color.primary)
-        } else {
-            ProgressView(value: state.progress, label: {
-                progressText(state.progressDescription)
-            }, currentValueLabel: {
+            } else {
                 Label("", systemImage: "pause.fill")
                     .font(.caption)
                     .tint(.secondary)
-            })
-            .tint(Color.primary)
-        }
+            }
+        })
+        .tint(Color.primary)
     }
 }
 

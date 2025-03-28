@@ -67,7 +67,7 @@ struct Kiwix: App {
                             library.start(isUserInitiated: false)
                         }
                     case .background:
-                        break
+                        reScheduleBackgroundDownloadTask()
                     @unknown default:
                         break
                     }
@@ -103,14 +103,6 @@ struct Kiwix: App {
                     }
                 }
                 .modifier(DonationViewModifier())
-                .onReceive(
-                    NotificationCenter.default.publisher(
-                        for: UIApplication.didEnterBackgroundNotification
-                    )
-                ) { _ in
-                    appDelegate.reScheduleBackgroundDownloadTask()
-                }
-                
         }
         .commands {
             CommandGroup(replacing: .undoRedo) {
@@ -119,6 +111,33 @@ struct Kiwix: App {
             CommandGroup(replacing: .textFormatting) {
                 PageZoomCommands()
             }
+        }
+        .backgroundTask(.appRefresh(BackgroundDownloads.identifier)) { _ in
+            await reScheduleBackgroundDownloadTask()
+            await ActivityService.shared().forceUpdate()
+        }
+    }
+    
+    func reScheduleBackgroundDownloadTask() {
+        guard case .kiwix = AppType.current else { return }
+        do {
+            let date = BackgroundDownloads.nextDate()
+            let request = BGAppRefreshTaskRequest(identifier: BackgroundDownloads.identifier)
+            request.earliestBeginDate = date
+            os_log(
+                "BackgroundDownloads task re-scheduled for: %s",
+                log: Log.DownloadService,
+                type: .debug,
+                date.formatted()
+            )
+            try BGTaskScheduler.shared.submit(request)
+        } catch {
+            os_log(
+                "BackgroundDownloads re-schedule failed: %s",
+                log: Log.DownloadService,
+                type: .error,
+                error.localizedDescription
+            )
         }
     }
 
@@ -129,57 +148,6 @@ struct Kiwix: App {
                          handleEventsForBackgroundURLSession identifier: String,
                          completionHandler: @escaping () -> Void) {
             DownloadService.shared.backgroundCompletionHandler = completionHandler
-        }
-        
-        func application(
-            _ application: UIApplication,
-            didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil
-        ) -> Bool {
-            registerBackgroundTask()
-            return true
-        }
-        
-        // Background download task
-        func registerBackgroundTask() {
-            guard case .kiwix = AppType.current else { return }
-            let isRegistered = BGTaskScheduler.shared.register(
-                forTaskWithIdentifier: BackgroundDownloads.identifier,
-                using: .main) { [self] task in
-                    // update the live activities, if any
-                    ActivityService.shared().start()
-                    // reschedule
-                    reScheduleBackgroundDownloadTask()
-                    task.setTaskCompleted(success: true)
-                }
-            if isRegistered {
-                os_log("BackgroundDownloads registered", log: Log.DownloadService, type: .debug)
-            } else {
-                os_log("BackgroundDownloads registering failed: %s", log: Log.DownloadService, type: .error)
-            }
-        }
-        
-        func reScheduleBackgroundDownloadTask() {
-            guard case .kiwix = AppType.current else { return }
-            do {
-                let date = BackgroundDownloads.nextDate()
-                let request = BGAppRefreshTaskRequest(identifier: BackgroundDownloads.identifier)
-                request.earliestBeginDate = date
-                os_log(
-                    "BackgroundDownloads task re-scheduled for: %s",
-                    log: Log.DownloadService,
-                    type: .debug,
-                    date.formatted()
-                )
-                
-                try BGTaskScheduler.shared.submit(request)
-            } catch {
-                os_log(
-                    "BackgroundDownloads re-schedule failed: %s",
-                    log: Log.DownloadService,
-                    type: .error,
-                    error.localizedDescription
-                )
-            }
         }
 
         /// Handling file download complete notification

@@ -57,22 +57,22 @@ final class DownloadTime {
     }
     
     private func averagePerSecond() -> Double {
-        var time: CFTimeInterval?
-        var amount: Int64?
         var averages: [Double] = []
-        for key in samples.keys.sorted() {
-            let value = samples[key]!
-            if let time, let amount {
-                let took = key - time
-                let downloaded = value - amount
-                if took > 0, downloaded > 0 {
-                    averages.append(Double(downloaded) / took)
-                }
-            }
-            time = key
-            amount = value
+        let allSamples = samples.sorted { dictA, dictB in
+            dictA.key < dictB.key
         }
-        return weightedMean(averages)
+        guard let first = allSamples.first else { return .infinity }
+        let firstTime = first.key
+        let firstAmount = first.value
+        
+        let remainingSamples = allSamples.dropFirst()
+        for sample in remainingSamples {
+            let took = sample.key - firstTime
+            let downloaded = sample.value - firstAmount
+            assert(took > 0 && downloaded > 0)
+            averages.append(Double(downloaded) / took)
+        }
+        return mean(averages)
     }
     
     private func latestSample() -> (CFTimeInterval, Int64)? {
@@ -83,14 +83,11 @@ final class DownloadTime {
         return (lastTime, lastAmount)
     }
     
-    private func weightedMean(_ values: [Double]) -> Double {
-        let weights: [Double] = (0...values.count).map { (Double($0) + 1.0) * 1.2 }
-        let sum = values.enumerated().reduce(1.0) { partialResult, iterator in
-            partialResult + (iterator.element * weights[iterator.offset])
-        }
-        let sumOfWeights = weights.reduce(1.0) { partialResult, value in
+    private func mean(_ values: [Double]) -> Double {
+        guard values.count > 0 else { return 0 }
+        let sum = values.reduce(Double(0.0)) { partialResult, value in
             partialResult + value
         }
-        return sum / sumOfWeights
+        return sum / Double(values.count)
     }
 }
