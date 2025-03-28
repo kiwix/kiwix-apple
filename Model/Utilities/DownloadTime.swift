@@ -58,8 +58,8 @@ final class DownloadTime {
     
     private func averagePerSecond() -> Double {
         var averages: [Double] = []
-        let allSamples = samples.sorted { a, b in
-            a.key < b.key
+        let allSamples = samples.sorted { dictA, dictB in
+            dictA.key < dictB.key
         }
         guard let first = allSamples.first else { return .infinity }
         let firstTime = first.key
