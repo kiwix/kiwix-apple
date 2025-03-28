@@ -67,7 +67,7 @@ struct Kiwix: App {
                             library.start(isUserInitiated: false)
                         }
                     case .background:
-                        break
+                        reScheduleBackgroundDownloadTask()
                     @unknown default:
                         break
                     }
@@ -111,6 +111,33 @@ struct Kiwix: App {
             CommandGroup(replacing: .textFormatting) {
                 PageZoomCommands()
             }
+        }
+        .backgroundTask(.appRefresh(BackgroundDownloads.identifier)) { _ in
+            await reScheduleBackgroundDownloadTask()
+            await ActivityService.shared().forceUpdate()
+        }
+    }
+    
+    func reScheduleBackgroundDownloadTask() {
+        guard case .kiwix = AppType.current else { return }
+        do {
+            let date = BackgroundDownloads.nextDate()
+            let request = BGAppRefreshTaskRequest(identifier: BackgroundDownloads.identifier)
+            request.earliestBeginDate = date
+            os_log(
+                "BackgroundDownloads task re-scheduled for: %s",
+                log: Log.DownloadService,
+                type: .debug,
+                date.formatted()
+            )
+            try BGTaskScheduler.shared.submit(request)
+        } catch {
+            os_log(
+                "BackgroundDownloads re-schedule failed: %s",
+                log: Log.DownloadService,
+                type: .error,
+                error.localizedDescription
+            )
         }
     }
 

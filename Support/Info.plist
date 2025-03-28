@@ -38,6 +38,7 @@
 	<array>
 		<string>audio</string>
 		<string>processing</string>
+		<string>fetch</string>
 	</array>
 	<key>UIFileSharingEnabled</key>
 	<true/>
@@ -64,9 +65,5 @@
 			</dict>
 		</dict>
 	</array>
-	<key>NSSupportsLiveActivities</key>
-	<true/>
-	<key>NSSupportsLiveActivitiesFrequentUpdates</key>
-	<true/>
 </dict>
 </plist>
