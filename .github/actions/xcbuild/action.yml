@@ -92,6 +92,7 @@ runs:
       run: | # remove pre-commit, it's not needed for CI
         cat Brewfile | grep -v -e pre-commit > Brewfile_CI
         brew bundle --force --file Brewfile_CI
+        xcodegen
 
     - name: Prepare Xcode
       shell: bash
