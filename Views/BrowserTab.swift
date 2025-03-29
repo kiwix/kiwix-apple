@@ -78,7 +78,11 @@ struct BrowserTab: View {
                     pageDataWithExtension: { [weak browser] in await browser?.pageDataWithExtension() },
                     isButtonDisabled: browser.zimFileName.isEmpty
                 )
-                PrintButton(browser: browser)
+                PrintButton(browserURLName: { [weak browser] in
+                    browser?.url?.lastPathComponent
+                }, browserDataAsPDF: { [weak browser] in
+                    try await browser?.webView.pdf()
+                })
 #endif
                 BookmarkButton(articleBookmarked: browser.articleBookmarked,
                                isButtonDisabled: browser.zimFileName.isEmpty,
@@ -108,20 +112,24 @@ struct BrowserTab: View {
                 browser?.refreshVideoState()
             }
         }
-        .modify { view in
+        .modify { [weak browser] view in
 #if os(macOS)
-            view.navigationTitle(browser.articleTitle.isEmpty ? Brand.appName : browser.articleTitle)
-                .navigationSubtitle(browser.zimFileName)
+            if let browser {
+                view.navigationTitle(browser.articleTitle.isEmpty ? Brand.appName : browser.articleTitle)
+                    .navigationSubtitle(browser.zimFileName)
+            } else {
+                view
+            }
 #elseif os(iOS)
             view
 #endif
         }
-        .onAppear {
-            browser.updateLastOpened()
+        .onAppear { [weak browser] in
+            browser?.updateLastOpened()
         }
-        .onDisappear {
-            browser.pauseVideoWhenNotInPIP()
-            browser.persistState()
+        .onDisappear { [weak browser] in
+            browser?.pauseVideoWhenNotInPIP()
+            browser?.persistState()
         }
     }
 

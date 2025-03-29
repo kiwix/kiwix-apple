@@ -252,7 +252,7 @@ struct RootView: View {
                 NotificationCenter.openURL(url, context: .deepLink)
             }
         }
-        .onReceive(openURL) { notification in
+        .onReceive(openURL) { [weak navigation] notification in
             guard let url = notification.userInfo?["url"] as? URL else {
                 return
             }
@@ -276,9 +276,10 @@ struct RootView: View {
                 break
             }
             guard controlActiveState == .key else { return }
-            let tabID = navigation.currentTabId
-            currentNavItem = .tab(objectID: tabID)
-            BrowserViewModel.getCached(tabID: tabID).load(url: url)
+            if let tabID = navigation?.currentTabId {
+                currentNavItem = .tab(objectID: tabID)
+                BrowserViewModel.getCached(tabID: tabID).load(url: url)
+            }
         }
         .onReceive(tabCloses) { publisher in
             // closing one window either by CMD+W || red(X) close button

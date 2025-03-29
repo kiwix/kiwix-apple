@@ -310,7 +310,10 @@ final class BrowserViewModel: NSObject, ObservableObject,
     // MARK: - Content Loading
     @MainActor
     func load(url: URL) {
-        guard webView.url != url else { return }
+        debugPrint("BrowserViewModel \(tabID.shortID) load(url: \(url.absoluteString))")
+        guard webView.url != url else {
+            return
+        }
         webView.load(URLRequest(url: url))
         self.url = url
     }
@@ -400,7 +403,7 @@ final class BrowserViewModel: NSObject, ObservableObject,
         // store the tabID statically, so that the new window can pick it up
         NavigationViewModel.tabIDToUseOnNewTab = newTabID
 
-        windowController.newWindowForTab(self)
+        windowController.newWindowForTab(nil)
         guard let newWindow = NSApp.keyWindow, currentWindow != newWindow else {
             // rather impossible case, but rolling back everything from above
             NavigationViewModel.tabIDToUseOnNewTab = nil
