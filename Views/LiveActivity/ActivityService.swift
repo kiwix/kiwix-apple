@@ -23,7 +23,6 @@ import os
 @MainActor
 final class ActivityService {
     
-    private static var instance: ActivityService?
     private var cancellables = Set<AnyCancellable>()
     private var activity: Activity<DownloadActivityAttributes>?
     private let averageDownloadSpeedFromLastSeconds: Double
@@ -31,27 +30,11 @@ final class ActivityService {
     private var isStarted: Bool = false
     private var downloadTimes: [UUID: DownloadTime] = [:]
     
-    public static func shared(
+    init(
         publisher: @MainActor @escaping () -> CurrentValueSubject<[UUID: DownloadState], Never> = {
             DownloadService.shared.progress.publisher
         },
         averageDownloadSpeedFromLastSeconds: Double = 30
-    ) -> ActivityService {
-        if let instance = Self.instance {
-            return instance
-        } else {
-            let instance = ActivityService(
-                publisher: publisher,
-                averageDownloadSpeedFromLastSeconds: averageDownloadSpeedFromLastSeconds
-            )
-            Self.instance = instance
-            return instance
-        }
-    }
-    
-    private init(
-        publisher: @MainActor @escaping () -> CurrentValueSubject<[UUID: DownloadState], Never>,
-        averageDownloadSpeedFromLastSeconds: Double
     ) {
         assert(averageDownloadSpeedFromLastSeconds > 0)
         self.averageDownloadSpeedFromLastSeconds = averageDownloadSpeedFromLastSeconds
@@ -69,17 +52,17 @@ final class ActivityService {
         }.store(in: &cancellables)
     }
     
-    func forceUpdate() {
-        let state = publisher().value
-        if state.isEmpty {
-            stop()
-        } else {
-            update(state: state)
+    func stop() {
+        Task {
+            await activity?.end(nil, dismissalPolicy: .immediate)
+            activity = nil
+            isStarted = false
+            downloadTimes = [:]
+            // make sure we clean up orphan activities of the same type as well
+            for activity in Activity<DownloadActivityAttributes>.activities {
+                await activity.end(nil, dismissalPolicy: .immediate)
+            }
         }
-        os_log("ActivityService.forceUpdate",
-               log: Log.DownloadService,
-               type: .debug,
-               state.description)
     }
     
     private func start(with state: [UUID: DownloadState], downloadTimes: [UUID: CFTimeInterval]) {
@@ -154,19 +137,6 @@ final class ActivityService {
             let (key, value) = time
             partialResult.updateValue(value.remainingTime(now: now), forKey: key)
         })
-    }
-    
-    private func stop() {
-        Task {
-            await activity?.end(nil, dismissalPolicy: .immediate)
-            activity = nil
-            isStarted = false
-            downloadTimes = [:]
-            // make sure we clean up orphan activities of the same type as well
-            for activity in Activity<DownloadActivityAttributes>.activities {
-                await activity.end(nil, dismissalPolicy: .immediate)
-            }
-        }
     }
     
     private func getDownloadTitle(for uuid: UUID) async -> String {
