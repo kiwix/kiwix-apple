@@ -47,7 +47,7 @@ final class DownloadTime {
         guard remainingTime > 0 else {
             return 0
         }
-        return remainingTime
+        return remainingTime * 1.1 // make it a bit larger not to disappoint users
     }
     
     private func filterOutSamples(now: CFTimeInterval) {
