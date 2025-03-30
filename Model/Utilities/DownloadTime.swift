@@ -69,8 +69,9 @@ final class DownloadTime {
         for sample in remainingSamples {
             let took = sample.key - firstTime
             let downloaded = sample.value - firstAmount
-            assert(took > 0 && downloaded > 0)
-            averages.append(Double(downloaded) / took)
+            if took > 0 && downloaded > 0 {
+                averages.append(Double(downloaded) / took)
+            }
         }
         return mean(averages)
     }
