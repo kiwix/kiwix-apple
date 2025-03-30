@@ -28,7 +28,7 @@ struct Kiwix: App {
     @StateObject private var navigation = NavigationViewModel()
     @UIApplicationDelegateAdaptor(AppDelegate.self) private var appDelegate
     private let fileMonitor: DirectoryMonitor
-    private let activityService: ActivityService?
+    let activityService: ActivityService?
     
     init() {
         fileMonitor = DirectoryMonitor(url: URL.documentDirectory) { LibraryOperations.scanDirectory($0) }
@@ -36,6 +36,7 @@ struct Kiwix: App {
         switch AppType.current {
         case .kiwix:
             activityService = ActivityService()
+            appDelegate.activityService = activityService
         case .custom:
             activityService = nil
         }
@@ -44,7 +45,6 @@ struct Kiwix: App {
         if !ProcessInfo.processInfo.arguments.contains("testing") {
             _ = MigrationService().migrateAll()
         }
-        
     }
 
     var body: some Scene {
@@ -116,7 +116,9 @@ struct Kiwix: App {
         }
     }
 
-    private class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCenterDelegate {
+    private class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCenterDelegate, ObservableObject {
+        
+        weak var activityService: ActivityService?
         
         /// Storing background download completion handler sent to application delegate
         func application(_ application: UIApplication,
@@ -141,6 +143,10 @@ struct Kiwix: App {
         /// Purge some cached browser view models when receiving memory warning
         func applicationDidReceiveMemoryWarning(_ application: UIApplication) {
             BrowserViewModel.purgeCache()
+        }
+        
+        func applicationWillTerminate(_ application: UIApplication) {
+            activityService?.terminateLiveActivities()
         }
     }
 }

@@ -34,7 +34,7 @@ final class ActivityService {
         publisher: @MainActor @escaping () -> CurrentValueSubject<[UUID: DownloadState], Never> = {
             DownloadService.shared.progress.publisher
         },
-        averageDownloadSpeedFromLastSeconds: Double = 30
+        averageDownloadSpeedFromLastSeconds: Double = 3
     ) {
         assert(averageDownloadSpeedFromLastSeconds > 0)
         self.averageDownloadSpeedFromLastSeconds = averageDownloadSpeedFromLastSeconds
@@ -63,6 +63,18 @@ final class ActivityService {
                 await activity.end(nil, dismissalPolicy: .immediate)
             }
         }
+    }
+    
+    func terminateLiveActivities() {
+        // @see: https://developer.apple.com/forums/thread/732418
+        let semaphore = DispatchSemaphore(value: 0)
+        Task.detached {
+            for activity in Activity<DownloadActivityAttributes>.activities {
+                await activity.end(nil, dismissalPolicy: .immediate)
+            }
+            semaphore.signal()
+        }
+        semaphore.wait()
     }
     
     private func start(with state: [UUID: DownloadState], downloadTimes: [UUID: CFTimeInterval]) {
@@ -172,13 +184,6 @@ final class ActivityService {
                     isPaused: download.isPaused
                 )
         })
-    }
-    
-    private func hasAnyPause(in state: [UUID: DownloadState]) -> Bool {
-        guard !state.isEmpty else { return false }
-        return !state.values.allSatisfy { (download: DownloadState) in
-            download.isPaused == false
-        }
     }
 }
 
