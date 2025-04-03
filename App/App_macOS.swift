@@ -299,11 +299,11 @@ struct RootView: View {
             browser.pauseVideoWhenNotInPIP()
             navigation.deleteTab(tabID: tabID)
         }
-        .onReceive(keepOnlyTabs) { [weak navigation] notification in
+        .onReceive(keepOnlyTabs) {notification in
             guard let tabsToKeep = notification.userInfo?["tabIds"] as? Set<NSManagedObjectID> else {
                 return
             }
-            navigation?.keepOnlyTabsBy(tabIds: tabsToKeep)
+            navigation.keepOnlyTabsBy(tabIds: tabsToKeep)
         }
         .onReceive(appTerminates) { _ in
             // CMD+Q -> Quit Kiwix, this also closes the last window
