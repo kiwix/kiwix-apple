@@ -59,6 +59,5 @@ final class OrderedCache<Key: Hashable, Value> {
 
     func removeValue(forKey key: Key) {
         dict.removeValue(forKey: key)
-        debugPrint("BrowserViewModel cache count: \(dict.count)")
     }
 }

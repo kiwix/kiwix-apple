@@ -33,14 +33,12 @@ final class BrowserViewModel: NSObject, ObservableObject,
     @MainActor
     static func getCached(tabID: NSManagedObjectID) -> BrowserViewModel {
         if let cachedModel = cache?.findBy(key: tabID) {
-            debugPrint("BrowserViewModel from cache: \(tabID.shortID)")
             return cachedModel
         }
         if cache == nil {
             cache = .init()
         }
         let viewModel = BrowserViewModel(tabID: tabID)
-        debugPrint("BrowserViewModel new instance for: \(tabID.shortID)")
         cache?.removeValue(forKey: tabID)
         cache?.setValue(viewModel, forKey: tabID)
         return viewModel
@@ -57,7 +55,6 @@ final class BrowserViewModel: NSObject, ObservableObject,
             if let browserViewModel = cache?.findBy(key: id) {
                 await browserViewModel.destroy()
                 cache?.removeValue(forKey: id)
-                debugPrint("BrowserViewModel removed from cache: \(id.shortID)")
             }
         }
     }
@@ -310,7 +307,6 @@ final class BrowserViewModel: NSObject, ObservableObject,
     // MARK: - Content Loading
     @MainActor
     func load(url: URL) {
-        debugPrint("BrowserViewModel \(tabID.shortID) load(url: \(url.absoluteString))")
         guard webView.url != url else {
             return
         }
