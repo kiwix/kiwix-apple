@@ -252,7 +252,7 @@ struct RootView: View {
                 NotificationCenter.openURL(url, context: .deepLink)
             }
         }
-        .onReceive(openURL) { [weak navigation] notification in
+        .onReceive(openURL) { notification in
             guard let url = notification.userInfo?["url"] as? URL else {
                 return
             }
@@ -265,8 +265,8 @@ struct RootView: View {
                 // We need to filter it down the the last window
                 // (which is usually not the key window yet at this point),
                 // and load the content only within that
-                Task { @MainActor [weak navigation] in
-                    if windowTracker.isLastWindow(), let navigation {
+                Task { @MainActor in
+                    if windowTracker.isLastWindow() {
                         BrowserViewModel.getCached(tabID: navigation.currentTabId).load(url: url)
                     }
                 }
@@ -276,10 +276,9 @@ struct RootView: View {
                 break
             }
             guard controlActiveState == .key else { return }
-            if let tabID = navigation?.currentTabId {
-                currentNavItem = .tab(objectID: tabID)
-                BrowserViewModel.getCached(tabID: tabID).load(url: url)
-            }
+            let tabID = navigation.currentTabId
+            currentNavItem = .tab(objectID: tabID)
+            BrowserViewModel.getCached(tabID: tabID).load(url: url)
         }
         .onReceive(tabCloses) { publisher in
             // closing one window either by CMD+W || red(X) close button
@@ -288,6 +287,8 @@ struct RootView: View {
                 // but that's not comming from our window
                 return
             }
+            windowTracker.current = nil // remove the reference to this window, see guard above
+            
             guard !navigation.isTerminating else {
                 // tab closed by app termination
                 return
@@ -304,11 +305,11 @@ struct RootView: View {
             }
             navigation?.keepOnlyTabsBy(tabIds: tabsToKeep)
         }
-        .onReceive(appTerminates) { [weak navigation] _ in
+        .onReceive(appTerminates) { _ in
             // CMD+Q -> Quit Kiwix, this also closes the last window
-            navigation?.isTerminating = true
-        }.onReceive(goForwardPublisher) { [weak navigation] _ in
-            guard case .tab(let tabID) = navigation?.currentItem else {
+            navigation.isTerminating = true
+        }.onReceive(goForwardPublisher) { _ in
+            guard case .tab(let tabID) = navigation.currentItem else {
                 return
             }
             BrowserViewModel.getCached(tabID: tabID).webView.goForward()
@@ -340,8 +341,8 @@ struct RootView: View {
                 _ = MigrationService().migrateAll()
             }
         }
-        .withHostingWindow { [windowTracker] hostWindow in
-            windowTracker.current = hostWindow
+        .withHostingWindow { [weak windowTracker] hostWindow in
+            windowTracker?.current = hostWindow
         }
     }
 }
