@@ -101,7 +101,6 @@ final class NavigationViewModel: ObservableObject {
     /// - Parameter tabID: ID of the tab to delete
     func deleteTab(tabID: NSManagedObjectID) {
         let currentItemValue = currentItem
-        currentItem = .loading // avoid getting a closing tab's BrowserViewModel on macOS
         Database.shared.performBackgroundTask { context in
             let sortByCreation = [NSSortDescriptor(key: "created", ascending: false)]
             guard let tabs: [Tab] = try? context.fetch(Tab.fetchRequest(predicate: nil,

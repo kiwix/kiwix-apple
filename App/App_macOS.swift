@@ -296,27 +296,24 @@ struct RootView: View {
             let browser = BrowserViewModel.getCached(tabID: tabID)
             // tab closed by user
             browser.pauseVideoWhenNotInPIP()
-            Task { @MainActor [weak browser] in
-                await browser?.clear()
-            }
             navigation.deleteTab(tabID: tabID)
         }
-        .onReceive(keepOnlyTabs) { notification in
+        .onReceive(keepOnlyTabs) { [weak navigation] notification in
             guard let tabsToKeep = notification.userInfo?["tabIds"] as? Set<NSManagedObjectID> else {
                 return
             }
-            navigation.keepOnlyTabsBy(tabIds: tabsToKeep)
+            navigation?.keepOnlyTabsBy(tabIds: tabsToKeep)
         }
-        .onReceive(appTerminates) { _ in
+        .onReceive(appTerminates) { [weak navigation] _ in
             // CMD+Q -> Quit Kiwix, this also closes the last window
-            navigation.isTerminating = true
-        }.onReceive(goForwardPublisher) { _ in
-            guard case .tab(let tabID) = navigation.currentItem else {
+            navigation?.isTerminating = true
+        }.onReceive(goForwardPublisher) { [weak navigation] _ in
+            guard case .tab(let tabID) = navigation?.currentItem else {
                 return
             }
             BrowserViewModel.getCached(tabID: tabID).webView.goForward()
-        }.onReceive(goBackPublisher) { _ in
-            guard case .tab(let tabID) = navigation.currentItem else {
+        }.onReceive(goBackPublisher) { [weak navigation] _ in
+            guard case .tab(let tabID) = navigation?.currentItem else {
                 return
             }
             BrowserViewModel.getCached(tabID: tabID).webView.goBack()
