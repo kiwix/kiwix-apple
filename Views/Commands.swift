@@ -21,6 +21,10 @@ struct BrowserViewModelKey: FocusedValueKey {
     typealias Value = BrowserViewModel
 }
 
+struct IsBrowserURLSet: FocusedValueKey {
+    typealias Value = Bool
+}
+
 struct CanGoBackKey: FocusedValueKey {
     typealias Value = Bool
 }
@@ -34,9 +38,9 @@ struct NavigationItemKey: FocusedValueKey {
 }
 
 extension FocusedValues {
-    var browserViewModel: BrowserViewModelKey.Value? {
-        get { self[BrowserViewModelKey.self] }
-        set { self[BrowserViewModelKey.self] = newValue }
+    var isBrowserURLSet: IsBrowserURLSet.Value? {
+        get { self[IsBrowserURLSet.self] }
+        set { self[IsBrowserURLSet.self] = newValue }
     }
 
     var canGoBack: CanGoBackKey.Value? {
@@ -56,15 +60,16 @@ extension FocusedValues {
 }
 
 struct NavigationCommands: View {
+    let goBack: () -> Void
+    let goForward: () -> Void
     @FocusedValue(\.canGoBack) var canGoBack: Bool?
     @FocusedValue(\.canGoForward) var canGoForward: Bool?
-    @FocusedValue(\.browserViewModel) var browser: BrowserViewModel?
 
     var body: some View {
-        Button(LocalString.common_button_go_back) { browser?.webView.goBack() }
+        Button(LocalString.common_button_go_back) { goBack() }
             .keyboardShortcut("[")
             .disabled(canGoBack != true)
-        Button(LocalString.common_button_go_forward) { browser?.webView.goForward() }
+        Button(LocalString.common_button_go_forward) { goForward() }
             .keyboardShortcut("]")
             .disabled(canGoForward != true)
     }
@@ -72,18 +77,18 @@ struct NavigationCommands: View {
 
 struct PageZoomCommands: View {
     @Default(.webViewPageZoom) var webViewPageZoom
-    @FocusedValue(\.browserViewModel) var browser: BrowserViewModel?
+    @FocusedValue(\.isBrowserURLSet) var isBrowserURLSet: Bool?
 
     var body: some View {
         Button(LocalString.commands_button_actual_size) { webViewPageZoom = 1 }
             .keyboardShortcut("0")
-            .disabled(webViewPageZoom == 1 || browser?.url == nil)
+            .disabled(webViewPageZoom == 1 || isBrowserURLSet != true)
         Button(LocalString.comments_button_zoom_in) { webViewPageZoom += 0.1 }
             .keyboardShortcut("+")
-            .disabled(webViewPageZoom >= 2 || browser?.url == nil)
+            .disabled(webViewPageZoom >= 2 || isBrowserURLSet != true)
         Button(LocalString.comments_button_zoom_out) { webViewPageZoom -= 0.1 }
             .keyboardShortcut("-")
-            .disabled(webViewPageZoom <= 0.5 || browser?.url == nil)
+            .disabled(webViewPageZoom <= 0.5 || isBrowserURLSet != true)
     }
 }
 

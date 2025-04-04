@@ -18,17 +18,23 @@ import SwiftUI
 import WebKit
 
 struct ContentSearchButton: View {
-
-    @EnvironmentObject private var browser: BrowserViewModel
+    @FocusedValue(\.isBrowserURLSet) var isBrowserURLSet
+    let findInteraction: () -> Void
+    
+    init(browser: BrowserViewModel) {
+        findInteraction = { [weak browser] in
+            browser?.webView.isFindInteractionEnabled = true
+            browser?.webView.findInteraction?.presentFindNavigator(showingReplace: false)
+        }
+    }
 
     var body: some View {
         Button(LocalString.common_search,
                systemImage: "text.magnifyingglass",
                action: {
-            browser.webView.isFindInteractionEnabled = true
-            browser.webView.findInteraction?.presentFindNavigator(showingReplace: false)
+            findInteraction()
         }
-        ).disabled(browser.url == nil)
+        ).disabled(isBrowserURLSet != true)
     }
 }
 #endif

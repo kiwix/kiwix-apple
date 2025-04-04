@@ -15,13 +15,18 @@
 
 import SwiftUI
 import Defaults
+import CoreData
 
 /// This is macOS and iPad only specific, not used on iPhone
 struct BrowserTab: View {
+    @ObservedObject var browser: BrowserViewModel
     @Environment(\.scenePhase) private var scenePhase
-    @EnvironmentObject private var browser: BrowserViewModel
     @EnvironmentObject private var library: LibraryViewModel
     @StateObject private var search = SearchViewModel.shared
+    
+    init(tabID: NSManagedObjectID) {
+        self.browser = BrowserViewModel.getCached(tabID: tabID)
+    }
 
     var body: some View {
         let model = if FeatureFlags.hasLibrary {
@@ -29,9 +34,17 @@ struct BrowserTab: View {
         } else {
             NoCatalogLaunchViewModel(browser: browser)
         }
-        Content(model: model).toolbar {
+        Content(browser: browser, model: model).toolbar {
 #if os(macOS)
-            ToolbarItemGroup(placement: .navigation) { NavigationButtons() }
+            ToolbarItemGroup(placement: .navigation) {
+                NavigationButtons(
+                    goBack: { [weak browser] in
+                        browser?.webView.goBack()
+                    },
+                    goForward: { [weak browser] in
+                        browser?.webView.goForward()
+                    })
+            }
 #elseif os(iOS)
             ToolbarItemGroup(placement: .navigationBarLeading) {
                 if #unavailable(iOS 16) {
@@ -41,54 +54,89 @@ struct BrowserTab: View {
                         Label(LocalString.browser_tab_toolbar_show_sidebar_label, systemImage: "sidebar.left")
                     }
                 }
-                NavigationButtons()
+                NavigationButtons(
+                    goBack: { [weak browser] in
+                        browser?.webView.goBack()
+                    },
+                    goForward: { [weak browser] in
+                        browser?.webView.goForward()
+                    })
             }
 #endif
             ToolbarItemGroup(placement: .primaryAction) {
-                OutlineButton()
-                ExportButton()
-#if os(macOS)
-                PrintButton()
-#endif
-                BookmarkButton()
+                OutlineButton(browser: browser)
 #if os(iOS)
-                ContentSearchButton()
+                ExportButton(
+                    webViewURL: browser.webView.url,
+                    pageDataWithExtension: { [weak browser] in await browser?.pageDataWithExtension() },
+                    isButtonDisabled: browser.zimFileName.isEmpty
+                )
+#else
+                ExportButton(
+                    relativeToView: browser.webView,
+                    webViewURL: browser.webView.url,
+                    pageDataWithExtension: { [weak browser] in await browser?.pageDataWithExtension() },
+                    isButtonDisabled: browser.zimFileName.isEmpty
+                )
+                PrintButton(browserURLName: { [weak browser] in
+                    browser?.url?.lastPathComponent
+                }, browserDataAsPDF: { [weak browser] in
+                    try await browser?.webView.pdf()
+                })
 #endif
-                ArticleShortcutButtons(displayMode: .mainAndRandomArticle)
+                BookmarkButton(articleBookmarked: browser.articleBookmarked,
+                               isButtonDisabled: browser.zimFileName.isEmpty,
+                               createBookmark: { [weak browser] in browser?.createBookmark() },
+                               deleteBookmark: { [weak browser] in browser?.deleteBookmark() })
+#if os(iOS)
+                ContentSearchButton(browser: browser)
+#endif
+                ArticleShortcutButtons(
+                    displayMode: .mainAndRandomArticle,
+                    loadMainArticle: { [weak browser] zimFileID in
+                        browser?.loadMainArticle(zimFileID: zimFileID)
+                    },
+                    loadRandomArticle: { [weak browser] zimFileID in
+                        browser?.loadRandomArticle(zimFileID: zimFileID)
+                    })
             }
         }
         .environmentObject(search)
-        .focusedSceneValue(\.browserViewModel, browser)
+        .focusedSceneValue(\.isBrowserURLSet, browser.url != nil)
         .focusedSceneValue(\.canGoBack, browser.canGoBack)
         .focusedSceneValue(\.canGoForward, browser.canGoForward)
         .modifier(ExternalLinkHandler(externalURL: $browser.externalURL))
         .searchable(text: $search.searchText, placement: .toolbar, prompt: LocalString.common_search)
-        .onChange(of: scenePhase) { newValue in
+        .onChange(of: scenePhase) { [weak browser] newValue in
             if case .active = newValue {
-                browser.refreshVideoState()
+                browser?.refreshVideoState()
             }
         }
-        .modify { view in
+        .modify { [weak browser] view in
 #if os(macOS)
-            view.navigationTitle(browser.articleTitle.isEmpty ? Brand.appName : browser.articleTitle)
-                .navigationSubtitle(browser.zimFileName)
+            if let browser {
+                view.navigationTitle(browser.articleTitle.isEmpty ? Brand.appName : browser.articleTitle)
+                    .navigationSubtitle(browser.zimFileName)
+            } else {
+                view
+            }
 #elseif os(iOS)
             view
 #endif
         }
-        .onAppear {
-            browser.updateLastOpened()
+        .onAppear { [weak browser] in
+            browser?.updateLastOpened()
         }
-        .onDisappear {
-            browser.pauseVideoWhenNotInPIP()
-            browser.persistState()
+        .onDisappear { [weak browser] in
+            browser?.pauseVideoWhenNotInPIP()
+            browser?.persistState()
         }
     }
 
     private struct Content<LaunchModel>: View where LaunchModel: LaunchProtocol {
         @Environment(\.isSearching) private var isSearching
         @Environment(\.horizontalSizeClass) private var horizontalSizeClass
-        @EnvironmentObject private var browser: BrowserViewModel
+        let browser: BrowserViewModel
         @EnvironmentObject private var library: LibraryViewModel
         @EnvironmentObject private var navigation: NavigationViewModel
         @FetchRequest(
@@ -118,7 +166,7 @@ struct BrowserTab: View {
                         case .loadingData:
                             LoadingDataView()
                         case .webPage(let isLoading):
-                            WebView()
+                            WebView(browser: browser)
                                 .ignoresSafeArea()
                                 .overlay {
                                     if isLoading {
@@ -137,7 +185,7 @@ struct BrowserTab: View {
                         case .catalog(.fetching):
                             FetchingCatalogView()
                         case .catalog(.list):
-                            LocalLibraryList()
+                            LocalLibraryList(browser: browser)
                         case .catalog(.welcome(let welcomeViewState)):
                             WelcomeCatalog(viewState: welcomeViewState)
                         }

@@ -21,7 +21,7 @@ import Defaults
 
 #if os(macOS)
 struct WebView: NSViewRepresentable {
-    @EnvironmentObject private var browser: BrowserViewModel
+    @ObservedObject var browser: BrowserViewModel
 
     func makeNSView(context: Context) -> NSView {
         let nsView = NSView()
@@ -44,19 +44,24 @@ struct WebView: NSViewRepresentable {
         Coordinator(view: self)
     }
 
-    class Coordinator {
+    final class Coordinator {
         private let pageZoomObserver: Defaults.Observation
 
         init(view: WebView) {
-            pageZoomObserver = Defaults.observe(.webViewPageZoom) { change in
-                view.browser.webView.pageZoom = change.newValue
+            let browser = view.browser
+            pageZoomObserver = Defaults.observe(.webViewPageZoom) { [weak browser] change in
+                browser?.webView.pageZoom = change.newValue
             }
+        }
+        
+        deinit {
+            pageZoomObserver.invalidate()
         }
     }
 }
 #elseif os(iOS)
 struct WebView: UIViewControllerRepresentable {
-    @EnvironmentObject private var browser: BrowserViewModel
+    @ObservedObject var browser: BrowserViewModel
 
     func makeUIViewController(context: Context) -> WebViewController {
         WebViewController(webView: browser.webView)

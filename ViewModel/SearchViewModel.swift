@@ -66,6 +66,11 @@ final class SearchViewModel: NSObject, ObservableObject, NSFetchedResultsControl
                 }
             }
     }
+    
+    deinit {
+        queue.cancelAllOperations()
+        searchSubscriber?.cancel()
+    }
 
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
         zimFiles = fetchedResultsController.fetchedObjects?.reduce(into: [:]) { result, zimFile in

@@ -65,7 +65,11 @@ struct Kiwix: App {
                 Divider()
             }
             CommandGroup(after: .toolbar) {
-                NavigationCommands()
+                NavigationCommands(goBack: {
+                    NotificationCenter.default.post(name: .goBack, object: nil)
+                }, goForward: {
+                    NotificationCenter.default.post(name: .goForward, object: nil)
+                })
                 Divider()
                 PageZoomCommands()
                 Divider()
@@ -176,6 +180,8 @@ struct RootView: View {
     private let openURL = NotificationCenter.default.publisher(for: .openURL)
     private let appTerminates = NotificationCenter.default.publisher(for: NSApplication.willTerminateNotification)
     private let tabCloses = NotificationCenter.default.publisher(for: NSWindow.willCloseNotification)
+    private let goBackPublisher = NotificationCenter.default.publisher(for: .goBack)
+    private let goForwardPublisher = NotificationCenter.default.publisher(for: .goForward)
     /// Close other tabs then the ones received
     private let keepOnlyTabs = NotificationCenter.default.publisher(for: .keepOnlyTabs)
 
@@ -209,8 +215,7 @@ struct RootView: View {
             case .loading:
                 LoadingDataView()
             case .tab(let tabID):
-                let browser = BrowserViewModel.getCached(tabID: tabID)
-                BrowserTab().environmentObject(browser)
+                BrowserTab(tabID: tabID)
             case .bookmarks:
                 Bookmarks()
             case .opened:
@@ -260,8 +265,8 @@ struct RootView: View {
                 // We need to filter it down the the last window
                 // (which is usually not the key window yet at this point),
                 // and load the content only within that
-                Task { @MainActor [weak navigation] in
-                    if windowTracker.isLastWindow(), let navigation {
+                Task { @MainActor in
+                    if windowTracker.isLastWindow() {
                         BrowserViewModel.getCached(tabID: navigation.currentTabId).load(url: url)
                     }
                 }
@@ -282,6 +287,8 @@ struct RootView: View {
                 // but that's not comming from our window
                 return
             }
+            windowTracker.current = nil // remove the reference to this window, see guard above
+            
             guard !navigation.isTerminating else {
                 // tab closed by app termination
                 return
@@ -290,12 +297,9 @@ struct RootView: View {
             let browser = BrowserViewModel.getCached(tabID: tabID)
             // tab closed by user
             browser.pauseVideoWhenNotInPIP()
-            Task { @MainActor [weak browser] in
-                await browser?.clear()
-            }
             navigation.deleteTab(tabID: tabID)
         }
-        .onReceive(keepOnlyTabs) { notification in
+        .onReceive(keepOnlyTabs) {notification in
             guard let tabsToKeep = notification.userInfo?["tabIds"] as? Set<NSManagedObjectID> else {
                 return
             }
@@ -304,6 +308,16 @@ struct RootView: View {
         .onReceive(appTerminates) { _ in
             // CMD+Q -> Quit Kiwix, this also closes the last window
             navigation.isTerminating = true
+        }.onReceive(goForwardPublisher) { _ in
+            guard case .tab(let tabID) = navigation.currentItem else {
+                return
+            }
+            BrowserViewModel.getCached(tabID: tabID).webView.goForward()
+        }.onReceive(goBackPublisher) { [weak navigation] _ in
+            guard case .tab(let tabID) = navigation?.currentItem else {
+                return
+            }
+            BrowserViewModel.getCached(tabID: tabID).webView.goBack()
         }.task {
             switch AppType.current {
             case .kiwix:
@@ -327,8 +341,8 @@ struct RootView: View {
                 _ = MigrationService().migrateAll()
             }
         }
-        .withHostingWindow { [windowTracker] hostWindow in
-            windowTracker.current = hostWindow
+        .withHostingWindow { [weak windowTracker] hostWindow in
+            windowTracker?.current = hostWindow
         }
     }
 }

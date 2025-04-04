@@ -49,6 +49,15 @@ final class BrowserViewModel: NSObject, ObservableObject,
             cache?.removeOlderThan(Date.now.advanced(by: -360)) // 6 minutes
         }
     }
+    
+    nonisolated static func destroyTabById(id: NSManagedObjectID) {
+        Task { @MainActor in
+            if let browserViewModel = cache?.findBy(key: id) {
+                await browserViewModel.destroy()
+                cache?.removeValue(forKey: id)
+            }
+        }
+    }
 
     nonisolated static func keepOnlyTabsByIds(_ ids: Set<NSManagedObjectID>) {
         Task { @MainActor in
@@ -66,7 +75,7 @@ final class BrowserViewModel: NSObject, ObservableObject,
     @Published private(set) var canGoBack = false
     @Published private(set) var canGoForward = false
     @Published private(set) var articleTitle: String = ""
-    @Published private(set) var zimFileName: String = ""
+    @Published var zimFileName: String = ""
     @Published private(set) var articleBookmarked = false
     @Published private(set) var outlineItems = [OutlineItem]()
     @Published private(set) var outlineItemTree = [OutlineItem]()
@@ -168,6 +177,10 @@ final class BrowserViewModel: NSObject, ObservableObject,
             }
         }
     }
+    
+    deinit {
+        debugPrint("🧨 BrowserViewModel deinit 🧨")
+    }
 
     @MainActor
     func destroy() async {
@@ -176,6 +189,9 @@ final class BrowserViewModel: NSObject, ObservableObject,
         canGoForwardObserver?.invalidate()
         titleURLObserver?.cancel()
         isLoadingObserver?.invalidate()
+        let contentController = webView.configuration.userContentController
+        contentController.removeScriptMessageHandler(forName: "headings")
+        contentController.removeAllUserScripts()
         webView.navigationDelegate = nil
         webView.uiDelegate = nil
         #if os(iOS)
@@ -291,7 +307,9 @@ final class BrowserViewModel: NSObject, ObservableObject,
     // MARK: - Content Loading
     @MainActor
     func load(url: URL) {
-        guard webView.url != url else { return }
+        guard webView.url != url else {
+            return
+        }
         webView.load(URLRequest(url: url))
         self.url = url
     }
@@ -381,7 +399,7 @@ final class BrowserViewModel: NSObject, ObservableObject,
         // store the tabID statically, so that the new window can pick it up
         NavigationViewModel.tabIDToUseOnNewTab = newTabID
 
-        windowController.newWindowForTab(self)
+        windowController.newWindowForTab(nil)
         guard let newWindow = NSApp.keyWindow, currentWindow != newWindow else {
             // rather impossible case, but rolling back everything from above
             NavigationViewModel.tabIDToUseOnNewTab = nil
@@ -583,6 +601,7 @@ final class BrowserViewModel: NSObject, ObservableObject,
 #endif
 
 #if os(iOS)
+    // swiftlint:disable:next function_body_length
     func webView(
         _ webView: WKWebView,
         contextMenuConfigurationForElement elementInfo: WKContextMenuElementInfo,

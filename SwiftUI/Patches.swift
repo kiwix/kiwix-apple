@@ -77,6 +77,8 @@ extension Notification.Name {
     #if os(macOS)
     static let keepOnlyTabs = Notification.Name("keepOnlyTabs")
     #endif
+    static let goBack = Notification.Name("goBack")
+    static let goForward = Notification.Name("goForward")
     #if os(iOS)
     static let openDonations = Notification.Name("openDonations")
     #endif

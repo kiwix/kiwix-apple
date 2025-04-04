@@ -101,7 +101,26 @@ final class SplitViewController: UISplitViewController {
                 }
             }
         }
+        observeGoBackAndForward()
         observeAppBackgrounding()
+    }
+    
+    private func observeGoBackAndForward() {
+        let notificationCenter = NotificationCenter.default
+        notificationCenter.publisher(for: .goBack)
+            .sink { [weak self] _ in
+                guard case .tab(let tabID) = self?.navigationViewModel.currentItem else {
+                    return
+                }
+                BrowserViewModel.getCached(tabID: tabID).webView.goBack()
+            }.store(in: &cancellables)
+        notificationCenter.publisher(for: .goForward)
+            .sink { [weak self] _ in
+                guard case .tab(let tabID) = self?.navigationViewModel.currentItem else {
+                    return
+                }
+                BrowserViewModel.getCached(tabID: tabID).webView.goForward()
+            }.store(in: &cancellables)
     }
     
     private func observeAppBackgrounding() {
@@ -141,8 +160,7 @@ final class SplitViewController: UISplitViewController {
             let controller = UIHostingController(rootView: Bookmarks())
             setViewController(UINavigationController(rootViewController: controller), for: .secondary)
         case .tab(let tabID):
-            let view = BrowserTab()
-                .environmentObject(BrowserViewModel.getCached(tabID: tabID))
+            let view = BrowserTab(tabID: tabID)
             let controller = UIHostingController(rootView: view)
             controller.navigationItem.scrollEdgeAppearance = {
                 let apperance = UINavigationBarAppearance()

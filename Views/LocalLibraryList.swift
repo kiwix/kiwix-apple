@@ -19,7 +19,7 @@ import Defaults
 
 /// Displays a grid of available local ZIM files. Used on new tab.
 struct LocalLibraryList: View {
-    @EnvironmentObject private var browser: BrowserViewModel
+    private let load: (URL) -> Void
     @FetchRequest(
         sortDescriptors: [NSSortDescriptor(keyPath: \Bookmark.created, ascending: false)],
         animation: .easeInOut
@@ -29,6 +29,10 @@ struct LocalLibraryList: View {
         predicate: ZimFile.openedPredicate,
         animation: .easeInOut
     ) private var zimFiles: FetchedResults<ZimFile>
+    
+    init(browser: BrowserViewModel) {
+        load = browser.load(url:)
+    }
 
     var body: some View {
         LazyVGrid(
@@ -41,7 +45,7 @@ struct LocalLibraryList: View {
                     AsyncButtonView {
                         guard let url = await ZimFileService.shared
                             .getMainPageURL(zimFileID: zimFile.fileID) else { return }
-                        browser.load(url: url)
+                        load(url)
                     } label: {
                         ZimFileCell(zimFile, prominent: .name)
                     } loading: {
@@ -54,7 +58,7 @@ struct LocalLibraryList: View {
                 GridSection(title: LocalString.welcome_grid_bookmarks_title) {
                     ForEach(bookmarks.prefix(6)) { bookmark in
                         Button {
-                            browser.load(url: bookmark.articleURL)
+                            load(bookmark.articleURL)
                         } label: {
                             ArticleCell(bookmark: bookmark)
                         }

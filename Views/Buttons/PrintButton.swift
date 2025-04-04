@@ -18,21 +18,15 @@ import SwiftUI
 import PDFKit
 
 struct PrintButton: View {
-
-    @EnvironmentObject private var browser: BrowserViewModel
-
-    private func dataAndName() async -> (Data, String)? {
-        guard let browserURLName = browser.webView.url?.lastPathComponent else {
-            return nil
-        }
-        guard let pdfData = try? await browser.webView.pdf() else {
-            return nil
-        }
-        return (pdfData, browserURLName)
-    }
+    @FocusedValue(\.isBrowserURLSet) var isBrowserURLSet
+    /// browser.webView.url?.lastPathComponent
+    let browserURLName: () -> String?
+    /// browser.webView.pdf()
+    let browserDataAsPDF: () async throws -> Data?
 
     private func tempFileURL() async -> URL? {
-        guard let (pdfData, browserURLName) = await dataAndName() else { return nil }
+        guard let pdfData = try? await browserDataAsPDF(),
+              let browserURLName = browserURLName() else { return nil }
         return FileExporter.tempFileFrom(exportData: .init(data: pdfData, fileName: browserURLName))
     }
 
@@ -50,7 +44,7 @@ struct PrintButton: View {
             }  icon: {
                 Image(systemName: "printer")
             }
-        }.disabled(browser.zimFileName.isEmpty)
+        }.disabled(isBrowserURLSet != true)
         .keyboardShortcut("p", modifiers: .command)
     }
 }

@@ -17,7 +17,6 @@ import SwiftUI
 
 #if os(iOS)
 struct TabsManagerButton: View {
-    @EnvironmentObject private var browser: BrowserViewModel
     @EnvironmentObject private var navigation: NavigationViewModel
     @State private var presentedSheet: PresentedSheet?
 

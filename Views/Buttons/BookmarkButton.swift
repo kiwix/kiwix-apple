@@ -17,37 +17,40 @@ import SwiftUI
 
 struct BookmarkButton: View {
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
-    @EnvironmentObject private var browser: BrowserViewModel
     @State private var isShowingPopOver = false
+    let articleBookmarked: Bool
+    let isButtonDisabled: Bool
+    let createBookmark: () -> Void
+    let deleteBookmark: () -> Void
 
     var body: some View {
         #if os(macOS)
         Button {
-            if browser.articleBookmarked {
-                browser.deleteBookmark()
+            if articleBookmarked {
+                deleteBookmark()
             } else {
-                browser.createBookmark()
+                createBookmark()
             }
         } label: {
             Label {
-                Text(browser.articleBookmarked ?
+                Text(articleBookmarked ?
                      LocalString.common_dialog_button_remove_bookmark : LocalString.common_dialog_button_add_bookmark)
             } icon: {
-                Image(systemName: browser.articleBookmarked ? "star.fill" : "star")
-                    .renderingMode(browser.articleBookmarked ? .original : .template)
+                Image(systemName: articleBookmarked ? "star.fill" : "star")
+                    .renderingMode(articleBookmarked ? .original : .template)
             }
         }
         #elseif os(iOS)
         Menu {
-            if browser.articleBookmarked {
+            if articleBookmarked {
                 Button(role: .destructive) {
-                    browser.deleteBookmark()
+                    deleteBookmark()
                 } label: {
                     Label(LocalString.common_dialog_button_remove_bookmark, systemImage: "star.slash.fill")
                 }
             } else {
                 Button {
-                    browser.createBookmark()
+                    createBookmark()
                 } label: {
                     Label(LocalString.common_dialog_button_add_bookmark, systemImage: "star")
                 }
@@ -61,8 +64,8 @@ struct BookmarkButton: View {
             Label {
                 Text(LocalString.common_dialog_button_show_bookmarks)
             } icon: {
-                Image(systemName: browser.articleBookmarked ? "star.fill" : "star")
-                    .renderingMode(browser.articleBookmarked ? .original : .template)
+                Image(systemName: articleBookmarked ? "star.fill" : "star")
+                    .renderingMode(articleBookmarked ? .original : .template)
             }
         } primaryAction: {
             isShowingPopOver = true
@@ -80,23 +83,23 @@ struct BookmarkButton: View {
                     }
                     ToolbarItem(placement: .navigationBarTrailing) {
                         Button {
-                            if browser.articleBookmarked {
-                                browser.deleteBookmark()
+                            if articleBookmarked {
+                                deleteBookmark()
                             } else {
-                                browser.createBookmark()
+                                createBookmark()
                             }
                         } label: {
                             Label {
                                 Text(
-                                    browser.articleBookmarked ?
+                                    articleBookmarked ?
                                     LocalString.common_dialog_button_remove_bookmark :
                                         LocalString.common_dialog_button_add_bookmark
                                 )
                             } icon: {
-                                Image(systemName: browser.articleBookmarked ? "star.fill" : "star")
-                                    .renderingMode(browser.articleBookmarked ? .original : .template)
+                                Image(systemName: articleBookmarked ? "star.fill" : "star")
+                                    .renderingMode(articleBookmarked ? .original : .template)
                             }
-                        }.disabled(browser.url == nil)
+                        }.disabled(isButtonDisabled)
                     }
                 }
             }
