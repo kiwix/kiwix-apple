@@ -81,7 +81,17 @@ struct Kiwix: App {
             CommandGroup(after: .textEditing) {
                 Button(LocalString.common_search) {
                     isSearchFocused = true
-                }.keyboardShortcut("f", modifiers: [.command, .shift])
+                }
+                .keyboardShortcut("f", modifiers: [.command])
+                // intentional duplicate! When on reading tab with loaded webview content
+                // command + F will search the content itself
+                // therefore we want command + shift + F to trigger top bar ZIM file search
+                // The priority which one is picked is based on view tree hierarchy, see:
+                // https://developer.apple.com/documentation/swiftui/view/keyboardshortcut(_:)#discussion
+                Button(LocalString.common_search) {
+                    isSearchFocused = true
+                }
+                .keyboardShortcut("f", modifiers: [.command, .shift])
             }
             CommandGroup(replacing: .help) {}
         }
