@@ -36,6 +36,7 @@ struct Kiwix: App {
     private var amountSelected = PassthroughSubject<SelectedAmount?, Never>()
     @State private var selectedAmount: SelectedAmount?
     @StateObject var formReset = FormReset()
+    @FocusState private var isSearchFocused: Bool
 
     init() {
         UNUserNotificationCenter.current().delegate = notificationCenterDelegate
@@ -46,9 +47,10 @@ struct Kiwix: App {
 
     var body: some Scene {
         WindowGroup {
-            RootView()
+            RootView(isSearchFocused: $isSearchFocused)
                 .environment(\.managedObjectContext, Database.shared.viewContext)
                 .environmentObject(libraryRefreshViewModel)
+            
         }.commands {
             SidebarCommands()
             CommandGroup(replacing: .importExport) {
@@ -75,6 +77,11 @@ struct Kiwix: App {
                 Divider()
                 SidebarNavigationCommands()
                 Divider()
+            }
+            CommandGroup(after: .textEditing) {
+                Button(LocalString.common_search) {
+                    isSearchFocused = true
+                }.keyboardShortcut("f", modifiers: [.command, .shift])
             }
             CommandGroup(replacing: .help) {}
         }
@@ -174,6 +181,7 @@ struct RootView: View {
     @State private var currentNavItem: MenuItem?
     @StateObject private var windowTracker = WindowTracker()
     @State private var paymentButtonLabel: PayWithApplePayButtonLabel?
+    var isSearchFocused: FocusState<Bool>.Binding
 
     private let primaryItems: [MenuItem] = [.bookmarks]
     private let libraryItems: [MenuItem] = [.opened, .categories, .downloads, .new]
@@ -216,16 +224,22 @@ struct RootView: View {
                 LoadingDataView()
             case .tab(let tabID):
                 BrowserTab(tabID: tabID)
+                    .modifier(SearchFocused(isSearchFocused: isSearchFocused))
             case .bookmarks:
                 Bookmarks()
+                    .modifier(SearchFocused(isSearchFocused: isSearchFocused))
             case .opened:
                 ZimFilesOpened(dismiss: nil).modifier(LibraryZimFileDetailSidePanel())
             case .categories:
-                ZimFilesCategories(dismiss: nil).modifier(LibraryZimFileDetailSidePanel())
+                ZimFilesCategories(dismiss: nil)
+                    .modifier(LibraryZimFileDetailSidePanel())
+                    .modifier(SearchFocused(isSearchFocused: isSearchFocused))
             case .downloads:
                 ZimFilesDownloads(dismiss: nil).modifier(LibraryZimFileDetailSidePanel())
             case .new:
-                ZimFilesNew(dismiss: nil).modifier(LibraryZimFileDetailSidePanel())
+                ZimFilesNew(dismiss: nil)
+                    .modifier(LibraryZimFileDetailSidePanel())
+                    .modifier(SearchFocused(isSearchFocused: isSearchFocused))
             default:
                 EmptyView()
             }
