@@ -59,13 +59,13 @@ final class SidebarViewController: UICollectionViewController, NSFetchedResultsC
         static var allSections: [Section] {
             switch (FeatureFlags.hasLibrary, Brand.hideDonation) {
             case (true, true):
-                allCases.filter { [.donation].contains($0) }
+                allCases.filter { ![.donation].contains($0) }
             case (false, true):
-                allCases.filter { [.donation, .library].contains($0) }
+                allCases.filter { ![.donation, .library].contains($0) }
             case (true, false):
                 allCases
             case (false, false):
-                allCases.filter { [.library].contains($0) }
+                allCases.filter { ![.library].contains($0) }
             }
         }
     }
@@ -133,11 +133,15 @@ final class SidebarViewController: UICollectionViewController, NSFetchedResultsC
         // apply initial snapshot
         var snapshot = NSDiffableDataSourceSnapshot<Section, MenuItem>()
         snapshot.appendSections(Section.allSections)
-        snapshot.appendItems([.bookmarks], toSection: .primary)
+        if snapshot.sectionIdentifiers.contains(.primary) {
+            snapshot.appendItems([.bookmarks], toSection: .primary)
+        }
         if snapshot.sectionIdentifiers.contains(.library) {
             snapshot.appendItems([.opened, .categories, .downloads, .new], toSection: .library)
         }
-        snapshot.appendItems([.settings], toSection: .settings)
+        if snapshot.sectionIdentifiers.contains(.settings) {
+            snapshot.appendItems([.settings], toSection: .settings)
+        }
         if snapshot.sectionIdentifiers.contains(.donation) {
             snapshot.appendItems([.donation], toSection: .donation)
         }
@@ -239,6 +243,10 @@ final class SidebarViewController: UICollectionViewController, NSFetchedResultsC
     }
 
     private func configureHeader(headerView: UICollectionViewListCell, elementKind: String, indexPath: IndexPath) {
+        guard Section.allSections.indices.contains(indexPath.section) else {
+            headerView.contentConfiguration = nil
+            return
+        }
         let section = Section.allSections[indexPath.section]
         switch section {
         case .tabs:
