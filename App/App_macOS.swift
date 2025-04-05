@@ -253,6 +253,13 @@ struct RootView: View {
         .onChange(of: currentNavItem) { newValue in
             navigation.currentItem = newValue?.navigationItem
         }
+        .onChange(of: navigation.currentItem) { newValue in
+            guard let newValue else { return }
+            let navItem = MenuItem(from: newValue)
+            if currentNavItem != navItem {
+                currentNavItem = navItem
+            }
+        }
         .onOpenURL { url in
             if url.isFileURL {
                 // from opening an external file
