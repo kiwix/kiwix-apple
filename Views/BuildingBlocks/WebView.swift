@@ -122,7 +122,9 @@ final class WebViewController: UIViewController {
                 self?.topSafeAreaConstraint?.isActive = false
                 self?.view.topAnchor.constraint(equalTo: webView.topAnchor).isActive = true
             }
-        configureImmersiveReading()
+        if !Brand.disableImmersiveReading {
+            configureImmersiveReading()
+        }
     }
 
     override func viewDidLayoutSubviews() {

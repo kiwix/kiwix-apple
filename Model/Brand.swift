@@ -56,6 +56,11 @@ enum Brand {
     // if not set, we fall back to false, and display the support/donation button
     // for non Kiwix brands, it has no effect
     static let hideDonation: Bool = Config.value(for: .hideDonation) ?? false
+    
+    /// Some custom apps (eg: PhET) have a content that collides with immersive reading
+    /// we provide an optional way to turn this feature off.
+    /// Immersive reading remains enabled by default, unless declared otherwise.
+    static let disableImmersiveReading: Bool = Config.value(for: .disableImmersiveReading) ?? false
 
     static var defaultExternalLinkPolicy: ExternalLinkLoadingPolicy {
         guard let policyString: String = Config.value(for: .externalLinkDefaultPolicy),
@@ -87,6 +92,7 @@ enum Config: String {
     case aboutText = "CUSTOM_ABOUT_TEXT"
     case aboutWebsite = "CUSTOM_ABOUT_WEBSITE"
     case hideDonation = "HIDE_DONATION"
+    case disableImmersiveReading = "DISABLE_IMMERSIVE_READING"
 
     static func value<T>(for key: Config) -> T? where T: LosslessStringConvertible {
         guard let object = Bundle.main.object(forInfoDictionaryKey: key.rawValue) else {
