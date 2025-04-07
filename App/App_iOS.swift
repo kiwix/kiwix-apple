@@ -28,14 +28,15 @@ struct Kiwix: App {
     @StateObject private var navigation = NavigationViewModel()
     @UIApplicationDelegateAdaptor(AppDelegate.self) private var appDelegate
     private let fileMonitor: DirectoryMonitor
-    private let activityService: ActivityService?
+    let activityService: ActivityService?
     
     init() {
         fileMonitor = DirectoryMonitor(url: URL.documentDirectory) { LibraryOperations.scanDirectory($0) }
         // MARK: - live activities
         switch AppType.current {
         case .kiwix:
-            activityService = ActivityService.shared()
+            activityService = ActivityService()
+            appDelegate.activityService = activityService
         case .custom:
             activityService = nil
         }
@@ -44,7 +45,6 @@ struct Kiwix: App {
         if !ProcessInfo.processInfo.arguments.contains("testing") {
             _ = MigrationService().migrateAll()
         }
-        
     }
 
     var body: some Scene {
@@ -67,7 +67,7 @@ struct Kiwix: App {
                             library.start(isUserInitiated: false)
                         }
                     case .background:
-                        reScheduleBackgroundDownloadTask()
+                        break
                     @unknown default:
                         break
                     }
@@ -91,7 +91,9 @@ struct Kiwix: App {
                     case .kiwix:
                         fileMonitor.start()
                         await LibraryOperations.reopen()
-                        navigation.navigateToMostRecentTab()
+                        if navigation.currentItem != .downloads {
+                            navigation.navigateToMostRecentTab()
+                        }
                         LibraryOperations.scanDirectory(URL.documentDirectory)
                         LibraryOperations.applyFileBackupSetting()
                         DownloadService.shared.restartHeartbeatIfNeeded()
@@ -116,36 +118,11 @@ struct Kiwix: App {
                 PageZoomCommands()
             }
         }
-        .backgroundTask(.appRefresh(BackgroundDownloads.identifier)) { _ in
-            await reScheduleBackgroundDownloadTask()
-            await ActivityService.shared().forceUpdate()
-        }
-    }
-    
-    func reScheduleBackgroundDownloadTask() {
-        guard case .kiwix = AppType.current else { return }
-        do {
-            let date = BackgroundDownloads.nextDate()
-            let request = BGAppRefreshTaskRequest(identifier: BackgroundDownloads.identifier)
-            request.earliestBeginDate = date
-            os_log(
-                "BackgroundDownloads task re-scheduled for: %s",
-                log: Log.DownloadService,
-                type: .debug,
-                date.formatted()
-            )
-            try BGTaskScheduler.shared.submit(request)
-        } catch {
-            os_log(
-                "BackgroundDownloads re-schedule failed: %s",
-                log: Log.DownloadService,
-                type: .error,
-                error.localizedDescription
-            )
-        }
     }
 
-    private class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCenterDelegate {
+    private class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCenterDelegate, ObservableObject {
+        
+        weak var activityService: ActivityService?
         
         /// Storing background download completion handler sent to application delegate
         func application(_ application: UIApplication,
@@ -170,6 +147,10 @@ struct Kiwix: App {
         /// Purge some cached browser view models when receiving memory warning
         func applicationDidReceiveMemoryWarning(_ application: UIApplication) {
             BrowserViewModel.purgeCache()
+        }
+        
+        func applicationWillTerminate(_ application: UIApplication) {
+            activityService?.terminateLiveActivities()
         }
     }
 }
