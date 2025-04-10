@@ -19,13 +19,19 @@ enum CellBackground {
     #if os(macOS)
     private static let normal: Color = Color(nsColor: NSColor.controlBackgroundColor)
     private static let hover: Color = Color(nsColor: NSColor.selectedControlColor)
+    private static let selected: Color = Color(nsColor: NSColor.controlAccentColor)
+    private static let hoverSelected: Color = Color(nsColor: NSColor.controlAccentColor)
     #else
     private static let normal: Color = .secondaryBackground
     private static let hover: Color = .tertiaryBackground
     #endif
     
-    static func colorFor(isHovering: Bool) -> Color {
-        isHovering ? hover : normal
+    static func colorFor(isHovering: Bool, isSelected: Bool = false) -> Color {
+        if isSelected {
+            isHovering ? hoverSelected : selected
+        } else {
+            isHovering ? hover : normal
+        }
     }
     
     static let clipShapeRectangle = RoundedRectangle(cornerRadius: 12, style: .continuous)

@@ -27,6 +27,11 @@ struct ZimFilesOpened: View {
     @State private var isFileImporterPresented = false
     @EnvironmentObject private var viewModel: LibraryViewModel
     let dismiss: (() -> Void)? // iOS only
+    #if os(macOS)
+    private let allowsMultiSelect = true
+    #else
+    private let allowsMultiSelect = false
+    #endif
 
     var body: some View {
         LazyVGrid(
@@ -36,8 +41,15 @@ struct ZimFilesOpened: View {
         ) {
             ForEach(zimFiles) { zimFile in
                 LibraryZimFileContext(
-                    content: { ZimFileCell(zimFile, prominent: .name) },
+                    content: {
+                        ZimFileCell(
+                            zimFile,
+                            prominent: .name,
+                            isSelected: viewModel.multiSelectedZimFiles.contains(zimFile)
+                        )
+                    },
                     zimFile: zimFile,
+                    allowMultiSelection: allowsMultiSelect,
                     dismiss: dismiss)
             }
         }
@@ -50,7 +62,11 @@ struct ZimFilesOpened: View {
             }
         }
         .onChange(of: zimFiles.count) { _ in
-            viewModel.selectedZimFile = zimFiles.first // makes sure we also nil out, if all ZIMs were unlinked 
+            viewModel.selectedZimFile = zimFiles.first // makes sure we also nil out, if all ZIMs were unlinked
+            viewModel.multiSelectedZimFiles.removeAll()
+        }
+        .onDisappear {
+            viewModel.multiSelectedZimFiles.removeAll()
         }
         // not using OpenFileButton here, because it does not work on iOS/iPadOS 15 when this view is in a modal
         .fileImporter(

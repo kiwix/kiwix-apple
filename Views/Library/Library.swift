@@ -126,25 +126,41 @@ struct LibraryZimFileContext<Content: View>: View {
     private let zimFile: ZimFile
     /// iOS only
     private let dismiss: (() -> Void)?
+    private let allowMultiSelection: Bool
+    /// macOS only
+    @State private var isPresentingUnlinkAllAlert: Bool = false
     
     init(
         @ViewBuilder content: () -> Content,
         zimFile: ZimFile,
+        allowMultiSelection: Bool = false,
         dismiss: (() -> Void)? = nil
     ) {
         self.content = content()
         self.zimFile = zimFile
+        self.allowMultiSelection = allowMultiSelection
         self.dismiss = dismiss
     }
     
     var body: some View {
         Group {
 #if os(macOS)
-            Button {
-                viewModel.selectedZimFile = zimFile
-            } label: {
+            if allowMultiSelection {
                 content
-            }.buttonStyle(.plain)
+                    .gesture(TapGesture().modifiers(.command).onEnded({ value in
+                        viewModel.toggleMultiSelect(of: zimFile)
+                        if viewModel.multiSelectedZimFiles.count > 0 {
+                            viewModel.selectedZimFile = nil
+                        }
+                    }))
+                    .gesture(TapGesture().onEnded({ _ in
+                        viewModel.selectedZimFile = zimFile
+                    }))
+            } else {
+                content.onTapGesture {
+                    viewModel.selectedZimFile = zimFile
+                }
+            }
 #elseif os(iOS)
             NavigationLink {
                 ZimFileDetail(zimFile: zimFile, dismissParent: dismiss)
@@ -159,7 +175,31 @@ struct LibraryZimFileContext<Content: View>: View {
             if let downloadURL = zimFile.downloadURL {
                 Section { CopyPasteMenu(downloadURL: downloadURL) }
             }
+            #if os(macOS)
+            if allowMultiSelection, viewModel.multiSelectedZimFiles.count > 0 {
+                Section {
+                    Button {
+                        isPresentingUnlinkAllAlert = true
+                    } label: {
+                        Text("Unlink \(viewModel.multiSelectedZimFiles.count) zimFile")
+                    }
+                }
+            }
+            #endif
+        }
+        .alert(isPresented: $isPresentingUnlinkAllAlert) {
+            Alert(
+                title: Text(LocalString.zim_file_action_unlink_title + " " + "\(viewModel.multiSelectedZimFiles.count)"),
+                message: Text(LocalString.zim_file_action_unlink_message),
+                primaryButton: .destructive(Text(LocalString.zim_file_action_unlink_button_title)) {
+                    Task {
+                        for zimFile in viewModel.multiSelectedZimFiles {
+                            await LibraryOperations.unlink(zimFileID: zimFile.fileID)
+                        }
+                    }
+                },
+                secondaryButton: .cancel()
+            )
         }
     }
-    
 }
