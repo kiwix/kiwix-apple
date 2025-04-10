@@ -43,28 +43,31 @@ enum LibraryState {
     }
 }
 
+final class LibraryMultiSelectViewModel: ObservableObject {
+    @Published private(set) var selectedZimFiles = Set<ZimFile>()
+    
+    @MainActor
+    func toggleMultiSelect(of zimFile: ZimFile) {
+        if selectedZimFiles.contains(zimFile) {
+            selectedZimFiles.remove(zimFile)
+        } else {
+            selectedZimFiles.insert(zimFile)
+        }
+    }
+    
+    @MainActor
+    func singleSelect(zimFile: ZimFile) {
+        selectedZimFiles = Set([zimFile])
+    }
+    
+    @MainActor
+    func resetSelection() {
+        selectedZimFiles.removeAll()
+    }
+}
+
 final class LibraryViewModel: ObservableObject {
-    @Published var selectedZimFile: ZimFile? {
-        didSet {
-            if let selectedZimFile {
-                multiSelectedZimFiles = Set([selectedZimFile])
-            } else {
-                multiSelectedZimFiles.removeAll()
-            }
-        }
-    }
-    @Published var multiSelectedZimFiles = Set<ZimFile>() {
-        didSet {
-            switch multiSelectedZimFiles.count {
-            case 0 where selectedZimFile != nil:
-                selectedZimFile = nil
-            case 1 where selectedZimFile == nil:
-                selectedZimFile = multiSelectedZimFiles.first
-            default:
-                break
-            }
-        }
-    }
+    @Published var selectedZimFile: ZimFile?
     @MainActor @Published private(set) var error: Error?
     /// Note: due to multiple instances of LibraryViewModel,
     /// this `state` should not be changed directly, modify the `process.state` instead
@@ -99,15 +102,6 @@ final class LibraryViewModel: ObservableObject {
 
     func start(isUserInitiated: Bool) {
         Task { await start(isUserInitiated: isUserInitiated) }
-    }
-    
-    @MainActor
-    func toggleMultiSelect(of zimFile: ZimFile) {
-        if multiSelectedZimFiles.contains(zimFile) {
-            multiSelectedZimFiles.remove(zimFile)
-        } else {
-            multiSelectedZimFiles.insert(zimFile)
-        }
     }
 
     @MainActor

@@ -341,7 +341,7 @@ private struct DownloadTaskDetail: View {
     }
 }
 
-private struct Action: View {
+struct Action: View {
     let title: String
     let isDestructive: Bool
     let action: @MainActor () async -> Void

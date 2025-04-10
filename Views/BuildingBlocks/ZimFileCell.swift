@@ -24,6 +24,7 @@ struct ZimFileCell: View {
 
     let prominent: Prominent
 
+    // TODO: change isSelected to be mandatory
     init(_ zimFile: ZimFile, prominent: Prominent, isLoading: Bool = false, isSelected: Bool = false) {
         self.zimFile = zimFile
         self.prominent = prominent

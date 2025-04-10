@@ -182,6 +182,7 @@ struct RootView: View {
     @State private var currentNavItem: MenuItem?
     @StateObject private var windowTracker = WindowTracker()
     @State private var paymentButtonLabel: PayWithApplePayButtonLabel?
+    @StateObject private var multiSelection = LibraryMultiSelectViewModel()
     var isSearchFocused: FocusState<Bool>.Binding
 
     private let primaryItems: [MenuItem] = [.bookmarks]
@@ -230,7 +231,9 @@ struct RootView: View {
                 Bookmarks()
                     .modifier(SearchFocused(isSearchFocused: isSearchFocused))
             case .opened:
-                ZimFilesOpened(dismiss: nil).modifier(LibraryZimFileDetailSidePanel())
+                ZimFilesOpened(dismiss: nil)
+                    .environmentObject(multiSelection)
+                    .modifier(LibraryZimFileMultiSelectDetailSidePanel(viewModel: multiSelection))
             case .categories:
                 ZimFilesCategories(dismiss: nil)
                     .modifier(LibraryZimFileDetailSidePanel())

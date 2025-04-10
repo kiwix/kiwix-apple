@@ -95,6 +95,48 @@ struct Library_Previews: PreviewProvider {
 #elseif os(macOS)
 
 /// On macOS, adds a panel to the right of the modified view to show zim file detail.
+struct LibraryZimFileMultiSelectDetailSidePanel: ViewModifier {
+    @ObservedObject var viewModel: LibraryMultiSelectViewModel
+    @State private var isPresentingUnlinkAlert: Bool = false
+
+    func body(content: Content) -> some View {
+        VStack(spacing: 0) {
+            Divider()
+            content.safeAreaInset(edge: .trailing, spacing: 0) {
+                HStack(spacing: 0) {
+                    Divider()
+                    switch viewModel.selectedZimFiles.count {
+                    case 0:
+                        Message(text: LocalString.library_zim_file_details_side_panel_message)
+                            .background(.thickMaterial)
+                    case 1:
+                        ZimFileDetail(zimFile: viewModel.selectedZimFiles.first!, dismissParent: nil)
+                    default:
+                        Action(title: LocalString.zim_file_action_unlink_title, isDestructive: true) {
+                            isPresentingUnlinkAlert = true
+                        }.alert(isPresented: $isPresentingUnlinkAlert) {
+                            Alert(
+                                title: Text(LocalString.zim_file_action_unlink_title + " " + "\(viewModel.selectedZimFiles.count)"),
+                                message: Text(LocalString.zim_file_action_unlink_message),
+                                primaryButton: .destructive(Text(LocalString.zim_file_action_unlink_button_title)) {
+                                    Task {
+                                        for zimFile in viewModel.selectedZimFiles {
+                                            await LibraryOperations.unlink(zimFileID: zimFile.fileID)
+                                        }
+                                    }
+                                },
+                                secondaryButton: .cancel()
+                            )
+                        }
+                    }
+                }.frame(width: 275).background(.ultraThinMaterial)
+            }
+        }.onAppear { viewModel.resetSelection() }
+    }
+}
+
+
+/// On macOS, adds a panel to the right of the modified view to show zim file detail.
 struct LibraryZimFileDetailSidePanel: ViewModifier {
     @EnvironmentObject private var viewModel: LibraryViewModel
 
@@ -126,32 +168,31 @@ struct LibraryZimFileContext<Content: View>: View {
     private let zimFile: ZimFile
     /// iOS only
     private let dismiss: (() -> Void)?
-    private let allowMultiSelection: Bool
     /// macOS only
-    @State private var isPresentingUnlinkAllAlert: Bool = false
+    private let onMultiSelected: ((Bool) -> Void)?
     
     init(
         @ViewBuilder content: () -> Content,
         zimFile: ZimFile,
-        allowMultiSelection: Bool = false,
+        onMultiSelected: ((Bool) -> Void)? = nil,
         dismiss: (() -> Void)? = nil
     ) {
         self.content = content()
         self.zimFile = zimFile
-        self.allowMultiSelection = allowMultiSelection
+        self.onMultiSelected = onMultiSelected
         self.dismiss = dismiss
     }
     
     var body: some View {
         Group {
 #if os(macOS)
-            if allowMultiSelection {
+            if let onMultiSelected {
                 content
                     .gesture(TapGesture().modifiers(.command).onEnded({ value in
-                        viewModel.toggleMultiSelect(of: zimFile)
+                        onMultiSelected(true)
                     }))
                     .gesture(TapGesture().onEnded({ _ in
-                        viewModel.selectedZimFile = zimFile
+                        onMultiSelected(false)
                     }))
             } else {
                 content.onTapGesture {
@@ -172,31 +213,6 @@ struct LibraryZimFileContext<Content: View>: View {
             if let downloadURL = zimFile.downloadURL {
                 Section { CopyPasteMenu(downloadURL: downloadURL) }
             }
-            #if os(macOS)
-            if allowMultiSelection, viewModel.multiSelectedZimFiles.count > 0 {
-                Section {
-                    Button {
-                        isPresentingUnlinkAllAlert = true
-                    } label: {
-                        Text("Unlink \(viewModel.multiSelectedZimFiles.count) zimFile")
-                    }
-                }
-            }
-            #endif
-        }
-        .alert(isPresented: $isPresentingUnlinkAllAlert) {
-            Alert(
-                title: Text(LocalString.zim_file_action_unlink_title + " " + "\(viewModel.multiSelectedZimFiles.count)"),
-                message: Text(LocalString.zim_file_action_unlink_message),
-                primaryButton: .destructive(Text(LocalString.zim_file_action_unlink_button_title)) {
-                    Task {
-                        for zimFile in viewModel.multiSelectedZimFiles {
-                            await LibraryOperations.unlink(zimFileID: zimFile.fileID)
-                        }
-                    }
-                },
-                secondaryButton: .cancel()
-            )
         }
     }
 }

@@ -19,8 +19,8 @@ enum CellBackground {
     #if os(macOS)
     private static let normal: Color = Color(nsColor: NSColor.controlBackgroundColor)
     private static let hover: Color = Color(nsColor: NSColor.selectedControlColor)
-    private static let selected: Color = Color(nsColor: NSColor.controlAccentColor)
-    private static let hoverSelected: Color = Color(nsColor: NSColor.controlAccentColor)
+    private static let selected: Color = Color(nsColor: NSColor.selectedControlColor)
+    private static let hoverSelected: Color = Color(nsColor: NSColor.selectedControlColor)
     #else
     private static let normal: Color = .secondaryBackground
     private static let hover: Color = .tertiaryBackground
