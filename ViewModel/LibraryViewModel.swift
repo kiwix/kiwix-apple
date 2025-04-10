@@ -44,8 +44,27 @@ enum LibraryState {
 }
 
 final class LibraryViewModel: ObservableObject {
-    @Published var selectedZimFile: ZimFile?
-    @Published var multiSelectedZimFiles = Set<ZimFile>()
+    @Published var selectedZimFile: ZimFile? {
+        didSet {
+            if let selectedZimFile {
+                multiSelectedZimFiles = Set([selectedZimFile])
+            } else {
+                multiSelectedZimFiles.removeAll()
+            }
+        }
+    }
+    @Published var multiSelectedZimFiles = Set<ZimFile>() {
+        didSet {
+            switch multiSelectedZimFiles.count {
+            case 0 where selectedZimFile != nil:
+                selectedZimFile = nil
+            case 1 where selectedZimFile == nil:
+                selectedZimFile = multiSelectedZimFiles.first
+            default:
+                break
+            }
+        }
+    }
     @MainActor @Published private(set) var error: Error?
     /// Note: due to multiple instances of LibraryViewModel,
     /// this `state` should not be changed directly, modify the `process.state` instead

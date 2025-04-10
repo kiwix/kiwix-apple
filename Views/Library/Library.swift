@@ -149,9 +149,6 @@ struct LibraryZimFileContext<Content: View>: View {
                 content
                     .gesture(TapGesture().modifiers(.command).onEnded({ value in
                         viewModel.toggleMultiSelect(of: zimFile)
-                        if viewModel.multiSelectedZimFiles.count > 0 {
-                            viewModel.selectedZimFile = nil
-                        }
                     }))
                     .gesture(TapGesture().onEnded({ _ in
                         viewModel.selectedZimFile = zimFile

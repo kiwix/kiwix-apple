@@ -63,10 +63,6 @@ struct ZimFilesOpened: View {
         }
         .onChange(of: zimFiles.count) { _ in
             viewModel.selectedZimFile = zimFiles.first // makes sure we also nil out, if all ZIMs were unlinked
-            viewModel.multiSelectedZimFiles.removeAll()
-        }
-        .onDisappear {
-            viewModel.multiSelectedZimFiles.removeAll()
         }
         // not using OpenFileButton here, because it does not work on iOS/iPadOS 15 when this view is in a modal
         .fileImporter(
