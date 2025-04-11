@@ -30,12 +30,26 @@ struct ContentSearchBar: View {
 
     var body: some View {
         if isActivated {
-            field
-                .focused($focusedState)
+            if #available(macOS 14.0, *) {
+                field
+                    .focused($focusedState)
+                    .onKeyPress(.escape) {
+                        dismiss()
+                        return .handled
+                    }
+            } else {
+                field
+                    .focused($focusedState)
+            }
         } else {
             button
-                .keyboardShortcut("f")
+                .keyboardShortcut("f", modifiers: .command)
         }
+    }
+    
+    private func dismiss() {
+        viewModel.reset()
+        isActivated = false
     }
 
     private var button: some View {
@@ -93,8 +107,7 @@ struct ContentSearchBar: View {
 
     private var closeButton: some View {
         Button {
-            viewModel.reset()
-            isActivated = false
+            dismiss()
         } label: {
             Image(systemName: "xmark.circle.fill").foregroundColor(.primary)
         }

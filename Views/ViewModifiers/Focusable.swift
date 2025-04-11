@@ -31,7 +31,7 @@ struct Focusable<Value: Hashable>: ViewModifier {
     private let value: Value
     private let focusState: FocusState<Value>.Binding
     private let onReturn: () -> Void
-    private let onDissmiss: () -> Void
+    private let onDismiss: () -> Void
     
     init(
         _ binding: FocusState<Value>.Binding,
@@ -42,7 +42,7 @@ struct Focusable<Value: Hashable>: ViewModifier {
         self.focusState = binding
         self.value = value
         self.onReturn = onReturn
-        self.onDissmiss = onDismiss
+        self.onDismiss = onDismiss
     }
     
     func body(content: Content) -> some View {
@@ -55,7 +55,7 @@ struct Focusable<Value: Hashable>: ViewModifier {
                 onReturn()
             }))
             .modifier(KeyPressHandler(key: .escape, action: {
-                onDissmiss()
+                onDismiss()
             }))
         #else
         content

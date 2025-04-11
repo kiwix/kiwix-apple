@@ -36,6 +36,7 @@ struct Kiwix: App {
     private var amountSelected = PassthroughSubject<SelectedAmount?, Never>()
     @State private var selectedAmount: SelectedAmount?
     @StateObject var formReset = FormReset()
+    @FocusState private var isSearchFocused: Bool
 
     init() {
         UNUserNotificationCenter.current().delegate = notificationCenterDelegate
@@ -46,9 +47,10 @@ struct Kiwix: App {
 
     var body: some Scene {
         WindowGroup {
-            RootView()
+            RootView(isSearchFocused: $isSearchFocused)
                 .environment(\.managedObjectContext, Database.shared.viewContext)
                 .environmentObject(libraryRefreshViewModel)
+            
         }.commands {
             SidebarCommands()
             CommandGroup(replacing: .importExport) {
@@ -75,6 +77,21 @@ struct Kiwix: App {
                 Divider()
                 SidebarNavigationCommands()
                 Divider()
+            }
+            CommandGroup(after: .textEditing) {
+                Button(LocalString.common_search) {
+                    isSearchFocused = true
+                }
+                .keyboardShortcut("f", modifiers: [.command])
+                // intentional duplicate! When on reading tab with loaded webview content
+                // command + F will search the content itself
+                // therefore we want command + shift + F to trigger top bar ZIM file search
+                // The priority which one is picked is based on view tree hierarchy, see:
+                // https://developer.apple.com/documentation/swiftui/view/keyboardshortcut(_:)#discussion
+                Button(LocalString.common_search) {
+                    isSearchFocused = true
+                }
+                .keyboardShortcut("f", modifiers: [.command, .shift])
             }
             CommandGroup(replacing: .help) {}
         }
@@ -174,6 +191,7 @@ struct RootView: View {
     @State private var currentNavItem: MenuItem?
     @StateObject private var windowTracker = WindowTracker()
     @State private var paymentButtonLabel: PayWithApplePayButtonLabel?
+    var isSearchFocused: FocusState<Bool>.Binding
 
     private let primaryItems: [MenuItem] = [.bookmarks]
     private let libraryItems: [MenuItem] = [.opened, .categories, .downloads, .new]
@@ -216,16 +234,22 @@ struct RootView: View {
                 LoadingDataView()
             case .tab(let tabID):
                 BrowserTab(tabID: tabID)
+                    .modifier(SearchFocused(isSearchFocused: isSearchFocused))
             case .bookmarks:
                 Bookmarks()
+                    .modifier(SearchFocused(isSearchFocused: isSearchFocused))
             case .opened:
                 ZimFilesOpened(dismiss: nil).modifier(LibraryZimFileDetailSidePanel())
             case .categories:
-                ZimFilesCategories(dismiss: nil).modifier(LibraryZimFileDetailSidePanel())
+                ZimFilesCategories(dismiss: nil)
+                    .modifier(LibraryZimFileDetailSidePanel())
+                    .modifier(SearchFocused(isSearchFocused: isSearchFocused))
             case .downloads:
                 ZimFilesDownloads(dismiss: nil).modifier(LibraryZimFileDetailSidePanel())
             case .new:
-                ZimFilesNew(dismiss: nil).modifier(LibraryZimFileDetailSidePanel())
+                ZimFilesNew(dismiss: nil)
+                    .modifier(LibraryZimFileDetailSidePanel())
+                    .modifier(SearchFocused(isSearchFocused: isSearchFocused))
             default:
                 EmptyView()
             }
@@ -238,6 +262,13 @@ struct RootView: View {
         .environmentObject(navigation)
         .onChange(of: currentNavItem) { newValue in
             navigation.currentItem = newValue?.navigationItem
+        }
+        .onChange(of: navigation.currentItem) { newValue in
+            guard let newValue else { return }
+            let navItem = MenuItem(from: newValue)
+            if currentNavItem != navItem {
+                currentNavItem = navItem
+            }
         }
         .onOpenURL { url in
             if url.isFileURL {
@@ -345,28 +376,6 @@ struct RootView: View {
             windowTracker?.current = hostWindow
         }
     }
-}
-
-// MARK: helpers to capture the window
-
-extension View {
-    func withHostingWindow(_ callback: @escaping (NSWindow?) -> Void) -> some View {
-        self.background(HostingWindowFinder(callback: callback))
-    }
-}
-
-struct HostingWindowFinder: NSViewRepresentable {
-    typealias NSViewType = NSView
-    var callback: (NSWindow?) -> Void
-    func makeNSView(context: Context) -> NSView {
-        let view = NSView()
-        Task { @MainActor [weak view] in
-            self.callback(view?.window)
-        }
-        return view
-    }
-
-    func updateNSView(_ nsView: NSView, context: Context) {}
 }
 
 #endif
