@@ -25,20 +25,8 @@ struct ZimFilesOpened: View {
         animation: .easeInOut
     ) private var zimFiles: FetchedResults<ZimFile>
     @State private var isFileImporterPresented = false
-    @EnvironmentObject private var viewModel: LibraryViewModel
+    @EnvironmentObject private var viewModel: SelectedZimFileViewModel
     let dismiss: (() -> Void)? // iOS only
-    
-    #if os(macOS)
-    @EnvironmentObject private var multiSelectViewModel: LibraryMultiSelectViewModel
-    #endif
-    
-    private func isSelected(_ zimFile: ZimFile) -> Bool {
-#if os(macOS)
-        multiSelectViewModel.selectedZimFiles.contains(zimFile)
-#else
-        viewModel.selectedZimFile == zimFile
-#endif
-    }
 
     var body: some View {
         LazyVGrid(
@@ -47,24 +35,24 @@ struct ZimFilesOpened: View {
             spacing: 12
         ) {
             ForEach(zimFiles) { zimFile in
-                #if os(macOS)
-                let multiSelected = { [zimFile] isMulti in
-                    if isMulti {
-                        multiSelectViewModel.toggleMultiSelect(of: zimFile)
-                    } else {
-                        multiSelectViewModel.singleSelect(zimFile: zimFile)
+                let multiSelected: ((Bool) -> Void)? = if viewModel.isMultiSelection {
+                    { [zimFile] isSelectionMulti in
+                        if isSelectionMulti {
+                            viewModel.toggleMultiSelect(of: zimFile)
+                        } else {
+                            viewModel.singleSelect(zimFile: zimFile)
+                        }
                     }
+                } else {
+                    nil
                 }
-                #else
-                let multiSelected = nil
-                #endif
                 
                 LibraryZimFileContext(
                     content: {
                         ZimFileCell(
                             zimFile,
                             prominent: .name,
-                            isSelected: isSelected(zimFile)
+                            isSelected: viewModel.isSelected(zimFile)
                         )
                     },
                     zimFile: zimFile,
@@ -81,14 +69,11 @@ struct ZimFilesOpened: View {
             }
         }
         .onChange(of: zimFiles.count) { _ in
-            viewModel.selectedZimFile = zimFiles.first // makes sure we also nil out, if all ZIMs were unlinked
-            #if os(macOS)
             if let firstZimFile = zimFiles.first {
-                multiSelectViewModel.singleSelect(zimFile: firstZimFile)
+                viewModel.singleSelect(zimFile: firstZimFile)
             } else {
-                multiSelectViewModel.resetSelection()
+                viewModel.resetSelection()
             }
-            #endif
         }
         // not using OpenFileButton here, because it does not work on iOS/iPadOS 15 when this view is in a modal
         .fileImporter(
