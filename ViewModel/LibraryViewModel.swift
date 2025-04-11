@@ -43,6 +43,46 @@ enum LibraryState {
     }
 }
 
+@MainActor
+final class SelectedZimFileViewModel: ObservableObject {
+    let isMultiSelection: Bool
+    @Published private(set) var selectedZimFile: ZimFile?
+    @Published private(set) var selectedZimFiles = Set<ZimFile>()
+    
+    init(isMultiSelection: Bool) {
+        self.isMultiSelection = isMultiSelection
+    }
+    
+    func toggleMultiSelect(of zimFile: ZimFile) {
+        guard isMultiSelection else { return }
+        if selectedZimFiles.contains(zimFile) {
+            selectedZimFiles.remove(zimFile)
+        } else {
+            selectedZimFiles.insert(zimFile)
+        }
+    }
+    
+    func singleSelect(zimFile: ZimFile) {
+        guard isMultiSelection else {
+            selectedZimFile = zimFile
+            return
+        }
+        selectedZimFiles = Set([zimFile])
+    }
+    
+    func resetSelection() {
+        selectedZimFile = nil
+        selectedZimFiles.removeAll()
+    }
+    
+    func isSelected(_ zimFile: ZimFile) -> Bool {
+        guard isMultiSelection else {
+            return selectedZimFile == zimFile
+        }
+        return selectedZimFiles.contains(zimFile)
+    }
+}
+
 final class LibraryMultiSelectViewModel: ObservableObject {
     @Published private(set) var selectedZimFiles = Set<ZimFile>()
     
