@@ -151,7 +151,10 @@ struct DetailSidePanel<Content: View>: View {
                     }
                 }.frame(width: 275).background(.ultraThinMaterial)
             }
-        }.environmentObject(selection)
+        }
+        // !important, otherwise the wrapped contentView
+        // won't get the selection dependency
+        .environmentObject(selection)
     }
 }
 
@@ -188,19 +191,6 @@ struct MultiZimFilesOpenedContext<Content: View>: View {
     }
 }
 #endif
-
-struct ZimFileContextMenu: View {
-    let zimFile: ZimFile
-    
-    var body: some View {
-        if zimFile.fileURLBookmark != nil, !zimFile.isMissing {
-            Section { ArticleActions(zimFileID: zimFile.fileID) }
-        }
-        if let downloadURL = zimFile.downloadURL {
-            Section { CopyPasteMenu(downloadURL: downloadURL) }
-        }
-    }
-}
 
 /// On macOS, makes the content view clickable, to select a single ZIM file
 /// On iOS, converts the modified view to a NavigationLink that goes to the zim file detail.
