@@ -112,8 +112,8 @@ struct MultiZimFilesDetail: View {
                     isPresentingUnlinkAlert = true
                 }.alert(isPresented: $isPresentingUnlinkAlert) {
                     Alert(
-                        title: Text(LocalString.zim_file_action_unlink_title + " " + "\(zimFiles.count)"),
-                        message: Text(LocalString.zim_file_action_unlink_message),
+                        title: Text(LocalString.zim_file_action_unlink_multi_title(withArgs: zimFiles.count)),
+                        message: Text(LocalString.zim_file_action_unlink_multi_message(withArgs: zimFiles.count)),
                         primaryButton: .destructive(Text(LocalString.zim_file_action_unlink_button_title)) {
                             Task {
                                 for zimFile in zimFiles {
