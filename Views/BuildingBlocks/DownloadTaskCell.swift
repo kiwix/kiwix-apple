@@ -1,5 +1,5 @@
 /*
-65;6800;1c * This file is part of Kiwix for iOS & macOS.
+ * This file is part of Kiwix for iOS & macOS.
  *
  * Kiwix is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by
@@ -20,6 +20,7 @@ import SwiftUI
 import Combine
 
 struct DownloadTaskCell: View {
+    @EnvironmentObject var selection: SelectedZimFileViewModel
     @State private var isHovering: Bool = false
     @State private var downloadState = DownloadState(downloaded: 0, total: 1, resumeData: nil)
 
@@ -63,7 +64,12 @@ struct DownloadTaskCell: View {
             }.font(.caption).foregroundColor(.secondary)
         }
         .padding()
-        .background(CellBackground.colorFor(isHovering: isHovering))
+        .background(
+            CellBackground.colorFor(
+                isHovering: isHovering,
+                isSelected: selection.isSelected(downloadZimFile)
+            )
+        )
         .clipShape(CellBackground.clipShapeRectangle)
         .onHover { self.isHovering = $0 }
         .onReceive(DownloadService.shared.progress.publisher) { states in

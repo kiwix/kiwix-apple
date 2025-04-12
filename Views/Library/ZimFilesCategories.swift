@@ -141,7 +141,13 @@ private struct CategoryGrid: View {
                         if sections.count <= 1 {
                             ForEach(section) { zimFile in
                                 LibraryZimFileContext(
-                                    content: { ZimFileCell(zimFile, prominent: .size) },
+                                    content: {
+                                        ZimFileCell(
+                                            zimFile,
+                                            prominent: .size,
+                                            isSelected: selection.isSelected(zimFile)
+                                        )
+                                    },
                                     zimFile: zimFile,
                                     selection: selection,
                                     dismiss: dismiss)
@@ -150,7 +156,12 @@ private struct CategoryGrid: View {
                             Section {
                                 ForEach(section) { zimFile in
                                     LibraryZimFileContext(
-                                        content: { ZimFileCell(zimFile, prominent: .size) },
+                                        content: { ZimFileCell(
+                                            zimFile,
+                                            prominent: .size,
+                                            isSelected: selection.isSelected(zimFile)
+                                        )
+                                        },
                                         zimFile: zimFile,
                                         selection: selection,
                                         dismiss: dismiss)

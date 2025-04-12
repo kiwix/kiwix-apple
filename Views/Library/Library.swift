@@ -131,16 +131,16 @@ struct MultiZimFilesDetail: View {
 
 struct DetailSidePanel<Content: View>: View {
     @StateObject private var selection = SelectedZimFileViewModel()
-    private let contentView: (SelectedZimFileViewModel) -> Content
+    private let contentView: () -> Content
     
-    init(@ViewBuilder content: @escaping (SelectedZimFileViewModel) -> Content) {
+    init(@ViewBuilder content: @escaping () -> Content) {
         contentView = content
     }
     
     var body: some View {
         VStack(spacing: 0) {
             Divider()
-            contentView(selection).safeAreaInset(edge: .trailing, spacing: 0) {
+            contentView().safeAreaInset(edge: .trailing, spacing: 0) {
                 HStack(spacing: 0) {
                     Divider()
                     if let zimFile = selection.selectedZimFile {
@@ -151,7 +151,7 @@ struct DetailSidePanel<Content: View>: View {
                     }
                 }.frame(width: 275).background(.ultraThinMaterial)
             }
-        }
+        }.environmentObject(selection)
     }
 }
 

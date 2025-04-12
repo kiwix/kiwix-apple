@@ -113,7 +113,11 @@ struct ZimFilesNew: View {
             ForEach(viewModel.zimFiles, id: \.fileID) { zimFile in
                 LibraryZimFileContext(
                     content: {
-                        ZimFileCell(zimFile, prominent: .name)
+                        ZimFileCell(
+                            zimFile,
+                            prominent: .name,
+                            isSelected: selection.isSelected(zimFile)
+                        )
                     },
                     zimFile: zimFile,
                     selection: selection,

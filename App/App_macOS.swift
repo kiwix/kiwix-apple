@@ -236,23 +236,11 @@ struct RootView: View {
             case .opened:
                 MultiZimFilesOpened()
             case .categories:
-<<<<<<< HEAD
-                ZimFilesCategories(dismiss: nil)
-                    .modifier(LibraryZimFileDetailSidePanel())
-                    .modifier(SearchFocused(isSearchFocused: isSearchFocused))
-=======
-                DetailSidePanel(content: { selection in ZimFilesCategories(dismiss: nil).environmentObject(selection) })
->>>>>>> 1f496b8e (Make selection tab scoped)
+                DetailSidePanel(content: { ZimFilesCategories(dismiss: nil) })
             case .downloads:
-                DetailSidePanel(content: { selection in ZimFilesDownloads(dismiss: nil).environmentObject(selection) })
+                DetailSidePanel(content: { ZimFilesDownloads(dismiss: nil) })
             case .new:
-<<<<<<< HEAD
-                ZimFilesNew(dismiss: nil)
-                    .modifier(LibraryZimFileDetailSidePanel())
-                    .modifier(SearchFocused(isSearchFocused: isSearchFocused))
-=======
-                DetailSidePanel(content: { selection in ZimFilesNew(dismiss: nil).environmentObject(selection) })
->>>>>>> 1f496b8e (Make selection tab scoped)
+                DetailSidePanel(content: { ZimFilesNew(dismiss: nil) })
             default:
                 EmptyView()
             }
