@@ -47,9 +47,9 @@ struct LocalLibraryList: View {
                             .getMainPageURL(zimFileID: zimFile.fileID) else { return }
                         load(url)
                     } label: {
-                        ZimFileCell(zimFile, prominent: .name)
+                        ZimFileCell(zimFile, prominent: .name, isSelected: false)
                     } loading: {
-                        ZimFileCell(zimFile, prominent: .name, isLoading: true)
+                        ZimFileCell(zimFile, prominent: .name, isSelected: true, isLoading: true)
                     }
                     .buttonStyle(.plain)
                 }
