@@ -27,8 +27,6 @@ struct ZimFilesOpened: View {
         animation: .easeInOut
     ) private var zimFiles: FetchedResults<ZimFile>
     @State private var isFileImporterPresented = false
-    // TODO: try this out with a StateObject from this level,
-    // maybe we don't need to reset it then
     @EnvironmentObject var selection: SelectedZimFileViewModel
     let dismiss: (() -> Void)? // iOS only
 
