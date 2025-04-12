@@ -26,7 +26,7 @@ struct MultiZimFilesOpened: View {
         animation: .easeInOut
     ) private var zimFiles: FetchedResults<ZimFile>
     @State private var isFileImporterPresented = false
-    @StateObject var selection: MultiSelectedZimFilesViewModel
+    @StateObject private var selection = MultiSelectedZimFilesViewModel()
 
     var body: some View {
         VStack(spacing: 0) {

@@ -230,7 +230,7 @@ struct RootView: View {
                 Bookmarks()
                     .modifier(SearchFocused(isSearchFocused: isSearchFocused))
             case .opened:
-                MultiZimFilesOpened(selection: MultiSelectedZimFilesViewModel())
+                MultiZimFilesOpened()
             case .categories:
                 ZimFilesCategories(dismiss: nil)
                     .modifier(LibraryZimFileDetailSidePanel())
