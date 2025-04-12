@@ -44,6 +44,14 @@ struct ContentSearchBar: View {
         } else {
             button
                 .keyboardShortcut("f", modifiers: .command)
+            /// special hidden button to trigger the top bar zim file search with cmd+shift+F
+            Button {
+                NotificationCenter.default.post(name: .zimSearch, object: nil)
+            } label: {
+                Text("")
+            }
+            .hidden()
+            .keyboardShortcut("f", modifiers: [.command, .shift])
         }
     }
     
