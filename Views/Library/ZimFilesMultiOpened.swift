@@ -19,7 +19,7 @@ import UniformTypeIdentifiers
 #if os(macOS)
 /// A grid of zim files that are opened, or was open but is now missing.
 /// A macOS specific version of ZimFilesOpened, supporting multi selection
-struct MultiZimFilesOpened: View {
+struct ZimFilesMultiOpened: View {
     @FetchRequest(
         sortDescriptors: [NSSortDescriptor(keyPath: \ZimFile.size, ascending: false)],
         predicate: ZimFile.Predicate.isDownloaded,
@@ -37,7 +37,7 @@ struct MultiZimFilesOpened: View {
                 spacing: 12
             ) {
                 ForEach(zimFiles) { zimFile in
-                    MultiZimFilesOpenedContext(
+                    MultiZimFilesContext(
                         content: {
                             ZimFileCell(
                                 zimFile,

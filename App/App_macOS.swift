@@ -234,7 +234,7 @@ struct RootView: View {
                 Bookmarks()
                     .modifier(SearchFocused(isSearchFocused: isSearchFocused))
             case .opened:
-                MultiZimFilesOpened()
+                ZimFilesMultiOpened()
             case .categories:
                 DetailSidePanel(content: { ZimFilesCategories(dismiss: nil) })
             case .downloads:

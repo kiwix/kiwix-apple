@@ -160,7 +160,7 @@ struct DetailSidePanel<Content: View>: View {
 
 /// A macOS only variant of LibraryZimFileContext
 /// supporting multiple selection
-struct MultiZimFilesOpenedContext<Content: View>: View {
+struct MultiZimFilesContext<Content: View>: View {
     @ObservedObject var selection: MultiSelectedZimFilesViewModel
     
     private let content: Content
