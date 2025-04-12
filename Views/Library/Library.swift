@@ -99,12 +99,16 @@ struct MultiZimFilesDetail: View {
     let zimFiles: Set<ZimFile>
     @State private var isPresentingUnlinkAlert: Bool = false
     
+    private func zimFilesCount() -> String {
+        Formatter.number.string(from: NSNumber(value: zimFiles.count)) ?? ""
+    }
+    
     var body: some View {
         List {
             Section(LocalString.multi_zim_files_selected_sidebar_title) {
                 Attribute(
                     title: LocalString.multi_zim_files_selected_description_count,
-                    detail: Formatter.number.string(from: NSNumber(value: zimFiles.count))
+                    detail: zimFilesCount()
                 )
             }.collapsible(false)
             Section(LocalString.zim_file_list_actions_text) {
@@ -112,8 +116,8 @@ struct MultiZimFilesDetail: View {
                     isPresentingUnlinkAlert = true
                 }.alert(isPresented: $isPresentingUnlinkAlert) {
                     Alert(
-                        title: Text(LocalString.zim_file_action_unlink_multi_title(withArgs: zimFiles.count)),
-                        message: Text(LocalString.zim_file_action_unlink_multi_message(withArgs: zimFiles.count)),
+                        title: Text(LocalString.zim_file_action_unlink_multi_title(withArgs: zimFilesCount())),
+                        message: Text(LocalString.zim_file_action_unlink_multi_message(withArgs: zimFilesCount())),
                         primaryButton: .destructive(Text(LocalString.zim_file_action_unlink_button_title)) {
                             Task {
                                 for zimFile in zimFiles {

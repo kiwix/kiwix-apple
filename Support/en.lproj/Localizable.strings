@@ -123,7 +123,7 @@
 "zim_file.action.toggle_cellular" = "Download using cellular";
 "zim_file.action.unlink.title" = "Unlink";
 "zim_file.action.unlink.message" = "All bookmarked articles linked to this ZIM file will be deleted, but the original file will remain in place.";
-"zim_file.action.unlink.multi_title" = "Unlink all %@ ZIM files";
+"zim_file.action.unlink.multi_title" = "Unlink %@ ZIM files";
 "zim_file.action.unlink.multi_message" = "All bookmarked articles linked to these %@ ZIM files will be deleted, but the original files will remain in place.";
 "zim_file.action.unlink.button.title" = "Unlink";
 "zim_file.action.delete.title" = "Delete";
