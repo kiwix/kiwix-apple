@@ -25,7 +25,9 @@ struct ZimFilesOpened: View {
         animation: .easeInOut
     ) private var zimFiles: FetchedResults<ZimFile>
     @State private var isFileImporterPresented = false
-    @ObservedObject var selection: SelectedZimFileViewModel
+    // TODO: try this out with a StateObject from this level,
+    // maybe we don't need to reset it then
+    @EnvironmentObject var selection: SelectedZimFileViewModel
     let dismiss: (() -> Void)? // iOS only
 
     var body: some View {
@@ -58,7 +60,7 @@ struct ZimFilesOpened: View {
         }
         .onChange(of: zimFiles.count) { _ in
             if let firstZimFile = zimFiles.first {
-                selection.singleSelect(zimFile: firstZimFile)
+                selection.selectedZimFile = firstZimFile
             } else {
                 selection.reset()
             }
@@ -94,3 +96,5 @@ struct ZimFilesOpened: View {
         }
     }
 }
+
+

@@ -94,36 +94,10 @@ struct Library_Previews: PreviewProvider {
 
 #elseif os(macOS)
 
-/// On macOS, adds a panel to the right of the modified view to show zim file detail.
-struct LibraryZimFileMultiSelectDetailSidePanel: ViewModifier {
-    @ObservedObject var selection: SelectedZimFileViewModel
-
-    func body(content: Content) -> some View {
-        VStack(spacing: 0) {
-            Divider()
-            content.safeAreaInset(edge: .trailing, spacing: 0) {
-                HStack(spacing: 0) {
-                    Divider()
-                    switch selection.selectedZimFiles.count {
-                    case 0:
-                        Message(text: LocalString.library_zim_file_details_side_panel_message)
-                            .background(.thickMaterial)
-                    case 1:
-                        ZimFileDetail(zimFile: selection.selectedZimFiles.first!, dismissParent: nil)
-                    default:
-                        MultiZimFilesDetail(selection: selection)
-                    }
-                }.frame(width: 275).background(.ultraThinMaterial)
-            }
-        }.onAppear { selection.reset() }
-    }
-}
-
 /// Multi ZIM files unlinking side panel
 struct MultiZimFilesDetail: View {
-    @ObservedObject var selection: SelectedZimFileViewModel
+    let zimFiles: Set<ZimFile>
     @State private var isPresentingUnlinkAlert: Bool = false
-    private var zimFiles: Set<ZimFile> { selection.selectedZimFiles }
     
     var body: some View {
         List {
@@ -184,23 +158,19 @@ struct LibraryZimFileDetailSidePanel: ViewModifier {
 /// A macOS only variant of LibraryZimFileContext
 /// supporting multiple selection
 struct MultiZimFilesOpenedContext<Content: View>: View {
-    @ObservedObject var selection: SelectedZimFileViewModel
+    @ObservedObject var selection: MultiSelectedZimFilesViewModel
     
     private let content: Content
     private let zimFile: ZimFile
-    /// iOS only
-    private let dismiss: (() -> Void)?
     
     init(
         @ViewBuilder content: () -> Content,
         zimFile: ZimFile,
-        selection: SelectedZimFileViewModel,
-        dismiss: (() -> Void)? = nil
+        selection: MultiSelectedZimFilesViewModel
     ) {
         self.content = content()
         self.zimFile = zimFile
         self.selection = selection
-        self.dismiss = dismiss
     }
     
     var body: some View {
@@ -232,11 +202,10 @@ struct ZimFileContextMenu: View {
     }
 }
 
-/// On macOS, converts the modified view to a Button that modifies the currently selected zim file
+/// On macOS, makes the content view clickable, to select a single ZIM file
 /// On iOS, converts the modified view to a NavigationLink that goes to the zim file detail.
 struct LibraryZimFileContext<Content: View>: View {
     @ObservedObject var selection: SelectedZimFileViewModel
-    
     private let content: Content
     private let zimFile: ZimFile
     /// iOS only
@@ -257,18 +226,8 @@ struct LibraryZimFileContext<Content: View>: View {
     var body: some View {
         Group {
 #if os(macOS)
-            if selection.isMultiSelection {
-                content
-                    .gesture(TapGesture().modifiers(.command).onEnded({ value in
-                        selection.toggleMultiSelect(of: zimFile)
-                    }))
-                    .gesture(TapGesture().onEnded({ _ in
-                        selection.singleSelect(zimFile: zimFile)
-                    }))
-            } else {
-                content.onTapGesture {
-                    selection.singleSelect(zimFile: zimFile)
-                }
+            content.onTapGesture {
+                selection.selectedZimFile = zimFile
             }
 #elseif os(iOS)
             NavigationLink {
