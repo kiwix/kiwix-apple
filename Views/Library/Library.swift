@@ -97,7 +97,6 @@ struct Library_Previews: PreviewProvider {
 /// On macOS, adds a panel to the right of the modified view to show zim file detail.
 struct LibraryZimFileMultiSelectDetailSidePanel: ViewModifier {
     @ObservedObject var selection: SelectedZimFileViewModel
-    @State private var isPresentingUnlinkAlert: Bool = false
 
     func body(content: Content) -> some View {
         VStack(spacing: 0) {
@@ -112,26 +111,47 @@ struct LibraryZimFileMultiSelectDetailSidePanel: ViewModifier {
                     case 1:
                         ZimFileDetail(zimFile: selection.selectedZimFiles.first!, dismissParent: nil)
                     default:
-                        Action(title: LocalString.zim_file_action_unlink_title, isDestructive: true) {
-                            isPresentingUnlinkAlert = true
-                        }.alert(isPresented: $isPresentingUnlinkAlert) {
-                            Alert(
-                                title: Text(LocalString.zim_file_action_unlink_title + " " + "\(selection.selectedZimFiles.count)"),
-                                message: Text(LocalString.zim_file_action_unlink_message),
-                                primaryButton: .destructive(Text(LocalString.zim_file_action_unlink_button_title)) {
-                                    Task {
-                                        for zimFile in selection.selectedZimFiles {
-                                            await LibraryOperations.unlink(zimFileID: zimFile.fileID)
-                                        }
-                                    }
-                                },
-                                secondaryButton: .cancel()
-                            )
-                        }
+                        MultiZimFileDetail(selection: selection)
                     }
                 }.frame(width: 275).background(.ultraThinMaterial)
             }
         }.onAppear { selection.reset() }
+    }
+}
+
+/// Detail about one single zim file.
+struct MultiZimFileDetail: View {
+    @ObservedObject var selection: SelectedZimFileViewModel
+    @State private var isPresentingUnlinkAlert: Bool = false
+    private var zimFiles: Set<ZimFile> { selection.selectedZimFiles }
+    
+    var body: some View {
+        List {
+            Section("Selected") {
+                Attribute(
+                    title: "ZIM files",
+                    detail: Formatter.number.string(from: NSNumber(value: zimFiles.count))
+                )
+            }.collapsible(false)
+            Section(LocalString.zim_file_list_actions_text) {
+                Action(title: LocalString.zim_file_action_unlink_title, isDestructive: true) {
+                    isPresentingUnlinkAlert = true
+                }.alert(isPresented: $isPresentingUnlinkAlert) {
+                    Alert(
+                        title: Text(LocalString.zim_file_action_unlink_title + " " + "\(zimFiles.count)"),
+                        message: Text(LocalString.zim_file_action_unlink_message),
+                        primaryButton: .destructive(Text(LocalString.zim_file_action_unlink_button_title)) {
+                            Task {
+                                for zimFile in zimFiles {
+                                    await LibraryOperations.unlink(zimFileID: zimFile.fileID)
+                                }
+                            }
+                        },
+                        secondaryButton: .cancel()
+                    )
+                }
+            }.collapsible(false)
+        }.listStyle(.sidebar)
     }
 }
 
