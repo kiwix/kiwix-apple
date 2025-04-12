@@ -176,7 +176,7 @@ struct MultiZimFilesOpenedContext<Content: View>: View {
     var body: some View {
         Group {
             content
-                .gesture(TapGesture().modifiers(.command).onEnded({ value in
+                .gesture(TapGesture().modifiers(.command).onEnded({ _ in
                     selection.toggleMultiSelect(of: zimFile)
                 }))
                 .gesture(TapGesture().onEnded({ _ in
