@@ -111,7 +111,7 @@ struct LibraryZimFileMultiSelectDetailSidePanel: ViewModifier {
                     case 1:
                         ZimFileDetail(zimFile: selection.selectedZimFiles.first!, dismissParent: nil)
                     default:
-                        MultiZimFileDetail(selection: selection)
+                        MultiZimFilesDetail(selection: selection)
                     }
                 }.frame(width: 275).background(.ultraThinMaterial)
             }
@@ -119,8 +119,8 @@ struct LibraryZimFileMultiSelectDetailSidePanel: ViewModifier {
     }
 }
 
-/// Detail about one single zim file.
-struct MultiZimFileDetail: View {
+/// Multi ZIM files unlinking side panel
+struct MultiZimFilesDetail: View {
     @ObservedObject var selection: SelectedZimFileViewModel
     @State private var isPresentingUnlinkAlert: Bool = false
     private var zimFiles: Set<ZimFile> { selection.selectedZimFiles }
@@ -179,6 +179,59 @@ struct LibraryZimFileDetailSidePanel: ViewModifier {
 }
 #endif
 
+#if os(macOS)
+
+/// A macOS only variant of LibraryZimFileContext
+/// supporting multiple selection
+struct MultiZimFilesOpenedContext<Content: View>: View {
+    @ObservedObject var selection: SelectedZimFileViewModel
+    
+    private let content: Content
+    private let zimFile: ZimFile
+    /// iOS only
+    private let dismiss: (() -> Void)?
+    
+    init(
+        @ViewBuilder content: () -> Content,
+        zimFile: ZimFile,
+        selection: SelectedZimFileViewModel,
+        dismiss: (() -> Void)? = nil
+    ) {
+        self.content = content()
+        self.zimFile = zimFile
+        self.selection = selection
+        self.dismiss = dismiss
+    }
+    
+    var body: some View {
+        Group {
+            content
+                .gesture(TapGesture().modifiers(.command).onEnded({ value in
+                    selection.toggleMultiSelect(of: zimFile)
+                }))
+                .gesture(TapGesture().onEnded({ _ in
+                    selection.singleSelect(zimFile: zimFile)
+                }))
+        }.contextMenu {
+            ZimFileContextMenu(zimFile: zimFile)
+        }
+    }
+}
+#endif
+
+struct ZimFileContextMenu: View {
+    let zimFile: ZimFile
+    
+    var body: some View {
+        if zimFile.fileURLBookmark != nil, !zimFile.isMissing {
+            Section { ArticleActions(zimFileID: zimFile.fileID) }
+        }
+        if let downloadURL = zimFile.downloadURL {
+            Section { CopyPasteMenu(downloadURL: downloadURL) }
+        }
+    }
+}
+
 /// On macOS, converts the modified view to a Button that modifies the currently selected zim file
 /// On iOS, converts the modified view to a NavigationLink that goes to the zim file detail.
 struct LibraryZimFileContext<Content: View>: View {
@@ -225,12 +278,7 @@ struct LibraryZimFileContext<Content: View>: View {
             }
 #endif
         }.contextMenu {
-            if zimFile.fileURLBookmark != nil, !zimFile.isMissing {
-                Section { ArticleActions(zimFileID: zimFile.fileID) }
-            }
-            if let downloadURL = zimFile.downloadURL {
-                Section { CopyPasteMenu(downloadURL: downloadURL) }
-            }
+            ZimFileContextMenu(zimFile: zimFile)
         }
     }
 }

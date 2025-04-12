@@ -258,6 +258,7 @@ struct RootView: View {
         .modifier(OpenFileHandler())
         .modifier(SaveContentHandler())
         .environmentObject(navigation)
+        .environmentObject(selection)
         .onChange(of: currentNavItem) { newValue in
             navigation.currentItem = newValue?.navigationItem
         }
