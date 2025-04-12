@@ -13,4 +13,31 @@
 // You should have received a copy of the GNU General Public License
 // along with Kiwix; If not, see https://www.gnu.org/licenses/.
 
-import Foundation
+import SwiftUI
+
+struct Action: View {
+    let title: String
+    let isDestructive: Bool
+    let action: @MainActor () async -> Void
+
+    init(title: String,
+         isDestructive: Bool = false,
+         action: @MainActor @escaping () async -> Void = {}
+    ) {
+        self.title = title
+        self.isDestructive = isDestructive
+        self.action = action
+    }
+
+    var body: some View {
+        AsyncButton(action: action, label: {
+            HStack {
+                Spacer()
+                Text(title)
+                    .fontWeight(.medium)
+                    .foregroundColor(isDestructive ? .red : nil)
+                Spacer()
+            }
+        })
+    }
+}
