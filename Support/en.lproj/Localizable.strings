@@ -151,6 +151,8 @@
 "zim_file.download_task.action.resume" = "Resume";
 "zim_file.download_task.action.paused" = "Paused";
 "service_worker_warning.label.description" = "Zim files requiring service workers are not supported.";
+"multi_zim_files_selected_sidebar_title" = "Selected";
+"multi_zim_files_selected_description_count" = "ZIM files";
 
 "reading_settings.zoom.title" = "Page zoom";
 "reading_settings.zoom.reset.button" = "Reset";

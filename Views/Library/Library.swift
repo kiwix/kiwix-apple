@@ -101,9 +101,9 @@ struct MultiZimFilesDetail: View {
     
     var body: some View {
         List {
-            Section("Selected") {
+            Section(LocalString.multi_zim_files_selected_sidebar_title) {
                 Attribute(
-                    title: "ZIM files",
+                    title: LocalString.multi_zim_files_selected_description_count,
                     detail: Formatter.number.string(from: NSNumber(value: zimFiles.count))
                 )
             }.collapsible(false)
