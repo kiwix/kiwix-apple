@@ -16,7 +16,9 @@
 import SwiftUI
 import UniformTypeIdentifiers
 
-/// A grid of zim files that are opened, or was open but is now missing.
+#if os(iOS)
+/// A grid of zim files that are opened, or was open but is now missing
+/// iOS only
 struct ZimFilesOpened: View {
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     @FetchRequest(
@@ -75,7 +77,6 @@ struct ZimFilesOpened: View {
             NotificationCenter.openFiles(urls, context: .library)
         }
         .toolbar {
-            #if os(iOS)
             ToolbarItem(placement: .navigationBarLeading) {
                 if #unavailable(iOS 16), horizontalSizeClass == .regular {
                     Button {
@@ -85,7 +86,6 @@ struct ZimFilesOpened: View {
                     }
                 }
             }
-            #endif
             ToolbarItem {
                 Button {
                     isFileImporterPresented = true
@@ -96,5 +96,4 @@ struct ZimFilesOpened: View {
         }
     }
 }
-
-
+#endif
