@@ -134,7 +134,9 @@ struct SearchResults: View {
                         }
                         if nextIndex < viewModel.results.startIndex {
                             $focusedSearchItem.wrappedValue = nil
+                            #if os(macOS)
                             NotificationCenter.default.post(name: .zimSearch, object: nil)
+                            #endif
                         } else if (viewModel.results.startIndex..<viewModel.results.endIndex).contains(nextIndex) {
                             $focusedSearchItem.wrappedValue = viewModel.results[nextIndex].url
                         }
