@@ -1,6 +1,7 @@
 // Messages for Brazilian Portuguese (português do Brasil)
 // Exported from translatewiki.net
 // Author: Klgor1803
+// Author: Ninawauwau
 // Author: Obiru
 
 "library_refresh_error.retrieve.description" = "Erro ao recuperar dados da biblioteca.";
@@ -48,6 +49,7 @@
 "download_task_cell.status.failed" = "Falhou";
 "download_task_cell.status.downloading" = "Baixando...";
 "download_task_cell.status.paused" = "Pausado";
+"library_refresh_time.last" = "Agora mesmo";
 "library_refresh_time.never" = "Nunca";
 "zim_file_cell.article_count.suffix" = "artigos";
 "zim_file_missing_indicator.help" = "Está faltando o arquivo zim.";
@@ -61,3 +63,6 @@
 "zim_file_new.button.refresh" = "Atualizar";
 "zim_file.list.name.text" = "Nome";
 "zim_file.list.description.text" = "Descrição";
+"zim_file.action.locate.title" = "Localizar";
+"zim_file.action.open_main_page.title" = "Abrir página principal";
+"zim_file.action.reveal_in_finder.title" = "Mostrar em Finder";
