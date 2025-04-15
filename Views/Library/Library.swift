@@ -129,15 +129,18 @@ struct MultiZimFilesDetail: View {
     }
 }
 
-
-/// On macOS, adds a panel to the right of the modified view to show zim file detail.
-struct LibraryZimFileDetailSidePanel: ViewModifier {
-    @EnvironmentObject private var selection: SelectedZimFileViewModel
-
-    func body(content: Content) -> some View {
+struct DetailSidePanel<Content: View>: View {
+    @StateObject private var selection = SelectedZimFileViewModel()
+    private let contentView: (SelectedZimFileViewModel) -> Content
+    
+    init(@ViewBuilder content: @escaping (SelectedZimFileViewModel) -> Content) {
+        contentView = content
+    }
+    
+    var body: some View {
         VStack(spacing: 0) {
             Divider()
-            content.safeAreaInset(edge: .trailing, spacing: 0) {
+            contentView(selection).safeAreaInset(edge: .trailing, spacing: 0) {
                 HStack(spacing: 0) {
                     Divider()
                     if let zimFile = selection.selectedZimFile {
@@ -148,12 +151,9 @@ struct LibraryZimFileDetailSidePanel: ViewModifier {
                     }
                 }.frame(width: 275).background(.ultraThinMaterial)
             }
-        }.onAppear { selection.selectedZimFile = nil }
+        }
     }
 }
-#endif
-
-#if os(macOS)
 
 /// A macOS only variant of LibraryZimFileContext
 /// supporting multiple selection

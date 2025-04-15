@@ -182,8 +182,12 @@ struct RootView: View {
     @State private var currentNavItem: MenuItem?
     @StateObject private var windowTracker = WindowTracker()
     @State private var paymentButtonLabel: PayWithApplePayButtonLabel?
+<<<<<<< HEAD
     var isSearchFocused: FocusState<Bool>.Binding
     @StateObject private var selection = SelectedZimFileViewModel()
+=======
+
+>>>>>>> 1f496b8e (Make selection tab scoped)
     private let primaryItems: [MenuItem] = [.bookmarks]
     private let libraryItems: [MenuItem] = [.opened, .categories, .downloads, .new]
     private let openURL = NotificationCenter.default.publisher(for: .openURL)
@@ -232,15 +236,23 @@ struct RootView: View {
             case .opened:
                 MultiZimFilesOpened()
             case .categories:
+<<<<<<< HEAD
                 ZimFilesCategories(dismiss: nil)
                     .modifier(LibraryZimFileDetailSidePanel())
                     .modifier(SearchFocused(isSearchFocused: isSearchFocused))
+=======
+                DetailSidePanel(content: { selection in ZimFilesCategories(dismiss: nil).environmentObject(selection) })
+>>>>>>> 1f496b8e (Make selection tab scoped)
             case .downloads:
-                ZimFilesDownloads(dismiss: nil).modifier(LibraryZimFileDetailSidePanel())
+                DetailSidePanel(content: { selection in ZimFilesDownloads(dismiss: nil).environmentObject(selection) })
             case .new:
+<<<<<<< HEAD
                 ZimFilesNew(dismiss: nil)
                     .modifier(LibraryZimFileDetailSidePanel())
                     .modifier(SearchFocused(isSearchFocused: isSearchFocused))
+=======
+                DetailSidePanel(content: { selection in ZimFilesNew(dismiss: nil).environmentObject(selection) })
+>>>>>>> 1f496b8e (Make selection tab scoped)
             default:
                 EmptyView()
             }
@@ -251,7 +263,6 @@ struct RootView: View {
         .modifier(OpenFileHandler())
         .modifier(SaveContentHandler())
         .environmentObject(navigation)
-        .environmentObject(selection)
         .onChange(of: currentNavItem) { newValue in
             navigation.currentItem = newValue?.navigationItem
         }
