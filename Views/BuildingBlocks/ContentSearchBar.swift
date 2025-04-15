@@ -30,12 +30,34 @@ struct ContentSearchBar: View {
 
     var body: some View {
         if isActivated {
-            field
-                .focused($focusedState)
+            if #available(macOS 14.0, *) {
+                field
+                    .focused($focusedState)
+                    .onKeyPress(.escape) {
+                        dismiss()
+                        return .handled
+                    }
+            } else {
+                field
+                    .focused($focusedState)
+            }
         } else {
             button
-                .keyboardShortcut("f")
+                .keyboardShortcut("f", modifiers: .command)
+            /// special hidden button to trigger the top bar zim file search with cmd+shift+F
+            Button {
+                NotificationCenter.default.post(name: .zimSearch, object: nil)
+            } label: {
+                Text("")
+            }
+            .hidden()
+            .keyboardShortcut("f", modifiers: [.command, .shift])
         }
+    }
+    
+    private func dismiss() {
+        viewModel.reset()
+        isActivated = false
     }
 
     private var button: some View {
@@ -93,8 +115,7 @@ struct ContentSearchBar: View {
 
     private var closeButton: some View {
         Button {
-            viewModel.reset()
-            isActivated = false
+            dismiss()
         } label: {
             Image(systemName: "xmark.circle.fill").foregroundColor(.primary)
         }

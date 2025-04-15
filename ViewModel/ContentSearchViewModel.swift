@@ -48,7 +48,9 @@ final class ContentSearchViewModel: NSObject, ObservableObject {
     }
 
     func reset() {
-        contentSearchText = ""
+        Task { @MainActor in // intentionally publishing on the next run loop
+            contentSearchText = ""
+        }
     }
 }
 #endif
