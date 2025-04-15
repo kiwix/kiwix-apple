@@ -182,12 +182,8 @@ struct RootView: View {
     @State private var currentNavItem: MenuItem?
     @StateObject private var windowTracker = WindowTracker()
     @State private var paymentButtonLabel: PayWithApplePayButtonLabel?
-<<<<<<< HEAD
     var isSearchFocused: FocusState<Bool>.Binding
     @StateObject private var selection = SelectedZimFileViewModel()
-=======
-
->>>>>>> 1f496b8e (Make selection tab scoped)
     private let primaryItems: [MenuItem] = [.bookmarks]
     private let libraryItems: [MenuItem] = [.opened, .categories, .downloads, .new]
     private let openURL = NotificationCenter.default.publisher(for: .openURL)
@@ -237,10 +233,12 @@ struct RootView: View {
                 ZimFilesMultiOpened()
             case .categories:
                 DetailSidePanel(content: { ZimFilesCategories(dismiss: nil) })
+                    .modifier(SearchFocused(isSearchFocused: isSearchFocused))
             case .downloads:
                 DetailSidePanel(content: { ZimFilesDownloads(dismiss: nil) })
             case .new:
                 DetailSidePanel(content: { ZimFilesNew(dismiss: nil) })
+                    .modifier(SearchFocused(isSearchFocused: isSearchFocused))
             default:
                 EmptyView()
             }
