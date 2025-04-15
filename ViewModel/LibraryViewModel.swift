@@ -46,7 +46,7 @@ enum LibraryState {
 @MainActor
 final class SelectedZimFileViewModel: ObservableObject {
     let isMultiSelection: Bool
-    @Published private(set) var selectedZimFile: ZimFile?
+    @Published var selectedZimFile: ZimFile?
     @Published private(set) var selectedZimFiles = Set<ZimFile>()
     
     init(isMultiSelection: Bool) {
@@ -70,7 +70,7 @@ final class SelectedZimFileViewModel: ObservableObject {
         selectedZimFiles = Set([zimFile])
     }
     
-    func resetSelection() {
+    func reset() {
         selectedZimFile = nil
         selectedZimFiles.removeAll()
     }
@@ -83,31 +83,7 @@ final class SelectedZimFileViewModel: ObservableObject {
     }
 }
 
-final class LibraryMultiSelectViewModel: ObservableObject {
-    @Published private(set) var selectedZimFiles = Set<ZimFile>()
-    
-    @MainActor
-    func toggleMultiSelect(of zimFile: ZimFile) {
-        if selectedZimFiles.contains(zimFile) {
-            selectedZimFiles.remove(zimFile)
-        } else {
-            selectedZimFiles.insert(zimFile)
-        }
-    }
-    
-    @MainActor
-    func singleSelect(zimFile: ZimFile) {
-        selectedZimFiles = Set([zimFile])
-    }
-    
-    @MainActor
-    func resetSelection() {
-        selectedZimFiles.removeAll()
-    }
-}
-
 final class LibraryViewModel: ObservableObject {
-    @Published var selectedZimFile: ZimFile?
     @MainActor @Published private(set) var error: Error?
     /// Note: due to multiple instances of LibraryViewModel,
     /// this `state` should not be changed directly, modify the `process.state` instead

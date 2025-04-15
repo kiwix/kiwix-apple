@@ -25,7 +25,7 @@ struct ZimFilesOpened: View {
         animation: .easeInOut
     ) private var zimFiles: FetchedResults<ZimFile>
     @State private var isFileImporterPresented = false
-    @EnvironmentObject private var viewModel: SelectedZimFileViewModel
+    @ObservedObject var selection: SelectedZimFileViewModel
     let dismiss: (() -> Void)? // iOS only
 
     var body: some View {
@@ -35,28 +35,16 @@ struct ZimFilesOpened: View {
             spacing: 12
         ) {
             ForEach(zimFiles) { zimFile in
-                let multiSelected: ((Bool) -> Void)? = if viewModel.isMultiSelection {
-                    { [zimFile] isSelectionMulti in
-                        if isSelectionMulti {
-                            viewModel.toggleMultiSelect(of: zimFile)
-                        } else {
-                            viewModel.singleSelect(zimFile: zimFile)
-                        }
-                    }
-                } else {
-                    nil
-                }
-                
                 LibraryZimFileContext(
                     content: {
                         ZimFileCell(
                             zimFile,
                             prominent: .name,
-                            isSelected: viewModel.isSelected(zimFile)
+                            isSelected: selection.isSelected(zimFile)
                         )
                     },
                     zimFile: zimFile,
-                    onMultiSelected: multiSelected,
+                    selection: selection,
                     dismiss: dismiss)
             }
         }
@@ -70,9 +58,9 @@ struct ZimFilesOpened: View {
         }
         .onChange(of: zimFiles.count) { _ in
             if let firstZimFile = zimFiles.first {
-                viewModel.singleSelect(zimFile: firstZimFile)
+                selection.singleSelect(zimFile: firstZimFile)
             } else {
-                viewModel.resetSelection()
+                selection.reset()
             }
         }
         // not using OpenFileButton here, because it does not work on iOS/iPadOS 15 when this view is in a modal

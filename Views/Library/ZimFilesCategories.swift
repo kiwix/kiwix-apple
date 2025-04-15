@@ -105,6 +105,7 @@ private struct CategoryGrid: View {
     @Binding var searchText: String
     @Default(.libraryLanguageCodes) private var languageCodes
     @EnvironmentObject private var viewModel: LibraryViewModel
+    @EnvironmentObject private var selection: SelectedZimFileViewModel
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     @SectionedFetchRequest private var sections: SectionedFetchResults<String, ZimFile>
     private let dismiss: (() -> Void)? // iOS only
@@ -142,6 +143,7 @@ private struct CategoryGrid: View {
                                 LibraryZimFileContext(
                                     content: { ZimFileCell(zimFile, prominent: .size) },
                                     zimFile: zimFile,
+                                    selection: selection,
                                     dismiss: dismiss)
                             }
                         } else {
@@ -150,6 +152,7 @@ private struct CategoryGrid: View {
                                     LibraryZimFileContext(
                                         content: { ZimFileCell(zimFile, prominent: .size) },
                                         zimFile: zimFile,
+                                        selection: selection,
                                         dismiss: dismiss)
                                 }
                             } header: {
@@ -173,7 +176,7 @@ private struct CategoryGrid: View {
             }
         }
         .searchable(text: $searchText)
-        .onChange(of: category) { _ in viewModel.selectedZimFile = nil }
+        .onChange(of: category) { _ in selection.reset() }
         .onChange(of: searchText) { _ in
             sections.nsPredicate = ZimFilesCategory.buildPredicate(category: category, searchText: searchText)
         }
@@ -211,6 +214,7 @@ private struct CategoryList: View {
     @Binding var searchText: String
     @Default(.libraryLanguageCodes) private var languageCodes
     @EnvironmentObject private var viewModel: LibraryViewModel
+    @EnvironmentObject private var selection: SelectedZimFileViewModel
     @FetchRequest private var zimFiles: FetchedResults<ZimFile>
     private let dismiss: (() -> Void)?
 
@@ -247,10 +251,11 @@ private struct CategoryList: View {
                     Message(text: LocalString.zim_file_category_section_empty_message)
                 }
             } else {
-                List(zimFiles, id: \.self, selection: $viewModel.selectedZimFile) { zimFile in
+                List(zimFiles, id: \.self, selection: $selection.selectedZimFile) { zimFile in
                     LibraryZimFileContext(
                         content: { ZimFileRow(zimFile) },
                         zimFile: zimFile,
+                        selection: selection,
                         dismiss: dismiss)
                 }
                 #if os(macOS)
@@ -261,7 +266,7 @@ private struct CategoryList: View {
             }
         }
         .searchable(text: $searchText)
-        .onChange(of: category) { _ in viewModel.selectedZimFile = nil }
+        .onChange(of: category) { _ in selection.reset() }
         .onChange(of: searchText) { _ in
             zimFiles.nsPredicate = ZimFilesCategory.buildPredicate(category: category, searchText: searchText)
         }

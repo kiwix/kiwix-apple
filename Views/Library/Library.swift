@@ -96,7 +96,7 @@ struct Library_Previews: PreviewProvider {
 
 /// On macOS, adds a panel to the right of the modified view to show zim file detail.
 struct LibraryZimFileMultiSelectDetailSidePanel: ViewModifier {
-    @ObservedObject var viewModel: LibraryMultiSelectViewModel
+    @ObservedObject var selection: SelectedZimFileViewModel
     @State private var isPresentingUnlinkAlert: Bool = false
 
     func body(content: Content) -> some View {
@@ -105,22 +105,22 @@ struct LibraryZimFileMultiSelectDetailSidePanel: ViewModifier {
             content.safeAreaInset(edge: .trailing, spacing: 0) {
                 HStack(spacing: 0) {
                     Divider()
-                    switch viewModel.selectedZimFiles.count {
+                    switch selection.selectedZimFiles.count {
                     case 0:
                         Message(text: LocalString.library_zim_file_details_side_panel_message)
                             .background(.thickMaterial)
                     case 1:
-                        ZimFileDetail(zimFile: viewModel.selectedZimFiles.first!, dismissParent: nil)
+                        ZimFileDetail(zimFile: selection.selectedZimFiles.first!, dismissParent: nil)
                     default:
                         Action(title: LocalString.zim_file_action_unlink_title, isDestructive: true) {
                             isPresentingUnlinkAlert = true
                         }.alert(isPresented: $isPresentingUnlinkAlert) {
                             Alert(
-                                title: Text(LocalString.zim_file_action_unlink_title + " " + "\(viewModel.selectedZimFiles.count)"),
+                                title: Text(LocalString.zim_file_action_unlink_title + " " + "\(selection.selectedZimFiles.count)"),
                                 message: Text(LocalString.zim_file_action_unlink_message),
                                 primaryButton: .destructive(Text(LocalString.zim_file_action_unlink_button_title)) {
                                     Task {
-                                        for zimFile in viewModel.selectedZimFiles {
+                                        for zimFile in selection.selectedZimFiles {
                                             await LibraryOperations.unlink(zimFileID: zimFile.fileID)
                                         }
                                     }
@@ -131,14 +131,14 @@ struct LibraryZimFileMultiSelectDetailSidePanel: ViewModifier {
                     }
                 }.frame(width: 275).background(.ultraThinMaterial)
             }
-        }.onAppear { viewModel.resetSelection() }
+        }.onAppear { selection.reset() }
     }
 }
 
 
 /// On macOS, adds a panel to the right of the modified view to show zim file detail.
 struct LibraryZimFileDetailSidePanel: ViewModifier {
-    @EnvironmentObject private var viewModel: LibraryViewModel
+    @EnvironmentObject private var selection: SelectedZimFileViewModel
 
     func body(content: Content) -> some View {
         VStack(spacing: 0) {
@@ -146,7 +146,7 @@ struct LibraryZimFileDetailSidePanel: ViewModifier {
             content.safeAreaInset(edge: .trailing, spacing: 0) {
                 HStack(spacing: 0) {
                     Divider()
-                    if let zimFile = viewModel.selectedZimFile {
+                    if let zimFile = selection.selectedZimFile {
                         ZimFileDetail(zimFile: zimFile, dismissParent: nil)
                     } else {
                         Message(text: LocalString.library_zim_file_details_side_panel_message)
@@ -154,7 +154,7 @@ struct LibraryZimFileDetailSidePanel: ViewModifier {
                     }
                 }.frame(width: 275).background(.ultraThinMaterial)
             }
-        }.onAppear { viewModel.selectedZimFile = nil }
+        }.onAppear { selection.selectedZimFile = nil }
     }
 }
 #endif
@@ -162,41 +162,39 @@ struct LibraryZimFileDetailSidePanel: ViewModifier {
 /// On macOS, converts the modified view to a Button that modifies the currently selected zim file
 /// On iOS, converts the modified view to a NavigationLink that goes to the zim file detail.
 struct LibraryZimFileContext<Content: View>: View {
-    @EnvironmentObject private var viewModel: LibraryViewModel
+    @ObservedObject var selection: SelectedZimFileViewModel
     
     private let content: Content
     private let zimFile: ZimFile
     /// iOS only
     private let dismiss: (() -> Void)?
-    /// macOS only
-    private let onMultiSelected: ((Bool) -> Void)?
     
     init(
         @ViewBuilder content: () -> Content,
         zimFile: ZimFile,
-        onMultiSelected: ((Bool) -> Void)? = nil,
+        selection: SelectedZimFileViewModel,
         dismiss: (() -> Void)? = nil
     ) {
         self.content = content()
         self.zimFile = zimFile
-        self.onMultiSelected = onMultiSelected
+        self.selection = selection
         self.dismiss = dismiss
     }
     
     var body: some View {
         Group {
 #if os(macOS)
-            if let onMultiSelected {
+            if selection.isMultiSelection {
                 content
                     .gesture(TapGesture().modifiers(.command).onEnded({ value in
-                        onMultiSelected(true)
+                        selection.toggleMultiSelect(of: zimFile)
                     }))
                     .gesture(TapGesture().onEnded({ _ in
-                        onMultiSelected(false)
+                        selection.singleSelect(zimFile: zimFile)
                     }))
             } else {
                 content.onTapGesture {
-                    viewModel.selectedZimFile = zimFile
+                    selection.singleSelect(zimFile: zimFile)
                 }
             }
 #elseif os(iOS)

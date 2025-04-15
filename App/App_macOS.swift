@@ -182,8 +182,12 @@ struct RootView: View {
     @State private var currentNavItem: MenuItem?
     @StateObject private var windowTracker = WindowTracker()
     @State private var paymentButtonLabel: PayWithApplePayButtonLabel?
+<<<<<<< HEAD
     @StateObject private var multiSelection = LibraryMultiSelectViewModel()
     var isSearchFocused: FocusState<Bool>.Binding
+=======
+    @StateObject private var selection = SelectedZimFileViewModel(isMultiSelection: false)
+>>>>>>> f3ebab51 (Split and rename viewModels)
 
     private let primaryItems: [MenuItem] = [.bookmarks]
     private let libraryItems: [MenuItem] = [.opened, .categories, .downloads, .new]
@@ -231,9 +235,9 @@ struct RootView: View {
                 Bookmarks()
                     .modifier(SearchFocused(isSearchFocused: isSearchFocused))
             case .opened:
-                ZimFilesOpened(dismiss: nil)
-                    .environmentObject(multiSelection)
-                    .modifier(LibraryZimFileMultiSelectDetailSidePanel(viewModel: multiSelection))
+                let multiSelection = SelectedZimFileViewModel(isMultiSelection: true)
+                ZimFilesOpened(selection: multiSelection, dismiss: nil)
+                    .modifier(LibraryZimFileMultiSelectDetailSidePanel(selection: multiSelection))
             case .categories:
                 ZimFilesCategories(dismiss: nil)
                     .modifier(LibraryZimFileDetailSidePanel())

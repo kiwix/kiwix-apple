@@ -282,14 +282,14 @@ private struct FileLocator: ViewModifier {
 
 private struct DownloadTaskDetail: View {
     @ObservedObject var downloadZimFile: ZimFile
-    @EnvironmentObject var viewModel: LibraryViewModel
+    @EnvironmentObject var selection: SelectedZimFileViewModel
     @State private var downloadState = DownloadState.empty()
 
     var body: some View {
         Group {
             Action(title: LocalString.zim_file_download_task_action_title_cancel, isDestructive: true) {
                 DownloadService.shared.cancel(zimFileID: downloadZimFile.fileID)
-                viewModel.selectedZimFile = nil
+                selection.reset()
             }
             if let error = downloadZimFile.downloadTask?.error {
                 if downloadState.resumeData != nil {

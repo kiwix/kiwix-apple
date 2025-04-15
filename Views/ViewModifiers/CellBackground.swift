@@ -18,19 +18,17 @@ import SwiftUI
 enum CellBackground {
     #if os(macOS)
     private static let normal: Color = Color(nsColor: NSColor.controlBackgroundColor)
-    private static let hover: Color = Color(nsColor: NSColor.selectedControlColor)
     private static let selected: Color = Color(nsColor: NSColor.selectedControlColor)
-    private static let hoverSelected: Color = Color(nsColor: NSColor.selectedControlColor)
     #else
     private static let normal: Color = .secondaryBackground
-    private static let hover: Color = .tertiaryBackground
+    private static let selected: Color = .tertiaryBackground
     #endif
     
     static func colorFor(isHovering: Bool, isSelected: Bool = false) -> Color {
         if isSelected {
-            isHovering ? hoverSelected : selected
+            isHovering ? selected.opacity(0.75) : selected
         } else {
-            isHovering ? hover : normal
+            isHovering ? selected.opacity(0.5) : normal
         }
     }
     

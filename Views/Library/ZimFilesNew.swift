@@ -97,6 +97,7 @@ private final class ViewModel: ObservableObject {
 /// A grid of zim files that are newly available.
 struct ZimFilesNew: View {
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
+    @EnvironmentObject private var selection: SelectedZimFileViewModel
     @EnvironmentObject var library: LibraryViewModel
     @Default(.libraryLanguageCodes) private var languageCodes
     @StateObject private var viewModel = ViewModel()
@@ -115,6 +116,7 @@ struct ZimFilesNew: View {
                         ZimFileCell(zimFile, prominent: .name)
                     },
                     zimFile: zimFile,
+                    selection: selection,
                     dismiss: dismiss)
                 .transition(AnyTransition.opacity)
             }
