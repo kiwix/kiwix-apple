@@ -25,6 +25,7 @@ struct Kiwix: App {
     
     @Environment(\.scenePhase) private var scenePhase
     @StateObject private var library = LibraryViewModel()
+    @StateObject private var selection = SelectedZimFileViewModel()
     @StateObject private var navigation = NavigationViewModel()
     @UIApplicationDelegateAdaptor(AppDelegate.self) private var appDelegate
     private let fileMonitor: DirectoryMonitor
@@ -53,6 +54,7 @@ struct Kiwix: App {
                 .ignoresSafeArea()
                 .environment(\.managedObjectContext, Database.shared.viewContext)
                 .environmentObject(library)
+                .environmentObject(selection)
                 .environmentObject(navigation)
                 .modifier(AlertHandler())
                 .modifier(OpenFileHandler())

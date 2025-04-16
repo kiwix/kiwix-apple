@@ -18,6 +18,7 @@ import SwiftUI
 
 /// A grid of zim files that are being downloaded.
 struct ZimFilesDownloads: View {
+    @EnvironmentObject var selection: SelectedZimFileViewModel
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     @FetchRequest(
         sortDescriptors: [NSSortDescriptor(keyPath: \DownloadTask.created, ascending: false)],
@@ -39,6 +40,7 @@ struct ZimFilesDownloads: View {
                 LibraryZimFileContext(
                     content: { DownloadTaskCell(zimFile) },
                     zimFile: zimFile,
+                    selection: selection,
                     dismiss: dismiss)
             }
         }

@@ -15,22 +15,15 @@
 
 import SwiftUI
 
-enum CellBackground {
-    #if os(macOS)
-    private static let normal: Color = Color(nsColor: NSColor.controlBackgroundColor)
-    private static let selected: Color = Color(nsColor: NSColor.selectedControlColor)
-    #else
-    private static let normal: Color = .secondaryBackground
-    private static let selected: Color = .tertiaryBackground
-    #endif
+struct ZimFileContextMenu: View {
+    let zimFile: ZimFile
     
-    static func colorFor(isHovering: Bool, isSelected: Bool = false) -> Color {
-        if isSelected {
-            isHovering ? selected.opacity(0.75) : selected
-        } else {
-            isHovering ? selected.opacity(0.5) : normal
+    var body: some View {
+        if zimFile.fileURLBookmark != nil, !zimFile.isMissing {
+            Section { ArticleActions(zimFileID: zimFile.fileID) }
+        }
+        if let downloadURL = zimFile.downloadURL {
+            Section { CopyPasteMenu(downloadURL: downloadURL) }
         }
     }
-    
-    static let clipShapeRectangle = RoundedRectangle(cornerRadius: 12, style: .continuous)
 }

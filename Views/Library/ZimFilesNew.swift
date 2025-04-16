@@ -97,6 +97,7 @@ private final class ViewModel: ObservableObject {
 /// A grid of zim files that are newly available.
 struct ZimFilesNew: View {
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
+    @EnvironmentObject private var selection: SelectedZimFileViewModel
     @EnvironmentObject var library: LibraryViewModel
     @Default(.libraryLanguageCodes) private var languageCodes
     @StateObject private var viewModel = ViewModel()
@@ -112,9 +113,14 @@ struct ZimFilesNew: View {
             ForEach(viewModel.zimFiles, id: \.fileID) { zimFile in
                 LibraryZimFileContext(
                     content: {
-                        ZimFileCell(zimFile, prominent: .name)
+                        ZimFileCell(
+                            zimFile,
+                            prominent: .name,
+                            isSelected: selection.isSelected(zimFile)
+                        )
                     },
                     zimFile: zimFile,
+                    selection: selection,
                     dismiss: dismiss)
                 .transition(AnyTransition.opacity)
             }

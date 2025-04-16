@@ -282,14 +282,14 @@ private struct FileLocator: ViewModifier {
 
 private struct DownloadTaskDetail: View {
     @ObservedObject var downloadZimFile: ZimFile
-    @EnvironmentObject var viewModel: LibraryViewModel
+    @EnvironmentObject var selection: SelectedZimFileViewModel
     @State private var downloadState = DownloadState.empty()
 
     var body: some View {
         Group {
             Action(title: LocalString.zim_file_download_task_action_title_cancel, isDestructive: true) {
                 DownloadService.shared.cancel(zimFileID: downloadZimFile.fileID)
-                viewModel.selectedZimFile = nil
+                selection.reset()
             }
             if let error = downloadZimFile.downloadTask?.error {
                 if downloadState.resumeData != nil {
@@ -338,33 +338,6 @@ private struct DownloadTaskDetail: View {
         guard downloadState.total > 0 else { return nil }
         let fractionCompleted = NSNumber(value: Double(downloadState.downloaded) / Double(downloadState.total))
         return Formatter.percent.string(from: fractionCompleted)
-    }
-}
-
-private struct Action: View {
-    let title: String
-    let isDestructive: Bool
-    let action: @MainActor () async -> Void
-
-    init(title: String,
-         isDestructive: Bool = false,
-         action: @MainActor @escaping () async -> Void = {}
-    ) {
-        self.title = title
-        self.isDestructive = isDestructive
-        self.action = action
-    }
-
-    var body: some View {
-        AsyncButton(action: action, label: {
-            HStack {
-                Spacer()
-                Text(title)
-                    .fontWeight(.medium)
-                    .foregroundColor(isDestructive ? .red : nil)
-                Spacer()
-            }
-        })
     }
 }
 

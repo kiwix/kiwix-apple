@@ -20,12 +20,19 @@ struct ZimFileCell: View {
     @ObservedObject var zimFile: ZimFile
     @State private var isHovering: Bool = false
     let isLoading: Bool
+    let isSelected: Bool
 
     let prominent: Prominent
 
-    init(_ zimFile: ZimFile, prominent: Prominent, isLoading: Bool = false) {
+    init(
+        _ zimFile: ZimFile,
+        prominent: Prominent,
+        isSelected: Bool,
+        isLoading: Bool = false
+    ) {
         self.zimFile = zimFile
         self.prominent = prominent
+        self.isSelected = isSelected
         self.isLoading = isLoading
     }
 
@@ -81,7 +88,7 @@ struct ZimFileCell: View {
             }
         }
         .padding()
-        .background(CellBackground.colorFor(isHovering: isHovering))
+        .background(CellBackground.colorFor(isHovering: isHovering, isSelected: isSelected))
         .clipShape(CellBackground.clipShapeRectangle)
         .modifier(LoadingOverlay(isLoading: isLoading))
         .onHover { self.isHovering = $0 }
@@ -126,29 +133,30 @@ struct ZimFileCell_Previews: PreviewProvider {
 
     static var previews: some View {
         Group {
-            ZimFileCell(ZimFileCell_Previews.zimFile, prominent: .name)
+            ZimFileCell(ZimFileCell_Previews.zimFile, prominent: .name, isSelected: false)
                 .preferredColorScheme(.light)
                 .padding()
                 .frame(width: 300, height: 100)
                 .previewLayout(.sizeThatFits)
             ZimFileCell(ZimFileCell_Previews.zimFile, 
                         prominent: .name,
+                        isSelected: true,
                         isLoading: true)
                 .preferredColorScheme(.light)
                 .padding()
                 .frame(width: 300, height: 100)
                 .previewLayout(.sizeThatFits)
-            ZimFileCell(ZimFileCell_Previews.zimFile, prominent: .name)
+            ZimFileCell(ZimFileCell_Previews.zimFile, prominent: .name, isSelected: false)
                 .preferredColorScheme(.dark)
                 .padding()
                 .frame(width: 300, height: 100)
                 .previewLayout(.sizeThatFits)
-            ZimFileCell(ZimFileCell_Previews.zimFile, prominent: .size)
+            ZimFileCell(ZimFileCell_Previews.zimFile, prominent: .size, isSelected: false)
                 .preferredColorScheme(.light)
                 .padding()
                 .frame(width: 300, height: 100)
                 .previewLayout(.sizeThatFits)
-            ZimFileCell(ZimFileCell_Previews.zimFile, prominent: .size)
+            ZimFileCell(ZimFileCell_Previews.zimFile, prominent: .size, isSelected: true)
                 .preferredColorScheme(.dark)
                 .padding()
                 .frame(width: 300, height: 100)
