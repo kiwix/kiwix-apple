@@ -79,7 +79,7 @@ struct SearchResults: View {
             ScrollViewReader { scrollReader in
                 ScrollView {
                     LazyVGrid(columns: [GridItem(.flexible(minimum: 300, maximum: 700), alignment: .center)]) {
-                        ForEach(viewModel.results) { result in
+                        ForEach(viewModel.results, id: \.url) { result in
                             Button {
                                 recentSearchTexts = {
                                     var searchTexts = Defaults[.recentSearchTexts]
