@@ -48,6 +48,7 @@
 "zim_file.list.actions.text" = "Azioni";
 "zim_file.list.info.text" = "Informazioni";
 "zim_file.action.open_main_page.title" = "Apri pagina principale";
+"zim_file.action.unlink.multi_title" = "Scollega %@ file ZIM";
 "zim_file.action.unlink.button.title" = "Scollega";
 "zim_file.action.download.warning.message" = "Potrebbe non esserci spazio sufficiente sul tuo dispositivo per questo file ZIM.";
 "zim_file.action.download.warning.message1" = "Rimarrebbe meno di 1 GB di spazio libero dopo il download del file ZIM.";
@@ -57,6 +58,7 @@
 "zim_file.base_info.attribute.created" = "Creato";
 "zim_file.bool_info.pictures" = "Immagini";
 "zim_file.download_task.action.paused" = "In pausa";
+"multi.zim_files_selected.description_count" = "File ZIM";
 "reading_settings.zoom.title" = "Zoom della pagina";
 "library_settings.button.refresh_now" = "Aggiorna ora";
 "library_settings.languages.title" = "Lingue";
