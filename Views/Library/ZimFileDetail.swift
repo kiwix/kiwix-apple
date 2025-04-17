@@ -52,6 +52,11 @@ struct ZimFileDetail: View {
                 counts
                 id
             }.collapsible(false)
+            if isDestroyable(zimFile) {
+                Section {
+                    destorySection
+                }.collapsible(false)
+            }
         }
         .safeAreaInset(edge: .top) {
             if zimFile.requiresServiceWorkers {
@@ -82,6 +87,9 @@ struct ZimFileDetail: View {
             }
             Section { counts }
             Section { id }
+            if isDestroyable(zimFile) {
+                Section { destorySection }
+            }
         }
         .listStyle(.insetGrouped)
         .modifier(FileLocator(isPresenting: $isPresentingFileLocator))
@@ -108,12 +116,11 @@ struct ZimFileDetail: View {
     }
 
     @ViewBuilder
-    var actions: some View {
+    private var actions: some View {
         if zimFile.downloadTask != nil {  // zim file is being downloaded
             DownloadTaskDetail(downloadZimFile: zimFile)
         } else if zimFile.isMissing {  // zim file was opened, but is now missing
             Action(title: LocalString.zim_file_action_locate_title) { isPresentingFileLocator = true }
-            unlinkAction
         } else if zimFile.fileURLBookmark != nil {  // zim file is opened
             Action(title: LocalString.zim_file_action_open_main_page_title) {
                 guard let url = await ZimFileService.shared.getMainPageURL(zimFileID: zimFile.fileID) else { return }
@@ -130,13 +137,6 @@ struct ZimFileDetail: View {
                 guard let url = await ZimFileService.shared.getFileURL(zimFileID: zimFile.id) else { return }
                 NSWorkspace.shared.activateFileViewerSelecting([url])
             }
-            unlinkAction
-            #elseif os(iOS)
-            if isInDocumentsDirectory {
-                deleteAction
-            } else {
-                unlinkAction
-            }
             #endif
         } else if zimFile.downloadURL != nil {  // zim file can be downloaded
             #if os(iOS)
@@ -145,8 +145,28 @@ struct ZimFileDetail: View {
             downloadAction
         }
     }
+    
+    private func isDestroyable(_ zimFile: ZimFile) -> Bool {
+        if zimFile.isMissing { return true }
+        if zimFile.fileURLBookmark != nil { return true }
+        return false
+    }
+    
+    @ViewBuilder
+    private var destorySection: some View {
+#if os(macOS)
+        unlinkAction
+#elseif os(iOS)
+        if isInDocumentsDirectory {
+            deleteAction
+        } else {
+            unlinkAction
+        }
+#endif
+    }
 
-    var unlinkAction: some View {
+    @ViewBuilder
+    private var unlinkAction: some View {
         Action(title: LocalString.zim_file_action_unlink_title, isDestructive: true) {
             isPresentingUnlinkAlert = true
         }.alert(isPresented: $isPresentingUnlinkAlert) {
@@ -166,7 +186,8 @@ struct ZimFileDetail: View {
         }
     }
 
-    var deleteAction: some View {
+    @ViewBuilder
+    private var deleteAction: some View {
         Action(title: LocalString.zim_file_action_delete_title, isDestructive: true) {
             isPresentingDeleteAlert = true
         }.alert(isPresented: $isPresentingDeleteAlert) {
@@ -186,7 +207,7 @@ struct ZimFileDetail: View {
         }
     }
 
-    var downloadAction: some View {
+    private var downloadAction: some View {
         Action(title: LocalString.zim_file_action_download_title) {
             if let freeSpace = freeSpace, zimFile.size >= freeSpace - 10^9 {
                 isPresentingDownloadAlert = true
@@ -218,7 +239,7 @@ struct ZimFileDetail: View {
     }
 
     @ViewBuilder
-    var basicInfo: some View {
+    private var basicInfo: some View {
         Attribute(title: LocalString.zim_file_base_info_attribute_language,
                   detail: zimFile.languageCodesListed)
         Attribute(title: LocalString.zim_file_base_info_attribute_category,
@@ -230,7 +251,7 @@ struct ZimFileDetail: View {
     }
 
     @ViewBuilder
-    var boolInfo: some View {
+    private var boolInfo: some View {
         AttributeBool(title: LocalString.zim_file_bool_info_pictures, detail: zimFile.hasPictures)
         AttributeBool(title: LocalString.zim_file_bool_info_videos, detail: zimFile.hasVideos)
         AttributeBool(title: LocalString.zim_file_bool_info_details, detail: zimFile.hasDetails)
@@ -241,7 +262,7 @@ struct ZimFileDetail: View {
     }
 
     @ViewBuilder
-    var counts: some View {
+    private var counts: some View {
         Attribute(
             title: LocalString.zim_file_counts_article_count,
             detail: Formatter.number.string(from: NSNumber(value: zimFile.articleCount))
@@ -253,7 +274,7 @@ struct ZimFileDetail: View {
     }
 
     @ViewBuilder
-    var id: some View {
+    private var id: some View {
         Attribute(title: LocalString.zim_file_detail_id_title, detail: String(zimFile.fileID.uuidString.prefix(8)))
     }
 
@@ -322,7 +343,7 @@ private struct DownloadTaskDetail: View {
         )
     }
 
-    var detail: String {
+    private var detail: String {
         if let percent = percent {
             return "\(size) - \(percent)"
         } else {
@@ -330,11 +351,11 @@ private struct DownloadTaskDetail: View {
         }
     }
 
-    var size: String {
+    private var size: String {
         Formatter.size.string(fromByteCount: downloadState.downloaded)
     }
 
-    var percent: String? {
+    private var percent: String? {
         guard downloadState.total > 0 else { return nil }
         let fractionCompleted = NSNumber(value: Double(downloadState.downloaded) / Double(downloadState.total))
         return Formatter.percent.string(from: fractionCompleted)
