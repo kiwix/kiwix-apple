@@ -35,9 +35,23 @@
     if ([self.absoluteString hasSuffix:@"/"]) {
         return self;
     } else {
-        NSString *lastPath = [self.lastPathComponent stringByAppendingString:@"/"];
-        NSURL* withoutLastPath = [self URLByDeletingLastPathComponent];
-        return [withoutLastPath URLByAppendingPathComponent: lastPath];
+        NSString *lastPathComponent = self.lastPathComponent;
+        if(lastPathComponent == nil) {
+            return self;
+        } else {
+            NSString *lastPath = [lastPathComponent stringByAppendingString:@"/"];
+            NSURL* withoutLastPath = [self URLByDeletingLastPathComponent];
+            if(withoutLastPath == nil) {
+                return self;
+            } else {
+                NSURL *newURL = [withoutLastPath URLByAppendingPathComponent: lastPath];
+                if(newURL == nil) {
+                    return self;
+                } else {
+                    return newURL;
+                }
+            }
+        }
     }
 }
 
