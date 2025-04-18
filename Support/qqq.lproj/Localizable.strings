@@ -91,7 +91,7 @@
 "zim_file.action.unlink.message" = "All bookmarked articles linked to this ZIM file will be deleted, but the original file will remain in place.";
 "zim_file.action.unlink.multi_title" = "Alert title after selecting multiple ZIM files and attempting to unlink all of them. The param contains the count of the ZIM files (guaranteed to be plural = always more than 1)";
 "zim_file.action.unlink.multi_message" = "All bookmarked articles linked to these (param count of) ZIM files will be deleted, but the original files will remain in place. The count is always more than 1 file = plural";
-"zim_file.action.unlink.button.title" = "Confirm button title on the alert pop-up to rmeove a downloaded ZIM file";
+"zim_file.action.unlink.button.title" = "Confirm button title on the alert pop-up to remove a downloaded ZIM file";
 "zim_file.action.delete.title" = "A button title to remove the downloaded file. It is also used as part of the alert title after pressing the button, together with the ZIM file name, eg: 'Delete Chemistry by Wikipedia'";
 "zim_file.action.delete.message" = "Description of the popup alert informing about the consequences of removing the ZIM file.";
 "zim_file.action.delete.button.title" = "Confirmation button of the popup alert to Delete the given ZIM file";
