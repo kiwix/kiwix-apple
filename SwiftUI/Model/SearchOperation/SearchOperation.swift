@@ -23,8 +23,8 @@ extension SearchOperation {
         guard !searchText.isEmpty else { return }
         performSearch()
 
-        // reduce to unique results by id
-        let uniqueDict = Dictionary(grouping: results, by: { $0.id })
+        // reduce to unique results by URL
+        let uniqueDict = Dictionary(grouping: results, by: { $0.url })
         let values = uniqueDict.compactMapValues { $0.first }.values
         __results = NSMutableOrderedSet(array: Array(values) )
 
