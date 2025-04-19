@@ -226,10 +226,6 @@ extension WKWebView {
 }
 #endif
 
-enum WebViewConfigCache {
-    static let config = WebViewConfiguration()
-}
-
 final class WebViewConfiguration: WKWebViewConfiguration {
     override init() {
         super.init()
