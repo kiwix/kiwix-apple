@@ -19,14 +19,12 @@ struct OutlineButton: View {
     private let items: [OutlineItem]
     private let itemTree: [OutlineItem]
     private let scrollTo: (_ itemID: String) -> Void
-    private let articleTitle: String
     @Environment(\.dismissSearch) private var dismissSearch
     @State private var isShowingOutline = false
     
     init(browser: BrowserViewModel) {
         items = browser.outlineItems
         itemTree = browser.outlineItemTree
-        articleTitle = browser.articleTitle
         scrollTo = { [weak browser] itemID in
             browser?.scrollTo(outlineItemID: itemID)
         }
@@ -69,7 +67,6 @@ struct OutlineButton: View {
                         }.listStyle(.plain)
                     }
                 }
-                .navigationTitle(articleTitle)
                 .navigationBarTitleDisplayMode(.inline)
                 .toolbar {
                     ToolbarItem(placement: .cancellationAction) {
