@@ -17,7 +17,6 @@
 import SwiftUI
 import Combine
 import UserNotifications
-import BackgroundTasks
 import os
 
 @main
@@ -29,23 +28,14 @@ struct Kiwix: App {
     @StateObject private var navigation = NavigationViewModel()
     @UIApplicationDelegateAdaptor(AppDelegate.self) private var appDelegate
     private let fileMonitor: DirectoryMonitor
-    private let activityService: ActivityService?
     
     init() {
         fileMonitor = DirectoryMonitor(url: URL.documentDirectory) { LibraryOperations.scanDirectory($0) }
-        // MARK: - live activities
-        switch AppType.current {
-        case .kiwix:
-            activityService = ActivityService.shared()
-        case .custom:
-            activityService = nil
-        }
         UNUserNotificationCenter.current().delegate = appDelegate
         // MARK: - migrations
         if !ProcessInfo.processInfo.arguments.contains("testing") {
             _ = MigrationService().migrateAll()
         }
-        
     }
 
     var body: some Scene {
@@ -69,7 +59,8 @@ struct Kiwix: App {
                             library.start(isUserInitiated: false)
                         }
                     case .background:
-                        reScheduleBackgroundDownloadTask()
+                        break
+//                        reScheduleBackgroundDownloadTask()
                     @unknown default:
                         break
                     }
@@ -78,14 +69,7 @@ struct Kiwix: App {
                     if url.isFileURL {
                         NotificationCenter.openFiles([url], context: .file)
                     } else if url.isZIMURL {
-                        switch url {
-                        case DownloadActivityAttributes.downloadsDeepLink:
-                            if FeatureFlags.hasLibrary {
-                                navigation.showDownloads.send()
-                            }
-                        default:
-                            NotificationCenter.openURL(url)
-                        }
+                        NotificationCenter.openURL(url)
                     }
                 }
                 .task {
@@ -97,7 +81,6 @@ struct Kiwix: App {
                         LibraryOperations.scanDirectory(URL.documentDirectory)
                         LibraryOperations.applyFileBackupSetting()
                         DownloadService.shared.restartHeartbeatIfNeeded()
-                        activityService?.start()
                     case let .custom(zimFileURL):
                         await LibraryOperations.open(url: zimFileURL)
                         ZimMigration.forCustomApps()
@@ -117,33 +100,6 @@ struct Kiwix: App {
             CommandGroup(replacing: .textFormatting) {
                 PageZoomCommands()
             }
-        }
-        .backgroundTask(.appRefresh(BackgroundDownloads.identifier)) { _ in
-            await reScheduleBackgroundDownloadTask()
-            await ActivityService.shared().forceUpdate()
-        }
-    }
-    
-    func reScheduleBackgroundDownloadTask() {
-        guard case .kiwix = AppType.current else { return }
-        do {
-            let date = BackgroundDownloads.nextDate()
-            let request = BGAppRefreshTaskRequest(identifier: BackgroundDownloads.identifier)
-            request.earliestBeginDate = date
-            os_log(
-                "BackgroundDownloads task re-scheduled for: %s",
-                log: Log.DownloadService,
-                type: .debug,
-                date.formatted()
-            )
-            try BGTaskScheduler.shared.submit(request)
-        } catch {
-            os_log(
-                "BackgroundDownloads re-schedule failed: %s",
-                log: Log.DownloadService,
-                type: .error,
-                error.localizedDescription
-            )
         }
     }
 
