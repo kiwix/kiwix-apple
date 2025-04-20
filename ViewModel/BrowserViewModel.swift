@@ -732,14 +732,12 @@ final class BrowserViewModel: NSObject, ObservableObject,
     @MainActor private func generateOutlineTree(headings: [[String: String]]) {
         let root = OutlineItem(index: -1, text: "", level: 0)
         var stack: [OutlineItem] = [root]
-        var all = [String: OutlineItem]()
 
         headings.enumerated().forEach { index, heading in
             guard let id = heading["id"],
                   let text = heading["text"],
                   let tag = heading["tag"], let level = Int(tag.suffix(1)) else { return }
             let item = OutlineItem(id: id, index: index, text: text, level: level)
-            all[item.id] = item
 
             // get last item in stack
             // if last item is child of item's sibling, unwind stack until a sibling is found
@@ -760,9 +758,9 @@ final class BrowserViewModel: NSObject, ObservableObject,
             }
         }
 
-        // if there is only one h1, make the first item non collapsible
+        // if there is only one item at top level, do not display it only it's children
         if let rootChildren = root.children, rootChildren.count == 1, let rootFirstChild = rootChildren.first {
-            self.outlineItemTree = [rootFirstChild.asNonCollapsible()]
+            self.outlineItemTree = rootFirstChild.children ?? []
         } else {
             self.outlineItemTree = root.children ?? []
         }
