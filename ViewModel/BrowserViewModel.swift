@@ -760,10 +760,9 @@ final class BrowserViewModel: NSObject, ObservableObject,
             }
         }
 
-        // if there is only one h1, flatten one level
+        // if there is only one h1, make the first item non collapsible
         if let rootChildren = root.children, rootChildren.count == 1, let rootFirstChild = rootChildren.first {
-            let children = rootFirstChild.removeAllChildren()
-            self.outlineItemTree = [rootFirstChild] + children
+            self.outlineItemTree = [rootFirstChild.asNonCollapsible()]
         } else {
             self.outlineItemTree = root.children ?? []
         }

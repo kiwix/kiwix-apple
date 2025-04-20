@@ -90,7 +90,8 @@ struct OutlineButton: View {
 
         var body: some View {
             if let children = item.children {
-                DisclosureGroup(isExpanded: $item.isExpanded) {
+                let isExpanded = item.isCollapsible ? $item.isExpanded : .constant(true)
+                DisclosureGroup(isExpanded: isExpanded) {
                     ForEach(children) { child in
                         OutlineNode(item: child, action: action)
                     }

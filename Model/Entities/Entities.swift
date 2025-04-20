@@ -86,20 +86,28 @@ struct Language: Identifiable, Comparable {
     }
 }
 
-class OutlineItem: ObservableObject, Identifiable {
+final class OutlineItem: ObservableObject, Identifiable {
     let id: String
     let index: Int
     let text: String
     let level: Int
+    let isCollapsible: Bool
     private(set) var children: [OutlineItem]?
 
     @Published var isExpanded = true
+    
+    func asNonCollapsible() -> OutlineItem {
+        let copy = OutlineItem(id: id, index: index, text: text, level: level, isCollapsible: false)
+        copy.children = children
+        return copy
+    }
 
-    init(id: String, index: Int, text: String, level: Int) {
+    init(id: String, index: Int, text: String, level: Int, isCollapsible: Bool = true) {
         self.id = id
         self.index = index
         self.text = text
         self.level = level
+        self.isCollapsible = isCollapsible
     }
 
     convenience init(index: Int, text: String, level: Int) {
