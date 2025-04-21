@@ -54,14 +54,14 @@ struct OpenFileHandler: ViewModifier {
     @State private var isAlertPresented = false
     @State private var activeAlert: ActiveAlert?
 
-    private let importFiles = NotificationCenter.default.publisher(for: .openFiles)
+    private let openFiles = NotificationCenter.default.publisher(for: .openFiles)
 
     enum ActiveAlert {
         case unableToOpen(filenames: [String])
     }
     // swiftlint:disable:next cyclomatic_complexity
     func body(content: Content) -> some View {
-        content.onReceive(importFiles) { notification in
+        content.onReceive(openFiles) { notification in
             guard let urls = notification.userInfo?["urls"] as? [URL],
                   let context = notification.userInfo?["context"] as? OpenFileContext else { return }
 
@@ -90,7 +90,11 @@ struct OpenFileHandler: ViewModifier {
                             NotificationCenter.openURL(url, inNewTab: true, context: .file)
                         }
                         #elseif os(iOS)
-                        NotificationCenter.openURL(url, inNewTab: true)
+                        if case .file(.some(let deepLinkID)) = context {
+                            NotificationCenter.openURL(url, inNewTab: true, context: .deepLink(id: deepLinkID))
+                        } else {
+                            NotificationCenter.openURL(url, inNewTab: true)
+                        }
                         #endif
                     }
                 case .welcomeScreen:

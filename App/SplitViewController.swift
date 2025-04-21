@@ -89,7 +89,7 @@ final class SplitViewController: UISplitViewController {
         })
         
         openURLObserver = NotificationCenter.default.addObserver(
-            forName: .openURL, object: nil, queue: nil
+            forName: .openURL, object: nil, queue: .main
         ) { [weak self] notification in
             guard let url = notification.userInfo?["url"] as? URL else { return }
             let inNewTab = notification.userInfo?["inNewTab"] as? Bool ?? false
@@ -98,6 +98,10 @@ final class SplitViewController: UISplitViewController {
                     BrowserViewModel.getCached(tabID: tabID).load(url: url)
                 } else if let tabID = self?.navigationViewModel.createTab() {
                     BrowserViewModel.getCached(tabID: tabID).load(url: url)
+                }
+                if let context = notification.userInfo?["context"] as? OpenURLContext,
+                   case .deepLink(let deepLinkId) = context {
+                    DeepLinkService.shared.stopFor(uuid: deepLinkId)
                 }
             }
         }
