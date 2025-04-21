@@ -16,7 +16,6 @@
 import CoreData
 import WebKit
 import Combine
-import os
 
 @MainActor
 final class NavigationViewModel: ObservableObject {
@@ -68,7 +67,6 @@ final class NavigationViewModel: ObservableObject {
         let tab = (try? context.fetch(fetchRequest).first) ?? Self.makeTab(context: context)
         Task {
             await MainActor.run {
-                os_log("open navigate to most recent tab", log: Log.LibraryOperations, type: .error)
                 currentItem = NavigationItem.tab(objectID: tab.objectID)
             }
         }

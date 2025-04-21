@@ -28,7 +28,6 @@ struct Kiwix: App {
     @StateObject private var navigation = NavigationViewModel()
     @UIApplicationDelegateAdaptor(AppDelegate.self) private var appDelegate
     private let fileMonitor: DirectoryMonitor
-//    @State var isOpeningDeeplink = true
     
     init() {
         fileMonitor = DirectoryMonitor(url: URL.documentDirectory) { LibraryOperations.scanDirectory($0) }
@@ -80,7 +79,7 @@ struct Kiwix: App {
                         fileMonitor.start()
                         await LibraryOperations.reopen()
                         if !DeepLinkService.shared.isRunning() {
-                            navigation.navigateToMostRecentTab()                            
+                            navigation.navigateToMostRecentTab()
                         }
                         LibraryOperations.scanDirectory(URL.documentDirectory)
                         LibraryOperations.applyFileBackupSetting()
