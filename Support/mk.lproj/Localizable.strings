@@ -88,6 +88,8 @@
 "zim_file.action.toggle_cellular" = "Преземи на мобилен";
 "zim_file.action.unlink.title" = "Тргни врска";
 "zim_file.action.unlink.message" = "Сите обележани статии поврзани со оваа ZIM-податотека ќе бидат избришани, но изворната податотека ќе остане.";
+"zim_file.action.unlink.multi_title" = "Тргни врски од %@ ZIM-податотеки";
+"zim_file.action.unlink.multi_message" = "Сите обележани статии поврзани со овие %@ ZIM-податотеки ќе бидат избришани, но изворните податотеки ќе останат.";
 "zim_file.action.unlink.button.title" = "Тргни врска";
 "zim_file.action.delete.title" = "Избриши";
 "zim_file.action.delete.message" = "ZIM-податотеката и сите обележани статии поврзани со неа ќе бидат избришани.";
@@ -116,6 +118,8 @@
 "zim_file.download_task.action.resume" = "Продолжи";
 "zim_file.download_task.action.paused" = "Запрено";
 "service_worker_warning.label.description" = "Не се поддржани ZIM-податотеки што бараат застапнички служби.";
+"multi.zim_files_selected.sidebar_title" = "Избрано";
+"multi.zim_files_selected.description_count" = "ZIM-податотеки";
 "reading_settings.zoom.title" = "Приближување на страницата";
 "reading_settings.zoom.reset.button" = "Поништи";
 "reading_settings.external_link.title" = "Надворешна врска";

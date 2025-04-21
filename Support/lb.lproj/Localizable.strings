@@ -86,6 +86,7 @@
 "zim_file.download_task.action.downloading" = "Eroflueden...";
 "zim_file.download_task.action.resume" = "Virufueren";
 "zim_file.download_task.action.paused" = "Pauséiert";
+"multi.zim_files_selected.description_count" = "ZIM-Fichieren";
 "reading_settings.zoom.title" = "Säitezoom";
 "reading_settings.zoom.reset.button" = "Zrécksetzen";
 "reading_settings.external_link.title" = "Externe Link";
