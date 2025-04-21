@@ -45,7 +45,6 @@ final class SplitViewController: UISplitViewController {
     }
 
     // MARK: - Lifecycle
-
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -63,6 +62,13 @@ final class SplitViewController: UISplitViewController {
         setSecondaryController()
 
         // observers
+        observeNavigation()
+        observeOpeningFiles()
+        observeGoBackAndForward()
+        observeAppBackgrounding()
+    }
+    
+    private func observeNavigation() {
         navigationItemObserver = navigationViewModel.$currentItem
             .receive(on: DispatchQueue.main)  // needed to postpones sink after navigationViewModel.currentItem updates
             .dropFirst()
@@ -77,8 +83,7 @@ final class SplitViewController: UISplitViewController {
                     self?.preferredDisplayMode = .automatic
                 }
             }
-        showDownloadsObserver = navigationViewModel
-            .showDownloads
+        showDownloadsObserver = navigationViewModel.showDownloads
             .receive(on: DispatchQueue.main)
             .sink(receiveValue: { [weak self] _ in
                 if self?.traitCollection.horizontalSizeClass == .regular,
@@ -87,7 +92,9 @@ final class SplitViewController: UISplitViewController {
                 }
                 // the compact one is triggered in CompactViewController
         })
-        
+    }
+    
+    private func observeOpeningFiles() {
         openURLObserver = NotificationCenter.default.addObserver(
             forName: .openURL, object: nil, queue: .main
         ) { [weak self] notification in
@@ -105,8 +112,6 @@ final class SplitViewController: UISplitViewController {
                 }
             }
         }
-        observeGoBackAndForward()
-        observeAppBackgrounding()
     }
     
     private func observeGoBackAndForward() {

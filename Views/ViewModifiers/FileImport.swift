@@ -59,7 +59,7 @@ struct OpenFileHandler: ViewModifier {
     enum ActiveAlert {
         case unableToOpen(filenames: [String])
     }
-    // swiftlint:disable:next cyclomatic_complexity
+    // swiftlint:disable:next cyclomatic_complexity function_body_length
     func body(content: Content) -> some View {
         content.onReceive(openFiles) { notification in
             guard let urls = notification.userInfo?["urls"] as? [URL],
