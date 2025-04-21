@@ -107,7 +107,7 @@ final class SplitViewController: UISplitViewController {
                     BrowserViewModel.getCached(tabID: tabID).load(url: url)
                 }
                 if let context = notification.userInfo?["context"] as? OpenURLContext,
-                   case .deepLink(let deepLinkId) = context {
+                   case .deepLink(.some(let deepLinkId)) = context {
                     DeepLinkService.shared.stopFor(uuid: deepLinkId)
                 }
             }

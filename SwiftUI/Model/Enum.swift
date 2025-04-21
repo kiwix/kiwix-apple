@@ -139,7 +139,7 @@ enum ExternalLinkLoadingPolicy: String, CaseIterable, Identifiable, Defaults.Ser
 }
 
 enum OpenURLContext {
-    case deepLink(id: UUID)
+    case deepLink(id: UUID?)
     case file
 }
 
