@@ -758,8 +758,11 @@ final class BrowserViewModel: NSObject, ObservableObject,
             }
         }
 
-        // if there is only one item at top level, do not display it only it's children
-        if let rootChildren = root.children, rootChildren.count == 1, let rootFirstChild = rootChildren.first {
+        // if there is only one item at top level, with the same text as the article title
+        // do not display it only it's children
+        if let rootChildren = root.children, rootChildren.count == 1,
+            let rootFirstChild = rootChildren.first,
+           rootFirstChild.text.lowercased() == articleTitle.lowercased() {
             self.outlineItemTree = rootFirstChild.children ?? []
         } else {
             self.outlineItemTree = root.children ?? []
