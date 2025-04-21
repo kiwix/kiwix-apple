@@ -25,11 +25,15 @@ enum CellBackground {
     #endif
     
     static func colorFor(isHovering: Bool, isSelected: Bool = false) -> Color {
+        #if os(macOS)
         if isSelected {
             isHovering ? selected.opacity(0.75) : selected
         } else {
             isHovering ? selected.opacity(0.5) : normal
         }
+        #else
+        isHovering ? selected : normal
+        #endif
     }
     
     static let clipShapeRectangle = RoundedRectangle(cornerRadius: 12, style: .continuous)
