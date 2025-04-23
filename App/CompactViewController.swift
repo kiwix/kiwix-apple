@@ -321,10 +321,12 @@ private struct Content<LaunchModel>: View where LaunchModel: LaunchProtocol {
         }
         .toolbar {
             ToolbarItemGroup(placement: .primaryAction) {
-                Button(LocalString.article_shortcut_random_button_title_ios,
-                       systemImage: "die.face.5",
-                       action: { [weak browser] in browser?.loadRandomArticle() })
-                .disabled(zimFiles.isEmpty)
+                if !Brand.hideRandomButton {
+                    Button(LocalString.article_shortcut_random_button_title_ios,
+                           systemImage: "die.face.5",
+                           action: { [weak browser] in browser?.loadRandomArticle() })
+                    .disabled(zimFiles.isEmpty)
+                }
                 ContentSearchButton(browser: browser)
             }
         }
