@@ -89,6 +89,8 @@
 "zim_file.action.toggle_cellular" = "使用蜂巢式網路下載";
 "zim_file.action.unlink.title" = "取消連結";
 "zim_file.action.unlink.message" = "連結到該 ZIM 檔案的所有加入到書籤的條目都將被刪除，不過原始檔案會保留於原處。";
+"zim_file.action.unlink.multi_title" = "取消連結 %@ 個 ZIM 檔案";
+"zim_file.action.unlink.multi_message" = "連結到這些 %@ 個 ZIM 檔案的所有書籤條目都會被刪除，不過原始檔案會保留於原處。";
 "zim_file.action.unlink.button.title" = "取消連結";
 "zim_file.action.delete.title" = "刪除";
 "zim_file.action.delete.message" = "ZIM 檔案與連結到該檔案的所有加入到書籤的條目都將被刪除。";
@@ -117,6 +119,8 @@
 "zim_file.download_task.action.resume" = "繼續";
 "zim_file.download_task.action.paused" = "已暫停";
 "service_worker_warning.label.description" = "不支援需要 service worker 的 Zim 檔案。";
+"multi.zim_files_selected.sidebar_title" = "已選擇";
+"multi.zim_files_selected.description_count" = "ZIM 檔案";
 "reading_settings.zoom.title" = "頁面縮放";
 "reading_settings.zoom.reset.button" = "重設";
 "reading_settings.external_link.title" = "外部連結";
