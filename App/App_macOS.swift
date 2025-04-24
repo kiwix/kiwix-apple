@@ -264,12 +264,14 @@ struct RootView: View {
                 // from opening an external file
                 let browser = BrowserViewModel.getCached(tabID: navigation.currentTabId)
                 browser.forceLoadingState()
-                NotificationCenter.openFiles([url], context: .file)
+                // deeplink id is not needed on macOS
+                NotificationCenter.openFiles([url], context: .file(deepLinkId: nil))
             } else if url.isZIMURL {
                 // from deeplinks
                 let browser = BrowserViewModel.getCached(tabID: navigation.currentTabId)
                 browser.forceLoadingState()
-                NotificationCenter.openURL(url, context: .deepLink)
+                // deeplink id is not needed on macOS
+                NotificationCenter.openURL(url, context: .deepLink(id: nil))
             }
         }
         .onReceive(openURL) { notification in

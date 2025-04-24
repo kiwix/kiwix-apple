@@ -60,14 +60,15 @@ struct Kiwix: App {
                         }
                     case .background:
                         break
-//                        reScheduleBackgroundDownloadTask()
                     @unknown default:
                         break
                     }
                 }
                 .onOpenURL { url in
                     if url.isFileURL {
-                        NotificationCenter.openFiles([url], context: .file)
+                        let deepLinkId = UUID()
+                        DeepLinkService.shared.startFor(uuid: deepLinkId)
+                        NotificationCenter.openFiles([url], context: .file(deepLinkId: deepLinkId))
                     } else if url.isZIMURL {
                         NotificationCenter.openURL(url)
                     }
@@ -77,7 +78,9 @@ struct Kiwix: App {
                     case .kiwix:
                         fileMonitor.start()
                         await LibraryOperations.reopen()
-                        navigation.navigateToMostRecentTab()
+                        if !DeepLinkService.shared.isRunning() {
+                            navigation.navigateToMostRecentTab()
+                        }
                         LibraryOperations.scanDirectory(URL.documentDirectory)
                         LibraryOperations.applyFileBackupSetting()
                         DownloadService.shared.restartHeartbeatIfNeeded()

@@ -45,7 +45,6 @@ final class SplitViewController: UISplitViewController {
     }
 
     // MARK: - Lifecycle
-
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -63,6 +62,13 @@ final class SplitViewController: UISplitViewController {
         setSecondaryController()
 
         // observers
+        observeNavigation()
+        observeOpeningFiles()
+        observeGoBackAndForward()
+        observeAppBackgrounding()
+    }
+    
+    private func observeNavigation() {
         navigationItemObserver = navigationViewModel.$currentItem
             .receive(on: DispatchQueue.main)  // needed to postpones sink after navigationViewModel.currentItem updates
             .dropFirst()
@@ -77,8 +83,7 @@ final class SplitViewController: UISplitViewController {
                     self?.preferredDisplayMode = .automatic
                 }
             }
-        showDownloadsObserver = navigationViewModel
-            .showDownloads
+        showDownloadsObserver = navigationViewModel.showDownloads
             .receive(on: DispatchQueue.main)
             .sink(receiveValue: { [weak self] _ in
                 if self?.traitCollection.horizontalSizeClass == .regular,
@@ -87,9 +92,11 @@ final class SplitViewController: UISplitViewController {
                 }
                 // the compact one is triggered in CompactViewController
         })
-        
+    }
+    
+    private func observeOpeningFiles() {
         openURLObserver = NotificationCenter.default.addObserver(
-            forName: .openURL, object: nil, queue: nil
+            forName: .openURL, object: nil, queue: .main
         ) { [weak self] notification in
             guard let url = notification.userInfo?["url"] as? URL else { return }
             let inNewTab = notification.userInfo?["inNewTab"] as? Bool ?? false
@@ -99,10 +106,12 @@ final class SplitViewController: UISplitViewController {
                 } else if let tabID = self?.navigationViewModel.createTab() {
                     BrowserViewModel.getCached(tabID: tabID).load(url: url)
                 }
+                if let context = notification.userInfo?["context"] as? OpenURLContext,
+                   case .deepLink(.some(let deepLinkId)) = context {
+                    DeepLinkService.shared.stopFor(uuid: deepLinkId)
+                }
             }
         }
-        observeGoBackAndForward()
-        observeAppBackgrounding()
     }
     
     private func observeGoBackAndForward() {

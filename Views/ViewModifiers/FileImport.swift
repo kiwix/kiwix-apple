@@ -54,14 +54,14 @@ struct OpenFileHandler: ViewModifier {
     @State private var isAlertPresented = false
     @State private var activeAlert: ActiveAlert?
 
-    private let importFiles = NotificationCenter.default.publisher(for: .openFiles)
+    private let openFiles = NotificationCenter.default.publisher(for: .openFiles)
 
     enum ActiveAlert {
         case unableToOpen(filenames: [String])
     }
-    // swiftlint:disable:next cyclomatic_complexity
+    // swiftlint:disable:next cyclomatic_complexity function_body_length
     func body(content: Content) -> some View {
-        content.onReceive(importFiles) { notification in
+        content.onReceive(openFiles) { notification in
             guard let urls = notification.userInfo?["urls"] as? [URL],
                   let context = notification.userInfo?["context"] as? OpenFileContext else { return }
 
@@ -83,14 +83,21 @@ struct OpenFileHandler: ViewModifier {
                     for fileID in openedZimFileIDs {
                         guard let url = await ZimFileService.shared.getMainPageURL(zimFileID: fileID) else { return }
                         #if os(macOS)
-                        if .command == context {
+                        switch context {
+                        case .command:
                             NotificationCenter.openURL(url, inNewTab: true)
-                        } else if .file == context {
+                        case .file:
                             // Note: inNewTab:true/false has no meaning here, the system will open a new window anyway
                             NotificationCenter.openURL(url, inNewTab: true, context: .file)
+                        default:
+                            break
                         }
                         #elseif os(iOS)
-                        NotificationCenter.openURL(url, inNewTab: true)
+                        if case .file(.some(let deepLinkID)) = context {
+                            NotificationCenter.openURL(url, inNewTab: true, context: .deepLink(id: deepLinkID))
+                        } else {
+                            NotificationCenter.openURL(url, inNewTab: true)
+                        }
                         #endif
                     }
                 case .welcomeScreen:
