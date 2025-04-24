@@ -48,6 +48,7 @@ enum Brand {
     static let appStoreId: String = Config.value(for: .appStoreID) ?? "id997079563"
     static let loadingLogoImage: String = "welcomeLogo"
     static var loadingLogoSize: CGSize = ImageInfo.sizeOf(imageName: loadingLogoImage)!
+    static let hideRandomButton: Bool = Config.value(for: .hideRandomButton) ?? false
 
     static let aboutText: String = Config.value(for: .aboutText) ?? LocalString.settings_about_description
     static let aboutWebsite: String = Config.value(for: .aboutWebsite) ?? "https://www.kiwix.org"
@@ -92,6 +93,7 @@ enum Config: String {
     case aboutText = "CUSTOM_ABOUT_TEXT"
     case aboutWebsite = "CUSTOM_ABOUT_WEBSITE"
     case hideDonation = "HIDE_DONATION"
+    case hideRandomButton = "HIDE_RANDOM_BUTTON"
     case disableImmersiveReading = "DISABLE_IMMERSIVE_READING"
 
     static func value<T>(for key: Config) -> T? where T: LosslessStringConvertible {

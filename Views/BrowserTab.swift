@@ -92,7 +92,6 @@ struct BrowserTab: View {
                 ContentSearchButton(browser: browser)
 #endif
                 ArticleShortcutButtons(
-                    displayMode: .mainAndRandomArticle,
                     loadMainArticle: { [weak browser] zimFileID in
                         browser?.loadMainArticle(zimFileID: zimFileID)
                     },

@@ -22,20 +22,18 @@ struct ArticleShortcutButtons: View {
         predicate: ZimFile.openedPredicate
     ) private var zimFiles: FetchedResults<ZimFile>
 
-    let displayMode: DisplayMode
+    let displayMode: DisplayMode = Brand.hideRandomButton ? .mainArticle : .mainAndRandomArticle
     let loadMainArticle: @MainActor (UUID?) -> Void
     let loadRandomArticle: @MainActor (UUID?) -> Void
 
     enum DisplayMode {
-        case mainArticle, randomArticle, mainAndRandomArticle
+        case mainArticle, mainAndRandomArticle
     }
 
     var body: some View {
         switch displayMode {
         case .mainArticle:
             mainArticle
-        case .randomArticle:
-            randomArticle
         case .mainAndRandomArticle:
             mainArticle
             randomArticle
