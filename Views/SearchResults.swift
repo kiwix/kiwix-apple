@@ -22,6 +22,7 @@ struct SearchResults: View {
     @Environment(\.dismissSearch) private var dismissSearch
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     @Environment(\.managedObjectContext) private var managedObjectContext
+    @Environment(\.isSearching) private var isSearching
     @EnvironmentObject private var viewModel: SearchViewModel
     @EnvironmentObject private var navigation: NavigationViewModel
     @FocusState private var focusedSearchItem: URL? // macOS only
@@ -35,6 +36,17 @@ struct SearchResults: View {
 
     var body: some View {
         Group {
+            #if os(macOS)
+            // Special hidden button to enable down key response when
+            // search is active, to go to search results
+            if isSearching, focusedSearchItem == nil {
+                Button(action: {
+                    focusedSearchItem = viewModel.results.first?.url
+                }, label: {})
+                .hidden()
+                .keyboardShortcut(.downArrow, modifiers: [])
+            }
+            #endif
             if zimFiles.isEmpty {
                 Message(text: LocalString.search_result_zimfile_empty_message)
             } else if horizontalSizeClass == .regular {
@@ -120,7 +132,12 @@ struct SearchResults: View {
                         case .down: nextIndex = viewModel.results.index(after: index)
                         default: nextIndex = viewModel.results.startIndex
                         }
-                        if (viewModel.results.startIndex..<viewModel.results.endIndex).contains(nextIndex) {
+                        if nextIndex < viewModel.results.startIndex {
+                            $focusedSearchItem.wrappedValue = nil
+                            #if os(macOS)
+                            NotificationCenter.default.post(name: .zimSearch, object: nil)
+                            #endif
+                        } else if (viewModel.results.startIndex..<viewModel.results.endIndex).contains(nextIndex) {
                             $focusedSearchItem.wrappedValue = viewModel.results[nextIndex].url
                         }
                     }
