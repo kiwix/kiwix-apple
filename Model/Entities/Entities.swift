@@ -86,7 +86,7 @@ struct Language: Identifiable, Comparable {
     }
 }
 
-class OutlineItem: ObservableObject, Identifiable {
+final class OutlineItem: ObservableObject, Identifiable {
     let id: String
     let index: Int
     let text: String
