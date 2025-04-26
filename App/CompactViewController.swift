@@ -196,19 +196,23 @@ private struct CompactView: View {
                         browser?.webView.goForward()
                     })
                 Spacer()
-                OutlineButton(browser: browser)
-                Spacer()
+                if !Brand.hideTOCButton {
+                    OutlineButton(browser: browser)
+                    Spacer()
+                }
                 BookmarkButton(articleBookmarked: browser.articleBookmarked,
                                isButtonDisabled: browser.zimFileName.isEmpty,
                                createBookmark: { [weak browser] in browser?.createBookmark() },
                                deleteBookmark: { [weak browser] in browser?.deleteBookmark() })
                 Spacer()
-                ExportButton(
-                    webViewURL: browser.webView.url,
-                    pageDataWithExtension: browser.pageDataWithExtension,
-                    isButtonDisabled: browser.zimFileName.isEmpty
-                )
-                Spacer()
+                if !Brand.hideShareButton {
+                    ExportButton(
+                        webViewURL: browser.webView.url,
+                        pageDataWithExtension: browser.pageDataWithExtension,
+                        isButtonDisabled: browser.zimFileName.isEmpty
+                    )
+                    Spacer()
+                }
                 TabsManagerButton()
                 Spacer()
                 if FeatureFlags.hasLibrary {
@@ -327,7 +331,9 @@ private struct Content<LaunchModel>: View where LaunchModel: LaunchProtocol {
                            action: { [weak browser] in browser?.loadRandomArticle() })
                     .disabled(zimFiles.isEmpty)
                 }
-                ContentSearchButton(browser: browser)
+                if !Brand.hideFindInPage {
+                    ContentSearchButton(browser: browser)
+                }
             }
         }
         .onChange(of: scenePhase) { newValue in
