@@ -274,6 +274,7 @@ struct RootView: View {
                        let mainPageURL = await ZimFileService.shared.getMainPageURL(zimFileID: metadata.fileID) {
                         browser.load(url: mainPageURL)
                     } else {
+                        await browser.clear()
                         isOpenFileAlertPresented = true
                         openFileAlert = .unableToOpen(filenames: [url.lastPathComponent])
                     }
