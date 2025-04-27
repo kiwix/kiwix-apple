@@ -184,6 +184,10 @@ struct RootView: View {
     @State private var paymentButtonLabel: PayWithApplePayButtonLabel?
     var isSearchFocused: FocusState<Bool>.Binding
     @StateObject private var selection = SelectedZimFileViewModel()
+    // Open file alerts
+    @State private var isOpenFileAlertPresented = false
+    @State private var openFileAlert: OpenFileAlert?
+    
     private let primaryItems: [MenuItem] = [.bookmarks]
     private let libraryItems: [MenuItem] = [.opened, .categories, .downloads, .new]
     private let openURL = NotificationCenter.default.publisher(for: .openURL)
@@ -264,39 +268,56 @@ struct RootView: View {
                 // from opening an external file
                 let browser = BrowserViewModel.getCached(tabID: navigation.currentTabId)
                 browser.forceLoadingState()
-                // deeplink id is not needed on macOS
-                NotificationCenter.openFiles([url], context: .file(deepLinkId: nil))
+                
+                Task { // open the ZIM file
+                    if let metadata = await LibraryOperations.open(url: url),
+                       let mainPageURL = await ZimFileService.shared.getMainPageURL(zimFileID: metadata.fileID) {
+                        browser.load(url: mainPageURL)
+                    } else {
+                        isOpenFileAlertPresented = true
+                        openFileAlert = .unableToOpen(filenames: [url.lastPathComponent])
+                    }
+                }
             } else if url.isZIMURL {
                 // from deeplinks
                 let browser = BrowserViewModel.getCached(tabID: navigation.currentTabId)
-                browser.forceLoadingState()
-                // deeplink id is not needed on macOS
-                NotificationCenter.openURL(url, context: .deepLink(id: nil))
+                browser.load(url: url)
+            }
+        }
+        .alert(LocalString.file_import_alert_no_open_title,
+               isPresented: $isOpenFileAlertPresented, presenting: openFileAlert) { _ in
+        } message: { alert in
+            switch alert {
+            case .unableToOpen(let filenames):
+                let name = ListFormatter.localizedString(byJoining: filenames)
+                Text(LocalString.file_import_alert_no_open_message(withArgs: name))
             }
         }
         .onReceive(openURL) { notification in
             guard let url = notification.userInfo?["url"] as? URL else {
                 return
             }
-            switch notification.userInfo?["context"] as? OpenURLContext {
-            case .file, .deepLink:
-                // handle the opened ZIM file from Finder / DeepLink
-                // for which the system opens a new window,
-                // this part of the code, will be called on all possible windows, we need this though,
-                // otherwise it won't fire on app start, where we might not have a fully configured window yet.
-                // We need to filter it down the the last window
-                // (which is usually not the key window yet at this point),
-                // and load the content only within that
-                Task { @MainActor in
-                    if windowTracker.isLastWindow() {
-                        BrowserViewModel.getCached(tabID: navigation.currentTabId).load(url: url)
-                    }
-                }
-                return
-                
-            case .none:
-                break
-            }
+//            switch notification.userInfo?["context"] as? OpenURLContext {
+//            case .file, .deepLink:
+//                // handle the opened ZIM file from Finder / DeepLink
+//                // for which the system opens a new window,
+//                // this part of the code, will be called on all possible windows, we need this though,
+//                // otherwise it won't fire on app start, where we might not have a fully configured window yet.
+//                // We need to filter it down the the last window
+//                // (which is usually not the key window yet at this point),
+//                // and load the content only within that
+//                Task { @MainActor in
+//                    if windowTracker.isLastWindow() {
+//                        BrowserViewModel.getCached(tabID: navigation.currentTabId).load(url: url)
+//                    } else {
+//                        print("coulnd't find the appropriate window for: \(navigation.currentTabId)")
+//                    }
+//                }
+//                return
+//                
+//            case .none:
+//                break
+//            }
             guard controlActiveState == .key else { return }
             let tabID = navigation.currentTabId
             currentNavItem = .tab(objectID: tabID)

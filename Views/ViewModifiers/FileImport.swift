@@ -49,16 +49,17 @@ struct OpenFileButton<Label: View>: View {
     }
 }
 
+enum OpenFileAlert {
+    case unableToOpen(filenames: [String])
+}
+
 struct OpenFileHandler: ViewModifier {
     @EnvironmentObject private var navigation: NavigationViewModel
     @State private var isAlertPresented = false
-    @State private var activeAlert: ActiveAlert?
+    @State private var activeAlert: OpenFileAlert?
 
     private let openFiles = NotificationCenter.default.publisher(for: .openFiles)
 
-    enum ActiveAlert {
-        case unableToOpen(filenames: [String])
-    }
     // swiftlint:disable:next cyclomatic_complexity function_body_length
     func body(content: Content) -> some View {
         content.onReceive(openFiles) { notification in
