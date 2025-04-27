@@ -78,6 +78,7 @@ struct OpenFileHandler: ViewModifier {
                     }
                 }
                 
+                // action for zim files that can be opened (e.g. open main page)
                 if case .library = context {
                     // don't need to open the main page
                 } else {
