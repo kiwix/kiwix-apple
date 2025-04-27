@@ -4,10 +4,6 @@
 <dict>
 	<key>APP_STORE_ID</key>
 	<string>id997079563</string>
-	<key>BGTaskSchedulerPermittedIdentifiers</key>
-	<array>
-		<string>org.kiwix.downloads_to_liveactivity</string>
-	</array>
 	<key>CFBundleDocumentTypes</key>
 	<array>
 		<dict>
