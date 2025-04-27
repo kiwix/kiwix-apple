@@ -77,39 +77,35 @@ struct OpenFileHandler: ViewModifier {
                         invalidURLs.insert(url)
                     }
                 }
-
-                // action for zim files that can be opened (e.g. open main page)
-                switch context {
-                case .command, .file:
+                
+                if case .library = context {
+                    // don't need to open the main page
+                } else {
                     for fileID in openedZimFileIDs {
-                        guard let url = await ZimFileService.shared.getMainPageURL(zimFileID: fileID) else { return }
-                        #if os(macOS)
-                        switch context {
-                        case .command:
-                            NotificationCenter.openURL(url, inNewTab: true)
-                        case .file:
-                            // Note: inNewTab:true/false has no meaning here, the system will open a new window anyway
-                            NotificationCenter.openURL(url, inNewTab: true, context: .file)
-                        default:
-                            break
+                        if let url = await ZimFileService.shared.getMainPageURL(zimFileID: fileID) {
+                            // action for zim files that can be opened (e.g. open main page)
+                            switch context {
+                            #if os(iOS)
+                            case .file(.none):
+                                NotificationCenter.openURL(url, inNewTab: true)
+                            case .file(.some(let deepLinkID)):
+                                NotificationCenter.openURL(
+                                    url,
+                                    inNewTab: true,
+                                    context: .deepLink(id: deepLinkID)
+                                )
+                            #else
+                            case .command:
+                                NotificationCenter.openURL(url, inNewTab: true)
+                            #endif
+                            case .welcomeScreen:
+                                NotificationCenter.openURL(url)
+                            case .library:
+                                break
+                            }
                         }
-                        #elseif os(iOS)
-                        if case .file(.some(let deepLinkID)) = context {
-                            NotificationCenter.openURL(url, inNewTab: true, context: .deepLink(id: deepLinkID))
-                        } else {
-                            NotificationCenter.openURL(url, inNewTab: true)
-                        }
-                        #endif
                     }
-                case .welcomeScreen:
-                    for fileID in openedZimFileIDs {
-                        guard let url = await ZimFileService.shared.getMainPageURL(zimFileID: fileID) else { return }
-                        NotificationCenter.openURL(url)
-                    }
-                default:
-                    break
                 }
-
                 // show alert if there are any files that cannot be opened
                 if !invalidURLs.isEmpty {
                     isAlertPresented = true

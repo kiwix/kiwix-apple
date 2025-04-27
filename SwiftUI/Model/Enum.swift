@@ -140,12 +140,14 @@ enum ExternalLinkLoadingPolicy: String, CaseIterable, Identifiable, Defaults.Ser
 
 enum OpenURLContext {
     case deepLink(id: UUID?)
-    case file
 }
 
 enum OpenFileContext {
-    case command
+    #if os(iOS)
     case file(deepLinkId: UUID? = nil)
+    #else
+    case command
+    #endif
     case welcomeScreen
     case library
 }
