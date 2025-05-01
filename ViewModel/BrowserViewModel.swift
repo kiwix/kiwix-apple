@@ -386,7 +386,7 @@ final class BrowserViewModel: NSObject, ObservableObject,
 
 #if os(macOS)
     @MainActor
-    private func createNewWindow(with url: URL) -> Bool {
+    @discardableResult func createNewWindow(with url: URL) -> Bool {
         guard let currentWindow = NSApp.keyWindow,
               let windowController = currentWindow.windowController else { return false }
         let context = Database.shared.viewContext
@@ -576,7 +576,7 @@ final class BrowserViewModel: NSObject, ObservableObject,
             return nil
         }
 
-        _ = createNewWindow(with: newUrl)
+        createNewWindow(with: newUrl)
         return nil
     }
 #else

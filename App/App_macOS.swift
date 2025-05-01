@@ -25,6 +25,13 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     func applicationShouldTerminateAfterLastWindowClosed(_ sender: NSApplication) -> Bool {
         true
     }
+    func application(
+        _ application: NSApplication,
+        continue userActivity: NSUserActivity,
+        restorationHandler: @escaping ([any NSUserActivityRestoring]) -> Void
+    ) -> Bool {
+        false
+    }
 }
 
 @main
@@ -86,6 +93,7 @@ struct Kiwix: App {
             }
             CommandGroup(replacing: .help) {}
         }
+
         Settings {
             TabView {
                 ReadingSettings()
@@ -97,6 +105,8 @@ struct Kiwix: App {
             }
             .frame(width: 550, height: 400)
         }
+        .handlesExternalEvents(matching: [])
+        
         Window(LocalString.payment_donate_title, id: "donation") {
             Group {
                 if let selectedAmount {
@@ -132,6 +142,7 @@ struct Kiwix: App {
         .commandsRemoved()
         .defaultSize(width: 320, height: 400)
         .restorationBehaviourDisabled()
+        .handlesExternalEvents(matching: [])
 
         Window("", id: "donation-thank-you") {
             PaymentResultPopUp(state: .thankYou)
@@ -141,6 +152,7 @@ struct Kiwix: App {
         .commandsRemoved()
         .defaultSize(width: 320, height: 198)
         .restorationBehaviourDisabled()
+        .handlesExternalEvents(matching: [])
 
         Window("", id: "donation-error") {
             PaymentResultPopUp(state: .error)
@@ -150,6 +162,7 @@ struct Kiwix: App {
         .commandsRemoved()
         .defaultSize(width: 320, height: 198)
         .restorationBehaviourDisabled()
+        .handlesExternalEvents(matching: [])
     }
 
     private func closeDonation() {
@@ -200,6 +213,7 @@ struct RootView: View {
     // Open file alerts
     @State private var isOpenFileAlertPresented = false
     @State private var openFileAlert: OpenFileAlert?
+    @State private var openExternalEventsInSameWindow: Bool = true
     
     private let primaryItems: [MenuItem] = [.bookmarks]
     private let libraryItems: [MenuItem] = [.opened, .categories, .downloads, .new]
@@ -280,12 +294,18 @@ struct RootView: View {
             if url.isFileURL {
                 // from opening an external file
                 let browser = BrowserViewModel.getCached(tabID: navigation.currentTabId)
-                browser.forceLoadingState()
+                if !openExternalEventsInSameWindow {
+                    browser.forceLoadingState()
+                }
                 
                 Task { // open the ZIM file
                     if let metadata = await LibraryOperations.open(url: url),
                        let mainPageURL = await ZimFileService.shared.getMainPageURL(zimFileID: metadata.fileID) {
-                        browser.load(url: mainPageURL)
+                        if openExternalEventsInSameWindow {
+                            browser.createNewWindow(with: mainPageURL)
+                        } else {
+                            browser.load(url: mainPageURL)
+                        }
                     } else {
                         await browser.clear()
                         isOpenFileAlertPresented = true
@@ -294,8 +314,22 @@ struct RootView: View {
                 }
             } else if url.isZIMURL {
                 // from deeplinks
-                let browser = BrowserViewModel.getCached(tabID: navigation.currentTabId)
-                browser.load(url: url)
+                if openExternalEventsInSameWindow {
+                    Task { @MainActor in
+                        // we want to open the deeplink a new tab (in the currently active window)
+                        // at this point though, the latest tab is active, that received the deeplink handling
+                        // therefore we do need to wait 1 UI cycle, to finish the original
+                        // deeplink handling (hence the Task { @MainActor solution)
+                        // This way we can activate the newly opened tab with the deeplink content in it
+                        let browser = BrowserViewModel.getCached(tabID: navigation.currentTabId)
+                        browser.createNewWindow(with: url)
+                    }
+                } else {
+                    // in this case the system created a new detached window / single tab
+                    // that is currently active
+                    let browser = BrowserViewModel.getCached(tabID: navigation.currentTabId)
+                    browser.load(url: url)
+                }
             }
         }
         .alert(LocalString.file_import_alert_no_open_title,
@@ -385,6 +419,7 @@ struct RootView: View {
         .withHostingWindow { [weak windowTracker] hostWindow in
             windowTracker?.current = hostWindow
         }
+        .modifier(ExternalEventHandler(openInSameWindow: openExternalEventsInSameWindow))
     }
 }
 
