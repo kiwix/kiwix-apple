@@ -23,6 +23,9 @@ extension Defaults.Keys {
     static let externalLinkLoadingPolicy = Key<ExternalLinkLoadingPolicy>(
         "externalLinkLoadingPolicy", default: Brand.defaultExternalLinkPolicy
     )
+    static let externalEventTabOpenPolicy = Key<ExternalEventOpeningPolicy>(
+        "ExternalEventOpeningPolicy", default: .openInNewTabSameWindow
+    )
     static let searchResultSnippetMode = Key<SearchResultSnippetMode>(
         "searchResultSnippetMode", default: Brand.defaultSearchSnippetMode
     )

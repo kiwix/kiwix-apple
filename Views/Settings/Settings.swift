@@ -22,6 +22,7 @@ struct ReadingSettings: View {
     @Default(.externalLinkLoadingPolicy) private var externalLinkLoadingPolicy
     @Default(.searchResultSnippetMode) private var searchResultSnippetMode
     @Default(.webViewPageZoom) private var webViewPageZoom
+    @Default(.externalEventTabOpenPolicy) private var externalEventTabOpenPolicy
 
     var body: some View {
         let isSnippet = Binding {
@@ -51,6 +52,16 @@ struct ReadingSettings: View {
                     } label: { }
                 }
             }
+            if !AppType.isCustom {
+                SettingSection(name: LocalString.reading_settings_external_events_tab_opening_title) {
+                    Picker(selection: $externalEventTabOpenPolicy) {
+                        ForEach(ExternalEventOpeningPolicy.allCases) { policy in
+                            Text(policy.name).tag(policy)
+                        }
+                    } label: { }
+                }
+            }
+            
             if FeatureFlags.showSearchSnippetInSettings {
                 SettingSection(name: LocalString.reading_settings_search_snippet_title) {
                     Toggle(" ", isOn: isSnippet)

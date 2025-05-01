@@ -213,7 +213,7 @@ struct RootView: View {
     // Open file alerts
     @State private var isOpenFileAlertPresented = false
     @State private var openFileAlert: OpenFileAlert?
-    @State private var openExternalEventsInSameWindow: Bool = true
+    @Default(.externalEventTabOpenPolicy) private var externalEventTabOpenPolicy
     
     private let primaryItems: [MenuItem] = [.bookmarks]
     private let libraryItems: [MenuItem] = [.opened, .categories, .downloads, .new]
@@ -294,16 +294,17 @@ struct RootView: View {
             if url.isFileURL {
                 // from opening an external file
                 let browser = BrowserViewModel.getCached(tabID: navigation.currentTabId)
-                if !openExternalEventsInSameWindow {
-                    browser.forceLoadingState()
+                if externalEventTabOpenPolicy == .openInNewDetachedWindow {
+                    browser.forceLoadingState() // we are already in the new window, show loading immediately
                 }
                 
                 Task { // open the ZIM file
                     if let metadata = await LibraryOperations.open(url: url),
                        let mainPageURL = await ZimFileService.shared.getMainPageURL(zimFileID: metadata.fileID) {
-                        if openExternalEventsInSameWindow {
+                        switch externalEventTabOpenPolicy {
+                        case .openInNewTabSameWindow:
                             browser.createNewWindow(with: mainPageURL)
-                        } else {
+                        case .openInNewDetachedWindow:
                             browser.load(url: mainPageURL)
                         }
                     } else {
@@ -314,7 +315,8 @@ struct RootView: View {
                 }
             } else if url.isZIMURL {
                 // from deeplinks
-                if openExternalEventsInSameWindow {
+                switch externalEventTabOpenPolicy {
+                case .openInNewTabSameWindow:
                     Task { @MainActor in
                         // we want to open the deeplink a new tab (in the currently active window)
                         // at this point though, the latest tab is active, that received the deeplink handling
@@ -324,7 +326,7 @@ struct RootView: View {
                         let browser = BrowserViewModel.getCached(tabID: navigation.currentTabId)
                         browser.createNewWindow(with: url)
                     }
-                } else {
+                case .openInNewDetachedWindow:
                     // in this case the system created a new detached window / single tab
                     // that is currently active
                     let browser = BrowserViewModel.getCached(tabID: navigation.currentTabId)
@@ -419,7 +421,7 @@ struct RootView: View {
         .withHostingWindow { [weak windowTracker] hostWindow in
             windowTracker?.current = hostWindow
         }
-        .modifier(ExternalEventHandler(openInSameWindow: openExternalEventsInSameWindow))
+        .modifier(ExternalEventHandler(openInSameWindow: externalEventTabOpenPolicy == .openInNewTabSameWindow))
     }
 }
 
