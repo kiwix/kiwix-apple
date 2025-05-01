@@ -64,32 +64,42 @@ struct BrowserTab: View {
             }
 #endif
             ToolbarItemGroup(placement: .primaryAction) {
-                OutlineButton(browser: browser)
+                if !Brand.hideTOCButton {
+                    OutlineButton(browser: browser)
+                }
 #if os(iOS)
-                ExportButton(
-                    webViewURL: browser.webView.url,
-                    pageDataWithExtension: { [weak browser] in await browser?.pageDataWithExtension() },
-                    isButtonDisabled: browser.zimFileName.isEmpty
-                )
+                if !Brand.hideShareButton {
+                    ExportButton(
+                        webViewURL: browser.webView.url,
+                        pageDataWithExtension: { [weak browser] in await browser?.pageDataWithExtension() },
+                        isButtonDisabled: browser.zimFileName.isEmpty
+                    )
+                }
 #else
-                ExportButton(
-                    relativeToView: browser.webView,
-                    webViewURL: browser.webView.url,
-                    pageDataWithExtension: { [weak browser] in await browser?.pageDataWithExtension() },
-                    isButtonDisabled: browser.zimFileName.isEmpty
-                )
-                PrintButton(browserURLName: { [weak browser] in
-                    browser?.url?.lastPathComponent
-                }, browserDataAsPDF: { [weak browser] in
-                    try await browser?.webView.pdf()
-                })
+                if !Brand.hideShareButton {
+                    ExportButton(
+                        relativeToView: browser.webView,
+                        webViewURL: browser.webView.url,
+                        pageDataWithExtension: { [weak browser] in await browser?.pageDataWithExtension() },
+                        isButtonDisabled: browser.zimFileName.isEmpty
+                    )
+                }
+                if !Brand.hidePrintButton {
+                    PrintButton(browserURLName: { [weak browser] in
+                        browser?.url?.lastPathComponent
+                    }, browserDataAsPDF: { [weak browser] in
+                        try await browser?.webView.pdf()
+                    })
+                }
 #endif
                 BookmarkButton(articleBookmarked: browser.articleBookmarked,
                                isButtonDisabled: browser.zimFileName.isEmpty,
                                createBookmark: { [weak browser] in browser?.createBookmark() },
                                deleteBookmark: { [weak browser] in browser?.deleteBookmark() })
 #if os(iOS)
-                ContentSearchButton(browser: browser)
+                if !Brand.hideFindInPage {
+                    ContentSearchButton(browser: browser)
+                }
 #endif
                 ArticleShortcutButtons(
                     loadMainArticle: { [weak browser] zimFileID in
@@ -174,11 +184,13 @@ struct BrowserTab: View {
                                 }
 #if os(macOS)
                                 .overlay(alignment: .bottomTrailing) {
-                                    ContentSearchBar(
-                                        model: ContentSearchViewModel(
-                                            findInWebPage: browser.webView.find(_:configuration:)
+                                    if !Brand.hideFindInPage {
+                                        ContentSearchBar(
+                                            model: ContentSearchViewModel(
+                                                findInWebPage: browser.webView.find(_:configuration:)
+                                            )
                                         )
-                                    )
+                                    }
                                 }
 #endif
                         case .catalog(.fetching):

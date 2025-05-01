@@ -48,7 +48,11 @@ enum Brand {
     static let appStoreId: String = Config.value(for: .appStoreID) ?? "id997079563"
     static let loadingLogoImage: String = "welcomeLogo"
     static var loadingLogoSize: CGSize = ImageInfo.sizeOf(imageName: loadingLogoImage)!
+    static let hideFindInPage: Bool = Config.value(for: .hideFindInPage) ?? false
+    static let hidePrintButton: Bool = Config.value(for: .hidePrintButton) ?? false
     static let hideRandomButton: Bool = Config.value(for: .hideRandomButton) ?? false
+    static let hideShareButton: Bool = Config.value(for: .hideShareButton) ?? false
+    static let hideTOCButton: Bool = Config.value(for: .hideTOCButton) ?? false
 
     static let aboutText: String = Config.value(for: .aboutText) ?? LocalString.settings_about_description
     static let aboutWebsite: String = Config.value(for: .aboutWebsite) ?? "https://www.kiwix.org"
@@ -92,9 +96,13 @@ enum Config: String {
     case showSearchSnippetInSettings = "SETTINGS_SHOW_SEARCH_SNIPPET"
     case aboutText = "CUSTOM_ABOUT_TEXT"
     case aboutWebsite = "CUSTOM_ABOUT_WEBSITE"
-    case hideDonation = "HIDE_DONATION"
-    case hideRandomButton = "HIDE_RANDOM_BUTTON"
     case disableImmersiveReading = "DISABLE_IMMERSIVE_READING"
+    case hideDonation = "HIDE_DONATION"
+    case hideFindInPage = "HIDE_FIND_IN_PAGE"
+    case hidePrintButton = "HIDE_PRINT_BUTTON"
+    case hideRandomButton = "HIDE_RANDOM_BUTTON"
+    case hideShareButton = "HIDE_SHARE_BUTTON"
+    case hideTOCButton = "HIDE_TOC_BUTTON"
 
     static func value<T>(for key: Config) -> T? where T: LosslessStringConvertible {
         guard let object = Bundle.main.object(forInfoDictionaryKey: key.rawValue) else {
