@@ -159,6 +159,7 @@
 "reading_settings.zoom.title" = "Page zoom";
 "reading_settings.zoom.reset.button" = "Reset";
 "reading_settings.external_link.title" = "External Link";
+"reading_settings.external_events_tab_opening.title" = "URLs and files should";
 "reading_settings.search_snippet.title" = "Search snippet";
 "reading_settings.tab.reading" = "Reading";
 "library_settings.catalog.title" = "Catalog";
@@ -255,8 +256,8 @@
 "enum.external_link_loading_policy.always_ask" = "Always Ask";
 "enum.external_link_loading_policy.always_load" = "Always Load";
 "enum.external_link_loading_policy.never_load" = "Never Load";
-"enum.enum_external_event.open_in_new_tab_same_window" = "Open in new tab in the active window";
-"enum.enum_external_event.open_new_detached_window" = "Open in new detached window";
+"enum.external_event.open_in_new_tab_same_window" = "Open in a new tab in the active window";
+"enum.external_event.open_new_detached_window" = "Open in a new detached window";
 "enum.flavor.max" = "max";
 "enum.flavor.no_pic" = "no pic";
 "enum.flavor.mini" = "mini";
