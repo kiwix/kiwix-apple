@@ -25,13 +25,6 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     func applicationShouldTerminateAfterLastWindowClosed(_ sender: NSApplication) -> Bool {
         true
     }
-    func application(
-        _ application: NSApplication,
-        continue userActivity: NSUserActivity,
-        restorationHandler: @escaping ([any NSUserActivityRestoring]) -> Void
-    ) -> Bool {
-        false
-    }
 }
 
 @main
@@ -187,16 +180,6 @@ struct Kiwix: App {
                 }
                 await MainActor.run { completionHandler() }
             }
-        }
-    }
-}
-
-private extension Scene {
-    nonisolated func restorationBehaviourDisabled() -> some Scene {
-        if #available(macOS 15.0, *) {
-            return restorationBehavior(.disabled)
-        } else {
-            return self
         }
     }
 }
