@@ -131,6 +131,7 @@ struct Kiwix: App {
         .windowStyle(.titleBar)
         .commandsRemoved()
         .defaultSize(width: 320, height: 400)
+        .restorationBehaviourDisabled()
 
         Window("", id: "donation-thank-you") {
             PaymentResultPopUp(state: .thankYou)
@@ -139,6 +140,7 @@ struct Kiwix: App {
         .windowResizability(.contentMinSize)
         .commandsRemoved()
         .defaultSize(width: 320, height: 198)
+        .restorationBehaviourDisabled()
 
         Window("", id: "donation-error") {
             PaymentResultPopUp(state: .error)
@@ -147,6 +149,7 @@ struct Kiwix: App {
         .windowResizability(.contentMinSize)
         .commandsRemoved()
         .defaultSize(width: 320, height: 198)
+        .restorationBehaviourDisabled()
     }
 
     private func closeDonation() {
@@ -171,6 +174,16 @@ struct Kiwix: App {
                 }
                 await MainActor.run { completionHandler() }
             }
+        }
+    }
+}
+
+private extension Scene {
+    nonisolated func restorationBehaviourDisabled() -> some Scene {
+        if #available(macOS 15.0, *) {
+            return restorationBehavior(.disabled)
+        } else {
+            return self
         }
     }
 }
