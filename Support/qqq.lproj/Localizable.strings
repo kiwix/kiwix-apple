@@ -211,6 +211,8 @@
 "enum.external_link_loading_policy.always_ask" = "Settings picker option title: how external links should be treated";
 "enum.external_link_loading_policy.always_load" = "Settings picker option title: how external links should be treated";
 "enum.external_link_loading_policy.never_load" = "Settings picker option title: how external links should be treated";
+"enum.enum_external_event.open_in_new_tab_same_window" = "Settings picker option title: how to handle zim urls, and files opened in Finder: they should be opened in a new tab attached to the currently active window";
+"enum.enum_external_event.open_new_detached_window" = "Settings picker option title: how to handle zim urls, and files opened in Finder: they should be opened in a new detached window on top of the currently running application window";
 "enum.flavor.max" = "short, abreviated label displayed in the corner of zim file cards, describing the flavour of the file. The shorter the better.";
 "enum.flavor.no_pic" = "short, abreviated label displayed in the corner of zim file cards, describing the flavour of the file. The shorter the better.";
 "enum.flavor.mini" = "short, abreviated label displayed in the corner of zim file cards, describing the flavour of the file. The shorter the better.";
