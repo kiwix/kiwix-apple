@@ -13,4 +13,23 @@
 // You should have received a copy of the GNU General Public License
 // along with Kiwix; If not, see https://www.gnu.org/licenses/.
 
+#if os(macOS)
 import Foundation
+import UserNotifications
+import AppKit
+
+final class NotificationCenterDelegate: NSObject, UNUserNotificationCenterDelegate {
+    /// Handling file download complete notification
+    func userNotificationCenter(_ center: UNUserNotificationCenter,
+                                didReceive response: UNNotificationResponse,
+                                withCompletionHandler completionHandler: @escaping () -> Void) {
+        Task {
+            if let zimFileID = UUID(uuidString: response.notification.request.identifier),
+               let mainPageURL = await ZimFileService.shared.getMainPageURL(zimFileID: zimFileID) {
+                NSWorkspace.shared.open(mainPageURL)
+            }
+            await MainActor.run { completionHandler() }
+        }
+    }
+}
+#endif

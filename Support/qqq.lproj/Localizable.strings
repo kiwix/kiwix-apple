@@ -124,7 +124,6 @@
 "reading_settings.zoom.title" = "Label title for a percentage selector in app settings, eg: 100%";
 "reading_settings.zoom.reset.button" = "Button title for percentage selector for zoom level in app settings";
 "reading_settings.external_link.title" = "Label title for option picker. External Link: Always Ask | Always Load | Never Load";
-"reading_settings.external_events_tab_opening.title" = "Label title for option picker. URLs and files should: Open in a new tab in the active window | Open in a new detached window";
 "reading_settings.search_snippet.title" = "Label title for option picker. Search snippet: Disabled | First Paragraph | First Sentence | Matches";
 "reading_settings.tab.reading" = "Settings page tab title";
 "library_settings.catalog.title" = "In settings: Label next to button Catalog: [Refresh] Last Refresh: 30 minutes ago";
@@ -212,8 +211,6 @@
 "enum.external_link_loading_policy.always_ask" = "Settings picker option title: how external links should be treated";
 "enum.external_link_loading_policy.always_load" = "Settings picker option title: how external links should be treated";
 "enum.external_link_loading_policy.never_load" = "Settings picker option title: how external links should be treated";
-"enum.external_event.open_in_new_tab_same_window" = "Settings picker option title: how to handle zim urls, and files opened in Finder: they should be opened in a new tab attached to the currently active window";
-"enum.external_event.open_new_detached_window" = "Settings picker option title: how to handle zim urls, and files opened in Finder: they should be opened in a new detached window on top of the currently running application window";
 "enum.flavor.max" = "short, abreviated label displayed in the corner of zim file cards, describing the flavour of the file. The shorter the better.";
 "enum.flavor.no_pic" = "short, abreviated label displayed in the corner of zim file cards, describing the flavour of the file. The shorter the better.";
 "enum.flavor.mini" = "short, abreviated label displayed in the corner of zim file cards, describing the flavour of the file. The shorter the better.";

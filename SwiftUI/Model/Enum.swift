@@ -138,21 +138,6 @@ enum ExternalLinkLoadingPolicy: String, CaseIterable, Identifiable, Defaults.Ser
     }
 }
 
-enum ExternalEventOpeningPolicy: String, CaseIterable, Identifiable, Defaults.Serializable {
-    var id: String { self.rawValue }
-    case openInNewTabSameWindow
-    case openInNewDetachedWindow
-    
-    var name: String {
-        switch self {
-        case .openInNewTabSameWindow:
-            return LocalString.enum_external_event_open_in_new_tab_same_window
-        case .openInNewDetachedWindow:
-            return LocalString.enum_external_event_open_new_detached_window
-        }
-    }
-}
-
 enum OpenURLContext {
     case deepLink(id: UUID?)
 }

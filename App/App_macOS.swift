@@ -167,21 +167,6 @@ struct Kiwix: App {
             window.identifier?.rawValue == "donation"
         }?.close()
     }
-
-    private class NotificationCenterDelegate: NSObject, UNUserNotificationCenterDelegate {
-        /// Handling file download complete notification
-        func userNotificationCenter(_ center: UNUserNotificationCenter,
-                                    didReceive response: UNNotificationResponse,
-                                    withCompletionHandler completionHandler: @escaping () -> Void) {
-            Task {
-                if let zimFileID = UUID(uuidString: response.notification.request.identifier),
-                   let mainPageURL = await ZimFileService.shared.getMainPageURL(zimFileID: zimFileID) {
-                    NSWorkspace.shared.open(mainPageURL)
-                }
-                await MainActor.run { completionHandler() }
-            }
-        }
-    }
 }
 
 struct RootView: View {
@@ -196,7 +181,6 @@ struct RootView: View {
     // Open file alerts
     @State private var isOpenFileAlertPresented = false
     @State private var openFileAlert: OpenFileAlert?
-    @Default(.externalEventTabOpenPolicy) private var externalEventTabOpenPolicy
     
     private let primaryItems: [MenuItem] = [.bookmarks]
     private let libraryItems: [MenuItem] = [.opened, .categories, .downloads, .new]
@@ -207,6 +191,8 @@ struct RootView: View {
     private let goForwardPublisher = NotificationCenter.default.publisher(for: .goForward)
     /// Close other tabs then the ones received
     private let keepOnlyTabs = NotificationCenter.default.publisher(for: .keepOnlyTabs)
+    // in essence it's the "zim://" value
+    private static let zimURL: String = "\(KiwixURLSchemeHandler.ZIMScheme)://"
 
     var body: some View {
         NavigationSplitView {
@@ -274,21 +260,23 @@ struct RootView: View {
             }
         }
         .onOpenURL { url in
+            /// if the app was just started via URL or file (wasn't open before)
+            /// we want to load the content in the first window
+            /// otherwise in a new tab (but within the currently active window)
+            let isAppStart = NSApplication.shared.windows.count == 1
             if url.isFileURL {
                 // from opening an external file
                 let browser = BrowserViewModel.getCached(tabID: navigation.currentTabId)
-                if externalEventTabOpenPolicy == .openInNewDetachedWindow {
-                    browser.forceLoadingState() // we are already in the new window, show loading immediately
+                if isAppStart {
+                    browser.forceLoadingState()
                 }
-                
                 Task { // open the ZIM file
                     if let metadata = await LibraryOperations.open(url: url),
                        let mainPageURL = await ZimFileService.shared.getMainPageURL(zimFileID: metadata.fileID) {
-                        switch externalEventTabOpenPolicy {
-                        case .openInNewTabSameWindow:
-                            browser.createNewWindow(with: mainPageURL)
-                        case .openInNewDetachedWindow:
+                        if isAppStart {
                             browser.load(url: mainPageURL)
+                        } else {
+                            browser.createNewWindow(with: mainPageURL)
                         }
                     } else {
                         await browser.clear()
@@ -298,8 +286,10 @@ struct RootView: View {
                 }
             } else if url.isZIMURL {
                 // from deeplinks
-                switch externalEventTabOpenPolicy {
-                case .openInNewTabSameWindow:
+                if isAppStart {
+                    let browser = BrowserViewModel.getCached(tabID: navigation.currentTabId)
+                    browser.load(url: url)
+                } else {
                     Task { @MainActor in
                         // we want to open the deeplink a new tab (in the currently active window)
                         // at this point though, the latest tab is active, that received the deeplink handling
@@ -309,11 +299,6 @@ struct RootView: View {
                         let browser = BrowserViewModel.getCached(tabID: navigation.currentTabId)
                         browser.createNewWindow(with: url)
                     }
-                case .openInNewDetachedWindow:
-                    // in this case the system created a new detached window / single tab
-                    // that is currently active
-                    let browser = BrowserViewModel.getCached(tabID: navigation.currentTabId)
-                    browser.load(url: url)
                 }
             }
         }
@@ -404,7 +389,10 @@ struct RootView: View {
         .withHostingWindow { [weak windowTracker] hostWindow in
             windowTracker?.current = hostWindow
         }
-        .modifier(ExternalEventHandler(openInSameWindow: externalEventTabOpenPolicy == .openInNewTabSameWindow))
+        .handlesExternalEvents(
+            preferring: Set([Self.zimURL]),
+            allowing: Set([Self.zimURL, "file:///"])
+        )
     }
 }
 
