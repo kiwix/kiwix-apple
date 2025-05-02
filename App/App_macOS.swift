@@ -86,6 +86,7 @@ struct Kiwix: App {
             }
             CommandGroup(replacing: .help) {}
         }
+
         Settings {
             TabView {
                 ReadingSettings()
@@ -97,6 +98,8 @@ struct Kiwix: App {
             }
             .frame(width: 550, height: 400)
         }
+        .handlesExternalEvents(matching: [])
+        
         Window(LocalString.payment_donate_title, id: "donation") {
             Group {
                 if let selectedAmount {
@@ -131,6 +134,8 @@ struct Kiwix: App {
         .windowStyle(.titleBar)
         .commandsRemoved()
         .defaultSize(width: 320, height: 400)
+        .restorationBehaviourDisabled()
+        .handlesExternalEvents(matching: [])
 
         Window("", id: "donation-thank-you") {
             PaymentResultPopUp(state: .thankYou)
@@ -139,6 +144,8 @@ struct Kiwix: App {
         .windowResizability(.contentMinSize)
         .commandsRemoved()
         .defaultSize(width: 320, height: 198)
+        .restorationBehaviourDisabled()
+        .handlesExternalEvents(matching: [])
 
         Window("", id: "donation-error") {
             PaymentResultPopUp(state: .error)
@@ -147,6 +154,8 @@ struct Kiwix: App {
         .windowResizability(.contentMinSize)
         .commandsRemoved()
         .defaultSize(width: 320, height: 198)
+        .restorationBehaviourDisabled()
+        .handlesExternalEvents(matching: [])
     }
 
     private func closeDonation() {
@@ -157,21 +166,6 @@ struct Kiwix: App {
         NSApplication.shared.windows.first { window in
             window.identifier?.rawValue == "donation"
         }?.close()
-    }
-
-    private class NotificationCenterDelegate: NSObject, UNUserNotificationCenterDelegate {
-        /// Handling file download complete notification
-        func userNotificationCenter(_ center: UNUserNotificationCenter,
-                                    didReceive response: UNNotificationResponse,
-                                    withCompletionHandler completionHandler: @escaping () -> Void) {
-            Task {
-                if let zimFileID = UUID(uuidString: response.notification.request.identifier),
-                   let mainPageURL = await ZimFileService.shared.getMainPageURL(zimFileID: zimFileID) {
-                    NSWorkspace.shared.open(mainPageURL)
-                }
-                await MainActor.run { completionHandler() }
-            }
-        }
     }
 }
 
@@ -197,6 +191,8 @@ struct RootView: View {
     private let goForwardPublisher = NotificationCenter.default.publisher(for: .goForward)
     /// Close other tabs then the ones received
     private let keepOnlyTabs = NotificationCenter.default.publisher(for: .keepOnlyTabs)
+    // in essence it's the "zim://" value
+    private static let zimURL: String = "\(KiwixURLSchemeHandler.ZIMScheme)://"
 
     var body: some View {
         NavigationSplitView {
@@ -264,15 +260,24 @@ struct RootView: View {
             }
         }
         .onOpenURL { url in
+            /// if the app was just started via URL or file (wasn't open before)
+            /// we want to load the content in the first window
+            /// otherwise in a new tab (but within the currently active window)
+            let isAppStart = NSApplication.shared.windows.count == 1
             if url.isFileURL {
                 // from opening an external file
                 let browser = BrowserViewModel.getCached(tabID: navigation.currentTabId)
-                browser.forceLoadingState()
-                
+                if isAppStart {
+                    browser.forceLoadingState()
+                }
                 Task { // open the ZIM file
                     if let metadata = await LibraryOperations.open(url: url),
                        let mainPageURL = await ZimFileService.shared.getMainPageURL(zimFileID: metadata.fileID) {
-                        browser.load(url: mainPageURL)
+                        if isAppStart {
+                            browser.load(url: mainPageURL)
+                        } else {
+                            browser.createNewWindow(with: mainPageURL)
+                        }
                     } else {
                         await browser.clear()
                         isOpenFileAlertPresented = true
@@ -281,8 +286,20 @@ struct RootView: View {
                 }
             } else if url.isZIMURL {
                 // from deeplinks
-                let browser = BrowserViewModel.getCached(tabID: navigation.currentTabId)
-                browser.load(url: url)
+                if isAppStart {
+                    let browser = BrowserViewModel.getCached(tabID: navigation.currentTabId)
+                    browser.load(url: url)
+                } else {
+                    Task { @MainActor in
+                        // we want to open the deeplink a new tab (in the currently active window)
+                        // at this point though, the latest tab is active, that received the deeplink handling
+                        // therefore we do need to wait 1 UI cycle, to finish the original
+                        // deeplink handling (hence the Task { @MainActor solution)
+                        // This way we can activate the newly opened tab with the deeplink content in it
+                        let browser = BrowserViewModel.getCached(tabID: navigation.currentTabId)
+                        browser.createNewWindow(with: url)
+                    }
+                }
             }
         }
         .alert(LocalString.file_import_alert_no_open_title,
@@ -372,6 +389,10 @@ struct RootView: View {
         .withHostingWindow { [weak windowTracker] hostWindow in
             windowTracker?.current = hostWindow
         }
+        .handlesExternalEvents(
+            preferring: Set([Self.zimURL]),
+            allowing: Set([Self.zimURL, "file:///"])
+        )
     }
 }
 
