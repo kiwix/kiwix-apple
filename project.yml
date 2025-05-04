@@ -2,8 +2,8 @@ name: Kiwix
 options:
   xcodeVersion: 16.1
   deploymentTarget: # the three latest major versions should be supported
-      iOS: 16.6
-      macOS: 13.0
+    iOS: 16.6
+    macOS: 13.0
   generateEmptyDirectories: true
   useTabs: false
   groupSortPosition: top
@@ -75,7 +75,7 @@ targetTemplates:
       - sdk: SystemConfiguration.framework
       - package: Defaults
       - package: StripeApplePay
-    sources: 
+    sources:
       - path: App
       - path: Model
       - path: SwiftUI
@@ -111,7 +111,7 @@ targets:
         INFOPLIST_KEY_UILaunchStoryboardName: SplashScreenKiwix.storyboard
     sources:
       - path: Support
-        excludes: 
+        excludes:
           - "**/qqq.lproj"
           - "**/igl.lproj"
           - "**/dag.lproj"
@@ -136,7 +136,26 @@ targets:
       - path: Tests
     dependencies:
       - target: Kiwix
-    
+
+  UITests:
+    type: bundle.ui-testing
+    supportedDestinations: [iOS, macOS]
+    settings:
+      PRODUCT_BUNDLE_IDENTIFIER: org.kiwix.UITests
+      # TEST_HOST: $(BUILT_PRODUCTS_DIR)/Kiwix.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Kiwix
+      BUNDLE_LOADER: $(TEST_HOST)
+    entitlements:
+      path: Support/Kiwix-unitTest.entitlements
+      properties:
+        com.apple.security.app-sandbox: false
+        # from macOS 14, sandbox and unit test are not working together on CI
+        # a pop up appears that needs user acceptance
+        # see: https://developer.apple.com/documentation/security/accessing-files-from-the-macos-app-sandbox
+    sources:
+      - path: UITests
+    dependencies:
+      - target: Kiwix
+
 schemes:
   Kiwix:
     build:
@@ -146,8 +165,16 @@ schemes:
       targets:
         - UnitTests
       commandLineArguments:
-            testing: true
+        testing: true
       gatherCoverageData: true
       coverageTargets:
         - Kiwix
-      
+  UITests:
+    build:
+      targets:
+        Kiwix: all
+    test:
+      targets:
+        - UITests
+      commandLineArguments:
+        testing: true
