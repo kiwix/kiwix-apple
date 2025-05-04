@@ -4,3 +4,4 @@ included:
   - Views/Settings/
 excluded:
   - Support/LocalString.swift
+  - UITests
