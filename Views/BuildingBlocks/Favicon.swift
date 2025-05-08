@@ -63,7 +63,7 @@ struct Favicon_Previews: PreviewProvider {
             category: .wikipedia,
             imageData: nil,
             imageURL: URL(
-                string: "https://library.kiwix.org/meta?name=favicon&content=wikipedia_en_climate_change_maxi_2021-12"
+                string: "https://library.kiwix.org/catalog/v2/illustration/e82e6816-a2dc-a7f0-2d15-58d24709db93/?size=48"
             )!
         ).frame(width: 200, height: 200).previewLayout(.sizeThatFits)
         Favicon(

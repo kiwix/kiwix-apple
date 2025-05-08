@@ -39,7 +39,7 @@
     return self;
 }
 
-- (BOOL)parseData:(nonnull NSData *)data {
+- (BOOL)parseData:(nonnull NSData *)data using: (nonnull NSString *)urlHost {
     try {
         NSString *content = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
         if (content == nil) {
@@ -47,7 +47,7 @@
         }
         std::shared_ptr<kiwix::Manager> manager = std::make_shared<kiwix::Manager>(self.library);
         return manager->readOpds([content cStringUsingEncoding:NSUTF8StringEncoding],
-                                 [@"https://library.kiwix.org" cStringUsingEncoding:NSUTF8StringEncoding]);
+                                 [urlHost cStringUsingEncoding:NSUTF8StringEncoding]);
     } catch (std::exception) {
         return false;
     }

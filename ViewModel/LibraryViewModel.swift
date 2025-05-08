@@ -95,7 +95,7 @@ final class LibraryViewModel: ObservableObject {
     private var insertionCount = 0
     private var deletionCount = 0
     
-    private static let catalogURL = URL(string: "https://library.kiwix.org/catalog/v2/entries?count=-1")!
+    private static let catalogURL = URL(string: "https://opds.library.kiwix.org/v2/entries?count=-1")!
 
     @MainActor
     init(
@@ -131,7 +131,7 @@ final class LibraryViewModel: ObservableObject {
             process.state = .inProgress
 
             // refresh library
-            guard let data = try await fetchData() else {
+            guard case (var data, let responseURL)? = try await fetchData() else {
                 // this is the case when we have no new data (304 http)
                 // but we still need to refresh the memory only stored
                 // zimfile categories to languages dictionary
@@ -156,7 +156,7 @@ final class LibraryViewModel: ObservableObject {
                     return
                 }
             }
-            let parser = try await parse(data: data)
+            let parser = try await parse(data: data, urlHost: responseURL)
             // delete all old ISO Lang Code entries if needed, by passing in an empty parser
             if defaults[.libraryUsingOldISOLangCodes] {
                 try await process(parser: DeletingParser())
@@ -252,7 +252,7 @@ final class LibraryViewModel: ObservableObject {
         }
     }
 
-    private func fetchData() async throws -> Data? {
+    private func fetchData() async throws -> (Data, URL)? {
         do {
             var request = URLRequest(url: Self.catalogURL, timeoutInterval: 20)
             request.allHTTPHeaderFields = ["If-None-Match": defaults[.libraryETag]]
@@ -260,19 +260,20 @@ final class LibraryViewModel: ObservableObject {
             guard let response = response as? HTTPURLResponse else { return nil }
             switch response.statusCode {
             case 200:
+                let responseURL = response.url ?? Self.catalogURL
                 if let eTag = response.allHeaderFields["Etag"] as? String {
                     defaults[.libraryETag] = eTag
                 }
                 // OK to process further
                 os_log("Retrieved OPDS Data, size: %llu bytes", log: Log.OPDS, type: .info, data.count)
-                return data
+                return (data, responseURL)
             case 304:
                 return nil // already downloaded
             default:
                 throw LibraryRefreshError.retrieve(description: "HTTP Status \(response.statusCode).")
             }
         } catch {
-            os_log("Error retrieving OPDS Data: %s", log: Log.OPDS, type: .error)
+            os_log("Error retrieving OPDS Data: %s", log: Log.OPDS, type: .error, error.localizedDescription)
             if let error = error as? LibraryRefreshError {
                 throw error
             } else {
@@ -281,11 +282,16 @@ final class LibraryViewModel: ObservableObject {
         }
     }
 
-    private func parse(data: Data) async throws -> OPDSParser {
+    private func parse(data: Data, urlHost: URL) async throws -> OPDSParser {
         try await withCheckedThrowingContinuation { continuation in
             let parser = OPDSParser()
             do {
-                try parser.parse(data: data)
+                let urlHostString = urlHost
+                    .withoutQueryParams()
+                    .trim(pathComponents: ["catalog", "v2", "entries"])
+                    .absoluteString
+                    .removingSuffix("/")
+                try parser.parse(data: data, urlHost: urlHostString)
                 continuation.resume(returning: parser)
             } catch {
                 continuation.resume(throwing: error)

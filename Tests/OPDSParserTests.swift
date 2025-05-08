@@ -22,7 +22,7 @@ final class OPDSParserTests: XCTestCase {
         XCTExpectFailure("Requires work in dependency to resolve the issue.")
         let content = "Invalid OPDS Data"
         XCTAssertThrowsError(
-            try OPDSParser().parse(data: content.data(using: .utf8)!)
+            try OPDSParser().parse(data: content.data(using: .utf8)!, urlHost: "")
         )
     }
 
@@ -31,7 +31,7 @@ final class OPDSParserTests: XCTestCase {
         let incompatibleEncodings: [String.Encoding] = [.unicode, .utf16, .utf32]
         try incompatibleEncodings.forEach { encoding in
             XCTAssertThrowsError(
-                try OPDSParser().parse(data: content.data(using: encoding)!),
+                try OPDSParser().parse(data: content.data(using: encoding)!, urlHost: ""),
                 "parsing with enconding \(encoding.description) should fail"
             )
         }
@@ -76,7 +76,7 @@ final class OPDSParserTests: XCTestCase {
 
         // Parse data
         let parser = OPDSParser()
-        XCTAssertNoThrow(try parser.parse(data: content.data(using: .utf8)!))
+        XCTAssertNoThrow(try parser.parse(data: content.data(using: .utf8)!, urlHost: "https://library.kiwix.org"))
 
         // check one zim file is populated
         let zimFileID = UUID(uuidString: "1ec90eab-5724-492b-9529-893959520de4")!

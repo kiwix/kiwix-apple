@@ -95,4 +95,22 @@ extension URL {
         components.scheme = "zim"
         return components.url ?? self
     }
+    
+    func trim(pathComponents: [String]) -> URL {
+        var result = self
+        for component in pathComponents.reversed() {
+            if result.lastPathComponent == component {
+                result = result.deletingLastPathComponent()
+            }
+        }
+        return result.deletingPathExtension()
+    }
+    
+    func withoutQueryParams() -> URL {
+        guard var components = URLComponents(url: self, resolvingAgainstBaseURL: false) else {
+            return self
+        }
+        components.queryItems = nil
+        return components.url ?? self
+    }
 }

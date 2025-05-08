@@ -15,7 +15,7 @@
 
 protocol Parser {
     var zimFileIDs: Set<UUID> { get }
-    func parse(data: Data) throws
+    func parse(data: Data, urlHost: String) throws
     func getMetaData(id: UUID) -> ZimFileMetaData?
 }
 
@@ -24,8 +24,8 @@ extension OPDSParser: Parser {
         __getZimFileIDs() as? Set<UUID> ?? Set<UUID>()
     }
 
-    func parse(data: Data) throws {
-        if !self.__parseData(data) {
+    func parse(data: Data, urlHost: String) throws {
+        if !self.__parseData(data, using: urlHost) {
             throw LibraryRefreshError.parse
         }
     }
@@ -42,7 +42,7 @@ extension OPDSParser: Parser {
 struct DeletingParser: Parser {
     let zimFileIDs: Set<UUID> = .init()
 
-    func parse(data: Data) throws {
+    func parse(data: Data, urlHost: String) throws {
     }
 
     func getMetaData(id: UUID) -> ZimFileMetaData? {

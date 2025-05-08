@@ -172,7 +172,7 @@ final class LibraryRefreshViewModelTest: XCTestCase {
         let zimFileID = UUID()
         HTTPTestingURLProtocol.handler = { urlProtocol in
             let response = HTTPURLResponse(
-                url: URL.mock(),
+                url: URL(string: "https://library.kiwix.org/catalog/v2/entries?count=-1")!,
                 statusCode: 200, httpVersion: nil, headerFields: [:]
             )!
             let data = self.makeOPDSData(zimFileID: zimFileID).data(using: .utf8)!
