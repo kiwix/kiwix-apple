@@ -18,15 +18,15 @@ import UniformTypeIdentifiers
 
 struct CopyPasteMenu: View {
     
-    let downloadURL: URL
+    let url: URL
     
     var body: some View {
         Button {
             #if os(macOS)
             NSPasteboard.general.clearContents()
-            NSPasteboard.general.setString(downloadURL.absoluteString, forType: .string)
+            NSPasteboard.general.setString(url.absoluteString, forType: .string)
             #elseif os(iOS)
-            UIPasteboard.general.setValue(downloadURL.absoluteString, forPasteboardType: UTType.url.identifier)
+            UIPasteboard.general.setValue(url.absoluteString, forPasteboardType: UTType.url.identifier)
             #endif
         } label: {
             Label(LocalString.library_zim_file_context_copy_url, systemImage: "doc.on.doc")
