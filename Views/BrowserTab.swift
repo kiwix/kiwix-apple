@@ -44,6 +44,11 @@ struct BrowserTab: View {
                     goForward: { [weak browser] in
                         browser?.webView.goForward()
                     })
+                if let url = browser.url {
+                    CopyPasteMenu(url: url)
+                        .keyboardShortcut("c", modifiers: [.command, .shift])
+                        
+                }
             }
 #elseif os(iOS)
             ToolbarItemGroup(placement: .navigationBarLeading) {
