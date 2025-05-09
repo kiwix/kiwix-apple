@@ -73,11 +73,9 @@ final class OPDSParserTests: XCTestCase {
           </entry>
         </feed>
         """
-
-        
-        let responseTestURL = URL(string: "https://resp-test.org/")!
         
         // Parse data
+        let responseTestURL = URL(string: "https://resp-test.org/")!
         let parser = OPDSParser()
         XCTAssertNoThrow(
             try parser.parse(

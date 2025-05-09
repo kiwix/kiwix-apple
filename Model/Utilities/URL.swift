@@ -96,7 +96,6 @@ extension URL {
         return components.url ?? self
     }
     
-    
     /// Remove the defined components one by one if found
     /// - Parameter pathComponents: eg: /package/details/more can be defined as: ["package", "details", "more"]
     /// - Returns: the modified url
@@ -107,7 +106,6 @@ extension URL {
         }
         return result
     }
-    
     
     /// Removes everything after ? or &
     /// - Returns: the modified URL, or the same if it fails to find the components
