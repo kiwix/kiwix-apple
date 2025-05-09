@@ -25,7 +25,7 @@ extension OPDSParser: Parser {
     }
 
     func parse(data: Data, urlHost: String) throws {
-        if !self.__parseData(data, using: urlHost) {
+        if !self.__parseData(data, using: urlHost.removingSuffix("/")) {
             throw LibraryRefreshError.parse
         }
     }

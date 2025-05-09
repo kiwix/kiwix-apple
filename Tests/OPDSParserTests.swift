@@ -74,9 +74,17 @@ final class OPDSParserTests: XCTestCase {
         </feed>
         """
 
+        
+        let responseTestURL = URL(string: "https://resp-test.org/")!
+        
         // Parse data
         let parser = OPDSParser()
-        XCTAssertNoThrow(try parser.parse(data: content.data(using: .utf8)!, urlHost: "https://library.kiwix.org"))
+        XCTAssertNoThrow(
+            try parser.parse(
+                data: content.data(using: .utf8)!,
+                urlHost: responseTestURL.absoluteString
+            )
+        )
 
         // check one zim file is populated
         let zimFileID = UUID(uuidString: "1ec90eab-5724-492b-9529-893959520de4")!
@@ -108,7 +116,7 @@ final class OPDSParserTests: XCTestCase {
         )
         XCTAssertEqual(
             metadata.faviconURL,
-            URL(string: "https://library.kiwix.org/catalog/v2/illustration/1ec90eab-5724-492b-9529-893959520de4/")
+            URL(string: "https://resp-test.org/catalog/v2/illustration/1ec90eab-5724-492b-9529-893959520de4/")
         )
         XCTAssertEqual(metadata.flavor, "maxi")
     }

@@ -290,7 +290,6 @@ final class LibraryViewModel: ObservableObject {
                     .withoutQueryParams()
                     .trim(pathComponents: ["catalog", "v2", "entries"])
                     .absoluteString
-                    .removingSuffix("/")
                 try parser.parse(data: data, urlHost: urlHostString)
                 continuation.resume(returning: parser)
             } catch {
