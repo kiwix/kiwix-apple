@@ -96,16 +96,21 @@ extension URL {
         return components.url ?? self
     }
     
+    
+    /// Remove the defined components one by one if found
+    /// - Parameter pathComponents: eg: /package/details/more can be defined as: ["package", "details", "more"]
+    /// - Returns: the modified url
     func trim(pathComponents: [String]) -> URL {
         var result = self
-        for component in pathComponents.reversed() {
-            if result.lastPathComponent == component {
-                result = result.deletingLastPathComponent()
-            }
+        for component in pathComponents.reversed() where component == result.lastPathComponent {
+            result = result.deletingLastPathComponent()
         }
-        return result.deletingPathExtension()
+        return result
     }
     
+    
+    /// Removes everything after ? or &
+    /// - Returns: the modified URL, or the same if it fails to find the components
     func withoutQueryParams() -> URL {
         guard var components = URLComponents(url: self, resolvingAgainstBaseURL: false) else {
             return self
