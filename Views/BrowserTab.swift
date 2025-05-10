@@ -44,11 +44,6 @@ struct BrowserTab: View {
                     goForward: { [weak browser] in
                         browser?.webView.goForward()
                     })
-                if let url = browser.url {
-                    CopyPasteMenu(url: url)
-                        .keyboardShortcut("c", modifiers: [.command, .shift])
-                        
-                }
             }
 #elseif os(iOS)
             ToolbarItemGroup(placement: .navigationBarLeading) {
@@ -82,12 +77,21 @@ struct BrowserTab: View {
                 }
 #else
                 if !Brand.hideShareButton {
-                    ExportButton(
-                        relativeToView: browser.webView,
-                        webViewURL: browser.webView.url,
-                        pageDataWithExtension: { [weak browser] in await browser?.pageDataWithExtension() },
-                        isButtonDisabled: browser.zimFileName.isEmpty
-                    )
+                    Menu {
+                        if let url = browser.webView.url {
+                            CopyPasteMenu(url: url)
+                                .keyboardShortcut("c", modifiers: [.command, .shift])
+                        }
+                        ExportButton(
+                            relativeToView: browser.webView,
+                            webViewURL: browser.webView.url,
+                            pageDataWithExtension: { [weak browser] in await browser?.pageDataWithExtension() },
+                            isButtonDisabled: browser.zimFileName.isEmpty,
+                            buttonLabel: LocalString.common_button_share_as_pdf
+                        )
+                    } label: {
+                        Label(LocalString.common_button_share, systemImage: "square.and.arrow.up")
+                    }.disabled(browser.webView.url == nil)
                 }
                 if !Brand.hidePrintButton {
                     PrintButton(browserURLName: { [weak browser] in
@@ -117,6 +121,9 @@ struct BrowserTab: View {
         }
         .environmentObject(search)
         .focusedSceneValue(\.isBrowserURLSet, browser.url != nil)
+        #if os(macOS)
+        .focusedSceneValue(\.browserURL, browser.url)
+        #endif
         .focusedSceneValue(\.canGoBack, browser.canGoBack)
         .focusedSceneValue(\.canGoForward, browser.canGoForward)
         .modifier(ExternalLinkHandler(externalURL: $browser.externalURL))
