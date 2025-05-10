@@ -23,8 +23,7 @@ struct CopyPasteMenu: View {
     var body: some View {
         Button {
             #if os(macOS)
-            NSPasteboard.general.clearContents()
-            NSPasteboard.general.setString(url.absoluteString, forType: .string)
+            Self.copyToPasteBoard(url: url)
             #elseif os(iOS)
             UIPasteboard.general.setValue(url.absoluteString, forPasteboardType: UTType.url.identifier)
             #endif
@@ -32,4 +31,11 @@ struct CopyPasteMenu: View {
             Label(LocalString.library_zim_file_context_copy_url, systemImage: "doc.on.doc")
         }
     }
+    
+    #if os(macOS)
+    public static func copyToPasteBoard(url: URL) {
+        NSPasteboard.general.clearContents()
+        NSPasteboard.general.setString(url.absoluteString, forType: .string)
+    }
+    #endif
 }

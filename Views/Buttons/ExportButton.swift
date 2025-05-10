@@ -23,6 +23,8 @@ struct ExportButton: View {
     let webViewURL: URL?
     let pageDataWithExtension: () async -> (Data, String?)?
     let isButtonDisabled: Bool
+    
+    var buttonLabel: String = LocalString.common_button_share
 
     /// - Returns: Returns the browser data, fileName and extension
     private func dataNameAndExtension() async -> FileExportData? {
@@ -48,12 +50,22 @@ struct ExportButton: View {
                 NotificationCenter.exportFileData(exportData)
                 #else
                 guard let url = await tempFileURL() else { return }
-                NSSharingServicePicker(items: [url]).show(relativeTo: .null, of: relativeToView, preferredEdge: .minY)
+                NSSharingServicePicker(items: [url]).show(
+                    relativeTo: NSRect(
+                        origin: .zero,
+                        size: CGSize(
+                            width: 640,
+                            height: 54
+                        )
+                    ),
+                    of: relativeToView,
+                    preferredEdge: .minY
+                )
                 #endif
             }
         } label: {
             Label {
-                Text(LocalString.common_button_share)
+                Text(buttonLabel)
             }  icon: {
                 Image(systemName: "square.and.arrow.up")
             }

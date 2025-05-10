@@ -37,6 +37,7 @@ struct Kiwix: App {
     @State private var selectedAmount: SelectedAmount?
     @StateObject var formReset = FormReset()
     @FocusState private var isSearchFocused: Bool
+    @FocusedValue(\.browserURL) var browserURL
 
     init() {
         UNUserNotificationCenter.current().delegate = notificationCenterDelegate
@@ -77,6 +78,16 @@ struct Kiwix: App {
                 Divider()
                 SidebarNavigationCommands()
                 Divider()
+            }
+            CommandGroup(after: .pasteboard) {
+                Button(LocalString.library_zim_file_context_copy_url) {
+                    if let browserURL {
+                        CopyPasteMenu.copyToPasteBoard(url: browserURL)
+                    }
+                }
+                .disabled(browserURL == nil)
+                .keyboardShortcut("c", modifiers: [.command, .shift])
+                    
             }
             CommandGroup(after: .textEditing) {
                 Button(LocalString.common_search) {
