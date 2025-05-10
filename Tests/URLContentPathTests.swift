@@ -43,5 +43,11 @@ final class URLContentPathTests: XCTestCase {
             "widgets.wp.com/likes/master.html?ver=20240530"
         ])
     }
+    
+    func test_trimming() {
+        let inputURL = URL(string: "https://library.kiwix.org/catalog/v2/entries?count=-1")!
+        let expectedURL = URL(string: "https://library.kiwix.org/")!
+        XCTAssertEqual(inputURL.withoutQueryParams().trim(pathComponents: ["catalog", "v2", "entries"]), expectedURL)
+    }
 
 }

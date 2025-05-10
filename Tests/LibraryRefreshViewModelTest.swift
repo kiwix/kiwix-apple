@@ -171,8 +171,9 @@ final class LibraryRefreshViewModelTest: XCTestCase {
     func testNewZimFileAndProperties() async throws {
         let zimFileID = UUID()
         HTTPTestingURLProtocol.handler = { urlProtocol in
+            let responseTestURL = URL(string: "https://response-testing.com/catalog/v2/entries?count=-1")!
             let response = HTTPURLResponse(
-                url: URL.mock(),
+                url: responseTestURL,
                 statusCode: 200, httpVersion: nil, headerFields: [:]
             )!
             let data = self.makeOPDSData(zimFileID: zimFileID).data(using: .utf8)!
@@ -211,7 +212,7 @@ final class LibraryRefreshViewModelTest: XCTestCase {
         XCTAssertNil(zimFile.faviconData)
         XCTAssertEqual(
             zimFile.faviconURL,
-            URL(string: "https://library.kiwix.org/catalog/v2/illustration/1ec90eab-5724-492b-9529-893959520de4/")
+            URL(string: "https://response-testing.com/catalog/v2/illustration/1ec90eab-5724-492b-9529-893959520de4/")
         )
         XCTAssertEqual(zimFile.fileDescription, "A selection of the best 50,000 Wikipedia articles")
         XCTAssertEqual(zimFile.fileID, zimFileID)

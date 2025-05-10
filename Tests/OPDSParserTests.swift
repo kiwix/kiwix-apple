@@ -22,7 +22,7 @@ final class OPDSParserTests: XCTestCase {
         XCTExpectFailure("Requires work in dependency to resolve the issue.")
         let content = "Invalid OPDS Data"
         XCTAssertThrowsError(
-            try OPDSParser().parse(data: content.data(using: .utf8)!)
+            try OPDSParser().parse(data: content.data(using: .utf8)!, urlHost: "")
         )
     }
 
@@ -31,7 +31,7 @@ final class OPDSParserTests: XCTestCase {
         let incompatibleEncodings: [String.Encoding] = [.unicode, .utf16, .utf32]
         try incompatibleEncodings.forEach { encoding in
             XCTAssertThrowsError(
-                try OPDSParser().parse(data: content.data(using: encoding)!),
+                try OPDSParser().parse(data: content.data(using: encoding)!, urlHost: ""),
                 "parsing with enconding \(encoding.description) should fail"
             )
         }
@@ -73,10 +73,16 @@ final class OPDSParserTests: XCTestCase {
           </entry>
         </feed>
         """
-
+        
         // Parse data
+        let responseTestURL = URL(string: "https://resp-test.org/")!
         let parser = OPDSParser()
-        XCTAssertNoThrow(try parser.parse(data: content.data(using: .utf8)!))
+        XCTAssertNoThrow(
+            try parser.parse(
+                data: content.data(using: .utf8)!,
+                urlHost: responseTestURL.absoluteString
+            )
+        )
 
         // check one zim file is populated
         let zimFileID = UUID(uuidString: "1ec90eab-5724-492b-9529-893959520de4")!
@@ -108,7 +114,7 @@ final class OPDSParserTests: XCTestCase {
         )
         XCTAssertEqual(
             metadata.faviconURL,
-            URL(string: "https://library.kiwix.org/catalog/v2/illustration/1ec90eab-5724-492b-9529-893959520de4/")
+            URL(string: "https://resp-test.org/catalog/v2/illustration/1ec90eab-5724-492b-9529-893959520de4/")
         )
         XCTAssertEqual(metadata.flavor, "maxi")
     }

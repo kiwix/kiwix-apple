@@ -21,6 +21,11 @@ extension String {
         guard hasPrefix(value) else { return self }
         return String(dropFirst(value.count))
     }
+    
+    func removingSuffix(_ value: String) -> String {
+        guard hasSuffix(value) else { return self }
+        return String(dropLast(value.count))
+    }
 
     func replacingRegex(
         matching pattern: String,
