@@ -25,6 +25,10 @@ struct IsBrowserURLSet: FocusedValueKey {
     typealias Value = Bool
 }
 
+struct BrowserURL: FocusedValueKey {
+    typealias Value = URL
+}
+
 struct CanGoBackKey: FocusedValueKey {
     typealias Value = Bool
 }
@@ -38,6 +42,12 @@ struct NavigationItemKey: FocusedValueKey {
 }
 
 extension FocusedValues {
+    #if os(macOS)
+    var browserURL: BrowserURL.Value? {
+        get { self[BrowserURL.self] }
+        set { self[BrowserURL.self] = newValue}
+    }
+    #endif
     var isBrowserURLSet: IsBrowserURLSet.Value? {
         get { self[IsBrowserURLSet.self] }
         set { self[IsBrowserURLSet.self] = newValue }
