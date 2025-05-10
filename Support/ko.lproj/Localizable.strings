@@ -115,6 +115,7 @@
 "zim_file.download_task.action.resume" = "계속하기";
 "zim_file.download_task.action.paused" = "일시 중단됨";
 "service_worker_warning.label.description" = "서비스 워커가 필요한 Zim 파일은 지원하지 않습니다.";
+"multi.zim_files_selected.description_count" = "ZIM 파일";
 "reading_settings.zoom.title" = "페이지 확대/축소";
 "reading_settings.zoom.reset.button" = "초기화";
 "reading_settings.external_link.title" = "외부 링크";

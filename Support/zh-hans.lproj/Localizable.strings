@@ -2,6 +2,7 @@
 // Exported from translatewiki.net
 // Author: Dream Star.cn
 // Author: Kichin
+// Author: Prmsh
 // Author: TFX202X
 // Author: Vibrance
 // Author: XtexChooser
@@ -93,6 +94,8 @@
 "zim_file.action.toggle_cellular" = "使用蜂窝数据下载";
 "zim_file.action.unlink.title" = "取消连接";
 "zim_file.action.unlink.message" = "所有链接到此 ZIM 文件的书签文章都将被删除，但原始文件将保留在原处。";
+"zim_file.action.unlink.multi_title" = "取消链接 %@ 个 ZIM 文件";
+"zim_file.action.unlink.multi_message" = "所有链接到这 %@ 个 ZIM 文件的书签条目都将被删除，保留原始文件于原处。";
 "zim_file.action.unlink.button.title" = "取消连接";
 "zim_file.action.delete.title" = "删除";
 "zim_file.action.delete.message" = "ZIM 文件和链接到此 ZIM 文件的所有书签文章都将被删除。";
@@ -121,6 +124,8 @@
 "zim_file.download_task.action.resume" = "继续";
 "zim_file.download_task.action.paused" = "已暂停";
 "service_worker_warning.label.description" = "不支持需要service workers的 Zim 文件。";
+"multi.zim_files_selected.sidebar_title" = "已选择";
+"multi.zim_files_selected.description_count" = "ZIM 文件";
 "reading_settings.zoom.title" = "页面缩放";
 "reading_settings.zoom.reset.button" = "重置";
 "reading_settings.external_link.title" = "外部链接";

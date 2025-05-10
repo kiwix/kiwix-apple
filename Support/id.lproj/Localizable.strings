@@ -88,6 +88,8 @@
 "zim_file.action.toggle_cellular" = "Unduh menggunakan seluler";
 "zim_file.action.unlink.title" = "Hapus tautan";
 "zim_file.action.unlink.message" = "Semua artikel yang dimarkah dan ditautkan ke berkas ZIM ini akan dihapus, namun berkas asli akan tetap ada.";
+"zim_file.action.unlink.multi_title" = "Hapus tautan berkas %@ ZIM";
+"zim_file.action.unlink.multi_message" = "Semua artikel yang dimarkah dan ditautkan ke %@ berkas ZIM tersebut akan dihapus, namun berkas asli akan tetap ada.";
 "zim_file.action.unlink.button.title" = "Hapus tautan";
 "zim_file.action.delete.title" = "Hapus";
 "zim_file.action.delete.message" = "Berkas ZIM dan semua artikel yang dimarkah dan ditautkan ke berkas ZIM ini akan dihapus.";
@@ -116,6 +118,8 @@
 "zim_file.download_task.action.resume" = "Lanjutkan";
 "zim_file.download_task.action.paused" = "Dijeda";
 "service_worker_warning.label.description" = "Berkas Zim yang memerlukan pekerja layanan tidak didukung.";
+"multi.zim_files_selected.sidebar_title" = "Dipilih";
+"multi.zim_files_selected.description_count" = "Berkas ZIM";
 "reading_settings.zoom.title" = "Pembesaran halaman";
 "reading_settings.zoom.reset.button" = "Atur ulang";
 "reading_settings.external_link.title" = "Pranala Luar";

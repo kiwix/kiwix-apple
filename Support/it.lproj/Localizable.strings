@@ -1,6 +1,7 @@
 // Messages for Italian (italiano)
 // Exported from translatewiki.net
 // Author: Beta16
+// Author: Clorofolle
 // Author: LametinoWiki
 // Author: Luca.favorido
 
@@ -32,21 +33,35 @@
 "bookmark_context_menu.view.title" = "Visualizza";
 "external_link_handler.alert.title" = "Collegamento esterno";
 "file_import.alert.no_open.message" = "%@ non può essere aperto.";
+"download_task_cell.status.downloading" = "Download in corso...";
 "download_task_cell.status.paused" = "In pausa";
+"flavor_tag.help.max" = "ogni cosa eccetto i file multimediali di grandi dimensioni, come video/audio";
+"flavor_tag.help.no_pic" = "la maggior parte delle immagini sono state rimosse";
+"flavor_tag.help.mini" = "è disponibile solo una parte del testo, probabilmente la prima sezione";
 "library_refresh_time.last" = "Proprio adesso";
+"library_refresh_time.never" = "Mai";
+"zim_file_cell.article_count.suffix" = "voci";
 "zim_file_missing_indicator.help" = "Manca il file Zim.";
 "library.zim_file_details.side_panel.message" = "Seleziona un file ZIM per vedere i dettagli";
 "library.zim_file_context.main_page.label" = "Pagina principale";
+"library.zim_file_context.random.label" = "Pagina a caso";
+"library.zim_file_context.copy_url" = "Copia l'URL";
 "zim_file_opened.overlay.no-opened.message" = "Nessun file ZIM aperto";
+"zim_file_opened.toolbar.show_sidebar.label" = "Mostra barra laterale";
+"zim_file_opened.toolbar.open.title" = "Apri...";
 "zim_file_opened.toolbar.open.help" = "Apri un file ZIM";
 "zim_file_category.title" = "Categoria";
+"zim_file_catalog.fetching.message" = "Recupero del catalogo in corso...";
 "zim_file_category.section.empty.message" = "Nessun file ZIM in questa categoria.";
+"zim_file_downloads.overlay.empty.message" = "Nessuna attività di download";
+"zim_file_downloads.toolbar.show_sidebar.label" = "Mostra barra laterale";
 "zim_file_new_overlay.empty" = "Nessun nuovo file ZIM";
 "zim_file_new.button.refresh" = "Aggiorna";
 "zim_file.list.name.text" = "Nome";
 "zim_file.list.description.text" = "Descrizione";
 "zim_file.list.actions.text" = "Azioni";
 "zim_file.list.info.text" = "Informazioni";
+"zim_file.action.locate.title" = "Localizza";
 "zim_file.action.open_main_page.title" = "Apri pagina principale";
 "zim_file.action.unlink.multi_title" = "Scollega %@ file ZIM";
 "zim_file.action.unlink.button.title" = "Scollega";
