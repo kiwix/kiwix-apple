@@ -86,6 +86,16 @@ Kiwix compiles on both macOS architectures x86_64 and arm64 (Apple silicon).
 
 Kiwix for iOS and macOS can run, in both cases, on x86_64 or arm64.
 
+### Testing
+
+To run the tests, you need to select one of the following Xcode schemes:
+- **Kiwix** - this includes the unit tests. To run it: from the Product menu select Test, or press (CMD) ⌘ + U.
+It can be run on both iOS and macOS destinations.
+- **UITests_iOS** - this includes the UI automated tests for iOS. Select an appropriate iOS destination for this before running. Similarly with (CMD) ⌘ + U.
+- **UITests_macOS** - this includes the UI automated tests for macOS, please select macOS as the destination ((CMD) ⌘ + U to run). You might require to enable Automation in Settings and give admin consent to run it.
+
+To learn more about UI tests, please refer to [the documentation on XCUIAutomation.](https://developer.apple.com/documentation/xcuiautomation)
+
 ### Switch to another version of the `CoreKiwix.xcframework`
 
 `CoreKiwix.xcframework` is published with all supported platforms and CPU architectures:
