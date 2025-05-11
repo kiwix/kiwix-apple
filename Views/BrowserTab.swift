@@ -77,12 +77,21 @@ struct BrowserTab: View {
                 }
 #else
                 if !Brand.hideShareButton {
-                    ExportButton(
-                        relativeToView: browser.webView,
-                        webViewURL: browser.webView.url,
-                        pageDataWithExtension: { [weak browser] in await browser?.pageDataWithExtension() },
-                        isButtonDisabled: browser.zimFileName.isEmpty
-                    )
+                    Menu {
+                        ExportButton(
+                            relativeToView: browser.webView,
+                            webViewURL: browser.webView.url,
+                            pageDataWithExtension: { [weak browser] in await browser?.pageDataWithExtension() },
+                            isButtonDisabled: browser.zimFileName.isEmpty,
+                            buttonLabel: LocalString.common_button_share_as_pdf
+                        )
+                        if let url = browser.webView.url {
+                            CopyPasteMenu(url: url)
+                                .keyboardShortcut("c", modifiers: [.command, .shift])
+                        }
+                    } label: {
+                        Label(LocalString.common_button_share, systemImage: "square.and.arrow.up")
+                    }.disabled(browser.webView.url == nil)
                 }
                 if !Brand.hidePrintButton {
                     PrintButton(browserURLName: { [weak browser] in
@@ -112,6 +121,9 @@ struct BrowserTab: View {
         }
         .environmentObject(search)
         .focusedSceneValue(\.isBrowserURLSet, browser.url != nil)
+        #if os(macOS)
+        .focusedSceneValue(\.browserURL, browser.url)
+        #endif
         .focusedSceneValue(\.canGoBack, browser.canGoBack)
         .focusedSceneValue(\.canGoForward, browser.canGoForward)
         .modifier(ExternalLinkHandler(externalURL: $browser.externalURL))

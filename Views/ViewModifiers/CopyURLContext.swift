@@ -13,17 +13,22 @@
 // You should have received a copy of the GNU General Public License
 // along with Kiwix; If not, see https://www.gnu.org/licenses/.
 
+#if os(macOS)
 import SwiftUI
 
-struct ZimFileContextMenu: View {
-    let zimFile: ZimFile
+struct CopyURLContext: ViewModifier {
     
-    var body: some View {
-        if zimFile.fileURLBookmark != nil, !zimFile.isMissing {
-            Section { ArticleActions(zimFileID: zimFile.fileID) }
-        }
-        if let downloadURL = zimFile.downloadURL {
-            Section { CopyPasteMenu(url: downloadURL) }
+    @State var url: URL?
+    
+    func body(content: Content) -> some View {
+        if let url {
+            content.contextMenu {
+                CopyPasteMenu(url: url)
+            }
+        } else {
+            content
         }
     }
 }
+
+#endif
