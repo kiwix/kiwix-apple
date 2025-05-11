@@ -28,6 +28,5 @@ final class LoadingUI_iOS_Test: XCTestCase {
         app/*@START_MENU_TOKEN@*/.buttons["Categories"]/*[[".tabBars",".buttons[\"Categories\"]",".buttons[\"books.vertical\"]"],[[[-1,2],[-1,1],[-1,0,1]],[[-1,2],[-1,1]]],[1]]@END_MENU_TOKEN@*/.tap()
         app/*@START_MENU_TOKEN@*/.buttons["Done"]/*[[".otherElements[\"Done\"].buttons.firstMatch",".otherElements.buttons[\"Done\"]",".buttons[\"Done\"]"],[[[-1,2],[-1,1],[-1,0]]],[0]]@END_MENU_TOKEN@*/.tap()
         
-        
     }
 }
