@@ -137,9 +137,9 @@ targets:
     dependencies:
       - target: Kiwix
 
-  UITests:
+  UITests_macOS:
     type: bundle.ui-testing
-    supportedDestinations: [iOS, macOS]
+    supportedDestinations: [macOS]
     settings:
       PRODUCT_BUNDLE_IDENTIFIER: org.kiwix.UITests
       # TEST_HOST: $(BUILT_PRODUCTS_DIR)/Kiwix.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Kiwix
@@ -152,7 +152,7 @@ targets:
         # a pop up appears that needs user acceptance
         # see: https://developer.apple.com/documentation/security/accessing-files-from-the-macos-app-sandbox
     sources:
-      - path: UITests
+      - path: UITests_macOS
     dependencies:
       - target: Kiwix
 
@@ -169,12 +169,12 @@ schemes:
       gatherCoverageData: true
       coverageTargets:
         - Kiwix
-  UITests:
+  UITests_macOS:
     build:
       targets:
         Kiwix: all
     test:
       targets:
-        - UITests
+        - UITests_macOS
       commandLineArguments:
         testing: true
