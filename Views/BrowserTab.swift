@@ -78,10 +78,6 @@ struct BrowserTab: View {
 #else
                 if !Brand.hideShareButton {
                     Menu {
-                        if let url = browser.webView.url {
-                            CopyPasteMenu(url: url)
-                                .keyboardShortcut("c", modifiers: [.command, .shift])
-                        }
                         ExportButton(
                             relativeToView: browser.webView,
                             webViewURL: browser.webView.url,
@@ -89,6 +85,10 @@ struct BrowserTab: View {
                             isButtonDisabled: browser.zimFileName.isEmpty,
                             buttonLabel: LocalString.common_button_share_as_pdf
                         )
+                        if let url = browser.webView.url {
+                            CopyPasteMenu(url: url)
+                                .keyboardShortcut("c", modifiers: [.command, .shift])
+                        }
                     } label: {
                         Label(LocalString.common_button_share, systemImage: "square.and.arrow.up")
                     }.disabled(browser.webView.url == nil)
