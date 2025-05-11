@@ -41,6 +41,10 @@ struct NavigationItemKey: FocusedValueKey {
     typealias Value = Binding<NavigationItem?>
 }
 
+struct HasZIMFilesKey: FocusedValueKey {
+    typealias Value = Bool
+}
+
 extension FocusedValues {
     #if os(macOS)
     var browserURL: BrowserURL.Value? {
@@ -48,6 +52,12 @@ extension FocusedValues {
         set { self[BrowserURL.self] = newValue}
     }
     #endif
+    
+    var hasZIMFiles: HasZIMFilesKey.Value? {
+        get { self[HasZIMFilesKey.self] }
+        set { self[HasZIMFilesKey.self] = newValue }
+    }
+    
     var isBrowserURLSet: IsBrowserURLSet.Value? {
         get { self[IsBrowserURLSet.self] }
         set { self[IsBrowserURLSet.self] = newValue }
