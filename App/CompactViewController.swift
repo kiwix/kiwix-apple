@@ -149,6 +149,7 @@ private struct CompactView: View {
     @EnvironmentObject private var library: LibraryViewModel
     @State private var presentedSheet: PresentedSheet?
     @ObservedObject private var browser: BrowserViewModel
+    @FocusedValue(\.hasZIMFiles) var hasZimFiles
     
     private enum PresentedSheet: Identifiable {
         case library(downloads: Bool)
@@ -176,14 +177,21 @@ private struct CompactView: View {
         } else {
             NoCatalogLaunchViewModel(browser: browser)
         }
-        Content(browser: browser, tabID: browser.tabID, showLibrary: {
-            if presentedSheet == nil {
-                presentedSheet = .library(downloads: false)
-            } else {
-                // there's a sheet already presented by the user
-                // do nothing
-            }
-        }, model: model)
+        Content(
+            browser: browser,
+            tabID: browser.tabID,
+            showLibrary: {
+                if presentedSheet == nil {
+                    presentedSheet = .library(downloads: false)
+                } else {
+                    // there's a sheet already presented by the user
+                    // do nothing
+                }
+            },
+            showSettings: {
+                presentedSheet = .settings
+            },
+            model: model)
         .id(browser.tabID)
         .toolbar {
             ToolbarItemGroup(placement: .bottomBar) {
@@ -196,23 +204,6 @@ private struct CompactView: View {
                         browser?.webView.goForward()
                     })
                 Spacer()
-                if !Brand.hideTOCButton {
-                    OutlineButton(browser: browser)
-                    Spacer()
-                }
-                BookmarkButton(articleBookmarked: browser.articleBookmarked,
-                               isButtonDisabled: browser.zimFileName.isEmpty,
-                               createBookmark: { [weak browser] in browser?.createBookmark() },
-                               deleteBookmark: { [weak browser] in browser?.deleteBookmark() })
-                Spacer()
-                if !Brand.hideShareButton {
-                    ExportButton(
-                        webViewURL: browser.webView.url,
-                        pageDataWithExtension: browser.pageDataWithExtension,
-                        isButtonDisabled: browser.zimFileName.isEmpty
-                    )
-                    Spacer()
-                }
                 TabsManagerButton()
                 Spacer()
                 if FeatureFlags.hasLibrary {
@@ -223,11 +214,29 @@ private struct CompactView: View {
                     }
                     Spacer()
                 }
-                Button {
-                    presentedSheet = .settings
-                } label: {
-                    Label(LocalString.common_tab_menu_settings, systemImage: "gear")
+                if !Brand.hideShareButton {
+                    ExportButton(
+                        webViewURL: browser.webView.url,
+                        pageDataWithExtension: browser.pageDataWithExtension,
+                        isButtonDisabled: browser.zimFileName.isEmpty
+                    )
+                    Spacer()
                 }
+                if !Brand.hideTOCButton {
+                    OutlineButton(browser: browser)
+                    Spacer()
+                }
+                if !Brand.hideRandomButton {
+                    Button(LocalString.article_shortcut_random_button_title_ios,
+                           systemImage: "die.face.5",
+                           action: { [weak browser] in browser?.loadRandomArticle() })
+                    .disabled(hasZimFiles == false)
+                    Spacer()
+                }
+                BookmarkButton(articleBookmarked: browser.articleBookmarked,
+                               isButtonDisabled: browser.zimFileName.isEmpty,
+                               createBookmark: { [weak browser] in browser?.createBookmark() },
+                               deleteBookmark: { [weak browser] in browser?.deleteBookmark() })
                 Spacer()
             }
         }
@@ -268,6 +277,7 @@ private struct Content<LaunchModel>: View where LaunchModel: LaunchProtocol {
     @ObservedObject var browser: BrowserViewModel
     let tabID: NSManagedObjectID?
     let showLibrary: () -> Void
+    let showSettings: () -> Void
     @ObservedObject var model: LaunchModel
     
     @Environment(\.scenePhase) private var scenePhase
@@ -313,6 +323,7 @@ private struct Content<LaunchModel>: View where LaunchModel: LaunchProtocol {
         .focusedSceneValue(\.isBrowserURLSet, browser.url != nil)
         .focusedSceneValue(\.canGoBack, browser.canGoBack)
         .focusedSceneValue(\.canGoForward, browser.canGoForward)
+        .focusedSceneValue(\.hasZIMFiles, zimFiles.isEmpty == false)
         .modifier(ExternalLinkHandler(externalURL: $browser.externalURL))
         .onAppear { [weak browser] in
             browser?.updateLastOpened()
@@ -325,14 +336,13 @@ private struct Content<LaunchModel>: View where LaunchModel: LaunchProtocol {
         }
         .toolbar {
             ToolbarItemGroup(placement: .primaryAction) {
-                if !Brand.hideRandomButton {
-                    Button(LocalString.article_shortcut_random_button_title_ios,
-                           systemImage: "die.face.5",
-                           action: { [weak browser] in browser?.loadRandomArticle() })
-                    .disabled(zimFiles.isEmpty)
-                }
                 if !Brand.hideFindInPage {
                     ContentSearchButton(browser: browser)
+                }
+                Button {
+                    showSettings()
+                } label: {
+                    Label(LocalString.common_tab_menu_settings, systemImage: "gear")
                 }
             }
         }
