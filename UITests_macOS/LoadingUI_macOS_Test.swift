@@ -15,20 +15,7 @@
 
 import XCTest
 
-final class LoadingUITest: XCTestCase {
-
-    override func setUpWithError() throws {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
-
-        // In UI tests it is usually best to stop immediately when a failure occurs.
-        continueAfterFailure = false
-
-        // In UI tests it’s important to set the initial state - such as interface orientation - required for your tests before they run. The setUp method is a good place to do this.
-    }
-
-    override func tearDownWithError() throws {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
-    }
+final class LoadingUI_macOS_Test: XCTestCase {
 
     func testSideBarItems() throws {
         // UI tests must launch the application that they test.
@@ -41,7 +28,5 @@ final class LoadingUITest: XCTestCase {
         cellsQuery/*@START_MENU_TOKEN@*/.containing(.staticText, identifier: "Categories").firstMatch/*[[".element(boundBy: 4)",".containing(.staticText, identifier: \"Categories\").firstMatch"],[[[-1,1],[-1,0]]],[0]]@END_MENU_TOKEN@*/.click()
         app/*@START_MENU_TOKEN@*/.staticTexts["Downloads"]/*[[".cells.staticTexts[\"Downloads\"]",".staticTexts[\"Downloads\"]"],[[[-1,1],[-1,0]]],[0]]@END_MENU_TOKEN@*/.click()
         cellsQuery/*@START_MENU_TOKEN@*/.containing(.staticText, identifier: "New").firstMatch/*[[".element(boundBy: 6)",".containing(.staticText, identifier: \"New\").firstMatch"],[[[-1,1],[-1,0]]],[0]]@END_MENU_TOKEN@*/.click()
-       
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
     }
 }

@@ -156,6 +156,20 @@ targets:
     dependencies:
       - target: Kiwix
 
+  UITests_iOS:
+    type: bundle.ui-testing
+    supportedDestinations: [iOS]
+    settings:
+      PRODUCT_BUNDLE_IDENTIFIER: org.kiwix.UITests
+      # TEST_HOST: $(BUILT_PRODUCTS_DIR)/Kiwix.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Kiwix
+      BUNDLE_LOADER: $(TEST_HOST)
+    entitlements:
+      path: Support/Kiwix-unitTest.entitlements
+    sources:
+      - path: UITests_iOS
+    dependencies:
+      - target: Kiwix
+
 schemes:
   Kiwix:
     build:
@@ -176,5 +190,14 @@ schemes:
     test:
       targets:
         - UITests_macOS
+      commandLineArguments:
+        testing: true
+  UITests_iOS:
+    build:
+      targets:
+        Kiwix: all
+    test:
+      targets:
+        - UITests_iOS
       commandLineArguments:
         testing: true
