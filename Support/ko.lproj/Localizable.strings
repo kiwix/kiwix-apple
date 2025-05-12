@@ -24,6 +24,7 @@
 "common.button.no" = "아니오";
 "common.button.print" = "인쇄";
 "common.button.share" = "공유";
+"common.button.share_as_pdf" = "PDF로 공유";
 "common.search" = "검색";
 "common.tab.manager.title" = "탭 관리자";
 "common.tab.navigation.title" = "탭";
