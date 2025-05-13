@@ -1,4 +1,30 @@
 # 3.9.0
+  - NEW
+    - macOS keyboard navigation in search (@BPerlakiH #1154, #1159)
+    - macOS support multi selection of zimfiles for unlinking, and selection fixes (@BPerlakiH #1157, #1176)
+    - macOS easy way to copy the current URL (@BPerlakiH #1199)
+    - iOS re-arranged navigation buttons, making the randomizer button more accessible (@BPerlakiH #1200)
+    - UITests added (@BPerlakiH #1195)
+
+  - UPDATE
+    - Localisation updates (@translatewiki #1131, #1143, #1156, #1160, #1165, #1173, #1196, #1202)
+    - iPad Re-arrange donation button (@BPerlakiH #1139, #1151, #1187)
+    - Delete/unlink buttons were moved to the bottom of detail pages (@BPerlakiH #1158)
+    - Add feature flag to turn off immersive reading (custom apps) (@BPerlakiH #1153)
+    - Make random button optional for (custom apps) (@BPerlakiH #1180)
+    - Library endpoint changes (BPerlakiH #1198)
+    - Optionally disable TOC Button, Share button, Find in Page (custom apps) (@BPerlakiH #1185)
+
+  - FIX
+    - Performance improvements (@BPerlakiH #1168)
+    - iPad Remember side menu selection after background / foreground (@BPerlakiH #1141)
+    - macOS side menu optimalization (@BPerlakiH #1135)
+    - Memory issues by cleaning up browser instances (@BPerlakiH #1148)
+    - Search results crashes (@BPerlakiH #1162, #1164)
+    - Opening external ZIM in race condition with recent tab (@BPerlakiH #1174)
+    - Content outlines (@BPerlakiH #1171)
+    - macos loading ZIM files in split screen window (@BPerlakiH #1188)
+    - macOS deeplink to window behaviour (@BPerlakiH #1191)
 
 # 3.8.0
   - UPDATE:
@@ -111,7 +137,7 @@
     - Blank search results (@BPerlakiH #943)
 
 ## 3.4.0
-  - FIX: 
+  - FIX:
     - Empty screen after re-opening ZIM home page (@BPerlakiH #834)
     - tab reconfiguration, improve the look of icons (@BPerlakiH #832)
     - bookmark titles for non html content (@BPerlakiH #826)
@@ -128,11 +154,11 @@
     - macOS webView full-screen mode (@BPerlakiH #791)
     - video full screen mode for macOS (@BPerlakiH #763)
     - CI/CD target FTP folder for release (@rgaudin #757)
-  - NEW: 
+  - NEW:
     - stream data in chunks for compressed data via libzim (@BPerlakiH #790)
     - stream uncompressed data in chunks (@BPerlakiH #778 #774)
     - full screen reading mode for iOS (@TheRealAnt @BPerlakiH #771 #764)
-  - UPDATE: 
+  - UPDATE:
     - Translations (#833, #821, #813, #777, #770, #761)
     - to libkiwix 13.1.0-4 (@BPerlakiH #836)
     - readme on how to debug webviews (@BPerlakiH #822)
@@ -269,11 +295,11 @@ Technical:
 - iPad: a new design with all UI controls at the top bar
 - Random Article Button: tap to load a random article in the current zim file
 - Main Page Button: tap to go to main page of the current article
-- Long press on random article or main page button to choose from all on device zim files (not available on iOS 12 & 13) 
+- Long press on random article or main page button to choose from all on device zim files (not available on iOS 12 & 13)
 - Link Preview: tap and hold on a link to see preview of the article (not available on iOS 12)
 - UI updates in app settings  (not available on iOS 12)
 - Remove support for iOS 11 (We are committed to support last three major OS)
-  - library related crashings 
+  - library related crashings
   - zim file icon transluency
 
 Technical:
@@ -352,7 +378,7 @@ Speed improvements and more options for search snippets:
 - First Sentence: from first paragraph, further extract the first sentence with iOS natural language processing engine
 - Matches: highlight search term matches in the article (slowest, what we offer before)
 
-Other New Stuff: 
+Other New Stuff:
 
 - updated app icon
 - new design of search result list
