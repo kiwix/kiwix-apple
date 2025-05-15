@@ -19,6 +19,7 @@
 "common.button.no" = "neen";
 "common.button.print" = "Drécken";
 "common.button.share" = "Deelen";
+"common.button.share_as_pdf" = "Als PDF deelen";
 "common.search" = "Sichen";
 "common.tab.manager.title" = "Tabs-Manager";
 "common.tab.navigation.title" = "Tabs";
