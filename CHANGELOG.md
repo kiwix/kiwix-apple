@@ -1,3 +1,5 @@
+# 4.0.0
+
 # 3.9.0
   - NEW
     - macOS keyboard navigation in search (@BPerlakiH #1154, #1159)
