@@ -22,6 +22,7 @@
 "common.button.no" = "Не";
 "common.button.print" = "Испечати";
 "common.button.share" = "Сподели";
+"common.button.share_as_pdf" = "Сподели како PDF";
 "common.search" = "Пребарај";
 "common.tab.manager.title" = "Управник на јазичиња";
 "common.tab.navigation.title" = "Јазичиња";
