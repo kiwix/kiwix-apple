@@ -184,27 +184,30 @@ struct BrowserTab: View {
                             #endif
                     } else {
                         switch model.state {
-                        case .loadingData:
-                            LoadingDataView()
-                        case .webPage(let isLoading):
-                            WebView(browser: browser)
-                                .ignoresSafeArea()
-                                .overlay {
-                                    if isLoading {
-                                        LoadingProgressView()
+                        case .loadingData, .webPage:
+                            ZStack {
+                                LoadingDataView()
+                                    .opacity(model.state == .loadingData ? 1.0 : 0.0)
+                                WebView(browser: browser)
+                                    .opacity(model.state == .loadingData ? 0.0 : 1.0)
+                                    .ignoresSafeArea()
+                                    .overlay {
+                                        if case .webPage(let isLoading) = model.state, isLoading {
+                                            LoadingProgressView()
+                                        }
                                     }
-                                }
 #if os(macOS)
-                                .overlay(alignment: .bottomTrailing) {
-                                    if !Brand.hideFindInPage {
-                                        ContentSearchBar(
-                                            model: ContentSearchViewModel(
-                                                findInWebPage: browser.webView.find(_:configuration:)
+                                    .overlay(alignment: .bottomTrailing) {
+                                        if !Brand.hideFindInPage {
+                                            ContentSearchBar(
+                                                model: ContentSearchViewModel(
+                                                    findInWebPage: browser.webView.find(_:configuration:)
+                                                )
                                             )
-                                        )
+                                        }
                                     }
-                                }
 #endif
+                            }
                         case .catalog(.fetching):
                             FetchingCatalogView()
                         case .catalog(.list):
