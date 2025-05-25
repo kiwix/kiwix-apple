@@ -58,7 +58,7 @@ final class SplitViewController: UISplitViewController {
             ),
             for: .compact
         )
-        setViewController(SidebarViewController(), for: .primary)
+        setViewController(SidebarViewController(navigationViewModel: navigationViewModel), for: .primary)
         setSecondaryController()
 
         // observers

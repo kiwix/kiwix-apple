@@ -45,9 +45,7 @@ final class SidebarViewController: UICollectionViewController, NSFetchedResultsC
         cacheName: nil
     )
 
-    private var navigationViewModel: NavigationViewModel? {
-        (splitViewController as? SplitViewController)?.navigationViewModel
-    }
+    private let navigationViewModel: NavigationViewModel
 
     enum Section: String, CaseIterable {
         case tabs
@@ -70,7 +68,8 @@ final class SidebarViewController: UICollectionViewController, NSFetchedResultsC
         }
     }
 
-    init() {
+    init(navigationViewModel: NavigationViewModel) {
+        self.navigationViewModel = navigationViewModel
         super.init(collectionViewLayout: UICollectionViewLayout())
         collectionView.collectionViewLayout = UICollectionViewCompositionalLayout { _, layoutEnvironment in
             var config = UICollectionLayoutListConfiguration(appearance: .sidebar)
@@ -88,8 +87,7 @@ final class SidebarViewController: UICollectionViewController, NSFetchedResultsC
     }
 
     func updateSelection() {
-        guard let navigationViewModel,
-              let currentItem = navigationViewModel.currentItem,
+        guard let currentItem = navigationViewModel.currentItem,
               let currentMenuItem = MenuItem(from: currentItem),
               let indexPath = dataSource.indexPath(for: currentMenuItem),
               collectionView.indexPathsForSelectedItems?.first != indexPath else { return }
@@ -108,7 +106,7 @@ final class SidebarViewController: UICollectionViewController, NSFetchedResultsC
         navigationItem.rightBarButtonItem = UIBarButtonItem(
             image: UIImage(systemName: "plus.square"),
             primaryAction: UIAction { [unowned self] _ in
-                navigationViewModel?.createTab()
+                navigationViewModel.createTab()
             },
             menu: UIMenu(children: [
                 UIAction(
@@ -116,8 +114,7 @@ final class SidebarViewController: UICollectionViewController, NSFetchedResultsC
                     image: UIImage(systemName: "xmark.square"),
                     attributes: .destructive
                 ) { [unowned self] _ in
-                    guard let navigationViewModel,
-                          case let .tab(tabID) = navigationViewModel.currentItem else { return }
+                    guard case let .tab(tabID) = navigationViewModel.currentItem else { return }
                     navigationViewModel.deleteTab(tabID: tabID)
                 },
                 UIAction(
@@ -125,7 +122,7 @@ final class SidebarViewController: UICollectionViewController, NSFetchedResultsC
                     image: UIImage(systemName: "xmark.square.fill"),
                     attributes: .destructive
                 ) { [unowned self] _ in
-                    navigationViewModel?.deleteAllTabs()
+                    navigationViewModel.deleteAllTabs()
                 }
             ])
         )
@@ -204,7 +201,6 @@ final class SidebarViewController: UICollectionViewController, NSFetchedResultsC
 
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         guard let splitViewController,
-              let navigationViewModel,
               let navigationItem = dataSource.itemIdentifier(for: indexPath)?.navigationItem else { return }
         if navigationViewModel.currentItem != navigationItem {
             navigationViewModel.currentItem = navigationItem
@@ -268,8 +264,7 @@ final class SidebarViewController: UICollectionViewController, NSFetchedResultsC
     }
 
     private func configureSwipeAction(indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-        guard let navigationViewModel,
-              let item = dataSource.itemIdentifier(for: indexPath),
+        guard let item = dataSource.itemIdentifier(for: indexPath),
               case let .tab(tabID) = item else { return nil }
         let title = LocalString.sidebar_view_navigation_button_close
         let action = UIContextualAction(style: .destructive,
