@@ -18,10 +18,25 @@ import WebKit
 import Combine
 
 @MainActor
-final class NavigationViewModel: ObservableObject {
+protocol NavigationViewModeling {
+    var currentItem: NavigationItem? { get set }
+    var currentItemPublished: Published<NavigationItem?> { get }
+    var currentItemPublisher: Published<NavigationItem?>.Publisher { get }
+    
+    @discardableResult
+    func createTab() -> NSManagedObjectID
+    func deleteTab(tabID: NSManagedObjectID)
+    func deleteAllTabs()
+}
+
+@MainActor
+final class NavigationViewModel: ObservableObject, NavigationViewModeling {
     let uuid = UUID()
     // remained optional due to focusedSceneValue conformance
     @Published var currentItem: NavigationItem? = .loading
+    var currentItemPublished: Published<NavigationItem?> { _currentItem }
+    var currentItemPublisher: Published<NavigationItem?>.Publisher { $currentItem }
+    
     private(set) var showDownloads = PassthroughSubject<Void, Never>()
     
     #if os(macOS)
