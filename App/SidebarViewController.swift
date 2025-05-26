@@ -143,16 +143,14 @@ final class SidebarViewController: UICollectionViewController, NSFetchedResultsC
             snapshot.appendItems([.settings], toSection: .settings)
         }
         
-        dataSource.apply(snapshot, animatingDifferences: false)
-        try? fetchedResultController.performFetch()
-        
         // show the donation async
-        Task {
+        Task { @MainActor in
             if snapshot.sectionIdentifiers.contains(.donation),
                await Payment.paymentButtonTypeAsync() != nil {
                 snapshot.appendItems([.donation], toSection: .donation)
-                await dataSource.apply(snapshot, animatingDifferences: false)
             }
+            await dataSource.apply(snapshot, animatingDifferences: false)
+            try? fetchedResultController.performFetch()
         }
     }
 
