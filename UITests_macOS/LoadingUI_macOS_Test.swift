@@ -22,12 +22,11 @@ final class LoadingUI_macOS_Test: XCTestCase {
         let app = XCUIApplication()
         app.launchArguments = ["ui_testing"]
         app.activate()
-        app/*@START_MENU_TOKEN@*/.staticTexts["Bookmarks"]/*[[".cells.staticTexts[\"Bookmarks\"]",".staticTexts[\"Bookmarks\"]"],[[[-1,1],[-1,0]]],[0]]@END_MENU_TOKEN@*/.click()
         
-        let cellsQuery = app.cells
-        cellsQuery/*@START_MENU_TOKEN@*/.containing(.staticText, identifier: "Opened").firstMatch/*[[".element(boundBy: 3)",".containing(.staticText, identifier: \"Opened\").firstMatch"],[[[-1,1],[-1,0]]],[0]]@END_MENU_TOKEN@*/.click()
-        cellsQuery/*@START_MENU_TOKEN@*/.containing(.staticText, identifier: "Categories").firstMatch/*[[".element(boundBy: 4)",".containing(.staticText, identifier: \"Categories\").firstMatch"],[[[-1,1],[-1,0]]],[0]]@END_MENU_TOKEN@*/.click()
-        app/*@START_MENU_TOKEN@*/.staticTexts["Downloads"]/*[[".cells.staticTexts[\"Downloads\"]",".staticTexts[\"Downloads\"]"],[[[-1,1],[-1,0]]],[0]]@END_MENU_TOKEN@*/.click()
-        cellsQuery/*@START_MENU_TOKEN@*/.containing(.staticText, identifier: "New").firstMatch/*[[".element(boundBy: 6)",".containing(.staticText, identifier: \"New\").firstMatch"],[[[-1,1],[-1,0]]],[0]]@END_MENU_TOKEN@*/.click()
+        app.staticTexts["Bookmarks"].click()
+        app.staticTexts["Opened"].click()
+        app.staticTexts["Categories"].click()
+        app.staticTexts["Downloads"].click()
+        app.staticTexts["New"].click()
     }
 }
