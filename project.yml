@@ -84,9 +84,6 @@ targetTemplates:
       - path: PrivacyInfo.xcprivacy
         destinationFilters:
           - iOS
-      - path: Common
-        destinationFilters:
-          - iOS
       - path: Contents
         includes:
           - Resources
@@ -192,7 +189,6 @@ schemes:
         - UITests_macOS
       commandLineArguments:
         testing: true
-        ui_testing: true
   UITests_iOS:
     build:
       targets:
@@ -202,4 +198,3 @@ schemes:
         - UITests_iOS
       commandLineArguments:
         testing: true
-        ui_testing: true
