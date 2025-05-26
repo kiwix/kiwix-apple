@@ -16,6 +16,15 @@
 import Foundation
 
 enum FeatureFlags {
+    
+    public static func isUITesting() -> Bool {
+        #if DEBUG
+            ProcessInfo.processInfo.arguments.contains("ui_testing")
+        #else
+            false
+        #endif
+    }
+    
 #if DEBUG
     static let wikipediaDarkUserCSS: Bool = true
     static let map: Bool = true

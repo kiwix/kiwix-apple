@@ -115,7 +115,9 @@ final class LibraryViewModel: ObservableObject {
     }
 
     func start(isUserInitiated: Bool) {
-        Task { await start(isUserInitiated: isUserInitiated) }
+        if !FeatureFlags.isUITesting() {
+            Task { await start(isUserInitiated: isUserInitiated) }
+        }
     }
 
     @MainActor

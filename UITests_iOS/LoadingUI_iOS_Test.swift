@@ -20,6 +20,7 @@ final class LoadingUI_iOS_Test: XCTestCase {
     @MainActor
     func testLaunchingApp_onIPhone() throws {
         let app = XCUIApplication()
+        app.launchArguments = ["ui_testing"]
         app.activate()
         app/*@START_MENU_TOKEN@*/.buttons["Library"]/*[[".otherElements.buttons[\"Library\"]",".buttons[\"Library\"]"],[[[-1,1],[-1,0]]],[0]]@END_MENU_TOKEN@*/.tap()
         app/*@START_MENU_TOKEN@*/.buttons["New"]/*[[".tabBars",".buttons[\"New\"]",".buttons[\"newspaper\"]"],[[[-1,2],[-1,1],[-1,0,1]],[[-1,2],[-1,1]]],[1]]@END_MENU_TOKEN@*/.tap()
