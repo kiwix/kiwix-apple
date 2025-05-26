@@ -72,6 +72,7 @@ final class SidebarViewController: UICollectionViewController, NSFetchedResultsC
 
     init() {
         super.init(collectionViewLayout: UICollectionViewLayout())
+        collectionView.accessibilityIdentifier = "sidebar_collection_view"
         collectionView.collectionViewLayout = UICollectionViewCompositionalLayout { _, layoutEnvironment in
             var config = UICollectionLayoutListConfiguration(appearance: .sidebar)
             config.headerMode = .supplementary
@@ -244,6 +245,7 @@ final class SidebarViewController: UICollectionViewController, NSFetchedResultsC
             config.image = UIImage(systemName: item.icon)
             config.imageProperties.tintColor = item.iconForegroundColor
             cell.contentConfiguration = config
+            cell.accessibilityIdentifier = item.accessibilityIdentifier
         }
     }
 

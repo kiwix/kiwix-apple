@@ -20,6 +20,7 @@ final class LoadingUI_macOS_Test: XCTestCase {
     func testSideBarItems() throws {
         // UI tests must launch the application that they test.
         let app = XCUIApplication()
+        app.launchArguments = ["ui_testing"]
         app.activate()
         app/*@START_MENU_TOKEN@*/.staticTexts["Bookmarks"]/*[[".cells.staticTexts[\"Bookmarks\"]",".staticTexts[\"Bookmarks\"]"],[[[-1,1],[-1,0]]],[0]]@END_MENU_TOKEN@*/.click()
         
