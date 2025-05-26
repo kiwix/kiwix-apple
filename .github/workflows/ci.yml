@@ -79,9 +79,9 @@ jobs:
         if: matrix.platform == 'iOS'
         run: xcodebuild test -scheme UITests_iPhone -destination 'platform=iOS Simulator,name=iPhone 16 Pro'
 
-      - name: Run UI Tests on iPhone
+      - name: Run UI Tests on iPad
         if: matrix.platform == 'iOS'
-        run: xcodebuild test -scheme UITests_iPad -destination 'platform=iOS Simulator,name=iPad Pro 13-inch'
+        run: xcodebuild test -scheme UITests_iPad -destination 'platform=iOS Simulator,name=iPad Pro 13-inch (M4)'
 
       - name: Run UI Tests on macOS
         if: matrix.platform == 'macOS'
