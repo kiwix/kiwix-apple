@@ -19,33 +19,28 @@ final class LoadingUI_iPhone_Test: XCTestCase {
 
     @MainActor
     func testLaunchingApp_onIPhone() throws {
+        if !XCUIDevice.shared.orientation.isPortrait {
+            XCUIDevice.shared.orientation = .portrait
+        }
+        
         let app = XCUIApplication()
         app.launchArguments = ["ui_testing"]
         app.activate()
-        app /*@START_MENU_TOKEN@*/.buttons[
-            "Library"
-        ] /*[[".otherElements.buttons[\"Library\"]",".buttons[\"Library\"]"],[[[-1,1],[-1,0]]],[0]]@END_MENU_TOKEN@*/
-            .tap()
-        app /*@START_MENU_TOKEN@*/.buttons[
-            "New"
-        ] /*[[".tabBars",".buttons[\"New\"]",".buttons[\"newspaper\"]"],[[[-1,2],[-1,1],[-1,0,1]],[[-1,2],[-1,1]]],[1]]@END_MENU_TOKEN@*/
-            .tap()
-        app /*@START_MENU_TOKEN@*/.buttons[
-            "Downloads"
-        ] /*[[".tabBars",".buttons[\"Downloads\"]",".buttons[\"tray.and.arrow.down\"]"],[[[-1,2],[-1,1],[-1,0,1]],[[-1,2],[-1,1]]],[1]]@END_MENU_TOKEN@*/
-            .tap()
-        app /*@START_MENU_TOKEN@*/.buttons[
-            "Opened"
-        ] /*[[".tabBars",".buttons[\"Opened\"]",".buttons[\"folder\"]"],[[[-1,2],[-1,1],[-1,0,1]],[[-1,2],[-1,1]]],[1]]@END_MENU_TOKEN@*/
-            .tap()
-        app /*@START_MENU_TOKEN@*/.buttons[
-            "Categories"
-        ] /*[[".tabBars",".buttons[\"Categories\"]",".buttons[\"books.vertical\"]"],[[[-1,2],[-1,1],[-1,0,1]],[[-1,2],[-1,1]]],[1]]@END_MENU_TOKEN@*/
-            .tap()
-        app /*@START_MENU_TOKEN@*/.buttons[
-            "Done"
-        ] /*[[".otherElements[\"Done\"].buttons.firstMatch",".otherElements.buttons[\"Done\"]",".buttons[\"Done\"]"],[[[-1,2],[-1,1],[-1,0]]],[0]]@END_MENU_TOKEN@*/
-            .tap()
-
+        
+        XCTAssertFalse(app.buttons["Go Back"].isEnabled)
+        XCTAssertFalse(app.buttons["Go Forward"].isEnabled)
+        XCTAssertFalse(app.buttons["Share"].isEnabled)
+        XCTAssertFalse(app.buttons["List"].isEnabled)
+        XCTAssertFalse(app.buttons["Random Page"].isEnabled)
+        
+        app.buttons["Library"].tap()
+        
+        XCTAssertTrue(app.buttons["Categories"].isSelected)
+        
+        app.buttons["New"].tap()
+        app.buttons["Downloads"].tap()
+        app.buttons["Opened"].tap()
+        app.buttons["Categories"].tap()
+        app.buttons["Done"].tap()
     }
 }
