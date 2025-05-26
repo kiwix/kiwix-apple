@@ -17,8 +17,66 @@
 import CoreData
 import SwiftUI
 import UIKit
+import Combine
 
-final class SidebarViewController: UICollectionViewController, NSFetchedResultsControllerDelegate {
+struct MenuTabData {
+    let title: String
+    let menuImage: UIImage?
+}
+
+protocol SidebarFetching {
+    var publisher: Published<[NSManagedObjectID]>.Publisher { get }
+    func performFetch() throws
+    func tabDataFor(objectID: NSManagedObjectID) -> MenuTabData?
+}
+
+final class SidebarFetchedResultsControllerDelegate: NSObject, NSFetchedResultsControllerDelegate, SidebarFetching {
+    var publisher: Published<[NSManagedObjectID]>.Publisher { $objectIDs }
+    @Published private var objectIDs: [NSManagedObjectID] = []
+    
+    private let fetchedResultController = NSFetchedResultsController(
+        fetchRequest: Tab.fetchRequest(sortDescriptors: [NSSortDescriptor(key: "created", ascending: false)]),
+        managedObjectContext: Database.shared.viewContext,
+        sectionNameKeyPath: nil,
+        cacheName: nil
+    )
+    
+    func performFetch() throws {
+        fetchedResultController.delegate = self
+        try fetchedResultController.performFetch()
+    }
+    
+    nonisolated func controller(
+        _ controller: NSFetchedResultsController<NSFetchRequestResult>,
+        didChangeContentWith snapshot: NSDiffableDataSourceSnapshotReference
+    ) {
+        let tabIds = snapshot.itemIdentifiers
+            .compactMap { $0 as? NSManagedObjectID }
+        // publish the changes
+        objectIDs = tabIds
+    }
+    
+    func tabDataFor(objectID: NSManagedObjectID) -> MenuTabData? {
+        guard let tab = try? Database.shared.viewContext.existingObject(with: objectID) as? Tab else { return nil }
+        let menuImage: UIImage?
+        
+        if let zimFile = tab.zimFile, let category = Category(rawValue: zimFile.category) {
+            if let imgData = zimFile.faviconData {
+                menuImage = UIImage(data: imgData)
+            } else {
+                menuImage = UIImage(named: category.icon)
+            }
+        } else {
+            menuImage = UIImage(systemName: "square")
+        }
+        return MenuTabData(
+            title: tab.title ?? LocalString.common_tab_menu_new_tab,
+            menuImage: menuImage
+        )
+    }
+}
+
+final class SidebarViewController: UICollectionViewController {
     private lazy var dataSource = {
         let cellRegistration = UICollectionView.CellRegistration<UICollectionViewListCell, MenuItem> {
             [unowned self] cell, indexPath, item in
@@ -38,16 +96,10 @@ final class SidebarViewController: UICollectionViewController, NSFetchedResultsC
         }
         return dataSource
     }()
-    private let fetchedResultController = NSFetchedResultsController(
-        fetchRequest: Tab.fetchRequest(sortDescriptors: [NSSortDescriptor(key: "created", ascending: false)]),
-        managedObjectContext: Database.shared.viewContext,
-        sectionNameKeyPath: nil,
-        cacheName: nil
-    )
 
-    private var navigationViewModel: NavigationViewModel? {
-        (splitViewController as? SplitViewController)?.navigationViewModel
-    }
+    private var navigationViewModel: any ObservableObject & NavigationViewModeling
+    private let fetching: SidebarFetching
+    private var cancellables: Set<AnyCancellable> = []
 
     enum Section: String, CaseIterable {
         case tabs
@@ -70,7 +122,9 @@ final class SidebarViewController: UICollectionViewController, NSFetchedResultsC
         }
     }
 
-    init() {
+    init(navigationViewModel: any ObservableObject & NavigationViewModeling, fetching: SidebarFetching) {
+        self.navigationViewModel = navigationViewModel
+        self.fetching = fetching
         super.init(collectionViewLayout: UICollectionViewLayout())
         collectionView.collectionViewLayout = UICollectionViewCompositionalLayout { _, layoutEnvironment in
             var config = UICollectionLayoutListConfiguration(appearance: .sidebar)
@@ -88,8 +142,7 @@ final class SidebarViewController: UICollectionViewController, NSFetchedResultsC
     }
 
     func updateSelection() {
-        guard let navigationViewModel,
-              let currentItem = navigationViewModel.currentItem,
+        guard let currentItem = navigationViewModel.currentItem,
               let currentMenuItem = MenuItem(from: currentItem),
               let indexPath = dataSource.indexPath(for: currentMenuItem),
               collectionView.indexPathsForSelectedItems?.first != indexPath else { return }
@@ -100,7 +153,12 @@ final class SidebarViewController: UICollectionViewController, NSFetchedResultsC
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        fetchedResultController.delegate = self
+        fetching
+            .publisher
+            .receive(on: RunLoop.main)
+            .sink { [weak self] objectIDs in
+            self?.onChanged(tabIds: objectIDs)
+        }.store(in: &cancellables)
 
         // configure view
         navigationItem.title = Brand.appName
@@ -108,7 +166,7 @@ final class SidebarViewController: UICollectionViewController, NSFetchedResultsC
         navigationItem.rightBarButtonItem = UIBarButtonItem(
             image: UIImage(systemName: "plus.square"),
             primaryAction: UIAction { [unowned self] _ in
-                navigationViewModel?.createTab()
+                navigationViewModel.createTab()
             },
             menu: UIMenu(children: [
                 UIAction(
@@ -116,8 +174,7 @@ final class SidebarViewController: UICollectionViewController, NSFetchedResultsC
                     image: UIImage(systemName: "xmark.square"),
                     attributes: .destructive
                 ) { [unowned self] _ in
-                    guard let navigationViewModel,
-                          case let .tab(tabID) = navigationViewModel.currentItem else { return }
+                    guard case let .tab(tabID) = navigationViewModel.currentItem else { return }
                     navigationViewModel.deleteTab(tabID: tabID)
                 },
                 UIAction(
@@ -125,7 +182,7 @@ final class SidebarViewController: UICollectionViewController, NSFetchedResultsC
                     image: UIImage(systemName: "xmark.square.fill"),
                     attributes: .destructive
                 ) { [unowned self] _ in
-                    navigationViewModel?.deleteAllTabs()
+                    navigationViewModel.deleteAllTabs()
                 }
             ])
         )
@@ -150,7 +207,7 @@ final class SidebarViewController: UICollectionViewController, NSFetchedResultsC
                 snapshot.appendItems([.donation], toSection: .donation)
             }
             await dataSource.apply(snapshot, animatingDifferences: false)
-            try? fetchedResultController.performFetch()
+            try? fetching.performFetch()
         }
     }
 
@@ -165,13 +222,7 @@ final class SidebarViewController: UICollectionViewController, NSFetchedResultsC
     }
 
     // MARK: - Delegations
-
-    nonisolated func controller(
-        _ controller: NSFetchedResultsController<NSFetchRequestResult>,
-        didChangeContentWith snapshot: NSDiffableDataSourceSnapshotReference
-    ) {
-        let tabIds = snapshot.itemIdentifiers
-            .compactMap { $0 as? NSManagedObjectID }
+    func onChanged(tabIds: [NSManagedObjectID]) {
         let tabs = tabIds.map { MenuItem.tab(objectID: $0) }
         var tabsSnapshot = NSDiffableDataSourceSectionSnapshot<MenuItem>()
         tabsSnapshot.append(tabs)
@@ -204,7 +255,6 @@ final class SidebarViewController: UICollectionViewController, NSFetchedResultsC
 
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         guard let splitViewController,
-              let navigationViewModel,
               let navigationItem = dataSource.itemIdentifier(for: indexPath)?.navigationItem else { return }
         if navigationViewModel.currentItem != navigationItem {
             navigationViewModel.currentItem = navigationItem
@@ -221,30 +271,20 @@ final class SidebarViewController: UICollectionViewController, NSFetchedResultsC
     // MARK: - Collection View Configuration
 
     private func configureCell(cell: UICollectionViewListCell, indexPath: IndexPath, item: MenuItem) {
+        var config = cell.defaultContentConfiguration()
         if case let .tab(objectID) = item,
-            let tab = try? Database.shared.viewContext.existingObject(with: objectID) as? Tab {
-            var config = cell.defaultContentConfiguration()
-            config.text = tab.title ?? LocalString.common_tab_menu_new_tab
-            if let zimFile = tab.zimFile, let category = Category(rawValue: zimFile.category) {
-                config.textProperties.numberOfLines = 1
-                if let imgData = zimFile.faviconData {
-                    config.image = UIImage(data: imgData)
-                } else {
-                    config.image = UIImage(named: category.icon)
-                }
-                config.imageProperties.maximumSize = CGSize(width: 22, height: 22)
-                config.imageProperties.cornerRadius = 3
-            } else {
-                config.image = UIImage(systemName: "square")
-            }
-            cell.contentConfiguration = config
+           let tabData = fetching.tabDataFor(objectID: objectID) {
+            config.text = tabData.title
+            config.textProperties.numberOfLines = 1
+            config.image = tabData.menuImage
+            config.imageProperties.maximumSize = CGSize(width: 22, height: 22)
+            config.imageProperties.cornerRadius = 3
         } else {
-            var config = cell.defaultContentConfiguration()
             config.text = item.name
             config.image = UIImage(systemName: item.icon)
             config.imageProperties.tintColor = item.iconForegroundColor
-            cell.contentConfiguration = config
         }
+        cell.contentConfiguration = config
     }
 
     private func configureHeader(headerView: UICollectionViewListCell, elementKind: String, indexPath: IndexPath) {
@@ -268,8 +308,7 @@ final class SidebarViewController: UICollectionViewController, NSFetchedResultsC
     }
 
     private func configureSwipeAction(indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-        guard let navigationViewModel,
-              let item = dataSource.itemIdentifier(for: indexPath),
+        guard let item = dataSource.itemIdentifier(for: indexPath),
               case let .tab(tabID) = item else { return nil }
         let title = LocalString.sidebar_view_navigation_button_close
         let action = UIContextualAction(style: .destructive,
