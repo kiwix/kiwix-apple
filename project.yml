@@ -153,7 +153,7 @@ targets:
     dependencies:
       - target: Kiwix
 
-  UITests_iOS:
+  UITests_iPhone:
     type: bundle.ui-testing
     supportedDestinations: [iOS]
     settings:
@@ -163,7 +163,21 @@ targets:
     entitlements:
       path: Support/Kiwix-unitTest.entitlements
     sources:
-      - path: UITests_iOS
+      - path: UITests_iPhone
+    dependencies:
+      - target: Kiwix
+
+  UITests_iPad:
+    type: bundle.ui-testing
+    supportedDestinations: [iOS]
+    settings:
+      PRODUCT_BUNDLE_IDENTIFIER: org.kiwix.UITests
+      # TEST_HOST: $(BUILT_PRODUCTS_DIR)/Kiwix.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Kiwix
+      BUNDLE_LOADER: $(TEST_HOST)
+    entitlements:
+      path: Support/Kiwix-unitTest.entitlements
+    sources:
+      - path: UITests_iPad
     dependencies:
       - target: Kiwix
 
@@ -189,12 +203,21 @@ schemes:
         - UITests_macOS
       commandLineArguments:
         testing: true
-  UITests_iOS:
+  UITests_iPhone:
     build:
       targets:
         Kiwix: all
     test:
       targets:
-        - UITests_iOS
+        - UITests_iPhone
+      commandLineArguments:
+        testing: true
+  UITests_iPad:
+    build:
+      targets:
+        Kiwix: all
+    test:
+      targets:
+        - UITests_iPad
       commandLineArguments:
         testing: true

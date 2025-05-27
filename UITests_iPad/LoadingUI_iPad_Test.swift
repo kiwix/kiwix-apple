@@ -15,18 +15,31 @@
 
 import XCTest
 
-final class LoadingUI_macOS_Test: XCTestCase {
+final class LoadingUI_iPad_Test: XCTestCase {
 
-    func testSideBarItems() throws {
-        // UI tests must launch the application that they test.
+    @MainActor
+    func testLaunchingApp_on_iPad() throws {
+        
+        if !XCUIDevice.shared.orientation.isLandscape {
+            XCUIDevice.shared.orientation = .landscapeLeft
+        }
+        
         let app = XCUIApplication()
         app.launchArguments = ["ui_testing"]
         app.activate()
         
-        app.staticTexts["Bookmarks"].click()
-        app.staticTexts["Opened"].click()
-        app.staticTexts["Categories"].click()
-        app.staticTexts["Downloads"].click()
-        app.staticTexts["New"].click()
+        app.buttons.matching(identifier: "ToggleSidebar").element.tap()
+        
+        let sidebar = app.collectionViews["sidebar_collection_view"]
+        
+        XCTAssert(sidebar.cells["New Tab"].isSelected)
+        
+        sidebar.cells["bookmarks"].tap()
+        sidebar.cells["opened"].tap()
+        sidebar.cells["categories"].tap()
+        sidebar.cells["downloads"].tap()
+        sidebar.cells["new"].tap()
+        sidebar.cells["settings"].tap()
+        sidebar.cells["donation"].tap()
     }
 }
