@@ -164,6 +164,7 @@ targets:
       path: Support/Kiwix-unitTest.entitlements
     sources:
       - path: UITests_iPhone
+      - path: UITests_common
     dependencies:
       - target: Kiwix
 
@@ -178,6 +179,7 @@ targets:
       path: Support/Kiwix-unitTest.entitlements
     sources:
       - path: UITests_iPad
+      - path: UITests_common
     dependencies:
       - target: Kiwix
 
