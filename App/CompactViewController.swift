@@ -211,7 +211,7 @@ private struct CompactView: View {
                         presentedSheet = .library(downloads: false)
                     } label: {
                         Label(LocalString.common_tab_menu_library, systemImage: "folder")
-                    }
+                    }.accessibilityIdentifier("Library")
                     Spacer()
                 }
                 if !Brand.hideShareButton {

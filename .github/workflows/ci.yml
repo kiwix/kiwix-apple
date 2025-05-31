@@ -75,9 +75,13 @@ jobs:
         env:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
-      - name: Run UI Tests on iOS
+      - name: Run UI Tests on iPhone
         if: matrix.platform == 'iOS'
-        run: xcodebuild test -scheme UITests_iOS -destination 'platform=iOS Simulator,name=iPhone 16 Pro'
+        run: xcodebuild test -scheme UITests_iPhone -destination 'platform=iOS Simulator,name=iPhone 16 Pro'
+
+      - name: Run UI Tests on iPad
+        if: matrix.platform == 'iOS'
+        run: xcodebuild test -scheme UITests_iPad -destination 'platform=iOS Simulator,name=iPad Pro 13-inch (M4)'
 
       - name: Run UI Tests on macOS
         if: matrix.platform == 'macOS'
