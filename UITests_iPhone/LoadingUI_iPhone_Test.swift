@@ -24,16 +24,8 @@ final class LoadingUI_iPhone_Test: XCTestCase {
         }
         
         let app = XCUIApplication()
-        app.launchArguments = ["ui_testing"]
         app.activate()
-        
-        XCTAssertFalse(app.buttons["Go Back"].isEnabled)
-        XCTAssertFalse(app.buttons["Go Forward"].isEnabled)
-        XCTAssertFalse(app.buttons["Share"].isEnabled)
-        XCTAssertFalse(app.buttons["List"].isEnabled)
-        XCTAssertFalse(app.buttons["Random Page"].isEnabled)
-        
-        app.buttons["Library"].tap()
+        Wait.inApp(app, forElement: app.buttons["Categories"])
         
         XCTAssertTrue(app.buttons["Categories"].isSelected)
         
@@ -42,5 +34,11 @@ final class LoadingUI_iPhone_Test: XCTestCase {
         app.buttons["Opened"].tap()
         app.buttons["Categories"].tap()
         app.buttons["Done"].tap()
+        
+        XCTAssertFalse(app.buttons["Go Back"].isEnabled)
+        XCTAssertFalse(app.buttons["Go Forward"].isEnabled)
+        XCTAssertFalse(app.buttons["Share"].isEnabled)
+        XCTAssertFalse(app.buttons["List"].isEnabled)
+        XCTAssertFalse(app.buttons["Random Page"].isEnabled)
     }
 }

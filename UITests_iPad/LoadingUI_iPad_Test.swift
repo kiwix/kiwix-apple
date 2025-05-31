@@ -25,7 +25,6 @@ final class LoadingUI_iPad_Test: XCTestCase {
         }
         
         let app = XCUIApplication()
-        app.launchArguments = ["ui_testing"]
         app.activate()
         
         app.buttons.matching(identifier: "ToggleSidebar").element.tap()

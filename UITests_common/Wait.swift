@@ -13,19 +13,25 @@
 // You should have received a copy of the GNU General Public License
 // along with Kiwix; If not, see https://www.gnu.org/licenses/.
 
+import Foundation
 import XCTest
 
-final class LoadingUI_macOS_Test: XCTestCase {
-
-    func testSideBarItems() throws {
-        // UI tests must launch the application that they test.
-        let app = XCUIApplication()
-        app.activate()
-        
-        app.staticTexts["Bookmarks"].click()
-        app.staticTexts["Opened"].click()
-        app.staticTexts["Categories"].click()
-        app.staticTexts["Downloads"].click()
-        app.staticTexts["New"].click()
+struct Wait {
+    
+    private static let sec30: TimeInterval = 30
+    private static func actionFor(_ element: XCUIElement) -> String {
+        "waiting for: \(element)"
+    }
+    
+    @discardableResult
+    static func inApp(
+        _ app: XCUIApplication,
+        forElement element: XCUIElement,
+        timeout: TimeInterval = sec30
+    ) -> XCUIApplication {
+        XCTContext.runActivity(named: Self.actionFor(element)) { activity in
+            XCTAssertTrue(element.waitForExistence(timeout: timeout), activity.name)
+            return app
+        }
     }
 }
