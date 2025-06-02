@@ -290,6 +290,27 @@ enum MenuItem: Hashable {
         }
     }
     
+    var accessibilityIdentifier: String {
+        switch self {
+        case .tab:
+            "tab"
+        case .bookmarks:
+            "bookmarks"
+        case .opened:
+            "opened"
+        case .categories:
+            "categories"
+        case .new:
+            "new"
+        case .downloads:
+            "downloads"
+        case .settings:
+            "settings"
+        case .donation:
+            "donation"
+        }
+    }
+    
     var icon: String {
         switch self {
         case .bookmarks:
