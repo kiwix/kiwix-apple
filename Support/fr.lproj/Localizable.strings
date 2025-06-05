@@ -3,6 +3,7 @@
 // Author: Adriendelucca
 // Author: Benoit74
 // Author: Crochet.david
+// Author: Derugon
 // Author: Gomoko
 // Author: Goombiis
 // Author: Hecatonchire
@@ -35,6 +36,7 @@
 "common.button.no" = "non";
 "common.button.print" = "Imprimer";
 "common.button.share" = "Partager";
+"common.button.share_as_pdf" = "Partager au format PDF";
 "common.search" = "Rechercher";
 "common.tab.manager.title" = "Gestionnaire d'onglets";
 "common.tab.navigation.title" = "Onglets";
@@ -101,6 +103,8 @@
 "zim_file.action.toggle_cellular" = "Télécharger en utilisant le téléphone cellulaire";
 "zim_file.action.unlink.title" = "Délier";
 "zim_file.action.unlink.message" = "Tous les articles mis en signet liés à ce fichier ZIM seront supprimés, mais le fichier d'origine restera en place.";
+"zim_file.action.unlink.multi_title" = "Délier %@ fichiers ZIM";
+"zim_file.action.unlink.multi_message" = "Tous les articles mis en signet liés à ces %@ fichiers ZIM seront supprimés, mais les fichiers d'origine resteront en place.";
 "zim_file.action.unlink.button.title" = "Délier";
 "zim_file.action.delete.title" = "Supprimer";
 "zim_file.action.delete.message" = "Le fichier ZIM et tous les articles mis en favoris liés à ce fichier ZIM seront supprimés.";
@@ -129,6 +133,8 @@
 "zim_file.download_task.action.resume" = "Reprendre";
 "zim_file.download_task.action.paused" = "Pause";
 "service_worker_warning.label.description" = "Les fichiers Zim nécessitant des travailleurs de service ne sont pas pris en charge.";
+"multi.zim_files_selected.sidebar_title" = "Sélectionné(s)";
+"multi.zim_files_selected.description_count" = "Fichiers ZIM";
 "reading_settings.zoom.title" = "Zoom de la page";
 "reading_settings.zoom.reset.button" = "Réinitialiser";
 "reading_settings.external_link.title" = "Lien externe";
