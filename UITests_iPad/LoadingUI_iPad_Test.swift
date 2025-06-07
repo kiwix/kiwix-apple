@@ -66,6 +66,7 @@ final class LoadingUI_iPad_Test: XCTestCase {
     }
     
     private func testAfterRelaunch(_ app: XCUIApplication) {
+        usleep(1)
         let sidebar = app.collectionViews["sidebar_collection_view"]
         let zimFileTab = sidebar.cells["Apache Pig Documentation"].firstMatch
         Wait.inApp(app, forElement: zimFileTab)
