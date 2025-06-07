@@ -299,16 +299,19 @@ private struct Content<LaunchModel>: View where LaunchModel: LaunchProtocol {
             let _ = model.updateWith(hasZimFiles: !zimFiles.isEmpty,
                                      hasSeenCategories: hasSeenCategories)
             switch model.state {
-            case .loadingData:
-                LoadingDataView()
-            case .webPage(let isLoading):
-                WebView(browser: browser)
-                    .ignoresSafeArea()
-                    .overlay {
-                        if isLoading {
-                            LoadingProgressView()
+            case .loadingData, .webPage:
+                ZStack {
+                    LoadingDataView()
+                        .opacity(model.state == .loadingData ? 1.0 : 0.0)
+                    WebView(browser: browser)
+                        .opacity(model.state == .loadingData ? 0.0 : 1.0)
+                        .ignoresSafeArea()
+                        .overlay {
+                            if case .webPage(let isLoading) = model.state, isLoading {
+                                LoadingProgressView()
+                            }
                         }
-                    }
+                }
             case .catalog(let catalogSequence):
                 switch catalogSequence {
                 case .fetching:
