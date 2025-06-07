@@ -25,14 +25,14 @@ final class LoadingUI_iPhone_Test: XCTestCase {
         
         let app = XCUIApplication()
         app.activate()
-        Wait.inApp(app, forElement: app.buttons["Categories"])
-        
-        XCTAssertTrue(app.buttons["Categories"].isSelected)
+        let categoriesButton = app.buttons["Categories"]
+        Wait.inApp(app, forElement: categoriesButton)
+        XCTAssertTrue(categoriesButton.isSelected)
         
         app.buttons["New"].tap()
         app.buttons["Downloads"].tap()
         app.buttons["Opened"].tap()
-        app.buttons["Categories"].tap()
+        categoriesButton.tap()
         app.buttons["Done"].tap()
         
         XCTAssertFalse(app.buttons["Go Back"].isEnabled)

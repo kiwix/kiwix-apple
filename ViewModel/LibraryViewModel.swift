@@ -131,7 +131,7 @@ final class LibraryViewModel: ObservableObject {
             process.state = .inProgress
 
             // refresh library
-            guard case (var data, let responseURL)? = try await fetchData() else {
+            guard case (let data, let responseURL)? = try await fetchData() else {
                 // this is the case when we have no new data (304 http)
                 // but we still need to refresh the memory only stored
                 // zimfile categories to languages dictionary
@@ -283,19 +283,13 @@ final class LibraryViewModel: ObservableObject {
     }
 
     private func parse(data: Data, urlHost: URL) async throws -> OPDSParser {
-        try await withCheckedThrowingContinuation { continuation in
-            let parser = OPDSParser()
-            do {
-                let urlHostString = urlHost
-                    .withoutQueryParams()
-                    .trim(pathComponents: ["catalog", "v2", "entries"])
-                    .absoluteString
-                try parser.parse(data: data, urlHost: urlHostString)
-                continuation.resume(returning: parser)
-            } catch {
-                continuation.resume(throwing: error)
-            }
-        }
+        let parser = OPDSParser()
+        let urlHostString = urlHost
+            .withoutQueryParams()
+            .trim(pathComponents: ["catalog", "v2", "entries"])
+            .absoluteString
+        try await parser.parse(data: data, urlHost: urlHostString)
+        return parser
     }
 
     private func process(parser: Parser) async throws {
