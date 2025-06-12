@@ -1,7 +1,11 @@
 // Messages for Polish (polski)
 // Exported from translatewiki.net
+// Author: Loran
 // Author: WaldiSt
 
+"library_refresh_error.retrieve.description" = "Błąd podczas łączenia ze zdalną biblioteką.";
+"library_refresh_error.parse.description" = "Błąd podczas analizy danych biblioteki.";
+"library_refresh_error.process.description" = "Wystąpił błąd podczas przetwarzania danych biblioteki.";
 "common.dialog.button.open" = "Otwórz";
 "common.dialog.button.open_in_new_tab" = "Otwórz w nowej karcie";
 "common.dialog.button.add_bookmark" = "Dodaj zakładkę";
