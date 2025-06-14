@@ -240,13 +240,21 @@ final class LibraryRefreshViewModelTest: XCTestCase {
     func testZimFileDeprecation() async throws {
         let testDefaults = TestDefaults()
         testDefaults.setup()
+        let context = Database.shared.viewContext
+        let oldZimFiles = try? context.fetch(ZimFile.fetchRequest())
+        oldZimFiles?.forEach { zimFile in
+            context.delete(zimFile)
+        }
+        if context.hasChanges {
+            try? context.save()
+        }
+        
         // refresh library for the first time, which should create one zim file
         let viewModel = LibraryViewModel(urlSession: urlSession,
                                          processFactory: { LibraryProcess(defaultState: .initial) },
                                          defaults: testDefaults,
                                          categories: CategoriesToLanguages(withDefaults: testDefaults))
         await viewModel.start(isUserInitiated: true)
-        let context = Database.shared.viewContext
         let zimFile1 = try XCTUnwrap(try context.fetch(ZimFile.fetchRequest()).first)
 
         // refresh library for the second time, which should replace the old zim file with a new one
@@ -271,6 +279,8 @@ final class LibraryRefreshViewModelTest: XCTestCase {
         // clean up
         context.delete(zimFile1)
         context.delete(zimFile2)
+        
+        try? context.save()
     }
 }
 
