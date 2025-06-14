@@ -15,6 +15,7 @@
 
 protocol Parser {
     var zimFileIDs: Set<UUID> { get }
+    @ZimActor
     func parse(data: Data, urlHost: String) throws
     func getMetaData(id: UUID) -> ZimFileMetaData?
 }
@@ -24,6 +25,7 @@ extension OPDSParser: Parser {
         __getZimFileIDs() as? Set<UUID> ?? Set<UUID>()
     }
 
+    @ZimActor
     func parse(data: Data, urlHost: String) throws {
         if !self.__parseData(data, using: urlHost.removingSuffix("/")) {
             throw LibraryRefreshError.parse
