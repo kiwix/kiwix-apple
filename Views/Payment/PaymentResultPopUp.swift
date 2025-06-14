@@ -65,6 +65,7 @@ struct PaymentResultPopUp: View {
             Button("", systemImage: "x.circle.fill") {
                 dismiss()
             }
+            .accessibilityIdentifier("close_payment_button")
             .font(.title2)
             .foregroundStyle(.secondary)
             .padding()
