@@ -17,6 +17,7 @@ import CoreData
 import XCTest
 
 import Defaults
+import Combine
 @testable import Kiwix
 
 private class HTTPTestingURLProtocol: URLProtocol {
@@ -37,6 +38,7 @@ private class HTTPTestingURLProtocol: URLProtocol {
 
 final class LibraryRefreshViewModelTest: XCTestCase {
     private var urlSession: URLSession?
+    private var cancellables = Set<AnyCancellable>()
 
     override func setUpWithError() throws {
         let config = URLSessionConfiguration.ephemeral
@@ -240,17 +242,48 @@ final class LibraryRefreshViewModelTest: XCTestCase {
     func testZimFileDeprecation() async throws {
         let testDefaults = TestDefaults()
         testDefaults.setup()
+        let context = Database.shared.viewContext
+        let oldZimFiles = try? context.fetch(ZimFile.fetchRequest())
+        oldZimFiles?.forEach { zimFile in
+            context.delete(zimFile)
+        }
+        if context.hasChanges {
+            try? context.save()
+        }
+        
         // refresh library for the first time, which should create one zim file
         let viewModel = LibraryViewModel(urlSession: urlSession,
                                          processFactory: { LibraryProcess(defaultState: .initial) },
                                          defaults: testDefaults,
                                          categories: CategoriesToLanguages(withDefaults: testDefaults))
+        
+        let expectationVMComplete = XCTestExpectation(description: "viewModel completed")
+        viewModel.$state.sink { value in
+            switch value {
+            case .complete:
+                expectationVMComplete.fulfill()
+            default:
+                break
+            }
+        }.store(in: &cancellables)
         await viewModel.start(isUserInitiated: true)
-        let context = Database.shared.viewContext
+        await fulfillment(of: [expectationVMComplete], timeout: 2)
+        
         let zimFile1 = try XCTUnwrap(try context.fetch(ZimFile.fetchRequest()).first)
 
         // refresh library for the second time, which should replace the old zim file with a new one
+        let expectationVMComplete2 = XCTestExpectation(description: "viewModel completed")
+        viewModel.$state.sink { value in
+            switch value {
+            case .complete:
+                expectationVMComplete2.fulfill()
+            default:
+                break
+            }
+        }.store(in: &cancellables)
         await viewModel.start(isUserInitiated: true)
+        await fulfillment(of: [expectationVMComplete2], timeout: 2)
+        
         var zimFiles = try context.fetch(ZimFile.fetchRequest())
         XCTAssertEqual(zimFiles.count, 1)
         let zimFile2 = try XCTUnwrap(zimFiles.first)
@@ -271,6 +304,8 @@ final class LibraryRefreshViewModelTest: XCTestCase {
         // clean up
         context.delete(zimFile1)
         context.delete(zimFile2)
+        
+        try? context.save()
     }
 }
 

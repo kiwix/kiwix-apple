@@ -228,7 +228,7 @@ struct LibraryZimFileContext<Content: View>: View {
                 ZimFileDetail(zimFile: zimFile, dismissParent: dismiss)
             } label: {
                 content
-            }
+            } .accessibilityIdentifier(zimFile.name)
 #endif
         }.contextMenu {
             ZimFileContextMenu(zimFile: zimFile)
