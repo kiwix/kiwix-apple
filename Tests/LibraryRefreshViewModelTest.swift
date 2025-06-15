@@ -278,7 +278,7 @@ final class LibraryRefreshViewModelTest: XCTestCase {
             case .complete:
                 expectationVMComplete2.fulfill()
             default:
-                break;
+                break
             }
         }.store(in: &cancellables)
         await viewModel.start(isUserInitiated: true)
