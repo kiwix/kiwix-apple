@@ -68,12 +68,16 @@ jobs:
 
       - name: Run Unit Tests on macOS
         if: matrix.platform == 'macOS'
-        run: xcodebuild test -scheme Kiwix -destination 'platform=macOS' CODE_SIGNING_ALLOWED=NO
+        run: xcodebuild clean test -scheme Kiwix -configuration Debug -destination 'platform=macOS'
 
       - name: Upload code coverage
         uses: codecov/codecov-action@v4.2.0
         env:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+
+      - name: Run UI Tests on macOS
+        if: matrix.platform == 'macOS'
+        run: xcodebuild test -scheme UITests_macOS -destination 'platform=macOS'
 
       # - name: Run UI Tests on iPhone
       #   if: matrix.platform == 'iOS'
@@ -87,6 +91,3 @@ jobs:
       #     DEVICE_NAME: "iPad Pro 13-inch (M4)"
       #   run: xcodebuild test -scheme UITests_iPad -destination "platform=iOS Simulator,name=$DEVICE_NAME"
 
-      - name: Run UI Tests on macOS
-        if: matrix.platform == 'macOS'
-        run: xcodebuild test -scheme UITests_macOS -destination 'platform=macOS'
