@@ -127,7 +127,6 @@
 "library_settings.auto_refresh.toggle" = "Auto-refrescar";
 "library_settings.catalog_warning.text" = "Si es activate, le catalogo del bibliotheca essera refrescate automaticamente quando es obsolete.";
 "library_settings.languages.title" = "Linguas";
-"library_settings.tab.library.title" = "Bibliotheca";
 "settings.navigation.title" = "Parametros";
 "library_settings.toggle.cellular" = "Discargar per rete mobile";
 "library_settings.new-download-task-description" = "Le cambiamento se applicara solmente al nove discargamentos.";

@@ -137,7 +137,6 @@
 "library_settings.auto_refresh.toggle" = "自动刷新";
 "library_settings.catalog_warning.text" = "启用后，图书馆目录将在过期时自动刷新。";
 "library_settings.languages.title" = "语言";
-"library_settings.tab.library.title" = "图书馆";
 "settings.navigation.title" = "设置";
 "library_settings.toggle.cellular" = "使用蜂窝数据下载";
 "library_settings.new-download-task-description" = "更改仅适用于新的下载任务。";

@@ -93,7 +93,6 @@
 "library_settings.auto_refresh.toggle" = "Automatyczne odświeżanie";
 "library_settings.catalog_warning.text" = "Gdy ta opcja jest włączona, katalog biblioteki będzie automatycznie odświeżany, jeśli będzie nieaktualny.";
 "library_settings.languages.title" = "Języki";
-"library_settings.tab.library.title" = "Biblioteka";
 "settings.navigation.title" = "Ustawienia";
 "library_settings.toggle.cellular" = "Pobierz za pomocą sieci komórkowej";
 "library_settings.new-download-task-description" = "Zmiana będzie miała zastosowanie tylko do nowych zadań pobierania.";

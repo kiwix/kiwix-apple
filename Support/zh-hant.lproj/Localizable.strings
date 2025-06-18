@@ -132,7 +132,6 @@
 "library_settings.auto_refresh.toggle" = "自動重整";
 "library_settings.catalog_warning.text" = "啟用後，在圖書館目錄過期時會自動重整。";
 "library_settings.languages.title" = "語言";
-"library_settings.tab.library.title" = "圖書館";
 "settings.navigation.title" = "設定";
 "library_settings.toggle.cellular" = "使用蜂巢式網路下載";
 "library_settings.new-download-task-description" = "更改內容僅套用到新的下載任務。";

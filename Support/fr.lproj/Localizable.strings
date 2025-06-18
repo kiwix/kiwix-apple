@@ -146,7 +146,6 @@
 "library_settings.auto_refresh.toggle" = "Actualisation automatique";
 "library_settings.catalog_warning.text" = "Lorsqu'il est activé, le catalogue de la bibliothèque sera actualisé automatiquement lorsqu'il sera obsolète.";
 "library_settings.languages.title" = "Langues";
-"library_settings.tab.library.title" = "Bibliothèque";
 "settings.navigation.title" = "Paramètres";
 "library_settings.toggle.cellular" = "Télécharger en utilisant un téléphone cellulaire";
 "library_settings.new-download-task-description" = "Le changement ne s'appliquera qu'aux nouvelles tâches de téléchargement.";

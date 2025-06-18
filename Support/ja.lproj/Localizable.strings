@@ -129,7 +129,6 @@
 "library_settings.auto_refresh.toggle" = "自動更新";
 "library_settings.catalog_warning.text" = "有効にすると、新しいライブラリカタログに自動更新します。";
 "library_settings.languages.title" = "言語";
-"library_settings.tab.library.title" = "ライブラリ";
 "settings.navigation.title" = "設定";
 "library_settings.toggle.cellular" = "モバイル通信でダウンロード";
 "library_settings.new-download-task-description" = "変更は新規ダウンロードにのみ適用されます。";
