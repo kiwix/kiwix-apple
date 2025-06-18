@@ -172,7 +172,6 @@
 "library_settings.auto_refresh.toggle" = "Auto refresh";
 "library_settings.catalog_warning.text" = "When enabled, the library catalog will be refreshed automatically when outdated.";
 "library_settings.languages.title" = "Languages";
-"library_settings.tab.library.title" = "Library";
 "settings.navigation.title" = "Settings";
 "library_settings.toggle.cellular" = "Download using cellular";
 "library_settings.new-download-task-description" = "Change will only apply to new download tasks.";

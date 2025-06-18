@@ -128,7 +128,6 @@
 "library_settings.auto_refresh.toggle" = "רענון אוטומטי";
 "library_settings.catalog_warning.text" = "כשזה מופעל, קטלוג הספרייה ירוענן אוטומטית כאשר הוא מתיישן.";
 "library_settings.languages.title" = "שפות";
-"library_settings.tab.library.title" = "ספרייה";
 "settings.navigation.title" = "הגדרות";
 "library_settings.toggle.cellular" = "להוריד באמצעות הרשת הסלולרית";
 "library_settings.new-download-task-description" = "השינוי יחול רק על משימות הורדה חדשות.";

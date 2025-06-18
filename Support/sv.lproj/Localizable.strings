@@ -130,7 +130,6 @@
 "library_settings.auto_refresh.toggle" = "Uppdatera automatiskt";
 "library_settings.catalog_warning.text" = "När den är aktiverad uppdateras bibliotekskatalogen automatiskt när den är föråldrad.";
 "library_settings.languages.title" = "Språk";
-"library_settings.tab.library.title" = "Bibliotek";
 "settings.navigation.title" = "Inställningar";
 "library_settings.toggle.cellular" = "Ladda ned med mobildata";
 "library_settings.new-download-task-description" = "Ändring kommer endast att gälla för nya nedladdningsuppgifter.";

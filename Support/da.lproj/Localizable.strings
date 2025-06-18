@@ -77,7 +77,6 @@
 "zim_file.download_task.action.pause" = "Pause";
 "zim_file.download_task.action.downloading" = "Downloader...";
 "zim_file.download_task.action.paused" = "Sat på pause";
-"library_settings.tab.library.title" = "Bibliotek";
 "settings.navigation.title" = "Indstillinger";
 "catalog_settings.refreshing.text" = "Opdaterer...";
 "catalog_settings.refresh_now.button" = "Opdater Nu";

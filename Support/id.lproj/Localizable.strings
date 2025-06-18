@@ -131,7 +131,6 @@
 "library_settings.auto_refresh.toggle" = "Pemuatan ulang otomatis";
 "library_settings.catalog_warning.text" = "Jika diaktifkan, katalog perpustakaan akan diperbarui secara otomatis jika sudah kadaluwarsa.";
 "library_settings.languages.title" = "Bahasa";
-"library_settings.tab.library.title" = "Perpustakaan";
 "settings.navigation.title" = "Pengaturan";
 "library_settings.toggle.cellular" = "Unduh menggunakan seluler";
 "library_settings.new-download-task-description" = "Perubahan hanya akan berlaku untuk tugas pengunduhan baru.";

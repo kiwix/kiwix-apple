@@ -106,7 +106,7 @@ struct LibrarySettings: View {
             }
         }
         .padding()
-        .tabItem { Label(LocalString.library_settings_tab_library_title, systemImage: "folder.badge.gearshape") }
+        .tabItem { Label(LocalString.library_settings_catalog_title, systemImage: "folder.badge.gearshape") }
     }
 }
 
@@ -225,7 +225,7 @@ struct Settings: View {
             }.disabled(library.state != .complete)
             Toggle(LocalString.library_settings_toggle_cellular, isOn: $downloadUsingCellular)
         } header: {
-            Text(LocalString.library_settings_tab_library_title)
+            Text(LocalString.library_settings_catalog_title)
         } footer: {
             Text(LocalString.library_settings_new_download_task_description)
         }

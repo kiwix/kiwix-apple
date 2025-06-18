@@ -127,7 +127,6 @@
 "library_settings.auto_refresh.toggle" = "Reîmprospătare automată";
 "library_settings.catalog_warning.text" = "Când este activat, catalogul bibliotecii va fi reîmprospătat automat când este învechit.";
 "library_settings.languages.title" = "Limbile";
-"library_settings.tab.library.title" = "Bibliotecă";
 "settings.navigation.title" = "Setări";
 "library_settings.toggle.cellular" = "Descărcați folosind telefonul mobil";
 "library_settings.new-download-task-description" = "Modificarea se va aplica numai noilor sarcini de descărcare.";

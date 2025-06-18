@@ -131,13 +131,12 @@
 "reading_settings.external_link.title" = "Label title for option picker. External Link: Always Ask | Always Load | Never Load";
 "reading_settings.search_snippet.title" = "Label title for option picker. Search snippet: Disabled | First Paragraph | First Sentence | Matches";
 "reading_settings.tab.reading" = "Settings page tab title";
-"library_settings.catalog.title" = "In settings: Label next to button Catalog: [Refresh] Last Refresh: 30 minutes ago";
+"library_settings.catalog.title" = "In settings: Both a Tab title, and the label next to button Catalog: [Refresh] Last Refresh: 30 minutes ago";
 "library_settings.button.refresh_now" = "In settings a button title";
 "library_settings.last_refresh.text" = "Label title in settings, eg: Last refresh: 30 minutes ago";
 "library_settings.auto_refresh.toggle" = "Label next to tickbox in settings: [X] Auto refresh";
 "library_settings.catalog_warning.text" = "Settings, Description below the tickbox 'Auto refresh'";
 "library_settings.languages.title" = "Settings, Label next to a table listing Languages each with a tickbox and the ZIM files count supported in that language";
-"library_settings.tab.library.title" = "Settings page tab title";
 "settings.navigation.title" = "Title of navigation item to Settings";
 "library_settings.toggle.cellular" = "Label for toggle in settings";
 "library_settings.new-download-task-description" = "Small print under the toggle 'Download using cellular'";
