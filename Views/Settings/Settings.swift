@@ -164,7 +164,7 @@ struct Settings: View {
             if FeatureFlags.hasLibrary {
                 List {
                     readingSettings
-                    librarySettings
+                    downloadSettings
                     catalogSettings
                     backupSettings
                     miscellaneous
@@ -216,16 +216,11 @@ struct Settings: View {
         }
     }
 
-    var librarySettings: some View {
+    var downloadSettings: some View {
         Section {
-            NavigationLink {
-                LanguageSelector()
-            } label: {
-                SelectedLanaguageLabel()
-            }.disabled(library.state != .complete)
             Toggle(LocalString.library_settings_toggle_cellular, isOn: $downloadUsingCellular)
         } header: {
-            Text(LocalString.library_settings_catalog_title)
+            Text(LocalString.library_settings_downloads_title)
         } footer: {
             Text(LocalString.library_settings_new_download_task_description)
         }
@@ -233,6 +228,11 @@ struct Settings: View {
 
     var catalogSettings: some View {
         Section {
+            NavigationLink {
+                LanguageSelector()
+            } label: {
+                SelectedLanaguageLabel()
+            }.disabled(library.state != .complete)
             HStack {
                 if library.state == .error {
                     Text(LocalString.library_refresh_error_retrieve_description).foregroundColor(.red)

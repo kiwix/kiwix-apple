@@ -132,6 +132,7 @@
 "reading_settings.search_snippet.title" = "Label title for option picker. Search snippet: Disabled | First Paragraph | First Sentence | Matches";
 "reading_settings.tab.reading" = "Settings page tab title";
 "library_settings.catalog.title" = "In settings: Both a Tab title, and the label next to button Catalog: [Refresh] Last Refresh: 30 minutes ago";
+"library_settings.downloads.title" = "In Settings, on iOS, a section title for downloads related setting values";
 "library_settings.button.refresh_now" = "In settings a button title";
 "library_settings.last_refresh.text" = "Label title in settings, eg: Last refresh: 30 minutes ago";
 "library_settings.auto_refresh.toggle" = "Label next to tickbox in settings: [X] Auto refresh";

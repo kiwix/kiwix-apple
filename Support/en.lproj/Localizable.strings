@@ -167,6 +167,7 @@
 "reading_settings.search_snippet.title" = "Search snippet";
 "reading_settings.tab.reading" = "Reading";
 "library_settings.catalog.title" = "Catalog";
+"library_settings.downloads.title" = "Downloads";
 "library_settings.button.refresh_now" = "Refresh Now";
 "library_settings.last_refresh.text" = "Last refresh";
 "library_settings.auto_refresh.toggle" = "Auto refresh";
