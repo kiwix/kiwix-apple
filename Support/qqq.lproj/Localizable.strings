@@ -3,9 +3,9 @@
 // Author: Amire80
 // Author: Beracy
 
-"library_refresh_error.retrieve.description" = "Alert description, when refreshing the library failed, due to a connection error to the server";
-"library_refresh_error.parse.description" = "Alert description, when refreshing the library failed, due to an error when parsing the response from the server";
-"library_refresh_error.process.description" = "Alert description, when refreshing the library failed, due to an error while processing the data from the server";
+"library_refresh_error.retrieve.description" = "Alert description, when refreshing the catalog failed, due to a connection error to the server";
+"library_refresh_error.parse.description" = "Alert description, when refreshing the catalog failed, due to an error when parsing the response from the server";
+"library_refresh_error.process.description" = "Alert description, when refreshing the catalog failed, due to an error while processing the data from the server";
 "download_service.complete.title" = "Title of the notification a user receives, once the started download completes";
 "download_service.complete.description" = "%@ is a file name.";
 "download_service.failed.description" = "Description of an alert pop up, the user see if an item cannot be downloaded.";

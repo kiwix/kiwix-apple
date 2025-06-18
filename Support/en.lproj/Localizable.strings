@@ -14,11 +14,11 @@
 // along with Kiwix; If not, see https://www.gnu.org/licenses/.
 
 /* Library Refresh Error */
-"library_refresh_error.retrieve.description" = "Error retrieving library data.";
+"library_refresh_error.retrieve.description" = "Error retrieving catalog data.";
 /* Library Refresh Error */
-"library_refresh_error.parse.description" = "Error parsing library data.";
+"library_refresh_error.parse.description" = "Error parsing catalog data.";
 /* Library Refresh Error */
-"library_refresh_error.process.description" = "Error processing library data.";
+"library_refresh_error.process.description" = "Error processing catalog data.";
 
 "download_service.complete.title" = "Download Completed";
 "download_service.complete.description" = "%@ has been downloaded successfully.";
