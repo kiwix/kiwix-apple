@@ -110,7 +110,7 @@ final class LibraryRefreshViewModelTest: XCTestCase {
         XCTAssert(viewModel.error is LibraryRefreshError)
         XCTAssertEqual(
             viewModel.error?.localizedDescription,
-            "Error retrieving library data. The operation couldn’t be completed. (NSURLErrorDomain error -1001.)"
+            "Error retrieving catalog data. The operation couldn’t be completed. (NSURLErrorDomain error -1001.)"
         )
     }
 
@@ -136,7 +136,7 @@ final class LibraryRefreshViewModelTest: XCTestCase {
         XCTAssert(viewModel.error is LibraryRefreshError)
         XCTAssertEqual(
             viewModel.error?.localizedDescription,
-            "Error retrieving library data. HTTP Status 404."
+            "Error retrieving catalog data. HTTP Status 404."
         )
     }
 
