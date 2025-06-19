@@ -131,7 +131,6 @@
 "library_settings.auto_refresh.toggle" = "Otomatik yenileme";
 "library_settings.catalog_warning.text" = "Etkinleştirildiğinde kütüphane kataloğu güncelliğini yitirdiğinde otomatik olarak yenilenecektir.";
 "library_settings.languages.title" = "Diller";
-"library_settings.tab.library.title" = "Kütüphane";
 "settings.navigation.title" = "Ayarlar";
 "library_settings.toggle.cellular" = "Hücresel kullanarak indir";
 "library_settings.new-download-task-description" = "Değişiklik yalnızca yeni indirme görevlerine uygulanacaktır.";

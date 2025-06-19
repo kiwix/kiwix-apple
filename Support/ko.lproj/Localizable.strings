@@ -124,7 +124,6 @@
 "library_settings.button.refresh_now" = "지금 새로 고침";
 "library_settings.auto_refresh.toggle" = "자동 새로 고침";
 "library_settings.languages.title" = "언어";
-"library_settings.tab.library.title" = "라이브러리";
 "settings.navigation.title" = "설정";
 "library_settings.toggle.cellular" = "셀룰러를 사용하여 다운로드";
 "library_settings.new-download-task-description" = "변경사항은 새로운 다운로드 작업에만 적용됩니다.";

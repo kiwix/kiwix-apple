@@ -119,7 +119,6 @@
 "library_settings.auto_refresh.toggle" = "Автоматичне оновлення";
 "library_settings.catalog_warning.text" = "Коли ввімкнено, каталог бібліотеки оновлюватиметься автоматично, якщо він застарів.";
 "library_settings.languages.title" = "Мови";
-"library_settings.tab.library.title" = "Бібліотека";
 "settings.navigation.title" = "Налаштування";
 "library_settings.toggle.cellular" = "Завантажувати використовуючи стільникові дані";
 "library_settings.new-download-task-description" = "Зміни застосовуватимуться лише до нових завантажень.";
