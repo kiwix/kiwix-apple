@@ -45,6 +45,7 @@ struct PaymentForm: View {
             Button("", systemImage: "x.circle.fill") {
                 dismiss()
             }
+            .accessibilityIdentifier("close_payment_button")
             .font(.title)
             .foregroundStyle(.tertiary)
             .padding()

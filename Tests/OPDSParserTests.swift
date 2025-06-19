@@ -18,6 +18,7 @@ import XCTest
 
 final class OPDSParserTests: XCTestCase {
     /// Test OPDSParser.parse throws error when OPDS data is invalid.
+    @ZimActor
     func testInvalidOPDSData() {
         XCTExpectFailure("Requires work in dependency to resolve the issue.")
         let content = "Invalid OPDS Data"
@@ -26,6 +27,7 @@ final class OPDSParserTests: XCTestCase {
         )
     }
 
+    @ZimActor
     func testNonCompatibleDataWithUT8() throws {
         let content = "any data"
         let incompatibleEncodings: [String.Encoding] = [.unicode, .utf16, .utf32]
@@ -44,6 +46,7 @@ final class OPDSParserTests: XCTestCase {
     }
 
     /// Test OPDSParser can parse and extract zim file metadata.
+    @ZimActor
     func test() throws {
         let content = """
         <feed xmlns="http://www.w3.org/2005/Atom"
