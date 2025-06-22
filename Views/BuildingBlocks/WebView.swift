@@ -238,17 +238,6 @@ final class WebViewConfiguration: WKWebViewConfiguration {
         #endif
         userContentController = {
             let controller = WKUserContentController()
-            if FeatureFlags.wikipediaDarkUserCSS,
-               let path = Bundle.main.path(forResource: "wikipedia_dark", ofType: "css"),
-               let css = try? String(contentsOfFile: path) {
-                let source = """
-                    var style = document.createElement('style');
-                    style.innerHTML = `\(css)`;
-                    document.head.appendChild(style);
-                    """
-                let script = WKUserScript(source: source, injectionTime: .atDocumentEnd, forMainFrameOnly: false)
-                controller.addUserScript(script)
-            }
             if let url = Bundle.main.url(forResource: "injection", withExtension: "js"),
                let javascript = try? String(contentsOf: url) {
                 let script = WKUserScript(source: javascript, injectionTime: .atDocumentEnd, forMainFrameOnly: false)
