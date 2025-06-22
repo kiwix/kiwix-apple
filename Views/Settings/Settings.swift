@@ -166,8 +166,8 @@ struct Settings: View {
                     readingSettings
                     downloadSettings
                     catalogSettings
-                    backupSettings
                     miscellaneous
+                    backupSettings
                 }
                 .modifier(ToolbarRoleBrowser())
                 .navigationTitle(LocalString.settings_navigation_title)
