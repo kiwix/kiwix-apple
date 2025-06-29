@@ -125,7 +125,6 @@
 "library_settings.auto_refresh.toggle" = "Vetërifreskoje";
 "library_settings.catalog_warning.text" = "Kur aktivizohet, katalogu i bibliotekës do të rifreskohet vetvetiu, kur vjetrohet.";
 "library_settings.languages.title" = "Gjuhë";
-"library_settings.tab.library.title" = "Bibliotekë";
 "settings.navigation.title" = "Rregullime";
 "library_settings.toggle.cellular" = "Shkarkojeni duke përdorur celularin";
 "library_settings.new-download-task-description" = "Ndryshimi do të aplikohet vetëm mbi akte të rinj shkarkimesh.";

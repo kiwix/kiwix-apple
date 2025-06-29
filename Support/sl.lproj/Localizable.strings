@@ -125,7 +125,6 @@
 "library_settings.auto_refresh.toggle" = "Samodejno osveževanje";
 "library_settings.catalog_warning.text" = "Če je omogočeno, se bo knjižnični katalog samodejno osvežil, ko bo zastarel.";
 "library_settings.languages.title" = "Jeziki";
-"library_settings.tab.library.title" = "Knjižnica";
 "settings.navigation.title" = "Nastavitve";
 "library_settings.toggle.cellular" = "Mobilni prenos";
 "library_settings.new-download-task-description" = "Sprememba bo veljala samo za nova opravila prenosa.";

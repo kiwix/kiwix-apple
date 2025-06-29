@@ -72,7 +72,6 @@
 "zim_file.download_task.action.paused" = "Pysäytetty";
 "reading_settings.external_link.title" = "Ulkoinen linkki";
 "library_settings.languages.title" = "Kielet";
-"library_settings.tab.library.title" = "Kirjasto";
 "settings.navigation.title" = "Asetukset";
 "settings.miscellaneous.button.feedback" = "Palaute";
 "settings.miscellaneous.button.rate_app" = "Arvostele sovellus";

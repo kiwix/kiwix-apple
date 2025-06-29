@@ -133,7 +133,6 @@
 "library_settings.auto_refresh.toggle" = "Автообновление";
 "library_settings.catalog_warning.text" = "Если эта опция включена, каталог библиотеки будет обновляться автоматически, если он устареет.";
 "library_settings.languages.title" = "Языки";
-"library_settings.tab.library.title" = "Библиотека";
 "settings.navigation.title" = "Настройки";
 "library_settings.toggle.cellular" = "Загрузка через мобильный интернет";
 "library_settings.new-download-task-description" = "Изменение будет применяться только к новым задачам загрузки.";

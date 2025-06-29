@@ -132,7 +132,6 @@
 "library_settings.auto_refresh.toggle" = "Автоподнова";
 "library_settings.catalog_warning.text" = "Кога е овозможен, библиотечниот каталог ќе биде автоматски подновуван кога ќе застари.";
 "library_settings.languages.title" = "Јазици";
-"library_settings.tab.library.title" = "Библиотека";
 "settings.navigation.title" = "Нагодувања";
 "library_settings.toggle.cellular" = "Преземи на мобилен";
 "library_settings.new-download-task-description" = "Промената ќе важи само за новите задачи за преземање.";

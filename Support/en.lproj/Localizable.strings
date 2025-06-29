@@ -14,11 +14,11 @@
 // along with Kiwix; If not, see https://www.gnu.org/licenses/.
 
 /* Library Refresh Error */
-"library_refresh_error.retrieve.description" = "Error retrieving library data.";
+"library_refresh_error.retrieve.description" = "Error retrieving catalog data.";
 /* Library Refresh Error */
-"library_refresh_error.parse.description" = "Error parsing library data.";
+"library_refresh_error.parse.description" = "Error parsing catalog data.";
 /* Library Refresh Error */
-"library_refresh_error.process.description" = "Error processing library data.";
+"library_refresh_error.process.description" = "Error processing catalog data.";
 
 "download_service.complete.title" = "Download Completed";
 "download_service.complete.description" = "%@ has been downloaded successfully.";
@@ -167,12 +167,12 @@
 "reading_settings.search_snippet.title" = "Search snippet";
 "reading_settings.tab.reading" = "Reading";
 "library_settings.catalog.title" = "Catalog";
+"library_settings.downloads.title" = "Downloads";
 "library_settings.button.refresh_now" = "Refresh Now";
 "library_settings.last_refresh.text" = "Last refresh";
 "library_settings.auto_refresh.toggle" = "Auto refresh";
 "library_settings.catalog_warning.text" = "When enabled, the library catalog will be refreshed automatically when outdated.";
 "library_settings.languages.title" = "Languages";
-"library_settings.tab.library.title" = "Library";
 "settings.navigation.title" = "Settings";
 "library_settings.toggle.cellular" = "Download using cellular";
 "library_settings.new-download-task-description" = "Change will only apply to new download tasks.";
