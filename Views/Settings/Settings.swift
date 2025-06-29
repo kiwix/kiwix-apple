@@ -52,8 +52,8 @@ struct ReadingSettings: View {
                     } label: { }
                 }
             }
-            // Appearance
-            SettingSection(name: LocalString.appearance_settings_title) {
+            // Theme
+            SettingSection(name: LocalString.theme_settings_title) {
                 Picker(selection: $colorSchemeStore.userColorScheme) {
                     ForEach(UserColorScheme.allCases) { colorScheme in
                         Text(colorScheme.name).tag(colorScheme)
@@ -192,8 +192,8 @@ struct Settings: View {
             searchResultSnippetMode = isOn ? .matches : .disabled
         }
         return Section(LocalString.reading_settings_tab_reading) {
-            // Appearance
-            Picker(LocalString.appearance_settings_title, selection: $colorSchemeStore.userColorScheme) {
+            // Theme
+            Picker(LocalString.theme_settings_title, selection: $colorSchemeStore.userColorScheme) {
                 ForEach(UserColorScheme.allCases) { colorScheme in
                     Text(colorScheme.name).tag(colorScheme)
                 }

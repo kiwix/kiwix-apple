@@ -157,10 +157,10 @@
 "multi.zim_files_selected.sidebar_title" = "Selected";
 "multi.zim_files_selected.description_count" = "ZIM files";
 
-"appearance_settings.title" = "Appearance";
-"appearance_settings.option.dark" = "Dark";
-"appearance_settings.option.light" = "Light";
-"appearance_settings.option.system" = "System";
+"theme_settings.title" = "Theme";
+"theme_settings.option.dark" = "Dark";
+"theme_settings.option.light" = "Light";
+"theme_settings.option.system" = "System";
 "reading_settings.zoom.title" = "Page zoom";
 "reading_settings.zoom.reset.button" = "Reset";
 "reading_settings.external_link.title" = "External Link";

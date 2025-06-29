@@ -26,9 +26,9 @@ enum UserColorScheme: Int, CaseIterable, Identifiable {
     
     var name: String {
         switch self {
-        case .light: return LocalString.appearance_settings_option_light
-        case .dark: return LocalString.appearance_settings_option_dark
-        case .system: return LocalString.appearance_settings_option_system
+        case .light: return LocalString.theme_settings_option_light
+        case .dark: return LocalString.theme_settings_option_dark
+        case .system: return LocalString.theme_settings_option_system
         }
     }
     
