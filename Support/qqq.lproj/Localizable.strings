@@ -122,7 +122,7 @@
 "service_worker_warning.label.description" = "Accessiblity label for warning icon (!)";
 "multi.zim_files_selected.sidebar_title" = "Side bar title, when user selects multiple ZIM files at once, in order to unlink them";
 "multi.zim_files_selected.description_count" = "Side bar description, when user selects multiple ZIM files at once, it is describing the amount of files selected. It's always greater than 1 file., eg: ZIM files: 3";
-"theme_settings.title" = "Title for the appearance settings. It is a way to toggle between System/Light/Dark appearance of the application.";
+"theme_settings.title" = "Title for the theme settings. It is a way to toggle between System/Light/Dark themes for the application.";
 "theme_settings.option.dark" = "An option value for theme settings, displayed as a drop down option title. It overrides the value coming from the operating system.";
 "theme_settings.option.light" = "An option value for theme settings, displayed as a drop down option title. It overrides the value coming from the operating system.";
 "theme_settings.option.system" = "An option value for theme settings, displayed as a drop down option title. This means we take the theme value that the operating system provides.";
