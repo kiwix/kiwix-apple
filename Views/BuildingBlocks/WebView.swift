@@ -83,20 +83,13 @@ final class WebViewController: UIViewController {
     init(webView: WKWebView) {
         self.webView = webView
         pageZoomObserver = Defaults.observe(.webViewPageZoom) { change in
-            webView.pageZoom = change.newValue
+            webView.adjustTextSize(pageZoom: change.newValue)
         }
         super.init(nibName: nil, bundle: nil)
     }
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-    
-    deinit {
-        pageZoomObserver.invalidate()
-        layoutCancellable?.cancel()
-        webViewURLObserver?.invalidate()
-        compactViewNavigationController = nil
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -203,18 +196,32 @@ extension WebViewController {
     }
     
     private func configureImmersiveReading() {
-        // Configure Device Orientation Notifications
-        UIDevice.current.beginGeneratingDeviceOrientationNotifications()
-        NotificationCenter.default.addObserver(self,
-                                               selector: #selector(self.onOrientationChange),
-                                               name: UIDevice.orientationDidChangeNotification,
-                                               object: nil)
-        
-        // Configure Navigation Controller
-        webView.scrollView.delegate = self
-        if parent?.navigationController != nil {
-            compactViewNavigationController = parent?.navigationController
+        configureDeviceOrientationNotifications()
+        configureNavigationController()
+
+        func configureDeviceOrientationNotifications() {
+            UIDevice.current.beginGeneratingDeviceOrientationNotifications()
+            NotificationCenter.default.addObserver(self,
+                                                   selector: #selector(self.onOrientationChange),
+                                                   name: UIDevice.orientationDidChangeNotification,
+                                                   object: nil)
         }
+        
+        func configureNavigationController() {
+            webView.scrollView.delegate = self
+            if parent?.navigationController != nil {
+                compactViewNavigationController = parent?.navigationController
+            }
+        }
+    }
+}
+
+extension WKWebView {
+    func adjustTextSize(pageZoom: Double? = nil) {
+        let pageZoom = pageZoom ?? Defaults[.webViewPageZoom]
+        let template = "document.getElementsByTagName('body')[0].style.webkitTextSizeAdjust='%.0f%%'"
+        let javascript = String(format: template, pageZoom * 100)
+        evaluateJavaScript(javascript, completionHandler: nil)
     }
 }
 #endif

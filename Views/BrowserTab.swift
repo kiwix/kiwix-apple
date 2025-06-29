@@ -46,7 +46,7 @@ struct BrowserTab: View {
                     })
             }
 #elseif os(iOS)
-            ToolbarItemGroup(placement: .navigationBarLeading) { [weak browser] in
+            ToolbarItemGroup(placement: .navigationBarLeading) {
                 if #unavailable(iOS 16) {
                     Button {
                         NotificationCenter.toggleSidebar()
@@ -63,12 +63,12 @@ struct BrowserTab: View {
                     })
             }
 #endif
-            ToolbarItemGroup(placement: .primaryAction) { [weak browser] in
-                if !Brand.hideTOCButton, let browser {
+            ToolbarItemGroup(placement: .primaryAction) {
+                if !Brand.hideTOCButton {
                     OutlineButton(browser: browser)
                 }
 #if os(iOS)
-                if !Brand.hideShareButton, let browser {
+                if !Brand.hideShareButton {
                     ExportButton(
                         webViewURL: browser.webView.url,
                         pageDataWithExtension: { [weak browser] in await browser?.pageDataWithExtension() },
@@ -76,7 +76,7 @@ struct BrowserTab: View {
                     )
                 }
 #else
-                if !Brand.hideShareButton, let browser {
+                if !Brand.hideShareButton {
                     Menu {
                         ExportButton(
                             relativeToView: browser.webView,
@@ -101,12 +101,12 @@ struct BrowserTab: View {
                     })
                 }
 #endif
-                BookmarkButton(articleBookmarked: browser?.articleBookmarked == true,
-                               isButtonDisabled: browser?.zimFileName.isEmpty == true,
+                BookmarkButton(articleBookmarked: browser.articleBookmarked,
+                               isButtonDisabled: browser.zimFileName.isEmpty,
                                createBookmark: { [weak browser] in browser?.createBookmark() },
                                deleteBookmark: { [weak browser] in browser?.deleteBookmark() })
 #if os(iOS)
-                if !Brand.hideFindInPage, let browser {
+                if !Brand.hideFindInPage {
                     ContentSearchButton(browser: browser)
                 }
 #endif
