@@ -136,6 +136,7 @@ final class BrowserViewModel: NSObject, ObservableObject,
         webView.configuration.userContentController.add(self, name: "headings")
         webView.navigationDelegate = self
         webView.uiDelegate = self
+        webView.pageZoom = Defaults[.webViewPageZoom]
 
         restoreBy(tabID: tabID)
 
@@ -516,7 +517,6 @@ final class BrowserViewModel: NSObject, ObservableObject,
         if #available(iOS 17, *), Device.current == .iPhone {
             webView.evaluateJavaScript("fixVideoElements();")
         }
-        webView.adjustTextSize()
 #else
         persistState()
 #endif
@@ -528,9 +528,9 @@ final class BrowserViewModel: NSObject, ObservableObject,
         withError error: Error
     ) {
         let error = error as NSError
-        Task { @MainActor in
-            webView.stopLoading()
-            (webView.configuration
+        Task { @MainActor [weak webView] in
+            webView?.stopLoading()
+            (webView?.configuration
                 .urlSchemeHandler(forURLScheme: KiwixURLSchemeHandler.ZIMScheme) as? KiwixURLSchemeHandler)?
                 .didFailProvisionalNavigation()
         }
