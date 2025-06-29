@@ -219,9 +219,10 @@ extension WebViewController {
 extension WKWebView {
     func adjustTextSize(pageZoom: Double? = nil) {
         let pageZoom = pageZoom ?? Defaults[.webViewPageZoom]
-        let template = "document.getElementsByTagName('body')[0].style.webkitTextSizeAdjust='%.0f%%'"
-        let javascript = String(format: template, pageZoom * 100)
-        evaluateJavaScript(javascript, completionHandler: nil)
+        self.pageZoom = pageZoom
+//        let template = "document.getElementsByTagName('body')[0].style.webkitTextSizeAdjust='%.0f%%'"
+//        let javascript = String(format: template, pageZoom * 100)
+//        evaluateJavaScript(javascript, completionHandler: nil)
     }
 }
 #endif
