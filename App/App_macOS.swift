@@ -37,6 +37,7 @@ struct Kiwix: App {
     @StateObject var formReset = FormReset()
     @FocusState private var isSearchFocused: Bool
     @FocusedValue(\.browserURL) var browserURL
+    @StateObject private var colorSchemeStore = UserColorSchemeStore()
 
     init() {
         UNUserNotificationCenter.current().delegate = notificationCenterDelegate
@@ -50,7 +51,9 @@ struct Kiwix: App {
             RootView(isSearchFocused: $isSearchFocused)
                 .environment(\.managedObjectContext, Database.shared.viewContext)
                 .environmentObject(libraryRefreshViewModel)
-            
+                .task {
+                    colorSchemeStore.update()
+                }
         }.commands {
             SidebarCommands()
             CommandGroup(replacing: .importExport) {
@@ -100,6 +103,7 @@ struct Kiwix: App {
         Settings {
             TabView {
                 ReadingSettings()
+                    .environmentObject(colorSchemeStore)
                 if FeatureFlags.hasLibrary {
                     LibrarySettings()
                         .environmentObject(libraryRefreshViewModel)
