@@ -19,6 +19,7 @@ import Defaults
 
 #if os(macOS)
 struct ReadingSettings: View {
+    @EnvironmentObject private var colorSchemeStore: UserColorSchemeStore
     @Default(.externalLinkLoadingPolicy) private var externalLinkLoadingPolicy
     @Default(.searchResultSnippetMode) private var searchResultSnippetMode
     @Default(.webViewPageZoom) private var webViewPageZoom
@@ -51,6 +52,15 @@ struct ReadingSettings: View {
                     } label: { }
                 }
             }
+            // Appearance
+            SettingSection(name: LocalString.appearance_settings_title) {
+                Picker(selection: $colorSchemeStore.userColorScheme) {
+                    ForEach(UserColorScheme.allCases) { colorScheme in
+                        Text(colorScheme.name).tag(colorScheme)
+                    }
+                } label: { }
+            }
+            
             if FeatureFlags.showSearchSnippetInSettings {
                 SettingSection(name: LocalString.reading_settings_search_snippet_title) {
                     Toggle(" ", isOn: isSnippet)
@@ -137,6 +147,7 @@ struct Settings: View {
     @Default(.libraryAutoRefresh) private var libraryAutoRefresh
     @Default(.searchResultSnippetMode) private var searchResultSnippetMode
     @Default(.webViewPageZoom) private var webViewPageZoom
+    @EnvironmentObject private var colorSchemeStore: UserColorSchemeStore
     @EnvironmentObject private var library: LibraryViewModel
     @Environment(\.horizontalSizeClass) var horizontalSizeClass
 
@@ -181,6 +192,13 @@ struct Settings: View {
             searchResultSnippetMode = isOn ? .matches : .disabled
         }
         return Section(LocalString.reading_settings_tab_reading) {
+            // Appearance
+            Picker(LocalString.appearance_settings_title, selection: $colorSchemeStore.userColorScheme) {
+                ForEach(UserColorScheme.allCases) { colorScheme in
+                    Text(colorScheme.name).tag(colorScheme)
+                }
+            }
+            
             Stepper(value: $webViewPageZoom, in: 0.5...2, step: 0.05) {
                 Text(LocalString.reading_settings_zoom_title +
                      ": \(Formatter.percent.string(from: NSNumber(value: webViewPageZoom)) ?? "")")

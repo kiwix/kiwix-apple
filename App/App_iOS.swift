@@ -27,6 +27,7 @@ struct Kiwix: App {
     @StateObject private var selection = SelectedZimFileViewModel()
     @StateObject private var navigation = NavigationViewModel()
     @UIApplicationDelegateAdaptor(AppDelegate.self) private var appDelegate
+    @StateObject private var colorSchemeStore = UserColorSchemeStore()
     private let fileMonitor: DirectoryMonitor
     
     init() {
@@ -46,6 +47,7 @@ struct Kiwix: App {
                 .environmentObject(library)
                 .environmentObject(selection)
                 .environmentObject(navigation)
+                .environmentObject(colorSchemeStore)
                 .modifier(AlertHandler())
                 .modifier(OpenFileHandler())
                 .modifier(FileExportHandler())
@@ -89,6 +91,9 @@ struct Kiwix: App {
                         ZimMigration.forCustomApps()
                         navigation.navigateToMostRecentTab()
                     }
+                }
+                .onAppear {
+                    colorSchemeStore.update()
                 }
                 .modifier(DonationViewModifier())
         }
