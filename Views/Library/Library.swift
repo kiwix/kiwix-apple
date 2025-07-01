@@ -64,6 +64,8 @@ struct Library: View {
                             .environment(\.managedObjectContext, Database.shared.viewContext)
                     case .new:
                         ZimFilesNew(dismiss: dismiss)
+                    case .hotspot:
+                        ZimFilesOpened(dismiss: dismiss)
                     }
                 }
                 .tag(tabItem)
