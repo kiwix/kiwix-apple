@@ -196,6 +196,7 @@ final class SplitViewController: UISplitViewController {
             let controller = UIHostingController(rootView: Settings())
             setViewController(UINavigationController(rootViewController: controller), for: .secondary)
         case .loading:
+            debugPrint("current wifi IP address: \(Hotspot.wifiIPaddress())")
             let controller = UIHostingController(rootView: LoadingDataView())
             setViewController(UINavigationController(rootViewController: controller), for: .secondary)
         case .hotspot:
