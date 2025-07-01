@@ -232,6 +232,7 @@
 "enum.navigation_item.categories" = "Side navigation menu item title";
 "enum.navigation_item.new" = "Side navigation menu item title";
 "enum.navigation_item.downloads" = "Side navigation menu item title";
+"enum.navigation_item.hotspot" = "Side navigation menu item title";
 "enum.navigation_item.settings" = "Side navigation menu item title";
 "enum.search_result_snippet_mode.disabled" = "Picker option title in settings. Search snippet: Disabled | Matches";
 "enum.search_result_snippet_mode.matches" = "Picker option title in settings. Search snippet: Disabled | Matches";

@@ -121,7 +121,7 @@ struct SidebarNavigationCommands: View {
         buildButtons([.bookmarks], modifiers: [.command])
         if FeatureFlags.hasLibrary {
             Divider()
-            buildButtons([.opened, .categories, .downloads, .new], modifiers: [.command, .control])
+            buildButtons([.opened, .categories, .downloads, .new, .hotspot], modifiers: [.command, .control])
         }
     }
 

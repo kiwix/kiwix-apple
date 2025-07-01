@@ -278,6 +278,7 @@
 "enum.navigation_item.new" = "New";
 "enum.navigation_item.downloads" = "Downloads";
 "enum.navigation_item.settings" = "Settings";
+"enum.navigation_item.hotspot" = "Hotspot";
 "enum.search_result_snippet_mode.disabled" = "Disabled";
 "enum.search_result_snippet_mode.matches" = "Matches";
 

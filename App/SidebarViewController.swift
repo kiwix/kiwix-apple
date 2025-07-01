@@ -54,6 +54,7 @@ final class SidebarViewController: UICollectionViewController, NSFetchedResultsC
         case primary
         case library
         case settings
+        case hotspot
         case donation
 
         static var allSections: [Section] {
@@ -61,11 +62,11 @@ final class SidebarViewController: UICollectionViewController, NSFetchedResultsC
             case (true, true):
                 allCases.filter { ![.donation].contains($0) }
             case (false, true):
-                allCases.filter { ![.donation, .library].contains($0) }
+                allCases.filter { ![.donation, .library, .hotspot].contains($0) }
             case (true, false):
                 allCases
             case (false, false):
-                allCases.filter { ![.library].contains($0) }
+                allCases.filter { ![.library, .hotspot].contains($0) }
             }
         }
     }
@@ -139,6 +140,9 @@ final class SidebarViewController: UICollectionViewController, NSFetchedResultsC
         }
         if snapshot.sectionIdentifiers.contains(.library) {
             snapshot.appendItems([.opened, .categories, .downloads, .new], toSection: .library)
+        }
+        if snapshot.sectionIdentifiers.contains(.hotspot) {
+            snapshot.appendItems([.hotspot], toSection: .hotspot)
         }
         if snapshot.sectionIdentifiers.contains(.settings) {
             snapshot.appendItems([.settings], toSection: .settings)

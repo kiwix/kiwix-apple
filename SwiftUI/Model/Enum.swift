@@ -189,7 +189,7 @@ enum LibraryLanguageSortingMode: String, CaseIterable, Identifiable, Defaults.Se
 }
 
 enum LibraryTabItem: String, CaseIterable, Identifiable {
-    case categories, new, downloads, opened
+    case categories, new, downloads, opened, hotspot
 
     var id: String { self.rawValue }
 
@@ -203,6 +203,8 @@ enum LibraryTabItem: String, CaseIterable, Identifiable {
             return LocalString.enum_libray_tab_item_downloads
         case .new:
             return LocalString.enum_libray_tab_item_new
+        case .hotspot:
+            return LocalString.enum_navigation_item_hotspot
         }
     }
 
@@ -216,6 +218,8 @@ enum LibraryTabItem: String, CaseIterable, Identifiable {
             return "tray.and.arrow.down"
         case .new:
             return "newspaper"
+        case .hotspot:
+            return "wifi"
         }
     }
 }
@@ -226,6 +230,7 @@ enum NavigationItem: Hashable, Identifiable {
     case loading
     case bookmarks, map(location: CLLocation?), tab(objectID: NSManagedObjectID)
     case opened, categories, new, downloads
+    case hotspot
     case settings
 }
 
@@ -238,6 +243,7 @@ enum MenuItem: Hashable {
     case downloads
     case settings
     case donation
+    case hotspot
     
     init?(from navigationItem: NavigationItem) {
         switch navigationItem {
@@ -249,6 +255,7 @@ enum MenuItem: Hashable {
         case .new: self = .new
         case .downloads: self = .downloads
         case .settings: self = .settings
+        case .hotspot: self = .hotspot
         }
     }
     
@@ -262,6 +269,7 @@ enum MenuItem: Hashable {
         case .downloads: .downloads
         case .settings: .settings
         case .donation: nil
+        case .hotspot: .hotspot
         }
     }
     
@@ -287,6 +295,8 @@ enum MenuItem: Hashable {
             return LocalString.enum_navigation_item_settings
         case .donation:
             return LocalString.payment_support_button_label
+        case .hotspot:
+            return LocalString.enum_navigation_item_hotspot
         }
     }
     
@@ -308,6 +318,8 @@ enum MenuItem: Hashable {
             "settings"
         case .donation:
             "donation"
+        case .hotspot:
+            "hotspot"
         }
     }
     
@@ -333,6 +345,8 @@ enum MenuItem: Hashable {
             return "gear"
         case .donation:
             return "heart.fill"
+        case .hotspot:
+            return "wifi"
         }
     }
     #if os(iOS)
@@ -340,7 +354,7 @@ enum MenuItem: Hashable {
         switch self {
         case .donation:
             return UIColor.red
-        case .tab, .bookmarks, .opened, .categories, .new, .downloads, .settings:
+        case .tab, .bookmarks, .opened, .categories, .new, .downloads, .hotspot, .settings:
             return nil
         }
     }
