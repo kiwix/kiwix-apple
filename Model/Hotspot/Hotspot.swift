@@ -15,7 +15,16 @@
 
 import Foundation
 
-struct Hotspot {
+final class Hotspot: ObservableObject {
+    
+    static let shared = Hotspot()
+    
+    @Published private(set) var isStarted: Bool = false
+    
+    @MainActor
+    func toggle() {
+        isStarted = !isStarted
+    }
     
     static func wifiIPaddress() -> String {
         var address: String?

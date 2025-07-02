@@ -89,7 +89,7 @@ struct RootView: View {
                     .modifier(SearchFocused(isSearchFocused: isSearchFocused))
             case .hotspot:
                 let _ = debugPrint("current wifi IP address: \(Hotspot.wifiIPaddress())")
-                ZimFilesMultiOpened()
+                HotspotZimFilesSelection()
             default:
                 EmptyView()
             }
