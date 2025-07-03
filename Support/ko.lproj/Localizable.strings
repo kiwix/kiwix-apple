@@ -4,8 +4,11 @@
 // Author: YeBoy371
 // Author: Ykhwong
 
+// Fuzzy
 "library_refresh_error.retrieve.description" = "라이브러리 데이터를 검색하는 중 오류가 발생했습니다.";
+// Fuzzy
 "library_refresh_error.parse.description" = "라이브러리 데이터의 구문을 분석하는 중 오류가 발생했습니다.";
+// Fuzzy
 "library_refresh_error.process.description" = "라이브러리 데이터를 처리하는 동안 오류가 발생했습니다.";
 "download_service.complete.title" = "다운로드 완료";
 "download_service.complete.description" = "%@ 항목이 성공적으로 다운로드되었습니다.";
@@ -117,6 +120,10 @@
 "zim_file.download_task.action.paused" = "일시 중단됨";
 "service_worker_warning.label.description" = "서비스 워커가 필요한 Zim 파일은 지원하지 않습니다.";
 "multi.zim_files_selected.description_count" = "ZIM 파일";
+"theme_settings.title" = "테마";
+"theme_settings.option.dark" = "다크";
+"theme_settings.option.light" = "라이트";
+"theme_settings.option.system" = "시스템";
 "reading_settings.zoom.title" = "페이지 확대/축소";
 "reading_settings.zoom.reset.button" = "초기화";
 "reading_settings.external_link.title" = "외부 링크";

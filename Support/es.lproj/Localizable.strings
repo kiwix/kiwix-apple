@@ -5,8 +5,11 @@
 // Author: Jmabel
 // Author: Sinopsistrans
 
+// Fuzzy
 "library_refresh_error.retrieve.description" = "Error al recuperar datos de la biblioteca.";
+// Fuzzy
 "library_refresh_error.parse.description" = "Error al analizar los datos de la biblioteca.";
+// Fuzzy
 "library_refresh_error.process.description" = "Error al procesar los datos de la biblioteca.";
 "download_service.complete.title" = "Descarga completada";
 "download_service.complete.description" = "%@ se descargó con éxito.";

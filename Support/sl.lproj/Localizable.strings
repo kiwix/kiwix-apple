@@ -2,8 +2,11 @@
 // Exported from translatewiki.net
 // Author: Eleassar
 
+// Fuzzy
 "library_refresh_error.retrieve.description" = "Napaka pri pridobivanju podatkov knjižnice.";
+// Fuzzy
 "library_refresh_error.parse.description" = "Napaka pri razčlenjevanju podatkov knjižnice.";
+// Fuzzy
 "library_refresh_error.process.description" = "Napaka pri obdelavi podatkov knjižnice.";
 "download_service.complete.title" = "Prenos končan";
 "download_service.complete.description" = "%@ se je uspešno preneslo.";

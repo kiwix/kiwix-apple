@@ -4,8 +4,11 @@
 // Author: JosefAnthony
 // Author: McDutchie
 
+// Fuzzy
 "library_refresh_error.retrieve.description" = "Ije du enwn ki Domo kwobi dufuñ";
+// Fuzzy
 "library_refresh_error.parse.description" = "Ike doyi ki Domo kwobi dufuñ";
+// Fuzzy
 "library_refresh_error.process.description" = "Ijeñ jucheñ Kuma kpo";
 "common.dialog.button.open" = "Eebi";
 "common.button.go_back" = "Da bi";

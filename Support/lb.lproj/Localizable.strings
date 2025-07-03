@@ -3,6 +3,9 @@
 // Author: Robby
 // Author: Volvox
 
+"library_refresh_error.retrieve.description" = "Feeler beim Ofruffe vun de Katalogdonnéeën.";
+"library_refresh_error.parse.description" = "Feeler beim Parse vun de Katalogdonnéeën.";
+"library_refresh_error.process.description" = "Feeler beim Parse vun de Katalogdonnéeën.";
 "download_service.complete.title" = "Download ofgeschloss";
 "download_service.complete.description" = "%@ gouf erfollegräich erofgeluden.";
 "common.dialog.button.open" = "Opmaachen";
@@ -88,6 +91,10 @@
 "zim_file.download_task.action.resume" = "Virufueren";
 "zim_file.download_task.action.paused" = "Pauséiert";
 "multi.zim_files_selected.description_count" = "ZIM-Fichieren";
+"theme_settings.title" = "Faarfscheema";
+"theme_settings.option.dark" = "Däischter";
+"theme_settings.option.light" = "Hell";
+"theme_settings.option.system" = "System";
 "reading_settings.zoom.title" = "Säitezoom";
 "reading_settings.zoom.reset.button" = "Zrécksetzen";
 "reading_settings.external_link.title" = "Externe Link";

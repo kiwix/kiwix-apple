@@ -3,8 +3,11 @@
 // Author: Kly
 // Author: 列维劳德
 
+// Fuzzy
 "library_refresh_error.retrieve.description" = "檢索圖書館資料時發生錯誤。";
+// Fuzzy
 "library_refresh_error.parse.description" = "解析圖書館資料時發生錯誤。";
+// Fuzzy
 "library_refresh_error.process.description" = "處理圖書館資料時發生錯誤。";
 "download_service.complete.title" = "下載完成";
 "download_service.complete.description" = "已成功下載%@。";

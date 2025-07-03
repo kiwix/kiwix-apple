@@ -5,8 +5,11 @@
 // Author: Ninawauwau
 // Author: Obiru
 
+// Fuzzy
 "library_refresh_error.retrieve.description" = "Erro ao recuperar dados da biblioteca.";
+// Fuzzy
 "library_refresh_error.parse.description" = "Erro ao analisar dados da biblioteca.";
+// Fuzzy
 "library_refresh_error.process.description" = "Erro ao processar dados da biblioteca.";
 "download_service.complete.title" = "Download Completo";
 "download_service.failed.description" = "Não foi possível baixar este arquivo.";

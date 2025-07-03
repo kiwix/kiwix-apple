@@ -3,8 +3,11 @@
 // Author: Amire80
 // Author: YaronSh
 
+// Fuzzy
 "library_refresh_error.retrieve.description" = "שגיאה באחזור נתוני ספרייה.";
+// Fuzzy
 "library_refresh_error.parse.description" = "שגיאה בפענוח נתוני ספרייה.";
+// Fuzzy
 "library_refresh_error.process.description" = "שגיאה בעיבוד נתוני ספרייה.";
 "download_service.complete.title" = "ההורדה הושלמה";
 "download_service.complete.description" = "%@ הורד בהצלחה.";

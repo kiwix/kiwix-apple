@@ -8,8 +8,11 @@
 // Author: XtexChooser
 // Author: 沈澄心
 
+// Fuzzy
 "library_refresh_error.retrieve.description" = "检索图书馆数据时发生错误。";
+// Fuzzy
 "library_refresh_error.parse.description" = "解析图书馆数据时出错。";
+// Fuzzy
 "library_refresh_error.process.description" = "处理图书馆数据时发生错误。";
 "download_service.complete.title" = "下载完成";
 "download_service.complete.description" = "已成功下载%@";

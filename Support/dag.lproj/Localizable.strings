@@ -3,8 +3,11 @@
 // Author: Alhaj Darajaati
 // Author: Kalakpagh
 
+// Fuzzy
 "library_refresh_error.retrieve.description" = "Chiriŋ karimbu shee lahabali labi deei";
+// Fuzzy
 "library_refresh_error.parse.description" = "Chiriŋ karimbu shee lahabali din na niŋdi ni.";
+// Fuzzy
 "library_refresh_error.process.description" = "Chiriŋ karimbu shee lahabali din na niŋdi ni";
 "download_service.complete.title" = "Deebu naai";
 "download_service.complete.description" = "%@ tooi deegi ni nasara.";

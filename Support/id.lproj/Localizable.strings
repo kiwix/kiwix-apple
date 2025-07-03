@@ -2,8 +2,11 @@
 // Exported from translatewiki.net
 // Author: Akmaie Ajam
 
+// Fuzzy
 "library_refresh_error.retrieve.description" = "Ada kesalahan saat mengambil data perpustakaan.";
+// Fuzzy
 "library_refresh_error.parse.description" = "Ada kesalahan saat mengurai data perpustakaan.";
+// Fuzzy
 "library_refresh_error.process.description" = "Ada kesalahan saat mengolah data perpustakaan.";
 "download_service.complete.title" = "Unduh Selesai";
 "download_service.complete.description" = "%@ berhasil diunduh.";
