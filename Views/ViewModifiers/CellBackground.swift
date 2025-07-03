@@ -37,4 +37,12 @@ enum CellBackground {
     }
     
     static let clipShapeRectangle = RoundedRectangle(cornerRadius: 12, style: .continuous)
+    
+    static func hotspotSelectionColorFor(isHovering: Bool, isSelected: Bool) -> Color {
+        #if os(macOS)
+        colorFor(isHovering: isHovering, isSelected: isSelected)
+        #else
+        isSelected ? .accentColor.opacity(0.5) : normal
+        #endif
+    }
 }
