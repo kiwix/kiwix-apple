@@ -25,7 +25,14 @@ struct HotspotZimFilesSelection: View {
         animation: .easeInOut
     ) private var zimFiles: FetchedResults<ZimFile>
     @State private var isFileImporterPresented = false
-    @StateObject private var selection = MultiSelectedZimFilesViewModel()
+    @ObservedObject private var hotspot: Hotspot
+    @StateObject private var selection: MultiSelectedZimFilesViewModel
+    
+    init(hotspotProvider: @MainActor () -> Hotspot = { @MainActor in Hotspot.shared }) {
+        let hotspotInstance = hotspotProvider()
+        self.hotspot = hotspotInstance
+        _selection = StateObject(wrappedValue: hotspotInstance.selection)
+    }
 
     var body: some View {
         VStack(spacing: 0) {
@@ -41,13 +48,16 @@ struct HotspotZimFilesSelection: View {
                             ZimFileCell(
                                 zimFile,
                                 prominent: .name,
-                                isSelected: selection.isSelected(zimFile)
+                                isSelected: selection.isSelected(zimFile),
+                                backgroundColoring: CellBackground.hotspotSelectionColorFor
                             )
                         },
                         zimFile: zimFile,
-                        selection: selection)
+                        selection: selection
+                    )
                 }
             }
+            .disabled(hotspot.isStarted)
             .modifier(GridCommon(edges: .all))
             .modifier(ToolbarRoleBrowser())
             .navigationTitle(MenuItem.hotspot.name)
@@ -63,6 +73,7 @@ struct HotspotZimFilesSelection: View {
                     selection.reset()
                 }
             }
+            #if os(macOS)
             .safeAreaInset(edge: .trailing, spacing: 0) {
                 HStack(spacing: 0) {
                     Divider()
@@ -74,8 +85,31 @@ struct HotspotZimFilesSelection: View {
                     default:
                         HotspotDetails(zimFiles: selection.selectedZimFiles)
                     }
-                }.frame(width: 275).background(.ultraThinMaterial)
+                }
+                .frame(width: 275)
+                .background(.ultraThinMaterial)
+            }
+            #endif
+        }
+        #if os(iOS)
+        .toolbar {
+            ToolbarItem(placement: .topBarTrailing) {
+                Button {
+                    hotspot.toggle()
+                } label: {
+                    let text = if hotspot.isStarted {
+                        LocalString.hotspot_action_stop_server_title
+                    } else {
+                        LocalString.hotspot_action_start_server_title
+                    }
+                    Text(text)
+                        .bold()
+                }
+                .disabled(selection.selectedZimFiles.isEmpty && !hotspot.isStarted)
+                .padding(.leading, 32)
+                .modifier(BadgeModifier(count: selection.selectedZimFiles.count))
             }
         }
+        #endif
     }
 }

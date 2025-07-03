@@ -66,7 +66,8 @@ struct Library: View {
                         ZimFilesNew(dismiss: dismiss)
                     case .hotspot:
                         let _ = debugPrint("current wifi IP address: \(Hotspot.wifiIPaddress())")
-                        ZimFilesOpened(dismiss: dismiss)
+                        HotspotZimFilesSelection()
+//                        ZimFilesOpened(dismiss: dismiss)
                     }
                 }
                 .tag(tabItem)

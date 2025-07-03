@@ -15,11 +15,14 @@
 
 import Foundation
 
+@MainActor
 final class Hotspot: ObservableObject {
     
+    @MainActor
     static let shared = Hotspot()
     
     @Published private(set) var isStarted: Bool = false
+    @Published var selection = MultiSelectedZimFilesViewModel()
     
     @MainActor
     func toggle() {
