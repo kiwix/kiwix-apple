@@ -77,7 +77,6 @@ struct HotspotZimFilesSelection: View {
             .safeAreaInset(edge: .trailing, spacing: 0) {
                 HStack(spacing: 0) {
                     Divider()
-                    //TODO: handle started / stopped state of hotspot here as well
                     switch selection.selectedZimFiles.count {
                     case 0:
                         Message(text: LocalString.hotspot_zim_file_selection_message)
