@@ -88,7 +88,6 @@ struct RootView: View {
                 DetailSidePanel(content: { ZimFilesNew(dismiss: nil) })
                     .modifier(SearchFocused(isSearchFocused: isSearchFocused))
             case .hotspot:
-                let _ = debugPrint("current wifi IP address: \(Hotspot.wifiIPaddress())")
                 HotspotZimFilesSelection()
             default:
                 EmptyView()
