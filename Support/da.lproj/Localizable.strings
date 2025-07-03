@@ -3,8 +3,11 @@
 // Author: Peterleth
 // Author: Zakawer2
 
+// Fuzzy
 "library_refresh_error.retrieve.description" = "Fejl ved hentning af biblioteksdata.";
+// Fuzzy
 "library_refresh_error.parse.description" = "Fejl ved parsing af biblioteksdata.";
+// Fuzzy
 "library_refresh_error.process.description" = "Fejl ved behandling af biblioteksdata.";
 "download_service.complete.title" = "Download fuldført";
 "download_service.complete.description" = "%@ er blevet downloadet.";

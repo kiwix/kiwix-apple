@@ -3,6 +3,7 @@
 // Author: Cabal
 // Author: Kuldeepburjbhalaike
 
+// Fuzzy
 "library_refresh_error.retrieve.description" = "ਕਿਤਾਬਘਰ ਡਾਟਾ ਪ੍ਰਾਪਤ ਕਰਨ ਵਿੱਚ ਗਲਤੀ।";
 "common.dialog.button.open" = "ਖੋਲ੍ਹੋ";
 "common.dialog.button.open_in_new_tab" = "ਨਵੇਂ ਟੈਬ 'ਚ ਖੋਲ੍ਹੋ";

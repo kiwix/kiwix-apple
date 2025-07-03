@@ -3,6 +3,7 @@
 // Author: Adriendelucca
 // Author: Troer56
 
+// Fuzzy
 "library_refresh_error.retrieve.description" = "Ur fazi zo bet en ur adtapout roadennoù al levraoueg.";
 "download_service.complete.title" = "Pellgargañ kaset da benn";
 "download_service.complete.description" = "%@ zo bet pellgarget gant berzh.";
@@ -97,7 +98,6 @@
 "library_settings.last_refresh.text" = "Freskaet da ziwezhañ";
 "library_settings.auto_refresh.toggle" = "Freskaat emgefreek";
 "library_settings.languages.title" = "Yezhoù";
-"library_settings.tab.library.title" = "Levraoueg";
 "settings.navigation.title" = "Arventennoù";
 "catalog_settings.last_refresh.text" = "Freskaet da ziwezhañ";
 "catalog_settings.refreshing.text" = "O freskaat...";

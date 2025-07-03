@@ -8,8 +8,10 @@
 // Author: Rofiatmustapha12
 // Author: Smavrina
 
+// Fuzzy
 "library_refresh_error.retrieve.description" = "Ошибка получения данных библиотеки.";
-"library_refresh_error.parse.description" = "Ошибка анализа данных библиотеки.";
+"library_refresh_error.parse.description" = "Ошибка анализа данных каталога.";
+// Fuzzy
 "library_refresh_error.process.description" = "Ошибка обработки данных библиотеки.";
 "download_service.complete.title" = "Загрузка завершена";
 "download_service.complete.description" = "%@ успешно загружен.";
@@ -122,12 +124,17 @@
 "zim_file.download_task.action.resume" = "Продолжить";
 "zim_file.download_task.action.paused" = "Приостановлено";
 "service_worker_warning.label.description" = "Файлы Zim, требующие сервисных работников, не поддерживаются.";
+"theme_settings.title" = "Тема";
+"theme_settings.option.dark" = "Тёмная";
+"theme_settings.option.light" = "Светлая";
+"theme_settings.option.system" = "Системная";
 "reading_settings.zoom.title" = "Масштаб страницы";
 "reading_settings.zoom.reset.button" = "Сбросить";
 "reading_settings.external_link.title" = "Внешняя ссылка";
 "reading_settings.search_snippet.title" = "Фрагмент поиска";
 "reading_settings.tab.reading" = "Чтение";
 "library_settings.catalog.title" = "Каталог";
+"library_settings.downloads.title" = "Загрузки";
 "library_settings.button.refresh_now" = "Обновить сейчас";
 "library_settings.last_refresh.text" = "Последнее обновление";
 "library_settings.auto_refresh.toggle" = "Автообновление";

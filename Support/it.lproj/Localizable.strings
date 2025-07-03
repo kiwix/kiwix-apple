@@ -4,10 +4,14 @@
 // Author: Clorofolle
 // Author: LametinoWiki
 // Author: Luca.favorido
+// Author: Wheelygay
 
-"library_refresh_error.retrieve.description" = "Errore durante il recupero dei dati della libreria.";
+"library_refresh_error.retrieve.description" = "Errore durante il recupero dei dati del catalogo.";
+"library_refresh_error.process.description" = "Errore durante l'elaborazione dei dati del catalogo.";
 "download_service.complete.title" = "Download completato";
 "download_service.complete.description" = "%@ è stato scaricato con successo.";
+"common.dialog.button.open" = "Apri";
+"common.dialog.button.add_bookmark" = "Aggiungi segnalibro";
 "common.dialog.button.remove_bookmark" = "Rimuovi segnalibro";
 "common.dialog.button.show_bookmarks" = "Mostra preferiti";
 "common.dialog.button.bookmark" = "Segnalibro";
@@ -19,6 +23,8 @@
 "common.button.no" = "no";
 "common.button.print" = "Stampa";
 "common.button.share" = "Condividi";
+"common.button.share_as_pdf" = "Condividi come PDF";
+"common.search" = "Cerca";
 "common.tab.manager.title" = "Gestore delle schede";
 "common.tab.navigation.title" = "Schede";
 "common.tab.menu.new_tab" = "Nuova scheda";
@@ -72,11 +78,21 @@
 "zim_file.base_info.attribute.category" = "Categoria";
 "zim_file.base_info.attribute.created" = "Creato";
 "zim_file.bool_info.pictures" = "Immagini";
+"zim_file.bool_info.videos" = "Video";
+"zim_file.bool_info.details" = "Dettagli";
+"zim_file.download_task.action.downloading" = "Download in corso...";
+"zim_file.download_task.action.resume" = "Riprendi";
 "zim_file.download_task.action.paused" = "In pausa";
 "multi.zim_files_selected.description_count" = "File ZIM";
+"theme_settings.title" = "Tema";
+"theme_settings.option.dark" = "Scuro";
+"theme_settings.option.light" = "Chiaro";
+"theme_settings.option.system" = "Sistema";
 "reading_settings.zoom.title" = "Zoom della pagina";
+"library_settings.downloads.title" = "Download";
 "library_settings.button.refresh_now" = "Aggiorna ora";
 "library_settings.languages.title" = "Lingue";
+"settings.navigation.title" = "Impostazioni";
 "library_settings.toggle.cellular" = "Scarica tramite cellulare";
 "catalog_settings.last_refresh.text" = "Ultimo aggiornamento";
 "catalog_settings.refreshing.text" = "Aggiornamento...";
@@ -85,9 +101,13 @@
 "backup_settings.toggle.title" = "Includi i file ZIM nel backup";
 "settings.miscellaneous.navigation.about" = "Informazioni";
 "settings.selected_language.title" = "Lingue";
+"language_selector.name.title" = "Nome";
+"language_selector.count.table.title" = "Conteggio";
 "language_selector.no_language.title" = "Nessuna lingua";
 "language_selector.showing.header" = "Sto mostrando:";
+"language_selector.navitation.title" = "Lingua";
 "language_selector.toolbar.sorting" = "Ordinamento";
+"settings.about.title" = "Informazioni";
 "settings.about.dependencies.name" = "Nome";
 "settings.about.description" = "Kiwix è un lettore offline per contenuti online come Wikipedia, Project Gutenberg o TED Talks. Rende la conoscenza disponibile a persone che non hanno o hanno un accesso limitato a Internet. Il software e il contenuto sono gratuiti per chiunque.";
 "settings.about.appverion.title" = "Versione";
@@ -100,6 +120,7 @@
 "search_result.header.text" = "Ricerca recente";
 "search_result.filter_hearder.button.none" = "Nessuno";
 "welcome.main_page.title" = "Pagina principale";
+"welcome.grid.bookmarks.title" = "Segnalibri";
 "welcome.actions.open_file" = "Apri file";
 "welcome.loading.data.text" = "Caricamento dati...";
 "commands.button.actual_size" = "Dimensione effettiva";
@@ -111,6 +132,8 @@
 "enum.category.wikipedia" = "Wikipedia";
 "enum.category.wikibooks" = "Wikibooks";
 "enum.category.wikinews" = "Wikinotizie";
+"enum.category.wikiversity" = "Wikiversità";
+"enum.category.wiktionary" = "Wikizionario";
 "enum.category.vikidia" = "Vikidia";
 "enum.external_link_loading_policy.never_load" = "Non caricare mai";
 "enum.flavor.no_pic" = "nessuna foto";
@@ -119,9 +142,12 @@
 "enum.libray_tab_item.opened" = "Aperto";
 "enum.libray_tab_item.categories" = "Categorie";
 "enum.libray_tab_item.new" = "Nuovo";
+"enum.navigation_item.bookmarks" = "Segnalibri";
 "enum.navigation_item.new_tab" = "Nuova scheda";
 "enum.navigation_item.opened" = "Aperto";
+"enum.navigation_item.categories" = "Categorie";
 "enum.navigation_item.new" = "Nuovo";
+"enum.navigation_item.settings" = "Impostazioni";
 "enum.search_result_snippet_mode.disabled" = "Disattivato";
 "payment.donate.title" = "Dona";
 "payment.description.label" = "Sostieni Kiwix";

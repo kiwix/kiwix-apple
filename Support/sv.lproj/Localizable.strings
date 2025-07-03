@@ -5,8 +5,11 @@
 // Author: Sabelöga
 // Author: WikiPhoenix
 
+// Fuzzy
 "library_refresh_error.retrieve.description" = "Fel vid hämtning av biblioteksdata.";
+// Fuzzy
 "library_refresh_error.parse.description" = "Fel vid analys av biblioteksdata.";
+// Fuzzy
 "library_refresh_error.process.description" = "Fel vid bearbetning av biblioteksdata.";
 "download_service.complete.title" = "Nedladdning slutfördes";
 "download_service.complete.description" = "%@ har laddats ned.";
