@@ -67,7 +67,6 @@ struct Library: View {
                     case .hotspot:
                         let _ = debugPrint("current wifi IP address: \(Hotspot.wifiIPaddress())")
                         HotspotZimFilesSelection()
-//                        ZimFilesOpened(dismiss: dismiss)
                     }
                 }
                 .tag(tabItem)

@@ -196,11 +196,11 @@ final class SplitViewController: UISplitViewController {
             let controller = UIHostingController(rootView: Settings())
             setViewController(UINavigationController(rootViewController: controller), for: .secondary)
         case .loading:
-            debugPrint("current wifi IP address: \(Hotspot.wifiIPaddress())")
             let controller = UIHostingController(rootView: LoadingDataView())
             setViewController(UINavigationController(rootViewController: controller), for: .secondary)
         case .hotspot:
-            let controller = UIHostingController(rootView: ZimFilesOpened(dismiss: nil))
+            debugPrint("current wifi IP address: \(Hotspot.wifiIPaddress())")
+            let controller = UIHostingController(rootView: HotspotZimFilesSelection())
             setViewController(UINavigationController(rootViewController: controller), for: .secondary)
         default:
             let controller = UIHostingController(rootView: Text("vc-not-implemented"))
