@@ -5,8 +5,11 @@
 // Author: Gremid
 // Author: Justman10000
 
+// Fuzzy
 "library_refresh_error.retrieve.description" = "Fehler beim Abrufen von Bibliotheksdaten.";
+// Fuzzy
 "library_refresh_error.parse.description" = "Fehler beim Lesen von Bibliotheksdaten.";
+// Fuzzy
 "library_refresh_error.process.description" = "Fehler beim Verarbeiten von Bibliotheksdaten.";
 "download_service.complete.title" = "Download abgeschlossen";
 "download_service.complete.description" = "%@ wurde erfolgreich heruntergeladen.";

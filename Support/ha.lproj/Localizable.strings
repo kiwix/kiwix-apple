@@ -7,8 +7,11 @@
 // Author: Ummabruka
 // Author: Yusuf Sa'adu
 
+// Fuzzy
 "library_refresh_error.retrieve.description" = "Kuskure maido da bayanan laburare.";
+// Fuzzy
 "library_refresh_error.parse.description" = "Kuskure wajen tantance bayanai dakin karatu";
+// Fuzzy
 "library_refresh_error.process.description" = "Kuskuren wajen sarrafa bayanan dakin karatu";
 "download_service.complete.title" = "Saukewa ta kammalu";
 "download_service.complete.description" = "Nasarar kammaluwar %@";

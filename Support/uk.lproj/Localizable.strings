@@ -2,8 +2,11 @@
 // Exported from translatewiki.net
 // Author: Daries1
 
+// Fuzzy
 "library_refresh_error.retrieve.description" = "Помилка отримання даних бібліотеки.";
+// Fuzzy
 "library_refresh_error.parse.description" = "Помилка парсування даних бібліотеки.";
+// Fuzzy
 "library_refresh_error.process.description" = "Помилка обробки даних бібліотеки.";
 "download_service.complete.title" = "Завантаження завершено";
 "download_service.complete.description" = "%@ було успішно завантажено.";

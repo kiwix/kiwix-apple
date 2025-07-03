@@ -7,8 +7,11 @@
 // Author: Oby Ezeilo
 // Author: Sayvhior
 
+// Fuzzy
 "library_refresh_error.retrieve.description" = "Njehie iweghachite data nke ọba akwụkwọ.";
+// Fuzzy
 "library_refresh_error.parse.description" = "Njehie nyochaa data ọbá akwụkwọ.";
+// Fuzzy
 "library_refresh_error.process.description" = "Njehie nhazi data ọba akwụkwọ.";
 "download_service.complete.title" = "ebudatachala mbudata";
 "download_service.complete.description" = "Ebudatala %@ nke ọma.";

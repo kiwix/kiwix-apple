@@ -16,9 +16,9 @@
 // Author: Vikoula5
 // Author: Wladek92
 
-"library_refresh_error.retrieve.description" = "Erreur lors de la récupération des données de la bibliothèque.";
-"library_refresh_error.parse.description" = "Erreur lors de l'analyse des données de la bibliothèque.";
-"library_refresh_error.process.description" = "Erreur lors du traitement des données de la bibliothèque.";
+"library_refresh_error.retrieve.description" = "Erreur lors de la récupération des données du catalogue.";
+"library_refresh_error.parse.description" = "Erreur lors de l’analyse des données du catalogue.";
+"library_refresh_error.process.description" = "Erreur lors du traitement des données du catalogue.";
 "download_service.complete.title" = "Téléchargement terminé";
 "download_service.complete.description" = "%@ A été téléchargé avec succès.";
 "download_service.failed.description" = "Impossible de télécharger ce fichier.";
@@ -135,12 +135,17 @@
 "service_worker_warning.label.description" = "Les fichiers Zim nécessitant des travailleurs de service ne sont pas pris en charge.";
 "multi.zim_files_selected.sidebar_title" = "Sélectionné(s)";
 "multi.zim_files_selected.description_count" = "Fichiers ZIM";
+"theme_settings.title" = "Thème";
+"theme_settings.option.dark" = "Sombre";
+"theme_settings.option.light" = "Clair";
+"theme_settings.option.system" = "Système";
 "reading_settings.zoom.title" = "Zoom de la page";
 "reading_settings.zoom.reset.button" = "Réinitialiser";
 "reading_settings.external_link.title" = "Lien externe";
 "reading_settings.search_snippet.title" = "Extrait de recherche";
 "reading_settings.tab.reading" = "Lecture";
 "library_settings.catalog.title" = "Catalogue";
+"library_settings.downloads.title" = "Téléchargements";
 "library_settings.button.refresh_now" = "Rafraîchir maintenant";
 "library_settings.last_refresh.text" = "Dernière actualisation";
 "library_settings.auto_refresh.toggle" = "Actualisation automatique";

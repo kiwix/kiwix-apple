@@ -3,8 +3,11 @@
 // Author: Hedda
 // Author: Rofiatmustapha12
 
+// Fuzzy
 "library_refresh_error.retrieve.description" = "Kitaplık verileri alınırken hata oluştu.";
+// Fuzzy
 "library_refresh_error.parse.description" = "Kitaplık verileri ayrıştırılırken hata oluştu.";
+// Fuzzy
 "library_refresh_error.process.description" = "Kitaplık verileri işlenirken hata oluştu.";
 "download_service.complete.title" = "İndirme tamamlandı";
 "download_service.complete.description" = "%@ başarıyla indirildi.";
