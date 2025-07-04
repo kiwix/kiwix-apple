@@ -15,6 +15,7 @@
 
 #import <Foundation/Foundation.h>
 #import "ZimFileMetaData.h"
+#import "zim/archive.h"
 
 @interface ZimFileService : NSObject
 
@@ -30,6 +31,7 @@
 - (NSUUID *_Nullable)open:(NSUUID *_Nonnull)zimFileID NS_REFINED_FOR_SWIFT;
 - (void)close:(NSUUID *_Nonnull)zimFileID NS_REFINED_FOR_SWIFT;
 - (NSArray *_Nonnull)getReaderIdentifiers NS_REFINED_FOR_SWIFT;
+- (zim::Archive *_Nullable) findArchiveBy: (NSUUID *_Nonnull) zimFileID;
 - (nonnull void *) getArchives;
 
 # pragma mark - Metadata

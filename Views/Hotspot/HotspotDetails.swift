@@ -41,7 +41,7 @@ struct HotspotDetails: View {
             .collapsible(false)
             Section(LocalString.zim_file_list_actions_text) {
                 Action(title: buttonTitle) {
-                    hotspot.toggle()
+                    await hotspot.toggle()
                 }
                 .buttonStyle(.borderedProminent)
             }
@@ -52,7 +52,7 @@ struct HotspotDetails: View {
     
     var body: some View {
         Action(title: buttonTitle, isDestructive: hotspot.isStarted) {
-            hotspot.toggle()
+            await hotspot.toggle()
         }
         .buttonStyle(.borderedProminent)
         .modifier(BadgeModifier(count: zimFiles.count))
