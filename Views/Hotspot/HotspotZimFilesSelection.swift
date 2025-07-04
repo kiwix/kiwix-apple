@@ -93,8 +93,8 @@ struct HotspotZimFilesSelection: View {
         #if os(iOS)
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
-                Button {
-                    hotspot.toggle()
+                AsyncButton {
+                    await hotspot.toggle()
                 } label: {
                     let text = if hotspot.isStarted {
                         LocalString.hotspot_action_stop_server_title
