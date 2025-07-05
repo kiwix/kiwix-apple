@@ -15,6 +15,7 @@
 
 import SwiftUI
 
+#if os(macOS)
 /// Hotspot multi ZIM files side panel
 struct HotspotDetails: View {
     let zimFiles: Set<ZimFile>
@@ -30,7 +31,6 @@ struct HotspotDetails: View {
         Formatter.number.string(from: NSNumber(value: zimFiles.count)) ?? ""
     }
     
-    #if os(macOS)
     var body: some View {
         List {
             Section(LocalString.multi_zim_files_selected_sidebar_title) {
@@ -70,16 +70,6 @@ struct HotspotDetails: View {
                 serverAddress = nil
             }
         }
-    }
-    #else
-    
-    var body: some View {
-        Action(title: buttonTitle, isDestructive: hotspot.isStarted) {
-            await hotspot.toggle()
-        }
-        .buttonStyle(.borderedProminent)
-        .modifier(BadgeModifier(count: zimFiles.count))
-    }
-    
-    #endif
+    }    
 }
+#endif
