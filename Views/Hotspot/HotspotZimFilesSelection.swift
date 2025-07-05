@@ -27,13 +27,16 @@ struct HotspotZimFilesSelection: View {
     @State private var isFileImporterPresented = false
     @ObservedObject private var hotspot: Hotspot
     @StateObject private var selection: MultiSelectedZimFilesViewModel
+#if os(iOS)
+    @State private var serverAddress: URL?
+#endif
     
     init(hotspotProvider: @MainActor () -> Hotspot = { @MainActor in Hotspot.shared }) {
         let hotspotInstance = hotspotProvider()
         self.hotspot = hotspotInstance
         _selection = StateObject(wrappedValue: hotspotInstance.selection)
     }
-
+    
     var body: some View {
         VStack(spacing: 0) {
             Divider()
@@ -65,6 +68,19 @@ struct HotspotZimFilesSelection: View {
                 if zimFiles.isEmpty {
                     Message(text: LocalString.zim_file_opened_overlay_no_opened_message)
                 }
+                if let serverAddress {
+                    List {
+                        Section(LocalString.hotspot_server_running_title) {
+                            AttributeLink(title: LocalString.hotspot_server_running_address,
+                                          destination: serverAddress)
+                        }
+                        if let qrCode = QRCode.image(from: serverAddress.absoluteString) {
+                            qrCode
+                                .resizable()
+                                .frame(width: 250, height: 250, alignment: .center)
+                        }
+                    }
+                }
             }
             .onChange(of: zimFiles.count) { _ in
                 if let firstZimFile = zimFiles.first {
@@ -73,7 +89,16 @@ struct HotspotZimFilesSelection: View {
                     selection.reset()
                 }
             }
-            #if os(macOS)
+            .onReceive(hotspot.$isStarted) { isStarted in
+                if isStarted {
+                    Task {
+                        serverAddress = await hotspot.serverAddress()
+                    }
+                } else {
+                    serverAddress = nil
+                }
+            }
+#if os(macOS)
             .safeAreaInset(edge: .trailing, spacing: 0) {
                 HStack(spacing: 0) {
                     Divider()
@@ -88,9 +113,9 @@ struct HotspotZimFilesSelection: View {
                 .frame(width: 275)
                 .background(.ultraThinMaterial)
             }
-            #endif
+#endif
         }
-        #if os(iOS)
+#if os(iOS)
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
                 AsyncButton {
@@ -109,6 +134,6 @@ struct HotspotZimFilesSelection: View {
                 .modifier(BadgeModifier(count: selection.selectedZimFiles.count))
             }
         }
-        #endif
+#endif
     }
 }
