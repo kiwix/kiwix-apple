@@ -53,6 +53,11 @@ struct HotspotDetails: View {
                     AttributeLink(title: LocalString.hotspot_server_running_address,
                                   destination: serverAddress)
                 }
+                if let qrCode = QRCode.image(from: serverAddress.absoluteString) {
+                    qrCode
+                        .resizable()
+                        .frame(width: 250, height: 250)
+                }
             }
         }
         .listStyle(.sidebar)
