@@ -69,6 +69,7 @@ struct HotspotZimFilesSelection: View {
                     Message(text: LocalString.zim_file_opened_overlay_no_opened_message)
                 }
                 if let serverAddress {
+                    // TODO: we need a loading in between start / stop
                     List {
                         Section(LocalString.hotspot_server_running_title) {
                             AttributeLink(title: LocalString.hotspot_server_running_address,
@@ -83,6 +84,7 @@ struct HotspotZimFilesSelection: View {
                 }
             }
             .onChange(of: zimFiles.count) { _ in
+                // TODO: double check this scenario
                 if let firstZimFile = zimFiles.first {
                     selection.singleSelect(zimFile: firstZimFile)
                 } else {
