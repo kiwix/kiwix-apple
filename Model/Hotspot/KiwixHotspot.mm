@@ -71,6 +71,14 @@
     self.server->start();
 }
 
+- (NSString *)address {
+    if(self.server == nullptr) {
+        return nil;
+    }
+    NSString *ipAddress = [NSString stringWithUTF8String: self.server->getAddress().addr.c_str()];
+    return [NSString stringWithFormat:@"http://%@:%i", ipAddress, self.server->getPort()];
+}
+
 - (void)stop {
     if(self.server != nullptr) {
         self.server->stop();

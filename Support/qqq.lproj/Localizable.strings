@@ -68,6 +68,8 @@
 "hotspot.zim_file_selection.message" = "Default placeholder text for side panel, when no file is yet selected to be served on Kiwix Hotspot.";
 "hotspot.action.start_server.title" = "A button title to start the Kiwix Hotspot with the selected files";
 "hotspot.action.stop_server.title" = "A button title to stop the Kiwix Hotspot";
+"hotspot.server_running.title" = "A title informing that the server is running, we show the address details of the server below";
+"hotspot.server_running.address" = "Description prefix for the Kiwix Hotspot address details. Eg: Address http://192.168.100.10:8080";
 "library.zim_file_details.side_panel.message" = "Default placeholder text for side panel on macOS, when no file is selected.";
 "library.zim_file_context.main_page.label" = "Supplementary action title, when long pressing on a ZIM file";
 "library.zim_file_context.random.label" = "Supplementary action title, when long pressing on a ZIM file";
