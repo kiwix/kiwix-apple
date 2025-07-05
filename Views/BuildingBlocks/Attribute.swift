@@ -28,6 +28,20 @@ struct Attribute: View {
     }
 }
 
+struct AttributeLink: View {
+    let title: String
+    let destination: URL
+
+    var body: some View {
+        HStack {
+            Text(title)
+            Spacer()
+            Link(destination.absoluteString, destination: destination)
+                .foregroundColor(.accentColor)
+        }
+    }
+}
+
 struct AttributeBool: View {
     let title: String
     let detail: Bool

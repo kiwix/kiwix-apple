@@ -19,6 +19,7 @@
 @interface KiwixHotspot : NSObject
 
 - (nonnull KiwixHotspot *)initWithZimFileIds:(NSSet *_Nonnull) zimFileIDs onPort:(int) port NS_REFINED_FOR_SWIFT;
+- (nullable NSString *) address NS_REFINED_FOR_SWIFT;
 //- (void)start;
 - (void) stop NS_REFINED_FOR_SWIFT;
 

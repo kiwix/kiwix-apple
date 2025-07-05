@@ -45,37 +45,15 @@ final class Hotspot: ObservableObject {
             self.hotspot = KiwixHotspot(__zimFileIds: zimFileIds, onPort: 8080)
             await MainActor.run {
                 isStarted = true
-                debugPrint("current IP: \(Self.wifiIPaddress())")
             }
         }
     }
     
-    static func wifiIPaddress() -> String {
-        var address: String?
-        var ifaddr: UnsafeMutablePointer<ifaddrs>? = nil
-        if getifaddrs(&ifaddr) == 0 {
-            var ptr = ifaddr
-            while ptr != nil {
-                defer { ptr = ptr?.pointee.ifa_next }
-                
-                guard let interface = ptr?.pointee else { return "" }
-                let addrFamily = interface.ifa_addr.pointee.sa_family
-                if addrFamily == UInt8(AF_INET) || addrFamily == UInt8(AF_INET6) {
-                    
-                    let wifi = "en0"
-                    // wired = ["en2", "en3", "en4"]
-                    // cellular = ["pdp_ip0","pdp_ip1","pdp_ip2","pdp_ip3"]
-                    
-                    let name: String = String(cString: (interface.ifa_name))
-                    if  name == wifi {
-                        var hostname = [CChar](repeating: 0, count: Int(NI_MAXHOST))
-                        getnameinfo(interface.ifa_addr, socklen_t((interface.ifa_addr.pointee.sa_len)), &hostname, socklen_t(hostname.count), nil, socklen_t(0), NI_NUMERICHOST)
-                        address = String(cString: hostname)
-                    }
-                }
-            }
-            freeifaddrs(ifaddr)
+    @MainActor
+    func serverAddress() async -> URL? {
+        guard let address = await self.hotspot?.__address() else {
+            return nil
         }
-        return address ?? ""
+        return URL(string: address)
     }
 }

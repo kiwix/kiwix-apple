@@ -19,6 +19,7 @@ import SwiftUI
 struct HotspotDetails: View {
     let zimFiles: Set<ZimFile>
     @State private var isPresentingUnlinkAlert: Bool = false
+    @State private var serverAddress: URL?
     @ObservedObject private var hotspot = Hotspot.shared
     
     private var buttonTitle: String {
@@ -46,7 +47,24 @@ struct HotspotDetails: View {
                 .buttonStyle(.borderedProminent)
             }
             .collapsible(false)
-        }.listStyle(.sidebar)
+            
+            if let serverAddress {
+                Section(LocalString.hotspot_server_running_title) {
+                    AttributeLink(title: LocalString.hotspot_server_running_address,
+                                  destination: serverAddress)
+                }
+            }
+        }
+        .listStyle(.sidebar)
+        .onReceive(hotspot.$isStarted) { isStarted in
+            if isStarted {
+                Task {
+                    serverAddress = await hotspot.serverAddress()
+                }
+            } else {
+                serverAddress = nil
+            }
+        }
     }
     #else
     
