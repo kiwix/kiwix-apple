@@ -42,7 +42,7 @@ final class Hotspot: ObservableObject {
                 debugPrint("no zim files were set for Hotspot to start")
                 return
             }
-            self.hotspot = KiwixHotspot(__zimFileIds: zimFileIds)
+            self.hotspot = KiwixHotspot(__zimFileIds: zimFileIds, onPort: 8080)
             await MainActor.run {
                 isStarted = true
                 debugPrint("current IP: \(Self.wifiIPaddress())")

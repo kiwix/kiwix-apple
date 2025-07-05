@@ -36,12 +36,12 @@
 
 @implementation KiwixHotspot
 
-- (KiwixHotspot *)initWithZimFileIds:(nonnull NSSet *)zimFileIDs {
+- (KiwixHotspot *)initWithZimFileIds:(nonnull NSSet *)zimFileIDs onPort: (int) port {
     self = [super init];
     if (self) {
         self.library = kiwix::Library::create();
         if(self.library != nullptr) {
-            [self startFor:zimFileIDs];
+            [self startFor:zimFileIDs onPort: port];
         } else {
             NSLog(@"couldn't create kiwix::Library for Hotspot!");
         }
@@ -49,7 +49,7 @@
     return self;
 }
 
--(void) startFor: (nonnull NSSet *) zimFileIDs {
+-(void) startFor: (nonnull NSSet *) zimFileIDs onPort: (int) port {
     if (self.server != nullptr) {
         self.server = nil;
     }
@@ -67,7 +67,7 @@
         }
     }
     self.server = std::make_shared<kiwix::Server>(self.library);
-    self.server->setPort(8080);
+    self.server->setPort(port);
     self.server->start();
 }
 
