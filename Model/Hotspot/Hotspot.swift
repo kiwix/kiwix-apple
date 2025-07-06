@@ -40,9 +40,11 @@ final class Hotspot: ObservableObject {
             await MainActor.run { self.isStarted = false }
             return
         } else {
-            let zimFileIds: Set<UUID> = await MainActor.run(resultType: Set<UUID>.self, body: {
-                Set(selection.selectedZimFiles.map{ $0.fileID })
-            })
+            let zimFileIds: Set<UUID> = await MainActor.run(
+                resultType: Set<UUID>.self,
+                body: {
+                    Set(selection.selectedZimFiles.map { $0.fileID })
+                })
             guard !zimFileIds.isEmpty else {
                 debugPrint("no zim files were set for Hotspot to start")
                 return
