@@ -79,7 +79,7 @@ final class UserColorSchemeStore: ObservableObject {
     
     #if os(macOS)
     func update() {
-        NSApplication.shared.appearance = userColorScheme.asNSAppearance ?? NSAppearance.currentDrawing()
+        NSApplication.shared.appearance = userColorScheme.asNSAppearance
     }
     #endif
     
