@@ -66,6 +66,7 @@ struct ReadingSettings: View {
                     Toggle(" ", isOn: isSnippet)
                 }
             }
+            Spacer()
         }
         .padding()
         .tabItem { Label(LocalString.reading_settings_tab_reading, systemImage: "book") }
@@ -103,6 +104,7 @@ struct LibrarySettings: View {
             }
             SettingSection(name: LocalString.library_settings_languages_title, alignment: .top) {
                 LanguageSelector()
+                    .environmentObject(library)
             }
         }
         .padding()
@@ -110,24 +112,64 @@ struct LibrarySettings: View {
     }
 }
 
+struct HotspotSettings: View {
+    
+    @Default(.hotspotPortNumber) private var savedPortNumber
+    @State private var portNumber: Int
+    @State private var showAlert: Bool = false
+    
+    init() {
+        self.portNumber = Defaults[.hotspotPortNumber]
+    }
+    
+    var body: some View {
+        VStack(spacing: 16) {
+            SettingSection(name: LocalString.hotspot_settings_port_number) {
+                TextField("", value: $portNumber, format: .number)
+                    .textFieldStyle(.roundedBorder)
+            }
+            .onChange(of: portNumber) { newValue in
+                if Hotspot.isValid(port: newValue) {
+                    showAlert = false
+                    // make sure we only save valid port numbers
+                    savedPortNumber = newValue
+                } else {
+                    showAlert = true
+                }
+            }
+            if showAlert {
+                Text(Hotspot.invalidPortMessage)
+                    .font(.callout)
+                    .foregroundStyle(.red)
+            }
+            Spacer()
+        }
+        .padding()
+        .tabItem { Label(LocalString.enum_navigation_item_hotspot, systemImage: "wifi") }
+    }
+}
+
 struct SettingSection<Content: View>: View {
     let name: String
     let alignment: VerticalAlignment
+    let leftWidth: CGFloat
     var content: () -> Content
 
     init(
         name: String,
         alignment: VerticalAlignment = .firstTextBaseline,
+        leftWidth: CGFloat = 100,
         @ViewBuilder content: @escaping () -> Content
     ) {
         self.name = name
         self.alignment = alignment
+        self.leftWidth = leftWidth
         self.content = content
     }
 
     var body: some View {
         HStack(alignment: alignment) {
-            Text("\(name):").frame(width: 100, alignment: .trailing)
+            Text("\(name):").frame(width: leftWidth, alignment: .trailing)
             VStack(alignment: .leading, spacing: 16, content: content)
             Spacer()
         }

@@ -14,12 +14,17 @@
 // along with Kiwix; If not, see https://www.gnu.org/licenses/.
 
 import Foundation
+import Defaults
 
 @MainActor
 final class Hotspot: ObservableObject {
     
     @MainActor
     static let shared = Hotspot()
+    
+    private static let minPort = 1024
+    nonisolated static let defaultPort = 8080
+    private static let maxPort = 9999
     
     @ZimActor
     private var hotspot: KiwixHotspot?
@@ -42,7 +47,8 @@ final class Hotspot: ObservableObject {
                 debugPrint("no zim files were set for Hotspot to start")
                 return
             }
-            self.hotspot = KiwixHotspot(__zimFileIds: zimFileIds, onPort: 8080)
+            let portNumber = Int32(Defaults[.hotspotPortNumber])
+            self.hotspot = KiwixHotspot(__zimFileIds: zimFileIds, onPort: portNumber)
             await MainActor.run {
                 isStarted = true
             }
@@ -55,5 +61,16 @@ final class Hotspot: ObservableObject {
             return nil
         }
         return URL(string: address)
+    }
+    
+    static func isValid(port: Int) -> Bool {
+        switch port {
+        case minPort...maxPort: return true
+        default: return false
+        }
+    }
+    
+    static var invalidPortMessage: String {
+        LocalString.hotspot_settings_invalid_port_message(withArgs: "\(minPort)", "\(maxPort)")
     }
 }

@@ -107,6 +107,7 @@ struct Kiwix: App {
                 if FeatureFlags.hasLibrary {
                     LibrarySettings()
                         .environmentObject(libraryRefreshViewModel)
+                    HotspotSettings()
                 }
                 About()
             }
