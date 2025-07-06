@@ -30,7 +30,6 @@
 
 @property kiwix::LibraryPtr library;
 @property std::shared_ptr<kiwix::Server> server;
-//@property kiwix::Server server;
 
 @end
 
