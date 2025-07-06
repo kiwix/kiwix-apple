@@ -114,7 +114,6 @@ struct LibrarySettings: View {
 
 struct HotspotSettings: View {
     
-    @Default(.hotspotPortNumber) private var savedPortNumber
     @State private var portNumber: Int
     @State private var showAlert: Bool = false
     
@@ -132,7 +131,7 @@ struct HotspotSettings: View {
                 if Hotspot.isValid(port: newValue) {
                     showAlert = false
                     // make sure we only save valid port numbers
-                    savedPortNumber = newValue
+                    Defaults[.hotspotPortNumber] = newValue
                 } else {
                     showAlert = true
                 }
@@ -192,6 +191,13 @@ struct Settings: View {
     @EnvironmentObject private var colorSchemeStore: UserColorSchemeStore
     @EnvironmentObject private var library: LibraryViewModel
     @Environment(\.horizontalSizeClass) var horizontalSizeClass
+    
+    @State private var showHotspotAlert: Bool = false
+    @State private var portNumber: Int
+    
+    init() {
+        self.portNumber = Defaults[.hotspotPortNumber]
+    }
 
     enum Route {
         case languageSelector, about
@@ -209,6 +215,7 @@ struct Settings: View {
                     downloadSettings
                     catalogSettings
                     miscellaneous
+                    hotspot
                     backupSettings
                 }
                 .modifier(ToolbarRoleBrowser())
@@ -329,6 +336,30 @@ struct Settings: View {
                 UIApplication.shared.open(url)
             }
             NavigationLink(LocalString.settings_miscellaneous_navigation_about) { About() }
+        }
+    }
+    
+    var hotspot: some View {
+        Section {
+            if showHotspotAlert {
+                Text(Hotspot.invalidPortMessage).foregroundStyle(.red)
+            }
+            HStack {
+                Text(LocalString.hotspot_settings_port_number)
+                TextField("", value: $portNumber, format: .number)
+                    .textFieldStyle(.roundedBorder)
+                .onChange(of: portNumber) { newValue in
+                    if Hotspot.isValid(port: newValue) {
+                        showHotspotAlert = false
+                        // make sure we only save valid port numbers
+                        Defaults[.hotspotPortNumber] = newValue
+                    } else {
+                        showHotspotAlert = true
+                    }
+                }
+            }
+        } header: {
+            Text(LocalString.enum_navigation_item_hotspot)
         }
     }
 }
