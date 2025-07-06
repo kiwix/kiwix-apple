@@ -100,6 +100,7 @@
 "hotspot.action.stop_server.title" = "Stop Server";
 "hotspot.server_running.title" = "Server is running";
 "hotspot.server_running.address" = "Address";
+"hotspot.server_explanation" = "In order to be able to browse these ZIM files on other devices, please ensure that all devices are connected to the same WiFi Network.";
 "library.zim_file_details.side_panel.message" = "Select a ZIM file to see details";
 "library.zim_file_context.main_page.label" = "Main Page";
 "library.zim_file_context.random.label" = "Random Page";

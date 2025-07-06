@@ -70,6 +70,7 @@
 "hotspot.action.stop_server.title" = "A button title to stop the Kiwix Hotspot";
 "hotspot.server_running.title" = "A title informing that the server is running, we show the address details of the server below";
 "hotspot.server_running.address" = "Description prefix for the Kiwix Hotspot address details. Eg: Address http://192.168.100.10:8080";
+"hotspot.server_explanation" = "A desription text explaining the network setup of devices for the Kiwix Hotspot.";
 "library.zim_file_details.side_panel.message" = "Default placeholder text for side panel on macOS, when no file is selected.";
 "library.zim_file_context.main_page.label" = "Supplementary action title, when long pressing on a ZIM file";
 "library.zim_file_context.random.label" = "Supplementary action title, when long pressing on a ZIM file";

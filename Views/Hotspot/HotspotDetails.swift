@@ -52,13 +52,20 @@ struct HotspotDetails: View {
                 Section(LocalString.hotspot_server_running_title) {
                     AttributeLink(title: LocalString.hotspot_server_running_address,
                                   destination: serverAddress)
+                    if let qrCode = QRCode.image(from: serverAddress.absoluteString) {
+                        qrCode
+                            .resizable()
+                            .frame(width: 250, height: 250, alignment: .trailing)
+                    }
                 }
-                if let qrCode = QRCode.image(from: serverAddress.absoluteString) {
-                    qrCode
-                        .resizable()
-                        .frame(width: 250, height: 250)
-                }
+                .collapsible(false)
             }
+            Section {
+                Text(LocalString.hotspot_server_explanation)
+                    .font(.subheadline)
+                    .multilineTextAlignment(.leading)
+                    .lineLimit(nil)
+            }.collapsible(false)
         }
         .listStyle(.sidebar)
         .onReceive(hotspot.$isStarted) { isStarted in

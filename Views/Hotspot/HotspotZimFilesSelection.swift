@@ -64,31 +64,35 @@ struct HotspotZimFilesSelection: View {
             .modifier(GridCommon(edges: .all))
             .modifier(ToolbarRoleBrowser())
             .navigationTitle(MenuItem.hotspot.name)
+            .task {
+                // make sure that our selection only contains still existing ZIM files
+                selection.intersection(with: Set(zimFiles))
+            }
+#if os(iOS)
             .overlay {
                 if zimFiles.isEmpty {
                     Message(text: LocalString.zim_file_opened_overlay_no_opened_message)
                 }
                 if let serverAddress {
-                    // TODO: we need a loading in between start / stop
                     List {
                         Section(LocalString.hotspot_server_running_title) {
                             AttributeLink(title: LocalString.hotspot_server_running_address,
                                           destination: serverAddress)
+                            if let qrCode = QRCode.image(from: serverAddress.absoluteString) {
+                                Section {
+                                    qrCode
+                                        .resizable()
+                                        .frame(width: 250, height: 250)
+                                }
+                            }
                         }
-                        if let qrCode = QRCode.image(from: serverAddress.absoluteString) {
-                            qrCode
-                                .resizable()
-                                .frame(width: 250, height: 250, alignment: .center)
+                        Section {
+                            Text(LocalString.hotspot_server_explanation)
+                                .font(.subheadline)
+                                .multilineTextAlignment(.leading)
+                                .lineLimit(nil)
                         }
                     }
-                }
-            }
-            .onChange(of: zimFiles.count) { _ in
-                // TODO: double check this scenario
-                if let firstZimFile = zimFiles.first {
-                    selection.singleSelect(zimFile: firstZimFile)
-                } else {
-                    selection.reset()
                 }
             }
             .onReceive(hotspot.$isStarted) { isStarted in
@@ -100,7 +104,31 @@ struct HotspotZimFilesSelection: View {
                     serverAddress = nil
                 }
             }
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    AsyncButton {
+                        await hotspot.toggle()
+                    } label: {
+                        let text = if hotspot.isStarted {
+                            LocalString.hotspot_action_stop_server_title
+                        } else {
+                            LocalString.hotspot_action_start_server_title
+                        }
+                        Text(text)
+                            .bold()
+                    }
+                    .disabled(selection.selectedZimFiles.isEmpty && !hotspot.isStarted)
+                    .padding(.leading, 32)
+                    .modifier(BadgeModifier(count: selection.selectedZimFiles.count))
+                }
+            }
+#endif
 #if os(macOS)
+            .overlay {
+                if zimFiles.isEmpty {
+                    Message(text: LocalString.zim_file_opened_overlay_no_opened_message)
+                }
+            }
             .safeAreaInset(edge: .trailing, spacing: 0) {
                 HStack(spacing: 0) {
                     Divider()
@@ -117,25 +145,5 @@ struct HotspotZimFilesSelection: View {
             }
 #endif
         }
-#if os(iOS)
-        .toolbar {
-            ToolbarItem(placement: .topBarTrailing) {
-                AsyncButton {
-                    await hotspot.toggle()
-                } label: {
-                    let text = if hotspot.isStarted {
-                        LocalString.hotspot_action_stop_server_title
-                    } else {
-                        LocalString.hotspot_action_start_server_title
-                    }
-                    Text(text)
-                        .bold()
-                }
-                .disabled(selection.selectedZimFiles.isEmpty && !hotspot.isStarted)
-                .padding(.leading, 32)
-                .modifier(BadgeModifier(count: selection.selectedZimFiles.count))
-            }
-        }
-#endif
     }
 }

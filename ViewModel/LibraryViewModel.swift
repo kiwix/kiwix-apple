@@ -66,6 +66,10 @@ final class MultiSelectedZimFilesViewModel: ObservableObject {
     func isSelected(_ zimFile: ZimFile) -> Bool {
         selectedZimFiles.contains(zimFile)
     }
+    
+    func intersection(with zimFiles: Set<ZimFile>) {
+        selectedZimFiles = selectedZimFiles.intersection(zimFiles)
+    }
 }
 
 @MainActor
