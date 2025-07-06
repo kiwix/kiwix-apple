@@ -2,9 +2,9 @@
 // Exported from translatewiki.net
 // Author: Bjankuloski06
 
-"library_refresh_error.retrieve.description" = "Грешка при преземањето на податоците од библиотеката.";
-"library_refresh_error.parse.description" = "Грешка при расчленувањето на податоците од библиотеката.";
-"library_refresh_error.process.description" = "Грешка при обработката на податоци од библиотеката.";
+"library_refresh_error.retrieve.description" = "Грешка при преземањето на податоците од каталогот.";
+"library_refresh_error.parse.description" = "Грешка при расчленувањето на податоците од каталогот.";
+"library_refresh_error.process.description" = "Грешка при обработката на податоци од каталогот.";
 "download_service.complete.title" = "Преземањето е завршено";
 "download_service.complete.description" = "%@ е успешно преземено.";
 "download_service.failed.description" = "Не можев да ја преземам оваа податотека.";
@@ -121,12 +121,17 @@
 "service_worker_warning.label.description" = "Не се поддржани ZIM-податотеки што бараат застапнички служби.";
 "multi.zim_files_selected.sidebar_title" = "Избрано";
 "multi.zim_files_selected.description_count" = "ZIM-податотеки";
+"theme_settings.title" = "Изглед";
+"theme_settings.option.dark" = "Темен";
+"theme_settings.option.light" = "Светол";
+"theme_settings.option.system" = "Системски";
 "reading_settings.zoom.title" = "Приближување на страницата";
 "reading_settings.zoom.reset.button" = "Поништи";
 "reading_settings.external_link.title" = "Надворешна врска";
 "reading_settings.search_snippet.title" = "Пребарај го исечокот";
 "reading_settings.tab.reading" = "Читање";
 "library_settings.catalog.title" = "Каталог";
+"library_settings.downloads.title" = "Преземања";
 "library_settings.button.refresh_now" = "Поднови сега";
 "library_settings.last_refresh.text" = "Последна поднова";
 "library_settings.auto_refresh.toggle" = "Автоподнова";

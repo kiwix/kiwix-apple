@@ -2,8 +2,11 @@
 // Exported from translatewiki.net
 // Author: MSClaudiu
 
+// Fuzzy
 "library_refresh_error.retrieve.description" = "Eroare la preluarea datelor din bibliotecă.";
+// Fuzzy
 "library_refresh_error.parse.description" = "Eroare la analizarea datelor din bibliotecă.";
+// Fuzzy
 "library_refresh_error.process.description" = "Eroare la procesarea datelor din bibliotecă.";
 "download_service.complete.title" = "Descărcare Completată";
 "download_service.complete.description" = "%@ a fost descărcat cu succes.";

@@ -2,8 +2,11 @@
 // Exported from translatewiki.net
 // Author: Besnik b
 
+// Fuzzy
 "library_refresh_error.retrieve.description" = "Gabim në marrje të dhënash biblioteke.";
+// Fuzzy
 "library_refresh_error.parse.description" = "Gabim në analizim të dhënash biblioteke.";
+// Fuzzy
 "library_refresh_error.process.description" = "Gabim në përpunim të dhënash biblioteke.";
 "download_service.complete.title" = "Shkarkimi u Plotësua";
 "download_service.complete.description" = "%@ u shkarkua me sukses.";

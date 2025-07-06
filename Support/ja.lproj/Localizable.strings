@@ -4,8 +4,11 @@
 // Author: Hiroyasu Nishiyama
 // Author: MathXplore
 
+// Fuzzy
 "library_refresh_error.retrieve.description" = "ライブラリデータの取得エラー";
+// Fuzzy
 "library_refresh_error.parse.description" = "ライブラリデータの解析エラー";
+// Fuzzy
 "library_refresh_error.process.description" = "ライブラリデータの処理エラー";
 "download_service.complete.title" = "ダウンロード完了";
 "download_service.complete.description" = "%@のダウンロードに成功しました";

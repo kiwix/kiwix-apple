@@ -2,9 +2,9 @@
 // Exported from translatewiki.net
 // Author: McDutchie
 
-"library_refresh_error.retrieve.description" = "Error durante le recuperation del datos del bibliotheca.";
-"library_refresh_error.parse.description" = "Error durante le analyse del datos del bibliotheca.";
-"library_refresh_error.process.description" = "Error durante le processamento del datos del bibliotheca.";
+"library_refresh_error.retrieve.description" = "Error durante le recuperation del datos del catalogo.";
+"library_refresh_error.parse.description" = "Error durante le interpretation del datos del catalogo.";
+"library_refresh_error.process.description" = "Error durante le processamento del datos del catalogo.";
 "download_service.complete.title" = "Discargamento complete";
 "download_service.complete.description" = "%@ ha essite discargate con successo.";
 "download_service.failed.description" = "Non pote discargar iste file.";
