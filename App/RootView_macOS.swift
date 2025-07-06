@@ -31,7 +31,7 @@ struct RootView: View {
     @State private var openFileAlert: OpenFileAlert?
     
     private let primaryItems: [MenuItem] = [.bookmarks]
-    private let libraryItems: [MenuItem] = [.opened, .categories, .downloads, .new]
+    private let libraryItems: [MenuItem] = [.opened, .categories, .downloads, .new, .hotspot]
     private let openURL = NotificationCenter.default.publisher(for: .openURL)
     private let appTerminates = NotificationCenter.default.publisher(for: NSApplication.willTerminateNotification)
     private let tabCloses = NotificationCenter.default.publisher(for: NSWindow.willCloseNotification)
@@ -87,6 +87,8 @@ struct RootView: View {
             case .new:
                 DetailSidePanel(content: { ZimFilesNew(dismiss: nil) })
                     .modifier(SearchFocused(isSearchFocused: isSearchFocused))
+            case .hotspot:
+                HotspotZimFilesSelection()
             default:
                 EmptyView()
             }

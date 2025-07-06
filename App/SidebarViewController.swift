@@ -138,7 +138,7 @@ final class SidebarViewController: UICollectionViewController, NSFetchedResultsC
             snapshot.appendItems([.bookmarks], toSection: .primary)
         }
         if snapshot.sectionIdentifiers.contains(.library) {
-            snapshot.appendItems([.opened, .categories, .downloads, .new], toSection: .library)
+            snapshot.appendItems([.opened, .categories, .downloads, .new, .hotspot], toSection: .library)
         }
         if snapshot.sectionIdentifiers.contains(.settings) {
             snapshot.appendItems([.settings], toSection: .settings)

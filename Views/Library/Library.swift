@@ -64,6 +64,8 @@ struct Library: View {
                             .environment(\.managedObjectContext, Database.shared.viewContext)
                     case .new:
                         ZimFilesNew(dismiss: dismiss)
+                    case .hotspot:
+                        HotspotZimFilesSelection()
                     }
                 }
                 .tag(tabItem)
@@ -163,7 +165,8 @@ struct DetailSidePanel<Content: View>: View {
 }
 
 /// A macOS only variant of LibraryZimFileContext
-/// supporting multiple selection
+/// supporting multiple selection with command click
+/// and single selection with pure click
 struct MultiZimFilesContext<Content: View>: View {
     @ObservedObject var selection: MultiSelectedZimFilesViewModel
     
@@ -195,6 +198,35 @@ struct MultiZimFilesContext<Content: View>: View {
     }
 }
 #endif
+
+/// Cross platform, only multi-selection is supported
+struct MultiZimFilesSelectionContext<Content: View>: View {
+    @ObservedObject var selection: MultiSelectedZimFilesViewModel
+    
+    private let content: Content
+    private let zimFile: ZimFile
+    
+    init(
+        @ViewBuilder content: () -> Content,
+        zimFile: ZimFile,
+        selection: MultiSelectedZimFilesViewModel
+    ) {
+        self.content = content()
+        self.zimFile = zimFile
+        self.selection = selection
+    }
+    
+    var body: some View {
+        Group {
+            content
+                .onTapGesture(perform: {
+                    selection.toggleMultiSelect(of: zimFile)
+                })
+        }.contextMenu {
+            ZimFileContextMenu(zimFile: zimFile)
+        }
+    }
+}
 
 /// On macOS, makes the content view clickable, to select a single ZIM file
 /// On iOS, converts the modified view to a NavigationLink that goes to the zim file detail.

@@ -198,6 +198,9 @@ final class SplitViewController: UISplitViewController {
         case .loading:
             let controller = UIHostingController(rootView: LoadingDataView())
             setViewController(UINavigationController(rootViewController: controller), for: .secondary)
+        case .hotspot:
+            let controller = UIHostingController(rootView: HotspotZimFilesSelection())
+            setViewController(UINavigationController(rootViewController: controller), for: .secondary)
         default:
             let controller = UIHostingController(rootView: Text("vc-not-implemented"))
             setViewController(UINavigationController(rootViewController: controller), for: .secondary)

@@ -65,6 +65,14 @@
 "library_refresh_time.never" = "Never";
 "zim_file_cell.article_count.suffix" = "Part of the ZIM file description, when we list ZIM files (as card results), eg: '246K articles', the word articles is added after the number";
 "zim_file_missing_indicator.help" = "Accessibility label for a warning (!) icon";
+"hotspot.zim_file_selection.message" = "Default placeholder text for side panel, when no file is yet selected to be served on Kiwix Hotspot.";
+"hotspot.action.start_server.title" = "A button title to start the Kiwix Hotspot with the selected files";
+"hotspot.action.stop_server.title" = "A button title to stop the Kiwix Hotspot";
+"hotspot.settings.port_number" = "Label for setting the default port number for Kiwix Hotspot in settings. Eg: Port number: 4567";
+"hotspot.settings.invalid_port_message" = "A warning message that an invalid port number was set. It uses two number arguments a minimum and a maximum. Eg ... a value between 1024 and 9999";
+"hotspot.server_running.title" = "A title informing that the server is running, we show the address details of the server below";
+"hotspot.server_running.address" = "Description prefix for the Kiwix Hotspot address details. Eg: Address http://192.168.100.10:8080";
+"hotspot.server_explanation" = "A desription text explaining the network setup of devices for the Kiwix Hotspot.";
 "library.zim_file_details.side_panel.message" = "Default placeholder text for side panel on macOS, when no file is selected.";
 "library.zim_file_context.main_page.label" = "Supplementary action title, when long pressing on a ZIM file";
 "library.zim_file_context.random.label" = "Supplementary action title, when long pressing on a ZIM file";
@@ -232,6 +240,7 @@
 "enum.navigation_item.categories" = "Side navigation menu item title";
 "enum.navigation_item.new" = "Side navigation menu item title";
 "enum.navigation_item.downloads" = "Side navigation menu item title";
+"enum.navigation_item.hotspot" = "Side navigation menu item title";
 "enum.navigation_item.settings" = "Side navigation menu item title";
 "enum.search_result_snippet_mode.disabled" = "Picker option title in settings. Search snippet: Disabled | Matches";
 "enum.search_result_snippet_mode.matches" = "Picker option title in settings. Search snippet: Disabled | Matches";

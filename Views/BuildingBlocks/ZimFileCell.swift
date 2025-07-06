@@ -23,17 +23,20 @@ struct ZimFileCell: View {
     let isSelected: Bool
 
     let prominent: Prominent
+    private let backgroundColoring: (_ isHovering: Bool, _ isSelected: Bool) -> Color
 
     init(
         _ zimFile: ZimFile,
         prominent: Prominent,
         isSelected: Bool,
-        isLoading: Bool = false
+        isLoading: Bool = false,
+        backgroundColoring: @escaping (_ isHovering: Bool, _ isSelected: Bool) -> Color = CellBackground.colorFor
     ) {
         self.zimFile = zimFile
         self.prominent = prominent
         self.isSelected = isSelected
         self.isLoading = isLoading
+        self.backgroundColoring = backgroundColoring
     }
 
     var body: some View {
@@ -88,7 +91,7 @@ struct ZimFileCell: View {
             }
         }
         .padding()
-        .background(CellBackground.colorFor(isHovering: isHovering, isSelected: isSelected))
+        .background(backgroundColoring(isHovering, isSelected))
         .clipShape(CellBackground.clipShapeRectangle)
         .modifier(LoadingOverlay(isLoading: isLoading))
         .onHover { self.isHovering = $0 }
