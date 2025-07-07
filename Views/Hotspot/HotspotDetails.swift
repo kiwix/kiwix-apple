@@ -21,6 +21,7 @@ struct HotspotDetails: View {
     let zimFiles: Set<ZimFile>
     @State private var isPresentingUnlinkAlert: Bool = false
     @State private var serverAddress: URL?
+    @State private var qrCodeImage: Image?
     @ObservedObject private var hotspot = Hotspot.shared
     
     private var buttonTitle: String {
@@ -52,10 +53,14 @@ struct HotspotDetails: View {
                 Section(LocalString.hotspot_server_running_title) {
                     AttributeLink(title: LocalString.hotspot_server_running_address,
                                   destination: serverAddress)
-                    if let qrCode = QRCode.image(from: serverAddress.absoluteString) {
-                        qrCode
+                    if let qrCodeImage {
+                        qrCodeImage
                             .resizable()
-                            .frame(width: 250, height: 250, alignment: .trailing)
+                            .frame(width: 250, height: 250)
+                    } else {
+                        ProgressView()
+                            .progressViewStyle(.circular)
+                            .frame(width: 250, height: 250)
                     }
                 }
                 .collapsible(false)
@@ -72,9 +77,15 @@ struct HotspotDetails: View {
             if isStarted {
                 Task {
                     serverAddress = await hotspot.serverAddress()
+                    if let serverAddress {
+                        qrCodeImage = await QRCode.image(from: serverAddress.absoluteString)
+                    } else {
+                        qrCodeImage = nil
+                    }
                 }
             } else {
                 serverAddress = nil
+                qrCodeImage = nil
             }
         }
     }    

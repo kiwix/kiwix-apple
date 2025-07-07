@@ -29,6 +29,7 @@ struct HotspotZimFilesSelection: View {
     @StateObject private var selection: MultiSelectedZimFilesViewModel
 #if os(iOS)
     @State private var serverAddress: URL?
+    @State private var qrCodeImage: Image?
 #endif
     
     init(hotspotProvider: @MainActor () -> Hotspot = { @MainActor in Hotspot.shared }) {
@@ -78,13 +79,17 @@ struct HotspotZimFilesSelection: View {
                         Section(LocalString.hotspot_server_running_title) {
                             AttributeLink(title: LocalString.hotspot_server_running_address,
                                           destination: serverAddress)
-                            if let qrCode = QRCode.image(from: serverAddress.absoluteString) {
                                 Section {
-                                    qrCode
-                                        .resizable()
-                                        .frame(width: 250, height: 250)
+                                    if let qrCodeImage {
+                                        qrCodeImage
+                                            .resizable()
+                                            .frame(width: 250, height: 250)
+                                    } else {
+                                        ProgressView()
+                                            .progressViewStyle(.circular)
+                                            .frame(width: 250, height: 250)
+                                    }
                                 }
-                            }
                         }
                         Section {
                             Text(LocalString.hotspot_server_explanation)
@@ -99,9 +104,15 @@ struct HotspotZimFilesSelection: View {
                 if isStarted {
                     Task {
                         serverAddress = await hotspot.serverAddress()
+                        if let serverAddress {
+                            qrCodeImage = await QRCode.image(from: serverAddress.absoluteString)
+                        } else {
+                            qrCodeImage = nil
+                        }
                     }
                 } else {
                     serverAddress = nil
+                    qrCodeImage = nil
                 }
             }
             .toolbar {

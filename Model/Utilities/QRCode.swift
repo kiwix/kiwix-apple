@@ -15,13 +15,14 @@
 
 import SwiftUI
 import CoreImage
+import os
 
 struct QRCode {
 
-    static func image(from text: String) -> Image? {
+    static func image(from text: String) async -> Image? {
         let data = Data(text.utf8)
         guard let filter = CIFilter(name: "CIQRCodeGenerator") else {
-            debugPrint("cannot create CIFilter")
+            os_log("QRCode cannot create CIFilter", log: Log.LibraryService, type: .error)
             return nil
         }
         filter.setValue(data, forKey: "inputMessage")
@@ -30,7 +31,7 @@ struct QRCode {
         let transform = CGAffineTransform(scaleX: 20, y: 20)
         guard let outputImage = filter.outputImage?.transformed(by: transform),
               let image = context.createCGImage(outputImage, from: outputImage.extent) else {
-            debugPrint("cannot create qr code image")
+            os_log("QRCode cannot create image", log: Log.LibraryService, type: .error)
             return nil
         }
         return Image(image, scale: 1, label: Text(text))
