@@ -3,12 +3,9 @@
 // Author: Kly
 // Author: 列维劳德
 
-// Fuzzy
-"library_refresh_error.retrieve.description" = "檢索圖書館資料時發生錯誤。";
-// Fuzzy
-"library_refresh_error.parse.description" = "解析圖書館資料時發生錯誤。";
-// Fuzzy
-"library_refresh_error.process.description" = "處理圖書館資料時發生錯誤。";
+"library_refresh_error.retrieve.description" = "檢索目錄資料時發生錯誤。";
+"library_refresh_error.parse.description" = "解析目錄資料時發生錯誤。";
+"library_refresh_error.process.description" = "處理目錄資料時發生錯誤。";
 "download_service.complete.title" = "下載完成";
 "download_service.complete.description" = "已成功下載%@。";
 "download_service.failed.description" = "無法下載此檔案。";
@@ -26,6 +23,7 @@
 "common.button.no" = "否";
 "common.button.print" = "列印";
 "common.button.share" = "分享";
+"common.button.share_as_pdf" = "以 PDF 格式分享";
 "common.search" = "搜尋";
 "common.tab.manager.title" = "分頁管理器";
 "common.tab.navigation.title" = "分頁";
@@ -33,7 +31,7 @@
 "common.tab.menu.close_this" = "關閉此分頁";
 "common.tab.menu.close_all" = "關閉全部分頁";
 "common.tab.list.close" = "關閉分頁";
-"common.tab.menu.library" = "圖書館";
+"common.tab.menu.library" = "文庫";
 "common.tab.menu.settings" = "設定";
 "common.export_file.alert.title" = "匯出檔案";
 "common.export_file.alert.description" = "您要匯出檔案「%@」嗎？";
@@ -67,6 +65,14 @@
 "library_refresh_time.never" = "永不";
 "zim_file_cell.article_count.suffix" = "條目";
 "zim_file_missing_indicator.help" = "遺失 Zim 檔案。";
+"hotspot.zim_file_selection.message" = "選擇您想要在伺服器上託管的 ZIM 檔案";
+"hotspot.action.start_server.title" = "啟動伺服器";
+"hotspot.action.stop_server.title" = "停止伺服器";
+"hotspot.server_running.title" = "伺服器運行中";
+"hotspot.server_running.address" = "位址";
+"hotspot.settings.port_number" = "埠號";
+"hotspot.settings.invalid_port_message" = "埠號無效，請改用介於 %@ 和 %@ 之間的值";
+"hotspot.server_explanation" = "為了在其他設備上瀏覽 ZIM 檔案，請確認所有設備皆連線到同一個 WiFi 網路。";
 "library.zim_file_details.side_panel.message" = "選擇一個 ZIM 檔案以查看詳細資訊";
 "library.zim_file_context.main_page.label" = "主頁";
 "library.zim_file_context.random.label" = "隨機頁面";
@@ -124,16 +130,21 @@
 "service_worker_warning.label.description" = "不支援需要 service worker 的 Zim 檔案。";
 "multi.zim_files_selected.sidebar_title" = "已選擇";
 "multi.zim_files_selected.description_count" = "ZIM 檔案";
+"theme_settings.title" = "主題";
+"theme_settings.option.dark" = "暗黑";
+"theme_settings.option.light" = "明亮";
+"theme_settings.option.system" = "系統";
 "reading_settings.zoom.title" = "頁面縮放";
 "reading_settings.zoom.reset.button" = "重設";
 "reading_settings.external_link.title" = "外部連結";
 "reading_settings.search_snippet.title" = "搜尋片段";
 "reading_settings.tab.reading" = "閱讀";
 "library_settings.catalog.title" = "目錄";
+"library_settings.downloads.title" = "下載";
 "library_settings.button.refresh_now" = "現在重整";
 "library_settings.last_refresh.text" = "上一次重整";
 "library_settings.auto_refresh.toggle" = "自動重整";
-"library_settings.catalog_warning.text" = "啟用後，在圖書館目錄過期時會自動重整。";
+"library_settings.catalog_warning.text" = "啟用後，在文庫目錄過期時會自動重整。";
 "library_settings.languages.title" = "語言";
 "settings.navigation.title" = "設定";
 "library_settings.toggle.cellular" = "使用蜂巢式網路下載";
@@ -143,7 +154,7 @@
 "catalog_settings.refresh_now.button" = "現在重整";
 "catalog_settings.auto_refresh.toggle" = "自動重整";
 "catalog_settings.header.text" = "目錄";
-"catalog_settings.footer.text" = "啟用後，在圖書館目錄過期時會自動重整。";
+"catalog_settings.footer.text" = "啟用後，在文庫目錄過期時會自動重整。";
 "backup_settings.toggle.title" = "在備份中包含 ZIM 檔案";
 "backup_settings.header.text" = "備份";
 "backup_settings.footer.text" = "不適用於在此開啟的檔案。";
@@ -195,7 +206,7 @@
 "comments.button.zoom_out" = "縮小";
 "app_macos_commands.open_file" = "開啟…";
 "app_macos_commands.new" = "新分頁";
-"app_macos_navigation.button.library" = "圖書館";
+"app_macos_navigation.button.library" = "文庫";
 "sidebar_view.navigation.button.close_all" = "關閉所有分頁";
 "sidebar_view.navigation.button.close" = "關閉";
 "enum.category.wikipedia" = "維基百科";
@@ -228,6 +239,7 @@
 "enum.navigation_item.new" = "新";
 "enum.navigation_item.downloads" = "下載";
 "enum.navigation_item.settings" = "設定";
+"enum.navigation_item.hotspot" = "熱點";
 "enum.search_result_snippet_mode.disabled" = "已停用";
 "enum.search_result_snippet_mode.matches" = "相符";
 "payment.donate.title" = "捐款";
