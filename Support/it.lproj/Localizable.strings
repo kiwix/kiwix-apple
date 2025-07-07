@@ -48,6 +48,12 @@
 "library_refresh_time.never" = "Mai";
 "zim_file_cell.article_count.suffix" = "voci";
 "zim_file_missing_indicator.help" = "Manca il file Zim.";
+"hotspot.zim_file_selection.message" = "Seleziona i file ZIM che vuoi ospitare sul server";
+"hotspot.action.start_server.title" = "Avvia server";
+"hotspot.action.stop_server.title" = "Arresta server";
+"hotspot.server_running.address" = "Indirizzo";
+"hotspot.settings.port_number" = "Numero di porta";
+"hotspot.settings.invalid_port_message" = "Numero di porta non valido, provare un valore compreso tra %@ e %@";
 "library.zim_file_details.side_panel.message" = "Seleziona un file ZIM per vedere i dettagli";
 "library.zim_file_context.main_page.label" = "Pagina principale";
 "library.zim_file_context.random.label" = "Pagina a caso";
