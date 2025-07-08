@@ -68,7 +68,7 @@ jobs:
 
       - name: Run Unit Tests on macOS
         if: matrix.platform == 'macOS'
-        run: xcodebuild clean test -scheme Kiwix -configuration Debug -destination 'platform=macOS'
+        run: xcodebuild clean test -scheme Kiwix -configuration Debug -destination 'platform=macOS' CODE_SIGNING_ALLOWED=NO
 
       - name: Upload code coverage
         uses: codecov/codecov-action@v4.2.0
