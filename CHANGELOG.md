@@ -1,4 +1,21 @@
-# 3.9.1
+# 3.11.0
+
+# 3.10.0
+  - NEW
+    - Custom Light/Dark theme settings (@BPerlakiH #1226, #1230, #1232)
+    - Kiwix Hotspot (@BPerlakiH #1231, #1234)
+
+  - UPDATE
+    - iPhone, iPad UI tests (@BPerlakiH #1218)
+    - Localisation updates (@translatewiki #1206, #1223, #1233)
+    - Unified naming for catalog / library (@BPerlakiH #1224)
+    - Support button in iOS settings moved above the fold (@BPerlakiH #1227)
+
+  - FIX
+    - sidebar item selection on app restart (@BPerlakiH #1211)
+    - PhET initial webpage to be on screen for html canvas calculations (@BPerlakiH #1210)
+    - CI tests (@BPerlakiH #1217, #1220)
+    - PhET initial webView sizing (@BPerlakiH #1221)
 
 # 3.9.0
   - NEW
