@@ -19,7 +19,6 @@ import SwiftUI
 /// Hotspot multi ZIM files side panel
 struct HotspotDetails: View {
     let zimFiles: Set<ZimFile>
-    @State private var isPresentingUnlinkAlert: Bool = false
     @State private var serverAddress: URL?
     @State private var qrCodeImage: Image?
     @ObservedObject private var hotspot = Hotspot.shared
