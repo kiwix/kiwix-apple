@@ -16,8 +16,7 @@
 import Foundation
 import Defaults
 
-@MainActor
-final class Hotspot: ObservableObject {
+final class Hotspot {
     
     @MainActor
     static let shared = Hotspot()
@@ -26,35 +25,35 @@ final class Hotspot: ObservableObject {
     nonisolated static let defaultPort = 8080
     private static let maxPort = 9999
     
-    @ZimActor
-    private var hotspot: KiwixHotspot?
-    
-    @Published private(set) var isStarted: Bool = false
-    @Published var selection = MultiSelectedZimFilesViewModel()
+    @MainActor
+    @Published var isStarted: Bool = false
     
     @ZimActor
-    func toggle() async {
-        if let hotspot {
-            hotspot.__stop()
-            self.hotspot = nil
-            await MainActor.run { self.isStarted = false }
-            return
-        } else {
-            let zimFileIds: Set<UUID> = await MainActor.run(
-                resultType: Set<UUID>.self,
-                body: {
-                    Set(selection.selectedZimFiles.map { $0.fileID })
-                })
-            guard !zimFileIds.isEmpty else {
-                debugPrint("no zim files were set for Hotspot to start")
-                return
-            }
-            let portNumber = Int32(Defaults[.hotspotPortNumber])
-            self.hotspot = KiwixHotspot(__zimFileIds: zimFileIds, onPort: portNumber)
-            await MainActor.run {
-                isStarted = true
+    private var hotspot: KiwixHotspot? {
+        didSet {
+            let started = hotspot != nil
+            Task { @MainActor [weak self] in
+                self?.isStarted = started
             }
         }
+    }
+
+    @ZimActor
+    func startWith(zimFileIds: Set<UUID>) async {
+        guard hotspot == nil else { return }
+        guard !zimFileIds.isEmpty else {
+            debugPrint("no zim files were set for Hotspot to start")
+            return
+        }
+        let portNumber = Int32(Defaults[.hotspotPortNumber])
+        hotspot = KiwixHotspot(__zimFileIds: zimFileIds, onPort: portNumber)
+    }
+    
+    @ZimActor
+    func stop() async {
+        guard let hotspot else { return }
+        hotspot.__stop()
+        self.hotspot = nil
     }
     
     @MainActor
@@ -65,14 +64,14 @@ final class Hotspot: ObservableObject {
         return URL(string: address)
     }
     
-    static func isValid(port: Int) -> Bool {
+    nonisolated static func isValid(port: Int) -> Bool {
         switch port {
         case minPort...maxPort: return true
         default: return false
         }
     }
     
-    static var invalidPortMessage: String {
+    nonisolated static var invalidPortMessage: String {
         LocalString.hotspot_settings_invalid_port_message(withArgs: "\(minPort)", "\(maxPort)")
     }
 }

@@ -24,18 +24,14 @@ struct HotspotZimFilesSelection: View {
         predicate: ZimFile.openedPredicate,
         animation: .easeInOut
     ) private var zimFiles: FetchedResults<ZimFile>
-    @State private var isFileImporterPresented = false
-    @ObservedObject private var hotspot: Hotspot
     @StateObject private var selection: MultiSelectedZimFilesViewModel
-#if os(iOS)
-    @State private var serverAddress: URL?
-    @State private var qrCodeImage: Image?
-#endif
+    @ObservedObject private var hotspot = HotspotObservable()
     
-    init(hotspotProvider: @MainActor () -> Hotspot = { @MainActor in Hotspot.shared }) {
-        let hotspotInstance = hotspotProvider()
-        self.hotspot = hotspotInstance
-        _selection = StateObject(wrappedValue: hotspotInstance.selection)
+    init(
+        selectionProvider: @MainActor () -> MultiSelectedZimFilesViewModel = { @MainActor in HotspotState.selection }
+    ) {
+        let selectionInstance = selectionProvider()
+        _selection = StateObject(wrappedValue: selectionInstance)
     }
     
     var body: some View {
@@ -61,7 +57,7 @@ struct HotspotZimFilesSelection: View {
                     )
                 }
             }
-            .disabled(hotspot.isStarted)
+            .disabled(hotspot.state.isStarted)
             .modifier(GridCommon(edges: .all))
             .modifier(ToolbarRoleBrowser())
             .navigationTitle(MenuItem.hotspot.name)
@@ -74,61 +70,24 @@ struct HotspotZimFilesSelection: View {
                 if zimFiles.isEmpty {
                     Message(text: LocalString.zim_file_opened_overlay_no_opened_message)
                 }
-                if let serverAddress {
+                if case .started(let address, let qrCodeImage) = hotspot.state {
                     List {
-                        Section(LocalString.hotspot_server_running_title) {
-                            AttributeLink(title: LocalString.hotspot_server_running_address,
-                                          destination: serverAddress)
-                                Section {
-                                    if let qrCodeImage {
-                                        qrCodeImage
-                                            .resizable()
-                                            .frame(width: 250, height: 250)
-                                    } else {
-                                        ProgressView()
-                                            .progressViewStyle(.circular)
-                                            .frame(width: 250, height: 250)
-                                    }
-                                }
-                        }
-                        Section {
-                            Text(LocalString.hotspot_server_explanation)
-                                .font(.subheadline)
-                                .multilineTextAlignment(.leading)
-                                .lineLimit(nil)
-                        }
+                        HotspotAddress(serverAddress: address, qrCodeImage: qrCodeImage)
+                        HotspotExplanation()
                     }
-                }
-            }
-            .onReceive(hotspot.$isStarted) { isStarted in
-                if isStarted {
-                    Task {
-                        serverAddress = await hotspot.serverAddress()
-                        if let serverAddress {
-                            qrCodeImage = await QRCode.image(from: serverAddress.absoluteString)
-                        } else {
-                            qrCodeImage = nil
-                        }
-                    }
-                } else {
-                    serverAddress = nil
-                    qrCodeImage = nil
                 }
             }
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
                     AsyncButton {
-                        await hotspot.toggle()
+                        await hotspot.toggleWith(
+                            zimFileIds: Set(selection.selectedZimFiles.map { $0.fileID })
+                        )
                     } label: {
-                        let text = if hotspot.isStarted {
-                            LocalString.hotspot_action_stop_server_title
-                        } else {
-                            LocalString.hotspot_action_start_server_title
-                        }
-                        Text(text)
+                        Text(hotspot.buttonTitle)
                             .bold()
                     }
-                    .disabled(selection.selectedZimFiles.isEmpty && !hotspot.isStarted)
+                    .disabled(selection.selectedZimFiles.isEmpty && !hotspot.state.isStarted)
                     .padding(.leading, 32)
                     .modifier(BadgeModifier(count: selection.selectedZimFiles.count))
                 }
@@ -148,7 +107,8 @@ struct HotspotZimFilesSelection: View {
                         Message(text: LocalString.hotspot_zim_file_selection_message)
                             .background(.thickMaterial)
                     default:
-                        HotspotDetails(zimFiles: selection.selectedZimFiles)
+                        HotspotDetails(zimFileIds: Set(selection.selectedZimFiles.map { $0.fileID }),
+                                       hotspot: hotspot)
                     }
                 }
                 .frame(width: 275)
