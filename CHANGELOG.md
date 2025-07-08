@@ -14,7 +14,7 @@
   - FIX
     - sidebar item selection on app restart (@BPerlakiH #1211)
     - PhET initial webpage to be on screen for html canvas calculations (@BPerlakiH #1210)
-    - CI tests (@BPerlakiH #1217, #1220)
+    - CI tests (@BPerlakiH #1217, #1220, #1236)
     - PhET initial webView sizing (@BPerlakiH #1221)
 
 # 3.9.0
