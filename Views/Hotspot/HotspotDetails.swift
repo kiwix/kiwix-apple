@@ -18,18 +18,11 @@ import SwiftUI
 #if os(macOS)
 /// Hotspot multi ZIM files side panel
 struct HotspotDetails: View {
-    let zimFiles: Set<ZimFile>
-    @State private var isPresentingUnlinkAlert: Bool = false
-    @State private var serverAddress: URL?
-    @State private var qrCodeImage: Image?
-    @ObservedObject private var hotspot = Hotspot.shared
-    
-    private var buttonTitle: String {
-        hotspot.isStarted ? LocalString.hotspot_action_stop_server_title : LocalString.hotspot_action_start_server_title
-    }
+    let zimFileIds: Set<UUID>
+    @ObservedObject var hotspot: HotspotObservable
     
     private func zimFilesCount() -> String {
-        Formatter.number.string(from: NSNumber(value: zimFiles.count)) ?? ""
+        Formatter.number.string(from: NSNumber(value: zimFileIds.count)) ?? ""
     }
     
     var body: some View {
@@ -42,52 +35,19 @@ struct HotspotDetails: View {
             }
             .collapsible(false)
             Section(LocalString.zim_file_list_actions_text) {
-                Action(title: buttonTitle) {
-                    await hotspot.toggle()
+                Action(title: hotspot.buttonTitle) {
+                    await hotspot.toggleWith(zimFileIds: zimFileIds)
                 }
                 .buttonStyle(.borderedProminent)
             }
             .collapsible(false)
             
-            if let serverAddress {
-                Section(LocalString.hotspot_server_running_title) {
-                    AttributeLink(title: LocalString.hotspot_server_running_address,
-                                  destination: serverAddress)
-                    if let qrCodeImage {
-                        qrCodeImage
-                            .resizable()
-                            .frame(width: 250, height: 250)
-                    } else {
-                        ProgressView()
-                            .progressViewStyle(.circular)
-                            .frame(width: 250, height: 250)
-                    }
-                }
-                .collapsible(false)
+            if case .started(let address, let qrCodeImage) = hotspot.state {
+                HotspotAddress(serverAddress: address, qrCodeImage: qrCodeImage)
             }
-            Section {
-                Text(LocalString.hotspot_server_explanation)
-                    .font(.subheadline)
-                    .multilineTextAlignment(.leading)
-                    .lineLimit(nil)
-            }.collapsible(false)
+            HotspotExplanation()
         }
         .listStyle(.sidebar)
-        .onReceive(hotspot.$isStarted) { isStarted in
-            if isStarted {
-                Task {
-                    serverAddress = await hotspot.serverAddress()
-                    if let serverAddress {
-                        qrCodeImage = await QRCode.image(from: serverAddress.absoluteString)
-                    } else {
-                        qrCodeImage = nil
-                    }
-                }
-            } else {
-                serverAddress = nil
-                qrCodeImage = nil
-            }
-        }
     }    
 }
 #endif
