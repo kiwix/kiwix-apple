@@ -1,6 +1,7 @@
 // Messages for Traditional Chinese (中文（繁體）)
 // Exported from translatewiki.net
 // Author: Kly
+// Author: Winston Sung
 // Author: 列维劳德
 
 "library_refresh_error.retrieve.description" = "檢索目錄資料時發生錯誤。";
@@ -115,7 +116,7 @@
 "zim_file.base_info.attribute.created" = "已建立";
 "zim_file.bool_info.pictures" = "圖片";
 "zim_file.bool_info.videos" = "影片";
-"zim_file.bool_info.details" = "詳細資料";
+"zim_file.bool_info.details" = "詳細資訊";
 "zim_file.bool_info.require_service_workers" = "需要 service worker";
 "zim_file.counts.article_count" = "條目總計";
 "zim_file.counts.article.media_count" = "多媒體總計";

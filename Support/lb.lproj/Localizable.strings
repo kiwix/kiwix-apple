@@ -56,6 +56,10 @@
 "library_refresh_time.last" = "Elo just";
 "library_refresh_time.never" = "Ni";
 "zim_file_cell.article_count.suffix" = "Artikelen";
+"hotspot.action.start_server.title" = "Server starten";
+"hotspot.action.stop_server.title" = "Server stoppen";
+"hotspot.server_running.title" = "De Server leeft";
+"hotspot.server_running.address" = "Adress";
 "library.zim_file_context.main_page.label" = "Haaptsäit";
 "library.zim_file_context.random.label" = "Zoufälleg Säit";
 "library.zim_file_context.copy_url" = "URL kopéieren";
@@ -172,6 +176,7 @@
 "enum.navigation_item.categories" = "Kategorien";
 "enum.navigation_item.new" = "Nei";
 "enum.navigation_item.settings" = "Astellungen";
+"enum.navigation_item.hotspot" = "Hotspot";
 "enum.search_result_snippet_mode.disabled" = "Desaktivéiert";
 "enum.search_result_snippet_mode.matches" = "Treffer";
 "payment.description.label" = "Kiwix ënnerstëtzen";
