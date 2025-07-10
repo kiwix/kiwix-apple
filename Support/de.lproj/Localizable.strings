@@ -1,16 +1,14 @@
 // Messages for German (Deutsch)
 // Exported from translatewiki.net
+// Author: *surak*
 // Author: Brettchenweber
 // Author: Caro
 // Author: Gremid
 // Author: Justman10000
 
-// Fuzzy
-"library_refresh_error.retrieve.description" = "Fehler beim Abrufen von Bibliotheksdaten.";
-// Fuzzy
-"library_refresh_error.parse.description" = "Fehler beim Lesen von Bibliotheksdaten.";
-// Fuzzy
-"library_refresh_error.process.description" = "Fehler beim Verarbeiten von Bibliotheksdaten.";
+"library_refresh_error.retrieve.description" = "Fehler beim Abrufen der Katalogdaten.";
+"library_refresh_error.parse.description" = "Fehler beim Parsen der Katalogdaten.";
+"library_refresh_error.process.description" = "Fehler beim Verarbeiten der Katalogdaten.";
 "download_service.complete.title" = "Download abgeschlossen";
 "download_service.complete.description" = "%@ wurde erfolgreich heruntergeladen.";
 "download_service.failed.description" = "Diese Datei konnte nicht heruntergeladen werden.";
@@ -69,6 +67,8 @@
 "library_refresh_time.never" = "Niemals";
 "zim_file_cell.article_count.suffix" = "Artikel";
 "zim_file_missing_indicator.help" = "Zim-Datei fehlt.";
+"hotspot.settings.port_number" = "Portnummer";
+"hotspot.settings.invalid_port_message" = "Ungültige Portnummer, versuche einen Wert zwischen %@ und %@";
 "library.zim_file_details.side_panel.message" = "Wähle eine ZIM-Datei aus, um Details zu sehen";
 "library.zim_file_context.main_page.label" = "Hauptseite";
 "library.zim_file_context.random.label" = "Zufällige Seite";
