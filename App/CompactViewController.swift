@@ -150,14 +150,17 @@ private struct CompactView: View {
     @State private var presentedSheet: PresentedSheet?
     @ObservedObject private var browser: BrowserViewModel
     @FocusedValue(\.hasZIMFiles) var hasZimFiles
+    private let hotspotShareURL = NotificationCenter.default.publisher(for: .hotspotShareURL)
     
     private enum PresentedSheet: Identifiable {
         case library(downloads: Bool)
+        case hotspotShare(url: URL)
         case settings
         var id: String {
             switch self {
             case .library(true): return "library-downloads"
             case .library(false): return "library"
+            case .hotspotShare: return "hotspot-share"
             case .settings: return "settings"
             }
         }
@@ -246,6 +249,9 @@ private struct CompactView: View {
                 Library(dismiss: dismiss)
             case .library(downloads: true):
                 Library(dismiss: dismiss, tabItem: .downloads)
+            case .hotspotShare(let url):
+                // comes from HotspotZimFilesSelection
+                ActivityViewController(activityItems: [url].compactMap { $0 })
             case .settings:
                 NavigationStack {
                     Settings().toolbar {
@@ -266,9 +272,18 @@ private struct CompactView: View {
                 // switching to the downloads tab
                 // is done within Library
                 break
+            case .hotspotShare:
+                // doesn't apply
+                break
             case .settings, nil:
                 presentedSheet = .library(downloads: true)
             }
+        }
+        .onReceive(hotspotShareURL) { notification in
+            guard let url = notification.userInfo?["url"] as? URL else {
+                return
+            }
+            presentedSheet = .hotspotShare(url: url)
         }
     }
 }
