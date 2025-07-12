@@ -250,6 +250,7 @@ private struct CompactView: View {
             case .library(downloads: true):
                 Library(dismiss: dismiss, tabItem: .downloads)
             case .hotspotShare(let url):
+                // comes from HotspotZimFilesSelection
                 ActivityViewController(activityItems: [url].compactMap { $0 })
             case .settings:
                 NavigationStack {

@@ -44,7 +44,6 @@ struct HotspotAddress: View {
                 Spacer()
                 ShareButton(action: onShare)
             }
-            
             #endif
             if let qrCodeImage {
                 qrCodeImage
@@ -61,11 +60,6 @@ struct HotspotAddress: View {
         .withHostingWindow { [weak windowTracker] window in
             windowTracker?.current = window
         }
-#else
-//        .sheet(isPresented: Binding(get: { shareSheetURL != nil }, set: { _ in } )) {
-//            Text("share url: \(shareSheetURL?.absoluteString)")
-//            ActivityViewController(activityItems: [shareSheetURL].compactMap { $0 })
-//        }
 #endif
     }
 }
