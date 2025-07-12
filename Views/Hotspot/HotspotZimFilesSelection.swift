@@ -26,6 +26,18 @@ struct HotspotZimFilesSelection: View {
     ) private var zimFiles: FetchedResults<ZimFile>
     @StateObject private var selection: MultiSelectedZimFilesViewModel
     @ObservedObject private var hotspot = HotspotObservable()
+    @State private var presentedSheet: PresentedSheet?
+    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
+    
+    private enum PresentedSheet: Identifiable {
+        case shareHotspot(url: URL)
+        
+        var id: String {
+            switch self {
+            case .shareHotspot: return "shareHotspot"
+            }
+        }
+    }
     
     init(
         selectionProvider: @MainActor () -> MultiSelectedZimFilesViewModel = { @MainActor in HotspotState.selection }
@@ -72,9 +84,25 @@ struct HotspotZimFilesSelection: View {
                 }
                 if case .started(let address, let qrCodeImage) = hotspot.state {
                     List {
-                        HotspotAddress(serverAddress: address, qrCodeImage: qrCodeImage)
+                        HotspotAddress(serverAddress: address, qrCodeImage: qrCodeImage, onShare: {
+                            if horizontalSizeClass == .compact {
+                                // for (compact) iPhone we want to close the whole library popup
+                                // and display the share dialog instead of it
+                                // going all the way back to CompactView(Controller)
+                                NotificationCenter.hotspotShare(url: address)
+                            } else {
+                                // for (regular) iPad we can display the share dialog right here
+                                presentedSheet = .shareHotspot(url: address)
+                            }
+                        })
                         HotspotExplanation()
                     }
+                }
+            }
+            .sheet(item: $presentedSheet) { presentedSheet in
+                switch presentedSheet {
+                case .shareHotspot(let url):
+                    ActivityViewController(activityItems: [url].compactMap { $0 })
                 }
             }
             .toolbar {

@@ -18,11 +18,34 @@ import SwiftUI
 struct HotspotAddress: View {
     let serverAddress: URL
     let qrCodeImage: Image?
-    
+    #if os(macOS)
+    @StateObject private var windowTracker = WindowTracker()
+    #else
+    let onShare: () -> Void
+    #endif
     var body: some View {
         Section(LocalString.hotspot_server_running_title) {
             AttributeLink(title: LocalString.hotspot_server_running_address,
                           destination: serverAddress)
+            #if os(macOS)
+            if let contentView = windowTracker.current?.contentView {
+                HStack {
+                    Spacer()
+                    ShareButton(
+                        url: serverAddress,
+                        relativeToView: contentView,
+                        origin: CGPoint(x: 640, y: 220),
+                        preferredEdge: .maxX
+                    )
+                }
+            }
+            #else
+            HStack {
+                Spacer()
+                ShareButton(action: onShare)
+            }
+            
+            #endif
             if let qrCodeImage {
                 qrCodeImage
                     .resizable()
@@ -35,6 +58,14 @@ struct HotspotAddress: View {
         }
 #if os(macOS)
         .collapsible(false)
+        .withHostingWindow { [weak windowTracker] window in
+            windowTracker?.current = window
+        }
+#else
+//        .sheet(isPresented: Binding(get: { shareSheetURL != nil }, set: { _ in } )) {
+//            Text("share url: \(shareSheetURL?.absoluteString)")
+//            ActivityViewController(activityItems: [shareSheetURL].compactMap { $0 })
+//        }
 #endif
     }
 }
