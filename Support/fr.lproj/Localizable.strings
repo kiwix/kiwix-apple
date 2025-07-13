@@ -78,6 +78,14 @@
 "library_refresh_time.never" = "Jamais";
 "zim_file_cell.article_count.suffix" = "articles";
 "zim_file_missing_indicator.help" = "Le fichier Zim est manquant.";
+"hotspot.zim_file_selection.message" = "Sélectionnez les fichiers ZIM que vous voulez héberger sur le serveur";
+"hotspot.action.start_server.title" = "Démarrer le serveur";
+"hotspot.action.stop_server.title" = "Arrêter le serveur";
+"hotspot.server_running.title" = "Le serveur est en cours d’exécution";
+"hotspot.server_running.address" = "Adresse";
+"hotspot.settings.port_number" = "Numéro de port";
+"hotspot.settings.invalid_port_message" = "Numéro de port invalide, essayez une valeur entre %@ et %@";
+"hotspot.server_explanation" = "Afin de pouvoir parcourir ces fichiers ZIM sur d’autres appareils, veuillez vous assurer que tous les appareils sont connectés au même réseau WiFi.";
 "library.zim_file_details.side_panel.message" = "Sélectionnez un fichier ZIM pour voir les détails";
 "library.zim_file_context.main_page.label" = "Page principale";
 "library.zim_file_context.random.label" = "Page au hasard";
@@ -244,6 +252,7 @@
 "enum.navigation_item.new" = "Nouveau";
 "enum.navigation_item.downloads" = "Téléchargements";
 "enum.navigation_item.settings" = "Paramètres";
+"enum.navigation_item.hotspot" = "Borne WiFi";
 "enum.search_result_snippet_mode.disabled" = "Désactivé";
 "enum.search_result_snippet_mode.matches" = "Correspondances";
 "payment.donate.title" = "Faire un don";

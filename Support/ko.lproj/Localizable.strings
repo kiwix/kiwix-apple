@@ -66,6 +66,11 @@
 "library_refresh_time.last" = "즉시";
 "library_refresh_time.never" = "없음";
 "zim_file_missing_indicator.help" = "Zim 파일이 없습니다.";
+"hotspot.action.start_server.title" = "서버 시작";
+"hotspot.action.stop_server.title" = "서버 정지";
+"hotspot.server_running.title" = "서버가 실행 중입니다";
+"hotspot.server_running.address" = "주소";
+"hotspot.settings.port_number" = "포트 번호";
 "library.zim_file_details.side_panel.message" = "상세 내용을 보려면 ZIM 파일을 선택하십시오";
 "library.zim_file_context.main_page.label" = "대문";
 "library.zim_file_context.random.label" = "임의의 문서";
@@ -128,6 +133,7 @@
 "reading_settings.zoom.reset.button" = "초기화";
 "reading_settings.external_link.title" = "외부 링크";
 "library_settings.catalog.title" = "카탈로그";
+"library_settings.downloads.title" = "다운로드";
 "library_settings.button.refresh_now" = "지금 새로 고침";
 "library_settings.auto_refresh.toggle" = "자동 새로 고침";
 "library_settings.languages.title" = "언어";
@@ -211,6 +217,7 @@
 "enum.navigation_item.categories" = "분류";
 "enum.navigation_item.downloads" = "다운로드";
 "enum.navigation_item.settings" = "설정";
+"enum.navigation_item.hotspot" = "핫스팟";
 "enum.search_result_snippet_mode.disabled" = "비활성화됨";
 "payment.donate.title" = "기부";
 "payment.description.label" = "Kiwix 지원하기";
