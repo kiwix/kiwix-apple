@@ -3,11 +3,11 @@
 # 3.10.0
   - NEW
     - Custom Light/Dark theme settings (@BPerlakiH #1226, #1230, #1232)
-    - Kiwix Hotspot (@BPerlakiH #1231, #1234)
+    - Kiwix Hotspot (@BPerlakiH #1231, #1234, #1238, #1240)
 
   - UPDATE
     - iPhone, iPad UI tests (@BPerlakiH #1218)
-    - Localisation updates (@translatewiki #1206, #1223, #1233)
+    - Localisation updates (@translatewiki #1206, #1223, #1233, #1239)
     - Unified naming for catalog / library (@BPerlakiH #1224)
     - Support button in iOS settings moved above the fold (@BPerlakiH #1227)
 
