@@ -82,6 +82,7 @@ extension Notification.Name {
     static let goForward = Notification.Name("goForward")
     #if os(iOS)
     static let openDonations = Notification.Name("openDonations")
+    static let hotspotShareURL = Notification.Name("hotspotShareURL")
     #endif
 }
 
@@ -137,6 +138,10 @@ extension NotificationCenter {
     #if os(iOS)
     @MainActor static func openDonations() {
         NotificationCenter.default.post(name: .openDonations, object: nil, userInfo: nil)
+    }
+    
+    @MainActor static func hotspotShare(url: URL) {
+        NotificationCenter.default.post(name: .hotspotShareURL, object: nil, userInfo: ["url": url])
     }
     #endif
 }
