@@ -21,12 +21,14 @@ import Combine
 @testable import Kiwix
 
 private class HTTPTestingURLProtocol: URLProtocol {
+    @MainActor
     static var handler: ((URLProtocol) -> Void)?
 
     override class func canInit(with request: URLRequest) -> Bool { true }
     override class func canonicalRequest(for request: URLRequest) -> URLRequest { request }
     override func stopLoading() { }
 
+    @MainActor
     override func startLoading() {
         if let handler = HTTPTestingURLProtocol.handler {
             handler(self)
@@ -37,9 +39,10 @@ private class HTTPTestingURLProtocol: URLProtocol {
 }
 
 final class LibraryRefreshViewModelTest: XCTestCase {
-    private var urlSession: URLSession?
+    private var urlSession: URLSession!
     private var cancellables = Set<AnyCancellable>()
 
+    @MainActor
     override func setUpWithError() throws {
         let config = URLSessionConfiguration.ephemeral
         config.protocolClasses = [HTTPTestingURLProtocol.self]
@@ -57,6 +60,7 @@ final class LibraryRefreshViewModelTest: XCTestCase {
         }
     }
 
+    @MainActor
     override func tearDownWithError() throws {
         HTTPTestingURLProtocol.handler = nil
     }

@@ -17,7 +17,7 @@ import CoreData
 import SwiftUI
 
 struct ZimFileCell: View {
-    @ObservedObject var zimFile: ZimFile
+    @MainActor @ObservedObject var zimFile: ZimFile
     @State private var isHovering: Bool = false
     let isLoading: Bool
     let isSelected: Bool

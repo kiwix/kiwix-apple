@@ -103,12 +103,12 @@ final class LibraryViewModel: ObservableObject {
 
     @MainActor
     init(
-        urlSession: URLSession? = nil,
+        urlSession: URLSession = URLSession.shared,
         processFactory: @MainActor () -> LibraryProcess = { .shared },
         defaults: Defaulting = UDefaults(),
         categories: CategoriesProtocol = CategoriesToLanguages(withDefaults: UDefaults())
     ) {
-        self.urlSession = urlSession ?? URLSession.shared
+        self.urlSession = urlSession
         self.process = processFactory()
         self.defaults = defaults
         self.categories = categories
