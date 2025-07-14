@@ -85,6 +85,7 @@
 "hotspot.server_running.address" = "Adresse";
 "hotspot.settings.port_number" = "Numéro de port";
 "hotspot.settings.invalid_port_message" = "Numéro de port invalide, essayez une valeur entre %@ et %@";
+// Fuzzy
 "hotspot.server_explanation" = "Afin de pouvoir parcourir ces fichiers ZIM sur d’autres appareils, veuillez vous assurer que tous les appareils sont connectés au même réseau WiFi.";
 "library.zim_file_details.side_panel.message" = "Sélectionnez un fichier ZIM pour voir les détails";
 "library.zim_file_context.main_page.label" = "Page principale";

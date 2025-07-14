@@ -54,6 +54,7 @@
 "hotspot.server_running.address" = "Indirizzo";
 "hotspot.settings.port_number" = "Numero di porta";
 "hotspot.settings.invalid_port_message" = "Numero di porta non valido, provare un valore compreso tra %@ e %@";
+"hotspot.server_explanation" = "Per esplorare questi file ZIM su altri dispositivi, assicurati che tutti i dispositivi siano sulla stessa rete WiFi o connessi al tuo hotspot personale.";
 "library.zim_file_details.side_panel.message" = "Seleziona un file ZIM per vedere i dettagli";
 "library.zim_file_context.main_page.label" = "Pagina principale";
 "library.zim_file_context.random.label" = "Pagina a caso";

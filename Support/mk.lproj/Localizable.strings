@@ -71,6 +71,7 @@
 "hotspot.server_running.address" = "Адреса";
 "hotspot.settings.port_number" = "Број на порта";
 "hotspot.settings.invalid_port_message" = "Неважечки број на порта. Обидете се со вредност помеѓу %@ и %@";
+// Fuzzy
 "hotspot.server_explanation" = "За да ги прелистувате овие ZIM-податотеки на други уреди, проверете дали сите тие се поврзани на истата безжична мрежа.";
 "library.zim_file_details.side_panel.message" = "Изберете ZIM-податотека за да ги видите поединостите";
 "library.zim_file_context.main_page.label" = "Главна страница";
