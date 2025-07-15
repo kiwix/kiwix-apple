@@ -21,12 +21,14 @@ import Combine
 @testable import Kiwix
 
 private class HTTPTestingURLProtocol: URLProtocol {
+    @MainActor
     static var handler: ((URLProtocol) -> Void)?
 
     override class func canInit(with request: URLRequest) -> Bool { true }
     override class func canonicalRequest(for request: URLRequest) -> URLRequest { request }
     override func stopLoading() { }
 
+    @MainActor
     override func startLoading() {
         if let handler = HTTPTestingURLProtocol.handler {
             handler(self)
@@ -37,9 +39,10 @@ private class HTTPTestingURLProtocol: URLProtocol {
 }
 
 final class LibraryRefreshViewModelTest: XCTestCase {
-    private var urlSession: URLSession?
+    private var urlSession: URLSession!
     private var cancellables = Set<AnyCancellable>()
 
+    @MainActor
     override func setUpWithError() throws {
         let config = URLSessionConfiguration.ephemeral
         config.protocolClasses = [HTTPTestingURLProtocol.self]
@@ -57,6 +60,7 @@ final class LibraryRefreshViewModelTest: XCTestCase {
         }
     }
 
+    @MainActor
     override func tearDownWithError() throws {
         HTTPTestingURLProtocol.handler = nil
     }
@@ -105,7 +109,8 @@ final class LibraryRefreshViewModelTest: XCTestCase {
         let viewModel = LibraryViewModel(urlSession: urlSession,
                                          processFactory: { LibraryProcess(defaultState: .initial) },
                                          defaults: testDefaults,
-                                         categories: CategoriesToLanguages(withDefaults: testDefaults))
+                                         categories: CategoriesToLanguages(withDefaults: testDefaults),
+                                         database: TestDatabase())
         await viewModel.start(isUserInitiated: true)
         XCTAssert(viewModel.error is LibraryRefreshError)
         XCTAssertEqual(
@@ -131,7 +136,8 @@ final class LibraryRefreshViewModelTest: XCTestCase {
         let viewModel = LibraryViewModel(urlSession: urlSession,
                                          processFactory: { LibraryProcess(defaultState: .initial) },
                                          defaults: testDefaults,
-                                         categories: CategoriesToLanguages(withDefaults: testDefaults))
+                                         categories: CategoriesToLanguages(withDefaults: testDefaults),
+                                         database: TestDatabase())
         await viewModel.start(isUserInitiated: true)
         XCTAssert(viewModel.error is LibraryRefreshError)
         XCTAssertEqual(
@@ -158,7 +164,8 @@ final class LibraryRefreshViewModelTest: XCTestCase {
         let viewModel = LibraryViewModel(urlSession: urlSession,
                                          processFactory: { LibraryProcess(defaultState: .initial) },
                                          defaults: testDefaults,
-                                         categories: CategoriesToLanguages(withDefaults: testDefaults))
+                                         categories: CategoriesToLanguages(withDefaults: testDefaults),
+                                         database: TestDatabase())
         await viewModel.start(isUserInitiated: true)
         XCTExpectFailure("Requires work in dependency to resolve the issue.")
         XCTAssertEqual(
@@ -185,23 +192,28 @@ final class LibraryRefreshViewModelTest: XCTestCase {
         }
         let testDefaults = TestDefaults()
         testDefaults.setup()
+        let database = TestDatabase()
+        let context = database.context
+        
         let viewModel = LibraryViewModel(urlSession: urlSession,
                                          processFactory: { LibraryProcess(defaultState: .initial) },
                                          defaults: testDefaults,
-                                         categories: CategoriesToLanguages(withDefaults: testDefaults))
+                                         categories: CategoriesToLanguages(withDefaults: testDefaults),
+                                         database: database)
+        
         await viewModel.start(isUserInitiated: true)
 
         // check no error has happened
         XCTAssertNil(viewModel.error)
 
         // check one zim file is in the database
-        let context = Database.shared.viewContext
-        let zimFiles = try context.fetch(ZimFile.fetchRequest())
+        let zimFiles = try context.fetchZimFiles()
         XCTAssertEqual(zimFiles.count, 1)
         XCTAssertEqual(zimFiles[0].id, zimFileID)
 
         // check zim file can be retrieved by id, and properties are populated
-        let zimFile = try XCTUnwrap(try context.fetch(ZimFile.fetchRequest(fileID: zimFileID)).first)
+        // swiftlint:disable:next force_try
+        let zimFile = try! XCTUnwrap(zimFiles.first { $0.fileID == zimFileID })
         XCTAssertEqual(zimFile.id, zimFileID)
         XCTAssertEqual(zimFile.articleCount, 50001)
         XCTAssertEqual(zimFile.category, Category.wikipedia.rawValue)
@@ -233,8 +245,6 @@ final class LibraryRefreshViewModelTest: XCTestCase {
         XCTAssertEqual(zimFile.requiresServiceWorkers, false)
         XCTAssertEqual(zimFile.size, 6515656704)
         
-        // clean up
-        context.delete(zimFile)
     }
 
     /// Test zim file deprecation
@@ -242,21 +252,43 @@ final class LibraryRefreshViewModelTest: XCTestCase {
     func testZimFileDeprecation() async throws {
         let testDefaults = TestDefaults()
         testDefaults.setup()
-        let context = Database.shared.viewContext
-        let oldZimFiles = try? context.fetch(ZimFile.fetchRequest())
-        oldZimFiles?.forEach { zimFile in
-            context.delete(zimFile)
-        }
-        if context.hasChanges {
-            try? context.save()
-        }
+        
+        let database = TestDatabase()
+        let context = database.context
         
         // refresh library for the first time, which should create one zim file
         let viewModel = LibraryViewModel(urlSession: urlSession,
                                          processFactory: { LibraryProcess(defaultState: .initial) },
                                          defaults: testDefaults,
-                                         categories: CategoriesToLanguages(withDefaults: testDefaults))
+                                         categories: CategoriesToLanguages(withDefaults: testDefaults),
+                                         database: database)
         
+        await forceRefresh(viewModel: viewModel)
+        
+        let zimFile1 = try XCTUnwrap(try context.fetchZimFiles().first)
+
+        // refresh library for the second time, which should replace the old zim file with a new one
+        await forceRefresh(viewModel: viewModel)
+        
+        var zimFiles = try context.fetchZimFiles()
+        XCTAssertEqual(zimFiles.count, 1)
+        let zimFile2 = try XCTUnwrap(zimFiles.first)
+        XCTAssertNotEqual(zimFile1.fileID, zimFile2.fileID)
+
+        // set fileURLBookmark of zim file 2
+        zimFile2.fileURLBookmark = Data("/Users/tester/Downloads/file_url.zim".utf8)
+
+        // refresh library for the third time
+        await forceRefresh(viewModel: viewModel)
+        
+        zimFiles = try context.fetchZimFiles()
+
+        // check there are two zim files in the database, and zim file 2 is not deprecated
+        XCTAssertEqual(zimFiles.count, 2)
+        XCTAssertEqual(zimFiles.filter({ $0.fileID == zimFile2.fileID }).count, 1)
+    }
+    
+    private func forceRefresh(viewModel: LibraryViewModel) async {
         let expectationVMComplete = XCTestExpectation(description: "viewModel completed")
         viewModel.$state.sink { value in
             switch value {
@@ -268,44 +300,6 @@ final class LibraryRefreshViewModelTest: XCTestCase {
         }.store(in: &cancellables)
         await viewModel.start(isUserInitiated: true)
         await fulfillment(of: [expectationVMComplete], timeout: 2)
-        
-        let zimFile1 = try XCTUnwrap(try context.fetch(ZimFile.fetchRequest()).first)
-
-        // refresh library for the second time, which should replace the old zim file with a new one
-        let expectationVMComplete2 = XCTestExpectation(description: "viewModel completed")
-        viewModel.$state.sink { value in
-            switch value {
-            case .complete:
-                expectationVMComplete2.fulfill()
-            default:
-                break
-            }
-        }.store(in: &cancellables)
-        await viewModel.start(isUserInitiated: true)
-        await fulfillment(of: [expectationVMComplete2], timeout: 2)
-        
-        var zimFiles = try context.fetch(ZimFile.fetchRequest())
-        XCTAssertEqual(zimFiles.count, 1)
-        let zimFile2 = try XCTUnwrap(zimFiles.first)
-        XCTAssertNotEqual(zimFile1.fileID, zimFile2.fileID)
-
-        // set fileURLBookmark of zim file 2
-        zimFile2.fileURLBookmark = Data("/Users/tester/Downloads/file_url.zim".utf8)
-        try context.save()
-
-        // refresh library for the third time
-        await viewModel.start(isUserInitiated: true)
-        zimFiles = try context.fetch(ZimFile.fetchRequest())
-
-        // check there are two zim files in the database, and zim file 2 is not deprecated
-        XCTAssertEqual(zimFiles.count, 2)
-        XCTAssertEqual(zimFiles.filter({ $0.fileID == zimFile2.fileID }).count, 1)
-        
-        // clean up
-        context.delete(zimFile1)
-        context.delete(zimFile2)
-        
-        try? context.save()
     }
 }
 
