@@ -2,6 +2,7 @@
 // Exported from translatewiki.net
 // Author: 787IYO
 // Author: EdnaLisa
+// Author: Gwanki
 // Author: Rofiatmustapha12
 // Author: Smshika
 // Author: Ummabruka
@@ -66,6 +67,7 @@
 "library_refresh_time.never" = "Ba a taɓa yin hakan ba";
 "zim_file_cell.article_count.suffix" = "Makalu";
 "zim_file_missing_indicator.help" = "Fayil ɗin Zim ya ɓace.";
+"hotspot.server_explanation" = "Don bincika waɗannan fayilolin ZIM akan wasu na'urori, tabbatar da cewa duk na'urorin suna kan hanyar sadarwar WiFi iri ɗaya ko kuma an haɗa su zuwa Keɓaɓɓen Hotspot.";
 // Fuzzy
 "library.zim_file_details.side_panel.message" = "Zabi fayil din zim dan ganin cikakken bayani";
 "library.zim_file_context.main_page.label" = "Babban Shafi";
