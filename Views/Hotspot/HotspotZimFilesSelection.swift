@@ -116,7 +116,7 @@ struct HotspotZimFilesSelection: View {
                             .bold()
                     }
                     .disabled(selection.selectedZimFiles.isEmpty && !hotspot.state.isStarted)
-                    .padding(.leading, 32)
+                    .padding(.leading, selection.selectedZimFiles.count > 10 ? 48 : 32)
                     .modifier(BadgeModifier(count: selection.selectedZimFiles.count))
                 }
             }
