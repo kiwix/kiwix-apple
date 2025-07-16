@@ -96,8 +96,8 @@
 "zim_file_missing_indicator.help" = "Zim file is missing.";
 
 "hotspot.zim_file_selection.message" = "Select the ZIM files you wish to host on the server";
-"hotspot.action.start_server.title" = "Start Server";
-"hotspot.action.stop_server.title" = "Stop Server";
+"hotspot.action.start_hotspot.title" = "Start Hotspot";
+"hotspot.action.stop_hotspot.title" = "Stop Hotspot";
 "hotspot.server_running.title" = "Server is running";
 "hotspot.server_running.address" = "Address";
 "hotspot.settings.port_number" = "Port number";
