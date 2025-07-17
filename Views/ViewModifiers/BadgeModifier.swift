@@ -18,14 +18,20 @@ import SwiftUI
 struct BadgeModifier: ViewModifier {
     let count: Int
     
+    private static let formatter: NumberFormatter = {
+        let numberFormatter = NumberFormatter()
+        numberFormatter.numberStyle = .none
+        numberFormatter.usesGroupingSeparator = false
+        return numberFormatter
+    }()
+    
     func body(content: Content) -> some View {
         ZStack(alignment: .leading) {
-            content
-            if count > 0 {
-                HStack(spacing: 0) {
-                    Text("\(count)")
-                        .monospacedDigit()
+            HStack {
+                if count > 0 {
+                    Text(Self.formatter.string(for: count) ?? "")
                         .font(.subheadline)
+                        .fontDesign(.monospaced)
                         .frame(minWidth: 18, minHeight: 18)
                         .padding(.horizontal, count > 9 ? 12 : 8)
                         .foregroundColor(.background)
@@ -33,6 +39,7 @@ struct BadgeModifier: ViewModifier {
                         .clipShape(Capsule())
                         .bold()
                 }
+                content
             }
         }
     }
