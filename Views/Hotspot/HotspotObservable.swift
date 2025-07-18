@@ -33,7 +33,7 @@ enum HotspotState {
 @MainActor
 final class HotspotObservable: ObservableObject {
     
-    @Published var buttonTitle: String = LocalString.hotspot_action_start_server_title
+    @Published var buttonTitle: String = LocalString.hotspot_action_start_hotspot_title
     @Published var state: HotspotState = .stopped
     private var hotspot = Hotspot.shared
     private var cancellables = Set<AnyCancellable>()
@@ -56,7 +56,7 @@ final class HotspotObservable: ObservableObject {
     
     private func update(isStarted: Bool) async {
         if isStarted {
-            buttonTitle = LocalString.hotspot_action_stop_server_title
+            buttonTitle = LocalString.hotspot_action_stop_hotspot_title
             let address = await hotspot.serverAddress()
             if let address {
                 state = .started(address, nil)
@@ -66,7 +66,7 @@ final class HotspotObservable: ObservableObject {
                 state = .stopped
             }
         } else {
-            buttonTitle = LocalString.hotspot_action_start_server_title
+            buttonTitle = LocalString.hotspot_action_start_hotspot_title
             state = .stopped
         }
     }
