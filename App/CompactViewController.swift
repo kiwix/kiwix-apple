@@ -358,9 +358,9 @@ private struct Content<LaunchModel>: View where LaunchModel: LaunchProtocol {
                     ContentSearchButton(browser: browser)
                 }
                 TextToSpeechButton(isButtonDisabled: browser.zimFileName.isEmpty) { [weak browser] in
-                    browser?.bodyText { bodyText in
+                    browser?.bodyTextAndLanguage { bodyText, langCode in
                         if let bodyText {
-                            TextToSpeech.shared.start(for: bodyText, languageCode: "en")
+                            TextToSpeech.shared.start(for: bodyText, languageCode: langCode)
                         }
                     }
                 }

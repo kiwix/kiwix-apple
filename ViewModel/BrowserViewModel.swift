@@ -557,24 +557,39 @@ final class BrowserViewModel: NSObject, ObservableObject,
         if message.name == "headings", let headings = message.body as? [[String: String]] {
             self.generateOutlineList(headings: headings)
             self.generateOutlineTree(headings: headings)
-        } else if message.name == "bodyText", let bodyText = message.body as? String {
-            debugPrint("bodyText: \(bodyText)")
-            onBodyTextReady?(bodyText)
+        } else if message.name == "bodyText", let data = message.body as? [String: String] {
+            onBodyTextReady?(formatForTTS(bodyText: data["text"]), formatForTTS(langCode: data["lang"]))
             onBodyTextReady = nil // execute only once
         }
     }
     
-    // MARK: - getBodyText
+    // MARK: - getBodyText fot TTS
     @MainActor
-    private var onBodyTextReady: ((String?) -> Void)?
+    private var onBodyTextReady: ((_ text: String?, _ langCode: String) -> Void)?
     
     @MainActor
-    func bodyText(onComplete: @escaping (String?) -> Void) {
-        onBodyTextReady = { text in
-            let replacedText = try? text?.replacingRegex(matching: "\n", with: ",\n")
-            onComplete(replacedText)
+    func bodyTextAndLanguage(onComplete: @escaping (_ text: String?, _ langCode: String) -> Void) {
+        onBodyTextReady = onComplete
+        webView.evaluateJavaScript("getFullBodyTextAndLanguage();")
+    }
+    
+    private func formatForTTS(bodyText: String?) -> String? {
+        guard let bodyText else { return nil }
+        if let replacedText = try? bodyText.replacingRegex(matching: "\n", with: ",\n") {
+            return replacedText
+        } else {
+            return bodyText
         }
-        webView.evaluateJavaScript("getFullBodyText();")
+    }
+    
+    private func formatForTTS(langCode: String?) -> String {
+        guard let langCode else { return "en" }
+        if langCode.contains("-"),
+            let firstPart = langCode.split(separator: "-").first {
+            return String(firstPart)
+        } else {
+            return langCode
+        }
     }
 
     // MARK: - WKUIDelegate
