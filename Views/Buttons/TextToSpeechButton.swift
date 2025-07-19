@@ -17,12 +17,11 @@ import SwiftUI
 
 struct TextToSpeechButton: View {
     
-    let isStarted: Bool
     let isButtonDisabled: Bool
     let action: () -> Void
     
     var body: some View {
-        Button("Text to speech", systemImage: isStarted ? "microphone.fill" : "microphone") {
+        Button("Text to speech", systemImage: "microphone.fill") {
             action()
         }.disabled(isButtonDisabled)
     }

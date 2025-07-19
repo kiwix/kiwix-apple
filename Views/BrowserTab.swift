@@ -101,10 +101,7 @@ struct BrowserTab: View {
                     })
                 }
 #endif
-                TextToSpeechButton(
-                    isStarted: TextToSpeech.shared.isStarted,
-                    isButtonDisabled: browser.zimFileName.isEmpty
-                ) { [weak browser] in
+                TextToSpeechButton(isButtonDisabled: browser.zimFileName.isEmpty) { [weak browser] in
                     browser?.bodyText(onComplete: { bodyText in
                         if let bodyText {
                             TextToSpeech.shared.start(for: bodyText, languageCode: "en")

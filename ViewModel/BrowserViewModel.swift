@@ -570,7 +570,10 @@ final class BrowserViewModel: NSObject, ObservableObject,
     
     @MainActor
     func bodyText(onComplete: @escaping (String?) -> Void) {
-        onBodyTextReady = onComplete
+        onBodyTextReady = { text in
+            let replacedText = try? text?.replacingRegex(matching: "\n", with: ",\n")
+            onComplete(replacedText)
+        }
         webView.evaluateJavaScript("getFullBodyText();")
     }
 

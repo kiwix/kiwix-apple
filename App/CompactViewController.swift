@@ -357,6 +357,13 @@ private struct Content<LaunchModel>: View where LaunchModel: LaunchProtocol {
                 if !Brand.hideFindInPage {
                     ContentSearchButton(browser: browser)
                 }
+                TextToSpeechButton(isButtonDisabled: browser.zimFileName.isEmpty) { [weak browser] in
+                    browser?.bodyText { bodyText in
+                        if let bodyText {
+                            TextToSpeech.shared.start(for: bodyText, languageCode: "en")
+                        }
+                    }
+                }
                 Button {
                     showSettings()
                 } label: {
