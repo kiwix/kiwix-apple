@@ -56,6 +56,10 @@ function getOutlineItems() {
 	)
 }
 
+function getFullBodyText() {
+    window.webkit.messageHandlers.bodyText.postMessage(document.body.innerText)
+}
+
 // observe headings for intersection
 function observeHeadings() {
 	observer.disconnect()

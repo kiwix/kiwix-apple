@@ -133,7 +133,9 @@ final class BrowserViewModel: NSObject, ObservableObject,
         webView.allowsBackForwardNavigationGestures = true
         webView.configuration.defaultWebpagePreferences.preferredContentMode = .mobile // for font adjustment to work
         webView.configuration.userContentController.removeScriptMessageHandler(forName: "headings")
+        webView.configuration.userContentController.removeScriptMessageHandler(forName: "bodyText")
         webView.configuration.userContentController.add(self, name: "headings")
+        webView.configuration.userContentController.add(self, name: "bodyText")
         webView.navigationDelegate = self
         webView.uiDelegate = self
 
@@ -191,6 +193,7 @@ final class BrowserViewModel: NSObject, ObservableObject,
         isLoadingObserver?.invalidate()
         let contentController = webView.configuration.userContentController
         contentController.removeScriptMessageHandler(forName: "headings")
+        contentController.removeScriptMessageHandler(forName: "bodyText")
         contentController.removeAllUserScripts()
         webView.navigationDelegate = nil
         webView.uiDelegate = nil
@@ -554,7 +557,21 @@ final class BrowserViewModel: NSObject, ObservableObject,
         if message.name == "headings", let headings = message.body as? [[String: String]] {
             self.generateOutlineList(headings: headings)
             self.generateOutlineTree(headings: headings)
+        } else if message.name == "bodyText", let bodyText = message.body as? String {
+            debugPrint("bodyText: \(bodyText)")
+            onBodyTextReady?(bodyText)
+            onBodyTextReady = nil // execute only once
         }
+    }
+    
+    // MARK: - getBodyText
+    @MainActor
+    private var onBodyTextReady: ((String?) -> Void)?
+    
+    @MainActor
+    func bodyText(onComplete: @escaping (String?) -> Void) {
+        onBodyTextReady = onComplete
+        webView.evaluateJavaScript("getFullBodyText();")
     }
 
     // MARK: - WKUIDelegate

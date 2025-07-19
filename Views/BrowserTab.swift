@@ -101,6 +101,17 @@ struct BrowserTab: View {
                     })
                 }
 #endif
+                TextToSpeechButton(
+                    isStarted: TextToSpeech.shared.isStarted,
+                    isButtonDisabled: browser.zimFileName.isEmpty
+                ) { [weak browser] in
+                    browser?.bodyText(onComplete: { bodyText in
+                        if let bodyText {
+                            TextToSpeech.shared.start(for: bodyText, languageCode: "en")
+                        }
+                    })
+                }
+                
                 BookmarkButton(articleBookmarked: browser.articleBookmarked,
                                isButtonDisabled: browser.zimFileName.isEmpty,
                                createBookmark: { [weak browser] in browser?.createBookmark() },
