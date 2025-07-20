@@ -48,7 +48,6 @@ struct HotspotZimFilesSelection: View {
     
     var body: some View {
         VStack(spacing: 0) {
-            Divider()
             LazyVGrid(
                 columns: ([GridItem(.adaptive(minimum: 250, maximum: 500), spacing: 12)]),
                 alignment: .leading,
