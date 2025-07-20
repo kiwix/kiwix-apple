@@ -28,29 +28,6 @@ struct Attribute: View {
     }
 }
 
-struct AttributeLinkWithShare: View {
-    let title: String
-    let destination: URL
-    let onShare: () -> Void
-
-    var body: some View {
-        HStack {
-            Text(title)
-            Spacer()
-            
-            Button(
-                LocalString.common_button_share,
-                systemImage: "square.and.arrow.up",
-                action: onShare
-            )
-//            ShareButton(action: onShare)
-            Spacer()
-            Link(destination.absoluteString, destination: destination)
-                .foregroundColor(.accentColor)
-        }
-    }
-}
-
 struct AttributeBool: View {
     let title: String
     let detail: Bool

@@ -25,18 +25,6 @@ struct HotspotZimFilesSelection: View {
     ) private var zimFiles: FetchedResults<ZimFile>
     @StateObject private var selection: MultiSelectedZimFilesViewModel
     @ObservedObject private var hotspot = HotspotObservable()
-    @State private var presentedSheet: PresentedSheet?
-    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
-    
-    private enum PresentedSheet: Identifiable {
-        case shareHotspot(url: URL)
-        
-        var id: String {
-            switch self {
-            case .shareHotspot: return "shareHotspot"
-            }
-        }
-    }
     
     init(
         selectionProvider: @MainActor () -> MultiSelectedZimFilesViewModel = { @MainActor in HotspotState.selection }
@@ -60,17 +48,15 @@ struct HotspotZimFilesSelection: View {
                         HotspotCell {
                             HStack {
                                 Spacer()
-                                if let qrCodeImage {
-                                    qrCodeImage
-                                        .resizable()
-                                        .frame(idealWidth: 240, maxWidth: 300, idealHeight: 240, maxHeight: 300)
-                                        .aspectRatio(1.0, contentMode: .fill)
-                                } else {
-                                    ProgressView()
-                                        .progressViewStyle(.circular)
-                                        .frame(idealWidth: 240, maxWidth: 300, idealHeight: 240, maxHeight: 300)
-                                        .aspectRatio(1.0, contentMode: .fill)
+                                Group {
+                                    if let qrCodeImage {
+                                        qrCodeImage.resizable()
+                                    } else {
+                                        ProgressView().progressViewStyle(.circular)
+                                    }
                                 }
+                                .frame(idealWidth: 240, maxWidth: 300, idealHeight: 240, maxHeight: 300)
+                                .aspectRatio(1.0, contentMode: .fill)
                                 Spacer()
                             }
                         }
@@ -83,31 +69,15 @@ struct HotspotZimFilesSelection: View {
                                     Spacer()
                                     HStack(alignment: .bottom, spacing: 12) {
                                         Spacer()
-                                        Button(
-                                            LocalString.common_button_share,
-                                            systemImage: "square.and.arrow.up",
-                                            action: {
-                                                #if os(iOS)
-                                                if horizontalSizeClass == .compact {
-                                                    // for (compact) iPhone we want to close the whole library popup
-                                                    // and display the share dialog instead of it
-                                                    // going all the way back to CompactView(Controller)
-                                                    NotificationCenter.hotspotShare(url: address)
-                                                } else {
-                                                    // for (regular) iPad we can display the share dialog right here
-                                                    presentedSheet = .shareHotspot(url: address)
-                                                }
-                                                #else
-                                                //TODO: implement share for macOS
-                                                #endif
-                                            }
-                                        )
+                                        ShareLink(item: address) {
+                                            Label(LocalString.common_button_share, systemImage: "square.and.arrow.up")
+                                        }
                                         CopyPasteMenu(url: address)
                                     }
-                                    #if os(macOS)
+#if os(macOS)
                                     .buttonStyle(.borderless)
                                     .foregroundStyle(Color.accentColor)
-                                    #endif
+#endif
                                 }
                             }
                             .frame(maxHeight: 91)
@@ -143,13 +113,6 @@ struct HotspotZimFilesSelection: View {
             // make sure that our selection only contains still existing ZIM files
             selection.intersection(with: Set(zimFiles))
         }
-#if os(iOS)
-        .sheet(item: $presentedSheet) { presentedSheet in
-            switch presentedSheet {
-            case .shareHotspot(let url):
-                ActivityViewController(activityItems: [url].compactMap { $0 })
-            }
-        }
         .toolbar {
             ToolbarItem(placement: .primaryAction) {
                 AsyncButton {
@@ -160,35 +123,12 @@ struct HotspotZimFilesSelection: View {
                     Text(hotspot.buttonTitle)
                         .bold()
                 }
-                #if os(macOS)
+#if os(macOS)
                 .buttonStyle(.borderless)
-                #endif
+#endif
                 .disabled(selection.selectedZimFiles.isEmpty && !hotspot.state.isStarted)
                 .modifier(BadgeModifier(count: selection.selectedZimFiles.count))
             }
         }
-#endif
-//#if os(macOS)
-//        //        .overlay {
-//        //            if zimFiles.isEmpty {
-//        //                Message(text: LocalString.zim_file_opened_overlay_no_opened_message)
-//        //            }
-//        //        }
-//        .safeAreaInset(edge: .trailing, spacing: 0) {
-//            HStack(spacing: 0) {
-//                Divider()
-//                switch selection.selectedZimFiles.count {
-//                case 0:
-//                    Message(text: LocalString.hotspot_zim_file_selection_message)
-//                        .background(.thickMaterial)
-//                default:
-//                    HotspotDetails(zimFileIds: Set(selection.selectedZimFiles.map { $0.fileID }),
-//                                   hotspot: hotspot)
-//                }
-//            }
-//            .frame(width: 275)
-//            .background(.ultraThinMaterial)
-//        }
-//#endif
     }
 }
