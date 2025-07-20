@@ -24,9 +24,16 @@ struct HotspotAddress: View {
     let onShare: () -> Void
     #endif
     var body: some View {
-        Section(LocalString.hotspot_server_running_title) {
-            AttributeLink(title: LocalString.hotspot_server_running_address,
-                          destination: serverAddress)
+        //        Section(LocalString.hotspot_server_running_title) {
+        VStack {
+//            Text(LocalString.hotspot_server_running_title)
+//                .font(.title)
+            
+            AttributeLinkWithShare(
+                title: LocalString.hotspot_server_running_address,
+                destination: serverAddress,
+                onShare: onShare
+            )
             #if os(macOS)
             if let contentView = windowTracker.current?.contentView {
                 HStack {
@@ -39,12 +46,8 @@ struct HotspotAddress: View {
                     )
                 }
             }
-            #else
-            HStack {
-                Spacer()
-                ShareButton(action: onShare)
-            }
             #endif
+            Spacer()
             if let qrCodeImage {
                 qrCodeImage
                     .resizable()
@@ -54,6 +57,7 @@ struct HotspotAddress: View {
                     .progressViewStyle(.circular)
                     .frame(width: 250, height: 250)
             }
+            Spacer()
         }
 #if os(macOS)
         .collapsible(false)

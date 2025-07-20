@@ -48,99 +48,136 @@ struct HotspotZimFilesSelection: View {
     
     var body: some View {
         VStack(spacing: 0) {
-            LazyVGrid(
-                columns: ([GridItem(.adaptive(minimum: 250, maximum: 500), spacing: 12)]),
-                alignment: .leading,
-                spacing: 12
-            ) {
-                ForEach(zimFiles) { zimFile in
-                    MultiZimFilesSelectionContext(
-                        content: {
-                            ZimFileCell(
-                                zimFile,
-                                prominent: .name,
-                                isSelected: selection.isSelected(zimFile),
-                                backgroundColoring: CellBackground.hotspotSelectionColorFor
-                            )
-                        },
-                        zimFile: zimFile,
-                        selection: selection
-                    )
-                }
-            }
-            .disabled(hotspot.state.isStarted)
-            .modifier(GridCommon(edges: .all))
-            .modifier(ToolbarRoleBrowser())
-            .navigationTitle(MenuItem.hotspot.name)
-            .task {
-                // make sure that our selection only contains still existing ZIM files
-                selection.intersection(with: Set(zimFiles))
-            }
-#if os(iOS)
-            .overlay {
-                if zimFiles.isEmpty {
-                    Message(text: LocalString.zim_file_opened_overlay_no_opened_message)
-                }
-                if case .started(let address, let qrCodeImage) = hotspot.state {
-                    List {
-                        HotspotAddress(serverAddress: address, qrCodeImage: qrCodeImage, onShare: {
-                            if horizontalSizeClass == .compact {
-                                // for (compact) iPhone we want to close the whole library popup
-                                // and display the share dialog instead of it
-                                // going all the way back to CompactView(Controller)
-                                NotificationCenter.hotspotShare(url: address)
-                            } else {
-                                // for (regular) iPad we can display the share dialog right here
-                                presentedSheet = .shareHotspot(url: address)
+            if zimFiles.isEmpty {
+                Message(text: LocalString.zim_file_opened_overlay_no_opened_message)
+            } else {
+                LazyVGrid(
+                    columns: ([GridItem(.adaptive(minimum: 250, maximum: 500), spacing: 12)]),
+                    alignment: .leading,
+                    spacing: 12
+                ) {
+                    if case .started(let address, let qrCodeImage) = hotspot.state {
+                        
+                        HotspotCell {
+                            HStack {
+                                Spacer()
+                                if let qrCodeImage {
+                                    qrCodeImage
+                                        .resizable()
+                                        .frame(width: 250, height: 250)
+                                } else {
+                                    ProgressView()
+                                        .progressViewStyle(.circular)
+                                        .frame(width: 250, height: 250)
+                                }
+                                Spacer()
                             }
-                        })
-                        HotspotExplanation()
+                        }
+                        
+                        VStack {
+                            HotspotCell {
+                                VStack(alignment: .leading, spacing: 8) {
+                                    Link(address.absoluteString, destination: address)
+                                        .fontWeight(.semibold).foregroundColor(.accentColor).lineLimit(1)
+                                    Spacer()
+                                    HStack(alignment: .bottom, spacing: 12) {
+                                        Spacer()
+                                        Button(
+                                            LocalString.common_button_share,
+                                            systemImage: "square.and.arrow.up",
+                                            action: {
+                                                if horizontalSizeClass == .compact {
+                                                    // for (compact) iPhone we want to close the whole library popup
+                                                    // and display the share dialog instead of it
+                                                    // going all the way back to CompactView(Controller)
+                                                    NotificationCenter.hotspotShare(url: address)
+                                                } else {
+                                                    // for (regular) iPad we can display the share dialog right here
+                                                    presentedSheet = .shareHotspot(url: address)
+                                                }
+                                            }
+                                        )
+                                        CopyPasteMenu(url: address)
+                                    }
+                                }
+                            }
+                            .frame(maxHeight: 91)
+                            
+                            HotspotCell {
+                                HotspotExplanation()
+                            }
+                        }
+                        
+                    } else {
+                        ForEach(zimFiles) { zimFile in
+                            MultiZimFilesSelectionContext(
+                                content: {
+                                    ZimFileCell(
+                                        zimFile,
+                                        prominent: .name,
+                                        isSelected: selection.isSelected(zimFile),
+                                        backgroundColoring: CellBackground.hotspotSelectionColorFor
+                                    )
+                                },
+                                zimFile: zimFile,
+                                selection: selection
+                            )
+                        }
                     }
                 }
             }
-            .sheet(item: $presentedSheet) { presentedSheet in
-                switch presentedSheet {
-                case .shareHotspot(let url):
-                    ActivityViewController(activityItems: [url].compactMap { $0 })
-                }
+        }
+        .modifier(GridCommon(edges: .all))
+        .modifier(ToolbarRoleBrowser())
+        .navigationTitle(MenuItem.hotspot.name)
+        .task {
+            // make sure that our selection only contains still existing ZIM files
+            selection.intersection(with: Set(zimFiles))
+        }
+#if os(iOS)
+        .sheet(item: $presentedSheet) { presentedSheet in
+            switch presentedSheet {
+            case .shareHotspot(let url):
+                ActivityViewController(activityItems: [url].compactMap { $0 })
             }
-            .toolbar {
-                ToolbarItem(placement: .topBarTrailing) {
-                    AsyncButton {
-                        await hotspot.toggleWith(
-                            zimFileIds: Set(selection.selectedZimFiles.map { $0.fileID })
-                        )
-                    } label: {
-                        Text(hotspot.buttonTitle)
-                            .bold()
-                    }
-                    .disabled(selection.selectedZimFiles.isEmpty && !hotspot.state.isStarted)
-                    .modifier(BadgeModifier(count: selection.selectedZimFiles.count))
+        }
+        .toolbar {
+            ToolbarItem(placement: .topBarTrailing) {
+                AsyncButton {
+                    await hotspot.toggleWith(
+                        zimFileIds: Set(selection.selectedZimFiles.map { $0.fileID })
+                    )
+                } label: {
+                    Text(hotspot.buttonTitle)
+                        .bold()
                 }
+                .disabled(selection.selectedZimFiles.isEmpty && !hotspot.state.isStarted)
+                .modifier(BadgeModifier(count: selection.selectedZimFiles.count))
             }
+        }
 #endif
 #if os(macOS)
-            .overlay {
-                if zimFiles.isEmpty {
-                    Message(text: LocalString.zim_file_opened_overlay_no_opened_message)
-                }
+        .overlay {
+            if zimFiles.isEmpty {
+                Message(text: LocalString.zim_file_opened_overlay_no_opened_message)
             }
-            .safeAreaInset(edge: .trailing, spacing: 0) {
-                HStack(spacing: 0) {
-                    Divider()
-                    switch selection.selectedZimFiles.count {
-                    case 0:
-                        Message(text: LocalString.hotspot_zim_file_selection_message)
-                            .background(.thickMaterial)
-                    default:
-                        HotspotDetails(zimFileIds: Set(selection.selectedZimFiles.map { $0.fileID }),
-                                       hotspot: hotspot)
-                    }
-                }
-                .frame(width: 275)
-                .background(.ultraThinMaterial)
-            }
-#endif
         }
+        .safeAreaInset(edge: .trailing, spacing: 0) {
+            HStack(spacing: 0) {
+                Divider()
+                switch selection.selectedZimFiles.count {
+                case 0:
+                    Message(text: LocalString.hotspot_zim_file_selection_message)
+                        .background(.thickMaterial)
+                default:
+                    HotspotDetails(zimFileIds: Set(selection.selectedZimFiles.map { $0.fileID }),
+                                   hotspot: hotspot)
+                }
+            }
+            .frame(width: 275)
+            .background(.ultraThinMaterial)
+        }
+#endif
     }
 }
+

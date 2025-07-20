@@ -18,7 +18,13 @@ import UniformTypeIdentifiers
 
 struct CopyPasteMenu: View {
     
-    let url: URL
+    private let url: URL
+    private let label: String
+    
+    init(url: URL, label: String = LocalString.library_zim_file_context_copy_url) {
+        self.url = url
+        self.label = label
+    }
     
     var body: some View {
         Button {
@@ -28,7 +34,7 @@ struct CopyPasteMenu: View {
             UIPasteboard.general.setValue(url.absoluteString, forPasteboardType: UTType.url.identifier)
             #endif
         } label: {
-            Label(LocalString.library_zim_file_context_copy_url, systemImage: "doc.on.doc")
+            Label(label, systemImage: "doc.on.doc")
         }
     }
     
