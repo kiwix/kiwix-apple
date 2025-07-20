@@ -20,7 +20,9 @@ struct HotspotExplanation: View {
         VStack {
             HStack {
                 Text(LocalString.hotspot_server_explanation)
+                #if os(iOS)
                     .font(.subheadline)
+                #endif
                     .multilineTextAlignment(.leading)
                     .lineLimit(nil)
                 Spacer()

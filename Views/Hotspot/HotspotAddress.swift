@@ -15,26 +15,22 @@
 
 import SwiftUI
 
+#if os(macOS)
 struct HotspotAddress: View {
     let serverAddress: URL
     let qrCodeImage: Image?
-    #if os(macOS)
     @StateObject private var windowTracker = WindowTracker()
-    #else
-    let onShare: () -> Void
-    #endif
     var body: some View {
-        //        Section(LocalString.hotspot_server_running_title) {
+//                Section(LocalString.hotspot_server_running_title) {
         VStack {
 //            Text(LocalString.hotspot_server_running_title)
 //                .font(.title)
             
-            AttributeLinkWithShare(
-                title: LocalString.hotspot_server_running_address,
-                destination: serverAddress,
-                onShare: onShare
-            )
-            #if os(macOS)
+//            AttributeLinkWithShare(
+//                title: LocalString.hotspot_server_running_address,
+//                destination: serverAddress,
+//                onShare: onShare
+//            )
             if let contentView = windowTracker.current?.contentView {
                 HStack {
                     Spacer()
@@ -46,7 +42,6 @@ struct HotspotAddress: View {
                     )
                 }
             }
-            #endif
             Spacer()
             if let qrCodeImage {
                 qrCodeImage
@@ -59,11 +54,9 @@ struct HotspotAddress: View {
             }
             Spacer()
         }
-#if os(macOS)
-        .collapsible(false)
         .withHostingWindow { [weak windowTracker] window in
             windowTracker?.current = window
         }
-#endif
     }
 }
+#endif

@@ -14,7 +14,6 @@
 // along with Kiwix; If not, see https://www.gnu.org/licenses/.
 
 import SwiftUI
-import UniformTypeIdentifiers
 
 /// A grid of zim files that are opened, or was open but is now missing.
 /// A specific version of ZimFilesOpened, supporting multi selection for HotSpot
@@ -64,11 +63,13 @@ struct HotspotZimFilesSelection: View {
                                 if let qrCodeImage {
                                     qrCodeImage
                                         .resizable()
-                                        .frame(width: 250, height: 250)
+                                        .frame(idealWidth: 240, maxWidth: 300, idealHeight: 240, maxHeight: 300)
+                                        .aspectRatio(1.0, contentMode: .fill)
                                 } else {
                                     ProgressView()
                                         .progressViewStyle(.circular)
-                                        .frame(width: 250, height: 250)
+                                        .frame(idealWidth: 240, maxWidth: 300, idealHeight: 240, maxHeight: 300)
+                                        .aspectRatio(1.0, contentMode: .fill)
                                 }
                                 Spacer()
                             }
@@ -86,6 +87,7 @@ struct HotspotZimFilesSelection: View {
                                             LocalString.common_button_share,
                                             systemImage: "square.and.arrow.up",
                                             action: {
+                                                #if os(iOS)
                                                 if horizontalSizeClass == .compact {
                                                     // for (compact) iPhone we want to close the whole library popup
                                                     // and display the share dialog instead of it
@@ -95,10 +97,17 @@ struct HotspotZimFilesSelection: View {
                                                     // for (regular) iPad we can display the share dialog right here
                                                     presentedSheet = .shareHotspot(url: address)
                                                 }
+                                                #else
+                                                //TODO: implement share for macOS
+                                                #endif
                                             }
                                         )
                                         CopyPasteMenu(url: address)
                                     }
+                                    #if os(macOS)
+                                    .buttonStyle(.borderless)
+                                    .foregroundStyle(Color.accentColor)
+                                    #endif
                                 }
                             }
                             .frame(maxHeight: 91)
@@ -142,7 +151,7 @@ struct HotspotZimFilesSelection: View {
             }
         }
         .toolbar {
-            ToolbarItem(placement: .topBarTrailing) {
+            ToolbarItem(placement: .primaryAction) {
                 AsyncButton {
                     await hotspot.toggleWith(
                         zimFileIds: Set(selection.selectedZimFiles.map { $0.fileID })
@@ -151,33 +160,35 @@ struct HotspotZimFilesSelection: View {
                     Text(hotspot.buttonTitle)
                         .bold()
                 }
+                #if os(macOS)
+                .buttonStyle(.borderless)
+                #endif
                 .disabled(selection.selectedZimFiles.isEmpty && !hotspot.state.isStarted)
                 .modifier(BadgeModifier(count: selection.selectedZimFiles.count))
             }
         }
 #endif
-#if os(macOS)
-        .overlay {
-            if zimFiles.isEmpty {
-                Message(text: LocalString.zim_file_opened_overlay_no_opened_message)
-            }
-        }
-        .safeAreaInset(edge: .trailing, spacing: 0) {
-            HStack(spacing: 0) {
-                Divider()
-                switch selection.selectedZimFiles.count {
-                case 0:
-                    Message(text: LocalString.hotspot_zim_file_selection_message)
-                        .background(.thickMaterial)
-                default:
-                    HotspotDetails(zimFileIds: Set(selection.selectedZimFiles.map { $0.fileID }),
-                                   hotspot: hotspot)
-                }
-            }
-            .frame(width: 275)
-            .background(.ultraThinMaterial)
-        }
-#endif
+//#if os(macOS)
+//        //        .overlay {
+//        //            if zimFiles.isEmpty {
+//        //                Message(text: LocalString.zim_file_opened_overlay_no_opened_message)
+//        //            }
+//        //        }
+//        .safeAreaInset(edge: .trailing, spacing: 0) {
+//            HStack(spacing: 0) {
+//                Divider()
+//                switch selection.selectedZimFiles.count {
+//                case 0:
+//                    Message(text: LocalString.hotspot_zim_file_selection_message)
+//                        .background(.thickMaterial)
+//                default:
+//                    HotspotDetails(zimFileIds: Set(selection.selectedZimFiles.map { $0.fileID }),
+//                                   hotspot: hotspot)
+//                }
+//            }
+//            .frame(width: 275)
+//            .background(.ultraThinMaterial)
+//        }
+//#endif
     }
 }
-
