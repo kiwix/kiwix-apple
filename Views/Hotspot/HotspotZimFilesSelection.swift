@@ -64,7 +64,10 @@ struct HotspotZimFilesSelection: View {
                                     Spacer()
                                     if let qrCodeImage {
                                         let img = Image(qrCodeImage, scale: 1, label: Text(address.absoluteString))
-                                        ShareLink(item: img, preview: SharePreview(address.absoluteString, image: img)) {
+                                        ShareLink(
+                                            item: img,
+                                            preview: SharePreview(address.absoluteString, image: img)
+                                        ) {
                                             Label(LocalString.common_button_share, systemImage: "square.and.arrow.up")
                                         }
                                         CopyImageToPasteBoard(image: qrCodeImage)

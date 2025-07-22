@@ -69,7 +69,6 @@ struct CopyImageToPasteBoard: View {
     }
     #endif
     
-    
     #if os(macOS)
     public static func copyToPasteBoard(image: CGImage) {
         NSPasteboard.general.clearContents()
