@@ -50,8 +50,7 @@ struct CopyImageToPasteBoard: View {
     private let image: CGImage
     private let label: String
     
-    // TODO: localise
-    init(image: CGImage, label: String = "Copy") {
+    init(image: CGImage, label: String = LocalString.common_button_copy) {
         self.image = image
         self.label = label
     }
