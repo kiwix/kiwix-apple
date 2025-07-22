@@ -65,8 +65,6 @@
 "zim_file_cell.article_count.suffix" = "статии";
 "zim_file_missing_indicator.help" = "ZIM-податотеката недостасува.";
 "hotspot.zim_file_selection.message" = "Изберете ги ZIM-податотеките што сакате да ги вдомите на опслужувачот";
-"hotspot.action.start_server.title" = "Покрени го опслужувачот";
-"hotspot.action.stop_server.title" = "Запри го опслужувачот";
 "hotspot.server_running.title" = "Опслужувачот работи";
 "hotspot.server_running.address" = "Адреса";
 "hotspot.settings.port_number" = "Број на порта";

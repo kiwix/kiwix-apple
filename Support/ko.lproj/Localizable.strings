@@ -4,12 +4,9 @@
 // Author: YeBoy371
 // Author: Ykhwong
 
-// Fuzzy
-"library_refresh_error.retrieve.description" = "라이브러리 데이터를 검색하는 중 오류가 발생했습니다.";
-// Fuzzy
-"library_refresh_error.parse.description" = "라이브러리 데이터의 구문을 분석하는 중 오류가 발생했습니다.";
-// Fuzzy
-"library_refresh_error.process.description" = "라이브러리 데이터를 처리하는 동안 오류가 발생했습니다.";
+"library_refresh_error.retrieve.description" = "카탈로그 데이터를 검색하는 중 오류가 발생했습니다.";
+"library_refresh_error.parse.description" = "카탈로그 데이터의 구문을 분석하는 중 오류가 발생했습니다.";
+"library_refresh_error.process.description" = "카탈로그 데이터를 처리하는 동안 오류가 발생했습니다.";
 "download_service.complete.title" = "다운로드 완료";
 "download_service.complete.description" = "%@ 항목이 성공적으로 다운로드되었습니다.";
 "download_service.failed.description" = "이 파일을 다운로드할 수 없습니다.";
@@ -66,8 +63,6 @@
 "library_refresh_time.last" = "즉시";
 "library_refresh_time.never" = "없음";
 "zim_file_missing_indicator.help" = "Zim 파일이 없습니다.";
-"hotspot.action.start_server.title" = "서버 시작";
-"hotspot.action.stop_server.title" = "서버 정지";
 "hotspot.server_running.title" = "서버가 실행 중입니다";
 "hotspot.server_running.address" = "주소";
 "hotspot.settings.port_number" = "포트 번호";
