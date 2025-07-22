@@ -44,21 +44,37 @@ struct HotspotZimFilesSelection: View {
                     spacing: 12
                 ) {
                     if case .started(let address, let qrCodeImage) = hotspot.state {
-                        
                         HotspotCell {
-                            HStack {
-                                Spacer()
-                                Group {
+                            VStack {
+                                HStack {
+                                    Spacer()
+                                    Group {
+                                        if let qrCodeImage {
+                                            Image(qrCodeImage, scale: 1, label: Text(address.absoluteString))
+                                                .resizable()
+                                        } else {
+                                            ProgressView().progressViewStyle(.circular)
+                                        }
+                                    }
+                                    .frame(idealWidth: 240, maxWidth: 300, idealHeight: 240, maxHeight: 300)
+                                    .aspectRatio(1.0, contentMode: .fill)
+                                    Spacer()
+                                }
+                                HStack(alignment: .bottom) {
+                                    Spacer()
                                     if let qrCodeImage {
-                                        qrCodeImage.resizable()
-                                    } else {
-                                        ProgressView().progressViewStyle(.circular)
+                                        let img = Image(qrCodeImage, scale: 1, label: Text(address.absoluteString))
+                                        ShareLink(item: img, preview: SharePreview(address.absoluteString, image: img)) {
+                                            Label(LocalString.common_button_share, systemImage: "square.and.arrow.up")
+                                        }
+                                        CopyImageToPasteBoard(image: qrCodeImage)
                                     }
                                 }
-                                .frame(idealWidth: 240, maxWidth: 300, idealHeight: 240, maxHeight: 300)
-                                .aspectRatio(1.0, contentMode: .fill)
-                                Spacer()
                             }
+#if os(macOS)
+                            .buttonStyle(.borderless)
+                            .foregroundStyle(Color.accentColor)
+#endif
                         }
                         
                         VStack {
@@ -81,7 +97,7 @@ struct HotspotZimFilesSelection: View {
                                 }
                             }
                             .frame(maxHeight: 91)
-                            
+
                             HotspotCell {
                                 HotspotExplanation()
                             }

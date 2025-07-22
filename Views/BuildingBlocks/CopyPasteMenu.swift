@@ -45,3 +45,38 @@ struct CopyPasteMenu: View {
     }
     #endif
 }
+
+struct CopyImageToPasteBoard: View {
+    private let image: CGImage
+    private let label: String
+    
+    // TODO: localise
+    init(image: CGImage, label: String = "Copy") {
+        self.image = image
+        self.label = label
+    }
+    
+    var body: some View {
+        Button {
+            Self.copyToPasteBoard(image: image)
+        } label: {
+            Label(label, systemImage: "doc.on.doc")
+        }
+    }
+    
+    #if os(iOS)
+    public static func copyToPasteBoard(image: CGImage) {
+        UIPasteboard.general.image = UIImage(cgImage: image)
+    }
+    #endif
+    
+    
+    #if os(macOS)
+    public static func copyToPasteBoard(image: CGImage) {
+        NSPasteboard.general.clearContents()
+        let nsImage = NSImage(cgImage: image, size: CGSize(width: image.width, height: image.height))
+        let tiffData = nsImage.tiffRepresentation
+        NSPasteboard.general.setData(tiffData, forType: .tiff)
+    }
+    #endif
+}
