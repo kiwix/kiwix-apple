@@ -67,12 +67,13 @@
 "zim_file_cell.article_count.suffix" = "條目";
 "zim_file_missing_indicator.help" = "遺失 Zim 檔案。";
 "hotspot.zim_file_selection.message" = "選擇您想要在伺服器上託管的 ZIM 檔案";
+"hotspot.action.start_hotspot.title" = "啟動熱點";
+"hotspot.action.stop_hotspot.title" = "停止熱點";
 "hotspot.server_running.title" = "伺服器運行中";
 "hotspot.server_running.address" = "位址";
 "hotspot.settings.port_number" = "埠號";
 "hotspot.settings.invalid_port_message" = "埠號無效，請改用介於 %@ 和 %@ 之間的值";
-// Fuzzy
-"hotspot.server_explanation" = "為了在其他設備上瀏覽 ZIM 檔案，請確認所有設備皆連線到同一個 WiFi 網路。";
+"hotspot.server_explanation" = "要瀏覽其他設備上的 ZIM 檔案，請確認所有設備皆連線到同一個 WiFi 網路，或是皆連線到您的個人熱點上。";
 "library.zim_file_details.side_panel.message" = "選擇一個 ZIM 檔案以查看詳細資訊";
 "library.zim_file_context.main_page.label" = "主頁";
 "library.zim_file_context.random.label" = "隨機頁面";
