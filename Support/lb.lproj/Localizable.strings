@@ -56,6 +56,8 @@
 "library_refresh_time.last" = "Elo just";
 "library_refresh_time.never" = "Ni";
 "zim_file_cell.article_count.suffix" = "Artikelen";
+"hotspot.action.start_hotspot.title" = "Hotspot aktivéieren";
+"hotspot.action.stop_hotspot.title" = "Hotspot desaktivéieren";
 "hotspot.server_running.title" = "De Server leeft";
 "hotspot.server_running.address" = "Adress";
 "library.zim_file_context.main_page.label" = "Haaptsäit";
