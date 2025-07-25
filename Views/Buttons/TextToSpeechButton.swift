@@ -21,7 +21,7 @@ struct TextToSpeechButton: View {
     let action: () -> Void
     
     var body: some View {
-        Button("Text to speech", systemImage: "microphone") {
+        Button("Text to speech", systemImage: "rectangle.3.group.bubble") {
             action()
         }.disabled(isButtonDisabled)
     }
