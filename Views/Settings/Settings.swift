@@ -17,6 +17,14 @@ import SwiftUI
 
 import Defaults
 
+enum PortNumberFormatter {
+    static let instance: NumberFormatter = {
+        let formatter = NumberFormatter()
+        formatter.usesGroupingSeparator = false
+        return formatter
+    }()
+}
+
 #if os(macOS)
 struct ReadingSettings: View {
     @EnvironmentObject private var colorSchemeStore: UserColorSchemeStore
@@ -124,7 +132,7 @@ struct HotspotSettings: View {
     var body: some View {
         VStack(spacing: 16) {
             SettingSection(name: LocalString.hotspot_settings_port_number) {
-                TextField("", value: $portNumber, format: .number)
+                TextField("", value: $portNumber, formatter: PortNumberFormatter.instance)
                     .textFieldStyle(.roundedBorder)
             }
             .onChange(of: portNumber) { newValue in
@@ -346,7 +354,7 @@ struct Settings: View {
             }
             HStack {
                 Text(LocalString.hotspot_settings_port_number)
-                TextField("", value: $portNumber, format: .number)
+                TextField("", value: $portNumber, formatter: PortNumberFormatter.instance)
                     .textFieldStyle(.roundedBorder)
                 .onChange(of: portNumber) { newValue in
                     if Hotspot.isValid(port: newValue) {
