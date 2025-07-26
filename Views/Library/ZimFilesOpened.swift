@@ -29,6 +29,8 @@ struct ZimFilesOpened: View {
     @State private var isFileImporterPresented = false
     @EnvironmentObject var selection: SelectedZimFileViewModel
     let dismiss: (() -> Void)? // iOS only
+    private let selectFileById = NotificationCenter.default.publisher(for: .selectFile)
+    @State private var fileIdToOpen: UUID?
 
     var body: some View {
         LazyVGrid(
@@ -58,9 +60,23 @@ struct ZimFilesOpened: View {
                 Message(text: LocalString.zim_file_opened_overlay_no_opened_message)
             }
         }
+        .onReceive(selectFileById, perform: { notification in
+            guard let fileId = notification.userInfo?["fileId"] as? UUID else {
+                fileIdToOpen = nil
+                return
+            }
+            fileIdToOpen = fileId
+        })
         .onChange(of: zimFiles.count) { _ in
-            if let firstZimFile = zimFiles.first {
-                selection.selectedZimFile = firstZimFile
+            let selectedZimFile: ZimFile?
+            if let fileIdToOpen {
+                selectedZimFile = zimFiles.first { $0.fileID == fileIdToOpen }
+                self.fileIdToOpen = nil
+            } else {
+                selectedZimFile = zimFiles.first
+            }
+            if let selectedZimFile {
+                selection.selectedZimFile = selectedZimFile
             } else {
                 selection.reset()
             }
