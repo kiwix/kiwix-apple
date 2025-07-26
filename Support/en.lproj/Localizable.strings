@@ -38,6 +38,7 @@
 "common.button.yes" = "Yes";
 "common.button.no" = "no";
 "common.button.print" = "Print";
+"common.button.copy" = "Copy";
 "common.button.share" = "Share";
 "common.button.share_as_pdf" = "Share as PDF";
 "common.search" = "Search";
@@ -95,11 +96,8 @@
 
 "zim_file_missing_indicator.help" = "Zim file is missing.";
 
-"hotspot.zim_file_selection.message" = "Select the ZIM files you wish to host on the server";
 "hotspot.action.start_hotspot.title" = "Start Hotspot";
 "hotspot.action.stop_hotspot.title" = "Stop Hotspot";
-"hotspot.server_running.title" = "Server is running";
-"hotspot.server_running.address" = "Address";
 "hotspot.settings.port_number" = "Port number";
 "hotspot.settings.invalid_port_message" = "Invalid port number, try a value between %@ and %@";
 "hotspot.server_explanation" = "To browse these ZIM files on other devices, make sure all devices are either on the same WiFi network or connected to your Personal Hotspot.";
