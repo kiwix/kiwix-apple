@@ -91,7 +91,7 @@ struct HotspotZimFilesSelection: View {
                                         ShareLink(item: address) {
                                             Label(LocalString.common_button_share, systemImage: "square.and.arrow.up")
                                         }
-                                        CopyPasteMenu(url: address)
+                                        CopyPasteMenu(url: address, label: LocalString.common_button_copy)
                                     }
 #if os(macOS)
                                     .buttonStyle(.borderless)
