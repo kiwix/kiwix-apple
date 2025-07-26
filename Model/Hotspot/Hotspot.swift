@@ -21,9 +21,9 @@ final class Hotspot {
     @MainActor
     static let shared = Hotspot()
     
-    private static let minPort = 1024
+    private static let minPort = 1
     nonisolated static let defaultPort = 8080
-    private static let maxPort = 9999
+    private static let maxPort = 65535
     
     @MainActor
     @Published var isStarted: Bool = false
