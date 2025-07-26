@@ -341,9 +341,6 @@ struct Settings: View {
     
     var hotspot: some View {
         Section {
-            if showHotspotAlert {
-                Text(Hotspot.invalidPortMessage).foregroundStyle(.red)
-            }
             HStack {
                 Text(LocalString.hotspot_settings_port_number)
                 TextField("", value: $portNumber, format: .number)
@@ -357,6 +354,9 @@ struct Settings: View {
                         showHotspotAlert = true
                     }
                 }
+            }
+            if showHotspotAlert {
+                Text(Hotspot.invalidPortMessage).foregroundStyle(.red)
             }
         } header: {
             Text(LocalString.enum_navigation_item_hotspot)
