@@ -178,8 +178,13 @@ final class SplitViewController: UISplitViewController {
             }()
             setViewController(UINavigationController(rootViewController: controller), for: .secondary)
         case .opened:
-            let controller = UIHostingController(rootView: ZimFilesOpened(dismiss: nil))
-            setViewController(UINavigationController(rootViewController: controller), for: .secondary)
+            // workaround for programatic triggering ZimFileDetails
+            // on iPad full screen view
+            let navHelper = NavigationHelper()
+            let controller = UIHostingController(rootView: ZimFilesOpened(navigationHelper: navHelper, dismiss: nil))
+            let navController = UINavigationController(rootViewController: controller)
+            navHelper.navigationController = navController
+            setViewController(navController, for: .secondary)
         case .categories:
             let controller = UIHostingController(rootView: ZimFilesCategories(dismiss: nil))
             setViewController(UINavigationController(rootViewController: controller), for: .secondary)

@@ -27,6 +27,8 @@ struct ZimFilesMultiOpened: View {
     ) private var zimFiles: FetchedResults<ZimFile>
     @State private var isFileImporterPresented = false
     @StateObject private var selection = MultiSelectedZimFilesViewModel()
+    private let selectFileById = NotificationCenter.default.publisher(for: .selectFile)
+    @State private var fileIdToOpen: UUID?
 
     var body: some View {
         VStack(spacing: 0) {
@@ -57,9 +59,23 @@ struct ZimFilesMultiOpened: View {
                     Message(text: LocalString.zim_file_opened_overlay_no_opened_message)
                 }
             }
+            .onReceive(selectFileById, perform: { notification in
+                guard let fileId = notification.userInfo?["fileId"] as? UUID else {
+                    fileIdToOpen = nil
+                    return
+                }
+                fileIdToOpen = fileId
+            })
             .onChange(of: zimFiles.count) { _ in
-                if let firstZimFile = zimFiles.first {
-                    selection.singleSelect(zimFile: firstZimFile)
+                let selectedZimFile: ZimFile?
+                if let fileIdToOpen {
+                    selectedZimFile = zimFiles.first { $0.fileID == fileIdToOpen }
+                    self.fileIdToOpen = nil
+                } else {
+                    selectedZimFile = zimFiles.first
+                }
+                if let selectedZimFile {
+                    selection.singleSelect(zimFile: selectedZimFile)
                 } else {
                     selection.reset()
                 }

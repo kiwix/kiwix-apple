@@ -71,6 +71,7 @@ extension Notification.Name {
     static let alert = Notification.Name("alert")
     static let openFiles = Notification.Name("openFiles")
     static let openURL = Notification.Name("openURL")
+    static let selectFile = Notification.Name("selectFile")
     static let exportFileData = Notification.Name("exportFileData")
     static let saveContent = Notification.Name("saveContent")
     static let toggleSidebar = Notification.Name("toggleSidebar")
@@ -109,6 +110,11 @@ extension NotificationCenter {
             object: nil,
             userInfo: userInfo
         )
+    }
+    
+    @MainActor
+    static func selectFileBy(fileId: UUID) {
+        NotificationCenter.default.post(name: .selectFile, object: nil, userInfo: ["fileId": fileId])
     }
 
     static func openFiles(_ urls: [URL], context: OpenFileContext) {

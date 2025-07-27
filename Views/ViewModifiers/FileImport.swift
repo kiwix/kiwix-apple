@@ -81,6 +81,11 @@ struct OpenFileHandler: ViewModifier {
                 // action for zim files that can be opened (e.g. open main page)
                 if case .library = context {
                     // don't need to open the main page
+                    // but we should select it to show the details
+                    // if there's only one ZIM file imported
+                    if openedZimFileIDs.count == 1, let firstFileID = openedZimFileIDs.first {
+                        NotificationCenter.selectFileBy(fileId: firstFileID)
+                    }
                 } else {
                     for fileID in openedZimFileIDs {
                         if let url = await ZimFileService.shared.getMainPageURL(zimFileID: fileID) {
