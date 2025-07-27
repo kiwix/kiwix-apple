@@ -42,8 +42,6 @@ struct ZimFilesOpened: View {
     @State private var isFileImporterPresented = false
     @EnvironmentObject var selection: SelectedZimFileViewModel
     let navigationHelper: NavigationHelper
-    
-    let dismiss: (() -> Void)?
     private let selectFileById = NotificationCenter.default.publisher(for: .selectFile)
     @State private var fileIdToOpen: UUID?
 
@@ -55,7 +53,7 @@ struct ZimFilesOpened: View {
         ) {
             ForEach(zimFiles) { zimFile in
                 NavigationLink {
-                    ZimFileDetail(zimFile: zimFile, dismissParent: dismiss)
+                    ZimFileDetail(zimFile: zimFile, dismissParent: nil)
                 } label: {
                     ZimFileCell(
                         zimFile,
@@ -97,7 +95,7 @@ struct ZimFilesOpened: View {
         .onReceive(selection.$selectedZimFile, perform: { selectedZimFile in
             if let selectedZimFile {
                 navigationHelper.push {
-                    ZimFileDetail(zimFile: selectedZimFile, dismissParent: dismiss)
+                    ZimFileDetail(zimFile: selectedZimFile, dismissParent: nil)
                 }
             }
         })

@@ -181,7 +181,7 @@ final class SplitViewController: UISplitViewController {
             // workaround for programatic triggering ZimFileDetails
             // on iPad full screen view
             let navHelper = NavigationHelper()
-            let controller = UIHostingController(rootView: ZimFilesOpened(navigationHelper: navHelper, dismiss: nil))
+            let controller = UIHostingController(rootView: ZimFilesOpened(navigationHelper: navHelper))
             let navController = UINavigationController(rootViewController: controller)
             navHelper.navigationController = navController
             setViewController(navController, for: .secondary)
