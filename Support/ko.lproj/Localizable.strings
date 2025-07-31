@@ -63,6 +63,8 @@
 "library_refresh_time.last" = "즉시";
 "library_refresh_time.never" = "없음";
 "zim_file_missing_indicator.help" = "Zim 파일이 없습니다.";
+"hotspot.action.start_hotspot.title" = "핫스팟 시작";
+"hotspot.action.stop_hotspot.title" = "핫스팟 중지";
 "hotspot.server_running.title" = "서버가 실행 중입니다";
 "hotspot.server_running.address" = "주소";
 "hotspot.settings.port_number" = "포트 번호";
