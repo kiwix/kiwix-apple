@@ -80,6 +80,8 @@
 "zim_file_cell.article_count.suffix" = "articles";
 "zim_file_missing_indicator.help" = "Le fichier Zim est manquant.";
 "hotspot.zim_file_selection.message" = "Sélectionnez les fichiers ZIM que vous voulez héberger sur le serveur";
+"hotspot.action.start_hotspot.title" = "Démarrer le point d’accès";
+"hotspot.action.stop_hotspot.title" = "Arrêter le point d’accès";
 "hotspot.server_running.title" = "Le serveur est en cours d’exécution";
 "hotspot.server_running.address" = "Adresse";
 "hotspot.settings.port_number" = "Numéro de port";

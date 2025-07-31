@@ -65,6 +65,8 @@
 "zim_file_cell.article_count.suffix" = "articulos";
 "zim_file_missing_indicator.help" = "Le file ZIM manca.";
 "hotspot.zim_file_selection.message" = "Selige le files ZIM que tu vole albergar sur le servitor";
+"hotspot.action.start_hotspot.title" = "Aperir puncto de accesso";
+"hotspot.action.stop_hotspot.title" = "Clauder puncto de accesso";
 "hotspot.server_running.title" = "Le servitor es active";
 "hotspot.server_running.address" = "Adresse";
 "hotspot.settings.port_number" = "Numero de porto";
