@@ -20,7 +20,7 @@ enum HotspotState {
     @MainActor static let selection = MultiSelectedZimFilesViewModel()
     
     case stopped
-    case started(URL, Image?)
+    case started(URL, CGImage?)
     
     var isStarted: Bool {
         switch self {

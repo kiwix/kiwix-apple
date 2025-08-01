@@ -18,7 +18,13 @@ import UniformTypeIdentifiers
 
 struct CopyPasteMenu: View {
     
-    let url: URL
+    private let url: URL
+    private let label: String
+    
+    init(url: URL, label: String = LocalString.library_zim_file_context_copy_url) {
+        self.url = url
+        self.label = label
+    }
     
     var body: some View {
         Button {
@@ -28,7 +34,7 @@ struct CopyPasteMenu: View {
             UIPasteboard.general.setValue(url.absoluteString, forPasteboardType: UTType.url.identifier)
             #endif
         } label: {
-            Label(LocalString.library_zim_file_context_copy_url, systemImage: "doc.on.doc")
+            Label(label, systemImage: "doc.on.doc")
         }
     }
     
@@ -36,6 +42,39 @@ struct CopyPasteMenu: View {
     public static func copyToPasteBoard(url: URL) {
         NSPasteboard.general.clearContents()
         NSPasteboard.general.setString(url.absoluteString, forType: .string)
+    }
+    #endif
+}
+
+struct CopyImageToPasteBoard: View {
+    private let image: CGImage
+    private let label: String
+    
+    init(image: CGImage, label: String = LocalString.common_button_copy) {
+        self.image = image
+        self.label = label
+    }
+    
+    var body: some View {
+        Button {
+            Self.copyToPasteBoard(image: image)
+        } label: {
+            Label(label, systemImage: "doc.on.doc")
+        }
+    }
+    
+    #if os(iOS)
+    public static func copyToPasteBoard(image: CGImage) {
+        UIPasteboard.general.image = UIImage(cgImage: image)
+    }
+    #endif
+    
+    #if os(macOS)
+    public static func copyToPasteBoard(image: CGImage) {
+        NSPasteboard.general.clearContents()
+        let nsImage = NSImage(cgImage: image, size: CGSize(width: image.width, height: image.height))
+        let tiffData = nsImage.tiffRepresentation
+        NSPasteboard.general.setData(tiffData, forType: .tiff)
     }
     #endif
 }

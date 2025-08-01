@@ -19,7 +19,7 @@ import os
 
 struct QRCode {
 
-    static func image(from text: String) async -> Image? {
+    static func image(from text: String) async -> CGImage? {
         let data = Data(text.utf8)
         guard let filter = CIFilter(name: "CIQRCodeGenerator") else {
             os_log("QRCode cannot create CIFilter", log: Log.LibraryService, type: .error)
@@ -34,7 +34,7 @@ struct QRCode {
             os_log("QRCode cannot create image", log: Log.LibraryService, type: .error)
             return nil
         }
-        return Image(image, scale: 1, label: Text(text))
+        return image
     }
 
 }

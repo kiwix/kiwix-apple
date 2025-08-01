@@ -14,7 +14,6 @@
 // along with Kiwix; If not, see https://www.gnu.org/licenses/.
 
 import SwiftUI
-import UniformTypeIdentifiers
 
 /// A grid of zim files that are opened, or was open but is now missing.
 /// A specific version of ZimFilesOpened, supporting multi selection for HotSpot
@@ -26,18 +25,6 @@ struct HotspotZimFilesSelection: View {
     ) private var zimFiles: FetchedResults<ZimFile>
     @StateObject private var selection: MultiSelectedZimFilesViewModel
     @ObservedObject private var hotspot = HotspotObservable()
-    @State private var presentedSheet: PresentedSheet?
-    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
-    
-    private enum PresentedSheet: Identifiable {
-        case shareHotspot(url: URL)
-        
-        var id: String {
-            switch self {
-            case .shareHotspot: return "shareHotspot"
-            }
-        }
-    }
     
     init(
         selectionProvider: @MainActor () -> MultiSelectedZimFilesViewModel = { @MainActor in HotspotState.selection }
@@ -48,99 +35,119 @@ struct HotspotZimFilesSelection: View {
     
     var body: some View {
         VStack(spacing: 0) {
-            LazyVGrid(
-                columns: ([GridItem(.adaptive(minimum: 250, maximum: 500), spacing: 12)]),
-                alignment: .leading,
-                spacing: 12
-            ) {
-                ForEach(zimFiles) { zimFile in
-                    MultiZimFilesSelectionContext(
-                        content: {
-                            ZimFileCell(
-                                zimFile,
-                                prominent: .name,
-                                isSelected: selection.isSelected(zimFile),
-                                backgroundColoring: CellBackground.hotspotSelectionColorFor
-                            )
-                        },
-                        zimFile: zimFile,
-                        selection: selection
-                    )
-                }
-            }
-            .disabled(hotspot.state.isStarted)
-            .modifier(GridCommon(edges: .all))
-            .modifier(ToolbarRoleBrowser())
-            .navigationTitle(MenuItem.hotspot.name)
-            .task {
-                // make sure that our selection only contains still existing ZIM files
-                selection.intersection(with: Set(zimFiles))
-            }
-#if os(iOS)
-            .overlay {
-                if zimFiles.isEmpty {
-                    Message(text: LocalString.zim_file_opened_overlay_no_opened_message)
-                }
-                if case .started(let address, let qrCodeImage) = hotspot.state {
-                    List {
-                        HotspotAddress(serverAddress: address, qrCodeImage: qrCodeImage, onShare: {
-                            if horizontalSizeClass == .compact {
-                                // for (compact) iPhone we want to close the whole library popup
-                                // and display the share dialog instead of it
-                                // going all the way back to CompactView(Controller)
-                                NotificationCenter.hotspotShare(url: address)
-                            } else {
-                                // for (regular) iPad we can display the share dialog right here
-                                presentedSheet = .shareHotspot(url: address)
+            if zimFiles.isEmpty {
+                Message(text: LocalString.zim_file_opened_overlay_no_opened_message)
+            } else {
+                LazyVGrid(
+                    columns: ([GridItem(.adaptive(minimum: 250, maximum: 500), spacing: 12)]),
+                    alignment: .leading,
+                    spacing: 12
+                ) {
+                    if case .started(let address, let qrCodeImage) = hotspot.state {
+                        HotspotCell {
+                            VStack {
+                                HStack {
+                                    Spacer()
+                                    Group {
+                                        if let qrCodeImage {
+                                            Image(qrCodeImage, scale: 1, label: Text(address.absoluteString))
+                                                .resizable()
+                                        } else {
+                                            ProgressView().progressViewStyle(.circular)
+                                        }
+                                    }
+                                    .frame(idealWidth: 240, maxWidth: 300, idealHeight: 240, maxHeight: 300)
+                                    .aspectRatio(1.0, contentMode: .fill)
+                                    Spacer()
+                                }
+                                HStack(alignment: .bottom) {
+                                    Spacer()
+                                    if let qrCodeImage {
+                                        let img = Image(qrCodeImage, scale: 1, label: Text(address.absoluteString))
+                                        ShareLink(
+                                            item: img,
+                                            preview: SharePreview(address.absoluteString, image: img)
+                                        ) {
+                                            Label(LocalString.common_button_share, systemImage: "square.and.arrow.up")
+                                        }
+                                        CopyImageToPasteBoard(image: qrCodeImage)
+                                    }
+                                }
                             }
-                        })
-                        HotspotExplanation()
-                    }
-                }
-            }
-            .sheet(item: $presentedSheet) { presentedSheet in
-                switch presentedSheet {
-                case .shareHotspot(let url):
-                    ActivityViewController(activityItems: [url].compactMap { $0 })
-                }
-            }
-            .toolbar {
-                ToolbarItem(placement: .topBarTrailing) {
-                    AsyncButton {
-                        await hotspot.toggleWith(
-                            zimFileIds: Set(selection.selectedZimFiles.map { $0.fileID })
-                        )
-                    } label: {
-                        Text(hotspot.buttonTitle)
-                            .bold()
-                    }
-                    .disabled(selection.selectedZimFiles.isEmpty && !hotspot.state.isStarted)
-                    .modifier(BadgeModifier(count: selection.selectedZimFiles.count))
-                }
-            }
-#endif
 #if os(macOS)
-            .overlay {
-                if zimFiles.isEmpty {
-                    Message(text: LocalString.zim_file_opened_overlay_no_opened_message)
-                }
-            }
-            .safeAreaInset(edge: .trailing, spacing: 0) {
-                HStack(spacing: 0) {
-                    Divider()
-                    switch selection.selectedZimFiles.count {
-                    case 0:
-                        Message(text: LocalString.hotspot_zim_file_selection_message)
-                            .background(.thickMaterial)
-                    default:
-                        HotspotDetails(zimFileIds: Set(selection.selectedZimFiles.map { $0.fileID }),
-                                       hotspot: hotspot)
+                            .buttonStyle(.borderless)
+                            .foregroundStyle(Color.accentColor)
+#endif
+                        }
+                        
+                        VStack {
+                            HotspotCell {
+                                VStack(alignment: .leading, spacing: 8) {
+                                    Link(address.absoluteString, destination: address)
+                                        .fontWeight(.semibold).foregroundColor(.accentColor).lineLimit(1)
+                                    Spacer()
+                                    HStack(alignment: .bottom, spacing: 12) {
+                                        Spacer()
+                                        ShareLink(item: address) {
+                                            Label(LocalString.common_button_share, systemImage: "square.and.arrow.up")
+                                        }
+                                        CopyPasteMenu(url: address, label: LocalString.common_button_copy)
+                                    }
+#if os(macOS)
+                                    .buttonStyle(.borderless)
+                                    .foregroundStyle(Color.accentColor)
+#endif
+                                }
+                            }
+                            .frame(maxHeight: 91)
+
+                            HotspotCell {
+                                HotspotExplanation()
+                            }
+                        }
+                        
+                    } else {
+                        ForEach(zimFiles) { zimFile in
+                            MultiZimFilesSelectionContext(
+                                content: {
+                                    ZimFileCell(
+                                        zimFile,
+                                        prominent: .name,
+                                        isSelected: selection.isSelected(zimFile),
+                                        backgroundColoring: CellBackground.hotspotSelectionColorFor
+                                    )
+                                },
+                                zimFile: zimFile,
+                                selection: selection
+                            )
+                        }
                     }
                 }
-                .frame(width: 275)
-                .background(.ultraThinMaterial)
             }
+        }
+        .modifier(GridCommon(edges: .all))
+        .modifier(ToolbarRoleBrowser())
+        .navigationTitle(MenuItem.hotspot.name)
+        .task {
+            // make sure that our selection only contains still existing ZIM files
+            selection.intersection(with: Set(zimFiles))
+        }
+        .toolbar {
+            ToolbarItem(placement: .primaryAction) {
+                AsyncButton {
+                    await hotspot.toggleWith(
+                        zimFileIds: Set(selection.selectedZimFiles.map { $0.fileID })
+                    )
+                } label: {
+                    Text(hotspot.buttonTitle)
+                        .bold()
+                }
+#if os(macOS)
+                .buttonStyle(.borderless)
 #endif
+                .disabled(selection.selectedZimFiles.isEmpty && !hotspot.state.isStarted)
+                .modifier(BadgeModifier(count: selection.selectedZimFiles.count))
+            }
         }
     }
 }

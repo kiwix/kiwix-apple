@@ -24,7 +24,6 @@
 "attribute.detail.unknown" = "अज्ञात";
 "download_task_cell.status.failed" = "विफल हुआ";
 "library_refresh_time.never" = "कभी नहीं";
-"hotspot.server_running.address" = "पता";
 "library.zim_file_context.main_page.label" = "मुखपृष्ठ";
 "zim_file_opened.toolbar.open.title" = "खोलें...";
 "zim_file_category.title" = "श्रेणी";
