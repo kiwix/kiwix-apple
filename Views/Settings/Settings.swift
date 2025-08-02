@@ -317,25 +317,23 @@ struct Settings: View {
     
     var hotspot: some View {
         Section {
-            VStack {
-                Text(Hotspot.validPortRangeMessage())
-                    .foregroundColor(.secondary)
-                HStack {
-                    Text(LocalString.hotspot_settings_port_number)
-                    TextField("", value: $portNumber, formatter: PortNumberFormatter.instance)
-                        .textFieldStyle(.roundedBorder)
-                        .onChange(of: portNumber) { newValue in
-                            let fixedValue = Hotspot.fixedUp(port: newValue)
-                            if fixedValue != newValue {
-                                portNumber = fixedValue
-                            }
-                            // save the valid port number
-                            Defaults[.hotspotPortNumber] = portNumber
+            HStack {
+                Text(LocalString.hotspot_settings_port_number)
+                TextField("", value: $portNumber, formatter: PortNumberFormatter.instance)
+                    .textFieldStyle(.roundedBorder)
+                    .onChange(of: portNumber) { newValue in
+                        let fixedValue = Hotspot.fixedUp(port: newValue)
+                        if fixedValue != newValue {
+                            portNumber = fixedValue
                         }
-                }
+                        // save the valid port number
+                        Defaults[.hotspotPortNumber] = portNumber
+                    }
             }
         } header: {
             Text(LocalString.enum_navigation_item_hotspot)
+        } footer: {
+            Text(Hotspot.validPortRangeMessage())
         }
     }
 }
