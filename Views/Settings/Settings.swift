@@ -17,6 +17,28 @@ import SwiftUI
 
 import Defaults
 
+enum PortNumberFormatter {
+    static let instance: NumberFormatter = {
+        let formatter = NumberFormatter()
+        formatter.usesGroupingSeparator = false
+        return formatter
+    }()
+}
+
+enum PortChecking {
+    /// - Returns: an optional error message
+    static func onPortChanged(newValue: Int) async -> String? {
+        switch await Hotspot.check(port: newValue) {
+        case .valid:
+            // make sure we only save valid port numbers
+            Defaults[.hotspotPortNumber] = newValue
+            return nil
+        case let .invalid(errorMessage):
+            return errorMessage
+        }
+    }
+}
+
 #if os(macOS)
 struct ReadingSettings: View {
     @EnvironmentObject private var colorSchemeStore: UserColorSchemeStore
@@ -115,7 +137,8 @@ struct LibrarySettings: View {
 struct HotspotSettings: View {
     
     @State private var portNumber: Int
-    @State private var showAlert: Bool = false
+    @State private var portAlert: String?
+    @Environment(\.controlActiveState) var controlActiveState
     
     init() {
         self.portNumber = Defaults[.hotspotPortNumber]
@@ -124,20 +147,16 @@ struct HotspotSettings: View {
     var body: some View {
         VStack(spacing: 16) {
             SettingSection(name: LocalString.hotspot_settings_port_number) {
-                TextField("", value: $portNumber, format: .number)
+                TextField("", value: $portNumber, formatter: PortNumberFormatter.instance)
                     .textFieldStyle(.roundedBorder)
             }
             .onChange(of: portNumber) { newValue in
-                if Hotspot.isValid(port: newValue) {
-                    showAlert = false
-                    // make sure we only save valid port numbers
-                    Defaults[.hotspotPortNumber] = newValue
-                } else {
-                    showAlert = true
+                Task { @MainActor in
+                    portAlert = await PortChecking.onPortChanged(newValue: newValue)
                 }
             }
-            if showAlert {
-                Text(Hotspot.invalidPortMessage)
+            if let portAlert {
+                Text(portAlert)
                     .font(.callout)
                     .foregroundStyle(.red)
             }
@@ -145,32 +164,17 @@ struct HotspotSettings: View {
         }
         .padding()
         .tabItem { Label(LocalString.enum_navigation_item_hotspot, systemImage: "wifi") }
-    }
-}
-
-struct SettingSection<Content: View>: View {
-    let name: String
-    let alignment: VerticalAlignment
-    let leftWidth: CGFloat
-    var content: () -> Content
-
-    init(
-        name: String,
-        alignment: VerticalAlignment = .firstTextBaseline,
-        leftWidth: CGFloat = 100,
-        @ViewBuilder content: @escaping () -> Content
-    ) {
-        self.name = name
-        self.alignment = alignment
-        self.leftWidth = leftWidth
-        self.content = content
-    }
-
-    var body: some View {
-        HStack(alignment: alignment) {
-            Text("\(name):").frame(width: leftWidth, alignment: .trailing)
-            VStack(alignment: .leading, spacing: 16, content: content)
-            Spacer()
+        // re-check port on both opening the settings
+        // and when switching apps (windows)
+        .task {
+            portAlert = await PortChecking.onPortChanged(newValue: portNumber)
+        }
+        .onChange(of: controlActiveState) { controlState in
+            if case .key = controlState {
+                Task { @MainActor in
+                    portAlert = await PortChecking.onPortChanged(newValue: portNumber)
+                }
+            }
         }
     }
 }
@@ -192,7 +196,7 @@ struct Settings: View {
     @EnvironmentObject private var library: LibraryViewModel
     @Environment(\.horizontalSizeClass) var horizontalSizeClass
     
-    @State private var showHotspotAlert: Bool = false
+    @State private var portAlert: String?
     @State private var portNumber: Int
     
     init() {
@@ -341,25 +345,31 @@ struct Settings: View {
     
     var hotspot: some View {
         Section {
-            if showHotspotAlert {
-                Text(Hotspot.invalidPortMessage).foregroundStyle(.red)
-            }
             HStack {
                 Text(LocalString.hotspot_settings_port_number)
-                TextField("", value: $portNumber, format: .number)
+                TextField("", value: $portNumber, formatter: PortNumberFormatter.instance)
                     .textFieldStyle(.roundedBorder)
                 .onChange(of: portNumber) { newValue in
-                    if Hotspot.isValid(port: newValue) {
-                        showHotspotAlert = false
-                        // make sure we only save valid port numbers
-                        Defaults[.hotspotPortNumber] = newValue
-                    } else {
-                        showHotspotAlert = true
+                    Task { @MainActor in
+                        portAlert = await PortChecking.onPortChanged(newValue: newValue)
                     }
                 }
             }
         } header: {
-            Text(LocalString.enum_navigation_item_hotspot)
+            HStack {
+                if let portAlert {
+                    Text(portAlert)
+                        .foregroundStyle(.red)
+                        .font(.caption2)
+                } else {
+                    Text(LocalString.enum_navigation_item_hotspot)
+                }
+            }
+        }
+        .onAppear {
+            Task { @MainActor in
+                portAlert = await PortChecking.onPortChanged(newValue: portNumber)
+            }
         }
     }
 }

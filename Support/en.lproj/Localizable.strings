@@ -102,6 +102,7 @@
 "hotspot.server_running.address" = "Address";
 "hotspot.settings.port_number" = "Port number";
 "hotspot.settings.invalid_port_message" = "Invalid port number, try a value between %@ and %@";
+"hotspot.settings.already_in_use_port_message" = "Port %@ is already in use. Try using a different port.";
 "hotspot.server_explanation" = "To browse these ZIM files on other devices, make sure all devices are either on the same WiFi network or connected to your Personal Hotspot.";
 "library.zim_file_details.side_panel.message" = "Select a ZIM file to see details";
 "library.zim_file_context.main_page.label" = "Main Page";

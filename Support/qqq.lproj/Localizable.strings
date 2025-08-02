@@ -72,6 +72,7 @@
 "hotspot.server_running.address" = "Description prefix for the Kiwix Hotspot address details. Eg: Address http://192.168.100.10:8080";
 "hotspot.settings.port_number" = "Label for setting the default port number for Kiwix Hotspot in settings. Eg: Port number: 4567";
 "hotspot.settings.invalid_port_message" = "A warning message that an invalid port number was set. It uses two number arguments a minimum and a maximum. Eg ... a value between 1024 and 9999";
+"hotspot.settings.already_in_use_port_message" = "A warning message, that the selected port number (argument) is already in use.";
 "hotspot.server_explanation" = "A desription text explaining the network setup of devices for the Kiwix Hotspot.";
 "library.zim_file_details.side_panel.message" = "Default placeholder text for side panel on macOS, when no file is selected.";
 "library.zim_file_context.main_page.label" = "Supplementary action title, when long pressing on a ZIM file";
