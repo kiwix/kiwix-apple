@@ -367,9 +367,11 @@ final class BrowserViewModel: NSObject, ObservableObject,
 
     @MainActor
     func refreshVideoState() {
-        Task { [weak webView] in
-            await MainActor.run { [weak webView] in
-                webView?.evaluateJavaScript("refreshVideoState();")
+        if #unavailable(iOS 18.0) {
+            Task { [weak webView] in
+                await MainActor.run { [weak webView] in
+                    webView?.evaluateJavaScript("refreshVideoState();")
+                }
             }
         }
     }
