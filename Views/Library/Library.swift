@@ -58,7 +58,7 @@ struct Library: View {
                         .listStyle(.plain)
                         .navigationTitle(MenuItem.categories.name)
                     case .opened:
-                        ZimFilesOpened(dismiss: dismiss)
+                        ZimFilesOpenedNavStack(dismiss: dismiss)
                     case .downloads:
                         ZimFilesDownloads(dismiss: dismiss)
                             .environment(\.managedObjectContext, Database.shared.viewContext)
