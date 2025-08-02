@@ -152,7 +152,7 @@ struct HotspotSettings: View {
             }
             .onChange(of: portNumber) { newValue in
                 Task { @MainActor in
-                    portAlert = await PortChecking.onPortChanged(newValue: portNumber)
+                    portAlert = await PortChecking.onPortChanged(newValue: newValue)
                 }
             }
             if let portAlert {
@@ -175,33 +175,6 @@ struct HotspotSettings: View {
                     portAlert = await PortChecking.onPortChanged(newValue: portNumber)
                 }
             }
-        }
-    }
-}
-
-struct SettingSection<Content: View>: View {
-    let name: String
-    let alignment: VerticalAlignment
-    let leftWidth: CGFloat
-    var content: () -> Content
-
-    init(
-        name: String,
-        alignment: VerticalAlignment = .firstTextBaseline,
-        leftWidth: CGFloat = 100,
-        @ViewBuilder content: @escaping () -> Content
-    ) {
-        self.name = name
-        self.alignment = alignment
-        self.leftWidth = leftWidth
-        self.content = content
-    }
-
-    var body: some View {
-        HStack(alignment: alignment) {
-            Text("\(name):").frame(width: leftWidth, alignment: .trailing)
-            VStack(alignment: .leading, spacing: 16, content: content)
-            Spacer()
         }
     }
 }
@@ -378,7 +351,7 @@ struct Settings: View {
                     .textFieldStyle(.roundedBorder)
                 .onChange(of: portNumber) { newValue in
                     Task { @MainActor in
-                        portAlert = await PortChecking.onPortChanged(newValue: portNumber)
+                        portAlert = await PortChecking.onPortChanged(newValue: newValue)
                     }
                 }
             }

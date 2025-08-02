@@ -85,7 +85,6 @@ final class Hotspot {
         return port.intValue
     }
     
-    
     /// Check if the given port is in valid range and if occupied by anything else than a running KiwixHotspot
     /// - Parameter port: the port to check
     /// - Returns: the result of the check

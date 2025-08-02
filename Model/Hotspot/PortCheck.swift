@@ -34,10 +34,10 @@ enum PortCheck {
         addr.sin_port = Int(OSHostByteOrder()) == OSLittleEndian ? _OSSwapInt16(port) : port
         addr.sin_addr = in_addr(s_addr: inet_addr("0.0.0.0"))
         addr.sin_zero = (0, 0, 0, 0, 0, 0, 0, 0)
-        var bind_addr = sockaddr()
-        memcpy(&bind_addr, &addr, Int(sizeOfSockkAddr))
+        var bindAddress = sockaddr()
+        memcpy(&bindAddress, &addr, Int(sizeOfSockkAddr))
         
-        if Darwin.bind(socketFileDescriptor, &bind_addr, socklen_t(sizeOfSockkAddr)) == -1 {
+        if Darwin.bind(socketFileDescriptor, &bindAddress, socklen_t(sizeOfSockkAddr)) == -1 {
             return false
         }
         let isOpen = listen(socketFileDescriptor, SOMAXCONN ) != -1
