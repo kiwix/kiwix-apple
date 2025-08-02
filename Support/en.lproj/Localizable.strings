@@ -101,8 +101,8 @@
 "hotspot.server_running.title" = "Server is running";
 "hotspot.server_running.address" = "Address";
 "hotspot.settings.port_number" = "Port number";
-"hotspot.settings.invalid_port_message" = "Invalid port number, try a value between %@ and %@";
-"hotspot.settings.already_in_use_port_message" = "Port %@ is already in use. Try using a different port.";
+"hotspot.settings.recommended_port_range" = "The network port used by the Hotspot, should be between %@ and %@";
+"hotspot.error.port_already_used_by_another_app" = "Hotspot can’t start because port %@ is in use. To fix this, close the app using it or change the Kiwix Hotspot port in settings.";
 "hotspot.server_explanation" = "To browse these ZIM files on other devices, make sure all devices are either on the same WiFi network or connected to your Personal Hotspot.";
 "library.zim_file_details.side_panel.message" = "Select a ZIM file to see details";
 "library.zim_file_context.main_page.label" = "Main Page";

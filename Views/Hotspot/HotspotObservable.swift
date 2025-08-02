@@ -37,7 +37,6 @@ final class HotspotObservable: ObservableObject {
     
     @Published var buttonTitle: String = LocalString.hotspot_action_start_hotspot_title
     @Published var state: HotspotState = .stopped
-    @Published var errorMessage: String?
     private var hotspot = Hotspot.shared
     private var cancellables = Set<AnyCancellable>()
     
@@ -61,7 +60,6 @@ final class HotspotObservable: ObservableObject {
         switch hotspotState {
         case .started:
             buttonTitle = LocalString.hotspot_action_stop_hotspot_title
-            errorMessage = nil
             let address = await hotspot.serverAddress()
             if let address {
                 state = .started(address, nil)
@@ -71,13 +69,11 @@ final class HotspotObservable: ObservableObject {
                 state = .stopped
             }
         case .stopped:
-            errorMessage = nil
             buttonTitle = LocalString.hotspot_action_start_hotspot_title
             state = .stopped
         case let .error(message):
-            errorMessage = message
             buttonTitle = LocalString.hotspot_action_start_hotspot_title
-            state = .stopped
+            state = .error(message)
         }
     }
 }

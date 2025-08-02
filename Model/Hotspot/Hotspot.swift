@@ -50,9 +50,11 @@ final class Hotspot {
             return
         }
         let port: Int = Defaults[.hotspotPortNumber]
-        guard case .valid = await Self.check(port: port) else {
+        guard PortCheck.isOpen(port: port) else {
             await MainActor.run {
-                state = .error(LocalString.hotspot_settings_already_in_use_port_message(withArgs: "\(port)"))
+                state = .error(
+                    LocalString.hotspot_error_port_already_used_by_another_app(withArgs: "\(port)")
+                )
             }
             return
         }
@@ -85,27 +87,18 @@ final class Hotspot {
         return port.intValue
     }
     
-    /// Check if the given port is in valid range and if occupied by anything else than a running KiwixHotspot
-    /// - Parameter port: the port to check
-    /// - Returns: the result of the check
-    static func check(port: Int) async -> PortCheckResult {
-        switch port {
-        case minPort...maxPort:
-            if let runningPort = await Hotspot.shared.runningPort(),
-                runningPort == port {
-                // it is used by the currently running Hotspot
-                // it must be valid
-                return .valid
-            }
-            if await PortCheck.isOpen(port: port) {
-                return .valid
-            } else {
-                let message = LocalString.hotspot_settings_already_in_use_port_message(withArgs: "\(port)")
-                return .invalid(message)
-            }
-        default:
-            let message = LocalString.hotspot_settings_invalid_port_message(withArgs: "\(minPort)", "\(maxPort)")
-            return .invalid(message)
+    static func fixedUp(port: Int) -> Int {
+        guard minPort < port else {
+            return minPort
         }
+        var value = port
+        while maxPort < value {
+            value /= 10 // cut back the digits to be below max
+        }
+        return value
+    }
+    
+    nonisolated static func validPortRangeMessage() -> String {
+        LocalString.hotspot_settings_recommended_port_range(withArgs: "\(minPort)", "\(maxPort)")
     }
 }

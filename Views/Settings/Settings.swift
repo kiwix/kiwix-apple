@@ -25,20 +25,6 @@ enum PortNumberFormatter {
     }()
 }
 
-enum PortChecking {
-    /// - Returns: an optional error message
-    static func onPortChanged(newValue: Int) async -> String? {
-        switch await Hotspot.check(port: newValue) {
-        case .valid:
-            // make sure we only save valid port numbers
-            Defaults[.hotspotPortNumber] = newValue
-            return nil
-        case let .invalid(errorMessage):
-            return errorMessage
-        }
-    }
-}
-
 #if os(macOS)
 struct ReadingSettings: View {
     @EnvironmentObject private var colorSchemeStore: UserColorSchemeStore
@@ -137,7 +123,6 @@ struct LibrarySettings: View {
 struct HotspotSettings: View {
     
     @State private var portNumber: Int
-    @State private var portAlert: String?
     @Environment(\.controlActiveState) var controlActiveState
     
     init() {
@@ -147,35 +132,23 @@ struct HotspotSettings: View {
     var body: some View {
         VStack(spacing: 16) {
             SettingSection(name: LocalString.hotspot_settings_port_number) {
+                Text(Hotspot.validPortRangeMessage())
+                    .foregroundColor(.secondary)
                 TextField("", value: $portNumber, formatter: PortNumberFormatter.instance)
                     .textFieldStyle(.roundedBorder)
             }
             .onChange(of: portNumber) { newValue in
-                Task { @MainActor in
-                    portAlert = await PortChecking.onPortChanged(newValue: newValue)
+                let fixedValue = Hotspot.fixedUp(port: newValue)
+                if fixedValue != newValue {
+                    portNumber = fixedValue
                 }
-            }
-            if let portAlert {
-                Text(portAlert)
-                    .font(.callout)
-                    .foregroundStyle(.red)
+                // save the valid port number
+                Defaults[.hotspotPortNumber] = portNumber
             }
             Spacer()
         }
         .padding()
         .tabItem { Label(LocalString.enum_navigation_item_hotspot, systemImage: "wifi") }
-        // re-check port on both opening the settings
-        // and when switching apps (windows)
-        .task {
-            portAlert = await PortChecking.onPortChanged(newValue: portNumber)
-        }
-        .onChange(of: controlActiveState) { controlState in
-            if case .key = controlState {
-                Task { @MainActor in
-                    portAlert = await PortChecking.onPortChanged(newValue: portNumber)
-                }
-            }
-        }
     }
 }
 
@@ -196,7 +169,6 @@ struct Settings: View {
     @EnvironmentObject private var library: LibraryViewModel
     @Environment(\.horizontalSizeClass) var horizontalSizeClass
     
-    @State private var portAlert: String?
     @State private var portNumber: Int
     
     init() {
@@ -345,31 +317,25 @@ struct Settings: View {
     
     var hotspot: some View {
         Section {
-            HStack {
-                Text(LocalString.hotspot_settings_port_number)
-                TextField("", value: $portNumber, formatter: PortNumberFormatter.instance)
-                    .textFieldStyle(.roundedBorder)
-                .onChange(of: portNumber) { newValue in
-                    Task { @MainActor in
-                        portAlert = await PortChecking.onPortChanged(newValue: newValue)
-                    }
+            VStack {
+                Text(Hotspot.validPortRangeMessage())
+                    .foregroundColor(.secondary)
+                HStack {
+                    Text(LocalString.hotspot_settings_port_number)
+                    TextField("", value: $portNumber, formatter: PortNumberFormatter.instance)
+                        .textFieldStyle(.roundedBorder)
+                        .onChange(of: portNumber) { newValue in
+                            let fixedValue = Hotspot.fixedUp(port: newValue)
+                            if fixedValue != newValue {
+                                portNumber = fixedValue
+                            }
+                            // save the valid port number
+                            Defaults[.hotspotPortNumber] = portNumber
+                        }
                 }
             }
         } header: {
-            HStack {
-                if let portAlert {
-                    Text(portAlert)
-                        .foregroundStyle(.red)
-                        .font(.caption2)
-                } else {
-                    Text(LocalString.enum_navigation_item_hotspot)
-                }
-            }
-        }
-        .onAppear {
-            Task { @MainActor in
-                portAlert = await PortChecking.onPortChanged(newValue: portNumber)
-            }
+            Text(LocalString.enum_navigation_item_hotspot)
         }
     }
 }
