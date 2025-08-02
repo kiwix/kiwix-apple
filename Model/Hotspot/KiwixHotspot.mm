@@ -70,19 +70,12 @@
     self.server->start();
 }
 
-- (NSString * __nullable) address {
+- (NSString *)address {
     if(self.server == nullptr) {
         return nil;
     }
     NSString *ipAddress = [NSString stringWithUTF8String: self.server->getAddress().addr.c_str()];
     return [NSString stringWithFormat:@"http://%@:%i", ipAddress, self.server->getPort()];
-}
-
-- (NSNumber * __nullable) port {
-    if(self.server == nullptr) {
-        return nil;
-    }
-    return [NSNumber numberWithInt: self.server->getPort()];
 }
 
 - (void)stop {

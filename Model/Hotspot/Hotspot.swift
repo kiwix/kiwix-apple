@@ -80,13 +80,6 @@ final class Hotspot {
         return URL(string: address)
     }
     
-    func runningPort() async -> Int? {
-        guard let port = await self.hotspot?.__port() else {
-            return nil
-        }
-        return port.intValue
-    }
-    
     static func fixedUp(port: Int) -> Int {
         guard minPort < port else {
             return minPort
