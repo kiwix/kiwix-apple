@@ -45,6 +45,15 @@ struct HotspotDetails: View {
             if case .started(let address, let qrCodeImage) = hotspot.state {
                 HotspotAddress(serverAddress: address, qrCodeImage: qrCodeImage)
             }
+            if let errorMessage = hotspot.errorMessage {
+                Section {
+                    Text(errorMessage)
+                        .fontWeight(.bold)
+                        .lineLimit(nil)
+                        .multilineTextAlignment(.leading)
+                        .foregroundStyle(.red)
+                }
+            }
             HotspotExplanation()
         }
         .listStyle(.sidebar)
