@@ -132,10 +132,10 @@ struct HotspotSettings: View {
     var body: some View {
         VStack(spacing: 16) {
             SettingSection(name: LocalString.hotspot_settings_port_number) {
-                Text(Hotspot.validPortRangeMessage())
-                    .foregroundColor(.secondary)
                 TextField("", value: $portNumber, formatter: PortNumberFormatter.instance)
                     .textFieldStyle(.roundedBorder)
+                Text(Hotspot.validPortRangeMessage())
+                    .foregroundColor(.secondary)
             }
             .onChange(of: portNumber) { newValue in
                 let fixedValue = Hotspot.fixedUp(port: newValue)
