@@ -14,19 +14,20 @@
 // along with Kiwix; If not, see https://www.gnu.org/licenses/.
 
 import SwiftUI
-import Network
 
-struct HotspotExplanation: View {
+struct HotspotCell<Content: View>: View {
+    
+    private let content: Content
+    
+    init(@ViewBuilder content: () -> Content) {
+        self.content = content()
+    }
     
     var body: some View {
-        VStack {
-            HStack {
-                Text(Hotspot.explanationText)
-                    .multilineTextAlignment(.leading)
-                    .lineLimit(nil)
-                Spacer()
-            }
-            Spacer()
-        }
+        content
+            .padding()
+            .background(CellBackground.hotspotSelectionColorFor(isHovering: false, isSelected: false))
+            .clipShape(CellBackground.clipShapeRectangle)
     }
+    
 }
