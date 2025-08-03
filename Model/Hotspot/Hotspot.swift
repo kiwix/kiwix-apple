@@ -18,25 +18,29 @@ import Defaults
 
 final class Hotspot {
     
+    enum PortCheckResult {
+        case valid
+        case invalid(String)
+    }
+    
+    enum State {
+        case started
+        case stopped
+        case error(String)
+    }
+    
     @MainActor
     static let shared = Hotspot()
     
-    private static let minPort = 1024
+    private static let minPort = 1
     nonisolated static let defaultPort = 8080
-    private static let maxPort = 9999
+    private static let maxPort = 65535
     
     @MainActor
-    @Published var isStarted: Bool = false
+    @Published var state: State = .stopped
     
     @ZimActor
-    private var hotspot: KiwixHotspot? {
-        didSet {
-            let started = hotspot != nil
-            Task { @MainActor [weak self] in
-                self?.isStarted = started
-            }
-        }
-    }
+    private var hotspot: KiwixHotspot?
 
     @ZimActor
     func startWith(zimFileIds: Set<UUID>) async {
@@ -45,8 +49,20 @@ final class Hotspot {
             debugPrint("no zim files were set for Hotspot to start")
             return
         }
-        let portNumber = Int32(Defaults[.hotspotPortNumber])
+        let port: Int = Defaults[.hotspotPortNumber]
+        guard PortCheck.isOpen(port: port) else {
+            await MainActor.run {
+                state = .error(
+                    LocalString.hotspot_error_port_already_used_by_another_app(withArgs: "\(port)")
+                )
+            }
+            return
+        }
+        let portNumber = Int32(port)
         hotspot = KiwixHotspot(__zimFileIds: zimFileIds, onPort: portNumber)
+        await MainActor.run {
+            state = .started
+        }
     }
     
     @ZimActor
@@ -54,9 +70,9 @@ final class Hotspot {
         guard let hotspot else { return }
         hotspot.__stop()
         self.hotspot = nil
+        await MainActor.run { state = .stopped }
     }
     
-    @MainActor
     func serverAddress() async -> URL? {
         guard let address = await self.hotspot?.__address() else {
             return nil
@@ -64,14 +80,18 @@ final class Hotspot {
         return URL(string: address)
     }
     
-    nonisolated static func isValid(port: Int) -> Bool {
-        switch port {
-        case minPort...maxPort: return true
-        default: return false
+    static func fixedUp(port: Int) -> Int {
+        guard minPort < port else {
+            return minPort
         }
+        var value = port
+        while maxPort < value {
+            value /= 10 // cut back the digits to be below max
+        }
+        return value
     }
     
-    nonisolated static var invalidPortMessage: String {
-        LocalString.hotspot_settings_invalid_port_message(withArgs: "\(minPort)", "\(maxPort)")
+    nonisolated static func validPortRangeMessage() -> String {
+        LocalString.hotspot_settings_recommended_port_range(withArgs: "\(minPort)", "\(maxPort)")
     }
 }

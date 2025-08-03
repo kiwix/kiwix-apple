@@ -19,12 +19,14 @@ import Combine
 enum HotspotState {
     @MainActor static let selection = MultiSelectedZimFilesViewModel()
     
-    case stopped
     case started(URL, Image?)
+    case stopped
+    case error(String)
     
     var isStarted: Bool {
         switch self {
         case .stopped: return false
+        case .error: return false
         case .started: return true
         }
     }
@@ -39,23 +41,24 @@ final class HotspotObservable: ObservableObject {
     private var cancellables = Set<AnyCancellable>()
     
     init() {
-        hotspot.$isStarted.sink { [weak self] isStarted in
+        hotspot.$state.sink { [weak self] state in
             Task { [weak self] in
-                await self?.update(isStarted: isStarted)
+                await self?.update(hotspotState: state)
             }
         }.store(in: &cancellables)
     }
     
     func toggleWith(zimFileIds: Set<UUID>) async {
-        if hotspot.isStarted {
+        if state.isStarted {
             await hotspot.stop()
         } else {
             await hotspot.startWith(zimFileIds: zimFileIds)
         }
     }
     
-    private func update(isStarted: Bool) async {
-        if isStarted {
+    private func update(hotspotState: Hotspot.State) async {
+        switch hotspotState {
+        case .started:
             buttonTitle = LocalString.hotspot_action_stop_hotspot_title
             let address = await hotspot.serverAddress()
             if let address {
@@ -65,9 +68,12 @@ final class HotspotObservable: ObservableObject {
             } else {
                 state = .stopped
             }
-        } else {
+        case .stopped:
             buttonTitle = LocalString.hotspot_action_start_hotspot_title
             state = .stopped
+        case let .error(message):
+            buttonTitle = LocalString.hotspot_action_start_hotspot_title
+            state = .error(message)
         }
     }
 }

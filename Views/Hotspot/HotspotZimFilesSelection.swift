@@ -28,6 +28,7 @@ struct HotspotZimFilesSelection: View {
     @ObservedObject private var hotspot = HotspotObservable()
     @State private var presentedSheet: PresentedSheet?
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
+    @State private var hotspotError: String?
     
     private enum PresentedSheet: Identifiable {
         case shareHotspot(url: URL)
@@ -48,6 +49,13 @@ struct HotspotZimFilesSelection: View {
     
     var body: some View {
         VStack(spacing: 0) {
+            if let hotspotError {
+                Text(hotspotError)
+                    .font(.subheadline)
+                    .foregroundStyle(.red)
+                    .padding(.horizontal, 32)
+                    .padding(.vertical, 12)
+            }
             LazyVGrid(
                 columns: ([GridItem(.adaptive(minimum: 250, maximum: 500), spacing: 12)]),
                 alignment: .leading,
@@ -77,6 +85,14 @@ struct HotspotZimFilesSelection: View {
                 selection.intersection(with: Set(zimFiles))
             }
 #if os(iOS)
+            .onReceive(hotspot.$state) { state in
+                switch state {
+                case let .error(errorMessage):
+                    hotspotError = errorMessage
+                case .started, .stopped:
+                    hotspotError = nil
+                }
+            }
             .overlay {
                 if zimFiles.isEmpty {
                     Message(text: LocalString.zim_file_opened_overlay_no_opened_message)

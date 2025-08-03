@@ -42,10 +42,22 @@ struct HotspotDetails: View {
             }
             .collapsible(false)
             
-            if case .started(let address, let qrCodeImage) = hotspot.state {
+            switch hotspot.state {
+            case .started(let address, let qrCodeImage):
                 HotspotAddress(serverAddress: address, qrCodeImage: qrCodeImage)
+                HotspotExplanation()
+            case .stopped:
+                HotspotExplanation()
+            case .error(let errorMessage):
+                Section {
+                    Text(errorMessage)
+                        .lineLimit(nil)
+                        .multilineTextAlignment(.leading)
+                        .foregroundStyle(.red)
+                }
+                HotspotExplanation()
             }
-            HotspotExplanation()
+            
         }
         .listStyle(.sidebar)
     }    
