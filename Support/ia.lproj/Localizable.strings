@@ -70,7 +70,6 @@
 "hotspot.server_running.title" = "Le servitor es active";
 "hotspot.server_running.address" = "Adresse";
 "hotspot.settings.port_number" = "Numero de porto";
-"hotspot.settings.invalid_port_message" = "Numero de porto non valide. Essaya un valor inter %@ e %@";
 "hotspot.server_explanation" = "Pro navigar iste files ZIM sur altere apparatos, assecura te que tote le dispositivos es o sur le mesme rete WiFi o connectite a tu puncto de accesso personal.";
 "library.zim_file_details.side_panel.message" = "Selige un file ZIM pro vider detalios";
 "library.zim_file_context.main_page.label" = "Pagina principal";

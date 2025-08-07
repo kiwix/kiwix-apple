@@ -68,7 +68,6 @@
 "zim_file_cell.article_count.suffix" = "Artikel";
 "zim_file_missing_indicator.help" = "Zim-Datei fehlt.";
 "hotspot.settings.port_number" = "Portnummer";
-"hotspot.settings.invalid_port_message" = "Ungültige Portnummer, versuche einen Wert zwischen %@ und %@";
 "library.zim_file_details.side_panel.message" = "Wähle eine ZIM-Datei aus, um Details zu sehen";
 "library.zim_file_context.main_page.label" = "Hauptseite";
 "library.zim_file_context.random.label" = "Zufällige Seite";
