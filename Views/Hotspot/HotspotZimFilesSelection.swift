@@ -70,6 +70,26 @@ struct HotspotZimFilesSelection: View {
                 ) {
                     if case .started(let address, let qrCodeImage) = hotspot.state {
                         HotspotCell {
+                            VStack(alignment: .center, spacing: Self.vSpace) {
+                                Link(address.absoluteString, destination: address)
+                                    .fontWeight(.semibold).foregroundColor(.accentColor).lineLimit(1)
+                                HStack(spacing: 32) {
+                                    Spacer()
+                                    ShareLink(item: address) {
+                                        Label(LocalString.common_button_share, systemImage: "square.and.arrow.up")
+                                    }
+                                    CopyPasteMenu(url: address, label: LocalString.common_button_copy)
+                                    Spacer()
+                                }
+#if os(macOS)
+                                .buttonStyle(.borderless)
+                                .foregroundStyle(Color.accentColor)
+#endif
+                            }
+                            
+                        }
+                        
+                        HotspotCell {
                             HStack {
                                 Spacer()
                                 VStack(spacing: Self.vSpace) {
@@ -106,26 +126,6 @@ struct HotspotZimFilesSelection: View {
                             .buttonStyle(.borderless)
                             .foregroundStyle(Color.accentColor)
 #endif
-                        }
-                        
-                        HotspotCell {
-                            VStack(alignment: .center, spacing: Self.vSpace) {
-                                Link(address.absoluteString, destination: address)
-                                    .fontWeight(.semibold).foregroundColor(.accentColor).lineLimit(1)
-                                HStack(spacing: 32) {
-                                    Spacer()
-                                    ShareLink(item: address) {
-                                        Label(LocalString.common_button_share, systemImage: "square.and.arrow.up")
-                                    }
-                                    CopyPasteMenu(url: address, label: LocalString.common_button_copy)
-                                    Spacer()
-                                }
-#if os(macOS)
-                                .buttonStyle(.borderless)
-                                .foregroundStyle(Color.accentColor)
-#endif
-                            }
-                            
                         }
                         
                         HotspotCell {
