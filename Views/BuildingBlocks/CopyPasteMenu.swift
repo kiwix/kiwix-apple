@@ -20,6 +20,7 @@ struct CopyPasteMenu: View {
     
     private let url: URL
     private let label: String
+    @State var copyComplete: UInt = 0
     
     init(url: URL, label: String = LocalString.library_zim_file_context_copy_url) {
         self.url = url
@@ -27,15 +28,18 @@ struct CopyPasteMenu: View {
     }
     
     var body: some View {
-        Button {
-            #if os(macOS)
-            Self.copyToPasteBoard(url: url)
-            #elseif os(iOS)
-            UIPasteboard.general.setValue(url.absoluteString, forPasteboardType: UTType.url.identifier)
-            #endif
-        } label: {
-            Label(label, systemImage: "doc.on.doc")
-        }
+        SensoryFeedbackContext({
+            Button {
+                #if os(macOS)
+                Self.copyToPasteBoard(url: url)
+                #elseif os(iOS)
+                UIPasteboard.general.setValue(url.absoluteString, forPasteboardType: UTType.url.identifier)
+                #endif
+                copyComplete += 1
+            } label: {
+                Label(label, systemImage: "doc.on.doc")
+            }
+        }, trigger: copyComplete)
     }
     
     #if os(macOS)
@@ -49,6 +53,7 @@ struct CopyPasteMenu: View {
 struct CopyImageToPasteBoard: View {
     private let image: CGImage
     private let label: String
+    @State private var copyComplete: UInt = 0
     
     init(image: CGImage, label: String = LocalString.common_button_copy) {
         self.image = image
@@ -56,11 +61,14 @@ struct CopyImageToPasteBoard: View {
     }
     
     var body: some View {
-        Button {
-            Self.copyToPasteBoard(image: image)
-        } label: {
-            Label(label, systemImage: "doc.on.doc")
-        }
+        SensoryFeedbackContext({
+            Button {
+                Self.copyToPasteBoard(image: image)
+                copyComplete += 1
+            } label: {
+                Label(label, systemImage: "doc.on.doc")
+            }
+        }, trigger: copyComplete)
     }
     
     #if os(iOS)
@@ -77,4 +85,23 @@ struct CopyImageToPasteBoard: View {
         NSPasteboard.general.setData(tiffData, forType: .tiff)
     }
     #endif
+}
+
+struct SensoryFeedbackContext<Content: View, T: Equatable>: View {
+    private let content: Content
+    private let trigger: T
+    
+    init(@ViewBuilder _ content: () -> Content, trigger: T) {
+        self.content = content()
+        self.trigger = trigger
+    }
+    
+    var body: some View {
+        if #available(iOS 17, *) {
+            content
+                .sensoryFeedback(.success, trigger: trigger) { _, _ in true }
+        } else {
+            content
+        }
+    }
 }
