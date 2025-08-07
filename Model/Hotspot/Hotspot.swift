@@ -32,9 +32,9 @@ final class Hotspot {
     @MainActor
     static let shared = Hotspot()
     
-    private static let minPort = 1
+    static let minPort = 1
     nonisolated static let defaultPort = 8080
-    private static let maxPort = 65535
+    static let maxPort = 65535
     
     @MainActor
     @Published var state: State = .stopped
@@ -78,17 +78,6 @@ final class Hotspot {
             return nil
         }
         return URL(string: address)
-    }
-    
-    static func fixedUp(port: Int) -> Int {
-        guard minPort < port else {
-            return minPort
-        }
-        var value = port
-        while maxPort < value {
-            value /= 10 // cut back the digits to be below max
-        }
-        return value
     }
     
     nonisolated static func validPortRangeMessage() -> String {
