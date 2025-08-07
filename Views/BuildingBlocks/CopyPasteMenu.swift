@@ -97,9 +97,11 @@ struct SensoryFeedbackContext<Content: View, T: Equatable>: View {
     }
     
     var body: some View {
-        if #available(iOS 17, *) {
+        if #available(iOS 17, macOS 14, *) {
             content
+            #if os(iOS)
                 .sensoryFeedback(.success, trigger: trigger) { _, _ in true }
+            #endif
         } else {
             content
         }
