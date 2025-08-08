@@ -69,76 +69,7 @@ struct HotspotZimFilesSelection: View {
                     spacing: 12
                 ) {
                     if case .started(let address, let qrCodeImage) = hotspot.state {
-                        HotspotCell {
-                            VStack(alignment: .center, spacing: Self.vSpace) {
-                                #if os(macOS)
-                                Link(address.absoluteString, destination: address)
-                                    .fontWeight(.semibold).foregroundColor(.accentColor).lineLimit(1)
-                                #else
-                                Text(LocalString.hotspot_server_active_warning)
-                                    .fontWeight(.bold).foregroundStyle(Color.primary).lineLimit(nil)
-                                Text(address.absoluteString)
-                                    .fontWeight(.semibold).foregroundStyle(Color.primary).lineLimit(1)
-                                #endif
-                                HStack(spacing: 32) {
-                                    Spacer()
-                                    ShareLink(item: address) {
-                                        Label(LocalString.common_button_share, systemImage: "square.and.arrow.up")
-                                    }
-                                    CopyPasteMenu(url: address, label: LocalString.common_button_copy)
-                                    Spacer()
-                                }
-#if os(macOS)
-                                .buttonStyle(.borderless)
-                                .foregroundStyle(Color.accentColor)
-#endif
-                            }
-                            
-                        }
-                        
-                        HotspotCell {
-                            HStack {
-                                Spacer()
-                                VStack(spacing: Self.vSpace) {
-                                    Group {
-                                        if let qrCodeImage {
-                                            Image(qrCodeImage, scale: 1, label: Text(address.absoluteString))
-                                                .resizable()
-                                        } else {
-                                            ProgressView().progressViewStyle(.circular)
-                                        }
-                                    }
-                                    .frame(width: 220, height: 220)
-                                    .aspectRatio(1.0, contentMode: .fill)
-                                    
-                                    if let qrCodeImage {
-                                        HStack(spacing: 32) {
-                                            let img = Image(qrCodeImage, scale: 1, label: Text(address.absoluteString))
-                                            ShareLink(
-                                                item: img,
-                                                preview: SharePreview(address.absoluteString, image: img)
-                                            ) {
-                                                Label(
-                                                    LocalString.common_button_share,
-                                                    systemImage: "square.and.arrow.up"
-                                                )
-                                            }
-                                            CopyImageToPasteBoard(image: qrCodeImage)
-                                        }
-                                    }
-                                }
-                                Spacer()
-                            }
-#if os(macOS)
-                            .buttonStyle(.borderless)
-                            .foregroundStyle(Color.accentColor)
-#endif
-                        }
-                        
-                        HotspotCell {
-                            HotspotExplanation()
-                        }
-                        
+                        HotspotDetails(address: address, qrCodeImage: qrCodeImage, vSpace: Self.vSpace)
                     } else {
                         ForEach(zimFiles) { zimFile in
                             MultiZimFilesSelectionContext(
