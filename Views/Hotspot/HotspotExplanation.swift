@@ -14,17 +14,19 @@
 // along with Kiwix; If not, see https://www.gnu.org/licenses/.
 
 import SwiftUI
+import Network
 
 struct HotspotExplanation: View {
+    
     var body: some View {
-        Section {
-            Text(LocalString.hotspot_server_explanation)
-                .font(.subheadline)
-                .multilineTextAlignment(.leading)
-                .lineLimit(nil)
+        VStack {
+            HStack {
+                Text(Hotspot.explanationText)
+                    .multilineTextAlignment(.center)
+                    .lineLimit(nil)
+                Spacer()
+            }
+            Spacer()
         }
-#if os(macOS)
-        .collapsible(false)
-#endif
     }
 }

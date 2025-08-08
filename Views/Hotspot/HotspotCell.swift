@@ -13,22 +13,21 @@
 // You should have received a copy of the GNU General Public License
 // along with Kiwix; If not, see https://www.gnu.org/licenses/.
 
-#if os(macOS)
 import SwiftUI
 
-struct CopyURLContext: ViewModifier {
+struct HotspotCell<Content: View>: View {
     
-    @State var url: URL?
+    private let content: Content
     
-    func body(content: Content) -> some View {
-        if let url {
-            content.contextMenu {
-                CopyPasteMenu(url: url)
-            }
-        } else {
-            content
-        }
+    init(@ViewBuilder content: () -> Content) {
+        self.content = content()
     }
+    
+    var body: some View {
+        content
+            .padding()
+            .background(CellBackground.hotspotSelectionColorFor(isHovering: false, isSelected: false))
+            .clipShape(CellBackground.clipShapeRectangle)
+    }
+    
 }
-
-#endif

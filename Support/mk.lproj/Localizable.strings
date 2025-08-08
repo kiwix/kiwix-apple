@@ -64,11 +64,6 @@
 "library_refresh_time.never" = "Никогаш";
 "zim_file_cell.article_count.suffix" = "статии";
 "zim_file_missing_indicator.help" = "ZIM-податотеката недостасува.";
-"hotspot.zim_file_selection.message" = "Изберете ги ZIM-податотеките што сакате да ги вдомите на опслужувачот";
-"hotspot.action.start_hotspot.title" = "Пушти пристапна точка";
-"hotspot.action.stop_hotspot.title" = "Запри пристапна точка";
-"hotspot.server_running.title" = "Опслужувачот работи";
-"hotspot.server_running.address" = "Адреса";
 "hotspot.settings.port_number" = "Број на порта";
 "hotspot.settings.invalid_port_message" = "Неважечки број на порта. Обидете се со вредност помеѓу %@ и %@";
 "hotspot.server_explanation" = "За да ги прелистате овие ZIM-податотеки на други уреди, сите уреди треба да бидат на иста безжична мрежа, или да се поврзани на вашата лична пристапна точка.";
