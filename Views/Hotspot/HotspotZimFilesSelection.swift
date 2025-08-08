@@ -71,8 +71,15 @@ struct HotspotZimFilesSelection: View {
                     if case .started(let address, let qrCodeImage) = hotspot.state {
                         HotspotCell {
                             VStack(alignment: .center, spacing: Self.vSpace) {
+                                #if os(macOS)
                                 Link(address.absoluteString, destination: address)
                                     .fontWeight(.semibold).foregroundColor(.accentColor).lineLimit(1)
+                                #else
+                                Text(LocalString.hotspot_server_active_warning)
+                                    .fontWeight(.bold).foregroundStyle(Color.primary).lineLimit(nil)
+                                Text(address.absoluteString)
+                                    .fontWeight(.semibold).foregroundStyle(Color.primary).lineLimit(1)
+                                #endif
                                 HStack(spacing: 32) {
                                     Spacer()
                                     ShareLink(item: address) {

@@ -73,6 +73,7 @@
 "hotspot.error.port_already_used_by_another_app" = "A warning message, that the selected port number (argument value) is already in use.";
 "hotspot.server_full_explanation" = "A desription text explaining the network setup of devices for the Kiwix Hotspot.";
 "hotspot.server_wifi_only_explanation" = "A shortened desription text explaining the wifi setup of devices for the Kiwix Hotspot.";
+"hotspot.server_active_warning" = "A description text explaining that the hotspot only works on iOS while the application is actively open and in use (in the foreground).";
 "library.zim_file_details.side_panel.message" = "Default placeholder text for side panel on macOS, when no file is selected.";
 "library.zim_file_context.main_page.label" = "Supplementary action title, when long pressing on a ZIM file";
 "library.zim_file_context.random.label" = "Supplementary action title, when long pressing on a ZIM file";
