@@ -22,7 +22,7 @@ struct HotspotExplanation: View {
         VStack {
             HStack {
                 Text(Hotspot.explanationText)
-                    .multilineTextAlignment(.leading)
+                    .multilineTextAlignment(.center)
                     .lineLimit(nil)
                 Spacer()
             }

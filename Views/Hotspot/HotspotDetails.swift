@@ -28,9 +28,15 @@ struct HotspotDetails: View {
                     .fontWeight(.semibold).foregroundColor(.accentColor).lineLimit(1)
                 #else
                 Text(LocalString.hotspot_server_active_warning)
-                    .fontWeight(.bold).foregroundStyle(Color.primary).lineLimit(nil)
+                    .fontWeight(.bold)
+                    .foregroundStyle(Color.primary)
+                    .lineLimit(nil)
+                    .multilineTextAlignment(.center)
+                
                 Text(address.absoluteString)
-                    .fontWeight(.semibold).foregroundStyle(Color.primary).lineLimit(1)
+                    .fontWeight(.semibold)
+                    .foregroundStyle(Color.primary)
+                    .lineLimit(1)
                 #endif
                 HStack(spacing: 32) {
                     Spacer()

@@ -28,6 +28,7 @@ struct HotspotZimFilesSelection: View {
     @State private var presentedSheet: PresentedSheet?
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     @State private var hotspotError: String?
+    private static let vSpace: CGFloat = 18.0
     
     private enum PresentedSheet: Identifiable {
         case shareHotspot(url: URL)
@@ -46,11 +47,6 @@ struct HotspotZimFilesSelection: View {
         _selection = StateObject(wrappedValue: selectionInstance)
     }
     
-    private static let zimFilesGrid = [GridItem(.adaptive(minimum: 250, maximum: 500), spacing: 12)]
-    private static let activeHotspotGrid = [GridItem(.flexible(minimum: 250, maximum: 303), spacing: 12)]
-    @State private var gridColumns: [GridItem] = Self.zimFilesGrid
-    private static let vSpace: CGFloat = 18.0
-    
     var body: some View {
         VStack(spacing: 0) {
             if zimFiles.isEmpty {
@@ -63,14 +59,26 @@ struct HotspotZimFilesSelection: View {
                         .padding(.horizontal, 12)
                         .padding(.bottom, 24)
                 }
-                LazyVGrid(
-                    columns: gridColumns,
-                    alignment: .center,
-                    spacing: 12
-                ) {
-                    if case .started(let address, let qrCodeImage) = hotspot.state {
-                        HotspotDetails(address: address, qrCodeImage: qrCodeImage, vSpace: Self.vSpace)
-                    } else {
+                if case .started(let address, let qrCodeImage) = hotspot.state {
+                    HStack(alignment: .center) {
+                        VStack(alignment: .center, spacing: 12) {
+                            Spacer()
+                            LazyVGrid(
+                                columns: [GridItem(.flexible(minimum: 250, maximum: 303), spacing: 12)],
+                                alignment: .center,
+                                spacing: 12
+                            ) {
+                                HotspotDetails(address: address, qrCodeImage: qrCodeImage, vSpace: Self.vSpace)
+                            }
+                            Spacer()
+                        }
+                    }
+                } else {
+                    LazyVGrid(
+                        columns: [GridItem(.adaptive(minimum: 250, maximum: 500), spacing: 12)],
+                        alignment: .center,
+                        spacing: 12
+                    ) {
                         ForEach(zimFiles) { zimFile in
                             MultiZimFilesSelectionContext(
                                 content: {
@@ -86,10 +94,10 @@ struct HotspotZimFilesSelection: View {
                             )
                         }
                     }
+                    .modifier(GridCommon(edges: .all))
                 }
             }
         }
-        .modifier(GridCommon(edges: .all))
         .modifier(ToolbarRoleBrowser())
         .navigationTitle(MenuItem.hotspot.name)
         .task {
@@ -99,10 +107,8 @@ struct HotspotZimFilesSelection: View {
         .onReceive(hotspot.$state, perform: { state in
             switch state {
             case .started:
-                gridColumns = Self.activeHotspotGrid
                 hotspotError = nil
             case .stopped:
-                gridColumns = Self.zimFilesGrid
                 hotspotError = nil
             case let .error(errorMessage):
                 hotspotError = errorMessage
