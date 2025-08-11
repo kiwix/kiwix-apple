@@ -83,4 +83,12 @@ final class Hotspot {
     nonisolated static func validPortRangeMessage() -> String {
         LocalString.hotspot_settings_recommended_port_range(withArgs: "\(minPort)", "\(maxPort)")
     }
+    
+    nonisolated static var explanationText: String {
+        #if os(macOS)
+        LocalString.hotspot_server_wifi_only_explanation
+        #else
+        LocalString.hotspot_server_full_explanation
+        #endif
+    }
 }

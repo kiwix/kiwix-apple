@@ -19,7 +19,7 @@ import Combine
 enum HotspotState {
     @MainActor static let selection = MultiSelectedZimFilesViewModel()
     
-    case started(URL, Image?)
+    case started(URL, CGImage?)
     case stopped
     case error(String)
     

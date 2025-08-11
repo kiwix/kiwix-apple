@@ -15,51 +15,86 @@
 
 import SwiftUI
 
-#if os(macOS)
-/// Hotspot multi ZIM files side panel
 struct HotspotDetails: View {
-    let zimFileIds: Set<UUID>
-    @ObservedObject var hotspot: HotspotObservable
-    
-    private func zimFilesCount() -> String {
-        Formatter.number.string(from: NSNumber(value: zimFileIds.count)) ?? ""
-    }
+    let address: URL
+    let qrCodeImage: CGImage?
+    let vSpace: CGFloat
     
     var body: some View {
-        List {
-            Section(LocalString.multi_zim_files_selected_sidebar_title) {
-                Attribute(
-                    title: LocalString.multi_zim_files_selected_description_count,
-                    detail: zimFilesCount()
-                )
-            }
-            .collapsible(false)
-            Section(LocalString.zim_file_list_actions_text) {
-                Action(title: hotspot.buttonTitle) {
-                    await hotspot.toggleWith(zimFileIds: zimFileIds)
+        HotspotCell {
+            VStack(alignment: .center, spacing: vSpace) {
+                #if os(macOS)
+                Link(address.absoluteString, destination: address)
+                    .fontWeight(.semibold).foregroundColor(.accentColor).lineLimit(1)
+                #else
+                Text(LocalString.hotspot_server_active_warning)
+                    .fontWeight(.bold)
+                    .foregroundStyle(Color.primary)
+                    .lineLimit(nil)
+                    .multilineTextAlignment(.center)
+                
+                Text(address.absoluteString)
+                    .fontWeight(.semibold)
+                    .foregroundStyle(Color.primary)
+                    .lineLimit(1)
+                #endif
+                HStack(spacing: 32) {
+                    Spacer()
+                    ShareLink(item: address) {
+                        Label(LocalString.common_button_share, systemImage: "square.and.arrow.up")
+                    }
+                    CopyPasteMenu(url: address, label: LocalString.common_button_copy)
+                    Spacer()
                 }
-                .buttonStyle(.borderedProminent)
-            }
-            .collapsible(false)
-            
-            switch hotspot.state {
-            case .started(let address, let qrCodeImage):
-                HotspotAddress(serverAddress: address, qrCodeImage: qrCodeImage)
-                HotspotExplanation()
-            case .stopped:
-                HotspotExplanation()
-            case .error(let errorMessage):
-                Section {
-                    Text(errorMessage)
-                        .lineLimit(nil)
-                        .multilineTextAlignment(.leading)
-                        .foregroundStyle(.red)
-                }
-                HotspotExplanation()
+#if os(macOS)
+                .buttonStyle(.borderless)
+                .foregroundStyle(Color.accentColor)
+#endif
             }
             
         }
-        .listStyle(.sidebar)
-    }    
-}
+        
+        HotspotCell {
+            HStack {
+                Spacer()
+                VStack(spacing: vSpace) {
+                    Group {
+                        if let qrCodeImage {
+                            Image(qrCodeImage, scale: 1, label: Text(address.absoluteString))
+                                .resizable()
+                        } else {
+                            ProgressView().progressViewStyle(.circular)
+                        }
+                    }
+                    .frame(width: 220, height: 220)
+                    .aspectRatio(1.0, contentMode: .fill)
+                    
+                    if let qrCodeImage {
+                        HStack(spacing: 32) {
+                            let img = Image(qrCodeImage, scale: 1, label: Text(address.absoluteString))
+                            ShareLink(
+                                item: img,
+                                preview: SharePreview(address.absoluteString, image: img)
+                            ) {
+                                Label(
+                                    LocalString.common_button_share,
+                                    systemImage: "square.and.arrow.up"
+                                )
+                            }
+                            CopyImageToPasteBoard(image: qrCodeImage)
+                        }
+                    }
+                }
+                Spacer()
+            }
+#if os(macOS)
+            .buttonStyle(.borderless)
+            .foregroundStyle(Color.accentColor)
 #endif
+        }
+        
+        HotspotCell {
+            HotspotExplanation()
+        }
+    }
+}

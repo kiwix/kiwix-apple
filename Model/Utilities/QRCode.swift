@@ -19,7 +19,7 @@ import os
 
 struct QRCode {
 
-    static func image(from text: String) async -> Image? {
+    static func image(from text: String) async -> CGImage? {
         let data = Data(text.utf8)
         guard let filter = CIFilter(name: "CIQRCodeGenerator") else {
             os_log("QRCode cannot create CIFilter", log: Log.LibraryService, type: .error)
@@ -30,11 +30,11 @@ struct QRCode {
         let context = CIContext()
         let transform = CGAffineTransform(scaleX: 20, y: 20)
         guard let outputImage = filter.outputImage?.transformed(by: transform),
-              let image = context.createCGImage(outputImage, from: outputImage.extent) else {
+              let image = context.createCGImage(outputImage, from: outputImage.extent.insetBy(dx: 20, dy: 20)) else {
             os_log("QRCode cannot create image", log: Log.LibraryService, type: .error)
             return nil
         }
-        return Image(image, scale: 1, label: Text(text))
+        return image
     }
 
 }
