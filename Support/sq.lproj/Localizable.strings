@@ -1,6 +1,7 @@
 // Messages for Albanian (shqip)
 // Exported from translatewiki.net
 // Author: Besnik b
+// Author: Xhulianoo
 
 // Fuzzy
 "library_refresh_error.retrieve.description" = "Gabim në marrje të dhënash biblioteke.";
@@ -13,7 +14,7 @@
 "download_service.failed.description" = "S’arrihet të shkarkohet kjo kartelë.";
 "common.dialog.button.open" = "Hape";
 "common.dialog.button.open_in_new_tab" = "Hape në Skedë të Re";
-"common.dialog.button.add_bookmark" = "Shtoni Faqerojtësi";
+"common.dialog.button.add_bookmark" = "Shto Faqeshënues";
 "common.dialog.button.remove_bookmark" = "Hiqe Faqerojtësin";
 "common.dialog.button.show_bookmarks" = "Shfaq Faqerojtës";
 "common.dialog.button.bookmark" = "Faqeruaje";

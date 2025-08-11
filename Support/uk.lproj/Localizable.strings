@@ -1,13 +1,11 @@
 // Messages for Ukrainian (українська)
 // Exported from translatewiki.net
 // Author: Daries1
+// Author: Ата
 
-// Fuzzy
-"library_refresh_error.retrieve.description" = "Помилка отримання даних бібліотеки.";
-// Fuzzy
-"library_refresh_error.parse.description" = "Помилка парсування даних бібліотеки.";
-// Fuzzy
-"library_refresh_error.process.description" = "Помилка обробки даних бібліотеки.";
+"library_refresh_error.retrieve.description" = "Помилка отримання даних каталогу.";
+"library_refresh_error.parse.description" = "Помилка аналізу даних каталогу.";
+"library_refresh_error.process.description" = "Помилка обробки даних каталогу.";
 "download_service.complete.title" = "Завантаження завершено";
 "download_service.complete.description" = "%@ було успішно завантажено.";
 "download_service.failed.description" = "Не вдалось завантажити цей файл.";
@@ -37,8 +35,7 @@
 "common.export_file.alert.title" = "Експортувати файл";
 "common.export_file.alert.description" = "Ви бажаєте експортувати файл %@?";
 "common.export_file.alert.button.title" = "Експортувати";
-// Fuzzy
-"bookmark_button.show.help" = "Показати закладки. Натисніть і утримуйте, щоб додати або видалити закладку поточної статті.";
+"bookmark_button.show.help" = "Показати аркуш закладок, де поточну статтю можна додати або вилучити із закладок.";
 "article_shortcut.main.button.title" = "Основна стаття";
 "article_shortcut.main.button.help" = "Показати основну статтю";
 "article_shortcut.random.button.title.mac" = "Випадкова стаття";
