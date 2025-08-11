@@ -104,14 +104,17 @@
 
 # pragma mark - Metadata
 
-+ (ZimFileMetaData *)getMetaDataWithFileURL:(NSURL *)url {
++ (ZimFileMetaData *_Nullable)getMetaDataWithFileURL:(NSURL *)url {
     ZimFileMetaData *metaData = nil;
     [url startAccessingSecurityScopedResource];
     try {
         kiwix::Book book = kiwix::Book();
         book.update(zim::Archive([url fileSystemRepresentation]));
         metaData = [[ZimFileMetaData alloc] initWithBook: &book];
-    } catch (std::exception e) { }
+    } catch (std::exception e) {
+        [url stopAccessingSecurityScopedResource];
+        return nil;
+    }
     [url stopAccessingSecurityScopedResource];
     return metaData;
 }
@@ -176,6 +179,8 @@
             @"title": [NSString stringWithUTF8String:item.getTitle().c_str()],
             @"zimFileDate": [self getModificationDateOf: zimFileID]
         };
+    } catch (zim::EntryNotFound(EntryNotFound)) {
+        return nil;
     } catch (std::exception) {
         return nil;
     }

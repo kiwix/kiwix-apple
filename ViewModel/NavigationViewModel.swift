@@ -62,7 +62,10 @@ final class NavigationViewModel: ObservableObject {
 
     func navigateToMostRecentTab() {
         let context = Database.shared.viewContext
-        let fetchRequest = Tab.fetchRequest(sortDescriptors: [NSSortDescriptor(key: "lastOpened", ascending: false)])
+        let fetchRequest = Tab.fetchRequest(
+            predicate: Tab.Predicate.notMissing,
+            sortDescriptors: [NSSortDescriptor(key: "lastOpened", ascending: false)]
+        )
         fetchRequest.fetchLimit = 1
         let tab = (try? context.fetch(fetchRequest).first) ?? Self.makeTab(context: context)
         Task {

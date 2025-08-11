@@ -27,7 +27,8 @@
 
     // MARK: - Reader Management
 
-    /// Open a zim file from system file URL bookmark data
+    /// Revalidates the zim file url bookmark data (returned)
+    /// and stores the zim file url in ZimFileService associated with the zim UUID
     /// - Parameter bookmark: url bookmark data of the zim file to open
     /// - Returns: new url bookmark data if the one used to open the zim file is stale
     @discardableResult
