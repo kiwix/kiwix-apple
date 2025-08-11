@@ -145,6 +145,19 @@ final class Tab: NSManagedObject, Identifiable {
         request.predicate = NSPredicate(format: "id == %@", id as CVarArg)
         return request
     }
+    
+    enum Predicate {
+        private static let noZimFile = NSPredicate(format: "zimFile == nil")
+        private static let zimFileNotMissing = NSPredicate(format: "zimFile.isMissing == false")
+        
+        /// Make sure it is either not referencing any zimFile (eg: new tab)
+        /// or referencing an existing zimFile on disk
+        static var notMissing = NSCompoundPredicate(orPredicateWithSubpredicates: [
+            noZimFile,
+            zimFileNotMissing
+        ])
+    }
+
 }
 
 struct URLContentMetaData {
