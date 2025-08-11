@@ -256,10 +256,6 @@ final class SidebarViewController: UICollectionViewController, NSFetchedResultsC
         }
         let section = Section.allSections[indexPath.section]
         switch section {
-        case .tabs:
-            var config = UIListContentConfiguration.sidebarHeader()
-            config.text = LocalString.common_tab_navigation_title
-            headerView.contentConfiguration = config
         case .library:
             var config = UIListContentConfiguration.sidebarHeader()
             config.text = LocalString.common_tab_menu_library
