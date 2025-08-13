@@ -80,7 +80,6 @@
 "zim_file_cell.article_count.suffix" = "articles";
 "zim_file_missing_indicator.help" = "Le fichier Zim est manquant.";
 "hotspot.settings.port_number" = "Numéro de port";
-"hotspot.settings.invalid_port_message" = "Numéro de port invalide, essayez une valeur entre %@ et %@";
 "hotspot.server_explanation" = "Afin de pouvoir parcourir ces fichiers ZIM sur d’autres appareils, veuillez vous assurer que tous les appareils sont connectés au même point d'accès réseau ou WiFi.";
 "library.zim_file_details.side_panel.message" = "Sélectionnez un fichier ZIM pour voir les détails";
 "library.zim_file_context.main_page.label" = "Page principale";

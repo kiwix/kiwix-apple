@@ -65,7 +65,8 @@
 "zim_file_cell.article_count.suffix" = "статии";
 "zim_file_missing_indicator.help" = "ZIM-податотеката недостасува.";
 "hotspot.settings.port_number" = "Број на порта";
-"hotspot.settings.invalid_port_message" = "Неважечки број на порта. Обидете се со вредност помеѓу %@ и %@";
+"hotspot.settings.recommended_port_range" = "Мрежната порта што ја користи пристапната точка, треба да биде помеѓу %@ и %@";
+"hotspot.error.port_already_used_by_another_app" = "Пристапната точка не може да се покрене бидејќи портата %@ е во употреба. За да го решите ова, затворете го прилогот што ја користи или сменете ја портата за пристапна точка на Кивикс во нагодувањата.";
 "hotspot.server_explanation" = "За да ги прелистате овие ZIM-податотеки на други уреди, сите уреди треба да бидат на иста безжична мрежа, или да се поврзани на вашата лична пристапна точка.";
 "library.zim_file_details.side_panel.message" = "Изберете ZIM-податотека за да ги видите поединостите";
 "library.zim_file_context.main_page.label" = "Главна страница";
