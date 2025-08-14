@@ -64,10 +64,12 @@
 "library_refresh_time.never" = "Nunquam";
 "zim_file_cell.article_count.suffix" = "articulos";
 "zim_file_missing_indicator.help" = "Le file ZIM manca.";
+"hotspot.action.start_hotspot.title" = "Aperir puncto de accesso";
+"hotspot.action.stop_hotspot.title" = "Clauder puncto de accesso";
 "hotspot.settings.port_number" = "Numero de porto";
 "hotspot.settings.recommended_port_range" = "Le porto de rete usate per le puncto de accesso debe esser inter %@ e %@";
 "hotspot.error.port_already_used_by_another_app" = "Le puncto de accesso non pote initiar se perque le porto %@ es ja in uso. Pro remediar isto, claude le app que lo usa o cambia le porto del puncto de accesso de Kiwix in le Parametros.";
-"hotspot.server_explanation" = "Pro navigar iste files ZIM sur altere apparatos, assecura te que tote le dispositivos es o sur le mesme rete WiFi o connectite a tu puncto de accesso personal.";
+"hotspot.server_full_explanation" = "Pro navigar iste files ZIM sur altere apparatos, assecura te que tote le dispositivos es o sur le mesme rete WiFi o connectite a tu puncto de accesso personal.";
 "library.zim_file_details.side_panel.message" = "Selige un file ZIM pro vider detalios";
 "library.zim_file_context.main_page.label" = "Pagina principal";
 "library.zim_file_context.random.label" = "Pagina aleatori";

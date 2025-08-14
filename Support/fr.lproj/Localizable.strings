@@ -79,8 +79,10 @@
 "library_refresh_time.never" = "Jamais";
 "zim_file_cell.article_count.suffix" = "articles";
 "zim_file_missing_indicator.help" = "Le fichier Zim est manquant.";
+"hotspot.action.start_hotspot.title" = "Démarrer le point d’accès";
+"hotspot.action.stop_hotspot.title" = "Arrêter le point d’accès";
 "hotspot.settings.port_number" = "Numéro de port";
-"hotspot.server_explanation" = "Afin de pouvoir parcourir ces fichiers ZIM sur d’autres appareils, veuillez vous assurer que tous les appareils sont connectés au même point d'accès réseau ou WiFi.";
+"hotspot.server_full_explanation" = "Afin de pouvoir parcourir ces fichiers ZIM sur d’autres appareils, veuillez vous assurer que tous les appareils sont connectés au même point d'accès réseau ou WiFi.";
 "library.zim_file_details.side_panel.message" = "Sélectionnez un fichier ZIM pour voir les détails";
 "library.zim_file_context.main_page.label" = "Page principale";
 "library.zim_file_context.random.label" = "Page au hasard";

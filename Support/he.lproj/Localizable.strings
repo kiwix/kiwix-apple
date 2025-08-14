@@ -3,12 +3,9 @@
 // Author: Amire80
 // Author: YaronSh
 
-// Fuzzy
-"library_refresh_error.retrieve.description" = "שגיאה באחזור נתוני ספרייה.";
-// Fuzzy
-"library_refresh_error.parse.description" = "שגיאה בפענוח נתוני ספרייה.";
-// Fuzzy
-"library_refresh_error.process.description" = "שגיאה בעיבוד נתוני ספרייה.";
+"library_refresh_error.retrieve.description" = "שגיאה במשיכת נתוני קטלוג.";
+"library_refresh_error.parse.description" = "שגיאה בפענוח נתוני קטלוג.";
+"library_refresh_error.process.description" = "שגיאה בעיבוד נתוני קטלוג.";
 "download_service.complete.title" = "ההורדה הושלמה";
 "download_service.complete.description" = "%@ הורד בהצלחה.";
 "download_service.failed.description" = "לא ניתן להוריד את הקובץ הזה.";
@@ -25,7 +22,9 @@
 "common.button.yes" = "כן";
 "common.button.no" = "לא";
 "common.button.print" = "הדפסה";
+"common.button.copy" = "העתקה";
 "common.button.share" = "שיתוף";
+"common.button.share_as_pdf" = "שיתוף כ־PDF";
 "common.search" = "חיפוש";
 "common.tab.manager.title" = "מנהל הלשוניות";
 "common.tab.navigation.title" = "לשוניות";
@@ -67,6 +66,12 @@
 "library_refresh_time.never" = "מעולם לא";
 "zim_file_cell.article_count.suffix" = "ערכים";
 "zim_file_missing_indicator.help" = "קובץ ה־zim חסר.";
+"hotspot.action.start_hotspot.title" = "התחלת נקודה חמה";
+"hotspot.action.stop_hotspot.title" = "עצירת נקודה חמה";
+"hotspot.settings.port_number" = "מספר פתחה";
+"hotspot.settings.recommended_port_range" = "פתחת הרשת שתשמש לרשת האלחוטית, אמורה להיות בין %@ ל־%@";
+"hotspot.server_active_warning" = "הנקודה החמה נשארת פעילה כל עוד היישום פתוח ובשימוש.";
+"hotspot.server_wifi_only_explanation" = "כדי לעיין בקובצי ה־ZIM האלה במכשירים אחרים, נא לוודא שכל המכשירים באותה רשת אלחוטית.";
 "library.zim_file_details.side_panel.message" = "נא לבחור קובץ ZIM כדי לראות פרטים";
 "library.zim_file_context.main_page.label" = "עמוד ראשי";
 "library.zim_file_context.random.label" = "דף אקראי";
@@ -92,6 +97,8 @@
 "zim_file.action.toggle_cellular" = "להוריד באמצעות הרשת הסלולרית";
 "zim_file.action.unlink.title" = "ניתוק הקשר";
 "zim_file.action.unlink.message" = "כל הערכים עם סימניות המקושרים לקובץ ה־ZIM הזה יימחקו, אך הקובץ המקורי יישאר במקומו.";
+"zim_file.action.unlink.multi_title" = "ניתוק %@ קובצי ZIM";
+"zim_file.action.unlink.multi_message" = "כל הערכים המסומנים שמקושרים ל־%@ קובצי ה־ZIM האלה יימחקו, אבל הקבצים המקוריים יישארו במקומם.";
 "zim_file.action.unlink.button.title" = "ניתוק הקשר";
 "zim_file.action.delete.title" = "מחיקה";
 "zim_file.action.delete.message" = "קובץ ה־ZIM וכל הערכים עם סימניות המקושרים לקובץ ה־zim הזה יימחקו.";
@@ -120,12 +127,19 @@
 "zim_file.download_task.action.resume" = "להמשיך";
 "zim_file.download_task.action.paused" = "מושהה";
 "service_worker_warning.label.description" = "קובצי zim שדורשים service workers אינם נתמכים";
+"multi.zim_files_selected.sidebar_title" = "נבחרים";
+"multi.zim_files_selected.description_count" = "קובצי ZIM";
+"theme_settings.title" = "ערכת עיצוב";
+"theme_settings.option.dark" = "כהה";
+"theme_settings.option.light" = "בהירה";
+"theme_settings.option.system" = "מערכת";
 "reading_settings.zoom.title" = "תקריב דף";
 "reading_settings.zoom.reset.button" = "איפוס";
 "reading_settings.external_link.title" = "קישור חיצוני";
 "reading_settings.search_snippet.title" = "קטע חיפוש";
 "reading_settings.tab.reading" = "קריאה";
 "library_settings.catalog.title" = "קטלוג";
+"library_settings.downloads.title" = "הורדות";
 "library_settings.button.refresh_now" = "לרענן עכשיו";
 "library_settings.last_refresh.text" = "הרענון האחרון";
 "library_settings.auto_refresh.toggle" = "רענון אוטומטי";
@@ -224,6 +238,7 @@
 "enum.navigation_item.new" = "חדש";
 "enum.navigation_item.downloads" = "הורדות";
 "enum.navigation_item.settings" = "הגדרות";
+"enum.navigation_item.hotspot" = "נקודה חמה";
 "enum.search_result_snippet_mode.disabled" = "כבוי";
 "enum.search_result_snippet_mode.matches" = "התאמות";
 "payment.donate.title" = "לתרום";

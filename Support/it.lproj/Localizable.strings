@@ -51,7 +51,7 @@
 "hotspot.action.start_hotspot.title" = "Avvia hotspot";
 "hotspot.action.stop_hotspot.title" = "Arresta hotspot";
 "hotspot.settings.port_number" = "Numero di porta";
-"hotspot.server_explanation" = "Per esplorare questi file ZIM su altri dispositivi, assicurati che tutti i dispositivi siano sulla stessa rete WiFi o connessi al tuo hotspot personale.";
+"hotspot.server_full_explanation" = "Per esplorare questi file ZIM su altri dispositivi, assicurati che tutti i dispositivi siano sulla stessa rete WiFi o connessi al tuo hotspot personale.";
 "library.zim_file_details.side_panel.message" = "Seleziona un file ZIM per vedere i dettagli";
 "library.zim_file_context.main_page.label" = "Pagina principale";
 "library.zim_file_context.random.label" = "Pagina a caso";
