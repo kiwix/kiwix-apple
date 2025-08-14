@@ -3,13 +3,15 @@
 # 3.10.0
   - NEW
     - Custom Light/Dark theme settings (@BPerlakiH #1226, #1230, #1232)
-    - Kiwix Hotspot (@BPerlakiH #1231, #1234, #1238, #1240)
+    - Kiwix Hotspot (@BPerlakiH #1231, #1234, #1238, #1240, #1245, #1246, #1252, #1253, #1257, #1264)
 
   - UPDATE
     - iPhone, iPad UI tests (@BPerlakiH #1218)
-    - Localisation updates (@translatewiki #1206, #1223, #1233, #1239)
+    - Localisation updates (@translatewiki #1206, #1223, #1233, #1239, #1242, #1248, #1254, #1263)
     - Unified naming for catalog / library (@BPerlakiH #1224)
     - Support button in iOS settings moved above the fold (@BPerlakiH #1227)
+    - Open ZIM file details when importing a single file (@BPerlakiH #1258)
+    - Removed Tabs header in iOS side bar menu (@BPerlakiH #1268)
 
   - FIX
     - sidebar item selection on app restart (@BPerlakiH #1211)
