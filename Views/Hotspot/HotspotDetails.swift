@@ -47,7 +47,7 @@ struct HotspotDetails: View {
                         Label(LocalString.common_button_share, systemImage: "square.and.arrow.up")
                     }
                     Spacer()
-                    CopyPasteMenu(url: address, label: LocalString.common_button_copy)
+                    DynamicCopyButton(action: { CopyPaste.copyToPasteBoard(url: address) })
                 }
                 .frame(width: Const.imageWidth)
 #if os(macOS)
@@ -55,7 +55,6 @@ struct HotspotDetails: View {
                 .foregroundStyle(Color.accentColor)
 #endif
             }
-            
         }
         
         HotspotCell {
@@ -86,7 +85,7 @@ struct HotspotDetails: View {
                                 )
                             }
                             Spacer(minLength: 32)
-                            CopyImageToPasteBoard(image: qrCodeImage)
+                            DynamicCopyButton(action: { CopyPaste.copyToPasteBoard(image: qrCodeImage) })
                         }
                         .frame(width: Const.imageWidth)
                     }

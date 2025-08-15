@@ -84,7 +84,7 @@ struct Kiwix: App {
             CommandGroup(after: .pasteboard) {
                 Button(LocalString.library_zim_file_context_copy_url) {
                     if let browserURL {
-                        CopyPasteMenu.copyToPasteBoard(url: browserURL)
+                        CopyPaste.copyToPasteBoard(url: browserURL)
                     }
                 }
                 .disabled(browserURL == nil)
