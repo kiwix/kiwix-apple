@@ -20,6 +20,10 @@ struct HotspotDetails: View {
     let qrCodeImage: CGImage?
     let vSpace: CGFloat
     
+    private enum Const {
+        static let imageWidth: CGFloat = 220
+    }
+    
     var body: some View {
         HotspotCell {
             VStack(alignment: .center, spacing: vSpace) {
@@ -39,13 +43,13 @@ struct HotspotDetails: View {
                     .lineLimit(1)
                 #endif
                 HStack(spacing: 32) {
-                    Spacer()
                     ShareLink(item: address) {
                         Label(LocalString.common_button_share, systemImage: "square.and.arrow.up")
                     }
-                    CopyPasteMenu(url: address, label: LocalString.common_button_copy)
                     Spacer()
+                    CopyPasteMenu(url: address, label: LocalString.common_button_copy)
                 }
+                .frame(width: Const.imageWidth)
 #if os(macOS)
                 .buttonStyle(.borderless)
                 .foregroundStyle(Color.accentColor)
@@ -66,7 +70,7 @@ struct HotspotDetails: View {
                             ProgressView().progressViewStyle(.circular)
                         }
                     }
-                    .frame(width: 220, height: 220)
+                    .frame(width: Const.imageWidth, height: Const.imageWidth)
                     .aspectRatio(1.0, contentMode: .fill)
                     
                     if let qrCodeImage {
@@ -81,8 +85,10 @@ struct HotspotDetails: View {
                                     systemImage: "square.and.arrow.up"
                                 )
                             }
+                            Spacer()
                             CopyImageToPasteBoard(image: qrCodeImage)
                         }
+                        .frame(width: Const.imageWidth)
                     }
                 }
                 Spacer()
