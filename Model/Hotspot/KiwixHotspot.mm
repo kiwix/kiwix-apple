@@ -75,7 +75,16 @@
         return nil;
     }
     NSString *ipAddress = [NSString stringWithUTF8String: self.server->getAddress().addr.c_str()];
-    return [NSString stringWithFormat:@"http://%@:%i", ipAddress, self.server->getPort()];
+    return [NSString stringWithFormat:@"http://%@%@/", ipAddress, [self portNumberSuffix]];
+}
+
+- (NSString *) portNumberSuffix {
+    int portNumber = self.server->getPort();
+    if(portNumber == 80) {
+        return @"";
+    } else {
+        return [NSString stringWithFormat: @":%i", portNumber];
+    }
 }
 
 - (void)stop {
