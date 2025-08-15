@@ -60,17 +60,19 @@ struct HotspotZimFilesSelection: View {
                         .padding(.bottom, 24)
                 }
                 if case .started(let address, let qrCodeImage) = hotspot.state {
-                    HStack(alignment: .center) {
-                        VStack(alignment: .center, spacing: 12) {
-                            Spacer()
-                            LazyVGrid(
-                                columns: [GridItem(.flexible(minimum: 250, maximum: 303), spacing: 12)],
-                                alignment: .center,
-                                spacing: 12
-                            ) {
-                                HotspotDetails(address: address, qrCodeImage: qrCodeImage, vSpace: Self.vSpace)
+                    ScrollView {
+                        HStack(alignment: .center) {
+                            VStack(alignment: .center, spacing: 12) {
+                                Spacer()
+                                LazyVGrid(
+                                    columns: [GridItem(.flexible(minimum: 250, maximum: 303), spacing: 12)],
+                                    alignment: .center,
+                                    spacing: 12
+                                ) {
+                                    HotspotDetails(address: address, qrCodeImage: qrCodeImage, vSpace: Self.vSpace)
+                                }
+                                Spacer()
                             }
-                            Spacer()
                         }
                     }
                 } else {

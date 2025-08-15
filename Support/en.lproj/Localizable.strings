@@ -39,6 +39,7 @@
 "common.button.no" = "no";
 "common.button.print" = "Print";
 "common.button.copy" = "Copy";
+"common.button.copied" = "Copied";
 "common.button.share" = "Share";
 "common.button.share_as_pdf" = "Share as PDF";
 "common.search" = "Search";

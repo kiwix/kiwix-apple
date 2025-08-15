@@ -74,7 +74,7 @@ struct HotspotDetails: View {
                     .aspectRatio(1.0, contentMode: .fill)
                     
                     if let qrCodeImage {
-                        HStack(spacing: 32) {
+                        HStack {
                             let img = Image(qrCodeImage, scale: 1, label: Text(address.absoluteString))
                             ShareLink(
                                 item: img,
@@ -85,7 +85,7 @@ struct HotspotDetails: View {
                                     systemImage: "square.and.arrow.up"
                                 )
                             }
-                            Spacer()
+                            Spacer(minLength: 32)
                             CopyImageToPasteBoard(image: qrCodeImage)
                         }
                         .frame(width: Const.imageWidth)

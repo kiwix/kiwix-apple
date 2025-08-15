@@ -52,7 +52,6 @@ struct CopyPasteMenu: View {
 
 struct CopyImageToPasteBoard: View {
     private let image: CGImage
-    private let label: String
     @State private var copyComplete: UInt = 0
     @State private var animateCount: UInt = 0
     @State private var buttonState: ButtonState = .document
@@ -74,11 +73,17 @@ struct CopyImageToPasteBoard: View {
             case .complete: Color.green
             }
         }
+        
+        var label: String {
+            switch self {
+            case .document: LocalString.common_button_copy
+            case .complete: LocalString.common_button_copied
+            }
+        }
     }
     
-    init(image: CGImage, label: String = LocalString.common_button_copy) {
+    init(image: CGImage) {
         self.image = image
-        self.label = label
     }
     
     var body: some View {
@@ -88,12 +93,13 @@ struct CopyImageToPasteBoard: View {
                 copyComplete += 1
             } label: {
                 if #available(iOS 17, *) {
-                    Label(label, systemImage: buttonState.systemImage)
+                    Label(buttonState.label, systemImage: buttonState.systemImage)
                         .foregroundStyle(buttonState.color)
                         .contentTransition(.symbolEffect(.replace))
                 } else {
-                    Label(label, systemImage: buttonState.systemImage)
+                    Label(buttonState.label, systemImage: buttonState.systemImage)
                         .foregroundStyle(buttonState.color)
+                        
                 }
             }
             // fix for button height changes when the icon is swapped
