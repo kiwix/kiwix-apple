@@ -54,6 +54,27 @@ struct CopyImageToPasteBoard: View {
     private let image: CGImage
     private let label: String
     @State private var copyComplete: UInt = 0
+    @State private var animateCount: UInt = 0
+    @State private var buttonState: ButtonState = .document
+    
+    private enum ButtonState {
+        case document
+        case complete
+        
+        var systemImage: String {
+            switch self {
+            case .document: "doc.on.doc"
+            case .complete: "checkmark.circle.fill"
+            }
+        }
+        
+        var color: Color {
+            switch self {
+            case .document: Color.accentColor
+            case .complete: Color.green
+            }
+        }
+    }
     
     init(image: CGImage, label: String = LocalString.common_button_copy) {
         self.image = image
@@ -66,7 +87,27 @@ struct CopyImageToPasteBoard: View {
                 Self.copyToPasteBoard(image: image)
                 copyComplete += 1
             } label: {
-                Label(label, systemImage: "doc.on.doc")
+                if #available(iOS 17, *) {
+                    Label(label, systemImage: buttonState.systemImage)
+                        .foregroundStyle(buttonState.color)
+                        .contentTransition(.symbolEffect(.replace))
+                } else {
+                    Label(label, systemImage: buttonState.systemImage)
+                        .foregroundStyle(buttonState.color)
+                }
+            }
+            // fix for button height changes when the icon is swapped
+            .frame(minHeight: 23)
+            .onChange(of: copyComplete) { _ in
+                buttonState = .complete
+                Task {
+                    // Task.sleep works better than animation delay
+                    // this way the icon swaping is in sync
+                    try? await Task.sleep(nanoseconds: 1_000_000_000)
+                    withAnimation(.spring.speed(3)) {
+                        buttonState = .document
+                    }
+                }
             }
         }, trigger: copyComplete)
     }
