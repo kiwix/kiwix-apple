@@ -15,6 +15,7 @@
 
 import Foundation
 import Defaults
+import SwiftUI
 
 final class Hotspot {
     
@@ -62,6 +63,7 @@ final class Hotspot {
         hotspot = KiwixHotspot(__zimFileIds: zimFileIds, onPort: portNumber)
         await MainActor.run {
             state = .started
+            preventSleep(true)
         }
     }
     
@@ -70,7 +72,17 @@ final class Hotspot {
         guard let hotspot else { return }
         hotspot.__stop()
         self.hotspot = nil
-        await MainActor.run { state = .stopped }
+        await MainActor.run {
+            state = .stopped
+            preventSleep(false)
+        }
+    }
+    
+    @MainActor
+    private func preventSleep(_ value: Bool) {
+        #if os(iOS)
+        UIApplication.shared.isIdleTimerDisabled = value
+        #endif
     }
     
     func serverAddress() async -> URL? {
