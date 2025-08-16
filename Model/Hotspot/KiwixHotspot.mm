@@ -57,7 +57,7 @@
     
     for (NSUUID *zimFileID in zimFileIDs) {
         try {
-            zim::Archive * _Nullable archive = [[ZimFileService sharedInstance] findArchiveBy:zimFileID];
+            zim::Archive * _Nullable archive = [[ZimFileService sharedInstance] archiveBy: zimFileID];
             if(archive != nullptr) {
                 kiwix::Book book = kiwix::Book();
                 book.update(*archive);
