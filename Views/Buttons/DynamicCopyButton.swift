@@ -52,18 +52,8 @@ struct DynamicCopyButton: View {
                 action()
                 copyComplete += 1
             } label: {
-//                HStack {
-////                    withSymbolEffect(
-//                        Image(systemName: buttonState.systemImage)
-//                            .foregroundStyle(buttonState.color)
-////                    )
-//                    Text(buttonState.label)
-//                        .foregroundStyle(buttonState.color)
-//                }
-                withSymbolEffect(
-                    Label(buttonState.label, systemImage: buttonState.systemImage)
-                        .foregroundStyle(buttonState.color)
-                )
+                Label(buttonState.label, systemImage: buttonState.systemImage)
+                    .foregroundStyle(buttonState.color)
             }
             // fix for button height changes when the icon is swapped
             .frame(minHeight: 23)
@@ -73,26 +63,10 @@ struct DynamicCopyButton: View {
                     // Task.sleep works better than animation delay
                     // this way the icon swaping is in sync
                     try? await Task.sleep(nanoseconds: 1_000_000_000)
-//                    withAnimation(.default.speed(3)) {
-                        buttonState = .document
-//                    }
+                    buttonState = .document
                 }
             }
         }, trigger: copyComplete)
-    }
-    
-    @ViewBuilder
-    private func withSymbolEffect(_ content: some View) -> some View {
-        #if os(iOS)
-        if #available(iOS 17, *) {
-            content
-                .contentTransition(.symbolEffect(.replace))
-        } else {
-            content
-        }
-        #else
-            content
-        #endif
     }
 }
 

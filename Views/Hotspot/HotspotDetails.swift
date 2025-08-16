@@ -42,11 +42,11 @@ struct HotspotDetails: View {
                     .foregroundStyle(Color.primary)
                     .lineLimit(1)
                 #endif
-                HStack(spacing: 32) {
+                HStack {
                     ShareLink(item: address) {
                         Label(LocalString.common_button_share, systemImage: "square.and.arrow.up")
                     }
-                    Spacer()
+                    Spacer(minLength: 32)
                     DynamicCopyButton(action: { CopyPaste.copyToPasteBoard(url: address) })
                 }
                 .frame(width: Const.imageWidth)
