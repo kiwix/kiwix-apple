@@ -28,7 +28,6 @@ struct HotspotZimFilesSelection: View {
     @State private var presentedSheet: PresentedSheet?
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     @State private var hotspotError: String?
-    private static let vSpace: CGFloat = 18.0
     
     private enum PresentedSheet: Identifiable {
         case shareHotspot(url: URL)
@@ -60,17 +59,19 @@ struct HotspotZimFilesSelection: View {
                         .padding(.bottom, 24)
                 }
                 if case .started(let address, let qrCodeImage) = hotspot.state {
-                    HStack(alignment: .center) {
-                        VStack(alignment: .center, spacing: 12) {
-                            Spacer()
-                            LazyVGrid(
-                                columns: [GridItem(.flexible(minimum: 250, maximum: 303), spacing: 12)],
-                                alignment: .center,
-                                spacing: 12
-                            ) {
-                                HotspotDetails(address: address, qrCodeImage: qrCodeImage, vSpace: Self.vSpace)
+                    ScrollView {
+                        HStack(alignment: .center) {
+                            VStack(alignment: .center, spacing: 12) {
+                                Spacer()
+                                LazyVGrid(
+                                    columns: [GridItem(.flexible(minimum: 250, maximum: 303), spacing: 12)],
+                                    alignment: .center,
+                                    spacing: 12
+                                ) {
+                                    HotspotDetails(address: address, qrCodeImage: qrCodeImage)
+                                }
+                                Spacer()
                             }
-                            Spacer()
                         }
                     }
                 } else {

@@ -23,6 +23,7 @@
 "common.button.no" = "It is a title in the summary table on macOS: we list the attributes of a ZIM file: does it contain pictures yes/no, does it contain Videos yes/no, Details? yes/no";
 "common.button.print" = "Accessibility label for button to print the currently loaded article";
 "common.button.copy" = "Button label for copying a given item. The context is the same as the system's copy/paste acion.";
+"common.button.copied" = "Button label for confirming a given item was copied. The context is the same as the system's copy/paste acion.";
 "common.button.share" = "Accessibility label for share button, to share the currently loaded article with an external app.";
 "common.button.share_as_pdf" = "Accesibility label for share button. to share the curretly loadded article with an external application in a PDF file format.";
 "common.search" = "The default placeholder text for searchbars, when the search input field is empty";

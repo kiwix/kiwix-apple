@@ -18,40 +18,50 @@ import SwiftUI
 struct HotspotDetails: View {
     let address: URL
     let qrCodeImage: CGImage?
-    let vSpace: CGFloat
+    private let vSpace: CGFloat = 18
+    
+    private enum Const {
+        static let imageWidth: CGFloat = 220
+    }
     
     var body: some View {
         HotspotCell {
-            VStack(alignment: .center, spacing: vSpace) {
-                #if os(macOS)
-                Link(address.absoluteString, destination: address)
-                    .fontWeight(.semibold).foregroundColor(.accentColor).lineLimit(1)
-                #else
-                Text(LocalString.hotspot_server_active_warning)
-                    .fontWeight(.bold)
-                    .foregroundStyle(Color.primary)
-                    .lineLimit(nil)
-                    .multilineTextAlignment(.center)
-                
-                Text(address.absoluteString)
-                    .fontWeight(.semibold)
-                    .foregroundStyle(Color.primary)
-                    .lineLimit(1)
-                #endif
-                HStack(spacing: 32) {
-                    Spacer()
-                    ShareLink(item: address) {
-                        Label(LocalString.common_button_share, systemImage: "square.and.arrow.up")
-                    }
-                    CopyPasteMenu(url: address, label: LocalString.common_button_copy)
-                    Spacer()
-                }
+            HStack {
 #if os(macOS)
-                .buttonStyle(.borderless)
-                .foregroundStyle(Color.accentColor)
+                Spacer()
 #endif
+                VStack(alignment: .center, spacing: vSpace) {
+#if os(macOS)
+                    Link(address.absoluteString, destination: address)
+                        .fontWeight(.semibold).foregroundColor(.accentColor).lineLimit(1)
+                        .frame(width: Const.imageWidth)
+#else
+                    Text(LocalString.hotspot_server_active_warning)
+                        .fontWeight(.bold)
+                        .foregroundStyle(Color.primary)
+                        .lineLimit(nil)
+                        .multilineTextAlignment(.center)
+                    
+                    Text(address.absoluteString)
+                        .fontWeight(.semibold)
+                        .foregroundStyle(Color.primary)
+                        .lineLimit(1)
+#endif
+                    HStack {
+                        ShareLink(item: address) {
+                            Label(LocalString.common_button_share, systemImage: "square.and.arrow.up")
+                        }
+                        Spacer(minLength: 32)
+                        DynamicCopyButton(action: { CopyPaste.copyToPasteBoard(url: address) })
+                    }
+                    .frame(width: Const.imageWidth)
+#if os(macOS)
+                    .buttonStyle(.borderless)
+                    .foregroundStyle(Color.accentColor)
+#endif
+                }
+                Spacer()
             }
-            
         }
         
         HotspotCell {
@@ -66,11 +76,11 @@ struct HotspotDetails: View {
                             ProgressView().progressViewStyle(.circular)
                         }
                     }
-                    .frame(width: 220, height: 220)
+                    .frame(width: Const.imageWidth, height: Const.imageWidth)
                     .aspectRatio(1.0, contentMode: .fill)
                     
                     if let qrCodeImage {
-                        HStack(spacing: 32) {
+                        HStack {
                             let img = Image(qrCodeImage, scale: 1, label: Text(address.absoluteString))
                             ShareLink(
                                 item: img,
@@ -81,8 +91,10 @@ struct HotspotDetails: View {
                                     systemImage: "square.and.arrow.up"
                                 )
                             }
-                            CopyImageToPasteBoard(image: qrCodeImage)
+                            Spacer(minLength: 32)
+                            DynamicCopyButton(action: { CopyPaste.copyToPasteBoard(image: qrCodeImage) })
                         }
+                        .frame(width: Const.imageWidth)
                     }
                 }
                 Spacer()

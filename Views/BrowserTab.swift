@@ -86,8 +86,10 @@ struct BrowserTab: View {
                             buttonLabel: LocalString.common_button_share_as_pdf
                         )
                         if let url = browser.webView.url {
-                            CopyPasteMenu(url: url)
-                                .keyboardShortcut("c", modifiers: [.command, .shift])
+                            Button(LocalString.common_button_copy) {
+                                CopyPaste.copyToPasteBoard(url: url)
+                            }
+                            .keyboardShortcut("c", modifiers: [.command, .shift])
                         }
                     } label: {
                         Label(LocalString.common_button_share, systemImage: "square.and.arrow.up")

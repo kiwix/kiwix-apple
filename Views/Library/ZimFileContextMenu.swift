@@ -23,7 +23,11 @@ struct ZimFileContextMenu: View {
             Section { ArticleActions(zimFileID: zimFile.fileID) }
         }
         if let downloadURL = zimFile.downloadURL {
-            Section { CopyPasteMenu(url: downloadURL) }
+            Section {
+                Button(LocalString.library_zim_file_context_copy_url) {
+                    CopyPaste.copyToPasteBoard(url: downloadURL)
+                }
+            }
         }
     }
 }
