@@ -45,6 +45,7 @@ struct DynamicCopyButton: View {
     let action: () -> Void
     @State private var copyComplete: UInt = 0
     @State private var buttonState: ButtonState = .document
+    @State private var systemImage: String = ButtonState.document.systemImage
     
     var body: some View {
         SensoryFeedbackContext({
@@ -52,21 +53,39 @@ struct DynamicCopyButton: View {
                 action()
                 copyComplete += 1
             } label: {
-                Label(buttonState.label, systemImage: buttonState.systemImage)
-                    .foregroundStyle(buttonState.color)
+                withSymbolEffect(
+                    Label(buttonState.label, systemImage: systemImage)
+                        .foregroundStyle(buttonState.color)
+                )
             }
             // fix for button height changes when the icon is swapped
             .frame(minHeight: 23)
             .onChange(of: copyComplete) { _ in
-                buttonState = .complete
                 Task {
                     // Task.sleep works better than animation delay
                     // this way the icon swaping is in sync
-                    try? await Task.sleep(nanoseconds: 1_000_000_000)
-                    buttonState = .document
+                    buttonState = .complete
+                    try? await Task.sleep(nanoseconds: 100_000_000)
+                    systemImage = ButtonState.complete.systemImage
+                    try? await Task.sleep(nanoseconds: 800_000_000)
+                    systemImage = ButtonState.document.systemImage
+                    try? await Task.sleep(nanoseconds: 200_000_000)
+                    withAnimation(.easeInOut(duration: 0.2)) {
+                        buttonState = .document
+                    }
                 }
             }
         }, trigger: copyComplete)
+    }
+    
+    @ViewBuilder
+    private func withSymbolEffect(_ content: some View) -> some View {
+        if #available(iOS 17, macOS 14, *) {
+            content
+                .contentTransition(.symbolEffect(.replace))
+        } else {
+            content
+        }
     }
 }
 
