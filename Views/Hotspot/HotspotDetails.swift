@@ -18,7 +18,7 @@ import SwiftUI
 struct HotspotDetails: View {
     let address: URL
     let qrCodeImage: CGImage?
-    let vSpace: CGFloat
+    private let vSpace: CGFloat = 18
     
     private enum Const {
         static let imageWidth: CGFloat = 220
@@ -26,34 +26,41 @@ struct HotspotDetails: View {
     
     var body: some View {
         HotspotCell {
-            VStack(alignment: .center, spacing: vSpace) {
-                #if os(macOS)
-                Link(address.absoluteString, destination: address)
-                    .fontWeight(.semibold).foregroundColor(.accentColor).lineLimit(1)
-                #else
-                Text(LocalString.hotspot_server_active_warning)
-                    .fontWeight(.bold)
-                    .foregroundStyle(Color.primary)
-                    .lineLimit(nil)
-                    .multilineTextAlignment(.center)
-                
-                Text(address.absoluteString)
-                    .fontWeight(.semibold)
-                    .foregroundStyle(Color.primary)
-                    .lineLimit(1)
-                #endif
-                HStack {
-                    ShareLink(item: address) {
-                        Label(LocalString.common_button_share, systemImage: "square.and.arrow.up")
-                    }
-                    Spacer(minLength: 32)
-                    DynamicCopyButton(action: { CopyPaste.copyToPasteBoard(url: address) })
-                }
-                .frame(width: Const.imageWidth)
+            HStack {
 #if os(macOS)
-                .buttonStyle(.borderless)
-                .foregroundStyle(Color.accentColor)
+                Spacer()
 #endif
+                VStack(alignment: .center, spacing: vSpace) {
+#if os(macOS)
+                    Link(address.absoluteString, destination: address)
+                        .fontWeight(.semibold).foregroundColor(.accentColor).lineLimit(1)
+                        .frame(width: Const.imageWidth)
+#else
+                    Text(LocalString.hotspot_server_active_warning)
+                        .fontWeight(.bold)
+                        .foregroundStyle(Color.primary)
+                        .lineLimit(nil)
+                        .multilineTextAlignment(.center)
+                    
+                    Text(address.absoluteString)
+                        .fontWeight(.semibold)
+                        .foregroundStyle(Color.primary)
+                        .lineLimit(1)
+#endif
+                    HStack {
+                        ShareLink(item: address) {
+                            Label(LocalString.common_button_share, systemImage: "square.and.arrow.up")
+                        }
+                        Spacer(minLength: 32)
+                        DynamicCopyButton(action: { CopyPaste.copyToPasteBoard(url: address) })
+                    }
+                    .frame(width: Const.imageWidth)
+#if os(macOS)
+                    .buttonStyle(.borderless)
+                    .foregroundStyle(Color.accentColor)
+#endif
+                }
+                Spacer()
             }
         }
         

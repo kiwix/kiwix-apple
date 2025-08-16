@@ -28,7 +28,6 @@ struct HotspotZimFilesSelection: View {
     @State private var presentedSheet: PresentedSheet?
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     @State private var hotspotError: String?
-    private static let vSpace: CGFloat = 18.0
     
     private enum PresentedSheet: Identifiable {
         case shareHotspot(url: URL)
@@ -69,7 +68,7 @@ struct HotspotZimFilesSelection: View {
                                     alignment: .center,
                                     spacing: 12
                                 ) {
-                                    HotspotDetails(address: address, qrCodeImage: qrCodeImage, vSpace: Self.vSpace)
+                                    HotspotDetails(address: address, qrCodeImage: qrCodeImage)
                                 }
                                 Spacer()
                             }
