@@ -223,6 +223,7 @@
     return [[[zimFileID UUIDString] lowercaseString] cStringUsingEncoding:NSUTF8StringEncoding];
 }
 
+/// Find or insert and return the archive by zimFileID
 - (zim::Archive *_Nullable) archiveBy: (NSUUID *_Nonnull) zimFileID {
     zim::Archive *found = [self findArchiveBy:zimFileID];
     if(found == nil) {
@@ -237,6 +238,7 @@
     }
 }
 
+/// Only find (no insertion of) the archive by zimFileID
 - (zim::Archive *_Nullable) findArchiveBy: (NSUUID *_Nonnull) zimFileID {
     std::string zimFileID_C = [self zimfileID_C: zimFileID];
     auto found = self.archives->find(zimFileID_C);
