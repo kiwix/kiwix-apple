@@ -35,12 +35,14 @@
 
 @implementation KiwixHotspot
 
-- (KiwixHotspot *)initWithZimFileIds:(nonnull NSSet *)zimFileIDs onPort: (int) port {
+- (KiwixHotspot *_Nullable)initWithZimFileIds:(nonnull NSSet *)zimFileIDs onPort: (int) port {
     self = [super init];
     if (self) {
         self.library = kiwix::Library::create();
         if(self.library != nullptr) {
-            [self startFor:zimFileIDs onPort: port];
+            if([self startFor:zimFileIDs onPort: port] == false) {
+                return nil;
+            }
         } else {
             NSLog(@"couldn't create kiwix::Library for Hotspot!");
         }
@@ -48,7 +50,7 @@
     return self;
 }
 
--(void) startFor: (nonnull NSSet *) zimFileIDs onPort: (int) port {
+-(Boolean) startFor: (nonnull NSSet *) zimFileIDs onPort: (int) port {
     if (self.server != nullptr) {
         self.server = nil;
     }
@@ -60,14 +62,22 @@
                 kiwix::Book book = kiwix::Book();
                 book.update(*archive);
                 self.library->addBook(book);
+            } else {
+                NSLog(@"couldn't add to hotspot zimFileID: %@", zimFileID);
             }
         } catch (std::exception &e) {
             NSLog(@"couldn't add zimFile to Hotspot: %@ because: %s", zimFileID, e.what());
         }
     }
-    self.server = std::make_shared<kiwix::Server>(self.library);
-    self.server->setPort(port);
-    self.server->start();
+    if(self.library->getBooksIds().size() > 0) {
+        self.server = std::make_shared<kiwix::Server>(self.library);
+        self.server->setPort(port);
+        self.server->start();
+        return true;
+    } else {
+        NSLog(@"no point in starting the hotspot with no zim files");
+        return false;
+    }
 }
 
 - (NSString *)address {

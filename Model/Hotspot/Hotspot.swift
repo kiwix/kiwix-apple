@@ -61,9 +61,11 @@ final class Hotspot {
         }
         let portNumber = Int32(port)
         hotspot = KiwixHotspot(__zimFileIds: zimFileIds, onPort: portNumber)
-        await MainActor.run {
-            state = .started
-            preventSleep(true)
+        if hotspot != nil {
+            await MainActor.run {
+                state = .started
+                preventSleep(true)
+            }
         }
     }
     
