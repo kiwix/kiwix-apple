@@ -55,8 +55,13 @@ struct HotspotZimFilesSelection: View {
                     Text(hotspotError)
                         .lineLimit(nil)
                         .foregroundStyle(.red)
+                    #if os(iOS)
                         .padding(.horizontal, 12)
                         .padding(.bottom, 24)
+                    #else
+                        .padding()
+                        .padding(.bottom, 0)
+                    #endif
                 }
                 if case .started(let address, let qrCodeImage) = hotspot.state {
                     ScrollView {

@@ -61,8 +61,7 @@
     }
     if(self.library->getBooksIds().size() > 0) {
         self.server->setPort(port);
-        self.server->start();
-        return true;
+        return self.server->start(); // this returns false if the port is occupied
     } else {
         NSLog(@"no point in starting the hotspot with no zim files");
         self.server->stop();

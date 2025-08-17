@@ -19,11 +19,6 @@ import SwiftUI
 
 final class Hotspot {
     
-    enum PortCheckResult {
-        case valid
-        case invalid(String)
-    }
-    
     enum State {
         case started
         case stopped
@@ -46,23 +41,22 @@ final class Hotspot {
     @ZimActor
     func startWith(zimFileIds: Set<UUID>) async {
         guard !zimFileIds.isEmpty else {
-            assertionFailure("no zim files were set for Hotspot to start")
+            debugPrint("no zim files were set for Hotspot to start")
             return
         }
         let port: Int = Defaults[.hotspotPortNumber]
-        guard PortCheck.isOpen(port: port) else {
+        let portNumber = Int32(port)
+        if hotspot.__start(for: zimFileIds, onPort: portNumber) {
+            await MainActor.run {
+                state = .started
+                preventSleep(true)
+            }
+        } else {
             await MainActor.run {
                 state = .error(
                     LocalString.hotspot_error_port_already_used_by_another_app(withArgs: "\(port)")
                 )
             }
-            return
-        }
-        let portNumber = Int32(port)
-        hotspot.__start(for: zimFileIds, onPort: portNumber)
-        await MainActor.run {
-            state = .started
-            preventSleep(true)
         }
     }
     
