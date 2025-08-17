@@ -35,26 +35,16 @@
 
 @implementation KiwixHotspot
 
-- (KiwixHotspot *_Nullable)initWithZimFileIds:(nonnull NSSet *)zimFileIDs onPort: (int) port {
+- (KiwixHotspot *_Nonnull) init {
     self = [super init];
-    if (self) {
-        self.library = kiwix::Library::create();
-        if(self.library != nullptr) {
-            if([self startFor:zimFileIDs onPort: port] == false) {
-                return nil;
-            }
-        } else {
-            NSLog(@"couldn't create kiwix::Library for Hotspot!");
-        }
-    }
+    self.library = kiwix::Library::create();
+    self.server = std::make_shared<kiwix::Server>(self.library);
     return self;
 }
 
--(Boolean) startFor: (nonnull NSSet *) zimFileIDs onPort: (int) port {
-    if (self.server != nullptr) {
-        self.server = nil;
-    }
-    
+- (Boolean) startFor: (nonnull NSSet *) zimFileIDs onPort: (int) port {
+    self.server->stop();
+    [self removeAllBooksFromLibrary];
     for (NSUUID *zimFileID in zimFileIDs) {
         try {
             zim::Archive * _Nullable archive = [[ZimFileService sharedInstance] archiveBy: zimFileID];
@@ -70,20 +60,17 @@
         }
     }
     if(self.library->getBooksIds().size() > 0) {
-        self.server = std::make_shared<kiwix::Server>(self.library);
         self.server->setPort(port);
         self.server->start();
         return true;
     } else {
         NSLog(@"no point in starting the hotspot with no zim files");
+        self.server->stop();
         return false;
     }
 }
 
-- (NSString *)address {
-    if(self.server == nullptr) {
-        return nil;
-    }
+- (NSString *_Nullable) address {
     NSString *ipAddress = [NSString stringWithUTF8String: self.server->getAddress().addr.c_str()];
     return [NSString stringWithFormat:@"http://%@%@/", ipAddress, [self portNumberSuffix]];
 }
@@ -97,9 +84,14 @@
     }
 }
 
-- (void)stop {
-    if(self.server != nullptr) {
-        self.server->stop();
+- (void) stop {
+    self.server->stop();
+    [self removeAllBooksFromLibrary];
+}
+
+- (void) removeAllBooksFromLibrary {
+    for (std::string identifierC: self.library->getBooksIds()) {
+        self.library->removeBookById(identifierC);
     }
 }
 

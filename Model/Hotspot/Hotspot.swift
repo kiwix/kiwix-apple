@@ -41,13 +41,12 @@ final class Hotspot {
     @Published var state: State = .stopped
     
     @ZimActor
-    private var hotspot: KiwixHotspot?
+    private let hotspot = KiwixHotspot()
 
     @ZimActor
     func startWith(zimFileIds: Set<UUID>) async {
-        guard hotspot == nil else { return }
         guard !zimFileIds.isEmpty else {
-            debugPrint("no zim files were set for Hotspot to start")
+            assertionFailure("no zim files were set for Hotspot to start")
             return
         }
         let port: Int = Defaults[.hotspotPortNumber]
@@ -60,20 +59,16 @@ final class Hotspot {
             return
         }
         let portNumber = Int32(port)
-        hotspot = KiwixHotspot(__zimFileIds: zimFileIds, onPort: portNumber)
-        if hotspot != nil {
-            await MainActor.run {
-                state = .started
-                preventSleep(true)
-            }
+        hotspot.__start(for: zimFileIds, onPort: portNumber)
+        await MainActor.run {
+            state = .started
+            preventSleep(true)
         }
     }
     
     @ZimActor
     func stop() async {
-        guard let hotspot else { return }
         hotspot.__stop()
-        self.hotspot = nil
         await MainActor.run {
             state = .stopped
             preventSleep(false)
@@ -88,7 +83,7 @@ final class Hotspot {
     }
     
     func serverAddress() async -> URL? {
-        guard let address = await self.hotspot?.__address() else {
+        guard let address = await self.hotspot.__address() else {
             return nil
         }
         return URL(string: address)
