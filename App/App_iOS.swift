@@ -59,6 +59,9 @@ struct Kiwix: App {
                     case .active:
                         if FeatureFlags.hasLibrary {
                             library.start(isUserInitiated: false)
+                            Task {
+                                await Hotspot.shared.appDidBecomeActive()
+                            }
                         }
                     case .background:
                         break

@@ -20,7 +20,7 @@ import SwiftUI
 final class Hotspot {
     
     enum State {
-        case started
+        case started(zimFileIds: Set<UUID>)
         case stopped
         case error(String)
     }
@@ -48,7 +48,7 @@ final class Hotspot {
         let portNumber = Int32(port)
         if hotspot.__start(for: zimFileIds, onPort: portNumber) {
             await MainActor.run {
-                state = .started
+                state = .started(zimFileIds: zimFileIds)
                 preventSleep(true)
             }
         } else {
@@ -66,6 +66,16 @@ final class Hotspot {
         await MainActor.run {
             state = .stopped
             preventSleep(false)
+        }
+    }
+    
+    @MainActor
+    func appDidBecomeActive() async {
+        if case let .started(zimFileIds) = state {
+            Task { @ZimActor in
+                await stop()
+                await startWith(zimFileIds: zimFileIds)
+            }
         }
     }
     
