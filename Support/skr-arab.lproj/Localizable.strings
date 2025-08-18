@@ -14,6 +14,8 @@
 "common.button.yes" = "جیا";
 "common.button.no" = "کو";
 "common.button.print" = "چھاپو";
+"common.button.copy" = "نقل کرو";
+"common.button.copied" = "نقل تھی ڳئے";
 "common.button.share" = "شیئر";
 "common.search" = "ڳولو";
 "common.tab.navigation.title" = "ٹیباں";

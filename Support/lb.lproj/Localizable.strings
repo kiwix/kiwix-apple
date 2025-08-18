@@ -21,6 +21,8 @@
 "common.button.yes" = "Jo";
 "common.button.no" = "nee";
 "common.button.print" = "Drécken";
+"common.button.copy" = "Kopéieren";
+"common.button.copied" = "Kopéiert";
 "common.button.share" = "Deelen";
 "common.button.share_as_pdf" = "Als PDF deelen";
 "common.search" = "Sichen";

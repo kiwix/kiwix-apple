@@ -5,6 +5,7 @@
 // Author: Caro
 // Author: Gremid
 // Author: Justman10000
+// Author: Russianbabe1978
 
 "library_refresh_error.retrieve.description" = "Fehler beim Abrufen der Katalogdaten.";
 "library_refresh_error.parse.description" = "Fehler beim Parsen der Katalogdaten.";
@@ -25,6 +26,7 @@
 "common.button.yes" = "Ja";
 "common.button.no" = "nein";
 "common.button.print" = "Drucken";
+"common.button.copy" = "Kopieren";
 "common.button.share" = "Teilen";
 "common.search" = "Suchen";
 "common.tab.manager.title" = "Tabs-Manager";
@@ -68,6 +70,8 @@
 "zim_file_cell.article_count.suffix" = "Artikel";
 "zim_file_missing_indicator.help" = "Zim-Datei fehlt.";
 "hotspot.settings.port_number" = "Portnummer";
+"hotspot.server_active_warning" = "Der Hotspot bleibt nur aktiv, solange die App geöffnet und verwendet wird.";
+"hotspot.server_wifi_only_explanation" = "Um diese ZIM-Dateien auf anderen Geräten zu durchsuchen, stellen Sie sicher, dass sich alle Geräte im selben WLAN-Netzwerk befinden.";
 "library.zim_file_details.side_panel.message" = "Wähle eine ZIM-Datei aus, um Details zu sehen";
 "library.zim_file_context.main_page.label" = "Hauptseite";
 "library.zim_file_context.random.label" = "Zufällige Seite";

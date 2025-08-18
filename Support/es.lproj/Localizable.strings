@@ -3,6 +3,7 @@
 // Author: AlexanderFF
 // Author: Eulalio
 // Author: Jmabel
+// Author: Laranxa
 // Author: Sinopsistrans
 
 // Fuzzy
@@ -27,7 +28,10 @@
 "common.button.yes" = "Sí";
 "common.button.no" = "no";
 "common.button.print" = "Imprimir";
+"common.button.copy" = "Copiar";
+"common.button.copied" = "Copiado";
 "common.button.share" = "Compartir";
+"common.button.share_as_pdf" = "Compartir como PDF";
 "common.search" = "Buscar";
 "common.tab.manager.title" = "Administrador de pestañas";
 "common.tab.navigation.title" = "Pestañas";
@@ -63,12 +67,18 @@
 "download_task_cell.status.downloading" = "Descargando...";
 "download_task_cell.status.paused" = "En pausa";
 "flavor_tag.help.max" = "todo excepto archivos multimedia grandes como vídeo/audio";
-"flavor_tag.help.no_pic" = "La mayoría de las imágenes han sido eliminadas";
-"flavor_tag.help.mini" = "Sólo está disponible un subconjunto del texto, probablemente la primera sección.";
+"flavor_tag.help.no_pic" = "la mayoría de las imágenes han sido eliminadas";
+"flavor_tag.help.mini" = "sólo está disponible un subconjunto del texto, probablemente la primera sección";
 "library_refresh_time.last" = "Ahora mismo";
 "library_refresh_time.never" = "Nunca";
 "zim_file_cell.article_count.suffix" = "artículos";
 "zim_file_missing_indicator.help" = "Falta el archivo Zim.";
+"hotspot.action.start_hotspot.title" = "Iniciar servidor";
+"hotspot.action.stop_hotspot.title" = "Parar servidor";
+"hotspot.settings.port_number" = "Número de puerto";
+"hotspot.settings.recommended_port_range" = "El puerto de conexión usado por el servidor debería estar entre %@ y %@";
+"hotspot.server_active_warning" = "El punto de acceso se mantiene activo solamente mientras la aplicación está abierta y en uso.";
+"hotspot.server_wifi_only_explanation" = "Para busacar estos archivos ZIM en otros dispositivos asegúrese que todos ellos están en la misma red WiFi.";
 "library.zim_file_details.side_panel.message" = "Seleccione un archivo ZIM para ver los detalles";
 "library.zim_file_context.main_page.label" = "Página principal";
 "library.zim_file_context.random.label" = "Página aleatoria";
@@ -94,6 +104,8 @@
 "zim_file.action.toggle_cellular" = "Descargar usando el móvil";
 "zim_file.action.unlink.title" = "Desenlazar";
 "zim_file.action.unlink.message" = "Todos los artículos marcados vinculados a este archivo ZIM se eliminarán, pero el archivo original permanecerá en su lugar.";
+"zim_file.action.unlink.multi_title" = "Deseleccionar %@ archivos ZIM";
+"zim_file.action.unlink.multi_message" = "Todos los artículos marcados vinculados a estos archivos %@ ZIM serán borrados, pero los archivos originales permanecerán en su lugar.";
 "zim_file.action.unlink.button.title" = "Desvincular";
 "zim_file.action.delete.title" = "Eliminar";
 "zim_file.action.delete.message" = "El archivo ZIM y todos los marcadores vinculados a este se eliminarán.";
@@ -102,7 +114,7 @@
 "zim_file.action.download.warning.title" = "Advertencia de espacio";
 "zim_file.action.download.warning.message" = "Puede que no haya espacio suficiente en tu dispositivo para almacenar este archivo ZIM.";
 "zim_file.action.download.warning.message1" = "Habrá menos de 1 GB de espacio después de descargar el archivo ZIM.";
-"zim_file.action.download.button.anyway" = "Descargar de todos modos.";
+"zim_file.action.download.button.anyway" = "Descargar de todos modos";
 "zim_file.base_info.attribute.language" = "Idioma";
 "zim_file.base_info.attribute.category" = "Categoría";
 "zim_file.base_info.attribute.size" = "Tamaño";
@@ -122,12 +134,19 @@
 "zim_file.download_task.action.resume" = "Reanudar";
 "zim_file.download_task.action.paused" = "Pausada";
 "service_worker_warning.label.description" = "No se admiten archivos Zim que requieren trabajadores de servicio.";
+"multi.zim_files_selected.sidebar_title" = "Seleccionado";
+"multi.zim_files_selected.description_count" = "Archivos ZIM";
+"theme_settings.title" = "Tema";
+"theme_settings.option.dark" = "Oscuro";
+"theme_settings.option.light" = "Claro";
+"theme_settings.option.system" = "Sistema";
 "reading_settings.zoom.title" = "Ampliar página";
 "reading_settings.zoom.reset.button" = "Restablecer";
 "reading_settings.external_link.title" = "Enlace externo";
 "reading_settings.search_snippet.title" = "Fragmento de búsqueda";
 "reading_settings.tab.reading" = "Lectura";
 "library_settings.catalog.title" = "Catálogo";
+"library_settings.downloads.title" = "Descargas";
 "library_settings.button.refresh_now" = "Actualizar ahora";
 "library_settings.last_refresh.text" = "Última actualización";
 "library_settings.auto_refresh.toggle" = "Actualización automática";
@@ -204,13 +223,15 @@
 "enum.category.wikiversity" = "Wikiversidad";
 "enum.category.wikivoyage" = "Wikiviajes";
 "enum.category.wiktionary" = "Wikcionario";
+"enum.category.ted" = "TED";
 "enum.category.vikidia" = "Vikidia";
+"enum.category.stackexchange" = "StackExchange";
 "enum.category.other" = "Otros";
 "enum.external_link_loading_policy.always_ask" = "Pregunta siempre";
 "enum.external_link_loading_policy.always_load" = "Cargar siempre";
 "enum.external_link_loading_policy.never_load" = "No cargar nunca";
 "enum.flavor.max" = "máximo";
-"enum.flavor.no_pic" = "Sin foto";
+"enum.flavor.no_pic" = "sin imágen";
 "enum.flavor.mini" = "mini";
 "enum.library_language_sorting_model.a-z" = "A-Z";
 "enum.library_language_sorting_model.by_count" = "Por conteo";
@@ -226,5 +247,24 @@
 "enum.navigation_item.new" = "Nuevo";
 "enum.navigation_item.downloads" = "Descargas";
 "enum.navigation_item.settings" = "Ajustes";
+"enum.navigation_item.hotspot" = "Servidor";
 "enum.search_result_snippet_mode.disabled" = "Desactivado";
 "enum.search_result_snippet_mode.matches" = "Coincidencias";
+"payment.donate.title" = "Danar";
+"payment.description.label" = "Apoyar a Kiwix";
+"payment.summary_page.title" = "Apoyar a Kiwix";
+"payment.support_button.label" = "Apoya a Kiwix";
+"payment.monthly_support.label" = "Pago mensual a Kiwix";
+"payment.summary.title" = "Kiwix";
+"payment.textfield.custom_amount.label" = "Cantidad personalizada";
+"payment.confirm.button.title" = "Confirmar";
+"payment.selection.average_monthly_donation.subtitle" = "Donación mensual promedio";
+"payment.selection.last_year_average.subtitle" = "Promedio del año pasado";
+"payment.selection.custom_amount" = "Cantidad personalizada";
+"payment.selection.option.one_time" = "Una vez";
+"payment.selection.option.monthly" = "Mensual";
+"payment.support_fallback_message" = "Lo sentimos, su dispositivo no soporta Apple Pay.";
+"payment.success.title" = "Muchas grácias por su donación.";
+"payment.success.description" = "Su generosidad significa todo para nosotros.";
+"payment.error.title" = "Bueno, esto es incómodo.";
+"payment.error.description" = "Ha habido un problema con su pago. Por favor, inténtelo de nuevo.";

@@ -13,6 +13,7 @@
 "common.button.yes" = "हाँ";
 "common.button.no" = "नहीं";
 "common.button.print" = "प्रिंट करें";
+"common.button.copy" = "प्रतिलिपि बनाएँ";
 "common.button.share" = "साझा करें";
 "common.tab.menu.close_all" = "सभी टैब्स बंद करें";
 "common.tab.list.close" = "टैब बंद करें";
