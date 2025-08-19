@@ -36,6 +36,8 @@
 "common.button.yes" = "Oui";
 "common.button.no" = "non";
 "common.button.print" = "Imprimer";
+"common.button.copy" = "Copier";
+"common.button.copied" = "Copié";
 "common.button.share" = "Partager";
 "common.button.share_as_pdf" = "Partager au format PDF";
 "common.search" = "Rechercher";
@@ -82,7 +84,11 @@
 "hotspot.action.start_hotspot.title" = "Démarrer le point d’accès";
 "hotspot.action.stop_hotspot.title" = "Arrêter le point d’accès";
 "hotspot.settings.port_number" = "Numéro de port";
+"hotspot.settings.recommended_port_range" = "Le numéro de port réseau utilisé par le points d’accès, doit être compris entre %@ et %@";
+"hotspot.error.port_already_used_by_another_app" = "Le point d’accès ne peut pas être démarré car le port %@ est utilisé. Pour résoudre ce problème, fermez l’application qui utilise ce port ou changez le numéro de port du point d’accès Kiwix dans les paramètres.";
 "hotspot.server_full_explanation" = "Afin de pouvoir parcourir ces fichiers ZIM sur d’autres appareils, veuillez vous assurer que tous les appareils sont connectés au même point d'accès réseau ou WiFi.";
+"hotspot.server_active_warning" = "Le point d’accès reste actif uniquement lorsque l’application est lancée et en cours d’utilisation.";
+"hotspot.server_wifi_only_explanation" = "Afin de pouvoir parcourir ces fichiers ZIM sur d’autres appareils, veuillez vous assurer que tous les appareils sont connectés au même point d’accès WiFi.";
 "library.zim_file_details.side_panel.message" = "Sélectionnez un fichier ZIM pour voir les détails";
 "library.zim_file_context.main_page.label" = "Page principale";
 "library.zim_file_context.random.label" = "Page au hasard";

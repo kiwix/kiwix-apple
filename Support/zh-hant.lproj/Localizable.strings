@@ -24,6 +24,7 @@
 "common.button.no" = "否";
 "common.button.print" = "列印";
 "common.button.copy" = "複製";
+"common.button.copied" = "已複製";
 "common.button.share" = "分享";
 "common.button.share_as_pdf" = "以 PDF 格式分享";
 "common.search" = "搜尋";

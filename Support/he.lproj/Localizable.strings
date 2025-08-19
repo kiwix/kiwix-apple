@@ -3,7 +3,7 @@
 // Author: Amire80
 // Author: YaronSh
 
-"library_refresh_error.retrieve.description" = "שגיאה במשיכת נתוני קטלוג.";
+"library_refresh_error.retrieve.description" = "שגיאה באחזור נתוני קטלוג.";
 "library_refresh_error.parse.description" = "שגיאה בפענוח נתוני קטלוג.";
 "library_refresh_error.process.description" = "שגיאה בעיבוד נתוני קטלוג.";
 "download_service.complete.title" = "ההורדה הושלמה";
