@@ -27,7 +27,7 @@ struct HotspotZimFilesSelection: View {
     @ObservedObject private var hotspot = HotspotObservable.shared
     @State private var presentedSheet: PresentedSheet?
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
-    @State private var hotspotError: String?
+    @State private var hotspotError: (String, String)?
     
     private enum PresentedSheet: Identifiable {
         case shareHotspot(url: URL)
@@ -104,8 +104,8 @@ struct HotspotZimFilesSelection: View {
                 hotspotError = nil
             case .stopped:
                 hotspotError = nil
-            case let .error(errorMessage):
-                hotspotError = errorMessage
+            case let .error(title, description):
+                hotspotError = (title, description)
             }
         })
         .toolbar {
@@ -126,7 +126,8 @@ struct HotspotZimFilesSelection: View {
             }
         }
         .alert(isPresented: Binding<Bool>.constant($hotspotError.wrappedValue != nil)) {
-            Alert(title: Text(hotspotError ?? ""),
+            Alert(title: Text(hotspotError?.0 ?? ""),
+                  message: Text(hotspotError?.1 ?? ""),
                   primaryButton: .default(Text(LocalString.settings_navigation_title),
                                           action: { dismissAlert() }),
                   secondaryButton: .cancel({ dismissAlert() })

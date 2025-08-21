@@ -22,7 +22,7 @@ final class Hotspot {
     enum State: Equatable {
         case started(zimFileIds: Set<UUID>)
         case stopped
-        case error(String)
+        case error(title: String, description: String)
     }
     
     @MainActor
@@ -51,7 +51,8 @@ final class Hotspot {
             await preventSleep(true)
         } else {
             await update(state: .error(
-                LocalString.hotspot_error_port_already_used_by_another_app(withArgs: "\(port)")
+                title: LocalString.hotspot_error_port_already_used_by_another_app_title(withArgs: "\(port)"),
+                description: LocalString.hotspot_error_port_already_used_by_another_app_description
             ))
         }
     }

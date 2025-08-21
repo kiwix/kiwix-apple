@@ -21,7 +21,7 @@ enum HotspotState: Equatable {
     
     case started(URL, CGImage?)
     case stopped
-    case error(String)
+    case error(title: String, description: String)
     
     var isStarted: Bool {
         switch self {
@@ -77,9 +77,9 @@ final class HotspotObservable: ObservableObject {
         case .stopped:
             buttonTitle = LocalString.hotspot_action_start_hotspot_title
             update(state: .stopped)
-        case let .error(message):
+        case let .error(title, description):
             buttonTitle = LocalString.hotspot_action_start_hotspot_title
-            update(state: .error(message))
+            update(state: .error(title: title, description: description))
         }
     }
     

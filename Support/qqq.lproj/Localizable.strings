@@ -71,7 +71,8 @@
 "hotspot.action.stop_hotspot.title" = "A button title to stop the Kiwix Hotspot";
 "hotspot.settings.port_number" = "Label for setting the default port number for Kiwix Hotspot in settings. Eg: Port number: 4567";
 "hotspot.settings.recommended_port_range" = "A description in settings what is the valid range the user set Hotpost network port should fall into, when setting it. It uses two number arguments a minimum and a maximum. Eg ... between 1 and 65535";
-"hotspot.error.port_already_used_by_another_app" = "A warning message, that the selected port number (argument value) is already in use.";
+"hotspot.error.port_already_used_by_another_app_title" = "An alert message title, that the selected port number (argument value) is already in use.";
+"hotspot.error.port_already_used_by_another_app_description" = "Alert message explanation, how to fix the occupied port number problem.";
 "hotspot.server_full_explanation" = "A desription text explaining the network setup of devices for the Kiwix Hotspot.";
 "hotspot.server_active_warning" = "A description text explaining that the hotspot only works on iOS while the application is actively open and in use (in the foreground).";
 "hotspot.server_wifi_only_explanation" = "A shortened desription text explaining the wifi setup of devices for the Kiwix Hotspot.";
