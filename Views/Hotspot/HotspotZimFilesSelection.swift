@@ -138,7 +138,7 @@ struct HotspotZimFilesSelection: View {
     private func dismissAlert() {
         hotspotError = nil
         // at the end resetError is also setting hotspotError to nil
-        // but it's just but too slow for UI
+        // but it's just too slow for UI
         hotspot.resetError()
     }
 }
