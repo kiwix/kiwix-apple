@@ -24,7 +24,7 @@ struct HotspotZimFilesSelection: View {
         animation: .easeInOut
     ) private var zimFiles: FetchedResults<ZimFile>
     @StateObject private var selection: MultiSelectedZimFilesViewModel
-    @ObservedObject private var hotspot = HotspotObservable()
+    @ObservedObject private var hotspot = HotspotObservable.shared
     @State private var presentedSheet: PresentedSheet?
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     @State private var hotspotError: String?
@@ -51,18 +51,6 @@ struct HotspotZimFilesSelection: View {
             if zimFiles.isEmpty {
                 Message(text: LocalString.zim_file_opened_overlay_no_opened_message)
             } else {
-                if let hotspotError {
-                    Text(hotspotError)
-                        .lineLimit(nil)
-                        .foregroundStyle(.red)
-                    #if os(iOS)
-                        .padding(.horizontal, 12)
-                        .padding(.bottom, 24)
-                    #else
-                        .padding()
-                        .padding(.bottom, 0)
-                    #endif
-                }
                 if case .started(let address, let qrCodeImage) = hotspot.state {
                     ScrollView {
                         HStack(alignment: .center) {
@@ -137,5 +125,19 @@ struct HotspotZimFilesSelection: View {
                 .modifier(BadgeModifier(count: selection.selectedZimFiles.count))
             }
         }
+        .alert(isPresented: Binding<Bool>.constant($hotspotError.wrappedValue != nil)) {
+            Alert(title: Text(hotspotError ?? ""),
+                  primaryButton: .default(Text(LocalString.settings_navigation_title),
+                                          action: { dismissAlert() }),
+                  secondaryButton: .cancel({ dismissAlert() })
+            )
+        }
+    }
+    
+    private func dismissAlert() {
+        hotspotError = nil
+        // at the end resetError is also setting hotspotError to nil
+        // but it's just but too slow for UI
+        hotspot.resetError()
     }
 }
