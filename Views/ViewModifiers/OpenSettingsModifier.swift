@@ -18,7 +18,9 @@ import SwiftUI
 @available(macOS 14, *)
 struct OpeningSettingsModifier: ViewModifier {
     @Environment(\.openSettings) private var openSettings
-    private let navigateToHotspotSettingsPublisher = NotificationCenter.default.publisher(for: .navigateToHotSpotSettings)
+    private let navigateToHotspotSettingsPublisher = NotificationCenter.default.publisher(
+        for: .navigateToHotSpotSettings
+    )
     let updateTabSelection: () -> Void
     
     func body(content: Content) -> some View {
@@ -30,8 +32,11 @@ struct OpeningSettingsModifier: ViewModifier {
     }
 }
 
+// swiftlint:disable:next type_name
 struct OpeningSettingsModifier_macOS_13: ViewModifier {
-    private let navigateToHotspotSettingsPublisher = NotificationCenter.default.publisher(for: .navigateToHotSpotSettings)
+    private let navigateToHotspotSettingsPublisher = NotificationCenter.default.publisher(
+        for: .navigateToHotSpotSettings
+    )
     let updateTabSelection: () -> Void
     
     func body(content: Content) -> some View {
