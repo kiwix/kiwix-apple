@@ -127,14 +127,25 @@ struct HotspotZimFilesSelection: View {
             }
         }
         .alert(isPresented: Binding<Bool>.constant($hotspotError.wrappedValue != nil)) {
-            Alert(title: Text(hotspotError?.0 ?? ""),
-                  message: Text(hotspotError?.1 ?? ""),
-                  primaryButton: .default(Text(LocalString.settings_navigation_title),
-                                          action: {
+            
+            let settingButton = Alert.Button.default(Text(LocalString.settings_navigation_title), action: {
                 dismissAlert()
                 NotificationCenter.navigateToHotSpotSettings()
-            }),
-                  secondaryButton: .cancel(Text(LocalString.common_button_ok), action: { dismissAlert() })
+            })
+            let okButton = Alert.Button.default(Text(LocalString.common_button_ok), action: { dismissAlert() })
+            
+            #if os(macOS)
+            let primary = okButton
+            let secondary = settingButton
+            #else
+            let primary = settingButton
+            let secondary = okButton
+            #endif
+            
+            return Alert(title: Text(hotspotError?.0 ?? ""),
+                         message: Text(hotspotError?.1 ?? ""),
+                         primaryButton: primary,
+                         secondaryButton: secondary
             )
         }
     }
