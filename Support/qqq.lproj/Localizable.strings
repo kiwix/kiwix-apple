@@ -19,6 +19,7 @@
 "common.button.go_forward" = "Browser navigation buttton title";
 "common.button.done" = "The default button label for overflow menus, in order to close them";
 "common.button.cancel" = "Button label for both the search bar, to dismiss search results, and also a dismiss button label on an alert about opening external links";
+"common.button.ok" = "Button label for dismissing without any further action, Ok";
 "common.button.yes" = "It is a title in the summary table on macOS: we list the attributes of a ZIM file: does it contain pictures yes/no, does it contain Videos yes/no, Details? yes/no";
 "common.button.no" = "It is a title in the summary table on macOS: we list the attributes of a ZIM file: does it contain pictures yes/no, does it contain Videos yes/no, Details? yes/no";
 "common.button.print" = "Accessibility label for button to print the currently loaded article";

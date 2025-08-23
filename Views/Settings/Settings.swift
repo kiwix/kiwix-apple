@@ -14,7 +14,6 @@
 // along with Kiwix; If not, see https://www.gnu.org/licenses/.
 
 import SwiftUI
-
 import Defaults
 
 enum PortNumberFormatter {

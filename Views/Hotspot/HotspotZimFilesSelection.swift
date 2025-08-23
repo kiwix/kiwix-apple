@@ -120,6 +120,7 @@ struct HotspotZimFilesSelection: View {
                 }
 #if os(macOS)
                 .buttonStyle(.borderless)
+
 #endif
                 .disabled(selection.selectedZimFiles.isEmpty && !hotspot.state.isStarted)
                 .modifier(BadgeModifier(count: selection.selectedZimFiles.count))
@@ -129,8 +130,11 @@ struct HotspotZimFilesSelection: View {
             Alert(title: Text(hotspotError?.0 ?? ""),
                   message: Text(hotspotError?.1 ?? ""),
                   primaryButton: .default(Text(LocalString.settings_navigation_title),
-                                          action: { dismissAlert() }),
-                  secondaryButton: .cancel({ dismissAlert() })
+                                          action: {
+                dismissAlert()
+                NotificationCenter.navigateToHotSpotSettings()
+            }),
+                  secondaryButton: .cancel(Text(LocalString.common_button_ok), action: { dismissAlert() })
             )
         }
     }

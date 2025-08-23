@@ -26,6 +26,13 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     }
 }
 
+enum SettingsTab: Int {
+    case reading
+    case catalog
+    case hotspot
+    case about
+}
+
 @main
 struct Kiwix: App {
     @NSApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
@@ -38,6 +45,7 @@ struct Kiwix: App {
     @FocusState private var isSearchFocused: Bool
     @FocusedValue(\.browserURL) var browserURL
     @StateObject private var colorSchemeStore = UserColorSchemeStore()
+    @State private var settingsTab: Int = SettingsTab.reading.rawValue
 
     init() {
         UNUserNotificationCenter.current().delegate = notificationCenterDelegate
@@ -45,15 +53,22 @@ struct Kiwix: App {
             LibraryViewModel().start(isUserInitiated: false)
         }
     }
+    
+    private func selectHotspotTab() {
+        settingsTab = SettingsTab.hotspot.rawValue
+    }
 
     var body: some Scene {
         WindowGroup {
-            RootView(isSearchFocused: $isSearchFocused)
+            let root = RootView(isSearchFocused: $isSearchFocused)
                 .environment(\.managedObjectContext, Database.shared.viewContext)
                 .environmentObject(libraryRefreshViewModel)
-                .task {
-                    colorSchemeStore.update()
-                }
+                .task { colorSchemeStore.update() }
+            if #available(macOS 14, *) {
+                root.modifier(OpeningSettingsModifier(updateTabSelection: selectHotspotTab))
+            } else {
+                root.modifier(OpeningSettingsModifier_macOS_13(updateTabSelection: selectHotspotTab))
+            }
         }.commands {
             SidebarCommands()
             CommandGroup(replacing: .importExport) {
@@ -101,15 +116,19 @@ struct Kiwix: App {
         }
 
         Settings {
-            TabView {
+            TabView(selection: $settingsTab) {
                 ReadingSettings()
                     .environmentObject(colorSchemeStore)
+                    .tag(SettingsTab.reading.rawValue)
                 if FeatureFlags.hasLibrary {
                     LibrarySettings()
                         .environmentObject(libraryRefreshViewModel)
+                        .tag(SettingsTab.catalog.rawValue)
                     HotspotSettings()
+                        .tag(SettingsTab.hotspot.rawValue)
                 }
                 About()
+                    .tag(SettingsTab.about.rawValue)
             }
             .frame(width: 550, height: 400)
         }
