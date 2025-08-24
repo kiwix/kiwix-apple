@@ -66,6 +66,7 @@ final class SplitViewController: UISplitViewController {
         observeOpeningFiles()
         observeGoBackAndForward()
         observeAppBackgrounding()
+        observeNavigateToHotspotSettings()
     }
     
     private func observeNavigation() {
@@ -142,6 +143,16 @@ final class SplitViewController: UISplitViewController {
             .sink { [weak self] _ in
                 self?.isForegrounded = false
             }.store(in: &cancellables)
+    }
+    
+    private func observeNavigateToHotspotSettings() {
+        if Device.current == .iPad {
+            let notificationCenter = NotificationCenter.default
+            notificationCenter.publisher(for: .navigateToHotspotSettings)
+                .sink { [weak self] _ in
+                    self?.navigationViewModel.currentItem = .settings(scrollToHotspot: true)
+                }.store(in: &cancellables)
+        }
     }
 
     /// Dismiss any controller that is already presented when horizontal size class is about to change

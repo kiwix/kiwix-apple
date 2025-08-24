@@ -254,7 +254,10 @@ enum MenuItem: Hashable {
         case .categories: self = .categories
         case .new: self = .new
         case .downloads: self = .downloads
-        case .settings(let scrollToHotspot): self = .settings(scrollToHotspot: scrollToHotspot)
+        // we need to map it to false
+        // so when it's triggered from hotspot alert
+        // the side menu do get a selection update
+        case .settings: self = .settings(scrollToHotspot: false)
         case .hotspot: self = .hotspot
         }
     }
