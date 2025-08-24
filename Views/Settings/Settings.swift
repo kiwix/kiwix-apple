@@ -131,7 +131,10 @@ struct HotspotSettings: View {
     var body: some View {
         VStack(spacing: 16) {
             SettingSection(name: LocalString.hotspot_settings_port_number) {
-                PortInput()
+                // on macOS we can always focus on the port input
+                // regardless if we come from default settings route
+                // or being deeplinked from Hotspot error
+                PortInput(focusOnPortInput: true)
                 Text(Hotspot.validPortRangeMessage())
                     .foregroundColor(.secondary)
             }
@@ -149,6 +152,7 @@ import Combine
 
 struct Settings: View {
 
+    let scrollToHotspot: Bool
     @Default(.backupDocumentDirectory) private var backupDocumentDirectory
     @Default(.downloadUsingCellular) private var downloadUsingCellular
     @Default(.externalLinkLoadingPolicy) private var externalLinkLoadingPolicy
@@ -170,16 +174,23 @@ struct Settings: View {
     var body: some View {
         Group {
             if FeatureFlags.hasLibrary {
-                List {
-                    readingSettings
-                    downloadSettings
-                    catalogSettings
-                    miscellaneous
-                    hotspot
-                    backupSettings
+                ScrollViewReader { proxy in
+                    List {
+                        readingSettings
+                        downloadSettings
+                        catalogSettings
+                        miscellaneous
+                        hotspot.id("hotspot")
+                        backupSettings
+                    }
+                    .modifier(ToolbarRoleBrowser())
+                    .navigationTitle(LocalString.settings_navigation_title)
+                    .task {
+                        if scrollToHotspot {
+                            proxy.scrollTo("hotspot", anchor: .top)
+                        }
+                    }
                 }
-                .modifier(ToolbarRoleBrowser())
-                .navigationTitle(LocalString.settings_navigation_title)
             } else {
                 List {
                     readingSettings
@@ -301,7 +312,7 @@ struct Settings: View {
     
     var hotspot: some View {
         Section {
-            PortInput()
+            PortInput(focusOnPortInput: scrollToHotspot)
         } header: {
             Text(LocalString.enum_navigation_item_hotspot)
         } footer: {

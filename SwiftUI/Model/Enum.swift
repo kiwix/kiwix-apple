@@ -231,7 +231,7 @@ enum NavigationItem: Hashable, Identifiable {
     case bookmarks, map(location: CLLocation?), tab(objectID: NSManagedObjectID)
     case opened, categories, new, downloads
     case hotspot
-    case settings
+    case settings(scrollToHotspot: Bool)
 }
 
 enum MenuItem: Hashable {
@@ -241,7 +241,7 @@ enum MenuItem: Hashable {
     case categories
     case new
     case downloads
-    case settings
+    case settings(scrollToHotspot: Bool)
     case donation
     case hotspot
     
@@ -254,7 +254,7 @@ enum MenuItem: Hashable {
         case .categories: self = .categories
         case .new: self = .new
         case .downloads: self = .downloads
-        case .settings: self = .settings
+        case .settings(let scrollToHotspot): self = .settings(scrollToHotspot: scrollToHotspot)
         case .hotspot: self = .hotspot
         }
     }
@@ -267,7 +267,7 @@ enum MenuItem: Hashable {
         case .categories: .categories
         case .new: .new
         case .downloads: .downloads
-        case .settings: .settings
+        case .settings(let scrollToHotspot): .settings(scrollToHotspot: scrollToHotspot)
         case .donation: nil
         case .hotspot: .hotspot
         }

@@ -197,8 +197,8 @@ final class SplitViewController: UISplitViewController {
         case .new:
             let controller = UIHostingController(rootView: ZimFilesNew(dismiss: nil))
             setViewController(UINavigationController(rootViewController: controller), for: .secondary)
-        case .settings:
-            let controller = UIHostingController(rootView: Settings())
+        case .settings(let scrollToHotspot):
+            let controller = UIHostingController(rootView: Settings(scrollToHotspot: scrollToHotspot))
             setViewController(UINavigationController(rootViewController: controller), for: .secondary)
         case .loading:
             let controller = UIHostingController(rootView: LoadingDataView())

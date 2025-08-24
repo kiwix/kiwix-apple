@@ -28,6 +28,7 @@ import Defaults
 /// - changing to another window (without closing settings)
 struct PortInput: View {
     
+    let focusOnPortInput: Bool
     @ObservedObject private var portNumber = PortNumber()
     @FocusState var isFocused: Bool
     #if os(macOS)
@@ -48,13 +49,13 @@ struct PortInput: View {
                         }
                     }
                 }
-                .focused($isFocused)
                 .onChange(of: isFocused) { focused in
                     if !focused {
                         portNumber.save()
                     }
                 }
             #endif
+                .focused($isFocused)
                 .frame(maxWidth: 100)
                 .textFieldStyle(.roundedBorder)
                 .onChange(of: portNumber.stringValue, perform: portNumber.onChange(newValue: ))
@@ -72,6 +73,10 @@ struct PortInput: View {
             portNumber.save()
         }
         #endif
+        .task {
+            // move the initial focus to the port number if needed
+            isFocused = focusOnPortInput
+        }
     }
 }
 
