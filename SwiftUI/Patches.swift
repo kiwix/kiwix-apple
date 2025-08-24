@@ -74,6 +74,7 @@ extension Notification.Name {
     static let selectFile = Notification.Name("selectFile")
     static let exportFileData = Notification.Name("exportFileData")
     static let saveContent = Notification.Name("saveContent")
+    static let navigateToHotspotSettings = Notification.Name("navigateToHotspotSettings")
     static let toggleSidebar = Notification.Name("toggleSidebar")
     #if os(macOS)
     static let keepOnlyTabs = Notification.Name("keepOnlyTabs")
@@ -127,6 +128,12 @@ extension NotificationCenter {
 
     static func saveContent(url: URL) {
         NotificationCenter.default.post(name: .saveContent, object: nil, userInfo: ["url": url])
+    }
+    
+    static func navigateToHotspotSettings() {
+        if FeatureFlags.hasLibrary {
+            NotificationCenter.default.post(name: .navigateToHotspotSettings, object: nil, userInfo: nil)
+        }
     }
 
     static func toggleSidebar() {

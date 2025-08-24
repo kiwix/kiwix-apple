@@ -24,10 +24,10 @@ struct HotspotZimFilesSelection: View {
         animation: .easeInOut
     ) private var zimFiles: FetchedResults<ZimFile>
     @StateObject private var selection: MultiSelectedZimFilesViewModel
-    @ObservedObject private var hotspot = HotspotObservable()
+    @ObservedObject private var hotspot = HotspotObservable.shared
     @State private var presentedSheet: PresentedSheet?
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
-    @State private var hotspotError: String?
+    @State private var hotspotError: (String, String)?
     
     private enum PresentedSheet: Identifiable {
         case shareHotspot(url: URL)
@@ -51,18 +51,6 @@ struct HotspotZimFilesSelection: View {
             if zimFiles.isEmpty {
                 Message(text: LocalString.zim_file_opened_overlay_no_opened_message)
             } else {
-                if let hotspotError {
-                    Text(hotspotError)
-                        .lineLimit(nil)
-                        .foregroundStyle(.red)
-                    #if os(iOS)
-                        .padding(.horizontal, 12)
-                        .padding(.bottom, 24)
-                    #else
-                        .padding()
-                        .padding(.bottom, 0)
-                    #endif
-                }
                 if case .started(let address, let qrCodeImage) = hotspot.state {
                     ScrollView {
                         HStack(alignment: .center) {
@@ -116,8 +104,8 @@ struct HotspotZimFilesSelection: View {
                 hotspotError = nil
             case .stopped:
                 hotspotError = nil
-            case let .error(errorMessage):
-                hotspotError = errorMessage
+            case let .error(title, description):
+                hotspotError = (title, description)
             }
         })
         .toolbar {
@@ -132,10 +120,40 @@ struct HotspotZimFilesSelection: View {
                 }
 #if os(macOS)
                 .buttonStyle(.borderless)
+
 #endif
                 .disabled(selection.selectedZimFiles.isEmpty && !hotspot.state.isStarted)
                 .modifier(BadgeModifier(count: selection.selectedZimFiles.count))
             }
         }
+        .alert(isPresented: Binding<Bool>.constant($hotspotError.wrappedValue != nil)) {
+            
+            let settingButton = Alert.Button.default(Text(LocalString.settings_navigation_title), action: {
+                dismissAlert()
+                NotificationCenter.navigateToHotspotSettings()
+            })
+            let okButton = Alert.Button.default(Text(LocalString.common_button_ok), action: { dismissAlert() })
+            
+            #if os(macOS)
+            let primary = okButton
+            let secondary = settingButton
+            #else
+            let primary = settingButton
+            let secondary = okButton
+            #endif
+            
+            return Alert(title: Text(hotspotError?.0 ?? ""),
+                         message: Text(hotspotError?.1 ?? ""),
+                         primaryButton: primary,
+                         secondaryButton: secondary
+            )
+        }
+    }
+    
+    private func dismissAlert() {
+        hotspotError = nil
+        // at the end resetError is also setting hotspotError to nil
+        // but it's just too slow for UI
+        hotspot.resetError()
     }
 }

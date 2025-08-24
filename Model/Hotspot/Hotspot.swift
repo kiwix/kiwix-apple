@@ -19,10 +19,10 @@ import SwiftUI
 
 final class Hotspot {
     
-    enum State {
+    enum State: Equatable {
         case started(zimFileIds: Set<UUID>)
         case stopped
-        case error(String)
+        case error(title: String, description: String)
     }
     
     @MainActor
@@ -47,24 +47,27 @@ final class Hotspot {
         let port: Int = Defaults[.hotspotPortNumber]
         let portNumber = Int32(port)
         if hotspot.__start(for: zimFileIds, onPort: portNumber) {
-            await MainActor.run {
-                state = .started(zimFileIds: zimFileIds)
-                preventSleep(true)
-            }
+            await update(state: .started(zimFileIds: zimFileIds))
+            await preventSleep(true)
         } else {
-            await MainActor.run {
-                state = .error(
-                    LocalString.hotspot_error_port_already_used_by_another_app(withArgs: "\(port)")
-                )
-            }
+            await update(state: .error(
+                title: LocalString.hotspot_error_port_already_used_by_another_app_title(withArgs: "\(port)"),
+                description: LocalString.hotspot_error_port_already_used_by_another_app_description
+            ))
         }
     }
     
     @ZimActor
     func stop() async {
         hotspot.__stop()
-        await MainActor.run {
-            state = .stopped
+        await update(state: .stopped)
+        await preventSleep(false)
+    }
+    
+    @MainActor
+    func resetError() {
+        if case .error = state {
+            update(state: .stopped)
             preventSleep(false)
         }
     }
@@ -91,6 +94,13 @@ final class Hotspot {
             return nil
         }
         return URL(string: address)
+    }
+    
+    @MainActor
+    private func update(state newState: State) {
+        if state != newState {
+            state = newState
+        }
     }
     
     nonisolated static func validPortRangeMessage() -> String {

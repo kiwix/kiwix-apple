@@ -35,6 +35,7 @@
 "common.button.go_forward" = "Go Forward";
 "common.button.done" = "Done";
 "common.button.cancel" = "Cancel";
+"common.button.ok" = "Ok";
 "common.button.yes" = "Yes";
 "common.button.no" = "no";
 "common.button.print" = "Print";
@@ -101,7 +102,8 @@
 "hotspot.action.stop_hotspot.title" = "Stop Hotspot";
 "hotspot.settings.port_number" = "Port number";
 "hotspot.settings.recommended_port_range" = "The network port used by the Hotspot, should be between %@ and %@";
-"hotspot.error.port_already_used_by_another_app" = "Hotspot can’t start because port %@ is in use. To fix this, close the app using it or change the Kiwix Hotspot port in settings.";
+"hotspot.error.port_already_used_by_another_app_title" = "Hotspot can't start because port %@ is in use.";
+"hotspot.error.port_already_used_by_another_app_description" = "To fix this, close the app using it or change the Kiwix Hotspot port in settings.";
 "hotspot.server_full_explanation" = "To browse these ZIM files on other devices, make sure all devices are either on the same WiFi network or connected to your Personal Hotspot.";
 "hotspot.server_active_warning" = "The hotspot stays active only while the app is open and in use.";
 "hotspot.server_wifi_only_explanation" = "To browse these ZIM files on other devices, make sure all devices are on the same WiFi network.";

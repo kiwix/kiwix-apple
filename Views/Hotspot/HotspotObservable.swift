@@ -16,12 +16,12 @@
 import SwiftUI
 import Combine
 
-enum HotspotState {
+enum HotspotState: Equatable {
     @MainActor static let selection = MultiSelectedZimFilesViewModel()
     
     case started(URL, CGImage?)
     case stopped
-    case error(String)
+    case error(title: String, description: String)
     
     var isStarted: Bool {
         switch self {
@@ -39,8 +39,10 @@ final class HotspotObservable: ObservableObject {
     @Published var state: HotspotState = .stopped
     private var hotspot = Hotspot.shared
     private var cancellables = Set<AnyCancellable>()
+    @MainActor
+    static let shared = HotspotObservable()
     
-    init() {
+    private init() {
         hotspot.$state.sink { [weak self] state in
             Task { [weak self] in
                 await self?.update(hotspotState: state)
@@ -56,24 +58,34 @@ final class HotspotObservable: ObservableObject {
         }
     }
     
+    func resetError() {
+        hotspot.resetError()
+    }
+    
     private func update(hotspotState: Hotspot.State) async {
         switch hotspotState {
         case .started:
             buttonTitle = LocalString.hotspot_action_stop_hotspot_title
             let address = await hotspot.serverAddress()
             if let address {
-                state = .started(address, nil)
+                update(state: .started(address, nil))
                 let qrCodeImage = await QRCode.image(from: address.absoluteString)
-                state = .started(address, qrCodeImage)
+                update(state: .started(address, qrCodeImage))
             } else {
-                state = .stopped
+                update(state: .stopped)
             }
         case .stopped:
             buttonTitle = LocalString.hotspot_action_start_hotspot_title
-            state = .stopped
-        case let .error(message):
+            update(state: .stopped)
+        case let .error(title, description):
             buttonTitle = LocalString.hotspot_action_start_hotspot_title
-            state = .error(message)
+            update(state: .error(title: title, description: description))
+        }
+    }
+    
+    private func update(state newState: HotspotState) {
+        if state != newState {
+            state = newState
         }
     }
 }

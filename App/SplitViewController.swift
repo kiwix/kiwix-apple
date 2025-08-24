@@ -66,6 +66,7 @@ final class SplitViewController: UISplitViewController {
         observeOpeningFiles()
         observeGoBackAndForward()
         observeAppBackgrounding()
+        observeNavigateToHotspotSettings()
     }
     
     private func observeNavigation() {
@@ -143,6 +144,16 @@ final class SplitViewController: UISplitViewController {
                 self?.isForegrounded = false
             }.store(in: &cancellables)
     }
+    
+    private func observeNavigateToHotspotSettings() {
+        let notificationCenter = NotificationCenter.default
+        notificationCenter.publisher(for: .navigateToHotspotSettings)
+            .sink { [weak self] _ in
+                if self?.traitCollection.horizontalSizeClass != .compact {
+                    self?.navigationViewModel.currentItem = .settings(scrollToHotspot: true)
+                }
+            }.store(in: &cancellables)
+    }
 
     /// Dismiss any controller that is already presented when horizontal size class is about to change
     override func willTransition(to newCollection: UITraitCollection,
@@ -197,8 +208,8 @@ final class SplitViewController: UISplitViewController {
         case .new:
             let controller = UIHostingController(rootView: ZimFilesNew(dismiss: nil))
             setViewController(UINavigationController(rootViewController: controller), for: .secondary)
-        case .settings:
-            let controller = UIHostingController(rootView: Settings())
+        case .settings(let scrollToHotspot):
+            let controller = UIHostingController(rootView: Settings(scrollToHotspot: scrollToHotspot))
             setViewController(UINavigationController(rootViewController: controller), for: .secondary)
         case .loading:
             let controller = UIHostingController(rootView: LoadingDataView())

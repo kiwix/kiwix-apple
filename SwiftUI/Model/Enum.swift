@@ -231,7 +231,7 @@ enum NavigationItem: Hashable, Identifiable {
     case bookmarks, map(location: CLLocation?), tab(objectID: NSManagedObjectID)
     case opened, categories, new, downloads
     case hotspot
-    case settings
+    case settings(scrollToHotspot: Bool)
 }
 
 enum MenuItem: Hashable {
@@ -267,7 +267,8 @@ enum MenuItem: Hashable {
         case .categories: .categories
         case .new: .new
         case .downloads: .downloads
-        case .settings: .settings
+        // by selecting the side menu settings, we don't want to scroll
+        case .settings: .settings(scrollToHotspot: false)
         case .donation: nil
         case .hotspot: .hotspot
         }
