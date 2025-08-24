@@ -146,13 +146,13 @@ final class SplitViewController: UISplitViewController {
     }
     
     private func observeNavigateToHotspotSettings() {
-        if Device.current == .iPad {
-            let notificationCenter = NotificationCenter.default
-            notificationCenter.publisher(for: .navigateToHotspotSettings)
-                .sink { [weak self] _ in
+        let notificationCenter = NotificationCenter.default
+        notificationCenter.publisher(for: .navigateToHotspotSettings)
+            .sink { [weak self] _ in
+                if self?.traitCollection.horizontalSizeClass != .compact {
                     self?.navigationViewModel.currentItem = .settings(scrollToHotspot: true)
-                }.store(in: &cancellables)
-        }
+                }
+            }.store(in: &cancellables)
     }
 
     /// Dismiss any controller that is already presented when horizontal size class is about to change
