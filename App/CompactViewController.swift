@@ -150,6 +150,7 @@ private struct CompactView: View {
     @State private var presentedSheet: PresentedSheet?
     @ObservedObject private var browser: BrowserViewModel
     @FocusedValue(\.hasZIMFiles) var hasZimFiles
+    private let navigateToHotspotSettings = NotificationCenter.default.publisher(for: .navigateToHotspotSettings)
     private let hotspotShareURL = NotificationCenter.default.publisher(for: .hotspotShareURL)
     
     private enum PresentedSheet: Identifiable {
@@ -284,6 +285,9 @@ private struct CompactView: View {
                 return
             }
             presentedSheet = .hotspotShare(url: url)
+        }
+        .onReceive(navigateToHotspotSettings) { _ in
+            presentedSheet = .settings(scrollToHotspot: true)
         }
     }
 }
