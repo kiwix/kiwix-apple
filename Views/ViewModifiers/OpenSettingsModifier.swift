@@ -20,7 +20,7 @@ import SwiftUI
 struct OpeningSettingsModifier: ViewModifier {
     @Environment(\.openSettings) private var openSettings
     private let navigateToHotspotSettingsPublisher = NotificationCenter.default.publisher(
-        for: .navigateToHotSpotSettings
+        for: .navigateToHotspotSettings
     )
     let updateTabSelection: () -> Void
     
@@ -36,7 +36,7 @@ struct OpeningSettingsModifier: ViewModifier {
 // swiftlint:disable:next type_name
 struct OpeningSettingsModifier_macOS_13: ViewModifier {
     private let navigateToHotspotSettingsPublisher = NotificationCenter.default.publisher(
-        for: .navigateToHotSpotSettings
+        for: .navigateToHotspotSettings
     )
     let updateTabSelection: () -> Void
     

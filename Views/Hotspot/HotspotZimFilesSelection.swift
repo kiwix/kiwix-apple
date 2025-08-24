@@ -130,7 +130,7 @@ struct HotspotZimFilesSelection: View {
             
             let settingButton = Alert.Button.default(Text(LocalString.settings_navigation_title), action: {
                 dismissAlert()
-                NotificationCenter.navigateToHotSpotSettings()
+                NotificationCenter.navigateToHotspotSettings()
             })
             let okButton = Alert.Button.default(Text(LocalString.common_button_ok), action: { dismissAlert() })
             
