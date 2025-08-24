@@ -1,4 +1,9 @@
-# 3.11.0
+# 3.10.2
+
+# 3.10.1
+  - UPDATE
+    - Localisation updates (@translatewiki #1269, #1284)
+    - Kiwix Hotspot (@BPerlakiH #1278, #1279, #1280, #1281, #1282, #1283, #1286)
 
 # 3.10.0
   - NEW
