@@ -20,6 +20,7 @@
 "common.button.go_forward" = "向前";
 "common.button.done" = "完成";
 "common.button.cancel" = "取消";
+"common.button.ok" = "確定";
 "common.button.yes" = "是";
 "common.button.no" = "否";
 "common.button.print" = "列印";
@@ -72,7 +73,8 @@
 "hotspot.action.stop_hotspot.title" = "停止熱點";
 "hotspot.settings.port_number" = "埠號";
 "hotspot.settings.recommended_port_range" = "熱點使用的網路埠號應介於 %@ 和 %@ 之間";
-"hotspot.error.port_already_used_by_another_app" = "由於埠號 %@ 已被佔用，熱點無法啟動。要解決此問題請關閉正在使用熱點的應用程式，或在設定中更改 Kiwix 熱點埠號。";
+"hotspot.error.port_already_used_by_another_app_title" = "由於埠號 %@ 已被佔用，熱點無法啟動。";
+"hotspot.error.port_already_used_by_another_app_description" = "要解決此問題，請關閉正在使用熱點的應用程式，或在設定中更改 Kiwix 熱點埠號。";
 "hotspot.server_full_explanation" = "要瀏覽其他設備上的 ZIM 檔案，請確認所有設備皆連線到同一個 WiFi 網路，或是皆連線到您的個人熱點上。";
 "hotspot.server_active_warning" = "只有當應用程式開啟並使用時，熱點才會保持可用狀態。";
 "hotspot.server_wifi_only_explanation" = "若要在其他裝置上瀏覽這些 ZIM 檔案，請確認所有裝置都在同一段 WiFi 網路上。";
