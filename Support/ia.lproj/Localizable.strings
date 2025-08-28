@@ -18,9 +18,12 @@
 "common.button.go_forward" = "Avantiar";
 "common.button.done" = "Facite";
 "common.button.cancel" = "Cancellar";
+"common.button.ok" = "OK";
 "common.button.yes" = "Si";
 "common.button.no" = "no";
 "common.button.print" = "Imprimer";
+"common.button.copy" = "Copiar";
+"common.button.copied" = "Copiate";
 "common.button.share" = "Condivider";
 "common.button.share_as_pdf" = "Condivider como PDF";
 "common.search" = "Cercar";
@@ -68,8 +71,11 @@
 "hotspot.action.stop_hotspot.title" = "Clauder puncto de accesso";
 "hotspot.settings.port_number" = "Numero de porto";
 "hotspot.settings.recommended_port_range" = "Le porto de rete usate per le puncto de accesso debe esser inter %@ e %@";
-"hotspot.error.port_already_used_by_another_app" = "Le puncto de accesso non pote initiar se perque le porto %@ es ja in uso. Pro remediar isto, claude le app que lo usa o cambia le porto del puncto de accesso de Kiwix in le Parametros.";
+"hotspot.error.port_already_used_by_another_app_title" = "Le puncto de accesso non pote initiar se perque le porto %@ es ja in uso.";
+"hotspot.error.port_already_used_by_another_app_description" = "Pro remediar isto, claude le app que lo usa o cambia le porto del puncto de accesso de Kiwix in le Parametros.";
 "hotspot.server_full_explanation" = "Pro navigar iste files ZIM sur altere apparatos, assecura te que tote le dispositivos es o sur le mesme rete WiFi o connectite a tu puncto de accesso personal.";
+"hotspot.server_active_warning" = "Le puncto de accesso resta active solmente durante que le application es aperte e in uso.";
+"hotspot.server_wifi_only_explanation" = "Pro percurrer iste files ZIM sur altere apparatos, assecura te que tote le apparatos es connectite al mesme rete WiFi.";
 "library.zim_file_details.side_panel.message" = "Selige un file ZIM pro vider detalios";
 "library.zim_file_context.main_page.label" = "Pagina principal";
 "library.zim_file_context.random.label" = "Pagina aleatori";
