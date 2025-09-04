@@ -18,6 +18,7 @@
 "common.button.go_forward" = "Viru goen";
 "common.button.done" = "Fäerdeg";
 "common.button.cancel" = "Ofbriechen";
+"common.button.ok" = "OK";
 "common.button.yes" = "Jo";
 "common.button.no" = "nee";
 "common.button.print" = "Drécken";
@@ -60,6 +61,7 @@
 "zim_file_cell.article_count.suffix" = "Artikelen";
 "hotspot.action.start_hotspot.title" = "Hotspot aktivéieren";
 "hotspot.action.stop_hotspot.title" = "Hotspot desaktivéieren";
+"hotspot.error.port_already_used_by_another_app_title" = "Den Hotspot kann net aktivéiert ginn, well de Port %@ grad benotzt gëtt.";
 "library.zim_file_context.main_page.label" = "Haaptsäit";
 "library.zim_file_context.random.label" = "Zoufälleg Säit";
 "library.zim_file_context.copy_url" = "URL kopéieren";

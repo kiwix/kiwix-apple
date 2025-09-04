@@ -2,6 +2,7 @@
 // Exported from translatewiki.net
 // Author: Amire80
 // Author: Beracy
+// Author: McDutchie
 
 "library_refresh_error.retrieve.description" = "Alert description, when refreshing the catalog failed, due to a connection error to the server";
 "library_refresh_error.parse.description" = "Alert description, when refreshing the catalog failed, due to an error when parsing the response from the server";
@@ -73,7 +74,7 @@
 "hotspot.settings.port_number" = "Label for setting the default port number for Kiwix Hotspot in settings. Eg: Port number: 4567";
 "hotspot.settings.recommended_port_range" = "A description in settings what is the valid range the user set Hotpost network port should fall into, when setting it. It uses two number arguments a minimum and a maximum. Eg ... between 1 and 65535";
 "hotspot.error.port_already_used_by_another_app_title" = "An alert message title, that the selected port number (argument value) is already in use.";
-"hotspot.error.port_already_used_by_another_app_description" = "Alert message explanation, how to fix the occupied port number problem.";
+"hotspot.error.port_already_used_by_another_app_description" = "Alert message explanation, how to fix the occupied port number problem.\n\n\"It\" refers to the port that is already in use; see {{msg-kiwix|Apple-hotspot.error.port already used by another app title}}.";
 "hotspot.server_full_explanation" = "A desription text explaining the network setup of devices for the Kiwix Hotspot.";
 "hotspot.server_active_warning" = "A description text explaining that the hotspot only works on iOS while the application is actively open and in use (in the foreground).";
 "hotspot.server_wifi_only_explanation" = "A shortened desription text explaining the wifi setup of devices for the Kiwix Hotspot.";
@@ -101,7 +102,6 @@
 "zim_file.action.reveal_in_finder.title" = "Secondary button title on macOS, when the ZIM file is already downloaded";
 "zim_file.action.toggle_cellular" = "A toggle button label above the Download button on iOS";
 "zim_file.action.unlink.title" = "A button title to remove the downloaded file. It is also used as part of the alert title after pressing the button, together with the ZIM file name, eg: 'Unlink Chemistry by Wikipedia'";
-"zim_file.action.unlink.message" = "All bookmarked articles linked to this ZIM file will be deleted, but the original file will remain in place.";
 "zim_file.action.unlink.multi_title" = "Alert title after selecting multiple ZIM files and attempting to unlink all of them. The param contains the count of the ZIM files (guaranteed to be plural = always more than 1)";
 "zim_file.action.unlink.multi_message" = "All bookmarked articles linked to these (param count of) ZIM files will be deleted, but the original files will remain in place. The count is always more than 1 file = plural";
 "zim_file.action.unlink.button.title" = "Confirm button title on the alert pop-up to remove a downloaded ZIM file";
@@ -250,7 +250,7 @@
 "enum.search_result_snippet_mode.matches" = "Picker option title in settings. Search snippet: Disabled | Matches";
 "payment.donate.title" = "Title of the donation pop-up (Support Kiwix)";
 "payment.description.label" = "Label describing the purpose of the payment (Supporting Kiwix)";
-"payment.summary_page.title" = "Title for the payment summary page. It is required to display a summary before the final payemnt. The title makes it clear who is the beneficient of the donation.";
+"payment.summary_page.title" = "Title for the payment summary page. It is required to display a summary before the final payment. The title makes it clear who is the beneficiary of the donation.";
 "payment.support_button.label" = "The donation button title with a heart, that brings up the the donation / payment pop-up";
 "payment.monthly_support.label" = "Label to describe the already selected option, that the user will be charged a recurring monthly payment";
 "payment.summary.title" = "Text for the payment summary item of the payment. It is required to display the total of the payment, and the items included. In our case it's a single donation item";
