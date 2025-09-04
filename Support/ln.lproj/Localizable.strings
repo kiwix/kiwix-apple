@@ -1,8 +1,12 @@
 // Messages for Lingala (lingála)
 // Exported from translatewiki.net
+// Author: BOKOBA VEROLY
 // Author: Lingabo
 
 "common.button.done" = "Esalemi";
+"common.button.ok" = "Ok ,iyo ,yango,";
+"hotspot.error.port_already_used_by_another_app_title" = "Hotspot ekoki kobanda te mpo port %@ ezali kosalelama.";
+"hotspot.error.port_already_used_by_another_app_description" = "Mpo na kobongisa yango, kokanga application na kosalela yango to kobongola porte ya Kiwix Hotspot na bisika.";
 "reading_settings.zoom.reset.button" = "Kobongisama lisusu";
 "reading_settings.external_link.title" = "Boyokani ya libanda";
 "settings.navigation.title" = "Palamɛ́tɛlɛ";

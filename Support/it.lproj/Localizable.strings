@@ -19,6 +19,7 @@
 "common.button.go_forward" = "Vai avanti";
 "common.button.done" = "Fatto";
 "common.button.cancel" = "Annulla";
+"common.button.ok" = "Ok";
 "common.button.yes" = "Sì";
 "common.button.no" = "no";
 "common.button.print" = "Stampa";

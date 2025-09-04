@@ -2,14 +2,12 @@
 // Exported from translatewiki.net
 // Author: Eleassar
 
-// Fuzzy
-"library_refresh_error.retrieve.description" = "Napaka pri pridobivanju podatkov knjižnice.";
-// Fuzzy
-"library_refresh_error.parse.description" = "Napaka pri razčlenjevanju podatkov knjižnice.";
-// Fuzzy
-"library_refresh_error.process.description" = "Napaka pri obdelavi podatkov knjižnice.";
+"library_refresh_error.retrieve.description" = "Napaka pri pridobivanju kataloških podatkov.";
+"library_refresh_error.parse.description" = "Napaka pri razčlenjevanju kataloških podatkov.";
+"library_refresh_error.process.description" = "Napaka pri obdelavi kataloških podatkov.";
 "download_service.complete.title" = "Prenos končan";
 "download_service.complete.description" = "%@ se je uspešno preneslo.";
+"download_service.failed.description" = "Te datoteke ni mogoče prenesti.";
 "common.dialog.button.open" = "Odpri";
 "common.dialog.button.open_in_new_tab" = "Odpri v novem zavihku";
 "common.dialog.button.add_bookmark" = "Dodaj zaznamek";
@@ -20,8 +18,14 @@
 "common.button.go_forward" = "Pojdi naprej";
 "common.button.done" = "Končano";
 "common.button.cancel" = "Prekliči";
+"common.button.ok" = "V redu";
 "common.button.yes" = "Da";
 "common.button.no" = "ne";
+"common.button.print" = "Natisni";
+"common.button.copy" = "Kopiraj";
+"common.button.copied" = "Kopirano";
+"common.button.share" = "Deli";
+"common.button.share_as_pdf" = "Deli kot PDF";
 "common.search" = "Iskanje";
 "common.tab.manager.title" = "Upravitelj zavihkov";
 "common.tab.navigation.title" = "Zavihki";
@@ -31,11 +35,13 @@
 "common.tab.list.close" = "Zapri zavihek";
 "common.tab.menu.library" = "Knjižnica";
 "common.tab.menu.settings" = "Nastavitve";
+"common.export_file.alert.title" = "Izvozi datoteko";
+"common.export_file.alert.description" = "Ali želite izvoziti datoteko %@?";
+"common.export_file.alert.button.title" = "Izvoz";
 "outline_button.outline.title" = "Oris";
 "outline_button.outline.help" = "Prikaži oris članka";
 "outline_button.outline.empty.message" = "Oris ni na voljo";
-// Fuzzy
-"bookmark_button.show.help" = "Prikaži zaznamke. Dolgo pritisnite, da dodate ali odstranite zaznamek trenutnega članka.";
+"bookmark_button.show.help" = "Prikaži list z zaznamki, kjer je mogoče trenutni članek dodati ali odstraniti iz zaznamkov.";
 "article_shortcut.main.button.title" = "Glavni članek";
 "article_shortcut.main.button.help" = "Prikaži glavni članek";
 "article_shortcut.random.button.title.mac" = "Naključni članek";
@@ -61,7 +67,15 @@
 "library_refresh_time.never" = "Nikoli";
 "zim_file_cell.article_count.suffix" = "članki";
 "zim_file_missing_indicator.help" = "Datoteka Zim manjka.";
-// Fuzzy
+"hotspot.action.start_hotspot.title" = "Začni dostopno točko";
+"hotspot.action.stop_hotspot.title" = "Ustavi dostopno točko";
+"hotspot.settings.port_number" = "Številka vrat";
+"hotspot.settings.recommended_port_range" = "Omrežna vrata, ki jih uporablja dostopna točka, morajo biti med %@ in %@";
+"hotspot.error.port_already_used_by_another_app_title" = "Dostopna točka se ne more zagnati, ker so vrata %@ v uporabi.";
+"hotspot.error.port_already_used_by_another_app_description" = "Če želite to odpraviti, zaprite aplikacijo, ki jih uporablja, ali spremenite vrata dostopne točke Kiwix v nastavitvah.";
+"hotspot.server_full_explanation" = "Če želite brskati po teh datotekah ZIM na drugih napravah, zagotovite, da so vse naprave povezane v istem omrežju WiFi ali pa povezane z vašo osebno dostopno točko.";
+"hotspot.server_active_warning" = "Dostopna točka ostane aktivna samo, ko je aplikacija odprta in v uporabi.";
+"hotspot.server_wifi_only_explanation" = "Če želite brskati po teh datotekah ZIM na drugih napravah, zagotovite, da so vse naprave povezane v isto omrežje Wi-Fi.";
 "library.zim_file_details.side_panel.message" = "Izberite datoteko ZIM za ogled podrobnosti";
 "library.zim_file_context.main_page.label" = "Glavna stran";
 "library.zim_file_context.random.label" = "Naključna stran";
@@ -71,10 +85,10 @@
 "zim_file_opened.toolbar.open.title" = "Odpri ...";
 "zim_file_opened.toolbar.open.help" = "Odpri datoteko ZIM";
 "zim_file_category.title" = "Kategorija";
+"zim_file_catalog.fetching.message" = "Pridobivanje kataloga ...";
 "zim_file_category.section.empty.message" = "V tej kategoriji ni datoteke ZIM.";
 "zim_file_downloads.overlay.empty.message" = "Ni opravil prenosa";
 "zim_file_downloads.toolbar.show_sidebar.label" = "Prikaži stransko vrstico";
-// Fuzzy
 "zim_file_new_overlay.empty" = "Ni novih datotek ZIM";
 "zim_file_new.button.refresh" = "Osveži";
 "zim_file.list.name.text" = "Ime";
@@ -86,11 +100,11 @@
 "zim_file.action.reveal_in_finder.title" = "Razkrij v Finderju";
 "zim_file.action.toggle_cellular" = "Mobilni prenos";
 "zim_file.action.unlink.title" = "Odstrani povezavo";
-// Fuzzy
 "zim_file.action.unlink.message" = "Vsi označeni članki, povezani s to datoteko ZIM, bodo izbrisani, vendar bo izvorna datoteka ostala na mestu.";
+"zim_file.action.unlink.multi_title" = "Prekini povezavo z datotekami %@ ZIM";
+"zim_file.action.unlink.multi_message" = "Vsi zaznamovani članki, povezani s temi %@ datotekami ZIM, bodo izbrisani, vendar bodo izvorne datoteke ostale shranjene.";
 "zim_file.action.unlink.button.title" = "Odstrani povezavo";
 "zim_file.action.delete.title" = "Izbriši";
-// Fuzzy
 "zim_file.action.delete.message" = "Datoteka ZIM in vsi zaznamovani članki, povezani s to datoteko ZIM, bodo odstranjeni.";
 "zim_file.action.delete.button.title" = "Izbriši";
 "zim_file.action.download.title" = "Prenos";
@@ -117,12 +131,19 @@
 "zim_file.download_task.action.resume" = "Nadaljuj";
 "zim_file.download_task.action.paused" = "Zaustavljeno";
 "service_worker_warning.label.description" = "Datuteke Zim, ki potrebujejo Service Worker, niso podprte.";
+"multi.zim_files_selected.sidebar_title" = "Izbrano";
+"multi.zim_files_selected.description_count" = "Datoteke ZIM";
+"theme_settings.title" = "Tema";
+"theme_settings.option.dark" = "Temna";
+"theme_settings.option.light" = "Svetla";
+"theme_settings.option.system" = "Sistem";
 "reading_settings.zoom.title" = "Povečava strani";
 "reading_settings.zoom.reset.button" = "Ponastavi";
 "reading_settings.external_link.title" = "Zunanja povezava";
 "reading_settings.search_snippet.title" = "Delček iskanja";
 "reading_settings.tab.reading" = "Branje";
 "library_settings.catalog.title" = "Katalog";
+"library_settings.downloads.title" = "Prenosi";
 "library_settings.button.refresh_now" = "Osveži zdaj";
 "library_settings.last_refresh.text" = "Zadnja osvežitev";
 "library_settings.auto_refresh.toggle" = "Samodejno osveževanje";
@@ -180,6 +201,8 @@
 "welcome.main_page.title" = "Glavna stran";
 "welcome.grid.bookmarks.title" = "Zaznamki";
 "welcome.actions.open_file" = "Odpri datoteko";
+"welcome.loading.data.text" = "Nalaganje podatkov ...";
+"welcome.button.status.fetching_catalog.text" = "Pridobivanje kataloga ...";
 "welcome.button.status.fetch_catalog.text" = "Pridobi katalog";
 "commands.button.actual_size" = "Dejanska velikost";
 "comments.button.zoom_in" = "Približaj";
@@ -219,5 +242,24 @@
 "enum.navigation_item.new" = "Novo";
 "enum.navigation_item.downloads" = "Prenosi";
 "enum.navigation_item.settings" = "Nastavitve";
+"enum.navigation_item.hotspot" = "Dostopna točka";
 "enum.search_result_snippet_mode.disabled" = "Onemogočeno";
 "enum.search_result_snippet_mode.matches" = "Ujemanja";
+"payment.donate.title" = "Doniranje";
+"payment.description.label" = "Podprite Kiwix";
+"payment.summary_page.title" = "Podprite Kiwix";
+"payment.support_button.label" = "Podprite Kiwix";
+"payment.monthly_support.label" = "Mesečna podpora za Kiwix";
+"payment.summary.title" = "Kiwix";
+"payment.textfield.custom_amount.label" = "Drug znesek";
+"payment.confirm.button.title" = "Potrdi";
+"payment.selection.average_monthly_donation.subtitle" = "Povprečna mesečna donacija";
+"payment.selection.last_year_average.subtitle" = "Lanskoletno povprečje";
+"payment.selection.custom_amount" = "Drug znesek";
+"payment.selection.option.one_time" = "Enkratno";
+"payment.selection.option.monthly" = "Mesečno";
+"payment.support_fallback_message" = "Žal vaša naprava ne podpira Apple Pay.";
+"payment.success.title" = "Zahvaljujemo se vam za vašo donacijo!";
+"payment.success.description" = "Vaša velikodušnost nam veliko pomeni.";
+"payment.error.title" = "To je nerodno.";
+"payment.error.description" = "Prišlo je do težave z vašim plačilom. Poskusite znova.";

@@ -1,6 +1,7 @@
 // Messages for Finnish (suomi)
 // Exported from translatewiki.net
 // Author: Pyscowicz
+// Author: Samoasambia
 
 "download_service.complete.title" = "Lataus valmis";
 "download_service.complete.description" = "%@ on ladattu onnistuneesti.";
@@ -11,10 +12,17 @@
 "common.dialog.button.show_bookmarks" = "Näytä kirjanmerkit";
 "common.dialog.button.bookmark" = "Kirjanmerkki";
 "common.button.go_back" = "Takaisin";
+"common.button.go_forward" = "Siirry eteenpäin";
 "common.button.done" = "Valmis";
 "common.button.cancel" = "Peruuta";
+"common.button.ok" = "Ok";
 "common.button.yes" = "Kyllä";
 "common.button.no" = "ei";
+"common.button.print" = "Tulosta";
+"common.button.copy" = "Kopioi";
+"common.button.copied" = "Kopioitu";
+"common.button.share" = "Jaa";
+"common.button.share_as_pdf" = "Jaa PDF-muodossa";
 "common.search" = "Hae";
 "common.tab.navigation.title" = "Välilehdet";
 "common.tab.menu.new_tab" = "Uusi välilehti";
@@ -25,6 +33,7 @@
 "common.tab.menu.settings" = "Asetukset";
 "common.export_file.alert.title" = "Vie tiedosto";
 "common.export_file.alert.description" = "Haluatko viedä tiedoston %@?";
+"common.export_file.alert.button.title" = "Vie";
 "article_shortcut.main.button.title" = "Pääartikkeli";
 "article_shortcut.main.button.help" = "Näytä pääartikkeli";
 "article_shortcut.random.button.title.mac" = "Satunnainen artikkeli";
@@ -37,13 +46,16 @@
 "file_import.alert.no_open.title" = "Tiedostoa ei voitu avata";
 "file_import.alert.no_open.message" = "%@ ei voi avata.";
 "attribute.detail.unknown" = "Tuntematon";
+"download_task_cell.status.failed" = "Epäonnistui";
 "download_task_cell.status.downloading" = "Ladataan...";
 "download_task_cell.status.paused" = "Pysäytetty";
+"library_refresh_time.last" = "Juuri nyt";
 "library_refresh_time.never" = "Ei koskaan";
 "zim_file_cell.article_count.suffix" = "artikkelia";
 "zim_file_missing_indicator.help" = "Zim-tiedosto puuttuu.";
 "library.zim_file_context.main_page.label" = "Etusivu";
 "library.zim_file_context.random.label" = "Satunnainen sivu";
+"library.zim_file_context.copy_url" = "Kopioi URL";
 "zim_file_opened.toolbar.open.title" = "Avaa...";
 "zim_file_opened.toolbar.open.help" = "Avaa ZIM-tiedosto";
 "zim_file_category.title" = "Luokka";
@@ -67,6 +79,7 @@
 "zim_file.counts.article_count" = "Artikkelien määrä";
 "zim_file.counts.article.media_count" = "Median määrä";
 "zim_file.download_task.action.title.cancel" = "Peruuta";
+"zim_file.download_task.action.pause" = "Tauko";
 "zim_file.download_task.action.downloading" = "Ladataan...";
 "zim_file.download_task.action.resume" = "Jatka";
 "zim_file.download_task.action.paused" = "Pysäytetty";

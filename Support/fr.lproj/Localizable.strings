@@ -33,6 +33,7 @@
 "common.button.go_forward" = "Avancer";
 "common.button.done" = "Terminé";
 "common.button.cancel" = "Annuler";
+"common.button.ok" = "OK";
 "common.button.yes" = "Oui";
 "common.button.no" = "non";
 "common.button.print" = "Imprimer";
@@ -85,7 +86,8 @@
 "hotspot.action.stop_hotspot.title" = "Arrêter le point d’accès";
 "hotspot.settings.port_number" = "Numéro de port";
 "hotspot.settings.recommended_port_range" = "Le numéro de port réseau utilisé par le points d’accès, doit être compris entre %@ et %@";
-"hotspot.error.port_already_used_by_another_app" = "Le point d’accès ne peut pas être démarré car le port %@ est utilisé. Pour résoudre ce problème, fermez l’application qui utilise ce port ou changez le numéro de port du point d’accès Kiwix dans les paramètres.";
+"hotspot.error.port_already_used_by_another_app_title" = "Le point d’accès ne peut pas être démarré car le port %@ est utilisé.";
+"hotspot.error.port_already_used_by_another_app_description" = "Pour résoudre ce problème, fermez l’application qui utilise ce port ou changez le numéro de port du point d’accès Kiwix dans les paramètres.";
 "hotspot.server_full_explanation" = "Afin de pouvoir parcourir ces fichiers ZIM sur d’autres appareils, veuillez vous assurer que tous les appareils sont connectés au même point d'accès réseau ou WiFi.";
 "hotspot.server_active_warning" = "Le point d’accès reste actif uniquement lorsque l’application est lancée et en cours d’utilisation.";
 "hotspot.server_wifi_only_explanation" = "Afin de pouvoir parcourir ces fichiers ZIM sur d’autres appareils, veuillez vous assurer que tous les appareils sont connectés au même point d’accès WiFi.";

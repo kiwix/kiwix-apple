@@ -5,12 +5,10 @@
 // Author: Jmabel
 // Author: Laranxa
 // Author: Sinopsistrans
+// Author: Yucavalla
 
-// Fuzzy
 "library_refresh_error.retrieve.description" = "Error al recuperar datos de la biblioteca.";
-// Fuzzy
 "library_refresh_error.parse.description" = "Error al analizar los datos de la biblioteca.";
-// Fuzzy
 "library_refresh_error.process.description" = "Error al procesar los datos de la biblioteca.";
 "download_service.complete.title" = "Descarga completada";
 "download_service.complete.description" = "%@ se descargó con éxito.";
@@ -25,6 +23,7 @@
 "common.button.go_forward" = "Avanzar";
 "common.button.done" = "Hecho";
 "common.button.cancel" = "Cancelar";
+"common.button.ok" = "De acuerdo";
 "common.button.yes" = "Sí";
 "common.button.no" = "no";
 "common.button.print" = "Imprimir";
@@ -77,6 +76,9 @@
 "hotspot.action.stop_hotspot.title" = "Parar servidor";
 "hotspot.settings.port_number" = "Número de puerto";
 "hotspot.settings.recommended_port_range" = "El puerto de conexión usado por el servidor debería estar entre %@ y %@";
+"hotspot.error.port_already_used_by_another_app_title" = "El servidor no puede iniciar porque el puerto %@ está siendo utilizado. Para arreglar esto cierre la aplicación que lo utiliza o cambie el puerto del servidor Kiwix en los ajustes.";
+"hotspot.error.port_already_used_by_another_app_description" = "Para solucionar esto, cierre la aplicación que la está usando o cambie el puerto Kiwix Hotspot en la configuración.";
+"hotspot.server_full_explanation" = "Para buscar estos archivos ZIM en otros dispositivos asegúrese que estén en la misma red WiFi o conectados a su servidor personal.";
 "hotspot.server_active_warning" = "El punto de acceso se mantiene activo solamente mientras la aplicación está abierta y en uso.";
 "hotspot.server_wifi_only_explanation" = "Para busacar estos archivos ZIM en otros dispositivos asegúrese que todos ellos están en la misma red WiFi.";
 "library.zim_file_details.side_panel.message" = "Seleccione un archivo ZIM para ver los detalles";

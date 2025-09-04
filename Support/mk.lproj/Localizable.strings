@@ -18,9 +18,12 @@
 "common.button.go_forward" = "Напред";
 "common.button.done" = "Готово";
 "common.button.cancel" = "Откажи";
+"common.button.ok" = "Ок";
 "common.button.yes" = "Да";
 "common.button.no" = "Не";
 "common.button.print" = "Испечати";
+"common.button.copy" = "Копирај";
+"common.button.copied" = "Ископирано";
 "common.button.share" = "Сподели";
 "common.button.share_as_pdf" = "Сподели како PDF";
 "common.search" = "Пребарај";
@@ -68,8 +71,11 @@
 "hotspot.action.stop_hotspot.title" = "Запри пристапна точка";
 "hotspot.settings.port_number" = "Број на порта";
 "hotspot.settings.recommended_port_range" = "Мрежната порта што ја користи пристапната точка, треба да биде помеѓу %@ и %@";
-"hotspot.error.port_already_used_by_another_app" = "Пристапната точка не може да се покрене бидејќи портата %@ е во употреба. За да го решите ова, затворете го прилогот што ја користи или сменете ја портата за пристапна точка на Кивикс во нагодувањата.";
-"hotspot.server_full_explanation" = "За да ги прелистате овие ZIM-податотеки на други уреди, сите уреди треба да бидат на иста безжична мрежа, или да се поврзани на вашата лична пристапна точка.";
+"hotspot.error.port_already_used_by_another_app_title" = "Пристапната точка не може да се покрене бидејќи портата %@ е во употреба.";
+"hotspot.error.port_already_used_by_another_app_description" = "За да го поправите ова, затворете го прилогот што ја користи или сменете ја портата за пристапна точка во нагодувањата на Кивикс.";
+"hotspot.server_full_explanation" = "За да ги прелистувате овие ZIM-податотеки на други уреди, сите уреди треба да бидат на иста безжична мрежа, или да се поврзани на вашата лична пристапна точка.";
+"hotspot.server_active_warning" = "Пристапната точка останува активна само додека прилогот е отворен и во употреба.";
+"hotspot.server_wifi_only_explanation" = "За да ги прелистувате овие ZIM-податотеки на други уреди, сите тие треб да се на иста безжична мрежа.";
 "library.zim_file_details.side_panel.message" = "Изберете ZIM-податотека за да ги видите поединостите";
 "library.zim_file_context.main_page.label" = "Главна страница";
 "library.zim_file_context.random.label" = "Случајна страница";
