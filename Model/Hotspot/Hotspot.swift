@@ -39,7 +39,7 @@ final class Hotspot {
     private let hotspot = KiwixHotspot()
 
     @ZimActor
-    func startWith(zimFileIds: Set<UUID>) async {
+    func startWith(zimFileIds: Set<UUID>, updating: Bool = true) async {
         guard !zimFileIds.isEmpty else {
             debugPrint("no zim files were set for Hotspot to start")
             return
@@ -47,20 +47,26 @@ final class Hotspot {
         let port: Int = Defaults[.hotspotPortNumber]
         let portNumber = Int32(port)
         if hotspot.__start(for: zimFileIds, onPort: portNumber) {
-            await update(state: .started(zimFileIds: zimFileIds))
+            if updating {
+                await update(state: .started(zimFileIds: zimFileIds))
+            }
             await preventSleep(true)
         } else {
-            await update(state: .error(
-                title: LocalString.hotspot_error_port_already_used_by_another_app_title(withArgs: "\(port)"),
-                description: LocalString.hotspot_error_port_already_used_by_another_app_description
-            ))
+            if updating {
+                await update(state: .error(
+                    title: LocalString.hotspot_error_port_already_used_by_another_app_title(withArgs: "\(port)"),
+                    description: LocalString.hotspot_error_port_already_used_by_another_app_description
+                ))
+            }
         }
     }
     
     @ZimActor
-    func stop() async {
+    func stop(updating: Bool = true) async {
         hotspot.__stop()
-        await update(state: .stopped)
+        if updating {
+            await update(state: .stopped)
+        }
         await preventSleep(false)
     }
     
@@ -76,8 +82,8 @@ final class Hotspot {
     func appDidBecomeActive() async {
         if case let .started(zimFileIds) = state {
             Task { @ZimActor in
-                await stop()
-                await startWith(zimFileIds: zimFileIds)
+                await stop(updating: false)
+                await startWith(zimFileIds: zimFileIds, updating: false)
             }
         }
     }
