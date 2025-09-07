@@ -99,6 +99,23 @@ final class NavigationViewModel: ObservableObject {
         }
         return tabID
     }
+    
+    func deleteTabsBy(zimFileIds: [UUID]) {
+        var tabIDsToClose: [NSManagedObjectID] = []
+        Database.shared.performBackgroundTask { context in
+            let tabsRequest = Tab.fetchRequest(byZimFileIds: zimFileIds)
+            if let tabs = try? context.fetch(tabsRequest) {
+                for tab in tabs {
+                    tabIDsToClose.append(tab.objectID)
+                }
+            }
+            print("NavigationViewModel.deleteTabs by zimFileIds found: \(tabIDsToClose)")
+        }
+        print("NavigationViewModel.deleteTabs by zimFileIds execute: \(zimFileIds) => \(tabIDsToClose)")
+        for tabID in tabIDsToClose {
+            deleteTab(tabID: tabID)
+        }
+    }
 
     /// Delete a single tab, and select another tab
     /// - Parameter tabID: ID of the tab to delete
@@ -106,7 +123,7 @@ final class NavigationViewModel: ObservableObject {
         let currentItemValue = currentItem
         Database.shared.performBackgroundTask { context in
             let sortByCreation = [NSSortDescriptor(key: "created", ascending: false)]
-            guard let tabs: [Tab] = try? context.fetch(Tab.fetchRequest(predicate: nil,
+            guard let tabs: [Tab] = try? context.fetch(Tab.fetchRequest(predicate: Tab.Predicate.notMissing,
                                                                         sortDescriptors: sortByCreation)),
                   let tab: Tab = tabs.first(where: { $0.objectID == tabID }) else {
                 return

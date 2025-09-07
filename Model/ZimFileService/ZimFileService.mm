@@ -102,6 +102,10 @@
     return self.archives;
 }
 
+- (NSArray *)getZIMIDs {
+    return self.fileURLs.allKeys;
+}
+
 # pragma mark - Metadata
 
 + (ZimFileMetaData *_Nullable)getMetaDataWithFileURL:(NSURL *)url {
@@ -173,11 +177,15 @@
 - (NSDictionary *)getMetaData:(NSUUID *)zimFileID contentPath:(NSString *)contentPath {
     try {
         zim::Item item = [self itemIn:zimFileID contentPath:contentPath];
+        NSDate *modificationDate = [self getModificationDateOf: zimFileID];
+        if(modificationDate == nil) {
+            return nil;
+        }
         return @{
             @"mime": [NSString stringWithUTF8String:item.getMimetype().c_str()],
             @"size": [NSNumber numberWithUnsignedLongLong:item.getSize()],
             @"title": [NSString stringWithUTF8String:item.getTitle().c_str()],
-            @"zimFileDate": [self getModificationDateOf: zimFileID]
+            @"zimFileDate": modificationDate
         };
     } catch (zim::EntryNotFound(EntryNotFound)) {
         return nil;

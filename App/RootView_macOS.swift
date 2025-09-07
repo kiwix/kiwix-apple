@@ -29,6 +29,7 @@ struct RootView: View {
     // Open file alerts
     @State private var isOpenFileAlertPresented = false
     @State private var openFileAlert: OpenFileAlert?
+    @EnvironmentObject private var library: LibraryViewModel
     
     private let primaryItems: [MenuItem] = [.bookmarks]
     private let libraryItems: [MenuItem] = [.opened, .categories, .downloads, .new, .hotspot]
@@ -229,6 +230,25 @@ struct RootView: View {
             // MARK: - migrations
             if !ProcessInfo.processInfo.arguments.contains("testing") {
                 _ = MigrationService().migrateAll()
+            }
+        }
+        // Handle re-appearance and marking missing zim files
+        .onChange(of: controlActiveState) { newState in
+            switch newState {
+            case .key:
+                if FeatureFlags.hasLibrary {
+                    Task {
+                        let zimFileIds = await LibraryOperations.markMissingZIMFiles()
+                        print("missing zimFileIds: \(zimFileIds)")
+                        navigation.deleteTabsBy(zimFileIds: zimFileIds)
+                        await library.start(isUserInitiated: false)
+                    }
+                }
+                break
+            case .active, .inactive:
+                break
+            @unknown default:
+                break
             }
         }
         // special hook to trigger the zim file search in the nav bar, when a web view is opened

@@ -58,6 +58,11 @@ struct Kiwix: App {
                         try? Database.shared.viewContext.save()
                     case .active:
                         if FeatureFlags.hasLibrary {
+                            Task {
+                                let zimFileIds = await LibraryOperations.markMissingZIMFiles()
+                                print("missing zimFileIds: \(zimFileIds)")
+                                navigation.deleteTabsBy(zimFileIds: zimFileIds)
+                            }
                             library.start(isUserInitiated: false)
                             Task {
                                 await Hotspot.shared.appDidBecomeActive()

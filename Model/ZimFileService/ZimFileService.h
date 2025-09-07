@@ -35,6 +35,9 @@
 - (zim::Archive *_Nullable) findArchiveBy: (NSUUID *_Nonnull) zimFileID;
 - (nonnull void *) getArchives;
 
+# pragma mark - File Management
+- (NSArray *_Nonnull) getZIMIDs NS_REFINED_FOR_SWIFT;
+
 # pragma mark - Metadata
 
 + (nullable ZimFileMetaData *)getMetaDataWithFileURL:(nonnull NSURL *)url NS_REFINED_FOR_SWIFT;

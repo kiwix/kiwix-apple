@@ -93,6 +93,35 @@ struct LibraryOperations {
         }
         os_log("Reopened %d out of %d zim files", log: Log.LibraryOperations, type: .info, successCount, zimFiles.count)
     }
+    
+    
+    /// Mark all missing zimfiles, and return their zimFileID
+    /// - Returns: a list of UUIDs that were marked as missing
+    static func markMissingZIMFiles() async -> [UUID] {
+        let zimFileURLs = await ZimFileService.shared.getZIMFileURLs()
+        var missingIDs: [UUID] = []
+        for (zimFileID, url) in zimFileURLs {
+            if !FileManager.default.fileExists(atPath: url.path) {
+                missingIDs.append(zimFileID)
+            }
+        }
+        let context = Database.shared.viewContext
+        let zimRequest = ZimFile.fetchRequest(fileIDs: missingIDs)
+        guard let zimFiles = try? context.fetch(zimRequest) else {
+            return []
+        }
+        for zimFile in zimFiles {
+            if !zimFile.isMissing {
+                zimFile.isMissing = true
+            }
+        }
+        await MainActor.run {
+            if context.hasChanges {
+                try? context.save()
+            }
+        }
+        return zimFiles.map(\.fileID)
+    }
 
     /// Scan a directory and open available zim files inside it
     /// - Parameter url: directory to scan

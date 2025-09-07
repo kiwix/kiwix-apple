@@ -146,6 +146,13 @@ final class Tab: NSManagedObject, Identifiable {
         return request
     }
     
+    static func fetchRequest(byZimFileIds zimFileIds: [UUID]) -> NSFetchRequest<Tab> {
+        // swiftlint:disable:next force_cast
+        let request = super.fetchRequest() as! NSFetchRequest<Tab>
+        request.predicate = NSPredicate(format: "zimFile.fileID in %@", zimFileIds as CVarArg)
+        return request
+    }
+    
     enum Predicate {
         private static let noZimFile = NSPredicate(format: "zimFile == nil")
         private static let zimFileNotMissing = NSPredicate(format: "zimFile.isMissing == false")
@@ -292,6 +299,13 @@ final class ZimFile: NSManagedObject, Identifiable {
         // swiftlint:disable:next force_cast
         let request = super.fetchRequest() as! NSFetchRequest<ZimFile>
         request.predicate = NSPredicate(format: "fileID == %@", fileID as CVarArg)
+        return request
+    }
+    
+    static func fetchRequest(fileIDs: [UUID]) -> NSFetchRequest<ZimFile> {
+        // swiftlint:disable:next force_cast
+        let request = super.fetchRequest() as! NSFetchRequest<ZimFile>
+        request.predicate = NSPredicate(format: "fileID in %@", fileIDs as CVarArg)
         return request
     }
 }

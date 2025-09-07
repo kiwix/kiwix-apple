@@ -85,6 +85,18 @@
         return try? url.bookmarkData(options: .minimalBookmark)
         #endif
     }
+    
+    // MARK: - ZIM [UUID:URL] Retrieve
+    func getZIMFileURLs() -> [UUID: URL] {
+        var dict: [UUID: URL] = [:]
+        let zimIDs = __getZIMIDs() as? [UUID] ?? []
+        for zimFileID in zimIDs {
+            if let url = __getFileURL(zimFileID) {
+                dict[zimFileID] = url
+            }
+        }
+        return dict
+    }
 
     // MARK: - URL Retrieve
 
