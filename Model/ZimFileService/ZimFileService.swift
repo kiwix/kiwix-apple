@@ -32,7 +32,7 @@
     /// - Parameter bookmark: url bookmark data of the zim file to open
     /// - Returns: new url bookmark data if the one used to open the zim file is stale
     @discardableResult
-    func open(fileURLBookmark data: Data, for uuid: UUID) throws -> Data? {
+    func revalidate(fileURLBookmark data: Data, for uuid: UUID) throws -> Data? {
         // resolve url
         var isStale: Bool = false
         #if os(macOS)
@@ -47,6 +47,7 @@
         }
         #endif
         __store(url, with: uuid)
+        print("Found ZIM (\(uuid.uuidString)) URL: \(url.absoluteString)")
         return isStale ? ZimFileService.getFileURLBookmarkData(for: url) : nil
     }
 
