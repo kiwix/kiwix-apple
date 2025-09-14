@@ -211,7 +211,7 @@ struct RootView: View {
         }.task {
             switch AppType.current {
             case .kiwix:
-                await LibraryOperations.reopen()
+                await LibraryOperations.reValidate()
                 currentNavItem = .tab(objectID: navigation.currentTabId)
                 LibraryOperations.scanDirectory(URL.documentDirectory)
                 LibraryOperations.applyFileBackupSetting()
@@ -237,7 +237,7 @@ struct RootView: View {
             case .key:
                 if FeatureFlags.hasLibrary {
                     Task {
-                        await LibraryOperations.markMissingZIMFiles()
+                        await LibraryOperations.reValidate()
                         await navigation.deleteTabsWithMissingZimFiles()
                     }
                 }
