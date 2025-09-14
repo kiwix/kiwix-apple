@@ -57,6 +57,9 @@ final class Database {
 
         description.setOption(true as NSNumber, forKey: NSPersistentStoreRemoteChangeNotificationPostOptionKey)
         description.setOption(true as NSNumber, forKey: NSPersistentHistoryTrackingKey)
+        #if DEBUG
+        print("DB path: \(String(describing: description.url?.absoluteString))")
+        #endif
 
         container.loadPersistentStores { _, error in
             if let error = error as NSError? {

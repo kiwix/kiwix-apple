@@ -58,8 +58,10 @@ struct Kiwix: App {
                         try? Database.shared.viewContext.save()
                     case .active:
                         if FeatureFlags.hasLibrary {
-                            library.start(isUserInitiated: false)
                             Task {
+                                await LibraryOperations.markMissingZIMFiles()
+                                await navigation.deleteTabsWithMissingZimFiles()
+                                await library.start(isUserInitiated: false)
                                 await Hotspot.shared.appDidBecomeActive()
                             }
                         }
@@ -82,6 +84,7 @@ struct Kiwix: App {
                     switch AppType.current {
                     case .kiwix:
                         fileMonitor.start()
+                        await LibraryOperations.markMissingZIMFiles()
                         await LibraryOperations.reopen()
                         if !DeepLinkService.shared.isRunning() {
                             navigation.navigateToMostRecentTab()
