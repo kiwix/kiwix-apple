@@ -33,9 +33,9 @@ struct LibraryOperations {
         guard let metadata = await ZimFileService.getMetaData(url: url),
               let fileURLBookmark = await ZimFileService.getFileURLBookmarkData(for: url) else { return nil }
 
-        // open the file
+        // revalidate the file
         do {
-            try await ZimFileService.shared.open(fileURLBookmark: fileURLBookmark, for: metadata.fileID)
+            try await ZimFileService.shared.revalidate(fileURLBookmark: fileURLBookmark, for: metadata.fileID)
         } catch {
             return nil
         }
@@ -60,8 +60,9 @@ struct LibraryOperations {
         return metadata
     }
 
-    /// Reopen zim files from url bookmark data.
-    static func reopen() async {
+    /// Revalidate ZIM files from url bookmark data
+    /// Marks all missing zimfiles in the DB
+    static func reValidate() async {
         var successCount = 0
         let context = Database.shared.viewContext
         let request = ZimFile.fetchRequest(predicate: ZimFile.Predicate.isDownloaded)
@@ -74,7 +75,7 @@ struct LibraryOperations {
             guard let data = zimFile.fileURLBookmark else { return }
 
             do {
-                if let data = try await ZimFileService.shared.open(fileURLBookmark: data, for: zimFile.fileID) {
+                if let data = try await ZimFileService.shared.revalidate(fileURLBookmark: data, for: zimFile.fileID) {
                     zimFile.fileURLBookmark = data
                 }
                 zimFile.isMissing = false
@@ -86,35 +87,12 @@ struct LibraryOperations {
                 zimFile.isMissing = false
             }
         }
-        Task { @MainActor in
-            if context.hasChanges {
-                try? context.save()
-            }
-        }
-        os_log("Reopened %d out of %d zim files", log: Log.LibraryOperations, type: .info, successCount, zimFiles.count)
-    }
-    
-    
-    /// Marks all missing zimfiles in the DB
-    static func markMissingZIMFiles() async {
-        let zimFileURLs = await ZimFileService.shared.getZIMFileURLs()
-        var missingIDs: [UUID] = []
-        for (zimFileID, url) in zimFileURLs where !FileManager.default.fileExists(atPath: url.path) {
-            missingIDs.append(zimFileID)
-        }
-        let context = Database.shared.viewContext
-        let zimRequest = ZimFile.fetchRequest(fileIDs: missingIDs)
-        guard let zimFiles = try? context.fetch(zimRequest) else {
-            return
-        }
-        for zimFile in zimFiles where !zimFile.isMissing {
-            zimFile.isMissing = true
-        }
         await MainActor.run {
             if context.hasChanges {
                 try? context.save()
             }
         }
+        os_log("Reopened %d out of %d zim files", log: Log.LibraryOperations, type: .info, successCount, zimFiles.count)
     }
 
     /// Scan a directory and open available zim files inside it

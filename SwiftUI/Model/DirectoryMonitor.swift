@@ -19,7 +19,7 @@ protocol DirectoryMonitorDelegate: AnyObject {
     func directoryContentDidChange(url: URL)
 }
 
-class DirectoryMonitor {
+final class DirectoryMonitor {
     weak var delegate: DirectoryMonitorDelegate?
     private let url: URL
     private let onChange: ((URL) -> Void)?
