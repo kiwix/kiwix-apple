@@ -102,10 +102,6 @@
     return self.archives;
 }
 
-- (NSArray *)getZIMIDs {
-    return self.fileURLs.allKeys;
-}
-
 # pragma mark - Metadata
 
 + (ZimFileMetaData *_Nullable)getMetaDataWithFileURL:(NSURL *)url {

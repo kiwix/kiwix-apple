@@ -59,7 +59,7 @@ final class NavigationViewModel: ObservableObject {
         try? context.save()
         return tab
     }
-    
+
     func navigateToMostRecentTab() {
         Task {
             await navigateToMostRecentTabAsync()
