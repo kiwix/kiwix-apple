@@ -231,6 +231,22 @@ struct RootView: View {
                 _ = MigrationService().migrateAll()
             }
         }
+        // Handle re-appearance and marking missing zim files
+        .onChange(of: controlActiveState) { newState in
+            switch newState {
+            case .key:
+                if FeatureFlags.hasLibrary {
+                    Task {
+                        await LibraryOperations.markMissingZIMFiles()
+                        await navigation.deleteTabsWithMissingZimFiles()
+                    }
+                }
+            case .active, .inactive:
+                break
+            @unknown default:
+                break
+            }
+        }
         // special hook to trigger the zim file search in the nav bar, when a web view is opened
         // and the cmd+f is triggering the search in page
         .onReceive(NotificationCenter.default.publisher(for: .zimSearch)) { _ in

@@ -76,6 +76,7 @@ struct TabManager: View {
     @EnvironmentObject private var navigation: NavigationViewModel
     @FetchRequest(
         sortDescriptors: [SortDescriptor(\Tab.created, order: .reverse)],
+        predicate: Tab.Predicate.notMissing,
         animation: .easeInOut
     ) private var tabs: FetchedResults<Tab>
 

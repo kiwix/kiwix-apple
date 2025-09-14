@@ -39,7 +39,9 @@ final class SidebarViewController: UICollectionViewController, NSFetchedResultsC
         return dataSource
     }()
     private let fetchedResultController = NSFetchedResultsController(
-        fetchRequest: Tab.fetchRequest(sortDescriptors: [NSSortDescriptor(key: "created", ascending: false)]),
+        fetchRequest: Tab.fetchRequest(
+            predicate: Tab.Predicate.notMissing,
+            sortDescriptors: [NSSortDescriptor(key: "created", ascending: false)]),
         managedObjectContext: Database.shared.viewContext,
         sectionNameKeyPath: nil,
         cacheName: nil
@@ -162,6 +164,8 @@ final class SidebarViewController: UICollectionViewController, NSFetchedResultsC
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        // need to refresh the tabs, in case a zim file was deleted in the meantime
+        try? fetchedResultController.performFetch()
         updateSelection()
     }
 
