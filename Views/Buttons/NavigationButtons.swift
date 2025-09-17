@@ -25,7 +25,7 @@ struct NavigationButtons: View {
 
     var body: some View {
         goBackButton
-        Spacer()
+        SpacerBackCompatible()
         goForwardButton
     }
 
