@@ -63,7 +63,9 @@ struct TabsManagerButton: View {
                             }
                         }
                     }
-                }.modifier(MarkAsHalfSheet())
+                }
+                .modifier(MarkAsHalfSheet())
+                .background(.bar)
             }
         }
     }
