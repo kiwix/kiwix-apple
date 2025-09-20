@@ -218,29 +218,31 @@ private struct CompactView: View {
                     }.accessibilityIdentifier("Library")
                     SpacerBackCompatible()
                 }
-                if !Brand.hideShareButton {
-                    ExportButton(
-                        webViewURL: browser.webView.url,
-                        pageDataWithExtension: browser.pageDataWithExtension,
-                        isButtonDisabled: browser.zimFileName.isEmpty
-                    )
-                    SpacerBackCompatible()
-                }
                 if !Brand.hideTOCButton {
                     OutlineButton(browser: browser)
                     SpacerBackCompatible()
                 }
-                if !Brand.hideRandomButton {
-                    Button(LocalString.article_shortcut_random_button_title_ios,
-                           systemImage: "die.face.5",
-                           action: { [weak browser] in browser?.loadRandomArticle() })
-                    .disabled(hasZimFiles == false)
-                    SpacerBackCompatible()
+                Group {
+                    if !Brand.hideShareButton {
+                        ExportButton(
+                            webViewURL: browser.webView.url,
+                            pageDataWithExtension: browser.pageDataWithExtension,
+                            isButtonDisabled: browser.zimFileName.isEmpty
+                        )
+                        SpacerBackCompatible()
+                    }
+                    if !Brand.hideRandomButton {
+                        Button(LocalString.article_shortcut_random_button_title_ios,
+                               systemImage: "die.face.5",
+                               action: { [weak browser] in browser?.loadRandomArticle() })
+                        .disabled(hasZimFiles == false)
+                        SpacerBackCompatible()
+                    }
+                    BookmarkButton(articleBookmarked: browser.articleBookmarked,
+                                   isButtonDisabled: browser.zimFileName.isEmpty,
+                                   createBookmark: { [weak browser] in browser?.createBookmark() },
+                                   deleteBookmark: { [weak browser] in browser?.deleteBookmark() })
                 }
-                BookmarkButton(articleBookmarked: browser.articleBookmarked,
-                               isButtonDisabled: browser.zimFileName.isEmpty,
-                               createBookmark: { [weak browser] in browser?.createBookmark() },
-                               deleteBookmark: { [weak browser] in browser?.deleteBookmark() })
                 Spacer()
             }
         }
