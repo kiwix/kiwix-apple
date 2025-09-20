@@ -23,6 +23,7 @@ struct ExportButton: View {
     let webViewURL: URL?
     let pageDataWithExtension: () async -> (Data, String?)?
     let isButtonDisabled: Bool
+    var actionCallback: () -> Void = { }
     
     var buttonLabel: String = LocalString.common_button_share
 
@@ -45,6 +46,7 @@ struct ExportButton: View {
     var body: some View {
         Button {
             Task {
+                actionCallback()
                 #if os(iOS)
                 guard let exportData = await dataNameAndExtension() else { return }
                 NotificationCenter.exportFileData(exportData)
