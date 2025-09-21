@@ -207,7 +207,7 @@ final class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegat
             let fileId = zimFileID.uuidString
             if (200..<300).contains(httpResponse.statusCode) {
                 Log.DownloadService.info(
-                    "Download Ok, zimId: \(fileId, privacy: .public)",
+                    "Download Ok, zimId: \(fileId, privacy: .public)"
                 )
             } else {
                 let statusCode = httpResponse.statusCode
