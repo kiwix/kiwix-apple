@@ -183,9 +183,9 @@ struct Payment {
                             phase: PayWithApplePayButtonPaymentAuthorizationPhase) {
         switch phase {
         case .willAuthorize:
-            os_log("onPaymentAuthPhase: .willAuthorize")
+            Log.Payment.info("onPaymentAuthPhase: .willAuthorize")
         case .didAuthorize(let payment, let resultHandler):
-            os_log("onPaymentAuthPhase: .didAuthorize")
+            Log.Payment.info("onPaymentAuthPhase: .didAuthorize")
             // call our server to get payment / setup intent and return the client.secret
             Task { @MainActor [resultHandler] in
                 let paymentServer = StripeKiwix(endPoint: Self.kiwixPaymentServer,
@@ -218,13 +218,13 @@ struct Payment {
                     Self.finalResult = nil
                 }
                 resultHandler(result)
-                os_log("onPaymentAuthPhase: .didAuthorize: \(result.status == .success)")
+                Log.Payment.info("onPaymentAuthPhase: .didAuthorize: \(result.status == .success, privacy: .public)")
             }
         case .didFinish:
-            os_log("onPaymentAuthPhase: .didFinish")
+            Log.Payment.info("onPaymentAuthPhase: .didFinish")
             completeSubject.send(())
         @unknown default:
-            os_log("onPaymentAuthPhase: @unknown default")
+            Log.Payment.error("onPaymentAuthPhase: @unknown default")
         }
 
     }
