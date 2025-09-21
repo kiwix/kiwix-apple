@@ -18,6 +18,7 @@ import CoreData
 import UserNotifications
 import os
 
+// swiftlint:disable:next type_body_length
 final class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegate, URLSessionDownloadDelegate {
     static let shared = DownloadService()
     private let queue = DispatchQueue(label: "downloads", qos: .background)
@@ -184,9 +185,22 @@ final class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegat
     // MARK: - URLSessionTaskDelegate
 
     func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?) {
-        guard let taskDescription = task.taskDescription,
-              let zimFileID = UUID(uuidString: taskDescription),
-              let httpResponse = task.response as? HTTPURLResponse else { return }
+        guard let taskDescription = task.taskDescription else {
+            Log.DownloadService.fault("No taskDescription")
+            return
+        }
+        guard let zimFileID = UUID(uuidString: taskDescription) else {
+            Log.DownloadService.fault(
+                "Cannot convert taskDescription: \(taskDescription, privacy: .public)"
+            )
+            return
+        }
+        guard let httpResponse = task.response as? HTTPURLResponse else {
+            Log.DownloadService.fault(
+                "response is not an HTTPURLResponse"
+            )
+            return
+        }
         // download finished successfully if there's no error
         // and the status code is in the 200 < 300 range
         guard let error = error as NSError? else {
