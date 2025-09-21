@@ -32,7 +32,6 @@
 "common.tab.manager.title" = "Accessibility label for button tab bar button that opens an overlay menu.";
 "common.tab.navigation.title" = "On iPad it is a title in the sidemenu grouping tabs related buttons";
 "common.tab.menu.new_tab" = "Button title of an item in the overflow menu on iOS, the default title for a new tab (that has no content loaded yet) on iPad";
-"common.tab.menu.more" = "Button title of an item in the toolbar on iOS, indicating more buttons are hidden underneath";
 "common.tab.menu.close_this" = "Button title of an item in the overflow menu on iOS";
 "common.tab.menu.close_all" = "Button title of an item in the overflow menu on iOS";
 "common.tab.list.close" = "Accessibility label for button to close the current tab";
