@@ -207,7 +207,11 @@ final class LibraryViewModel: ObservableObject {
             let insertedCount = insertionCount
             let deletedCount = deletionCount
             let totalCount = parser.zimFileIDs.count
-            Log.OPDS.notice("Refresh finished -- insertion: \(insertedCount, privacy: .public), deletion: \(deletedCount, privacy: .public), total: \(totalCount, privacy: .public)")
+            Log.OPDS.notice("""
+Refresh finished -- insertion: \(insertedCount, privacy: .public), \
+deletion: \(deletedCount, privacy: .public), \
+total: \(totalCount, privacy: .public)
+""")
         } catch {
             self.error = error
             process.state = .error

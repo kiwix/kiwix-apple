@@ -445,7 +445,11 @@ final class BrowserViewModel: NSObject, ObservableObject,
             return .cancel
         } else if url.isZIMURL {
             guard await ZimFileService.shared.getContentSize(url: url) != nil else {
-                Log.URLSchemeHandler.error("Missing content at url: \(url.absoluteString, privacy: .public) => \(url.contentPath, privacy: .public)")
+                let urlString = url.absoluteString
+                let path = url.contentPath
+                Log.URLSchemeHandler.error(
+                    "Missing content at url: \(urlString, privacy: .public) => \(path, privacy: .public)"
+                )
                 if navigationAction.request.mainDocumentURL == url {
                     // only show alerts for missing main document
                     NotificationCenter.default.post(

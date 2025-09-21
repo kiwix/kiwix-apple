@@ -91,7 +91,9 @@ struct LibraryOperations {
                 try? context.save()
             }
         }
-        Log.LibraryOperations.info("Reopened \(successCount, privacy: .public) out of \(zimFiles.count, privacy: .public) zim files")
+        Log.LibraryOperations.info(
+            "Reopened \(successCount, privacy: .public) out of \(zimFiles.count, privacy: .public) zim files"
+        )
     }
 
     /// Scan a directory and open available zim files inside it
@@ -208,9 +210,12 @@ struct LibraryOperations {
                 try url.setResourceValues(resourceValues)
             }
             let status = backupDocumentDirectory ? "backing up" : "not backing up"
-            Log.LibraryOperations.info("Applying zim file backup setting (\(status, privacy: .public)) on \(urls.count, privacy: .public) zim file(s).")
+            let fileCount = urls.count
+            Log.LibraryOperations.info(
+                "Updated iCloud backup setting (\(status, privacy: .public)) on files: \(fileCount, privacy: .public)")
         } catch {
-            Log.LibraryOperations.error("Unable to change iCloud backup settings, due to \(error.localizedDescription, privacy: .public)")
+            Log.LibraryOperations.error(
+                "Unable to change iCloud backup settings, due to \(error.localizedDescription, privacy: .public)")
         }
     }
 }
