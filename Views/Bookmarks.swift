@@ -78,7 +78,14 @@ struct Bookmarks: View {
     }
 
     private static func buildPredicate(searchText: String) -> NSPredicate? {
-        guard !searchText.isEmpty else { return nil }
-        return NSPredicate(format: "title CONTAINS[cd] %@", searchText)
+        let searchPredicate: NSPredicate? = if searchText.isEmpty {
+            nil
+        } else {
+            NSPredicate(format: "title CONTAINS[cd] %@", searchText)
+        }
+        return NSCompoundPredicate(andPredicateWithSubpredicates: [
+            searchPredicate,
+            NSPredicate(format: "zimFile.isMissing == false")
+        ].compactMap { $0 })
     }
 }
