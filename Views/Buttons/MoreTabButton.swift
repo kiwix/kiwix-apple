@@ -13,6 +13,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Kiwix; If not, see https://www.gnu.org/licenses/.
 
+#if os(iOS)
 import SwiftUI
 
 struct MoreTabButton: View {
@@ -60,3 +61,4 @@ struct MoreTabButton: View {
         }
     }
 }
+#endif
