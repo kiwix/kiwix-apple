@@ -24,6 +24,15 @@ struct MoreTabButton: View {
     @State private var menuPopOver = false
     
     var body: some View {
+        if Brand.hideRandomButton && Brand.hideShareButton {
+            bookmarkButton()
+        } else {
+            withPopOverForMoreButtons()
+        }
+    }
+    
+    @ViewBuilder
+    private func withPopOverForMoreButtons() -> some View {
         Button {
             menuPopOver = true
         } label: {
@@ -33,7 +42,7 @@ struct MoreTabButton: View {
         ) {
             HStack(spacing: 24) {
                 if !Brand.hideRandomButton {
-                   randomButton()
+                    randomButton()
                 }
                 if !Brand.hideShareButton {
                     shareButton()
