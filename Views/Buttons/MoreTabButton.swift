@@ -32,6 +32,12 @@ struct MoreTabButton: View {
                   attachmentAnchor: .rect(.rect(CGRect(x: 0, y: 0, width: 184, height: 184)))
         ) {
             HStack(spacing: 24) {
+                if !Brand.hideRandomButton {
+                    Button(LocalString.article_shortcut_random_button_title_ios,
+                           systemImage: "die.face.5",
+                           action: { [weak browser] in browser?.loadRandomArticle() })
+                    .disabled(hasZimFiles == false)
+                }
                 if !Brand.hideShareButton {
                     ExportButton(
                         webViewURL: browser.webView.url,
@@ -41,12 +47,6 @@ struct MoreTabButton: View {
                             menuPopOver = false
                         }
                     )
-                }
-                if !Brand.hideRandomButton {
-                    Button(LocalString.article_shortcut_random_button_title_ios,
-                           systemImage: "die.face.5",
-                           action: { [weak browser] in browser?.loadRandomArticle() })
-                    .disabled(hasZimFiles == false)
                 }
                 BookmarkButton(articleBookmarked: browser.articleBookmarked,
                                isButtonDisabled: browser.zimFileName.isEmpty,
