@@ -33,25 +33,12 @@ struct MoreTabButton: View {
         ) {
             HStack(spacing: 24) {
                 if !Brand.hideRandomButton {
-                    Button(LocalString.article_shortcut_random_button_title_ios,
-                           systemImage: "die.face.5",
-                           action: { [weak browser] in browser?.loadRandomArticle() })
-                    .disabled(hasZimFiles == false)
+                   randomButton()
                 }
                 if !Brand.hideShareButton {
-                    ExportButton(
-                        webViewURL: browser.webView.url,
-                        pageDataWithExtension: browser.pageDataWithExtension,
-                        isButtonDisabled: browser.zimFileName.isEmpty,
-                        actionCallback: {
-                            menuPopOver = false
-                        }
-                    )
+                    shareButton()
                 }
-                BookmarkButton(articleBookmarked: browser.articleBookmarked,
-                               isButtonDisabled: browser.zimFileName.isEmpty,
-                               createBookmark: { [weak browser] in browser?.createBookmark() },
-                               deleteBookmark: { [weak browser] in browser?.deleteBookmark() })
+                bookmarkButton()
             }
             .labelStyle(.iconOnly)
             .buttonStyle(.borderless)
@@ -60,5 +47,34 @@ struct MoreTabButton: View {
             .presentationCompactAdaptation(.popover)
         }
     }
+    
+    @ViewBuilder
+    private func randomButton() -> some View {
+        Button(LocalString.article_shortcut_random_button_title_ios,
+               systemImage: "die.face.5",
+               action: { [weak browser] in browser?.loadRandomArticle() })
+        .disabled(hasZimFiles == false)
+    }
+    
+    @ViewBuilder
+    private func shareButton() -> some View {
+        ExportButton(
+            webViewURL: browser.webView.url,
+            pageDataWithExtension: browser.pageDataWithExtension,
+            isButtonDisabled: browser.zimFileName.isEmpty,
+            actionCallback: {
+                menuPopOver = false
+            }
+        )
+    }
+    
+    @ViewBuilder
+    private func bookmarkButton() -> some View {
+        BookmarkButton(articleBookmarked: browser.articleBookmarked,
+                       isButtonDisabled: browser.zimFileName.isEmpty,
+                       createBookmark: { [weak browser] in browser?.createBookmark() },
+                       deleteBookmark: { [weak browser] in browser?.deleteBookmark() })
+    }
+    
 }
 #endif
