@@ -18,6 +18,7 @@ import CoreData
 import UserNotifications
 import os
 
+// swiftlint:disable:next type_body_length
 final class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegate, URLSessionDownloadDelegate {
     static let shared = DownloadService()
     private let queue = DispatchQueue(label: "downloads", qos: .background)
@@ -146,11 +147,10 @@ final class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegat
                 context.delete(downloadTask)
                 try context.save()
             } catch {
-                os_log(
-                    "Error deleting download task. Error: %s",
-                    log: Log.DownloadService,
-                    type: .error,
-                    error.localizedDescription
+                let fileId = zimFileID.uuidString
+                let errorDesc = error.localizedDescription
+                Log.DownloadService.error(
+                    "Error deleting download task for: \(fileId, privacy: .public), \(errorDesc, privacy: .public)"
                 )
             }
         }
@@ -185,27 +185,34 @@ final class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegat
     // MARK: - URLSessionTaskDelegate
 
     func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?) {
-        guard let taskDescription = task.taskDescription,
-              let zimFileID = UUID(uuidString: taskDescription),
-              let httpResponse = task.response as? HTTPURLResponse else { return }
+        guard let taskDescription = task.taskDescription else {
+            Log.DownloadService.fault("No taskDescription")
+            return
+        }
+        guard let zimFileID = UUID(uuidString: taskDescription) else {
+            Log.DownloadService.fault(
+                "Cannot convert taskDescription: \(taskDescription, privacy: .public)"
+            )
+            return
+        }
+        guard let httpResponse = task.response as? HTTPURLResponse else {
+            Log.DownloadService.fault(
+                "response is not an HTTPURLResponse"
+            )
+            return
+        }
         // download finished successfully if there's no error
         // and the status code is in the 200 < 300 range
         guard let error = error as NSError? else {
+            let fileId = zimFileID.uuidString
             if (200..<300).contains(httpResponse.statusCode) {
-                os_log(
-                    "Download finished successfully. File ID: %s.",
-                    log: Log.DownloadService,
-                    type: .info,
-                    zimFileID.uuidString
+                Log.DownloadService.info(
+                    "Download Ok, zimId: \(fileId, privacy: .public)"
                 )
             } else {
-                os_log(
-                    "Download was unsuccessful. File ID: %s. status code: %i",
-                    log: Log.DownloadService,
-                    type: .info,
-                    zimFileID.uuidString,
-                    httpResponse.statusCode
-                )
+                let statusCode = httpResponse.statusCode
+                Log.DownloadService.error(
+                    "Download error: \(fileId, privacy: .public). status code: \(statusCode, privacy: .public)")
                 self.deleteDownloadTask(zimFileID: zimFileID)
             }
             return
@@ -230,13 +237,10 @@ final class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegat
                 try? context.save()
             }
         }
-        os_log(
-            "Download finished for File ID: %s. with: %s",
-            log: Log.DownloadService,
-            type: .error,
-            zimFileID.uuidString,
-            error.localizedDescription
-        )
+        let fileId = zimFileID.uuidString
+        let errorDesc = error.localizedDescription
+        Log.DownloadService.error(
+            "Finished for zimId: \(fileId, privacy: .public). with: \(errorDesc, privacy: .public)")
     }
 
     // MARK: - URLSessionDownloadDelegate
@@ -255,12 +259,21 @@ final class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegat
         }
     }
 
+    // swiftlint:disable:next function_body_length
     func urlSession(_ session: URLSession,
                     downloadTask: URLSessionDownloadTask,
                     didFinishDownloadingTo location: URL) {
-        guard let httpResponse = downloadTask.response as? HTTPURLResponse else { return }
+        guard let httpResponse = downloadTask.response as? HTTPURLResponse else {
+            Log.DownloadService.fault("Response is not an HTTPURLResponse")
+            return
+        }
 
+        let taskId = downloadTask.taskDescription ?? ""
         guard (200..<300).contains(httpResponse.statusCode) else {
+            let taskId = downloadTask.taskIdentifier.description
+            let statusCode = httpResponse.statusCode
+            Log.DownloadService.error(
+                "didFinish failed for: \(taskId, privacy: .public), status: \(statusCode, privacy: .public)")
             Task { @MainActor in
                 NotificationCenter.default.post(
                     name: .alert,
@@ -279,17 +292,40 @@ final class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegat
         #endif
 
         // move file
-        guard let directory = FileManager.default.urls(for: searchPath, in: .userDomainMask).first,
-            let zimFileID = UUID(uuidString: downloadTask.taskDescription ?? "") else { return }
+        
+        guard let directory = FileManager.default.urls(for: searchPath, in: .userDomainMask).first else {
+            Log.DownloadService.fault(
+                "Cannot find download directory! downloadTask: \(taskId ?? "", privacy: .public)"
+            )
+            return
+        }
+        guard let zimFileID = UUID(uuidString: taskId) else {
+            Log.DownloadService.fault(
+                "Cannot convert downloadTask to zimFileID: \(taskId, privacy: .public)"
+            )
+            return
+        }
         let fileName = downloadTask.response?.suggestedFilename
             ?? downloadTask.originalRequest?.url?.lastPathComponent
             ?? zimFileID.uuidString + ".zim"
         let destination = directory.appendingPathComponent(fileName)
+        Log.DownloadService.info(
+            "Start moving zimFile: \(fileName, privacy: .public), \(zimFileID.uuidString, privacy: .public)"
+        )
         try? FileManager.default.moveItem(at: location, to: destination)
-
+        Log.DownloadService.info(
+            "Completed moving zimFile: \(zimFileID.uuidString, privacy: .public)"
+        )
+        
         // open the file
         Task { @ZimActor in
+            Log.DownloadService.info(
+                "start opening zimFile: \(zimFileID.uuidString, privacy: .public)"
+            )
             await LibraryOperations.open(url: destination)
+            Log.DownloadService.info(
+                "opened downloaded zimFile: \(zimFileID.uuidString, privacy: .public)"
+            )
             // schedule notification
             scheduleDownloadCompleteNotification(zimFileID: zimFileID)
             deleteDownloadTask(zimFileID: zimFileID)

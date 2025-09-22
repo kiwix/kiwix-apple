@@ -106,7 +106,7 @@ enum Config: String {
 
     static func value<T>(for key: Config) -> T? where T: LosslessStringConvertible {
         guard let object = Bundle.main.object(forInfoDictionaryKey: key.rawValue) else {
-            os_log("Missing key from bundle: %@", log: Log.Branding, type: .error, key.rawValue)
+            Log.Branding.info("Missing key from bundle: \(key.rawValue, privacy: .public)")
             return nil
         }
         switch object {
@@ -116,7 +116,7 @@ enum Config: String {
             guard let value = T(string) else { fallthrough }
             return value
         default:
-            os_log("Invalid value type found for key: %@", log: Log.Branding, type: .error, key.rawValue)
+            Log.Branding.error("Invalid value type found for key: \(key.rawValue, privacy: .public)")
             return nil
         }
     }

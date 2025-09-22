@@ -91,7 +91,9 @@ struct LibraryOperations {
                 try? context.save()
             }
         }
-        os_log("Reopened %d out of %d zim files", log: Log.LibraryOperations, type: .info, successCount, zimFiles.count)
+        Log.LibraryOperations.info(
+            "Reopened \(successCount, privacy: .public) out of \(zimFiles.count, privacy: .public) zim files"
+        )
     }
 
     /// Scan a directory and open available zim files inside it
@@ -102,7 +104,7 @@ struct LibraryOperations {
             includingPropertiesForKeys: nil,
             options: [.skipsHiddenFiles, .skipsPackageDescendants, .skipsSubdirectoryDescendants]
         ).filter({ $0.pathExtension == "zim"}) else { return }
-        os_log("Discovered %d probable zim files.", log: Log.LibraryOperations, type: .info, fileURLs.count)
+        Log.LibraryOperations.info("Discovered \(fileURLs.count, privacy: .public) probable zim files.")
         Task {
             for fileURL in fileURLs {
                 await LibraryOperations.open(url: fileURL)
@@ -207,13 +209,13 @@ struct LibraryOperations {
                 var url = url
                 try url.setResourceValues(resourceValues)
             }
-            os_log(
-                "Applying zim file backup setting (%s) on %u zim file(s).",
-                log: Log.LibraryOperations,
-                type: .info,
-                backupDocumentDirectory ? "backing up" : "not backing up",
-                urls.count
-            )
-        } catch {}
+            let status = backupDocumentDirectory ? "backing up" : "not backing up"
+            let fileCount = urls.count
+            Log.LibraryOperations.info(
+                "Updated iCloud backup setting (\(status, privacy: .public)) on files: \(fileCount, privacy: .public)")
+        } catch {
+            Log.LibraryOperations.error(
+                "Unable to change iCloud backup settings, due to \(error.localizedDescription, privacy: .public)")
+        }
     }
 }

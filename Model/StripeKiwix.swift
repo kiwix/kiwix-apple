@@ -76,12 +76,12 @@ struct StripeKiwix {
                 throw StripeError.serverError
             }
             guard let dictionary = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] else {
-                os_log("Merchant session not established: unable to decode server response", type: .debug)
+                Log.Payment.error("Merchant session not established: unable to decode server response")
                 return nil
             }
             return PKPaymentMerchantSession(dictionary: dictionary)
         } catch let serverError {
-            os_log("Merchant session not established: %@", type: .debug, serverError.localizedDescription)
+            Log.Payment.error("Merchant session not established: \(serverError.localizedDescription, privacy: .public)")
             return nil
         }
     }

@@ -204,8 +204,14 @@ final class LibraryViewModel: ObservableObject {
             process.state = .complete
 
             // logging
-            os_log("Refresh finished -- addition: %d, deletion: %d, total: %d",
-                   log: Log.OPDS, type: .default, insertionCount, deletionCount, parser.zimFileIDs.count)
+            let insertedCount = insertionCount
+            let deletedCount = deletionCount
+            let totalCount = parser.zimFileIDs.count
+            Log.OPDS.notice("""
+Refresh finished -- insertion: \(insertedCount, privacy: .public), \
+deletion: \(deletedCount, privacy: .public), \
+total: \(totalCount, privacy: .public)
+""")
         } catch {
             self.error = error
             process.state = .error
@@ -291,7 +297,7 @@ final class LibraryViewModel: ObservableObject {
                     defaults[.libraryETag] = eTag
                 }
                 // OK to process further
-                os_log("Retrieved OPDS Data, size: %llu bytes", log: Log.OPDS, type: .info, data.count)
+                Log.OPDS.debug("Retrieved OPDS Data, size: \(data.count, format: .byteCount, privacy: .public) bytes")
                 return (data, responseURL)
             case 304:
                 return nil // already downloaded
@@ -299,7 +305,7 @@ final class LibraryViewModel: ObservableObject {
                 throw LibraryRefreshError.retrieve(description: "HTTP Status \(response.statusCode).")
             }
         } catch {
-            os_log("Error retrieving OPDS Data: %s", log: Log.OPDS, type: .error, error.localizedDescription)
+            Log.OPDS.error("Error retrieving OPDS Data: \(error.localizedDescription, privacy: .public)")
             if let error = error as? LibraryRefreshError {
                 throw error
             } else {
@@ -349,7 +355,7 @@ final class LibraryViewModel: ObservableObject {
                     
                     continuation.resume()
                 } catch {
-                    os_log("Error saving OPDS Data: %s", log: Log.OPDS, type: .error, error.localizedDescription)
+                    Log.OPDS.error("Error saving OPDS Data: \(error.localizedDescription, privacy: .public)")
                     continuation.resume(throwing: LibraryRefreshError.process)
                 }
             }

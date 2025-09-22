@@ -18,11 +18,12 @@ import os
 private let subsystem = "org.kiwix.kiwix"
 
 struct Log {
-    static let DownloadService = OSLog(subsystem: subsystem, category: "DownloadService")
-    static let FaviconDownloadService = OSLog(subsystem: subsystem, category: "FaviconDownloadService")
-    static let LibraryService = OSLog(subsystem: subsystem, category: "LibraryService")
-    static let LibraryOperations = OSLog(subsystem: subsystem, category: "LibraryOperations")
-    static let OPDS = OSLog(subsystem: subsystem, category: "OPDS")
-    static let URLSchemeHandler = OSLog(subsystem: subsystem, category: "URLSchemeHandler")
-    static let Branding = OSLog(subsystem: subsystem, category: "Branding")
+    static let DownloadService = Logger(subsystem: subsystem, category: "DownloadService")
+    static let FaviconDownloadService = Logger(subsystem: subsystem, category: "FaviconDownloadService")
+    static let LibraryOperations = Logger(subsystem: subsystem, category: "LibraryOperations")
+    static let QRCode = Logger(subsystem: subsystem, category: "QRCode")
+    static let OPDS = Logger(subsystem: subsystem, category: "OPDS")
+    static let URLSchemeHandler = Logger(subsystem: subsystem, category: "URLSchemeHandler")
+    static let Branding = Logger(subsystem: subsystem, category: "Branding")
+    static let Payment = Logger(subsystem: subsystem, category: "Payment")
 }
