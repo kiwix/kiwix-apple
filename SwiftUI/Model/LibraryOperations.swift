@@ -97,7 +97,6 @@ struct LibraryOperations {
         )
     }
     
-    
     /// Marks all missing zimfiles in the DB
     static func markMissingZIMFiles() async {
         let zimFileURLs = await ZimFileService.shared.getZIMFileURLs()
