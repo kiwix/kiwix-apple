@@ -18,7 +18,7 @@ import SwiftUI
 
 struct MoreTabButton: View {
     
-    let browser: BrowserViewModel
+    @ObservedObject var browser: BrowserViewModel
     @FocusedValue(\.hasZIMFiles) var hasZimFiles
     
     @State private var menuPopOver = false
