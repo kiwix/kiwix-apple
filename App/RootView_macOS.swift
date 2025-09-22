@@ -211,7 +211,7 @@ struct RootView: View {
         }.task {
             switch AppType.current {
             case .kiwix:
-                await LibraryOperations.reopen()
+                await LibraryOperations.reValidate()
                 currentNavItem = .tab(objectID: navigation.currentTabId)
                 LibraryOperations.scanDirectory(URL.documentDirectory)
                 LibraryOperations.applyFileBackupSetting()
@@ -229,6 +229,22 @@ struct RootView: View {
             // MARK: - migrations
             if !ProcessInfo.processInfo.arguments.contains("testing") {
                 _ = MigrationService().migrateAll()
+            }
+        }
+        // Handle re-appearance and marking missing zim files
+        .onChange(of: controlActiveState) { newState in
+            switch newState {
+            case .key:
+                if FeatureFlags.hasLibrary {
+                    Task {
+                        await LibraryOperations.reValidate()
+                        await navigation.deleteTabsWithMissingZimFiles()
+                    }
+                }
+            case .active, .inactive:
+                break
+            @unknown default:
+                break
             }
         }
         // special hook to trigger the zim file search in the nav bar, when a web view is opened

@@ -145,6 +145,35 @@ final class Tab: NSManagedObject, Identifiable {
         request.predicate = NSPredicate(format: "id == %@", id as CVarArg)
         return request
     }
+    
+    static func fetchRequest(byZimFileIds zimFileIds: [UUID]) -> NSFetchRequest<Tab> {
+        // swiftlint:disable:next force_cast
+        let request = super.fetchRequest() as! NSFetchRequest<Tab>
+        request.predicate = NSPredicate(format: "zimFile.fileID in %@", zimFileIds as CVarArg)
+        return request
+    }
+    
+    static func fetchRequestLastOpened() -> NSFetchRequest<Tab> {
+        let fetchRequest = Tab.fetchRequest(
+            predicate: Tab.Predicate.notMissing,
+            sortDescriptors: [NSSortDescriptor(key: "lastOpened", ascending: false)]
+        )
+        fetchRequest.fetchLimit = 1
+        return fetchRequest
+    }
+    
+    enum Predicate {
+        static let zimFileMissing = NSPredicate(format: "zimFile.isMissing == true")
+        private static let zimFileNotMissing = NSPredicate(format: "zimFile.isMissing == false")
+        private static let noZimFile = NSPredicate(format: "zimFile == nil")
+        
+        /// Make sure it is either not referencing any zimFile (eg: new tab)
+        /// or referencing an existing zimFile on disk
+        static var notMissing = NSCompoundPredicate(orPredicateWithSubpredicates: [
+            noZimFile,
+            zimFileNotMissing
+        ])
+    }
 }
 
 struct URLContentMetaData {
@@ -279,6 +308,13 @@ final class ZimFile: NSManagedObject, Identifiable {
         // swiftlint:disable:next force_cast
         let request = super.fetchRequest() as! NSFetchRequest<ZimFile>
         request.predicate = NSPredicate(format: "fileID == %@", fileID as CVarArg)
+        return request
+    }
+    
+    static func fetchRequest(fileIDs: [UUID]) -> NSFetchRequest<ZimFile> {
+        // swiftlint:disable:next force_cast
+        let request = super.fetchRequest() as! NSFetchRequest<ZimFile>
+        request.predicate = NSPredicate(format: "fileID in %@", fileIDs as CVarArg)
         return request
     }
 }
