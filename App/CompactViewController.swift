@@ -207,40 +207,22 @@ private struct CompactView: View {
                     goForward: { [weak browser] in
                         browser?.webView.goForward()
                     })
-                Spacer()
+                SpacerBackCompatible()
                 TabsManagerButton()
-                Spacer()
+                SpacerBackCompatible()
                 if FeatureFlags.hasLibrary {
                     Button {
                         presentedSheet = .library(downloads: false)
                     } label: {
                         Label(LocalString.common_tab_menu_library, systemImage: "folder")
                     }.accessibilityIdentifier("Library")
-                    Spacer()
-                }
-                if !Brand.hideShareButton {
-                    ExportButton(
-                        webViewURL: browser.webView.url,
-                        pageDataWithExtension: browser.pageDataWithExtension,
-                        isButtonDisabled: browser.zimFileName.isEmpty
-                    )
-                    Spacer()
+                    SpacerBackCompatible()
                 }
                 if !Brand.hideTOCButton {
                     OutlineButton(browser: browser)
-                    Spacer()
+                    SpacerBackCompatible()
                 }
-                if !Brand.hideRandomButton {
-                    Button(LocalString.article_shortcut_random_button_title_ios,
-                           systemImage: "die.face.5",
-                           action: { [weak browser] in browser?.loadRandomArticle() })
-                    .disabled(hasZimFiles == false)
-                    Spacer()
-                }
-                BookmarkButton(articleBookmarked: browser.articleBookmarked,
-                               isButtonDisabled: browser.zimFileName.isEmpty,
-                               createBookmark: { [weak browser] in browser?.createBookmark() },
-                               deleteBookmark: { [weak browser] in browser?.deleteBookmark() })
+                MoreTabButton(browser: browser)
                 Spacer()
             }
         }

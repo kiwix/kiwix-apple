@@ -25,8 +25,10 @@ struct NavigationButtons: View {
 
     var body: some View {
         goBackButton
-        Spacer()
-        goForwardButton
+        if canGoForward == true {
+            SpacerBackCompatible()
+            goForwardButton
+        }
     }
 
     var goBackButton: some View {
@@ -44,6 +46,6 @@ struct NavigationButtons: View {
             dismissSearch()
         } label: {
             Label(LocalString.common_button_go_forward, systemImage: "chevron.right")
-        }.disabled(canGoForward != true)
+        }
     }
 }
