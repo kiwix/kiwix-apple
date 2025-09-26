@@ -22,8 +22,9 @@ struct AlertHandler: ViewModifier {
 
     func body(content: Content) -> some View {
         content.onReceive(alert) { notification in
-            guard let rawValue = notification.userInfo?["rawValue"] as? String else { return }
-            activeAlert = ActiveAlert(rawValue: rawValue)
+            if let alertValue = notification.userInfo?["alert"] as? ActiveAlert {
+                activeAlert = alertValue
+            }
         }
         .alert(item: $activeAlert) { alert in
             switch alert {
@@ -31,6 +32,8 @@ struct AlertHandler: ViewModifier {
                 return Alert(title: Text(LocalString.alert_handler_alert_failed_title))
             case .downloadFailed:
                 return Alert(title: Text(LocalString.download_service_failed_description))
+            case let .downloadError(code, message):
+                return Alert(title: Text(LocalString.download_service_error_description(withArgs: "\(code)", message)))
             }
         }
     }
