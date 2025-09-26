@@ -258,6 +258,16 @@ final class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegat
                                total: totalBytesExpectedToWrite)
         }
     }
+    
+    private func showAlert(_ alert: ActiveAlert) {
+        Task { @MainActor in
+            NotificationCenter.default.post(
+                name: .alert,
+                object: nil,
+                userInfo: ["alert": alert]
+            )
+        }
+    }
 
     // swiftlint:disable:next function_body_length
     func urlSession(_ session: URLSession,
@@ -265,6 +275,7 @@ final class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegat
                     didFinishDownloadingTo location: URL) {
         guard let httpResponse = downloadTask.response as? HTTPURLResponse else {
             Log.DownloadService.fault("Response is not an HTTPURLResponse")
+            showAlert(.downloadError(#line, LocalString.download_service_error_option_invalid_response))
             return
         }
 
@@ -274,13 +285,7 @@ final class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegat
             let statusCode = httpResponse.statusCode
             Log.DownloadService.error(
                 "didFinish failed for: \(taskId, privacy: .public), status: \(statusCode, privacy: .public)")
-            Task { @MainActor in
-                NotificationCenter.default.post(
-                    name: .alert,
-                    object: nil,
-                    userInfo: ["rawValue": ActiveAlert.downloadFailed.rawValue]
-                )
-            }
+            showAlert(.downloadFailed)
             return
         }
 
@@ -295,14 +300,16 @@ final class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegat
         
         guard let directory = FileManager.default.urls(for: searchPath, in: .userDomainMask).first else {
             Log.DownloadService.fault(
-                "Cannot find download directory! downloadTask: \(taskId ?? "", privacy: .public)"
+                "Cannot find download directory! downloadTask: \(taskId, privacy: .public)"
             )
+            showAlert(.downloadError(#line, LocalString.download_service_error_option_directory))
             return
         }
         guard let zimFileID = UUID(uuidString: taskId) else {
             Log.DownloadService.fault(
                 "Cannot convert downloadTask to zimFileID: \(taskId, privacy: .public)"
             )
+            showAlert(.downloadError(#line, LocalString.download_service_error_option_invalid_taskid))
             return
         }
         let fileName = downloadTask.response?.suggestedFilename
