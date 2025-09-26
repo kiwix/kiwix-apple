@@ -301,6 +301,16 @@ struct Settings: View {
             Button(LocalString.settings_miscellaneous_button_feedback) {
                 UIApplication.shared.open(URL(string: "mailto:feedback@kiwix.org")!)
             }
+            Button("Report an bug") {
+                if let logStore = try? OSLogStore(scope: .currentProcessIdentifier),
+                   let entries = try? logStore.getEntries() {
+                    for entry in enties {
+                        print(entry)
+                    }
+                } else {
+                    print("couldn't collect logs")
+                }
+            }
             Button(LocalString.settings_miscellaneous_button_rate_app) {
                 let url = URL(appStoreReviewForName: Brand.appName.lowercased(),
                               appStoreID: Brand.appStoreId)
