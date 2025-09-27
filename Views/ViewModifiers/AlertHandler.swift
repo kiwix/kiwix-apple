@@ -22,19 +22,25 @@ struct AlertHandler: ViewModifier {
 
     func body(content: Content) -> some View {
         content.onReceive(alert) { notification in
-            if let alertValue = notification.userInfo?["alert"] as? ActiveAlert {
-                activeAlert = alertValue
+            guard let rawValue = notification.userInfo?["rawValue"] as? String else { return }
+            activeAlert = nil
+            activeAlert = ActiveAlert(rawValue: rawValue)
+        }
+        .alert(alertText(), isPresented: Binding<Bool>.constant(activeAlert != nil)) {
+            Button(LocalString.common_button_ok) {
+                activeAlert = nil
             }
         }
-        .alert(item: $activeAlert) { alert in
-            switch alert {
-            case .articleFailedToLoad:
-                return Alert(title: Text(LocalString.alert_handler_alert_failed_title))
-            case .downloadFailed:
-                return Alert(title: Text(LocalString.download_service_failed_description))
-            case let .downloadError(code, message):
-                return Alert(title: Text(LocalString.download_service_error_description(withArgs: "\(code)", message)))
-            }
+    }
+        
+    private func alertText() -> String {
+        switch activeAlert {
+        case .articleFailedToLoad:
+            LocalString.alert_handler_alert_failed_title
+        case .downloadFailed:
+            LocalString.download_service_failed_description
+        case nil:
+            ""
         }
     }
 }
