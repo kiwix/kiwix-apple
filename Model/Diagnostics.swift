@@ -14,6 +14,7 @@
 // along with Kiwix; If not, see https://www.gnu.org/licenses/.
 
 import Foundation
+import OSLog
 
 enum Diagnostics {
     
@@ -21,6 +22,20 @@ enum Diagnostics {
     static func start() {
         Log.Environment.notice("app: \(appVersion())")
         Log.Environment.notice("os: \(osName())")
+    }
+    
+    static func entries() async {
+        guard let logStore = try? OSLogStore(scope: .currentProcessIdentifier),
+              let entries = try? logStore.getEntries(
+                matching: NSPredicate(format: "subsystem == %@", KiwixLogger.subsystem)
+              ) else {
+            Log.Environment.error("couldn't collect logs")
+            return
+        }
+        
+        for entry in entries.makeIterator() {
+            print("\(entry.date.ISO8601Format()); \(entry.composedMessage)")
+        }
     }
     
     private static func appVersion() -> String {

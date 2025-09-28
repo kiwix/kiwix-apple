@@ -107,7 +107,7 @@ enum Config: String {
 
     static func value<T>(for key: Config) -> T? where T: LosslessStringConvertible {
         guard let object = Bundle.main.object(forInfoDictionaryKey: key.rawValue) else {
-            Log.Branding.info("Missing key from bundle: \(key.rawValue, privacy: .public)")
+            Log.Branding.debug("Missing key from bundle: \(key.rawValue, privacy: .public)")
             return nil
         }
         switch object {
