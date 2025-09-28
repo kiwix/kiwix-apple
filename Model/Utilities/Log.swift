@@ -18,6 +18,7 @@ import os
 private let subsystem = "org.kiwix.kiwix"
 
 struct Log {
+    static let Environment = Logger(subsystem: subsystem, category: "Environment")
     static let DownloadService = Logger(subsystem: subsystem, category: "DownloadService")
     static let FaviconDownloadService = Logger(subsystem: subsystem, category: "FaviconDownloadService")
     static let LibraryOperations = Logger(subsystem: subsystem, category: "LibraryOperations")
