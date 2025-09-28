@@ -332,7 +332,11 @@ final class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegat
         do {
             try FileManager.default.moveItem(at: location, to: destination)
         } catch {
-            Log.DownloadService.error("Unable to move file from: \(location.path(), privacy: .public) to: \(destination.absoluteString, privacy: .public), due to: \(error.localizedDescription, privacy: .public)")
+            Log.DownloadService.error("""
+Unable to move file from: \(location.path(), privacy: .public) 
+to: \(destination.absoluteString, privacy: .public), 
+due to: \(error.localizedDescription, privacy: .public)
+""")
             showAlert(.downloadError(#line, LocalString.download_service_error_option_unable_to_move_file))
             deleteDownloadTask(zimFileID: zimFileID)
         }
