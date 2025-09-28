@@ -48,6 +48,7 @@ struct Kiwix: App {
     @State private var settingsTab: Int = SettingsTab.reading.rawValue
 
     init() {
+        Diagnostics.start()
         UNUserNotificationCenter.current().delegate = notificationCenterDelegate
         if FeatureFlags.hasLibrary {
             LibraryViewModel().start(isUserInitiated: false)
