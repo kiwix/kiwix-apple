@@ -313,7 +313,6 @@ final class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegat
         #endif
 
         // move file
-        
         guard let directory = FileManager.default.urls(for: searchPath, in: .userDomainMask).first else {
             Log.DownloadService.fault(
                 "Cannot find download directory! downloadTask: \(taskId, privacy: .public)"
@@ -322,7 +321,7 @@ final class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegat
             deleteDownloadTask(zimFileID: zimFileID)
             return
         }
-        
+
         let fileName = downloadTask.response?.suggestedFilename
             ?? downloadTask.originalRequest?.url?.lastPathComponent
             ?? zimFileID.uuidString + ".zim"
