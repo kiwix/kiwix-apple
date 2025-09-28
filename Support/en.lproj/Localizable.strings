@@ -27,6 +27,7 @@
 "download_service.error.option_directory" = "download directory cannot be found";
 "download_service.error.option_invalid_taskid" = "invalid downloadTask id";
 "download_service.error.option_invalid_response" = "invalid response";
+"download_service.error.option_unable_to_move_file" = "unable to move downloaded file";
 
 "common.dialog.button.open" = "Open";
 "common.dialog.button.open_in_new_tab" = "Open in New Tab";

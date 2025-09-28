@@ -286,14 +286,22 @@ final class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegat
             showAlert(.downloadError(#line, LocalString.download_service_error_option_invalid_response))
             return
         }
-
         let taskId = downloadTask.taskDescription ?? ""
+        guard let zimFileID = UUID(uuidString: taskId) else {
+            Log.DownloadService.fault(
+                "Cannot convert downloadTask to zimFileID: \(taskId, privacy: .public)"
+            )
+            showAlert(.downloadError(#line, LocalString.download_service_error_option_invalid_taskid))
+            return
+        }
+
         guard (200..<300).contains(httpResponse.statusCode) else {
             let taskId = downloadTask.taskIdentifier.description
             let statusCode = httpResponse.statusCode
             Log.DownloadService.error(
                 "didFinish failed for: \(taskId, privacy: .public), status: \(statusCode, privacy: .public)")
             showAlert(.downloadFailed)
+            deleteDownloadTask(zimFileID: zimFileID)
             return
         }
 
@@ -311,15 +319,10 @@ final class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegat
                 "Cannot find download directory! downloadTask: \(taskId, privacy: .public)"
             )
             showAlert(.downloadError(#line, LocalString.download_service_error_option_directory))
+            deleteDownloadTask(zimFileID: zimFileID)
             return
         }
-        guard let zimFileID = UUID(uuidString: taskId) else {
-            Log.DownloadService.fault(
-                "Cannot convert downloadTask to zimFileID: \(taskId, privacy: .public)"
-            )
-            showAlert(.downloadError(#line, LocalString.download_service_error_option_invalid_taskid))
-            return
-        }
+        
         let fileName = downloadTask.response?.suggestedFilename
             ?? downloadTask.originalRequest?.url?.lastPathComponent
             ?? zimFileID.uuidString + ".zim"
@@ -327,7 +330,13 @@ final class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegat
         Log.DownloadService.info(
             "Start moving zimFile: \(fileName, privacy: .public), \(zimFileID.uuidString, privacy: .public)"
         )
-        try? FileManager.default.moveItem(at: location, to: destination)
+        do {
+            try FileManager.default.moveItem(at: location, to: destination)
+        } catch {
+            Log.DownloadService.error("Unable to move file from: \(location.path(), privacy: .public) to: \(destination.absoluteString, privacy: .public), due to: \(error.localizedDescription, privacy: .public)")
+            showAlert(.downloadError(#line, LocalString.download_service_error_option_unable_to_move_file))
+            deleteDownloadTask(zimFileID: zimFileID)
+        }
         Log.DownloadService.info(
             "Completed moving zimFile: \(zimFileID.uuidString, privacy: .public)"
         )

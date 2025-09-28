@@ -14,6 +14,7 @@
 "download_service.error.option_directory" = "A description of a specific download error, when the download folder cannot be reached. Becomes part of download_service.error.description";
 "download_service.error.option_invalid_taskid" = "A description of a specific download error, when the download task cannot be identified. Becomes part of download_service.error.description";
 "download_service.error.option_invalid_response" = "A description of a specific download error, when the download response has an invalid type. Becomes part of download_service.error.description";
+"download_service.error.option_unable_to_move_file" = "A description of a specific download error, when the downloaded file cannot be moved to the right place. Becomes part of download_service.error.description";
 "common.dialog.button.open" = "After long pressing a link it is the title of one of the options in the overflow menu";
 "common.dialog.button.open_in_new_tab" = "After long pressing a link it is the title of one of the options in the overflow menu";
 "common.dialog.button.add_bookmark" = "After long pressing the bottom tab menu item it is the title of one of the options in the overflow menu";
