@@ -31,6 +31,7 @@ struct Kiwix: App {
     private let fileMonitor: DirectoryMonitor
     
     init() {
+        Diagnostics.start()
         fileMonitor = DirectoryMonitor(url: URL.documentDirectory) { LibraryOperations.scanDirectory($0) }
         UNUserNotificationCenter.current().delegate = appDelegate
         // MARK: - migrations
