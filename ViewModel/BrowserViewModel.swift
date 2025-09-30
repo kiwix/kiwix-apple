@@ -455,7 +455,7 @@ final class BrowserViewModel: NSObject, ObservableObject,
                     NotificationCenter.default.post(
                         name: .alert,
                         object: nil,
-                        userInfo: ["rawValue": ActiveAlert.articleFailedToLoad.rawValue]
+                        userInfo: ["alert": ActiveAlert.articleFailedToLoad]
                     )
                 }
                 return .cancel
@@ -541,7 +541,7 @@ final class BrowserViewModel: NSObject, ObservableObject,
             return
         }
         NotificationCenter.default.post(
-            name: .alert, object: nil, userInfo: ["rawValue": ActiveAlert.articleFailedToLoad.rawValue]
+            name: .alert, object: nil, userInfo: ["alert": ActiveAlert.articleFailedToLoad]
         )
     }
 
