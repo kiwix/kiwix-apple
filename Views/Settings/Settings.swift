@@ -300,12 +300,6 @@ struct Settings: View {
                 }
             }
             
-            Button("Report a bug") {
-                Task {
-                    await Diagnostics.entries()
-                }
-            }
-            
             Button(LocalString.settings_miscellaneous_button_feedback) {
                 UIApplication.shared.open(URL(string: "mailto:feedback@kiwix.org")!)
             }
@@ -314,6 +308,7 @@ struct Settings: View {
                               appStoreID: Brand.appStoreId)
                 UIApplication.shared.open(url)
             }
+            NavigationLink("Share a diagnostic report") { DiagnosticsView() }
             NavigationLink(LocalString.settings_miscellaneous_navigation_about) { About() }
         }
     }
