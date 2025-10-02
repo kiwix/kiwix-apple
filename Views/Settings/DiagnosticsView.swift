@@ -23,8 +23,14 @@ struct DiagnosticsView: View {
     @State private var deviceDetails = true
     @State private var fileSystem = true
     
+    #if os(iOS)
+    private var alignment: HorizontalAlignment = .center
+    #else
+    private var alignment: HorizontalAlignment = .leading
+    #endif
+    
     var body: some View {
-        VStack {
+        VStack(alignment: alignment) {
             Text("""
                     Please share the following details, so we can diagnose the problem.
                     """)
@@ -41,12 +47,18 @@ struct DiagnosticsView: View {
             } label: {
                 Label("Share", systemImage: "square.and.arrow.up")
             }
+            #if os(iOS)
             .buttonStyle(.borderless)
+            #endif
             .padding()
         }
         .frame(maxWidth: 400)
         .navigationTitle("Diagnostic Report")
+        #if os(iOS)
         .navigationBarTitleDisplayMode(.large)
+        #else
+        .tabItem { Label("Diagnostics", systemImage: "exclamationmark.bubble") }
+        #endif
         .padding(.horizontal, 40)
     }
 }
