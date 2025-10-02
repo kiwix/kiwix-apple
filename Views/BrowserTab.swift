@@ -130,6 +130,14 @@ struct BrowserTab: View {
         .focusedSceneValue(\.canGoForward, browser.canGoForward)
         .modifier(ExternalLinkHandler(externalURL: $browser.externalURL))
         .searchable(text: $search.searchText, placement: .toolbar, prompt: LocalString.common_search)
+        .searchSuggestions {
+            if !search.searchText.isEmpty {
+                ForEach(search.suggestions, id: \.description) { value in
+                    Text(value)
+                        .searchCompletion(value)
+                }
+            }
+        }
         .onChange(of: scenePhase) { [weak browser] newValue in
             if case .active = newValue {
                 browser?.refreshVideoState()

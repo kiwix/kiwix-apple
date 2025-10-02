@@ -28,6 +28,7 @@ final class CompactViewController: UIHostingController<AnyView>, UISearchControl
     private let searchViewModel: SearchViewModel
     private let searchController: UISearchController
     private var searchTextObserver: AnyCancellable?
+    private var suggestionsObserver: AnyCancellable?
     private var openURLObserver: NSObjectProtocol?
 
     private var trailingNavItemGroups: [UIBarButtonItemGroup] = []
@@ -90,6 +91,19 @@ final class CompactViewController: UIHostingController<AnyView>, UISearchControl
             guard self?.searchController.searchBar.text != searchText else { return }
             self?.searchController.searchBar.text = searchText
         }
+//        suggestionsObserver = searchViewModel.$suggestions.sink { [weak self] suggestions in
+//            guard self?.searchController.searchBar.text?.isEmpty != true else {
+//                // empty out the suggestions
+//                self?.searchController.searchSuggestions = nil
+//                return
+//            }
+//            let uiSuggestions: [UISearchSuggestion] = suggestions.map {
+//                UISearchSuggestionItem(localizedSuggestion: $0)
+//            }
+//            self?.searchController.searchSuggestions = uiSuggestions
+//            self?.searchController.searchBar.searchTextField.searchSuggestions = uiSuggestions
+//        }
+        
         openURLObserver = NotificationCenter.default.addObserver(
             forName: .openURL, object: nil, queue: nil
         ) { [weak self] _ in
