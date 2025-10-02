@@ -31,6 +31,7 @@ enum SettingsTab: Int {
     case catalog
     case hotspot
     case about
+    case diagnostics
 }
 
 @main
@@ -130,6 +131,8 @@ struct Kiwix: App {
                 }
                 About()
                     .tag(SettingsTab.about.rawValue)
+                DiagnosticsView()
+                    .tag(SettingsTab.diagnostics.rawValue)
             }
             .frame(width: 550, height: 400)
         }
