@@ -10,6 +10,11 @@
 "download_service.complete.title" = "下載完成";
 "download_service.complete.description" = "已成功下載%@。";
 "download_service.failed.description" = "無法下載此檔案。";
+"download_service.error.description" = "下載未能成功。代碼：%@\n描述：%@";
+"download_service.error.option_directory" = "找不到下載目錄";
+"download_service.error.option_invalid_taskid" = "無效下載任務 ID";
+"download_service.error.option_invalid_response" = "無效回應";
+"download_service.error.option_unable_to_move_file" = "無法移動下載的檔案";
 "common.dialog.button.open" = "開啟";
 "common.dialog.button.open_in_new_tab" = "在新分頁開啟";
 "common.dialog.button.add_bookmark" = "新增書籤";
