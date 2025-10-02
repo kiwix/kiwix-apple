@@ -38,8 +38,8 @@ struct SearchResults: View {
         Group {
             #if os(macOS)
             // Special hidden button to enable down key response when
-            // search is active, to go to search results
-            if isSearching, focusedSearchItem == nil {
+            // search is active and has resu to go to search results
+            if isSearching, !viewModel.results.isEmpty, focusedSearchItem == nil {
                 Button(action: {
                     focusedSearchItem = viewModel.results.first?.url
                 }, label: {})

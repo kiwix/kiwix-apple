@@ -96,7 +96,7 @@ final class SearchViewModel: NSObject, ObservableObject, NSFetchedResultsControl
                    !zimFileIDs.isEmpty,
                    operation.results.isEmpty,
                    searchText.count > 2 {
-                    self?.suggestions = ["linux"]
+                    self?.suggestions = ["kernel"]
                     self?.inProgress = false
                 } else {
                     self?.suggestions = []
