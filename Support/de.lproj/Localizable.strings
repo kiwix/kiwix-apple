@@ -29,7 +29,7 @@
 "common.button.copy" = "Kopieren";
 "common.button.share" = "Teilen";
 "common.search" = "Suchen";
-"common.search.suggestion" = "Did you mean: \"%@\"?";
+"common.search.suggestion" = "Meinten Sie: \"%@\"?";
 
 "common.tab.manager.title" = "Tabs-Manager";
 "common.tab.navigation.title" = "Tabs";
