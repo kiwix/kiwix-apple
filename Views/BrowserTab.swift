@@ -129,7 +129,13 @@ struct BrowserTab: View {
         .focusedSceneValue(\.canGoBack, browser.canGoBack)
         .focusedSceneValue(\.canGoForward, browser.canGoForward)
         .modifier(ExternalLinkHandler(externalURL: $browser.externalURL))
+        #if os(iOS)
         .searchable(text: $search.searchText, placement: .toolbarPrincipal, prompt: LocalString.common_search)
+        #else
+        // on macOS the search suggestions are not showing when the placement is: .toolbarPrincipal
+        .searchable(text: $search.searchText, placement: .toolbar, prompt: LocalString.common_search)
+        #endif
+        
         .searchSuggestions {
             if !search.searchText.isEmpty {
                 ForEach(search.suggestions, id: \.description) { value in
