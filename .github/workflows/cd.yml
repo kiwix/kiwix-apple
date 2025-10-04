@@ -48,7 +48,7 @@ jobs:
       matrix:
         platform: [iOS, macOS]
         destination: [app-store, ftp]
-    runs-on: macos-14
+    runs-on: macos-15
 
     steps:
 
@@ -122,7 +122,7 @@ jobs:
 
     - name: Set iOS extra xcode params
       if: matrix.platform == 'iOS' && contains(env.UPLOAD_TO, matrix.destination)
-      run: echo "EXTRA_XCODEBUILD=-sdk iphoneos18.1 ${{ env.APPLE_AUTH_PARAMS }}" >> $GITHUB_ENV
+      run: echo "EXTRA_XCODEBUILD=-sdk iphoneos26.0 ${{ env.APPLE_AUTH_PARAMS }}" >> $GITHUB_ENV
 
     - name: Set macOS extra xcode params
       if: matrix.platform == 'macOS' && contains(env.UPLOAD_TO, matrix.destination)
