@@ -129,11 +129,11 @@ struct BrowserTab: View {
         .focusedSceneValue(\.canGoBack, browser.canGoBack)
         .focusedSceneValue(\.canGoForward, browser.canGoForward)
         .modifier(ExternalLinkHandler(externalURL: $browser.externalURL))
-        .searchable(text: $search.searchText, placement: .toolbar, prompt: LocalString.common_search)
+        .searchable(text: $search.searchText, placement: .toolbarPrincipal, prompt: LocalString.common_search)
         .searchSuggestions {
             if !search.searchText.isEmpty {
                 ForEach(search.suggestions, id: \.description) { value in
-                    Text(value)
+                    Text(LocalString.common_search_suggestion(withArgs: value))
                         .searchCompletion(value)
                 }
             }
