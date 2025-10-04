@@ -129,7 +129,11 @@ struct BrowserTab: View {
         .focusedSceneValue(\.canGoBack, browser.canGoBack)
         .focusedSceneValue(\.canGoForward, browser.canGoForward)
         .modifier(ExternalLinkHandler(externalURL: $browser.externalURL))
-        .searchable(text: $search.searchText, placement: .toolbarPrincipal, prompt: LocalString.common_search)
+        .searchable(
+            text: $search.searchText,
+            placement: searchFieldPlacement(),
+            prompt: LocalString.common_search
+        )
         .onChange(of: scenePhase) { [weak browser] newValue in
             if case .active = newValue {
                 browser?.refreshVideoState()
@@ -154,6 +158,15 @@ struct BrowserTab: View {
             browser?.pauseVideoWhenNotInPIP()
             browser?.persistState()
         }
+    }
+    
+    private func searchFieldPlacement() -> SearchFieldPlacement {
+        #if os(iOS)
+        .toolbarPrincipal
+        #else
+        // on macOS the search suggestions are not showing when the placement is: .toolbarPrincipal
+        .toolbar
+        #endif
     }
 
     private struct Content<LaunchModel>: View where LaunchModel: LaunchProtocol {
