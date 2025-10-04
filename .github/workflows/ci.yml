@@ -41,7 +41,7 @@ jobs:
 
       - name: Set EXTRA_XCODEBUILD for iOS
         if: matrix.platform == 'iOS'
-        run: echo "EXTRA_XCODEBUILD=-sdk iphoneos18.1 ${{ env.APPLE_AUTH_PARAMS }}" >> $GITHUB_ENV
+        run: echo "EXTRA_XCODEBUILD=-sdk iphoneos26.0 ${{ env.APPLE_AUTH_PARAMS }}" >> $GITHUB_ENV
 
       - name: Set EXTRA_XCODEBUILD for macOS
         if: matrix.platform == 'macOS'
