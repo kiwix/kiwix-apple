@@ -131,7 +131,7 @@ struct BrowserTab: View {
         .modifier(ExternalLinkHandler(externalURL: $browser.externalURL))
         .searchable(
             text: $search.searchText,
-            placement: searchFieldPlacement(),
+            placement: .toolbarPrincipal,
             prompt: LocalString.common_search
         )
         .onChange(of: scenePhase) { [weak browser] newValue in
@@ -158,15 +158,6 @@ struct BrowserTab: View {
             browser?.pauseVideoWhenNotInPIP()
             browser?.persistState()
         }
-    }
-    
-    private func searchFieldPlacement() -> SearchFieldPlacement {
-        #if os(iOS)
-        .toolbarPrincipal
-        #else
-        // on macOS the search suggestions are not showing when the placement is: .toolbarPrincipal
-        .toolbar
-        #endif
     }
 
     private struct Content<LaunchModel>: View where LaunchModel: LaunchProtocol {
