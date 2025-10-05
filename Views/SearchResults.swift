@@ -56,8 +56,6 @@ struct SearchResults: View {
                     #endif
                     Divider().ignoresSafeArea(.all, edges: .vertical)
                     content.frame(maxWidth: .infinity)
-                }.safeAreaInset(edge: .top, spacing: 0) {
-                    Divider()
                 }
             } else if viewModel.searchText.isEmpty {
                 sidebar
@@ -81,15 +79,26 @@ struct SearchResults: View {
                 Spacer()
             }
         } else if viewModel.results.isEmpty {
-            if !viewModel.suggestions.isEmpty {
-                ForEach(viewModel.suggestions, id: \.self) { suggestion in
-                    Message(text: LocalString.common_search_suggestion(withArgs: suggestion))
-                }
-            } else if viewModel.searchText.isEmpty {
+            if viewModel.searchText.isEmpty {
                 Spacer()
             } else {
                 Message(text: LocalString.search_result_zimfile_no_result_message)
             }
+            .safeAreaInset(edge: .top) {
+                    if !viewModel.suggestions.isEmpty {
+                        VStack(alignment: .leading) {
+                            ForEach(viewModel.suggestions, id: \.self) { suggestion in
+                                Button(LocalString.common_search_suggestion(withArgs: suggestion)) {
+                                    viewModel.searchText = suggestion
+                                }
+                                .buttonStyle(.borderless)
+                                .tint(.accentColor)
+                                .bold()
+                                .padding(.vertical)
+                            }
+                        }
+                    }
+                }
         } else {
             ScrollViewReader { scrollReader in
                 ScrollView {
