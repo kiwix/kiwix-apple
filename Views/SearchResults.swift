@@ -81,7 +81,11 @@ struct SearchResults: View {
                 Spacer()
             }
         } else if viewModel.results.isEmpty {
-            if viewModel.searchText.isEmpty {
+            if !viewModel.suggestions.isEmpty {
+                ForEach(viewModel.suggestions, id: \.self) { suggestion in
+                    Message(text: LocalString.common_search_suggestion(withArgs: suggestion))
+                }
+            } else if viewModel.searchText.isEmpty {
                 Spacer()
             } else {
                 Message(text: LocalString.search_result_zimfile_no_result_message)
