@@ -14,6 +14,7 @@
 // along with Kiwix; If not, see https://www.gnu.org/licenses/.
 
 import Foundation
+import Defaults
 import OSLog
 
 enum Diagnostics {
@@ -22,6 +23,8 @@ enum Diagnostics {
     static func start() {
         Log.Environment.notice("app: \(appVersion())")
         Log.Environment.notice("os: \(osName())")
+        Log.Environment.notice("\(languageCurrent())")
+        Log.Environment.notice("\(libraryLanguageCodes())")
     }
     
     static func entries() async {
@@ -54,5 +57,15 @@ enum Diagnostics {
         let deviceType = Device.current.rawValue
         let osVersion = ProcessInfo.processInfo.operatingSystemVersionString
         return "\(deviceType): \(osVersion)"
+    }
+    
+    private static func languageCurrent() -> String {
+        let current = Locale.current.language.languageCode?.identifier ?? "unknown"
+        return "Current language: \(current)"
+    }
+    
+    private static func libraryLanguageCodes() -> String {
+        let languageCodes: Set<String> = Defaults[.libraryLanguageCodes]
+        return "Library language codes: \(languageCodes.joined(separator: ", "))"
     }
 }
