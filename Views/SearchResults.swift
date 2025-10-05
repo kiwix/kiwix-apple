@@ -86,7 +86,13 @@ struct SearchResults: View {
                 Spacer()
             }
         } else if viewModel.results.isEmpty {
-            Message(text: LocalString.search_result_zimfile_no_result_message)
+            if !viewModel.suggestions.isEmpty {
+                ForEach(viewModel.suggestions, id: \.self) { suggestion in
+                    Message(text: LocalString.common_search_suggestion(withArgs: suggestion))
+                }
+            } else {
+                Message(text: LocalString.search_result_zimfile_no_result_message)
+            }
         } else {
             ScrollViewReader { scrollReader in
                 ScrollView {
