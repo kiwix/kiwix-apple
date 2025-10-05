@@ -9,6 +9,11 @@
 "download_service.complete.title" = "Download voltooid";
 "download_service.complete.description" = "%@ is met succes gedownload.";
 "download_service.failed.description" = "Kan dit bestand niet downloaden.";
+"download_service.error.description" = "Het downloaden is mislukt. Code: %@\n Beschrijving: %@";
+"download_service.error.option_directory" = "de downloaddirectory kan niet gevonden worden";
+"download_service.error.option_invalid_taskid" = "onjuiste downloadTask-ID";
+"download_service.error.option_invalid_response" = "onjuist antwoord";
+"download_service.error.option_unable_to_move_file" = "het gedownloade bestand kan niet verplaatst worden";
 "common.dialog.button.open" = "Openen";
 "common.dialog.button.open_in_new_tab" = "In nieuw tabblad openen";
 "common.dialog.button.add_bookmark" = "Bladwijzer toevoegen";
