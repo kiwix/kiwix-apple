@@ -23,6 +23,7 @@ final class SearchViewModel: NSObject, ObservableObject, NSFetchedResultsControl
     @Published private(set) var zimFiles: [UUID: ZimFile]  // ID of zim files that are included in search
     @Published private(set) var inProgress = false
     @Published private(set) var results = [SearchResult]()
+    @Published private(set) var suggestions: [String] = []
     
     static let shared = SearchViewModel()
 
@@ -97,6 +98,14 @@ final class SearchViewModel: NSObject, ObservableObject, NSFetchedResultsControl
             guard !operation.isCancelled else { return }
             Task { @MainActor [weak self] in
                 self?.results = operation.results
+                if FeatureFlags.suggestSearchTerms,
+                   !zimFileIDs.isEmpty,
+                   operation.results.isEmpty,
+                   searchText.count > 2 {
+                    self?.suggestions = ["kernel"]
+                } else {
+                    self?.suggestions = []
+                }
                 self?.inProgress = false
             }
         }
