@@ -148,7 +148,7 @@ struct SearchResults: View {
 
     var sidebar: some View {
         List {
-            if !recentSearchTexts.isEmpty {
+            if !FeatureFlags.hasLibrary || !recentSearchTexts.isEmpty {
                 Section {
                     ForEach(recentSearchTexts.prefix(6), id: \.self) { searchText in
                         Button(searchText) {
@@ -192,6 +192,7 @@ struct SearchResults: View {
             } label: {
                 Text(LocalString.search_result_button_clear).font(.caption).fontWeight(.medium)
             }
+            .disabled(recentSearchTexts.isEmpty)
         }
     }
 
