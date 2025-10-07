@@ -22,17 +22,27 @@ struct ArticleCell: View {
     let title: String
     let snippet: NSAttributedString?
     let zimFile: ZimFile?
+    private let imageName: String?
 
     init(bookmark: Bookmark) {
-        self.title = bookmark.title
-        self.snippet = nil
-        self.zimFile = bookmark.zimFile
+        title = bookmark.title
+        snippet = nil
+        zimFile = bookmark.zimFile
+        imageName = nil
     }
 
     init(result: SearchResult, zimFile: ZimFile?) {
-        self.title = result.title
-        self.snippet = result.snippet
+        title = result.title
+        snippet = result.snippet
         self.zimFile = zimFile
+        imageName = nil
+    }
+    
+    init(searchSuggestion: String) {
+        title = searchSuggestion
+        snippet = nil
+        zimFile = nil
+        imageName = "magnifyingglass"
     }
 
     var body: some View {
@@ -50,7 +60,9 @@ struct ArticleCell: View {
                 Spacer(minLength: 0)
             }
             Spacer()
-            if let zimFile = zimFile, let category = Category(rawValue: zimFile.category) {
+            if let imageName {
+                Image(systemName: imageName)
+            } else if let zimFile = zimFile, let category = Category(rawValue: zimFile.category) {
                 Favicon(category: category, imageData: zimFile.faviconData, imageURL: zimFile.faviconURL)
                     .frame(height: 20)
             }

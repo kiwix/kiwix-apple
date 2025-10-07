@@ -25,7 +25,7 @@ struct SearchResults: View {
     @Environment(\.isSearching) private var isSearching
     @EnvironmentObject private var viewModel: SearchViewModel
     @EnvironmentObject private var navigation: NavigationViewModel
-    @FocusState private var focusedSearchItem: URL? // macOS only
+    @FocusState private var focusedSearchItem: String? // macOS only
     @FetchRequest(
         sortDescriptors: [NSSortDescriptor(keyPath: \ZimFile.size, ascending: false)],
         predicate: ZimFile.Predicate.isDownloaded,
@@ -34,26 +34,31 @@ struct SearchResults: View {
 
     var body: some View {
         Group {
-            #if os(macOS)
+#if os(macOS)
             // Special hidden button to enable down key response when
             // search is active, to go to search results
             if isSearching, focusedSearchItem == nil {
                 Button(action: {
-                    focusedSearchItem = viewModel.results.first?.url
+                    switch viewModel.results {
+                    case let .results(results):
+                        focusedSearchItem = results.first?.url.absoluteString
+                    case let .suggestions(suggestions):
+                        focusedSearchItem = suggestions.first
+                    }
                 }, label: {})
                 .hidden()
                 .keyboardShortcut(.downArrow, modifiers: [])
             }
-            #endif
+#endif
             if zimFiles.isEmpty {
                 Message(text: LocalString.search_result_zimfile_empty_message)
             } else if horizontalSizeClass == .regular {
                 HStack(spacing: 0) {
-                    #if os(macOS)
+#if os(macOS)
                     sidebar.frame(width: 250)
-                    #elseif os(iOS)
+#elseif os(iOS)
                     sidebar.frame(width: 350)
-                    #endif
+#endif
                     Divider().ignoresSafeArea(.all, edges: .vertical)
                     content.frame(maxWidth: .infinity)
                 }
@@ -65,7 +70,7 @@ struct SearchResults: View {
         }
         .background(Color.background)
     }
-
+    
     @ViewBuilder
     var content: some View {
         if viewModel.inProgress {
@@ -78,50 +83,60 @@ struct SearchResults: View {
                 }
                 Spacer()
             }
-        } else if viewModel.results.isEmpty {
+        } else if case SearchResultItems.results([]) = viewModel.results {
             if viewModel.searchText.isEmpty {
                 Spacer()
-            } else {
+            } else { 
                 Message(text: LocalString.search_result_zimfile_no_result_message)
             }
-            .safeAreaInset(edge: .top) {
-                    if !viewModel.suggestions.isEmpty {
-                        VStack(alignment: .leading) {
-                            ForEach(viewModel.suggestions, id: \.self) { suggestion in
-                                Button(LocalString.common_search_suggestion(withArgs: suggestion)) {
-                                    viewModel.searchText = suggestion
-                                }
-                                .buttonStyle(.borderless)
-                                .tint(.accentColor)
-                                .bold()
-                                .padding(.vertical)
-                            }
-                        }
-                    }
-                }
         } else {
             ScrollViewReader { scrollReader in
                 ScrollView {
                     LazyVGrid(columns: [GridItem(.flexible(minimum: 300, maximum: 700), alignment: .center)]) {
-                        ForEach(viewModel.results, id: \.url) { result in
-                            Button {
-                                openResult(result: result)
-                            } label: {
-                                ArticleCell(result: result, zimFile: viewModel.zimFiles[result.zimFileID])
+                        
+                        switch viewModel.results {
+                        case let .results(results):
+                            ForEach(results, id: \SearchResult.url.absoluteString) { result in
+                                Button {
+                                    openResult(result: result)
+                                } label: {
+                                    ArticleCell(result: result, zimFile: viewModel.zimFiles[result.zimFileID])
+                                }
+                                .buttonStyle(.plain)
+                                .modifier(
+                                    Focusable( // macOS only
+                                        $focusedSearchItem,
+                                        equals: result.url.absoluteString,
+                                        onReturn: {
+                                            openResult(result: result)
+                                        },
+                                        onDismiss: {
+                                            $focusedSearchItem.wrappedValue = nil
+                                            dismissSearch()
+                                        })
+                                )
                             }
-                            .buttonStyle(.plain)
-                            .modifier(
-                                Focusable( // macOS only
-                                    $focusedSearchItem,
-                                    equals: result.url,
-                                    onReturn: {
-                                        openResult(result: result)
-                                    },
-                                    onDismiss: {
-                                        $focusedSearchItem.wrappedValue = nil
-                                        dismissSearch()
-                                    })
-                            )
+                        case let .suggestions(suggestions):
+                            ForEach(suggestions, id: \.self) { suggestion in
+                                Button {
+                                    viewModel.searchText = suggestion
+                                } label: {
+                                    ArticleCell(searchSuggestion: suggestion)
+                                }
+                                .buttonStyle(.plain)
+                                .modifier(
+                                    Focusable( // macOS only
+                                        $focusedSearchItem,
+                                        equals: suggestion,
+                                        onReturn: {
+                                            viewModel.searchText = suggestion
+                                        },
+                                        onDismiss: {
+                                            $focusedSearchItem.wrappedValue = nil
+                                            dismissSearch()
+                                        })
+                                )
+                            }
                         }
                     }.padding()
                 }
@@ -131,7 +146,7 @@ struct SearchResults: View {
                 .modifier(MoveCommand(perform: { direction in
                     // macOS only
                     if let focusedSearchItem,
-                       let index = viewModel.results.firstIndex(where: { $0.url == focusedSearchItem }) {
+                       let index = viewModel.results.firstIndex(where: focusedSearchItem) {
                         let nextIndex: Int
                         switch direction {
                         case .up: nextIndex = viewModel.results.index(before: index)
@@ -144,7 +159,12 @@ struct SearchResults: View {
                             NotificationCenter.default.post(name: .zimSearch, object: nil)
                             #endif
                         } else if (viewModel.results.startIndex..<viewModel.results.endIndex).contains(nextIndex) {
-                            $focusedSearchItem.wrappedValue = viewModel.results[nextIndex].url
+                            switch viewModel.results {
+                            case let .results(results):
+                                $focusedSearchItem.wrappedValue = results[nextIndex].url.absoluteString
+                            case let .suggestions(suggestions):
+                                $focusedSearchItem.wrappedValue = suggestions[nextIndex]
+                            }
                         }
                     }
                 }))
