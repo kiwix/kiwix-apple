@@ -97,7 +97,7 @@ struct SearchResults: View {
                         
                         switch viewModel.results {
                         case let .results(results):
-                            ForEach(results, id: \SearchResult.url.absoluteString) { result in
+                            ForEach(results, id: \.url.absoluteString) { result in
                                 Button {
                                     recentSearchTexts = {
                                         var searchTexts = Defaults[.recentSearchTexts]
@@ -124,6 +124,10 @@ struct SearchResults: View {
                                 )
                             }
                         case let .suggestions(suggestions):
+                            
+                            Text(LocalString.common_search_suggestion)
+                                .font(.callout)
+                            
                             ForEach(suggestions, id: \.self) { suggestion in
                                 Button {
                                     viewModel.searchText = suggestion
@@ -162,9 +166,9 @@ struct SearchResults: View {
                         }
                         if nextIndex < viewModel.results.startIndex {
                             $focusedSearchItem.wrappedValue = nil
-                            #if os(macOS)
+#if os(macOS)
                             NotificationCenter.default.post(name: .zimSearch, object: nil)
-                            #endif
+#endif
                         } else if (viewModel.results.startIndex..<viewModel.results.endIndex).contains(nextIndex) {
                             switch viewModel.results {
                             case let .results(results):
@@ -178,7 +182,7 @@ struct SearchResults: View {
             }
         }
     }
-
+    
     var sidebar: some View {
         List {
             if !FeatureFlags.hasLibrary || !recentSearchTexts.isEmpty {
@@ -191,9 +195,9 @@ struct SearchResults: View {
                                 recentSearchTexts.removeAll { $0 == searchText }
                             }
                         }
-                        #if os(macOS)
+#if os(macOS)
                         .buttonStyle(.link)
-                        #endif
+#endif
                     }
                 } header: { recentSearchHeader }
             }
@@ -215,7 +219,7 @@ struct SearchResults: View {
         }
         .modifier(NotFocusable()) // macOS only
     }
-
+    
     private var recentSearchHeader: some View {
         HStack {
             Text(LocalString.search_result_header_text)
@@ -228,7 +232,7 @@ struct SearchResults: View {
             .disabled(recentSearchTexts.isEmpty)
         }
     }
-
+    
     private var searchFilterHeader: some View {
         HStack {
             Text(LocalString.search_result_filter_hearder_text)
