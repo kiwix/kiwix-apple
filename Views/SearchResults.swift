@@ -120,6 +120,8 @@ struct SearchResults: View {
                             
                             Text(LocalString.common_search_suggestion)
                                 .font(.callout)
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                                .padding(.horizontal, 12)
                             
                             ForEach(suggestions, id: \.self) { suggestion in
                                 Button {
