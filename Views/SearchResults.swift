@@ -28,7 +28,7 @@ struct SearchResults: View {
     @FocusState private var focusedSearchItem: URL? // macOS only
     @FetchRequest(
         sortDescriptors: [NSSortDescriptor(keyPath: \ZimFile.size, ascending: false)],
-        predicate: ZimFile.openedPredicate,
+        predicate: ZimFile.Predicate.isDownloaded,
         animation: .easeInOut
     ) private var zimFiles: FetchedResults<ZimFile>
 
@@ -169,11 +169,11 @@ struct SearchResults: View {
                     ForEach(zimFiles) { zimFile in
                         HStack {
                             Toggle(zimFile.name, isOn: Binding<Bool>(get: {
-                                zimFile.includedInSearch
+                                zimFile.includedInSearch && !zimFile.isMissing
                             }, set: {
                                 zimFile.includedInSearch = $0
                                 try? managedObjectContext.save()
-                            }))
+                            })).disabled(zimFile.isMissing)
                             Spacer()
                         }
                     }
