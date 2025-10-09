@@ -33,7 +33,9 @@ final class SearchViewModel: NSObject, ObservableObject, NSFetchedResultsControl
 
     override private init() {
         // initialize fetched results controller
-        let predicate = NSPredicate(format: "includedInSearch == true AND fileURLBookmark != nil")
+        let predicate = NSPredicate(
+            format: "includedInSearch == true AND fileURLBookmark != nil AND isMissing != false"
+        )
         fetchedResultsController = NSFetchedResultsController(
             fetchRequest: ZimFile.fetchRequest(predicate: predicate),
             managedObjectContext: Database.shared.viewContext,

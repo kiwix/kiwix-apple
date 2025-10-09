@@ -28,7 +28,7 @@ struct SearchResults: View {
     @FocusState private var focusedSearchItem: URL? // macOS only
     @FetchRequest(
         sortDescriptors: [NSSortDescriptor(keyPath: \ZimFile.size, ascending: false)],
-        predicate: ZimFile.Predicate.isDownloaded,
+        predicate: ZimFile.openedPredicate,
         animation: .easeInOut
     ) private var zimFiles: FetchedResults<ZimFile>
 
