@@ -8,6 +8,11 @@
 "download_service.complete.title" = "Преземањето е завршено";
 "download_service.complete.description" = "%@ е успешно преземено.";
 "download_service.failed.description" = "Не можев да ја преземам оваа податотека.";
+"download_service.error.description" = "Преземањето не успеа. Код: %@\n Опис: %@";
+"download_service.error.option_directory" = "не ја најдов папката за преземања";
+"download_service.error.option_invalid_taskid" = "неважечка назнака за downloadTask";
+"download_service.error.option_invalid_response" = "неважечки одговор";
+"download_service.error.option_unable_to_move_file" = "не можев да ја преземам преместената податотека";
 "common.dialog.button.open" = "Отвори";
 "common.dialog.button.open_in_new_tab" = "Отвори во ново јазиче";
 "common.dialog.button.add_bookmark" = "Додај обележувач";

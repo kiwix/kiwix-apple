@@ -1,5 +1,6 @@
 // Messages for Simplified Chinese (中文（简体）)
 // Exported from translatewiki.net
+// Author: Cyanjiang
 // Author: Dream Star.cn
 // Author: Kichin
 // Author: Prmsh
@@ -8,15 +9,17 @@
 // Author: XtexChooser
 // Author: 沈澄心
 
-// Fuzzy
-"library_refresh_error.retrieve.description" = "检索图书馆数据时发生错误。";
-// Fuzzy
-"library_refresh_error.parse.description" = "解析图书馆数据时出错。";
-// Fuzzy
-"library_refresh_error.process.description" = "处理图书馆数据时发生错误。";
+"library_refresh_error.retrieve.description" = "检索目录数据时出错。";
+"library_refresh_error.parse.description" = "解析目录数据时出错。";
+"library_refresh_error.process.description" = "处理目录数据时出错。";
 "download_service.complete.title" = "下载完成";
 "download_service.complete.description" = "已成功下载%@";
 "download_service.failed.description" = "无法下载此文件。";
+"download_service.error.description" = "下载未能成功。代码：%@\n描述：%@";
+"download_service.error.option_directory" = "找不到下载目录";
+"download_service.error.option_invalid_taskid" = "下载任务ID无效";
+"download_service.error.option_invalid_response" = "无效响应";
+"download_service.error.option_unable_to_move_file" = "无法移动下载的文件";
 "common.dialog.button.open" = "打开";
 "common.dialog.button.open_in_new_tab" = "在新标签页中打开";
 "common.dialog.button.add_bookmark" = "添加书签";
@@ -27,10 +30,14 @@
 "common.button.go_forward" = "前进";
 "common.button.done" = "完成";
 "common.button.cancel" = "取消";
+"common.button.ok" = "好的";
 "common.button.yes" = "是";
 "common.button.no" = "否";
 "common.button.print" = "打印";
+"common.button.copy" = "复制";
+"common.button.copied" = "已复制";
 "common.button.share" = "分享";
+"common.button.share_as_pdf" = "以PDF格式共享";
 "common.search" = "搜索";
 "common.tab.manager.title" = "标签管理器";
 "common.tab.navigation.title" = "标签";
@@ -72,6 +79,15 @@
 "library_refresh_time.never" = "从不";
 "zim_file_cell.article_count.suffix" = "条目";
 "zim_file_missing_indicator.help" = "Zim 文件丢失";
+"hotspot.action.start_hotspot.title" = "启动热点";
+"hotspot.action.stop_hotspot.title" = "停止热点";
+"hotspot.settings.port_number" = "端口号";
+"hotspot.settings.recommended_port_range" = "热点使用的网络端口应在%@和%@之间";
+"hotspot.error.port_already_used_by_another_app_title" = "由于端口%@正在使用，热点无法启动。";
+"hotspot.error.port_already_used_by_another_app_description" = "要解决此问题，请关闭使用它的应用程序或在设置中更改Kiwix Hotspot端口。";
+"hotspot.server_full_explanation" = "要在其他设备上浏览这些ZIM文件，请确保所有设备都在同一个WiFi网络上或连接到您的个人热点。";
+"hotspot.server_active_warning" = "热点仅在应用程序打开和使用时保持活动状态。";
+"hotspot.server_wifi_only_explanation" = "要在其他设备上浏览这些ZIM文件，请确保所有设备都在同一个WiFi网络上。";
 "library.zim_file_details.side_panel.message" = "选择一个 ZIM 文件以查看详细信息";
 "library.zim_file_context.main_page.label" = "首页";
 "library.zim_file_context.random.label" = "随机页面";
@@ -129,12 +145,17 @@
 "service_worker_warning.label.description" = "不支持需要service workers的 Zim 文件。";
 "multi.zim_files_selected.sidebar_title" = "已选择";
 "multi.zim_files_selected.description_count" = "ZIM 文件";
+"theme_settings.title" = "主题";
+"theme_settings.option.dark" = "暗黑";
+"theme_settings.option.light" = "明亮";
+"theme_settings.option.system" = "系统";
 "reading_settings.zoom.title" = "页面缩放";
 "reading_settings.zoom.reset.button" = "重置";
 "reading_settings.external_link.title" = "外部链接";
 "reading_settings.search_snippet.title" = "搜索片段";
 "reading_settings.tab.reading" = "阅读";
 "library_settings.catalog.title" = "目录";
+"library_settings.downloads.title" = "下载";
 "library_settings.button.refresh_now" = "立即刷新";
 "library_settings.last_refresh.text" = "上次刷新";
 "library_settings.auto_refresh.toggle" = "自动刷新";
@@ -233,6 +254,7 @@
 "enum.navigation_item.new" = "新";
 "enum.navigation_item.downloads" = "下载";
 "enum.navigation_item.settings" = "设置";
+"enum.navigation_item.hotspot" = "热点";
 "enum.search_result_snippet_mode.disabled" = "已停用";
 "enum.search_result_snippet_mode.matches" = "相符";
 "payment.donate.title" = "捐款";
