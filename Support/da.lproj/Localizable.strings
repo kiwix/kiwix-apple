@@ -3,15 +3,17 @@
 // Author: Peterleth
 // Author: Zakawer2
 
-// Fuzzy
 "library_refresh_error.retrieve.description" = "Fejl ved hentning af biblioteksdata.";
-// Fuzzy
 "library_refresh_error.parse.description" = "Fejl ved parsing af biblioteksdata.";
-// Fuzzy
 "library_refresh_error.process.description" = "Fejl ved behandling af biblioteksdata.";
 "download_service.complete.title" = "Download fuldført";
 "download_service.complete.description" = "%@ er blevet downloadet.";
 "download_service.failed.description" = "Denne fil kunne ikke downloades.";
+"download_service.error.description" = "Download mislykkedes. Kode: %@\n Beskrivelse: %@";
+"download_service.error.option_directory" = "download af bibliotek kunne ikke findes";
+"download_service.error.option_invalid_taskid" = "ugyldigt downloadTask-id";
+"download_service.error.option_invalid_response" = "ugyldigt svar";
+"download_service.error.option_unable_to_move_file" = "kan ikke flytte downloadet fil";
 "common.dialog.button.open" = "Åben";
 "common.dialog.button.open_in_new_tab" = "Åbn i Ny Fane";
 "common.dialog.button.add_bookmark" = "Tilføj Bogmærke";
@@ -22,10 +24,14 @@
 "common.button.go_forward" = "Gå Fremad";
 "common.button.done" = "Udført";
 "common.button.cancel" = "Annuller";
+"common.button.ok" = "OK";
 "common.button.yes" = "Ja";
 "common.button.no" = "nej";
 "common.button.print" = "Udskriv";
+"common.button.copy" = "Kopier";
+"common.button.copied" = "Kopieret";
 "common.button.share" = "Del";
+"common.button.share_as_pdf" = "Del som PDF";
 "common.search" = "Søg";
 "common.tab.manager.title" = "Fane Manager";
 "common.tab.navigation.title" = "Faner";
@@ -38,14 +44,43 @@
 "common.export_file.alert.title" = "Eksporter fil";
 "common.export_file.alert.description" = "Vil du eksportere filen %@?";
 "common.export_file.alert.button.title" = "Eksportér";
+"outline_button.outline.title" = "Oversigt";
+"outline_button.outline.help" = "Vis artikeloversigt";
+"outline_button.outline.empty.message" = "Ingen oversigt tilgængelig";
+"article_shortcut.main.button.title" = "Hovedartikel";
+"article_shortcut.main.button.help" = "Vis hovedartikel";
+"article_shortcut.random.button.title.mac" = "Tilfældig artikel";
+"article_shortcut.random.button.title.ios" = "Tilfældig side";
+"article_shortcut.random.button.help" = "Vis tilfældig artikel";
+"alert_handler.alert.failed.title" = "Den ønskede artikel kunne ikke indlæses.";
 "bookmark_context_menu.view.title" = "Vis";
 "bookmark_context_menu.remove.title" = "Fjern";
 "external_link_handler.alert.title" = "Ekstern henvisning";
+"external_link_handler.alert.button.load.link" = "Indlæs linket";
 "external_link_handler.alert.ask.description" = "Der er blevet trykket på et eksternt link. Ønsker du at indlæse linket?";
+"external_link_handler.alert.not_loading.description" = "Du har trykket på et eksternt link. Din nuværende indstilling tillader dog ikke, at det indlæses.";
+"file_import.alert.no_open.title" = "Kan ikke åbne filen";
+"file_import.alert.no_open.message" = "%@ kan ikke åbnes.";
+"attribute.detail.unknown" = "Ukendt";
+"download_task_cell.status.failed" = "Mislykkedes";
+"download_task_cell.status.downloading" = "Downloader...";
+"download_task_cell.status.paused" = "Sat på pause";
+"flavor_tag.help.max" = "alt undtagen store mediefiler som video/lyd";
+"flavor_tag.help.no_pic" = "de fleste billeder er blevet fjernet";
+"flavor_tag.help.mini" = "kun en delmængde af teksten er tilgængelig, sandsynligvis den første del";
 "library_refresh_time.last" = "Netop Nu";
 "library_refresh_time.never" = "Aldrig";
 "zim_file_cell.article_count.suffix" = "artikler";
 "zim_file_missing_indicator.help" = "Zim-fil mangler.";
+"hotspot.action.start_hotspot.title" = "Start Hotspot";
+"hotspot.action.stop_hotspot.title" = "Stop Hotspot";
+"hotspot.settings.port_number" = "Portnummer";
+"hotspot.settings.recommended_port_range" = "Netværksporten, der bruges af hotspottet, skal være mellem %@ og %@";
+"hotspot.error.port_already_used_by_another_app_title" = "Hotspottet kan ikke starte, fordi port %@ er i brug.";
+"hotspot.error.port_already_used_by_another_app_description" = "For at løse dette skal du lukke appen, der bruger den, eller ændre Kiwix Hotspot-porten i indstillingerne.";
+"hotspot.server_full_explanation" = "For at gennemse disse ZIM-filer på andre enheder skal du sørge for, at alle enheder enten er på det samme WiFi-netværk eller har forbindelse til dit personlige hotspot.";
+"hotspot.server_active_warning" = "Hotspottet forbliver kun aktivt, mens appen er åben og i brug.";
+"hotspot.server_wifi_only_explanation" = "For at gennemse disse ZIM-filer på andre enheder skal du sørge for, at alle enheder er på det samme WiFi-netværk.";
 "library.zim_file_details.side_panel.message" = "Vælg en ZIM-fil for at se detaljer";
 "library.zim_file_context.main_page.label" = "Forside";
 "library.zim_file_context.random.label" = "Tilfældig Side";
@@ -63,6 +98,14 @@
 "zim_file_new.button.refresh" = "Opdatér";
 "zim_file.list.name.text" = "Navn";
 "zim_file.list.description.text" = "Beskrivelse";
+"zim_file.list.actions.text" = "Handlinger";
+"zim_file.list.info.text" = "Info";
+"zim_file.action.locate.title" = "Lokalisér";
+"zim_file.action.open_main_page.title" = "Åbn hovedsiden";
+"zim_file.action.reveal_in_finder.title" = "Vis i Finder";
+"zim_file.action.toggle_cellular" = "Download via mobildata";
+"zim_file.action.unlink.title" = "Fjern link";
+"zim_file.action.delete.title" = "Slet";
 "zim_file.action.download.warning.message1" = "Der ville være mindre end 1 GB plads tilbage, efter at ZIM-filen er downloadet.";
 "zim_file.base_info.attribute.language" = "Sprog";
 "zim_file.base_info.attribute.category" = "Kategori";
@@ -80,6 +123,13 @@
 "zim_file.download_task.action.pause" = "Pause";
 "zim_file.download_task.action.downloading" = "Downloader...";
 "zim_file.download_task.action.paused" = "Sat på pause";
+"theme_settings.option.dark" = "Mørkt";
+"theme_settings.option.light" = "Lyst";
+"theme_settings.option.system" = "System";
+"reading_settings.zoom.title" = "Sidezoom";
+"reading_settings.zoom.reset.button" = "Nulstil";
+"reading_settings.external_link.title" = "Eksterne links";
+"library_settings.languages.title" = "Sprog";
 "settings.navigation.title" = "Indstillinger";
 "catalog_settings.refreshing.text" = "Opdaterer...";
 "catalog_settings.refresh_now.button" = "Opdater Nu";
