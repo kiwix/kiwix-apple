@@ -169,11 +169,11 @@ struct SearchResults: View {
                     ForEach(zimFiles) { zimFile in
                         HStack {
                             Toggle(zimFile.name, isOn: Binding<Bool>(get: {
-                                zimFile.includedInSearch
+                                zimFile.includedInSearch && !zimFile.isMissing
                             }, set: {
                                 zimFile.includedInSearch = $0
                                 try? managedObjectContext.save()
-                            }))
+                            })).disabled(zimFile.isMissing)
                             Spacer()
                         }
                     }
