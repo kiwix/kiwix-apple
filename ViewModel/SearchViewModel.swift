@@ -58,9 +58,8 @@ final class SearchViewModel: NSObject, ObservableObject, NSFetchedResultsControl
         // subscribers
         searchSubscriber = Publishers.CombineLatest(
             $searchText.removeDuplicates { prev, current in
-                // consider search text to be the same
-                // ignoring spaces and new lines
-                Self.trim(term: prev) == Self.trim(term: current)
+                // consider search text to be the same ignoring spaces
+                prev.trimmingCharacters(in: .whitespaces) == current.trimmingCharacters(in: .whitespaces)
         }, $zimFiles)
             .map { [unowned self] searchText, zimFiles in
                 self.inProgress = true
@@ -102,15 +101,5 @@ final class SearchViewModel: NSObject, ObservableObject, NSFetchedResultsControl
             }
         }
         queue.addOperation(operation)
-    }
-    
-    private static func trim(term: String) -> String {
-        let trimmed = term.trimmingCharacters(in: .whitespacesAndNewlines)
-        do {
-            return try trimmed.replacingRegex(matching: "\\s{2,}", with: " ")
-        } catch {
-            Log.LibraryOperations.error("search key term matching failed: \(error)")
-        }
-        return trimmed
     }
 }
