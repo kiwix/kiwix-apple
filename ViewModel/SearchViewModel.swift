@@ -56,7 +56,11 @@ final class SearchViewModel: NSObject, ObservableObject, NSFetchedResultsControl
         fetchedResultsController.delegate = self
 
         // subscribers
-        searchSubscriber = Publishers.CombineLatest($searchText.removeDuplicates(), $zimFiles)
+        searchSubscriber = Publishers.CombineLatest(
+            $searchText.removeDuplicates { prev, current in
+                // consider search text to be the same ignoring spaces
+                prev.trimmingCharacters(in: .whitespaces) == current.trimmingCharacters(in: .whitespaces)
+        }, $zimFiles)
             .map { [unowned self] searchText, zimFiles in
                 self.inProgress = true
                 return (searchText, zimFiles)
