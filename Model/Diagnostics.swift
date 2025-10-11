@@ -25,6 +25,9 @@ enum Diagnostics {
         Log.Environment.notice("os: \(osName())")
         Log.Environment.notice("\(languageCurrent())")
         Log.Environment.notice("\(libraryLanguageCodes())")
+        #if os(macOS)
+        MacUser.logIsUserAdmin()
+        #endif
     }
     
     static func entries() async {
