@@ -31,22 +31,38 @@ struct DiagnosticsView: View {
                         """)
             .font(.headline)
             
-            Text("Your language settings")
-            Text("Application logs")
-            Text("List of your ZIM files")
-            Text("Device details")
-            Text("File system details")
-            
-            
-            AsyncButton {
-                await Diagnostics.entries()
-            } label: {
-                Label("Share", systemImage: "square.and.arrow.up")
+            VStack(alignment: alignment) {
+                Text("Application logs")
+                Text("Your language settings")
+                Text("List of your ZIM files")
+                Text("Device details")
+                Text("File system details")
             }
+            
+            HStack {
+                // EMAIL
+                AsyncButton {
+                    let logs = await Diagnostics.entries()
+                } label: {
+                    Label("Email", systemImage: "paperplane")
+                }
 #if os(iOS)
-            .buttonStyle(.borderless)
-            .padding()
+                .buttonStyle(.borderless)
+                .padding()
 #endif
+                
+                // SHARE
+                AsyncButton {
+                    let logs = await Diagnostics.entries()
+                } label: {
+                    Label("Share", systemImage: "square.and.arrow.up")
+                }
+#if os(iOS)
+                .buttonStyle(.borderless)
+                .padding()
+#endif
+                
+            }
             Spacer()
         }
         .frame(maxWidth: 400)
