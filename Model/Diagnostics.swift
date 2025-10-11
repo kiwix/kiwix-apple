@@ -19,29 +19,35 @@ import OSLog
 
 enum Diagnostics {
     
+    private static let byteCountFormatter = ByteCountFormatter()
+    
     /// Log the os and app related infos
     static func start() {
         Log.Environment.notice("app: \(appVersion())")
         Log.Environment.notice("os: \(osName())")
+        Log.Environment.notice("free space: \(freeSpace())")
+#if os(macOS)
+        MacUser.logIsUserAdmin()
+#endif
         Log.Environment.notice("\(languageCurrent())")
         Log.Environment.notice("\(libraryLanguageCodes())")
-        #if os(macOS)
-        MacUser.logIsUserAdmin()
-        #endif
+        
     }
     
-    static func entries() async {
+    static func entries() async -> String {
         guard let logStore = try? OSLogStore(scope: .currentProcessIdentifier),
               let entries = try? logStore.getEntries(
                 matching: NSPredicate(format: "subsystem == %@", KiwixLogger.subsystem)
               ) else {
             Log.Environment.error("couldn't collect logs")
-            return
+            return ""
         }
         
+        var logs: String = ""
         for entry in entries.makeIterator() {
-            print("\(entry.date.ISO8601Format()); \(entry.composedMessage)")
+            logs = logs.appending("\(entry.date.ISO8601Format()); \(entry.composedMessage)\n")
         }
+        return logs
     }
     
     private static func appVersion() -> String {
@@ -70,5 +76,18 @@ enum Diagnostics {
     private static func libraryLanguageCodes() -> String {
         let languageCodes: Set<String> = Defaults[.libraryLanguageCodes]
         return "Library language codes: \(languageCodes.joined(separator: ", "))"
+    }
+    
+    private static func freeSpace() -> String {
+        
+        let freeSpace: Int64? = try? FileManager.default
+            .urls(for: .documentDirectory, in: .userDomainMask)
+            .first?.resourceValues(forKeys: [.volumeAvailableCapacityForImportantUsageKey])
+            .volumeAvailableCapacityForImportantUsage
+        
+        guard let freeSpace else {
+            return "unknown"
+        }
+        return byteCountFormatter.string(fromByteCount: freeSpace)
     }
 }
