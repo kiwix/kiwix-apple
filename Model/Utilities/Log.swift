@@ -15,8 +15,6 @@
 
 import os
 
-
-
 struct Log {
     static let Environment = Logger(subsystem: subsystem, category: "Environment")
     static let DownloadService = Logger(subsystem: subsystem, category: "DownloadService")

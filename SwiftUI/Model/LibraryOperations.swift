@@ -88,7 +88,8 @@ struct LibraryOperations {
             } catch {
                 zimFile.fileURLBookmark = nil
                 zimFile.isMissing = false
-                Log.LibraryOperations.notice("ZIM file cannot be opened: \(zimFile.name) | \(downloadPath) due to: \(error)")
+                Log.LibraryOperations
+                    .notice("ZIM file cannot be opened: \(zimFile.name) | \(downloadPath) due to: \(error)")
             }
         }
         await MainActor.run { 
