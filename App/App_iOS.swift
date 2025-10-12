@@ -64,6 +64,10 @@ struct Kiwix: App {
                                 await library.start(isUserInitiated: false)
                                 await Hotspot.shared.appDidBecomeActive()
                             }
+                        } else {
+                            Task {
+                                await Hotspot.shared.appDidBecomeActive()
+                            }
                         }
                     case .background:
                         break
