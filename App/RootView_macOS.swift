@@ -31,7 +31,7 @@ struct RootView: View {
     @State private var openFileAlert: OpenFileAlert?
     
     private let primaryItems: [MenuItem] = [.bookmarks]
-    private let libraryItems: [MenuItem] = [.opened, .categories, .downloads, .new, .hotspot]
+    private let libraryItems: [MenuItem] = [.opened, .categories, .downloads, .new]
     private let openURL = NotificationCenter.default.publisher(for: .openURL)
     private let appTerminates = NotificationCenter.default.publisher(for: NSApplication.willTerminateNotification)
     private let tabCloses = NotificationCenter.default.publisher(for: NSWindow.willCloseNotification)
@@ -53,10 +53,12 @@ struct RootView: View {
                 }
                 if FeatureFlags.hasLibrary {
                     Section(LocalString.app_macos_navigation_button_library) {
-                        ForEach(libraryItems, id: \.self) { menuItem in
+                        ForEach(libraryItems + [MenuItem.hotspot], id: \.self) { menuItem in
                             Label(menuItem.name, systemImage: menuItem.icon)
                         }
                     }
+                } else {
+                    Label(MenuItem.hotspot.name, systemImage: MenuItem.hotspot.icon).id(MenuItem.hotspot)
                 }
             }
             .frame(minWidth: 160)

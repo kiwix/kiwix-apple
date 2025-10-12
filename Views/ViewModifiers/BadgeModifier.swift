@@ -28,7 +28,7 @@ struct BadgeModifier: ViewModifier {
     func body(content: Content) -> some View {
         ZStack(alignment: .leading) {
             HStack {
-                if count > 0 {
+                if FeatureFlags.hasLibrary, count > 0 {
                     Text(Self.formatter.string(for: count) ?? "")
                         .font(.subheadline)
                         .fontDesign(.monospaced)

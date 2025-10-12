@@ -20,6 +20,7 @@ final class MultiSelectedZimFilesViewModel: ObservableObject {
     @Published private(set) var selectedZimFiles = Set<ZimFile>()
     
     func toggleMultiSelect(of zimFile: ZimFile) {
+        guard FeatureFlags.hasLibrary else { return }
         if selectedZimFiles.contains(zimFile) {
             selectedZimFiles.remove(zimFile)
         } else {
@@ -36,7 +37,8 @@ final class MultiSelectedZimFilesViewModel: ObservableObject {
     }
     
     func isSelected(_ zimFile: ZimFile) -> Bool {
-        selectedZimFiles.contains(zimFile)
+        guard FeatureFlags.hasLibrary else { return true }
+        return selectedZimFiles.contains(zimFile)
     }
     
     func intersection(with zimFiles: Set<ZimFile>) {
