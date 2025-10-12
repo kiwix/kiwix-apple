@@ -127,8 +127,10 @@ struct Kiwix: App {
                     .tag(SettingsTab.hotspot.rawValue)
                 About()
                     .tag(SettingsTab.about.rawValue)
-                DiagnosticsView()
-                    .tag(SettingsTab.diagnostics.rawValue)
+                if FeatureFlags.hasLibrary {
+                    DiagnosticsView()
+                        .tag(SettingsTab.diagnostics.rawValue)
+                }
             }
             .frame(width: 550, height: 400)
         }

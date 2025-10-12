@@ -305,7 +305,9 @@ struct Settings: View {
                               appStoreID: Brand.appStoreId)
                 UIApplication.shared.open(url)
             }
-            NavigationLink("Share a diagnostic report") { DiagnosticsView() }
+            if FeatureFlags.hasLibrary {
+                NavigationLink("Share a diagnostic report") { DiagnosticsView() }
+            }
             NavigationLink(LocalString.settings_miscellaneous_navigation_about) { About() }
         }
     }
