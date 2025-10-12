@@ -14,6 +14,9 @@
 // along with Kiwix; If not, see https://www.gnu.org/licenses/.
 
 import SwiftUI
+#if os(iOS)
+import MessageUI
+#endif
 
 /// NOTE: This view is not translated on purpose.
 /// We want to make sure users only send us reports in English
@@ -21,88 +24,87 @@ struct DiagnosticsView: View {
     
     @State private var isLoading: Bool = false
     
+    private let alignment = HorizontalAlignment.leading
 #if os(iOS)
-    private var alignment: HorizontalAlignment = .center
-#else
+    @State private var email: Email?
+#elseif os(macOS)
     @State private var currentView: NSView?
-    private var alignment: HorizontalAlignment = .leading
 #endif
+    
+    @ViewBuilder
+    var description: some View {
+        Text("""
+                    Please share the following details, so we can diagnose the problem.
+                    """)
+        .font(.headline)
+        
+        VStack(alignment: .leading) {
+            Text("Application logs")
+            Text("Your language settings")
+            Text("List of your ZIM files")
+            Text("Device details")
+            Text("File system details")
+        }
+    }
+    
+    @ViewBuilder
+    var emailButton: some View {
+        AsyncButton {
+            isLoading = true
+            defer { isLoading = false }
+            let logs = await Diagnostics.entries(separator: Email.separator())
+            let email = Email(logs: logs)
+            email.create()
+        } label: {
+            Label("Email", systemImage: "paperplane")
+        }
+#if os(iOS)
+        .buttonStyle(.borderless)
+        .padding(.vertical)
+#endif
+    }
+    
+    @ViewBuilder
+    var shareButton: some View {
+#if os(macOS)
+        if let currentView {
+            AsyncButton {
+                isLoading = true
+                defer { isLoading = false }
+                let logs = await Diagnostics.entries(separator: "\n")
+                guard let data = logs.data(using: .utf8) else {
+                    return
+                }
+                let exportData = FileExportData(data: data, fileName: "diagnostics", fileExtension: "log")
+                guard let url = FileExporter.tempFileFrom(exportData: exportData) else {
+                    return
+                }
+                NSSharingServicePicker(items: [url]).show(
+                    relativeTo: NSRect(origin: CGPoint(x: 64, y: 330),
+                                       size: CGSize(width: 320, height: 54)
+                    ),
+                    of: currentView,
+                    preferredEdge: .minY
+                )
+            } label: {
+                Label("Share", systemImage: "square.and.arrow.up")
+            }
+        }
+#else
+        // TODO: implement for iOS
+        EmptyView()
+#endif
+    }
     
     var body: some View {
         VStack(alignment: alignment, spacing: 16) {
             Spacer()
-            Text("""
-                        Please share the following details, so we can diagnose the problem.
-                        """)
-            .font(.headline)
-            
-            VStack(alignment: alignment) {
-                Text("Application logs")
-                Text("Your language settings")
-                Text("List of your ZIM files")
-                Text("Device details")
-                Text("File system details")
-            }
+            description
             
             HStack {
-                // EMAIL
-                AsyncButton {
-                    isLoading = true
-                    let logs = await Diagnostics.entries(separator: Email.separator)
-                    let email = Email(logs: logs)
-                    email.create()
-                    isLoading = false
-                } label: {
-                    Label("Email", systemImage: "paperplane")
-                }
-#if os(iOS)
-                .buttonStyle(.borderless)
-                .padding()
-#endif
+                emailButton
+                shareButton
                 
-                // SHARE
-#if os(macOS)
-                if let currentView {
-                    AsyncButton {
-                        isLoading = true
-                        defer { isLoading = false }
-                        let logs = await Diagnostics.entries(separator: "\n")
-                        guard let data = logs.data(using: .utf8) else {
-                            return
-                        }
-                        let exportData = FileExportData(data: data, fileName: "diagnostics", fileExtension: "log")
-                        guard let url = FileExporter.tempFileFrom(exportData: exportData) else {
-                            return
-                        }
-                        NSSharingServicePicker(items: [url]).show(
-                            relativeTo: NSRect(
-                                origin: CGPoint(x: 64, y: 330),
-                                size: CGSize(
-                                    width: 320,
-                                    height: 54
-                                )
-                            ),
-                            of: currentView,
-                            preferredEdge: .minY
-                        )
-                    } label: {
-                        Label("Share", systemImage: "square.and.arrow.up")
-                    }
-                }
-#endif
-//                AsyncButton {
-//                    isLoading = true
-//                    
-//                        ShareButton(url: <#T##URL#>, relativeToView: <#T##NSView#>, origin: <#T##CGPoint#>, preferredEdge: <#T##NSRectEdge#>)
-//                    }
-//                    isLoading = false
-//                } label: {
-//                    Label("Share", systemImage: "square.and.arrow.up")
-//                }
-#if os(iOS)
-                .buttonStyle(.borderless)
-                .padding()
-#endif
                 if isLoading {
                     Text("Please wait...")
                 }
