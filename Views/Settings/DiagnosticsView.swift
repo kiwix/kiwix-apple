@@ -24,6 +24,7 @@ struct DiagnosticsView: View {
 #if os(iOS)
     private var alignment: HorizontalAlignment = .center
 #else
+    @State private var currentView: NSView?
     private var alignment: HorizontalAlignment = .leading
 #endif
     
@@ -60,13 +61,44 @@ struct DiagnosticsView: View {
 #endif
                 
                 // SHARE
-                AsyncButton {
-                    isLoading = true
-                    let logs = await Diagnostics.entries(separator: Email.separator)
-                    isLoading = false
-                } label: {
-                    Label("Share", systemImage: "square.and.arrow.up")
+#if os(macOS)
+                if let currentView {
+                    AsyncButton {
+                        isLoading = true
+                        defer { isLoading = false }
+                        let logs = await Diagnostics.entries(separator: "\n")
+                        guard let data = logs.data(using: .utf8) else {
+                            return
+                        }
+                        let exportData = FileExportData(data: data, fileName: "diagnostics", fileExtension: "log")
+                        guard let url = FileExporter.tempFileFrom(exportData: exportData) else {
+                            return
+                        }
+                        NSSharingServicePicker(items: [url]).show(
+                            relativeTo: NSRect(
+                                origin: CGPoint(x: 64, y: 330),
+                                size: CGSize(
+                                    width: 320,
+                                    height: 54
+                                )
+                            ),
+                            of: currentView,
+                            preferredEdge: .minY
+                        )
+                    } label: {
+                        Label("Share", systemImage: "square.and.arrow.up")
+                    }
                 }
+#endif
+//                AsyncButton {
+//                    isLoading = true
+//                    
+//                        ShareButton(url: <#T##URL#>, relativeToView: <#T##NSView#>, origin: <#T##CGPoint#>, preferredEdge: <#T##NSRectEdge#>)
+//                    }
+//                    isLoading = false
+//                } label: {
+//                    Label("Share", systemImage: "square.and.arrow.up")
+//                }
 #if os(iOS)
                 .buttonStyle(.borderless)
                 .padding()
@@ -84,6 +116,9 @@ struct DiagnosticsView: View {
         .padding(.horizontal, 40)
 #else
         .tabItem { Label("Diagnostics", systemImage: "exclamationmark.bubble") }
+        .withHostingWindow { hostWindow in
+            _currentView.wrappedValue = hostWindow?.contentView
+        }
 #endif
     }
 }
