@@ -13,11 +13,9 @@
 // You should have received a copy of the GNU General Public License
 // along with Kiwix; If not, see https://www.gnu.org/licenses/.
 
-import Foundation
+import SwiftUI
 #if os(macOS)
 import AppKit
-#else
-import MessageUI
 #endif
 
 /// Prepares diagnostic email to be sent by the user
