@@ -149,7 +149,6 @@ struct HotspotSettings: View {
 
 import PassKit
 import Combine
-import OSLog
 
 struct Settings: View {
 
@@ -298,7 +297,6 @@ struct Settings: View {
                     openDonation()
                 }
             }
-            
             Button(LocalString.settings_miscellaneous_button_feedback) {
                 UIApplication.shared.open(URL(string: "mailto:feedback@kiwix.org")!)
             }
