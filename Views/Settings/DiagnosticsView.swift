@@ -27,7 +27,7 @@ struct DiagnosticsView: View {
             Spacer()
             description
             
-            HStack {
+            HStack(alignment: .firstTextBaseline, spacing: 24) {
                 emailButton
 #if os(macOS)
                 saveButton
@@ -80,7 +80,6 @@ struct DiagnosticsView: View {
         }
 #if os(iOS)
         .buttonStyle(.borderless)
-        .padding(.vertical)
 #endif
     }
     
@@ -108,8 +107,17 @@ struct DiagnosticsView: View {
 #if os(iOS)
     @ViewBuilder
     var shareButton: some View {
-        // TODO: implement for iOS
-        EmptyView()
+        AsyncButton {
+            isLoading = true
+            defer { isLoading = false }
+            let logs = await Diagnostics.entries(separator: "\n")
+            guard let data = logs.data(using: .utf8) else { return }
+            let exportData = FileExportData(data: data, fileName: "diagnostic", fileExtension: "log")
+            NotificationCenter.exportFileData(exportData)
+        } label: {
+            Label("Share", systemImage: "square.and.arrow.up")
+        }
+        .buttonStyle(.borderless)
     }
 #endif
     
