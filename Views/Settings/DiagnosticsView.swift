@@ -15,7 +15,11 @@
 
 import SwiftUI
 
+/// NOTE: This view is not translated on purpose.
+/// We want to make sure users only send us reports in English
 struct DiagnosticsView: View {
+    
+    @State private var isLoading: Bool = false
     
 #if os(iOS)
     private var alignment: HorizontalAlignment = .center
@@ -42,7 +46,11 @@ struct DiagnosticsView: View {
             HStack {
                 // EMAIL
                 AsyncButton {
-                    let logs = await Diagnostics.entries()
+                    isLoading = true
+                    let logs = await Diagnostics.entries(separator: Email.separator)
+                    let email = Email(logs: logs)
+                    email.create()
+                    isLoading = false
                 } label: {
                     Label("Email", systemImage: "paperplane")
                 }
@@ -53,7 +61,9 @@ struct DiagnosticsView: View {
                 
                 // SHARE
                 AsyncButton {
-                    let logs = await Diagnostics.entries()
+                    isLoading = true
+                    let logs = await Diagnostics.entries(separator: Email.separator)
+                    isLoading = false
                 } label: {
                     Label("Share", systemImage: "square.and.arrow.up")
                 }
@@ -61,7 +71,9 @@ struct DiagnosticsView: View {
                 .buttonStyle(.borderless)
                 .padding()
 #endif
-                
+                if isLoading {
+                    Text("Please wait...")
+                }
             }
             Spacer()
         }

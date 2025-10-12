@@ -34,7 +34,7 @@ enum Diagnostics {
         
     }
     
-    static func entries() async -> String {
+    static func entries(separator: String) async -> String {
         guard let logStore = try? OSLogStore(scope: .currentProcessIdentifier),
               let entries = try? logStore.getEntries(
                 matching: NSPredicate(format: "subsystem == %@", KiwixLogger.subsystem)
@@ -45,7 +45,7 @@ enum Diagnostics {
         
         var logs: String = ""
         for entry in entries.makeIterator() {
-            logs = logs.appending("\(entry.date.ISO8601Format()); \(entry.composedMessage)\n")
+            logs = logs.appending("\(entry.date.ISO8601Format()); \(entry.composedMessage)\(separator)")
         }
         return logs
     }
