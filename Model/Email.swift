@@ -16,6 +16,8 @@
 import Foundation
 #if os(macOS)
 import AppKit
+#else
+import MessageUI
 #endif
 
 /// Prepares diagnostic email to be sent by the user
@@ -23,10 +25,13 @@ struct Email {
     
     let address: String = "apple-diagnostic@kiwix.org"
     let subject: String = "Diagnostic report"
-    let header: String = "Please describe your issue in English below:<br><br>"
+    let header: String = "Please describe your issue in English below:\(separator(count: 3)))"
     let divider: String = "---LOGS---"
     let logs: String
-    static let separator: String = "<br>"
+    
+    var body: String {
+        [header, divider, logs].joined(separator: Self.separator())
+    }
     
 #if os(macOS)
     func create() {
@@ -34,10 +39,27 @@ struct Email {
         sharingService?.recipients = [address]
         sharingService?.subject = subject
         
-        let body = [header, divider, logs].joined(separator: Self.separator)
         let items: [Any] = [body]
         sharingService?.perform(withItems: items)
     }
+#else
+    func create() {
+        var url = URL(string: "mailto:\(address)")!
+        url.append(queryItems: [
+            URLQueryItem(name: "subject", value: subject),
+            URLQueryItem(name: "body", value: body)
+        ])
+        UIApplication.shared.open(url)
+    }
 #endif
     
+    static func separator(count: Int = 1) -> String {
+        assert(count > 0)
+#if os(macOS)
+        let newLine: String = "<br>"
+#else
+        let newLine: String = "\r\n"
+#endif
+        return String(repeating: newLine, count: count)
+    }
 }
