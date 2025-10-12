@@ -25,7 +25,7 @@ struct Email {
     
     let address: String = "apple-diagnostic@kiwix.org"
     let subject: String = "Diagnostic report"
-    let header: String = "Please describe your issue in English below:\(separator(count: 3)))"
+    let header: String = "Please describe your issue in English below:\(separator(count: 3))"
     let divider: String = "---LOGS---"
     let logs: String
     
