@@ -21,10 +21,13 @@ struct MoreTabButton: View {
     @ObservedObject var browser: BrowserViewModel
     @FocusedValue(\.hasZIMFiles) var hasZimFiles
     
+    /// For custom apps, that have a dedicated hotspot toolbar button
+    let presentHotspot: () -> Void
+    
     @State private var menuPopOver = false
     
     var body: some View {
-        if Brand.hideRandomButton && Brand.hideShareButton {
+        if Brand.hideRandomButton && Brand.hideShareButton && FeatureFlags.hasLibrary {
             bookmarkButton()
         } else {
             withPopOverForMoreButtons()
@@ -46,6 +49,9 @@ struct MoreTabButton: View {
                 }
                 if !Brand.hideShareButton {
                     shareButton()
+                }
+                if !FeatureFlags.hasLibrary {
+                    hotspotButton()
                 }
                 bookmarkButton()
             }
@@ -75,6 +81,17 @@ struct MoreTabButton: View {
                 menuPopOver = false
             }
         )
+    }
+    
+    @ViewBuilder
+    private func hotspotButton() -> some View {
+        Button(
+            LocalString.enum_navigation_item_hotspot,
+            systemImage: "wifi",
+            action: {
+                menuPopOver = false
+                presentHotspot()
+            })
     }
     
     @ViewBuilder

@@ -124,9 +124,9 @@ struct Kiwix: App {
                     LibrarySettings()
                         .environmentObject(libraryRefreshViewModel)
                         .tag(SettingsTab.catalog.rawValue)
-                    HotspotSettings()
-                        .tag(SettingsTab.hotspot.rawValue)
                 }
+                HotspotSettings()
+                    .tag(SettingsTab.hotspot.rawValue)
                 About()
                     .tag(SettingsTab.about.rawValue)
             }

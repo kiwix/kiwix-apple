@@ -155,6 +155,7 @@ private struct CompactView: View {
     
     private enum PresentedSheet: Identifiable {
         case library(downloads: Bool)
+        case customHotspot // for custom iPhone apps only
         case hotspotShare(url: URL)
         case settings(scrollToHotspot: Bool)
         var id: String {
@@ -162,6 +163,7 @@ private struct CompactView: View {
             case .library(true): return "library-downloads"
             case .library(false): return "library"
             case .hotspotShare: return "hotspot-share"
+            case .customHotspot: return "custom-hotspot"
             case .settings: return "settings"
             }
         }
@@ -222,7 +224,10 @@ private struct CompactView: View {
                     OutlineButton(browser: browser)
                     SpacerBackCompatible()
                 }
-                MoreTabButton(browser: browser)
+                MoreTabButton(browser: browser,
+                              presentHotspot: {
+                    presentedSheet = .customHotspot
+                })
                 Spacer()
             }
         }
@@ -232,6 +237,10 @@ private struct CompactView: View {
                 Library(dismiss: dismiss)
             case .library(downloads: true):
                 Library(dismiss: dismiss, tabItem: .downloads)
+            case .customHotspot:
+                SheetContent {
+                    HotspotZimFilesSelection()
+                }
             case .hotspotShare(let url):
                 // comes from HotspotZimFilesSelection
                 ActivityViewController(activityItems: [url].compactMap { $0 })
@@ -255,7 +264,7 @@ private struct CompactView: View {
                 // switching to the downloads tab
                 // is done within Library
                 break
-            case .hotspotShare:
+            case .hotspotShare, .customHotspot:
                 // doesn't apply
                 break
             case .settings, nil:

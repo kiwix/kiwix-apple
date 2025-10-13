@@ -173,31 +173,28 @@ struct Settings: View {
 
     var body: some View {
         Group {
-            if FeatureFlags.hasLibrary {
-                ScrollViewReader { proxy in
-                    List {
+            ScrollViewReader { proxy in
+                List {
+                    if FeatureFlags.hasLibrary {
                         readingSettings
                         downloadSettings
                         catalogSettings
                         miscellaneous
                         hotspot.id("hotspot")
                         backupSettings
+                    } else {
+                        readingSettings
+                        miscellaneous
+                        hotspot.id("hotspot")
                     }
-                    .modifier(ToolbarRoleBrowser())
-                    .navigationTitle(LocalString.settings_navigation_title)
-                    .task {
-                        if scrollToHotspot {
-                            proxy.scrollTo("hotspot", anchor: .top)
-                        }
-                    }
-                }
-            } else {
-                List {
-                    readingSettings
-                    miscellaneous
                 }
                 .modifier(ToolbarRoleBrowser())
                 .navigationTitle(LocalString.settings_navigation_title)
+                .task {
+                    if scrollToHotspot {
+                        proxy.scrollTo("hotspot", anchor: .top)
+                    }
+                }
             }
         }
     }
