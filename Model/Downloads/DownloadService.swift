@@ -339,6 +339,7 @@ due to: \(error.localizedDescription, privacy: .public)
 """)
             showAlert(.downloadError(#line, LocalString.download_service_error_option_unable_to_move_file))
             deleteDownloadTask(zimFileID: zimFileID)
+            return
         }
         Log.DownloadService.info(
             "Completed moving zimFile: \(zimFileID.uuidString, privacy: .public)"
