@@ -138,8 +138,14 @@ final class SearchViewModel: NSObject, ObservableObject, NSFetchedResultsControl
     private func updateSearchResults(_ searchText: String, _ zimFileIDs: Set<UUID>) {
         queue.cancelAllOperations()
         // This is run at app start, and opens the archive of all searchable ZIM files
+        let cacheDir = try? FileManager.default.url(
+            for: .cachesDirectory, in: .userDomainMask, appropriateFor: nil, create: true
+        )
         for zimFileID in zimFileIDs {
             _ = ZimFileService.shared.openArchive(zimFileID: zimFileID)
+            if FeatureFlags.suggestSearchTerms, let cacheDir {
+                ZimFileService.shared.createSpellingIndex(zimFileID: zimFileID, cacheDir: cacheDir)
+            }
         }
         let operation = SearchOperation(searchText: searchText, zimFileIDs: zimFileIDs)
         operation.extractMatchingSnippet = Defaults[.searchResultSnippetMode] == .matches
