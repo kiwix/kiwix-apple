@@ -35,6 +35,9 @@
 - (zim::Archive *_Nullable) findArchiveBy: (NSUUID *_Nonnull) zimFileID;
 - (nonnull void *) getArchives;
 
+# pragma mark - Spelling
+- (void) createSpellingIndex: (NSUUID *_Nonnull) zimFileID cachePath:(NSString *_Nonnull)contentPath NS_REFINED_FOR_SWIFT;
+
 # pragma mark - Metadata
 
 + (nullable ZimFileMetaData *)getMetaDataWithFileURL:(nonnull NSURL *)url NS_REFINED_FOR_SWIFT;
