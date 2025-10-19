@@ -172,7 +172,7 @@ final class SearchViewModel: NSObject, ObservableObject, NSFetchedResultsControl
         operation.completionBlock = { [weak self] in
             guard !operation.isCancelled else { return }
             Task { @MainActor [weak self] in
-                self?.results = await operation.searchResultItems
+                self?.results = operation.searchResultItems
                 self?.updateProgress(false)
             }
         }
