@@ -15,8 +15,19 @@
 
 import Defaults
 
+@ZimActor
 extension SearchOperation {
-    var results: [SearchResult] { __results.array as? [SearchResult] ?? [] }
+    // TODO: remove me!
+    private var results: [SearchResult] { __results.array as? [SearchResult] ?? [] }
+    private var searchResults: [SearchResult] { __results.array as? [SearchResult] ?? [] }
+    private var corrections: [String] { __corrections.array as? [String] ?? [] }
+    var searchResultItems: SearchResultItems {
+        if !corrections.isEmpty {
+            .suggestions(corrections)
+        } else {
+            .results(searchResults)
+        }
+    }
 
     open override func main() {
         // perform index and title search
@@ -73,5 +84,22 @@ extension SearchOperation {
                 return .orderedSame
             }
         }
+
+        performSuggestions()
+    }
+    
+    private func performSuggestions() {
+        guard !isCancelled,
+              !zimFileIDs.isEmpty,
+              searchText.count > 2,
+              results.isEmpty,
+              spellCacheDir != nil else {
+            __corrections = []
+            return
+        }
+        Log.LibraryOperations.debug("perfoming search suggestsion")
+        __addSpellingCorrections()
+        let count: Int = __corrections.count
+        Log.LibraryOperations.debug("found search suggestsion: \(count)")
     }
 }
