@@ -83,6 +83,10 @@
     return self;
 }
 
+- (BOOL) isAsynchronous {
+    return false;
+}
+
 /// Perform index and title based searches.
 - (void)performSearch {
     // get a list of archives that are included in search
@@ -189,12 +193,14 @@
     std::filesystem::path path = std::filesystem::path([contentPath cStringUsingEncoding: NSUTF8StringEncoding]);
 
     for (NSUUID *zimFileID in self.zimFileIDs) {
+        if (self.isCancelled) { return; }
         std::string zimFileID_C = [[[zimFileID UUIDString] lowercaseString] cStringUsingEncoding:NSUTF8StringEncoding];
         try {
             auto archive = allArchives->at(zimFileID_C);
             kiwix::SpellingsDB db = kiwix::SpellingsDB(archive, path);
             std::vector<std::string> spellCorrections = db.getSpellingCorrections(self.searchText_C, 1);
             NSArray *array = convertToArray(spellCorrections);
+            if (self.isCancelled) { return; }
             [self.corrections addObjectsFromArray:array];
             NSInteger count = array.count;
             NSLog(@"addSpellingCorrections for %@: (%ld)", zimFileID, static_cast<long>(count));
