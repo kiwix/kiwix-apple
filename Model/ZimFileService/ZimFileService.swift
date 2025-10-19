@@ -55,7 +55,6 @@
     }
     
     func createSpellingIndex(zimFileID: UUID, cacheDir: URL) {
-
         __createSpellingIndex(zimFileID, cachePath: cacheDir.path())
     }
 
