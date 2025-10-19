@@ -15,10 +15,7 @@
 
 import Defaults
 
-@ZimActor
 extension SearchOperation {
-    // TODO: remove me!
-    private var results: [SearchResult] { __results.array as? [SearchResult] ?? [] }
     private var searchResults: [SearchResult] { __results.array as? [SearchResult] ?? [] }
     private var corrections: [String] { __corrections.array as? [String] ?? [] }
     var searchResultItems: SearchResultItems {
@@ -30,18 +27,20 @@ extension SearchOperation {
     }
 
     open override func main() {
+        __results.removeAllObjects()
+        __corrections.removeAllObjects()
         // perform index and title search
         guard !searchText.isEmpty else { return }
         performSearch()
 
         // reduce to unique results by URL
-        let uniqueDict = Dictionary(grouping: results, by: { $0.url })
+        let uniqueDict = Dictionary(grouping: searchResults, by: { $0.url })
         let values = uniqueDict.compactMapValues { $0.first }.values
         __results = NSMutableOrderedSet(array: Array(values) )
 
         // parse and extract search result snippet
         if case .matches = Defaults[.searchResultSnippetMode] {
-            for result in results {
+            for result in searchResults {
                 guard let html = result.htmlSnippet,
                       let data = html.data(using: .utf8) else { continue }
                 result.snippet = try? NSAttributedString(
@@ -58,7 +57,7 @@ extension SearchOperation {
 
         // swiftlint:disable compiler_protocol_init
         // calculate score for all results
-        for result in results {
+        for result in searchResults {
             guard !isCancelled else { return }
             let distance = WagnerFischer.distance(result.title.lowercased()[...], searchText[...])
             if let probability = result.probability?.doubleValue {
@@ -92,7 +91,7 @@ extension SearchOperation {
         guard !isCancelled,
               !zimFileIDs.isEmpty,
               searchText.count > 2,
-              results.isEmpty,
+              searchResults.isEmpty,
               spellCacheDir != nil else {
             __corrections = []
             return
