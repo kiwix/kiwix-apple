@@ -23,9 +23,14 @@ struct SearchResults: View {
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     @Environment(\.managedObjectContext) private var managedObjectContext
     @Environment(\.isSearching) private var isSearching
-    @EnvironmentObject private var viewModel: SearchViewModel
+    @EnvironmentObject private var viewModel: SearchTaskViewModel
     @EnvironmentObject private var navigation: NavigationViewModel
-    @FocusState private var focusedSearchItem: String? // macOS only
+    // macOS only
+    @FocusState private var focusedSearchItem: String? {
+        didSet {
+            debugPrint("focusedSearchItem: \(focusedSearchItem)")
+        }
+    }
     @FetchRequest(
         sortDescriptors: [NSSortDescriptor(keyPath: \ZimFile.size, ascending: false)],
         predicate: ZimFile.Predicate.isDownloaded,
@@ -190,15 +195,20 @@ struct SearchResults: View {
             if !FeatureFlags.hasLibrary || !recentSearchTexts.isEmpty {
                 Section {
                     ForEach(recentSearchTexts.prefix(6), id: \.self) { searchText in
-                        Button(searchText) {
+                        Button {
                             viewModel.searchText = searchText
-                        }.swipeActions {
+                        } label: {
+                            Text(searchText)
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                        }
+#if os(macOS)
+                        .buttonStyle(.link)
+#else
+                        .swipeActions {
                             Button(LocalString.search_result_sidebar_button_remove, role: .destructive) {
                                 recentSearchTexts.removeAll { $0 == searchText }
                             }
                         }
-#if os(macOS)
-                        .buttonStyle(.link)
 #endif
                     }
                 } header: { recentSearchHeader }

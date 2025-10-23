@@ -82,11 +82,6 @@
     }
     return self;
 }
-
-- (BOOL) isAsynchronous {
-    return false;
-}
-
 /// Perform index and title based searches.
 - (void)performSearch {
     // get a list of archives that are included in search

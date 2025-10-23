@@ -25,7 +25,7 @@ import CoreData
 import Defaults
 
 final class CompactViewController: UIHostingController<AnyView>, UISearchControllerDelegate, UISearchResultsUpdating {
-    private let searchViewModel: SearchViewModel
+    private let searchViewModel: SearchTaskViewModel
     private let searchController: UISearchController
     private var searchTextObserver: AnyCancellable?
     private var openURLObserver: NSObjectProtocol?
@@ -37,7 +37,7 @@ final class CompactViewController: UIHostingController<AnyView>, UISearchControl
 
     init(navigation: NavigationViewModel) {
         self.navigation = navigation
-        searchViewModel = SearchViewModel.shared
+        searchViewModel = SearchTaskViewModel.shared
         let searchResult = SearchResults().environmentObject(searchViewModel)
         searchController = UISearchController(searchResultsController: UIHostingController(rootView: searchResult))
         super.init(rootView: AnyView(CompactViewWrapper()))
