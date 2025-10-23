@@ -22,7 +22,7 @@ struct BrowserTab: View {
     @ObservedObject var browser: BrowserViewModel
     @Environment(\.scenePhase) private var scenePhase
     @EnvironmentObject private var library: LibraryViewModel
-    @StateObject private var search = SearchViewModel.shared
+    @StateObject private var search = SearchTaskViewModel.shared
     
     init(tabID: NSManagedObjectID) {
         self.browser = BrowserViewModel.getCached(tabID: tabID)
