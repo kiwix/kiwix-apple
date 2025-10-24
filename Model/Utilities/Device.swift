@@ -18,7 +18,7 @@ import Foundation
 import UIKit
 #endif
 
-enum Device {
+enum Device: String {
     case mac
     case iPhone
     case iPad
