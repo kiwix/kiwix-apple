@@ -78,12 +78,18 @@
         self.results = [[NSMutableOrderedSet alloc] initWithCapacity:35];
         self.corrections = [[NSMutableOrderedSet alloc] init];
         self.foundURLs = [[NSMutableSet alloc] initWithCapacity:35];
-//        self.qualityOfService = NSQualityOfServiceUserInitiated;
     }
     return self;
 }
+
+- (void)cancel {
+    _cancelled = true;
+}
+
+
 /// Perform index and title based searches.
 - (void)performSearch {
+    _cancelled = false;
     // get a list of archives that are included in search
     typedef std::unordered_map<std::string, zim::Archive> archives_map;
     auto *allArchives = static_cast<archives_map *>([[ZimFileService sharedInstance] getArchives]);
