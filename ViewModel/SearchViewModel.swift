@@ -157,13 +157,13 @@ final class SearchViewModel: NSObject, ObservableObject, NSFetchedResultsControl
             withSpellingCacheDir: cacheDir
         )
         operation.extractMatchingSnippet = Defaults[.searchResultSnippetMode] == .matches
-        operation.completionBlock = { [weak self] in
-            guard !operation.isCancelled else { return }
-            Task { @MainActor [weak self] in
-                self?.results = operation.searchResultItems
-                self?.inProgress = false
-            }
-        }
-        queue.addOperation(operation)
+//        operation.completionBlock = { [weak self] in
+//            guard !operation.isCancelled else { return }
+//            Task { @MainActor [weak self] in
+//                self?.results = operation.searchResultItems
+//                self?.inProgress = false
+//            }
+//        }
+//        queue.addOperation(operation)
     }
 }

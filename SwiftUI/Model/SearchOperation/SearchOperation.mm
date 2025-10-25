@@ -78,7 +78,7 @@
         self.results = [[NSMutableOrderedSet alloc] initWithCapacity:35];
         self.corrections = [[NSMutableOrderedSet alloc] init];
         self.foundURLs = [[NSMutableSet alloc] initWithCapacity:35];
-        self.qualityOfService = NSQualityOfServiceUserInitiated;
+//        self.qualityOfService = NSQualityOfServiceUserInitiated;
     }
     return self;
 }
