@@ -102,26 +102,17 @@ final class SearchTaskViewModel: NSObject, ObservableObject, @MainActor NSFetche
             return SearchResultItems.results([])
         }
         
-        
         // This is run at app start, and opens the archive of all searchable ZIM files
-        let cacheDir: URL? = if FeatureFlags.suggestSearchTerms {
-            try? FileManager.default.url(
-                for: .cachesDirectory, in: .userDomainMask, appropriateFor: nil, create: true
-            )
-        } else {
-            nil // don't use suggest search terms
-        }
         for zimFileID in zimFileIDs {
             _ = ZimFileService.shared.openArchive(zimFileID: zimFileID)
-            if let cacheDir {
-                ZimFileService.shared.createSpellingIndex(zimFileID: zimFileID, cacheDir: cacheDir)
-            }
+            ZimFileService.shared.createSpellingIndexFor(zimFileID: zimFileID)
+            
         }
+        let cacheDir = ZimFileService.shared.spellingCacheDir()
         let operation = SearchOperation(searchText: searchText, zimFileIDs: zimFileIDs, withSpellingCacheDir: cacheDir)
         operation.extractMatchingSnippet = Defaults[.searchResultSnippetMode] == .matches
         operation.main()
         return operation.searchResultItems
-//        return SearchResultItems.results([])
     }
     
 }

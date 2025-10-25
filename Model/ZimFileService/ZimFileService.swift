@@ -54,8 +54,23 @@
         __open(zimFileID)
     }
     
-    func createSpellingIndex(zimFileID: UUID, cacheDir: URL) {
-        __createSpellingIndex(zimFileID, cachePath: cacheDir.path())
+    func spellingCacheDir() -> URL? {
+        guard FeatureFlags.suggestSearchTerms,
+              let cacheDir = try? FileManager.default.url(
+                for: .cachesDirectory,
+                in: .userDomainMask,
+                appropriateFor: nil,
+                create: true
+              ) else {
+            return nil
+        }
+        return cacheDir
+    }
+    
+    func createSpellingIndexFor(zimFileID: UUID) {
+        if let cacheDir = spellingCacheDir() {
+            __createSpellingIndex(zimFileID, cachePath: cacheDir.path())
+        }
     }
 
     /// Close a zim file
