@@ -117,9 +117,11 @@ final class SearchTaskViewModel: NSObject, ObservableObject, @MainActor NSFetche
                 ZimFileService.shared.createSpellingIndex(zimFileID: zimFileID, cacheDir: cacheDir)
             }
         }
-        let extractMatchingSnippet = Defaults[.searchResultSnippetMode] == .matches
-        // TODO: do what SearchOperation does here
-        return SearchResultItems.results([])
+        let operation = SearchOperation(searchText: searchText, zimFileIDs: zimFileIDs, withSpellingCacheDir: cacheDir)
+        operation.extractMatchingSnippet = Defaults[.searchResultSnippetMode] == .matches
+        operation.main()
+        return operation.searchResultItems
+//        return SearchResultItems.results([])
     }
     
 }

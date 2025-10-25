@@ -17,7 +17,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface SearchOperation : NSOperation
+@interface SearchOperation : NSObject
 
 @property (nonatomic, strong) NSString *searchText;
 @property (nonatomic, assign) BOOL extractMatchingSnippet;
@@ -25,6 +25,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, nullable) NSURL *spellCacheDir;
 @property (nonatomic, strong) NSSet *zimFileIDs;
 @property (nonatomic, strong) NSMutableOrderedSet *results NS_REFINED_FOR_SWIFT;
+@property (nonatomic, assign) BOOL isCancelled NS_REFINED_FOR_SWIFT;
 @property (nonatomic, strong) NSMutableOrderedSet *corrections NS_REFINED_FOR_SWIFT;
 
 - (id)initWithSearchText:(NSString *)searchText zimFileIDs:(NSSet *)zimFileIDs withSpellingCacheDir: (NSURL *_Nullable) spellCacheDir;
