@@ -25,12 +25,13 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, nullable) NSURL *spellCacheDir;
 @property (nonatomic, strong) NSSet *zimFileIDs;
 @property (nonatomic, strong) NSMutableOrderedSet *results NS_REFINED_FOR_SWIFT;
-@property (nonatomic, assign) BOOL isCancelled NS_REFINED_FOR_SWIFT;
+@property (readonly, getter=isCancelled) BOOL cancelled;
 @property (nonatomic, strong) NSMutableOrderedSet *corrections NS_REFINED_FOR_SWIFT;
 
 - (id)initWithSearchText:(NSString *)searchText zimFileIDs:(NSSet *)zimFileIDs withSpellingCacheDir: (NSURL *_Nullable) spellCacheDir;
 - (void)performSearch;
 - (void) addSpellingCorrections NS_REFINED_FOR_SWIFT;
+- (void) cancel NS_REFINED_FOR_SWIFT;
 
 @end
 

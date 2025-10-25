@@ -58,7 +58,7 @@ extension SearchOperation {
         // swiftlint:disable compiler_protocol_init
         // calculate score for all results
         for result in searchResults {
-//            guard !isCancelled else { return }
+            guard !isCancelled else { return }
             let distance = WagnerFischer.distance(result.title.lowercased()[...], searchText[...])
             if let probability = result.probability?.doubleValue {
                 result.score = NSNumber(floatLiteral: Double(distance) * Foundation.log(7.5576 - 6.4524 * probability))
@@ -69,7 +69,7 @@ extension SearchOperation {
         // swiftlint:enable compiler_protocol_init
 
         // sort the results
-//        guard !isCancelled else { return }
+        guard !isCancelled else { return }
         __results.sort { lhs, rhs in
             guard let lhs = lhs as? SearchResult,
                   let rhs = rhs as? SearchResult,
@@ -88,7 +88,7 @@ extension SearchOperation {
     }
     
     private func performSuggestions() {
-        guard //!isCancelled,
+        guard !isCancelled,
               !zimFileIDs.isEmpty,
               searchText.count > 2,
               searchResults.isEmpty,
