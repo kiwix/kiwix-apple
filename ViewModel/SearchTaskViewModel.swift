@@ -106,7 +106,6 @@ final class SearchTaskViewModel: NSObject, ObservableObject, @MainActor NSFetche
         for zimFileID in zimFileIDs {
             _ = ZimFileService.shared.openArchive(zimFileID: zimFileID)
             ZimFileService.shared.createSpellingIndexFor(zimFileID: zimFileID)
-            
         }
         let cacheDir = ZimFileService.shared.spellingCacheDir()
         let operation = SearchOperation(searchText: searchText, zimFileIDs: zimFileIDs, withSpellingCacheDir: cacheDir)
