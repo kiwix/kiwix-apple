@@ -55,6 +55,8 @@ struct LibraryOperations {
                 await MainActor.run {
                     onComplete?()
                 }
+            }
+            Task.detached(name: "spellingIndex", priority: .utility) {
                 await ZimFileService.shared.createSpellingIndexFor(zimFileID: fileID)
             }
         }

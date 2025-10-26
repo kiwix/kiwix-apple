@@ -112,7 +112,6 @@
         NSLog(@"createSpellingIndex cannot find ZIM by ID: %@ (%@)", zimFileID.UUIDString, contentPath);
         return;
     }
-    NSLog(@"createSpellingIndex for:%@, in: %@", zimFileID.UUIDString, contentPath);
     std::filesystem::path path = std::filesystem::path([contentPath cStringUsingEncoding: NSUTF8StringEncoding]);
     kiwix::SpellingsDB db = kiwix::SpellingsDB(*archive, path);
 }
