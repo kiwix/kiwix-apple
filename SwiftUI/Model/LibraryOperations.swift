@@ -50,11 +50,12 @@ struct LibraryOperations {
             zimFile.fileURLBookmark = fileURLBookmark
             zimFile.isMissing = false
             if context.hasChanges { try? context.save() }
+            let fileID = metadata.fileID
             Task {
                 await MainActor.run {
                     onComplete?()
                 }
-                await ZimFileService.shared.createSpellingIndexFor(zimFileID: zimFile.fileID)
+                await ZimFileService.shared.createSpellingIndexFor(zimFileID: fileID)
             }
         }
 
