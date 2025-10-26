@@ -69,9 +69,7 @@
     
     func createSpellingIndexFor(zimFileID: UUID) {
         if let cacheDir = spellingCacheDir() {
-            let perf = Performance(id: zimFileID)
             __createSpellingIndex(zimFileID, cachePath: cacheDir.path())
-            perf.measure("createSpellingIndexFor")
         }
     }
 
