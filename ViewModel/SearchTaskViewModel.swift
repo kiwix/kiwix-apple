@@ -78,8 +78,9 @@ final class SearchTaskViewModel: NSObject, ObservableObject, @MainActor NSFetche
         }
     }
     
-    deinit {
-        searchSubscriber?.cancel()
+    func cancel() {
+        task?.cancel()
+        results = .results([])
     }
     
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {

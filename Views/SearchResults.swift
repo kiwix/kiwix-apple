@@ -28,7 +28,7 @@ struct SearchResults: View {
     // macOS only
     @FocusState private var focusedSearchItem: String? {
         didSet {
-            debugPrint("focusedSearchItem: \(focusedSearchItem)")
+            debugPrint("focusedSearchItem: \(focusedSearchItem ?? "nil")")
         }
     }
     @FetchRequest(
@@ -77,6 +77,8 @@ struct SearchResults: View {
         }
         .background(Color.background)
         .onReceive(openURL) { _ in
+            viewModel.cancel()
+            focusedSearchItem = nil
             dismissSearch()
         }
     }
@@ -111,6 +113,7 @@ struct SearchResults: View {
                                         return searchTexts
                                     }()
                                     NotificationCenter.openURL(result.url)
+                                    print("search result dismissed")
                                 } label: {
                                     ArticleCell(result: result, zimFile: viewModel.zimFiles[result.zimFileID])
                                 }
