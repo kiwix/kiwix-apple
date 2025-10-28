@@ -23,9 +23,16 @@ struct BrowserTab: View {
     @Environment(\.scenePhase) private var scenePhase
     @EnvironmentObject private var library: LibraryViewModel
     @StateObject private var search = SearchViewModel.shared
+    private let searchFieldPlacement: SearchFieldPlacement
     
     init(tabID: NSManagedObjectID) {
         self.browser = BrowserViewModel.getCached(tabID: tabID)
+        #if os(iOS)
+        searchFieldPlacement = .toolbarPrincipal
+        #else
+        // on macOS the toolbarPrincipal is causing dismiss issues
+        searchFieldPlacement = .toolbar
+        #endif
     }
 
     var body: some View {
@@ -131,7 +138,7 @@ struct BrowserTab: View {
         .modifier(ExternalLinkHandler(externalURL: $browser.externalURL))
         .searchable(
             text: $search.searchText,
-            placement: .toolbarPrincipal,
+            placement: searchFieldPlacement,
             prompt: LocalString.common_search
         )
         .onChange(of: scenePhase) { [weak browser] newValue in
