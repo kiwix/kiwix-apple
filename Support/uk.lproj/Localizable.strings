@@ -22,6 +22,8 @@
 "common.button.yes" = "Так";
 "common.button.no" = "ні";
 "common.button.print" = "Роздрукувати";
+"common.button.copy" = "Копіювати";
+"common.button.copied" = "Скопійовано";
 "common.button.share" = "Поділитися";
 "common.search" = "Пошук";
 "common.tab.manager.title" = "Менеджер вкладок";
@@ -108,6 +110,9 @@
 "zim_file.download_task.action.downloading" = "Завантаження…";
 "zim_file.download_task.action.resume" = "Продовжити";
 "zim_file.download_task.action.paused" = "Призупинено";
+"theme_settings.title" = "Тема";
+"theme_settings.option.dark" = "Темна";
+"theme_settings.option.light" = "Світла";
 "reading_settings.zoom.title" = "Масштаб сторінки";
 "reading_settings.zoom.reset.button" = "Скинути";
 "reading_settings.external_link.title" = "Зовнішні посилання";
@@ -192,7 +197,7 @@
 "enum.external_link_loading_policy.always_load" = "Завжди завантажувати";
 "enum.external_link_loading_policy.never_load" = "Ніколи не завантажувати";
 "enum.flavor.max" = "макс";
-"enum.flavor.no_pic" = "без зображень";
+"enum.flavor.no_pic" = "без фото";
 "enum.flavor.mini" = "міні";
 "enum.library_language_sorting_model.a-z" = "А-Я";
 "enum.library_language_sorting_model.by_count" = "За кількістю";
