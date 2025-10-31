@@ -215,10 +215,10 @@
 - (NSDictionary *_Nullable) getDirectAccess: (NSUUID *)zimFileID contentPath:(NSString *)contentPath {
     try {
         zim::Item item = [self itemIn:zimFileID contentPath: contentPath];
-        zim::Item::DirectAccessInfo info = item.getDirectAccessInformation();
+        zim::ItemDataDirectAccessInfo info = item.getDirectAccessInformation();
         return @{
-            @"path": [NSString stringWithUTF8String: info.first.c_str()],
-            @"offset": [NSNumber numberWithUnsignedLong: info.second]
+            @"path": [NSString stringWithUTF8String: info.filename.c_str()],
+            @"offset": [NSNumber numberWithUnsignedLong: info.offset]
         };
     } catch(std::exception) {
         return nil;
