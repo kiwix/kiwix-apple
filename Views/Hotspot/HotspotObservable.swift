@@ -65,9 +65,9 @@ final class HotspotObservable: ObservableObject {
     private func update(hotspotState: Hotspot.State) async {
         switch hotspotState {
         case .started:
-            buttonTitle = LocalString.hotspot_action_stop_hotspot_title
             let address = await hotspot.serverAddress()
             if let address {
+                buttonTitle = LocalString.hotspot_action_stop_hotspot_title
                 update(state: .started(address, nil))
                 let qrCodeImage = await QRCode.image(from: address.absoluteString)
                 update(state: .started(address, qrCodeImage))
