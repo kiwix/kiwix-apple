@@ -75,17 +75,7 @@ struct SearchResults: View {
 
     @ViewBuilder
     var content: some View {
-        if viewModel.inProgress {
-            VStack {
-                Spacer()
-                HStack {
-                    Spacer()
-                    ProgressView()
-                    Spacer()
-                }
-                Spacer()
-            }
-        } else if viewModel.results.isEmpty {
+        if viewModel.results.isEmpty {
             Message(text: LocalString.search_result_zimfile_no_result_message)
         } else {
             ScrollViewReader { scrollReader in
@@ -142,6 +132,11 @@ struct SearchResults: View {
                         }
                     }
                 }))
+                .overlay(alignment: .center) {
+                    if viewModel.inProgress {
+                        ProgressView()
+                    }
+                }
             }
         }
     }
