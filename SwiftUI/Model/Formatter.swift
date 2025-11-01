@@ -30,6 +30,7 @@ enum Formatter {
         return formatter
     }()
 
+    @MainActor
     static let size: ByteCountFormatter = {
         let formatter = ByteCountFormatter()
         formatter.countStyle = .file
