@@ -97,6 +97,7 @@ struct ZimFileCell: View {
         .onHover { self.isHovering = $0 }
     }
 
+    @MainActor
     static let dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.dateStyle = .medium
@@ -104,6 +105,7 @@ struct ZimFileCell: View {
         return formatter
     }()
 
+    @MainActor
     static let sizeFormatter: ByteCountFormatter = {
         let formatter = ByteCountFormatter()
         formatter.countStyle = .file
