@@ -97,13 +97,7 @@ struct SearchResults: View {
                     LazyVGrid(columns: [GridItem(.flexible(minimum: 300, maximum: 700), alignment: .center)]) {
                         ForEach(viewModel.results, id: \.url) { result in
                             Button {
-                                recentSearchTexts = {
-                                    var searchTexts = Defaults[.recentSearchTexts]
-                                    searchTexts.removeAll(where: { $0 == viewModel.searchText })
-                                    searchTexts.insert(viewModel.searchText, at: 0)
-                                    return searchTexts
-                                }()
-                                NotificationCenter.openURL(result.url)
+                                openResult(result: result)
                             } label: {
                                 ArticleCell(result: result, zimFile: viewModel.zimFiles[result.zimFileID])
                             }
@@ -113,7 +107,7 @@ struct SearchResults: View {
                                     $focusedSearchItem,
                                     equals: result.url,
                                     onReturn: {
-                                        NotificationCenter.openURL(result.url)
+                                        openResult(result: result)
                                     },
                                     onDismiss: {
                                         $focusedSearchItem.wrappedValue = nil
@@ -148,6 +142,27 @@ struct SearchResults: View {
                 }))
             }
         }
+    }
+    
+    private func openResult(result: SearchResult) {
+        recentSearchTexts = {
+            var searchTexts = Defaults[.recentSearchTexts]
+            searchTexts.removeAll(where: { $0 == viewModel.searchText })
+            searchTexts.insert(viewModel.searchText, at: 0)
+            return searchTexts
+        }()
+
+        dismissSearch()
+        #if os(macOS)
+        // delayed fix for placement: .toolbarPrincipal on macOS
+        // as it's not always dismissing properly, so we try again if needed
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+            if isSearching {
+                dismissSearch()
+            }
+        }
+        #endif
+        NotificationCenter.openURL(result.url)
     }
 
     var sidebar: some View {
