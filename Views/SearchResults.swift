@@ -32,8 +32,6 @@ struct SearchResults: View {
         animation: .easeInOut
     ) private var zimFiles: FetchedResults<ZimFile>
 
-    private let openURL = NotificationCenter.default.publisher(for: .openURL)
-
     var body: some View {
         Group {
             #if os(macOS)
@@ -68,9 +66,6 @@ struct SearchResults: View {
             }
         }
         .background(Color.background)
-        .onReceive(openURL) { _ in
-            dismissSearch()
-        }
     }
 
     @ViewBuilder
