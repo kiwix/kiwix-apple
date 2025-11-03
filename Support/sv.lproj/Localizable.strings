@@ -1,19 +1,22 @@
 // Messages for Swedish (svenska)
 // Exported from translatewiki.net
+// Author: Apq
 // Author: Larsa
 // Author: Rofiatmustapha12
 // Author: Sabelöga
 // Author: WikiPhoenix
 
-// Fuzzy
-"library_refresh_error.retrieve.description" = "Fel vid hämtning av biblioteksdata.";
-// Fuzzy
-"library_refresh_error.parse.description" = "Fel vid analys av biblioteksdata.";
-// Fuzzy
-"library_refresh_error.process.description" = "Fel vid bearbetning av biblioteksdata.";
+"library_refresh_error.retrieve.description" = "Fel vid hämtning av katalogdata.";
+"library_refresh_error.parse.description" = "Fel vid tolkning av katalogdata.";
+"library_refresh_error.process.description" = "Fel vid bearbetning av katalogdata.";
 "download_service.complete.title" = "Nedladdning slutfördes";
 "download_service.complete.description" = "%@ har laddats ned.";
 "download_service.failed.description" = "Det gick inte att ladda ner den här filen.";
+"download_service.error.description" = "Nedladdningen misslyckades. Kod: %@\n Beskrivning: %@";
+"download_service.error.option_directory" = "nedladdningsmappen kan inte hittas";
+"download_service.error.option_invalid_taskid" = "ogiltigt downloadTask-id";
+"download_service.error.option_invalid_response" = "ogiltigt svar";
+"download_service.error.option_unable_to_move_file" = "kan inte flytta den nedladdade filen";
 "common.dialog.button.open" = "Öppna";
 "common.dialog.button.open_in_new_tab" = "Öppna i ny flik";
 "common.dialog.button.add_bookmark" = "Lägg till bokmärke";
@@ -24,10 +27,14 @@
 "common.button.go_forward" = "Gå framåt";
 "common.button.done" = "Klar";
 "common.button.cancel" = "Avbryt";
+"common.button.ok" = "Ok";
 "common.button.yes" = "Ja";
 "common.button.no" = "nej";
 "common.button.print" = "Skriv ut";
+"common.button.copy" = "Kopiera";
+"common.button.copied" = "Kopierad";
 "common.button.share" = "Dela";
+"common.button.share_as_pdf" = "Dela som PDF";
 "common.search" = "Sök";
 "common.tab.manager.title" = "Flikhanterare";
 "common.tab.navigation.title" = "Flikar";
@@ -69,6 +76,15 @@
 "library_refresh_time.never" = "Aldrig";
 "zim_file_cell.article_count.suffix" = "artiklar";
 "zim_file_missing_indicator.help" = "Zim-fil saknas.";
+"hotspot.action.start_hotspot.title" = "Starta Hotspot";
+"hotspot.action.stop_hotspot.title" = "Stoppa Hotspot";
+"hotspot.settings.port_number" = "Portnummer";
+"hotspot.settings.recommended_port_range" = "Nätverksporten som används av Hotspoten ska vara mellan %@ och %@";
+"hotspot.error.port_already_used_by_another_app_title" = "Hotspot kan inte starta eftersom port %@ används.";
+"hotspot.error.port_already_used_by_another_app_description" = "För att åtgärda detta, stäng appen som använder den eller ändra Kiwix Hotspot-porten i inställningarna.";
+"hotspot.server_full_explanation" = "För att bläddra bland dessa ZIM-filer på andra enheter, se till att alla enheter antingen är på samma WiFi-nätverk eller anslutna till din personliga Hotspot.";
+"hotspot.server_active_warning" = "Hotspotten är bara aktiv medan appen är öppen och används.";
+"hotspot.server_wifi_only_explanation" = "För att bläddra bland dessa ZIM-filer på andra enheter, se till att alla enheter är anslutna till samma WiFi-nätverk.";
 "library.zim_file_details.side_panel.message" = "Välj en ZIM-fil för att se information";
 "library.zim_file_context.main_page.label" = "Huvudsida";
 "library.zim_file_context.random.label" = "Slumpsida";
@@ -94,6 +110,8 @@
 "zim_file.action.toggle_cellular" = "Ladda ned med mobildata";
 "zim_file.action.unlink.title" = "Ta bort länk";
 "zim_file.action.unlink.message" = "Alla bokmärkta artiklar som är länkade till denna ZIM-fil kommer att raderas, men originalfilen kommer att finnas kvar.";
+"zim_file.action.unlink.multi_title" = "Ta bort referensen till %@ ZIM-filer";
+"zim_file.action.unlink.multi_message" = "Alla bokmärkta artiklar som är länkade till dessa %@ ZIM-filer kommer att raderas, men originalfilerna kommer att finnas kvar.";
 "zim_file.action.unlink.button.title" = "Ta bort länk";
 "zim_file.action.delete.title" = "Radera";
 "zim_file.action.delete.message" = "ZIM-filen och alla bokmärkta artiklar som är länkade till denna ZIM-fil kommer att raderas.";
@@ -122,12 +140,19 @@
 "zim_file.download_task.action.resume" = "Återuppta";
 "zim_file.download_task.action.paused" = "Pausad";
 "service_worker_warning.label.description" = "Zim-filer som kräver servicearbetare stöds inte.";
+"multi.zim_files_selected.sidebar_title" = "Vald";
+"multi.zim_files_selected.description_count" = "ZIM-filer";
+"theme_settings.title" = "Tema";
+"theme_settings.option.dark" = "Mörkt";
+"theme_settings.option.light" = "Ljust";
+"theme_settings.option.system" = "System";
 "reading_settings.zoom.title" = "Sidzoom";
 "reading_settings.zoom.reset.button" = "Återställ";
 "reading_settings.external_link.title" = "Extern länk";
 "reading_settings.search_snippet.title" = "Sök utdrag";
 "reading_settings.tab.reading" = "Läsning";
 "library_settings.catalog.title" = "Katalog";
+"library_settings.downloads.title" = "Nedladdningar";
 "library_settings.button.refresh_now" = "Uppdatera nu";
 "library_settings.last_refresh.text" = "Senaste uppdatering";
 "library_settings.auto_refresh.toggle" = "Uppdatera automatiskt";
@@ -226,6 +251,7 @@
 "enum.navigation_item.new" = "Nytt";
 "enum.navigation_item.downloads" = "Nedladdningar";
 "enum.navigation_item.settings" = "Inställningar";
+"enum.navigation_item.hotspot" = "Hotspot";
 "enum.search_result_snippet_mode.disabled" = "Inaktiverad";
 "enum.search_result_snippet_mode.matches" = "Matchningar";
 "payment.donate.title" = "Donera";
