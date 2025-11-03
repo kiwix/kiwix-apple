@@ -20,7 +20,6 @@ final class OPDSParserTests: XCTestCase {
     /// Test OPDSParser.parse throws error when OPDS data is invalid.
     @ZimActor
     func testInvalidOPDSData() {
-        XCTExpectFailure("Requires work in dependency to resolve the issue.")
         let content = "Invalid OPDS Data"
         XCTAssertThrowsError(
             try OPDSParser().parse(data: content.data(using: .utf8)!, urlHost: "")
