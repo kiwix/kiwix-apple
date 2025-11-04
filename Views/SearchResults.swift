@@ -86,7 +86,11 @@ struct SearchResults: View {
                 Spacer()
             }
         } else if viewModel.results.isEmpty {
-            Message(text: LocalString.search_result_zimfile_no_result_message)
+            if viewModel.searchText.isEmpty {
+                Spacer()
+            } else {
+                Message(text: LocalString.search_result_zimfile_no_result_message)
+            }
         } else {
             ScrollViewReader { scrollReader in
                 ScrollView {
