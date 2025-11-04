@@ -25,6 +25,7 @@ final class CategoryFetchingTests: XCTestCase {
         try resetDB()
     }
 
+    @MainActor
     func testFilteredOutByLanguage() throws {
         // insert a zimFile
         let context = Database.shared.viewContext
@@ -43,6 +44,7 @@ final class CategoryFetchingTests: XCTestCase {
         XCTAssertTrue(results.isEmpty)
     }
 
+    @MainActor
     func testCanBeFoundByLanguage() throws {
         // insert a zimFile
         let context = Database.shared.viewContext
@@ -61,6 +63,7 @@ final class CategoryFetchingTests: XCTestCase {
         XCTAssertEqual(results.count, 1)
     }
 
+    @MainActor
     func testCanBeFoundByMultipleUserLanguages() throws {
         // insert a zimFile
         let context = Database.shared.viewContext
@@ -79,6 +82,7 @@ final class CategoryFetchingTests: XCTestCase {
         XCTAssertEqual(results.count, 1)
     }
 
+    @MainActor
     func testCanBeFoundHavingMultiLanguagesWithASingleUserLanguage() throws {
         // insert a zimFile
         let context = Database.shared.viewContext
@@ -97,6 +101,7 @@ final class CategoryFetchingTests: XCTestCase {
         XCTAssertEqual(results.count, 1)
     }
 
+    @MainActor
     func testCanBeFoundHavingMultiLanguageMatches() throws {
         // insert a zimFile
         let context = Database.shared.viewContext
@@ -115,6 +120,7 @@ final class CategoryFetchingTests: XCTestCase {
         XCTAssertEqual(results.count, 1)
     }
 
+    @MainActor
     func testFilteredOutByMultiToMultiLanguageMissMatch() throws {
         // insert a zimFile
         let context = Database.shared.viewContext
