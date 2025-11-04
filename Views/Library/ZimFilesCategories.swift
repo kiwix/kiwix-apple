@@ -79,6 +79,7 @@ struct ZimFilesCategory: View {
         }
     }
 
+    @MainActor
     static func buildPredicate(
         category: Category,
         searchText: String,

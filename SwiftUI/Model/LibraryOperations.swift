@@ -157,12 +157,8 @@ struct LibraryOperations {
             context.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
             guard let zimFile = try? ZimFile.fetchRequest(fileID: zimFileID).execute().first else { return }
             zimFile.bookmarks.forEach { context.delete($0) }
-            if zimFile.downloadURL == nil {
-                context.delete(zimFile)
-            } else {
-                zimFile.fileURLBookmark = nil
-                zimFile.isMissing = false
-            }
+            zimFile.fileURLBookmark = nil
+            zimFile.isMissing = false
             zimFile.tabs.forEach { context.delete($0) }
 
             if let tabs = try? Tab.fetchRequest().execute() {
