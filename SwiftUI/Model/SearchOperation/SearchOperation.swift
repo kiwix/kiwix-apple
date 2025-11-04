@@ -16,21 +16,31 @@
 import Defaults
 
 extension SearchOperation {
-    var results: [SearchResult] { __results.array as? [SearchResult] ?? [] }
+    private var searchResults: [SearchResult] { __results.array as? [SearchResult] ?? [] }
+    private var corrections: [String] { __corrections.array as? [String] ?? [] }
+    var searchResultItems: SearchResultItems {
+        if !corrections.isEmpty {
+            .suggestions(corrections)
+        } else {
+            .results(searchResults)
+        }
+    }
 
     open override func main() {
+        __results.removeAllObjects()
+        __corrections.removeAllObjects()
         // perform index and title search
         guard !searchText.isEmpty else { return }
         performSearch()
 
         // reduce to unique results by URL
-        let uniqueDict = Dictionary(grouping: results, by: { $0.url })
+        let uniqueDict = Dictionary(grouping: searchResults, by: { $0.url })
         let values = uniqueDict.compactMapValues { $0.first }.values
         __results = NSMutableOrderedSet(array: Array(values) )
 
         // parse and extract search result snippet
         if case .matches = Defaults[.searchResultSnippetMode] {
-            for result in results {
+            for result in searchResults {
                 guard let html = result.htmlSnippet,
                       let data = html.data(using: .utf8) else { continue }
                 result.snippet = try? NSAttributedString(
@@ -47,7 +57,7 @@ extension SearchOperation {
 
         // swiftlint:disable compiler_protocol_init
         // calculate score for all results
-        for result in results {
+        for result in searchResults {
             guard !isCancelled else { return }
             let distance = WagnerFischer.distance(result.title.lowercased()[...], searchText[...])
             if let probability = result.probability?.doubleValue {
@@ -73,5 +83,22 @@ extension SearchOperation {
                 return .orderedSame
             }
         }
+
+        performSuggestions()
+    }
+    
+    private func performSuggestions() {
+        guard !isCancelled,
+              !zimFileIDs.isEmpty,
+              searchText.count > 2,
+              searchResults.isEmpty,
+              spellCacheDir != nil else {
+            __corrections = []
+            return
+        }
+        Log.LibraryOperations.debug("perfoming search suggestsion")
+        __addSpellingCorrections()
+        let count: Int = __corrections.count
+        Log.LibraryOperations.debug("found search suggestsion: \(count)")
     }
 }

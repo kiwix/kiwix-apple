@@ -34,6 +34,7 @@
 "common.button.share" = "Accessibility label for share button, to share the currently loaded article with an external app.";
 "common.button.share_as_pdf" = "Accesibility label for share button. to share the curretly loadded article with an external application in a PDF file format.";
 "common.search" = "The default placeholder text for searchbars, when the search input field is empty";
+"common.search.suggestion" = "Title text for suggestions when the user enters a search term that is misspelled, and we're suggesting alternatives terms to search for.";
 "common.tab.manager.title" = "Accessibility label for button tab bar button that opens an overlay menu.";
 "common.tab.navigation.title" = "On iPad it is a title in the sidemenu grouping tabs related buttons";
 "common.tab.menu.new_tab" = "Button title of an item in the overflow menu on iOS, the default title for a new tab (that has no content loaded yet) on iPad";

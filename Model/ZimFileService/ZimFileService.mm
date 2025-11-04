@@ -14,6 +14,7 @@
 // along with Kiwix; If not, see https://www.gnu.org/licenses/.
 
 #include <unordered_map>
+#include <filesystem>
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wdocumentation"
 #include "kiwix/book.h"
@@ -22,6 +23,7 @@
 #include "zim/entry.h"
 #include "zim/error.h"
 #include "zim/item.h"
+#include "kiwix/spelling_correction.h"
 #pragma clang diagnostic pop
 
 #import "ZimFileService.h"
@@ -100,6 +102,19 @@
 - (nonnull void *) getArchives {
     NSLog(@"archives: %zu",  self.archives->size());
     return self.archives;
+}
+
+# pragma mark - Spelling
+
+- (void) createSpellingIndex:(NSUUID *)zimFileID cachePath:(NSString *)contentPath {
+    zim::Archive *archive = [self archiveBy: zimFileID];
+    if (archive == nil) {
+        NSLog(@"createSpellingIndex cannot find ZIM by ID: %@ (%@)", zimFileID.UUIDString, contentPath);
+        return;
+    }
+    NSLog(@"createSpellingIndex for:%@, in: %@", zimFileID.UUIDString, contentPath);
+    std::filesystem::path path = std::filesystem::path([contentPath cStringUsingEncoding: NSUTF8StringEncoding]);
+    kiwix::SpellingsDB db = kiwix::SpellingsDB(*archive, path);
 }
 
 # pragma mark - Metadata
