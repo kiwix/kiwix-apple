@@ -138,49 +138,33 @@ private struct CategoryGrid: View {
             } else {
                 LazyVGrid(columns: ([gridItem]), alignment: .leading, spacing: 12) {
                     ForEach(sections) { section in
-                        if sections.count <= 1 {
+                        Section {
                             ForEach(section) { zimFile in
                                 LibraryZimFileContext(
-                                    content: {
-                                        ZimFileCell(
-                                            zimFile,
-                                            prominent: .size,
-                                            isSelected: selection.isSelected(zimFile)
-                                        )
+                                    content: { ZimFileCell(
+                                        zimFile,
+                                        prominent: .size,
+                                        isSelected: selection.isSelected(zimFile)
+                                    )
                                     },
                                     zimFile: zimFile,
                                     selection: selection,
                                     dismiss: dismiss)
                             }
-                        } else {
-                            Section {
-                                ForEach(section) { zimFile in
-                                    LibraryZimFileContext(
-                                        content: { ZimFileCell(
-                                            zimFile,
-                                            prominent: .size,
-                                            isSelected: selection.isSelected(zimFile)
-                                        )
-                                        },
-                                        zimFile: zimFile,
-                                        selection: selection,
-                                        dismiss: dismiss)
-                                }
-                            } header: {
-                                SectionHeader(
-                                    title: section.id,
-                                    category: Category(rawValue: section.first?.category) ?? .other,
-                                    imageData: section.first?.faviconData,
-                                    imageURL: section.first?.faviconURL
-                                ).padding(
-                                    EdgeInsets(
-                                        top: section.id == sections.first?.id ? 0 : 10,
-                                        leading: 12,
-                                        bottom: -6,
-                                        trailing: 0
-                                    )
+                        } header: {
+                            SectionHeader(
+                                title: section.id,
+                                category: Category(rawValue: section.first?.category) ?? .other,
+                                imageData: section.first?.faviconData,
+                                imageURL: section.first?.faviconURL
+                            ).padding(
+                                EdgeInsets(
+                                    top: section.id == sections.first?.id ? 0 : 10,
+                                    leading: 12,
+                                    bottom: -6,
+                                    trailing: 0
                                 )
-                            }
+                            )
                         }
                     }
                 }.modifier(GridCommon())

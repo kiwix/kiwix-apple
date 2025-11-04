@@ -60,9 +60,14 @@ final class SearchViewModel: NSObject, ObservableObject, NSFetchedResultsControl
             $searchText.removeDuplicates { prev, current in
                 // consider search text to be the same ignoring spaces
                 prev.trimmingCharacters(in: .whitespaces) == current.trimmingCharacters(in: .whitespaces)
-        }, $zimFiles)
+            }, $zimFiles.removeDuplicates { prev, current in
+                // don't re-trigger for the same set of zim files
+                Set(prev.keys) == Set(current.keys)
+            })
             .map { [unowned self] searchText, zimFiles in
-                self.inProgress = true
+                if !searchText.isEmpty, !zimFiles.isEmpty {
+                    self.updateProgress(true)
+                }
                 return (searchText, zimFiles)
             }
             .debounce(for: 0.2, scheduler: DispatchQueue.main)
@@ -83,6 +88,13 @@ final class SearchViewModel: NSObject, ObservableObject, NSFetchedResultsControl
             result?[zimFile.fileID] = zimFile
         } ?? [:]
     }
+    
+    private func updateProgress(_ value: Bool) {
+        // don't publish duplicate values
+        if value != inProgress {
+            inProgress = value
+        }
+    }
 
     @ZimActor
     private func updateSearchResults(_ searchText: String, _ zimFileIDs: Set<UUID>) {
@@ -97,7 +109,7 @@ final class SearchViewModel: NSObject, ObservableObject, NSFetchedResultsControl
             guard !operation.isCancelled else { return }
             Task { @MainActor [weak self] in
                 self?.results = operation.results
-                self?.inProgress = false
+                self?.updateProgress(false)
             }
         }
         queue.addOperation(operation)
