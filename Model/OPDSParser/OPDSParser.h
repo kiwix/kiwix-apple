@@ -23,7 +23,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (nonnull instancetype)init;
 - (BOOL)parseData:(nonnull NSData *)data using: (nonnull NSString *)urlHost NS_REFINED_FOR_SWIFT;
 - (nonnull NSSet *)getZimFileIDs NS_REFINED_FOR_SWIFT;
-- (nullable ZimFileMetaData *)getZimFileMetaData:(nonnull NSUUID *)identifier NS_REFINED_FOR_SWIFT;
+- (nullable ZimFileMetaData *)getZimFileMetaData:(nonnull NSUUID *)identifier fetchFavicon: (BOOL) fetchFavicon NS_REFINED_FOR_SWIFT;
 
 @end
 
