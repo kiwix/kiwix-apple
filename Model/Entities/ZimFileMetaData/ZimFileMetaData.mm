@@ -157,16 +157,20 @@
 }
 
 - (NSData * _Nullable)getFaviconDataFromBook:(kiwix::Book *)book {
-    try {
-        std::string dataString = book->getIllustrations().at(0)->getData();
-        if(dataString.length() == 0) {
-            return nil;
-        }
-        NSData *favIconData = [NSData dataWithBytes: dataString.data() length: dataString.length()];
-        return favIconData;
-    } catch (std::exception) {
-        return nil;
-    }
+    return nil;
+    // this was never returning any data (always nil)
+    // but since libkiwix 14.1 it takes a huge amount of time even trying it
+    // so better not to even try, until it's not fixed
+//    try {
+//        std::string dataString = book->getIllustrations().at(0)->getData();
+//        if(dataString.length() == 0) {
+//            return nil;
+//        }
+//        NSData *favIconData = [NSData dataWithBytes: dataString.data() length: dataString.length()];
+//        return favIconData;
+//    } catch (std::exception) {
+//        return nil;
+//    }
 }
 
 - (NSString *)getFlavorFromBook:(kiwix::Book *)book {
