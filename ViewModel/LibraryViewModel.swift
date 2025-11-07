@@ -221,7 +221,7 @@ total: \(totalCount, privacy: .public)
     private func saveCategoryAvailableInLanguages(using parser: OPDSParser) {
         var dictionary: [Category: Set<String>] = [:]
         for zimFileID in parser.zimFileIDs {
-            if let meta = parser.getMetaData(id: zimFileID) {
+            if let meta = parser.getMetaData(id: zimFileID, fetchFavicon: false) {
                 let category = Category(rawValue: meta.category) ?? .other
                 let allLanguagesForCategory: Set<String>
                 let categoryLanguages: Set<String> = Set<String>(meta.languageCodes.components(separatedBy: ","))
@@ -343,7 +343,10 @@ total: \(totalCount, privacy: .public)
                     self.insertionCount = try context.bulkInsert { zimFile in
                         while !zimFileIDs.isEmpty {
                             guard let id = zimFileIDs.popFirst(),
-                                  let metadata = parser.getMetaData(id: id) else { continue }
+                                  // for parsing the whole catalog
+                                  // we don't want to fetch the favicons
+                                  // as it takes forever by doing one after another
+                                  let metadata = parser.getMetaData(id: id, fetchFavicon: false) else { continue }
                             LibraryOperations.configureZimFile(zimFile, metadata: metadata)
                             return false
                         }

@@ -62,11 +62,11 @@
     return [[NSSet alloc] initWithArray:uuids];
 }
 
-- (ZimFileMetaData *)getZimFileMetaData:(NSUUID *)identifier {
+- (ZimFileMetaData *)getZimFileMetaData:(NSUUID *)identifier fetchFavicon: (BOOL) fetchFavicon {
     std::string identifierC = [[[identifier UUIDString] lowercaseString] cStringUsingEncoding:NSUTF8StringEncoding];
     try {
         kiwix::Book book = self.library->getBookById(identifierC);
-        return [[ZimFileMetaData alloc] initWithBook: &book];
+        return [[ZimFileMetaData alloc] initWithBook: &book fetchFavicon: fetchFavicon];
     } catch (std::out_of_range) {
         return nil;
     }

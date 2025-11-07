@@ -41,7 +41,7 @@ final class OPDSParserTests: XCTestCase {
     /// Test OPDSParser.getMetaData returns nil when no metadata available with the given ID.
     func testMetadataNotFound() {
         let zimFileID = UUID(uuidString: "1ec90eab-5724-492b-9529-893959520de4")!
-        XCTAssertNil(OPDSParser().getMetaData(id: zimFileID))
+        XCTAssertNil(OPDSParser().getMetaData(id: zimFileID, fetchFavicon: false))
     }
 
     /// Test OPDSParser can parse and extract zim file metadata.
@@ -91,7 +91,7 @@ final class OPDSParserTests: XCTestCase {
         XCTAssertEqual(parser.zimFileIDs, Set([zimFileID]))
 
         // check zim file metadata
-        let metadata = try XCTUnwrap(parser.getMetaData(id: zimFileID))
+        let metadata = try XCTUnwrap(parser.getMetaData(id: zimFileID, fetchFavicon: false))
         XCTAssertEqual(metadata.fileID, zimFileID)
         XCTAssertEqual(metadata.groupIdentifier, "wikipedia_en_top")
         XCTAssertEqual(metadata.title, "Best of Wikipedia")

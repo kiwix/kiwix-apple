@@ -25,7 +25,7 @@
 
 @implementation ZimFileMetaData
 
-- (nullable instancetype)initWithBook:(void *)book {
+- (nullable instancetype)initWithBook:(void *)book fetchFavicon: (BOOL) fetchFavicon {
     self = [super init];
     if (self) {
         kiwix::Book *_book = static_cast<kiwix::Book *>(book);
@@ -59,7 +59,9 @@
         
         SAFE_READ(self.downloadURL, [self getURL:_book->getUrl()]);
         SAFE_READ(self.faviconURL, [self getFaviconURLFromBook:_book]);
-        SAFE_READ(self.faviconData, [self getFaviconDataFromBook:_book]);
+        if(fetchFavicon) {
+            SAFE_READ(self.faviconData, [self getFaviconDataFromBook:_book]);
+        }
         SAFE_READ(self.flavor, [self getFlavorFromBook:_book]);
         
         SAFE_READ_BOOL(self.hasDetails, _book->getTagBool("details"));
@@ -157,20 +159,16 @@
 }
 
 - (NSData * _Nullable)getFaviconDataFromBook:(kiwix::Book *)book {
-    return nil;
-    // this was never returning any data (always nil)
-    // but since libkiwix 14.1 it takes a huge amount of time even trying it
-    // so better not to even try, until it's not fixed
-//    try {
-//        std::string dataString = book->getIllustrations().at(0)->getData();
-//        if(dataString.length() == 0) {
-//            return nil;
-//        }
-//        NSData *favIconData = [NSData dataWithBytes: dataString.data() length: dataString.length()];
-//        return favIconData;
-//    } catch (std::exception) {
-//        return nil;
-//    }
+    try {
+        std::string dataString = book->getIllustrations().at(0)->getData();
+        if(dataString.length() == 0) {
+            return nil;
+        }
+        NSData *favIconData = [NSData dataWithBytes: dataString.data() length: dataString.length()];
+        return favIconData;
+    } catch (std::exception) {
+        return nil;
+    }
 }
 
 - (NSString *)getFlavorFromBook:(kiwix::Book *)book {
