@@ -30,8 +30,8 @@ struct LibraryOperations {
     /// - Parameter url: url of the zim file
     @discardableResult
     static func open(url: URL, onComplete: (() -> Void)? = nil) async -> ZimFileMetaData? {
-        guard let metadata = await ZimFileService.getMetaData(url: url),
-              let fileURLBookmark = await ZimFileService.getFileURLBookmarkData(for: url) else { return nil }
+        guard let fileURLBookmark = await ZimFileService.getFileURLBookmarkData(for: url),
+                let metadata = await ZimFileService.getMetaData(url: url) else { return nil }
 
         // revalidate the file
         do {

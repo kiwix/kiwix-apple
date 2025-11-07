@@ -125,7 +125,8 @@
     try {
         kiwix::Book book = kiwix::Book();
         book.update(zim::Archive([url fileSystemRepresentation]));
-        metaData = [[ZimFileMetaData alloc] initWithBook: &book];
+        // since we do have the ZIM file locally, we wan't the favicon as well
+        metaData = [[ZimFileMetaData alloc] initWithBook: &book fetchFavicon: true];
     } catch (std::exception e) {
         [url stopAccessingSecurityScopedResource];
         return nil;

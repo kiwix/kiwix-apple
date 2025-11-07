@@ -44,7 +44,7 @@
 @property (nonatomic, assign) BOOL requiresServiceWorkers;
 
 // methods
-- (nullable instancetype)initWithBook:(nonnull void *)book;
+- (nullable instancetype)initWithBook:(nonnull void *)book fetchFavicon: (BOOL) fetchFavicon;
 
 - (nonnull instancetype)initWithFileID:(NSUUID * _Nonnull)fileID
                         groupIdentifier:(NSString * _Nonnull)groupIdentifier
