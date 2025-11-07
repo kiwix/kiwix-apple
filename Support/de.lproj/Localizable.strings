@@ -5,6 +5,7 @@
 // Author: Caro
 // Author: Gremid
 // Author: Justman10000
+// Author: Kelson
 // Author: Russianbabe1978
 
 "library_refresh_error.retrieve.description" = "Fehler beim Abrufen der Katalogdaten.";
@@ -30,7 +31,6 @@
 "common.button.share" = "Teilen";
 "common.search" = "Suchen";
 "common.search.suggestion" = "Meinten Sie:";
-
 "common.tab.manager.title" = "Tabs-Manager";
 "common.tab.navigation.title" = "Tabs";
 "common.tab.menu.new_tab" = "Neuer Tab";
@@ -71,7 +71,13 @@
 "library_refresh_time.never" = "Niemals";
 "zim_file_cell.article_count.suffix" = "Artikel";
 "zim_file_missing_indicator.help" = "Zim-Datei fehlt.";
+"hotspot.action.start_hotspot.title" = "Hotspot starten";
+"hotspot.action.stop_hotspot.title" = "Hotspot anhalten";
 "hotspot.settings.port_number" = "Portnummer";
+"hotspot.settings.recommended_port_range" = "Der von dem Hotspot genutzte Netzwerkport sollte zwischen %@ und %@ liegen.";
+"hotspot.error.port_already_used_by_another_app_title" = "Der Hotspot kann nicht gestartet werden, da Port %@ belegt ist.";
+"hotspot.error.port_already_used_by_another_app_description" = "Um dies zu beheben, schließen Sie die App die den Port verwendet oder ändern Sie den Kiwix Hotspot-Port in den Einstellungen.";
+"hotspot.server_full_explanation" = "Um diese ZIM-Dateien auf anderen Geräten zu anzuzeigen, stellen Sie sicher, dass alle Geräte entweder auf demselben WiFi-Netzwerk sind oder mit Ihrem persönlichen Hotspot verbunden sind.";
 "hotspot.server_active_warning" = "Der Hotspot bleibt nur aktiv, solange die App geöffnet und verwendet wird.";
 "hotspot.server_wifi_only_explanation" = "Um diese ZIM-Dateien auf anderen Geräten zu durchsuchen, stellen Sie sicher, dass sich alle Geräte im selben WLAN-Netzwerk befinden.";
 "library.zim_file_details.side_panel.message" = "Wähle eine ZIM-Datei aus, um Details zu sehen";
@@ -231,6 +237,7 @@
 "enum.navigation_item.new" = "Neu";
 "enum.navigation_item.downloads" = "Downloads";
 "enum.navigation_item.settings" = "Einstellungen";
+"enum.navigation_item.hotspot" = "Hotspot";
 "enum.search_result_snippet_mode.disabled" = "Deaktiviert";
 "enum.search_result_snippet_mode.matches" = "Treffer";
 "payment.donate.title" = "Spenden";
