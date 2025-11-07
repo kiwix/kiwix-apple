@@ -94,7 +94,7 @@ enum Config: String {
     case showExternalLinkSettings = "SETTINGS_SHOW_EXTERNAL_LINK_OPTION"
     case externalLinkDefaultPolicy = "SETTINGS_DEFAULT_EXTERNAL_LINK_TO"
     case showSearchSnippetInSettings = "SETTINGS_SHOW_SEARCH_SNIPPET"
-    case showSearchSuggestions = "SHOW_SEARCH_SUGGESTIONS"
+    case showSearchSuggestionsSpellChecked = "SHOW_SEARCH_SUGGESTIONS_SPELLCHECKED"
     case aboutText = "CUSTOM_ABOUT_TEXT"
     case aboutWebsite = "CUSTOM_ABOUT_WEBSITE"
     case disableImmersiveReading = "DISABLE_IMMERSIVE_READING"

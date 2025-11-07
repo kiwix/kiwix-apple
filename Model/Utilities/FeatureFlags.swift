@@ -28,5 +28,5 @@ enum FeatureFlags {
     static let showExternalLinkOptionInSettings: Bool = Config.value(for: .showExternalLinkSettings) ?? true
     static let showSearchSnippetInSettings: Bool = Config.value(for: .showSearchSnippetInSettings) ?? true
     
-    static let suggestSearchTerms: Bool = Config.value(for: .showSearchSuggestions) ?? false
+    static let suggestSearchTerms: Bool = Config.value(for: .showSearchSuggestionsSpellChecked) ?? false
 }
