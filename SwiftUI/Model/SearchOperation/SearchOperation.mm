@@ -20,6 +20,8 @@
 #import "zim/item.h"
 #import "zim/search.h"
 #import "zim/suggestion.h"
+#import "kiwix/spelling_correction.h"
+#import <filesystem>
 #pragma clang diagnostic pop
 
 #import "SearchOperation.h"
@@ -61,19 +63,20 @@
 @interface SearchOperation ()
 
 @property (assign) std::string searchText_C;
-@property (nonatomic, strong) NSSet *zimFileIDs;
 
 @end
 
 @implementation SearchOperation
 
-- (id)initWithSearchText:(NSString *)searchText zimFileIDs:(NSSet *)zimFileIDs {
+- (id)initWithSearchText:(NSString *)searchText zimFileIDs:(NSSet *)zimFileIDs withSpellingCacheDir:(NSURL *)spellCacheDir {
     self = [super init];
     if (self) {
         self.searchText = searchText;
         self.searchText_C = [searchText cStringUsingEncoding:NSUTF8StringEncoding];
         self.zimFileIDs = zimFileIDs;
+        self.spellCacheDir = spellCacheDir;
         self.results = [[NSMutableOrderedSet alloc] initWithCapacity:35];
+        self.corrections = [[NSMutableOrderedSet alloc] init];
         self.foundURLs = [[NSMutableSet alloc] initWithCapacity:35];
         self.qualityOfService = NSQualityOfServiceUserInitiated;
     }
@@ -173,6 +176,45 @@
     [self.foundURLs addObject: url]; // store the url for comparison
     // store the result itself, without any modification to the original url
     [self.results addObject: searchResult];
+}
+
+# pragma mark - Spelling
+
+- (void) addSpellingCorrections {
+    [self.corrections removeAllObjects];
+    // get a list of archives that are included in search
+    typedef std::unordered_map<std::string, zim::Archive> archives_map;
+    auto *allArchives = static_cast<archives_map *>([[ZimFileService sharedInstance] getArchives]);
+    NSString *contentPath = [self.spellCacheDir path];
+    std::filesystem::path path = std::filesystem::path([contentPath cStringUsingEncoding: NSUTF8StringEncoding]);
+
+    for (NSUUID *zimFileID in self.zimFileIDs) {
+        if (self.isCancelled) { return; }
+        std::string zimFileID_C = [[[zimFileID UUIDString] lowercaseString] cStringUsingEncoding:NSUTF8StringEncoding];
+        try {
+            auto archive = allArchives->at(zimFileID_C);
+            kiwix::SpellingsDB db = kiwix::SpellingsDB(archive, path);
+            std::vector<std::string> spellCorrections = db.getSpellingCorrections(self.searchText_C, 1);
+            NSArray *array = convertToArray(spellCorrections);
+            if (self.isCancelled) { return; }
+            [self.corrections addObjectsFromArray:array];
+            NSInteger count = array.count;
+            NSLog(@"addSpellingCorrections for %@: (%ld)", zimFileID, static_cast<long>(count));
+        } catch (std::exception &e) {
+            NSLog(@"spellingsCorrections exception: %s", e.what());
+        }
+    }
+}
+
+NSArray<NSString *> *convertToArray(const std::vector<std::string> &vec) {
+    NSMutableArray<NSString *> *result = [NSMutableArray new];
+    for (const std::string &s : vec) {
+        NSString *value = [NSString stringWithUTF8String: s.c_str()];
+        if(value != nil) {
+            [result addObject: value];
+        }
+    }
+    return result;
 }
 
 @end

@@ -29,6 +29,8 @@
 "common.button.copy" = "Kopieren";
 "common.button.share" = "Teilen";
 "common.search" = "Suchen";
+"common.search.suggestion" = "Meinten Sie:";
+
 "common.tab.manager.title" = "Tabs-Manager";
 "common.tab.navigation.title" = "Tabs";
 "common.tab.menu.new_tab" = "Neuer Tab";

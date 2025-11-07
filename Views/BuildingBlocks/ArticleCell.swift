@@ -15,24 +15,35 @@
 
 import SwiftUI
 
+private enum ArticleImage {
+    case zimFile(ZimFile?)
+    case image(name: String)
+}
+
 /// A rounded rect cell displaying preview of an article.
 struct ArticleCell: View {
     @State private var isHovering: Bool = false
 
-    let title: String
-    let snippet: NSAttributedString?
-    let zimFile: ZimFile?
+    private let title: String
+    private let snippet: NSAttributedString?
+    private let articleImage: ArticleImage
 
     init(bookmark: Bookmark) {
-        self.title = bookmark.title
-        self.snippet = nil
-        self.zimFile = bookmark.zimFile
+        title = bookmark.title
+        snippet = nil
+        articleImage = .zimFile(bookmark.zimFile)
     }
 
     init(result: SearchResult, zimFile: ZimFile?) {
-        self.title = result.title
-        self.snippet = result.snippet
-        self.zimFile = zimFile
+        title = result.title
+        snippet = result.snippet
+        articleImage = .zimFile(zimFile)
+    }
+    
+    init(searchSuggestion: String) {
+        title = searchSuggestion
+        snippet = nil
+        articleImage = .image(name: "magnifyingglass")
     }
 
     var body: some View {
@@ -50,9 +61,14 @@ struct ArticleCell: View {
                 Spacer(minLength: 0)
             }
             Spacer()
-            if let zimFile = zimFile, let category = Category(rawValue: zimFile.category) {
-                Favicon(category: category, imageData: zimFile.faviconData, imageURL: zimFile.faviconURL)
-                    .frame(height: 20)
+            switch articleImage {
+            case .zimFile(let zimFile):
+                if let zimFile = zimFile, let category = Category(rawValue: zimFile.category) {
+                    Favicon(category: category, imageData: zimFile.faviconData, imageURL: zimFile.faviconURL)
+                        .frame(height: 20)
+                }
+            case .image(let name):
+                Image(systemName: name)
             }
         }
         .foregroundColor(.primary)

@@ -18,11 +18,61 @@ import CoreData
 
 import Defaults
 
+enum SearchResultItems {
+    case results([SearchResult])
+    case suggestions([String])
+    
+    func firstIndex(where value: String) -> Int? {
+        switch self {
+        case let .results(results):
+            results.firstIndex(where: { $0.url.absoluteString == value })
+        case let .suggestions(suggestions):
+            suggestions.firstIndex(where: { $0 == value})
+        }
+    }
+    
+    func index(before i: Int) -> Int {
+        switch self {
+        case let .results(results):
+            results.index(before: i)
+        case let .suggestions(suggestions):
+            suggestions.index(before: i)
+        }
+    }
+    
+    func index(after i: Int) -> Int {
+        switch self {
+        case let .results(results):
+            results.index(after: i)
+        case let .suggestions(suggestions):
+            suggestions.index(after: i)
+        }
+    }
+    
+    var startIndex: Int {
+        switch self {
+        case let .results(results):
+            results.startIndex
+        case let .suggestions(suggestions):
+            suggestions.startIndex
+        }
+    }
+    
+    var endIndex: Int {
+        switch self {
+        case let .results(results):
+            results.endIndex
+        case let .suggestions(suggestions):
+            suggestions.endIndex
+        }
+    }
+}
+
 final class SearchViewModel: NSObject, ObservableObject, NSFetchedResultsControllerDelegate {
     @Published var searchText: String = ""  // text in the search field
     @Published private(set) var zimFiles: [UUID: ZimFile]  // ID of zim files that are included in search
     @Published private(set) var inProgress = false
-    @Published private(set) var results = [SearchResult]()
+    @Published private(set) var results: SearchResultItems = .results([])
     
     static let shared = SearchViewModel()
 
@@ -100,15 +150,29 @@ final class SearchViewModel: NSObject, ObservableObject, NSFetchedResultsControl
     private func updateSearchResults(_ searchText: String, _ zimFileIDs: Set<UUID>) {
         queue.cancelAllOperations()
         // This is run at app start, and opens the archive of all searchable ZIM files
+        let cacheDir: URL? = if FeatureFlags.suggestSearchTerms {
+            try? FileManager.default.url(
+                for: .cachesDirectory, in: .userDomainMask, appropriateFor: nil, create: true
+            )
+        } else {
+            nil // don't use suggest search terms
+        }
         for zimFileID in zimFileIDs {
             _ = ZimFileService.shared.openArchive(zimFileID: zimFileID)
+            if let cacheDir {
+                ZimFileService.shared.createSpellingIndex(zimFileID: zimFileID, cacheDir: cacheDir)
+            }
         }
-        let operation = SearchOperation(searchText: searchText, zimFileIDs: zimFileIDs)
+        let operation = SearchOperation(
+            searchText: searchText,
+            zimFileIDs: zimFileIDs,
+            withSpellingCacheDir: cacheDir
+        )
         operation.extractMatchingSnippet = Defaults[.searchResultSnippetMode] == .matches
         operation.completionBlock = { [weak self] in
             guard !operation.isCancelled else { return }
             Task { @MainActor [weak self] in
-                self?.results = operation.results
+                self?.results = operation.searchResultItems
                 self?.updateProgress(false)
             }
         }
