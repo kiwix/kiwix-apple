@@ -214,7 +214,6 @@ final class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegat
                 if let zimFile = try? context.fetch(ZimFile.fetchRequest(fileID: zimFileID)).first {
                     content.body = LocalString.download_service_complete_description(withArgs: zimFile.name)
                 }
-
                 // schedule notification
                 let request = UNNotificationRequest(identifier: zimFileID.uuidString, content: content, trigger: nil)
                 center.add(request)
@@ -230,15 +229,11 @@ final class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegat
             return
         }
         guard let zimFileID = UUID(uuidString: taskDescription) else {
-            Log.DownloadService.fault(
-                "Cannot convert taskDescription: \(taskDescription, privacy: .public)"
-            )
+            Log.DownloadService.fault("Cannot convert taskDescription: \(taskDescription, privacy: .public)")
             return
         }
         guard let httpResponse = task.response as? HTTPURLResponse else {
-            Log.DownloadService.fault(
-                "response is not an HTTPURLResponse"
-            )
+            Log.DownloadService.fault("response is not an HTTPURLResponse")
             return
         }
         // download finished successfully if there's no error
@@ -303,11 +298,9 @@ final class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegat
     
     private func showAlert(_ alert: ActiveAlert) {
         Task { @MainActor in
-            NotificationCenter.default.post(
-                name: .alert,
-                object: nil,
-                userInfo: ["alert": alert]
-            )
+            NotificationCenter.default.post(name: .alert,
+                                            object: nil,
+                                            userInfo: ["alert": alert])
         }
     }
     
@@ -345,7 +338,7 @@ final class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegat
             return
         }
         guard let url = httpResponse.url,
-           let destination = DownloadDestination.filePathFor(downloadURL: url, taskId: taskId) else {
+           var destination = DownloadDestination.filePathFor(downloadURL: url, taskId: taskId) else {
             showAlert(.downloadError(#line, LocalString.download_service_error_option_directory))
             deleteDownloadTask(zimFileID: zimFileID)
             return
@@ -356,6 +349,14 @@ final class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegat
             "Start moving zimFile: \(fileName, privacy: .public), \(zimFileID.uuidString, privacy: .public)"
         )
         do {
+            var count = 0
+            let maxAttempts = 3
+            var nextDestination = destination
+            while FileManager.default.fileExists(atPath: nextDestination.path()), count <= maxAttempts {
+                nextDestination = DownloadDestination.alternateLocalPathFor(downloadURL: destination, count: count)
+                count += 1
+            }
+            destination = nextDestination
             try FileManager.default.moveItem(at: location, to: destination)
         } catch {
             Log.DownloadService.error("""

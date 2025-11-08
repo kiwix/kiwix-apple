@@ -34,4 +34,15 @@ enum DownloadDestination {
         }
         return directory.appendingPathComponent(downloadURL.lastPathComponent)
     }
+    
+    static func alternateLocalPathFor(downloadURL url: URL, count: Int) -> URL {
+        guard count > 0 else {
+            return url
+        }
+        let fileName = url.deletingPathExtension().lastPathComponent
+        let newFileName = fileName.appending("-\(count + 1)")
+        return url
+            .deletingLastPathComponent()
+            .appendingPathComponent(newFileName, conformingTo: .zimFile)
+    }
 }
