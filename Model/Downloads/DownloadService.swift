@@ -84,6 +84,15 @@ final class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegat
             let task = self.session.downloadTask(with: urlRequest)
             task.countOfBytesClientExpectsToReceive = zimFile.size
             task.taskDescription = zimFileID.uuidString
+            
+            let taskId = task.taskIdentifier.description
+            guard let destination = DownloadDestination.filePathFor(downloadURL: url, taskId: taskId) else {
+                showAlert(.downloadError(#line, LocalString.download_service_error_option_directory))
+                task.cancel()
+                deleteDownloadTask(zimFileID: zimFileID)
+                return
+            }
+            
             task.resume()
         }
     }
@@ -304,28 +313,14 @@ final class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegat
             deleteDownloadTask(zimFileID: zimFileID)
             return
         }
-
-        // determine which directory should the file be moved to
-        #if os(macOS)
-        let searchPath = FileManager.SearchPathDirectory.downloadsDirectory
-        #elseif os(iOS)
-        let searchPath = FileManager.SearchPathDirectory.documentDirectory
-        #endif
-
-        // move file
-        guard let directory = FileManager.default.urls(for: searchPath, in: .userDomainMask).first else {
-            Log.DownloadService.fault(
-                "Cannot find download directory! downloadTask: \(taskId, privacy: .public)"
-            )
+        guard let url = httpResponse.url,
+           let destination = DownloadDestination.filePathFor(downloadURL: url, taskId: taskId) else {
             showAlert(.downloadError(#line, LocalString.download_service_error_option_directory))
             deleteDownloadTask(zimFileID: zimFileID)
             return
         }
-
-        let fileName = downloadTask.response?.suggestedFilename
-            ?? downloadTask.originalRequest?.url?.lastPathComponent
-            ?? zimFileID.uuidString + ".zim"
-        let destination = directory.appendingPathComponent(fileName)
+        let fileName = destination.lastPathComponent
+        
         Log.DownloadService.info(
             "Start moving zimFile: \(fileName, privacy: .public), \(zimFileID.uuidString, privacy: .public)"
         )
