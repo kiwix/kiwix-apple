@@ -93,6 +93,13 @@ final class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegat
                 return
             }
             
+            if FileManager.default.fileExists(atPath: destination.path()) {
+                showAlert(.downloadError(#line, LocalString.download_service_failed_description))
+                task.cancel()
+                deleteDownloadTask(zimFileID: zimFileID)
+                return
+            }
+            
             task.resume()
         }
     }
