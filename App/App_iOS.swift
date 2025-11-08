@@ -49,6 +49,7 @@ struct Kiwix: App {
                 .environmentObject(navigation)
                 .environmentObject(colorSchemeStore)
                 .modifier(AlertHandler())
+                .modifier(QuestionHandler())
                 .modifier(OpenFileHandler())
                 .modifier(FileExportHandler())
                 .modifier(SaveContentHandler())

@@ -93,6 +93,10 @@
 "download_task_cell.status.downloading" = "Downloading...";
 "download_task_cell.status.paused" = "Paused";
 
+"download_again.question.title" = "You already have this file.";
+"download_again.question.description_part_1" = "It looks like %@ is already downloaded.";
+"download_again.question.description_part_2" = "Do you still want to download \"%@\"? Your existing file won't be deleted.";
+
 "flavor_tag.help.max" = "everything except large media files like video/audio";
 "flavor_tag.help.no_pic" = "most pictures have been removed";
 "flavor_tag.help.mini" = "only a subset of the text is available, probably the first section";

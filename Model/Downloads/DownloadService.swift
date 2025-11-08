@@ -93,15 +93,33 @@ final class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegat
                 return
             }
             
-            if FileManager.default.fileExists(atPath: destination.path()) {
-                showAlert(.downloadError(#line, LocalString.download_service_failed_description))
-                task.cancel()
-                deleteDownloadTask(zimFileID: zimFileID)
+            guard !FileManager.default.fileExists(atPath: destination.path()) else {
+                showQuestion(
+                    ActiveQuestion(
+                        text: questionText(destination: destination, zimFileName: zimFile.name),
+                        yes: LocalString.common_button_yes,
+                        cancel: LocalString.common_button_cancel,
+                        didConfirm: {
+                            task.resume()
+                        },
+                        didDismiss: { [weak self] in
+                            task.cancel()
+                            self?.deleteDownloadTask(zimFileID: zimFileID)
+                        }
+                    )
+                )
                 return
             }
             
             task.resume()
         }
+    }
+    
+    private func questionText(destination: URL, zimFileName: String) -> String {
+        [LocalString.download_again_question_title,
+         LocalString.download_again_question_description_part_1(withArgs: destination.lastPathComponent),
+         LocalString.download_again_question_description_part_2(withArgs: zimFileName)
+        ].joined(separator: "\n\n")
     }
 
     /// Cancel a zim file download task
@@ -290,6 +308,12 @@ final class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegat
                 object: nil,
                 userInfo: ["alert": alert]
             )
+        }
+    }
+    
+    private func showQuestion(_ question: ActiveQuestion) {
+        Task { @MainActor in
+            NotificationCenter.default.post(name: .question, object: nil, userInfo: ["question": question])
         }
     }
 
