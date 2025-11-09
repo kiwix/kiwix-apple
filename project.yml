@@ -1,9 +1,9 @@
 name: Kiwix
 options:
-  xcodeVersion: 16.1
+  xcodeVersion: 26.0
   deploymentTarget: # the three latest major versions should be supported
     iOS: 16.6
-    macOS: 13.0
+    macOS: 14.6
   generateEmptyDirectories: true
   useTabs: false
   groupSortPosition: top
