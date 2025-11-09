@@ -49,7 +49,7 @@ struct PortInput: View {
                         }
                     }
                 }
-                .onChange(of: isFocused) { focused in
+                .onChange(of: isFocused) { _, focused in
                     if !focused {
                         portNumber.save()
                     }
@@ -58,13 +58,14 @@ struct PortInput: View {
                 .focused($isFocused)
                 .frame(maxWidth: 100)
                 .textFieldStyle(.roundedBorder)
-                .onChange(of: portNumber.stringValue, perform: portNumber.onChange(newValue: ))
+                .onChange(of: portNumber.stringValue) { _, newValue in  portNumber.onChange(newValue: newValue)
+                }
                 .onSubmit {
                     portNumber.save()
                 }
         }
         #if os(macOS)
-        .onChange(of: controlActiveState) { newState in
+        .onChange(of: controlActiveState) { _, newState in
             if newState != .key {
                 portNumber.save()
             }

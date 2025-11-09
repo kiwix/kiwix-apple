@@ -172,11 +172,11 @@ private struct CategoryGrid: View {
             }
         }
         .searchable(text: $searchText)
-        .onChange(of: category) { _ in selection.reset() }
-        .onChange(of: searchText) { _ in
-            sections.nsPredicate = ZimFilesCategory.buildPredicate(category: category, searchText: searchText)
+        .onChange(of: category) { selection.reset() }
+        .onChange(of: searchText) { _, newValue in
+            sections.nsPredicate = ZimFilesCategory.buildPredicate(category: category, searchText: newValue)
         }
-        .onChange(of: languageCodes) { _ in
+        .onChange(of: languageCodes) {
             sections.nsPredicate = ZimFilesCategory.buildPredicate(category: category, searchText: searchText)
         }
     }
@@ -262,11 +262,11 @@ private struct CategoryList: View {
             }
         }
         .searchable(text: $searchText)
-        .onChange(of: category) { _ in selection.reset() }
-        .onChange(of: searchText) { _ in
-            zimFiles.nsPredicate = ZimFilesCategory.buildPredicate(category: category, searchText: searchText)
+        .onChange(of: category) { selection.reset() }
+        .onChange(of: searchText) { _, newValue in
+            zimFiles.nsPredicate = ZimFilesCategory.buildPredicate(category: category, searchText: newValue)
         }
-        .onChange(of: languageCodes) { _ in
+        .onChange(of: languageCodes) {
             zimFiles.nsPredicate = ZimFilesCategory.buildPredicate(category: category, searchText: searchText)
         }
     }

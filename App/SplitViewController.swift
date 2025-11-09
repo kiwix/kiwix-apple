@@ -62,6 +62,7 @@ final class SplitViewController: UISplitViewController {
         setSecondaryController()
 
         // observers
+        observeHorizontalTraitChanges()
         observeNavigation()
         observeOpeningFiles()
         observeGoBackAndForward()
@@ -163,14 +164,14 @@ final class SplitViewController: UISplitViewController {
         presentedViewController?.dismiss(animated: false)
     }
 
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        super.traitCollectionDidChange(previousTraitCollection)
-        guard isForegrounded,
-              previousTraitCollection?.horizontalSizeClass != traitCollection.horizontalSizeClass else { return }
-        if traitCollection.horizontalSizeClass == .compact {
-            navigationViewModel.navigateToMostRecentTab()
-        } else {
-            setSecondaryController()
+    private func observeHorizontalTraitChanges() {
+        registerForTraitChanges([UITraitHorizontalSizeClass.self]) { (self: Self, _) in
+            guard self.isForegrounded else { return }
+            if self.traitCollection.horizontalSizeClass == .compact {
+                self.navigationViewModel.navigateToMostRecentTab()
+            } else {
+                self.setSecondaryController()
+            }
         }
     }
 

@@ -33,7 +33,7 @@ struct ExternalLinkHandler: ViewModifier {
     }
 
     func body(content: Content) -> some View {
-        content.onChange(of: externalURL) { url in
+        content.onChange(of: externalURL) { _, url in
             guard let url else { return }
             switch Defaults[.externalLinkLoadingPolicy] {
             case .alwaysAsk:

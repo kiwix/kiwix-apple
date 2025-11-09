@@ -46,8 +46,8 @@ struct Bookmarks: View {
         .modifier(ToolbarRoleBrowser())
         .navigationTitle(LocalString.bookmark_navigation_title)
         .searchable(text: $searchText, prompt: LocalString.common_search)
-        .onChange(of: searchText) { searchText in
-            bookmarks.nsPredicate = Bookmarks.buildPredicate(searchText: searchText)
+        .onChange(of: searchText) { _, newValue in
+            bookmarks.nsPredicate = Bookmarks.buildPredicate(searchText: newValue)
         }
         .overlay {
             if bookmarks.isEmpty {

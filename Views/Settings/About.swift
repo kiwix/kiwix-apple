@@ -48,7 +48,7 @@ struct About: View {
         .padding()
         .tabItem { Label(LocalString.settings_about_title, systemImage: "info.circle") }
         .task { await getDependencies() }
-        .onChange(of: externalLinkURL) { url in
+        .onChange(of: externalLinkURL) { _, url in
             guard let url = url else { return }
             NSWorkspace.shared.open(url)
         }
@@ -81,7 +81,7 @@ struct About: View {
         }
         .navigationTitle(LocalString.settings_about_title)
         .navigationBarTitleDisplayMode(.inline)
-        .onChange(of: externalLinkURL) { url in
+        .onChange(of: externalLinkURL) { _, url in
             guard let url = url else { return }
             UIApplication.shared.open(url)
         }

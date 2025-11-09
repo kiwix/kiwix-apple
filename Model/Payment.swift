@@ -66,7 +66,7 @@ struct Payment {
     static let paymentSubscriptionManagingURL = "https://www.kiwix.org"
     static let supportedNetworks: [PKPaymentNetwork] = [
         .amex,
-        .bancomat,
+        PKPaymentNetwork.pagoBancomat,
         .bancontact,
         .cartesBancaires,
         .chinaUnionPay,

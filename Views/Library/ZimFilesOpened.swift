@@ -78,7 +78,7 @@ struct ZimFilesOpened: View {
             }
             fileIdToOpen = fileId
         })
-        .onChange(of: zimFiles.count) { _ in
+        .onChange(of: zimFiles.count) {
             let selectedZimFile: ZimFile?
             if let fileIdToOpen {
                 selectedZimFile = zimFiles.first { $0.fileID == fileIdToOpen }

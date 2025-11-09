@@ -285,7 +285,9 @@ struct Settings: View {
             Text(LocalString.backup_settings_header_text)
         } footer: {
             Text(LocalString.backup_settings_footer_text)
-        }.onChange(of: backupDocumentDirectory) { LibraryOperations.applyFileBackupSetting(isEnabled: $0) }
+        }.onChange(of: backupDocumentDirectory) { _, newValue in
+            LibraryOperations.applyFileBackupSetting(isEnabled: newValue)
+        }
     }
 
     var miscellaneous: some View {

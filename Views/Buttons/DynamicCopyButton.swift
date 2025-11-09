@@ -60,7 +60,7 @@ struct DynamicCopyButton: View {
             }
             // fix for button height changes when the icon is swapped
             .frame(minHeight: 23)
-            .onChange(of: copyComplete) { _ in
+            .onChange(of: copyComplete) {
                 Task {
                     // Task.sleep works better than animation delay
                     // this way the icon swaping is in sync

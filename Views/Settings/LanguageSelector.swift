@@ -45,8 +45,8 @@ struct LanguageSelector: View {
         }
         .opacity( library.state == .complete ? 1.0 : 0.3)
         .tableStyle(.bordered(alternatesRowBackgrounds: true))
-        .onChange(of: sortOrder) { languages.sort(using: $0) }
-        .onChange(of: library.state) { state in
+        .onChange(of: sortOrder) { _, newValue in languages.sort(using: newValue) }
+        .onChange(of: library.state) { _, state in
             guard state != .inProgress else { return }
             reloadLanguages()
         }
@@ -105,7 +105,7 @@ struct LanguageSelector: View {
                 hiding = languages.filter { !Defaults[.libraryLanguageCodes].contains($0.code) }
             }
         }
-        .onChange(of: sortingMode) { _ in
+        .onChange(of: sortingMode) {
             showing.sort(by: Languages.compare(lhs:rhs:))
             hiding.sort(by: Languages.compare(lhs:rhs:))
         }
