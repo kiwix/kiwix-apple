@@ -2,18 +2,26 @@ import os
 import argparse
 import re
 import glob
+import io
 from pathlib import Path
 
 # example usages:
 # python localizations.py generate
 # python localizations.py validate
+# python localizations.py remove bookmark.toolbar.show_sidebar.label
 
 parser = argparse.ArgumentParser()
-parser.add_argument('command', type=str, help="Possible options: generate | validate")
+parser.add_argument('command', type=str, help="Possible options: generate | validate | remove")
+parser.add_argument('term', type=str, nargs="?", help="a key ('.' separated) in the Localizable.string files to be removed" )
 arguments = parser.parse_args()
 
 command = arguments.command
-if command not in ['generate', 'validate']:
+term_to_remove = arguments.term
+if command not in ['generate', 'validate', 'remove']:
+    parser.print_help()
+    exit()
+
+if command == 'remove' and term_to_remove == '':
     parser.print_help()
     exit()
 
@@ -130,10 +138,30 @@ class Validate:
     def __get_var_name(self, key):
         return re.sub('[^a-z0-9]', '_', key.lower())
 
+class Remove:
+    def __init__(self, target_dir, term_to_remove):
+        for string_file in glob.iglob(os.path.join(target_dir, '**/*.strings'), recursive=True):
+            
+            buffer = io.StringIO()
+            removedALine = False
+            with(open(string_file, 'r')) as file:
+                for line in file.readlines():
+                    if term_to_remove not in line:
+                        buffer.write(line)
+                    else:
+                        removedALine = True
+            
+            if removedALine:
+                with(open(string_file, 'w')) as file:
+                    file.write(buffer.getvalue())
+        
+
 match command:
     case "generate":
         Generate(input_file_name, template_file_name, enum_name, target_dir)
     case "validate":
         Validate(input_file_name, comment_file_name, enum_name)
+    case "remove":
+        Remove(target_dir, term_to_remove)
     case _:
         exit(-1)
