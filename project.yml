@@ -2,7 +2,7 @@ name: Kiwix
 options:
   xcodeVersion: 26.0
   deploymentTarget: # the three latest major versions should be supported
-    iOS: 16.6
+    iOS: 17.6
     macOS: 14.6
   generateEmptyDirectories: true
   useTabs: false
