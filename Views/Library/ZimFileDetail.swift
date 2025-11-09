@@ -227,7 +227,7 @@ struct ZimFileDetail: View {
                 primaryButton: .default(Text(LocalString.zim_file_action_download_button_anyway)) {
                     DownloadService.shared.start(
                         zimFileID: zimFile.id,
-                        allowsCellularAccess: false
+                        allowsCellularAccess: downloadUsingCellular
                     )
                 },
                 secondaryButton: .cancel()

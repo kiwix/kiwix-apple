@@ -98,6 +98,7 @@ struct RootView: View {
         .frame(minWidth: 650, minHeight: 500)
         .focusedSceneValue(\.navigationItem, $navigation.currentItem)
         .modifier(AlertHandler())
+        .modifier(QuestionHandler())
         .modifier(OpenFileHandler())
         .modifier(SaveContentHandler())
         .environmentObject(navigation)
