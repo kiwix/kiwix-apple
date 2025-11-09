@@ -146,10 +146,10 @@ class Remove:
             removedALine = False
             with(open(string_file, 'r')) as file:
                 for line in file.readlines():
-                    if term_to_remove not in line:
-                        buffer.write(line)
-                    else:
+                    if term_to_remove in line:
                         removedALine = True
+                    else:
+                        buffer.write(line)
             
             if removedALine:
                 with(open(string_file, 'w')) as file:
