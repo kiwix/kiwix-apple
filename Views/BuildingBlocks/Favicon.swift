@@ -30,7 +30,7 @@ struct Favicon: View {
     var body: some View {
         image.scaledToFit().cornerRadius(3)
         .aspectRatio(1, contentMode: .fit)
-        .onAppear {
+        .task {
             guard let imageURL = imageURL, imageData == nil else { return }
             Database.shared.saveImageData(url: imageURL) { data in
                 imageData = data

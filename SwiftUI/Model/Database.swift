@@ -82,14 +82,15 @@ final class Database {
                   let mimeType = response.mimeType,
                   mimeType.contains("image"),
                   let data = data else { return }
-            performBackgroundTask { [data] context in
+            completion(data)
+            Task { @MainActor [weak self] in
+                guard let context = self?.viewContext else { return }
                 let predicate = NSPredicate(format: "faviconURL == %@", url as CVarArg)
                 let request = ZimFile.fetchRequest(predicate: predicate)
                 guard let zimFile = try? context.fetch(request).first else { return }
                 zimFile.faviconData = data
                 try? context.save()
             }
-            completion(data)
         }.resume()
     }
 }
