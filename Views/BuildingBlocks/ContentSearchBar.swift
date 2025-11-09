@@ -30,17 +30,12 @@ struct ContentSearchBar: View {
 
     var body: some View {
         if isActivated {
-            if #available(macOS 14.0, *) {
-                field
-                    .focused($focusedState)
-                    .onKeyPress(.escape) {
-                        dismiss()
-                        return .handled
-                    }
-            } else {
-                field
-                    .focused($focusedState)
-            }
+            field
+                .focused($focusedState)
+                .onKeyPress(.escape) {
+                    dismiss()
+                    return .handled
+                }
         } else {
             button
                 .keyboardShortcut("f", modifiers: .command)

@@ -115,7 +115,7 @@ final class BrowserViewModel: NSObject, ObservableObject,
     @MainActor private init(tabID: NSManagedObjectID) {
         self.tabID = tabID
         webView = WKWebView(frame: .zero, configuration: WebViewConfiguration())
-        if !Bundle.main.isProduction, #available(iOS 16.4, macOS 13.3, *) {
+        if !Bundle.main.isProduction {
                 webView.isInspectable = true
         }
         // Bookmark fetching:
@@ -511,7 +511,7 @@ final class BrowserViewModel: NSObject, ObservableObject,
 #if os(iOS)
         // on iOS 17 on the iPhone, the video starts with a black screen
         // if there's a poster attribute
-        if #available(iOS 17, *), Device.current == .iPhone {
+        if Device.current == .iPhone {
             webView.evaluateJavaScript("fixVideoElements();")
         }
         webView.adjustTextSize()
@@ -609,7 +609,7 @@ final class BrowserViewModel: NSObject, ObservableObject,
         let configuration = UIContextMenuConfiguration(
             previewProvider: {
                 let webView = WKWebView(frame: .zero, configuration: WebViewConfiguration())
-                if !Bundle.main.isProduction, #available(iOS 16.4, *) {
+                if !Bundle.main.isProduction {
                         webView.isInspectable = true
                 }
                 webView.load(URLRequest(url: url))

@@ -16,7 +16,6 @@
 #if os(macOS)
 import SwiftUI
 
-@available(macOS 14, *)
 struct OpeningSettingsModifier: ViewModifier {
     @Environment(\.openSettings) private var openSettings
     private let navigateToHotspotSettingsPublisher = NotificationCenter.default.publisher(
@@ -30,31 +29,6 @@ struct OpeningSettingsModifier: ViewModifier {
                 updateTabSelection()
                 openSettings()
             }
-    }
-}
-
-// swiftlint:disable:next type_name
-struct OpeningSettingsModifier_macOS_13: ViewModifier {
-    private let navigateToHotspotSettingsPublisher = NotificationCenter.default.publisher(
-        for: .navigateToHotspotSettings
-    )
-    let updateTabSelection: () -> Void
-    
-    func body(content: Content) -> some View {
-        content
-            .onReceive(navigateToHotspotSettingsPublisher) { _ in
-                updateTabSelection()
-                openSettings()
-            }
-    }
-    
-    private func openSettings() {
-        // macOS 13 Ventura
-        guard let delegate = NSApp.delegate else { return }
-        let selector = Selector(("showSettingsWindow:"))
-        if delegate.responds(to: selector) {
-            delegate.perform(selector, with: nil, with: nil)
-        }
     }
 }
 #endif

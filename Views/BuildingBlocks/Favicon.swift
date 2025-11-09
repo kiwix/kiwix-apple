@@ -68,7 +68,6 @@ struct Favicon: View {
     }
 }
 
-@available(iOS 15.0, *)
 struct Favicon_Previews: PreviewProvider {
     static var previews: some View {
         Favicon(

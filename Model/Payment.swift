@@ -226,10 +226,8 @@ struct Payment {
         @unknown default:
             Log.Payment.error("onPaymentAuthPhase: @unknown default")
         }
-
     }
 
-    @available(macOS 13.0, *)
     func onMerchantSessionUpdate() async -> PKPaymentRequestMerchantSessionUpdate {
         guard let session = await StripeKiwix.stripeSession(endPoint: Self.kiwixPaymentServer) else {
             await MainActor.run {
