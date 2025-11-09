@@ -53,7 +53,7 @@ struct Kiwix: App {
                 .modifier(OpenFileHandler())
                 .modifier(FileExportHandler())
                 .modifier(SaveContentHandler())
-                .onChange(of: scenePhase) { newValue in
+                .onChange(of: scenePhase) { _, newValue in
                     switch newValue {
                     case .inactive:
                         try? Database.shared.viewContext.save()

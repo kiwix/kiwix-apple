@@ -223,7 +223,7 @@ final class BrowserViewModel: NSObject, ObservableObject,
         if metaData?.isTextType == true,
            let pdfData = try? await webView.pdf() {
             return (pdfData, metaData?.exportFileExtension)
-        } else if let url = await webView.url,
+        } else if let url = webView.url,
                   let contentData = await ZimFileService.shared.getURLContent(url: url)?.data {
             let pathExtesion = url.pathExtension
             let fileExtension: String?

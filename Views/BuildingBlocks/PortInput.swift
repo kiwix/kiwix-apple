@@ -49,7 +49,7 @@ struct PortInput: View {
                         }
                     }
                 }
-                .onChange(of: isFocused) { focused in
+                .onChange(of: isFocused) { _, focused in
                     if !focused {
                         portNumber.save()
                     }

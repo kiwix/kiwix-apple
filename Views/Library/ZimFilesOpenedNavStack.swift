@@ -88,7 +88,7 @@ struct ZimFilesOpenedNavStack: View {
             }
             fileIdToOpen = fileId
         })
-        .onChange(of: zimFiles.count) { _ in
+        .onChange(of: zimFiles.count) {
             if let fileIdToOpen,
                let selectedZimFile = zimFiles.first(where: { $0.fileID == fileIdToOpen }) {
                 self.fileIdToOpen = nil

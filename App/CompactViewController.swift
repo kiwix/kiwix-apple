@@ -359,12 +359,12 @@ private struct Content<LaunchModel>: View where LaunchModel: LaunchProtocol {
                 }
             }
         }
-        .onChange(of: scenePhase) { newValue in
+        .onChange(of: scenePhase) { _, newValue in
             if case .active = newValue {
                 browser.refreshVideoState()
             }
         }
-        .onChange(of: library.state) { state in
+        .onChange(of: library.state) { _, state in
             guard state == .complete else { return }
             showTheLibrary()
         }

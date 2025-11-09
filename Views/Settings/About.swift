@@ -81,7 +81,7 @@ struct About: View {
         }
         .navigationTitle(LocalString.settings_about_title)
         .navigationBarTitleDisplayMode(.inline)
-        .onChange(of: externalLinkURL) { url in
+        .onChange(of: externalLinkURL) { _, url in
             guard let url = url else { return }
             UIApplication.shared.open(url)
         }

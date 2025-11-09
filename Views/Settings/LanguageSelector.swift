@@ -105,7 +105,7 @@ struct LanguageSelector: View {
                 hiding = languages.filter { !Defaults[.libraryLanguageCodes].contains($0.code) }
             }
         }
-        .onChange(of: sortingMode) { _ in
+        .onChange(of: sortingMode) {
             showing.sort(by: Languages.compare(lhs:rhs:))
             hiding.sort(by: Languages.compare(lhs:rhs:))
         }
