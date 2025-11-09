@@ -101,14 +101,12 @@
 "library.zim_file_context.random.label" = "Page au hasard";
 "library.zim_file_context.copy_url" = "Copier l’URL";
 "zim_file_opened.overlay.no-opened.message" = "Aucun fichier ZIM ouvert";
-"zim_file_opened.toolbar.show_sidebar.label" = "Afficher la barre latérale";
 "zim_file_opened.toolbar.open.title" = "Ouvrir...";
 "zim_file_opened.toolbar.open.help" = "Ouvrir un fichier ZIM";
 "zim_file_category.title" = "Catégorie";
 "zim_file_catalog.fetching.message" = "Récupération du catalogue...";
 "zim_file_category.section.empty.message" = "Aucun fichier ZIM dans cette catégorie.";
 "zim_file_downloads.overlay.empty.message" = "Aucune tâche de téléchargement";
-"zim_file_downloads.toolbar.show_sidebar.label" = "Afficher la barre latérale";
 "zim_file_new_overlay.empty" = "Pas de nouveau fichier ZIM";
 "zim_file_new.button.refresh" = "Actualiser";
 "zim_file.list.name.text" = "Nom";
@@ -208,8 +206,6 @@
 "settings.about.button.license" = "Licence publique générale GNU v3";
 "bookmark.navigation.title" = "Signets";
 "bookmark.overlay.empty.title" = "Aucun signet";
-"bookmark.toolbar.show_sidebar.label" = "Afficher la barre latérale";
-"browser_tab.toolbar.show_sidebar.label" = "Afficher la barre latérale";
 "search_result.zimfile.empty.message" = "Aucun fichier ZIM ouvert";
 "search_result.zimfile.no_result.message" = "Aucun résultat";
 "search_result.sidebar.button.remove" = "Retirer";

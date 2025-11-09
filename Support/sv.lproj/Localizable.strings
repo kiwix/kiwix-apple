@@ -90,14 +90,12 @@
 "library.zim_file_context.random.label" = "Slumpsida";
 "library.zim_file_context.copy_url" = "Kopiera webbadress";
 "zim_file_opened.overlay.no-opened.message" = "Ingen öppnad ZIM-fil";
-"zim_file_opened.toolbar.show_sidebar.label" = "Visa sidofält";
 "zim_file_opened.toolbar.open.title" = "Öppna...";
 "zim_file_opened.toolbar.open.help" = "Öppna en ZIM-fil";
 "zim_file_category.title" = "Kategori";
 "zim_file_catalog.fetching.message" = "Hämtar katalog...";
 "zim_file_category.section.empty.message" = "Ingen ZIM-fil under denna kategori.";
 "zim_file_downloads.overlay.empty.message" = "Inga nedladdningsuppgifter";
-"zim_file_downloads.toolbar.show_sidebar.label" = "Visa sidofält";
 "zim_file_new_overlay.empty" = "Ingen ny ZIM-fil";
 "zim_file_new.button.refresh" = "Uppdatera";
 "zim_file.list.name.text" = "Namn";
@@ -197,8 +195,6 @@
 "settings.about.button.license" = "GNU General Public License v3";
 "bookmark.navigation.title" = "Bokmärken";
 "bookmark.overlay.empty.title" = "Inga bokmärken";
-"bookmark.toolbar.show_sidebar.label" = "Visa sidofält";
-"browser_tab.toolbar.show_sidebar.label" = "Visa sidofält";
 "search_result.zimfile.empty.message" = "Ingen öppnad ZIM-fil";
 "search_result.zimfile.no_result.message" = "Inga resultat";
 "search_result.sidebar.button.remove" = "Ta bort";

@@ -86,14 +86,12 @@
 "library.zim_file_context.random.label" = "Tilfældig Side";
 "library.zim_file_context.copy_url" = "Kopiér URL";
 "zim_file_opened.overlay.no-opened.message" = "Ingen åbnet ZIM-fil";
-"zim_file_opened.toolbar.show_sidebar.label" = "Vis Sidebar";
 "zim_file_opened.toolbar.open.title" = "Åben...";
 "zim_file_opened.toolbar.open.help" = "Åbn en ZIM-fil";
 "zim_file_category.title" = "Kategori";
 "zim_file_catalog.fetching.message" = "Henter Katalog ...";
 "zim_file_category.section.empty.message" = "Ingen ZIM-fil i denne kategori.";
 "zim_file_downloads.overlay.empty.message" = "Ingen downloadopgaver";
-"zim_file_downloads.toolbar.show_sidebar.label" = "Vis Sidebar";
 "zim_file_new_overlay.empty" = "Ingen ny ZIM-fil";
 "zim_file_new.button.refresh" = "Opdatér";
 "zim_file.list.name.text" = "Navn";
@@ -159,8 +157,6 @@
 "settings.about.button.license" = "GNU General Public License v3";
 "bookmark.navigation.title" = "Bogmærker";
 "bookmark.overlay.empty.title" = "Ingen bogmærker";
-"bookmark.toolbar.show_sidebar.label" = "Vis Sidebar";
-"browser_tab.toolbar.show_sidebar.label" = "Vis Sidebar";
 "search_result.zimfile.empty.message" = "Ingen åbnet ZIM-fil";
 "search_result.zimfile.no_result.message" = "Ingen resultater";
 "search_result.sidebar.button.remove" = "Fjern";

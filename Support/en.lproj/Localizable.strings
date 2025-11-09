@@ -123,7 +123,6 @@
 "library.zim_file_context.copy_url" = "Copy URL";
 
 "zim_file_opened.overlay.no-opened.message" = "No opened ZIM file";
-"zim_file_opened.toolbar.show_sidebar.label" = "Show Sidebar";
 "zim_file_opened.toolbar.open.title" = "Open...";
 "zim_file_opened.toolbar.open.help" = "Open a ZIM file";
 "zim_file_category.title" = "Category";
@@ -131,7 +130,6 @@
 "zim_file_catalog.fetching.message" = "Fetching Catalog ...";
 "zim_file_category.section.empty.message" = "No ZIM file under this category.";
 "zim_file_downloads.overlay.empty.message" = "No download tasks";
-"zim_file_downloads.toolbar.show_sidebar.label" = "Show Sidebar";
 
 "zim_file_new_overlay.empty" = "No new ZIM file";
 "zim_file_new.button.refresh" = "Refresh";
@@ -236,9 +234,7 @@
 
 "bookmark.navigation.title" = "Bookmarks";
 "bookmark.overlay.empty.title" = "No bookmarks";
-"bookmark.toolbar.show_sidebar.label" = "Show Sidebar";
 
-"browser_tab.toolbar.show_sidebar.label" = "Show Sidebar";
 
 "search_result.zimfile.empty.message" = "No opened ZIM file";
 "search_result.zimfile.no_result.message" = "No result";

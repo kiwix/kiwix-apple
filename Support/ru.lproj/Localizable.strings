@@ -76,14 +76,12 @@
 "library.zim_file_context.random.label" = "Случайная страница";
 "library.zim_file_context.copy_url" = "Скопировать URL-адрес";
 "zim_file_opened.overlay.no-opened.message" = "Нет открытого ZIM-файла";
-"zim_file_opened.toolbar.show_sidebar.label" = "Показать боковую панель";
 "zim_file_opened.toolbar.open.title" = "Открыть...";
 "zim_file_opened.toolbar.open.help" = "Открыть ZIM-файл";
 "zim_file_category.title" = "Категория";
 "zim_file_catalog.fetching.message" = "Загрузка каталога...";
 "zim_file_category.section.empty.message" = "В этой категории нет ZIM-файла.";
 "zim_file_downloads.overlay.empty.message" = "Нет задач по загрузке";
-"zim_file_downloads.toolbar.show_sidebar.label" = "Показать боковую панель";
 "zim_file_new_overlay.empty" = "Нет нового ZIM-файла";
 "zim_file_new.button.refresh" = "Обновить";
 "zim_file.list.name.text" = "Имя";
@@ -179,8 +177,6 @@
 "settings.about.button.license" = "GNU General Public License v3";
 "bookmark.navigation.title" = "Закладки";
 "bookmark.overlay.empty.title" = "Нет закладок";
-"bookmark.toolbar.show_sidebar.label" = "Показать боковую панель";
-"browser_tab.toolbar.show_sidebar.label" = "Показать боковую панель";
 "search_result.zimfile.empty.message" = "Нет открытого ZIM-файла";
 "search_result.zimfile.no_result.message" = "Ничего не найдено";
 "search_result.sidebar.button.remove" = "Удалить";

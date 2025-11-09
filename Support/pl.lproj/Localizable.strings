@@ -59,7 +59,6 @@
 // Fuzzy
 "zim_file_category.section.empty.message" = "Brak pliku zim w tej kategorii.";
 "zim_file_downloads.overlay.empty.message" = "Brak zadań pobierania";
-"zim_file_downloads.toolbar.show_sidebar.label" = "Pokaż pasek boczny";
 // Fuzzy
 "zim_file_new_overlay.empty" = "Brak nowego pliku zim";
 "zim_file_new.button.refresh" = "Odśwież";
@@ -131,8 +130,6 @@
 "settings.about.source.title" = "Kod źródłowy";
 "bookmark.navigation.title" = "Zakładki";
 "bookmark.overlay.empty.title" = "Brak zakładek";
-"bookmark.toolbar.show_sidebar.label" = "Pokaż pasek boczny";
-"browser_tab.toolbar.show_sidebar.label" = "Pokaż pasek boczny";
 // Fuzzy
 "search_result.zimfile.empty.message" = "Brak otwartego pliku zim";
 "search_result.zimfile.no_result.message" = "Brak wyników";

@@ -66,12 +66,10 @@
 "library.zim_file_context.random.label" = "Випадкова сторінка";
 "library.zim_file_context.copy_url" = "Скопіювати URL";
 "zim_file_opened.overlay.no-opened.message" = "Немає відкритого файлу ZIM";
-"zim_file_opened.toolbar.show_sidebar.label" = "Показати бічну панель";
 "zim_file_opened.toolbar.open.title" = "Відкрити...";
 "zim_file_opened.toolbar.open.help" = "Відкрити файл ZIM";
 "zim_file_category.title" = "Категорія";
 "zim_file_category.section.empty.message" = "У цій категорії немає файлу ZIM.";
-"zim_file_downloads.toolbar.show_sidebar.label" = "Показати бічну панель";
 "zim_file_new_overlay.empty" = "Немає нового файлу ZIM";
 "zim_file_new.button.refresh" = "Оновити";
 "zim_file.list.name.text" = "Назва";
@@ -161,8 +159,6 @@
 "settings.about.button.license" = "Загальна громадська ліцензія GNU v3";
 "bookmark.navigation.title" = "Закладки";
 "bookmark.overlay.empty.title" = "Немає закладок";
-"bookmark.toolbar.show_sidebar.label" = "Показати бічну панель";
-"browser_tab.toolbar.show_sidebar.label" = "Показати бічну панель";
 "search_result.zimfile.empty.message" = "Немає відкритого файлу ZIM";
 "search_result.zimfile.no_result.message" = "Немає результатів";
 "search_result.sidebar.button.remove" = "Видалити";

@@ -71,14 +71,12 @@
 "library.zim_file_context.random.label" = "Pagină Aleatorie";
 "library.zim_file_context.copy_url" = "Copiază URL";
 "zim_file_opened.overlay.no-opened.message" = "Niciun fișier ZIM deschis";
-"zim_file_opened.toolbar.show_sidebar.label" = "Afișați bara laterală";
 "zim_file_opened.toolbar.open.title" = "Deschide...";
 "zim_file_opened.toolbar.open.help" = "Deschide Fișierul Zim";
 "zim_file_category.title" = "Categorie";
 "zim_file_catalog.fetching.message" = "Preia Catalogul...";
 "zim_file_category.section.empty.message" = "Niciun fișier ZIM în această categorie.";
 "zim_file_downloads.overlay.empty.message" = "Fără sarcini de descărcare";
-"zim_file_downloads.toolbar.show_sidebar.label" = "Afișați bara laterală";
 "zim_file_new_overlay.empty" = "Niciun fișier ZIM deschis";
 "zim_file_new.button.refresh" = "Reîmprospătare";
 "zim_file.list.name.text" = "Nume";
@@ -169,8 +167,6 @@
 "settings.about.button.license" = "Licența Publică Generală GNU v3";
 "bookmark.navigation.title" = "Semne de carte";
 "bookmark.overlay.empty.title" = "Nici un semn de carte";
-"bookmark.toolbar.show_sidebar.label" = "Afișați bara laterală";
-"browser_tab.toolbar.show_sidebar.label" = "Afișați bara laterală";
 "search_result.zimfile.empty.message" = "Niciun fișier ZIM deschis";
 "search_result.zimfile.no_result.message" = "Fără rezultate";
 "search_result.sidebar.button.remove" = "Elimină";

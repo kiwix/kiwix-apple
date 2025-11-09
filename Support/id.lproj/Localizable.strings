@@ -71,14 +71,12 @@
 "library.zim_file_context.random.label" = "Halaman Acak";
 "library.zim_file_context.copy_url" = "Salin URL";
 "zim_file_opened.overlay.no-opened.message" = "Tidak ada berkas ZIM yang dibuka";
-"zim_file_opened.toolbar.show_sidebar.label" = "Tampilkan Bilah Sisi";
 "zim_file_opened.toolbar.open.title" = "Buka...";
 "zim_file_opened.toolbar.open.help" = "Buka berkas ZIM";
 "zim_file_category.title" = "Kategori";
 "zim_file_catalog.fetching.message" = "Mengambil Katalog ...";
 "zim_file_category.section.empty.message" = "Tidak ada berkas ZIM dalam kategori ini.";
 "zim_file_downloads.overlay.empty.message" = "Tidak ada tugas unduhan";
-"zim_file_downloads.toolbar.show_sidebar.label" = "Tampilkan Bilah Sisi";
 "zim_file_new_overlay.empty" = "Tidak ada berkas ZIM baru";
 "zim_file_new.button.refresh" = "Muat ulang";
 "zim_file.list.name.text" = "Nama";
@@ -173,8 +171,6 @@
 "settings.about.button.license" = "Lisensi Publik Umum GNU v3";
 "bookmark.navigation.title" = "Markah";
 "bookmark.overlay.empty.title" = "Tidak Ada Markah";
-"bookmark.toolbar.show_sidebar.label" = "Tampilkan Bilah Sisi";
-"browser_tab.toolbar.show_sidebar.label" = "Tampilkan Bilah Sisi";
 "search_result.zimfile.empty.message" = "Tidak ada berkas ZIM yang dibuka";
 "search_result.zimfile.no_result.message" = "Tidak ada hasil";
 "search_result.sidebar.button.remove" = "Hapus";

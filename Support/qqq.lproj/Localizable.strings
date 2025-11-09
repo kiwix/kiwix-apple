@@ -93,14 +93,12 @@
 "library.zim_file_context.random.label" = "Supplementary action title, when long pressing on a ZIM file";
 "library.zim_file_context.copy_url" = "Suplementary action title, when long pressing a ZIM file. Also used as a button title to copy the hotspot URL. The context is the same as the system's copy/paste action.";
 "zim_file_opened.overlay.no-opened.message" = "Default placeholder text for center panel on macOS, when we have no history of opened files";
-"zim_file_opened.toolbar.show_sidebar.label" = "Show Sidebar";
 "zim_file_opened.toolbar.open.title" = "Accesissiblit label of a (+) icon on iOS, in the top right corner, to open a local file";
 "zim_file_opened.toolbar.open.help" = "Accessibility label of a (+) icon in the macOS app, in the top right corner, to open a local file";
 "zim_file_category.title" = "Accessiblity label for category picker";
 "zim_file_catalog.fetching.message" = "Fallback text for the case when the catalog of ZIM files is still being refreshed, and it will appear soon, as the operation completes.";
 "zim_file_category.section.empty.message" = "Fallback text for listing results";
 "zim_file_downloads.overlay.empty.message" = "Fallback text for center panel, when downloads are selected from the side menu.";
-"zim_file_downloads.toolbar.show_sidebar.label" = "Accessibility label for side bar toggle button";
 "zim_file_new_overlay.empty" = "Fallback text for listing new ZIM files available for download";
 "zim_file_new.button.refresh" = "Accessibility label for refresh button on the top nav bar to refresh the list of new ZIM files";
 "zim_file.list.name.text" = "Title for displaying the details of a ZIM file";
@@ -200,8 +198,6 @@
 "settings.about.button.license" = "Button label taking the user to the license details, on About page";
 "bookmark.navigation.title" = "Navigation button label";
 "bookmark.overlay.empty.title" = "Fallback text displayed in center, when there are no bookmarks";
-"bookmark.toolbar.show_sidebar.label" = "Accesibility label for side bar button icon";
-"browser_tab.toolbar.show_sidebar.label" = "Accesibility label for side bar button icon";
 "search_result.zimfile.empty.message" = "Fallback text on search results";
 "search_result.zimfile.no_result.message" = "Fallback text on search results";
 "search_result.sidebar.button.remove" = "Button text on search results, to remove former results";

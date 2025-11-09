@@ -59,7 +59,6 @@
 "zim_file_opened.toolbar.open.title" = "Avaa...";
 "zim_file_opened.toolbar.open.help" = "Avaa ZIM-tiedosto";
 "zim_file_category.title" = "Luokka";
-"zim_file_downloads.toolbar.show_sidebar.label" = "Näytä sivupalkki";
 "zim_file.list.name.text" = "Nimi";
 "zim_file.list.description.text" = "Kuvaus";
 "zim_file.action.open_main_page.title" = "Avaa etusivu";
@@ -104,8 +103,6 @@
 "settings.about.source.title" = "Lähdekoodi";
 "bookmark.navigation.title" = "Kirjanmerkit";
 "bookmark.overlay.empty.title" = "Ei kirjanmerkkejä";
-"bookmark.toolbar.show_sidebar.label" = "Näytä sivupalkki";
-"browser_tab.toolbar.show_sidebar.label" = "Näytä sivupalkki";
 "search_result.zimfile.no_result.message" = "Ei tuloksia";
 "search_result.sidebar.button.remove" = "Poista";
 "search_result.header.text" = "Viimeisin haku";

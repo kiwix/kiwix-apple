@@ -88,14 +88,12 @@
 "library.zim_file_context.random.label" = "隨機頁面";
 "library.zim_file_context.copy_url" = "複製 URL";
 "zim_file_opened.overlay.no-opened.message" = "沒有開啟的 ZIM 檔案";
-"zim_file_opened.toolbar.show_sidebar.label" = "顯示側邊欄";
 "zim_file_opened.toolbar.open.title" = "開啟…";
 "zim_file_opened.toolbar.open.help" = "開啟一個 ZIM 檔案";
 "zim_file_category.title" = "分類";
 "zim_file_catalog.fetching.message" = "正在抓取目錄…";
 "zim_file_category.section.empty.message" = "此分類下沒有 ZIM 檔案。";
 "zim_file_downloads.overlay.empty.message" = "沒有下載任務";
-"zim_file_downloads.toolbar.show_sidebar.label" = "顯示側邊欄";
 "zim_file_new_overlay.empty" = "沒有新的 ZIM 檔案";
 "zim_file_new.button.refresh" = "重整";
 "zim_file.list.name.text" = "名稱";
@@ -195,8 +193,6 @@
 "settings.about.button.license" = "GNU 通用公眾授權條款 v3";
 "bookmark.navigation.title" = "書籤";
 "bookmark.overlay.empty.title" = "沒有書籤";
-"bookmark.toolbar.show_sidebar.label" = "顯示側邊欄";
-"browser_tab.toolbar.show_sidebar.label" = "顯示側邊欄";
 "search_result.zimfile.empty.message" = "沒有開啟的 ZIM 檔案";
 "search_result.zimfile.no_result.message" = "沒有結果";
 "search_result.sidebar.button.remove" = "移除";

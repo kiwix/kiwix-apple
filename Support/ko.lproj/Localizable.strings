@@ -74,14 +74,12 @@
 "library.zim_file_context.random.label" = "임의의 문서";
 "library.zim_file_context.copy_url" = "URL 복사";
 "zim_file_opened.overlay.no-opened.message" = "열린 ZIM 파일이 없습니다";
-"zim_file_opened.toolbar.show_sidebar.label" = "사이드바 표시";
 "zim_file_opened.toolbar.open.title" = "열기...";
 "zim_file_opened.toolbar.open.help" = "ZIM 파일 열기";
 "zim_file_category.title" = "분류";
 "zim_file_catalog.fetching.message" = "카탈로그를 가져오는 중 ...";
 "zim_file_category.section.empty.message" = "이 분류에 속하는 ZIM 파일이 없습니다.";
 "zim_file_downloads.overlay.empty.message" = "다운로드 작업 없음";
-"zim_file_downloads.toolbar.show_sidebar.label" = "사이드바 표시";
 "zim_file_new_overlay.empty" = "새 ZIM 파일 없습니다";
 "zim_file_new.button.refresh" = "새로 고침";
 "zim_file.list.name.text" = "이름";
@@ -171,8 +169,6 @@
 "settings.about.button.license" = "GNU 일반 공중 사용 허가서 v3";
 "bookmark.navigation.title" = "북마크";
 "bookmark.overlay.empty.title" = "북마크 없음";
-"bookmark.toolbar.show_sidebar.label" = "사이드바 표시";
-"browser_tab.toolbar.show_sidebar.label" = "사이드바 표시";
 "search_result.zimfile.empty.message" = "열린 ZIM 파일이 없습니다";
 "search_result.zimfile.no_result.message" = "결과 없음";
 "search_result.sidebar.button.remove" = "제거";

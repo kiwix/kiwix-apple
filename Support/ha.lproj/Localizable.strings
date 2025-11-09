@@ -74,13 +74,11 @@
 "library.zim_file_context.random.label" = "Shafin bazuwar";
 "library.zim_file_context.copy_url" = "Kwafi URL";
 "zim_file_opened.overlay.no-opened.message" = "Babu buddaden zim fayil";
-"zim_file_opened.toolbar.show_sidebar.label" = "Nuna ma'aunin gefe";
 "zim_file_opened.toolbar.open.title" = "Bude..";
 "zim_file_opened.toolbar.open.help" = "Bude fayil ɗin zim";
 "zim_file_category.title" = "Rukuni";
 "zim_file_category.section.empty.message" = "Babu fayil ɗin zim a ƙarƙashin wannan rukunin";
 "zim_file_downloads.overlay.empty.message" = "Babu ayyukan zazzagewa";
-"zim_file_downloads.toolbar.show_sidebar.label" = "Nuna ma'aunin gefe";
 "zim_file_new_overlay.empty" = "Babu sabon fayil ɗin Zim";
 "zim_file_new.button.refresh" = "Wartsake";
 "zim_file.list.name.text" = "Suna";
@@ -171,8 +169,6 @@
 "settings.about.button.license" = "Babban Lasisi na GNU v3";
 "bookmark.navigation.title" = " bukumaaki";
 "bookmark.overlay.empty.title" = "Babu Alamomi";
-"bookmark.toolbar.show_sidebar.label" = "Nuna ma'aunin gefe";
-"browser_tab.toolbar.show_sidebar.label" = "Nuna ma'aunin gefe";
 "search_result.zimfile.empty.message" = "Babu buɗɗaɗen zim fayil";
 "search_result.zimfile.no_result.message" = "Babu sakamako";
 "search_result.sidebar.button.remove" = "Cire";

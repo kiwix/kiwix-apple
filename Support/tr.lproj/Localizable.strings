@@ -69,7 +69,6 @@
 "library.zim_file_context.copy_url" = "URL'yi kopyala";
 // Fuzzy
 "zim_file_opened.overlay.no-opened.message" = "Açık zim dosyası yok";
-"zim_file_opened.toolbar.show_sidebar.label" = "Kenar Çubuğunu Göster";
 "zim_file_opened.toolbar.open.title" = "Açık...";
 // Fuzzy
 "zim_file_opened.toolbar.open.help" = "Bir zim dosyasını açın";
@@ -77,7 +76,6 @@
 // Fuzzy
 "zim_file_category.section.empty.message" = "Bu kategori altında zim dosyası yok.";
 "zim_file_downloads.overlay.empty.message" = "İndirme görevi yok";
-"zim_file_downloads.toolbar.show_sidebar.label" = "Kenar Çubuğunu Göster";
 // Fuzzy
 "zim_file_new_overlay.empty" = "Yeni zim dosyası yok";
 "zim_file_new.button.refresh" = "Yenile";
@@ -174,8 +172,6 @@
 "settings.about.button.license" = "GNU Genel Kamu Lisansı v3";
 "bookmark.navigation.title" = "Yer İşaretleri";
 "bookmark.overlay.empty.title" = "Yer işareti yok";
-"bookmark.toolbar.show_sidebar.label" = "Kenar Çubuğunu Göster";
-"browser_tab.toolbar.show_sidebar.label" = "Kenar Çubuğunu Göster";
 // Fuzzy
 "search_result.zimfile.empty.message" = "Açık zim dosyası yok";
 "search_result.zimfile.no_result.message" = "Sonuç yok";
