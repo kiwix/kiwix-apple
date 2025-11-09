@@ -134,7 +134,7 @@ struct BrowserTab: View {
             placement: .toolbarPrincipal,
             prompt: LocalString.common_search
         )
-        .onChange(of: scenePhase) { [weak browser] newValue in
+        .onChange(of: scenePhase) { [weak browser] _, newValue in
             if case .active = newValue {
                 browser?.refreshVideoState()
             }
@@ -224,7 +224,7 @@ struct BrowserTab: View {
                     }
                 }
             }
-            .onChange(of: library.state) { state in
+            .onChange(of: library.state) { _, state in
                 guard state == .complete else { return }
                 showTheLibrary()
             }

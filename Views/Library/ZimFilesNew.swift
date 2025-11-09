@@ -45,6 +45,7 @@ private final class ViewModel: ObservableObject {
         }
     }
     
+    @MainActor
     func update() async {
         let searchText = self.searchText
         let languageCodes = self.languageCodes
@@ -66,10 +67,8 @@ private final class ViewModel: ObservableObject {
                 }
             }
         }
-        await MainActor.run {
-            withAnimation(.easeInOut) {
-                self.zimFiles = newZimFiles
-            }
+        withAnimation(.easeInOut) {
+            self.zimFiles = newZimFiles
         }
     }
     
@@ -134,10 +133,10 @@ struct ZimFilesNew: View {
             viewModel.update(languageCodes: languageCodes)
             library.start(isUserInitiated: false)
         }
-        .onChange(of: searchText) { newSearchText in
+        .onChange(of: searchText) { _, newSearchText in
             viewModel.update(searchText: newSearchText)
         }
-        .onChange(of: languageCodes) { newLanguageCodes in
+        .onChange(of: languageCodes) { _, newLanguageCodes in
             viewModel.update(languageCodes: newLanguageCodes)
         }
         .overlay {

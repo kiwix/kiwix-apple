@@ -102,10 +102,10 @@ struct RootView: View {
         .modifier(OpenFileHandler())
         .modifier(SaveContentHandler())
         .environmentObject(navigation)
-        .onChange(of: currentNavItem) { newValue in
+        .onChange(of: currentNavItem) { _, newValue in
             navigation.currentItem = newValue?.navigationItem
         }
-        .onChange(of: navigation.currentItem) { newValue in
+        .onChange(of: navigation.currentItem) { _, newValue in
             guard let newValue else { return }
             let navItem = MenuItem(from: newValue)
             if currentNavItem != navItem {
@@ -235,7 +235,7 @@ struct RootView: View {
             }
         }
         // Handle re-appearance and marking missing zim files
-        .onChange(of: controlActiveState) { newState in
+        .onChange(of: controlActiveState) { _, newState in
             switch newState {
             case .key:
                 if FeatureFlags.hasLibrary {
