@@ -83,7 +83,6 @@ struct Library: View {
     }
 }
 
-@available(iOS 16.0, *)
 struct Library_Previews: PreviewProvider {
     static var previews: some View {
         NavigationStack {

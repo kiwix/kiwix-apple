@@ -85,14 +85,12 @@
 "library.zim_file_context.random.label" = "Zufällige Seite";
 "library.zim_file_context.copy_url" = "URL kopieren";
 "zim_file_opened.overlay.no-opened.message" = "Keine geöffnete ZIM-Datei";
-"zim_file_opened.toolbar.show_sidebar.label" = "Seitenleiste anzeigen";
 "zim_file_opened.toolbar.open.title" = "Öffnen…";
 "zim_file_opened.toolbar.open.help" = "Öffne eine ZIM-Datei";
 "zim_file_category.title" = "Kategorie";
 "zim_file_catalog.fetching.message" = "Katalog wird abgerufen ...";
 "zim_file_category.section.empty.message" = "Keine ZIM-Datei in dieser Kategorie.";
 "zim_file_downloads.overlay.empty.message" = "Keine ausstehenden Downloads";
-"zim_file_downloads.toolbar.show_sidebar.label" = "Seitenleiste anzeigen";
 "zim_file_new_overlay.empty" = "Keine neue ZIM-Datei";
 "zim_file_new.button.refresh" = "Aktualisieren";
 "zim_file.list.name.text" = "Name";
@@ -183,8 +181,6 @@
 "settings.about.button.license" = "GNU General Public License v3";
 "bookmark.navigation.title" = "Lesezeichen";
 "bookmark.overlay.empty.title" = "Keine Lesezeichen";
-"bookmark.toolbar.show_sidebar.label" = "Seitenleiste anzeigen";
-"browser_tab.toolbar.show_sidebar.label" = "Seitenleiste anzeigen";
 "search_result.zimfile.empty.message" = "Keine geöffnete ZIM-Datei";
 "search_result.zimfile.no_result.message" = "Keine Ergebnisse";
 "search_result.sidebar.button.remove" = "Entfernen";

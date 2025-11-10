@@ -38,17 +38,6 @@ struct ZimFilesCategories: View {
             .modifier(ToolbarRoleBrowser())
             .navigationTitle(MenuItem.categories.name)
             .toolbar {
-                #if os(iOS)
-                ToolbarItem(placement: .navigationBarLeading) {
-                    if #unavailable(iOS 16) {
-                        Button {
-                            NotificationCenter.toggleSidebar()
-                        } label: {
-                            Label(LocalString.zim_file_opened_toolbar_show_sidebar_label, systemImage: "sidebar.left")
-                        }
-                    }
-                }
-                #endif
                 ToolbarItem {
                     Picker(LocalString.zim_file_category_title, selection: $selected) {
                         ForEach(categories) {

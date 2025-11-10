@@ -53,10 +53,9 @@ struct DynamicCopyButton: View {
                 action()
                 copyComplete += 1
             } label: {
-                withSymbolEffect(
-                    Label(buttonState.label, systemImage: systemImage)
-                        .foregroundStyle(buttonState.color)
-                )
+                Label(buttonState.label, systemImage: systemImage)
+                    .foregroundStyle(buttonState.color)
+                    .contentTransition(.symbolEffect(.replace))
             }
             // fix for button height changes when the icon is swapped
             .frame(minHeight: 23)
@@ -77,16 +76,7 @@ struct DynamicCopyButton: View {
             }
         }, trigger: copyComplete)
     }
-    
-    @ViewBuilder
-    private func withSymbolEffect(_ content: some View) -> some View {
-        if #available(iOS 17, macOS 14, *) {
-            content
-                .contentTransition(.symbolEffect(.replace))
-        } else {
-            content
-        }
-    }
+
 }
 
 struct SensoryFeedbackContext<Content: View, T: Equatable>: View {
@@ -99,13 +89,10 @@ struct SensoryFeedbackContext<Content: View, T: Equatable>: View {
     }
     
     var body: some View {
-        if #available(iOS 17, macOS 14, *) {
-            content
-            #if os(iOS)
-                .sensoryFeedback(.success, trigger: trigger) { _, _ in true }
-            #endif
-        } else {
-            content
-        }
+        content
+#if os(iOS)
+            .sensoryFeedback(.success, trigger: trigger) { _, _ in true }
+#endif
+        
     }
 }

@@ -87,14 +87,12 @@
 "library.zim_file_context.random.label" = "Willekeurige pagina";
 "library.zim_file_context.copy_url" = "URL kopiëren";
 "zim_file_opened.overlay.no-opened.message" = "Geen geopend ZIM-bestand";
-"zim_file_opened.toolbar.show_sidebar.label" = "Zijbalk weergeven";
 "zim_file_opened.toolbar.open.title" = "Openen...";
 "zim_file_opened.toolbar.open.help" = "ZIM-bestand openen";
 "zim_file_category.title" = "Categorie";
 "zim_file_catalog.fetching.message" = "Catalogus wordt opgehaald…";
 "zim_file_category.section.empty.message" = "Geen ZIM-bestand in deze categorie.";
 "zim_file_downloads.overlay.empty.message" = "Geen downloadtaken";
-"zim_file_downloads.toolbar.show_sidebar.label" = "Zijbalk weergeven";
 "zim_file_new_overlay.empty" = "Geen nieuw ZIM-bestand";
 "zim_file_new.button.refresh" = "Vernieuwen";
 "zim_file.list.name.text" = "Naam";
@@ -194,8 +192,6 @@
 "settings.about.button.license" = "GNU General Public License v3";
 "bookmark.navigation.title" = "Bladwijzers";
 "bookmark.overlay.empty.title" = "Geen bladwijzers";
-"bookmark.toolbar.show_sidebar.label" = "Zijbalk weergeven";
-"browser_tab.toolbar.show_sidebar.label" = "Zijbalk weergeven";
 "search_result.zimfile.empty.message" = "Geen geopend ZIM-bestand";
 "search_result.zimfile.no_result.message" = "Geen resultaat";
 "search_result.sidebar.button.remove" = "Verwijderen";

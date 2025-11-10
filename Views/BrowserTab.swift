@@ -47,13 +47,6 @@ struct BrowserTab: View {
             }
 #elseif os(iOS)
             ToolbarItemGroup(placement: .navigationBarLeading) {
-                if #unavailable(iOS 16) {
-                    Button {
-                        NotificationCenter.toggleSidebar()
-                    } label: {
-                        Label(LocalString.browser_tab_toolbar_show_sidebar_label, systemImage: "sidebar.left")
-                    }
-                }
                 NavigationButtons(
                     goBack: { [weak browser] in
                         browser?.webView.goBack()

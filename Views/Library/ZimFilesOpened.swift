@@ -109,15 +109,6 @@ struct ZimFilesOpened: View {
             NotificationCenter.openFiles(urls, context: .library)
         }
         .toolbar {
-            ToolbarItem(placement: .navigationBarLeading) {
-                if #unavailable(iOS 16), horizontalSizeClass == .regular {
-                    Button {
-                        NotificationCenter.toggleSidebar()
-                    } label: {
-                        Label(LocalString.zim_file_opened_toolbar_show_sidebar_label, systemImage: "sidebar.left")
-                    }
-                }
-            }
             ToolbarItem {
                 Button {
                     isFileImporterPresented = true

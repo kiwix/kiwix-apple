@@ -73,14 +73,12 @@
 "library.zim_file_context.random.label" = "おまかせ表示";
 "library.zim_file_context.copy_url" = "URLをコピー";
 "zim_file_opened.overlay.no-opened.message" = "オープンしたZIMファイルはありません";
-"zim_file_opened.toolbar.show_sidebar.label" = "サイドバーを表示";
 "zim_file_opened.toolbar.open.title" = "開く...";
 "zim_file_opened.toolbar.open.help" = "ZIMファイルを開く";
 "zim_file_category.title" = "カテゴリ";
 "zim_file_catalog.fetching.message" = "カタログを取得しています...";
 "zim_file_category.section.empty.message" = "このカテゴリーに ZIMファイルはありません。";
 "zim_file_downloads.overlay.empty.message" = "ダウンロード処理はありません";
-"zim_file_downloads.toolbar.show_sidebar.label" = "サイドバーを表示";
 "zim_file_new_overlay.empty" = "新しいZIMファイルはありません";
 "zim_file_new.button.refresh" = "更新";
 "zim_file.list.name.text" = "名前";
@@ -171,8 +169,6 @@
 "settings.about.button.license" = "GNU General Public License v3";
 "bookmark.navigation.title" = "ブックマーク";
 "bookmark.overlay.empty.title" = "ブックマークはありません";
-"bookmark.toolbar.show_sidebar.label" = "サイドバーを表示";
-"browser_tab.toolbar.show_sidebar.label" = "サイドバーを表示";
 "search_result.zimfile.empty.message" = "オープンしたZIMファイルはありません";
 "search_result.zimfile.no_result.message" = "結果なし";
 "search_result.sidebar.button.remove" = "削除";

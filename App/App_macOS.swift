@@ -60,15 +60,11 @@ struct Kiwix: App {
 
     var body: some Scene {
         WindowGroup {
-            let root = RootView(isSearchFocused: $isSearchFocused)
+            RootView(isSearchFocused: $isSearchFocused)
                 .environment(\.managedObjectContext, Database.shared.viewContext)
                 .environmentObject(libraryRefreshViewModel)
                 .task { colorSchemeStore.update() }
-            if #available(macOS 14, *) {
-                root.modifier(OpeningSettingsModifier(updateTabSelection: selectHotspotTab))
-            } else {
-                root.modifier(OpeningSettingsModifier_macOS_13(updateTabSelection: selectHotspotTab))
-            }
+                .modifier(OpeningSettingsModifier(updateTabSelection: selectHotspotTab))
         }.commands {
             SidebarCommands()
             CommandGroup(replacing: .importExport) {

@@ -86,14 +86,12 @@
 "library.zim_file_context.random.label" = "Naključna stran";
 "library.zim_file_context.copy_url" = "Kopiraj URL";
 "zim_file_opened.overlay.no-opened.message" = "Odprta ni nobena datoteka ZIM";
-"zim_file_opened.toolbar.show_sidebar.label" = "Prikaži stransko vrstico";
 "zim_file_opened.toolbar.open.title" = "Odpri ...";
 "zim_file_opened.toolbar.open.help" = "Odpri datoteko ZIM";
 "zim_file_category.title" = "Kategorija";
 "zim_file_catalog.fetching.message" = "Pridobivanje kataloga ...";
 "zim_file_category.section.empty.message" = "V tej kategoriji ni datoteke ZIM.";
 "zim_file_downloads.overlay.empty.message" = "Ni opravil prenosa";
-"zim_file_downloads.toolbar.show_sidebar.label" = "Prikaži stransko vrstico";
 "zim_file_new_overlay.empty" = "Ni novih datotek ZIM";
 "zim_file_new.button.refresh" = "Osveži";
 "zim_file.list.name.text" = "Ime";
@@ -193,8 +191,6 @@
 "settings.about.button.license" = "Splošna javna licenca GNU v3";
 "bookmark.navigation.title" = "Zaznamki";
 "bookmark.overlay.empty.title" = "Ni zaznamkov";
-"bookmark.toolbar.show_sidebar.label" = "Prikaži stransko vrstico";
-"browser_tab.toolbar.show_sidebar.label" = "Prikaži stransko vrstico";
 "search_result.zimfile.empty.message" = "Ni odprte datoteke ZIM";
 "search_result.zimfile.no_result.message" = "Ni zadetkov";
 "search_result.sidebar.button.remove" = "Odstrani";

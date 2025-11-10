@@ -58,14 +58,12 @@
 "library.zim_file_context.random.label" = "Pagina a caso";
 "library.zim_file_context.copy_url" = "Copia l'URL";
 "zim_file_opened.overlay.no-opened.message" = "Nessun file ZIM aperto";
-"zim_file_opened.toolbar.show_sidebar.label" = "Mostra barra laterale";
 "zim_file_opened.toolbar.open.title" = "Apri...";
 "zim_file_opened.toolbar.open.help" = "Apri un file ZIM";
 "zim_file_category.title" = "Categoria";
 "zim_file_catalog.fetching.message" = "Recupero del catalogo in corso...";
 "zim_file_category.section.empty.message" = "Nessun file ZIM in questa categoria.";
 "zim_file_downloads.overlay.empty.message" = "Nessuna attività di download";
-"zim_file_downloads.toolbar.show_sidebar.label" = "Mostra barra laterale";
 "zim_file_new_overlay.empty" = "Nessun nuovo file ZIM";
 "zim_file_new.button.refresh" = "Aggiorna";
 "zim_file.list.name.text" = "Nome";
@@ -118,7 +116,6 @@
 "settings.about.appverion.title" = "Versione";
 "settings.about.build.title" = "Release";
 "bookmark.navigation.title" = "Segnalibri";
-"bookmark.toolbar.show_sidebar.label" = "Mostra barra laterale";
 "search_result.zimfile.empty.message" = "Nessun file ZIM aperto";
 "search_result.zimfile.no_result.message" = "Nessun risultato";
 "search_result.sidebar.button.remove" = "Rimuovi";

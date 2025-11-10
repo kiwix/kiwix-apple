@@ -65,13 +65,11 @@
 "library.zim_file_context.random.label" = "Gahim piigi yaɣili";
 "library.zim_file_context.copy_url" = "Yaai URL";
 "zim_file_opened.overlay.no-opened.message" = "Zim fasara bi yooi";
-"zim_file_opened.toolbar.show_sidebar.label" = "Wuhimi \"sidebar\"";
 "zim_file_opened.toolbar.open.title" = "Yooi...";
 "zim_file_opened.toolbar.open.help" = "Yoomi zim fasara";
 "zim_file_category.title" = "Pubu";
 "zim_file_category.section.empty.message" = "Zim fasara kani pubu ŋɔ ni.";
 "zim_file_downloads.overlay.empty.message" = "Deebu tuma nima kani";
-"zim_file_downloads.toolbar.show_sidebar.label" = "Wuhimi \"Sidebar\"";
 "zim_file_new_overlay.empty" = "Zim fasara palli kani";
 "zim_file_new.button.refresh" = "Kahigi";
 "zim_file.list.name.text" = "Yuli";
@@ -155,8 +153,6 @@
 "settings.about.source.title" = "Kundivihira";
 "bookmark.navigation.title" = "Buku'dalima";
 "bookmark.overlay.empty.title" = "Buku'dalima kani";
-"bookmark.toolbar.show_sidebar.label" = "Wuhimi \"Sidebar\"";
-"browser_tab.toolbar.show_sidebar.label" = "Wuhimi \"Sidebar\"";
 "search_result.zimfile.empty.message" = "Zim fasara din yooi kani";
 "search_result.zimfile.no_result.message" = "Labisigu kani";
 "search_result.sidebar.button.remove" = "Yihi";

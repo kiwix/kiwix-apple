@@ -54,19 +54,6 @@ struct Bookmarks: View {
                 Message(text: LocalString.bookmark_overlay_empty_title)
             }
         }
-#if os(iOS)
-        .toolbar {
-            ToolbarItem(placement: .navigationBarLeading) {
-                if #unavailable(iOS 16), horizontalSizeClass == .regular {
-                    Button {
-                        NotificationCenter.toggleSidebar()
-                    } label: {
-                        Label(LocalString.bookmark_toolbar_show_sidebar_label, systemImage: "sidebar.left")
-                    }
-                }
-            }
-        }
-#endif
     }
 
     private var gridItem: GridItem {

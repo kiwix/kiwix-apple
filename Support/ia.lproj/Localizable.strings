@@ -86,14 +86,12 @@
 "library.zim_file_context.random.label" = "Pagina aleatori";
 "library.zim_file_context.copy_url" = "Copiar URL";
 "zim_file_opened.overlay.no-opened.message" = "Necun file ZIM aperite";
-"zim_file_opened.toolbar.show_sidebar.label" = "Monstrar barra lateral";
 "zim_file_opened.toolbar.open.title" = "Aperir…";
 "zim_file_opened.toolbar.open.help" = "Aperir un file ZIM";
 "zim_file_category.title" = "Categoria";
 "zim_file_catalog.fetching.message" = "Obtention del catalogo…";
 "zim_file_category.section.empty.message" = "Necun file ZIM in iste categoria.";
 "zim_file_downloads.overlay.empty.message" = "Necun discargamento";
-"zim_file_downloads.toolbar.show_sidebar.label" = "Monstrar barra lateral";
 "zim_file_new_overlay.empty" = "Necun nove file ZIM";
 "zim_file_new.button.refresh" = "Refrescar";
 "zim_file.list.name.text" = "Nomine";
@@ -193,8 +191,6 @@
 "settings.about.button.license" = "Licentia Public General de GNU v3";
 "bookmark.navigation.title" = "Marcapaginas";
 "bookmark.overlay.empty.title" = "Necun marcapagina";
-"bookmark.toolbar.show_sidebar.label" = "Monstrar barra lateral";
-"browser_tab.toolbar.show_sidebar.label" = "Monstrar barra lateral";
 "search_result.zimfile.empty.message" = "Necun file ZIM aperite";
 "search_result.zimfile.no_result.message" = "Nulle resultato";
 "search_result.sidebar.button.remove" = "Remover";

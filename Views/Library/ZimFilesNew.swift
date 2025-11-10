@@ -152,18 +152,6 @@ struct ZimFilesNew: View {
             }
         }
         .toolbar {
-            #if os(iOS)
-            ToolbarItem(placement: .navigationBarLeading) {
-                if #unavailable(iOS 16), horizontalSizeClass == .regular {
-                    Button {
-                        NotificationCenter.toggleSidebar()
-                    } label: {
-                        Label(LocalString.zim_file_opened_toolbar_show_sidebar_label,
-                              systemImage: "sidebar.left")
-                    }
-                }
-            }
-            #endif
             ToolbarItem {
                 if library.state == .inProgress {
                     ProgressView()
@@ -183,7 +171,6 @@ struct ZimFilesNew: View {
     }
 }
 
-@available(macOS 13.0, iOS 16.0, *)
 struct ZimFilesNew_Previews: PreviewProvider {
     static var previews: some View {
         NavigationStack {

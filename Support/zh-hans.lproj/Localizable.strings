@@ -93,14 +93,12 @@
 "library.zim_file_context.random.label" = "随机页面";
 "library.zim_file_context.copy_url" = "复制URL";
 "zim_file_opened.overlay.no-opened.message" = "没有打开任何 ZIM 文件";
-"zim_file_opened.toolbar.show_sidebar.label" = "显示侧边栏";
 "zim_file_opened.toolbar.open.title" = "打开...";
 "zim_file_opened.toolbar.open.help" = "打开 ZIM 文件";
 "zim_file_category.title" = "分类";
 "zim_file_catalog.fetching.message" = "正在获取目录…";
 "zim_file_category.section.empty.message" = "该类别下没有 ZIM 文件。";
 "zim_file_downloads.overlay.empty.message" = "没有下载任务";
-"zim_file_downloads.toolbar.show_sidebar.label" = "显示侧边栏";
 "zim_file_new_overlay.empty" = "没有新的 ZIM 文件";
 "zim_file_new.button.refresh" = "刷新";
 "zim_file.list.name.text" = "名称";
@@ -200,8 +198,6 @@
 "settings.about.button.license" = "GNU 通用公共许可证 v3";
 "bookmark.navigation.title" = "书签";
 "bookmark.overlay.empty.title" = "没有书签";
-"bookmark.toolbar.show_sidebar.label" = "显示侧边栏";
-"browser_tab.toolbar.show_sidebar.label" = "显示侧边栏";
 "search_result.zimfile.empty.message" = "没有打开任何 ZIM 文件";
 "search_result.zimfile.no_result.message" = "无结果";
 "search_result.sidebar.button.remove" = "移除";

@@ -44,13 +44,11 @@
 "library.zim_file_context.random.label" = "ਬੇਤਰਤੀਬ ਸਫ਼ਾ";
 "library.zim_file_context.copy_url" = "URL ਨਕਲ ਕਰੋ";
 "zim_file_opened.overlay.no-opened.message" = "ਕੋਈ ZIM ਫਾਈਲ ਨਹੀਂ ਖੁੱਲ੍ਹੀ।";
-"zim_file_opened.toolbar.show_sidebar.label" = "ਪਾਸੇ ਦੀ ਬਾਹੀ ਵਿਖਾਓ";
 "zim_file_opened.toolbar.open.title" = "ਖੋਲ੍ਹੋ...";
 "zim_file_opened.toolbar.open.help" = "ਇੱਕ ZIM ਫਾਈਲ ਖੋਲ੍ਹੋ";
 "zim_file_category.title" = "ਸ਼੍ਰੇਣੀ";
 "zim_file_category.section.empty.message" = "ਇਸ ਸ਼੍ਰੇਣੀ ਵਿੱਚ ਕੋਈ ZIM ਫਾਇਲ ਨਹੀਂ ਐ।";
 "zim_file_downloads.overlay.empty.message" = "ਕੋਈ ਉਤਾਰਾ ਕਾਰਜ ਨਹੀਂ ਹਨ";
-"zim_file_downloads.toolbar.show_sidebar.label" = "ਪਾਸੇ ਦੀ ਬਾਹੀ ਵਿਖਾਓ";
 "zim_file_new_overlay.empty" = "ਕੋਈ ਨਵੀਂ ZIM ਫਾਇਲ ਨਹੀਂ";
 "zim_file_new.button.refresh" = "ਤਾਜ਼ਾ ਕਰੋ";
 "zim_file.list.name.text" = "ਨਾਂ";
@@ -109,8 +107,6 @@
 "settings.about.build.title" = "ਬਣਤਰ";
 "settings.about.our_website.button" = "ਸਾਡੀ ਵੈੱਬਸਾਈਟ";
 "settings.about.source.title" = "ਸਰੋਤ";
-"bookmark.toolbar.show_sidebar.label" = "ਪਾਸੇ ਦੀ ਬਾਹੀ ਵਿਖਾਓ";
-"browser_tab.toolbar.show_sidebar.label" = "ਪਾਸੇ ਦੀ ਬਾਹੀ ਵਿਖਾਓ";
 "search_result.zimfile.empty.message" = "ਕੋਈ ZIM ਫਾਈਲ ਨਹੀਂ ਖੁੱਲ੍ਹੀ।";
 "search_result.zimfile.no_result.message" = "ਕੋਈ ਨਤੀਜਾ ਨਹੀਂ";
 "search_result.sidebar.button.remove" = "ਹਟਾਓ";

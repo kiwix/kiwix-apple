@@ -52,18 +52,5 @@ struct ZimFilesDownloads: View {
                 Message(text: LocalString.zim_file_downloads_overlay_empty_message)
             }
         }
-        .toolbar {
-            #if os(iOS)
-            ToolbarItem(placement: .navigationBarLeading) {
-                if #unavailable(iOS 16), horizontalSizeClass == .regular {
-                    Button {
-                        NotificationCenter.toggleSidebar()
-                    } label: {
-                        Label(LocalString.zim_file_downloads_toolbar_show_sidebar_label, systemImage: "sidebar.left")
-                    }
-                }
-            }
-            #endif
-        }
     }
 }

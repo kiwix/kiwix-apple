@@ -21,24 +21,15 @@ struct KeyPressHandler: ViewModifier {
     let action: () -> Void
     
     func body(content: Content) -> some View {
-        #if os(macOS)
-        if #available(macOS 14.0, *) {
-            newApi(content: content)
-        } else {
-            content
-        }
-        #else
-        content
-        #endif
-    }
-    
-    @available(macOS 14.0, iOS 17.0, *)
-    private func newApi(content: Content) -> some View {
+#if os(macOS)
         content.onKeyPress(key, action: {
             Task { await MainActor.run {
                 action()
             }}
             return .handled
         })
+#else
+        content
+#endif
     }
 }
