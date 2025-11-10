@@ -73,23 +73,4 @@ final class Database {
         container.viewContext.shouldDeleteInaccessibleFaults = true
         return container
     }
-
-    /// Save image data to zim files.
-    func saveImageData(url: URL, completion: @escaping (Data) -> Void) {
-        URLSession.shared.dataTask(with: url) { [self] data, response, _ in
-            guard let response = response as? HTTPURLResponse,
-                  response.statusCode == 200,
-                  let mimeType = response.mimeType,
-                  mimeType.contains("image"),
-                  let data = data else { return }
-            performBackgroundTask { [data] context in
-                let predicate = NSPredicate(format: "faviconURL == %@", url as CVarArg)
-                let request = ZimFile.fetchRequest(predicate: predicate)
-                guard let zimFile = try? context.fetch(request).first else { return }
-                zimFile.faviconData = data
-                try? context.save()
-            }
-            completion(data)
-        }.resume()
-    }
 }

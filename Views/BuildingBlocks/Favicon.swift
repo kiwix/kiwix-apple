@@ -30,10 +30,11 @@ struct Favicon: View {
     var body: some View {
         image.scaledToFit().cornerRadius(3)
         .aspectRatio(1, contentMode: .fit)
-        .onAppear {
+        .task {
             guard let imageURL = imageURL, imageData == nil else { return }
-            Database.shared.saveImageData(url: imageURL) { data in
-                imageData = data
+            if let imgData = try? await Self.asyncImageData(url: imageURL) {
+                imageData = imgData
+                FaviconSaver.shared.saveData(imgData, for: imageURL)
             }
         }
     }
@@ -53,6 +54,17 @@ struct Favicon: View {
             Image(category.icon).resizable()
         }
         #endif
+    }
+    
+    static func asyncImageData(url: URL) async throws -> Data? {
+        let (data, response) = try await URLSession.shared.data(from: url)
+        guard let response = response as? HTTPURLResponse,
+              response.statusCode == 200,
+              let mimeType = response.mimeType,
+              mimeType.contains("image") else {
+            return nil
+        }
+        return data
     }
 }
 
