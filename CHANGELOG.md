@@ -1,4 +1,39 @@
-# 3.10.2
+# 3.11.1
+
+# 3.11.0
+  - NEW:
+    - Hotspot for custom apps (@BPerlakiH #1331)
+    - Spellchecked search results (@BPerlakiH #1326, #1362)
+    - Confirmation of download when file already exists (@BPerlakiH #1364)
+
+  - UPDATED:
+    - Update project and build version to be 3.11.0 (@BPerlakiH #1291)
+    - Update Apple-Pay to 24.23.0 (@BPerlakiH #1294)
+    - Set default Hotspot port to 80 (@BPerlakiH #1298)
+    - Update swift logging (@BPerlakiH #1309)
+    - Add detailed download errors (@BPerlakiH #1314)
+    - Update to macOS-15 runner and Xcode 26 (@BPerlakiH #1319)
+    - Update to libkiwix 14.1.0 (@BPerlakiH #1351)
+    - Use libkiwix provided hotspot server address (@vighnesh-sawant @BPerlakiH #1353)
+    - Update min version to iOS17.6 macOS14.6 (@BPerlakiH #1365)
+    - Clean up after min OS version bump, remove #availables (@BPerlakiH #1366)
+    - Localisation updates from https://translatewiki.net (@translatewiki #1285, #1296, #1316, #1323, #1334, #1343, #1346, #1363)
+
+  - FIX:
+    - Fix blinking on appDidBecomeActive (@BPerlakiH #1292)
+    - Fix tabs overlay for iOS 26 (@BPerlakiH #1306)
+    - Fix state for unreachable ZIM files (@BPerlakiH #1301)
+    - Fix toolbar spacing for iOS 26 (@BPerlakiH #1303)
+    - Fix empty search side panel for custom apps (@BPerlakiH #1321)
+    - Exclude missing ZIM files from search options (@BPerlakiH #1328)
+    - Don't display no search results, if there's no search input (@BPerlakiH #1355)
+    - Search dismiss fixes (@BPerlakiH #1358)
+    - Avoid crashes on macOS (@BPerlakiH #1354)
+    - Search results loader on top (@BPerlakiH #1356)
+    - Fix extreme time trying to load favicon data (@BPerlakiH #1359)
+    - Disable favicon fetching during catalog parsing (@BPerlakiH #1360)
+    - Trim search input for comparison (@BPerlakiH #1327)
+    - Fix favicons performance scrolling (@BPerlakiH #1367)
 
 # 3.10.1
   - UPDATE
