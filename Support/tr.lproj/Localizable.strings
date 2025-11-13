@@ -2,13 +2,11 @@
 // Exported from translatewiki.net
 // Author: Hedda
 // Author: Rofiatmustapha12
+// Author: SaldırganSincap
 
-// Fuzzy
-"library_refresh_error.retrieve.description" = "Kitaplık verileri alınırken hata oluştu.";
-// Fuzzy
-"library_refresh_error.parse.description" = "Kitaplık verileri ayrıştırılırken hata oluştu.";
-// Fuzzy
-"library_refresh_error.process.description" = "Kitaplık verileri işlenirken hata oluştu.";
+"library_refresh_error.retrieve.description" = "Katalog verileri alınırken hata oluştu.";
+"library_refresh_error.parse.description" = "Katalog verileri ayrıştırılırken hata oluştu.";
+"library_refresh_error.process.description" = "Katalog verileri işlenirken hata oluştu.";
 "download_service.complete.title" = "İndirme tamamlandı";
 "download_service.complete.description" = "%@ başarıyla indirildi.";
 "common.dialog.button.open" = "Aç";
@@ -35,8 +33,7 @@
 "outline_button.outline.title" = "Özet";
 "outline_button.outline.help" = "Makale özetini göster";
 "outline_button.outline.empty.message" = "Özet bulunamadı";
-// Fuzzy
-"bookmark_button.show.help" = "Yer işaretlerini göster. Geçerli makaleye yer işareti koymak veya yer işaretini kaldırmak için uzun basın.";
+"bookmark_button.show.help" = "Mevcut maddenin yer imlerine eklenebileceği veya yer imlerinden çıkarılabileceği yer imi sayfasını göster.";
 "article_shortcut.main.button.title" = "Ana Makale";
 "article_shortcut.main.button.help" = "Ana makaleyi göster";
 "article_shortcut.random.button.title.mac" = "Rastgele Makale";
@@ -62,22 +59,17 @@
 "library_refresh_time.never" = "Asla";
 "zim_file_cell.article_count.suffix" = "makale";
 "zim_file_missing_indicator.help" = "Zim dosyası eksik.";
-// Fuzzy
-"library.zim_file_details.side_panel.message" = "Ayrıntıları görmek için bir zim dosyası seçin";
+"library.zim_file_details.side_panel.message" = "Ayrıntıları görmek için bir ZIM dosyası seçin";
 "library.zim_file_context.main_page.label" = "Anasayfa";
 "library.zim_file_context.random.label" = "Rastgele Sayfa";
 "library.zim_file_context.copy_url" = "URL'yi kopyala";
-// Fuzzy
-"zim_file_opened.overlay.no-opened.message" = "Açık zim dosyası yok";
+"zim_file_opened.overlay.no-opened.message" = "Açık ZIM dosyası yok";
 "zim_file_opened.toolbar.open.title" = "Açık...";
-// Fuzzy
-"zim_file_opened.toolbar.open.help" = "Bir zim dosyasını açın";
+"zim_file_opened.toolbar.open.help" = "Bir ZIM dosyasını açın";
 "zim_file_category.title" = "Kategori";
-// Fuzzy
-"zim_file_category.section.empty.message" = "Bu kategori altında zim dosyası yok.";
+"zim_file_category.section.empty.message" = "Bu kategori altında ZIM dosyası yok.";
 "zim_file_downloads.overlay.empty.message" = "İndirme görevi yok";
-// Fuzzy
-"zim_file_new_overlay.empty" = "Yeni zim dosyası yok";
+"zim_file_new_overlay.empty" = "Yeni ZIM dosyası yok";
 "zim_file_new.button.refresh" = "Yenile";
 "zim_file.list.name.text" = "Ad";
 "zim_file.list.description.text" = "Açıklama";
@@ -88,19 +80,15 @@
 "zim_file.action.reveal_in_finder.title" = "Finder'da Göster";
 "zim_file.action.toggle_cellular" = "Hücresel kullanarak indirme";
 "zim_file.action.unlink.title" = "Bağlantıyı Kaldır";
-// Fuzzy
-"zim_file.action.unlink.message" = "Bu zim dosyasına bağlı, yer imlerine eklenmiş tüm makaleler silinecek ancak orijinal dosya yerinde kalacaktır.";
+"zim_file.action.unlink.message" = "Bu ZIM dosyasına bağlı, yer imlerine eklenmiş tüm maddeler silinecek ancak orijinal dosya yerinde kalacaktır.";
 "zim_file.action.unlink.button.title" = "Bağlantıyı Kaldır";
 "zim_file.action.delete.title" = "Sil";
-// Fuzzy
-"zim_file.action.delete.message" = "Zim dosyası ve bu zim dosyasına bağlı yer imlerine eklenmiş tüm makaleler silinecektir.";
+"zim_file.action.delete.message" = "ZIM dosyası ve bu ZIM dosyasına bağlı yer imlerine eklenmiş tüm makaleler silinecektir.";
 "zim_file.action.delete.button.title" = "Sil";
 "zim_file.action.download.title" = "İndir";
 "zim_file.action.download.warning.title" = "Boş Yer Uyarısı";
-// Fuzzy
-"zim_file.action.download.warning.message" = "Bu zim dosyası için cihazınızda yeterli alan olmayabilir.";
-// Fuzzy
-"zim_file.action.download.warning.message1" = "Zim dosyası indirildikten sonra 1GB'tan az alan kalacaktır.";
+"zim_file.action.download.warning.message" = "Bu ZIM dosyası için cihazınızda yeterli alan olmayabilir.";
+"zim_file.action.download.warning.message1" = "ZIM dosyası indirildikten sonra 1GB'tan az alan kalacaktır.";
 "zim_file.action.download.button.anyway" = "Yine de İndir";
 "zim_file.base_info.attribute.language" = "Dil";
 "zim_file.base_info.attribute.category" = "Kategori";
@@ -141,8 +129,7 @@
 "catalog_settings.auto_refresh.toggle" = "Otomatik yenileme";
 "catalog_settings.header.text" = "Katalog";
 "catalog_settings.footer.text" = "Etkinleştirildiğinde kütüphane kataloğu güncelliğini yitirdiğinde otomatik olarak yenilenecektir.";
-// Fuzzy
-"backup_settings.toggle.title" = "Zim dosyalarını yedeklemeye dahil et";
+"backup_settings.toggle.title" = "ZIM dosyalarını yedeklemeye dahil et";
 "backup_settings.header.text" = "Yedek";
 "backup_settings.footer.text" = "Yerinde açılan dosyalar için geçerli değildir.";
 "settings.miscellaneous.title" = "Çeşitli";
@@ -172,8 +159,7 @@
 "settings.about.button.license" = "GNU Genel Kamu Lisansı v3";
 "bookmark.navigation.title" = "Yer İşaretleri";
 "bookmark.overlay.empty.title" = "Yer işareti yok";
-// Fuzzy
-"search_result.zimfile.empty.message" = "Açık zim dosyası yok";
+"search_result.zimfile.empty.message" = "Açık ZIM dosyası yok";
 "search_result.zimfile.no_result.message" = "Sonuç yok";
 "search_result.sidebar.button.remove" = "Kaldır";
 "search_result.header.text" = "Son Arama";

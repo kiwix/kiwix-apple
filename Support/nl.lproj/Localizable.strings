@@ -2,6 +2,7 @@
 // Exported from translatewiki.net
 // Author: ABPMAB
 // Author: McDutchie
+// Author: Siebrand
 
 "library_refresh_error.retrieve.description" = "Fout bij het opvragen van catalogusgegevens.";
 "library_refresh_error.parse.description" = "Fout bij het ontleden van catalogusgegevens.";
@@ -33,6 +34,7 @@
 "common.button.share" = "Delen";
 "common.button.share_as_pdf" = "Delen als PDF";
 "common.search" = "Zoeken";
+"common.search.suggestion" = "Bedoelde u:";
 "common.tab.manager.title" = "Tabbladbeheer";
 "common.tab.navigation.title" = "Tabbladen";
 "common.tab.menu.new_tab" = "Nieuw tabblad";
@@ -66,6 +68,9 @@
 "download_task_cell.status.failed" = "Mislukt";
 "download_task_cell.status.downloading" = "Aan het downloaden…";
 "download_task_cell.status.paused" = "Gepauzeerd";
+"download_again.question.title" = "U beschikt al over dit bestand.";
+"download_again.question.description_part_1" = "Het lijkt erop dat %@ al is gedownload.";
+"download_again.question.description_part_2" = "Wilt u \"%@\" nog steeds downloaden? Uw bestaande bestand wordt niet verwijderd.";
 "flavor_tag.help.max" = "alles behalve grote multimedia-bestanden zoals video/audio";
 "flavor_tag.help.no_pic" = "de meeste foto’s zijn verwijderd";
 "flavor_tag.help.mini" = "slechts een deel van de tekst is beschikbaar, waarschijnlijk het eerste gedeelte";

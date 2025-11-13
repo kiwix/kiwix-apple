@@ -42,6 +42,9 @@
 "file_import.alert.no_open.message" = "%@ non può essere aperto.";
 "download_task_cell.status.downloading" = "Download in corso...";
 "download_task_cell.status.paused" = "In pausa";
+"download_again.question.title" = "Hai già questo file.";
+"download_again.question.description_part_1" = "Sembra che %@ sia già stato scaricato.";
+"download_again.question.description_part_2" = "Vuoi comunque scaricare \"%@\"? Il file esistente non verrà cancellato.";
 "flavor_tag.help.max" = "ogni cosa eccetto i file multimediali di grandi dimensioni, come video/audio";
 "flavor_tag.help.no_pic" = "la maggior parte delle immagini sono state rimosse";
 "flavor_tag.help.mini" = "è disponibile solo una parte del testo, probabilmente la prima sezione";

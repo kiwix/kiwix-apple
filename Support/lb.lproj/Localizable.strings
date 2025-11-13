@@ -54,6 +54,7 @@
 "attribute.detail.unknown" = "Onbekannt";
 "download_task_cell.status.downloading" = "Eroflueden...";
 "download_task_cell.status.paused" = "Pauséiert";
+"download_again.question.title" = "Dir hutt dëse Fichier schonn.";
 "flavor_tag.help.max" = "alles ausser grouss Mediefichiere wéi Video an Audio";
 "flavor_tag.help.no_pic" = "déi meeschte Biller goufen erausgeholl";
 "flavor_tag.help.mini" = "nëmmen een Deel vum Text ass verfügbar, warscheinlech den éischten Abschnitt";

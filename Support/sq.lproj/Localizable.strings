@@ -14,7 +14,7 @@
 "download_service.failed.description" = "S’arrihet të shkarkohet kjo kartelë.";
 "common.dialog.button.open" = "Hape";
 "common.dialog.button.open_in_new_tab" = "Hape në Skedë të Re";
-"common.dialog.button.add_bookmark" = "Shto Faqeshënues";
+"common.dialog.button.add_bookmark" = "Shtoni Faqerojtës";
 "common.dialog.button.remove_bookmark" = "Hiqe Faqerojtësin";
 "common.dialog.button.show_bookmarks" = "Shfaq Faqerojtës";
 "common.dialog.button.bookmark" = "Faqeruaje";

@@ -32,6 +32,7 @@
 "common.button.share" = "Condivider";
 "common.button.share_as_pdf" = "Condivider como PDF";
 "common.search" = "Cercar";
+"common.search.suggestion" = "Vole tu dicer:";
 "common.tab.manager.title" = "Gestor de schedas";
 "common.tab.navigation.title" = "Schedas";
 "common.tab.menu.new_tab" = "Nove scheda";
@@ -65,6 +66,9 @@
 "download_task_cell.status.failed" = "Fallite";
 "download_task_cell.status.downloading" = "Discargamento…";
 "download_task_cell.status.paused" = "Pausate";
+"download_again.question.title" = "Tu dispone ja de iste file.";
+"download_again.question.description_part_1" = "Sembla que %@ ha ja essite discargate.";
+"download_again.question.description_part_2" = "Vole tu totevia discargar “%@”? Tu file existente non essera delite.";
 "flavor_tag.help.max" = "toto excepte grande files multimedial como video/audio";
 "flavor_tag.help.no_pic" = "le major parte de imagines ha essite removite";
 "flavor_tag.help.mini" = "solmente un parte del texto es disponibile, probabilemente le prime section";

@@ -36,6 +36,7 @@
 "common.button.share" = "Dela";
 "common.button.share_as_pdf" = "Dela som PDF";
 "common.search" = "Sök";
+"common.search.suggestion" = "Menade du:";
 "common.tab.manager.title" = "Flikhanterare";
 "common.tab.navigation.title" = "Flikar";
 "common.tab.menu.new_tab" = "Ny flik";
@@ -62,16 +63,19 @@
 "external_link_handler.alert.title" = "Extern länk";
 "external_link_handler.alert.button.load.link" = "Ladda länken";
 "external_link_handler.alert.ask.description" = "En extern länk är tryckt, vill du ladda in länken?";
-"external_link_handler.alert.not_loading.description" = "En extern länk har tryckts. Men dina nuvarande inställningar tillåter inte att länken laddas in.";
+"external_link_handler.alert.not_loading.description" = "En extern länk har tryckts. Dina nuvarande inställningar tillåter dock inte att den laddas.";
 "file_import.alert.no_open.title" = "Kunde inte öppna filen";
 "file_import.alert.no_open.message" = "%@ kan inte öppnas.";
 "attribute.detail.unknown" = "Okänd";
 "download_task_cell.status.failed" = "Misslyckades";
 "download_task_cell.status.downloading" = "Laddar ned...";
 "download_task_cell.status.paused" = "Pausad";
+"download_again.question.title" = "Du har redan den här filen.";
+"download_again.question.description_part_1" = "Det ser ut som att %@ redan laddats ned.";
+"download_again.question.description_part_2" = "Vill du fortfarande ladda ned \"%@\"? Din befintliga fil kommer inte att raderas.";
 "flavor_tag.help.max" = "förutom stora mediafiler som video/ljud";
 "flavor_tag.help.no_pic" = "de flesta bilderna har tagits bort";
-"flavor_tag.help.mini" = "endast en delmängd av texten är tillgänglig, förmodligen det första avsnittet";
+"flavor_tag.help.mini" = "endast en del av texten är tillgänglig, förmodligen det första avsnittet";
 "library_refresh_time.last" = "Alldeles nyss";
 "library_refresh_time.never" = "Aldrig";
 "zim_file_cell.article_count.suffix" = "artiklar";
@@ -186,7 +190,7 @@
 "settings.about.dependencies.name" = "Namn";
 "settings.about.dependencies.license" = "Licens";
 "settings.about.dependencies.version" = "Version";
-"settings.about.description" = "Kiwix är en offlineläsare för onlineinnehåll som Wikipedia, Project Gutenberg eller TED Talks. Det gör kunskap tillgänglig för personer med ingen eller begränsad tillgång till internet. Programvaran såväl som innehållet är gratis att använda för alla.";
+"settings.about.description" = "Kiwix är en offline-läsare för onlineinnehåll som Wikipedia, Project Gutenberg eller TED Talks. Den gör kunskap tillgänglig för personer med ingen eller begränsad internetåtkomst. Programvaran såväl som innehållet är gratis att använda för alla.";
 "settings.about.license-description" = "Denna app släpps under villkoren i GNU General Public License version 3.";
 "settings.about.appverion.title" = "Version";
 "settings.about.build.title" = "Bygge";
@@ -263,7 +267,7 @@
 "payment.selection.custom_amount" = "Anpassat belopp";
 "payment.selection.option.one_time" = "En gång";
 "payment.selection.option.monthly" = "Månadsvis";
-"payment.support_fallback_message" = "Vi beklagar, din enhet stöder inte Apple Pay.";
+"payment.support_fallback_message" = "Vi beklagar, din enhet stödjer inte Apple Pay.";
 "payment.success.title" = "Tack så mycket för din donation.";
 "payment.success.description" = "Din generositet betyder allt för oss.";
 "payment.error.title" = "Det här är stelt.";

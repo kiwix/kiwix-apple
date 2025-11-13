@@ -15,10 +15,6 @@
 "download_service.error.option_invalid_taskid" = "A description of a specific download error, when the download task cannot be identified. Becomes part of download_service.error.description";
 "download_service.error.option_invalid_response" = "A description of a specific download error, when the download response has an invalid type. Becomes part of download_service.error.description";
 "download_service.error.option_unable_to_move_file" = "A description of a specific download error, when the downloaded file cannot be moved to the right place. Becomes part of download_service.error.description";
-"download_again.question.title" = "Title of an alert pop up, informing the user tries to downlaod a file, that is already available locally.";
-"download_again.question.description_part_1" = "Part of an alert description, that a file is already downloaded. The parameter is replaced with the actual file name, eg: wikipedia.zim.";
-"download_again.question.description_part_2" = "Part of an alert description, that a file is already downloaded. The parameter is replaced with the zim file title, eg: Wikipedia maxi";
-
 "common.dialog.button.open" = "After long pressing a link it is the title of one of the options in the overflow menu";
 "common.dialog.button.open_in_new_tab" = "After long pressing a link it is the title of one of the options in the overflow menu";
 "common.dialog.button.add_bookmark" = "After long pressing the bottom tab menu item it is the title of one of the options in the overflow menu";
@@ -72,6 +68,9 @@
 "download_task_cell.status.failed" = "The title reporting the status of the current ZIM file download";
 "download_task_cell.status.downloading" = "The title reporting the status of the current ZIM file download";
 "download_task_cell.status.paused" = "The title reporting the status of the current ZIM file download";
+"download_again.question.title" = "Title of an alert pop up, informing the user tries to downlaod a file, that is already available locally.";
+"download_again.question.description_part_1" = "Part of an alert description, that a file is already downloaded. The parameter is replaced with the actual file name, eg: wikipedia.zim.";
+"download_again.question.description_part_2" = "Part of an alert description, that a file is already downloaded. The parameter is replaced with the zim file title, eg: Wikipedia maxi";
 "flavor_tag.help.max" = "Accessibility label for ZIM file results, explaining the different flavours of the same ZIM file (mini|max|nopic)";
 "flavor_tag.help.no_pic" = "Accessibility label for ZIM file results, explaining the different flavours of the same ZIM file (mini|max|nopic)";
 "flavor_tag.help.mini" = "Accessibility label for ZIM file results, explaining the different flavours of the same ZIM file (mini|max|nopic)";

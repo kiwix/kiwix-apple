@@ -34,6 +34,7 @@
 "common.button.share" = "分享";
 "common.button.share_as_pdf" = "以 PDF 格式分享";
 "common.search" = "搜尋";
+"common.search.suggestion" = "您是不是指：";
 "common.tab.manager.title" = "分頁管理器";
 "common.tab.navigation.title" = "分頁";
 "common.tab.menu.new_tab" = "新分頁";
@@ -67,6 +68,9 @@
 "download_task_cell.status.failed" = "失敗";
 "download_task_cell.status.downloading" = "正在下載…";
 "download_task_cell.status.paused" = "已暫停";
+"download_again.question.title" = "您已經擁有這個檔案。";
+"download_again.question.description_part_1" = "%@ 看起來已下載完畢。";
+"download_again.question.description_part_2" = "您仍要下載「%@」嗎？您的現有檔案不會被刪除。";
 "flavor_tag.help.max" = "除了影片/音訊等大型多媒體檔案之外的所有內容";
 "flavor_tag.help.no_pic" = "大多數圖片已被移除";
 "flavor_tag.help.mini" = "僅有文字的子集合可用，有可能是第一段落";

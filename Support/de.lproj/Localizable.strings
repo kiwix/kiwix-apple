@@ -1,6 +1,7 @@
 // Messages for German (Deutsch)
 // Exported from translatewiki.net
 // Author: *surak*
+// Author: Ameisenigel
 // Author: Brettchenweber
 // Author: Caro
 // Author: Gremid
@@ -14,6 +15,11 @@
 "download_service.complete.title" = "Download abgeschlossen";
 "download_service.complete.description" = "%@ wurde erfolgreich heruntergeladen.";
 "download_service.failed.description" = "Diese Datei konnte nicht heruntergeladen werden.";
+"download_service.error.description" = "Download fehlgeschlagen. Code: %@\n Beschreibung: %@";
+"download_service.error.option_directory" = "Downloadverzeichnis nicht gefunden";
+"download_service.error.option_invalid_taskid" = "ungültiger DownloadTask-Id";
+"download_service.error.option_invalid_response" = "ungültige Antwort";
+"download_service.error.option_unable_to_move_file" = "heruntergeladene Datei kann nicht verschoben werden";
 "common.dialog.button.open" = "Öffnen";
 "common.dialog.button.open_in_new_tab" = "In neuem Tab öffnen";
 "common.dialog.button.add_bookmark" = "Lesezeichen hinzufügen";
@@ -24,13 +30,16 @@
 "common.button.go_forward" = "Vorwärts";
 "common.button.done" = "Fertig";
 "common.button.cancel" = "Abbrechen";
+"common.button.ok" = "OK";
 "common.button.yes" = "Ja";
 "common.button.no" = "nein";
 "common.button.print" = "Drucken";
 "common.button.copy" = "Kopieren";
+"common.button.copied" = "Kopiert";
 "common.button.share" = "Teilen";
+"common.button.share_as_pdf" = "Als PDF teilen";
 "common.search" = "Suchen";
-"common.search.suggestion" = "Meinten Sie:";
+"common.search.suggestion" = "Meintest du:";
 "common.tab.manager.title" = "Tabs-Manager";
 "common.tab.navigation.title" = "Tabs";
 "common.tab.menu.new_tab" = "Neuer Tab";
@@ -72,13 +81,13 @@
 "zim_file_cell.article_count.suffix" = "Artikel";
 "zim_file_missing_indicator.help" = "Zim-Datei fehlt.";
 "hotspot.action.start_hotspot.title" = "Hotspot starten";
-"hotspot.action.stop_hotspot.title" = "Hotspot anhalten";
+"hotspot.action.stop_hotspot.title" = "Hotspot beenden";
 "hotspot.settings.port_number" = "Portnummer";
-"hotspot.settings.recommended_port_range" = "Der von dem Hotspot genutzte Netzwerkport sollte zwischen %@ und %@ liegen.";
+"hotspot.settings.recommended_port_range" = "Der vom Hotspot genutzte Netzwerkport sollte zwischen %@ und %@ liegen.";
 "hotspot.error.port_already_used_by_another_app_title" = "Der Hotspot kann nicht gestartet werden, da Port %@ belegt ist.";
-"hotspot.error.port_already_used_by_another_app_description" = "Um dies zu beheben, schließen Sie die App die den Port verwendet oder ändern Sie den Kiwix Hotspot-Port in den Einstellungen.";
-"hotspot.server_full_explanation" = "Um diese ZIM-Dateien auf anderen Geräten zu anzuzeigen, stellen Sie sicher, dass alle Geräte entweder auf demselben WiFi-Netzwerk sind oder mit Ihrem persönlichen Hotspot verbunden sind.";
-"hotspot.server_active_warning" = "Der Hotspot bleibt nur aktiv, solange die App geöffnet und verwendet wird.";
+"hotspot.error.port_already_used_by_another_app_description" = "Um dies zu beheben, schließen Sie die App, die den Port verwendet, oder ändern Sie den Kiwix-Hotspot-Port in den Einstellungen.";
+"hotspot.server_full_explanation" = "Um diese ZIM-Dateien auf anderen Geräten anzuzeigen, stellen Sie sicher, dass alle Geräte entweder auf demselben WiFi-Netzwerk oder mit Ihrem persönlichen Hotspot verbunden sind.";
+"hotspot.server_active_warning" = "Der Hotspot bleibt nur aktiv, solange die App geöffnet ist und verwendet wird.";
 "hotspot.server_wifi_only_explanation" = "Um diese ZIM-Dateien auf anderen Geräten zu durchsuchen, stellen Sie sicher, dass sich alle Geräte im selben WLAN-Netzwerk befinden.";
 "library.zim_file_details.side_panel.message" = "Wähle eine ZIM-Datei aus, um Details zu sehen";
 "library.zim_file_context.main_page.label" = "Hauptseite";
@@ -103,6 +112,8 @@
 "zim_file.action.toggle_cellular" = "Über Mobilfunk herunterladen";
 "zim_file.action.unlink.title" = "Verknüpfung aufheben";
 "zim_file.action.unlink.message" = "Alle mit dieser ZIM-Datei verknüpften Lesezeichen werden gelöscht, die Originaldatei bleibt jedoch erhalten.";
+"zim_file.action.unlink.multi_title" = "%@ ZIM-Dateien entkoppeln";
+"zim_file.action.unlink.multi_message" = "Alle mit diesen %@ ZIM-Dateien verknüpften Lesezeichen werden gelöscht; die Originaldateien bleiben jedoch erhalten.";
 "zim_file.action.unlink.button.title" = "Verknüpfung aufheben";
 "zim_file.action.delete.title" = "Löschen";
 "zim_file.action.delete.message" = "Die ZIM-Datei und alle mit ihr verknüpften Lesezeichen werden gelöscht.";
@@ -131,12 +142,19 @@
 "zim_file.download_task.action.resume" = "Fortfahren";
 "zim_file.download_task.action.paused" = "Pausiert";
 "service_worker_warning.label.description" = "ZIM-Dateien, die Service Worker erfordern, werden nicht unterstützt.";
+"multi.zim_files_selected.sidebar_title" = "Ausgewählt";
+"multi.zim_files_selected.description_count" = "ZIM-Dateien";
+"theme_settings.title" = "Theme";
+"theme_settings.option.dark" = "Dunkel";
+"theme_settings.option.light" = "Hell";
+"theme_settings.option.system" = "System";
 "reading_settings.zoom.title" = "Seitenzoom";
 "reading_settings.zoom.reset.button" = "Zurücksetzen";
 "reading_settings.external_link.title" = "Externer Link";
 "reading_settings.search_snippet.title" = "Suchtreffer";
 "reading_settings.tab.reading" = "Lese …";
 "library_settings.catalog.title" = "Katalog";
+"library_settings.downloads.title" = "Downloads";
 "library_settings.button.refresh_now" = "Jetzt aktualisieren";
 "library_settings.last_refresh.text" = "Letzte Aktualisierung";
 "library_settings.auto_refresh.toggle" = "Automatisch aktualisieren";
