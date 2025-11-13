@@ -2,6 +2,7 @@
 // Exported from translatewiki.net
 // Author: Cyanjiang
 // Author: Dream Star.cn
+// Author: GuoPC
 // Author: Kichin
 // Author: Prmsh
 // Author: TFX202X
@@ -39,6 +40,7 @@
 "common.button.share" = "分享";
 "common.button.share_as_pdf" = "以PDF格式共享";
 "common.search" = "搜索";
+"common.search.suggestion" = "您是否想找：";
 "common.tab.manager.title" = "标签管理器";
 "common.tab.navigation.title" = "标签";
 "common.tab.menu.new_tab" = "新建标签页";
@@ -72,6 +74,9 @@
 "download_task_cell.status.failed" = "失败";
 "download_task_cell.status.downloading" = "正在下载...";
 "download_task_cell.status.paused" = "已暂停";
+"download_again.question.title" = "您已经拥有这个文件。";
+"download_again.question.description_part_1" = "%@看起来已下载完毕。";
+"download_again.question.description_part_2" = "您仍要下载“%@”吗？您现有的文件不会被删除。";
 "flavor_tag.help.max" = "除视频/音频等大型媒体文件之外的所有内容";
 "flavor_tag.help.no_pic" = "大多数照片已被删除";
 "flavor_tag.help.mini" = "仅有部分文本可用，这可能是第一部分";

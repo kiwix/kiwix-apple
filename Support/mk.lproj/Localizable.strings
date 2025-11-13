@@ -32,6 +32,7 @@
 "common.button.share" = "Сподели";
 "common.button.share_as_pdf" = "Сподели како PDF";
 "common.search" = "Пребарај";
+"common.search.suggestion" = "Дали мислевте на:";
 "common.tab.manager.title" = "Управник на јазичиња";
 "common.tab.navigation.title" = "Јазичиња";
 "common.tab.menu.new_tab" = "Ново јазиче";
@@ -65,6 +66,9 @@
 "download_task_cell.status.failed" = "Неуспешно";
 "download_task_cell.status.downloading" = "Преземам...";
 "download_task_cell.status.paused" = "Запрено";
+"download_again.question.title" = "Веќе ја имате оваа податотека.";
+"download_again.question.description_part_1" = "Се чини дека %@ е веќе преземана.";
+"download_again.question.description_part_2" = "Дали сепак сакате да ја преземете „%@“? Постоечката податотека нема да се избрише.";
 "flavor_tag.help.max" = "сè освен големи медиумски податотеки како видео/звучни";
 "flavor_tag.help.no_pic" = "највеќето слики се отстранети";
 "flavor_tag.help.mini" = "достапен е само дел од текстот, веројатно првиот";
