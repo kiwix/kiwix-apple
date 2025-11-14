@@ -193,6 +193,7 @@ struct BrowserTab: View {
                                     .overlay {
                                         if case .webPage(let isLoading) = model.state, isLoading {
                                             LoadingProgressView()
+                                                .background(Color.background)
                                         }
                                     }
 #if os(macOS)
