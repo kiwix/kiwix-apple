@@ -72,8 +72,8 @@ final class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegat
             downloadTask.created = Date()
             downloadTask.fileID = zimFileID
             downloadTask.zimFile = zimFile
-            Task { @MainActor in
-                try? context.save()
+            Task { @MainActor [weak context] in
+                try? context?.save()
             }
 
             if url.lastPathComponent.hasSuffix(".meta4") {
@@ -165,8 +165,8 @@ final class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegat
             task.resume()
 
             downloadTask.error = nil
-            Task { @MainActor in
-                try? context.save()
+            Task { @MainActor [weak context] in
+                try? context?.save()
             }
         }
     }
@@ -183,8 +183,8 @@ final class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegat
                 let request = DownloadTask.fetchRequest(fileID: zimFileID)
                 guard let downloadTask = try context.fetch(request).first else { return }
                 context.delete(downloadTask)
-                Task { @MainActor in
-                    try context.save()
+                Task { @MainActor [weak context] in
+                    try context?.save()
                 }
             } catch {
                 let fileId = zimFileID.uuidString
@@ -269,8 +269,8 @@ final class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegat
                 let request = DownloadTask.fetchRequest(fileID: zimFileID)
                 guard let downloadTask = try? context.fetch(request).first else { return }
                 downloadTask.error = error.localizedDescription
-                Task { @MainActor in
-                    try? context.save()
+                Task { @MainActor [weak context] in
+                    try? context?.save()
                 }
             }
         }
