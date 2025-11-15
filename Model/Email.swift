@@ -21,8 +21,8 @@ import AppKit
 /// Prepares diagnostic email to be sent by the user
 struct Email {
     
-    let address: String = "apple-diagnostic@kiwix.org"
-    let subject: String = "Diagnostic report"
+    let address: String = "app-diagnostic@kiwix.org"
+    let subject: String = "Apple diagnostic report"
     let header: String = "Please describe your issue in English below:\(separator(count: 3))"
     let divider: String = "---LOGS---"
     let logs: String
