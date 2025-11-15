@@ -17,7 +17,7 @@
     - Use libkiwix provided hotspot server address (@vighnesh-sawant @BPerlakiH #1353)
     - Update min version to iOS17.6 macOS14.6 (@BPerlakiH #1365)
     - Clean up after min OS version bump, remove #availables (@BPerlakiH #1366)
-    - Localisation updates from https://translatewiki.net (@translatewiki #1285, #1296, #1316, #1323, #1334, #1343, #1346, #1363)
+    - Localisation updates from https://translatewiki.net (@translatewiki #1285, #1296, #1316, #1323, #1334, #1343, #1346, #1363, #1370)
 
   - FIX:
     - Fix blinking on appDidBecomeActive (@BPerlakiH #1292)
@@ -28,12 +28,13 @@
     - Exclude missing ZIM files from search options (@BPerlakiH #1328)
     - Don't display no search results, if there's no search input (@BPerlakiH #1355)
     - Search dismiss fixes (@BPerlakiH #1358)
-    - Avoid crashes on macOS (@BPerlakiH #1354)
+    - Avoid crashes on macOS (@BPerlakiH #1354, #1373)
     - Search results loader on top (@BPerlakiH #1356)
     - Fix extreme time trying to load favicon data (@BPerlakiH #1359)
     - Disable favicon fetching during catalog parsing (@BPerlakiH #1360)
     - Trim search input for comparison (@BPerlakiH #1327)
     - Fix favicons performance scrolling (@BPerlakiH #1367)
+    - Fix webview background in dark mode (@BPerlakiH #1372)
 
 # 3.10.1
   - UPDATE
