@@ -19,6 +19,7 @@
     - Update min version to iOS17.6 macOS14.6 (@BPerlakiH #1365)
     - Clean up after min OS version bump, remove #availables (@BPerlakiH #1366)
     - Localisation updates from https://translatewiki.net (@translatewiki #1285, #1296, #1316, #1323, #1334, #1343, #1346, #1363, #1370)
+    - Reverse tab order (@BPerlakiH #1375)
 
   - FIX:
     - Fix blinking on appDidBecomeActive (@BPerlakiH #1292)
