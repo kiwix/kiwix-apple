@@ -74,17 +74,22 @@ struct LibraryOperations {
         for zimFile in zimFiles {
             guard let data = zimFile.fileURLBookmark else { return }
 
+            let downloadPath = zimFile.downloadURL?.absoluteString ?? "unknown"
             do {
                 if let data = try await ZimFileService.shared.revalidate(fileURLBookmark: data, for: zimFile.fileID) {
                     zimFile.fileURLBookmark = data
                 }
                 zimFile.isMissing = false
                 successCount += 1
+                Log.LibraryOperations.notice("ZIM file opened: \(zimFile.name) | \(downloadPath)")
             } catch ZimFileOpenError.missing {
                 zimFile.isMissing = true
+                Log.LibraryOperations.notice("ZIM file missing: \(zimFile.name) | \(downloadPath)")
             } catch {
                 zimFile.fileURLBookmark = nil
                 zimFile.isMissing = false
+                Log.LibraryOperations
+                    .notice("ZIM file cannot be opened: \(zimFile.name) | \(downloadPath) due to: \(error)")
             }
         }
         await MainActor.run { 
