@@ -41,7 +41,7 @@ final class SidebarViewController: UICollectionViewController, NSFetchedResultsC
     private let fetchedResultController = NSFetchedResultsController(
         fetchRequest: Tab.fetchRequest(
             predicate: Tab.Predicate.notMissing,
-            sortDescriptors: [NSSortDescriptor(key: "created", ascending: false)]),
+            sortDescriptors: [NSSortDescriptor(key: "created", ascending: true)]),
         managedObjectContext: Database.shared.viewContext,
         sectionNameKeyPath: nil,
         cacheName: nil
