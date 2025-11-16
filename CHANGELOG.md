@@ -5,6 +5,7 @@
     - Hotspot for custom apps (@BPerlakiH #1331)
     - Spellchecked search results (@BPerlakiH #1326, #1362)
     - Confirmation of download when file already exists (@BPerlakiH #1364)
+    - Diagnostics feature (@BPerlakiH #1313)
 
   - UPDATED:
     - Update project and build version to be 3.11.0 (@BPerlakiH #1291)
