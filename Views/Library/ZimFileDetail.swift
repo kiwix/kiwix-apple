@@ -168,13 +168,12 @@ struct ZimFileDetail: View {
                 message: Text("To make sure your ZIM file is fully in tact, it can be verified. Caution: It may take several minutes to completely validate a ZIM file and you won't be able to use Kiwix in the meantime."),
                 primaryButton: .default(Text("Validate")) {
                     Task {
-                        debugPrint("start validating")
+                        Log.LibraryOperations.notice("Started ZIM validation for \(zimFile.fileID.uuidString, privacy: .public)")
                         NotificationCenter.startValidateZIM(title: zimFile.name)
-                        //TODO: do the real validation operation
-                        try? await Task.sleep(nanoseconds: 5_000_000_000)
+                        let result = await ZimFileService.shared.isValidZim(zimFileID: zimFile.fileID)
+                        Log.LibraryOperations.notice("Completed ZIM validation for \(zimFile.fileID.uuidString, privacy: .public), success: \(result, privacy: .public)")
                         NotificationCenter.stopValidation()
                         await MainActor.run {
-                            debugPrint("stop validating")
                             zimFile.isValidated = true
                             let viewContext = Database.shared.viewContext
                             if viewContext.hasChanges {

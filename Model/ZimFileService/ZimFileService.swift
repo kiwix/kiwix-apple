@@ -165,6 +165,11 @@
               let end = content["end"] as? UInt else { return nil }
         return URLContent(data: data, start: start, end: end)
     }
+    
+    // MARK: ZIM validation
+    func isValidZim(zimFileID: UUID) -> Bool {
+        __isValidZIM(zimFileID)
+    }
 }
 
 enum ZimFileOpenError: Error {
