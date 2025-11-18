@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="22758" systemVersion="23F79" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="24299" systemVersion="24G231" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="Bookmark" representedClassName=".Bookmark" syncable="YES">
         <attribute name="articleURL" attributeType="URI"/>
         <attribute name="created" attributeType="Date" usesScalarValueType="NO"/>
@@ -57,6 +57,7 @@
         <attribute name="persistentID" attributeType="String"/>
         <attribute name="requiresServiceWorkers" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
         <attribute name="size" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="verified" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
         <relationship name="bookmarks" toMany="YES" deletionRule="Cascade" destinationEntity="Bookmark" inverseName="zimFile" inverseEntity="Bookmark"/>
         <relationship name="downloadTask" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="DownloadTask" inverseName="zimFile" inverseEntity="DownloadTask"/>
         <relationship name="tabs" toMany="YES" deletionRule="Nullify" destinationEntity="Tab" inverseName="zimFile" inverseEntity="Tab"/>
