@@ -272,6 +272,7 @@ final class ZimFile: NSManagedObject, Identifiable {
     @NSManaged var persistentID: String
     @NSManaged var requiresServiceWorkers: Bool
     @NSManaged var size: Int64
+    @NSManaged var verified: Bool
 
     @NSManaged var bookmarks: Set<Bookmark>
     @NSManaged var downloadTask: DownloadTask?

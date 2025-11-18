@@ -30,6 +30,7 @@ struct ZimFileDetail: View {
     @State private var isPresentingDownloadAlert = false
     @State private var isPresentingFileLocator = false
     @State private var isPresentingUnlinkAlert = false
+    @State private var isPresentingValidationAlert = false
     @State private var isInDocumentsDirectory = false
     let dismissParent: (() -> Void)? // iOS only
 
@@ -52,6 +53,10 @@ struct ZimFileDetail: View {
                 counts
                 id
             }.collapsible(false)
+            if isValidatable(zimFile) {
+                Section { validateSection }
+                    .collapsible(false)
+            }
             if isDestroyable(zimFile) {
                 Section {
                     destorySection
@@ -87,6 +92,9 @@ struct ZimFileDetail: View {
             }
             Section { counts }
             Section { id }
+            if isValidatable(zimFile) {
+                Section { validateSection }
+            }
             if isDestroyable(zimFile) {
                 Section { destorySection }
             }
@@ -143,6 +151,28 @@ struct ZimFileDetail: View {
             Toggle(LocalString.zim_file_action_toggle_cellular, isOn: $downloadUsingCellular)
             #endif
             downloadAction
+        }
+    }
+    
+    private func isValidatable(_ zimFile: ZimFile) -> Bool {
+        zimFile.fileURLBookmark != nil && !zimFile.isMissing
+    }
+    
+    @ViewBuilder
+    private var validateSection: some View {
+        Action(title: "Validate") {
+            isPresentingValidationAlert = true
+        }.alert(isPresented: $isPresentingValidationAlert) {
+            Alert(
+                title: Text("Validation takes a long time"),
+                message: Text("To make sure your ZIM file is fully in tact, it can be verified. Caution: It may take several minutes to completely validate a ZIM file and you won't be able to use Kiwix in the meantime."),
+                primaryButton: .default(Text("Validate")) {
+                    Task { @ZimActor in
+                        debugPrint("validating")
+                    }
+                },
+                secondaryButton: .cancel()
+            )
         }
     }
     
@@ -259,6 +289,7 @@ struct ZimFileDetail: View {
             AttributeBool(title: LocalString.zim_file_bool_info_require_service_workers,
                           detail: zimFile.requiresServiceWorkers)
         }
+        AttributeBool(title: "Validated", detail: zimFile.verified)
     }
 
     @ViewBuilder
