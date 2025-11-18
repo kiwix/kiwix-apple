@@ -51,13 +51,13 @@
         <attribute name="hasVideos" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
         <attribute name="includedInSearch" attributeType="Boolean" defaultValueString="YES" usesScalarValueType="YES"/>
         <attribute name="isMissing" attributeType="Boolean" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="isValidated" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
         <attribute name="languageCode" attributeType="String"/>
         <attribute name="mediaCount" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="name" attributeType="String"/>
         <attribute name="persistentID" attributeType="String"/>
         <attribute name="requiresServiceWorkers" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
         <attribute name="size" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
-        <attribute name="verified" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
         <relationship name="bookmarks" toMany="YES" deletionRule="Cascade" destinationEntity="Bookmark" inverseName="zimFile" inverseEntity="Bookmark"/>
         <relationship name="downloadTask" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="DownloadTask" inverseName="zimFile" inverseEntity="DownloadTask"/>
         <relationship name="tabs" toMany="YES" deletionRule="Nullify" destinationEntity="Tab" inverseName="zimFile" inverseEntity="Tab"/>

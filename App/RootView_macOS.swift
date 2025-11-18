@@ -100,6 +100,7 @@ struct RootView: View {
         .modifier(AlertHandler())
         .modifier(QuestionHandler())
         .modifier(OpenFileHandler())
+        .modifier(ValidationModifier())
         .modifier(SaveContentHandler())
         .environmentObject(navigation)
         .onChange(of: currentNavItem) { _, newValue in

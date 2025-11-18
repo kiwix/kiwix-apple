@@ -167,8 +167,20 @@ struct ZimFileDetail: View {
                 title: Text("Validation takes a long time"),
                 message: Text("To make sure your ZIM file is fully in tact, it can be verified. Caution: It may take several minutes to completely validate a ZIM file and you won't be able to use Kiwix in the meantime."),
                 primaryButton: .default(Text("Validate")) {
-                    Task { @ZimActor in
-                        debugPrint("validating")
+                    Task {
+                        debugPrint("start validating")
+                        NotificationCenter.startValidateZIM(title: zimFile.name)
+                        //TODO: do the real validation operation
+                        try? await Task.sleep(nanoseconds: 5_000_000_000)
+                        NotificationCenter.stopValidation()
+                        await MainActor.run {
+                            debugPrint("stop validating")
+                            zimFile.isValidated = true
+                            let viewContext = Database.shared.viewContext
+                            if viewContext.hasChanges {
+                                try? viewContext.save()
+                            }
+                        }
                     }
                 },
                 secondaryButton: .cancel()
@@ -289,7 +301,7 @@ struct ZimFileDetail: View {
             AttributeBool(title: LocalString.zim_file_bool_info_require_service_workers,
                           detail: zimFile.requiresServiceWorkers)
         }
-        AttributeBool(title: "Validated", detail: zimFile.verified)
+        AttributeBool(title: "Validated", detail: zimFile.isValidated)
     }
 
     @ViewBuilder

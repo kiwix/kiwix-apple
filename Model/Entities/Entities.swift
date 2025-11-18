@@ -266,13 +266,13 @@ final class ZimFile: NSManagedObject, Identifiable {
     @NSManaged var hasVideos: Bool
     @NSManaged var includedInSearch: Bool
     @NSManaged var isMissing: Bool
+    @NSManaged var isValidated: Bool
     @NSManaged var languageCode: String
     @NSManaged var mediaCount: Int64
     @NSManaged var name: String
     @NSManaged var persistentID: String
     @NSManaged var requiresServiceWorkers: Bool
     @NSManaged var size: Int64
-    @NSManaged var verified: Bool
 
     @NSManaged var bookmarks: Set<Bookmark>
     @NSManaged var downloadTask: DownloadTask?
