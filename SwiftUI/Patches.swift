@@ -123,7 +123,6 @@ extension NotificationCenter {
         NotificationCenter.default.post(name: .validateZIM, object: nil, userInfo: ["isRunning": false])
     }
     
-    
     @MainActor
     static func selectFileBy(fileId: UUID) {
         NotificationCenter.default.post(name: .selectFile, object: nil, userInfo: ["fileId": fileId])
