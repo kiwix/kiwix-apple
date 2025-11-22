@@ -161,29 +161,42 @@ struct ZimFileDetail: View {
     @ViewBuilder
     private var validateSection: some View {
         Action(title: "Validate") {
-            isPresentingValidationAlert = true
+            if hasAlertBeforeValidation() {
+                isPresentingValidationAlert = true
+            } else {
+                validateZimFile(fileID: zimFile.fileID, name: zimFile.name)
+            }
         }.alert(isPresented: $isPresentingValidationAlert) {
             Alert(
                 title: Text("Validation takes a long time"),
                 message: Text("To make sure your ZIM file is fully in tact, it can be verified. Caution: It may take several minutes to completely validate a ZIM file and you won't be able to use Kiwix in the meantime."),
                 primaryButton: .default(Text("Validate")) {
-                    Task {
-                        Log.LibraryOperations.notice("Started ZIM validation for \(zimFile.fileID.uuidString, privacy: .public)")
-                        NotificationCenter.startValidateZIM(title: zimFile.name)
-                        let result = await ZimFileService.shared.isValidZim(zimFileID: zimFile.fileID)
-                        Log.LibraryOperations.notice("Completed ZIM validation for \(zimFile.fileID.uuidString, privacy: .public), success: \(result, privacy: .public)")
-                        NotificationCenter.stopValidation()
-                        await MainActor.run {
-                            zimFile.isValidated = true
-                            let viewContext = Database.shared.viewContext
-                            if viewContext.hasChanges {
-                                try? viewContext.save()
-                            }
-                        }
-                    }
+                    validateZimFile(fileID: zimFile.fileID, name: zimFile.name)
                 },
                 secondaryButton: .cancel()
             )
+        }
+    }
+    
+    private static let alertLimit100MB: UInt64 = 100 * 1024 * 1024
+    private func hasAlertBeforeValidation() -> Bool {
+        zimFile.size >= Self.alertLimit100MB
+    }
+    
+    private func validateZimFile(fileID: UUID, name: String) {
+        Task {
+            Log.LibraryOperations.notice("Started ZIM validation for \(fileID.uuidString, privacy: .public)")
+            NotificationCenter.startValidateZIM(title: name)
+            let result = await ZimFileService.shared.isValidZim(zimFileID: fileID)
+            Log.LibraryOperations.notice("Completed ZIM validation for \(fileID.uuidString, privacy: .public), success: \(result, privacy: .public)")
+            NotificationCenter.stopValidation()
+            await MainActor.run {
+                zimFile.isValidated = true
+                let viewContext = Database.shared.viewContext
+                if viewContext.hasChanges {
+                    try? viewContext.save()
+                }
+            }
         }
     }
     
