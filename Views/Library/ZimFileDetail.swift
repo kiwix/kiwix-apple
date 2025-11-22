@@ -168,8 +168,8 @@ struct ZimFileDetail: View {
             }
         }.alert(isPresented: $isPresentingValidationAlert) {
             Alert(
-                title: Text("Validation takes a long time"),
-                message: Text("To make sure your ZIM file is fully in tact, it can be verified. Caution: It may take several minutes to completely validate a ZIM file and you won't be able to use Kiwix in the meantime."),
+                title: Text("Validating ZIM file ..."),
+                message: Text("This may take several minutes. Kiwix will be unavailable until validation is complete."),
                 primaryButton: .default(Text("Validate")) {
                     validateZimFile(fileID: zimFile.fileID, name: zimFile.name)
                 },
