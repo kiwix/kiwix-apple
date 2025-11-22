@@ -32,6 +32,7 @@
 "common.button.share" = "Deli";
 "common.button.share_as_pdf" = "Deli kot PDF";
 "common.search" = "Iskanje";
+"common.search.suggestion" = "Ste mislili:";
 "common.tab.manager.title" = "Upravitelj zavihkov";
 "common.tab.navigation.title" = "Zavihki";
 "common.tab.menu.new_tab" = "Nov zavihek";
@@ -65,6 +66,9 @@
 "download_task_cell.status.failed" = "Spodletelo";
 "download_task_cell.status.downloading" = "Prenašam ...";
 "download_task_cell.status.paused" = "Zaustavljeno";
+"download_again.question.title" = "To datoteko že imate.";
+"download_again.question.description_part_1" = "Zdi se, da je datoteka %@ že prenesena.";
+"download_again.question.description_part_2" = "Ali še vedno želite prenesti »%@«? Vaša obstoječa datoteka ne bo izbrisana.";
 "flavor_tag.help.max" = "vse, razen velikih predstavnostnih datotek, kot je video/avdio";
 "flavor_tag.help.no_pic" = "večina slik je bila odstranjena";
 "flavor_tag.help.mini" = "na voljo je samo del besedila, verjetno prvi razdelek";
