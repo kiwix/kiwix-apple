@@ -67,6 +67,7 @@ struct Kiwix: App {
                 .environmentObject(libraryRefreshViewModel)
                 .task { colorSchemeStore.update() }
                 .modifier(OpeningSettingsModifier(updateTabSelection: selectHotspotTab))
+                .modifier(ValidationModifier())
         }.commands {
             SidebarCommands()
             CommandGroup(replacing: .importExport) {

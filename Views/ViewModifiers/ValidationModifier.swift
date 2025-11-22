@@ -27,6 +27,8 @@ private enum ValidationState {
     }
 }
 
+/// Makes sure that the whole screen is blocked while
+/// the validation of the ZIM file is ongoing
 struct ValidationModifier: ViewModifier {
     @State private var state = ValidationState.notValidating
     
