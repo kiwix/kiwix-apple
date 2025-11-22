@@ -44,16 +44,16 @@ struct ValidationModifier: ViewModifier {
     
     func body(content: Content) -> some View {
         ZStack {
+            content
+                .disabled(state.isValidating)
+                .opacity(state.isValidating ? 0.36 : 1)
+                .onReceive(validateZIM, perform: onReceived(notification:))
             if case let .validating(title) = state {
                 VStack(spacing: 32) {
                     Text("Validating \(title) ...")
                     ProgressView()
                 }
             }
-            content
-                .disabled(state.isValidating)
-                .opacity(state.isValidating ? 0.36 : 1)
-                .onReceive(validateZIM, perform: onReceived(notification:))
         }
     }
     
