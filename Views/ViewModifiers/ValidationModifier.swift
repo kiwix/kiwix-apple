@@ -15,7 +15,7 @@
 
 import SwiftUI
 
-private enum ValidationState {
+enum ValidationState {
     case validating(title: String)
     case notValidating
     
@@ -27,23 +27,32 @@ private enum ValidationState {
     }
 }
 
+struct Validation {
+    var state: ValidationState = .notValidating
+}
+// a globally shared state
+var ValidationShared = Validation()
+
 /// Makes sure that the whole screen is blocked while
 /// the validation of the ZIM file is ongoing
 struct ValidationModifier: ViewModifier {
-    @State private var state = ValidationState.notValidating
+    // using a shared state, so it will propage to new windows
+    // opened after the notification has been sent
+    @State private var state = ValidationShared.state
     
     private let validateZIM = NotificationCenter.default.publisher(for: .validateZIM)
     
     func body(content: Content) -> some View {
         ZStack {
             if case let .validating(title) = state {
-                VStack {
-                    Text("Validating \(title)")
+                VStack(spacing: 32) {
+                    Text("Validating \(title) ...")
                     ProgressView()
                 }
             }
             content
-                .opacity(state.isValidating ? 0 : 1)
+                .disabled(state.isValidating)
+                .opacity(state.isValidating ? 0.36 : 1)
                 .onReceive(validateZIM, perform: onReceived(notification:))
         }
     }
@@ -54,10 +63,15 @@ struct ValidationModifier: ViewModifier {
         // stop or start
         if userInfo["isRunning"] as? Bool == false,
            case .validating = state {
-            state = .notValidating
+            update(state: .notValidating)
         } else if let title = userInfo["title"] as? String,
                   case .notValidating = state {
-            state = .validating(title: title)
+            update(state: .validating(title: title))
         }
+    }
+    
+    private func update(state newState: ValidationState) {
+        state = newState
+        ValidationShared.state = newState
     }
 }

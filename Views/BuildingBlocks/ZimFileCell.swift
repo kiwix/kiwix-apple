@@ -63,6 +63,10 @@ struct ZimFileCell: View {
                         Text(ZimFileCell.dateFormatter.string(from: zimFile.created))
                             .font(.caption)
                     }.foregroundColor(.secondary)
+                    if !zimFile.isMissing, zimFile.isValidated {
+                        Image(systemName: "checkmark.circle.fill")
+                            .foregroundStyle(Color.green)
+                    }
                     Spacer()
                     if zimFile.isMissing { ZimFileMissingIndicator() }
                     if let flavor = Flavor(rawValue: zimFile.flavor) { FlavorTag(flavor) }

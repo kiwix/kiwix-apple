@@ -68,6 +68,7 @@ struct Kiwix: App {
                 .task { colorSchemeStore.update() }
                 .modifier(OpeningSettingsModifier(updateTabSelection: selectHotspotTab))
                 .modifier(ValidationModifier())
+                .disabled(ValidationShared.state.isValidating)
         }.commands {
             SidebarCommands()
             CommandGroup(replacing: .importExport) {
