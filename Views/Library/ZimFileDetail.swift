@@ -160,7 +160,7 @@ struct ZimFileDetail: View {
     
     @ViewBuilder
     private var validateSection: some View {
-        Action(title: "Validate") {
+        Action(title: LocalString.zim_file_action_validate_title) {
             if hasAlertBeforeValidation() {
                 isPresentingValidationAlert = true
             } else {
@@ -168,9 +168,9 @@ struct ZimFileDetail: View {
             }
         }.alert(isPresented: $isPresentingValidationAlert) {
             Alert(
-                title: Text("Validating ZIM file ..."),
-                message: Text("This may take several minutes. Kiwix will be unavailable until validation is complete."),
-                primaryButton: .default(Text("Validate")) {
+                title: Text(LocalString.zim_file_action_validate_alert_title),
+                message: Text(LocalString.zim_file_action_validate_alert_description),
+                primaryButton: .default(Text(LocalString.zim_file_action_validate_title)) {
                     validateZimFile(fileID: zimFile.fileID, name: zimFile.name)
                 },
                 secondaryButton: .cancel()

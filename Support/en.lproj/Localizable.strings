@@ -155,6 +155,9 @@
 "zim_file.action.download.warning.message" = "There might not be enough space on your device for this ZIM file.";
 "zim_file.action.download.warning.message1" = "There would be less than 1GB space left after the ZIM file is downloaded.";
 "zim_file.action.download.button.anyway" = "Download Anyway";
+"zim_file.action.validate.title" = "Validate";
+"zim_file.action.validate.alert.title" = "Validating ZIM file ...";
+"zim_file.action.validate.alert.description" = "This may take several minutes. Kiwix will be unavailable until validation is complete.";
 "zim_file.base_info.attribute.language" = "Language";
 "zim_file.base_info.attribute.category" = "Category";
 "zim_file.base_info.attribute.size" = "Size";

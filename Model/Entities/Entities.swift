@@ -267,7 +267,7 @@ final class ZimFile: NSManagedObject, Identifiable {
     @NSManaged var includedInSearch: Bool
     @NSManaged var isMissing: Bool
     var isValid: Bool? {
-        get { // not @NSManaged as obj-c cannot handling optional values
+        get { // not @NSManaged, as obj-c cannot handle optional values
             willAccessValue(forKey: "isValid")
             let isValid = primitiveValue(forKey: "isValid") as? Bool
             didAccessValue(forKey: "isValid")

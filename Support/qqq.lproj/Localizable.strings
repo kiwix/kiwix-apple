@@ -121,6 +121,9 @@
 "zim_file.action.download.warning.message" = "Description of the alert popup on low disk space";
 "zim_file.action.download.warning.message1" = "Alternative description of the alert popup on low disk space";
 "zim_file.action.download.button.anyway" = "Confirmation button title on the alert popup on low disk space";
+"zim_file.action.validate.title" = "Button title to validate a ZIM file's content (using checksum)";
+"zim_file.action.validate.alert.title" = "Alert title when user wants to validate a large ZIM file";
+"zim_file.action.validate.alert.description" = "Alert description when user wants to validate a large ZIM file";
 "zim_file.base_info.attribute.language" = "ZIM file details title, displayed in 2 columns, eg: Language: English";
 "zim_file.base_info.attribute.category" = "ZIM file details title, displayed in 2 columns, eg: Category: Wikipedia";
 "zim_file.base_info.attribute.size" = "ZIM file details title, displayed in 2 columns, eg: Size: 1,5 GB";
