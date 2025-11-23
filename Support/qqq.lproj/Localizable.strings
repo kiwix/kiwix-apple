@@ -124,6 +124,7 @@
 "zim_file.action.validate.title" = "Button title to validate a ZIM file's content (using checksum)";
 "zim_file.action.validate.alert.title" = "Alert title when user wants to validate a large ZIM file";
 "zim_file.action.validate.alert.description" = "Alert description when user wants to validate a large ZIM file";
+"zim_file.validation.in_progress" = "Progress message displayed in the middle of the screen, while the validation is running, using a param with the name of the zim file, eg: 'Validating Wikipedia Maxi ...'";
 "zim_file.base_info.attribute.language" = "ZIM file details title, displayed in 2 columns, eg: Language: English";
 "zim_file.base_info.attribute.category" = "ZIM file details title, displayed in 2 columns, eg: Category: Wikipedia";
 "zim_file.base_info.attribute.size" = "ZIM file details title, displayed in 2 columns, eg: Size: 1,5 GB";
@@ -132,6 +133,7 @@
 "zim_file.bool_info.videos" = "ZIM file details title, displayed in 2 columns, eg: Videos: no";
 "zim_file.bool_info.details" = "ZIM file details title, displayed in 2 columns, eg: Details: no";
 "zim_file.bool_info.require_service_workers" = "ZIM file details title, displayed in 2 columns, eg: Requires Service Workers: yes";
+"zim_file.bool_info.valid" = "ZIM file details title, displayed in 2 columns, eg: Valid: yes";
 "zim_file.counts.article_count" = "ZIM file details title, displayed in 2 columns, eg: Article Count:  8 799";
 "zim_file.counts.article.media_count" = "ZIM file details title, displayed in 2 columns, eg: Media Count: 1 154";
 "zim_file.detail.id.title" = "ZIM file details title, displayed in 2 columns, eg: ID: 11223345";

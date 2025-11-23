@@ -313,7 +313,7 @@ struct ZimFileDetail: View {
             AttributeBool(title: LocalString.zim_file_bool_info_require_service_workers,
                           detail: zimFile.requiresServiceWorkers)
         }
-        ZimValidationAttributeOptional(title: "Valid", isValid: zimFile.isValid)
+        ZimValidationAttributeOptional(title: LocalString.zim_file_bool_info_valid, isValid: zimFile.isValid)
     }
 
     @ViewBuilder

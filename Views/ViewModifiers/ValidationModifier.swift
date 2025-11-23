@@ -52,7 +52,7 @@ struct ValidationModifier: ViewModifier {
                 .onReceive(validateZIM, perform: onReceived(notification:))
             if case let .validating(title) = state {
                 VStack(spacing: 32) {
-                    Text("Validating \(title) ...")
+                    Text(LocalString.zim_file_validation_in_progress(withArgs: title))
                     ProgressView()
                 }
             }
