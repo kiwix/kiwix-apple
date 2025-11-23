@@ -266,7 +266,19 @@ final class ZimFile: NSManagedObject, Identifiable {
     @NSManaged var hasVideos: Bool
     @NSManaged var includedInSearch: Bool
     @NSManaged var isMissing: Bool
-    @NSManaged var isValidated: Bool
+    var isValid: Bool? {
+        get { // not @NSManaged as obj-c cannot handling optional values
+            willAccessValue(forKey: "isValid")
+            let isValid = primitiveValue(forKey: "isValid") as? Bool
+            didAccessValue(forKey: "isValid")
+            return isValid
+        }
+        set {
+            willChangeValue(forKey: "isValid")
+            setPrimitiveValue(newValue, forKey: "isValid")
+            didChangeValue(forKey: "isValid")
+        }
+    }
     @NSManaged var languageCode: String
     @NSManaged var mediaCount: Int64
     @NSManaged var name: String

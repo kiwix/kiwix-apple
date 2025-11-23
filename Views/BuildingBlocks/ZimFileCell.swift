@@ -63,9 +63,14 @@ struct ZimFileCell: View {
                         Text(ZimFileCell.dateFormatter.string(from: zimFile.created))
                             .font(.caption)
                     }.foregroundColor(.secondary)
-                    if !zimFile.isMissing, zimFile.isValidated {
-                        Image(systemName: "checkmark.circle.fill")
-                            .foregroundStyle(Color.green)
+                    if !zimFile.isMissing, let isValid = zimFile.isValid {
+                        if isValid {
+                            Image(systemName: "checkmark.circle.fill")
+                                .foregroundStyle(Color.green)
+                        } else {
+                            Image(systemName: "xmark.circle.fill")
+                                .foregroundStyle(Color.red)
+                        }
                     }
                     Spacer()
                     if zimFile.isMissing { ZimFileMissingIndicator() }

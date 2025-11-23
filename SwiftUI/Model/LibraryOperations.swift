@@ -164,7 +164,7 @@ struct LibraryOperations {
             zimFile.bookmarks.forEach { context.delete($0) }
             zimFile.fileURLBookmark = nil
             zimFile.isMissing = false
-            zimFile.isValidated = false
+            zimFile.isValid = nil
             zimFile.tabs.forEach { context.delete($0) }
 
             if let tabs = try? Tab.fetchRequest().execute() {

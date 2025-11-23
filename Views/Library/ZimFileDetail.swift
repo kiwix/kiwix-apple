@@ -191,7 +191,7 @@ struct ZimFileDetail: View {
             Log.LibraryOperations.notice("Completed ZIM validation for \(fileID.uuidString, privacy: .public), success: \(result, privacy: .public)")
             NotificationCenter.stopValidation()
             await MainActor.run {
-                zimFile.isValidated = true
+                zimFile.isValid = result
                 let viewContext = Database.shared.viewContext
                 if viewContext.hasChanges {
                     try? viewContext.save()
@@ -313,7 +313,7 @@ struct ZimFileDetail: View {
             AttributeBool(title: LocalString.zim_file_bool_info_require_service_workers,
                           detail: zimFile.requiresServiceWorkers)
         }
-        AttributeBool(title: "Validated", detail: zimFile.isValidated)
+        ZimValidationAttributeOptional(title: "Valid", isValid: zimFile.isValid)
     }
 
     @ViewBuilder
