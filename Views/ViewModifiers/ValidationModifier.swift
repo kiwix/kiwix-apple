@@ -30,7 +30,9 @@ enum ValidationState {
 struct Validation {
     var state: ValidationState = .notValidating
 }
-// a globally shared state
+
+// a globaly shared state
+// swiftlint:disable:next identifier_name
 var ValidationShared = Validation()
 
 /// Makes sure that the whole screen is blocked while
