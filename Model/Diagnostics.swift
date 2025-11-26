@@ -27,6 +27,7 @@ enum Diagnostics {
         Log.Environment.notice("os: \(osName(), privacy: .public)")
         Log.Environment.notice("free space: \(freeSpace(), privacy: .public)")
 #if os(macOS)
+        MacUser.name()
         MacUser.logIsUserAdmin()
 #endif
         Log.Environment.notice("\(languageCurrent(), privacy: .public)")
