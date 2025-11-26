@@ -14,6 +14,7 @@
 // along with Kiwix; If not, see https://www.gnu.org/licenses/.
 
 import SwiftUI
+import CoreData
 
 /// NOTE: This view is not translated on purpose.
 /// We want to make sure users only send us reports in English
@@ -21,6 +22,10 @@ struct DiagnosticsView: View {
     
     @State private var isLoading: Bool = false
     private let alignment = HorizontalAlignment.leading
+    @FetchRequest(
+        sortDescriptors: [NSSortDescriptor(keyPath: \ZimFile.size, ascending: false)],
+        predicate: ZimFile.notYetValidatedPredicate
+    ) private var zimFiles: FetchedResults<ZimFile>
     
     var body: some View {
         VStack(alignment: alignment, spacing: 16) {
@@ -34,7 +39,6 @@ struct DiagnosticsView: View {
 #else
                 shareButton
 #endif
-                
                 if isLoading {
                     Text("Please wait...")
                 }
@@ -72,6 +76,7 @@ struct DiagnosticsView: View {
         AsyncButton {
             isLoading = true
             defer { isLoading = false }
+            await validateRemainingZIMFiles()
             let logs = await Diagnostics.entries(separator: Email.separator())
             let email = Email(logs: logs)
             email.create()
@@ -89,6 +94,7 @@ struct DiagnosticsView: View {
         AsyncButton {
             isLoading = true
             defer { isLoading = false }
+            await validateRemainingZIMFiles()
             let logs = await Diagnostics.entries(separator: "\n")
             guard let data = logs.data(using: .utf8) else { return }
             let panel = NSSavePanel()
@@ -110,6 +116,7 @@ struct DiagnosticsView: View {
         AsyncButton {
             isLoading = true
             defer { isLoading = false }
+            await validateRemainingZIMFiles()
             let logs = await Diagnostics.entries(separator: "\n")
             guard let data = logs.data(using: .utf8) else { return }
             let exportData = FileExportData(data: data, fileName: "diagnostic", fileExtension: "log")
@@ -120,5 +127,9 @@ struct DiagnosticsView: View {
         .buttonStyle(.borderless)
     }
 #endif
-    
+        
+    private func validateRemainingZIMFiles() async {
+        await ZimFileValidator.validate(zimFiles: zimFiles.reversed(),
+                                        using: Database.shared.viewContext)
+    }
 }

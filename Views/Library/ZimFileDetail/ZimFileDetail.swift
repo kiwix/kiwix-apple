@@ -16,11 +16,11 @@
 import Combine
 import CoreData
 import SwiftUI
-import UniformTypeIdentifiers
 
 import Defaults
 
-/// Detail about one single zim file.
+// Details of a one single ZIM file
+// swiftlint:disable:next type_body_length
 struct ZimFileDetail: View {
     @Default(.downloadUsingCellular) private var downloadUsingCellular
     @Environment(\.dismiss) var dismiss
@@ -30,6 +30,7 @@ struct ZimFileDetail: View {
     @State private var isPresentingDownloadAlert = false
     @State private var isPresentingFileLocator = false
     @State private var isPresentingUnlinkAlert = false
+    @State private var isPresentingValidationAlert = false
     @State private var isInDocumentsDirectory = false
     let dismissParent: (() -> Void)? // iOS only
 
@@ -52,6 +53,10 @@ struct ZimFileDetail: View {
                 counts
                 id
             }.collapsible(false)
+            if isValidatable(zimFile) {
+                Section { validateSection }
+                    .collapsible(false)
+            }
             if isDestroyable(zimFile) {
                 Section {
                     destorySection
@@ -87,6 +92,9 @@ struct ZimFileDetail: View {
             }
             Section { counts }
             Section { id }
+            if isValidatable(zimFile) {
+                Section { validateSection }
+            }
             if isDestroyable(zimFile) {
                 Section { destorySection }
             }
@@ -143,6 +151,44 @@ struct ZimFileDetail: View {
             Toggle(LocalString.zim_file_action_toggle_cellular, isOn: $downloadUsingCellular)
             #endif
             downloadAction
+        }
+    }
+    
+    private func isValidatable(_ zimFile: ZimFile) -> Bool {
+        zimFile.fileURLBookmark != nil && !zimFile.isMissing
+    }
+    
+    @ViewBuilder
+    private var validateSection: some View {
+        Action(title: LocalString.zim_file_action_validate_title) {
+            if hasAlertBeforeValidation() {
+                isPresentingValidationAlert = true
+            } else {
+                validateZimFile()
+            }
+        }.alert(isPresented: $isPresentingValidationAlert) {
+            Alert(
+                title: Text(LocalString.zim_file_action_validate_alert_title),
+                message: Text(LocalString.zim_file_action_validate_alert_description),
+                primaryButton: .default(Text(LocalString.zim_file_action_validate_title)) {
+                    validateZimFile()
+                },
+                secondaryButton: .cancel()
+            )
+        }
+    }
+    
+    private static let alertLimit100MB: UInt64 = 100 * 1024 * 1024
+    private func hasAlertBeforeValidation() -> Bool {
+        zimFile.size >= Self.alertLimit100MB
+    }
+    
+    private func validateZimFile() {
+        Task {
+            if let context = zimFile.managedObjectContext {
+                await ZimFileValidator.validate(zimFiles: [zimFile],
+                                                using: context)
+            }
         }
     }
     
@@ -259,6 +305,9 @@ struct ZimFileDetail: View {
             AttributeBool(title: LocalString.zim_file_bool_info_require_service_workers,
                           detail: zimFile.requiresServiceWorkers)
         }
+        if isValidatable(zimFile) {
+            ZimValidationAttributeOptional(title: LocalString.zim_file_bool_info_valid, isValid: zimFile.isValid)
+        }
     }
 
     @ViewBuilder
@@ -283,91 +332,5 @@ struct ZimFileDetail: View {
             .urls(for: .documentDirectory, in: .userDomainMask)
             .first?.resourceValues(forKeys: [.volumeAvailableCapacityForImportantUsageKey])
             .volumeAvailableCapacityForImportantUsage
-    }
-}
-
-private struct FileLocator: ViewModifier {
-    @Binding var isPresenting: Bool
-
-    func body(content: Content) -> some View {
-        content.fileImporter(
-            isPresented: $isPresenting,
-            allowedContentTypes: [UTType(exportedAs: "org.openzim.zim")],
-            allowsMultipleSelection: false
-        ) { result in
-            guard case let .success(urls) = result, let url = urls.first else { return }
-            Task { await LibraryOperations.open(url: url) }
-        }
-    }
-}
-
-private struct DownloadTaskDetail: View {
-    @ObservedObject var downloadZimFile: ZimFile
-    @EnvironmentObject var selection: SelectedZimFileViewModel
-    @State private var downloadState = DownloadState.empty()
-
-    var body: some View {
-        Group {
-            Action(title: LocalString.zim_file_download_task_action_title_cancel, isDestructive: true) {
-                DownloadService.shared.cancel(zimFileID: downloadZimFile.fileID)
-                selection.reset()
-            }
-            if let error = downloadZimFile.downloadTask?.error {
-                if downloadState.resumeData != nil {
-                    Action(title: LocalString.zim_file_download_task_action_try_recover) {
-                        DownloadService.shared.resume(zimFileID: downloadZimFile.fileID)
-                    }
-                }
-                Attribute(title: LocalString.zim_file_download_task_action_failed, detail: detail)
-                Text(error)
-            } else if downloadState.resumeData == nil {
-                Action(title: LocalString.zim_file_download_task_action_pause) {
-                    DownloadService.shared.pause(zimFileID: downloadZimFile.fileID)
-                }
-                Attribute(title: LocalString.zim_file_download_task_action_downloading, detail: detail)
-            } else {
-                Action(title: LocalString.zim_file_download_task_action_resume) {
-                    DownloadService.shared.resume(zimFileID: downloadZimFile.fileID)
-                }
-                Attribute(title: LocalString.zim_file_download_task_action_paused, detail: detail)
-            }
-        }.onReceive(
-            DownloadService.shared.progress.publisher
-                .compactMap { [self] (states: [UUID: DownloadState]) -> DownloadState? in
-                    return states[downloadZimFile.fileID]
-                }, perform: { [self] (state: DownloadState?) in
-                    if let state {
-                        self.downloadState = state
-                    }
-                }
-        )
-    }
-
-    private var detail: String {
-        if let percent = percent {
-            return "\(size) - \(percent)"
-        } else {
-            return size
-        }
-    }
-
-    private var size: String {
-        Formatter.size.string(fromByteCount: downloadState.downloaded)
-    }
-
-    private var percent: String? {
-        guard downloadState.total > 0 else { return nil }
-        let fractionCompleted = NSNumber(value: Double(downloadState.downloaded) / Double(downloadState.total))
-        return Formatter.percent.string(from: fractionCompleted)
-    }
-}
-
-private struct ServiceWorkerWarning: View {
-    var body: some View {
-        Label {
-            Text(LocalString.service_worker_warning_label_description)
-        } icon: {
-            Image(systemName: "exclamationmark.triangle.fill").renderingMode(.original)
-        }
     }
 }

@@ -71,6 +71,7 @@ extension Notification.Name {
     static let alert = Notification.Name("alert")
     static let question = Notification.Name("question")
     static let openFiles = Notification.Name("openFiles")
+    static let validateZIM = Notification.Name("validateZIM")
     static let openURL = Notification.Name("openURL")
     static let selectFile = Notification.Name("selectFile")
     static let exportFileData = Notification.Name("exportFileData")
@@ -112,6 +113,14 @@ extension NotificationCenter {
             object: nil,
             userInfo: userInfo
         )
+    }
+    
+    static func startValidateZIM(title: String) {
+        NotificationCenter.default.post(name: .validateZIM, object: nil, userInfo: ["title": title])
+    }
+    
+    static func stopValidation() {
+        NotificationCenter.default.post(name: .validateZIM, object: nil, userInfo: ["isRunning": false])
     }
     
     @MainActor

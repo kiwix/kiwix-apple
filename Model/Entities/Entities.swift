@@ -266,6 +266,19 @@ final class ZimFile: NSManagedObject, Identifiable {
     @NSManaged var hasVideos: Bool
     @NSManaged var includedInSearch: Bool
     @NSManaged var isMissing: Bool
+    var isValid: Bool? {
+        get { // not @NSManaged, as obj-c cannot handle optional values
+            willAccessValue(forKey: "isValid")
+            let isValid = primitiveValue(forKey: "isValid") as? Bool
+            didAccessValue(forKey: "isValid")
+            return isValid
+        }
+        set {
+            willChangeValue(forKey: "isValid")
+            setPrimitiveValue(newValue, forKey: "isValid")
+            didChangeValue(forKey: "isValid")
+        }
+    }
     @NSManaged var languageCode: String
     @NSManaged var mediaCount: Int64
     @NSManaged var name: String
@@ -287,11 +300,18 @@ final class ZimFile: NSManagedObject, Identifiable {
         static let isDownloaded = NSPredicate(format: "fileURLBookmark != nil")
         static let notDownloaded = NSPredicate(format: "fileURLBookmark == nil")
         static let notMissing = NSPredicate(format: "isMissing == false")
+        static let notValidated = NSPredicate(format: "isValid == nil")
     }
 
     static var openedPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
         Predicate.isDownloaded,
         Predicate.notMissing
+    ])
+    
+    static var notYetValidatedPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
+        Predicate.isDownloaded,
+        Predicate.notMissing,
+        Predicate.notValidated
     ])
 
     static func fetchRequest(
