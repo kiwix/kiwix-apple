@@ -28,6 +28,8 @@ enum DownloadDiagnostics {
         ) else {
             return
         }
+        let tempDir = ProcessInfo().environment["TMPDIR"] ?? "unknown"
+        Log.DownloadService.notice("TEMP path: \(tempDir, privacy: .public)")
         Log.DownloadService.notice("Download path: \(path, privacy: .public)")
     }
 }
