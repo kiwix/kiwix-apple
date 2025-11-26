@@ -22,7 +22,7 @@ enum MacUser {
         let backgroundQueue = DispatchQueue(label: "org.kiwix.macuser_background", qos: .background)
         backgroundQueue.async {
             let isAdmin = isAdmin()
-            Log.Environment.notice("MacUser isAdmin: \(isAdmin)")
+            Log.Environment.notice("MacUser isAdmin: \(isAdmin, privacy: .public)")
         }
     }
     
@@ -36,17 +36,17 @@ enum MacUser {
     
     private static func currentUserIdentity() -> CSIdentity? {
         guard let query = CSIdentityQueryCreateForCurrentUser(nil) else {
-            Log.Environment.warning("\(#line) cannot get current mac user")
+            Log.Environment.warning("\(#line, privacy: .public) cannot get current mac user")
             return nil
         }
         let queryRef = query.takeRetainedValue()
         guard CSIdentityQueryExecute(queryRef, 0, nil) else {
-            Log.Environment.warning("\(#line) cannot execute query for mac user")
+            Log.Environment.warning("\(#line, privacy: .public) cannot execute query for mac user")
             return nil
         }
         guard let groups = CSIdentityQueryCopyResults(queryRef).takeRetainedValue() as? [CSIdentity],
               !groups.isEmpty else {
-            Log.Environment.warning("\(#line) no group found for mac user")
+            Log.Environment.warning("\(#line, privacy: .public) no group found for mac user")
             return nil
         }
         
@@ -62,7 +62,7 @@ enum MacUser {
             kCSIdentityClassGroup,
             defaultAthority
         ) else {
-            Log.Environment.warning("\(#line) cannot query admin user group")
+            Log.Environment.warning("\(#line, privacy: .public) cannot query admin user group")
             return nil
         }
         let queryRef = query.takeRetainedValue()
@@ -70,12 +70,12 @@ enum MacUser {
             CSIdentityQueryStop(queryRef)
         }
         guard CSIdentityQueryExecute(queryRef, 0, nil) else {
-            Log.Environment.warning("\(#line) cannot execute query for admin user group")
+            Log.Environment.warning("\(#line, privacy: .public) cannot execute query for admin user group")
             return nil
         }
         guard let groups = CSIdentityQueryCopyResults(queryRef).takeRetainedValue() as? [CSIdentity],
               !groups.isEmpty else {
-            Log.Environment.warning("\(#line) no group found for query")
+            Log.Environment.warning("\(#line, privacy: .public) no group found for query")
             return nil
         }
         return groups.first

@@ -23,14 +23,14 @@ enum Diagnostics {
     
     /// Log the os and app related infos
     static func start() {
-        Log.Environment.notice("app: \(appVersion())")
-        Log.Environment.notice("os: \(osName())")
-        Log.Environment.notice("free space: \(freeSpace())")
+        Log.Environment.notice("app: \(appVersion(), privacy: .public)")
+        Log.Environment.notice("os: \(osName(), privacy: .public)")
+        Log.Environment.notice("free space: \(freeSpace(), privacy: .public)")
 #if os(macOS)
         MacUser.logIsUserAdmin()
 #endif
-        Log.Environment.notice("\(languageCurrent())")
-        Log.Environment.notice("\(libraryLanguageCodes())")
+        Log.Environment.notice("\(languageCurrent(), privacy: .public)")
+        Log.Environment.notice("\(libraryLanguageCodes(), privacy: .public)")
         
     }
     
