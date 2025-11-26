@@ -29,6 +29,7 @@ enum Diagnostics {
 #if os(macOS)
         MacUser.name()
         MacUser.logIsUserAdmin()
+        DownloadDiagnostics.path()
 #endif
         Log.Environment.notice("\(languageCurrent(), privacy: .public)")
         Log.Environment.notice("\(libraryLanguageCodes(), privacy: .public)")
