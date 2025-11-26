@@ -13,7 +13,6 @@
 // You should have received a copy of the GNU General Public License
 // along with Kiwix; If not, see https://www.gnu.org/licenses/.
 
-#if os(macOS)
 import Foundation
 
 enum DownloadDiagnostics {
@@ -33,5 +32,3 @@ enum DownloadDiagnostics {
         Log.DownloadService.notice("Download path: \(path, privacy: .public)")
     }
 }
-
-#endif
