@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="22758" systemVersion="23F79" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="24299" systemVersion="24G231" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="Bookmark" representedClassName=".Bookmark" syncable="YES">
         <attribute name="articleURL" attributeType="URI"/>
         <attribute name="created" attributeType="Date" usesScalarValueType="NO"/>
@@ -51,6 +51,7 @@
         <attribute name="hasVideos" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
         <attribute name="includedInSearch" attributeType="Boolean" defaultValueString="YES" usesScalarValueType="YES"/>
         <attribute name="isMissing" attributeType="Boolean" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="isValid" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="languageCode" attributeType="String"/>
         <attribute name="mediaCount" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="name" attributeType="String"/>

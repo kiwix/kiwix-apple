@@ -48,3 +48,34 @@ struct AttributeBool: View {
         }
     }
 }
+
+struct ZimValidationAttributeOptional: View {
+    let title: String
+    let isValid: Bool?
+    
+    var body: some View {
+        HStack {
+            Text(title)
+            Spacer()
+            #if os(macOS)
+            let textValue: String = {
+                switch isValid {
+                case .some(true): LocalString.common_button_yes
+                case .some(false): LocalString.common_button_no
+                case .none: ""
+                }
+            }()
+            Text(textValue).foregroundColor(isValid == false ? .red : .secondary)
+            #elseif os(iOS)
+            switch isValid {
+            case .some(true):
+                Image(systemName: "checkmark.circle.fill").foregroundColor(.green)
+            case .some(false):
+                Image(systemName: "xmark.circle.fill").foregroundColor(.red)
+            case .none:
+                Image(systemName: "circle").foregroundStyle(.orange)
+            }
+            #endif
+        }
+    }
+}

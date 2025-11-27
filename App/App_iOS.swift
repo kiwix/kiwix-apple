@@ -54,6 +54,7 @@ struct Kiwix: App {
                 .modifier(OpenFileHandler())
                 .modifier(FileExportHandler())
                 .modifier(SaveContentHandler())
+                .modifier(ValidationModifier())
                 .onChange(of: scenePhase) { _, newValue in
                     switch newValue {
                     case .inactive:

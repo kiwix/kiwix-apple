@@ -1,5 +1,6 @@
 # 3.11.1
-
+  - NEW:
+    - ZIM file validation feature(@BPerlakiH #1379)
 # 3.11.0
   - NEW:
     - Hotspot for custom apps (@BPerlakiH #1331)

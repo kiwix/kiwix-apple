@@ -241,6 +241,13 @@
     }
 }
 
+# pragma mark - ZIM validation
+- (Boolean) isValidZIM: (NSUUID *_Nonnull) zimFileID {
+    zim::Archive *archive = [self archiveBy: zimFileID];
+    if (archive == nil) { return false; }
+    return archive->checkIntegrity(zim::IntegrityCheck::CHECKSUM);
+}
+
 # pragma mark - private
 
 /// Converts the UUID to a C representation
