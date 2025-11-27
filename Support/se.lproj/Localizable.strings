@@ -12,6 +12,7 @@
 "common.button.go_back" = "Ruovttoluotta";
 "common.button.done" = "Geargan";
 "common.button.cancel" = "Gaskkalduhte";
+"common.button.share" = "Juoge";
 "common.search" = "Oza";
 "common.tab.navigation.title" = "Leavggat";
 "common.tab.menu.new_tab" = "Ođđa leavga";
@@ -48,6 +49,7 @@
 "zim_file.bool_info.videos" = "Videot";
 "zim_file.bool_info.details" = "Lassedieđut";
 "zim_file.download_task.action.title.cancel" = "Gaskkalduhte";
+"theme_settings.option.light" = "Čuvges fárda";
 "library_settings.languages.title" = "Gielat";
 "settings.navigation.title" = "Ásahusat";
 "settings.miscellaneous.button.feedback" = "Máhcahat";
