@@ -81,15 +81,23 @@ struct LibraryOperations {
                 }
                 zimFile.isMissing = false
                 successCount += 1
-                Log.LibraryOperations.notice("ZIM file opened: \(zimFile.name) | \(downloadPath)")
+                Log.LibraryOperations.notice("""
+ZIM file opened: \(zimFile.name, privacy: .public) |\
+\(downloadPath, privacy: .public)
+""")
             } catch ZimFileOpenError.missing {
                 zimFile.isMissing = true
-                Log.LibraryOperations.notice("ZIM file missing: \(zimFile.name) | \(downloadPath)")
+                Log.LibraryOperations.notice("""
+ZIM file missing: \(zimFile.name, privacy: .public) |\
+ \(downloadPath, privacy: .public)
+""")
             } catch {
                 zimFile.fileURLBookmark = nil
                 zimFile.isMissing = false
-                Log.LibraryOperations
-                    .notice("ZIM file cannot be opened: \(zimFile.name) | \(downloadPath) due to: \(error)")
+                Log.LibraryOperations.notice("""
+ZIM file cannot be opened: \(zimFile.name, privacy: .public) |\ 
+\(downloadPath, privacy: .public) due to: \(error, privacy: .public)
+""")
             }
         }
         await MainActor.run { 

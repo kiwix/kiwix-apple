@@ -26,6 +26,7 @@ extension SearchOperation {
         }
     }
 
+    // swiftlint:disable:next cyclomatic_complexity
     open override func main() {
         __results.removeAllObjects()
         __corrections.removeAllObjects()
@@ -99,6 +100,6 @@ extension SearchOperation {
         Log.LibraryOperations.debug("perfoming search suggestsion")
         __addSpellingCorrections()
         let count: Int = __corrections.count
-        Log.LibraryOperations.debug("found search suggestsion: \(count)")
+        Log.LibraryOperations.debug("found search suggestsion: \(count, privacy: .public)")
     }
 }
