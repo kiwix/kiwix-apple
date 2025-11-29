@@ -33,10 +33,11 @@ enum Diagnostics {
     static func entries(separator: String) async -> String {
 #if os(macOS)
         MacUser.name()
-        MacUser.logIsUserAdmin()
+        MacUser.isUserAdmin()
 #endif
         Log.Environment.notice("ProcessInfo.environment:\n\(processInfoEnvironment(), privacy: .public)")
         DownloadDiagnostics.path()
+        
         guard let logStore = try? OSLogStore(scope: .currentProcessIdentifier),
               let entries = try? logStore.getEntries(
                 matching: NSPredicate(format: "subsystem == %@", KiwixLogger.subsystem)

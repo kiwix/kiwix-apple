@@ -18,17 +18,22 @@ import Foundation
 enum DownloadDiagnostics {
     
     // swiftlint:disable:next force_unwrap
-    private static let fakeURL = URL(string: "https://kiwix.org/diag.zim")!
+//    private static let fakeURL = URL(string: "https://kiwix.org/diag.zim")!
     
     static func path() {
-        guard let path = DownloadDestination.filePathFor(
-            downloadURL: Self.fakeURL,
-            taskId: "diag"
-        ) else {
+        guard let url = DownloadDestination.downloadLocalFolder() else {
             return
         }
         let tempDir = ProcessInfo().environment["TMPDIR"] ?? "unknown"
-        Log.DownloadService.notice("TEMP path: \(tempDir, privacy: .public)")
-        Log.DownloadService.notice("Download path: \(path, privacy: .public)")
+        logPath(prefix: "Temp", path: tempDir)
+        logPath(prefix: "Download", path: url.path())
+    }
+    
+    private static func logPath(prefix: String, path: String) {
+        let isWritable = FileManager.default.isWritableFile(atPath: path)
+        Log.DownloadService.notice("""
+\(prefix, privacy: .public) path: \(path, privacy: .public) isWritable: \(isWritable, privacy: .public)
+""")
+        
     }
 }

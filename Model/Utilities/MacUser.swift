@@ -23,7 +23,7 @@ enum MacUser {
         Log.Environment.notice("MacUser name: \(userName, privacy: .public)")
     }
     
-    static func logIsUserAdmin() {
+    static func isUserAdmin() {
         let backgroundQueue = DispatchQueue(label: "org.kiwix.macuser_background", qos: .background)
         backgroundQueue.async {
             let isAdmin = isAdmin()
