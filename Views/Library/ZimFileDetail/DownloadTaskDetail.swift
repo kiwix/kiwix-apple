@@ -39,7 +39,7 @@ extension ZimFileDetail {
                 } else if downloadState.resumeData == nil {
                     Action(title: LocalString.zim_file_download_task_action_pause) {
                         DownloadService.shared.pause(zimFileID: downloadZimFile.fileID)
-                    }
+                    }.disabled(downloadState.downloaded == 0) // make sure cannot be paused mid-state
                     Attribute(title: LocalString.zim_file_download_task_action_downloading, detail: detail)
                 } else {
                     Action(title: LocalString.zim_file_download_task_action_resume) {
