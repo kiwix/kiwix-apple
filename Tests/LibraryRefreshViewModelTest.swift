@@ -209,12 +209,11 @@ final class LibraryRefreshViewModelTest: XCTestCase {
         // check one zim file is in the database
         let zimFiles = try context.fetchZimFiles()
         XCTAssertEqual(zimFiles.count, 1)
-        XCTAssertEqual(zimFiles[0].id, zimFileID)
+        XCTAssertEqual(zimFiles[0].fileID, zimFileID)
 
         // check zim file can be retrieved by id, and properties are populated
         // swiftlint:disable:next force_try
         let zimFile = try! XCTUnwrap(zimFiles.first { $0.fileID == zimFileID })
-        XCTAssertEqual(zimFile.id, zimFileID)
         XCTAssertEqual(zimFile.articleCount, 50001)
         XCTAssertEqual(zimFile.category, Category.wikipedia.rawValue)
         // swiftlint:disable:next force_try

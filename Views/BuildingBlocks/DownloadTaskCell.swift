@@ -73,7 +73,7 @@ struct DownloadTaskCell: View {
         .clipShape(CellBackground.clipShapeRectangle)
         .onHover { self.isHovering = $0 }
         .onReceive(DownloadService.shared.progress.publisher) { states in
-            if let state = states[downloadZimFile.fileID] {
+            if !states.isEmpty, let state = states[downloadZimFile.fileID] {
                 self.downloadState = state
             }
         }

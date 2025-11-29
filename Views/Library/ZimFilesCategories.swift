@@ -129,7 +129,7 @@ private struct CategoryGrid: View {
                 LazyVGrid(columns: ([gridItem]), alignment: .leading, spacing: 12) {
                     ForEach(sections) { section in
                         Section {
-                            ForEach(section) { zimFile in
+                            ForEach(section, id: \.fileID) { zimFile in
                                 LibraryZimFileContext(
                                     content: { ZimFileCell(
                                         zimFile,

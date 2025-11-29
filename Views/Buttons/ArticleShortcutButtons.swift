@@ -52,7 +52,7 @@ struct ArticleShortcutButtons: View {
         .help(LocalString.article_shortcut_main_button_help)
         #elseif os(iOS)
         Menu {
-            ForEach(zimFiles) { zimFile in
+            ForEach(zimFiles, id: \.fileID) { zimFile in
                 Button(zimFile.name) {
                     loadMainArticle(zimFile.fileID)
                     dismissSearch()
@@ -83,7 +83,7 @@ struct ArticleShortcutButtons: View {
 
         #elseif os(iOS)
         Menu {
-            ForEach(zimFiles) { zimFile in
+            ForEach(zimFiles, id: \.fileID) { zimFile in
                 Button(zimFile.name) {
                     loadRandomArticle(zimFile.fileID)
                     dismissSearch()

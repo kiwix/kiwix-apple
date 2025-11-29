@@ -41,7 +41,7 @@ struct LocalLibraryList: View {
             spacing: 12
         ) {
             GridSection(title: LocalString.welcome_main_page_title) {
-                ForEach(zimFiles) { zimFile in
+                ForEach(zimFiles, id: \.fileID) { zimFile in
                     AsyncButtonView {
                         guard let url = await ZimFileService.shared
                             .getMainPageURL(zimFileID: zimFile.fileID) else { return }

@@ -51,7 +51,7 @@ struct ZimFilesOpened: View {
             alignment: .leading,
             spacing: 12
         ) {
-            ForEach(zimFiles) { zimFile in
+            ForEach(zimFiles, id: \.fileID) { zimFile in
                 NavigationLink {
                     ZimFileDetail(zimFile: zimFile, dismissParent: nil)
                 } label: {

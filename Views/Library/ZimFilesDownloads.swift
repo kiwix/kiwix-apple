@@ -22,6 +22,7 @@ struct ZimFilesDownloads: View {
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     @FetchRequest(
         sortDescriptors: [NSSortDescriptor(keyPath: \DownloadTask.created, ascending: false)],
+        predicate: NSPredicate(format: "zimFile != NULL"),
         animation: .easeInOut
     ) private var downloadTasks: FetchedResults<DownloadTask>
     private let dismiss: (() -> Void)?
@@ -36,12 +37,14 @@ struct ZimFilesDownloads: View {
             alignment: .leading,
             spacing: 12
         ) {
-            ForEach(downloadTasks.compactMap(\.zimFile)) { zimFile in
-                LibraryZimFileContext(
-                    content: { DownloadTaskCell(zimFile) },
-                    zimFile: zimFile,
-                    selection: selection,
-                    dismiss: dismiss)
+            ForEach(downloadTasks, id: \.fileID) { downloadTask in
+                if let zimFile = downloadTask.zimFile, zimFile.downloadTask != nil {
+                    LibraryZimFileContext(
+                        content: { DownloadTaskCell(zimFile) },
+                        zimFile: zimFile,
+                        selection: selection,
+                        dismiss: dismiss)
+                }
             }
         }
         .modifier(GridCommon())

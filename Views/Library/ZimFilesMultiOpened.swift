@@ -38,7 +38,7 @@ struct ZimFilesMultiOpened: View {
                 alignment: .leading,
                 spacing: 12
             ) {
-                ForEach(zimFiles) { zimFile in
+                ForEach(zimFiles, id: \.fileID) { zimFile in
                     MultiZimFilesContext(
                         content: {
                             ZimFileCell(
