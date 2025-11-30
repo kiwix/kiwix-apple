@@ -19,7 +19,7 @@ import SystemPackage
 #endif
 
 enum DownloadDiagnostics {
-        
+    
     static func path() {
         guard let url = DownloadDestination.downloadLocalFolder() else {
             return
@@ -27,6 +27,34 @@ enum DownloadDiagnostics {
         let tempDir = ProcessInfo().environment["TMPDIR"] ?? "unknown"
         logPath(prefix: "Temp", path: tempDir)
         logPath(prefix: "Download", path: url.path())
+    }
+    
+    static func testWritingAFile() {
+        let testURL = URL(string: "https://kiwix.org/diag.test")!
+        guard let destinationURL = DownloadDestination.filePathFor(downloadURL: testURL) else {
+            return
+        }
+        if let tempDir = ProcessInfo().environment["TMPDIR"],
+           let tempDirURL = URL(string: tempDir) {
+            let tempFileURL = tempDirURL.appendingPathComponent(testURL.lastPathComponent)
+            
+            if FileManager.default.createFile(atPath: tempFileURL.path(), contents: Data("test".utf8)) {
+                do {
+                    try FileManager.default.moveItem(atPath: tempFileURL.path(), toPath: destinationURL.path())
+                    Log.DownloadService.notice("successfully moved test file to downloads folder")
+                    try FileManager.default.removeItem(at: destinationURL)
+                    Log.DownloadService.notice("successfully removed test file in downloads folder")
+                } catch {
+                    Log.DownloadService.error("""
+        moving temp file failed: \(error.localizedDescription, privacy: .public)
+        """)
+                }
+            } else {
+                Log.DownloadService.error("cannot write to temp directory")
+            }
+        } else {
+            Log.DownloadService.error("cannot access temp directory")
+        }
     }
     
     private static func logPath(prefix: String, path: String) {

@@ -37,6 +37,7 @@ enum Diagnostics {
 #endif
         Log.Environment.notice("ProcessInfo.environment:\n\(processInfoEnvironment(), privacy: .public)")
         DownloadDiagnostics.path()
+        DownloadDiagnostics.testWritingAFile()
         
         guard let logStore = try? OSLogStore(scope: .currentProcessIdentifier),
               let entries = try? logStore.getEntries(
