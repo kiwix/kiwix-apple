@@ -142,7 +142,7 @@ struct ZimFileDetail: View {
             #endif
             #if os(macOS)
             Action(title: LocalString.zim_file_action_reveal_in_finder_title) {
-                guard let url = await ZimFileService.shared.getFileURL(zimFileID: zimFile.id) else { return }
+                guard let url = await ZimFileService.shared.getFileURL(zimFileID: zimFile.fileID) else { return }
                 NSWorkspace.shared.activateFileViewerSelecting([url])
             }
             #endif
@@ -258,7 +258,8 @@ struct ZimFileDetail: View {
             if let freeSpace = freeSpace, zimFile.size >= freeSpace - 10^9 {
                 isPresentingDownloadAlert = true
             } else {
-                DownloadService.shared.start(zimFileID: zimFile.id, allowsCellularAccess: downloadUsingCellular)
+                DownloadService.shared.start(zimFileID: zimFile.fileID,
+                                             allowsCellularAccess: downloadUsingCellular)
             }
         }.alert(isPresented: $isPresentingDownloadAlert) {
             Alert(
@@ -272,7 +273,7 @@ struct ZimFileDetail: View {
                 }()),
                 primaryButton: .default(Text(LocalString.zim_file_action_download_button_anyway)) {
                     DownloadService.shared.start(
-                        zimFileID: zimFile.id,
+                        zimFileID: zimFile.fileID,
                         allowsCellularAccess: downloadUsingCellular
                     )
                 },

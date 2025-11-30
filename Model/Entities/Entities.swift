@@ -37,22 +37,20 @@ class Bookmark: NSManagedObject, Identifiable {
     }
 }
 
-class DownloadTask: NSManagedObject, Identifiable {
-    var id: UUID { fileID }
-
+final class DownloadTask: NSManagedObject {
     @NSManaged var created: Date
     @NSManaged var error: String?
     @NSManaged var fileID: UUID
     @NSManaged var zimFile: ZimFile?
 
-    class func fetchRequest(predicate: NSPredicate? = nil) -> NSFetchRequest<DownloadTask> {
+    static func fetchRequest(predicate: NSPredicate? = nil) -> NSFetchRequest<DownloadTask> {
         // swiftlint:disable:next force_cast
         let request = super.fetchRequest() as! NSFetchRequest<DownloadTask>
         request.predicate = predicate
         return request
     }
 
-    class func fetchRequest(fileID: UUID) -> NSFetchRequest<DownloadTask> {
+    static func fetchRequest(fileID: UUID) -> NSFetchRequest<DownloadTask> {
         // swiftlint:disable:next force_cast
         let request = super.fetchRequest() as! NSFetchRequest<DownloadTask>
         request.predicate = NSPredicate(format: "fileID == %@", fileID as CVarArg)
@@ -247,9 +245,7 @@ struct DirectAccessInfo {
     }
 }
 
-final class ZimFile: NSManagedObject, Identifiable {
-    var id: UUID { fileID }
-
+final class ZimFile: NSManagedObject {
     @NSManaged var articleCount: Int64
     @NSManaged var category: String
     @NSManaged var created: Date
