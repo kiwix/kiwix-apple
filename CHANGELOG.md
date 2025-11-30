@@ -3,8 +3,10 @@
     - ZIM file validation feature(@BPerlakiH #1379)
   - FIX:
     - macOS crash when opening downloads tab (@BPerlakiH #1383)
+    - Immediate pause of downloads (@BPerlakiH #1385)
   - UPDATED:
     - Extended download diagnostics (@BPerlakiH #1386)
+
 # 3.11.0
   - NEW:
     - Hotspot for custom apps (@BPerlakiH #1331)
