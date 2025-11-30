@@ -18,7 +18,12 @@ import Foundation
 import CoreServices
 
 enum MacUser {
-    static func logIsUserAdmin() {
+    static func name() {
+        let userName = NSUserName()
+        Log.Environment.notice("MacUser name: \(userName, privacy: .public)")
+    }
+    
+    static func isUserAdmin() {
         let backgroundQueue = DispatchQueue(label: "org.kiwix.macuser_background", qos: .background)
         backgroundQueue.async {
             let isAdmin = isAdmin()

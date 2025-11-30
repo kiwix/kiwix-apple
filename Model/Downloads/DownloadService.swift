@@ -85,8 +85,7 @@ final class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegat
             task.countOfBytesClientExpectsToReceive = zimFile.size
             task.taskDescription = zimFileID.uuidString
             
-            let taskId = task.taskIdentifier.description
-            guard let destination = DownloadDestination.filePathFor(downloadURL: url, taskId: taskId) else {
+            guard let destination = DownloadDestination.filePathFor(downloadURL: url) else {
                 showAlert(.downloadError(#line, LocalString.download_service_error_option_directory))
                 task.cancel()
                 deleteDownloadTask(zimFileID: zimFileID)
@@ -338,7 +337,7 @@ final class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegat
             return
         }
         guard let url = httpResponse.url,
-           var destination = DownloadDestination.filePathFor(downloadURL: url, taskId: taskId) else {
+           var destination = DownloadDestination.filePathFor(downloadURL: url) else {
             showAlert(.downloadError(#line, LocalString.download_service_error_option_directory))
             deleteDownloadTask(zimFileID: zimFileID)
             return

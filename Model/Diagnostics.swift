@@ -26,15 +26,19 @@ enum Diagnostics {
         Log.Environment.notice("app: \(appVersion(), privacy: .public)")
         Log.Environment.notice("os: \(osName(), privacy: .public)")
         Log.Environment.notice("free space: \(freeSpace(), privacy: .public)")
-#if os(macOS)
-        MacUser.logIsUserAdmin()
-#endif
         Log.Environment.notice("\(languageCurrent(), privacy: .public)")
         Log.Environment.notice("\(libraryLanguageCodes(), privacy: .public)")
-        
     }
     
     static func entries(separator: String) async -> String {
+#if os(macOS)
+        MacUser.name()
+        MacUser.isUserAdmin()
+#endif
+        Log.Environment.notice("ProcessInfo.environment:\n\(processInfoEnvironment(), privacy: .public)")
+        DownloadDiagnostics.path()
+        DownloadDiagnostics.testWritingAFile()
+        
         guard let logStore = try? OSLogStore(scope: .currentProcessIdentifier),
               let entries = try? logStore.getEntries(
                 matching: NSPredicate(format: "subsystem == %@", KiwixLogger.subsystem)
@@ -66,6 +70,16 @@ enum Diagnostics {
         let deviceType = Device.current.rawValue
         let osVersion = ProcessInfo.processInfo.operatingSystemVersionString
         return "\(deviceType): \(osVersion)"
+    }
+    
+    private static func processInfoEnvironment() -> String {
+        var result = "[\n"
+        let environment = ProcessInfo().environment
+        for key in environment.keys.sorted() {
+            let value = environment[key] ?? "null"
+            result.append("\(key): \(value)\n")
+        }
+        return result.appending("]")
     }
     
     private static func languageCurrent() -> String {

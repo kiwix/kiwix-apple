@@ -17,7 +17,7 @@ import Foundation
 
 enum DownloadDestination {
     
-    static func filePathFor(downloadURL: URL, taskId: String) -> URL? {
+    static func downloadLocalFolder() -> URL? {
         // determine which directory should the file be moved to
         #if os(macOS)
         let searchPath = FileManager.SearchPathDirectory.downloadsDirectory
@@ -28,11 +28,15 @@ enum DownloadDestination {
         // move file
         guard let directory = FileManager.default.urls(for: searchPath, in: .userDomainMask).first else {
             Log.DownloadService.fault(
-                "Cannot find download directory! downloadTask: \(taskId, privacy: .public)"
+                "Cannot find download directory!"
             )
             return nil
         }
-        return directory.appendingPathComponent(downloadURL.lastPathComponent)
+        return directory
+    }
+    
+    static func filePathFor(downloadURL: URL) -> URL? {
+        downloadLocalFolder()?.appendingPathComponent(downloadURL.lastPathComponent)
     }
     
     static func alternateLocalPathFor(downloadURL url: URL, count: Int) -> URL {
