@@ -50,6 +50,9 @@ packages:
   StripeApplePay:
     url: https://github.com/CodeLikeW/stripe-apple-pay
     majorVersion: 24.23.0
+  SwiftSystem:
+    url: https://github.com/apple/swift-system
+    revision: b083113aef646d9d35403ca17e9789b750e42d1d
 
 targetTemplates:
   ApplicationTemplate:
@@ -76,6 +79,10 @@ targetTemplates:
       - sdk: SystemConfiguration.framework
       - package: Defaults
       - package: StripeApplePay
+      - package: SwiftSystem
+        product: SystemPackage
+        destinationFilters: 
+          - macOS
     sources:
       - path: App
       - path: Model

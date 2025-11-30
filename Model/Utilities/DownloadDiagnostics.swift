@@ -14,12 +14,12 @@
 // along with Kiwix; If not, see https://www.gnu.org/licenses/.
 
 import Foundation
+#if os(macOS)
+import SystemPackage
+#endif
 
 enum DownloadDiagnostics {
-    
-    // swiftlint:disable:next force_unwrap
-//    private static let fakeURL = URL(string: "https://kiwix.org/diag.zim")!
-    
+        
     static func path() {
         guard let url = DownloadDestination.downloadLocalFolder() else {
             return
@@ -34,6 +34,19 @@ enum DownloadDiagnostics {
         Log.DownloadService.notice("""
 \(prefix, privacy: .public) path: \(path, privacy: .public) isWritable: \(isWritable, privacy: .public)
 """)
-        
+#if os(macOS)
+        let filePath = FilePath(path)
+        if let stat = try? filePath.stat() {
+            let permissions = stat.mode.permissions.debugDescription
+            let userID = stat.userID.rawValue.description
+            let groupID = stat.groupID.rawValue.description
+            Log.DownloadService.notice("""
+            \(prefix, privacy: .public) path: \(path, privacy: .public) \
+            permissions: \(permissions, privacy: .public) \
+            userID: \(userID, privacy: .public) \
+            groupID: \(groupID, privacy: .public)
+            """)
+        }
+#endif
     }
 }
