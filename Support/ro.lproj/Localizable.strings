@@ -1,13 +1,11 @@
 // Messages for Romanian (română)
 // Exported from translatewiki.net
 // Author: MSClaudiu
+// Author: SZ475
 
-// Fuzzy
-"library_refresh_error.retrieve.description" = "Eroare la preluarea datelor din bibliotecă.";
-// Fuzzy
-"library_refresh_error.parse.description" = "Eroare la analizarea datelor din bibliotecă.";
-// Fuzzy
-"library_refresh_error.process.description" = "Eroare la procesarea datelor din bibliotecă.";
+"library_refresh_error.retrieve.description" = "Eroare la preluarea datelor din catalog.";
+"library_refresh_error.parse.description" = "Eroare la procesarea datelor din catalog.";
+"library_refresh_error.process.description" = "Eroare la procesarea datelor din catalog.";
 "download_service.complete.title" = "Descărcare Completată";
 "download_service.complete.description" = "%@ a fost descărcat cu succes.";
 "download_service.failed.description" = "Nu se poate descărca acest fișier.";
@@ -98,6 +96,7 @@
 "zim_file.action.download.warning.message" = "Este posibil să nu existe suficient spațiu pe dispozitiv pentru acest fișier ZIM.";
 "zim_file.action.download.warning.message1" = "Ar mai rămâne mai puțin de 1 GB spațiu după descărcarea fișierului ZIM.";
 "zim_file.action.download.button.anyway" = "Descărcați Oricum";
+"zim_file.action.validate.title" = "Validație";
 "zim_file.base_info.attribute.language" = "Limba";
 "zim_file.base_info.attribute.category" = "Categorie";
 "zim_file.base_info.attribute.size" = "Dimensiune";
@@ -106,6 +105,7 @@
 "zim_file.bool_info.videos" = "Videouri";
 "zim_file.bool_info.details" = "Detalii";
 "zim_file.bool_info.require_service_workers" = "Necesită Lucrători de Serviciu";
+"zim_file.bool_info.valid" = "Valid";
 "zim_file.counts.article_count" = "Număr de Articole";
 "zim_file.counts.article.media_count" = "Numărul Media";
 "zim_file.detail.id.title" = "ID";

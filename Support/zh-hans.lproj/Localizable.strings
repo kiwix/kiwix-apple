@@ -2,6 +2,7 @@
 // Exported from translatewiki.net
 // Author: Cyanjiang
 // Author: Dream Star.cn
+// Author: ExoHyper2026
 // Author: GuoPC
 // Author: Kichin
 // Author: Prmsh
@@ -127,6 +128,10 @@
 "zim_file.action.download.warning.message" = "您的设备上可能没有足够的空间来存储此 ZIM 文件。";
 "zim_file.action.download.warning.message1" = "下载 ZIM 文件后，剩余空间不足 1GB。";
 "zim_file.action.download.button.anyway" = "仍然下载";
+"zim_file.action.validate.title" = "验证";
+"zim_file.action.validate.alert.title" = "正在验证 ZIM 文件……";
+"zim_file.action.validate.alert.description" = "这可能需要几分钟时间。验证完之前，Kiwix 将无法使用。";
+"zim_file.validation.in_progress" = "正在验证 %@……";
 "zim_file.base_info.attribute.language" = "语言";
 "zim_file.base_info.attribute.category" = "分类";
 "zim_file.base_info.attribute.size" = "大小";
@@ -135,6 +140,7 @@
 "zim_file.bool_info.videos" = "视频";
 "zim_file.bool_info.details" = "详情";
 "zim_file.bool_info.require_service_workers" = "需要 Service Worker";
+"zim_file.bool_info.valid" = "有效";
 "zim_file.counts.article_count" = "总条目数";
 "zim_file.counts.article.media_count" = "媒体数量";
 "zim_file.detail.id.title" = "ID";
