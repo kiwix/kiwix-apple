@@ -30,7 +30,7 @@ struct ZimFileDetail: View {
     @State private var isPresentingDownloadAlert = false
     @State private var isPresentingFileLocator = false
     @State private var isPresentingUnlinkAlert = false
-    @State private var isPresentingValidationAlert = false
+    @State private var isPresentingIntegrityCheckAlert = false
     @State private var isInDocumentsDirectory = false
     let dismissParent: (() -> Void)? // iOS only
 
@@ -54,8 +54,9 @@ struct ZimFileDetail: View {
                 id
             }.collapsible(false)
             if isValidatable(zimFile) {
-                Section { validateSection }
-                    .collapsible(false)
+                Section {
+                    validateSection
+                }.collapsible(false)
             }
             if isDestroyable(zimFile) {
                 Section {
@@ -93,7 +94,9 @@ struct ZimFileDetail: View {
             Section { counts }
             Section { id }
             if isValidatable(zimFile) {
-                Section { validateSection }
+                Section {
+                    validateSection
+                }
             }
             if isDestroyable(zimFile) {
                 Section { destorySection }
@@ -160,18 +163,23 @@ struct ZimFileDetail: View {
     
     @ViewBuilder
     private var validateSection: some View {
-        Action(title: LocalString.zim_file_action_validate_title) {
-            if hasAlertBeforeValidation() {
-                isPresentingValidationAlert = true
+        ZimValidationAttributeOptional(
+            title: LocalString.zim_file_bool_info_zim_archive_integrity,
+            isIntegrityChecked: zimFile.isIntegrityChecked
+        )
+        
+        Action(title: LocalString.zim_file_action_integrity_check_title) {
+            if hasAlertBeforeIntegrityCheck() {
+                isPresentingIntegrityCheckAlert = true
             } else {
-                validateZimFile()
+                checkZimFileIntegrity()
             }
-        }.alert(isPresented: $isPresentingValidationAlert) {
+        }.alert(isPresented: $isPresentingIntegrityCheckAlert) {
             Alert(
-                title: Text(LocalString.zim_file_action_validate_alert_title),
-                message: Text(LocalString.zim_file_action_validate_alert_description),
-                primaryButton: .default(Text(LocalString.zim_file_action_validate_title)) {
-                    validateZimFile()
+                title: Text(LocalString.zim_file_action_integrity_check_alert_title),
+                message: Text(LocalString.zim_file_action_integrity_check_alert_description),
+                primaryButton: .default(Text(LocalString.zim_file_action_integrity_check_title)) {
+                    checkZimFileIntegrity()
                 },
                 secondaryButton: .cancel()
             )
@@ -179,15 +187,15 @@ struct ZimFileDetail: View {
     }
     
     private static let alertLimit100MB: UInt64 = 100 * 1024 * 1024
-    private func hasAlertBeforeValidation() -> Bool {
+    private func hasAlertBeforeIntegrityCheck() -> Bool {
         zimFile.size >= Self.alertLimit100MB
     }
     
-    private func validateZimFile() {
+    private func checkZimFileIntegrity() {
         Task {
             if let context = zimFile.managedObjectContext {
-                await ZimFileValidator.validate(zimFiles: [zimFile],
-                                                using: context)
+                await ZimFileIntegrity.check(zimFiles: [zimFile],
+                                             using: context)
             }
         }
     }
@@ -305,9 +313,6 @@ struct ZimFileDetail: View {
         if zimFile.requiresServiceWorkers {
             AttributeBool(title: LocalString.zim_file_bool_info_require_service_workers,
                           detail: zimFile.requiresServiceWorkers)
-        }
-        if isValidatable(zimFile) {
-            ZimValidationAttributeOptional(title: LocalString.zim_file_bool_info_valid, isValid: zimFile.isValid)
         }
     }
 

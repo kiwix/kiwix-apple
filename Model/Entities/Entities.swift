@@ -262,17 +262,17 @@ final class ZimFile: NSManagedObject {
     @NSManaged var hasVideos: Bool
     @NSManaged var includedInSearch: Bool
     @NSManaged var isMissing: Bool
-    var isValid: Bool? {
+    var isIntegrityChecked: Bool? {
         get { // not @NSManaged, as obj-c cannot handle optional values
-            willAccessValue(forKey: "isValid")
-            let isValid = primitiveValue(forKey: "isValid") as? Bool
-            didAccessValue(forKey: "isValid")
+            willAccessValue(forKey: "isIntegrityChecked")
+            let isValid = primitiveValue(forKey: "isIntegrityChecked") as? Bool
+            didAccessValue(forKey: "isIntegrityChecked")
             return isValid
         }
         set {
-            willChangeValue(forKey: "isValid")
-            setPrimitiveValue(newValue, forKey: "isValid")
-            didChangeValue(forKey: "isValid")
+            willChangeValue(forKey: "isIntegrityChecked")
+            setPrimitiveValue(newValue, forKey: "isIntegrityChecked")
+            didChangeValue(forKey: "isIntegrityChecked")
         }
     }
     @NSManaged var languageCode: String
@@ -296,7 +296,7 @@ final class ZimFile: NSManagedObject {
         static let isDownloaded = NSPredicate(format: "fileURLBookmark != nil")
         static let notDownloaded = NSPredicate(format: "fileURLBookmark == nil")
         static let notMissing = NSPredicate(format: "isMissing == false")
-        static let notValidated = NSPredicate(format: "isValid == nil")
+        static let noIntegrityCheck = NSPredicate(format: "isIntegrityChecked == nil")
     }
 
     static var openedPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
@@ -304,10 +304,10 @@ final class ZimFile: NSManagedObject {
         Predicate.notMissing
     ])
     
-    static var notYetValidatedPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
+    static var notYetIntegrityCheckedPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
         Predicate.isDownloaded,
         Predicate.notMissing,
-        Predicate.notValidated
+        Predicate.noIntegrityCheck
     ])
 
     static func fetchRequest(
