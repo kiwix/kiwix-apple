@@ -17,11 +17,11 @@ import Foundation
 import CoreData
 
 @MainActor
-enum ZimFileValidator {
+enum ZimFileIntegrity {
     
     /// Validate given ZIM files
     /// - Parameter files: [zimFile.fileID: zimFile.name]
-    static func validate(zimFiles: [ZimFile], using context: NSManagedObjectContext) async {
+    static func check(zimFiles: [ZimFile], using context: NSManagedObjectContext) async {
         for zimFile in zimFiles {
             let fileID = zimFile.fileID
             let name = zimFile.name
@@ -34,7 +34,7 @@ Started ZIM validation for \(fileID.uuidString, privacy: .public), \(name, priva
 Completed ZIM validation for \(fileID.uuidString, privacy: .public), \
 \(name, privacy: .public), success: \(result, privacy: .public)
 """)
-            zimFile.isValid = result
+            zimFile.isIntegrityChecked = result
             if context.hasChanges {
                 try? context.save()
             }
