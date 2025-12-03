@@ -83,9 +83,6 @@
 "zim_file.action.download.warning.title" = "Späicherplazwarnung";
 "zim_file.action.download.warning.message" = "Et ass villäicht net genuch Plaz op Ärem Apparat fir dës ZIM-Datei.";
 "zim_file.action.download.button.anyway" = "Trotzdeem eroflueden";
-"zim_file.action.validate.title" = "Validéieren";
-"zim_file.action.validate.alert.title" = "ZIM-Fichier gëtt validéiert ...";
-"zim_file.validation.in_progress" = "%@ gëtt validéiert ...";
 "zim_file.base_info.attribute.language" = "Sprooch";
 "zim_file.base_info.attribute.category" = "Kategorie";
 "zim_file.base_info.attribute.size" = "Gréisst";
