@@ -217,6 +217,14 @@ struct ZimFileDetail: View {
         }
     }
     
+    private func checkButtonTitle() -> String {
+        if zimFile.isIntegrityChecked == true {
+            LocalString.zim_file_action_integrity_recheck_title
+        } else {
+            LocalString.zim_file_action_integrity_check_title
+        }
+    }
+    
     private static let alertLimit100MB: UInt64 = 100 * 1024 * 1024
     private func hasAlertBeforeIntegrityCheck() -> Bool {
         zimFile.size >= Self.alertLimit100MB
