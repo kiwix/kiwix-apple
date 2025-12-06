@@ -58,7 +58,7 @@ struct DiagnosticsView: View {
     @ViewBuilder
     var description: some View {
         Text("""
-                    Please share the following details, so we can diagnose the problem.
+                    Diagnostic items:
                     """)
         .font(.headline)
         
