@@ -80,17 +80,12 @@
 "zim_file.action.download.warning.message" = "Potrebbe non esserci spazio sufficiente sul tuo dispositivo per questo file ZIM.";
 "zim_file.action.download.warning.message1" = "Rimarrebbe meno di 1 GB di spazio libero dopo il download del file ZIM.";
 "zim_file.action.download.button.anyway" = "Scarica comunque";
-"zim_file.action.validate.title" = "Convalida";
-"zim_file.action.validate.alert.title" = "Convalida del file ZIM in corso...";
-"zim_file.action.validate.alert.description" = "L'operazione potrebbe richiedere alcuni minuti. Kiwix non sarà disponibile fino al completamento della convalida.";
-"zim_file.validation.in_progress" = "Convalida di %@ ...";
 "zim_file.base_info.attribute.language" = "Lingua";
 "zim_file.base_info.attribute.category" = "Categoria";
 "zim_file.base_info.attribute.created" = "Creato";
 "zim_file.bool_info.pictures" = "Immagini";
 "zim_file.bool_info.videos" = "Video";
 "zim_file.bool_info.details" = "Dettagli";
-"zim_file.bool_info.valid" = "Valido";
 "zim_file.download_task.action.downloading" = "Download in corso...";
 "zim_file.download_task.action.resume" = "Riprendi";
 "zim_file.download_task.action.paused" = "In pausa";
