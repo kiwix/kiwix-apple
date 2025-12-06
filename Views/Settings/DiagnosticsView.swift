@@ -58,16 +58,16 @@ struct DiagnosticsView: View {
     @ViewBuilder
     var description: some View {
         Text("""
-                    Please share the following details, so we can diagnose the problem.
+                    Diagnostic items:
                     """)
         .font(.headline)
         
         VStack(alignment: .leading) {
-            Text("• Application logs")
-            Text("• Your language settings")
-            Text("• List of your ZIM files")
-            Text("• Device details")
-            Text("• File system details")
+            Text(" • Application logs")
+            Text(" • Your language settings")
+            Text(" • List of your ZIM files")
+            Text(" • Device details")
+            Text(" • File system details")
         }
     }
     
