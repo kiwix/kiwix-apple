@@ -241,8 +241,8 @@
     }
 }
 
-# pragma mark - ZIM validation
-- (Boolean) isValidZIM: (NSUUID *_Nonnull) zimFileID {
+# pragma mark - ZIM integrity check
+- (Boolean) checkIntegrity: (NSUUID *_Nonnull) zimFileID {
     zim::Archive *archive = [self archiveBy: zimFileID];
     if (archive == nil) { return false; }
     return archive->checkIntegrity(zim::IntegrityCheck::CHECKSUM);

@@ -67,8 +67,8 @@ struct Kiwix: App {
                 .environmentObject(libraryRefreshViewModel)
                 .task { colorSchemeStore.update() }
                 .modifier(OpeningSettingsModifier(updateTabSelection: selectHotspotTab))
-                .modifier(ValidationModifier())
-                .disabled(ValidationShared.state.isValidating)
+                .modifier(IntegrityCheckModifier())
+                .disabled(IntegrityCheckShared.state.isRunning)
         }.commands {
             SidebarCommands()
             CommandGroup(replacing: .importExport) {
