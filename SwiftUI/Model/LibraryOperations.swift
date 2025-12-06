@@ -49,9 +49,9 @@ struct LibraryOperations {
             LibraryOperations.configureZimFile(zimFile, metadata: metadata)
             zimFile.fileURLBookmark = fileURLBookmark
             zimFile.isMissing = false
-            if context.hasChanges { try? context.save() }
             Task {
                 await MainActor.run {
+                    if context.hasChanges { try? context.save() }
                     onComplete?()
                 }
             }
