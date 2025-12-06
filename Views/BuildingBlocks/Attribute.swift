@@ -49,7 +49,7 @@ struct AttributeBool: View {
     }
 }
 
-struct ZimValidationAttributeOptional: View {
+struct ZimItegrityAttributeOptional: View {
     let title: String
     let isIntegrityChecked: Bool?
     

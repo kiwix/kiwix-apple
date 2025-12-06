@@ -53,9 +53,9 @@ struct ZimFileDetail: View {
                 counts
                 id
             }.collapsible(false)
-            if isValidatable(zimFile) {
+            if isIntegrityCheckable(zimFile) {
                 Section {
-                    validateSection
+                    integritySection
                 }.collapsible(false)
             }
             if isDestroyable(zimFile) {
@@ -93,9 +93,9 @@ struct ZimFileDetail: View {
             }
             Section { counts }
             Section { id }
-            if isValidatable(zimFile) {
+            if isIntegrityCheckable(zimFile) {
                 Section {
-                    validateSection
+                    integritySection
                 }
             }
             if isDestroyable(zimFile) {
@@ -157,18 +157,32 @@ struct ZimFileDetail: View {
         }
     }
     
-    private func isValidatable(_ zimFile: ZimFile) -> Bool {
+    private func isIntegrityCheckable(_ zimFile: ZimFile) -> Bool {
         zimFile.fileURLBookmark != nil && !zimFile.isMissing
     }
     
     @ViewBuilder
-    private var validateSection: some View {
-        ZimValidationAttributeOptional(
+    private var integritySection: some View {
+        #if os(macOS)
+        ZimItegrityAttributeOptional(
             title: LocalString.zim_file_bool_info_zim_archive_integrity,
             isIntegrityChecked: zimFile.isIntegrityChecked
         )
-        
-        Action(title: LocalString.zim_file_action_integrity_check_title) {
+        checkIntegrityAction
+        #else
+        ZStack {
+            checkIntegrityAction
+            ZimItegrityAttributeOptional(
+                title: LocalString.zim_file_bool_info_zim_archive_integrity,
+                isIntegrityChecked: zimFile.isIntegrityChecked
+            )
+        }
+        #endif
+    }
+    
+    @ViewBuilder
+    private var checkIntegrityAction: some View {
+        Action(title: checkButtonTitle()) {
             if hasAlertBeforeIntegrityCheck() {
                 isPresentingIntegrityCheckAlert = true
             } else {
@@ -177,12 +191,19 @@ struct ZimFileDetail: View {
         }.alert(isPresented: $isPresentingIntegrityCheckAlert) {
             Alert(
                 title: Text(LocalString.zim_file_action_integrity_check_alert_title),
-                message: Text(LocalString.zim_file_action_integrity_check_alert_description),
                 primaryButton: .default(Text(LocalString.zim_file_action_integrity_check_title)) {
                     checkZimFileIntegrity()
                 },
                 secondaryButton: .cancel()
             )
+        }
+    }
+    
+    private func checkButtonTitle() -> String {
+        if zimFile.isIntegrityChecked == true {
+            LocalString.zim_file_action_integrity_recheck_title
+        } else {
+            LocalString.zim_file_action_integrity_check_title
         }
     }
     
