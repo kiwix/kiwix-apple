@@ -54,6 +54,13 @@ enum Diagnostics {
         return logs
     }
     
+    public static func fileName(using date: Date) -> String {
+        let formatter = ISO8601DateFormatter()
+        formatter.formatOptions = [.withDashSeparatorInDate, .withFullDate]
+        let dateString = formatter.string(from: date)
+        return "kiwix_diagnostic_\(dateString)"
+    }
+    
     private static func appVersion() -> String {
         let unknown = "unknown"
         let bundle = Bundle.main

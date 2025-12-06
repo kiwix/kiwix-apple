@@ -58,16 +58,16 @@ struct DiagnosticsView: View {
     @ViewBuilder
     var description: some View {
         Text("""
-                    Please share the following details, so we can diagnose the problem.
+                    Diagnostic items:
                     """)
         .font(.headline)
         
         VStack(alignment: .leading) {
-            Text("• Application logs")
-            Text("• Your language settings")
-            Text("• List of your ZIM files")
-            Text("• Device details")
-            Text("• File system details")
+            Text(" • Application logs")
+            Text(" • Your language settings")
+            Text(" • List of your ZIM files")
+            Text(" • Device details")
+            Text(" • File system details")
         }
     }
     
@@ -99,7 +99,7 @@ struct DiagnosticsView: View {
             guard let data = logs.data(using: .utf8) else { return }
             let panel = NSSavePanel()
             panel.allowedContentTypes = [.log]
-            panel.nameFieldStringValue = "diagnostics.log"
+            panel.nameFieldStringValue = "\(Diagnostics.fileName(using: Date())).txt"
             if case .OK = panel.runModal(),
                let targetURL = panel.url {
                 try? data.write(to: targetURL)
@@ -119,7 +119,11 @@ struct DiagnosticsView: View {
             await checkIntegrityOfRemaingingZIMFiles()
             let logs = await Diagnostics.entries(separator: "\n")
             guard let data = logs.data(using: .utf8) else { return }
-            let exportData = FileExportData(data: data, fileName: "diagnostic", fileExtension: "log")
+            let exportData = FileExportData(
+                data: data,
+                fileName: Diagnostics.fileName(using: Date()),
+                fileExtension: "txt"
+            )
             NotificationCenter.exportFileData(exportData)
         } label: {
             Label("Share", systemImage: "square.and.arrow.up")
