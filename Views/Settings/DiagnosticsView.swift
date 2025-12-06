@@ -63,11 +63,11 @@ struct DiagnosticsView: View {
         .font(.headline)
         
         VStack(alignment: .leading) {
-            Text("• Application logs")
-            Text("• Your language settings")
-            Text("• List of your ZIM files")
-            Text("• Device details")
-            Text("• File system details")
+            Text(" • Application logs")
+            Text(" • Your language settings")
+            Text(" • List of your ZIM files")
+            Text(" • Device details")
+            Text(" • File system details")
         }
     }
     
