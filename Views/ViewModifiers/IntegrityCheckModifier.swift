@@ -15,42 +15,42 @@
 
 import SwiftUI
 
-enum ValidationState {
-    case validating(title: String)
-    case notValidating
+enum IntegrityCheckState {
+    case running(title: String)
+    case stopped
     
-    var isValidating: Bool {
+    var isRunning: Bool {
         switch self {
-        case .validating: true
-        case .notValidating: false
+        case .running: true
+        case .stopped: false
         }
     }
 }
 
-struct Validation {
-    var state: ValidationState = .notValidating
+struct IntegrityCheck {
+    var state: IntegrityCheckState = .stopped
 }
 
 // a globaly shared state
 // swiftlint:disable:next identifier_name
-var ValidationShared = Validation()
+var IntegrityCheckShared = IntegrityCheck()
 
 /// Makes sure that the whole screen is blocked while
-/// the validation of the ZIM file is ongoing
-struct ValidationModifier: ViewModifier {
+/// the integrity check of the ZIM file is running
+struct IntegrityCheckModifier: ViewModifier {
     // using a shared state, so it will propage to new windows
     // opened after the notification has been sent
-    @State private var state = ValidationShared.state
+    @State private var state = IntegrityCheckShared.state
     
-    private let validateZIM = NotificationCenter.default.publisher(for: .validateZIM)
+    private let integrityCheck = NotificationCenter.default.publisher(for: .zimIntegrityCheck)
     
     func body(content: Content) -> some View {
         ZStack {
             content
-                .disabled(state.isValidating)
-                .opacity(state.isValidating ? 0.36 : 1)
-                .onReceive(validateZIM, perform: onReceived(notification:))
-            if case let .validating(title) = state {
+                .disabled(state.isRunning)
+                .opacity(state.isRunning ? 0.36 : 1)
+                .onReceive(integrityCheck, perform: onReceived(notification:))
+            if case let .running(title) = state {
                 VStack(spacing: 32) {
                     Text(LocalString.zim_file_integrity_check_in_progress(withArgs: title))
                     ProgressView()
@@ -64,15 +64,15 @@ struct ValidationModifier: ViewModifier {
         
         // stop or start
         if userInfo["isRunning"] as? Bool == false,
-           case .validating = state {
-            update(state: .notValidating)
+           case .running = state {
+            update(state: .stopped)
         } else if let title = userInfo["title"] as? String {
-            update(state: .validating(title: title))
+            update(state: .running(title: title))
         }
     }
     
-    private func update(state newState: ValidationState) {
+    private func update(state newState: IntegrityCheckState) {
         state = newState
-        ValidationShared.state = newState
+        IntegrityCheckShared.state = newState
     }
 }

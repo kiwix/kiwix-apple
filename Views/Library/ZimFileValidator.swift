@@ -19,19 +19,19 @@ import CoreData
 @MainActor
 enum ZimFileIntegrity {
     
-    /// Validate given ZIM files
+    /// Check the integrity of given ZIM files
     /// - Parameter files: [zimFile.fileID: zimFile.name]
     static func check(zimFiles: [ZimFile], using context: NSManagedObjectContext) async {
         for zimFile in zimFiles {
             let fileID = zimFile.fileID
             let name = zimFile.name
             Log.LibraryOperations.notice("""
-Started ZIM validation for \(fileID.uuidString, privacy: .public), \(name, privacy: .public)
+Started ZIM integrity check for \(fileID.uuidString, privacy: .public), \(name, privacy: .public)
 """)
-            NotificationCenter.startValidateZIM(title: name)
-            let result = await ZimFileService.shared.isValidZim(zimFileID: fileID)
+            NotificationCenter.startIntegrityCheckZIM(title: name)
+            let result = await ZimFileService.shared.checkIntegrity(zimFileID: fileID)
             Log.LibraryOperations.notice("""
-Completed ZIM validation for \(fileID.uuidString, privacy: .public), \
+Completed ZIM integrity check for \(fileID.uuidString, privacy: .public), \
 \(name, privacy: .public), success: \(result, privacy: .public)
 """)
             zimFile.isIntegrityChecked = result
@@ -39,6 +39,6 @@ Completed ZIM validation for \(fileID.uuidString, privacy: .public), \
                 try? context.save()
             }
         }
-        NotificationCenter.stopValidation()
+        NotificationCenter.stopIntegrityCheckZIM()
     }
 }
