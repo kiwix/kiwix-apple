@@ -62,6 +62,7 @@ struct LibraryOperations {
 
     /// Revalidate ZIM files from url bookmark data
     /// Marks all missing zimfiles in the DB
+    @MainActor
     static func reValidate() async {
         var successCount = 0
         let context = Database.shared.viewContext
