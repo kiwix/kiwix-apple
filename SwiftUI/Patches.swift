@@ -115,11 +115,11 @@ extension NotificationCenter {
         )
     }
     
-    static func startIntegrityCheckZIM(title: String) {
+    static func didStartIntegrityCheckZIM(title: String) {
         NotificationCenter.default.post(name: .zimIntegrityCheck, object: nil, userInfo: ["title": title])
     }
     
-    static func stopIntegrityCheckZIM() {
+    static func didStopIntegrityCheckZIM() {
         NotificationCenter.default.post(name: .zimIntegrityCheck, object: nil, userInfo: ["isRunning": false])
     }
     

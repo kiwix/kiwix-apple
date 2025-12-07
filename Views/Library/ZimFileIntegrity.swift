@@ -28,7 +28,7 @@ enum ZimFileIntegrity {
             Log.LibraryOperations.notice("""
 Started ZIM integrity check for \(fileID.uuidString, privacy: .public), \(name, privacy: .public)
 """)
-            NotificationCenter.startIntegrityCheckZIM(title: name)
+            NotificationCenter.didStartIntegrityCheckZIM(title: name)
             let result = await ZimFileService.shared.checkIntegrity(zimFileID: fileID)
             Log.LibraryOperations.notice("""
 Completed ZIM integrity check for \(fileID.uuidString, privacy: .public), \
@@ -39,6 +39,6 @@ Completed ZIM integrity check for \(fileID.uuidString, privacy: .public), \
                 try? context.save()
             }
         }
-        NotificationCenter.stopIntegrityCheckZIM()
+        NotificationCenter.didStopIntegrityCheckZIM()
     }
 }
