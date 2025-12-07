@@ -70,7 +70,11 @@ final class ZimIntegrityModel: ObservableObject {
             Log.LibraryOperations.notice("""
 Started ZIM integrity check for \(fileID.uuidString, privacy: .public), \(name, privacy: .public)
 """)
+<<<<<<<< HEAD:ViewModel/ZimIntegrityModel.swift
             await updateProgress(zimFileID: fileID, state: CheckState.running)
+========
+            NotificationCenter.didStartIntegrityCheckZIM(title: name)
+>>>>>>>> c38fcda8 (Rename):Views/Library/ZimFileIntegrity.swift
             let result = await ZimFileService.shared.checkIntegrity(zimFileID: fileID)
             Log.LibraryOperations.notice("""
 Completed ZIM integrity check for \(fileID.uuidString, privacy: .public), \
@@ -79,5 +83,9 @@ Completed ZIM integrity check for \(fileID.uuidString, privacy: .public), \
             zimFile.isIntegrityChecked = result
             await updateProgress(zimFileID: fileID, state: CheckState.complete(isValid: result))
         }
+<<<<<<<< HEAD:ViewModel/ZimIntegrityModel.swift
+========
+        NotificationCenter.didStopIntegrityCheckZIM()
+>>>>>>>> c38fcda8 (Rename):Views/Library/ZimFileIntegrity.swift
     }
 }
