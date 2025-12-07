@@ -25,6 +25,7 @@ enum ZimFileIntegrity {
         for zimFile in zimFiles {
             let fileID = zimFile.fileID
             let name = zimFile.name
+            zimFile.isIntegrityChecked = nil
             Log.LibraryOperations.notice("""
 Started ZIM integrity check for \(fileID.uuidString, privacy: .public), \(name, privacy: .public)
 """)
@@ -35,9 +36,6 @@ Completed ZIM integrity check for \(fileID.uuidString, privacy: .public), \
 \(name, privacy: .public), success: \(result, privacy: .public)
 """)
             zimFile.isIntegrityChecked = result
-            if context.hasChanges {
-                try? context.save()
-            }
         }
         NotificationCenter.didStopIntegrityCheckZIM()
     }

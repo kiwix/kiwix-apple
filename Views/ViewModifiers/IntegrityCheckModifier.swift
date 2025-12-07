@@ -41,22 +41,18 @@ struct IntegrityCheckModifier: ViewModifier {
     // using a shared state, so it will propage to new windows
     // opened after the notification has been sent
     @State private var state = IntegrityCheckShared.state
+    @State private var title: String = ""
     
     private let integrityCheck = NotificationCenter.default.publisher(for: .zimIntegrityCheck)
     
     func body(content: Content) -> some View {
-        ZStack {
-            content
-                .disabled(state.isRunning)
-                .opacity(state.isRunning ? 0.36 : 1)
-                .onReceive(integrityCheck, perform: onReceived(notification:))
-            if case let .running(title) = state {
-                VStack(spacing: 32) {
-                    Text(LocalString.zim_file_integrity_check_in_progress(withArgs: title))
-                    ProgressView()
+        content
+            .onReceive(integrityCheck, perform: onReceived(notification:))
+            .alert(title, isPresented: Binding<Bool>.constant(state.isRunning)) {
+                Button(LocalString.common_button_cancel, role: .cancel) {
+                    debugPrint("cancel")
                 }
             }
-        }
     }
     
     private func onReceived(notification: Notification) {
@@ -72,6 +68,9 @@ struct IntegrityCheckModifier: ViewModifier {
     }
     
     private func update(state newState: IntegrityCheckState) {
+        if case let .running(title) = newState {
+            self.title = LocalString.zim_file_integrity_check_in_progress(withArgs: title)
+        }
         state = newState
         IntegrityCheckShared.state = newState
     }
