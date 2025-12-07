@@ -49,9 +49,9 @@ struct LibraryOperations {
             LibraryOperations.configureZimFile(zimFile, metadata: metadata)
             zimFile.fileURLBookmark = fileURLBookmark
             zimFile.isMissing = false
-            if context.hasChanges { try? context.save() }
             Task {
                 await MainActor.run {
+                    if context.hasChanges { try? context.save() }
                     onComplete?()
                 }
             }
@@ -62,6 +62,7 @@ struct LibraryOperations {
 
     /// Revalidate ZIM files from url bookmark data
     /// Marks all missing zimfiles in the DB
+    @MainActor
     static func reValidate() async {
         var successCount = 0
         let context = Database.shared.viewContext
