@@ -213,7 +213,7 @@ struct ZimFileDetail: View {
     }
     
     private func checkZimFileIntegrity() {
-        Task {
+        Task { @MainActor in
             if let context = zimFile.managedObjectContext {
                 await ZimFileIntegrity.check(zimFiles: [zimFile],
                                              using: context)
