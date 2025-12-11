@@ -15,63 +15,44 @@
 
 import SwiftUI
 
-enum IntegrityCheckState {
-    case running(title: String)
-    case stopped
-    
-    var isRunning: Bool {
-        switch self {
-        case .running: true
-        case .stopped: false
-        }
-    }
-}
-
-struct IntegrityCheck {
-    var state: IntegrityCheckState = .stopped
-}
-
-// a globaly shared state
-// swiftlint:disable:next identifier_name
-var IntegrityCheckShared = IntegrityCheck()
-
 /// Makes sure that the whole screen is blocked while
 /// the integrity check of the ZIM file is running
 struct IntegrityCheckModifier: ViewModifier {
     // using a shared state, so it will propage to new windows
     // opened after the notification has been sent
-    @State private var state = IntegrityCheckShared.state
+//    @State private var state = IntegrityCheckShared.state
     @State private var title: String = ""
+    @State private var task: Task<Void, Error>?
     
     private let integrityCheck = NotificationCenter.default.publisher(for: .zimIntegrityCheck)
     
     func body(content: Content) -> some View {
         content
-            .onReceive(integrityCheck, perform: onReceived(notification:))
-            .alert(title, isPresented: Binding<Bool>.constant(state.isRunning)) {
+//            .onReceive(integrityCheck, perform: onReceived(notification:))
+            .alert(title, isPresented: Binding<Bool>.constant(true)) {
                 Button(LocalString.common_button_cancel, role: .cancel) {
-                    debugPrint("cancel")
+//                    NotificationCenter.cancelIntegrityCheckZIM()
                 }
             }
     }
     
-    private func onReceived(notification: Notification) {
-        guard let userInfo = notification.userInfo else { return }
-        
+//    private func onReceived(notification: Notification) {
+//        guard let userInfo = notification.userInfo else { return }
+//        
         // stop or start
-        if userInfo["isRunning"] as? Bool == false,
-           case .running = state {
-            update(state: .stopped)
-        } else if let title = userInfo["title"] as? String {
-            update(state: .running(title: title))
-        }
-    }
+//        if userInfo["isRunning"] as? Bool == false,
+//           case .running = state {
+//            update(state: .stopped)
+//        } else if let title = userInfo["title"] as? String {
+//            update(state: .running(title: title))
+//        }
+//    }
     
-    private func update(state newState: IntegrityCheckState) {
-        if case let .running(title) = newState {
-            self.title = LocalString.zim_file_integrity_check_in_progress(withArgs: title)
-        }
-        state = newState
-        IntegrityCheckShared.state = newState
-    }
+//    private func update(state newState: IntegrityCheckState) {
+//        if case let .running(title) = newState {
+//            self.title = LocalString.zim_file_integrity_check_in_progress(withArgs: title)
+//        }
+//        state = newState
+//        IntegrityCheckShared.state = newState
+//    }
 }

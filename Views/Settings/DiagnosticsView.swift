@@ -26,6 +26,8 @@ struct DiagnosticsView: View {
         sortDescriptors: [NSSortDescriptor(keyPath: \ZimFile.size, ascending: false)],
         predicate: ZimFile.notYetIntegrityCheckedPredicate
     ) private var zimFiles: FetchedResults<ZimFile>
+    @State private var integrityTask: Task<Void, Error>?
+    @ObservedObject private var integrityModel = ZimIntegrityModel()
     
     var body: some View {
         VStack(alignment: alignment, spacing: 16) {
@@ -133,7 +135,8 @@ struct DiagnosticsView: View {
 #endif
         
     private func checkIntegrityOfRemaingingZIMFiles() async {
-        await ZimFileIntegrity.check(zimFiles: zimFiles.reversed(),
-                                     using: Database.shared.viewContext)
+        integrityTask = Task {
+            await integrityModel.check(zimFiles: zimFiles.reversed())
+        }
     }
 }
