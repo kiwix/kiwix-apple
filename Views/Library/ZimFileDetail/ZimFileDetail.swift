@@ -26,11 +26,14 @@ struct ZimFileDetail: View {
     @Environment(\.dismiss) var dismiss
     @EnvironmentObject var navigation: NavigationViewModel
     @ObservedObject var zimFile: ZimFile
+    @ObservedObject private var zimIntegrityModel = ZimIntegrityModel()
+    @State private var integrityTask: Task<Void, Error>?
     @State private var isPresentingDeleteAlert = false
     @State private var isPresentingDownloadAlert = false
     @State private var isPresentingFileLocator = false
     @State private var isPresentingUnlinkAlert = false
     @State private var isPresentingIntegrityCheckAlert = false
+    @State private var isPresentingIntegrityCheckingProgress = false
     @State private var isInDocumentsDirectory = false
     let dismissParent: (() -> Void)? // iOS only
 
@@ -183,19 +186,34 @@ struct ZimFileDetail: View {
     @ViewBuilder
     private var checkIntegrityAction: some View {
         Action(title: checkButtonTitle()) {
-            if hasAlertBeforeIntegrityCheck() {
-                isPresentingIntegrityCheckAlert = true
-            } else {
+//            if hasAlertBeforeIntegrityCheck() {
+//                isPresentingIntegrityCheckAlert = true
+//            } else {
                 checkZimFileIntegrity()
-            }
-        }.alert(isPresented: $isPresentingIntegrityCheckAlert) {
+//            }
+        }
+        .onReceive(zimIntegrityModel.$checks) { checks in
+            debugPrint(checks)
+            isPresentingIntegrityCheckingProgress = !checks.isEmpty
+        }
+        .alert(isPresented: $isPresentingIntegrityCheckAlert) {
             Alert(
                 title: Text(LocalString.zim_file_action_integrity_check_alert_title),
                 primaryButton: .default(Text(LocalString.zim_file_action_integrity_check_title)) {
-                    checkZimFileIntegrity()
+                    Task {
+                        try? await Task.sleep(nanoseconds: 200) // wait a bit so this alert can be closed
+                        checkZimFileIntegrity()
+                    }
                 },
                 secondaryButton: .cancel()
             )
+        }
+        .alert(LocalString.zim_file_integrity_check_in_progress(withArgs: zimFile.name),
+               isPresented: $isPresentingIntegrityCheckingProgress) {
+            Button(LocalString.common_button_cancel, role: .cancel) {
+                integrityTask?.cancel()
+                zimIntegrityModel.reset()
+            }
         }
     }
     
@@ -213,11 +231,8 @@ struct ZimFileDetail: View {
     }
     
     private func checkZimFileIntegrity() {
-        Task { @MainActor in
-            if let context = zimFile.managedObjectContext {
-                await ZimFileIntegrity.check(zimFiles: [zimFile],
-                                             using: context)
-            }
+        integrityTask = Task {
+            await zimIntegrityModel.check(zimFiles: [zimFile])
         }
     }
     
