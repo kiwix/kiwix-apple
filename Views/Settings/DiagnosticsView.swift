@@ -24,7 +24,7 @@ struct DiagnosticsView: View {
     private let alignment = HorizontalAlignment.leading
     @FetchRequest(
         sortDescriptors: [NSSortDescriptor(keyPath: \ZimFile.size, ascending: false)],
-        predicate: ZimFile.notYetIntegrityCheckedPredicate
+        predicate: ZimFile.integrityCheckablePredicate
     ) private var zimFiles: FetchedResults<ZimFile>
     @State private var integrityTask: Task<Void, Error>?
     @ObservedObject private var integrityModel = ZimIntegrityModel()
@@ -41,9 +41,9 @@ struct DiagnosticsView: View {
 #else
                 shareButton
 #endif
-                if isLoading {
-                    Text("Please wait...")
-                }
+            }
+            if isLoading {
+                Text("Please wait...")
             }
             Spacer()
         }
@@ -65,11 +65,16 @@ struct DiagnosticsView: View {
         .font(.headline)
         
         VStack(alignment: .leading) {
+            Label("Application logs", systemImage: "circle")
+        }
+        
+        VStack(alignment: .leading) {
             Text(" • Application logs")
             Text(" • Your language settings")
             Text(" • List of your ZIM files")
             Text(" • Device details")
             Text(" • File system details")
+            Text(" • Integrity check of ZIM files")
         }
     }
     
@@ -78,7 +83,7 @@ struct DiagnosticsView: View {
         AsyncButton {
             isLoading = true
             defer { isLoading = false }
-            await checkIntegrityOfRemaingingZIMFiles()
+            await checkIntegrityOfZIMFiles()
             let logs = await Diagnostics.entries(separator: Email.separator())
             let email = Email(logs: logs)
             email.create()
@@ -96,7 +101,7 @@ struct DiagnosticsView: View {
         AsyncButton {
             isLoading = true
             defer { isLoading = false }
-            await checkIntegrityOfRemaingingZIMFiles()
+            await checkIntegrityOfZIMFiles()
             let logs = await Diagnostics.entries(separator: "\n")
             guard let data = logs.data(using: .utf8) else { return }
             let panel = NSSavePanel()
@@ -118,7 +123,7 @@ struct DiagnosticsView: View {
         AsyncButton {
             isLoading = true
             defer { isLoading = false }
-            await checkIntegrityOfRemaingingZIMFiles()
+            await checkIntegrityOfZIMFiles()
             let logs = await Diagnostics.entries(separator: "\n")
             guard let data = logs.data(using: .utf8) else { return }
             let exportData = FileExportData(
@@ -134,7 +139,7 @@ struct DiagnosticsView: View {
     }
 #endif
         
-    private func checkIntegrityOfRemaingingZIMFiles() async {
+    private func checkIntegrityOfZIMFiles() async {
         integrityTask = Task {
             await integrityModel.check(zimFiles: zimFiles.reversed())
         }

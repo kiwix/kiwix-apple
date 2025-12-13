@@ -296,7 +296,6 @@ final class ZimFile: NSManagedObject {
         static let isDownloaded = NSPredicate(format: "fileURLBookmark != nil")
         static let notDownloaded = NSPredicate(format: "fileURLBookmark == nil")
         static let notMissing = NSPredicate(format: "isMissing == false")
-        static let noIntegrityCheck = NSPredicate(format: "isIntegrityChecked == nil")
     }
 
     static var openedPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
@@ -304,11 +303,8 @@ final class ZimFile: NSManagedObject {
         Predicate.notMissing
     ])
     
-    static var notYetIntegrityCheckedPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
-        Predicate.isDownloaded,
-        Predicate.notMissing,
-        Predicate.noIntegrityCheck
-    ])
+    // it's the same condition, dowloaded, but not missing
+    static var integrityCheckablePredicate = openedPredicate
 
     static func fetchRequest(
         predicate: NSPredicate? = nil, sortDescriptors: [NSSortDescriptor] = []
