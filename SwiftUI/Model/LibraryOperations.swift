@@ -173,7 +173,7 @@ ZIM file cannot be opened: \(zimFile.name, privacy: .public) |\
             zimFile.bookmarks.forEach { context.delete($0) }
             zimFile.fileURLBookmark = nil
             zimFile.isMissing = false
-            zimFile.isValid = nil
+            zimFile.isIntegrityChecked = nil
             zimFile.tabs.forEach { context.delete($0) }
 
             if let tabs = try? Tab.fetchRequest().execute() {

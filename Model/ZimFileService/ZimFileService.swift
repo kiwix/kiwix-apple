@@ -166,9 +166,9 @@
         return URLContent(data: data, start: start, end: end)
     }
     
-    // MARK: ZIM validation
-    func isValidZim(zimFileID: UUID) -> Bool {
-        __isValidZIM(zimFileID)
+    // MARK: ZIM integrity check
+    func checkIntegrity(zimFileID: UUID) -> Bool {
+        __checkIntegrity(zimFileID)
     }
 }
 

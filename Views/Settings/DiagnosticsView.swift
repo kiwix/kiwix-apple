@@ -24,8 +24,10 @@ struct DiagnosticsView: View {
     private let alignment = HorizontalAlignment.leading
     @FetchRequest(
         sortDescriptors: [NSSortDescriptor(keyPath: \ZimFile.size, ascending: false)],
-        predicate: ZimFile.notYetValidatedPredicate
+        predicate: ZimFile.notYetIntegrityCheckedPredicate
     ) private var zimFiles: FetchedResults<ZimFile>
+    @State private var integrityTask: Task<Void, Error>?
+    @ObservedObject private var integrityModel = ZimIntegrityModel()
     
     var body: some View {
         VStack(alignment: alignment, spacing: 16) {
@@ -76,7 +78,7 @@ struct DiagnosticsView: View {
         AsyncButton {
             isLoading = true
             defer { isLoading = false }
-            await validateRemainingZIMFiles()
+            await checkIntegrityOfRemaingingZIMFiles()
             let logs = await Diagnostics.entries(separator: Email.separator())
             let email = Email(logs: logs)
             email.create()
@@ -94,7 +96,7 @@ struct DiagnosticsView: View {
         AsyncButton {
             isLoading = true
             defer { isLoading = false }
-            await validateRemainingZIMFiles()
+            await checkIntegrityOfRemaingingZIMFiles()
             let logs = await Diagnostics.entries(separator: "\n")
             guard let data = logs.data(using: .utf8) else { return }
             let panel = NSSavePanel()
@@ -116,7 +118,7 @@ struct DiagnosticsView: View {
         AsyncButton {
             isLoading = true
             defer { isLoading = false }
-            await validateRemainingZIMFiles()
+            await checkIntegrityOfRemaingingZIMFiles()
             let logs = await Diagnostics.entries(separator: "\n")
             guard let data = logs.data(using: .utf8) else { return }
             let exportData = FileExportData(
@@ -132,8 +134,9 @@ struct DiagnosticsView: View {
     }
 #endif
         
-    private func validateRemainingZIMFiles() async {
-        await ZimFileValidator.validate(zimFiles: zimFiles.reversed(),
-                                        using: Database.shared.viewContext)
+    private func checkIntegrityOfRemaingingZIMFiles() async {
+        integrityTask = Task {
+            await integrityModel.check(zimFiles: zimFiles.reversed())
+        }
     }
 }

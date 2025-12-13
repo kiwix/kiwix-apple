@@ -71,7 +71,7 @@ extension Notification.Name {
     static let alert = Notification.Name("alert")
     static let question = Notification.Name("question")
     static let openFiles = Notification.Name("openFiles")
-    static let validateZIM = Notification.Name("validateZIM")
+    static let zimIntegrityCheck = Notification.Name("zimIntegrityCheck")
     static let openURL = Notification.Name("openURL")
     static let selectFile = Notification.Name("selectFile")
     static let exportFileData = Notification.Name("exportFileData")
@@ -115,13 +115,17 @@ extension NotificationCenter {
         )
     }
     
-    static func startValidateZIM(title: String) {
-        NotificationCenter.default.post(name: .validateZIM, object: nil, userInfo: ["title": title])
-    }
-    
-    static func stopValidation() {
-        NotificationCenter.default.post(name: .validateZIM, object: nil, userInfo: ["isRunning": false])
-    }
+//    static func didStartIntegrityCheckZIM(title: String) {
+//        NotificationCenter.default.post(name: .zimIntegrityCheck, object: nil, userInfo: ["title": title])
+//    }
+//    
+//    static func cancelIntegrityCheckZIM() {
+//        NotificationCenter.default.post(name: .zimIntegrityCheck, object: nil, userInfo: ["cancel": true])
+//    }
+//    
+//    static func didStopIntegrityCheckZIM() {
+//        NotificationCenter.default.post(name: .zimIntegrityCheck, object: nil, userInfo: ["isRunning": false])
+//    }
     
     @MainActor
     static func selectFileBy(fileId: UUID) {
