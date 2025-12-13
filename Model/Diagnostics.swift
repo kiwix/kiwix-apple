@@ -37,10 +37,13 @@ struct DiagnosticItem: Identifiable {
     enum Status {
         case initial
         case inProgress
-        case complete
+        case complete(Bool)
         
         var isComplete: Bool {
-            self == .complete
+            if case .complete = self {
+                return true
+            }
+            return false
         }
         
         var systemImage: String {
@@ -57,10 +60,19 @@ struct DiagnosticItem: Identifiable {
             case .complete: .green
             }
         }
+        
+        static func from(checkState: ZimIntegrityModel.CheckState) -> Self {
+            switch checkState {
+            case .enqued: Status.initial
+            case .running: Status.inProgress
+            case .complete(let isValid): Status.complete(isValid)
+            }
+        }
     }
     
-    enum Identifier {
+    enum Identifier: Hashable {
         case integrityCheck
+        case integrityZIM(UUID)
         case applicationLogs
         case languageSettings
         case listOfZimFiles
@@ -70,6 +82,7 @@ struct DiagnosticItem: Identifiable {
         var defaultTitle: String {
             switch self {
             case .integrityCheck: "Integrity check of ZIM files"
+            case .integrityZIM: "Integrity check of ZIM files"
             case .applicationLogs: "Application logs"
             case .languageSettings: "Your language settings"
             case .listOfZimFiles: "List of your ZIM files"
@@ -84,36 +97,37 @@ final class DiagnosticsModel: ObservableObject {
     
     @MainActor @Published
     var items: [DiagnosticItem] = [
+        DiagnosticItem(id: .listOfZimFiles),
         DiagnosticItem(id: .integrityCheck),
         DiagnosticItem(id: .applicationLogs),
         DiagnosticItem(id: .languageSettings),
         DiagnosticItem(id: .deviceDetails),
         DiagnosticItem(id: .fileSystemDetails),
-        DiagnosticItem(id: .listOfZimFiles),
     ]
     
     private var integrityModel = ZimIntegrityModel()
     private var cancellable: AnyCancellable?
     
+    func cancel() {
+        cancellable?.cancel()
+    }
+    
     func start(using zimFiles: [ZimFile]) async -> [String] {
+        await updateItemBy(id: .listOfZimFiles, status: .complete(true))
         await updateItemBy(id: .integrityCheck, status: .inProgress)
-        cancellable = await integrityModel.checks.publisher.sink(receiveCompletion: { [weak self] _ in
-            Task { @MainActor [weak self] in
-                self?.completeItegrityCheck()
-            }
-        }, receiveValue: { checkInfo in
-            Task { @MainActor [weak self] in
-                let title = LocalString.zim_file_integrity_check_in_progress(withArgs: checkInfo.zimFile.name)
-                self?.integrityCheckProgress(title: title)
-            }
+        cancellable = integrityModel.$checks.sink(receiveValue: { [weak self] (infos: [ZimIntegrityModel.Info]) in
+            self?.didReceive(checkInfos: infos)
         })
+        
         await integrityModel.check(zimFiles: zimFiles)
-
+        
         await updateItemBy(id: .applicationLogs, status: .inProgress)
+        guard !Task.isCancelled else { return [] }
         let entries = await Diagnostics.entriesSeparated()
-        await updateItemBy(id: .languageSettings, status: .complete)
-        await updateItemBy(id: .deviceDetails, status: .complete)
-        await updateItemBy(id: .fileSystemDetails, status: .complete)
+        await updateItemBy(id: .applicationLogs, status: .complete(true))
+        await updateItemBy(id: .languageSettings, status: .complete(true))
+        await updateItemBy(id: .deviceDetails, status: .complete(true))
+        await updateItemBy(id: .fileSystemDetails, status: .complete(true))
         return entries
     }
     
@@ -132,20 +146,6 @@ final class DiagnosticsModel: ObservableObject {
     }
     
     @MainActor
-    private func completeItegrityCheck() {
-        items = items.map { item in
-            if item.id == .integrityCheck {
-                var newItem = item
-                newItem.title = DiagnosticItem.Identifier.integrityCheck.defaultTitle
-                newItem.status = .complete
-                return newItem
-            } else {
-                return item
-            }
-        }
-    }
-    
-    @MainActor
     private func updateItemBy(id: DiagnosticItem.Identifier, status: DiagnosticItem.Status) {
         items = items.map { item in
             if item.id == id {
@@ -155,6 +155,29 @@ final class DiagnosticsModel: ObservableObject {
             } else {
                 return item
             }
+        }
+    }
+    
+    private func didReceive(checkInfos: [ZimIntegrityModel.Info]) {
+        Task { @MainActor [weak self] in
+            guard var items = self?.items else { return }
+            if let integrityIndex = items.firstIndex(where: { $0.id == .integrityCheck }) {
+                items.remove(at: integrityIndex)
+            }
+            for check in checkInfos {
+                if let index = items.firstIndex(where: { $0.id == .integrityZIM(check.id) } ) {
+                    var item: DiagnosticItem = items[index]
+                    item.status = .from(checkState: check.state)
+                    items[index] = item
+                } else {
+                    let newItem = DiagnosticItem(id: .integrityZIM(check.id),
+                                                 title: LocalString.zim_file_integrity_check_in_progress(withArgs: check.zimFile.name),
+                                                 status: .from(checkState: check.state))
+                    let insertIndex: Int = items.firstIndex(where: { $0.id == .applicationLogs }) ?? 0
+                    items.insert(newItem, at: insertIndex)
+                }
+            }
+            self?.items = items
         }
     }
 }

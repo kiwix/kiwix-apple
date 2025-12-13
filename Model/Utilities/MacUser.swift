@@ -24,11 +24,11 @@ enum MacUser {
     }
     
     static func isUserAdmin() {
-        let backgroundQueue = DispatchQueue(label: "org.kiwix.macuser_background", qos: .background)
-        backgroundQueue.async {
+//        let backgroundQueue = DispatchQueue(label: "org.kiwix.macuser_background", qos: .background)
+//        backgroundQueue.async {
             let isAdmin = isAdmin()
             Log.Environment.notice("MacUser isAdmin: \(isAdmin, privacy: .public)")
-        }
+//        }
     }
     
     private static func isAdmin() -> Bool {
@@ -45,6 +45,9 @@ enum MacUser {
             return nil
         }
         let queryRef = query.takeRetainedValue()
+        defer {
+            CSIdentityQueryStop(queryRef)
+        }
         guard CSIdentityQueryExecute(queryRef, 0, nil) else {
             Log.Environment.warning("\(#line, privacy: .public) cannot execute query for mac user")
             return nil

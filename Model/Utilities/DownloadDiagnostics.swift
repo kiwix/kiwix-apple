@@ -37,6 +37,9 @@ enum DownloadDiagnostics {
         if let tempDir = ProcessInfo().environment["TMPDIR"],
            let tempDirURL = URL(string: tempDir) {
             let tempFileURL = tempDirURL.appendingPathComponent(testURL.lastPathComponent)
+            if FileManager.default.fileExists(atPath: destinationURL.path()) {
+                try? FileManager.default.removeItem(at: destinationURL)
+            }
             
             if FileManager.default.createFile(atPath: tempFileURL.path(), contents: Data("test".utf8)) {
                 do {
