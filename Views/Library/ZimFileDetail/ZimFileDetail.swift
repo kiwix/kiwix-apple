@@ -186,24 +186,17 @@ struct ZimFileDetail: View {
     @ViewBuilder
     private var checkIntegrityAction: some View {
         Action(title: checkButtonTitle()) {
-//            if hasAlertBeforeIntegrityCheck() {
-//                isPresentingIntegrityCheckAlert = true
-//            } else {
-                checkZimFileIntegrity()
-//            }
-        }
-        .onReceive(zimIntegrityModel.$checks) { checks in
-            debugPrint(checks)
-            isPresentingIntegrityCheckingProgress = !checks.isEmpty
+            if hasAlertBeforeIntegrityCheck() {
+                isPresentingIntegrityCheckAlert = true
+            } else {
+                checkIntegrity()
+            }
         }
         .alert(isPresented: $isPresentingIntegrityCheckAlert) {
             Alert(
                 title: Text(LocalString.zim_file_action_integrity_check_alert_title),
                 primaryButton: .default(Text(LocalString.zim_file_action_integrity_check_title)) {
-                    Task {
-                        try? await Task.sleep(nanoseconds: 200) // wait a bit so this alert can be closed
-                        checkZimFileIntegrity()
-                    }
+                    checkIntegrity()
                 },
                 secondaryButton: .cancel()
             )
@@ -211,8 +204,7 @@ struct ZimFileDetail: View {
         .alert(LocalString.zim_file_integrity_check_in_progress(withArgs: zimFile.name),
                isPresented: $isPresentingIntegrityCheckingProgress) {
             Button(LocalString.common_button_cancel, role: .cancel) {
-                integrityTask?.cancel()
-                zimIntegrityModel.reset()
+               cancelntegrityCheck()
             }
         }
     }
@@ -230,10 +222,18 @@ struct ZimFileDetail: View {
         zimFile.size >= Self.alertLimit100MB
     }
     
-    private func checkZimFileIntegrity() {
+    private func checkIntegrity() {
+        isPresentingIntegrityCheckingProgress = true
         integrityTask = Task {
             await zimIntegrityModel.check(zimFiles: [zimFile])
+            isPresentingIntegrityCheckingProgress = false
         }
+    }
+    
+    private func cancelntegrityCheck() {
+        integrityTask?.cancel()
+        zimIntegrityModel.reset()
+        isPresentingIntegrityCheckingProgress = false
     }
     
     private func isDestroyable(_ zimFile: ZimFile) -> Bool {

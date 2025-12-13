@@ -41,8 +41,10 @@ final class ZimIntegrityModel: ObservableObject {
     }
     
     @MainActor
-    private func addZimFile(_ zimFile: ZimFile) {
-        checks.append(Info(zimFile: zimFile, state: .enqued))
+    private func addZimFiles(_ zimFiles: [ZimFile]) {
+        checks = zimFiles.map({ zimFile in
+            Info(zimFile: zimFile, state: .enqued)
+        })
     }
 
     @MainActor
@@ -58,13 +60,11 @@ final class ZimIntegrityModel: ObservableObject {
     
     /// Check the integrity of given ZIM files
     func check(zimFiles: [ZimFile]) async {
-        await reset()
-        for zimFile in zimFiles {
-            zimFile.isIntegrityChecked = nil
-            await addZimFile(zimFile)
-        }
+        await addZimFiles(zimFiles)
+        
         for zimFile in zimFiles {
             guard !Task.isCancelled else { return }
+            zimFile.isIntegrityChecked = nil
             let fileID = zimFile.fileID
             let name = zimFile.name
             Log.LibraryOperations.notice("""
