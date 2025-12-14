@@ -49,12 +49,13 @@ struct LibraryOperations {
             LibraryOperations.configureZimFile(zimFile, metadata: metadata)
             zimFile.fileURLBookmark = fileURLBookmark
             zimFile.isMissing = false
-            Task {
-                await MainActor.run {
-                    if context.hasChanges { try? context.save() }
-                    onComplete?()
-                }
-            }
+            onComplete?()
+//            Task {
+//                await MainActor.run {
+//                    if context.hasChanges { try? context.save() }
+//                    onComplete?()
+//                }
+//            }
         }
 
         return metadata
@@ -120,11 +121,11 @@ ZIM file cannot be opened: \(zimFile.name, privacy: .public) |\
             options: [.skipsHiddenFiles, .skipsPackageDescendants, .skipsSubdirectoryDescendants]
         ).filter({ $0.pathExtension == "zim"}) else { return }
         Log.LibraryOperations.info("Discovered \(fileURLs.count, privacy: .public) probable zim files.")
-        Task {
-            for fileURL in fileURLs {
-                await LibraryOperations.open(url: fileURL)
-            }
-        }
+//        Task {
+//            for fileURL in fileURLs {
+//                await LibraryOperations.open(url: fileURL)
+//            }
+//        }
     }
 
     // MARK: - Configure

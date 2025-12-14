@@ -19,7 +19,7 @@ import OSLog
 import Combine
 import SwiftUI
 
-struct DiagnosticItem: Identifiable {
+struct DiagnosticItem: Identifiable, Equatable {
     let id: Identifier
     var title: String
     var status: Status
@@ -34,7 +34,7 @@ struct DiagnosticItem: Identifiable {
         self.status = status
     }
     
-    enum Status {
+    enum Status: Equatable {
         case initial
         case inProgress
         case complete(Bool)
@@ -93,10 +93,8 @@ struct DiagnosticItem: Identifiable {
     }
 }
 
-final class DiagnosticsModel: ObservableObject {
-    
-    @MainActor @Published
-    var items: [DiagnosticItem] = [
+private enum Const {
+    static let defaultItems: [DiagnosticItem] = [
         DiagnosticItem(id: .listOfZimFiles),
         DiagnosticItem(id: .integrityCheck),
         DiagnosticItem(id: .applicationLogs),
@@ -104,12 +102,23 @@ final class DiagnosticsModel: ObservableObject {
         DiagnosticItem(id: .deviceDetails),
         DiagnosticItem(id: .fileSystemDetails),
     ]
+}
+
+final class DiagnosticsModel: ObservableObject {
+    
+    @MainActor @Published
+    var items: [DiagnosticItem] = Const.defaultItems
     
     private var integrityModel = ZimIntegrityModel()
     private var cancellable: AnyCancellable?
     
     func cancel() {
-        cancellable?.cancel()
+        Task { @MainActor in
+            items = Const.defaultItems
+            integrityModel.reset()
+            cancellable?.cancel()
+            integrityModel = ZimIntegrityModel()
+        }
     }
     
     func start(using zimFiles: [ZimFile]) async -> [String] {
@@ -120,10 +129,11 @@ final class DiagnosticsModel: ObservableObject {
         })
         
         await integrityModel.check(zimFiles: zimFiles)
-        
+        guard !Task.isCancelled else { return [] }
         await updateItemBy(id: .applicationLogs, status: .inProgress)
         guard !Task.isCancelled else { return [] }
         let entries = await Diagnostics.entriesSeparated()
+        guard !Task.isCancelled else { return [] }
         await updateItemBy(id: .applicationLogs, status: .complete(true))
         await updateItemBy(id: .languageSettings, status: .complete(true))
         await updateItemBy(id: .deviceDetails, status: .complete(true))
@@ -215,30 +225,6 @@ enum Diagnostics {
         var logs: [String] = []
         for entry in entries.makeIterator() {
             logs.append("\(entry.date.ISO8601Format()); \(entry.composedMessage)")
-        }
-        return logs
-    }
-    
-    static func entries(separator: String) async -> String {
-#if os(macOS)
-        MacUser.name()
-        MacUser.isUserAdmin()
-#endif
-        Log.Environment.notice("ProcessInfo.environment:\n\(processInfoEnvironment(), privacy: .public)")
-        DownloadDiagnostics.path()
-        DownloadDiagnostics.testWritingAFile()
-        
-        guard let logStore = try? OSLogStore(scope: .currentProcessIdentifier),
-              let entries = try? logStore.getEntries(
-                matching: NSPredicate(format: "subsystem == %@", KiwixLogger.subsystem)
-              ) else {
-            Log.Environment.error("couldn't collect logs")
-            return ""
-        }
-        
-        var logs: String = ""
-        for entry in entries.makeIterator() {
-            logs = logs.appending("\(entry.date.ISO8601Format()); \(entry.composedMessage)\(separator)")
         }
         return logs
     }

@@ -20,44 +20,48 @@ import CoreData
 /// We want to make sure users only send us reports in English
 struct DiagnosticsView: View {
     
-    private let alignment = HorizontalAlignment.leading
     @FetchRequest(
         sortDescriptors: [NSSortDescriptor(keyPath: \ZimFile.size, ascending: false)],
         predicate: ZimFile.integrityCheckablePredicate
     ) private var zimFiles: FetchedResults<ZimFile>
     @State private var logs: [String] = []
+    @State private var isRunning: Bool = false
     @State private var integrityTask: Task<Void, Error>?
     @ObservedObject private var model = DiagnosticsModel()
     
     var body: some View {
-        VStack(alignment: alignment, spacing: 16) {
+        VStack(alignment: .center) {
             Spacer()
             diagnosticItems
-            
-            
-            if !logs.isEmpty {
-                HStack(alignment: .firstTextBaseline, spacing: 24) {
+            HStack(alignment: .firstTextBaseline, spacing: 24) {
+                if !logs.isEmpty {
                     emailButton
 #if os(macOS)
                     saveButton
 #else
                     shareButton
 #endif
+                } else {
+                    if isRunning {
+                        Label("Checking ...", systemImage: "exclamationmark.bubble")
+                            .foregroundStyle(.secondary)
+                            .symbolEffect(.bounce, options: .repeating, value: model.items)
+                    } else {
+                        runButton
+                    }
                 }
-            } else {
-                runButton
             }
-            Spacer()
+            Spacer(minLength: 32)
         }
-        .frame(maxWidth: 400)
-        .navigationTitle("Diagnostic Report")
+        .frame(maxWidth: 500)
+        .navigationTitle("Diagnostic Items")
         .onDisappear(perform: {
             model.cancel()
             integrityTask?.cancel()
             logs = []
         })
 #if os(iOS)
-        .navigationBarTitleDisplayMode(.large)
+        .navigationBarTitleDisplayMode(.inline)
         .padding(.horizontal, 40)
 #else
         .tabItem { Label("Diagnostics", systemImage: "exclamationmark.bubble") }
@@ -66,15 +70,12 @@ struct DiagnosticsView: View {
     
     @ViewBuilder
     var diagnosticItems: some View {
-        Text("""
-                    Diagnostic items:
-                    """)
-        .font(.headline)
         List {
             ForEach(model.items, id: \.id) { item in
                 Label(item.title, systemImage: item.status.systemImage)
                     .listItemTint(item.status.tintColor)
                     .listRowSeparator(.hidden)
+                    .symbolEffect(.bounce, value: item.status.isComplete)
                     
             }
         }
@@ -84,11 +85,16 @@ struct DiagnosticsView: View {
     @ViewBuilder
     var runButton: some View {
         AsyncButton {
-            integrityTask = Task {
-                logs = await model.start(using: zimFiles.reversed())
+            withAnimation {
+                isRunning = true
+                integrityTask = Task {
+                    logs = await model.start(using: zimFiles.reversed())
+                    isRunning = false
+                }
             }
         } label: {
-            Label("Run", systemImage: "exclamationmark.bubble")
+            Label("Run check", systemImage: "exclamationmark.bubble")
+                .symbolEffect(.bounce, value: isRunning)
         }
 #if os(iOS)
         .buttonStyle(.borderless)
@@ -103,6 +109,7 @@ struct DiagnosticsView: View {
             email.create()
         } label: {
             Label("Email", systemImage: "paperplane")
+                .symbolEffect(.bounce, value: isRunning)
         }
 #if os(iOS)
         .buttonStyle(.borderless)
@@ -124,6 +131,7 @@ struct DiagnosticsView: View {
             }
         } label: {
             Label("Save log file", systemImage: "square.and.arrow.down")
+                .symbolEffect(.bounce, value: isRunning)
         }
     }
 #endif
@@ -142,6 +150,7 @@ struct DiagnosticsView: View {
             NotificationCenter.exportFileData(exportData)
         } label: {
             Label("Share", systemImage: "square.and.arrow.up")
+                .symbolEffect(.bounce, value: isRunning)
         }
         .buttonStyle(.borderless)
     }

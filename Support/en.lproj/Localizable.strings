@@ -158,7 +158,7 @@
 "zim_file.action.integrity_check.title" = "Check";
 "zim_file.action.integrity_recheck.title" = "Recheck";
 "zim_file.action.integrity_check.alert.title" = "This may take several minutes. Kiwix will be unavailable until the integrity check is complete.";
-"zim_file.integrity_check.in_progress" = "Checking ZIM archive integrity of \"%@\" ...";
+"zim_file.integrity_check.in_progress" = "Integrity check: \"%@\" ...";
 "zim_file.base_info.attribute.language" = "Language";
 "zim_file.base_info.attribute.category" = "Category";
 "zim_file.base_info.attribute.size" = "Size";
