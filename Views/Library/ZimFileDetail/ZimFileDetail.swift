@@ -166,21 +166,21 @@ struct ZimFileDetail: View {
     
     @ViewBuilder
     private var integritySection: some View {
-        #if os(macOS)
-        ZimItegrityAttributeOptional(
-            title: LocalString.zim_file_bool_info_zim_archive_integrity,
-            isIntegrityChecked: zimFile.isIntegrityChecked
-        )
-        checkIntegrityAction
-        #else
-        ZStack {
-            checkIntegrityAction
+        if Device.current == .iPad {
+            ZStack {
+                checkIntegrityAction
+                ZimItegrityAttributeOptional(
+                    title: LocalString.zim_file_bool_info_zim_archive_integrity,
+                    isIntegrityChecked: zimFile.isIntegrityChecked
+                )
+            }
+        } else {
             ZimItegrityAttributeOptional(
                 title: LocalString.zim_file_bool_info_zim_archive_integrity,
                 isIntegrityChecked: zimFile.isIntegrityChecked
             )
+            checkIntegrityAction
         }
-        #endif
     }
     
     @ViewBuilder
