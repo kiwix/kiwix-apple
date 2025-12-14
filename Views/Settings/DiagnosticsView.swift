@@ -29,6 +29,8 @@ struct DiagnosticsView: View {
     @State private var integrityTask: Task<Void, Error>?
     @ObservedObject private var model = DiagnosticsModel()
     
+    // TODO: the init is called multiple times wiping out the DiagnosticsModel data
+    
     var body: some View {
         VStack(alignment: .center) {
             Spacer()
