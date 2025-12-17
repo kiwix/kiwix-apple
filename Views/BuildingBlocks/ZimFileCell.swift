@@ -63,8 +63,8 @@ struct ZimFileCell: View {
                         Text(ZimFileCell.dateFormatter.string(from: zimFile.created))
                             .font(.caption)
                     }.foregroundColor(.secondary)
-                    if !zimFile.isMissing, let isValid = zimFile.isValid {
-                        if isValid {
+                    if !zimFile.isMissing, let isIntegrityChecked = zimFile.isIntegrityChecked {
+                        if isIntegrityChecked {
                             Image(systemName: "checkmark.circle.fill")
                                 .foregroundStyle(Color.green)
                         } else {

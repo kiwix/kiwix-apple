@@ -54,7 +54,7 @@
 - (NSDictionary *_Nullable)getMetaData:(NSUUID *_Nonnull)zimFileID contentPath:(NSString *_Nonnull)contentPath  NS_REFINED_FOR_SWIFT;
 - (NSDictionary *_Nullable)getDirectAccess: (NSUUID *_Nonnull)zimFileID contentPath:(NSString *_Nonnull)contentPath NS_REFINED_FOR_SWIFT;
 
-# pragma mark - ZIM validation
-- (Boolean) isValidZIM: (NSUUID *_Nonnull)zimFileID NS_REFINED_FOR_SWIFT;
+# pragma mark - ZIM integrity check
+- (Boolean) checkIntegrity: (NSUUID *_Nonnull)zimFileID NS_REFINED_FOR_SWIFT;
 
 @end

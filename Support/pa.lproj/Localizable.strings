@@ -61,7 +61,6 @@
 "zim_file.action.delete.button.title" = "ਮਿਟਾਓ";
 "zim_file.action.download.title" = "ਉਤਾਰੋ/ਲਾਹੋ";
 "zim_file.action.download.button.anyway" = "ਕਿਸੇ ਵੀ ਤਰ੍ਹਾਂ ਲਾਹੋ";
-"zim_file.action.validate.alert.title" = "ZIM ਫਾਈਲ ਦੀ ਤਸਦੀਕ ਕੀਤੀ ਜਾ ਰਹੀ ਏ ...";
 "zim_file.base_info.attribute.language" = "ਬੋਲੀ";
 "zim_file.base_info.attribute.category" = "ਸ਼੍ਰੇਣੀ";
 "zim_file.base_info.attribute.size" = "ਅਕਾਰ";

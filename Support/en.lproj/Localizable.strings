@@ -155,10 +155,10 @@
 "zim_file.action.download.warning.message" = "There might not be enough space on your device for this ZIM file.";
 "zim_file.action.download.warning.message1" = "There would be less than 1GB space left after the ZIM file is downloaded.";
 "zim_file.action.download.button.anyway" = "Download Anyway";
-"zim_file.action.validate.title" = "Validate";
-"zim_file.action.validate.alert.title" = "Validating ZIM file ...";
-"zim_file.action.validate.alert.description" = "This may take several minutes. Kiwix will be unavailable until validation is complete.";
-"zim_file.validation.in_progress" = "Validating %@ ...";
+"zim_file.action.integrity_check.title" = "Check";
+"zim_file.action.integrity_recheck.title" = "Recheck";
+"zim_file.action.integrity_check.alert.title" = "This may take several minutes. Kiwix will be unavailable until the integrity check is complete.";
+"zim_file.integrity_check.in_progress" = "Checking ZIM archive integrity of \"%@\" ...";
 "zim_file.base_info.attribute.language" = "Language";
 "zim_file.base_info.attribute.category" = "Category";
 "zim_file.base_info.attribute.size" = "Size";
@@ -167,7 +167,7 @@
 "zim_file.bool_info.videos"  = "Videos";
 "zim_file.bool_info.details" = "Details";
 "zim_file.bool_info.require_service_workers" = "Requires Service Workers";
-"zim_file.bool_info.valid" = "Valid";
+"zim_file.bool_info.zim_archive_integrity" = "ZIM archive integrity";
 "zim_file.counts.article_count" = "Article Count";
 "zim_file.counts.article.media_count" = "Media Count";
 "zim_file.detail.id.title" = "ID";

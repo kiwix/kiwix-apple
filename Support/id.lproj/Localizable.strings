@@ -101,10 +101,6 @@
 "zim_file.action.download.warning.message" = "Mungkin tidak ada cukup ruang pada perangkat Anda untuk berkas ZIM ini.";
 "zim_file.action.download.warning.message1" = "Kurang dari 1GB ruang akan tersisa setelah berkas ZIM diunduh.";
 "zim_file.action.download.button.anyway" = "Unduh Saja";
-"zim_file.action.validate.title" = "Sahkan";
-"zim_file.action.validate.alert.title" = "Mengesahkan berkas ZIM…";
-"zim_file.action.validate.alert.description" = "Ini mungkin memakan waktu beberapa menit. Kiwix tidak akan tersedia sampai proses pengesahan selesai.";
-"zim_file.validation.in_progress" = "Mengesahkan %@ ...";
 "zim_file.base_info.attribute.language" = "Bahasa";
 "zim_file.base_info.attribute.category" = "Kategori";
 "zim_file.base_info.attribute.size" = "Ukuran";
@@ -113,7 +109,6 @@
 "zim_file.bool_info.videos" = "Video";
 "zim_file.bool_info.details" = "Rincian";
 "zim_file.bool_info.require_service_workers" = "Membutuhkan Pekerja Layanan";
-"zim_file.bool_info.valid" = "Sah";
 "zim_file.counts.article_count" = "Jumlah Artikel";
 "zim_file.counts.article.media_count" = "Jumlah Media";
 "zim_file.detail.id.title" = "ID";
