@@ -113,8 +113,12 @@
         return;
     }
     NSLog(@"createSpellingIndex for:%@, in: %@", zimFileID.UUIDString, contentPath);
-    std::filesystem::path path = std::filesystem::path([contentPath cStringUsingEncoding: NSUTF8StringEncoding]);
-    kiwix::SpellingsDB db = kiwix::SpellingsDB(*archive, path);
+    try {
+        std::filesystem::path path = std::filesystem::path([contentPath cStringUsingEncoding: NSUTF8StringEncoding]);
+        kiwix::SpellingsDB db = kiwix::SpellingsDB(*archive, path);
+    } catch (std::exception e) {
+        NSLog(@"create spelling index exception: %s", e.what());
+    }
 }
 
 # pragma mark - Metadata
