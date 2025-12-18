@@ -80,6 +80,7 @@
 "zim_file.action.download.warning.message" = "Potrebbe non esserci spazio sufficiente sul tuo dispositivo per questo file ZIM.";
 "zim_file.action.download.warning.message1" = "Rimarrebbe meno di 1 GB di spazio libero dopo il download del file ZIM.";
 "zim_file.action.download.button.anyway" = "Scarica comunque";
+"zim_file.action.integrity_check.title" = "Controlla";
 "zim_file.base_info.attribute.language" = "Lingua";
 "zim_file.base_info.attribute.category" = "Categoria";
 "zim_file.base_info.attribute.created" = "Creato";

@@ -119,10 +119,6 @@
 "zim_file.action.download.warning.message" = "V vaši napravi morda ni dovolj prostora za to datoteko ZIM.";
 "zim_file.action.download.warning.message1" = "Po prenosu datoteke ZIM bi ostalo manj kot 1 GB prostora.";
 "zim_file.action.download.button.anyway" = "Vseeno prenesi";
-"zim_file.action.validate.title" = "Preveri";
-"zim_file.action.validate.alert.title" = "Preverjanje datoteke ZIM ...";
-"zim_file.action.validate.alert.description" = "To lahko traja nekaj minut. Kiwix ne bo na voljo, dokler preverjanje ne bo končano.";
-"zim_file.validation.in_progress" = "Preverjanje %@ ...";
 "zim_file.base_info.attribute.language" = "Jezik";
 "zim_file.base_info.attribute.category" = "Kategorija";
 "zim_file.base_info.attribute.size" = "Velikost";
@@ -131,7 +127,6 @@
 "zim_file.bool_info.videos" = "Videi";
 "zim_file.bool_info.details" = "Podrobnosti";
 "zim_file.bool_info.require_service_workers" = "Potrebuje Service Workers";
-"zim_file.bool_info.valid" = "veljavno";
 "zim_file.counts.article_count" = "Število člankov";
 "zim_file.counts.article.media_count" = "Število medijev";
 "zim_file.detail.id.title" = "ID";

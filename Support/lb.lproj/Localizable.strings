@@ -90,7 +90,6 @@
 "zim_file.bool_info.pictures" = "Biller";
 "zim_file.bool_info.videos" = "Videoen";
 "zim_file.bool_info.details" = "Detailer";
-"zim_file.bool_info.valid" = "Gülteg";
 "zim_file.counts.article_count" = "Artikelzuel";
 "zim_file.counts.article.media_count" = "Medienzuel";
 "zim_file.detail.id.title" = "ID";
