@@ -16,6 +16,7 @@
 #import <Foundation/Foundation.h>
 #import "ZimFileMetaData.h"
 #import "zim/archive.h"
+#import "SpellingsDBWrapper.h"
 
 @interface ZimFileService : NSObject
 
@@ -34,6 +35,7 @@
 - (zim::Archive *_Nullable) archiveBy: (NSUUID *_Nonnull) zimFileID;
 - (zim::Archive *_Nullable) findArchiveBy: (NSUUID *_Nonnull) zimFileID;
 - (nonnull void *) getArchives;
+- (SpellingsDBWrapper *_Nullable)spellingsDBFor:(NSUUID *_Nonnull)zimFileID cachePath:(NSString *_Nonnull)contentPath;
 
 # pragma mark - Spelling
 - (void) createSpellingIndex: (NSUUID *_Nonnull) zimFileID cachePath:(NSString *_Nonnull)contentPath NS_REFINED_FOR_SWIFT;
