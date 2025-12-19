@@ -160,7 +160,12 @@ final class SearchViewModel: NSObject, ObservableObject, NSFetchedResultsControl
         for zimFileID in zimFileIDs {
             _ = ZimFileService.shared.openArchive(zimFileID: zimFileID)
             if let cacheDir {
-                let tempFile = cacheDir.appendingPathComponent(zimFileID.uuidString.lowercased().appending(".spellingsdb.v0.1.tmp"))
+                // make sure we delete the temp file of the db indexing
+                // otherwise it will lock the user in an everlasting error
+                // that the db cannot be created
+                // if the temp file exists, it means the former creation was not finished
+                let tempFileComponent = zimFileID.uuidString.lowercased().appending(".spellingsdb.v0.1.tmp")
+                let tempFile = cacheDir.appendingPathComponent(tempFileComponent)
                 if FileManager.default.fileExists(atPath: tempFile.path()) {
                     try? FileManager.default.removeItem(at: tempFile)
                 }
