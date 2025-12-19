@@ -28,7 +28,6 @@
 
 #import "ZimFileService.h"
 #import "ZimFileMetaData.h"
-#include <os/lock.h>
 #import "xapian.h"
 
 @interface ZimFileService ()
