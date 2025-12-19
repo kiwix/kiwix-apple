@@ -115,17 +115,6 @@ extension NotificationCenter {
         )
     }
     
-//    static func didStartIntegrityCheckZIM(title: String) {
-//        NotificationCenter.default.post(name: .zimIntegrityCheck, object: nil, userInfo: ["title": title])
-//    }
-//    
-//    static func cancelIntegrityCheckZIM() {
-//        NotificationCenter.default.post(name: .zimIntegrityCheck, object: nil, userInfo: ["cancel": true])
-//    }
-//    
-//    static func didStopIntegrityCheckZIM() {
-//        NotificationCenter.default.post(name: .zimIntegrityCheck, object: nil, userInfo: ["isRunning": false])
-//    }
     
     @MainActor
     static func selectFileBy(fileId: UUID) {
