@@ -100,7 +100,7 @@ private enum Const {
         DiagnosticItem(id: .applicationLogs),
         DiagnosticItem(id: .languageSettings),
         DiagnosticItem(id: .deviceDetails),
-        DiagnosticItem(id: .fileSystemDetails),
+        DiagnosticItem(id: .fileSystemDetails)
     ]
 }
 
@@ -175,13 +175,14 @@ final class DiagnosticsModel: ObservableObject {
                 items.remove(at: integrityIndex)
             }
             for check in checkInfos {
-                if let index = items.firstIndex(where: { $0.id == .integrityZIM(check.id) } ) {
+                if let index = items.firstIndex(where: { $0.id == .integrityZIM(check.id) }) {
                     var item: DiagnosticItem = items[index]
                     item.status = .from(checkState: check.state)
                     items[index] = item
                 } else {
+                    let title = LocalString.zim_file_integrity_check_in_progress(withArgs: check.zimFile.name)
                     let newItem = DiagnosticItem(id: .integrityZIM(check.id),
-                                                 title: LocalString.zim_file_integrity_check_in_progress(withArgs: check.zimFile.name),
+                                                 title: title,
                                                  status: .from(checkState: check.state))
                     let insertIndex: Int = items.firstIndex(where: { $0.id == .applicationLogs }) ?? 0
                     items.insert(newItem, at: insertIndex)
