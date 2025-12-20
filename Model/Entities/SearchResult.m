@@ -30,7 +30,11 @@
         components.scheme = @"zim";
         components.host = [zimFileID UUIDString];
         components.path = path;
-        self.url = [components URL];
+        NSURL *_Nullable finalURL = [components URL];
+        if (finalURL == nil) {
+            return nil;
+        }
+        self.url = finalURL;
         
         if (self.zimFileID == nil || self.title == nil || self.url == nil) {
             return nil;
