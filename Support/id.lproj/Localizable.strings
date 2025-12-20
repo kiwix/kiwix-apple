@@ -27,7 +27,7 @@
 "common.button.print" = "Cetak";
 "common.button.share" = "Bagikan";
 "common.search" = "Cari";
-"common.tab.manager.title" = "Manajer Tab";
+"common.tab.manager.title" = "Pengelola Tab";
 "common.tab.navigation.title" = "Tab";
 "common.tab.menu.new_tab" = "Tab Baru";
 "common.tab.menu.close_this" = "Tutup Tab Ini";

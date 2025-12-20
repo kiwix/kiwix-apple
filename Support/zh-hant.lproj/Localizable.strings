@@ -121,6 +121,10 @@
 "zim_file.action.download.warning.message" = "您的裝置可能沒有足夠的空間儲存此 ZIM 檔。";
 "zim_file.action.download.warning.message1" = "下載 ZIM 檔案後，剩餘空間會少於 1GB。";
 "zim_file.action.download.button.anyway" = "無論如何都要下載";
+"zim_file.action.integrity_check.title" = "檢查";
+"zim_file.action.integrity_recheck.title" = "重新檢查";
+"zim_file.action.integrity_check.alert.title" = "這可能需要幾分鐘，在完整性檢查結束前 Kiwix 會無法使用。";
+"zim_file.integrity_check.in_progress" = "正在檢查「%@」的 ZIM 歸檔完整性…";
 "zim_file.base_info.attribute.language" = "語言";
 "zim_file.base_info.attribute.category" = "分類";
 "zim_file.base_info.attribute.size" = "大小";
@@ -129,6 +133,7 @@
 "zim_file.bool_info.videos" = "影片";
 "zim_file.bool_info.details" = "詳細資訊";
 "zim_file.bool_info.require_service_workers" = "需要 service worker";
+"zim_file.bool_info.zim_archive_integrity" = "ZIM 存檔完整性";
 "zim_file.counts.article_count" = "條目總計";
 "zim_file.counts.article.media_count" = "多媒體總計";
 "zim_file.detail.id.title" = "ID";
