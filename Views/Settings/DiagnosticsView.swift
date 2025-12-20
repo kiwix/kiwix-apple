@@ -43,9 +43,20 @@ struct DiagnosticsView: View {
 #endif
                 } else {
                     if isRunning {
-                        Label("Checking ...", systemImage: "exclamationmark.bubble")
-                            .foregroundStyle(.secondary)
-                            .symbolEffect(.bounce, options: .repeating, value: model.items)
+                        VStack(alignment: .center) {
+                            ProgressView()
+                                .progressViewStyle(.circular)
+                            #if os(macOS)
+                                .scaleEffect(0.5)
+                            #endif
+                            
+                            Text("Checking...")
+                                .foregroundStyle(.secondary)
+                            
+                            Button(LocalString.common_button_cancel) {
+                                cancel()
+                            }
+                        }
                     } else {
                         runButton
                     }
@@ -56,10 +67,7 @@ struct DiagnosticsView: View {
         .frame(maxWidth: 500)
         .navigationTitle("Diagnostic Items")
         .onDisappear(perform: {
-            model.cancel()
-            integrityTask?.cancel()
-            logs = []
-            isRunning = false
+           cancel()
         })
 #if os(iOS)
         .navigationBarTitleDisplayMode(.inline)
@@ -67,6 +75,13 @@ struct DiagnosticsView: View {
 #else
         .tabItem { Label("Diagnostics", systemImage: "exclamationmark.bubble") }
 #endif
+    }
+    
+    private func cancel() {
+        model.cancel()
+        integrityTask?.cancel()
+        logs = []
+        isRunning = false
     }
     
     @ViewBuilder
@@ -89,8 +104,11 @@ struct DiagnosticsView: View {
             withAnimation {
                 isRunning = true
                 integrityTask = Task {
-                    logs = await model.start(using: zimFiles.reversed())
-                    isRunning = false
+                    let collectedLogs = await model.start(using: zimFiles.reversed())
+                    if !Task.isCancelled {
+                        logs = collectedLogs
+                        isRunning = false
+                    }
                 }
             }
         } label: {

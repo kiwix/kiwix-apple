@@ -114,9 +114,9 @@ final class DiagnosticsModel: ObservableObject {
     
     func cancel() {
         Task { @MainActor in
-            items = Const.defaultItems
-            integrityModel.reset()
             cancellable?.cancel()
+            integrityModel.reset()
+            items = Const.defaultItems
             integrityModel = ZimIntegrityModel()
         }
     }
@@ -208,13 +208,16 @@ enum Diagnostics {
     
     static func entriesSeparated() async -> [String] {
 #if os(macOS)
+        guard !Task.isCancelled else { return [] }
         MacUser.name()
         MacUser.isUserAdmin()
 #endif
+        guard !Task.isCancelled else { return [] }
         Log.Environment.notice("ProcessInfo.environment:\n\(processInfoEnvironment(), privacy: .public)")
         DownloadDiagnostics.path()
         DownloadDiagnostics.testWritingAFile()
         
+        guard !Task.isCancelled else { return [] }
         guard let logStore = try? OSLogStore(scope: .currentProcessIdentifier),
               let entries = try? logStore.getEntries(
                 matching: NSPredicate(format: "subsystem == %@", KiwixLogger.subsystem)
