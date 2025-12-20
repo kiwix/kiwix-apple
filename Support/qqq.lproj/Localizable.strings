@@ -124,7 +124,7 @@
 "zim_file.action.integrity_check.title" = "Button title to check the integrity of a ZIM file (using checksum)";
 "zim_file.action.integrity_recheck.title" = "Button title to recheck the integrity of a ZIM file (using checksum)";
 "zim_file.action.integrity_check.alert.title" = "Alert title when user wants to run integrity check on a large ZIM file";
-"zim_file.integrity_check.in_progress" = "Progress message displayed in the middle of the screen, while the integrity check is running, using a param with the name of the zim file, eg: 'Checking ZIM archive integrity of Wikipedia Maxi ...'";
+"zim_file.integrity_check.in_progress" = "Progress message displayed in the middle of the screen, while the integrity check is running, using a param with the name of the zim file, eg: 'Integrity check: \"Wikipedia Maxi\" ...'";
 "zim_file.base_info.attribute.language" = "ZIM file details title, displayed in 2 columns, eg: Language: English";
 "zim_file.base_info.attribute.category" = "ZIM file details title, displayed in 2 columns, eg: Category: Wikipedia";
 "zim_file.base_info.attribute.size" = "ZIM file details title, displayed in 2 columns, eg: Size: 1,5 GB";

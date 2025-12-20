@@ -29,29 +29,34 @@ final class ZimIntegrityModel: ObservableObject {
         var id: UUID {
             zimFile.fileID
         }
+        let checkID: UUID
         let zimFile: ZimFile
         let state: CheckState
     }
     
     @MainActor @Published var checks: [Info] = []
+    /// Makes sure we ignore updates for a formerly cancelled check
+    @MainActor
+    private var checkID = UUID()
 
     @MainActor
     func reset() {
         checks.removeAll()
+        checkID = UUID()
     }
     
     @MainActor
     private func addZimFiles(_ zimFiles: [ZimFile]) {
         checks = zimFiles.map({ zimFile in
-            Info(zimFile: zimFile, state: .enqued)
+            Info(checkID: checkID, zimFile: zimFile, state: .enqued)
         })
     }
 
     @MainActor
     private func updateProgress(zimFileID: UUID, state: CheckState) {
         checks = checks.map { info in
-            if info.id == zimFileID {
-                Info(zimFile: info.zimFile, state: state)
+            if info.id == zimFileID, info.checkID == checkID {
+                Info(checkID: info.checkID, zimFile: info.zimFile, state: state)
             } else {
                 info
             }
@@ -77,6 +82,7 @@ Completed ZIM integrity check for \(fileID.uuidString, privacy: .public), \
 \(name, privacy: .public), success: \(result, privacy: .public)
 """)
             zimFile.isIntegrityChecked = result
+            guard !Task.isCancelled else { return }
             await updateProgress(zimFileID: fileID, state: CheckState.complete(isValid: result))
         }
     }

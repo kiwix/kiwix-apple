@@ -36,9 +36,8 @@ struct Email {
         let sharingService = NSSharingService(named: NSSharingService.Name.composeEmail)
         sharingService?.recipients = [address]
         sharingService?.subject = subject
-        
-        let items: [Any] = [body]
-        sharingService?.perform(withItems: items)
+        let bodyItem = body.addingPercentEncoding(withAllowedCharacters: .alphanumerics)
+        sharingService?.perform(withItems: [bodyItem as Any])
     }
 #else
     func create() {
