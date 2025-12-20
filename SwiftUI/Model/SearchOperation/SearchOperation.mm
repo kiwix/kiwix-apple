@@ -27,6 +27,7 @@
 #import "SearchOperation.h"
 #import "SearchResult.h"
 #import "ZimFileService.h"
+#import "xapian.h"
 
 @interface NSURL (PathManipulation)
 - (NSURL * _Nonnull) withTrailingSlash;
@@ -182,19 +183,16 @@
 
 - (void) addSpellingCorrections {
     [self.corrections removeAllObjects];
-    // get a list of archives that are included in search
-    typedef std::unordered_map<std::string, zim::Archive> archives_map;
-    auto *allArchives = static_cast<archives_map *>([[ZimFileService sharedInstance] getArchives]);
     NSString *contentPath = [self.spellCacheDir path];
-    std::filesystem::path path = std::filesystem::path([contentPath cStringUsingEncoding: NSUTF8StringEncoding]);
-
+    // apply for the list of ZimFileIds that are included in search
     for (NSUUID *zimFileID in self.zimFileIDs) {
         if (self.isCancelled) { return; }
-        std::string zimFileID_C = [[[zimFileID UUIDString] lowercaseString] cStringUsingEncoding:NSUTF8StringEncoding];
         try {
-            auto archive = allArchives->at(zimFileID_C);
-            kiwix::SpellingsDB db = kiwix::SpellingsDB(archive, path);
-            std::vector<std::string> spellCorrections = db.getSpellingCorrections(self.searchText_C, 1);
+            SpellingsDBWrapper *dbWrapper = [[ZimFileService sharedInstance] spellingsDBFor:zimFileID cachePath:contentPath];
+            if(dbWrapper == nil) {
+                return;
+            }
+            std::vector<std::string> spellCorrections = dbWrapper.cppDB->getSpellingCorrections(self.searchText_C, 1);
             NSArray *array = convertToArray(spellCorrections);
             if (self.isCancelled) { return; }
             [self.corrections addObjectsFromArray:array];
@@ -202,6 +200,8 @@
             NSLog(@"addSpellingCorrections for %@: (%ld)", zimFileID, static_cast<long>(count));
         } catch (std::exception &e) {
             NSLog(@"spellingsCorrections exception: %s", e.what());
+        } catch (Xapian::DatabaseError e) {
+            NSLog(@"create spelling index exception no database found: %s", e.get_description().c_str());
         }
     }
 }
