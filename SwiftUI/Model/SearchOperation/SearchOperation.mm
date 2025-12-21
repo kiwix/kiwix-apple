@@ -122,21 +122,25 @@
 
             zim::Item item = result->getItem(result->isRedirect());
             NSUUID *zimFileID = [[NSUUID alloc] initWithUUIDBytes:(unsigned char *)result.getZimId().data];
-            NSString *path = [NSString stringWithCString:item.getPath().c_str() encoding:NSUTF8StringEncoding];
-            NSString *title = [NSString stringWithCString:item.getTitle().c_str() encoding:NSUTF8StringEncoding];
-            if (title.length == 0) {
+            NSString *_Nullable path = [NSString stringWithCString:item.getPath().c_str() encoding:NSUTF8StringEncoding];
+            NSString *_Nullable title = [NSString stringWithCString:item.getTitle().c_str() encoding:NSUTF8StringEncoding];
+            if (title == nil || title.length == 0) {
                 title = path; // display the path as a fallback
             }
-            SearchResult *searchResult = [[SearchResult alloc] initWithZimFileID:zimFileID path:path title:title];
-            searchResult.probability = [[NSNumber alloc] initWithFloat:result.getScore() / 100];
+            if (path != nil && title != nil) {
+                SearchResult *searchResult = [[SearchResult alloc] initWithZimFileID:zimFileID path:path title:title];
+                searchResult.probability = [[NSNumber alloc] initWithFloat:result.getScore() / 100];
 
-            // optionally, add snippet
-            if (self.extractMatchingSnippet) {
-                NSString *html = [NSString stringWithCString:result.getSnippet().c_str() encoding:NSUTF8StringEncoding];
-                searchResult.htmlSnippet = html;
-            }
-            if (searchResult != nil) {
-                [self addResult: searchResult];
+                // optionally, add snippet
+                if (self.extractMatchingSnippet) {
+                    NSString *_Nullable html = [NSString stringWithCString:result.getSnippet().c_str() encoding:NSUTF8StringEncoding];
+                    if (html != nil) {
+                        searchResult.htmlSnippet = html;
+                    }
+                }
+                if (searchResult != nil) {
+                    [self addResult: searchResult];
+                }
             }
         }
     } catch (std::exception &e) {
@@ -154,9 +158,9 @@
         auto results = zim::SuggestionSearcher(archive).suggest(self.searchText_C).getResults(0, count);
         for (auto result = results.begin(); result != results.end(); result++) {
             if (self.isCancelled) { return; }
-            NSString *path = [NSString stringWithCString:result->getPath().c_str() encoding:NSUTF8StringEncoding];
-            NSString *title = [NSString stringWithCString:result->getTitle().c_str() encoding:NSUTF8StringEncoding];
-            if (title.length > 0) {
+            NSString *_Nullable path = [NSString stringWithCString:result->getPath().c_str() encoding:NSUTF8StringEncoding];
+            NSString *_Nullable title = [NSString stringWithCString:result->getTitle().c_str() encoding:NSUTF8StringEncoding];
+            if (path != nil && title != nil && title.length > 0) {
                 SearchResult *searchResult = [[SearchResult alloc] initWithZimFileID:zimFileID path:path title:title];
                 if (searchResult != nil) {
                     [self addResult: searchResult];

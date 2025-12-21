@@ -170,25 +170,27 @@
     }
 }
 
-- (NSString *)getMainPagePath:(NSUUID *)zimFileID {
+- (NSString *_Nullable)getMainPagePath:(NSUUID *)zimFileID {
     zim::Archive *archive = [self archiveBy: zimFileID];
     if (archive == nil) { return nil; }
     try {
         zim::Entry entry = archive->getMainEntry();
         zim::Item item = entry.getItem(entry.isRedirect());
-        return [NSString stringWithCString:item.getPath().c_str() encoding:NSUTF8StringEncoding];
+        NSString *_Nullable pagePath = [NSString stringWithCString:item.getPath().c_str() encoding:NSUTF8StringEncoding];
+        return pagePath;
     } catch (std::exception) {
         return nil;
     }
 }
 
-- (NSString *)getRandomPagePath:(NSUUID *)zimFileID {
+- (NSString *_Nullable)getRandomPagePath:(NSUUID *)zimFileID {
     zim::Archive *archive = [self archiveBy: zimFileID];
     if (archive == nil) { return nil; }
     try {
         zim::Entry entry = archive->getRandomEntry();
         zim::Item item = entry.getItem(entry.isRedirect());
-        return [NSString stringWithCString:item.getPath().c_str() encoding:NSUTF8StringEncoding];
+        NSString *_Nullable pagePath = [NSString stringWithCString:item.getPath().c_str() encoding:NSUTF8StringEncoding];
+        return pagePath;
     } catch (std::exception) {
         return nil;
     }
