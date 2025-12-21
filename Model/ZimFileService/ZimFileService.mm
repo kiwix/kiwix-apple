@@ -116,6 +116,7 @@
     try {
         @synchronized (self) {
             NSLog(@"createSpellingIndex for:%@, in: %@", zimFileID.UUIDString, contentPath);
+            // this should be safe for utf-8, it comes from swift URL.path(percentEncoded=True)
             std::filesystem::path path = std::filesystem::path([contentPath cStringUsingEncoding: NSUTF8StringEncoding]);
             auto db = std::make_unique<kiwix::SpellingsDB>(*archive, path);
             SpellingsDBWrapper *wrapper = [[SpellingsDBWrapper alloc] initWithDB: std::move(db)];
@@ -162,9 +163,13 @@
     zim::Archive *archive = [self archiveBy: zimFileID];
     if (archive == nil) { return nil; }
     try {
-        std::string contentPathC = [contentPath cStringUsingEncoding:NSUTF8StringEncoding];
-        zim::Item item = archive->getEntryByPath(contentPathC).getRedirect();
-        return [NSString stringWithUTF8String: item.getPath().c_str()];
+        const char *_Nullable contentPathC = [contentPath cStringUsingEncoding:NSUTF8StringEncoding];
+        if (contentPathC != nil) {
+            zim::Item item = archive->getEntryByPath(contentPathC).getRedirect();
+            return [NSString stringWithUTF8String: item.getPath().c_str()];
+        } else {
+            return nil;
+        }
     } catch (std::exception) {
         return nil;
     }
@@ -271,6 +276,7 @@
 
 /// Converts the UUID to a C representation
 - (std::string) zimfileID_C: (NSUUID *_Nonnull) zimFileID {
+    // should be safe for utf-8 encoding
     return [[[zimFileID UUIDString] lowercaseString] cStringUsingEncoding:NSUTF8StringEncoding];
 }
 
@@ -315,7 +321,12 @@
     }
     zim::Archive *archive = [self archiveBy: zimFileID];
     if (archive == nil) { throw std::exception(); }
-    zim::Entry entry = archive->getEntryByPath([contentPath cStringUsingEncoding:NSUTF8StringEncoding]);
+    
+    const char *_Nullable contentPath_c = [contentPath cStringUsingEncoding:NSUTF8StringEncoding];
+    if (contentPath_c == nil) {
+        throw std::exception();
+    }
+    zim::Entry entry = archive->getEntryByPath(contentPath_c);
     return entry.getItem(entry.isRedirect());
 }
 

@@ -72,8 +72,19 @@
 - (id)initWithSearchText:(NSString *)searchText zimFileIDs:(NSSet *)zimFileIDs withSpellingCacheDir:(NSURL *)spellCacheDir {
     self = [super init];
     if (self) {
-        self.searchText = searchText;
-        self.searchText_C = [searchText cStringUsingEncoding:NSUTF8StringEncoding];
+        if([searchText canBeConvertedToEncoding: NSUTF8StringEncoding]) {
+            const char *_Nullable searchText_c_pointer = [searchText cStringUsingEncoding:NSUTF8StringEncoding];
+            if (searchText_c_pointer == nil) {
+                self.searchText = @"";
+                self.searchText_C = "";
+            } else {
+                self.searchText = searchText;
+                self.searchText_C = searchText_c_pointer;
+            }
+        } else {
+            self.searchText = @"";
+            self.searchText_C = "";
+        }
         self.zimFileIDs = zimFileIDs;
         self.spellCacheDir = spellCacheDir;
         self.results = [[NSMutableOrderedSet alloc] initWithCapacity:35];
@@ -91,6 +102,7 @@
     auto *allArchives = static_cast<archives_map *>([[ZimFileService sharedInstance] getArchives]);
 
     for (NSUUID *zimFileID in self.zimFileIDs) {
+        // should be fine for utf-8 encoding
         std::string zimFileID_C = [[[zimFileID UUIDString] lowercaseString] cStringUsingEncoding:NSUTF8StringEncoding];
         try {
             auto archive = allArchives->at(zimFileID_C);
