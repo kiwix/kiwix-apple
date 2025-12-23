@@ -332,7 +332,7 @@ final class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegat
             let statusCode = httpResponse.statusCode
             Log.DownloadService.error(
                 "didFinish failed for: \(taskId, privacy: .public), status: \(statusCode, privacy: .public)")
-            showAlert(.downloadFailed)
+            showAlert(.downloadFailed(zimFileID))
             deleteDownloadTask(zimFileID: zimFileID)
             return
         }

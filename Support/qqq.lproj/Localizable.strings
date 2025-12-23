@@ -9,7 +9,7 @@
 "library_refresh_error.process.description" = "Alert description, when refreshing the catalog failed, due to an error while processing the data from the server";
 "download_service.complete.title" = "Title of the notification a user receives, once the started download completes";
 "download_service.complete.description" = "%@ is a file name.";
-"download_service.failed.description" = "Description of an alert pop up, the user see if an item cannot be downloaded.";
+"download_service.failed.description" = "Description of an alert pop up, the user see if an item cannot be downloaded. Includes %@ which is a param for the name of the item to be downloaded.";
 "download_service.error.description" = "Description of an alert pop up, the user see if an item cannot be downloaded for a specific reason. Includes %@ an error code and %@ additional message as params.";
 "download_service.error.option_directory" = "A description of a specific download error, when the download folder cannot be reached. Becomes part of download_service.error.description";
 "download_service.error.option_invalid_taskid" = "A description of a specific download error, when the download task cannot be identified. Becomes part of download_service.error.description";
