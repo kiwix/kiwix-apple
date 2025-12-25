@@ -119,6 +119,11 @@
 "zim_file.action.download.warning.message" = "Може да нема доволно место на вашиот уред за оваа ZIM-податотека.";
 "zim_file.action.download.warning.message1" = "Ќе ви преостане помалку од 1 ГБ слободен простор по преземањето на ZIM-податотеката.";
 "zim_file.action.download.button.anyway" = "Сепак преземи";
+"zim_file.action.integrity_check.title" = "Провери";
+"zim_file.action.integrity_recheck.title" = "Провери повторно";
+"zim_file.action.integrity_check.alert.title" = "Ова може да потрае малку. Кивикс ќе биде недостапен додека не заврши проверката.";
+// Fuzzy
+"zim_file.integrity_check.in_progress" = "Го проверувам интегритетот на ZIM-архивот на „%@“ ...";
 "zim_file.base_info.attribute.language" = "Јазик";
 "zim_file.base_info.attribute.category" = "Категорија";
 "zim_file.base_info.attribute.size" = "Големина";
@@ -127,6 +132,7 @@
 "zim_file.bool_info.videos" = "Видеа";
 "zim_file.bool_info.details" = "Поединости";
 "zim_file.bool_info.require_service_workers" = "Бара застапнички служби";
+"zim_file.bool_info.zim_archive_integrity" = "Интегритет на ZIM-архивот";
 "zim_file.counts.article_count" = "Број на статии";
 "zim_file.counts.article.media_count" = "Број на податотеки";
 "zim_file.detail.id.title" = "Назнака";

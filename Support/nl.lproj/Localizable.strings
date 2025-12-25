@@ -121,6 +121,11 @@
 "zim_file.action.download.warning.message" = "Er is mogelijk niet genoeg ruimte op uw apparaat voor dit ZIM-bestand.";
 "zim_file.action.download.warning.message1" = "Na het downloaden van dit ZIM-bestand zou er minder dan 1 GB ruimte over zijn.";
 "zim_file.action.download.button.anyway" = "Toch downloaden";
+"zim_file.action.integrity_check.title" = "Controleren";
+"zim_file.action.integrity_recheck.title" = "Opnieuw controleren";
+"zim_file.action.integrity_check.alert.title" = "Dit kan enkele minuten duren. Kiwix is niet beschikbaar totdat de integriteitscontrole is voltooid.";
+// Fuzzy
+"zim_file.integrity_check.in_progress" = "De integriteit van het ZIM-archief \"%@\" controleren...";
 "zim_file.base_info.attribute.language" = "Taal";
 "zim_file.base_info.attribute.category" = "Categorie";
 "zim_file.base_info.attribute.size" = "Grootte";
@@ -129,6 +134,7 @@
 "zim_file.bool_info.videos" = "Video’s";
 "zim_file.bool_info.details" = "Details";
 "zim_file.bool_info.require_service_workers" = "Vereist ‘service workers’";
+"zim_file.bool_info.zim_archive_integrity" = "Integriteit van het ZIM-archief";
 "zim_file.counts.article_count" = "Aantal artikelen";
 "zim_file.counts.article.media_count" = "Aantal media";
 "zim_file.detail.id.title" = "ID";

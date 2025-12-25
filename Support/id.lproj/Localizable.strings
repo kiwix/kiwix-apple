@@ -1,6 +1,7 @@
 // Messages for Indonesian (Bahasa Indonesia)
 // Exported from translatewiki.net
 // Author: Akmaie Ajam
+// Author: Bennylin
 // Author: Penyuwangi
 
 // Fuzzy
@@ -41,7 +42,7 @@
 "outline_button.outline.title" = "Garis besar";
 "outline_button.outline.help" = "Tampilkan garis besar artikel";
 "outline_button.outline.empty.message" = "Tidak ada garis besar yang tersedia";
-"bookmark_button.show.help" = "Menampilkan lembar markah, dimana artikel saat ini dapat ditambahkan atau dihapus dari markah.";
+"bookmark_button.show.help" = "Menampilkan lembar markah buku, artikel saat ini dapat ditambahkan atau dihapus dari markah buku.";
 "article_shortcut.main.button.title" = "Artikel Utama";
 "article_shortcut.main.button.help" = "Tampilkan artikel utama";
 "article_shortcut.random.button.title.mac" = "Artikel Acak";
