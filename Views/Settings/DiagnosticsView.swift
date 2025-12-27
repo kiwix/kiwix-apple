@@ -29,10 +29,19 @@ struct DiagnosticsView: View {
     @State private var integrityTask: Task<Void, Error>?
     @ObservedObject private var model = DiagnosticsModel()
     
+    private enum Const {
+        #if os(iOS)
+        static let verticalSpace: CGFloat = 32
+        #else
+        static let verticalSpace: CGFloat = 12
+        #endif
+    }
+    
     var body: some View {
         VStack(alignment: .center) {
             Spacer()
             diagnosticItems
+            Spacer(minLength: Const.verticalSpace)
             HStack(alignment: .firstTextBaseline, spacing: 24) {
                 if !logs.isEmpty {
                     emailButton
@@ -48,24 +57,45 @@ struct DiagnosticsView: View {
                                 .progressViewStyle(.circular)
                             #if os(macOS)
                                 .scaleEffect(0.5)
+                                .padding(-8)
                             #endif
                             
                             Text("Checking...")
                                 .foregroundStyle(.secondary)
                             
-                            Button(LocalString.common_button_cancel) {
-                                cancel()
-                            }.foregroundStyle(.red)
+                            #if os(macOS)
+                            cancelButton
+                            #endif
                         }
+                        .padding(.vertical)
                     } else {
+                        #if os(macOS)
                         runButton
+                        #endif
                     }
                 }
             }
-            Spacer(minLength: 32)
+            Spacer(minLength: Const.verticalSpace)
         }
         .frame(maxWidth: 500)
         .navigationTitle("Diagnostic Items")
+        #if os(iOS)
+        .toolbar {
+            if logs.isEmpty {
+                if !isRunning {
+                    ToolbarItem(placement: .topBarTrailing) {
+                        runButton
+                            .padding(.horizontal)
+                    }
+                } else {
+                    ToolbarItem(placement: .topBarTrailing) {
+                       cancelButton
+                            .padding(.horizontal)
+                    }
+                }
+            }
+        }
+        #endif
         .onDisappear(perform: {
            cancel()
         })
@@ -95,6 +125,9 @@ struct DiagnosticsView: View {
                         .symbolEffect(.bounce, value: item.status.isComplete)
                 }
             }
+            #if os(iOS)
+            .listRowSpacing(-12)
+            #endif
             .listStyle(.plain)
             .onChange(of: model.items) {
                 if let firstInitial = model.items.first(where: { item in
@@ -103,6 +136,13 @@ struct DiagnosticsView: View {
                     proxy.scrollTo(firstInitial.id)
                 }
             }
+        }
+    }
+    
+    @ViewBuilder
+    var cancelButton: some View {
+        Button(LocalString.common_button_cancel, role: .destructive) {
+            cancel()
         }
     }
     
@@ -120,8 +160,12 @@ struct DiagnosticsView: View {
                 }
             }
         } label: {
+            #if os(macOS)
             Label("Run check", systemImage: "exclamationmark.bubble")
                 .symbolEffect(.bounce, value: isRunning)
+            #else
+            Text("Run check")
+            #endif
         }
 #if os(iOS)
         .buttonStyle(.borderless)
