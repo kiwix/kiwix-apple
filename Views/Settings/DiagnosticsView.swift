@@ -126,7 +126,7 @@ struct DiagnosticsView: View {
                 }
             }
             #if os(iOS)
-            .listRowSpacing(-12)
+            .listRowSpacing(-10)
             #endif
             .listStyle(.plain)
             .onChange(of: model.items) {
