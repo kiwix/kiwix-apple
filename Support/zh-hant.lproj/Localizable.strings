@@ -124,6 +124,7 @@
 "zim_file.action.integrity_check.title" = "檢查";
 "zim_file.action.integrity_recheck.title" = "重新檢查";
 "zim_file.action.integrity_check.alert.title" = "這可能需要幾分鐘，在完整性檢查結束前 Kiwix 會無法使用。";
+// Fuzzy
 "zim_file.integrity_check.in_progress" = "正在檢查「%@」的 ZIM 歸檔完整性…";
 "zim_file.base_info.attribute.language" = "語言";
 "zim_file.base_info.attribute.category" = "分類";
