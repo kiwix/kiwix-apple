@@ -55,7 +55,7 @@ struct DiagnosticsView: View {
                             
                             Button(LocalString.common_button_cancel) {
                                 cancel()
-                            }
+                            }.foregroundStyle(.red)
                         }
                     } else {
                         runButton
@@ -86,16 +86,24 @@ struct DiagnosticsView: View {
     
     @ViewBuilder
     var diagnosticItems: some View {
-        List {
-            ForEach(model.items, id: \.id) { item in
-                Label(item.title, systemImage: item.status.systemImage)
-                    .listItemTint(item.status.tintColor)
-                    .listRowSeparator(.hidden)
-                    .symbolEffect(.bounce, value: item.status.isComplete)
-                    
+        ScrollViewReader { proxy in
+            List {
+                ForEach(model.items, id: \.id) { item in
+                    Label(item.title, systemImage: item.status.systemImage)
+                        .listItemTint(item.status.tintColor)
+                        .listRowSeparator(.hidden)
+                        .symbolEffect(.bounce, value: item.status.isComplete)
+                }
+            }
+            .listStyle(.plain)
+            .onChange(of: model.items) {
+                if let firstInitial = model.items.first(where: { item in
+                    item.status == .initial
+                }) {
+                    proxy.scrollTo(firstInitial.id)
+                }
             }
         }
-        .listStyle(.plain)
     }
     
     @ViewBuilder
