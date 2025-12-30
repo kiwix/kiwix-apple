@@ -11,7 +11,6 @@
 "download_service.error.description" = "Download mislykkedes. Kode: %@\n Beskrivelse: %@";
 "download_service.error.option_directory" = "download af bibliotek kunne ikke findes";
 "download_service.error.option_invalid_taskid" = "ugyldigt downloadTask-id";
-"download_service.error.option_invalid_response" = "ugyldigt svar";
 "download_service.error.option_unable_to_move_file" = "kan ikke flytte downloadet fil";
 "common.dialog.button.open" = "Åben";
 "common.dialog.button.open_in_new_tab" = "Åbn i Ny Fane";

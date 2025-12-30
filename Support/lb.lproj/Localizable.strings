@@ -8,7 +8,6 @@
 "library_refresh_error.process.description" = "Feeler beim Parse vun de Katalogdonnéeën.";
 "download_service.complete.title" = "Download ofgeschloss";
 "download_service.complete.description" = "%@ gouf erfollegräich erofgeluden.";
-"download_service.error.option_invalid_response" = "ongülteg Äntwert";
 "common.dialog.button.open" = "Opmaachen";
 "common.dialog.button.open_in_new_tab" = "An engem neien Tab opmaachen";
 "common.dialog.button.add_bookmark" = "Lieszeechen derbäisetzen";

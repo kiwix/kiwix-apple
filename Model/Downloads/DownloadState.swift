@@ -31,7 +31,7 @@ struct DownloadState: Codable {
 
     init(downloaded: Int64, total: Int64, resumeData: Data?) {
         guard total >= downloaded, total > 0 else {
-            assertionFailure("invalid download progress values: downloaded \(downloaded) total: \(total)")
+//            assertionFailure("invalid download progress values: downloaded \(downloaded) total: \(total)")
             self.downloaded = downloaded
             self.total = downloaded
             self.resumeData = resumeData

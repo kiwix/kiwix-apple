@@ -25,11 +25,9 @@ struct AlertHandler: ViewModifier {
         content.onReceive(alert) { notification in
             if let alertValue = notification.userInfo?["alert"] as? ActiveAlert {
                 activeAlert = alertValue
-                if case let .downloadFailed(zimFileID) = alertValue {
-                    Database.shared.performBackgroundTask { context in
-                        let zimFile = try? context.fetch(ZimFile.fetchRequest(fileID: zimFileID)).first
-                        zimFileName = zimFile?.name ?? "unknown"
-                    }
+                if case let .downloadFailed(_, zimFileID) = alertValue {
+                    let zimFile = try? Database.shared.viewContext.fetch(ZimFile.fetchRequest(fileID: zimFileID)).first
+                    zimFileName = zimFile?.name ?? "unknown"
                 }
             }
         }
@@ -44,8 +42,8 @@ struct AlertHandler: ViewModifier {
         switch activeAlert {
         case .articleFailedToLoad:
             return LocalString.alert_handler_alert_failed_title
-        case let .downloadFailed(zimFileID):
-            return LocalString.download_service_failed_description(withArgs: zimFileName)
+        case let .downloadFailed(code, _):
+            return LocalString.download_service_failed_description(withArgs: zimFileName, "\(code)")
         case let .downloadError(code, message):
             return LocalString.download_service_error_description(withArgs: "\(code)", message)
         case nil:

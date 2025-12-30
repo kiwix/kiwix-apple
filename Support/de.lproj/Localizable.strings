@@ -17,7 +17,6 @@
 "download_service.error.description" = "Download fehlgeschlagen. Code: %@\n Beschreibung: %@";
 "download_service.error.option_directory" = "Downloadverzeichnis nicht gefunden";
 "download_service.error.option_invalid_taskid" = "ungültiger DownloadTask-Id";
-"download_service.error.option_invalid_response" = "ungültige Antwort";
 "download_service.error.option_unable_to_move_file" = "heruntergeladene Datei kann nicht verschoben werden";
 "common.dialog.button.open" = "Öffnen";
 "common.dialog.button.open_in_new_tab" = "In neuem Tab öffnen";

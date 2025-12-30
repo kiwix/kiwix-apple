@@ -14,7 +14,6 @@
 "download_service.error.description" = "Nedladdningen misslyckades. Kod: %@\n Beskrivning: %@";
 "download_service.error.option_directory" = "nedladdningsmappen kan inte hittas";
 "download_service.error.option_invalid_taskid" = "ogiltigt downloadTask-id";
-"download_service.error.option_invalid_response" = "ogiltigt svar";
 "download_service.error.option_unable_to_move_file" = "kan inte flytta den nedladdade filen";
 "common.dialog.button.open" = "Öppna";
 "common.dialog.button.open_in_new_tab" = "Öppna i ny flik";
