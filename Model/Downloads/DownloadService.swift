@@ -21,6 +21,7 @@ import os
 // swiftlint:disable:next type_body_length
 final class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegate, URLSessionDownloadDelegate {
     static let shared = DownloadService()
+    private let headCheck = DownloadHeadCheck()
     private let queue = DispatchQueue(label: "downloads", qos: .background)
     @MainActor let progress = DownloadTasksPublisher()
     @MainActor private var heartbeat: Timer?
@@ -98,8 +99,8 @@ final class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegat
                         text: questionText(destination: destination, zimFileName: zimFile.name),
                         yes: LocalString.common_button_yes,
                         cancel: LocalString.common_button_cancel,
-                        didConfirm: {
-                            task.resume()
+                        didConfirm: { [weak self] in
+                            self?.resumeTask(task, for: zimFileID)
                         },
                         didDismiss: { [weak self] in
                             task.cancel()
@@ -110,6 +111,18 @@ final class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegat
                 return
             }
             
+            resumeTask(task, for: zimFileID)
+        }
+    }
+    
+    private func resumeTask(_ task: URLSessionDownloadTask, for zimFileID: UUID) {
+        Task { [weak self] in
+            let error = await self?.headCheck.check(task: task)
+            guard error == nil else {
+                self?.showAlert(.downloadError(#line, "file cannot be found, or not online"))
+                self?.deleteDownloadTask(zimFileID: zimFileID)
+                return
+            }
             task.resume()
         }
     }
@@ -124,11 +137,11 @@ final class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegat
     /// Cancel a zim file download task
     /// - Parameter zimFileID: identifier of the zim file
     func cancel(zimFileID: UUID) {
-        session.getTasksWithCompletionHandler { [weak self] _, _, downloadTasks in
+        session.getTasksWithCompletionHandler { _, _, downloadTasks in
             if let task = downloadTasks.filter({ $0.taskDescription == zimFileID.uuidString }).first {
                 task.cancel()
             }
-            self?.deleteDownloadTask(zimFileID: zimFileID)
+            self.deleteDownloadTask(zimFileID: zimFileID)
         }
     }
 
@@ -233,8 +246,6 @@ final class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegat
         }
         guard let httpResponse = task.response as? HTTPURLResponse else {
             Log.DownloadService.fault("response is not an HTTPURLResponse")
-            deleteDownloadTask(zimFileID: zimFileID)
-            showAlert(.downloadFailed(#line, zimFileID))
             return
         }
         // download finished successfully if there's no error
@@ -249,7 +260,7 @@ final class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegat
                 let statusCode = httpResponse.statusCode
                 Log.DownloadService.error(
                     "Download error: \(fileId, privacy: .public). status code: \(statusCode, privacy: .public)")
-                deleteDownloadTask(zimFileID: zimFileID)
+                self.deleteDownloadTask(zimFileID: zimFileID)
             }
             return
         }
@@ -315,21 +326,17 @@ final class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegat
     func urlSession(_ session: URLSession,
                     downloadTask: URLSessionDownloadTask,
                     didFinishDownloadingTo location: URL) {
+        guard let httpResponse = downloadTask.response as? HTTPURLResponse else {
+            Log.DownloadService.fault("Response is not an HTTPURLResponse")
+            showAlert(.downloadError(#line, LocalString.download_service_failed_description(withArgs: "invalid response")))
+            return
+        }
         let taskId = downloadTask.taskDescription ?? ""
         guard let zimFileID = UUID(uuidString: taskId) else {
             Log.DownloadService.fault(
                 "Cannot convert downloadTask to zimFileID: \(taskId, privacy: .public)"
             )
             showAlert(.downloadError(#line, LocalString.download_service_error_option_invalid_taskid))
-            return
-        }
-        defer {
-            deleteDownloadTask(zimFileID: zimFileID)
-        }
-        
-        guard let httpResponse = downloadTask.response as? HTTPURLResponse else {
-            Log.DownloadService.fault("Response is not an HTTPURLResponse")
-            showAlert(.downloadFailed(#line, zimFileID))
             return
         }
 
@@ -339,11 +346,13 @@ final class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegat
             Log.DownloadService.error(
                 "didFinish failed for: \(taskId, privacy: .public), status: \(statusCode, privacy: .public)")
             showAlert(.downloadFailed(#line, zimFileID))
+            deleteDownloadTask(zimFileID: zimFileID)
             return
         }
         guard let url = httpResponse.url,
            var destination = DownloadDestination.filePathFor(downloadURL: url) else {
             showAlert(.downloadError(#line, LocalString.download_service_error_option_directory))
+            deleteDownloadTask(zimFileID: zimFileID)
             return
         }
         let fileName = destination.lastPathComponent
@@ -368,6 +377,7 @@ to: \(destination.absoluteString, privacy: .public),
 due to: \(error.localizedDescription, privacy: .public)
 """)
             showAlert(.downloadError(#line, LocalString.download_service_error_option_unable_to_move_file))
+            deleteDownloadTask(zimFileID: zimFileID)
         }
         Log.DownloadService.info(
             "Completed moving zimFile: \(zimFileID.uuidString, privacy: .public)"
@@ -384,6 +394,7 @@ due to: \(error.localizedDescription, privacy: .public)
             )
             // schedule notification
             scheduleDownloadCompleteNotification(zimFileID: zimFileID)
+            deleteDownloadTask(zimFileID: zimFileID)
         }
     }
 

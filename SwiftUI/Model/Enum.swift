@@ -24,6 +24,7 @@ enum ActiveAlert: Hashable, Identifiable {
     case articleFailedToLoad
     case downloadFailed(Int, UUID)
     case downloadError(Int, String)
+    case downloadHeadErrorResponse(Int, DownloadHeadCheck.ErrorResponse)
 }
 
 enum ActiveSheet: Hashable, Identifiable {

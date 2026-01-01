@@ -46,8 +46,26 @@ struct AlertHandler: ViewModifier {
             return LocalString.download_service_failed_description(withArgs: zimFileName, "\(code)")
         case let .downloadError(code, message):
             return LocalString.download_service_error_description(withArgs: "\(code)", message)
+        case let .downloadHeadErrorResponse(code, errorResponse):
+            let message = message(from: errorResponse)
+            return LocalString.download_service_error_description(withArgs: "\(code)", message)
         case nil:
             return ""
+        }
+    }
+    
+    private func message(from response: DownloadHeadCheck.ErrorResponse) -> String {
+        switch response {
+        case .invalidRequest(let line):
+            "Invalid request code: \(line)"
+        case .invalidResponse(let line, let requestURL):
+            "Invalid response code: \(line) for url: \(requestURL.absoluteString)"
+        case .responseError(let line, let description):
+            "Response error code: \(line), reason: \(description)"
+        case .responseURLError(let line, let urlError):
+            "Resource not reachable code: \(line), at url: \(urlError.failingURL, default: "unkown"), errorCode: \(urlError.errorCode), user info: \(urlError.errorUserInfo)"
+        case .invalid(let statusCode, let requestURL):
+            "Invalid status code: \(statusCode), for url: \(requestURL)"
         }
     }
 }

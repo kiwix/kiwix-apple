@@ -17,20 +17,41 @@ import Foundation
 
 struct DownloadHeadCheck {
     
-    func check(task: URLSessionDownloadTask) async -> Bool {
-        guard let request = task.originalRequest else {
-            return false
+    enum ErrorResponse: Hashable, Identifiable {
+        var id: Int { hashValue }
+        
+        case invalidRequest(line: Int)
+        case invalidResponse(line: Int, requestURL: URL)
+        case responseError(line: Int, description: String)
+        case responseURLError(line: Int, urlError: URLError)
+        case invalid(statusCode: Int, requestURL: URL)
+    }
+    
+    func check(task: URLSessionDownloadTask) async -> ErrorResponse? {
+        guard let request = task.originalRequest,
+              let url = request.url else {
+            return ErrorResponse.invalidRequest(line: #line)
         }
         var headRequest = request
         headRequest.httpMethod = "HEAD"
-        guard let (_, response) = try? await URLSession.shared.data(for: headRequest) else {
-            return false
+        do {
+            let (_, response) = try await URLSession.shared.data(for: headRequest)
+            
+            guard let httpResponse = (response as? HTTPURLResponse) else {
+                return ErrorResponse.invalidResponse(line: #line, requestURL: url)
+            }
+            let statusCode = httpResponse.statusCode
+            guard ((200..<300)).contains(statusCode) else {
+                return ErrorResponse.invalid(statusCode: statusCode, requestURL: url)
+            }
+            // no error
+            return nil
+        } catch {
+            if let urlError = error as? URLError {
+                return ErrorResponse.responseURLError(line: #line, urlError: urlError)
+            } else {
+                return ErrorResponse.responseError(line: #line, description: error.localizedDescription)
+            }
         }
-        guard let statusCode = (response as? HTTPURLResponse)?.statusCode,
-              ((200..<300)).contains(statusCode) else {
-            return false
-        }
-        
-        return true
     }
 }
