@@ -142,6 +142,7 @@
 "zim_file.download_task.action.failed" = "Attribute title in case of a download error";
 "zim_file.download_task.action.pause" = "Button title to pause an ongoing download";
 "zim_file.download_task.action.downloading" = "Attribute title when downloading is in progress";
+"zim_file.download_task.status_offline" = "Title when downloading is in progress, but the user seems to be offline.";
 "zim_file.download_task.action.resume" = "Button title to resume a paused download";
 "zim_file.download_task.action.paused" = "Attribute title of a paused download";
 "service_worker_warning.label.description" = "Accessiblity label for warning icon (!)";
