@@ -7,7 +7,6 @@
 "library_refresh_error.process.description" = "Napaka pri obdelavi kataloških podatkov.";
 "download_service.complete.title" = "Prenos končan";
 "download_service.complete.description" = "%@ se je uspešno preneslo.";
-"download_service.failed.description" = "Te datoteke ni mogoče prenesti.";
 "download_service.error.description" = "Prenos ni uspel. Koda: %@\n Opis: %@";
 "download_service.error.option_directory" = "imenika za prenos ni mogoče najti";
 "download_service.error.option_invalid_taskid" = "neveljaven ID opravila za prenos";

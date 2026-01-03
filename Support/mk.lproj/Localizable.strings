@@ -7,7 +7,6 @@
 "library_refresh_error.process.description" = "Грешка при обработката на податоци од каталогот.";
 "download_service.complete.title" = "Преземањето е завршено";
 "download_service.complete.description" = "%@ е успешно преземено.";
-"download_service.failed.description" = "Не можев да ја преземам оваа податотека.";
 "download_service.error.description" = "Преземањето не успеа. Код: %@\n Опис: %@";
 "download_service.error.option_directory" = "не ја најдов папката за преземања";
 "download_service.error.option_invalid_taskid" = "неважечка назнака за downloadTask";

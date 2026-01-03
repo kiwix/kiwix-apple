@@ -13,7 +13,6 @@
 "library_refresh_error.process.description" = "Error al procesar los datos de la biblioteca.";
 "download_service.complete.title" = "Descarga completada";
 "download_service.complete.description" = "%@ se descargó con éxito.";
-"download_service.failed.description" = "No es posible descargar este archivo.";
 "common.dialog.button.open" = "Abrir";
 "common.dialog.button.open_in_new_tab" = "Abrir en una pestaña nueva";
 "common.dialog.button.add_bookmark" = "Añadir marcador";

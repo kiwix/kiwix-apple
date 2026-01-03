@@ -22,7 +22,6 @@
 "library_refresh_error.process.description" = "Erreur lors du traitement des données du catalogue.";
 "download_service.complete.title" = "Téléchargement terminé";
 "download_service.complete.description" = "%@ A été téléchargé avec succès.";
-"download_service.failed.description" = "Impossible de télécharger ce fichier.";
 "download_service.error.description" = "Le téléchargement n'a pas réussi. Code: %@ Description: %@";
 "download_service.error.option_directory" = "le répertoire de téléchargement est introuvable";
 "download_service.error.option_invalid_taskid" = "ID d'origine du téléchargement invalide";

@@ -247,7 +247,7 @@ final class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegat
             } else {
                 let statusCode = httpResponse.statusCode
                 Log.DownloadService.error(
-                    "Download error: \(fileId, privacy: .public). status code: \(statusCode, privacy: .public)")
+                    "Download error: \(fileId, privacy: .public). url: \(httpResponse.url?.absoluteString ?? "unknown", privacy: .public). Status code: \(statusCode, privacy: .public)")
                 self.deleteDownloadTask(zimFileID: zimFileID)
             }
             return
@@ -315,7 +315,7 @@ final class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegat
                     downloadTask: URLSessionDownloadTask,
                     didFinishDownloadingTo location: URL) {
         guard let httpResponse = downloadTask.response as? HTTPURLResponse else {
-            Log.DownloadService.fault("Response is not an HTTPURLResponse")
+            Log.DownloadService.fault("Response completed, but it is not an HTTPURLResponse")
             showAlert(.downloadError(#line, LocalString.download_service_error_option_invalid_response))
             return
         }
@@ -331,9 +331,10 @@ final class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegat
         guard (200..<300).contains(httpResponse.statusCode) else {
             let taskId = downloadTask.taskIdentifier.description
             let statusCode = httpResponse.statusCode
+            let urlString = httpResponse.url?.absoluteString ?? "unknown"
             Log.DownloadService.error(
-                "didFinish failed for: \(taskId, privacy: .public), status: \(statusCode, privacy: .public)")
-            showAlert(.downloadFailed)
+                "didFinish failed for: \(taskId, privacy: .public), url: \(urlString, privacy: .public). Status code: \(statusCode, privacy: .public)")
+            showAlert(.downloadFailed(zimFileID: zimFileID, url: urlString, statusCode: statusCode))
             deleteDownloadTask(zimFileID: zimFileID)
             return
         }

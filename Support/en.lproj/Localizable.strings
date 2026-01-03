@@ -22,7 +22,7 @@
 
 "download_service.complete.title" = "Download Completed";
 "download_service.complete.description" = "%@ has been downloaded successfully.";
-"download_service.failed.description" = "Unable to download this file.";
+"download_service.failed.description" = "Unable to download:\n\"%@\"\nfrom url:\n%@\nHTTP status code: %@";
 "download_service.error.description" = "Download failed to succeed. Code: %@\n Description: %@";
 "download_service.error.option_directory" = "download directory cannot be found";
 "download_service.error.option_invalid_taskid" = "invalid downloadTask id";

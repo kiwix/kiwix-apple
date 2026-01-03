@@ -10,7 +10,6 @@
 "library_refresh_error.process.description" = "處理目錄資料時發生錯誤。";
 "download_service.complete.title" = "下載完成";
 "download_service.complete.description" = "已成功下載%@。";
-"download_service.failed.description" = "無法下載此檔案。";
 "download_service.error.description" = "下載未能成功。代碼：%@\n描述：%@";
 "download_service.error.option_directory" = "找不到下載目錄";
 "download_service.error.option_invalid_taskid" = "無效下載任務 ID";

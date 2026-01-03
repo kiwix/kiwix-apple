@@ -8,7 +8,6 @@
 "library_refresh_error.process.description" = "שגיאה בעיבוד נתוני קטלוג.";
 "download_service.complete.title" = "ההורדה הושלמה";
 "download_service.complete.description" = "%@ הורד בהצלחה.";
-"download_service.failed.description" = "לא ניתן להוריד את הקובץ הזה.";
 "common.dialog.button.open" = "פתיחה";
 "common.dialog.button.open_in_new_tab" = "פתיחה בלשונית חדשה";
 "common.dialog.button.add_bookmark" = "הוספת סימנייה";

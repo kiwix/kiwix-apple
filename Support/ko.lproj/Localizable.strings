@@ -9,7 +9,6 @@
 "library_refresh_error.process.description" = "카탈로그 데이터를 처리하는 동안 오류가 발생했습니다.";
 "download_service.complete.title" = "다운로드 완료";
 "download_service.complete.description" = "%@ 항목이 성공적으로 다운로드되었습니다.";
-"download_service.failed.description" = "이 파일을 다운로드할 수 없습니다.";
 "common.dialog.button.open" = "열기";
 "common.dialog.button.open_in_new_tab" = "새 탭으로 열기";
 "common.dialog.button.add_bookmark" = "북마크 추가";
