@@ -8,7 +8,6 @@
 "library_refresh_error.process.description" = "Eroare la procesarea datelor din catalog.";
 "download_service.complete.title" = "Descărcare Completată";
 "download_service.complete.description" = "%@ a fost descărcat cu succes.";
-"download_service.failed.description" = "Nu se poate descărca acest fișier.";
 "common.dialog.button.open" = "Deschis";
 "common.dialog.button.open_in_new_tab" = "Deschide în Filă Nouă";
 "common.dialog.button.add_bookmark" = "Adaugă Semn de Carte";

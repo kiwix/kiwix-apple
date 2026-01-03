@@ -12,7 +12,6 @@
 "library_refresh_error.process.description" = "Ada kesalahan saat mengolah data perpustakaan.";
 "download_service.complete.title" = "Unduh Selesai";
 "download_service.complete.description" = "%@ berhasil diunduh.";
-"download_service.failed.description" = "Tidak dapat mengunduh berkas ini.";
 "common.dialog.button.open" = "Buka";
 "common.dialog.button.open_in_new_tab" = "Buka di Tab Baru";
 "common.dialog.button.add_bookmark" = "Tambahkan Markah";

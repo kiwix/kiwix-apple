@@ -17,12 +17,17 @@ import SwiftUI
 
 struct AlertHandler: ViewModifier {
     @State private var activeAlert: ActiveAlert?
+    @State private var zimFileName: String = ""
 
     private let alert = NotificationCenter.default.publisher(for: .alert)
 
     func body(content: Content) -> some View {
         content.onReceive(alert) { notification in
             if let alertValue = notification.userInfo?["alert"] as? ActiveAlert {
+                if case let .downloadFailed(zimFileID, _, _) = alertValue {
+                    let zimFile = try? Database.shared.viewContext.fetch(ZimFile.fetchRequest(fileID: zimFileID)).first
+                    zimFileName = zimFile?.name ?? "unknown"
+                }
                 activeAlert = alertValue
             }
         }
@@ -37,8 +42,8 @@ struct AlertHandler: ViewModifier {
         switch activeAlert {
         case .articleFailedToLoad:
             LocalString.alert_handler_alert_failed_title
-        case .downloadFailed:
-            LocalString.download_service_failed_description
+        case let .downloadFailed(_, url, statusCode):
+            LocalString.download_service_failed_description(withArgs: zimFileName, url, "\(statusCode)")
         case let .downloadError(code, message):
             LocalString.download_service_error_description(withArgs: "\(code)", message)
         case nil:
