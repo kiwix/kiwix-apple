@@ -25,6 +25,21 @@ struct DownloadHeadCheck {
         case responseError(line: Int, description: String)
         case responseURLError(line: Int, urlError: URLError)
         case invalid(statusCode: Int, requestURL: URL)
+        
+        var message: String {
+            switch self {
+            case .invalidRequest(let line):
+                "Invalid request code: \(line)"
+            case .invalidResponse(let line, let requestURL):
+                "Invalid response code: \(line) for url: \(requestURL.absoluteString)"
+            case .responseError(let line, let description):
+                "Response error code: \(line), reason: \(description)"
+            case .responseURLError(let line, let urlError):
+                "\(urlError.localizedDescription)\nURL: \(urlError.failingURL, default: "unkown"), errorCodes: \(line) | \(urlError.errorCode)"
+            case .invalid(let statusCode, let requestURL):
+                "Invalid status code: \(statusCode),\nfor url: \(requestURL)"
+            }
+        }
     }
     
     func check(task: URLSessionDownloadTask) async -> ErrorResponse? {
