@@ -12,7 +12,6 @@
 // Fuzzy
 "library_refresh_error.process.description" = "Erro ao processar dados da biblioteca.";
 "download_service.complete.title" = "Download Completo";
-"download_service.failed.description" = "Não foi possível baixar este arquivo.";
 "common.dialog.button.open" = "Abrir";
 "common.dialog.button.open_in_new_tab" = "Abrir em uma nova guia";
 "common.dialog.button.add_bookmark" = "Adicionar Marcação";

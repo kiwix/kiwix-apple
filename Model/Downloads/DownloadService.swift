@@ -18,6 +18,8 @@ import CoreData
 import UserNotifications
 import os
 
+// swiftlint:disable file_length
+
 // swiftlint:disable:next type_body_length
 final class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegate, URLSessionDownloadDelegate {
     static let shared = DownloadService()
@@ -86,7 +88,8 @@ final class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegat
             task.taskDescription = zimFileID.uuidString
             
             guard let destination = DownloadDestination.filePathFor(downloadURL: url) else {
-                showAlert(.downloadError(#line, LocalString.download_service_error_option_directory))
+                let errorMessage = LocalString.download_service_error_option_directory
+                showAlert(.downloadErrorZIM(zimFileID: zimFileID, url: url.absoluteString, errorMessage: errorMessage))
                 task.cancel()
                 deleteDownloadTask(zimFileID: zimFileID)
                 return
@@ -98,8 +101,8 @@ final class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegat
                         text: questionText(destination: destination, zimFileName: zimFile.name),
                         yes: LocalString.common_button_yes,
                         cancel: LocalString.common_button_cancel,
-                        didConfirm: {
-                            task.resume()
+                        didConfirm: { [weak self] in
+                            self?.resumeTask(task, zimFileID: zimFileID)
                         },
                         didDismiss: { [weak self] in
                             task.cancel()
@@ -109,7 +112,16 @@ final class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegat
                 )
                 return
             }
-            
+
+            resumeTask(task, zimFileID: zimFileID)
+        }
+    }
+    
+    private func resumeTask(_ task: URLSessionDownloadTask, zimFileID: UUID) {
+        Task { @MainActor [progress] in
+            progress.updateFor(uuid: zimFileID,
+                                     downloaded: 0,
+                                     total: task.countOfBytesClientExpectsToReceive)
             task.resume()
         }
     }
@@ -221,7 +233,17 @@ final class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegat
     }
 
     // MARK: - URLSessionTaskDelegate
-
+        
+    // swiftlint:disable function_body_length
+    /// This is called upon both successful and unsuccessful completion !
+    /// "The only errors your delegate receives through the error parameter are client-side errors,
+    /// such as being unable to resolve the hostname or connect to the host.
+    /// To check for server-side errors, inspect the response property
+    /// of the task parameter received by this callback."
+    /// - Parameters:
+    ///   - session: the current session
+    ///   - task: if the task is cancelled / paused by the user it will be called because of that
+    ///   - error: client-side errors, including task cancelled / paused
     func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?) {
         guard let taskDescription = task.taskDescription else {
             Log.DownloadService.fault("No taskDescription")
@@ -231,13 +253,20 @@ final class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegat
             Log.DownloadService.fault("Cannot convert taskDescription: \(taskDescription, privacy: .public)")
             return
         }
-        guard let httpResponse = task.response as? HTTPURLResponse else {
-            Log.DownloadService.fault("response is not an HTTPURLResponse")
-            return
-        }
-        // download finished successfully if there's no error
-        // and the status code is in the 200 < 300 range
+        
+        // download finished withouth client side errors
+        // inspect the response property
+        // eg: the status code should be in the 200 < 300 range
         guard let error = error as NSError? else {
+            guard let httpResponse = task.response as? HTTPURLResponse else {
+                Log.DownloadService.fault("response is not an HTTPURLResponse")
+                deleteDownloadTask(zimFileID: zimFileID)
+                let errorMessage = LocalString.download_service_error_option_invalid_response
+                showAlert(.downloadErrorZIM(zimFileID: zimFileID,
+                                            url: task.originalRequest?.url?.absoluteString,
+                                            errorMessage: errorMessage))
+                return
+            }
             let fileId = zimFileID.uuidString
             if (200..<300).contains(httpResponse.statusCode) {
                 Log.DownloadService.info(
@@ -245,22 +274,28 @@ final class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegat
                 )
             } else {
                 let statusCode = httpResponse.statusCode
-                Log.DownloadService.error(
-                    "Download error: \(fileId, privacy: .public). status code: \(statusCode, privacy: .public)")
+                Log.DownloadService.error("""
+                Download error: \(fileId, privacy: .public). \
+                URL: \(httpResponse.url?.absoluteString ?? "unknown", privacy: .public). \
+                Status code: \(statusCode, privacy: .public)
+                """)
                 self.deleteDownloadTask(zimFileID: zimFileID)
             }
+            return
+        }
+        
+        // at this point we do know there was a client side error:
+        
+        // check if the task was cancelled / paused
+        guard error.code != NSURLErrorCancelled else {
+            // the resume data was already saved above with:
+            // task.cancel { [progress] resumeData in
             return
         }
 
        // Save the error description and resume data if there are new result data
         let resumeData = error.userInfo[NSURLSessionDownloadTaskResumeData] as? Data
         Task { @MainActor [progress] in
-            // The result data equality check is used as a trick to distinguish user pausing 
-            // the download task vs failure.
-            // When pausing, the same resume data would have already been saved when the delegate is called.
-            guard progress.resumeDataFor(uuid: zimFileID) != resumeData else {
-                return
-            }
             progress.updateFor(uuid: zimFileID, withResumeData: resumeData)
 
             Database.shared.performBackgroundTask { context in
@@ -277,7 +312,12 @@ final class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegat
         let errorDesc = error.localizedDescription
         Log.DownloadService.error(
             "Finished for zimId: \(fileId, privacy: .public). with: \(errorDesc, privacy: .public)")
+        deleteDownloadTask(zimFileID: zimFileID)
+        showAlert(.downloadErrorZIM(zimFileID: zimFileID,
+                                    url: task.originalRequest?.url?.absoluteString,
+                                    errorMessage: errorDesc))
     }
+    // swiftlint:enable function_body_length
 
     // MARK: - URLSessionDownloadDelegate
 
@@ -313,32 +353,48 @@ final class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegat
     func urlSession(_ session: URLSession,
                     downloadTask: URLSessionDownloadTask,
                     didFinishDownloadingTo location: URL) {
-        guard let httpResponse = downloadTask.response as? HTTPURLResponse else {
-            Log.DownloadService.fault("Response is not an HTTPURLResponse")
-            showAlert(.downloadError(#line, LocalString.download_service_error_option_invalid_response))
-            return
-        }
         let taskId = downloadTask.taskDescription ?? ""
         guard let zimFileID = UUID(uuidString: taskId) else {
             Log.DownloadService.fault(
                 "Cannot convert downloadTask to zimFileID: \(taskId, privacy: .public)"
             )
-            showAlert(.downloadError(#line, LocalString.download_service_error_option_invalid_taskid))
+            showAlert(.downloadErrorGeneric(LocalString.download_service_error_option_invalid_taskid))
+            return
+        }
+        guard let httpResponse = downloadTask.response as? HTTPURLResponse else {
+            let errorMessage = LocalString.download_service_error_option_invalid_response
+            let url = downloadTask.originalRequest?.url
+            let urlString = url?.absoluteString ?? "uknown"
+            Log.DownloadService.fault("""
+Response completed, but it is not an HTTPURLResponse URL: \(urlString, privacy: .public)
+""")
+            showAlert(.downloadErrorZIM(zimFileID: zimFileID,
+                                        url: url?.absoluteString,
+                                        errorMessage: errorMessage))
             return
         }
 
         guard (200..<300).contains(httpResponse.statusCode) else {
-            let taskId = downloadTask.taskIdentifier.description
             let statusCode = httpResponse.statusCode
-            Log.DownloadService.error(
-                "didFinish failed for: \(taskId, privacy: .public), status: \(statusCode, privacy: .public)")
-            showAlert(.downloadFailed)
+            let url = httpResponse.url
+            let urlString = url?.absoluteString ?? "unknown"
+            Log.DownloadService.error("""
+DidFinish failed for: \(zimFileID, privacy: .public), URL: \(urlString, privacy: .public).
+Status code: \(statusCode, privacy: .public)
+""")
+            let errorMessage = LocalString.download_service_error_option_http_status(withArgs: "\(statusCode)")
+            showAlert(.downloadErrorZIM(zimFileID: zimFileID,
+                                        url: url?.absoluteString,
+                                        errorMessage: errorMessage))
             deleteDownloadTask(zimFileID: zimFileID)
             return
         }
         guard let url = httpResponse.url,
            var destination = DownloadDestination.filePathFor(downloadURL: url) else {
-            showAlert(.downloadError(#line, LocalString.download_service_error_option_directory))
+            let errorMessage = LocalString.download_service_error_option_directory
+            showAlert(.downloadErrorZIM(zimFileID: zimFileID,
+                                        url: httpResponse.url?.absoluteString,
+                                        errorMessage: errorMessage))
             deleteDownloadTask(zimFileID: zimFileID)
             return
         }
@@ -363,7 +419,10 @@ Unable to move file from: \(location.path(), privacy: .public)
 to: \(destination.absoluteString, privacy: .public), 
 due to: \(error.localizedDescription, privacy: .public)
 """)
-            showAlert(.downloadError(#line, LocalString.download_service_error_option_unable_to_move_file))
+            let errorMessage = LocalString.download_service_error_option_unable_to_move_file
+            showAlert(.downloadErrorZIM(zimFileID: zimFileID,
+                                        url: url.absoluteString,
+                                        errorMessage: errorMessage))
             deleteDownloadTask(zimFileID: zimFileID)
         }
         Log.DownloadService.info(
@@ -393,3 +452,5 @@ due to: \(error.localizedDescription, privacy: .public)
         }
     }
 }
+
+// swiftlint:enable file_length

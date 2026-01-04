@@ -11,8 +11,6 @@
 "library_refresh_error.process.description" = "Fel vid bearbetning av katalogdata.";
 "download_service.complete.title" = "Nedladdning slutfördes";
 "download_service.complete.description" = "%@ har laddats ned.";
-"download_service.failed.description" = "Det gick inte att ladda ner den här filen.";
-"download_service.error.description" = "Nedladdningen misslyckades. Kod: %@\n Beskrivning: %@";
 "download_service.error.option_directory" = "nedladdningsmappen kan inte hittas";
 "download_service.error.option_invalid_taskid" = "ogiltigt downloadTask-id";
 "download_service.error.option_invalid_response" = "ogiltigt svar";
