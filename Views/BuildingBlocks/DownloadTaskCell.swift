@@ -23,6 +23,7 @@ struct DownloadTaskCell: View {
     @EnvironmentObject var selection: SelectedZimFileViewModel
     @State private var isHovering: Bool = false
     @State private var downloadState = DownloadState(downloaded: 0, total: 1, resumeData: nil)
+    @StateObject private var networkState = DownloadService.shared.networkState
 
     let downloadZimFile: ZimFile
     init(_ downloadZimFile: ZimFile) {
@@ -52,7 +53,12 @@ struct DownloadTaskCell: View {
                 if downloadZimFile.downloadTask?.error != nil {
                     Text(LocalString.download_task_cell_status_failed)
                 } else if downloadState.resumeData == nil {
-                    Text(LocalString.download_task_cell_status_downloading)
+                    if networkState.isOnline {
+                        Text(LocalString.download_task_cell_status_downloading)
+                    } else {
+                        Label(LocalString.zim_file_download_task_status_offline, systemImage: "wifi.slash")
+                            .foregroundStyle(.orange)
+                    }
                 } else {
                     Text(LocalString.download_task_cell_status_paused)
                 }
@@ -76,6 +82,9 @@ struct DownloadTaskCell: View {
             if !states.isEmpty, let state = states[downloadZimFile.fileID] {
                 self.downloadState = state
             }
+        }
+        .task {
+            networkState.startMonitoring()
         }
     }
 }

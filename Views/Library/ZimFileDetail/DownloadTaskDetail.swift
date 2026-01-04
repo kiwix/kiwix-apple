@@ -21,6 +21,7 @@ extension ZimFileDetail {
         @ObservedObject var downloadZimFile: ZimFile
         @EnvironmentObject var selection: SelectedZimFileViewModel
         @State private var downloadState = DownloadState.empty()
+        @StateObject private var networkState = DownloadService.shared.networkState
         
         var body: some View {
             Group {
@@ -40,7 +41,16 @@ extension ZimFileDetail {
                     Action(title: LocalString.zim_file_download_task_action_pause) {
                         DownloadService.shared.pause(zimFileID: downloadZimFile.fileID)
                     }.disabled(downloadState.downloaded == 0) // make sure cannot be paused mid-state
-                    Attribute(title: LocalString.zim_file_download_task_action_downloading, detail: detail)
+                    if networkState.isOnline {
+                        Attribute(title: LocalString.zim_file_download_task_action_downloading, detail: detail)
+                    } else {
+                        HStack {
+                            Label(LocalString.zim_file_download_task_status_offline, systemImage: "wifi.slash")
+                                .foregroundStyle(.orange)
+                            Spacer()
+                            Text(detail).foregroundColor(.secondary)
+                        }
+                    }
                 } else {
                     Action(title: LocalString.zim_file_download_task_action_resume) {
                         DownloadService.shared.resume(zimFileID: downloadZimFile.fileID)
@@ -57,6 +67,9 @@ extension ZimFileDetail {
                         }
                     }
             )
+            .task {
+                networkState.startMonitoring()
+            }
         }
         
         private var detail: String {
