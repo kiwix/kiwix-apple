@@ -15,7 +15,6 @@
 "library_refresh_error.process.description" = "Ошибка обработки данных библиотеки.";
 "download_service.complete.title" = "Загрузка завершена";
 "download_service.complete.description" = "%@ успешно загружен.";
-"download_service.failed.description" = "Невозможно загрузить этот файл.";
 "common.dialog.button.open" = "Открыть";
 "common.dialog.button.open_in_new_tab" = "Открыть в новой вкладке";
 "common.dialog.button.add_bookmark" = "Добавить закладку";

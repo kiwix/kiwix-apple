@@ -12,7 +12,6 @@
 "library_refresh_error.process.description" = "ライブラリデータの処理エラー";
 "download_service.complete.title" = "ダウンロード完了";
 "download_service.complete.description" = "%@のダウンロードに成功しました";
-"download_service.failed.description" = "ファイルをダウントードできません。";
 "common.dialog.button.open" = "オープン";
 "common.dialog.button.open_in_new_tab" = "新しいタブで開く";
 "common.dialog.button.add_bookmark" = "ブックマークを追加";

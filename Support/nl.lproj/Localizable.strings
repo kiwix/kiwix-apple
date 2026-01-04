@@ -9,8 +9,6 @@
 "library_refresh_error.process.description" = "Fout bij het verwerken van catalogusgegevens.";
 "download_service.complete.title" = "Download voltooid";
 "download_service.complete.description" = "%@ is met succes gedownload.";
-"download_service.failed.description" = "Kan dit bestand niet downloaden.";
-"download_service.error.description" = "Het downloaden is mislukt. Code: %@\n Beschrijving: %@";
 "download_service.error.option_directory" = "de downloaddirectory kan niet gevonden worden";
 "download_service.error.option_invalid_taskid" = "onjuiste downloadTask-ID";
 "download_service.error.option_invalid_response" = "onjuist antwoord";
