@@ -8,7 +8,6 @@
 "library_refresh_error.process.description" = "Помилка обробки даних каталогу.";
 "download_service.complete.title" = "Завантаження завершено";
 "download_service.complete.description" = "%@ було успішно завантажено.";
-"download_service.error.description" = "Не вдалось завантажити. Код: %@\n Опис: %@";
 "download_service.error.option_unable_to_move_file" = "не вдалося перемістити завантажений файл";
 "common.dialog.button.open" = "Відкрити";
 "common.dialog.button.open_in_new_tab" = "Відкрити в новій вкладці";

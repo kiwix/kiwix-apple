@@ -8,7 +8,6 @@
 "library_refresh_error.process.description" = "Fejl ved behandling af biblioteksdata.";
 "download_service.complete.title" = "Download fuldført";
 "download_service.complete.description" = "%@ er blevet downloadet.";
-"download_service.error.description" = "Download mislykkedes. Kode: %@\n Beskrivelse: %@";
 "download_service.error.option_directory" = "download af bibliotek kunne ikke findes";
 "download_service.error.option_invalid_taskid" = "ugyldigt downloadTask-id";
 "download_service.error.option_invalid_response" = "ugyldigt svar";

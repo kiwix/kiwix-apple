@@ -9,8 +9,12 @@
 "library_refresh_error.process.description" = "Alert description, when refreshing the catalog failed, due to an error while processing the data from the server";
 "download_service.complete.title" = "Title of the notification a user receives, once the started download completes";
 "download_service.complete.description" = "%@ is a file name.";
-"download_service.failed.description" = "Description of an alert pop up, the user see if an item cannot be downloaded. Includes \"%@\" which is a param for the name of the item to be downloaded, and 2 additional parameters the source url and the http status code.";
-"download_service.error.description" = "Description of an alert pop up, the user see if an item cannot be downloaded for a specific reason. Includes %@ an error code and %@ additional message as params.";
+
+"download_service.error.general.description" = "Description of an alert pop up, when download fails. This is a generic one, when we don't know the title of the download, and from where it was meant to be downloaded from.";
+"download_service.error.zimfile.description" = "Description of an alert pop up, when download fails. This is a bit more specific, we do know the title of the download (\"%@\" parameter).";
+"download_service.error.zimfile.and.url.description" = "Description of an alert pop up, when download fails. This is very specific, we do know the title of the download was (\"%@\" 1st parameter) and from which URL (2nd %@ parameter)";
+
+"download_service.error.option_http_status" = "Additional download error info, where the %@ param is going to be a status code number eg: 404";
 "download_service.error.option_directory" = "A description of a specific download error, when the download folder cannot be reached. Becomes part of download_service.error.description";
 "download_service.error.option_invalid_taskid" = "A description of a specific download error, when the download task cannot be identified. Becomes part of download_service.error.description";
 "download_service.error.option_invalid_response" = "A description of a specific download error, when the download response has an invalid type. Becomes part of download_service.error.description";

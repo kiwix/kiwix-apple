@@ -22,8 +22,8 @@ enum ActiveAlert: Hashable, Identifiable {
     var id: Int { hashValue }
     
     case articleFailedToLoad
-    case downloadFailed(zimFileID: UUID, url: String, statusCode: Int)
-    case downloadError(Int, String)
+    case downloadErrorGeneric(String)
+    case downloadErrorZIM(zimFileID: UUID, url: String?, errorMessage: String)
 }
 
 enum ActiveSheet: Hashable, Identifiable {

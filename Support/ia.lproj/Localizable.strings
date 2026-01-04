@@ -7,7 +7,6 @@
 "library_refresh_error.process.description" = "Error durante le processamento del datos del catalogo.";
 "download_service.complete.title" = "Discargamento complete";
 "download_service.complete.description" = "%@ ha essite discargate con successo.";
-"download_service.error.description" = "Le discargamento ha fallite. Codice: %@\n Description: %@";
 "download_service.error.option_directory" = "le directorio de discargamento non poteva esser trovate";
 "download_service.error.option_invalid_taskid" = "ID downloadTask non valide";
 "download_service.error.option_invalid_response" = "responsa non valide";
