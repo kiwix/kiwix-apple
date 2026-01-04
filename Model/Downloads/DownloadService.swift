@@ -100,8 +100,8 @@ final class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegat
                         text: questionText(destination: destination, zimFileName: zimFile.name),
                         yes: LocalString.common_button_yes,
                         cancel: LocalString.common_button_cancel,
-                        didConfirm: {
-                            task.resume()
+                        didConfirm: { [weak self] in
+                            self?.resumeTask(task, zimFileID: zimFileID)
                         },
                         didDismiss: { [weak self] in
                             task.cancel()
@@ -111,7 +111,16 @@ final class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegat
                 )
                 return
             }
-            
+
+            resumeTask(task, zimFileID: zimFileID)
+        }
+    }
+    
+    private func resumeTask(_ task: URLSessionDownloadTask, zimFileID: UUID) {
+        Task { @MainActor [progress] in
+            progress.updateFor(uuid: zimFileID,
+                                     downloaded: 0,
+                                     total: task.countOfBytesClientExpectsToReceive)
             task.resume()
         }
     }
@@ -223,7 +232,16 @@ final class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegat
     }
 
     // MARK: - URLSessionTaskDelegate
-
+    
+    /// This is called upon both successful and unsuccessful completion !
+    /// "The only errors your delegate receives through the error parameter are client-side errors,
+    /// such as being unable to resolve the hostname or connect to the host.
+    /// To check for server-side errors, inspect the response property
+    /// of the task parameter received by this callback."
+    /// - Parameters:
+    ///   - session: the current session
+    ///   - task: if the task is cancelled / paused by the user it will be called because of that
+    ///   - error: client-side errors, including task cancelled / paused
     func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?) {
         guard let taskDescription = task.taskDescription else {
             Log.DownloadService.fault("No taskDescription")
@@ -234,8 +252,9 @@ final class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegat
             return
         }
         
-        // download finished successfully if there's no error
-        // and the status code is in the 200 < 300 range
+        // download finished withouth client side errors
+        // inspect the response property
+        // eg: the status code should be in the 200 < 300 range
         guard let error = error as NSError? else {
             guard let httpResponse = task.response as? HTTPURLResponse else {
                 Log.DownloadService.fault("response is not an HTTPURLResponse")
@@ -259,16 +278,19 @@ final class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegat
             }
             return
         }
+        
+        // at this point we do know there was a client side error:
+        
+        // check if the task was cancelled / paused
+        guard error.code != NSURLErrorCancelled else {
+            // the resume data was already saved above with:
+            // task.cancel { [progress] resumeData in
+            return
+        }
 
        // Save the error description and resume data if there are new result data
         let resumeData = error.userInfo[NSURLSessionDownloadTaskResumeData] as? Data
         Task { @MainActor [progress] in
-            // The result data equality check is used as a trick to distinguish user pausing 
-            // the download task vs failure.
-            // When pausing, the same resume data would have already been saved when the delegate is called.
-            guard progress.resumeDataFor(uuid: zimFileID) != resumeData else {
-                return
-            }
             progress.updateFor(uuid: zimFileID, withResumeData: resumeData)
 
             Database.shared.performBackgroundTask { context in
@@ -285,6 +307,10 @@ final class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegat
         let errorDesc = error.localizedDescription
         Log.DownloadService.error(
             "Finished for zimId: \(fileId, privacy: .public). with: \(errorDesc, privacy: .public)")
+        deleteDownloadTask(zimFileID: zimFileID)
+        showAlert(.downloadErrorZIM(zimFileID: zimFileID,
+                                    url: task.originalRequest?.url?.absoluteString,
+                                    errorMessage: errorDesc))
     }
 
     // MARK: - URLSessionDownloadDelegate
