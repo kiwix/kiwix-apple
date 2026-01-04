@@ -16,7 +16,6 @@
 "library_refresh_error.process.description" = "处理目录数据时出错。";
 "download_service.complete.title" = "下载完成";
 "download_service.complete.description" = "已成功下载%@";
-"download_service.error.description" = "下载未能成功。代码：%@\n描述：%@";
 "download_service.error.option_directory" = "找不到下载目录";
 "download_service.error.option_invalid_taskid" = "下载任务ID无效";
 "download_service.error.option_invalid_response" = "无效响应";

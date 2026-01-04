@@ -22,12 +22,15 @@
 
 "download_service.complete.title" = "Download Completed";
 "download_service.complete.description" = "%@ has been downloaded successfully.";
-"download_service.failed.description" = "Unable to download:\n\"%@\"\nfrom url:\n%@\nHTTP status code: %@";
-"download_service.error.description" = "Download failed to succeed. Code: %@\n Description: %@";
-"download_service.error.option_directory" = "download directory cannot be found";
-"download_service.error.option_invalid_taskid" = "invalid downloadTask id";
-"download_service.error.option_invalid_response" = "invalid response";
-"download_service.error.option_unable_to_move_file" = "unable to move downloaded file";
+"download_service.error.general.description" = "Download failed to succeed.";
+"download_service.error.zimfile.description" = "Unable to download:\n\"%@\"";
+"download_service.error.zimfile.and.url.description" = "Unable to download:\n\"%@\"\nfrom url:\n%@";
+
+"download_service.error.option_http_status" = "HTTP status code: %@";
+"download_service.error.option_directory" = "Download directory cannot be found";
+"download_service.error.option_invalid_taskid" = "Invalid downloadTask id";
+"download_service.error.option_invalid_response" = "Invalid response";
+"download_service.error.option_unable_to_move_file" = "Unable to move downloaded file";
 
 "common.dialog.button.open" = "Open";
 "common.dialog.button.open_in_new_tab" = "Open in New Tab";

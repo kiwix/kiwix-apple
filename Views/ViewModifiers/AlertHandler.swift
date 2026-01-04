@@ -24,9 +24,12 @@ struct AlertHandler: ViewModifier {
     func body(content: Content) -> some View {
         content.onReceive(alert) { notification in
             if let alertValue = notification.userInfo?["alert"] as? ActiveAlert {
-                if case let .downloadFailed(zimFileID, _, _) = alertValue {
+                switch alertValue {
+                case let .downloadErrorZIM(zimFileID, _, _):
                     let zimFile = try? Database.shared.viewContext.fetch(ZimFile.fetchRequest(fileID: zimFileID)).first
                     zimFileName = zimFile?.name ?? "unknown"
+                default:
+                    zimFileName = ""
                 }
                 activeAlert = alertValue
             }
@@ -42,10 +45,21 @@ struct AlertHandler: ViewModifier {
         switch activeAlert {
         case .articleFailedToLoad:
             LocalString.alert_handler_alert_failed_title
-        case let .downloadFailed(_, url, statusCode):
-            LocalString.download_service_failed_description(withArgs: zimFileName, url, "\(statusCode)")
-        case let .downloadError(code, message):
-            LocalString.download_service_error_description(withArgs: "\(code)", message)
+        case let .downloadErrorGeneric(errorMessage):
+            [LocalString.download_service_error_general_description,
+             errorMessage
+            ].joined(separator: "\n")
+            
+        case let .downloadErrorZIM(_, .none, errorMessage):
+            [LocalString.download_service_error_zimfile_description(withArgs: zimFileName),
+             errorMessage
+            ].joined(separator: "\n")
+        
+        case let .downloadErrorZIM(_, .some(url), errorMessage):
+            [LocalString.download_service_error_zimfile_and_url_description(withArgs: zimFileName, url),
+             errorMessage]
+                .joined(separator: "\n")
+            
         case nil:
             ""
         }

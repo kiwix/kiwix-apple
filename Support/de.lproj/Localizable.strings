@@ -14,7 +14,6 @@
 "library_refresh_error.process.description" = "Fehler beim Verarbeiten der Katalogdaten.";
 "download_service.complete.title" = "Download abgeschlossen";
 "download_service.complete.description" = "%@ wurde erfolgreich heruntergeladen.";
-"download_service.error.description" = "Download fehlgeschlagen. Code: %@\n Beschreibung: %@";
 "download_service.error.option_directory" = "Downloadverzeichnis nicht gefunden";
 "download_service.error.option_invalid_taskid" = "ungültiger DownloadTask-Id";
 "download_service.error.option_invalid_response" = "ungültige Antwort";
