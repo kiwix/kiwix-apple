@@ -18,6 +18,8 @@ import CoreData
 import UserNotifications
 import os
 
+// swiftlint:disable file_length
+
 // swiftlint:disable:next type_body_length
 final class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegate, URLSessionDownloadDelegate {
     static let shared = DownloadService()
@@ -232,7 +234,8 @@ final class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegat
     }
 
     // MARK: - URLSessionTaskDelegate
-    
+        
+    // swiftlint:disable function_body_length
     /// This is called upon both successful and unsuccessful completion !
     /// "The only errors your delegate receives through the error parameter are client-side errors,
     /// such as being unable to resolve the hostname or connect to the host.
@@ -272,8 +275,11 @@ final class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegat
                 )
             } else {
                 let statusCode = httpResponse.statusCode
-                Log.DownloadService.error(
-                    "Download error: \(fileId, privacy: .public). url: \(httpResponse.url?.absoluteString ?? "unknown", privacy: .public). Status code: \(statusCode, privacy: .public)")
+                Log.DownloadService.error("""
+                Download error: \(fileId, privacy: .public). \
+                URL: \(httpResponse.url?.absoluteString ?? "unknown", privacy: .public). \
+                Status code: \(statusCode, privacy: .public)
+                """)
                 self.deleteDownloadTask(zimFileID: zimFileID)
             }
             return
@@ -312,6 +318,7 @@ final class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegat
                                     url: task.originalRequest?.url?.absoluteString,
                                     errorMessage: errorDesc))
     }
+    // swiftlint:enable function_body_length
 
     // MARK: - URLSessionDownloadDelegate
 
@@ -446,3 +453,5 @@ due to: \(error.localizedDescription, privacy: .public)
         }
     }
 }
+
+// swiftlint:enable file_length
