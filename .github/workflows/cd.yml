@@ -29,7 +29,7 @@ env:
   KEYCHAIN: /Users/runner/build.keychain-db
   KEYCHAIN_PASSWORD: mysecretpassword
   KEYCHAIN_PROFILE: build-profile
-  SSH_KEY: /tmp/id_rsa
+  KIWIX_FILE_UPLOAD_SSH_KEY_PATH: /tmp/kiwix_file_upload_key
   APPLE_STORE_AUTH_KEY_PATH: /tmp/authkey.p8
   APPLE_AUTH_PARAMS: "-authenticationKeyPath /tmp/authkey.p8 -authenticationKeyID ${{ secrets.APPLE_STORE_AUTH_KEY_ID }} -authenticationKeyIssuerID ${{ secrets.APPLE_STORE_AUTH_KEY_ISSUER_ID }}"
   # conditionally updated later:
@@ -214,21 +214,21 @@ jobs:
         xcrun notarytool submit --keychain $KEYCHAIN --keychain-profile $KEYCHAIN_PROFILE --wait $PWD/kiwix-$VERSION.dmg
         xcrun stapler staple $PWD/kiwix-$VERSION.dmg
 
-    - name: Add SSH_KEY to filesystem
+    - name: Write SSH private key (to upload packages) to filesystem
       if: matrix.destination == 'ftp' && contains(env.UPLOAD_TO, matrix.destination)
       run: |
-        echo "${{ secrets.SSH_KEY }}" > $SSH_KEY
-        chmod 600 $SSH_KEY
+        echo "${{ secrets.KIWIX_FILE_UPLOAD_SSH_KEY }}" > $KIWIX_FILE_UPLOAD_SSH_KEY_PATH
+        chmod 600 $KIWIX_FILE_UPLOAD_SSH_KEY_PATH
 
     - name: Upload DMG
       if: matrix.platform == 'macOS' && matrix.destination == 'ftp' && contains(env.UPLOAD_TO, matrix.destination)
       run: |
         mv ${PWD}/kiwix-${VERSION}.dmg ${PWD}/kiwix-macos_${VERSION}.dmg
-        python .github/upload_file.py --src ${PWD}/kiwix-macos_${VERSION}.dmg --dest ci@master.download.kiwix.org:30022/data/download/${UPLOAD_FOLDER} --ssh-key ${SSH_KEY}
+        python .github/upload_file.py --src ${PWD}/kiwix-macos_${VERSION}.dmg --dest ci@master.download.kiwix.org:30022/data/download/${UPLOAD_FOLDER} --ssh-key ${KIWIX_FILE_UPLOAD_SSH_KEY_PATH}
         mv ${PWD}/kiwix-macos_${VERSION}.dmg ${PWD}/kiwix-${VERSION}.dmg
 
     - name: Upload IPA
       if: matrix.platform == 'iOS' && matrix.destination == 'ftp' && contains(env.UPLOAD_TO, matrix.destination)
       run: |
         mv ${PWD}/export/Kiwix.ipa ${PWD}/export/kiwix-${VERSION}.ipa
-        python .github/upload_file.py --src ${PWD}/export/kiwix-${VERSION}.ipa --dest ci@master.download.kiwix.org:30022/data/download/${UPLOAD_FOLDER} --ssh-key ${SSH_KEY}
+        python .github/upload_file.py --src ${PWD}/export/kiwix-${VERSION}.ipa --dest ci@master.download.kiwix.org:30022/data/download/${UPLOAD_FOLDER} --ssh-key ${KIWIX_FILE_UPLOAD_SSH_KEY_PATH}
