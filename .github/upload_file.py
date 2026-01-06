@@ -27,7 +27,7 @@ def main() -> int:
         "--ssh-key",
         required=False,
         help="filepath to the private key to use for upload",
-        default=os.getenv("SSH_KEY", ""),
+        default=os.getenv("KIWIX_FILE_UPLOAD_SSH_KEY_PATH", ""),
         dest="ssh_key",
     )
 
