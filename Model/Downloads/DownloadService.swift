@@ -66,7 +66,7 @@ final class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegat
             context.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
             let fetchRequest = ZimFile.fetchRequest(fileID: zimFileID)
             guard let zimFile = try? context.fetch(fetchRequest).first,
-                  var url = zimFile.downloadURL else {
+                  let url = zimFile.downloadURL else {
                 return
             }
             let downloadTask = DownloadTask(context: context)
@@ -76,13 +76,8 @@ final class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegat
             Task { @MainActor [weak context] in
                 try? context?.save()
             }
-
-            if url.lastPathComponent.hasSuffix(".meta4") {
-                url = url.deletingPathExtension()
-            }
-            var urlRequest = URLRequest(url: url)
-            urlRequest.allowsCellularAccess = allowsCellularAccess
-            let task = self.session.downloadTask(with: urlRequest)
+            
+            let task = downloadTaskFor(url: url, allowsCellularAccess: allowsCellularAccess)
             task.countOfBytesClientExpectsToReceive = zimFile.size
             task.taskDescription = zimFileID.uuidString
             
@@ -110,7 +105,26 @@ final class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegat
                 )
                 return
             }
-            
+
+            resumeTask(task, zimFileID: zimFileID)
+        }
+    }
+    
+    private func downloadTaskFor(url downloadURL: URL, allowsCellularAccess: Bool) -> URLSessionDownloadTask {
+        var url = downloadURL
+        if url.lastPathComponent.hasSuffix(".meta4") {
+            url = url.deletingPathExtension()
+        }
+        var urlRequest = URLRequest(url: url)
+        urlRequest.allowsCellularAccess = allowsCellularAccess
+        return session.downloadTask(with: urlRequest)
+    }
+    
+    private func resumeTask(_ task: URLSessionDownloadTask, zimFileID: UUID) {
+        Task { @MainActor [progress] in
+            progress.updateFor(uuid: zimFileID,
+                                     downloaded: 0,
+                                     total: task.countOfBytesClientExpectsToReceive)
             task.resume()
         }
     }
@@ -137,10 +151,15 @@ final class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegat
     /// - Parameter zimFileID: identifier of the zim file
     func pause(zimFileID: UUID) {
         session.getTasksWithCompletionHandler { [progress] _, _, downloadTasks in
-            guard let task = downloadTasks.filter({ $0.taskDescription == zimFileID.uuidString }).first else { return }
+            guard let task = downloadTasks.filter({ $0.taskDescription == zimFileID.uuidString }).first else {
+                Task { @MainActor [progress] in
+                    progress.updateFor(uuid: zimFileID, withResumeData: nil, isPaused: true)
+                }
+                return
+            }
             task.cancel { [progress] resumeData in
                 Task { @MainActor [progress] in
-                    progress.updateFor(uuid: zimFileID, withResumeData: resumeData)
+                    progress.updateFor(uuid: zimFileID, withResumeData: resumeData, isPaused: true)
                 }
             }
         }
@@ -148,11 +167,11 @@ final class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegat
 
     /// Resume a zim file download task and start heartbeat
     /// - Parameter zimFileID: identifier of the zim file
-    @MainActor func resume(zimFileID: UUID) {
+    @MainActor func resume(zimFileID: UUID, allowsCellularAccess: Bool) {
         requestNotificationAuthorization()
 
-        guard let resumeData = progress.resumeDataFor(uuid: zimFileID) else { return }
-        progress.updateFor(uuid: zimFileID, withResumeData: nil)
+        progress.updateFor(uuid: zimFileID, withResumeData: nil, isPaused: false)
+        let resumeData = progress.resumeDataFor(uuid: zimFileID)
 
         Database.shared.performBackgroundTask { [self, resumeData] context in
             context.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
@@ -160,9 +179,15 @@ final class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegat
             let request = DownloadTask.fetchRequest(fileID: zimFileID)
             guard let downloadTask = try? context.fetch(request).first else { return }
 
-            let task = self.session.downloadTask(withResumeData: resumeData)
+            let task: URLSessionDownloadTask
+            if let resumeData {
+                task = self.session.downloadTask(withResumeData: resumeData)
+            } else {
+                guard let url = downloadTask.zimFile?.downloadURL else { return }
+                task = downloadTaskFor(url: url, allowsCellularAccess: allowsCellularAccess)
+            }
             task.taskDescription = zimFileID.uuidString
-            task.resume()
+            resumeTask(task, zimFileID: zimFileID)
 
             downloadTask.error = nil
             Task { @MainActor [weak context] in
@@ -256,13 +281,7 @@ final class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegat
        // Save the error description and resume data if there are new result data
         let resumeData = error.userInfo[NSURLSessionDownloadTaskResumeData] as? Data
         Task { @MainActor [progress] in
-            // The result data equality check is used as a trick to distinguish user pausing 
-            // the download task vs failure.
-            // When pausing, the same resume data would have already been saved when the delegate is called.
-            guard progress.resumeDataFor(uuid: zimFileID) != resumeData else {
-                return
-            }
-            progress.updateFor(uuid: zimFileID, withResumeData: resumeData)
+            progress.updateFor(uuid: zimFileID, withResumeData: resumeData, isPaused: false)
 
             Database.shared.performBackgroundTask { context in
                 context.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump

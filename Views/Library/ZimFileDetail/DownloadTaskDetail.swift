@@ -13,11 +13,13 @@
 // You should have received a copy of the GNU General Public License
 // along with Kiwix; If not, see https://www.gnu.org/licenses/.
 
+import Defaults
 import SwiftUI
 
 extension ZimFileDetail {
     
     struct DownloadTaskDetail: View {
+        @Default(.downloadUsingCellular) private var downloadUsingCellular
         @ObservedObject var downloadZimFile: ZimFile
         @EnvironmentObject var selection: SelectedZimFileViewModel
         @State private var downloadState = DownloadState.empty()
@@ -32,15 +34,18 @@ extension ZimFileDetail {
                 if let error = downloadZimFile.downloadTask?.error {
                     if downloadState.resumeData != nil {
                         Action(title: LocalString.zim_file_download_task_action_try_recover) {
-                            DownloadService.shared.resume(zimFileID: downloadZimFile.fileID)
+                            DownloadService.shared.resume(
+                                zimFileID: downloadZimFile.fileID,
+                                allowsCellularAccess: downloadUsingCellular
+                            )
                         }
                     }
                     Attribute(title: LocalString.zim_file_download_task_action_failed, detail: detail)
                     Text(error)
-                } else if downloadState.resumeData == nil {
+                } else if !downloadState.isPaused {
                     Action(title: LocalString.zim_file_download_task_action_pause) {
                         DownloadService.shared.pause(zimFileID: downloadZimFile.fileID)
-                    }.disabled(downloadState.downloaded == 0) // make sure cannot be paused mid-state
+                    }
                     if networkState.isOnline {
                         Attribute(title: LocalString.zim_file_download_task_action_downloading, detail: detail)
                     } else {
@@ -53,7 +58,10 @@ extension ZimFileDetail {
                     }
                 } else {
                     Action(title: LocalString.zim_file_download_task_action_resume) {
-                        DownloadService.shared.resume(zimFileID: downloadZimFile.fileID)
+                        DownloadService.shared.resume(
+                            zimFileID: downloadZimFile.fileID,
+                            allowsCellularAccess: downloadUsingCellular
+                        )
                     }
                     Attribute(title: LocalString.zim_file_download_task_action_paused, detail: detail)
                 }
