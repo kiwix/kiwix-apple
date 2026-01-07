@@ -35,7 +35,7 @@ final class DownloadTasksPublisher {
         if let state = states[uuid] {
             states[uuid] = state.updatedWith(downloaded: downloaded, total: total)
         } else {
-            states[uuid] = DownloadState(downloaded: downloaded, total: total, resumeData: nil)
+            states[uuid] = DownloadState(downloaded: downloaded, total: total, resumeData: nil, isPaused: false)
         }
         publisher.send(states)
         saveState()
@@ -55,9 +55,9 @@ final class DownloadTasksPublisher {
         states[uuid]?.resumeData
     }
 
-    func updateFor(uuid: UUID, withResumeData resumeData: Data?) {
+    func updateFor(uuid: UUID, withResumeData resumeData: Data?, isPaused: Bool) {
         if let state = states[uuid] {
-            states[uuid] = state.updatedWith(resumeData: resumeData)
+            states[uuid] = state.updatedWith(resumeData: resumeData, isPaused: isPaused)
             publisher.send(states)
             saveState()
         } else {

@@ -19,33 +19,32 @@ import Combine
 struct DownloadState: Codable {
     let downloaded: Int64
     let total: Int64
+    let isPaused: Bool
     let resumeData: Data?
-    
-    var isPaused: Bool {
-        resumeData != nil
-    }
 
     static func empty() -> DownloadState {
-        .init(downloaded: 0, total: 1, resumeData: nil)
+        .init(downloaded: 0, total: 1, resumeData: nil, isPaused: false)
     }
 
-    init(downloaded: Int64, total: Int64, resumeData: Data?) {
+    init(downloaded: Int64, total: Int64, resumeData: Data?, isPaused: Bool) {
         guard total >= downloaded, total >= 0 else {
             self.downloaded = downloaded
             self.total = downloaded
             self.resumeData = resumeData
+            self.isPaused = isPaused
             return
         }
         self.downloaded = downloaded
         self.total = total
         self.resumeData = resumeData
+        self.isPaused = isPaused
     }
 
     func updatedWith(downloaded: Int64, total: Int64) -> DownloadState {
-        DownloadState(downloaded: downloaded, total: total, resumeData: resumeData)
+        DownloadState(downloaded: downloaded, total: total, resumeData: resumeData, isPaused: false)
     }
 
-    func updatedWith(resumeData: Data?) -> DownloadState {
-        DownloadState(downloaded: downloaded, total: total, resumeData: resumeData)
+    func updatedWith(resumeData: Data?, isPaused: Bool) -> DownloadState {
+        DownloadState(downloaded: downloaded, total: total, resumeData: resumeData, isPaused: isPaused)
     }
 }
