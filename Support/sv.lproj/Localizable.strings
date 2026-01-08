@@ -4,6 +4,7 @@
 // Author: Larsa
 // Author: Rofiatmustapha12
 // Author: Sabelöga
+// Author: Stefan2255
 // Author: WikiPhoenix
 
 "library_refresh_error.retrieve.description" = "Fel vid hämtning av katalogdata.";
@@ -123,6 +124,10 @@
 "zim_file.action.download.warning.message" = "Det kanske inte finns tillräckligt med utrymme på din enhet för den här ZIM-filen.";
 "zim_file.action.download.warning.message1" = "Det skulle finnas mindre än 1 GB utrymme kvar efter att ZIM-filen har laddats ner.";
 "zim_file.action.download.button.anyway" = "Ladda ned ändå";
+"zim_file.action.integrity_check.title" = "Kontrollera";
+"zim_file.action.integrity_recheck.title" = "Kontrollera igen";
+"zim_file.action.integrity_check.alert.title" = "Detta kan ta flera minuter. Kiwix kommer inte att vara tillgängligt förrän integritetskontrollen är klar.";
+"zim_file.integrity_check.in_progress" = "Integritetskontroll: \"%@\" ...";
 "zim_file.base_info.attribute.language" = "Språk";
 "zim_file.base_info.attribute.category" = "Kategori";
 "zim_file.base_info.attribute.size" = "Storlek";
@@ -131,6 +136,7 @@
 "zim_file.bool_info.videos" = "Videor";
 "zim_file.bool_info.details" = "Detaljer";
 "zim_file.bool_info.require_service_workers" = "Kräver serviceskript";
+"zim_file.bool_info.zim_archive_integrity" = "ZIM-arkiv integritet";
 "zim_file.counts.article_count" = "Antal artiklar";
 "zim_file.counts.article.media_count" = "Antal media";
 "zim_file.detail.id.title" = "ID";

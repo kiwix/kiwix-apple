@@ -225,7 +225,7 @@
 "enum.navigation_item.settings" = "Pengaturan";
 "enum.search_result_snippet_mode.disabled" = "Nonaktif";
 "enum.search_result_snippet_mode.matches" = "Cocok Dengan";
-"payment.donate.title" = "Donasikan";
+"payment.donate.title" = "Sumbangi";
 "payment.description.label" = "Dukung Kiwix";
 "payment.summary_page.title" = "Dukung Kiwix";
 "payment.support_button.label" = "Dukung Kiwix";
@@ -233,13 +233,13 @@
 "payment.summary.title" = "Kiwix";
 "payment.textfield.custom_amount.label" = "Jumlah khusus";
 "payment.confirm.button.title" = "Konfirmasi";
-"payment.selection.average_monthly_donation.subtitle" = "Rata-rata jumlah donasi bulanan";
+"payment.selection.average_monthly_donation.subtitle" = "Rata-rata sumbangan bulanan";
 "payment.selection.last_year_average.subtitle" = "Rata-rata tahun lalu";
 "payment.selection.custom_amount" = "Jumlah kustom";
 "payment.selection.option.one_time" = "Sekali saja";
 "payment.selection.option.monthly" = "Bulanan";
 "payment.support_fallback_message" = "Maaf, perangkat Anda tidak mendukung Apple Pay.";
-"payment.success.title" = "Terima kasih atas donasi Anda!";
+"payment.success.title" = "Terima kasih banyak atas sumbangan Anda.";
 "payment.success.description" = "Kemurahan hati Anda sangat berarti bagi kami.";
 "payment.error.title" = "Wah, itu aneh.";
 "payment.error.description" = "Ada masalah dengan pembayaran Anda. Silakan coba lagi.";

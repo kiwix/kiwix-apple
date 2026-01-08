@@ -131,8 +131,7 @@
 "zim_file.action.integrity_check.title" = "检查";
 "zim_file.action.integrity_recheck.title" = "重新检查";
 "zim_file.action.integrity_check.alert.title" = "这可能需要几分钟。在完整性检查结束前Kiwix会无法使用。";
-// Fuzzy
-"zim_file.integrity_check.in_progress" = "正在检查“%@”的ZIM归档完整性…";
+"zim_file.integrity_check.in_progress" = "完整性检查：“%@”…";
 "zim_file.base_info.attribute.language" = "语言";
 "zim_file.base_info.attribute.category" = "分类";
 "zim_file.base_info.attribute.size" = "大小";
