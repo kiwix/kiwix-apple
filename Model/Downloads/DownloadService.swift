@@ -21,6 +21,7 @@ import os
 // swiftlint:disable:next type_body_length
 final class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegate, URLSessionDownloadDelegate {
     static let shared = DownloadService()
+    let networkState = NetworkState()
     private let queue = DispatchQueue(label: "downloads", qos: .background)
     @MainActor let progress = DownloadTasksPublisher()
     @MainActor private var heartbeat: Timer?
@@ -232,7 +233,7 @@ final class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegat
             return
         }
         guard let httpResponse = task.response as? HTTPURLResponse else {
-            Log.DownloadService.fault("response is not an HTTPURLResponse")
+            Log.DownloadService.fault("response did complete, but it is not an HTTPURLResponse")
             return
         }
         // download finished successfully if there's no error

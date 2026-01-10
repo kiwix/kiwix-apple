@@ -21,6 +21,7 @@ extension ZimFileDetail {
         @ObservedObject var downloadZimFile: ZimFile
         @EnvironmentObject var selection: SelectedZimFileViewModel
         @State private var downloadState = DownloadState.empty()
+        @StateObject private var networkState = DownloadService.shared.networkState
         
         var body: some View {
             Group {
@@ -39,13 +40,27 @@ extension ZimFileDetail {
                 } else if downloadState.resumeData == nil {
                     Action(title: LocalString.zim_file_download_task_action_pause) {
                         DownloadService.shared.pause(zimFileID: downloadZimFile.fileID)
-                    }.disabled(downloadState.downloaded == 0) // make sure cannot be paused mid-state
-                    Attribute(title: LocalString.zim_file_download_task_action_downloading, detail: detail)
+                    }.disabled(networkState.isOnline == false) // make sure cannot be paused mid-state
+                    if networkState.isOnline {
+                        Attribute(
+                            title: LocalString.zim_file_download_task_action_downloading,
+                            detail: detail
+                        )
+                    } else {
+                        Attribute(
+                            title: LocalString.download_task_cell_status_paused_device_offline,
+                            detail: detail
+                        )
+                    }
                 } else {
                     Action(title: LocalString.zim_file_download_task_action_resume) {
                         DownloadService.shared.resume(zimFileID: downloadZimFile.fileID)
+                    }.disabled(networkState.isOnline == false)
+                    if networkState.isOnline {
+                        Attribute(title: LocalString.download_task_cell_status_paused, detail: detail)
+                    } else {
+                        Attribute(title: LocalString.download_task_cell_status_paused_device_offline, detail: detail)
                     }
-                    Attribute(title: LocalString.zim_file_download_task_action_paused, detail: detail)
                 }
             }.onReceive(
                 DownloadService.shared.progress.publisher
@@ -57,14 +72,33 @@ extension ZimFileDetail {
                         }
                     }
             )
+            .task {
+                networkState.startMonitoring()
+            }
         }
         
         private var detail: String {
-            if let percent = percent {
-                return "\(size) - \(percent)"
+            #if os(macOS)
+            if networkState.isOnline {
+                if let percent = percent {
+                    return "\(size) - \(percent)"
+                } else {
+                    return size
+                }
             } else {
-                return size
+                if let percent = percent {
+                    return percent // the offline message has to fit
+                } else {
+                    return size
+                }
             }
+            #else
+                if let percent = percent {
+                    return "\(size) - \(percent)"
+                } else {
+                    return size
+                }
+            #endif
         }
         
         private var size: String {
