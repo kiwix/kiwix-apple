@@ -92,6 +92,7 @@
 "download_task_cell.status.failed" = "Failed";
 "download_task_cell.status.downloading" = "Downloading...";
 "download_task_cell.status.paused" = "Paused";
+"download_task_cell.status.paused.device_offline" = "Paused (device is offline)";
 
 "download_again.question.title" = "You already have this file.";
 "download_again.question.description_part_1" = "It looks like %@ is already downloaded.";
@@ -177,7 +178,6 @@
 "zim_file.download_task.action.pause" = "Pause";
 "zim_file.download_task.action.downloading" = "Downloading...";
 "zim_file.download_task.action.resume" = "Resume";
-"zim_file.download_task.action.paused" = "Paused";
 "service_worker_warning.label.description" = "Zim files requiring service workers are not supported.";
 "multi.zim_files_selected.sidebar_title" = "Selected";
 "multi.zim_files_selected.description_count" = "ZIM files";
