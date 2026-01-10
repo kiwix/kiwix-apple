@@ -68,6 +68,7 @@
 "download_task_cell.status.failed" = "The title reporting the status of the current ZIM file download";
 "download_task_cell.status.downloading" = "The title reporting the status of the current ZIM file download";
 "download_task_cell.status.paused" = "The title reporting the status of the current ZIM file download";
+"download_task_cell.status.paused.device_offline" = "The title reporting the status of the current ZIM file download";
 "download_again.question.title" = "Title of an alert pop up, informing the user tries to downlaod a file, that is already available locally.";
 "download_again.question.description_part_1" = "Part of an alert description, that a file is already downloaded. The parameter is replaced with the actual file name, eg: wikipedia.zim.";
 "download_again.question.description_part_2" = "Part of an alert description, that a file is already downloaded. The parameter is replaced with the zim file title, eg: Wikipedia maxi";
@@ -142,9 +143,7 @@
 "zim_file.download_task.action.failed" = "Attribute title in case of a download error";
 "zim_file.download_task.action.pause" = "Button title to pause an ongoing download";
 "zim_file.download_task.action.downloading" = "Attribute title when downloading is in progress";
-"zim_file.download_task.status_offline" = "Title when downloading is in progress, but the user seems to be offline.";
 "zim_file.download_task.action.resume" = "Button title to resume a paused download";
-"zim_file.download_task.action.paused" = "Attribute title of a paused download";
 "service_worker_warning.label.description" = "Accessiblity label for warning icon (!)";
 "multi.zim_files_selected.sidebar_title" = "Side bar title, when user selects multiple ZIM files at once, in order to unlink them";
 "multi.zim_files_selected.description_count" = "Side bar description, when user selects multiple ZIM files at once, it is describing the amount of files selected. It's always greater than 1 file., eg: ZIM files: 3";

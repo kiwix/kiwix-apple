@@ -15,6 +15,7 @@
  * along with Kiwix; If not, see https://www.gnu.org/licenses/.
 */
 
+import Combine
 import CoreData
 import SwiftUI
 import Combine
@@ -22,23 +23,15 @@ import Combine
 struct DownloadTaskCell: View {
     @EnvironmentObject var selection: SelectedZimFileViewModel
     @State private var isHovering: Bool = false
-    @State private var downloadState = DownloadState(downloaded: 0, total: 1, resumeData: nil, isPaused: false)
+    @State private var downloadState = DownloadUIState.empty()
     @StateObject private var networkState = DownloadService.shared.networkState
-
+    
     let downloadZimFile: ZimFile
     init(_ downloadZimFile: ZimFile) {
         self.downloadZimFile = downloadZimFile
     }
-
+    
     var body: some View {
-        let progress: Progress = {
-            let prog = Progress(totalUnitCount: downloadState.total)
-            prog.completedUnitCount = downloadState.downloaded
-            prog.kind = .file
-            prog.fileTotalCount = 1
-            prog.fileOperationKind = .downloading
-            return prog
-        }()
         VStack(spacing: 8) {
             HStack {
                 Text(downloadZimFile.name).fontWeight(.semibold).foregroundColor(.primary).lineLimit(1)
@@ -52,39 +45,45 @@ struct DownloadTaskCell: View {
             VStack(alignment: .leading, spacing: 4) {
                 if downloadZimFile.downloadTask?.error != nil {
                     Text(LocalString.download_task_cell_status_failed)
-                } else if downloadState.isPaused {
-                    if networkState.isOnline {
-                        Text(LocalString.download_task_cell_status_downloading)
-                    } else {
-                        Label(LocalString.zim_file_download_task_status_offline, systemImage: "wifi.slash")
-                            .foregroundStyle(.orange)
-                    }
                 } else {
-                    Text(LocalString.download_task_cell_status_paused)
+                    switch downloadState.state {
+                    case .resumed:
+                        Text(LocalString.download_task_cell_status_downloading)
+                    case .paused(isOnline: true):
+                        Text(LocalString.download_task_cell_status_paused)
+                    case .paused(isOnline: false):
+                        Text(LocalString.download_task_cell_status_paused_device_offline)
+                    }
+                    ProgressView(
+                        value: Float(downloadState.progress.completedUnitCount),
+                        total: Float(downloadState.progress.totalUnitCount)
+                    )
+                    Text(downloadState.progress.localizedAdditionalDescription).animation(.none, value: downloadState.progress)
                 }
-                ProgressView(
-                    value: Float(downloadState.downloaded),
-                    total: Float(downloadState.total)
-                )
-                Text(progress.localizedAdditionalDescription).animation(.none, value: progress)
             }.font(.caption).foregroundColor(.secondary)
-        }
-        .padding()
-        .background(
-            CellBackground.colorFor(
-                isHovering: isHovering,
-                isSelected: selection.isSelected(downloadZimFile)
-            )
-        )
-        .clipShape(CellBackground.clipShapeRectangle)
-        .onHover { self.isHovering = $0 }
-        .onReceive(DownloadService.shared.progress.publisher) { states in
-            if !states.isEmpty, let state = states[downloadZimFile.fileID] {
-                self.downloadState = state
-            }
-        }
-        .task {
-            networkState.startMonitoring()
+                .padding()
+                .background(
+                    CellBackground.colorFor(
+                        isHovering: isHovering,
+                        isSelected: selection.isSelected(downloadZimFile)
+                    )
+                )
+                .clipShape(CellBackground.clipShapeRectangle)
+                .onHover { self.isHovering = $0 }
+                .onReceive(
+                    Publishers.CombineLatest(
+                        DownloadService.shared.progress.publisher,
+                        networkState.$isOnline
+                    )) { values in
+                        let states = values.0
+                        let isOnline = values.1
+                        if !states.isEmpty, let state = states[downloadZimFile.fileID] {
+                            self.downloadState = DownloadUIState(downloadState: state, isOnline: isOnline)
+                        }
+                    }
+                    .task {
+                        networkState.startMonitoring()
+                    }
         }
     }
 }

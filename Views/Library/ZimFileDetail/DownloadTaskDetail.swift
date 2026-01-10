@@ -13,6 +13,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Kiwix; If not, see https://www.gnu.org/licenses/.
 
+import Combine
 import Defaults
 import SwiftUI
 
@@ -22,7 +23,7 @@ extension ZimFileDetail {
         @Default(.downloadUsingCellular) private var downloadUsingCellular
         @ObservedObject var downloadZimFile: ZimFile
         @EnvironmentObject var selection: SelectedZimFileViewModel
-        @State private var downloadState = DownloadState.empty()
+        @State private var downloadState = DownloadUIState.empty()
         @StateObject private var networkState = DownloadService.shared.networkState
         
         var body: some View {
@@ -32,7 +33,7 @@ extension ZimFileDetail {
                     selection.reset()
                 }
                 if let error = downloadZimFile.downloadTask?.error {
-                    if downloadState.resumeData != nil {
+                    if downloadState.hasResumeData {
                         Action(title: LocalString.zim_file_download_task_action_try_recover) {
                             DownloadService.shared.resume(
                                 zimFileID: downloadZimFile.fileID,
@@ -42,60 +43,63 @@ extension ZimFileDetail {
                     }
                     Attribute(title: LocalString.zim_file_download_task_action_failed, detail: detail)
                     Text(error)
-                } else if !downloadState.isPaused {
-                    Action(title: LocalString.zim_file_download_task_action_pause) {
-                        DownloadService.shared.pause(zimFileID: downloadZimFile.fileID)
-                    }
-                    if networkState.isOnline {
-                        Attribute(title: LocalString.zim_file_download_task_action_downloading, detail: detail)
-                    } else {
-                        HStack {
-                            Label(LocalString.zim_file_download_task_status_offline, systemImage: "wifi.slash")
-                                .foregroundStyle(.orange)
-                            Spacer()
-                            Text(detail).foregroundColor(.secondary)
-                        }
-                    }
                 } else {
-                    Action(title: LocalString.zim_file_download_task_action_resume) {
-                        DownloadService.shared.resume(
-                            zimFileID: downloadZimFile.fileID,
-                            allowsCellularAccess: downloadUsingCellular
-                        )
+                    switch downloadState.state {
+                    case .resumed:
+                        Action(title: LocalString.zim_file_download_task_action_pause) {
+                            DownloadService.shared.pause(zimFileID: downloadZimFile.fileID)
+                        }
+                        Attribute(title: LocalString.zim_file_download_task_action_downloading, detail: detail)
+                    case let .paused(isOnline):
+                        Action(title: LocalString.zim_file_download_task_action_resume) {
+                            DownloadService.shared.resume(
+                                zimFileID: downloadZimFile.fileID,
+                                allowsCellularAccess: downloadUsingCellular
+                            )
+                        }.disabled(!isOnline)
+                        let pauseTitle: String = if isOnline {
+                            LocalString.download_task_cell_status_paused
+                        } else {
+                            LocalString.download_task_cell_status_paused_device_offline
+                        }
+                        Attribute(title: pauseTitle, detail: detail)
                     }
-                    Attribute(title: LocalString.zim_file_download_task_action_paused, detail: detail)
                 }
             }.onReceive(
-                DownloadService.shared.progress.publisher
-                    .compactMap { [self] (states: [UUID: DownloadState]) -> DownloadState? in
-                        return states[downloadZimFile.fileID]
-                    }, perform: { [self] (state: DownloadState?) in
-                        if let state {
-                            self.downloadState = state
-                        }
-                    }
-            )
+                Publishers.CombineLatest(
+                    DownloadService.shared.progress.publisher,
+                    networkState.$isOnline
+                )
+            ) { [self] values in
+                let states = values.0
+                let isOnline = values.1
+                if !states.isEmpty, let state = states[downloadZimFile.fileID] {
+                    self.downloadState = DownloadUIState(downloadState: state, isOnline: isOnline)
+                }
+            }
             .task {
                 networkState.startMonitoring()
             }
         }
         
         private var detail: String {
-            if let percent = percent {
-                return "\(size) - \(percent)"
+            #if os(macOS)
+            if let percent = downloadState.percent {
+                if networkState.isOnline {
+                    return "\(downloadState.size) - \(percent)"
+                } else {
+                    return percent
+                }
             } else {
-                return size
+                return downloadState.size
             }
-        }
-        
-        private var size: String {
-            Formatter.size.string(fromByteCount: downloadState.downloaded)
-        }
-        
-        private var percent: String? {
-            guard downloadState.total > 0 else { return nil }
-            let fractionCompleted = NSNumber(value: Double(downloadState.downloaded) / Double(downloadState.total))
-            return Formatter.percent.string(from: fractionCompleted)
+            #else
+                if let percent = downloadState.percent {
+                    return "\(downloadState.size) - \(percent)"
+                } else {
+                    return downloadState.size
+                }
+            #endif
         }
     }
 }
