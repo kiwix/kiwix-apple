@@ -279,7 +279,6 @@
 "payment.error.description" = "Il y a eu un problème avec votre paiement. Veuillez réessayer.";
 "download_service.error.client.backgroundSessionInUseByAnotherProcess" = "Impossible de communiquer avec le service de transfert en arrière-plan.";
 "download_service.error.client.backgroundSessionWasDisconnected" = "Connexion avec le service de transfert en arrière-plan interrompue.";
-"download_service.error.client.None" = "erreur inconnue";
 "download_service.error.client.cancelled" = "annulé";
 "download_service.error.client.badURL" = "URL incorrecte";
 "download_service.error.client.timedOut" = "La requête a expiré.";

@@ -220,7 +220,6 @@
 "payment.error.description" = "Der har været et problem med din betaling. Prøv venligst igen.";
 "download_service.error.client.backgroundSessionInUseByAnotherProcess" = "Kunne ikke kommunikere med overførselstjenesten i baggrunden";
 "download_service.error.client.backgroundSessionWasDisconnected" = "Mistede forbindelsen til overførselstjenesten i baggrunden";
-"download_service.error.client.None" = "ukendt fejl";
 "download_service.error.client.cancelled" = "annulleret";
 "download_service.error.client.badURL" = "ugyldig URL";
 "download_service.error.client.timedOut" = "Anmodningen udløb.";

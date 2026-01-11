@@ -244,7 +244,6 @@
 "payment.error.description" = "Ada masalah dengan pembayaran Anda. Silakan coba lagi.";
 "download_service.error.client.backgroundSessionInUseByAnotherProcess" = "Tidak dapat berkomunikasi dengan layanan transfer latar belakang";
 "download_service.error.client.backgroundSessionWasDisconnected" = "Koneksi ke layanan transfer latar belakang hilang";
-"download_service.error.client.None" = "kesalahan tidak diketahui";
 "download_service.error.client.cancelled" = "dibatalkan";
 "download_service.error.client.badURL" = "URL buruk";
 "download_service.error.client.timedOut" = "Waktu permintaan habis.";

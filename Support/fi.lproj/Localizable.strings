@@ -142,7 +142,6 @@
 "enum.search_result_snippet_mode.disabled" = "Pois käytöstä";
 "download_service.error.client.backgroundSessionInUseByAnotherProcess" = "Ei voitu muodostaa yhteyttä taustasiirtopalveluun";
 "download_service.error.client.backgroundSessionWasDisconnected" = "Yhteys taustasiirtopalveluun menetettiin.";
-"download_service.error.client.None" = "tuntematon virhe";
 "download_service.error.client.cancelled" = "Kumottu";
 "download_service.error.client.badURL" = "virheellinen osoite";
 "download_service.error.client.timedOut" = "Pyyntö aikakatkaistiin.";

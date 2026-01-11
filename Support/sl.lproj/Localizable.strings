@@ -268,7 +268,6 @@
 "payment.error.description" = "Prišlo je do težave z vašim plačilom. Poskusite znova.";
 "download_service.error.client.backgroundSessionInUseByAnotherProcess" = "Komunikacija s storitvijo prenosa v ozadju ni bila mogoča";
 "download_service.error.client.backgroundSessionWasDisconnected" = "Povezava s storitvijo prenosa v ozadju je bila prekinjena";
-"download_service.error.client.None" = "neznana napaka";
 "download_service.error.client.cancelled" = "preklicano";
 "download_service.error.client.badURL" = "neveljaven URL";
 "download_service.error.client.timedOut" = "Časovna omejitev zahteve je potekla.";

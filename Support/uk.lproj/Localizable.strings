@@ -245,7 +245,6 @@
 "payment.error.title" = "Незручно вийшло.";
 "download_service.error.client.backgroundSessionInUseByAnotherProcess" = "Не вдалося звʼязатися зі службою фонового передавання";
 "download_service.error.client.backgroundSessionWasDisconnected" = "Втрачено звʼязок зі службою фонового передавання";
-"download_service.error.client.None" = "невідома помилка";
 "download_service.error.client.cancelled" = "скасовано";
 "download_service.error.client.badURL" = "некоректний URL";
 "download_service.error.client.timedOut" = "Час на запит сплив.";

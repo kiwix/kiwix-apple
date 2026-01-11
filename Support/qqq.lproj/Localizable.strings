@@ -283,7 +283,6 @@
 "payment.error.description" = "Error message description, the user receives if the payment fails";
 "download_service.error.client.backgroundSessionInUseByAnotherProcess" = "Additional description of the download alert pop up, describing the specific system error, that occured.";
 "download_service.error.client.backgroundSessionWasDisconnected" = "Additional description of the download alert pop up, describing the specific system error, that occured.";
-"download_service.error.client.None" = "Additional description of the download alert pop up, describing the specific system error, that occured.";
 "download_service.error.client.cancelled" = "Additional description of the download alert pop up, describing the specific system error, that occured.";
 "download_service.error.client.badURL" = "Additional description of the download alert pop up, describing the specific system error, that occured.";
 "download_service.error.client.timedOut" = "Additional description of the download alert pop up, describing the specific system error, that occured.";

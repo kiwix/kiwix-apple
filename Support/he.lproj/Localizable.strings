@@ -256,7 +256,6 @@
 "payment.error.description" = "הייתה בעיה עם תשלום שלך. נא לנסות שוב.";
 "download_service.error.client.backgroundSessionInUseByAnotherProcess" = "היתה בעיה בתקשורת עם שירות ההעברה ברקע";
 "download_service.error.client.backgroundSessionWasDisconnected" = "אבד הקשר עם שירות ההעברה ברקע";
-"download_service.error.client.None" = "שגיאה שאינה ידועה";
 "download_service.error.client.cancelled" = "בוטל";
 "download_service.error.client.badURL" = "כתובת אינטרנט שגויה";
 "download_service.error.client.timedOut" = "הבקשה נתקלה בחוסר מענה.";

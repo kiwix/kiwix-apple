@@ -86,7 +86,6 @@
 "payment.confirm.button.title" = "पुष्टि करें";
 "download_service.error.client.backgroundSessionInUseByAnotherProcess" = "बैकग्राउंड ट्रांसफ़र सेवा से संपर्क नहीं हो सका";
 "download_service.error.client.backgroundSessionWasDisconnected" = "बैकग्राउंड ट्रांसफ़र सेवा से कनेक्शन अनुपलब्ध हो गया";
-"download_service.error.client.None" = "अज्ञात एरर";
 "download_service.error.client.cancelled" = "रद्द";
 "download_service.error.client.badURL" = "बैड URL";
 "download_service.error.client.timedOut" = "अनुरोध का टाइमआउट हो गया।";

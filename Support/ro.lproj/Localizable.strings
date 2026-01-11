@@ -238,7 +238,6 @@
 "payment.error.description" = "A apărut o problemă cu plata dvs. Vă rugăm să încercați din nou.";
 "download_service.error.client.backgroundSessionInUseByAnotherProcess" = "Comunicare imposibilă cu serviciul de transferare din fundal";
 "download_service.error.client.backgroundSessionWasDisconnected" = "Conexiune pierdută cu serviciul de transferare din fundal";
-"download_service.error.client.None" = "eroare necunoscută";
 "download_service.error.client.cancelled" = "anulat";
 "download_service.error.client.badURL" = "URL greșit";
 "download_service.error.client.timedOut" = "Solicitarea a expirat.";

@@ -273,7 +273,6 @@
 "payment.error.description" = "Ha habido un problema con su pago. Por favor, inténtelo de nuevo.";
 "download_service.error.client.backgroundSessionInUseByAnotherProcess" = "No se ha podido establecer comunicación con el servicio de transferencia en segundo plano";
 "download_service.error.client.backgroundSessionWasDisconnected" = "Se ha perdido la conexión con el servicio de transferencia en segundo plano";
-"download_service.error.client.None" = "Error desconocido";
 "download_service.error.client.cancelled" = "Operación cancelada";
 "download_service.error.client.badURL" = "URL no válida";
 "download_service.error.client.timedOut" = "Se ha agotado el tiempo de espera.";

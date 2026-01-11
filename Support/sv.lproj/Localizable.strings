@@ -278,7 +278,6 @@
 "payment.error.description" = "Det har uppstått ett problem med din betalning. Försök igen.";
 "download_service.error.client.backgroundSessionInUseByAnotherProcess" = "Kunde inte kommunicera med bakgrundöverföringstjänsten";
 "download_service.error.client.backgroundSessionWasDisconnected" = "Förlorade kontakten med bakgrundöverföringstjänsten";
-"download_service.error.client.None" = "okänt fel";
 "download_service.error.client.cancelled" = "avbruten";
 "download_service.error.client.badURL" = "felaktig URL";
 "download_service.error.client.timedOut" = "Begäran nådde en maxtidsgräns.";

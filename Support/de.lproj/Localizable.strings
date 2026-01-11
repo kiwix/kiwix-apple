@@ -272,7 +272,6 @@
 "payment.error.description" = "Bei Ihrer Zahlung ist ein Problem aufgetreten. Bitte versuchen Sie es erneut.";
 "download_service.error.client.backgroundSessionInUseByAnotherProcess" = "Kommunikation mit Hintergrundübertragungsdienst nicht möglich.";
 "download_service.error.client.backgroundSessionWasDisconnected" = "Verbindung zum Hintergrundübertragungsdienst verloren";
-"download_service.error.client.None" = "Unbekannter Fehler";
 "download_service.error.client.cancelled" = "Abgebrochen";
 "download_service.error.client.badURL" = "Ungültige URL";
 "download_service.error.client.timedOut" = "Zeitüberschreitung bei der Anforderung.";
