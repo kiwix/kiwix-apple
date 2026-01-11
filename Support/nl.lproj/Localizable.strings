@@ -276,7 +276,6 @@
 "payment.error.description" = "Er is een probleem opgetreden met uw betaling. Probeer het a.u.b. opnieuw.";
 "download_service.error.client.backgroundSessionInUseByAnotherProcess" = "Geen communicatie mogelijk met de voorziening voor overdracht op de achtergrond";
 "download_service.error.client.backgroundSessionWasDisconnected" = "Verbinding met voorziening voor overdracht op de achtergrond is verbroken";
-"download_service.error.client.None" = "onbekende fout";
 "download_service.error.client.cancelled" = "geannuleerd";
 "download_service.error.client.badURL" = "onjuiste URL";
 "download_service.error.client.timedOut" = "Time-out van het verzoek.";

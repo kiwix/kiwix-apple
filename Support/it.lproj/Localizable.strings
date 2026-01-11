@@ -173,7 +173,6 @@
 "payment.error.description" = "Si è verificato un problema con il pagamento. Riprova.";
 "download_service.error.client.backgroundSessionInUseByAnotherProcess" = "Impossibile comunicare con il servizio di trasferimento in background";
 "download_service.error.client.backgroundSessionWasDisconnected" = "Connessione al servizio di trasferimento in background persa";
-"download_service.error.client.None" = "errore sconosciuto";
 "download_service.error.client.cancelled" = "annullato";
 "download_service.error.client.badURL" = "URL non valido";
 "download_service.error.client.timedOut" = "Tempo di richiesta scaduto.";

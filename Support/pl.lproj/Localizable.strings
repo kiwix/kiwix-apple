@@ -171,7 +171,6 @@
 "enum.search_result_snippet_mode.disabled" = "Wyłączony";
 "download_service.error.client.backgroundSessionInUseByAnotherProcess" = "Nie można połączyć się z usługą przesyłania w tle";
 "download_service.error.client.backgroundSessionWasDisconnected" = "Utrata połączenia z usługą przesyłania w tle";
-"download_service.error.client.None" = "nieznany błąd";
 "download_service.error.client.cancelled" = "anulowane";
 "download_service.error.client.badURL" = "błędny URL";
 "download_service.error.client.timedOut" = "Przekroczenie limitu czasu żądania.";

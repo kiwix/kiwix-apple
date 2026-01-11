@@ -239,7 +239,6 @@
 "payment.selection.option.monthly" = "Ежемесячно";
 "download_service.error.client.backgroundSessionInUseByAnotherProcess" = "Не удалось установить связь со службой фоновой передачи файлов";
 "download_service.error.client.backgroundSessionWasDisconnected" = "Связь со службой фоновой передачи файлов потеряна";
-"download_service.error.client.None" = "неизвестная ошибка";
 "download_service.error.client.cancelled" = "отменено";
 "download_service.error.client.badURL" = "неверный URL-адрес";
 "download_service.error.client.timedOut" = "Превышен лимит времени на запрос.";

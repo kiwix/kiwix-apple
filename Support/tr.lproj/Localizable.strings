@@ -213,7 +213,6 @@
 "enum.search_result_snippet_mode.matches" = "Eşleşmeler";
 "download_service.error.client.backgroundSessionInUseByAnotherProcess" = "Arka planda aktarım servisiyle iletişim kurulamadı";
 "download_service.error.client.backgroundSessionWasDisconnected" = "Arka planda aktarım servisiyle bağlantı kesildi";
-"download_service.error.client.None" = "bilinmeyen hata";
 "download_service.error.client.cancelled" = "vazgeçildi";
 "download_service.error.client.badURL" = "geçersiz URL";
 "download_service.error.client.timedOut" = "İstek zaman aşımına uğradı.";

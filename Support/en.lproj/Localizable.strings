@@ -328,7 +328,6 @@
 "payment.error.description" = "There has been an issue with your payment. Please try again.";
 "download_service.error.client.backgroundSessionInUseByAnotherProcess" = "Could not communicate with background transfer service";
 "download_service.error.client.backgroundSessionWasDisconnected" = "Lost connection to background transfer service";
-"download_service.error.client.None" = "unknown error";
 "download_service.error.client.cancelled" = "cancelled";
 "download_service.error.client.badURL" = "bad URL";
 "download_service.error.client.timedOut" = "The request timed out.";

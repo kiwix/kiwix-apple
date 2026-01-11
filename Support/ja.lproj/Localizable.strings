@@ -217,7 +217,6 @@
 "enum.search_result_snippet_mode.matches" = "マッチ";
 "download_service.error.client.backgroundSessionInUseByAnotherProcess" = "バックグラウンド転送サービスと通信できませんでした。";
 "download_service.error.client.backgroundSessionWasDisconnected" = "バックグラウンド転送サービスとの接続が解除されました。";
-"download_service.error.client.None" = "不明なエラー";
 "download_service.error.client.cancelled" = "キャンセルしました";
 "download_service.error.client.badURL" = "無効なURL";
 "download_service.error.client.timedOut" = "リクエストがタイムアウトになりました。";
