@@ -34,32 +34,38 @@ struct AlertHandler: ViewModifier {
                 activeAlert = alertValue
             }
         }
-        .alert(alertText(), isPresented: Binding<Bool>.constant(activeAlert != nil)) {
+        .alert(alertTitle(), isPresented: Binding<Bool>.constant(activeAlert != nil), actions: {
             Button(LocalString.common_button_ok) {
                 activeAlert = nil
             }
-        }
+        }, message: {
+            Text(alertMessage())
+        })
     }
         
-    private func alertText() -> String {
+    private func alertTitle() -> String {
         switch activeAlert {
         case .articleFailedToLoad:
             LocalString.alert_handler_alert_failed_title
-        case let .downloadErrorGeneric(errorMessage):
-            [LocalString.download_service_error_general_description,
-             errorMessage
-            ].joined(separator: "\n")
-            
+        case .downloadErrorGeneric:
+            LocalString.download_service_error_general_title
+        case .downloadErrorZIM:
+            LocalString.download_service_error_zimfile_title(withArgs: zimFileName)
+        case nil:
+            ""
+        }
+    }
+    
+    private func alertMessage() -> String {
+        switch activeAlert {
+        case .articleFailedToLoad:
+            LocalString.download_service_error_footer
+        case let .downloadErrorGeneric(description):
+            [description, LocalString.download_service_error_footer].joined(separator: "\n\n")
         case let .downloadErrorZIM(_, .none, errorMessage):
-            [LocalString.download_service_error_zimfile_description(withArgs: zimFileName),
-             errorMessage
-            ].joined(separator: "\n")
-        
+            [errorMessage, LocalString.download_service_error_footer].joined(separator: "\n\n")
         case let .downloadErrorZIM(_, .some(url), errorMessage):
-            [LocalString.download_service_error_zimfile_and_url_description(withArgs: zimFileName, url),
-             errorMessage]
-                .joined(separator: "\n")
-            
+            [url, errorMessage, LocalString.download_service_error_footer].joined(separator: "\n\n")
         case nil:
             ""
         }

@@ -22,9 +22,9 @@
 
 "download_service.complete.title" = "Download Completed";
 "download_service.complete.description" = "%@ has been downloaded successfully.";
-"download_service.error.general.description" = "Download failed to succeed.";
-"download_service.error.zimfile.description" = "Unable to download "%@\"";
-"download_service.error.zimfile.and.url.description" = "Unable to download:\n\"%@\"\nfrom url:\n%@";
+"download_service.error.general.title" = "Download failed to succeed.";
+"download_service.error.zimfile.title" = "Unable to download \"%@\"";
+"download_service.error.footer" = "The download could not be completed.";
 
 "download_service.error.option_http_status" = "HTTP status code: %@";
 "download_service.error.option_directory" = "Download directory cannot be found";

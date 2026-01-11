@@ -278,7 +278,8 @@ final class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegat
                 Log.DownloadService.error("""
                 Download error: \(fileId, privacy: .public). \
                 URL: \(httpResponse.url?.absoluteString ?? "unknown", privacy: .public). \
-                Status code: \(statusCode, privacy: .public)
+                Status code: \(statusCode, privacy: .public),
+                Error: \(httpResponse.debugDescription, privacy: .public)
                 """)
                 self.deleteDownloadTask(zimFileID: zimFileID)
             }
@@ -359,7 +360,7 @@ final class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegat
             Log.DownloadService.fault(
                 "Cannot convert downloadTask to zimFileID: \(taskId, privacy: .public)"
             )
-            showAlert(.downloadErrorGeneric(LocalString.download_service_error_option_invalid_taskid))
+            showAlert(.downloadErrorGeneric(description: LocalString.download_service_error_option_invalid_taskid))
             return
         }
         guard let httpResponse = downloadTask.response as? HTTPURLResponse else {
