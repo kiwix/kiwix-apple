@@ -23,7 +23,7 @@
 "download_service.complete.title" = "Download Completed";
 "download_service.complete.description" = "%@ has been downloaded successfully.";
 "download_service.error.general.description" = "Download failed to succeed.";
-"download_service.error.zimfile.description" = "Unable to download:\n\"%@\"";
+"download_service.error.zimfile.description" = "Unable to download "%@\"";
 "download_service.error.zimfile.and.url.description" = "Unable to download:\n\"%@\"\nfrom url:\n%@";
 
 "download_service.error.option_http_status" = "HTTP status code: %@";
