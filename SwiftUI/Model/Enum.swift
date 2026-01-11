@@ -22,7 +22,7 @@ enum ActiveAlert: Hashable, Identifiable {
     var id: Int { hashValue }
     
     case articleFailedToLoad
-    case downloadErrorGeneric(String)
+    case downloadErrorGeneric(description: String)
     case downloadErrorZIM(zimFileID: UUID, url: String?, errorMessage: String)
 }
 
