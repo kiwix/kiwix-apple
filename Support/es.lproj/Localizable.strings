@@ -1,6 +1,7 @@
 // Messages for Spanish (español)
 // Exported from translatewiki.net
 // Author: AlexanderFF
+// Author: Avengium
 // Author: Eulalio
 // Author: Jmabel
 // Author: Laranxa
@@ -115,6 +116,10 @@
 "zim_file.action.download.warning.message" = "Puede que no haya espacio suficiente en tu dispositivo para almacenar este archivo ZIM.";
 "zim_file.action.download.warning.message1" = "Habrá menos de 1 GB de espacio después de descargar el archivo ZIM.";
 "zim_file.action.download.button.anyway" = "Descargar de todos modos";
+"zim_file.action.integrity_check.title" = "Verificar";
+"zim_file.action.integrity_recheck.title" = "Vuelva a comprobar";
+"zim_file.action.integrity_check.alert.title" = "Esto puede tardar varios minutos. Kiwix no estará disponible hasta que se complete la verificación de integridad.";
+"zim_file.integrity_check.in_progress" = "Comprobación de integridad: \"%@\" ...";
 "zim_file.base_info.attribute.language" = "Idioma";
 "zim_file.base_info.attribute.category" = "Categoría";
 "zim_file.base_info.attribute.size" = "Tamaño";
@@ -123,6 +128,7 @@
 "zim_file.bool_info.videos" = "Vídeos";
 "zim_file.bool_info.details" = "Detalles";
 "zim_file.bool_info.require_service_workers" = "Requiere trabajadores de servicio";
+"zim_file.bool_info.zim_archive_integrity" = "Integridad del archivo ZIM";
 "zim_file.counts.article_count" = "Número de artículos";
 "zim_file.counts.article.media_count" = "Recuento de medios";
 "zim_file.detail.id.title" = "ID";

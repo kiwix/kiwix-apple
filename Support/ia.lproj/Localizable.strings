@@ -119,6 +119,10 @@
 "zim_file.action.download.warning.message" = "Le spatio restante sur tu apparato pote esser insufficiente pro iste file ZIM.";
 "zim_file.action.download.warning.message1" = "Restarea minus de 1GB de spatio post le discargamento del file ZIM.";
 "zim_file.action.download.button.anyway" = "Discargar totevia";
+"zim_file.action.integrity_check.title" = "Verificar";
+"zim_file.action.integrity_recheck.title" = "Reverificar";
+"zim_file.action.integrity_check.alert.title" = "Isto pote prender plure minutas. Kiwix essera indisponibile usque le verification de integritate se termina.";
+"zim_file.integrity_check.in_progress" = "Verification de integritate: \"%@\" ...";
 "zim_file.base_info.attribute.language" = "Lingua";
 "zim_file.base_info.attribute.category" = "Categoria";
 "zim_file.base_info.attribute.size" = "Dimension";
@@ -127,6 +131,7 @@
 "zim_file.bool_info.videos" = "Videos";
 "zim_file.bool_info.details" = "Detalios";
 "zim_file.bool_info.require_service_workers" = "Require ‘service workers’";
+"zim_file.bool_info.zim_archive_integrity" = "Integritate del archivo ZIM";
 "zim_file.counts.article_count" = "Numero de articulos";
 "zim_file.counts.article.media_count" = "Objectos multimedial";
 "zim_file.detail.id.title" = "ID";
