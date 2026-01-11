@@ -17,6 +17,7 @@ import Foundation
 
 enum DownloadErrors {
     
+    // swiftlint:disable:next function_body_length cyclomatic_complexity
     static func localizedString(from error: NSError) -> String {
         guard let urlError = error as? URLError, error.domain == NSURLErrorDomain.description else {
             return error.localizedDescription
