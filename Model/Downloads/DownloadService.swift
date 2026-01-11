@@ -311,9 +311,11 @@ final class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegat
             }
         }
         let fileId = zimFileID.uuidString
-        let errorDesc = error.localizedDescription
+        let errorDebugDesc = error.debugDescription
         Log.DownloadService.error(
-            "Finished for zimId: \(fileId, privacy: .public). with: \(errorDesc, privacy: .public)")
+            "Finished for zimId: \(fileId, privacy: .public). with: \(errorDebugDesc, privacy: .public)")
+        
+        let errorDesc = DownloadErrors.localizedString(from: error)
         deleteDownloadTask(zimFileID: zimFileID)
         showAlert(.downloadErrorZIM(zimFileID: zimFileID,
                                     url: task.originalRequest?.url?.absoluteString,
