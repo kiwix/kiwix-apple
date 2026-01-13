@@ -76,8 +76,12 @@ struct SearchResults: View {
         if case SearchResultItems.results([]) = viewModel.results {
             if viewModel.searchText.isEmpty {
                 Spacer()
-            } else { 
-                Message(text: LocalString.search_result_zimfile_no_result_message)
+            } else {
+                if viewModel.inProgress {
+                    ProgressView()
+                } else {
+                    Message(text: LocalString.search_result_zimfile_no_result_message)
+                }
             }
         } else {
             ScrollViewReader { scrollReader in
