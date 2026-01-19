@@ -87,7 +87,6 @@
 "zim_file.download_task.action.pause" = "Pausar";
 "zim_file.download_task.action.downloading" = "Baixando...";
 "zim_file.download_task.action.resume" = "Retomar";
-"zim_file.download_task.action.paused" = "Pausado";
 "reading_settings.zoom.reset.button" = "Redefinir";
 "reading_settings.external_link.title" = "Link externo";
 "library_settings.catalog.title" = "Catálogo";

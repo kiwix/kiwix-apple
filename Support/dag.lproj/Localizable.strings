@@ -107,7 +107,6 @@
 "zim_file.download_task.action.pause" = "Zanibu";
 "zim_file.download_task.action.downloading" = "Deebu...";
 "zim_file.download_task.action.resume" = "Tuɣili";
-"zim_file.download_task.action.paused" = "Zanibu";
 "service_worker_warning.label.description" = "Zim fasara nima din bɔri saandi tum tumdiba bi saɣi n-ti";
 "reading_settings.zoom.title" = "Yaɣili zoom";
 "reading_settings.zoom.reset.button" = "Labi'niŋ";

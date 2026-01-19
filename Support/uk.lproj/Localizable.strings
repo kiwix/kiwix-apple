@@ -1,6 +1,7 @@
 // Messages for Ukrainian (українська)
 // Exported from translatewiki.net
 // Author: Daries1
+// Author: Movses
 // Author: Ата
 
 "library_refresh_error.retrieve.description" = "Помилка отримання даних каталогу.";
@@ -8,7 +9,7 @@
 "library_refresh_error.process.description" = "Помилка обробки даних каталогу.";
 "download_service.complete.title" = "Завантаження завершено";
 "download_service.complete.description" = "%@ було успішно завантажено.";
-"download_service.error.option_unable_to_move_file" = "не вдалося перемістити завантажений файл";
+"download_service.error.option_unable_to_move_file" = "Не вдалось перемістити завантажений файл";
 "common.dialog.button.open" = "Відкрити";
 "common.dialog.button.open_in_new_tab" = "Відкрити в новій вкладці";
 "common.dialog.button.add_bookmark" = "Додати в закладки";
@@ -118,7 +119,6 @@
 "zim_file.download_task.action.pause" = "Призупинити";
 "zim_file.download_task.action.downloading" = "Завантаження…";
 "zim_file.download_task.action.resume" = "Продовжити";
-"zim_file.download_task.action.paused" = "Призупинено";
 "multi.zim_files_selected.description_count" = "ZIM-файли";
 "theme_settings.title" = "Тема";
 "theme_settings.option.dark" = "Темна";

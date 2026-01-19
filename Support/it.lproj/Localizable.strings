@@ -42,6 +42,7 @@
 "file_import.alert.no_open.message" = "%@ non può essere aperto.";
 "download_task_cell.status.downloading" = "Download in corso...";
 "download_task_cell.status.paused" = "In pausa";
+"download_task_cell.status.paused.device_offline" = "In pausa (il dispositivo è offline)";
 "download_again.question.title" = "Hai già questo file.";
 "download_again.question.description_part_1" = "Sembra che %@ sia già stato scaricato.";
 "download_again.question.description_part_2" = "Vuoi comunque scaricare \"%@\"? Il file esistente non verrà cancellato.";
@@ -89,7 +90,6 @@
 "zim_file.bool_info.details" = "Dettagli";
 "zim_file.download_task.action.downloading" = "Download in corso...";
 "zim_file.download_task.action.resume" = "Riprendi";
-"zim_file.download_task.action.paused" = "In pausa";
 "multi.zim_files_selected.description_count" = "File ZIM";
 "theme_settings.title" = "Tema";
 "theme_settings.option.dark" = "Scuro";

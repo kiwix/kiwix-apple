@@ -8,9 +8,13 @@
 "library_refresh_error.process.description" = "Fejl ved behandling af biblioteksdata.";
 "download_service.complete.title" = "Download fuldført";
 "download_service.complete.description" = "%@ er blevet downloadet.";
+// Fuzzy
 "download_service.error.option_directory" = "download af bibliotek kunne ikke findes";
+// Fuzzy
 "download_service.error.option_invalid_taskid" = "ugyldigt downloadTask-id";
+// Fuzzy
 "download_service.error.option_invalid_response" = "ugyldigt svar";
+// Fuzzy
 "download_service.error.option_unable_to_move_file" = "kan ikke flytte downloadet fil";
 "common.dialog.button.open" = "Åben";
 "common.dialog.button.open_in_new_tab" = "Åbn i Ny Fane";
@@ -118,7 +122,6 @@
 "zim_file.download_task.action.failed" = "Mislykkedes";
 "zim_file.download_task.action.pause" = "Pause";
 "zim_file.download_task.action.downloading" = "Downloader...";
-"zim_file.download_task.action.paused" = "Sat på pause";
 "theme_settings.option.dark" = "Mørkt";
 "theme_settings.option.light" = "Lyst";
 "theme_settings.option.system" = "System";

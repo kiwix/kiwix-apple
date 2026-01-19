@@ -7,10 +7,10 @@
 "library_refresh_error.process.description" = "Error durante le processamento del datos del catalogo.";
 "download_service.complete.title" = "Discargamento complete";
 "download_service.complete.description" = "%@ ha essite discargate con successo.";
-"download_service.error.option_directory" = "le directorio de discargamento non poteva esser trovate";
+"download_service.error.option_directory" = "Le directorio de discargamento non poteva esser trovate";
 "download_service.error.option_invalid_taskid" = "ID downloadTask non valide";
-"download_service.error.option_invalid_response" = "responsa non valide";
-"download_service.error.option_unable_to_move_file" = "non pote displaciar le file discargate";
+"download_service.error.option_invalid_response" = "Responsa non valide";
+"download_service.error.option_unable_to_move_file" = "Non pote displaciar le file discargate";
 "common.dialog.button.open" = "Aperir";
 "common.dialog.button.open_in_new_tab" = "Aperir in un nove scheda";
 "common.dialog.button.add_bookmark" = "Adder marcapagina";
@@ -139,7 +139,6 @@
 "zim_file.download_task.action.pause" = "Pausar";
 "zim_file.download_task.action.downloading" = "Discargamento…";
 "zim_file.download_task.action.resume" = "Reprender";
-"zim_file.download_task.action.paused" = "Pausate";
 "service_worker_warning.label.description" = "Le files ZIM que require ‘service workers’ non es supportate.";
 "multi.zim_files_selected.sidebar_title" = "Seligite";
 "multi.zim_files_selected.description_count" = "Files ZIM";

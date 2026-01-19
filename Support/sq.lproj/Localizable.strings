@@ -115,7 +115,6 @@
 "zim_file.download_task.action.pause" = "Ndale";
 "zim_file.download_task.action.downloading" = "Po shkarkohet…";
 "zim_file.download_task.action.resume" = "Rimerre";
-"zim_file.download_task.action.paused" = "Ndalur";
 "service_worker_warning.label.description" = "Nuk mbulohen kartela Zim që duan doemos <em>service workers</em>.";
 "reading_settings.zoom.title" = "Zmadhim/zvogëlim pamjeje faqeje";
 "reading_settings.external_link.title" = "Lidhje e Jashtme";

@@ -12,10 +12,14 @@
 "library_refresh_error.process.description" = "Fel vid bearbetning av katalogdata.";
 "download_service.complete.title" = "Nedladdning slutfördes";
 "download_service.complete.description" = "%@ har laddats ned.";
-"download_service.error.option_directory" = "nedladdningsmappen kan inte hittas";
-"download_service.error.option_invalid_taskid" = "ogiltigt downloadTask-id";
-"download_service.error.option_invalid_response" = "ogiltigt svar";
-"download_service.error.option_unable_to_move_file" = "kan inte flytta den nedladdade filen";
+"download_service.error.general.title" = "Nedladdningen misslyckades.";
+"download_service.error.zimfile.title" = "Kan inte ladda ner \"%@\"";
+"download_service.error.footer" = "Nedladdningen kunde inte slutföras.";
+"download_service.error.option_http_status" = "HTTP-statuskod: %@";
+"download_service.error.option_directory" = "Nedladdningsmappen kan inte hittas";
+"download_service.error.option_invalid_taskid" = "Ogiltigt downloadTask-id";
+"download_service.error.option_invalid_response" = "Ogiltigt svar";
+"download_service.error.option_unable_to_move_file" = "Kan inte flytta den nedladdade filen";
 "common.dialog.button.open" = "Öppna";
 "common.dialog.button.open_in_new_tab" = "Öppna i ny flik";
 "common.dialog.button.add_bookmark" = "Lägg till bokmärke";
@@ -69,6 +73,7 @@
 "download_task_cell.status.failed" = "Misslyckades";
 "download_task_cell.status.downloading" = "Laddar ned...";
 "download_task_cell.status.paused" = "Pausad";
+"download_task_cell.status.paused.device_offline" = "Pauserad (enhet är offline)";
 "download_again.question.title" = "Du har redan den här filen.";
 "download_again.question.description_part_1" = "Det ser ut som att %@ redan laddats ned.";
 "download_again.question.description_part_2" = "Vill du fortfarande ladda ned \"%@\"? Din befintliga fil kommer inte att raderas.";
@@ -144,7 +149,6 @@
 "zim_file.download_task.action.pause" = "Pausa";
 "zim_file.download_task.action.downloading" = "Laddar ned...";
 "zim_file.download_task.action.resume" = "Återuppta";
-"zim_file.download_task.action.paused" = "Pausad";
 "service_worker_warning.label.description" = "Zim-filer som kräver servicearbetare stöds inte.";
 "multi.zim_files_selected.sidebar_title" = "Vald";
 "multi.zim_files_selected.description_count" = "ZIM-filer";

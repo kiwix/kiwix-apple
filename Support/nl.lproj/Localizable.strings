@@ -9,10 +9,10 @@
 "library_refresh_error.process.description" = "Fout bij het verwerken van catalogusgegevens.";
 "download_service.complete.title" = "Download voltooid";
 "download_service.complete.description" = "%@ is met succes gedownload.";
-"download_service.error.option_directory" = "de downloaddirectory kan niet gevonden worden";
-"download_service.error.option_invalid_taskid" = "onjuiste downloadTask-ID";
-"download_service.error.option_invalid_response" = "onjuist antwoord";
-"download_service.error.option_unable_to_move_file" = "het gedownloade bestand kan niet verplaatst worden";
+"download_service.error.option_directory" = "De downloaddirectory kan niet gevonden worden";
+"download_service.error.option_invalid_taskid" = "Onjuiste downloadTask-ID";
+"download_service.error.option_invalid_response" = "Onjuist antwoord";
+"download_service.error.option_unable_to_move_file" = "Het gedownloade bestand kan niet verplaatst worden";
 "common.dialog.button.open" = "Openen";
 "common.dialog.button.open_in_new_tab" = "In nieuw tabblad openen";
 "common.dialog.button.add_bookmark" = "Bladwijzer toevoegen";
@@ -66,6 +66,7 @@
 "download_task_cell.status.failed" = "Mislukt";
 "download_task_cell.status.downloading" = "Aan het downloaden…";
 "download_task_cell.status.paused" = "Gepauzeerd";
+"download_task_cell.status.paused.device_offline" = "Gepauzeerd (apparaat is offline)";
 "download_again.question.title" = "U beschikt al over dit bestand.";
 "download_again.question.description_part_1" = "Het lijkt erop dat %@ al is gedownload.";
 "download_again.question.description_part_2" = "Wilt u \"%@\" nog steeds downloaden? Uw bestaande bestand wordt niet verwijderd.";
@@ -122,8 +123,7 @@
 "zim_file.action.integrity_check.title" = "Controleren";
 "zim_file.action.integrity_recheck.title" = "Opnieuw controleren";
 "zim_file.action.integrity_check.alert.title" = "Dit kan enkele minuten duren. Kiwix is niet beschikbaar totdat de integriteitscontrole is voltooid.";
-// Fuzzy
-"zim_file.integrity_check.in_progress" = "De integriteit van het ZIM-archief \"%@\" controleren...";
+"zim_file.integrity_check.in_progress" = "Integriteitscontrole: “%@”…";
 "zim_file.base_info.attribute.language" = "Taal";
 "zim_file.base_info.attribute.category" = "Categorie";
 "zim_file.base_info.attribute.size" = "Grootte";
@@ -142,7 +142,6 @@
 "zim_file.download_task.action.pause" = "Pauzeren";
 "zim_file.download_task.action.downloading" = "Aan het downloaden…";
 "zim_file.download_task.action.resume" = "Hervatten";
-"zim_file.download_task.action.paused" = "Gepauzeerd";
 "service_worker_warning.label.description" = "ZIM-bestanden waarvoor ‘service workers’ nodig zijn, worden niet ondersteund.";
 "multi.zim_files_selected.sidebar_title" = "Geselecteerd";
 "multi.zim_files_selected.description_count" = "ZIM-bestanden";

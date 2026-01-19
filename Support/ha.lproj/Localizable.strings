@@ -117,7 +117,6 @@
 "zim_file.download_task.action.pause" = "Dakata";
 "zim_file.download_task.action.downloading" = "Ana saukewa...";
 "zim_file.download_task.action.resume" = "ci gaba";
-"zim_file.download_task.action.paused" = "Dakata";
 "service_worker_warning.label.description" = "Fayilolin Zim da ke buƙatar ma'aikatan sabis ba su da tallafi.";
 "reading_settings.zoom.title" = "Shafin zoom";
 "reading_settings.zoom.reset.button" = "Sake saiti";

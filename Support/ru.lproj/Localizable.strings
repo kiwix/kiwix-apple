@@ -119,7 +119,6 @@
 "zim_file.download_task.action.pause" = "Пауза";
 "zim_file.download_task.action.downloading" = "Загрузка...";
 "zim_file.download_task.action.resume" = "Продолжить";
-"zim_file.download_task.action.paused" = "Приостановлено";
 "service_worker_warning.label.description" = "Файлы Zim, требующие сервисных работников, не поддерживаются.";
 "theme_settings.title" = "Тема";
 "theme_settings.option.dark" = "Тёмная";

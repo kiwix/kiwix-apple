@@ -4,6 +4,7 @@
 // Author: Dream Star.cn
 // Author: ExoHyper2026
 // Author: GuoPC
+// Author: Key0121
 // Author: Kichin
 // Author: Prmsh
 // Author: TFX202X
@@ -16,6 +17,10 @@
 "library_refresh_error.process.description" = "处理目录数据时出错。";
 "download_service.complete.title" = "下载完成";
 "download_service.complete.description" = "已成功下载%@";
+"download_service.error.general.title" = "下载失败。";
+"download_service.error.zimfile.title" = "无法下载“%@”";
+"download_service.error.footer" = "下载未能完成。";
+"download_service.error.option_http_status" = "HTTP状态码：%@";
 "download_service.error.option_directory" = "找不到下载目录";
 "download_service.error.option_invalid_taskid" = "下载任务ID无效";
 "download_service.error.option_invalid_response" = "无效响应";
@@ -73,6 +78,7 @@
 "download_task_cell.status.failed" = "失败";
 "download_task_cell.status.downloading" = "正在下载...";
 "download_task_cell.status.paused" = "已暂停";
+"download_task_cell.status.paused.device_offline" = "已暂停（设备离线）";
 "download_again.question.title" = "您已经拥有这个文件。";
 "download_again.question.description_part_1" = "%@看起来已下载完毕。";
 "download_again.question.description_part_2" = "您仍要下载“%@”吗？您现有的文件不会被删除。";
@@ -148,7 +154,6 @@
 "zim_file.download_task.action.pause" = "暂停";
 "zim_file.download_task.action.downloading" = "正在下载...";
 "zim_file.download_task.action.resume" = "继续";
-"zim_file.download_task.action.paused" = "已暂停";
 "service_worker_warning.label.description" = "不支持需要service workers的 Zim 文件。";
 "multi.zim_files_selected.sidebar_title" = "已选择";
 "multi.zim_files_selected.description_count" = "ZIM 文件";
@@ -280,3 +285,46 @@
 "payment.success.description" = "您的慷慨对于我们来说意味着一切。";
 "payment.error.title" = "嗯，这很尴尬。";
 "payment.error.description" = "您的付款出现问题。请重试。";
+"download_service.error.client.backgroundSessionInUseByAnotherProcess" = "无法与后台传输服务通信";
+"download_service.error.client.backgroundSessionWasDisconnected" = "与后台传输服务断开连接";
+"download_service.error.client.cancelled" = "已取消";
+"download_service.error.client.badURL" = "无效URL";
+"download_service.error.client.timedOut" = "请求已超时。";
+"download_service.error.client.unsupportedURL" = "不支持的URL";
+"download_service.error.client.cannotFindHost" = "找不到具有指定主机名称的服务器。";
+"download_service.error.client.cannotConnectToHost" = "无法连接到服务器。";
+"download_service.error.client.networkConnectionLost" = "网络连接中断。";
+"download_service.error.client.dnsLookupFailed" = "DNS查询错误";
+"download_service.error.client.httpTooManyRedirects" = "HTTP重定向次数过多";
+"download_service.error.client.resourceUnavailable" = "资源不可用";
+"download_service.error.client.notConnectedToInternet" = "网络连接似乎已断开。";
+"download_service.error.client.redirectToNonExistentLocation" = "没有重定向到任何位置";
+"download_service.error.client.badServerResponse" = "服务器响应错误。";
+"download_service.error.client.zeroByteResource" = "零字节资源";
+"download_service.error.client.cannotDecodeRawData" = "无法解码原始数据";
+"download_service.error.client.cannotDecodeContentData" = "无法解码内容数据";
+"download_service.error.client.cannotParseResponse" = "无法解析响应";
+"download_service.error.client.internationalRoamingOff" = "国际漫游目前已关闭。";
+"download_service.error.client.callIsActive" = "由于目前正在通话，因此无法建立数据连接。";
+"download_service.error.client.dataNotAllowed" = "目前不允许建立数据连接。";
+"download_service.error.client.requestBodyStreamExhausted" = "已耗尽请求体流";
+"download_service.error.client.fileDoesNotExist" = "在此服务器上找不到所请求的URL。";
+"download_service.error.client.fileIsDirectory" = "文件是目录";
+"download_service.error.client.noPermissionsToReadFile" = "您没有权限访问所请求的资源。";
+"download_service.error.client.dataLengthExceedsMaximum" = "资源超出最大容量";
+"download_service.error.client.secureConnectionFailed" = "发生SSL错误，无法与服务器建立安全连接。";
+"download_service.error.client.serverCertificateHasBadDate" = "此服务器的证书已过期。";
+"download_service.error.client.serverCertificateUntrusted" = "此服务器的证书无效。";
+"download_service.error.client.serverCertificateHasUnknownRoot" = "此服务器的证书由未知的证书颁发机构签发。";
+"download_service.error.client.serverCertificateNotYetValid" = "此服务器的证书尚未生效。";
+"download_service.error.client.clientCertificateRejected" = "服务器不接受该证书。";
+"download_service.error.client.clientCertificateRequired" = "服务器需要客户端证书。";
+"download_service.error.client.cannotLoadFromNetwork" = "无法从网络加载";
+"download_service.error.client.cannotCreateFile" = "无法创建文件";
+"download_service.error.client.cannotOpenFile" = "无法打开文件";
+"download_service.error.client.cannotCloseFile" = "关闭文件时发生错误";
+"download_service.error.client.cannotWriteToFile" = "无法写入文件";
+"download_service.error.client.cannotRemoveFile" = "无法移除文件";
+"download_service.error.client.cannotMoveFile" = "无法移动文件";
+"download_service.error.client.downloadDecodingFailedMidStream" = "下载解码失败";
+"download_service.error.client.downloadDecodingFailedToComplete" = "下载解码失败";

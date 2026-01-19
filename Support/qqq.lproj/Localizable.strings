@@ -9,11 +9,9 @@
 "library_refresh_error.process.description" = "Alert description, when refreshing the catalog failed, due to an error while processing the data from the server";
 "download_service.complete.title" = "Title of the notification a user receives, once the started download completes";
 "download_service.complete.description" = "%@ is a file name.";
-
 "download_service.error.general.title" = "Description of an alert pop up, when download fails. This is a generic one, when we don't know the title of the download, and from where it was meant to be downloaded from.";
 "download_service.error.zimfile.title" = "Description of an alert pop up, when download fails. This is a bit more specific, we do know the title of the download (\"%@\" parameter).";
 "download_service.error.footer" = "Additional description of an alert pop up, appended to the end of the description, that this download could not be completed.";
-
 "download_service.error.option_http_status" = "Additional download error info, where the %@ param is going to be a status code number eg: 404";
 "download_service.error.option_directory" = "A description of a specific download error, when the download folder cannot be reached. Becomes part of download_service.error.description";
 "download_service.error.option_invalid_taskid" = "A description of a specific download error, when the download task cannot be identified. Becomes part of download_service.error.description";

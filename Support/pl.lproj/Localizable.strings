@@ -1,5 +1,6 @@
 // Messages for Polish (polski)
 // Exported from translatewiki.net
+// Author: Atvalerie
 // Author: Loran
 // Author: WaldiSt
 
@@ -183,7 +184,7 @@
 "download_service.error.client.resourceUnavailable" = "zasób niedostępny";
 "download_service.error.client.notConnectedToInternet" = "Połączenie z Internetem jest prawdopodobnie rozłączone.";
 "download_service.error.client.redirectToNonExistentLocation" = "przekierowanie donikąd";
-"download_service.error.client.badServerResponse" = "Otrzymano błędną odpowiedź z serwera.";
+"download_service.error.client.badServerResponse" = "Otrzymano błędną odpowiedź od serwera.";
 "download_service.error.client.zeroByteResource" = "zasób o rozmiarze zero bajtów";
 "download_service.error.client.cannotDecodeRawData" = "nie można odkodować danych raw";
 "download_service.error.client.cannotDecodeContentData" = "nie można odkodować danych zawartości";
