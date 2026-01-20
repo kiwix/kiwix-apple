@@ -118,7 +118,6 @@
 "zim_file.download_task.action.pause" = "Jeda";
 "zim_file.download_task.action.downloading" = "Mengunduh...";
 "zim_file.download_task.action.resume" = "Lanjutkan";
-"zim_file.download_task.action.paused" = "Dijeda";
 "service_worker_warning.label.description" = "Berkas Zim yang memerlukan pekerja layanan tidak didukung.";
 "multi.zim_files_selected.sidebar_title" = "Dipilih";
 "multi.zim_files_selected.description_count" = "Berkas ZIM";
@@ -131,7 +130,7 @@
 "library_settings.button.refresh_now" = "Muat Ulang Sekarang";
 "library_settings.last_refresh.text" = "Pemuatan ulang terakhir";
 "library_settings.auto_refresh.toggle" = "Pemuatan ulang otomatis";
-"library_settings.catalog_warning.text" = "Jika diaktifkan, katalog perpustakaan akan diperbarui secara otomatis jika sudah kadaluwarsa.";
+"library_settings.catalog_warning.text" = "Jika diaktifkan, katalog perpustakaan akan diperbarui secara otomatis jika sudah kedaluwarsa.";
 "library_settings.languages.title" = "Bahasa";
 "settings.navigation.title" = "Pengaturan";
 "library_settings.toggle.cellular" = "Unduh menggunakan seluler";
@@ -141,7 +140,7 @@
 "catalog_settings.refresh_now.button" = "Muat Ulang Sekarang";
 "catalog_settings.auto_refresh.toggle" = "Pemuatan ulang otomatis";
 "catalog_settings.header.text" = "Katalog";
-"catalog_settings.footer.text" = "Jika diaktifkan, katalog perpustakaan akan diperbarui secara otomatis jika sudah kadaluwarsa.";
+"catalog_settings.footer.text" = "Jika diaktifkan, katalog perpustakaan akan diperbarui secara otomatis jika sudah kedaluwarsa.";
 "backup_settings.toggle.title" = "Sertakan berkas ZIM dalam cadangan";
 "backup_settings.header.text" = "Cadangan";
 "backup_settings.footer.text" = "Tidak berlaku untuk berkas yang dibuka di tempat.";

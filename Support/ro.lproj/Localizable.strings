@@ -112,7 +112,6 @@
 "zim_file.download_task.action.pause" = "Pauză";
 "zim_file.download_task.action.downloading" = "Descărcare...";
 "zim_file.download_task.action.resume" = "Reia";
-"zim_file.download_task.action.paused" = "Pauză";
 "service_worker_warning.label.description" = "Fișierele zim care necesită lucrători de service nu sunt acceptate.";
 "reading_settings.zoom.title" = "Mărirea paginii";
 "reading_settings.zoom.reset.button" = "Resetează";

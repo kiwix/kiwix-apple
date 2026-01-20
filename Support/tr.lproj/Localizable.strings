@@ -107,7 +107,6 @@
 "zim_file.download_task.action.pause" = "Duraklat";
 "zim_file.download_task.action.downloading" = "Yükleniyor...";
 "zim_file.download_task.action.resume" = "Devam et";
-"zim_file.download_task.action.paused" = "Durduruldu";
 "service_worker_warning.label.description" = "Servis çalışanlarını gerektiren Zim dosyaları desteklenmez.";
 "reading_settings.zoom.title" = "Sayfa yakınlaştırma";
 "reading_settings.zoom.reset.button" = "Sıfırla";

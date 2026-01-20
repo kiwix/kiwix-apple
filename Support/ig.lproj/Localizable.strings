@@ -123,7 +123,6 @@
 "zim_file.download_task.action.pause" = "Akwụsịla";
 "zim_file.download_task.action.downloading" = "Na-ebudata...";
 "zim_file.download_task.action.resume" = "malite";
-"zim_file.download_task.action.paused" = "Akwụsịla";
 "service_worker_warning.label.description" = "Zim Failụ nke chọrọ ndị ọrụ enweghị mkwado.";
 "reading_settings.zoom.title" = "Peeji nke Zoom";
 "reading_settings.zoom.reset.button" = "gbazigharịa";

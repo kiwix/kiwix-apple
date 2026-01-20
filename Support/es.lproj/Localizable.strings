@@ -13,6 +13,14 @@
 "library_refresh_error.process.description" = "Error al procesar los datos de la biblioteca.";
 "download_service.complete.title" = "Descarga completada";
 "download_service.complete.description" = "%@ se descargó con éxito.";
+"download_service.error.general.title" = "La descarga no tuvo éxito.";
+"download_service.error.zimfile.title" = "No se puede descargar \"%@\"";
+"download_service.error.footer" = "La descarga no pudo completarse.";
+"download_service.error.option_http_status" = "Código de estado HTTP: %@";
+"download_service.error.option_directory" = "No se puede encontrar el directorio de descarga";
+"download_service.error.option_invalid_taskid" = "ID de downloadTask (tarea de descarga) no válido";
+"download_service.error.option_invalid_response" = "Respuesta no válida";
+"download_service.error.option_unable_to_move_file" = "No se puede mover el archivo descargado";
 "common.dialog.button.open" = "Abrir";
 "common.dialog.button.open_in_new_tab" = "Abrir en una pestaña nueva";
 "common.dialog.button.add_bookmark" = "Añadir marcador";
@@ -32,6 +40,7 @@
 "common.button.share" = "Compartir";
 "common.button.share_as_pdf" = "Compartir como PDF";
 "common.search" = "Buscar";
+"common.search.suggestion" = "Quizás quiso decir:";
 "common.tab.manager.title" = "Administrador de pestañas";
 "common.tab.navigation.title" = "Pestañas";
 "common.tab.menu.new_tab" = "Pestaña nueva";
@@ -65,6 +74,10 @@
 "download_task_cell.status.failed" = "Falló";
 "download_task_cell.status.downloading" = "Descargando...";
 "download_task_cell.status.paused" = "En pausa";
+"download_task_cell.status.paused.device_offline" = "En pausa (el dispositivo está fuera de línea)";
+"download_again.question.title" = "Ya tiene este archivo.";
+"download_again.question.description_part_1" = "Parece que %@ ya está descargado.";
+"download_again.question.description_part_2" = "¿Aún desea descargar \"%@\"? Su archivo existente no se eliminará.";
 "flavor_tag.help.max" = "todo excepto archivos multimedia grandes como vídeo/audio";
 "flavor_tag.help.no_pic" = "la mayoría de las imágenes han sido eliminadas";
 "flavor_tag.help.mini" = "sólo está disponible un subconjunto del texto, probablemente la primera sección";
@@ -137,7 +150,6 @@
 "zim_file.download_task.action.pause" = "Pausar";
 "zim_file.download_task.action.downloading" = "Descargando...";
 "zim_file.download_task.action.resume" = "Reanudar";
-"zim_file.download_task.action.paused" = "Pausada";
 "service_worker_warning.label.description" = "No se admiten archivos Zim que requieren trabajadores de servicio.";
 "multi.zim_files_selected.sidebar_title" = "Seleccionado";
 "multi.zim_files_selected.description_count" = "Archivos ZIM";

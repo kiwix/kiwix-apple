@@ -1,5 +1,6 @@
 // Messages for Traditional Chinese (中文（繁體）)
 // Exported from translatewiki.net
+// Author: Key0121
 // Author: Kly
 // Author: Winston Sung
 // Author: 列维劳德
@@ -10,6 +11,10 @@
 "library_refresh_error.process.description" = "處理目錄資料時發生錯誤。";
 "download_service.complete.title" = "下載完成";
 "download_service.complete.description" = "已成功下載%@。";
+"download_service.error.general.title" = "下載未能成功。";
+"download_service.error.zimfile.title" = "無法下載「%@」";
+"download_service.error.footer" = "下載未能完成。";
+"download_service.error.option_http_status" = "HTTP 狀態碼：%@";
 "download_service.error.option_directory" = "找不到下載目錄";
 "download_service.error.option_invalid_taskid" = "無效下載任務 ID";
 "download_service.error.option_invalid_response" = "無效回應";
@@ -67,6 +72,7 @@
 "download_task_cell.status.failed" = "失敗";
 "download_task_cell.status.downloading" = "正在下載…";
 "download_task_cell.status.paused" = "已暫停";
+"download_task_cell.status.paused.device_offline" = "已暫停（裝置離線）";
 "download_again.question.title" = "您已經擁有這個檔案。";
 "download_again.question.description_part_1" = "%@ 看起來已下載完畢。";
 "download_again.question.description_part_2" = "您仍要下載「%@」嗎？您的現有檔案不會被刪除。";
@@ -142,7 +148,6 @@
 "zim_file.download_task.action.pause" = "暫停";
 "zim_file.download_task.action.downloading" = "正在下載…";
 "zim_file.download_task.action.resume" = "繼續";
-"zim_file.download_task.action.paused" = "已暫停";
 "service_worker_warning.label.description" = "不支援需要 service worker 的 Zim 檔案。";
 "multi.zim_files_selected.sidebar_title" = "已選擇";
 "multi.zim_files_selected.description_count" = "ZIM 檔案";
@@ -274,3 +279,46 @@
 "payment.success.description" = "您的慷慨行為對我們至關重要。";
 "payment.error.title" = "唔，真尷尬。";
 "payment.error.description" = "您的付款出現了問題。請重試。";
+"download_service.error.client.backgroundSessionInUseByAnotherProcess" = "無法與背景傳輸服務通信";
+"download_service.error.client.backgroundSessionWasDisconnected" = "與背景傳輸服務斷開連線";
+"download_service.error.client.cancelled" = "已取消";
+"download_service.error.client.badURL" = "無效 URL";
+"download_service.error.client.timedOut" = "請求已逾時。";
+"download_service.error.client.unsupportedURL" = "不支援的 URL";
+"download_service.error.client.cannotFindHost" = "找不到具有指定主機名稱的伺服器。";
+"download_service.error.client.cannotConnectToHost" = "無法連接至伺服器。";
+"download_service.error.client.networkConnectionLost" = "網路連線中斷。";
+"download_service.error.client.dnsLookupFailed" = "DNS 查詢錯誤";
+"download_service.error.client.httpTooManyRedirects" = "HTTP 重新導向次數過多";
+"download_service.error.client.resourceUnavailable" = "資源不可用";
+"download_service.error.client.notConnectedToInternet" = "網路連線似乎已離線。";
+"download_service.error.client.redirectToNonExistentLocation" = "沒有重新導向到任何位置";
+"download_service.error.client.badServerResponse" = "伺服器回應錯誤。";
+"download_service.error.client.zeroByteResource" = "零位元組大小的資源";
+"download_service.error.client.cannotDecodeRawData" = "無法解碼原始資料";
+"download_service.error.client.cannotDecodeContentData" = "無法解碼內容資料";
+"download_service.error.client.cannotParseResponse" = "無法解析回應";
+"download_service.error.client.internationalRoamingOff" = "國際漫遊目前已關閉。";
+"download_service.error.client.callIsActive" = "由於目前正通話中，因此無法建立資料連線。";
+"download_service.error.client.dataNotAllowed" = "目前不允許資料連線。";
+"download_service.error.client.requestBodyStreamExhausted" = "已耗盡請求主體串流";
+"download_service.error.client.fileDoesNotExist" = "在此伺服器上找不到請求的 URL。";
+"download_service.error.client.fileIsDirectory" = "檔案是目錄";
+"download_service.error.client.noPermissionsToReadFile" = "您沒有權限存取所請求的資源。";
+"download_service.error.client.dataLengthExceedsMaximum" = "資源超出最大容量";
+"download_service.error.client.secureConnectionFailed" = "發生 SSL 錯誤，無法與伺服器建立安全連線。";
+"download_service.error.client.serverCertificateHasBadDate" = "此伺服器的憑證已過期。";
+"download_service.error.client.serverCertificateUntrusted" = "此伺服器的憑證無效。";
+"download_service.error.client.serverCertificateHasUnknownRoot" = "此伺服器的憑證是由未知的憑證授權單位簽發。";
+"download_service.error.client.serverCertificateNotYetValid" = "此伺服器的憑證未生效。";
+"download_service.error.client.clientCertificateRejected" = "伺服器不接受該憑證。";
+"download_service.error.client.clientCertificateRequired" = "伺服器需要客戶端憑證。";
+"download_service.error.client.cannotLoadFromNetwork" = "無法從網路載入";
+"download_service.error.client.cannotCreateFile" = "無法建立檔案";
+"download_service.error.client.cannotOpenFile" = "無法開啟檔案";
+"download_service.error.client.cannotCloseFile" = "關閉檔案時發生錯誤";
+"download_service.error.client.cannotWriteToFile" = "無法寫入檔案";
+"download_service.error.client.cannotRemoveFile" = "無法移除檔案";
+"download_service.error.client.cannotMoveFile" = "無法移動檔案";
+"download_service.error.client.downloadDecodingFailedMidStream" = "下載解碼失敗";
+"download_service.error.client.downloadDecodingFailedToComplete" = "下載解碼失敗";

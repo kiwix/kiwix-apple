@@ -116,7 +116,6 @@
 "zim_file.download_task.action.pause" = "一時停止";
 "zim_file.download_task.action.downloading" = "ダウンロード中...";
 "zim_file.download_task.action.resume" = "再開";
-"zim_file.download_task.action.paused" = "一時停止";
 "service_worker_warning.label.description" = "サービスワーカーを必要とするZIMファイルはサポート対象外です。";
 "reading_settings.zoom.title" = "ページズーム";
 "reading_settings.zoom.reset.button" = "リセット";

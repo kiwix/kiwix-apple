@@ -7,9 +7,13 @@
 "library_refresh_error.process.description" = "Грешка при обработката на податоци од каталогот.";
 "download_service.complete.title" = "Преземањето е завршено";
 "download_service.complete.description" = "%@ е успешно преземено.";
+// Fuzzy
 "download_service.error.option_directory" = "не ја најдов папката за преземања";
+// Fuzzy
 "download_service.error.option_invalid_taskid" = "неважечка назнака за downloadTask";
+// Fuzzy
 "download_service.error.option_invalid_response" = "неважечки одговор";
+// Fuzzy
 "download_service.error.option_unable_to_move_file" = "не можев да ја преземам преместената податотека";
 "common.dialog.button.open" = "Отвори";
 "common.dialog.button.open_in_new_tab" = "Отвори во ново јазиче";
@@ -140,7 +144,6 @@
 "zim_file.download_task.action.pause" = "Запри";
 "zim_file.download_task.action.downloading" = "Преземам...";
 "zim_file.download_task.action.resume" = "Продолжи";
-"zim_file.download_task.action.paused" = "Запрено";
 "service_worker_warning.label.description" = "Не се поддржани ZIM-податотеки што бараат застапнички служби.";
 "multi.zim_files_selected.sidebar_title" = "Избрано";
 "multi.zim_files_selected.description_count" = "ZIM-податотеки";

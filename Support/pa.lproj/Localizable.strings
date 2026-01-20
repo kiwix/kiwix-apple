@@ -77,7 +77,6 @@
 "zim_file.download_task.action.pause" = "ਰੋਕੋ";
 "zim_file.download_task.action.downloading" = "ਉਤਾਰਾ ਹੋ ਰਿਹਾ ਹੈ...";
 "zim_file.download_task.action.resume" = "ਮੁੜ ਸ਼ੁਰੂ ਕਰੋ";
-"zim_file.download_task.action.paused" = "ਰੋਕਿਆ ਗਿਆ";
 "multi.zim_files_selected.sidebar_title" = "ਚੁਣਿਆ ਗਿਆ";
 "reading_settings.zoom.reset.button" = "ਮੁੜ-ਬਣਾਓ";
 "reading_settings.external_link.title" = "ਬਾਹਰੀ ਕੜੀ";

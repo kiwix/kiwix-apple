@@ -81,7 +81,6 @@
 "zim_file.download_task.action.pause" = "Tauko";
 "zim_file.download_task.action.downloading" = "Ladataan...";
 "zim_file.download_task.action.resume" = "Jatka";
-"zim_file.download_task.action.paused" = "Pysäytetty";
 "reading_settings.external_link.title" = "Ulkoinen linkki";
 "library_settings.languages.title" = "Kielet";
 "settings.navigation.title" = "Asetukset";

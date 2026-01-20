@@ -88,7 +88,6 @@
 "zim_file.download_task.action.pause" = "Ehanañ";
 "zim_file.download_task.action.downloading" = "O pellgargañ...";
 "zim_file.download_task.action.resume" = "Adstagañ ganti";
-"zim_file.download_task.action.paused" = "Ehanet";
 "reading_settings.zoom.title" = "Zoum ar bajenn";
 "reading_settings.external_link.title" = "Liamm diavaez";
 "reading_settings.tab.reading" = "O lenn";

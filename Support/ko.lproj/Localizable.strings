@@ -28,6 +28,7 @@
 "common.button.share" = "공유";
 "common.button.share_as_pdf" = "PDF로 공유";
 "common.search" = "검색";
+"common.search.suggestion" = "이것을 찾으셨습니까:";
 "common.tab.manager.title" = "탭 관리자";
 "common.tab.navigation.title" = "탭";
 "common.tab.menu.new_tab" = "새 탭";
@@ -117,7 +118,6 @@
 "zim_file.download_task.action.pause" = "일시 정지";
 "zim_file.download_task.action.downloading" = "다운로드 중...";
 "zim_file.download_task.action.resume" = "계속하기";
-"zim_file.download_task.action.paused" = "일시 중단됨";
 "service_worker_warning.label.description" = "서비스 워커가 필요한 Zim 파일은 지원하지 않습니다.";
 "multi.zim_files_selected.description_count" = "ZIM 파일";
 "theme_settings.title" = "테마";

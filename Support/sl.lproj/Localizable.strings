@@ -7,9 +7,13 @@
 "library_refresh_error.process.description" = "Napaka pri obdelavi kataloških podatkov.";
 "download_service.complete.title" = "Prenos končan";
 "download_service.complete.description" = "%@ se je uspešno preneslo.";
+// Fuzzy
 "download_service.error.option_directory" = "imenika za prenos ni mogoče najti";
+// Fuzzy
 "download_service.error.option_invalid_taskid" = "neveljaven ID opravila za prenos";
+// Fuzzy
 "download_service.error.option_invalid_response" = "neveljaven odgovor";
+// Fuzzy
 "download_service.error.option_unable_to_move_file" = "prenesene datoteke ni mogoče prestaviti";
 "common.dialog.button.open" = "Odpri";
 "common.dialog.button.open_in_new_tab" = "Odpri v novem zavihku";
@@ -134,7 +138,6 @@
 "zim_file.download_task.action.pause" = "Premor";
 "zim_file.download_task.action.downloading" = "Prenos ...";
 "zim_file.download_task.action.resume" = "Nadaljuj";
-"zim_file.download_task.action.paused" = "Zaustavljeno";
 "service_worker_warning.label.description" = "Datuteke Zim, ki potrebujejo Service Worker, niso podprte.";
 "multi.zim_files_selected.sidebar_title" = "Izbrano";
 "multi.zim_files_selected.description_count" = "Datoteke ZIM";

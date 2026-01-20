@@ -8,7 +8,7 @@
 "library_refresh_error.process.description" = "Feeler beim Parse vun de Katalogdonnéeën.";
 "download_service.complete.title" = "Download ofgeschloss";
 "download_service.complete.description" = "%@ gouf erfollegräich erofgeluden.";
-"download_service.error.option_invalid_response" = "ongülteg Äntwert";
+"download_service.error.option_invalid_response" = "Ongülteg Äntwert";
 "common.dialog.button.open" = "Opmaachen";
 "common.dialog.button.open_in_new_tab" = "An engem neien Tab opmaachen";
 "common.dialog.button.add_bookmark" = "Lieszeechen derbäisetzen";
@@ -97,7 +97,6 @@
 "zim_file.download_task.action.pause" = "Pauséieren";
 "zim_file.download_task.action.downloading" = "Eroflueden...";
 "zim_file.download_task.action.resume" = "Virufueren";
-"zim_file.download_task.action.paused" = "Pauséiert";
 "multi.zim_files_selected.description_count" = "ZIM-Fichieren";
 "theme_settings.title" = "Faarfscheema";
 "theme_settings.option.dark" = "Däischter";
@@ -190,3 +189,6 @@
 "payment.confirm.button.title" = "Confirméieren";
 "payment.selection.option.monthly" = "All Mount";
 "payment.success.title" = "Villmools Merci fir Ären Don.";
+"download_service.error.client.cancelled" = "ofgebrach";
+"download_service.error.client.serverCertificateUntrusted" = "De Certificat fir dëse Server ass ongülteg.";
+"download_service.error.client.clientCertificateRejected" = "De Server huet de Certificat net akzeptéiert.";
