@@ -177,7 +177,9 @@ final class SearchViewModel: NSObject, ObservableObject, NSFetchedResultsControl
             zimFileIDs: zimFileIDs,
             withSpellingCacheDir: cacheDir
         )
-        operation.extractMatchingSnippet = Defaults[.searchResultSnippetMode] == .matches
+        // Revert this once we solve:
+        // https://github.com/kiwix/libkiwix/issues/1265
+        operation.extractMatchingSnippet = false // Defaults[.searchResultSnippetMode] == .matches
         operation.completionBlock = { [weak self] in
             guard !operation.isCancelled else { return }
             Task { @MainActor [weak self] in

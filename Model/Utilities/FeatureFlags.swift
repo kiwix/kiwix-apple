@@ -26,7 +26,9 @@ enum FeatureFlags {
     static let hasLibrary: Bool = !AppType.isCustom
 
     static let showExternalLinkOptionInSettings: Bool = Config.value(for: .showExternalLinkSettings) ?? true
-    static let showSearchSnippetInSettings: Bool = Config.value(for: .showSearchSnippetInSettings) ?? true
+    // Revert this once we solve:
+    // https://github.com/kiwix/libkiwix/issues/1265
+    static let showSearchSnippetInSettings: Bool = false // Config.value(for: .showSearchSnippetInSettings) ?? true
     
     static let suggestSearchTerms: Bool = Config.value(for: .showSearchSuggestionsSpellChecked) ?? false
 }
