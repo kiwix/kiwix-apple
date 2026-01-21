@@ -195,33 +195,6 @@
     [self.results addObject: searchResult];
 }
 
-# pragma mark - Spelling
-
-- (void) addSpellingCorrections {
-    [self.corrections removeAllObjects];
-    NSString *contentPath = [self.spellCacheDir path];
-    // apply for the list of ZimFileIds that are included in search
-    for (NSUUID *zimFileID in self.zimFileIDs) {
-        if (self.isCancelled) { return; }
-        try {
-            SpellingsDBWrapper *dbWrapper = [[ZimFileService sharedInstance] spellingsDBFor:zimFileID cachePath:contentPath];
-            if(dbWrapper == nil) {
-                return;
-            }
-            std::vector<std::string> spellCorrections = dbWrapper.cppDB->getSpellingCorrections(self.searchText_C, 1);
-            NSArray *array = convertToArray(spellCorrections);
-            if (self.isCancelled) { return; }
-            [self.corrections addObjectsFromArray:array];
-            NSInteger count = array.count;
-            NSLog(@"addSpellingCorrections for %@: (%ld)", zimFileID, static_cast<long>(count));
-        } catch (std::exception &e) {
-            NSLog(@"spellingsCorrections exception: %s", e.what());
-        } catch (Xapian::DatabaseError e) {
-            NSLog(@"create spelling index exception no database found: %s", e.get_description().c_str());
-        }
-    }
-}
-
 NSArray<NSString *> *convertToArray(const std::vector<std::string> &vec) {
     NSMutableArray<NSString *> *result = [NSMutableArray new];
     for (const std::string &s : vec) {

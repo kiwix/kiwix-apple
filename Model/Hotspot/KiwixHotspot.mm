@@ -70,12 +70,16 @@
 }
 
 - (NSString *_Nullable) address {
-    std::vector<std::string> urls = self.server->getServerAccessUrls();
-    if (urls.size() > 0) {
-        return [NSString stringWithUTF8String: urls[0].c_str()];
+    NSString *ipAddress = [NSString stringWithUTF8String: self.server->getAddress().addr.c_str()];
+    return [NSString stringWithFormat:@"http://%@%@/", ipAddress, [self portNumberSuffix]];
+}
+
+- (NSString *) portNumberSuffix {
+    int portNumber = self.server->getPort();
+    if(portNumber == 80) {
+        return @"";
     } else {
-        NSLog(@"no hotspot url was found");
-        return nil;
+        return [NSString stringWithFormat: @":%i", portNumber];
     }
 }
 

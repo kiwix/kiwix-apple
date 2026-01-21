@@ -53,10 +53,6 @@
     func openArchive(zimFileID: UUID) -> UUID? {
         __open(zimFileID)
     }
-    
-    func createSpellingIndex(zimFileID: UUID, cacheDir: URL) {
-        __createSpellingIndex(zimFileID, cachePath: cacheDir.path())
-    }
 
     /// Close a zim file
     /// - Parameter fileID: ID of the zim file to close

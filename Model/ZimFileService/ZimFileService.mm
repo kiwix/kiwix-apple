@@ -105,36 +105,6 @@
     return self.archives;
 }
 
-# pragma mark - Spelling
-- (SpellingsDBWrapper *_Nullable)spellingsDBFor:(NSUUID *)zimFileID cachePath:(NSString *)contentPath {
-    
-    zim::Archive *archive = [self archiveBy: zimFileID];
-    if (archive == nil) {
-        NSLog(@"cannot find ZIM by ID: %@ (%@)", zimFileID.UUIDString, contentPath);
-        return nil;
-    }
-    try {
-        @synchronized (self) {
-            NSLog(@"createSpellingIndex for:%@, in: %@", zimFileID.UUIDString, contentPath);
-            // this should be safe for utf-8, it comes from swift URL.path(percentEncoded=True)
-            std::filesystem::path path = std::filesystem::path([contentPath cStringUsingEncoding: NSUTF8StringEncoding]);
-            auto db = std::make_unique<kiwix::SpellingsDB>(*archive, path);
-            SpellingsDBWrapper *wrapper = [[SpellingsDBWrapper alloc] initWithDB: std::move(db)];
-            return wrapper;
-        }
-    } catch (std::exception e) {
-        NSLog(@"create spelling index exception: %s", e.what());
-        return nil;
-    } catch (Xapian::DatabaseError e) {
-        NSLog(@"create spelling index exception no database found: %s", e.get_description().c_str());
-        return nil;
-    }
-}
-
-- (void) createSpellingIndex:(NSUUID *)zimFileID cachePath:(NSString *)contentPath {
-    [self spellingsDBFor:zimFileID cachePath:contentPath];
-}
-
 # pragma mark - Metadata
 
 + (ZimFileMetaData *_Nullable)getMetaDataWithFileURL:(NSURL *)url {
@@ -255,10 +225,10 @@
 - (NSDictionary *_Nullable) getDirectAccess: (NSUUID *)zimFileID contentPath:(NSString *)contentPath {
     try {
         zim::Item item = [self itemIn:zimFileID contentPath: contentPath];
-        zim::ItemDataDirectAccessInfo info = item.getDirectAccessInformation();
+        zim::Item::DirectAccessInfo info = item.getDirectAccessInformation();
         return @{
-            @"path": [NSString stringWithUTF8String: info.filename.c_str()],
-            @"offset": [NSNumber numberWithUnsignedLong: info.offset]
+            @"path": [NSString stringWithUTF8String: info.first.c_str()],
+            @"offset": [NSNumber numberWithUnsignedLong: info.second]
         };
     } catch(std::exception) {
         return nil;

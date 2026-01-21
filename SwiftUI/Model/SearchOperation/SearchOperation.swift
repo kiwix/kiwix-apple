@@ -98,7 +98,6 @@ extension SearchOperation {
             return
         }
         Log.LibraryOperations.debug("perfoming search suggestsion")
-        __addSpellingCorrections()
         let count: Int = __corrections.count
         Log.LibraryOperations.debug("found search suggestsion: \(count, privacy: .public)")
     }

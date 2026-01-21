@@ -29,7 +29,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (id)initWithSearchText:(NSString *)searchText zimFileIDs:(NSSet *)zimFileIDs withSpellingCacheDir: (NSURL *_Nullable) spellCacheDir;
 - (void)performSearch;
-- (void) addSpellingCorrections NS_REFINED_FOR_SWIFT;
 
 @end
 

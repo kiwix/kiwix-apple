@@ -169,7 +169,6 @@ final class SearchViewModel: NSObject, ObservableObject, NSFetchedResultsControl
                 if FileManager.default.fileExists(atPath: tempFile.path()) {
                     try? FileManager.default.removeItem(at: tempFile)
                 }
-                ZimFileService.shared.createSpellingIndex(zimFileID: zimFileID, cacheDir: cacheDir)
             }
         }
         let operation = SearchOperation(
