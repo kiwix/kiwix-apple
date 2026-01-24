@@ -169,7 +169,7 @@ private struct CategoryGrid: View {
                 }.modifier(GridCommon())
             }
         }
-        .searchable(text: $searchText)
+        .searchable(text: $searchText, prompt: LocalString.common_search)
         .onChange(of: category) { selection.reset() }
         .onChange(of: searchText) { _, newValue in
             sections.nsPredicate = ZimFilesCategory.buildPredicate(category: category, searchText: newValue)
@@ -259,7 +259,7 @@ private struct CategoryList: View {
                 #endif
             }
         }
-        .searchable(text: $searchText)
+        .searchable(text: $searchText, prompt: LocalString.common_search)
         .onChange(of: category) { selection.reset() }
         .onChange(of: searchText) { _, newValue in
             zimFiles.nsPredicate = ZimFilesCategory.buildPredicate(category: category, searchText: newValue)
