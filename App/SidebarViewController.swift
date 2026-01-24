@@ -18,7 +18,8 @@ import CoreData
 import SwiftUI
 import UIKit
 
-final class SidebarViewController: UICollectionViewController, NSFetchedResultsControllerDelegate {
+@MainActor
+final class SidebarViewController: UICollectionViewController, @MainActor NSFetchedResultsControllerDelegate {
     private lazy var dataSource = {
         let cellRegistration = UICollectionView.CellRegistration<UICollectionViewListCell, MenuItem> {
             [unowned self] cell, indexPath, item in
@@ -173,8 +174,7 @@ final class SidebarViewController: UICollectionViewController, NSFetchedResultsC
     }
 
     // MARK: - Delegations
-
-    nonisolated func controller(
+    func controller(
         _ controller: NSFetchedResultsController<NSFetchRequestResult>,
         didChangeContentWith snapshot: NSDiffableDataSourceSnapshotReference
     ) {
@@ -183,21 +183,15 @@ final class SidebarViewController: UICollectionViewController, NSFetchedResultsC
         let tabs = tabIds.map { MenuItem.tab(objectID: $0) }
         var tabsSnapshot = NSDiffableDataSourceSectionSnapshot<MenuItem>()
         tabsSnapshot.append(tabs)
-        Task { [tabsSnapshot] in
-            await MainActor.run { [tabsSnapshot] in
-                dataSource.apply(
-                    tabsSnapshot,
-                    to: .tabs,
-                    animatingDifferences: dataSource.snapshot(for: .tabs).items.count > 0
-                ) {
-                    guard let indexPath = self.collectionView.indexPathsForSelectedItems?.first,
-                          let item = self.dataSource.itemIdentifier(for: indexPath),
-                          case .tab = item else { return }
-                    var sourceSnapshot = self.dataSource.snapshot()
-                    sourceSnapshot.reconfigureItems([item])
-                    self.dataSource.apply(sourceSnapshot, animatingDifferences: true)
-                }
-            }
+        let shouldAnimate = dataSource.snapshot(for: .tabs).items.count > 0
+        Task { @MainActor in
+            await dataSource.apply(tabsSnapshot, to: .tabs, animatingDifferences: shouldAnimate)
+            guard let indexPath = self.collectionView.indexPathsForSelectedItems?.first,
+                  let item = self.dataSource.itemIdentifier(for: indexPath),
+                  case .tab = item else { return }
+            var sourceSnapshot = self.dataSource.snapshot()
+            sourceSnapshot.reconfigureItems([item])
+            await dataSource.apply(sourceSnapshot, animatingDifferences: true)
         }
     }
     
