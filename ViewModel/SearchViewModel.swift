@@ -157,6 +157,12 @@ final class SearchViewModel: NSObject, ObservableObject, NSFetchedResultsControl
         } else {
             nil // don't use suggest search terms
         }
+        guard !searchText.isEmpty else {
+            // don't open archives on start:
+            results = .results([])
+            updateProgress(false)
+            return
+        }
         for zimFileID in zimFileIDs {
             _ = ZimFileService.shared.openArchive(zimFileID: zimFileID)
             if let cacheDir {
