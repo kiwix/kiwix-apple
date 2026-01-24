@@ -30,7 +30,7 @@ struct ContentSearchButton: View {
 
     var body: some View {
         Button(LocalString.common_search_inpage,
-               systemImage: "text.magnifyingglass",
+               systemImage: "text.page.badge.magnifyingglass",
                action: {
             findInteraction()
         }
