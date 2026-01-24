@@ -70,7 +70,7 @@ struct ContentSearchBar: View {
     private var field: some View {
         HStack {
             searchImage
-            TextField(LocalString.common_search, text: $viewModel.contentSearchText)
+            TextField(LocalString.common_search_inpage, text: $viewModel.contentSearchText)
                 .textFieldStyle(.roundedBorder)
             HStack(spacing: 2) {
                 leftButton
