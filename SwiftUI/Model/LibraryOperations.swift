@@ -83,7 +83,7 @@ struct LibraryOperations {
                 zimFile.isMissing = false
                 successCount += 1
                 Log.LibraryOperations.notice("""
-ZIM file opened: \(zimFile.name, privacy: .public) |\
+ZIM file revalidated: \(zimFile.name, privacy: .public) |\
 \(downloadPath, privacy: .public)
 """)
             } catch ZimFileOpenError.missing {
@@ -96,7 +96,7 @@ ZIM file missing: \(zimFile.name, privacy: .public) |\
                 zimFile.fileURLBookmark = nil
                 zimFile.isMissing = false
                 Log.LibraryOperations.notice("""
-ZIM file cannot be opened: \(zimFile.name, privacy: .public) |\ 
+ZIM file cannot be found: \(zimFile.name, privacy: .public) |\ 
 \(downloadPath, privacy: .public) due to: \(error, privacy: .public)
 """)
             }
@@ -107,7 +107,7 @@ ZIM file cannot be opened: \(zimFile.name, privacy: .public) |\
             }
         }
         Log.LibraryOperations.info(
-            "Reopened \(successCount, privacy: .public) out of \(zimFiles.count, privacy: .public) zim files"
+            "Revalidated \(successCount, privacy: .public) out of \(zimFiles.count, privacy: .public) zim files"
         )
     }
 
