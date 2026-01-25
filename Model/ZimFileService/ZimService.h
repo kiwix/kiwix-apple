@@ -18,13 +18,13 @@
 #import "zim/archive.h"
 #import "SpellingsDBWrapper.h"
 
-@interface ZimFileService : NSObject
+@interface ZimService : NSObject
 
 @property (nonatomic, strong) NSString *_Nonnull libkiwixVersion;
 @property (nonatomic, strong) NSString *_Nonnull libzimVersion;
 
 - (instancetype _Nonnull)init NS_REFINED_FOR_SWIFT;
-+ (nonnull ZimFileService *)sharedInstance NS_REFINED_FOR_SWIFT;
++ (nonnull ZimService *)sharedInstance NS_REFINED_FOR_SWIFT;
 
 #pragma mark - Reader Management
 
