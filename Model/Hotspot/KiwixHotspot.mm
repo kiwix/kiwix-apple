@@ -23,7 +23,7 @@
 #import "kiwix/library.h"
 #import "kiwix/book.h"
 #import "kiwix/server.h"
-#import "ZimFileService.h"
+#import "ZimService.h"
 
 
 @interface KiwixHotspot ()
@@ -47,7 +47,7 @@
     [self removeAllBooksFromLibrary];
     for (NSUUID *zimFileID in zimFileIDs) {
         try {
-            zim::Archive * _Nullable archive = [[ZimFileService sharedInstance] archiveBy: zimFileID];
+            zim::Archive * _Nullable archive = [[ZimService sharedInstance] archiveBy: zimFileID];
             if(archive != nullptr) {
                 kiwix::Book book = kiwix::Book();
                 book.update(*archive);

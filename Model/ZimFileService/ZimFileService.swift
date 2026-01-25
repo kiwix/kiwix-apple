@@ -13,17 +13,20 @@
 // You should have received a copy of the GNU General Public License
 // along with Kiwix; If not, see https://www.gnu.org/licenses/.
 
+import Foundation
+
 @globalActor actor ZimActor {
     static let shared = ZimActor()
 }
 
-/// A service to interact with zim files
-@ZimActor extension ZimFileService {
+@ZimActor
+struct ZimFileService {
+    static let shared = ZimFileService()
     /// Shared ZimFileService instance
-    static let shared = ZimFileService.__sharedInstance()
+    private let instance = ZimService.__sharedInstance()
 
     /// IDs of current local zim files (not necessaraly with opened Archive)
-    private var fileIDs: [UUID] { __getReaderIdentifiers().compactMap({ $0 as? UUID }) }
+    private var fileIDs: [UUID] { instance.__getReaderIdentifiers().compactMap({ $0 as? UUID }) }
 
     // MARK: - Reader Management
 
@@ -46,26 +49,26 @@
             throw ZimFileOpenError.missing
         }
         #endif
-        __store(url, with: uuid)
+        instance.__store(url, with: uuid)
         return isStale ? ZimFileService.getFileURLBookmarkData(for: url) : nil
     }
 
     func openArchive(zimFileID: UUID) -> UUID? {
-        __open(zimFileID)
+        instance.__open(zimFileID)
     }
     
     func createSpellingIndex(zimFileID: UUID, cacheDir: URL) {
-        __createSpellingIndex(zimFileID, cachePath: cacheDir.path())
+        instance.__createSpellingIndex(zimFileID, cachePath: cacheDir.path())
     }
 
     /// Close a zim file
     /// - Parameter fileID: ID of the zim file to close
-    func close(fileID: UUID) { __close(fileID) }
+    func close(fileID: UUID) { instance.__close(fileID) }
 
     // MARK: - Metadata
 
     static func getMetaData(url: URL) -> ZimFileMetaData? {
-        __getMetaData(withFileURL: url)
+        ZimService.__getMetaData(withFileURL: url)
     }
 
     // MARK: - URL System Bookmark
@@ -93,24 +96,24 @@
     // MARK: - URL Retrieve
 
     func getFileURL(zimFileID: UUID) -> URL? {
-        return __getFileURL(zimFileID)
+        return instance.__getFileURL(zimFileID)
     }
 
     func getRedirectedURL(url: URL) -> URL? {
         guard let zimFileID = url.zimFileID,
-              let redirectedPath = __getRedirectedPath(zimFileID, contentPath: url.contentPath) else { return nil }
+              let redirectedPath = instance.__getRedirectedPath(zimFileID, contentPath: url.contentPath) else { return nil }
         return URL(zimFileID: zimFileID.uuidString, contentPath: redirectedPath)
     }
 
     func getMainPageURL(zimFileID: UUID? = nil) -> URL? {
         guard let zimFileID = zimFileID ?? fileIDs.randomElement(),
-              let path = __getMainPagePath(zimFileID) else { return nil }
+              let path = instance.__getMainPagePath(zimFileID) else { return nil }
         return URL(zimFileID: zimFileID.uuidString, contentPath: path)
     }
 
     func getRandomPageURL(zimFileID: UUID? = nil) -> URL? {
         guard let zimFileID = zimFileID ?? fileIDs.randomElement(),
-              let path = __getRandomPagePath(zimFileID) else { return nil }
+              let path = instance.__getRandomPagePath(zimFileID) else { return nil }
         return URL(zimFileID: zimFileID.uuidString, contentPath: path)
     }
 
@@ -128,12 +131,12 @@
 
     func getContentSize(url: URL) -> NSNumber? {
         guard let zimFileUUID = url.zimFileID else { return nil }
-        return __getContentSize(zimFileUUID, contentPath: url.contentPath)
+        return instance.__getContentSize(zimFileUUID, contentPath: url.contentPath)
     }
 
     func getDirectAccessInfo(url: URL) -> DirectAccessInfo? {
         guard let zimFileUUID = url.zimFileID,
-              let directAccess = __getDirectAccess(zimFileUUID, contentPath: url.contentPath),
+              let directAccess = instance.__getDirectAccess(zimFileUUID, contentPath: url.contentPath),
               let path: String = directAccess["path"] as? String,
               let offset: UInt = directAccess["offset"] as? UInt
         else {
@@ -144,7 +147,7 @@
 
     func getContentMetaData(url: URL) -> URLContentMetaData? {
         guard let zimFileUUID = url.zimFileID,
-              let content = __getMetaData(zimFileUUID, contentPath: url.contentPath),
+              let content = instance.__getMetaData(zimFileUUID, contentPath: url.contentPath),
               let mime = content["mime"] as? String,
               let size = content["size"] as? UInt,
               let title = content["title"] as? String else { return nil }
@@ -159,7 +162,7 @@
 
     func getURLContent(zimFileID: String, contentPath: String, start: UInt = 0, end: UInt = 0) -> URLContent? {
         guard let zimFileID = UUID(uuidString: zimFileID),
-              let content = __getContent(zimFileID, contentPath: contentPath, start: start, end: end),
+              let content = instance.__getContent(zimFileID, contentPath: contentPath, start: start, end: end),
               let data = content["data"] as? Data,
               let start = content["start"] as? UInt,
               let end = content["end"] as? UInt else { return nil }
@@ -168,7 +171,7 @@
     
     // MARK: ZIM integrity check
     func checkIntegrity(zimFileID: UUID) -> Bool {
-        __checkIntegrity(zimFileID)
+        instance.__checkIntegrity(zimFileID)
     }
 }
 
