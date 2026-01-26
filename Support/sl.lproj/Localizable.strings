@@ -7,14 +7,14 @@
 "library_refresh_error.process.description" = "Napaka pri obdelavi kataloških podatkov.";
 "download_service.complete.title" = "Prenos končan";
 "download_service.complete.description" = "%@ se je uspešno preneslo.";
-// Fuzzy
-"download_service.error.option_directory" = "imenika za prenos ni mogoče najti";
-// Fuzzy
-"download_service.error.option_invalid_taskid" = "neveljaven ID opravila za prenos";
-// Fuzzy
-"download_service.error.option_invalid_response" = "neveljaven odgovor";
-// Fuzzy
-"download_service.error.option_unable_to_move_file" = "prenesene datoteke ni mogoče prestaviti";
+"download_service.error.general.title" = "Prenos ni uspel.";
+"download_service.error.zimfile.title" = "Datoteke »%@« ni bilo mogoče prenesti";
+"download_service.error.footer" = "Prenosa ni bilo mogoče dokončati.";
+"download_service.error.option_http_status" = "Oznaka stanja HTTP: %@";
+"download_service.error.option_directory" = "Imenika za prenos ni mogoče najti";
+"download_service.error.option_invalid_taskid" = "Neveljaven ID opravila za prenos";
+"download_service.error.option_invalid_response" = "Neveljaven odgovor";
+"download_service.error.option_unable_to_move_file" = "Prenesene datoteke ni mogoče premakniti";
 "common.dialog.button.open" = "Odpri";
 "common.dialog.button.open_in_new_tab" = "Odpri v novem zavihku";
 "common.dialog.button.add_bookmark" = "Dodaj zaznamek";
@@ -68,6 +68,7 @@
 "download_task_cell.status.failed" = "Spodletelo";
 "download_task_cell.status.downloading" = "Prenašam ...";
 "download_task_cell.status.paused" = "Zaustavljeno";
+"download_task_cell.status.paused.device_offline" = "Zaustavljeno (naprava je brez povezave)";
 "download_again.question.title" = "To datoteko že imate.";
 "download_again.question.description_part_1" = "Zdi se, da je datoteka %@ že prenesena.";
 "download_again.question.description_part_2" = "Ali še vedno želite prenesti »%@«? Vaša obstoječa datoteka ne bo izbrisana.";
@@ -121,6 +122,10 @@
 "zim_file.action.download.warning.message" = "V vaši napravi morda ni dovolj prostora za to datoteko ZIM.";
 "zim_file.action.download.warning.message1" = "Po prenosu datoteke ZIM bi ostalo manj kot 1 GB prostora.";
 "zim_file.action.download.button.anyway" = "Vseeno prenesi";
+"zim_file.action.integrity_check.title" = "Preveri";
+"zim_file.action.integrity_recheck.title" = "Znova preveri";
+"zim_file.action.integrity_check.alert.title" = "To lahko traja nekaj minut. Kiwix ne bo na voljo, dokler preverjanje ne bo končano.";
+"zim_file.integrity_check.in_progress" = "Preverjanje integritete: »%@« ...";
 "zim_file.base_info.attribute.language" = "Jezik";
 "zim_file.base_info.attribute.category" = "Kategorija";
 "zim_file.base_info.attribute.size" = "Velikost";
@@ -129,6 +134,7 @@
 "zim_file.bool_info.videos" = "Videi";
 "zim_file.bool_info.details" = "Podrobnosti";
 "zim_file.bool_info.require_service_workers" = "Potrebuje Service Workers";
+"zim_file.bool_info.zim_archive_integrity" = "Integriteta arhiva ZIM";
 "zim_file.counts.article_count" = "Število člankov";
 "zim_file.counts.article.media_count" = "Število medijev";
 "zim_file.detail.id.title" = "ID";
