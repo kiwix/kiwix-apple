@@ -17,89 +17,96 @@ import CoreData
 import Combine
 import os
 
-enum LibraryState {
-    case initial
-    case inProgress
-    case complete
-    case error
-
-    static func defaultState(defaults: Defaulting = UDefaults()) -> LibraryState {
-        if defaults[.libraryLastRefresh] == nil {
-            return .initial
-        } else {
-            return .complete
-        }
-    }
-}
-
-/// Makes sure that the process value is stored in a single state
-/// regardless of the amount of instances we have for LibraryViewModel
-@MainActor final class LibraryProcess: ObservableObject {
-    static let shared = LibraryProcess()
-    @Published var state: LibraryState
-
-    init(defaultState: LibraryState = .defaultState()) {
-        state = defaultState
+private struct Count {
+    let insertion: Int
+    let deletion: Int
+    
+    func add(_ other: Count) -> Count {
+        Count(
+            insertion: insertion + other.insertion,
+            deletion: deletion + other.deletion
+        )
     }
 }
 
 // MARK: database protocols
-
 protocol Databasing {
-    var context: DBObjectContext { get }
-    func backgroundTask(_ block: @escaping (DBObjectContext) -> Void)
+    func fetchZimFileIds() async throws -> [UUID]
+    func fetchZimFileCategoryLanguageData() async throws -> [ZimFileCategoryLangaugeData]
+    func bulkInsert(metadata: [ZimFileMetaStruct]) async throws -> Int
+    func bulkDeleteNotDownloadedZims(notIncludedIn: Set<UUID>) async throws -> Int
 }
 
-extension Database: Databasing {
-    var context: any DBObjectContext {
-        viewContext
+struct ProductionDatabase: Databasing {
+    
+    func fetchZimFileIds() async throws -> [UUID] {
+        try await Database.shared.backgroundContext.perform {
+            var request = ZimFile.fetchRequest()
+            request.propertiesToFetch = ["fileID"]
+            return try request.execute().map { $0.fileID }
+        }
     }
     
-    func backgroundTask(_ block: @escaping (any DBObjectContext) -> Void) {
-        performBackgroundTask(block)
-    }
-}
-
-protocol DBObjectContext {
-    func fetchZimFiles() throws -> [ZimFile]
-    func bulkInsert(handler: @escaping (ZimFile) -> Bool) throws -> Int
-    func bulkDeleteNotDownloadedZims(notIncludedIn: Set<UUID>) throws -> Int
-}
-
-extension NSManagedObjectContext: DBObjectContext {
-    func bulkInsert(handler: @escaping (ZimFile) -> Bool) throws -> Int {
-        let insertRequest = NSBatchInsertRequest(
-            entity: ZimFile.entity(),
-            managedObjectHandler: { zimFile in
-                guard let zimFile = zimFile as? ZimFile else { return true }
-                return handler(zimFile)
+    func fetchZimFileCategoryLanguageData() async throws -> [ZimFileCategoryLangaugeData] {
+        try await Database.shared.backgroundContext.perform {
+            var request = ZimFile.fetchRequest()
+            request.propertiesToFetch = ["category", "languageCode"]
+            return try request.execute().map {
+                ZimFileCategoryLangaugeData(category: $0.category, languageCode: $0.languageCode)
             }
-        )
-        insertRequest.resultType = .count
-        if let result = try execute(insertRequest) as? NSBatchInsertResult {
-            return result.result as? Int ?? 0
-        } else {
+        }
+    }
+    
+    func bulkInsert(metadata: [ZimFileMetaStruct]) async throws -> Int {
+        var listOfData = metadata
+        let context = Database.shared.backgroundContext
+        return await context.perform {
+            let insertRequest = NSBatchInsertRequest(
+                entity: ZimFile.entity(),
+                managedObjectHandler: { zimFile in
+                    guard let zimFile = zimFile as? ZimFile else { return true }
+                    while let data = listOfData.popLast() {
+                        LibraryOperations.configureZimFile(zimFile, metadata: data)
+                        return false
+                    }
+                    return true
+                }
+            )
+            insertRequest.resultType = .count
+            
+            guard let result = try? context.execute(insertRequest),
+                  let batchResult = result as? NSBatchInsertResult,
+                  let insertCount = batchResult.result as? Int
+            else {
+                return 0
+            }
+            return insertCount
+        }
+    }
+    
+    func bulkDeleteNotDownloadedZims(notIncludedIn: Set<UUID>) async throws -> Int {
+        let context = Database.shared.backgroundContext
+        return try await context.perform {
+            let fetchRequest: NSFetchRequest<NSFetchRequestResult> = ZimFile.fetchRequest()
+            fetchRequest.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
+                ZimFile.Predicate.notDownloaded,
+                NSPredicate(format: "NOT fileID IN %@", notIncludedIn)
+            ])
+            let deleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
+            deleteRequest.resultType = .resultTypeCount
+            
+            if let result = try context.execute(deleteRequest) as? NSBatchDeleteResult {
+                return result.result as? Int ?? 0
+            }
             return 0
         }
     }
-    
-    func bulkDeleteNotDownloadedZims(notIncludedIn: Set<UUID>) throws -> Int {
-        let fetchRequest: NSFetchRequest<NSFetchRequestResult> = ZimFile.fetchRequest()
-        fetchRequest.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
-            ZimFile.Predicate.notDownloaded,
-            NSPredicate(format: "NOT fileID IN %@", notIncludedIn)
-        ])
-        let deleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
-        deleteRequest.resultType = .resultTypeCount
-        if let result = try execute(deleteRequest) as? NSBatchDeleteResult {
-            return result.result as? Int ?? 0
-        }
-        return 0
-    }
-    
-    func fetchZimFiles() throws -> [ZimFile] {
-        try fetch(ZimFile.fetchRequest())
-    }
+}
+
+// non-isolated ZimFileData
+struct ZimFileCategoryLangaugeData {
+    let category: String
+    let languageCode: String
 }
 
 // MARK: LibraryViewModel
@@ -114,10 +121,7 @@ final class LibraryViewModel: ObservableObject {
     private let defaults: Defaulting
     private let categories: CategoriesProtocol
     private let database: Databasing
-
     private let urlSession: URLSession
-    private var insertionCount = 0
-    private var deletionCount = 0
     
     private static let catalogURL = URL(string: "https://opds.library.kiwix.org/v2/entries?count=-1")!
 
@@ -127,7 +131,7 @@ final class LibraryViewModel: ObservableObject {
         processFactory: @MainActor () -> LibraryProcess = { .shared },
         defaults: Defaulting = UDefaults(),
         categories: CategoriesProtocol = CategoriesToLanguages(withDefaults: UDefaults()),
-        database: Databasing = Database.shared
+        database: Databasing = ProductionDatabase()
     ) {
         self.urlSession = urlSession
         self.process = processFactory()
@@ -162,9 +166,8 @@ final class LibraryViewModel: ObservableObject {
                 // but we still need to refresh the memory only stored
                 // zimfile categories to languages dictionary
                 if categories.allCategories().count < 2 {
-                    let context = database.context
-                    if let zimFiles: [ZimFile] = try? context.fetchZimFiles() {
-                        saveCategoryAvailableInLanguages(fromDBZimFiles: zimFiles)
+                    if let categoryLangData = try? await database.fetchZimFileCategoryLanguageData() {
+                        saveCategoryAvailableInLanguages(fromDBZimFiles: categoryLangData)
                         // populate library language code if there isn't one set already
                         await setDefaultContentFilterLanguage()
                         
@@ -183,18 +186,21 @@ final class LibraryViewModel: ObservableObject {
                 }
             }
             let parser = try await parse(data: data, urlHost: responseURL)
+            var processCount = Count(insertion: 0, deletion: 0)
             // delete all old ISO Lang Code entries if needed, by passing in an empty parser
             if defaults[.libraryUsingOldISOLangCodes] {
-                try await process(parser: DeletingParser())
+                let deleteCount = try await process(parser: DeletingParser())
+                processCount = processCount.add(deleteCount)
                 defaults[.libraryUsingOldISOLangCodes] = false
             }
             // process the feed
-            try await process(parser: parser)
+            let feedCount = try await process(parser: parser)
+            processCount = processCount.add(feedCount)
 
             // update library last refresh timestamp
             defaults[.libraryLastRefresh] = Date()
 
-            saveCategoryAvailableInLanguages(using: parser)
+            await saveCategoryAvailableInLanguages(using: parser)
 
             // populate library language code if there isn't one set already
             await setDefaultContentFilterLanguage()
@@ -204,12 +210,10 @@ final class LibraryViewModel: ObservableObject {
             process.state = .complete
 
             // logging
-            let insertedCount = insertionCount
-            let deletedCount = deletionCount
-            let totalCount = parser.zimFileIDs.count
+            let totalCount = await parser.zimFileIDs.count
             Log.OPDS.notice("""
-Refresh finished -- insertion: \(insertedCount, privacy: .public), \
-deletion: \(deletedCount, privacy: .public), \
+Refresh finished -- insertion: \(processCount.insertion, privacy: .public), \
+deletion: \(processCount.deletion, privacy: .public), \
 total: \(totalCount, privacy: .public)
 """)
         } catch {
@@ -218,10 +222,10 @@ total: \(totalCount, privacy: .public)
         }
     }
 
-    private func saveCategoryAvailableInLanguages(using parser: OPDSParser) {
+    private func saveCategoryAvailableInLanguages(using parser: OPDSParser) async {
         var dictionary: [Category: Set<String>] = [:]
-        for zimFileID in parser.zimFileIDs {
-            if let meta = parser.getMetaData(id: zimFileID, fetchFavicon: false) {
+        for zimFileID in await parser.zimFileIDs {
+            if let meta = await parser.getMetaData(id: zimFileID, fetchFavicon: false) {
                 let category = Category(rawValue: meta.category) ?? .other
                 let allLanguagesForCategory: Set<String>
                 let categoryLanguages: Set<String> = Set<String>(meta.languageCodes.components(separatedBy: ","))
@@ -236,7 +240,7 @@ total: \(totalCount, privacy: .public)
         categories.save(dictionary)
     }
     
-    private func saveCategoryAvailableInLanguages(fromDBZimFiles zimFiles: [ZimFile]) {
+    @MainActor private func saveCategoryAvailableInLanguages(fromDBZimFiles zimFiles: [ZimFileCategoryLangaugeData]) {
         var dictionary: [Category: Set<String>] = [:]
         for zimFile in zimFiles {
             let category = Category(rawValue: zimFile.category) ?? .other
@@ -323,45 +327,27 @@ total: \(totalCount, privacy: .public)
         try await parser.parse(data: data, urlHost: urlHostString)
         return parser
     }
-
-    private func process(parser: Parser) async throws {
-        try await withCheckedThrowingContinuation { [weak self] continuation in
-            guard let self else {
-                continuation.resume()
-                return
+    
+    @ZimActor
+    private func process(parser: Parser) async throws -> Count {
+        let parsedZimFileIDs = parser.zimFileIDs
+        do {
+            // insert new zim files
+            let existingIDs = try await database.fetchZimFileIds()
+            let zimFileIDs = parsedZimFileIDs.subtracting(existingIDs)
+            let allZimMetaData: [ZimFileMetaStruct] = zimFileIDs.compactMap { uuid in
+                // for parsing the whole catalog
+                // we don't want to auto-fetch the favicons
+                // It takes forever !
+                parser.getMetaData(id: uuid, fetchFavicon: false)
             }
-            self.database.backgroundTask { [weak self] context in
-                guard let self else {
-                    continuation.resume()
-                    return
-                }
-                do {
-                    // insert new zim files
-                    let existing = try context.fetchZimFiles().map { $0.fileID }
-                    var zimFileIDs = parser.zimFileIDs.subtracting(existing)
-                    
-                    self.insertionCount = try context.bulkInsert { zimFile in
-                        while !zimFileIDs.isEmpty {
-                            guard let id = zimFileIDs.popFirst(),
-                                  // for parsing the whole catalog
-                                  // we don't want to fetch the favicons
-                                  // as it takes forever by doing one after another
-                                  let metadata = parser.getMetaData(id: id, fetchFavicon: false) else { continue }
-                            LibraryOperations.configureZimFile(zimFile, metadata: metadata)
-                            return false
-                        }
-                        return true
-                    }
-                    
-                    // delete old zim entries not included in the feed
-                    self.deletionCount = try context.bulkDeleteNotDownloadedZims(notIncludedIn: parser.zimFileIDs)
-                    
-                    continuation.resume()
-                } catch {
-                    Log.OPDS.error("Error saving OPDS Data: \(error.localizedDescription, privacy: .public)")
-                    continuation.resume(throwing: LibraryRefreshError.process)
-                }
-            }
+            let insertCount = try await database.bulkInsert(metadata: allZimMetaData)
+            // delete old zim entries not included in the feed
+            let deleteCount = try await database.bulkDeleteNotDownloadedZims(notIncludedIn: parsedZimFileIDs)
+            return Count(insertion: insertCount, deletion: deleteCount)
+        } catch {
+            Log.OPDS.error("Error saving OPDS Data: \(error.localizedDescription, privacy: .public)")
+            throw LibraryRefreshError.process
         }
     }
 }
