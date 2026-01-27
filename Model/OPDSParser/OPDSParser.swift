@@ -13,9 +13,9 @@
 // You should have received a copy of the GNU General Public License
 // along with Kiwix; If not, see https://www.gnu.org/licenses/.
 
+@ZimActor
 protocol Parser {
     var zimFileIDs: Set<UUID> { get }
-    @ZimActor
     func parse(data: Data, urlHost: String) throws
     func getMetaData(id: UUID, fetchFavicon: Bool) -> ZimFileMetaStruct?
 }
@@ -36,7 +36,6 @@ extension OPDSParser: Parser {
         guard let metadata = __getZimFileMetaData(id, fetchFavicon: fetchFavicon) else {
             return nil
         }
-        
         return ZimFileMetaStruct(
             fileID: metadata.fileID,
             groupIdentifier: metadata.groupIdentifier,
