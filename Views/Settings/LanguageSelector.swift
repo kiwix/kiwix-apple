@@ -156,7 +156,10 @@ class Languages {
         let languages: [Language]? = try? await backgroundContext.perform {
             let count = NSExpressionDescription()
             count.name = "count"
-            count.expression = NSExpression(forFunction: "count:", arguments: [NSExpression(forKeyPath: "languageCode")])
+            count.expression = NSExpression(
+                forFunction: "count:",
+                arguments: [NSExpression(forKeyPath: "languageCode")]
+            )
             count.expressionResultType = .integer16AttributeType
             
             let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "ZimFile")
