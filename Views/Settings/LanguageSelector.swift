@@ -151,37 +151,33 @@ class Languages {
     /// Retrieve a list of languages.
     /// - Returns: languages with count of zim files in each language
     static func fetch() async -> [Language] {
-        let count = NSExpressionDescription()
-        count.name = "count"
-        count.expression = NSExpression(forFunction: "count:", arguments: [NSExpression(forKeyPath: "languageCode")])
-        count.expressionResultType = .integer16AttributeType
-
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "ZimFile")
-        // exclude the already downloaded files, they might have invalid language set
-        // but we are mainly interested in fetched content
-        fetchRequest.predicate = ZimFile.Predicate.notDownloaded
-        fetchRequest.propertiesToFetch = ["languageCode", count]
-        fetchRequest.propertiesToGroupBy = ["languageCode"]
-        fetchRequest.resultType = .dictionaryResultType
-
-        let languages: [Language] = await withCheckedContinuation { continuation in
-            Database.shared.performBackgroundTask { context in
-                guard let results = try? context.fetch(fetchRequest) else {
-                    continuation.resume(returning: [])
-                    return
+        
+        let backgroundContext = Database.shared.backgroundContext
+        let languages: [Language]? = try? await backgroundContext.perform {
+            let count = NSExpressionDescription()
+            count.name = "count"
+            count.expression = NSExpression(forFunction: "count:", arguments: [NSExpression(forKeyPath: "languageCode")])
+            count.expressionResultType = .integer16AttributeType
+            
+            let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "ZimFile")
+            // exclude the already downloaded files, they might have invalid language set
+            // but we are mainly interested in fetched content
+            fetchRequest.predicate = ZimFile.Predicate.notDownloaded
+            fetchRequest.propertiesToFetch = ["languageCode", count]
+            fetchRequest.propertiesToGroupBy = ["languageCode"]
+            fetchRequest.resultType = .dictionaryResultType
+            let results = try fetchRequest.execute()
+            let collector = LanguageCollector()
+            for result in results {
+                if let result = result as? NSDictionary,
+                   let languageCodes = result["languageCode"] as? String,
+                   let count = result["count"] as? Int {
+                    collector.addLanguages(codes: languageCodes, count: count)
                 }
-                let collector = LanguageCollector()
-                for result in results {
-                    if let result = result as? NSDictionary,
-                       let languageCodes = result["languageCode"] as? String,
-                       let count = result["count"] as? Int {
-                        collector.addLanguages(codes: languageCodes, count: count)
-                    }
-                }
-                continuation.resume(returning: collector.languages())
             }
+            return collector.languages()
         }
-        return languages
+        return languages ?? []
     }
 
     /// Compare two languages based on library language sorting order.
