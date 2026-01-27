@@ -25,7 +25,7 @@ struct AlertHandler: ViewModifier {
         content.onReceive(alert) { notification in
             if let alertValue = notification.userInfo?["alert"] as? ActiveAlert {
                 switch alertValue {
-                case let .downloadErrorZIM(zimFileID, _, _):
+                case let .downloadErrorZIM(zimFileID, _):
                     let zimFile = try? Database.shared.viewContext.fetch(ZimFile.fetchRequest(fileID: zimFileID)).first
                     zimFileName = zimFile?.name ?? "unknown"
                 default:
@@ -62,10 +62,8 @@ struct AlertHandler: ViewModifier {
             LocalString.download_service_error_footer
         case let .downloadErrorGeneric(description):
             [description, LocalString.download_service_error_footer].joined(separator: "\n\n")
-        case let .downloadErrorZIM(_, .none, errorMessage):
+        case let .downloadErrorZIM(_, errorMessage):
             [errorMessage, LocalString.download_service_error_footer].joined(separator: "\n\n")
-        case let .downloadErrorZIM(_, .some(url), errorMessage):
-            [url, errorMessage, LocalString.download_service_error_footer].joined(separator: "\n\n")
         case nil:
             ""
         }

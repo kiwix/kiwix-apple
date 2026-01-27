@@ -90,7 +90,7 @@ final class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegat
             
             guard let destination = DownloadDestination.filePathFor(downloadURL: url) else {
                 let errorMessage = LocalString.download_service_error_option_directory
-                showAlert(.downloadErrorZIM(zimFileID: zimFileID, url: url.absoluteString, errorMessage: errorMessage))
+                showAlert(.downloadErrorZIM(zimFileID: zimFileID, errorMessage: errorMessage))
                 task.cancel()
                 deleteDownloadTask(zimFileID: zimFileID)
                 return
@@ -264,7 +264,6 @@ final class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegat
                 deleteDownloadTask(zimFileID: zimFileID)
                 let errorMessage = LocalString.download_service_error_option_invalid_response
                 showAlert(.downloadErrorZIM(zimFileID: zimFileID,
-                                            url: task.originalRequest?.url?.absoluteString,
                                             errorMessage: errorMessage))
                 return
             }
@@ -318,7 +317,6 @@ final class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegat
         let errorDesc = DownloadErrors.localizedString(from: error)
         deleteDownloadTask(zimFileID: zimFileID)
         showAlert(.downloadErrorZIM(zimFileID: zimFileID,
-                                    url: task.originalRequest?.url?.absoluteString,
                                     errorMessage: errorDesc))
     }
     // swiftlint:enable function_body_length
@@ -373,7 +371,6 @@ final class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegat
 Response completed, but it is not an HTTPURLResponse URL: \(urlString, privacy: .public)
 """)
             showAlert(.downloadErrorZIM(zimFileID: zimFileID,
-                                        url: url?.absoluteString,
                                         errorMessage: errorMessage))
             return
         }
@@ -388,7 +385,6 @@ Status code: \(statusCode, privacy: .public)
 """)
             let errorMessage = LocalString.download_service_error_option_http_status(withArgs: "\(statusCode)")
             showAlert(.downloadErrorZIM(zimFileID: zimFileID,
-                                        url: url?.absoluteString,
                                         errorMessage: errorMessage))
             deleteDownloadTask(zimFileID: zimFileID)
             return
@@ -397,7 +393,6 @@ Status code: \(statusCode, privacy: .public)
            var destination = DownloadDestination.filePathFor(downloadURL: url) else {
             let errorMessage = LocalString.download_service_error_option_directory
             showAlert(.downloadErrorZIM(zimFileID: zimFileID,
-                                        url: httpResponse.url?.absoluteString,
                                         errorMessage: errorMessage))
             deleteDownloadTask(zimFileID: zimFileID)
             return
@@ -425,7 +420,6 @@ due to: \(error.localizedDescription, privacy: .public)
 """)
             let errorMessage = LocalString.download_service_error_option_unable_to_move_file
             showAlert(.downloadErrorZIM(zimFileID: zimFileID,
-                                        url: url.absoluteString,
                                         errorMessage: errorMessage))
             deleteDownloadTask(zimFileID: zimFileID)
         }
