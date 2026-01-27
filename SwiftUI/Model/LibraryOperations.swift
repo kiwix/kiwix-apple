@@ -29,7 +29,7 @@ struct LibraryOperations {
     /// Open a zim file with url
     /// - Parameter url: url of the zim file
     @discardableResult
-    static func open(url: URL, onComplete: (() -> Void)? = nil) async -> ZimFileMetaData? {
+    static func open(url: URL, onComplete: (() -> Void)? = nil) async -> ZimFileMetaStruct? {
         guard let fileURLBookmark = await ZimFileService.getFileURLBookmarkData(for: url),
                 let metadata = await ZimFileService.getMetaData(url: url) else { return nil }
 
@@ -125,8 +125,8 @@ ZIM file cannot be opened: \(zimFile.name, privacy: .public) |\
     // MARK: - Configure
 
     /// Configure a zim file object based on its metadata.
-    nonisolated static func configureZimFile(_ zimFile: ZimFile, metadata: ZimFileMetaData) {
-        zimFile.articleCount = metadata.articleCount.int64Value
+    nonisolated static func configureZimFile(_ zimFile: ZimFile, metadata: ZimFileMetaStruct) {
+        zimFile.articleCount = metadata.articleCount
         zimFile.category = (Category(rawValue: metadata.category) ?? .other).rawValue
         zimFile.created = metadata.creationDate
         zimFile.fileDescription = metadata.fileDescription
@@ -136,11 +136,11 @@ ZIM file cannot be opened: \(zimFile.name, privacy: .public) |\
         zimFile.hasPictures = metadata.hasPictures
         zimFile.hasVideos = metadata.hasVideos
         zimFile.languageCode = metadata.languageCodes
-        zimFile.mediaCount = metadata.mediaCount.int64Value
+        zimFile.mediaCount = metadata.mediaCount
         zimFile.name = metadata.title
         zimFile.persistentID = metadata.groupIdentifier
         zimFile.requiresServiceWorkers = metadata.requiresServiceWorkers
-        zimFile.size = metadata.size.int64Value
+        zimFile.size = metadata.size
 
         // Overwrite these, only if there are new values
         if let faviconURL = metadata.faviconURL { zimFile.faviconURL = faviconURL }
