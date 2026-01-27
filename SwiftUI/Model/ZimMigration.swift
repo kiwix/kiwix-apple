@@ -33,18 +33,17 @@ enum ZimMigration {
         sortDescriptors: Self.sortDescriptors
     )
 
-    static func forCustomApps() {
+    static func forCustomApps() async {
         guard FeatureFlags.hasLibrary == false else { return }
-        Database.shared.performBackgroundTask { context in
+        let backgroundContext = Database.shared.backgroundContext
+        await backgroundContext.perform {
             guard var zimFiles = try? requestLatestZimFile.execute(),
                   zimFiles.count > 1,
                   let latest = zimFiles.popLast() else {
                 return
             }
-
-            context.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
             for zimFile in zimFiles {
-                migrateFrom(zimFile: zimFile, toZimFile: latest, using: context)
+                migrateFrom(zimFile: zimFile, toZimFile: latest, using: backgroundContext)
             }
         }
     }
