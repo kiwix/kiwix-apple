@@ -46,6 +46,7 @@ extension Defaults.Keys {
 
     static let categoriesToLanguages = Key<[Category: Set<String>]>("categoriesToLanguages", default: [:])
     static let hasSeenCategories = Key<Bool>("hasSeenCategories", default: false)
+    static let selectedCategory = Key<String?>("selectedCategory", default: nil)
     
     static let hotspotPortNumber = Key<Int>("hotspotPortNumber", default: Hotspot.defaultPort)
 

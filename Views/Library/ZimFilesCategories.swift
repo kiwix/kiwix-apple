@@ -29,7 +29,15 @@ struct ZimFilesCategories: View {
         categories: [Category] = CategoriesToLanguages().allCategories()
     ) {
         self.categories = categories
-        selected = categories.first ?? .wikipedia
+        let selectedCategory: Category? = {
+            guard let selectedCategoryId = Defaults[.selectedCategory] else {
+                return nil
+            }
+            return categories.first { category in
+                category.id == selectedCategoryId
+            }
+        }()
+        selected = selectedCategory ?? categories.first ?? .wikipedia
         self.dismiss = dismiss
     }
 
@@ -50,6 +58,7 @@ struct ZimFilesCategories: View {
             }
             .onDisappear {
                 hasSeenCategories = true
+                Defaults[.selectedCategory] = selected.id
             }
     }
 }
