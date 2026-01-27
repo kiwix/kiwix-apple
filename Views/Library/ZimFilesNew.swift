@@ -23,12 +23,6 @@ private final class ViewModel: ObservableObject {
     private var languageCodes = Set<String>()
     private var searchText: String = ""
     
-    private let sortDescriptors = [
-        NSSortDescriptor(keyPath: \ZimFile.created, ascending: false),
-        NSSortDescriptor(keyPath: \ZimFile.name, ascending: true),
-        NSSortDescriptor(keyPath: \ZimFile.size, ascending: false)
-    ]
-    
     func update(languageCodes: Set<String>) {
         guard languageCodes != self.languageCodes else { return }
         self.languageCodes = languageCodes
@@ -49,22 +43,23 @@ private final class ViewModel: ObservableObject {
     func update() async {
         let searchText = self.searchText
         let languageCodes = self.languageCodes
-        let newZimFiles: [ZimFile] = await withCheckedContinuation { continuation in
-            Database.shared.performBackgroundTask { context in
-                let predicate: NSPredicate = Self.buildPredicate(
-                    searchText: searchText,
-                    languageCodes: languageCodes
-                )
-                if let results = try? context.fetch(
-                    ZimFile.fetchRequest(
-                        predicate: predicate,
-                        sortDescriptors: self.sortDescriptors
-                    )
-                ) {
-                    continuation.resume(returning: results)
-                } else {
-                    continuation.resume(returning: [])
-                }
+        let newZimFiles: [ZimFile] = await Database.shared.backgroundContext.perform {
+            let predicate: NSPredicate = Self.buildPredicate(
+                searchText: searchText,
+                languageCodes: languageCodes
+            )
+            let sortDescriptors = [
+                NSSortDescriptor(keyPath: \ZimFile.created, ascending: false),
+                NSSortDescriptor(keyPath: \ZimFile.name, ascending: true),
+                NSSortDescriptor(keyPath: \ZimFile.size, ascending: false)
+            ]
+            if let results = try? ZimFile.fetchRequest(
+                predicate: predicate,
+                sortDescriptors: sortDescriptors
+            ).execute() {
+                return results
+            } else {
+                return []
             }
         }
         withAnimation(.easeInOut) {
