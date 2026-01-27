@@ -152,17 +152,18 @@ ZIM file cannot be opened: \(zimFile.name, privacy: .public) |\
 
     /// Unlink a zim file from library, delete associated bookmarks, and delete the file.
     /// - Parameter zimFile: the zim file to delete
-    @ZimActor static func delete(zimFileID: UUID) {
+    @ZimActor static func delete(zimFileID: UUID) async {
         guard let url = ZimFileService.shared.getFileURL(zimFileID: zimFileID) else { return }
         defer { try? FileManager.default.removeItem(at: url) }
-        LibraryOperations.unlink(zimFileID: zimFileID)
+        await LibraryOperations.unlink(zimFileID: zimFileID)
     }
 
     /// Unlink a zim file from library, delete associated bookmarks, but don't delete the file.
     /// - Parameter zimFile: the zim file to unlink
-    @ZimActor static func unlink(zimFileID: UUID) {
+    @ZimActor static func unlink(zimFileID: UUID) async {
         ZimFileService.shared.close(fileID: zimFileID)
-        Database.shared.performBackgroundTask { context in
+        let context = Database.shared.backgroundContext
+        await context.perform {
             context.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
             guard let zimFile = try? ZimFile.fetchRequest(fileID: zimFileID).execute().first else { return }
             zimFile.bookmarks.forEach { context.delete($0) }
