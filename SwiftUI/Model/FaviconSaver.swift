@@ -49,20 +49,23 @@ final class FaviconSaver {
     }
     
     private func bulkSaveToDB(dict: [URL: Data]) {
-        Database.shared.performBackgroundTask { context in
-            for (url, data) in dict {
-                let request = NSBatchUpdateRequest(
-                    entity: ZimFile.entity(),
-                )
-                request.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
-                    NSPredicate(format: "faviconURL == %@", url.absoluteString as CVarArg),
-                    NSPredicate(format: "faviconData == nil")
-                ])
-                
-                request.propertiesToUpdate = ["faviconData": data]
-                request.includesSubentities = false
-                request.resultType = .updatedObjectsCountResultType
-                _ = try? context.execute(request) as? NSBatchUpdateResult
+        Task(priority: .utility) {
+            let context = Database.shared.backgroundContext
+            await context.perform {
+                for (url, data) in dict {
+                    let request = NSBatchUpdateRequest(
+                        entity: ZimFile.entity(),
+                    )
+                    request.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
+                        NSPredicate(format: "faviconURL == %@", url.absoluteString as CVarArg),
+                        NSPredicate(format: "faviconData == nil")
+                    ])
+                    
+                    request.propertiesToUpdate = ["faviconData": data]
+                    request.includesSubentities = false
+                    request.resultType = .updatedObjectsCountResultType
+                    _ = try? context.execute(request) as? NSBatchUpdateResult
+                }
             }
         }
     }
