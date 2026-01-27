@@ -41,22 +41,17 @@ struct LibraryOperations {
         }
 
         // upsert zim file in the database
-        Database.shared.performBackgroundTask { context in
-            context.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
+        let context = Database.shared.backgroundContext
+        try? await context.perform {
             let predicate = NSPredicate(format: "fileID == %@", metadata.fileID as CVarArg)
             let fetchRequest = ZimFile.fetchRequest(predicate: predicate)
-            guard let zimFile = try? context.fetch(fetchRequest).first ?? ZimFile(context: context) else { return }
+            guard let zimFile = try? fetchRequest.execute().first ?? ZimFile(context: context) else { return }
             LibraryOperations.configureZimFile(zimFile, metadata: metadata)
             zimFile.fileURLBookmark = fileURLBookmark
             zimFile.isMissing = false
-            Task {
-                await MainActor.run {
-                    if context.hasChanges { try? context.save() }
-                    onComplete?()
-                }
-            }
+            try context.save()
         }
-
+        onComplete?()
         return metadata
     }
 
@@ -130,7 +125,7 @@ ZIM file cannot be opened: \(zimFile.name, privacy: .public) |\
     // MARK: - Configure
 
     /// Configure a zim file object based on its metadata.
-    static func configureZimFile(_ zimFile: ZimFile, metadata: ZimFileMetaData) {
+    nonisolated static func configureZimFile(_ zimFile: ZimFile, metadata: ZimFileMetaData) {
         zimFile.articleCount = metadata.articleCount.int64Value
         zimFile.category = (Category(rawValue: metadata.category) ?? .other).rawValue
         zimFile.created = metadata.creationDate
