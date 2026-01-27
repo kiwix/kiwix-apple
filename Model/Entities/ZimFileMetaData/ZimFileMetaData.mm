@@ -25,6 +25,7 @@
 
 @implementation ZimFileMetaData
 
+// deprecated use ZimFileMetaStruct instead
 - (nullable instancetype)initWithBook:(void *)book fetchFavicon: (BOOL) fetchFavicon {
     self = [super init];
     if (self) {

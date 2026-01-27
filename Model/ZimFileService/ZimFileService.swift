@@ -64,8 +64,32 @@
 
     // MARK: - Metadata
 
-    static func getMetaData(url: URL) -> ZimFileMetaData? {
-        __getMetaData(withFileURL: url)
+    static func getMetaData(url: URL) -> ZimFileMetaStruct? {
+        guard let metadata = ZimFileService.__getMetaData(withFileURL: url) else {
+            return nil
+        }
+        return ZimFileMetaStruct(
+            fileID: metadata.fileID,
+            groupIdentifier: metadata.groupIdentifier,
+            title: metadata.title,
+            fileDescription: metadata.fileDescription,
+            languageCodes: metadata.languageCodes,
+            category: metadata.category,
+            creationDate: metadata.creationDate,
+            size: Int64(truncating: metadata.size),
+            articleCount: Int64(truncating: metadata.articleCount),
+            mediaCount: Int64(truncating: metadata.mediaCount),
+            creator: metadata.creator,
+            publisher: metadata.publisher,
+            downloadURL: metadata.downloadURL,
+            faviconURL: metadata.faviconURL,
+            faviconData: metadata.faviconData,
+            flavor: metadata.flavor,
+            hasDetails: metadata.hasDetails,
+            hasPictures: metadata.hasPictures,
+            hasVideos: metadata.hasVideos,
+            requiresServiceWorkers: metadata.requiresServiceWorkers
+        )
     }
 
     // MARK: - URL System Bookmark

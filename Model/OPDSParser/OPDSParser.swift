@@ -17,7 +17,7 @@ protocol Parser {
     var zimFileIDs: Set<UUID> { get }
     @ZimActor
     func parse(data: Data, urlHost: String) throws
-    func getMetaData(id: UUID, fetchFavicon: Bool) -> ZimFileMetaData?
+    func getMetaData(id: UUID, fetchFavicon: Bool) -> ZimFileMetaStruct?
 }
 
 extension OPDSParser: Parser {
@@ -32,8 +32,33 @@ extension OPDSParser: Parser {
         }
     }
 
-    func getMetaData(id: UUID, fetchFavicon: Bool) -> ZimFileMetaData? {
-        return __getZimFileMetaData(id, fetchFavicon: fetchFavicon)
+    func getMetaData(id: UUID, fetchFavicon: Bool) -> ZimFileMetaStruct? {
+        guard let metadata = __getZimFileMetaData(id, fetchFavicon: fetchFavicon) else {
+            return nil
+        }
+        
+        return ZimFileMetaStruct(
+            fileID: metadata.fileID,
+            groupIdentifier: metadata.groupIdentifier,
+            title: metadata.title,
+            fileDescription: metadata.fileDescription,
+            languageCodes: metadata.languageCodes,
+            category: metadata.category,
+            creationDate: metadata.creationDate,
+            size: Int64(truncating: metadata.size),
+            articleCount: Int64(truncating: metadata.articleCount),
+            mediaCount: Int64(truncating: metadata.mediaCount),
+            creator: metadata.creator,
+            publisher: metadata.publisher,
+            downloadURL: metadata.downloadURL,
+            faviconURL: metadata.faviconURL,
+            faviconData: metadata.faviconData,
+            flavor: metadata.flavor,
+            hasDetails: metadata.hasDetails,
+            hasPictures: metadata.hasPictures,
+            hasVideos: metadata.hasVideos,
+            requiresServiceWorkers: metadata.requiresServiceWorkers
+        )
     }
 }
 
@@ -47,7 +72,7 @@ struct DeletingParser: Parser {
     func parse(data: Data, urlHost: String) throws {
     }
 
-    func getMetaData(id: UUID, fetchFavicon: Bool) -> ZimFileMetaData? {
+    func getMetaData(id: UUID, fetchFavicon: Bool) -> ZimFileMetaStruct? {
         nil
     }
 }
