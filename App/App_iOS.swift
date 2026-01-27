@@ -99,7 +99,7 @@ struct Kiwix: App {
                         DownloadService.shared.restartHeartbeatIfNeeded()
                     case let .custom(zimFileURL):
                         await LibraryOperations.open(url: zimFileURL)
-                        ZimMigration.forCustomApps()
+                        await ZimMigration.forCustomApps()
                         navigation.navigateToMostRecentTab()
                     }
                 }
