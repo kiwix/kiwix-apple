@@ -19,7 +19,7 @@ import os
 final class Database {
     static let shared = Database()
     private let container: NSPersistentContainer
-    private let backgroundContext: NSManagedObjectContext
+    let backgroundContext: NSManagedObjectContext
     private let backgroundQueue = DispatchQueue(label: "database.background.queue",
                                                 qos: .utility)
 
@@ -37,6 +37,7 @@ final class Database {
         container.viewContext
     }
 
+    @available(*, deprecated, renamed: "backgroundContext", message: "use async backgroundContext.perform")
     func performBackgroundTask(_ block: @escaping (NSManagedObjectContext) -> Void) {
         backgroundQueue.sync { [self] in
             backgroundContext.perform { [self] in
