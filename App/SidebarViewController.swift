@@ -121,14 +121,18 @@ final class SidebarViewController: UICollectionViewController, NSFetchedResultsC
                 ) { [unowned self] _ in
                     guard let navigationViewModel,
                           case let .tab(tabID) = navigationViewModel.currentItem else { return }
-                    navigationViewModel.deleteTab(tabID: tabID)
+                    Task { [weak navigationViewModel] in
+                        await navigationViewModel?.deleteTab(tabID: tabID)
+                    }
                 },
                 UIAction(
                     title: LocalString.sidebar_view_navigation_button_close_all,
                     image: UIImage(systemName: "xmark.square.fill"),
                     attributes: .destructive
                 ) { [unowned self] _ in
-                    navigationViewModel?.deleteAllTabs()
+                    Task {
+                        await navigationViewModel?.deleteAllTabs()
+                    }
                 }
             ])
         )
@@ -279,7 +283,9 @@ final class SidebarViewController: UICollectionViewController, NSFetchedResultsC
         let title = LocalString.sidebar_view_navigation_button_close
         let action = UIContextualAction(style: .destructive,
                                         title: title) { [weak navigationViewModel] _, _, _ in
-            navigationViewModel?.deleteTab(tabID: tabID)
+            Task { [weak navigationViewModel] in
+                await navigationViewModel?.deleteTab(tabID: tabID)
+            }
         }
         action.image = UIImage(systemName: "xmark")
         return UISwipeActionsConfiguration(actions: [action])

@@ -50,12 +50,11 @@ final class BrowserViewModel: NSObject, ObservableObject,
         }
     }
     
-    nonisolated static func destroyTabById(id: NSManagedObjectID) {
-        Task { @MainActor in
-            if let browserViewModel = cache?.findBy(key: id) {
-                await browserViewModel.destroy()
-                cache?.removeValue(forKey: id)
-            }
+    @MainActor
+    static func destroyTabById(id: NSManagedObjectID) async {
+        if let browserViewModel = cache?.findBy(key: id) {
+            await browserViewModel.destroy()
+            cache?.removeValue(forKey: id)
         }
     }
 
