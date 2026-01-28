@@ -32,6 +32,7 @@ extension OPDSParser: Parser {
         }
     }
 
+    @ZimActor
     func getMetaData(id: UUID, fetchFavicon: Bool) -> ZimFileMetaStruct? {
         guard let metadata = __getZimFileMetaData(id, fetchFavicon: fetchFavicon) else {
             return nil
