@@ -19,9 +19,11 @@ import CoreData
 
 final class TestDatabase: Databasing {
     
-    var zimFiles: [ZimFileMetaStruct] = []
+    //FIXME: this should be a struct based on ZimFile not the metadata!!!
+    // revert the test cases and do it again !
+    var zimFiles: [ZimFileStruct] = []
     
-    func fetchZimFiles() async throws -> [ZimFileMetaStruct] {
+    func fetchZimFiles() async throws -> [ZimFileStruct] {
         zimFiles
     }
     
@@ -31,11 +33,11 @@ final class TestDatabase: Databasing {
     
     func fetchZimFileCategoryLanguageData() async throws -> [ZimFileCategoryLanguageData] {
         zimFiles.map {
-            ZimFileCategoryLanguageData(category: $0.category, languageCode: $0.languageCodes)
+            ZimFileCategoryLanguageData(category: $0.category, languageCode: $0.languageCode)
         }
     }
     
-    func bulkInsert(metadata: [ZimFileMetaStruct]) async throws -> Int {
+    func bulkInsert(metadata: [ZimFileStruct]) async throws -> Int {
         zimFiles.append(contentsOf: metadata)
         return metadata.count
     }
