@@ -33,14 +33,18 @@ struct TabsManagerButton: View {
                 } label: {
                     Label(LocalString.common_tab_menu_new_tab, systemImage: "plus.square")
                 }
-                Button(role: .destructive) {
-                    guard case .tab(let tabID) = navigation.currentItem else { return }
-                    navigation.deleteTab(tabID: tabID)
+                Button(role: .destructive) { [weak navigation] in
+                    guard case .tab(let tabID) = navigation?.currentItem else { return }
+                    Task { [weak navigation] in
+                        await navigation?.deleteTab(tabID: tabID)
+                    }
                 } label: {
                     Label(LocalString.common_tab_menu_close_this, systemImage: "xmark.square")
                 }
-                Button(role: .destructive) {
-                    navigation.deleteAllTabs()
+                Button(role: .destructive) { [weak navigation] in
+                    Task { [weak navigation] in
+                        await navigation?.deleteAllTabs()
+                    }
                 } label: {
                     Label(LocalString.common_tab_menu_close_all, systemImage: "xmark.square.fill")
                 }
@@ -91,8 +95,10 @@ struct TabManager: View {
                 navigation.currentItem == NavigationItem.tab(objectID: tab.objectID) ? Color.blue.opacity(0.2) : nil
             )
             .swipeActions {
-                Button(role: .destructive) {
-                    navigation.deleteTab(tabID: tab.objectID)
+                Button(role: .destructive) { [weak navigation] in
+                    Task { [weak navigation] in
+                        await navigation?.deleteTab(tabID: tab.objectID)
+                    }
                 } label: {
                     Label(LocalString.common_tab_list_close, systemImage: "xmark")
                 }
@@ -103,14 +109,18 @@ struct TabManager: View {
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             Menu {
-                Button(role: .destructive) {
-                    guard case let .tab(tabID) = navigation.currentItem else { return }
-                    navigation.deleteTab(tabID: tabID)
+                Button(role: .destructive) { [weak navigation] in
+                    guard case let .tab(tabID) = navigation?.currentItem else { return }
+                    Task { [weak navigation] in
+                        await navigation?.deleteTab(tabID: tabID)
+                    }
                 } label: {
                     Label(LocalString.common_tab_menu_close_this, systemImage: "xmark.square")
                 }
-                Button(role: .destructive) {
-                    navigation.deleteAllTabs()
+                Button(role: .destructive) { [weak navigation] in
+                    Task { [weak navigation] in
+                        await navigation?.deleteAllTabs()
+                    }
                 } label: {
                     Label(LocalString.common_tab_menu_close_all, systemImage: "xmark.square.fill")
                 }
