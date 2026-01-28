@@ -19,8 +19,6 @@ import CoreData
 
 final class TestDatabase: Databasing {
     
-    //FIXME: this should be a struct based on ZimFile not the metadata!!!
-    // revert the test cases and do it again !
     var zimFiles: [ZimFileStruct] = []
     
     func fetchZimFiles() async throws -> [ZimFileStruct] {
@@ -37,17 +35,60 @@ final class TestDatabase: Databasing {
         }
     }
     
-    func bulkInsert(metadata: [ZimFileStruct]) async throws -> Int {
-        zimFiles.append(contentsOf: metadata)
-        return metadata.count
+    func bulkInsert(metadata: [ZimFileMetaStruct]) async throws -> Int {
+        let newFileIds = metadata.map { $0.fileID }
+        let oldFiles = zimFiles.filter { zimFile in
+            newFileIds.contains(zimFile.fileID) == false
+        }
+        let newFiles = metadata.map { metadata in
+            ZimFileStruct(from: metadata)
+        }
+        zimFiles = oldFiles + newFiles
+        return newFiles.count
     }
     
     func bulkDeleteNotDownloadedZims(notIncludedIn: Set<UUID>) async throws -> Int {
         let oldCount = zimFiles.count
         zimFiles = zimFiles.filter { zimFile in
-            notIncludedIn.contains(zimFile.fileID)
+            notIncludedIn.contains(zimFile.fileID) || zimFile.fileURLBookmark != nil
         }
         let newCount = zimFiles.count
         return oldCount - newCount
     }
+    
+    func update(with changedZimFile: ZimFileStruct) {
+        zimFiles = zimFiles.map { zimFile in
+            guard zimFile.fileID == changedZimFile.fileID else {
+                return zimFile
+            }
+            return changedZimFile
+        }
+    }
+}
+
+private extension ZimFileStruct {
+    /// Based on LibraryOperations configureZimFile
+    init(from metadata: ZimFileMetaStruct) {
+        self.init(articleCount: metadata.articleCount,
+                  category: (Category(rawValue: metadata.category) ?? .other).rawValue,
+                  created: metadata.creationDate,
+                  downloadURL: metadata.downloadURL,
+                  faviconData: metadata.faviconData,
+                  faviconURL: metadata.faviconURL,
+                  fileDescription: metadata.fileDescription,
+                  fileID: metadata.fileID,
+                  flavor: metadata.flavor,
+                  hasDetails: metadata.hasDetails,
+                  hasPictures: metadata.hasPictures,
+                  hasVideos: metadata.hasVideos,
+                  includedInSearch: true,
+                  isMissing: false,
+                  languageCode: metadata.languageCodes,
+                  mediaCount: metadata.mediaCount,
+                  name: metadata.title,
+                  persistentID: metadata.groupIdentifier,
+                  requiresServiceWorkers: metadata.requiresServiceWorkers,
+                  size: metadata.size)
+    }
+    
 }

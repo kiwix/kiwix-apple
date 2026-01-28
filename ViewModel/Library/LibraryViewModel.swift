@@ -36,7 +36,7 @@ protocol Databasing {
     func fetchZimFiles() async throws -> [ZimFileStruct]
     func fetchZimFileIds() async throws -> [UUID]
     func fetchZimFileCategoryLanguageData() async throws -> [ZimFileCategoryLanguageData]
-    func bulkInsert(metadata: [ZimFileStruct]) async throws -> Int
+    func bulkInsert(metadata: [ZimFileMetaStruct]) async throws -> Int
     func bulkDeleteNotDownloadedZims(notIncludedIn: Set<UUID>) async throws -> Int
 }
 
@@ -90,7 +90,7 @@ struct ProductionDatabase: Databasing {
         }
     }
     
-    func bulkInsert(metadata: [ZimFileStruct]) async throws -> Int {
+    func bulkInsert(metadata: [ZimFileMetaStruct]) async throws -> Int {
         var listOfData = metadata
         let context = Database.shared.backgroundContext
         return await context.perform {

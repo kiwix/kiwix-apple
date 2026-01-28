@@ -26,7 +26,7 @@ struct ZimFileStruct {
     let fileDescription: String
     let fileID: UUID
     ///  System file URL, if not nil, it means it's downloaded
-    let fileURLBookmark: Data?
+    var fileURLBookmark: Data?
     let flavor: String?
     let hasDetails: Bool
     let hasPictures: Bool
