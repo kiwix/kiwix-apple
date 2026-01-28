@@ -45,8 +45,8 @@ struct LibraryOperations {
         try? await context.perform {
             let predicate = NSPredicate(format: "fileID == %@", metadata.fileID as CVarArg)
             let fetchRequest = ZimFile.fetchRequest(predicate: predicate)
-            guard let zimFile = try? fetchRequest.execute().first ?? ZimFile(context: context) else { return }
-            LibraryOperations.configureZimFile(zimFile, metadata: metadata)
+            guard var zimFile = try? fetchRequest.execute().first ?? ZimFile(context: context) else { return }
+            LibraryOperations.configureZimFile(&zimFile, metadata: metadata)
             zimFile.fileURLBookmark = fileURLBookmark
             zimFile.isMissing = false
             try context.save()
@@ -125,7 +125,7 @@ ZIM file cannot be opened: \(zimFile.name, privacy: .public) |\
     // MARK: - Configure
 
     /// Configure a zim file object based on its metadata.
-    nonisolated static func configureZimFile(_ zimFile: ZimFile, metadata: ZimFileMetaStruct) {
+    nonisolated static func configureZimFile(_ zimFile: inout ZimFile, metadata: ZimFileMetaStruct) {
         zimFile.articleCount = metadata.articleCount
         zimFile.category = (Category(rawValue: metadata.category) ?? .other).rawValue
         zimFile.created = metadata.creationDate

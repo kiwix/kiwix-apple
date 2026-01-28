@@ -17,43 +17,35 @@ import Foundation
 import CoreData
 @testable import Kiwix
 
-final class TestContext: DBObjectContext {
+final class TestDatabase: Databasing {
     
-    private let objectContext = NSManagedObjectContext(.privateQueue)
+    var zimFiles: [ZimFileMetaStruct] = []
     
-    var zimFiles: [ZimFile] = []
-    
-    func fetchZimFiles() throws -> [ZimFile] {
+    func fetchZimFiles() async throws -> [ZimFileMetaStruct] {
         zimFiles
     }
     
-    func bulkInsert(handler: @escaping (ZimFile) -> Bool) throws -> Int {
-        var count = 0
-        var zimFile = ZimFile(context: objectContext)
-        while handler(zimFile) == false {
-            zimFiles.append(zimFile)
-            zimFile = ZimFile(context: objectContext)
-            count += 1
-        }
-        return count
+    func fetchZimFileIds() async throws -> [UUID] {
+        zimFiles.map { $0.fileID }
     }
     
-    func bulkDeleteNotDownloadedZims(notIncludedIn: Set<UUID>) throws -> Int {
+    func fetchZimFileCategoryLanguageData() async throws -> [ZimFileCategoryLanguageData] {
+        zimFiles.map {
+            ZimFileCategoryLanguageData(category: $0.category, languageCode: $0.languageCodes)
+        }
+    }
+    
+    func bulkInsert(metadata: [ZimFileMetaStruct]) async throws -> Int {
+        zimFiles.append(contentsOf: metadata)
+        return metadata.count
+    }
+    
+    func bulkDeleteNotDownloadedZims(notIncludedIn: Set<UUID>) async throws -> Int {
         let oldCount = zimFiles.count
         zimFiles = zimFiles.filter { zimFile in
-            notIncludedIn.contains(zimFile.fileID) || zimFile.fileURLBookmark != nil
+            notIncludedIn.contains(zimFile.fileID)
         }
         let newCount = zimFiles.count
         return oldCount - newCount
-    }
-    
-}
-
-final class TestDatabase: Databasing {
-    
-    var context: DBObjectContext = TestContext()
-    
-    func backgroundTask(_ block: @escaping (any DBObjectContext) -> Void) {
-        block(context)
     }
 }

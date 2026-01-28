@@ -31,28 +31,60 @@ private struct Count {
 
 // MARK: database protocols
 protocol Databasing {
+    
+    /// For testing purposes only
+    func fetchZimFiles() async throws -> [ZimFileMetaStruct]
     func fetchZimFileIds() async throws -> [UUID]
-    func fetchZimFileCategoryLanguageData() async throws -> [ZimFileCategoryLangaugeData]
+    func fetchZimFileCategoryLanguageData() async throws -> [ZimFileCategoryLanguageData]
     func bulkInsert(metadata: [ZimFileMetaStruct]) async throws -> Int
     func bulkDeleteNotDownloadedZims(notIncludedIn: Set<UUID>) async throws -> Int
 }
 
 struct ProductionDatabase: Databasing {
     
+    // for testing only atm
+    func fetchZimFiles() async throws -> [ZimFileMetaStruct] {
+        let zimFiles = try await Database.shared.backgroundContext.perform {
+            try ZimFile.fetchRequest().execute()
+        }
+        return zimFiles.map { zimFile in
+            ZimFileMetaStruct(fileID: zimFile.fileID,
+                              groupIdentifier: "",
+                              title: zimFile.name,
+                              fileDescription: zimFile.fileDescription,
+                              languageCodes: zimFile.languageCode,
+                              category: zimFile.category,
+                              creationDate: zimFile.created,
+                              size: zimFile.size,
+                              articleCount: zimFile.articleCount,
+                              mediaCount: zimFile.mediaCount,
+                              creator: "",
+                              publisher: "",
+                              downloadURL: zimFile.downloadURL,
+                              faviconURL: zimFile.faviconURL,
+                              faviconData: zimFile.faviconData,
+                              flavor: zimFile.flavor,
+                              hasDetails: zimFile.hasDetails,
+                              hasPictures: zimFile.hasPictures,
+                              hasVideos: zimFile.hasVideos,
+                              requiresServiceWorkers: zimFile.requiresServiceWorkers)
+        }
+    }
+    
     func fetchZimFileIds() async throws -> [UUID] {
         try await Database.shared.backgroundContext.perform {
-            var request = ZimFile.fetchRequest()
+            let request = ZimFile.fetchRequest()
             request.propertiesToFetch = ["fileID"]
             return try request.execute().map { $0.fileID }
         }
     }
     
-    func fetchZimFileCategoryLanguageData() async throws -> [ZimFileCategoryLangaugeData] {
+    func fetchZimFileCategoryLanguageData() async throws -> [ZimFileCategoryLanguageData] {
         try await Database.shared.backgroundContext.perform {
-            var request = ZimFile.fetchRequest()
+            let request = ZimFile.fetchRequest()
             request.propertiesToFetch = ["category", "languageCode"]
             return try request.execute().map {
-                ZimFileCategoryLangaugeData(category: $0.category, languageCode: $0.languageCode)
+                ZimFileCategoryLanguageData(category: $0.category, languageCode: $0.languageCode)
             }
         }
     }
@@ -64,9 +96,9 @@ struct ProductionDatabase: Databasing {
             let insertRequest = NSBatchInsertRequest(
                 entity: ZimFile.entity(),
                 managedObjectHandler: { zimFile in
-                    guard let zimFile = zimFile as? ZimFile else { return true }
+                    guard var zimFile = zimFile as? ZimFile else { return true }
                     while let data = listOfData.popLast() {
-                        LibraryOperations.configureZimFile(zimFile, metadata: data)
+                        LibraryOperations.configureZimFile(&zimFile, metadata: data)
                         return false
                     }
                     return true
@@ -104,7 +136,7 @@ struct ProductionDatabase: Databasing {
 }
 
 // non-isolated ZimFileData
-struct ZimFileCategoryLangaugeData {
+struct ZimFileCategoryLanguageData {
     let category: String
     let languageCode: String
 }
@@ -240,7 +272,7 @@ total: \(totalCount, privacy: .public)
         categories.save(dictionary)
     }
     
-    @MainActor private func saveCategoryAvailableInLanguages(fromDBZimFiles zimFiles: [ZimFileCategoryLangaugeData]) {
+    @MainActor private func saveCategoryAvailableInLanguages(fromDBZimFiles zimFiles: [ZimFileCategoryLanguageData]) {
         var dictionary: [Category: Set<String>] = [:]
         for zimFile in zimFiles {
             let category = Category(rawValue: zimFile.category) ?? .other
