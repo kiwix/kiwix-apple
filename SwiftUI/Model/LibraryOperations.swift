@@ -125,20 +125,20 @@ ZIM file cannot be opened: \(zimFile.name, privacy: .public) |\
     // MARK: - Configure
 
     /// Configure a zim file object based on its metadata.
-    nonisolated static func configureZimFile(_ zimFile: inout ZimFile, metadata: ZimFileMetaStruct) {
+    nonisolated static func configureZimFile(_ zimFile: inout ZimFile, metadata: ZimFileStruct) {
         zimFile.articleCount = metadata.articleCount
         zimFile.category = (Category(rawValue: metadata.category) ?? .other).rawValue
-        zimFile.created = metadata.creationDate
+        zimFile.created = metadata.created
         zimFile.fileDescription = metadata.fileDescription
         zimFile.fileID = metadata.fileID
         zimFile.flavor = metadata.flavor
         zimFile.hasDetails = metadata.hasDetails
         zimFile.hasPictures = metadata.hasPictures
         zimFile.hasVideos = metadata.hasVideos
-        zimFile.languageCode = metadata.languageCodes
+        zimFile.languageCode = metadata.languageCode
         zimFile.mediaCount = metadata.mediaCount
-        zimFile.name = metadata.title
-        zimFile.persistentID = metadata.groupIdentifier
+        zimFile.name = metadata.name
+        zimFile.persistentID = metadata.persistentID
         zimFile.requiresServiceWorkers = metadata.requiresServiceWorkers
         zimFile.size = metadata.size
 

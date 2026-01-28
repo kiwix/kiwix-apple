@@ -33,41 +33,42 @@ private struct Count {
 protocol Databasing {
     
     /// For testing purposes only
-    func fetchZimFiles() async throws -> [ZimFileMetaStruct]
+    func fetchZimFiles() async throws -> [ZimFileStruct]
     func fetchZimFileIds() async throws -> [UUID]
     func fetchZimFileCategoryLanguageData() async throws -> [ZimFileCategoryLanguageData]
-    func bulkInsert(metadata: [ZimFileMetaStruct]) async throws -> Int
+    func bulkInsert(metadata: [ZimFileStruct]) async throws -> Int
     func bulkDeleteNotDownloadedZims(notIncludedIn: Set<UUID>) async throws -> Int
 }
 
 struct ProductionDatabase: Databasing {
     
     // for testing only atm
-    func fetchZimFiles() async throws -> [ZimFileMetaStruct] {
+    func fetchZimFiles() async throws -> [ZimFileStruct] {
         let zimFiles = try await Database.shared.backgroundContext.perform {
             try ZimFile.fetchRequest().execute()
         }
         return zimFiles.map { zimFile in
-            ZimFileMetaStruct(fileID: zimFile.fileID,
-                              groupIdentifier: "",
-                              title: zimFile.name,
-                              fileDescription: zimFile.fileDescription,
-                              languageCodes: zimFile.languageCode,
-                              category: zimFile.category,
-                              creationDate: zimFile.created,
-                              size: zimFile.size,
-                              articleCount: zimFile.articleCount,
-                              mediaCount: zimFile.mediaCount,
-                              creator: "",
-                              publisher: "",
-                              downloadURL: zimFile.downloadURL,
-                              faviconURL: zimFile.faviconURL,
-                              faviconData: zimFile.faviconData,
-                              flavor: zimFile.flavor,
-                              hasDetails: zimFile.hasDetails,
-                              hasPictures: zimFile.hasPictures,
-                              hasVideos: zimFile.hasVideos,
-                              requiresServiceWorkers: zimFile.requiresServiceWorkers)
+            ZimFileStruct(articleCount: zimFile.articleCount,
+                          category: zimFile.category,
+                          created: zimFile.created,
+                          downloadURL: zimFile.downloadURL,
+                          faviconData: zimFile.faviconData,
+                          faviconURL: zimFile.faviconURL,
+                          fileDescription: zimFile.fileDescription,
+                          fileID: zimFile.fileID,
+                          fileURLBookmark: zimFile.fileURLBookmark,
+                          flavor: zimFile.flavor,
+                          hasDetails: zimFile.hasDetails,
+                          hasPictures: zimFile.hasPictures,
+                          hasVideos: zimFile.hasVideos,
+                          includedInSearch: zimFile.includedInSearch,
+                          isMissing: zimFile.isMissing,
+                          languageCode: zimFile.languageCode,
+                          mediaCount: zimFile.mediaCount,
+                          name: zimFile.name,
+                          persistentID: zimFile.persistentID,
+                          requiresServiceWorkers: zimFile.requiresServiceWorkers,
+                          size: zimFile.size)
         }
     }
     
@@ -89,7 +90,7 @@ struct ProductionDatabase: Databasing {
         }
     }
     
-    func bulkInsert(metadata: [ZimFileMetaStruct]) async throws -> Int {
+    func bulkInsert(metadata: [ZimFileStruct]) async throws -> Int {
         var listOfData = metadata
         let context = Database.shared.backgroundContext
         return await context.perform {
