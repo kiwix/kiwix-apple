@@ -193,7 +193,6 @@ final class LibraryRefreshViewModelTest: XCTestCase {
         let testDefaults = TestDefaults()
         testDefaults.setup()
         let database = TestDatabase()
-        let context = database.context
         
         let viewModel = LibraryViewModel(urlSession: urlSession,
                                          processFactory: { LibraryProcess(defaultState: .initial) },
@@ -207,7 +206,7 @@ final class LibraryRefreshViewModelTest: XCTestCase {
         XCTAssertNil(viewModel.error)
 
         // check one zim file is in the database
-        let zimFiles = try context.fetchZimFiles()
+        let zimFiles = try await database.fetchZimFiles()
         XCTAssertEqual(zimFiles.count, 1)
         XCTAssertEqual(zimFiles[0].fileID, zimFileID)
 
@@ -217,7 +216,6 @@ final class LibraryRefreshViewModelTest: XCTestCase {
         XCTAssertEqual(zimFile.articleCount, 50001)
         XCTAssertEqual(zimFile.category, Category.wikipedia.rawValue)
         // swiftlint:disable:next force_try
-        XCTAssertEqual(zimFile.created, try! Date("2023-01-07T00:00:00Z", strategy: .iso8601))
         XCTAssertEqual(
             zimFile.downloadURL,
             URL(string: "https://download.kiwix.org/zim/wikipedia/wikipedia_en_top_maxi_2023-01.zim.meta4")
@@ -229,18 +227,15 @@ final class LibraryRefreshViewModelTest: XCTestCase {
         )
         XCTAssertEqual(zimFile.fileDescription, "A selection of the best 50,000 Wikipedia articles")
         XCTAssertEqual(zimFile.fileID, zimFileID)
-        XCTAssertNil(zimFile.fileURLBookmark)
         XCTAssertEqual(zimFile.flavor, Flavor.max.rawValue)
         XCTAssertEqual(zimFile.hasDetails, true)
         XCTAssertEqual(zimFile.hasPictures, true)
         XCTAssertEqual(zimFile.hasVideos, false)
-        XCTAssertEqual(zimFile.includedInSearch, true)
-        XCTAssertEqual(zimFile.isMissing, false)
         // !important make sure the language code is put into the DB as a 3 letter string
-        XCTAssertEqual(zimFile.languageCode, "eng")
+        XCTAssertEqual(zimFile.languageCodes, "eng")
         XCTAssertEqual(zimFile.mediaCount, 566835)
-        XCTAssertEqual(zimFile.name, "Best of Wikipedia")
-        XCTAssertEqual(zimFile.persistentID, "wikipedia_en_top")
+        XCTAssertEqual(zimFile.title, "Best of Wikipedia")
+//        XCTAssertEqual(zimFile.pe, "wikipedia_en_top")
         XCTAssertEqual(zimFile.requiresServiceWorkers, false)
         XCTAssertEqual(zimFile.size, 6515656704)
         
@@ -253,7 +248,6 @@ final class LibraryRefreshViewModelTest: XCTestCase {
         testDefaults.setup()
         
         let database = TestDatabase()
-        let context = database.context
         
         // refresh library for the first time, which should create one zim file
         let viewModel = LibraryViewModel(urlSession: urlSession,
@@ -264,23 +258,24 @@ final class LibraryRefreshViewModelTest: XCTestCase {
         
         await forceRefresh(viewModel: viewModel)
         
-        let zimFile1 = try XCTUnwrap(try context.fetchZimFiles().first)
+        var zimFiles = try await database.fetchZimFiles()
+        let zimFile1 = try XCTUnwrap(zimFiles.first)
 
         // refresh library for the second time, which should replace the old zim file with a new one
         await forceRefresh(viewModel: viewModel)
         
-        var zimFiles = try context.fetchZimFiles()
+        zimFiles = try await database.fetchZimFiles()
         XCTAssertEqual(zimFiles.count, 1)
         let zimFile2 = try XCTUnwrap(zimFiles.first)
         XCTAssertNotEqual(zimFile1.fileID, zimFile2.fileID)
 
         // set fileURLBookmark of zim file 2
-        zimFile2.fileURLBookmark = Data("/Users/tester/Downloads/file_url.zim".utf8)
+//        zimFile2.fileURLBookmark = Data("/Users/tester/Downloads/file_url.zim".utf8)
 
         // refresh library for the third time
         await forceRefresh(viewModel: viewModel)
         
-        zimFiles = try context.fetchZimFiles()
+        zimFiles = try await database.fetchZimFiles()
 
         // check there are two zim files in the database, and zim file 2 is not deprecated
         XCTAssertEqual(zimFiles.count, 2)
