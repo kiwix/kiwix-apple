@@ -117,6 +117,7 @@
 "welcome.main_page.title" = "ਮੁੱਖ ਸਫ਼ਾ";
 "welcome.actions.open_file" = "ਫ਼ਾਈਲ ਖੋਲ੍ਹੋ";
 "welcome.loading.data.text" = "ਡਾਟਾ ਲੋਡ ਕੀਤਾ ਜਾ ਰਿਹਾ ਐ...";
+"app_macos_commands.open_file" = "ਖੋਲ੍ਹੋ...";
 "app_macos_navigation.button.library" = "ਕਿਤਾਬਘਰ";
 "sidebar_view.navigation.button.close" = "ਬੰਦ ਕਰੋ";
 "enum.category.wikipedia" = "ਵਿਕੀਪੀਡੀਆ";
