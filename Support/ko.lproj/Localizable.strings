@@ -1,5 +1,6 @@
 // Messages for Korean (한국어)
 // Exported from translatewiki.net
+// Author: Bisang
 // Author: Suleiman the Magnificent Television
 // Author: YeBoy371
 // Author: Ykhwong
@@ -231,18 +232,18 @@
 "download_service.error.client.backgroundSessionWasDisconnected" = "백그라운드 전송 서비스와의 연결이 끊어짐";
 "download_service.error.client.cancelled" = "취소됨";
 "download_service.error.client.badURL" = "잘못된 URL";
-"download_service.error.client.timedOut" = "요청한 시간이 초과되었습니다.";
+"download_service.error.client.timedOut" = "요청 시간이 초과되었습니다.";
 "download_service.error.client.unsupportedURL" = "지원되지 않는 URL";
-"download_service.error.client.cannotFindHost" = "특정 호스트 이름을 가진 서버를 찾을 수 없습니다.";
+"download_service.error.client.cannotFindHost" = "해당 호스트 이름을 가진 서버를 찾을 수 없습니다.";
 "download_service.error.client.cannotConnectToHost" = "서버에 연결할 수 없습니다.";
-"download_service.error.client.networkConnectionLost" = "네트워크 연결이 유실되었습니다.";
-"download_service.error.client.dnsLookupFailed" = "DNS Lookup 오류";
+"download_service.error.client.networkConnectionLost" = "네트워크 연결이 끊어졌습니다.";
+"download_service.error.client.dnsLookupFailed" = "DNS 검색 오류";
 "download_service.error.client.httpTooManyRedirects" = "HTTP 재이동이 너무 많음";
 "download_service.error.client.resourceUnavailable" = "리소스 사용 불가";
 "download_service.error.client.notConnectedToInternet" = "인터넷 연결이 오프라인 상태입니다.";
 "download_service.error.client.redirectToNonExistentLocation" = "재이동되지 않음";
 "download_service.error.client.badServerResponse" = "서버에서 잘못된 응답을 보냈습니다.";
-"download_service.error.client.zeroByteResource" = "0바이트 리소스";
+"download_service.error.client.zeroByteResource" = "0 바이트 리소스";
 "download_service.error.client.cannotDecodeRawData" = "원본 데이터를 디코딩할 수 없음";
 "download_service.error.client.cannotDecodeContentData" = "콘텐츠 데이터를 디코딩할 수 없음";
 "download_service.error.client.cannotParseResponse" = "응답을 분석할 수 없음";
@@ -251,7 +252,7 @@
 "download_service.error.client.dataNotAllowed" = "현재 데이터 연결이 허용되지 않습니다.";
 "download_service.error.client.requestBodyStreamExhausted" = "요청 본문 스트림 부족";
 "download_service.error.client.fileDoesNotExist" = "이 서버에서 요청한 URL을 찾을 수 없습니다.";
-"download_service.error.client.fileIsDirectory" = "파일이 디렉토리임";
+"download_service.error.client.fileIsDirectory" = "파일이 경로임";
 "download_service.error.client.noPermissionsToReadFile" = "요청한 리소스에 접근할 수 있는 권한이 없습니다.";
 "download_service.error.client.dataLengthExceedsMaximum" = "리소스가 최대 크기를 초과함";
 "download_service.error.client.secureConnectionFailed" = "SSL 오류가 발생했기 때문에 서버에 안전하게 연결할 수 없습니다.";
@@ -264,9 +265,9 @@
 "download_service.error.client.cannotLoadFromNetwork" = "네트워크에서 로드할 수 없음";
 "download_service.error.client.cannotCreateFile" = "파일을 생성할 수 없음";
 "download_service.error.client.cannotOpenFile" = "파일을 열 수 없음";
-"download_service.error.client.cannotCloseFile" = "파일을 닫는 도중 실패";
+"download_service.error.client.cannotCloseFile" = "파일을 닫는 도중 오류 발생";
 "download_service.error.client.cannotWriteToFile" = "파일에 쓸 수 없음";
 "download_service.error.client.cannotRemoveFile" = "파일을 제거할 수 없음";
 "download_service.error.client.cannotMoveFile" = "파일을 이동할 수 없음";
-"download_service.error.client.downloadDecodingFailedMidStream" = "디코딩 다운로드 실패";
-"download_service.error.client.downloadDecodingFailedToComplete" = "디코딩 다운로드 실패";
+"download_service.error.client.downloadDecodingFailedMidStream" = "다운로드 디코딩 실패";
+"download_service.error.client.downloadDecodingFailedToComplete" = "다운로드 디코딩 실패";

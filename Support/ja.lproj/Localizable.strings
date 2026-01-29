@@ -3,6 +3,7 @@
 // Author: Chqaz
 // Author: Hiroyasu Nishiyama
 // Author: MathXplore
+// Author: Whym
 
 // Fuzzy
 "library_refresh_error.retrieve.description" = "ライブラリデータの取得エラー";
@@ -27,6 +28,7 @@
 "common.button.print" = "印刷";
 "common.button.share" = "共有";
 "common.search" = "検索";
+"common.search.inpage" = "ページ内検索";
 "common.tab.manager.title" = "タブマネージャ";
 "common.tab.navigation.title" = "タブ";
 "common.tab.menu.new_tab" = "新規タブ";

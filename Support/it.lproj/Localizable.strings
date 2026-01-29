@@ -26,6 +26,7 @@
 "common.button.share" = "Condividi";
 "common.button.share_as_pdf" = "Condividi come PDF";
 "common.search" = "Cerca";
+"common.search.inpage" = "Cerca nella pagina";
 "common.tab.manager.title" = "Gestore delle schede";
 "common.tab.navigation.title" = "Schede";
 "common.tab.menu.new_tab" = "Nuova scheda";
