@@ -275,8 +275,9 @@ final class BrowserViewModel: NSObject, ObservableObject,
     @MainActor
     func updateLastOpened() {
         let currentTabID = tabID
-        Task {
-            Database.shared.performBackgroundTask { context in
+        Task(priority: .utility) {
+            let context = Database.shared.backgroundContext
+            await context.perform {
                 guard let tab = try? context.existingObject(with: currentTabID) as? Tab else {
                     return
                 }
@@ -288,10 +289,11 @@ final class BrowserViewModel: NSObject, ObservableObject,
 
     @MainActor
     func persistState() {
-        let webData = webView.interactionState as? Data
         let currentTabID = tabID
-        Task {
-            Database.shared.performBackgroundTask { context in
+        Task(priority: .utility) {
+            let webData = webView.interactionState as? Data
+            let context = Database.shared.backgroundContext
+            await context.perform {
                 guard let tab = try? context.existingObject(with: currentTabID) as? Tab else {
                     return
                 }
@@ -644,14 +646,14 @@ final class BrowserViewModel: NSObject, ObservableObject,
                        !bookmarks.isEmpty {
                         return UIAction(title: LocalString.common_dialog_button_remove_bookmark,
                                         image: UIImage(systemName: "star.slash.fill")) { [weak self] _ in
-                            self?.deleteBookmark(url: url)
+                            Task { [weak self] in await self?.deleteBookmark(url: url) }
                         }
                     } else {
                         return UIAction(
                             title: LocalString.common_dialog_button_bookmark,
                             image: UIImage(systemName: "star")
                         ) { [weak self] _ in
-                            Task { @MainActor [weak self] in self?.createBookmark(url: url) }
+                            Task { [weak self] in await self?.createBookmark(url: url) }
                         }
                     }
                 }()
@@ -672,28 +674,29 @@ final class BrowserViewModel: NSObject, ObservableObject,
     }
 
     @MainActor 
-    func createBookmark(url: URL? = nil) {
+    func createBookmark(url: URL? = nil) async {
         guard let url = url ?? webView.url,
               let zimFileID = url.zimFileID else { return }
         let title = webView.title
-        Task {
-            guard let metaData = await ZimFileService.shared.getContentMetaData(url: url) else { return }
-            Database.shared.performBackgroundTask { context in
-                let bookmark = Bookmark(context: context)
-                bookmark.articleURL = url
-                bookmark.created = Date()
-                guard let zimFile = try? context.fetch(ZimFile.fetchRequest(fileID: zimFileID)).first else { return }
+        guard let metaData = await ZimFileService.shared.getContentMetaData(url: url) else { return }
+        
+        let context = Database.shared.backgroundContext
+        await context.perform {
+            let bookmark = Bookmark(context: context)
+            bookmark.articleURL = url
+            bookmark.created = Date()
+            guard let zimFile = try? ZimFile.fetchRequest(fileID: zimFileID).execute().first else { return }
 
-                bookmark.zimFile = zimFile
-                bookmark.title = title ?? metaData.zimTitle
-                try? context.save()
-            }
+            bookmark.zimFile = zimFile
+            bookmark.title = title ?? metaData.zimTitle
+            try? context.save()
         }
     }
 
-    func deleteBookmark(url: URL? = nil) {
+    func deleteBookmark(url: URL? = nil) async {
         guard let url = url ?? webView.url else { return }
-        Database.shared.performBackgroundTask { context in
+        let context = Database.shared.backgroundContext
+        await context.perform {
             let request = Bookmark.fetchRequest(predicate: NSPredicate(format: "articleURL == %@", url as CVarArg))
             guard let bookmark = try? context.fetch(request).first else { return }
             context.delete(bookmark)

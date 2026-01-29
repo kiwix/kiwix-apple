@@ -98,8 +98,8 @@ struct MoreTabButton: View {
     private func bookmarkButton() -> some View {
         BookmarkButton(articleBookmarked: browser.articleBookmarked,
                        isButtonDisabled: browser.zimFileName.isEmpty,
-                       createBookmark: { [weak browser] in browser?.createBookmark() },
-                       deleteBookmark: { [weak browser] in browser?.deleteBookmark() })
+                       createBookmark: { [weak browser] in Task { [weak browser] in await browser?.createBookmark() } } ,
+                       deleteBookmark: { [weak browser] in Task { [weak browser] in await browser?.deleteBookmark() } })
     }
     
 }
