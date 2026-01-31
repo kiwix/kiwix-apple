@@ -1,3 +1,38 @@
+# 3.13.0
+
+# 3.12.0
+  - NEW:
+    - ZIM file validation feature (@BPerlakiH #1379, #1394, #1404)
+  - UPDATED:
+    - Update project and version numbers (@BPerlakiH #1378, #1431)
+    - Bump up build version to be 3.12.0 (@BPerlakiH )
+    - Increase the macOS build number (@BPerlakiH #1393)
+    - Update build settings to Xcode 26.1.1 (@BPerlakiH #1448)
+    - Use libkiwix 14.1.1 (@BPerlakiH #1389)
+    - Extend Download diagnostics (@BPerlakiH #1386)
+    - Rename diagnostic title and button (@BPerlakiH #1398)
+    - Use date in kiwix diagnostic output file name (@BPerlakiH #1396)
+    - 1412 diagnostics UI improvements (@BPerlakiH #1414)
+    - SSH private key secret has changed its name (@kelson42 #1423)
+    - UI-pause downloads when offline (@BPerlakiH #1424)
+    - Remove URL from download description (@BPerlakiH #1441)
+    - Remember selected category (@BPerlakiH #1444)
+    - Localisation updates from https://translatewiki.net (@translatewiki #1377, #1381, #1392, #1395, #1405, #1411, #1415, #1428, #1445, #1449)
+  - FIX:
+    - Fix log values to be included in the diagnostics report (@BPerlakiH #1382)
+    - Fix download task out of sync with zimFile (@BPerlakiH #1383)
+    - Disable download pause for mid-state (@BPerlakiH #1385)
+    - Fix reopening app with zim files from crashing (@BPerlakiH #1401)
+    - Fix concurent spellings db creation (@BPerlakiH #1407)
+    - Fix nil value search crashes (@BPerlakiH #1408)
+    - UFT-8 sanitize user input for search, and contentPath (@BPerlakiH #1410)
+    - Display progress while searching (@BPerlakiH #1427)
+    - Improve download error handling (@BPerlakiH #1418)
+    - Search in page label (@BPerlakiH #1443)
+    - Use our localisation for search input (@BPerlakiH #1442)
+    - Fix Hotspot button and text positioning (@BPerlakiH #1451)
+    - Limit memory usage (@BPerlakiH #1454)
+
 # 3.11.1
   - NEW:
     - ZIM file validation feature(@BPerlakiH #1379)
