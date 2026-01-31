@@ -24,7 +24,6 @@ struct HotspotExplanation: View {
                 Text(Hotspot.explanationText)
                     .multilineTextAlignment(.center)
                     .lineLimit(nil)
-                Spacer()
             }
             Spacer()
         }

@@ -60,7 +60,9 @@ struct HotspotDetails: View {
                     .foregroundStyle(Color.accentColor)
 #endif
                 }
+#if os(macOS)
                 Spacer()
+#endif
             }
         }
         

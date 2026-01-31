@@ -41,6 +41,7 @@ struct BadgeModifier: ViewModifier {
                 }
                 content
             }
+            .padding(EdgeInsets(top: 0, leading: 8, bottom: 0, trailing: 0))
         }
     }
 }
