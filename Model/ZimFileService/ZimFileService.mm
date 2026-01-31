@@ -44,6 +44,10 @@
 - (instancetype)init {
     self = [super init];
     if (self) {
+        // 16*1024*1024
+        // as of:
+        // https://github.com/kiwix/libkiwix/issues/1265#issuecomment-3817993025
+        zim::setClusterCacheMaxSize(16777216);
         self.archives = new std::unordered_map<std::string, zim::Archive>();
         self.fileURLs = [[NSMutableDictionary alloc] init];
         self.libzimVersion = [[NSString alloc] initWithUTF8String:LIBZIM_VERSION];
