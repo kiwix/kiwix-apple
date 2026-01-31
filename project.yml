@@ -33,6 +33,7 @@ settings:
     ENABLE_HARDENED_RUNTIME[sdk=macosx*]: YES
     APP_STORE_ID: $(APP_STORE_ID)
     INFOPLIST_KEY_UILaunchScreen_Generation: YES
+    SWIFT_STRICT_CONCURRENCY: Targeted
 
   configs:
     debug:
