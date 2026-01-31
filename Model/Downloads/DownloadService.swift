@@ -15,7 +15,7 @@
 
 import Combine
 import CoreData
-import UserNotifications
+@preconcurrency import UserNotifications
 import os
 
 // swiftlint:disable file_length
@@ -23,6 +23,7 @@ import os
 // swiftlint:disable:next type_body_length
 final class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegate, URLSessionDownloadDelegate {
     static let shared = DownloadService()
+    @MainActor
     let networkState = NetworkState()
     private let queue = DispatchQueue(label: "downloads", qos: .background)
     @MainActor let progress = DownloadTasksPublisher()

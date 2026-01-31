@@ -37,15 +37,6 @@ final class Database {
         container.viewContext
     }
 
-    @available(*, deprecated, renamed: "backgroundContext", message: "use async backgroundContext.perform")
-    func performBackgroundTask(_ block: @escaping (NSManagedObjectContext) -> Void) {
-        backgroundQueue.sync { [self] in
-            backgroundContext.perform { [self] in
-                block(backgroundContext)
-            }
-        }
-    }
-
     /// A persistent container to set up the Core Data stack.
     private static func createContainer() -> NSPersistentContainer {
         let container = NSPersistentContainer(name: "DataModel")
@@ -69,7 +60,7 @@ final class Database {
         container.viewContext.automaticallyMergesChangesFromParent = true
         container.viewContext.name = "viewContext"
         /// - Tag: viewContextMergePolicy
-        container.viewContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
+        container.viewContext.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
         container.viewContext.undoManager = nil
         container.viewContext.shouldDeleteInaccessibleFaults = true
         return container

@@ -16,8 +16,8 @@
 import Foundation
 import Network
 
+@MainActor
 final class NetworkState: ObservableObject {
-    @MainActor
     @Published
     var isOnline: Bool = true
     
