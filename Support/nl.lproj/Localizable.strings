@@ -9,6 +9,10 @@
 "library_refresh_error.process.description" = "Fout bij het verwerken van catalogusgegevens.";
 "download_service.complete.title" = "Download voltooid";
 "download_service.complete.description" = "%@ is met succes gedownload.";
+"download_service.error.general.title" = "Het downloaden is mislukt.";
+"download_service.error.zimfile.title" = "Kan \"%@\" niet downloaden";
+"download_service.error.footer" = "De download kon niet worden voltooid.";
+"download_service.error.option_http_status" = "HTTP-statuscode: %@";
 "download_service.error.option_directory" = "De downloaddirectory kan niet gevonden worden";
 "download_service.error.option_invalid_taskid" = "Onjuiste downloadTask-ID";
 "download_service.error.option_invalid_response" = "Onjuist antwoord";

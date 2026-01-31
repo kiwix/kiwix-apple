@@ -38,6 +38,7 @@
 "common.button.share" = "分享";
 "common.button.share_as_pdf" = "以 PDF 格式分享";
 "common.search" = "搜尋";
+"common.search.inpage" = "在頁面搜尋";
 "common.search.suggestion" = "您是不是指：";
 "common.tab.manager.title" = "分頁管理器";
 "common.tab.navigation.title" = "分頁";
