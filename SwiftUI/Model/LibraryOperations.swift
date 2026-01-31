@@ -41,7 +41,7 @@ struct LibraryOperations {
         }
 
         // upsert zim file in the database
-        let context = Database.shared.backgroundContext
+        let context = Database.shared.viewContext
         try? await context.perform {
             let predicate = NSPredicate(format: "fileID == %@", metadata.fileID as CVarArg)
             let fetchRequest = ZimFile.fetchRequest(predicate: predicate)

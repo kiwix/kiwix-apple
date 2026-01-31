@@ -167,37 +167,30 @@ final class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegat
         task.taskDescription = zimFileID.uuidString
         task.resume()
 
-        Task {
-            let context = Database.shared.backgroundContext
-            await context.perform {
-                let request = DownloadTask.fetchRequest(fileID: zimFileID)
-                guard let downloadTask = try? context.fetch(request).first else { return }
-                downloadTask.error = nil
-                try? context.save()
-            }
-        }
+        let context = Database.shared.viewContext
+        let request = DownloadTask.fetchRequest(fileID: zimFileID)
+        guard let downloadTask = try? context.fetch(request).first else { return }
+        downloadTask.error = nil
+        try? context.save()
     }
 
     // MARK: - Database
 
     private func deleteDownloadTask(zimFileID: UUID) {
-        Task { [weak progress] in
-            await progress?.resetFor(uuid: zimFileID)
-            
-            let context = Database.shared.backgroundContext
-            await context.perform {
-                do {
-                    let request = DownloadTask.fetchRequest(fileID: zimFileID)
-                    guard let downloadTask = try request.execute().first else { return }
-                    context.delete(downloadTask)
-                    try? context.save()
-                } catch {
-                    let fileId = zimFileID.uuidString
-                    let errorDesc = error.localizedDescription
-                    Log.DownloadService.error(
-                        "Error deleting download task for: \(fileId, privacy: .public), \(errorDesc, privacy: .public)"
-                    )
-                }
+        Task { @MainActor [weak progress]  in
+            progress?.resetFor(uuid: zimFileID)
+            let context = Database.shared.viewContext
+            do {
+                let request = DownloadTask.fetchRequest(fileID: zimFileID)
+                guard let downloadTask = try request.execute().first else { return }
+                context.delete(downloadTask)
+                try context.save()
+            } catch {
+                let fileId = zimFileID.uuidString
+                let errorDesc = error.localizedDescription
+                Log.DownloadService.error(
+                    "Error deleting download task for: \(fileId, privacy: .public), \(errorDesc, privacy: .public)"
+                )
             }
         }
     }
