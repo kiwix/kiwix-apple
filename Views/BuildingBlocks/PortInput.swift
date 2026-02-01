@@ -35,12 +35,22 @@ struct PortInput: View {
     @Environment(\.controlActiveState) var controlActiveState
     #endif
     
+    #if os(iOS)
+    private var iOSKeyboardType: UIKeyboardType {
+        if Device.current == .iPad {
+            UIKeyboardType.numbersAndPunctuation
+        } else {
+            UIKeyboardType.numberPad
+        }
+    }
+    #endif
+    
     var body: some View {
         HStack {
             Text(LocalString.hotspot_settings_port_number)
             TextField("", text: $portNumber.stringValue)
             #if os(iOS)
-                .keyboardType(.numberPad)
+                .keyboardType(iOSKeyboardType)
                 .toolbar {
                     ToolbarItemGroup(placement: .keyboard) {
                         Spacer()
