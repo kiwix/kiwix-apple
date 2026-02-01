@@ -154,7 +154,6 @@ struct BrowserTab: View {
     }
 
     private struct Content<LaunchModel>: View where LaunchModel: LaunchProtocol {
-        @Environment(\.isSearching) private var isSearching
         @Environment(\.horizontalSizeClass) private var horizontalSizeClass
         let browser: BrowserViewModel
         @EnvironmentObject private var library: LibraryViewModel
@@ -167,6 +166,7 @@ struct BrowserTab: View {
         /// which triggers the model to be revalidated
         @Default(.hasSeenCategories) private var hasSeenCategories
         @ObservedObject var model: LaunchModel
+        @StateObject private var search = SearchViewModel.shared
 
         var body: some View {
             // swiftlint:disable:next redundant_discardable_let
@@ -174,13 +174,9 @@ struct BrowserTab: View {
                              hasSeenCategories: hasSeenCategories)
             GeometryReader { proxy in
                 Group {
-                    if isSearching {
+                    if !search.searchText.isEmpty {
                         SearchResults()
-                            #if os(macOS)
                             .environment(\.horizontalSizeClass, proxy.size.width > 650 ? .regular : .compact)
-                            #elseif os(iOS)
-                            .environment(\.horizontalSizeClass, proxy.size.width > 750 ? .regular : .compact)
-                            #endif
                     } else {
                         switch model.state {
                         case .loadingData, .webPage:
