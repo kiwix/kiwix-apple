@@ -18,6 +18,8 @@ import SwiftUI
 enum CellBackground {
     #if os(macOS)
     private static let normal: Color = Color(nsColor: NSColor.controlBackgroundColor)
+    @available(macOS 26.0, *)
+    private static let normal26: Color = Color.secondaryBackground.opacity(0.12).mix(with: selected, by: 0.082)
     private static let selected: Color = Color(nsColor: NSColor.selectedControlColor)
     #else
     private static let normal: Color = .secondaryBackground
@@ -29,12 +31,26 @@ enum CellBackground {
         if isSelected {
             isHovering ? selected.opacity(0.75) : selected
         } else {
-            isHovering ? selected.opacity(0.5) : normal
+            if isHovering {
+                selected.opacity(0.5)
+            } else {
+                macOSCellBackground()
+            }
         }
         #else
         isHovering ? selected : normal
         #endif
     }
+    
+    #if os(macOS)
+    private static func macOSCellBackground() -> Color {
+        if #available(macOS 26, *) {
+            normal26
+        } else {
+            normal
+        }
+    }
+    #endif
     
     static let clipShapeRectangle = RoundedRectangle(cornerRadius: 12, style: .continuous)
     
