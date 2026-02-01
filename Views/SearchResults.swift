@@ -78,7 +78,9 @@ struct SearchResults: View {
                 Spacer()
             } else {
                 if viewModel.inProgress {
-                    ProgressView()
+                    Group {
+                        ProgressView()
+                    }.frame(maxWidth: .infinity, maxHeight: .infinity)
                 } else {
                     Message(text: LocalString.search_result_zimfile_no_result_message)
                 }
