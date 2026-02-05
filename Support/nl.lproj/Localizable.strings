@@ -36,6 +36,7 @@
 "common.button.share" = "Delen";
 "common.button.share_as_pdf" = "Delen als PDF";
 "common.search" = "Zoeken";
+"common.search.inpage" = "Zoeken op pagina";
 "common.search.suggestion" = "Bedoelde u:";
 "common.tab.manager.title" = "Tabbladbeheer";
 "common.tab.navigation.title" = "Tabbladen";

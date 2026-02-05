@@ -9,6 +9,7 @@
 // Author: Gomoko
 // Author: Goombiis
 // Author: Hecatonchire
+// Author: Kelson
 // Author: MacOS Weed
 // Author: Mahabarata
 // Author: McDutchie
@@ -23,14 +24,14 @@
 "library_refresh_error.process.description" = "Erreur lors du traitement des données du catalogue.";
 "download_service.complete.title" = "Téléchargement terminé";
 "download_service.complete.description" = "%@ A été téléchargé avec succès.";
-// Fuzzy
-"download_service.error.option_directory" = "le répertoire de téléchargement est introuvable";
-// Fuzzy
-"download_service.error.option_invalid_taskid" = "ID d'origine du téléchargement invalide";
-// Fuzzy
-"download_service.error.option_invalid_response" = "réponse invalide";
-// Fuzzy
-"download_service.error.option_unable_to_move_file" = "impossible de déplacer le fichier téléchargé";
+"download_service.error.general.title" = "Le téléchargement a échoué.";
+"download_service.error.zimfile.title" = "Impossible de télécharger \"%@\"";
+"download_service.error.footer" = "Le téléchargement n'a pas pu être terminé.";
+"download_service.error.option_http_status" = "Code d'état HTTP : %@";
+"download_service.error.option_directory" = "Répertoire de téléchargement introuvable";
+"download_service.error.option_invalid_taskid" = "ID de téléchargement invalide";
+"download_service.error.option_invalid_response" = "Réponse invalide";
+"download_service.error.option_unable_to_move_file" = "Impossible de déplacer le fichier téléchargé";
 "common.dialog.button.open" = "Ouvrir";
 "common.dialog.button.open_in_new_tab" = "Ouvrir dans un nouvel onglet";
 "common.dialog.button.add_bookmark" = "Ajouter un marque-page";
@@ -50,6 +51,8 @@
 "common.button.share" = "Partager";
 "common.button.share_as_pdf" = "Partager au format PDF";
 "common.search" = "Rechercher";
+"common.search.inpage" = "Rechercher dans la page";
+"common.search.suggestion" = "Voulez-vous dire :";
 "common.tab.manager.title" = "Gestionnaire d'onglets";
 "common.tab.navigation.title" = "Onglets";
 "common.tab.menu.new_tab" = "Nouvel onglet";
@@ -83,6 +86,10 @@
 "download_task_cell.status.failed" = "Échec";
 "download_task_cell.status.downloading" = "Téléchargement...";
 "download_task_cell.status.paused" = "Pause";
+"download_task_cell.status.paused.device_offline" = "En pause (appareil hors ligne)";
+"download_again.question.title" = "Vous avez déjà ce fichier.";
+"download_again.question.description_part_1" = "Il semble que %@ a déjà été téléchargé.";
+"download_again.question.description_part_2" = "Vous voulez toujours télécharger \"%@\" ? Votre fichier existant ne sera pas supprimé.";
 "flavor_tag.help.max" = "tout sauf les gros fichiers multimédias comme la vidéo/audio";
 "flavor_tag.help.no_pic" = "la plupart des photos ont été supprimées";
 "flavor_tag.help.mini" = "seul un sous-ensemble du texte est disponible, probablement la première section";
@@ -133,6 +140,10 @@
 "zim_file.action.download.warning.message" = "Il n'y a peut-être pas assez d'espace sur votre appareil pour ce fichier ZIM.";
 "zim_file.action.download.warning.message1" = "Il resterait moins de 1 Go d’espace après le téléchargement du fichier ZIM.";
 "zim_file.action.download.button.anyway" = "Télécharger quand même";
+"zim_file.action.integrity_check.title" = "Vérifier";
+"zim_file.action.integrity_recheck.title" = "Revérifier";
+"zim_file.action.integrity_check.alert.title" = "Cela peut prendre plusieurs minutes. Kiwix ne sera pas disponible avant la fin de la vérification de l'intégrité.";
+"zim_file.integrity_check.in_progress" = "Vérification d'intégrité : \"%@\" ...";
 "zim_file.base_info.attribute.language" = "Langue";
 "zim_file.base_info.attribute.category" = "Catégorie";
 "zim_file.base_info.attribute.size" = "Taille";
@@ -141,6 +152,7 @@
 "zim_file.bool_info.videos" = "Vidéos";
 "zim_file.bool_info.details" = "Détails";
 "zim_file.bool_info.require_service_workers" = "Nécessite des travailleurs pour le service";
+"zim_file.bool_info.zim_archive_integrity" = "Intégrité de l'archive ZIM";
 "zim_file.counts.article_count" = "Nombre d’articles";
 "zim_file.counts.article.media_count" = "Nombre de médias";
 "zim_file.detail.id.title" = "ID";
@@ -170,7 +182,7 @@
 "library_settings.catalog_warning.text" = "Lorsqu'il est activé, le catalogue de la bibliothèque sera actualisé automatiquement lorsqu'il sera obsolète.";
 "library_settings.languages.title" = "Langues";
 "settings.navigation.title" = "Paramètres";
-"library_settings.toggle.cellular" = "Télécharger en utilisant un téléphone cellulaire";
+"library_settings.toggle.cellular" = "Télécharger via le réseau cellulaire";
 "library_settings.new-download-task-description" = "Le changement ne s'appliquera qu'aux nouvelles tâches de téléchargement.";
 "catalog_settings.last_refresh.text" = "Dernière actualisation";
 "catalog_settings.refreshing.text" = "Rafraîchissement…";

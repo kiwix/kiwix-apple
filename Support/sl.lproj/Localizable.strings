@@ -34,6 +34,7 @@
 "common.button.share" = "Deli";
 "common.button.share_as_pdf" = "Deli kot PDF";
 "common.search" = "Iskanje";
+"common.search.inpage" = "Poišči na strani";
 "common.search.suggestion" = "Ste mislili:";
 "common.tab.manager.title" = "Upravitelj zavihkov";
 "common.tab.navigation.title" = "Zavihki";

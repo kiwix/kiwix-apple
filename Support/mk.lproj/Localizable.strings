@@ -7,14 +7,14 @@
 "library_refresh_error.process.description" = "Грешка при обработката на податоци од каталогот.";
 "download_service.complete.title" = "Преземањето е завршено";
 "download_service.complete.description" = "%@ е успешно преземено.";
-// Fuzzy
-"download_service.error.option_directory" = "не ја најдов папката за преземања";
-// Fuzzy
-"download_service.error.option_invalid_taskid" = "неважечка назнака за downloadTask";
-// Fuzzy
-"download_service.error.option_invalid_response" = "неважечки одговор";
-// Fuzzy
-"download_service.error.option_unable_to_move_file" = "не можев да ја преземам преместената податотека";
+"download_service.error.general.title" = "Преземањето не успеа.";
+"download_service.error.zimfile.title" = "Не можев да го преземам „%@“";
+"download_service.error.footer" = "Не можев да го довршам преземањето.";
+"download_service.error.option_http_status" = "Ознака на состојбата на HTTP: %@";
+"download_service.error.option_directory" = "Не ја најдов папката за преземања";
+"download_service.error.option_invalid_taskid" = "Неважечка назнака за downloadTask";
+"download_service.error.option_invalid_response" = "Неважечки одговор";
+"download_service.error.option_unable_to_move_file" = "Не можев да ја преземам преместената податотека";
 "common.dialog.button.open" = "Отвори";
 "common.dialog.button.open_in_new_tab" = "Отвори во ново јазиче";
 "common.dialog.button.add_bookmark" = "Додај обележувач";
@@ -34,6 +34,7 @@
 "common.button.share" = "Сподели";
 "common.button.share_as_pdf" = "Сподели како PDF";
 "common.search" = "Пребарај";
+"common.search.inpage" = "Пребарај во страница";
 "common.search.suggestion" = "Дали мислевте на:";
 "common.tab.manager.title" = "Управник на јазичиња";
 "common.tab.navigation.title" = "Јазичиња";
@@ -68,6 +69,7 @@
 "download_task_cell.status.failed" = "Неуспешно";
 "download_task_cell.status.downloading" = "Преземам...";
 "download_task_cell.status.paused" = "Запрено";
+"download_task_cell.status.paused.device_offline" = "Запрено (уредот нема линија)";
 "download_again.question.title" = "Веќе ја имате оваа податотека.";
 "download_again.question.description_part_1" = "Се чини дека %@ е веќе преземана.";
 "download_again.question.description_part_2" = "Дали сепак сакате да ја преземете „%@“? Постоечката податотека нема да се избрише.";
@@ -124,8 +126,7 @@
 "zim_file.action.integrity_check.title" = "Провери";
 "zim_file.action.integrity_recheck.title" = "Провери повторно";
 "zim_file.action.integrity_check.alert.title" = "Ова може да потрае малку. Кивикс ќе биде недостапен додека не заврши проверката.";
-// Fuzzy
-"zim_file.integrity_check.in_progress" = "Го проверувам интегритетот на ZIM-архивот на „%@“ ...";
+"zim_file.integrity_check.in_progress" = "Проверка на интегритетот: „%@“ ...";
 "zim_file.base_info.attribute.language" = "Јазик";
 "zim_file.base_info.attribute.category" = "Категорија";
 "zim_file.base_info.attribute.size" = "Големина";
@@ -275,3 +276,8 @@
 "payment.success.description" = "Вашата великодушност ни значи многу.";
 "payment.error.title" = "Ова е незгодно.";
 "payment.error.description" = "Се јави проблем со вашата уплата. Обидете се повторно.";
+"download_service.error.client.backgroundSessionInUseByAnotherProcess" = "Не можев да стапам во врска со заднинската префрлачка служба";
+"download_service.error.client.backgroundSessionWasDisconnected" = "Изгубив врска со заднинската префрлачка служба";
+"download_service.error.client.cancelled" = "откажано";
+"download_service.error.client.badURL" = "неисправна URL-адреса";
+"download_service.error.client.timedOut" = "Барањето истече.";
