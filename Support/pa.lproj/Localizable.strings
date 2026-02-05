@@ -5,6 +5,7 @@
 
 // Fuzzy
 "library_refresh_error.retrieve.description" = "ਕਿਤਾਬਘਰ ਡਾਟਾ ਪ੍ਰਾਪਤ ਕਰਨ ਵਿੱਚ ਗਲਤੀ।";
+"download_service.complete.title" = "ਉਤਾਰਾ ਪੂਰਾ ਹੋਇਆ";
 "common.dialog.button.open" = "ਖੋਲ੍ਹੋ";
 "common.dialog.button.open_in_new_tab" = "ਨਵੇਂ ਟੈਬ 'ਚ ਖੋਲ੍ਹੋ";
 "common.button.go_back" = "ਪਿੱਛੇ ਜਾਓ";
@@ -14,8 +15,11 @@
 "common.button.yes" = "ਹਾਂ";
 "common.button.no" = "ਨਹੀਂ";
 "common.button.print" = "ਛਾਪੋ";
+"common.button.copy" = "ਨਕਲ ਕਰੋ";
+"common.button.copied" = "ਨਕਲ ਕੀਤੀ";
 "common.button.share" = "ਸਾਂਝਾ ਕਰੋ";
 "common.search" = "ਲੱਭੋ";
+"common.search.suggestion" = "ਕੀ ਤੁਹਾਡਾ ਮਤਲਬ ਏ:";
 "common.tab.menu.library" = "ਕਿਤਾਬਘਰ";
 "common.tab.menu.settings" = "ਤਰਜੀਹਾਂ";
 "common.export_file.alert.title" = "ਫਾਈਲ ਬਰਾਮਦ ਕਰੋ";
@@ -61,6 +65,8 @@
 "zim_file.action.delete.button.title" = "ਮਿਟਾਓ";
 "zim_file.action.download.title" = "ਉਤਾਰੋ/ਲਾਹੋ";
 "zim_file.action.download.button.anyway" = "ਕਿਸੇ ਵੀ ਤਰ੍ਹਾਂ ਲਾਹੋ";
+"zim_file.action.integrity_check.title" = "ਜਾਂਚੋ";
+"zim_file.action.integrity_recheck.title" = "ਮੁੜ ਜਾਂਚੋ";
 "zim_file.base_info.attribute.language" = "ਬੋਲੀ";
 "zim_file.base_info.attribute.category" = "ਸ਼੍ਰੇਣੀ";
 "zim_file.base_info.attribute.size" = "ਅਕਾਰ";
@@ -78,6 +84,9 @@
 "zim_file.download_task.action.downloading" = "ਉਤਾਰਾ ਹੋ ਰਿਹਾ ਹੈ...";
 "zim_file.download_task.action.resume" = "ਮੁੜ ਸ਼ੁਰੂ ਕਰੋ";
 "multi.zim_files_selected.sidebar_title" = "ਚੁਣਿਆ ਗਿਆ";
+"theme_settings.title" = "ਵਿਸ਼ਾ-ਵਸਤੂ";
+"theme_settings.option.dark" = "ਗੂੜ੍ਹਾ";
+"theme_settings.option.light" = "ਚਾਨਣ";
 "reading_settings.zoom.reset.button" = "ਮੁੜ-ਬਣਾਓ";
 "reading_settings.external_link.title" = "ਬਾਹਰੀ ਕੜੀ";
 "reading_settings.tab.reading" = "ਪੜ੍ਹ ਰਿਹਾ ਐ";

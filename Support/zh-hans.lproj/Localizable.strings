@@ -44,6 +44,7 @@
 "common.button.share" = "分享";
 "common.button.share_as_pdf" = "以PDF格式共享";
 "common.search" = "搜索";
+"common.search.inpage" = "在页面内搜索";
 "common.search.suggestion" = "您是否想找：";
 "common.tab.manager.title" = "标签管理器";
 "common.tab.navigation.title" = "标签";
