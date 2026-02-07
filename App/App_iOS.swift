@@ -32,6 +32,9 @@ struct Kiwix: App {
     
     init() {
         Diagnostics.start()
+        Task { @MainActor in
+            await WebContentBlocker.compilePolicy()
+        }
         fileMonitor = DirectoryMonitor(url: URL.documentDirectory) { LibraryOperations.scanDirectory($0) }
         UNUserNotificationCenter.current().delegate = appDelegate
         // MARK: - migrations

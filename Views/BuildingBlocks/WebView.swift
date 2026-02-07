@@ -230,29 +230,3 @@ extension WKWebView {
     }
 }
 #endif
-
-final class WebViewConfiguration: WKWebViewConfiguration {
-    override init() {
-        super.init()
-        setURLSchemeHandler(KiwixURLSchemeHandler(), forURLScheme: KiwixURLSchemeHandler.ZIMScheme)
-        #if os(macOS)
-        preferences.isElementFullscreenEnabled = true
-        #else
-        allowsInlineMediaPlayback = true
-        mediaTypesRequiringUserActionForPlayback = []
-        #endif
-        userContentController = {
-            let controller = WKUserContentController()
-            if let url = Bundle.main.url(forResource: "injection", withExtension: "js"),
-               let javascript = try? String(contentsOf: url) {
-                let script = WKUserScript(source: javascript, injectionTime: .atDocumentEnd, forMainFrameOnly: false)
-                controller.addUserScript(script)
-            }
-            return controller
-        }()
-    }
-
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-}
