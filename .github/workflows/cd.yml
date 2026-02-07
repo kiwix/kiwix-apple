@@ -197,6 +197,7 @@ jobs:
       run: |
         plutil -create xml1 ./export.plist
         plutil -insert destination -string upload ./export.plist
+        plutil -insert manageAppVersionAndBuildNumber -bool false ./export.plist
         plutil -insert method -string $EXPORT_METHOD ./export.plist
 
     - name: Upload Archive to Apple (App Store or Notarization)
