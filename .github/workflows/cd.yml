@@ -65,6 +65,11 @@ jobs:
         sed -i '' '/in-app-payments/d' project.yml
         plutil -insert HIDE_DONATION -bool true Support/Info.plist
 
+    - name: Set BUILD NUMBER by date
+      run: |
+        export BUILD_NUMBER=$(date '+%Y%m%d.%H%M')
+        sed -i '' 's/CURRENT_PROJECT_VERSION: .*/CURRENT_PROJECT_VERSION: '$BUILD_NUMBER'/g' project.yml
+
     - name: Set VERSION from code
       shell: python
       run: |
@@ -197,6 +202,7 @@ jobs:
       run: |
         plutil -create xml1 ./export.plist
         plutil -insert destination -string upload ./export.plist
+        plutil -insert manageAppVersionAndBuildNumber -bool false ./export.plist
         plutil -insert method -string $EXPORT_METHOD ./export.plist
 
     - name: Upload Archive to Apple (App Store or Notarization)
