@@ -89,7 +89,7 @@
 "theme_settings.option.light" = "ਚਾਨਣ";
 "reading_settings.zoom.reset.button" = "ਮੁੜ-ਬਣਾਓ";
 "reading_settings.external_link.title" = "ਬਾਹਰੀ ਕੜੀ";
-"reading_settings.tab.reading" = "ਪੜ੍ਹ ਰਿਹਾ ਐ";
+"reading_settings.tab.reading" = "ਪੜ੍ਹ ਰਿਹਾ ਏ";
 "library_settings.button.refresh_now" = "ਹੁਣੇ ਤਾਜ਼ਾ ਕਰੋ";
 "library_settings.languages.title" = "ਬੋਲੀਆਂ";
 "settings.navigation.title" = "ਤਰਜੀਹਾਂ";
@@ -147,7 +147,7 @@
 "enum.libray_tab_item.categories" = "ਸ਼੍ਰੇਣੀਆਂ";
 "enum.libray_tab_item.downloads" = "ਉਤਾਰੋ/ਲਾਹੋ";
 "enum.libray_tab_item.new" = "ਨਵਾਂ";
-"enum.navigation_item.reading" = "ਪੜ੍ਹ ਰਿਹਾ ਐ";
+"enum.navigation_item.reading" = "ਪੜ੍ਹ ਰਿਹਾ ਏ";
 "enum.navigation_item.opened" = "ਖੋਲ੍ਹਿਆ ਗਿਆ";
 "enum.navigation_item.categories" = "ਸ਼੍ਰੇਣੀਆਂ";
 "enum.navigation_item.new" = "ਨਵਾਂ";
