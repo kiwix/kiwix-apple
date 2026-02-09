@@ -93,8 +93,7 @@ ZIM file missing: \(zimFile.name, privacy: .public) |\
  \(downloadPath, privacy: .public)
 """)
             } catch {
-                zimFile.fileURLBookmark = nil
-                zimFile.isMissing = false
+                zimFile.isMissing = true
                 Log.LibraryOperations.notice("""
 ZIM file cannot be opened: \(zimFile.name, privacy: .public) |\ 
 \(downloadPath, privacy: .public) due to: \(error, privacy: .public)
