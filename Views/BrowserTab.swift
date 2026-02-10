@@ -63,6 +63,7 @@ struct BrowserTab: View {
 #if os(iOS)
                 if !Brand.hideShareButton {
                     ExportButton(
+                        articleTitle: browser.articleTitle,
                         webViewURL: browser.webView.url,
                         pageDataWithExtension: { [weak browser] in await browser?.pageDataWithExtension() },
                         isButtonDisabled: browser.zimFileName.isEmpty
@@ -73,6 +74,7 @@ struct BrowserTab: View {
                     Menu {
                         ExportButton(
                             relativeToView: browser.webView,
+                            articleTitle: browser.articleTitle,
                             webViewURL: browser.webView.url,
                             pageDataWithExtension: { [weak browser] in await browser?.pageDataWithExtension() },
                             isButtonDisabled: browser.zimFileName.isEmpty,
@@ -89,8 +91,8 @@ struct BrowserTab: View {
                     }.disabled(browser.webView.url == nil)
                 }
                 if !Brand.hidePrintButton {
-                    PrintButton(browserURLName: { [weak browser] in
-                        browser?.url?.lastPathComponent
+                    PrintButton(articleTitle: { [weak browser] in
+                        browser?.articleTitle
                     }, browserDataAsPDF: { [weak browser] in
                         try await browser?.webView.pdf()
                     })

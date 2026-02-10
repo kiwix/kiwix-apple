@@ -27,6 +27,13 @@ extension String {
         return String(dropLast(value.count))
     }
 
+    var slugifiedFileName: String {
+        lowercased()
+            .replacingOccurrences(of: " ", with: "-")
+            .replacingOccurrences(of: "/", with: "")
+            .replacingOccurrences(of: ":", with: "")
+    }
+
     func replacingRegex(
         matching pattern: String,
         findingOptions: NSRegularExpression.Options = .caseInsensitive,

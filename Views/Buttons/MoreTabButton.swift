@@ -74,6 +74,7 @@ struct MoreTabButton: View {
     @ViewBuilder
     private func shareButton() -> some View {
         ExportButton(
+            articleTitle: browser.articleTitle,
             webViewURL: browser.webView.url,
             pageDataWithExtension: browser.pageDataWithExtension,
             isButtonDisabled: browser.zimFileName.isEmpty,

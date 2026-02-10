@@ -20,6 +20,7 @@ struct ExportButton: View {
     #if os(macOS)
     let relativeToView: NSView
     #endif
+    let articleTitle: String
     let webViewURL: URL?
     let pageDataWithExtension: () async -> (Data, String?)?
     let isButtonDisabled: Bool
@@ -29,12 +30,13 @@ struct ExportButton: View {
 
     /// - Returns: Returns the browser data, fileName and extension
     private func dataNameAndExtension() async -> FileExportData? {
-        guard let fileName = webViewURL?.lastPathComponent else {
-            return nil
-        }
         guard let (pageData, fileExtension) = await pageDataWithExtension() else {
             return nil
         }
+        let baseName = articleTitle.isEmpty
+            ? webViewURL?.deletingPathExtension().lastPathComponent
+            : articleTitle
+        guard let fileName = baseName?.slugifiedFileName else { return nil }
         return FileExportData(data: pageData, fileName: fileName, fileExtension: fileExtension)
     }
 

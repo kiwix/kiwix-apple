@@ -19,15 +19,14 @@ import PDFKit
 
 struct PrintButton: View {
     @FocusedValue(\.isBrowserURLSet) var isBrowserURLSet
-    /// browser.webView.url?.lastPathComponent
-    let browserURLName: () -> String?
+    let articleTitle: () -> String?
     /// browser.webView.pdf()
     let browserDataAsPDF: () async throws -> Data?
 
     private func tempFileURL() async -> URL? {
         guard let pdfData = try? await browserDataAsPDF(),
-              let browserURLName = browserURLName() else { return nil }
-        return FileExporter.tempFileFrom(exportData: .init(data: pdfData, fileName: browserURLName))
+              let title = articleTitle(), !title.isEmpty else { return nil }
+        return FileExporter.tempFileFrom(exportData: .init(data: pdfData, fileName: title.slugifiedFileName))
     }
 
     var body: some View {
