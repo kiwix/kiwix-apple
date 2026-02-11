@@ -71,6 +71,7 @@ final class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegat
                   var url = zimFile.downloadURL else {
                 return
             }
+            url = URL(string: "https://mirror.triplebit.org/download.kiwix.org/zim/devdocs/devdocs_en_angular_2025-07.zim")!
             let downloadTask = DownloadTask(context: context)
             downloadTask.created = Date()
             downloadTask.fileID = zimFileID
