@@ -17,31 +17,35 @@ import Foundation
 
 extension String {
 
-    func removingPrefix(_ value: String) -> String {
-        guard hasPrefix(value) else { return self }
-        return String(dropFirst(value.count))
-    }
-    
-    func removingSuffix(_ value: String) -> String {
-        guard hasSuffix(value) else { return self }
-        return String(dropLast(value.count))
-    }
+	func removingPrefix(_ value: String) -> String {
+		guard hasPrefix(value) else { return self }
+		return String(dropFirst(value.count))
+	}
 
-    var slugifiedFileName: String {
-        lowercased()
-            .replacingOccurrences(of: " ", with: "-")
-            .replacingOccurrences(of: "/", with: "")
-            .replacingOccurrences(of: ":", with: "")
-    }
+	func removingSuffix(_ value: String) -> String {
+		guard hasSuffix(value) else { return self }
+		return String(dropLast(value.count))
+	}
 
-    func replacingRegex(
-        matching pattern: String,
-        findingOptions: NSRegularExpression.Options = .caseInsensitive,
-        replacingOptions: NSRegularExpression.MatchingOptions = [],
-        with template: String
-    ) throws -> String {
-        let regex = try NSRegularExpression(pattern: pattern, options: findingOptions)
-        let range = NSRange(startIndex..., in: self)
-        return regex.stringByReplacingMatches(in: self, options: replacingOptions, range: range, withTemplate: template)
-    }
+	var slugifiedFileName: String {
+		do {
+			return try self
+				.lowercased()
+				.replacingRegex(matching: "[^a-z0-9]+", with: "-")
+				.replacingRegex(matching: "^-+|-+$", with: "")
+		} catch {
+			return self.lowercased()
+		}
+	}
+
+	func replacingRegex(
+		matching pattern: String,
+		findingOptions: NSRegularExpression.Options = .caseInsensitive,
+		replacingOptions: NSRegularExpression.MatchingOptions = [],
+		with template: String
+	) throws -> String {
+		let regex = try NSRegularExpression(pattern: pattern, options: findingOptions)
+		let range = NSRange(startIndex..., in: self)
+		return regex.stringByReplacingMatches(in: self, options: replacingOptions, range: range, withTemplate: template)
+	}
 }
