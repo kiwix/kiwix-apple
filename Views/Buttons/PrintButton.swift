@@ -25,7 +25,12 @@ struct PrintButton: View {
 
 	private func tempFileURL() async -> URL? {
 		guard let pdfData = try? await browserDataAsPDF(),
-			  let title = articleTitle(), !title.isEmpty else { return "article"}
+	    let title: String
+        if let articleTitle = articleTitle(), !articleTitle.isEmpty {
+            title = articleTitle
+        } else {
+            title = "article"
+        }
 		return FileExporter.tempFileFrom(exportData: .init(data: pdfData, fileName: title.slugifiedFileName))
 	}
 
