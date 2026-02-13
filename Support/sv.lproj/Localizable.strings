@@ -2,6 +2,7 @@
 // Exported from translatewiki.net
 // Author: Apq
 // Author: Larsa
+// Author: Michael FOSS
 // Author: Rofiatmustapha12
 // Author: Sabelöga
 // Author: Stefan2255
@@ -39,6 +40,7 @@
 "common.button.share" = "Dela";
 "common.button.share_as_pdf" = "Dela som PDF";
 "common.search" = "Sök";
+"common.search.inpage" = "Sök i sida";
 "common.search.suggestion" = "Menade du:";
 "common.tab.manager.title" = "Flikhanterare";
 "common.tab.navigation.title" = "Flikar";
