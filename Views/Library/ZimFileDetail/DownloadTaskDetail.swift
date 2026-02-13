@@ -22,6 +22,7 @@ extension ZimFileDetail {
         @EnvironmentObject var selection: SelectedZimFileViewModel
         @State private var downloadState = DownloadState.empty()
         @StateObject private var networkState = DownloadService.shared.networkState
+        @State private var downloadNetworkState: DownloadTaskNetworkState = .online
         
         var body: some View {
             Group {
@@ -37,29 +38,30 @@ extension ZimFileDetail {
                     }
                     Attribute(title: LocalString.zim_file_download_task_action_failed, detail: detail)
                     Text(error)
-                } else if downloadState.resumeData == nil {
-                    Action(title: LocalString.zim_file_download_task_action_pause) {
-                        DownloadService.shared.pause(zimFileID: downloadZimFile.fileID)
-                    }.disabled(networkState.isOnline == false) // make sure cannot be paused mid-state
-                    if networkState.isOnline {
-                        Attribute(
-                            title: LocalString.zim_file_download_task_action_downloading,
-                            detail: detail
-                        )
-                    } else {
-                        Attribute(
-                            title: LocalString.download_task_cell_status_paused_device_offline,
-                            detail: detail
-                        )
-                    }
                 } else {
-                    Action(title: LocalString.zim_file_download_task_action_resume) {
-                        DownloadService.shared.resume(zimFileID: downloadZimFile.fileID)
-                    }.disabled(networkState.isOnline == false)
-                    if networkState.isOnline {
-                        Attribute(title: LocalString.download_task_cell_status_paused, detail: detail)
+                    // Action button
+                    if downloadState.resumeData == nil {
+                        Action(title: LocalString.zim_file_download_task_action_pause) {
+                            DownloadService.shared.pause(zimFileID: downloadZimFile.fileID)
+                        }.disabled(downloadNetworkState != .online) // make sure cannot be paused mid-state
                     } else {
+                        Action(title: LocalString.zim_file_download_task_action_resume) {
+                            DownloadService.shared.resume(zimFileID: downloadZimFile.fileID)
+                        }.disabled(downloadNetworkState != .online)
+                    }
+                    
+                    switch downloadNetworkState {
+                    case .offline:
                         Attribute(title: LocalString.download_task_cell_status_paused_device_offline, detail: detail)
+                    case .waitingForWifi:
+                        Attribute(title: LocalString.download_task_cell_status_paused_waiting_for_wifi, detail: detail)
+                    case .online:
+                        if downloadState.resumeData == nil {
+                            Attribute(title: LocalString.zim_file_download_task_action_downloading, detail: detail)
+                        } else {
+                            // genuinely paused by the user
+                            Attribute(title: LocalString.download_task_cell_status_paused, detail: detail)
+                        }
                     }
                 }
             }.onReceive(
@@ -72,8 +74,27 @@ extension ZimFileDetail {
                         }
                     }
             )
+            .onChange(of: networkState.onlineState, { _, newState in
+                Task {
+                    await updateWith(onlineState: newState)
+                }
+            })
             .task {
                 networkState.startMonitoring()
+                await updateWith(onlineState: networkState.onlineState)
+            }
+        }
+        
+        @MainActor
+        private func updateWith(onlineState: OnlineState) async {
+            let zimFileID = downloadZimFile.fileID
+            guard let allowsCellular = await DownloadService.shared.allowsCellularAccessFor(zimFileID: zimFileID) else {
+                return
+            }
+            let newDowloadNetworkState = DownloadTaskNetworkState(onlineState: onlineState,
+                                                                  downloadAllowsCellular: allowsCellular)
+            if newDowloadNetworkState != downloadNetworkState {
+                downloadNetworkState = newDowloadNetworkState
             }
         }
         
