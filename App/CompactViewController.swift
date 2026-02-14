@@ -136,11 +136,15 @@ private struct CompactViewWrapper: View {
     @EnvironmentObject private var navigation: NavigationViewModel
     
     var body: some View {
-        if case .loading = navigation.currentItem {
-            LoadingDataView()
-        } else if case let .tab(tabID) = navigation.currentItem {
-            CompactView(tabID: tabID)
+        Group {
+            if case .loading = navigation.currentItem {
+                LoadingDataView()
+            } else if case let .tab(tabID) = navigation.currentItem {
+                CompactView(tabID: tabID)
+                    .transition(.opacity)
+            }
         }
+        .animation(.easeInOut(duration: 0.2), value: navigation.currentItem)
     }
 }
 
