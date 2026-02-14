@@ -130,6 +130,7 @@ final class SearchViewModel: NSObject, ObservableObject, NSFetchedResultsControl
             }
     }
     
+    @MainActor
     deinit {
         queue.cancelAllOperations()
         searchSubscriber?.cancel()
