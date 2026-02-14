@@ -19,15 +19,21 @@ import PDFKit
 
 struct PrintButton: View {
     @FocusedValue(\.isBrowserURLSet) var isBrowserURLSet
-    /// browser.webView.url?.lastPathComponent
-    let browserURLName: () -> String?
+    let articleTitle: () -> String?
     /// browser.webView.pdf()
     let browserDataAsPDF: () async throws -> Data?
 
     private func tempFileURL() async -> URL? {
-        guard let pdfData = try? await browserDataAsPDF(),
-              let browserURLName = browserURLName() else { return nil }
-        return FileExporter.tempFileFrom(exportData: .init(data: pdfData, fileName: browserURLName))
+        guard let pdfData = try? await browserDataAsPDF() else {
+            return nil
+        }
+        let title: String
+        if let articleTitle = articleTitle(), !articleTitle.isEmpty {
+            title = articleTitle.slugifiedFileName
+        } else {
+            title = "article"
+        }
+        return FileExporter.tempFileFrom(exportData: .init(data: pdfData, fileName: title))
     }
 
     var body: some View {
@@ -45,7 +51,7 @@ struct PrintButton: View {
                 Image(systemName: "printer")
             }
         }.disabled(isBrowserURLSet != true)
-        .keyboardShortcut("p", modifiers: .command)
+            .keyboardShortcut("p", modifiers: .command)
     }
 }
 #endif

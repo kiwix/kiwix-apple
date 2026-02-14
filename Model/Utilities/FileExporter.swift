@@ -36,9 +36,7 @@ enum FileExporter {
         } else {
             extensionToAppend = ""
         }
-        guard let tempFileName = exportData.fileName.split(separator: ".").first?.appending(extensionToAppend) else {
-            return nil
-        }
+        let tempFileName = exportData.fileName.appending(extensionToAppend)
         let tempFileURL = URL(temporaryFileWithName: tempFileName)
         guard (try? exportData.data.write(to: tempFileURL)) != nil else {
             return nil

@@ -21,10 +21,21 @@ extension String {
         guard hasPrefix(value) else { return self }
         return String(dropFirst(value.count))
     }
-    
+
     func removingSuffix(_ value: String) -> String {
         guard hasSuffix(value) else { return self }
         return String(dropLast(value.count))
+    }
+
+    var slugifiedFileName: String {
+        do {
+            return try self
+                .lowercased()
+                .replacingRegex(matching: "[^a-z0-9]+", with: "-")
+                .replacingRegex(matching: "^-+|-+$", with: "")
+        } catch {
+            return self.lowercased()
+        }
     }
 
     func replacingRegex(

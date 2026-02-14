@@ -23,7 +23,7 @@ struct BrowserTab: View {
     @Environment(\.scenePhase) private var scenePhase
     @EnvironmentObject private var library: LibraryViewModel
     @StateObject private var search = SearchViewModel.shared
-    
+
     init(tabID: NSManagedObjectID) {
         self.browser = BrowserViewModel.getCached(tabID: tabID)
     }
@@ -63,6 +63,7 @@ struct BrowserTab: View {
 #if os(iOS)
                 if !Brand.hideShareButton {
                     ExportButton(
+                        articleTitle: browser.articleTitle,
                         webViewURL: browser.webView.url,
                         pageDataWithExtension: { [weak browser] in await browser?.pageDataWithExtension() },
                         isButtonDisabled: browser.zimFileName.isEmpty
@@ -73,6 +74,7 @@ struct BrowserTab: View {
                     Menu {
                         ExportButton(
                             relativeToView: browser.webView,
+                            articleTitle: browser.articleTitle,
                             webViewURL: browser.webView.url,
                             pageDataWithExtension: { [weak browser] in await browser?.pageDataWithExtension() },
                             isButtonDisabled: browser.zimFileName.isEmpty,
@@ -89,8 +91,8 @@ struct BrowserTab: View {
                     }.disabled(browser.webView.url == nil)
                 }
                 if !Brand.hidePrintButton {
-                    PrintButton(browserURLName: { [weak browser] in
-                        browser?.url?.lastPathComponent
+                    PrintButton(articleTitle: { [weak browser] in
+                        browser?.articleTitle
                     }, browserDataAsPDF: { [weak browser] in
                         try await browser?.webView.pdf()
                     })
@@ -116,9 +118,9 @@ struct BrowserTab: View {
         }
         .environmentObject(search)
         .focusedSceneValue(\.isBrowserURLSet, browser.url != nil)
-        #if os(macOS)
+#if os(macOS)
         .focusedSceneValue(\.browserURL, browser.url)
-        #endif
+#endif
         .focusedSceneValue(\.canGoBack, browser.canGoBack)
         .focusedSceneValue(\.canGoForward, browser.canGoForward)
         .modifier(ExternalLinkHandler(externalURL: $browser.externalURL))
@@ -171,7 +173,7 @@ struct BrowserTab: View {
         var body: some View {
             // swiftlint:disable:next redundant_discardable_let
             let _ = model.updateWith(hasZimFiles: !zimFiles.isEmpty,
-                             hasSeenCategories: hasSeenCategories)
+                                     hasSeenCategories: hasSeenCategories)
             GeometryReader { proxy in
                 Group {
                     if !search.searchText.isEmpty {
