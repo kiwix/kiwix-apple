@@ -100,7 +100,7 @@ extension ZimFileDetail {
         
         private var detail: String {
             #if os(macOS)
-            if networkState.isOnline {
+            if networkState.onlineState == .online {
                 if let percent = percent {
                     return "\(size) - \(percent)"
                 } else {
