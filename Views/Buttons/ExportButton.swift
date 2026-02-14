@@ -33,9 +33,11 @@ struct ExportButton: View {
         guard let (pageData, fileExtension) = await pageDataWithExtension() else {
             return nil
         }
-        let baseName = articleTitle.isEmpty
-        ? webViewURL?.deletingPathExtension().lastPathComponent
-        : articleTitle
+        let baseName = if articleTitle.isEmpty {
+            webViewURL?.deletingPathExtension().lastPathComponent
+        } else {
+            articleTitle
+        }
         guard let fileName = baseName?.slugifiedFileName else { return nil }
         return FileExportData(data: pageData, fileName: fileName, fileExtension: fileExtension)
     }
