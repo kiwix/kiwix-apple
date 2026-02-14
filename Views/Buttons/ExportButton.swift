@@ -16,16 +16,16 @@
 import SwiftUI
 
 struct ExportButton: View {
-    
-    #if os(macOS)
+
+#if os(macOS)
     let relativeToView: NSView
-    #endif
+#endif
     let articleTitle: String
     let webViewURL: URL?
     let pageDataWithExtension: () async -> (Data, String?)?
     let isButtonDisabled: Bool
     var actionCallback: () -> Void = { }
-    
+
     var buttonLabel: String = LocalString.common_button_share
 
     /// - Returns: Returns the browser data, fileName and extension
@@ -34,8 +34,8 @@ struct ExportButton: View {
             return nil
         }
         let baseName = articleTitle.isEmpty
-            ? webViewURL?.deletingPathExtension().lastPathComponent
-            : articleTitle
+        ? webViewURL?.deletingPathExtension().lastPathComponent
+        : articleTitle
         guard let fileName = baseName?.slugifiedFileName else { return nil }
         return FileExportData(data: pageData, fileName: fileName, fileExtension: fileExtension)
     }
@@ -49,10 +49,10 @@ struct ExportButton: View {
         Button {
             Task {
                 actionCallback()
-                #if os(iOS)
+#if os(iOS)
                 guard let exportData = await dataNameAndExtension() else { return }
                 NotificationCenter.exportFileData(exportData)
-                #else
+#else
                 guard let url = await tempFileURL() else { return }
                 NSSharingServicePicker(items: [url]).show(
                     relativeTo: NSRect(
@@ -65,7 +65,7 @@ struct ExportButton: View {
                     of: relativeToView,
                     preferredEdge: .minY
                 )
-                #endif
+#endif
             }
         } label: {
             Label {

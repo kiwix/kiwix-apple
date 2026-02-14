@@ -18,10 +18,10 @@ import SwiftUI
 import PDFKit
 
 struct PrintButton: View {
-	@FocusedValue(\.isBrowserURLSet) var isBrowserURLSet
-	let articleTitle: () -> String?
-	/// browser.webView.pdf()
-	let browserDataAsPDF: () async throws -> Data?
+    @FocusedValue(\.isBrowserURLSet) var isBrowserURLSet
+    let articleTitle: () -> String?
+    /// browser.webView.pdf()
+    let browserDataAsPDF: () async throws -> Data?
 
     private func tempFileURL() async -> URL? {
         guard let pdfData = try? await browserDataAsPDF() else {
@@ -36,22 +36,22 @@ struct PrintButton: View {
         return FileExporter.tempFileFrom(exportData: .init(data: pdfData, fileName: title))
     }
 
-	var body: some View {
-		Button {
-			Task {
-				guard let url = await tempFileURL() else { return }
-				let pdfDoc = PDFDocument(url: url)
-				let operation = pdfDoc?.printOperation(for: .shared, scalingMode: .pageScaleToFit, autoRotate: true)
-				operation?.run()
-			}
-		} label: {
-			Label {
-				Text(LocalString.common_button_print)
-			}  icon: {
-				Image(systemName: "printer")
-			}
-		}.disabled(isBrowserURLSet != true)
-			.keyboardShortcut("p", modifiers: .command)
-	}
+    var body: some View {
+        Button {
+            Task {
+                guard let url = await tempFileURL() else { return }
+                let pdfDoc = PDFDocument(url: url)
+                let operation = pdfDoc?.printOperation(for: .shared, scalingMode: .pageScaleToFit, autoRotate: true)
+                operation?.run()
+            }
+        } label: {
+            Label {
+                Text(LocalString.common_button_print)
+            }  icon: {
+                Image(systemName: "printer")
+            }
+        }.disabled(isBrowserURLSet != true)
+            .keyboardShortcut("p", modifiers: .command)
+    }
 }
 #endif
