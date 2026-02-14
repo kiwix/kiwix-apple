@@ -97,7 +97,7 @@
 "download_task_cell.status.downloading" = "Downloading...";
 "download_task_cell.status.paused" = "Paused";
 "download_task_cell.status.paused.device_offline" = "Paused (device is offline)";
-"download_task_cell.status.paused.waiting_for_wifi" = "Paused (waiting for wifi)";
+"download_task_cell.status.paused.waiting_for_wifi" = "Paused (waiting for WiFi)";
 
 "download_again.question.title" = "You already have this file.";
 "download_again.question.description_part_1" = "It looks like %@ is already downloaded.";
