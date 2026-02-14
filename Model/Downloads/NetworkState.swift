@@ -16,20 +16,64 @@
 import Foundation
 import Network
 
+// Mapped state from `OnlineState` plus
+// from the session download task
+// depending if it allows cellular access or not
+// it is PER DOWNLOAD task
+enum DownloadTaskNetworkState {
+    init(onlineState: OnlineState, downloadAllowsCellular: Bool) {
+        switch (onlineState, downloadAllowsCellular) {
+        case (.offline, _):
+            self = .offline
+        case (.onlineOnCellularOnly, false):
+            self = .waitingForWifi
+        default:
+            self = .online
+        }
+    }
+    
+    case offline
+    case waitingForWifi
+    case online
+}
+
+/// States that are comming from the GLOBAL network state listener
+enum OnlineState {
+    init(hasConnection: Bool, hasOnlyCellular: Bool) {
+        switch (hasConnection, hasOnlyCellular) {
+        case (false, _):
+            self = .offline
+        case (true, false):
+            self = .online
+        case (true, true):
+            self = .onlineOnCellularOnly
+        }
+    }
+    
+    case offline
+    case onlineOnCellularOnly
+    case online
+}
+
 final class NetworkState: ObservableObject {
     @MainActor
     @Published
-    var isOnline: Bool = true
+    var onlineState: OnlineState = .online
     
     private let monitor = NWPathMonitor()
     private let queue = DispatchQueue(label: "org.kiwix.network.monitor")
     
     init() {
         monitor.pathUpdateHandler = { [weak self] path in
-            let newValue = path.status == .satisfied
+            let hasConnection = path.status == .satisfied
+            // if there is any other type of connection (eg: wired lan)
+            // it means we are not only on cellular
+            let types: [NWInterface.InterfaceType] = path.availableInterfaces.map { $0.type }
+            let hasOnlyCellular = types.filter { $0 != .cellular }.isEmpty
+            let newState = OnlineState(hasConnection: hasConnection, hasOnlyCellular: hasOnlyCellular)
             Task { @MainActor [weak self] in
-                if newValue != self?.isOnline {
-                    self?.isOnline = newValue
+                if newState != self?.onlineState {
+                    self?.onlineState = newState
                 }
             }
         }

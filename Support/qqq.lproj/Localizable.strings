@@ -72,6 +72,7 @@
 "download_task_cell.status.downloading" = "The title reporting the status of the current ZIM file download";
 "download_task_cell.status.paused" = "The title reporting the status of the current ZIM file download";
 "download_task_cell.status.paused.device_offline" = "The title reporting the status of the current ZIM file download";
+"download_task_cell.status.paused.waiting_for_wifi" = "The title reporting the status of the current ZIM file download. Due to user set preferrence, downloads are only carried out via WiFi, but there's no such connection available at the moment.";
 "download_again.question.title" = "Title of an alert pop up, informing the user tries to downlaod a file, that is already available locally.";
 "download_again.question.description_part_1" = "Part of an alert description, that a file is already downloaded. The parameter is replaced with the actual file name, eg: wikipedia.zim.";
 "download_again.question.description_part_2" = "Part of an alert description, that a file is already downloaded. The parameter is replaced with the zim file title, eg: Wikipedia maxi";

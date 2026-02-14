@@ -24,6 +24,7 @@ struct DownloadTaskCell: View {
     @State private var isHovering: Bool = false
     @State private var downloadState = DownloadState(downloaded: 0, total: 1, resumeData: nil)
     @StateObject private var networkState = DownloadService.shared.networkState
+    @State private var downloadNetworkState: DownloadTaskNetworkState = .online
 
     let downloadZimFile: ZimFile
     init(_ downloadZimFile: ZimFile) {
@@ -52,23 +53,26 @@ struct DownloadTaskCell: View {
             VStack(alignment: .leading, spacing: 4) {
                 if downloadZimFile.downloadTask?.error != nil {
                     Text(LocalString.download_task_cell_status_failed)
-                } else if downloadState.resumeData == nil {
-                    if networkState.isOnline {
-                        Text(LocalString.download_task_cell_status_downloading)
-                    } else {
-                        Text(LocalString.download_task_cell_status_paused_device_offline)
-                    }
                 } else {
-                    if networkState.isOnline {
-                        Text(LocalString.download_task_cell_status_paused)
-                    } else {
+                    switch downloadNetworkState {
+                    case .offline:
                         Text(LocalString.download_task_cell_status_paused_device_offline)
+                    case .waitingForWifi:
+                        Text(LocalString.download_task_cell_status_paused_waiting_for_wifi)
+                    case .online:
+                        if downloadState.resumeData == nil {
+                            Text(LocalString.download_task_cell_status_downloading)
+                        } else {
+                            // genuinely paused by the user
+                            Text(LocalString.download_task_cell_status_paused)
+                        }
                     }
                 }
                 ProgressView(
                     value: Float(downloadState.downloaded),
                     total: Float(downloadState.total)
                 )
+                .progressViewStyle(.linear)
                 Text(progress.localizedAdditionalDescription).animation(.none, value: progress)
             }.font(.caption).foregroundColor(.secondary)
         }
@@ -86,8 +90,27 @@ struct DownloadTaskCell: View {
                 self.downloadState = state
             }
         }
+        .onChange(of: networkState.onlineState, { _, newState in
+            Task {
+                await updateWith(onlineState: newState)
+            }
+        })
         .task {
             networkState.startMonitoring()
+            await updateWith(onlineState: networkState.onlineState)
+        }
+    }
+    
+    @MainActor
+    private func updateWith(onlineState: OnlineState) async {
+        let zimFileID = downloadZimFile.fileID
+        guard let allowsCellular = await DownloadService.shared.allowsCellularAccessFor(zimFileID: zimFileID) else {
+            return
+        }
+        let newDowloadNetworkState = DownloadTaskNetworkState(onlineState: onlineState,
+                                                              downloadAllowsCellular: allowsCellular)
+        if newDowloadNetworkState != downloadNetworkState {
+            downloadNetworkState = newDowloadNetworkState
         }
     }
 }

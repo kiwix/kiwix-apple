@@ -183,6 +183,13 @@ final class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegat
         }
     }
 
+    @MainActor
+    func allowsCellularAccessFor(zimFileID: UUID) async -> Bool? {
+        let (_, _, downloadTasks) = await session.tasks
+        let task = downloadTasks.first(where: { $0.taskDescription == zimFileID.uuidString })
+        return task?.originalRequest?.allowsCellularAccess
+    }
+
     // MARK: - Database
 
     private func deleteDownloadTask(zimFileID: UUID) {
