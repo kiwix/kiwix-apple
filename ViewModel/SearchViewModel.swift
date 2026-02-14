@@ -68,12 +68,14 @@ enum SearchResultItems {
     }
 }
 
+@MainActor
 final class SearchViewModel: NSObject, ObservableObject, NSFetchedResultsControllerDelegate {
     @Published var searchText: String = ""  // text in the search field
-    @Published private(set) var zimFiles: [UUID: ZimFile]  // ID of zim files that are included in search
+    @Published private(set) var zimDataDict: [UUID: ZimArticleData]  // ID of zim files that are included in search
     @Published private(set) var inProgress = false
     @Published private(set) var results: SearchResultItems = .results([])
     
+    @MainActor
     static let shared = SearchViewModel()
 
     private let fetchedResultsController: NSFetchedResultsController<ZimFile>
@@ -95,8 +97,8 @@ final class SearchViewModel: NSObject, ObservableObject, NSFetchedResultsControl
 
         // initialize zim file IDs
         try? fetchedResultsController.performFetch()
-        zimFiles = fetchedResultsController.fetchedObjects?.reduce(into: [:]) { result, zimFile in
-            result?[zimFile.fileID] = zimFile
+        zimDataDict = fetchedResultsController.fetchedObjects?.reduce(into: [:]) { result, zimFile in
+            result?[zimFile.fileID] = ZimArticleData(from: zimFile)
         } ?? [:]
 
         super.init()
@@ -110,20 +112,20 @@ final class SearchViewModel: NSObject, ObservableObject, NSFetchedResultsControl
             $searchText.removeDuplicates { prev, current in
                 // consider search text to be the same ignoring spaces
                 prev.trimmingCharacters(in: .whitespaces) == current.trimmingCharacters(in: .whitespaces)
-            }, $zimFiles.removeDuplicates { prev, current in
+            }, $zimDataDict.removeDuplicates { prev, current in
                 // don't re-trigger for the same set of zim files
                 Set(prev.keys) == Set(current.keys)
             })
-            .map { [unowned self] searchText, zimFiles in
-                if !searchText.isEmpty, !zimFiles.isEmpty {
+            .map { [unowned self] searchText, zimDataDict in
+                if !searchText.isEmpty, !zimDataDict.isEmpty {
                     self.updateProgress(true)
                 }
-                return (searchText, zimFiles)
+                return (searchText, zimDataDict)
             }
             .debounce(for: 0.2, scheduler: DispatchQueue.main)
-            .sink { [unowned self] searchText, zimFiles in
+            .sink { [unowned self] searchText, zimDataDict in
                 Task { @ZimActor [weak self] in
-                    self?.updateSearchResults(searchText, Set(zimFiles.keys))
+                    self?.updateSearchResults(searchText, Set(zimDataDict.keys))
                 }
             }
     }
@@ -133,10 +135,12 @@ final class SearchViewModel: NSObject, ObservableObject, NSFetchedResultsControl
         searchSubscriber?.cancel()
     }
 
-    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-        zimFiles = fetchedResultsController.fetchedObjects?.reduce(into: [:]) { result, zimFile in
-            result?[zimFile.fileID] = zimFile
-        } ?? [:]
+    nonisolated func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+        Task { @MainActor in
+            zimDataDict = fetchedResultsController.fetchedObjects?.reduce(into: [:]) { result, zimFile in
+                result?[zimFile.fileID] = ZimArticleData(from: zimFile)
+            } ?? [:]
+        }
     }
     
     private func updateProgress(_ value: Bool) {
