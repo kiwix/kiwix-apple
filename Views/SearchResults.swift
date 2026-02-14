@@ -96,7 +96,7 @@ struct SearchResults: View {
                                 Button {
                                     openResult(result: result)
                                 } label: {
-                                    ArticleCell(result: result, zimFile: viewModel.zimFiles[result.zimFileID])
+                                    ArticleCell(result: result, zimData: viewModel.zimDataDict[result.zimFileID])
                                 }
                                 .buttonStyle(.plain)
                                 .modifier(

@@ -16,8 +16,41 @@
 import SwiftUI
 
 private enum ArticleImage {
-    case zimFile(ZimFile?)
+    case zimData(ZimArticleData?)
     case image(name: String)
+}
+
+struct BookmarkArticleData: Sendable {
+    init(from bookmark: Bookmark) {
+        title = bookmark.title
+        if let zimFile = bookmark.zimFile {
+            zimData = ZimArticleData(from: zimFile)
+        } else {
+            zimData = ZimArticleData(
+                category: "",
+                faviconData: nil,
+                faviconURL: nil
+            )
+        }
+    }
+    let title: String
+    let zimData: ZimArticleData
+}
+
+struct ZimArticleData: Sendable {
+    init(from zimFile: ZimFile) {
+        category = zimFile.category
+        faviconData = zimFile.faviconData
+        faviconURL = zimFile.faviconURL
+    }
+    init(category: String, faviconData: Data?, faviconURL: URL?) {
+        self.category = category
+        self.faviconData = faviconData
+        self.faviconURL = faviconURL
+    }
+    let category: String
+    let faviconData: Data?
+    let faviconURL: URL?
 }
 
 /// A rounded rect cell displaying preview of an article.
@@ -28,16 +61,16 @@ struct ArticleCell: View {
     private let snippet: NSAttributedString?
     private let articleImage: ArticleImage
 
-    init(bookmark: Bookmark) {
-        title = bookmark.title
+    init(bookmarkData: BookmarkArticleData) {
+        title = bookmarkData.title
         snippet = nil
-        articleImage = .zimFile(bookmark.zimFile)
+        articleImage = .zimData(bookmarkData.zimData)
     }
 
-    init(result: SearchResult, zimFile: ZimFile?) {
+    init(result: SearchResult, zimData: ZimArticleData?) {
         title = result.title
         snippet = result.snippet
-        articleImage = .zimFile(zimFile)
+        articleImage = .zimData(zimData)
     }
     
     init(searchSuggestion: String) {
@@ -62,9 +95,9 @@ struct ArticleCell: View {
             }
             Spacer()
             switch articleImage {
-            case .zimFile(let zimFile):
-                if let zimFile = zimFile, let category = Category(rawValue: zimFile.category) {
-                    Favicon(category: category, imageData: zimFile.faviconData, imageURL: zimFile.faviconURL)
+            case .zimData(let zimData):
+                if let zimData = zimData, let category = Category(rawValue: zimData.category) {
+                    Favicon(category: category, imageData: zimData.faviconData, imageURL: zimData.faviconURL)
                         .frame(height: 20)
                 }
             case .image(let name):
@@ -91,7 +124,7 @@ struct ArticleCell_Previews: PreviewProvider {
     }()
 
     static var previews: some View {
-        ArticleCell(result: ArticleCell_Previews.result, zimFile: nil)
+        ArticleCell(result: ArticleCell_Previews.result, zimData: nil)
             .frame(width: 500, height: 100)
             .padding()
             .previewLayout(.sizeThatFits)

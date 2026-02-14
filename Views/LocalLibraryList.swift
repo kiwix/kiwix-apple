@@ -60,7 +60,7 @@ struct LocalLibraryList: View {
                         Button {
                             load(bookmark.articleURL)
                         } label: {
-                            ArticleCell(bookmark: bookmark)
+                            ArticleCell(bookmarkData: BookmarkArticleData(from: bookmark))
                         }
                         .buttonStyle(.plain)
                         .modifier(BookmarkContextMenu(bookmark: bookmark))
