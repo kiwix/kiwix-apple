@@ -20,6 +20,7 @@ import UniformTypeIdentifiers
 
 final class NavigationHelper {
     weak var navigationController: UINavigationController?
+    @MainActor
     func push<V: View>(@ViewBuilder _ view: () -> V) {
         let hostingVC = UIHostingController(rootView: view())
         navigationController?.pushViewController(hostingVC, animated: true)
