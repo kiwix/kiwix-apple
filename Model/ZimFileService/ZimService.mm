@@ -26,18 +26,18 @@
 #include "kiwix/spelling_correction.h"
 #pragma clang diagnostic pop
 
-#import "ZimFileService.h"
+#import "ZimService.h"
 #import "ZimFileMetaData.h"
 #import "xapian.h"
 
-@interface ZimFileService ()
+@interface ZimService ()
 
 @property (assign) std::unordered_map<std::string, zim::Archive> *archives; // (NSUUID_c: Archive)
 @property (strong) NSMutableDictionary *fileURLs; // [NSUUID: URL]
 
 @end
 
-@implementation ZimFileService
+@implementation ZimService
 
 #pragma mark - init
 
@@ -56,11 +56,11 @@
     return self;
 }
 
-+ (ZimFileService *)sharedInstance {
-    static ZimFileService *sharedInstance = nil;
++ (ZimService *)sharedInstance {
+    static ZimService *sharedInstance = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        sharedInstance = [[ZimFileService alloc] init];
+        sharedInstance = [[ZimService alloc] init];
     });
     return sharedInstance;
 }

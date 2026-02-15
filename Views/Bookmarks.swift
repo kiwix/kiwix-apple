@@ -36,7 +36,9 @@ struct Bookmarks: View {
                         dismiss()
                     }
                 } label: {
-                    ArticleCell(bookmark: bookmark)
+                    ArticleCell(
+                        bookmarkData: BookmarkArticleData(from: bookmark)
+                    )
                 }
                 .buttonStyle(.plain)
                 .modifier(BookmarkContextMenu(bookmark: bookmark))

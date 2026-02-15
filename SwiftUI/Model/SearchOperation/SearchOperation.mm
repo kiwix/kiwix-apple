@@ -26,7 +26,7 @@
 
 #import "SearchOperation.h"
 #import "SearchResult.h"
-#import "ZimFileService.h"
+#import "ZimService.h"
 #import "xapian.h"
 
 @interface NSURL (PathManipulation)
@@ -99,7 +99,7 @@
 - (void)performSearch {
     // get a list of archives that are included in search
     typedef std::unordered_map<std::string, zim::Archive> archives_map;
-    auto *allArchives = static_cast<archives_map *>([[ZimFileService sharedInstance] getArchives]);
+    auto *allArchives = static_cast<archives_map *>([[ZimService sharedInstance] getArchives]);
 
     for (NSUUID *zimFileID in self.zimFileIDs) {
         // should be fine for utf-8 encoding
@@ -204,7 +204,7 @@
     for (NSUUID *zimFileID in self.zimFileIDs) {
         if (self.isCancelled) { return; }
         try {
-            SpellingsDBWrapper *dbWrapper = [[ZimFileService sharedInstance] spellingsDBFor:zimFileID cachePath:contentPath];
+            SpellingsDBWrapper *dbWrapper = [[ZimService sharedInstance] spellingsDBFor:zimFileID cachePath:contentPath];
             if(dbWrapper == nil) {
                 return;
             }

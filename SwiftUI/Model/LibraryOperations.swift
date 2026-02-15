@@ -29,7 +29,7 @@ struct LibraryOperations {
     /// Open a zim file with url
     /// - Parameter url: url of the zim file
     @discardableResult
-    static func open(url: URL, onComplete: (() -> Void)? = nil) async -> ZimFileMetaData? {
+    static func open(url: URL) async -> ZimFileMetaData? {
         guard let fileURLBookmark = await ZimFileService.getFileURLBookmarkData(for: url),
                 let metadata = await ZimFileService.getMetaData(url: url) else { return nil }
 
@@ -52,7 +52,6 @@ struct LibraryOperations {
             Task {
                 await MainActor.run {
                     if context.hasChanges { try? context.save() }
-                    onComplete?()
                 }
             }
         }
