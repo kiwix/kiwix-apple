@@ -182,9 +182,8 @@ struct Settings: View {
                         readingSettings
                         downloadSettings
                         catalogSettings
-                        miscellaneous
                         hotspot.id("hotspot")
-                        backupSettings
+                        miscellaneous
                     } else {
                         readingSettings
                         miscellaneous
@@ -284,20 +283,8 @@ struct Settings: View {
         }
     }
 
-    var backupSettings: some View {
-        Section {
-            Toggle(LocalString.backup_settings_toggle_title, isOn: $backupDocumentDirectory)
-        } header: {
-            Text(LocalString.backup_settings_header_text)
-        } footer: {
-            Text(LocalString.backup_settings_footer_text)
-        }.onChange(of: backupDocumentDirectory) { _, newValue in
-            LibraryOperations.applyFileBackupSetting(isEnabled: newValue)
-        }
-    }
-
     var miscellaneous: some View {
-        Section(LocalString.settings_miscellaneous_title) {
+        Section {
             if paymentButtonLabel != nil, horizontalSizeClass != .regular {
                 SupportKiwixButton {
                     openDonation()
@@ -315,6 +302,14 @@ struct Settings: View {
                 NavigationLink("Diagnostic report") { DiagnosticsView() }
             }
             NavigationLink(LocalString.settings_miscellaneous_navigation_about) { About() }
+            Toggle(LocalString.backup_settings_toggle_title, isOn: $backupDocumentDirectory)
+                .onChange(of: backupDocumentDirectory) { _, newValue in
+                    LibraryOperations.applyFileBackupSetting(isEnabled: newValue)
+                }
+        } header: {
+            Text(LocalString.settings_miscellaneous_title)
+        } footer: {
+            Text(LocalString.backup_settings_footer_text)
         }
     }
     
