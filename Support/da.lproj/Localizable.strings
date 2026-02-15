@@ -158,7 +158,6 @@
 "reading_settings.search_snippet.title" = "Søgeuddrag";
 "reading_settings.tab.reading" = "Læsning";
 "library_settings.catalog.title" = "Katalog";
-"library_settings.downloads.title" = "Downloads";
 "library_settings.button.refresh_now" = "Opdater nu";
 "library_settings.last_refresh.text" = "Seneste opdatering";
 "library_settings.auto_refresh.toggle" = "Automatisk opdatering";
@@ -172,7 +171,6 @@
 "catalog_settings.auto_refresh.toggle" = "Automatisk opdatering";
 "catalog_settings.header.text" = "Katalog";
 "backup_settings.toggle.title" = "Inkluder ZIM-filer i sikkerhedskopien";
-"backup_settings.header.text" = "Backup";
 "backup_settings.footer.text" = "Gælder ikke for filer, der åbnes på stedet.";
 "settings.miscellaneous.title" = "Misc";
 "settings.miscellaneous.button.feedback" = "Feedback";

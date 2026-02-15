@@ -142,7 +142,6 @@
 "catalog_settings.header.text" = "Katalog";
 "catalog_settings.footer.text" = "Jika diaktifkan, katalog perpustakaan akan diperbarui secara otomatis jika sudah kedaluwarsa.";
 "backup_settings.toggle.title" = "Sertakan berkas ZIM dalam cadangan";
-"backup_settings.header.text" = "Cadangan";
 "backup_settings.footer.text" = "Tidak berlaku untuk berkas yang dibuka di tempat.";
 "settings.miscellaneous.title" = "Lain-lain";
 "settings.miscellaneous.button.feedback" = "Umpan balik";

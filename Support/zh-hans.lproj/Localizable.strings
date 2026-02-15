@@ -168,7 +168,6 @@
 "reading_settings.search_snippet.title" = "搜索片段";
 "reading_settings.tab.reading" = "阅读";
 "library_settings.catalog.title" = "目录";
-"library_settings.downloads.title" = "下载";
 "library_settings.button.refresh_now" = "立即刷新";
 "library_settings.last_refresh.text" = "上次刷新";
 "library_settings.auto_refresh.toggle" = "自动刷新";
@@ -184,7 +183,6 @@
 "catalog_settings.header.text" = "目录";
 "catalog_settings.footer.text" = "启用后，图书馆目录将在过期时自动刷新。";
 "backup_settings.toggle.title" = "在备份中包含 ZIM 文件";
-"backup_settings.header.text" = "备份";
 "backup_settings.footer.text" = "不适用于在这里打开的文件。";
 "settings.miscellaneous.title" = "杂项";
 "settings.miscellaneous.button.feedback" = "反馈";

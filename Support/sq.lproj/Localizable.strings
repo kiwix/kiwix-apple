@@ -135,7 +135,6 @@
 "catalog_settings.header.text" = "Katalog";
 "catalog_settings.footer.text" = "Kur aktivizohet, katalogu i bibliotekës do të rifreskohet vetvetiu, kur vjetrohet.";
 "backup_settings.toggle.title" = "Përfshi në kopjeruajtje kartela ZIM";
-"backup_settings.header.text" = "Kopjeruajtje";
 "backup_settings.footer.text" = "Nuk aplikohet mbi kartela të hapura në vend.";
 "settings.miscellaneous.title" = "Të ndryshme";
 "settings.miscellaneous.button.feedback" = "Përshtypje";

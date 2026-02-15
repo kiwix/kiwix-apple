@@ -158,7 +158,6 @@
 "reading_settings.search_snippet.title" = "Extracto de recerca";
 "reading_settings.tab.reading" = "Lectura";
 "library_settings.catalog.title" = "Catalogo";
-"library_settings.downloads.title" = "Discargamentos";
 "library_settings.button.refresh_now" = "Refrescar ora";
 "library_settings.last_refresh.text" = "Ultime refrescamento";
 "library_settings.auto_refresh.toggle" = "Auto-refrescar";
@@ -174,7 +173,6 @@
 "catalog_settings.header.text" = "Catalogo";
 "catalog_settings.footer.text" = "Si es activate, le catalogo del bibliotheca essera refrescate automaticamente quando es obsolete.";
 "backup_settings.toggle.title" = "Includer files ZIM in copia de reserva";
-"backup_settings.header.text" = "Copia de reserva";
 "backup_settings.footer.text" = "Non se applica al files aperite directemente.";
 "settings.miscellaneous.title" = "Misc";
 "settings.miscellaneous.button.feedback" = "Commentario";

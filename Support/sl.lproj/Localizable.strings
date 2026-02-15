@@ -158,7 +158,6 @@
 "reading_settings.search_snippet.title" = "Delček iskanja";
 "reading_settings.tab.reading" = "Branje";
 "library_settings.catalog.title" = "Katalog";
-"library_settings.downloads.title" = "Prenosi";
 "library_settings.button.refresh_now" = "Osveži zdaj";
 "library_settings.last_refresh.text" = "Zadnja osvežitev";
 "library_settings.auto_refresh.toggle" = "Samodejno osveževanje";
@@ -174,7 +173,6 @@
 "catalog_settings.header.text" = "Katalog";
 "catalog_settings.footer.text" = "Če je omogočeno, se bo knjižnični katalog samodejno osvežil, ko bo zastarel.";
 "backup_settings.toggle.title" = "V varnostno kopijo vključi datoteko ZIM";
-"backup_settings.header.text" = "Varnostna kopija";
 "backup_settings.footer.text" = "Ne uporablja se za neposredno odprte datoteke.";
 "settings.miscellaneous.title" = "Razno";
 "settings.miscellaneous.button.feedback" = "Odziv";
