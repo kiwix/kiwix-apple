@@ -163,7 +163,6 @@
 "reading_settings.search_snippet.title" = "Fragmento de búsqueda";
 "reading_settings.tab.reading" = "Lectura";
 "library_settings.catalog.title" = "Catálogo";
-"library_settings.downloads.title" = "Descargas";
 "library_settings.button.refresh_now" = "Actualizar ahora";
 "library_settings.last_refresh.text" = "Última actualización";
 "library_settings.auto_refresh.toggle" = "Actualización automática";
@@ -179,7 +178,6 @@
 "catalog_settings.header.text" = "Catálogo";
 "catalog_settings.footer.text" = "Si esta opción está activada, el catálogo de la biblioteca se actualizará automáticamente cuando quede obsoleto.";
 "backup_settings.toggle.title" = "Incluir archivos ZIM en la copia de seguridad";
-"backup_settings.header.text" = "Copia de seguridad";
 "backup_settings.footer.text" = "No se aplica a los archivos abiertos en su lugar.";
 "settings.miscellaneous.title" = "Varias";
 "settings.miscellaneous.button.feedback" = "Sugerencias";

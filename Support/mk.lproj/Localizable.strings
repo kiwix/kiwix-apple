@@ -158,7 +158,6 @@
 "reading_settings.search_snippet.title" = "Пребарај го исечокот";
 "reading_settings.tab.reading" = "Читање";
 "library_settings.catalog.title" = "Каталог";
-"library_settings.downloads.title" = "Преземања";
 "library_settings.button.refresh_now" = "Поднови сега";
 "library_settings.last_refresh.text" = "Последна поднова";
 "library_settings.auto_refresh.toggle" = "Автоподнова";
@@ -174,7 +173,6 @@
 "catalog_settings.header.text" = "Каталог";
 "catalog_settings.footer.text" = "Кога е овозможен, библиотечниот каталог ќе биде автоматски подновуван кога ќе застари.";
 "backup_settings.toggle.title" = "Вклучи ZIM-податотеки во резервата";
-"backup_settings.header.text" = "Резерва";
 "backup_settings.footer.text" = "Не важи за податотеки отворени на лице место.";
 "settings.miscellaneous.title" = "Разно";
 "settings.miscellaneous.button.feedback" = "Мислења";

@@ -164,7 +164,6 @@
 "reading_settings.search_snippet.title" = "Sök utdrag";
 "reading_settings.tab.reading" = "Läsning";
 "library_settings.catalog.title" = "Katalog";
-"library_settings.downloads.title" = "Nedladdningar";
 "library_settings.button.refresh_now" = "Uppdatera nu";
 "library_settings.last_refresh.text" = "Senaste uppdatering";
 "library_settings.auto_refresh.toggle" = "Uppdatera automatiskt";
@@ -180,7 +179,6 @@
 "catalog_settings.header.text" = "Katalog";
 "catalog_settings.footer.text" = "När den är aktiverad uppdateras bibliotekskatalogen automatiskt när den är föråldrad.";
 "backup_settings.toggle.title" = "Inkludera ZIM-filer i säkerhetskopian";
-"backup_settings.header.text" = "Säkerhetskopiering";
 "backup_settings.footer.text" = "Gäller inte filer som öppnas på plats.";
 "settings.miscellaneous.title" = "Övrigt";
 "settings.miscellaneous.button.feedback" = "Återkoppling";

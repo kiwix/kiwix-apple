@@ -134,7 +134,6 @@
 "catalog_settings.header.text" = "Catalog";
 "catalog_settings.footer.text" = "Când este activat, catalogul bibliotecii va fi reîmprospătat automat când este învechit.";
 "backup_settings.toggle.title" = "Includeți fișierele ZIM în backup";
-"backup_settings.header.text" = "Backup (copie de rezervă)";
 "backup_settings.footer.text" = "Nu se aplică fișierelor deschise pe loc.";
 "settings.miscellaneous.title" = "Diverse";
 "settings.miscellaneous.button.feedback" = "Feedback";

@@ -106,7 +106,6 @@
 "catalog_settings.header.text" = "Katalog";
 "catalog_settings.footer.text" = "Gdy ta opcja jest włączona, katalog biblioteki będzie automatycznie odświeżany, jeśli będzie nieaktualny.";
 "backup_settings.toggle.title" = "Dołącz pliki ZIM do kopii zapasowej";
-"backup_settings.header.text" = "Kopia zapasowa";
 "backup_settings.footer.text" = "Nie dotyczy plików otwieranych lokalnie.";
 "settings.miscellaneous.title" = "Różne";
 "settings.miscellaneous.button.feedback" = "Informacja zwrotna";

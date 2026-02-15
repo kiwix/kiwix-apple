@@ -130,7 +130,6 @@
 "reading_settings.search_snippet.title" = "Фрагмент поиска";
 "reading_settings.tab.reading" = "Чтение";
 "library_settings.catalog.title" = "Каталог";
-"library_settings.downloads.title" = "Загрузки";
 "library_settings.button.refresh_now" = "Обновить сейчас";
 "library_settings.last_refresh.text" = "Последнее обновление";
 "library_settings.auto_refresh.toggle" = "Автообновление";
@@ -146,7 +145,6 @@
 "catalog_settings.header.text" = "Каталог";
 "catalog_settings.footer.text" = "Если эта опция включена, каталог библиотеки будет обновляться автоматически, если он устареет.";
 "backup_settings.toggle.title" = "Включить ZIM-файлы в резервную копию";
-"backup_settings.header.text" = "Резервное копирование";
 "backup_settings.footer.text" = "Не применяется к файлам, открытым на месте.";
 "settings.miscellaneous.title" = "Разное";
 "settings.miscellaneous.button.feedback" = "Обратная связь";

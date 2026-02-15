@@ -140,7 +140,6 @@
 "catalog_settings.header.text" = "カタログ";
 "catalog_settings.footer.text" = "有効にすると、新しいライブラリカタログに自動更新します。";
 "backup_settings.toggle.title" = "バックアップにZIMファイルを含める";
-"backup_settings.header.text" = "バックアップ";
 "backup_settings.footer.text" = "その場でオープンしたファイルには適用されません。";
 "settings.miscellaneous.title" = "その他";
 "settings.miscellaneous.button.feedback" = "フィードバック";

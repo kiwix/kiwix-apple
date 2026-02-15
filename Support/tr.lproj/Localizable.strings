@@ -129,7 +129,6 @@
 "catalog_settings.header.text" = "Katalog";
 "catalog_settings.footer.text" = "Etkinleştirildiğinde kütüphane kataloğu güncelliğini yitirdiğinde otomatik olarak yenilenecektir.";
 "backup_settings.toggle.title" = "ZIM dosyalarını yedeklemeye dahil et";
-"backup_settings.header.text" = "Yedek";
 "backup_settings.footer.text" = "Yerinde açılan dosyalar için geçerli değildir.";
 "settings.miscellaneous.title" = "Çeşitli";
 "settings.miscellaneous.button.feedback" = "Geri bildirim";
