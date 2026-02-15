@@ -1,4 +1,22 @@
+# 3.14.0
+
 # 3.13.0
+  - NEW:
+    - Add .editorconfig file (@BPerlakiH #1485)
+  - UPDATED:
+    - Update project to version 3.13.0 (@BPerlakiH #1458)
+    - Update to libkiwix 14.1.1-1 and libzim 9.5.0 (@BPerlakiH #1469)
+    - Localisation updates from https://translatewiki.net (@translatewiki #1464, #1474, #1477)
+  - FIX:
+    - Preserve category selection (@BPerlakiH #1460)
+    - Fix macOS 26 cell backgrounds (@BPerlakiH #1462)
+    - Use full keyboard for hotspot port input on iPad (@BPerlakiH #1463)
+    - Apply resource filtering by zim namespace (@BPerlakiH #1468)
+    - Auto increment build number (@BPerlakiH #1471)
+    - Do not mark ZimFile as not downloaded in case of an unexpected error (@BPerlakiH #1475)
+    - Download waiting for WiFi (@BPerlakiH #1478, #1482)
+    - Filename for shared PDF (@codiearyan #1476)
+    - Concurrent search and validation (@BPerlakiH #1484)
 
 # 3.12.0
   - NEW:
