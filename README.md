@@ -57,12 +57,10 @@ To get started, you will need the following:
 To compile and run Kiwix from Xcode locally, you will need to:
 * Change the Bundle Identifier (in *Signing & Capabilities*)
 * Select appropriate Signing Certificate/Profile.
-* It is recommended to enable:
+* It is recommended to enable ``.editconfig`` values in:
 
-`Xcode settings > Text Editing > Editing`
-> "While Editing":
-> - ✅ "Automatically trim trailing whitespace"
-> - ✅ "Include whitespace-only lines"
+`Xcode settings > Editing > Indentation`:
+> - "Prefer settings from .editorconfig files" ✅ 
 
 ### Dependencies installed for you
 Our `Brewfile` will install all the necessary dependencies for you:
