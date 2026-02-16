@@ -160,7 +160,6 @@
 "reading_settings.search_snippet.title" = "Zoekfragment";
 "reading_settings.tab.reading" = "Lezen";
 "library_settings.catalog.title" = "Catalogus";
-"library_settings.downloads.title" = "Downloads";
 "library_settings.button.refresh_now" = "Nu vernieuwen";
 "library_settings.last_refresh.text" = "Laatste vernieuwing";
 "library_settings.auto_refresh.toggle" = "Automatisch vernieuwen";
@@ -176,7 +175,6 @@
 "catalog_settings.header.text" = "Catalogus";
 "catalog_settings.footer.text" = "Als dit is ingeschakeld, wordt de bibliotheekcatalogus automatisch vernieuwd bij veroudering.";
 "backup_settings.toggle.title" = "ZIM-bestanden opnemen in back-up";
-"backup_settings.header.text" = "Back-up";
 "backup_settings.footer.text" = "Geldt niet voor bestanden die ter plekke zijn geopend.";
 "settings.miscellaneous.title" = "Diversen";
 "settings.miscellaneous.button.feedback" = "Terugkoppeling";

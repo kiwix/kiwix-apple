@@ -162,7 +162,6 @@
 "reading_settings.search_snippet.title" = "搜尋片段";
 "reading_settings.tab.reading" = "閱讀";
 "library_settings.catalog.title" = "目錄";
-"library_settings.downloads.title" = "下載";
 "library_settings.button.refresh_now" = "現在重整";
 "library_settings.last_refresh.text" = "上一次重整";
 "library_settings.auto_refresh.toggle" = "自動重整";
@@ -178,7 +177,6 @@
 "catalog_settings.header.text" = "目錄";
 "catalog_settings.footer.text" = "啟用後，在文庫目錄過期時會自動重整。";
 "backup_settings.toggle.title" = "在備份中包含 ZIM 檔案";
-"backup_settings.header.text" = "備份";
 "backup_settings.footer.text" = "不適用於在此開啟的檔案。";
 "settings.miscellaneous.title" = "雜項";
 "settings.miscellaneous.button.feedback" = "回饋";

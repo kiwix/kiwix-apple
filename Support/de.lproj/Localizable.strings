@@ -155,7 +155,6 @@
 "reading_settings.search_snippet.title" = "Suchtreffer";
 "reading_settings.tab.reading" = "Lese …";
 "library_settings.catalog.title" = "Katalog";
-"library_settings.downloads.title" = "Downloads";
 "library_settings.button.refresh_now" = "Jetzt aktualisieren";
 "library_settings.last_refresh.text" = "Letzte Aktualisierung";
 "library_settings.auto_refresh.toggle" = "Automatisch aktualisieren";
@@ -171,7 +170,6 @@
 "catalog_settings.header.text" = "Katalog";
 "catalog_settings.footer.text" = "Wenn diese Option aktiviert ist, wird ein nicht aktueller Bibliothekskatalog automatisch aktualisiert.";
 "backup_settings.toggle.title" = "Beziehe ZIM-Dateien ins Backup ein";
-"backup_settings.header.text" = "Backup";
 "backup_settings.footer.text" = "Gilt nicht für direkt geöffnete Dateien.";
 "settings.miscellaneous.title" = "Verschiedenes";
 "settings.miscellaneous.button.feedback" = "Feedback";

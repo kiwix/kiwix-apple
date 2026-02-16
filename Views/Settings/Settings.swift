@@ -177,11 +177,10 @@ struct Settings: View {
                 List {
                     if FeatureFlags.hasLibrary {
                         readingSettings
-                        downloadSettings
                         catalogSettings
-                        miscellaneous
+                        downloadSettings
                         hotspot.id("hotspot")
-                        backupSettings
+                        miscellaneous
                     } else {
                         readingSettings
                         miscellaneous
@@ -236,8 +235,6 @@ struct Settings: View {
     var downloadSettings: some View {
         Section {
             Toggle(LocalString.library_settings_toggle_cellular, isOn: $downloadUsingCellular)
-        } header: {
-            Text(LocalString.library_settings_downloads_title)
         } footer: {
             Text(LocalString.library_settings_new_download_task_description)
         }
@@ -278,20 +275,8 @@ struct Settings: View {
         }
     }
 
-    var backupSettings: some View {
-        Section {
-            Toggle(LocalString.backup_settings_toggle_title, isOn: $backupDocumentDirectory)
-        } header: {
-            Text(LocalString.backup_settings_header_text)
-        } footer: {
-            Text(LocalString.backup_settings_footer_text)
-        }.onChange(of: backupDocumentDirectory) { _, newValue in
-            LibraryOperations.applyFileBackupSetting(isEnabled: newValue)
-        }
-    }
-
     var miscellaneous: some View {
-        Section(LocalString.settings_miscellaneous_title) {
+        Section {
             if Payment.paymentButtonType() != nil, horizontalSizeClass != .regular {
                 SupportKiwixButton {
                     openDonation()
@@ -309,6 +294,14 @@ struct Settings: View {
                 NavigationLink("Diagnostic report") { DiagnosticsView() }
             }
             NavigationLink(LocalString.settings_miscellaneous_navigation_about) { About() }
+            Toggle(LocalString.backup_settings_toggle_title, isOn: $backupDocumentDirectory)
+                .onChange(of: backupDocumentDirectory) { _, newValue in
+                    LibraryOperations.applyFileBackupSetting(isEnabled: newValue)
+                }
+        } header: {
+            Text(LocalString.settings_miscellaneous_title)
+        } footer: {
+            Text(LocalString.backup_settings_footer_text)
         }
     }
     

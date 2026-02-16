@@ -146,7 +146,6 @@
 "catalog_settings.footer.text" = "Mgbe enyere ya ikike, katalọgụ ọba akwụkwọ ga-eji aka emeghagharị ihe mgbe ọ pụrụ na nke a na-akọ.";
 // Fuzzy
 "backup_settings.toggle.title" = "Tinye zim faịlụ na ndabere nchekwa";
-"backup_settings.header.text" = "Ndabere";
 "backup_settings.footer.text" = "Adịghị emetụta faịlụ ndị mepere ebe.";
 "settings.miscellaneous.title" = "Mcheta-ma-mchetaghim";
 "settings.miscellaneous.button.feedback" = "Nzaghachi";

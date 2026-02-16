@@ -130,7 +130,6 @@
 "reading_settings.search_snippet.title" = "Фрагмент пошуку";
 "reading_settings.tab.reading" = "Читання";
 "library_settings.catalog.title" = "Каталог";
-"library_settings.downloads.title" = "Завантаження";
 "library_settings.button.refresh_now" = "Оновити зараз";
 "library_settings.last_refresh.text" = "Останнє оновлення";
 "library_settings.auto_refresh.toggle" = "Автоматичне оновлення";
@@ -146,7 +145,6 @@
 "catalog_settings.header.text" = "Каталог";
 "catalog_settings.footer.text" = "Коли ввімкнено, каталог бібліотеки оновлюватиметься автоматично, якщо він застарів.";
 "backup_settings.toggle.title" = "Включати файли ZIM у резервну копію";
-"backup_settings.header.text" = "Резервне копіювання";
 "settings.miscellaneous.title" = "Різне";
 "settings.miscellaneous.button.feedback" = "Зворотний зв'язок";
 "settings.miscellaneous.button.rate_app" = "Оцініть застосунок";
