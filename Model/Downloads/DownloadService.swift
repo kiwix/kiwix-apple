@@ -235,7 +235,7 @@ final class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegat
                 }
                 // schedule notification
                 let request = UNNotificationRequest(identifier: zimFileID.uuidString, content: content, trigger: nil)
-                center.add(request)
+                UNUserNotificationCenter.current().add(request)
             }
         }
     }
