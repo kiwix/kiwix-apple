@@ -162,6 +162,7 @@ struct Settings: View {
     @EnvironmentObject private var colorSchemeStore: UserColorSchemeStore
     @EnvironmentObject private var library: LibraryViewModel
     @Environment(\.horizontalSizeClass) var horizontalSizeClass
+    @State private var paymentButtonLabel: PayWithApplePayButtonLabel? = nil
 
     enum Route {
         case languageSelector, about
@@ -194,6 +195,7 @@ struct Settings: View {
                     if scrollToHotspot {
                         proxy.scrollTo("hotspot", anchor: .top)
                     }
+                    paymentButtonLabel = await Payment.paymentButtonTypeAsync()
                 }
             }
         }
@@ -292,7 +294,7 @@ struct Settings: View {
 
     var miscellaneous: some View {
         Section(LocalString.settings_miscellaneous_title) {
-            if Payment.paymentButtonType() != nil, horizontalSizeClass != .regular {
+            if paymentButtonLabel != nil, horizontalSizeClass != .regular {
                 SupportKiwixButton {
                     openDonation()
                 }
