@@ -28,8 +28,21 @@ final class NotificationCenterDelegate: NSObject, UNUserNotificationCenterDelega
                let mainPageURL = await ZimFileService.shared.getMainPageURL(zimFileID: zimFileID) {
                 NSWorkspace.shared.open(mainPageURL)
             }
-            await MainActor.run { completionHandler() }
+            await MainActor.run {
+                completionHandler()
+            }
         }
     }
+    
+//    func userNotificationCenter(_ center: UNUserNotificationCenter,
+//                                didReceive response: UNNotificationResponse) async {
+//        if let zimFileID = UUID(uuidString: response.notification.request.identifier),
+//           let mainPageURL = await ZimFileService.shared.getMainPageURL(zimFileID: zimFileID) {
+//            await MainActor.run {
+//                _ = NSWorkspace.shared.open(mainPageURL)
+//            }
+//        }
+//        
+//    }
 }
 #endif
