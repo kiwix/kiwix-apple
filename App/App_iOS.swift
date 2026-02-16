@@ -125,7 +125,7 @@ struct Kiwix: App {
         }
     }
 
-    private class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCenterDelegate {
+    private class AppDelegate: NSObject, UIApplicationDelegate, @MainActor UNUserNotificationCenterDelegate {
         
         /// Storing background download completion handler sent to application delegate
         func application(_ application: UIApplication,
