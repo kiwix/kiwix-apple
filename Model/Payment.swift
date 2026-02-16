@@ -240,11 +240,10 @@ struct Payment {
         }
     }
 
+    @MainActor
     func onMerchantSessionUpdate() async -> PKPaymentRequestMerchantSessionUpdate {
         guard let session = await StripeKiwix.stripeSession(endPoint: Self.kiwixPaymentServer) else {
-            await MainActor.run {
-                Self.finalResult = .error
-            }
+            Self.finalResult = .error
             return .init(status: .failure, merchantSession: nil)
         }
         return .init(status: .success, merchantSession: session)
