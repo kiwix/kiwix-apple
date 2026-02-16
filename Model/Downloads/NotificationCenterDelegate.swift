@@ -21,28 +21,13 @@ import AppKit
 final class NotificationCenterDelegate: NSObject, UNUserNotificationCenterDelegate {
     /// Handling file download complete notification
     func userNotificationCenter(_ center: UNUserNotificationCenter,
-                                didReceive response: UNNotificationResponse,
-                                withCompletionHandler completionHandler: @escaping () -> Void) {
-        Task {
-            if let zimFileID = UUID(uuidString: response.notification.request.identifier),
-               let mainPageURL = await ZimFileService.shared.getMainPageURL(zimFileID: zimFileID) {
-                NSWorkspace.shared.open(mainPageURL)
-            }
+                                didReceive response: UNNotificationResponse) async {
+        if let zimFileID = UUID(uuidString: response.notification.request.identifier),
+           let mainPageURL = await ZimFileService.shared.getMainPageURL(zimFileID: zimFileID) {
             await MainActor.run {
-                completionHandler()
+                _ = NSWorkspace.shared.open(mainPageURL)
             }
         }
     }
-    
-//    func userNotificationCenter(_ center: UNUserNotificationCenter,
-//                                didReceive response: UNNotificationResponse) async {
-//        if let zimFileID = UUID(uuidString: response.notification.request.identifier),
-//           let mainPageURL = await ZimFileService.shared.getMainPageURL(zimFileID: zimFileID) {
-//            await MainActor.run {
-//                _ = NSWorkspace.shared.open(mainPageURL)
-//            }
-//        }
-//        
-//    }
 }
 #endif
