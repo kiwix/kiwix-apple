@@ -28,14 +28,12 @@ struct Kiwix: App {
     @StateObject private var navigation = NavigationViewModel()
     @UIApplicationDelegateAdaptor(AppDelegate.self) private var appDelegate
     @StateObject private var colorSchemeStore = UserColorSchemeStore()
-    private let fileMonitor: DirectoryMonitor
     
     init() {
         Diagnostics.start()
         Task { @MainActor in
             await WebContentBlocker.compilePolicy()
         }
-        fileMonitor = DirectoryMonitor(url: URL.documentDirectory) { LibraryOperations.scanDirectory($0) }
         UNUserNotificationCenter.current().delegate = appDelegate
         // MARK: - migrations
         if !ProcessInfo.processInfo.arguments.contains("testing") {
@@ -92,12 +90,10 @@ struct Kiwix: App {
                 .task {
                     switch AppType.current {
                     case .kiwix:
-                        fileMonitor.start()
                         await LibraryOperations.reValidate()
                         if !DeepLinkService.shared.isRunning() {
                             navigation.navigateToMostRecentTab()
                         }
-                        LibraryOperations.scanDirectory(URL.documentDirectory)
                         LibraryOperations.applyFileBackupSetting()
                         DownloadService.shared.restartHeartbeatIfNeeded()
                     case let .custom(zimFileURL):

@@ -216,7 +216,6 @@ struct RootView: View {
             case .kiwix:
                 await LibraryOperations.reValidate()
                 currentNavItem = .tab(objectID: navigation.currentTabId)
-                LibraryOperations.scanDirectory(URL.documentDirectory)
                 LibraryOperations.applyFileBackupSetting()
                 DownloadService.shared.restartHeartbeatIfNeeded()
             case let .custom(zimFileURL):

@@ -109,22 +109,6 @@ ZIM file cannot be opened: \(zimFile.name, privacy: .public) |\
         )
     }
 
-    /// Scan a directory and open available zim files inside it
-    /// - Parameter url: directory to scan
-    static func scanDirectory(_ url: URL) {
-        guard let fileURLs = try? FileManager.default.contentsOfDirectory(
-            at: url,
-            includingPropertiesForKeys: nil,
-            options: [.skipsHiddenFiles, .skipsPackageDescendants, .skipsSubdirectoryDescendants]
-        ).filter({ $0.pathExtension == "zim"}) else { return }
-        Log.LibraryOperations.info("Discovered \(fileURLs.count, privacy: .public) probable zim files.")
-        Task {
-            for fileURL in fileURLs {
-                await LibraryOperations.open(url: fileURL)
-            }
-        }
-    }
-
     // MARK: - Configure
 
     /// Configure a zim file object based on its metadata.
