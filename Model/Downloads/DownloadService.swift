@@ -23,7 +23,7 @@ import os
 // swiftlint:disable:next type_body_length
 final class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegate, URLSessionDownloadDelegate {
     static let shared = DownloadService()
-    let networkState = NetworkState()
+    @MainActor let networkState = NetworkState()
     private let queue = DispatchQueue(label: "downloads", qos: .background)
     @MainActor let progress = DownloadTasksPublisher()
     @MainActor private var heartbeat: Timer?
