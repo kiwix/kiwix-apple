@@ -54,6 +54,7 @@ enum UserColorScheme: Int, CaseIterable, Identifiable {
     #endif
 }
 
+@MainActor
 final class UserColorSchemeStore: ObservableObject {
     
     @AppStorage("userColorScheme") var userColorScheme: UserColorScheme = .system {
