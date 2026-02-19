@@ -16,6 +16,7 @@
 import Foundation
 import CoreData
 
+@MainActor
 final class ZimIntegrityModel: ObservableObject {
     
     enum CheckState: Equatable {
@@ -34,25 +35,21 @@ final class ZimIntegrityModel: ObservableObject {
         let state: CheckState
     }
     
-    @MainActor @Published var checks: [Info] = []
+    @Published var checks: [Info] = []
     /// Makes sure we ignore updates for a formerly cancelled check
-    @MainActor
     private var checkID = UUID()
 
-    @MainActor
     func reset() {
         checks.removeAll()
         checkID = UUID()
     }
     
-    @MainActor
     private func addZimFiles(_ zimFiles: [ZimFile]) {
         checks = zimFiles.map({ zimFile in
             Info(checkID: checkID, zimFile: zimFile, state: .enqued)
         })
     }
 
-    @MainActor
     private func updateProgress(zimFileID: UUID, state: CheckState) {
         checks = checks.map { info in
             if info.id == zimFileID, info.checkID == checkID {
@@ -65,7 +62,7 @@ final class ZimIntegrityModel: ObservableObject {
     
     /// Check the integrity of given ZIM files
     func check(zimFiles: [ZimFile]) async {
-        await addZimFiles(zimFiles)
+        addZimFiles(zimFiles)
         
         for zimFile in zimFiles {
             guard !Task.isCancelled else { return }
@@ -75,7 +72,7 @@ final class ZimIntegrityModel: ObservableObject {
             Log.LibraryOperations.notice("""
 Started ZIM integrity check for \(fileID.uuidString, privacy: .public), \(name, privacy: .public)
 """)
-            await updateProgress(zimFileID: fileID, state: CheckState.running)
+            updateProgress(zimFileID: fileID, state: CheckState.running)
             let result = await ZimFileService.shared.checkIntegrity(zimFileID: fileID)
             Log.LibraryOperations.notice("""
 Completed ZIM integrity check for \(fileID.uuidString, privacy: .public), \
@@ -83,7 +80,7 @@ Completed ZIM integrity check for \(fileID.uuidString, privacy: .public), \
 """)
             zimFile.isIntegrityChecked = result
             guard !Task.isCancelled else { return }
-            await updateProgress(zimFileID: fileID, state: CheckState.complete(isValid: result))
+            updateProgress(zimFileID: fileID, state: CheckState.complete(isValid: result))
         }
     }
 }

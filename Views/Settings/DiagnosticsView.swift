@@ -18,6 +18,7 @@ import CoreData
 
 /// NOTE: This view is not translated on purpose.
 /// We want to make sure users only send us reports in English
+@MainActor
 struct DiagnosticsView: View {
     
     @FetchRequest(
@@ -27,7 +28,7 @@ struct DiagnosticsView: View {
     @State private var logs: [String] = []
     @State private var isRunning: Bool = false
     @State private var integrityTask: Task<Void, Error>?
-    @ObservedObject private var model = DiagnosticsModel()
+    @MainActor @ObservedObject private var model = DiagnosticsModel()
     
     private enum Const {
         #if os(iOS)
@@ -151,7 +152,7 @@ struct DiagnosticsView: View {
         AsyncButton {
             withAnimation {
                 isRunning = true
-                integrityTask = Task {
+                integrityTask = Task { @MainActor in
                     let collectedLogs = await model.start(using: zimFiles.reversed())
                     if !Task.isCancelled {
                         logs = collectedLogs
