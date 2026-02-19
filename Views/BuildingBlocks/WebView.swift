@@ -47,6 +47,7 @@ struct WebView: NSViewRepresentable {
     final class Coordinator {
         private let pageZoomObserver: Defaults.Observation
 
+        @MainActor
         init(view: WebView) {
             let browser = view.browser
             pageZoomObserver = Defaults.observe(.webViewPageZoom) { [weak browser] change in
