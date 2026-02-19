@@ -15,32 +15,33 @@
 
 import Foundation
 
-protocol DirectoryMonitorDelegate: AnyObject {
-    func directoryContentDidChange(url: URL)
-}
-
-class DirectoryMonitor {
-    weak var delegate: DirectoryMonitorDelegate?
+actor DirectoryMonitor {
     private let url: URL
-    private let onChange: ((URL) -> Void)?
-
+    private let onChange: (@Sendable (URL) -> Void)?
     private var descriptor: CInt = -1
     private var source: DispatchSourceFileSystemObject?
-    private let queue = DispatchQueue(label: "org.kiwix.directorymonitor", attributes: DispatchQueue.Attributes.concurrent)
-
-    init(url: URL, onChange: ((URL) -> Void)? = nil) {
+    private let queue = DispatchQueue(
+        label: "org.kiwix.directorymonitor",
+        attributes: DispatchQueue.Attributes.concurrent
+    )
+    
+    init(url: URL, onChange: (@Sendable (URL) -> Void)? = nil) {
         self.url = url
         self.onChange = onChange
     }
-
+    
     // MARK: Monitoring
-
+    
     func start() {
-        guard source == nil && descriptor == -1 else {return}
-
+        guard source == nil && descriptor == -1 else { return }
+        debugPrint("\(#file): \(url.path())")
         descriptor = open(url.path, O_EVTONLY)
-        source = DispatchSource.makeFileSystemObjectSource(fileDescriptor: descriptor, eventMask: .write, queue: queue)
-
+        source = DispatchSource.makeFileSystemObjectSource(
+            fileDescriptor: descriptor,
+            eventMask: .write,
+            queue: queue
+        )
+        
         source?.setEventHandler(handler: {
             self.directoryContentDidChange()
         })
@@ -51,29 +52,29 @@ class DirectoryMonitor {
         })
         source?.resume()
     }
-
+    
     func stop() {
-        guard let source = source else {return}
+        guard let source = source else { return }
         source.cancel()
     }
-
+    
     // MARK: - Custom Methods
-
+    
     private var isCheckingChanges = false
-    private var previousDirectoryHash: [String]? = nil
-    private var currentDirectoryHash: [String]? = nil
+    private var previousDirectoryHash: [String]?
+    private var currentDirectoryHash: [String]?
     private var hashEqualCheck = 0
-
+    
     private func directoryContentDidChange() {
         hashEqualCheck = 0
         if isCheckingChanges == false {
             checkDirectoryChanges()
         }
     }
-
+    
     private func checkDirectoryChanges() {
         isCheckingChanges = true
-
+        
         previousDirectoryHash = currentDirectoryHash
         currentDirectoryHash = directoryHashes()
         if let previousDirectoryHash = previousDirectoryHash, let currentDirectoryHash = currentDirectoryHash {
@@ -96,23 +97,23 @@ class DirectoryMonitor {
             checkDirectoryChanges()
         }
     }
-
+    
     private func directoryDidReachStasis() {
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + Double(Int64(NSEC_PER_SEC/10)) / Double(NSEC_PER_SEC), execute: { [weak self] in
-            guard let url = self?.url else { return }
-            self?.delegate?.directoryContentDidChange(url: url)
-            self?.onChange?(url)
-        })
+        Task {
+            try? await Task.sleep(nanoseconds: 100_000_000)
+            onChange?(url)
+        }
     }
-
+    
     private func waitAndCheckAgain() {
-        queue.asyncAfter(deadline: DispatchTime.now() + Double(Int64(NSEC_PER_SEC/2)) / Double(NSEC_PER_SEC), execute: { [weak self] in
-            self?.checkDirectoryChanges()
-        })
+        Task {
+            try? await Task.sleep(nanoseconds: 50_000_000)
+            checkDirectoryChanges()
+        }
     }
-
+    
     // MARK: - Generate directory file info array
-
+    
     private func directoryHashes() -> [String] {
         var hashes = [String]()
         do {
@@ -127,7 +128,7 @@ class DirectoryMonitor {
         }
         return hashes
     }
-
+    
     private func fileHash(_ fileName: String) -> String? {
         if let fileSize = fileSize(fileName) {
             return fileName + "_\(fileSize)"
@@ -135,7 +136,7 @@ class DirectoryMonitor {
             return nil
         }
     }
-
+    
     private func fileSize(_ fileName: String) -> Int64? {
         let path = self.url.appendingPathComponent(fileName).path
         if FileManager.default.fileExists(atPath: path) {
