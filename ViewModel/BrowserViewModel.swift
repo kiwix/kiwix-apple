@@ -23,14 +23,12 @@ import CoreKiwix
 
 // swiftlint:disable file_length
 // swiftlint:disable:next type_body_length
-final class BrowserViewModel: NSObject, ObservableObject,
+@MainActor final class BrowserViewModel: NSObject, ObservableObject,
                               WKNavigationDelegate, WKScriptMessageHandler, WKUIDelegate,
                               NSFetchedResultsControllerDelegate {
 
-    @MainActor
     private static var cache: OrderedCache<NSManagedObjectID, BrowserViewModel>?
 
-    @MainActor
     static func getCached(tabID: NSManagedObjectID) -> BrowserViewModel {
         if let cachedModel = cache?.findBy(key: tabID) {
             return cachedModel
@@ -495,7 +493,7 @@ final class BrowserViewModel: NSObject, ObservableObject,
     func webView(
         _ webView: WKWebView,
         decidePolicyFor navigationResponse: WKNavigationResponse,
-        decisionHandler: @escaping (WKNavigationResponsePolicy) -> Void
+        decisionHandler: @MainActor @escaping (WKNavigationResponsePolicy) -> Void
     ) {
         canShowMimeType = navigationResponse.canShowMIMEType
         guard canShowMimeType else {
@@ -667,9 +665,12 @@ final class BrowserViewModel: NSObject, ObservableObject,
 
     // MARK: - Bookmark
 
-    func controller(_: NSFetchedResultsController<NSFetchRequestResult>,
-                    didChangeContentWith snapshot: NSDiffableDataSourceSnapshotReference) {
-        articleBookmarked = !snapshot.itemIdentifiers.isEmpty
+    nonisolated func controller(_: NSFetchedResultsController<NSFetchRequestResult>,
+                                didChangeContentWith snapshot: NSDiffableDataSourceSnapshotReference) {
+        let isEmpty: Bool = snapshot.itemIdentifiers.isEmpty
+        Task { @MainActor in
+            articleBookmarked = !isEmpty
+        }
     }
 
     @MainActor 
