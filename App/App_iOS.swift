@@ -92,7 +92,7 @@ struct Kiwix: App {
                 .task {
                     switch AppType.current {
                     case .kiwix:
-                        fileMonitor.start()
+                        await fileMonitor.start()
                         await LibraryOperations.reValidate()
                         if !DeepLinkService.shared.isRunning() {
                             navigation.navigateToMostRecentTab()
