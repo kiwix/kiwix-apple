@@ -18,7 +18,7 @@ import Combine
 import Foundation
 import os
 
-final class FaviconSaver {
+final class FaviconSaver: @unchecked Sendable {
     
     static let shared = FaviconSaver()
     private var store: [URL: Data] = [:]
@@ -35,7 +35,7 @@ final class FaviconSaver {
                 self.lock.withLock {
                     self.store.removeAll()
                 }
-                self.bulkSaveToDB(dict: dictToSave)
+                Self.bulkSaveToDB(dict: dictToSave)
             }
     }
     
@@ -48,7 +48,7 @@ final class FaviconSaver {
         }
     }
     
-    private func bulkSaveToDB(dict: [URL: Data]) {
+    private static func bulkSaveToDB(dict: [URL: Data]) {
         Database.shared.performBackgroundTask { context in
             for (url, data) in dict {
                 let request = NSBatchUpdateRequest(
