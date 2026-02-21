@@ -345,7 +345,9 @@ private struct Content<LaunchModel>: View where LaunchModel: LaunchProtocol {
         .onDisappear { [weak browser] in
             if tabID != nil {
                 browser?.pauseVideoWhenNotInPIP()
-                browser?.persistState()
+                Task { @MainActor [weak browser] in
+                    await browser?.persistState()
+                }
             }
         }
         .toolbar {
