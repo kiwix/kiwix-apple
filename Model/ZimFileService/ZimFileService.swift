@@ -127,7 +127,9 @@ struct ZimFileService {
 
     func getRedirectedURL(url: URL) -> URL? {
         guard let zimFileID = url.zimFileID,
-              let redirectedPath = instance.__getRedirectedPath(zimFileID, contentPath: url.contentPath) else { return nil }
+              let redirectedPath = instance.__getRedirectedPath(zimFileID, contentPath: url.contentPath) else {
+            return nil
+        }
         return URL(zimFileID: zimFileID.uuidString, contentPath: redirectedPath)
     }
 

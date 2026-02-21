@@ -24,7 +24,7 @@ struct PaymentSummary: View {
     private let selectedAmount: SelectedAmount
     private let payment: Payment
     private let onComplete: @MainActor () -> Void
-    @State private var paymentButtonLabel: PayWithApplePayButtonLabel? = nil
+    @State private var paymentButtonLabel: PayWithApplePayButtonLabel?
 
     init(selectedAmount: SelectedAmount,
          onComplete: @escaping @MainActor () -> Void) {
