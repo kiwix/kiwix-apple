@@ -200,8 +200,7 @@ struct Payment {
             Log.Payment.info("onPaymentAuthPhase: .didAuthorize")
             // call our server to get payment / setup intent and return the client.secret
             Task { @MainActor [resultHandler] in
-                let paymentServer = StripeKiwix(endPoint: Self.kiwixPaymentServer,
-                                                payment: payment)
+                let paymentServer = StripeKiwix(endPoint: Self.kiwixPaymentServer)
                 do {
                     let publicKey = try await paymentServer.publishableKey()
                     StripeAPI.defaultPublishableKey = publicKey

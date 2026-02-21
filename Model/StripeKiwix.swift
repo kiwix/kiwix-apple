@@ -28,7 +28,6 @@ struct StripeKiwix {
     }
 
     let endPoint: URL
-    let payment: PKPayment
 
     func publishableKey() async throws -> String {
         let (data, response) = try await URLSession.shared.data(from: endPoint.appending(path: "config"))
@@ -42,6 +41,7 @@ struct StripeKiwix {
         return json.publishableKey
     }
 
+    @MainActor
     func clientSecretForPayment(selectedAmount: SelectedAmount) async -> Result<String, Error> {
         do {
             // for monthly we should create a setup-intent:
