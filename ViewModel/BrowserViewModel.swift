@@ -597,18 +597,18 @@ import CoreKiwix
 #endif
 
 #if os(iOS)
+    
     // swiftlint:disable:next function_body_length
     func webView(
         _ webView: WKWebView,
-        contextMenuConfigurationForElement elementInfo: WKContextMenuElementInfo,
-        completionHandler: @escaping (UIContextMenuConfiguration?) -> Void
-    ) {
-        guard let url = elementInfo.linkURL, url.isZIMURL else { completionHandler(nil); return }
+        contextMenuConfigurationFor elementInfo: WKContextMenuElementInfo
+    ) async -> UIContextMenuConfiguration? {
+        guard let url = elementInfo.linkURL, url.isZIMURL else { return nil }
         let configuration = UIContextMenuConfiguration(
             previewProvider: {
                 let webView = WKWebView(frame: .zero, configuration: WebViewConfiguration())
                 if !Bundle.main.isProduction {
-                        webView.isInspectable = true
+                    webView.isInspectable = true
                 }
                 webView.load(URLRequest(url: url))
                 return WebViewController(webView: webView)
@@ -616,13 +616,13 @@ import CoreKiwix
             actionProvider: { [weak self] _ in
                 guard let self else { return UIMenu(children: []) }
                 var actions = [UIAction]()
-
+                
                 // open url
                 actions.append(
                     UIAction(title: LocalString.common_dialog_button_open,
                              image: UIImage(systemName: "doc.text")) { [weak self] _ in
                                  self?.webView.load(URLRequest(url: url))
-                    }
+                             }
                 )
                 actions.append(
                     UIAction(title: LocalString.common_dialog_button_open_in_new_tab,
@@ -630,15 +630,15 @@ import CoreKiwix
                                  Task { @MainActor in
                                      NotificationCenter.openURL(url, inNewTab: true)
                                  }
-                    }
+                             }
                 )
-
+                
                 // bookmark
                 let bookmarkAction: UIAction = { [weak self] in
                     let context = Database.shared.viewContext
                     let predicate = NSPredicate(format: "articleURL == %@", url as CVarArg)
                     let request = Bookmark.fetchRequest(predicate: predicate)
-
+                    
                     if let bookmarks = try? context.fetch(request),
                        !bookmarks.isEmpty {
                         return UIAction(title: LocalString.common_dialog_button_remove_bookmark,
@@ -655,11 +655,11 @@ import CoreKiwix
                     }
                 }()
                 actions.append(bookmarkAction)
-
+                
                 return UIMenu(children: actions)
             }
         )
-        completionHandler(configuration)
+        return configuration
     }
 #endif
 
