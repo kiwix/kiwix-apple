@@ -32,6 +32,7 @@ enum SettingsTab: Int {
     case hotspot
     case about
     case diagnostics
+    case downloads
 }
 
 @main
@@ -135,6 +136,8 @@ struct Kiwix: App {
                         .environment(\.managedObjectContext, Database.shared.viewContext)
                         .tag(SettingsTab.diagnostics.rawValue)
                 }
+                DownloadSettings()
+                    .tag(SettingsTab.downloads.rawValue)
             }
             .frame(width: 550, height: 400)
         }

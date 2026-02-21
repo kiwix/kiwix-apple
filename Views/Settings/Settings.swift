@@ -121,6 +121,32 @@ struct LibrarySettings: View {
     }
 }
 
+/// Settings view for download configuration on macOS.
+/// Allows users to choose a custom download directory for large ZIM files.
+struct DownloadSettings: View {
+    var body: some View {
+        VStack(spacing: 16) {
+            SettingSection(name: LocalString.download_settings_location_title, alignment: .top) {
+                DownloadLocationPicker()
+            }
+            
+            // Info section explaining the feature
+            VStack(alignment: .leading, spacing: 8) {
+                Text(LocalString.download_settings_info_title)
+                    .font(.headline)
+                Text(LocalString.download_settings_info_description)
+                    .font(.caption)
+                    .foregroundColor(.secondary)
+            }
+            .padding(.top, 8)
+            
+            Spacer()
+        }
+        .padding()
+        .tabItem { Label(LocalString.download_settings_tab_title, systemImage: "arrow.down.circle") }
+    }
+}
+
 struct HotspotSettings: View {
     
     @State private var portNumber: Int

@@ -115,3 +115,111 @@ enum DownloadErrors {
         
     }
 }
+
+// MARK: - Direct Write Download Errors (macOS only)
+
+#if os(macOS)
+/// Errors specific to the direct-write download system on macOS.
+/// These errors occur when downloading directly to a custom directory (e.g., external drive).
+enum DirectWriteDownloadError: LocalizedError {
+    /// The destination directory doesn't exist or is not accessible
+    case destinationNotAccessible(path: String)
+    
+    /// Not enough free space on the destination volume
+    case insufficientDiskSpace(required: Int64, available: Int64)
+    
+    /// The destination volume was unmounted during download
+    case volumeUnmounted(path: String)
+    
+    /// Cannot create file at the destination
+    case cannotCreateFile(path: String, underlyingError: Error?)
+    
+    /// Cannot write to the file (I/O error during download)
+    case writeError(path: String, underlyingError: Error?)
+    
+    /// Server doesn't support range requests (required for resume)
+    case rangeRequestsNotSupported
+    
+    /// The partial file was modified or corrupted
+    case partialFileCorrupted(path: String)
+    
+    /// Invalid HTTP response from server
+    case invalidServerResponse(statusCode: Int)
+    
+    /// Download was cancelled by user
+    case cancelled
+    
+    var errorDescription: String? {
+        switch self {
+        case .destinationNotAccessible(let path):
+            return String(
+                format: NSLocalizedString(
+                    "The download directory is not accessible: %@",
+                    comment: "Error when download directory is not accessible"
+                ),
+                path
+            )
+        case .insufficientDiskSpace(let required, let available):
+            let requiredStr = ByteCountFormatter.string(fromByteCount: required, countStyle: .file)
+            let availableStr = ByteCountFormatter.string(fromByteCount: available, countStyle: .file)
+            return String(
+                format: NSLocalizedString(
+                    "Not enough disk space. Required: %@, Available: %@",
+                    comment: "Error when there's not enough disk space"
+                ),
+                requiredStr, availableStr
+            )
+        case .volumeUnmounted(let path):
+            return String(
+                format: NSLocalizedString(
+                    "The volume was disconnected during download: %@",
+                    comment: "Error when volume is unmounted during download"
+                ),
+                path
+            )
+        case .cannotCreateFile(let path, _):
+            return String(
+                format: NSLocalizedString(
+                    "Cannot create file at: %@",
+                    comment: "Error when file cannot be created"
+                ),
+                path
+            )
+        case .writeError(let path, _):
+            return String(
+                format: NSLocalizedString(
+                    "Error writing to file: %@",
+                    comment: "Error during file write"
+                ),
+                path
+            )
+        case .rangeRequestsNotSupported:
+            return NSLocalizedString(
+                "The server doesn't support resumable downloads",
+                comment: "Error when server doesn't support range requests"
+            )
+        case .partialFileCorrupted(let path):
+            return String(
+                format: NSLocalizedString(
+                    "The partial download file is corrupted: %@",
+                    comment: "Error when partial file is corrupted"
+                ),
+                path
+            )
+        case .invalidServerResponse(let statusCode):
+            return String(
+                format: NSLocalizedString(
+                    "Invalid server response (HTTP %d)",
+                    comment: "Error for invalid HTTP response"
+                ),
+                statusCode
+            )
+        case .cancelled:
+            return NSLocalizedString(
+                "Download was cancelled",
+                comment: "Error when download is cancelled"
+            )
+        }
+    }
+}
+#endif
