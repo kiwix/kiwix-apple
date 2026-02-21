@@ -339,8 +339,8 @@ private struct Content<LaunchModel>: View where LaunchModel: LaunchProtocol {
         .focusedSceneValue(\.canGoForward, browser.canGoForward)
         .focusedSceneValue(\.hasZIMFiles, zimFiles.isEmpty == false)
         .modifier(ExternalLinkHandler(externalURL: $browser.externalURL))
-        .onAppear { [weak browser] in
-            browser?.updateLastOpened()
+        .task { [weak browser] in
+            await browser?.updateLastOpened()
         }
         .onDisappear { [weak browser] in
             if tabID != nil {
