@@ -137,7 +137,6 @@ struct Payment {
         return nil
     }
     
-    
     /// Sendable version of PayWithApplePayButtonLabel
     private enum ApplePaymentLabelType: Sendable {
         case donate

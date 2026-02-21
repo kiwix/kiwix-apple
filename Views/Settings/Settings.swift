@@ -164,7 +164,7 @@ struct Settings: View {
     @EnvironmentObject private var colorSchemeStore: UserColorSchemeStore
     @EnvironmentObject private var library: LibraryViewModel
     @Environment(\.horizontalSizeClass) var horizontalSizeClass
-    @State private var paymentButtonLabel: PayWithApplePayButtonLabel? = nil
+    @State private var paymentButtonLabel: PayWithApplePayButtonLabel?
 
     enum Route {
         case languageSelector, about
