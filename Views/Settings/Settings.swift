@@ -89,7 +89,9 @@ struct LibrarySettings: View {
             SettingSection(name: LocalString.library_settings_catalog_title, alignment: .top) {
                 HStack(spacing: 6) {
                     Button(LocalString.library_settings_button_refresh_now) {
-                        library.start(isUserInitiated: true)
+                        Task { [weak library] in
+                            await library?.start(isUserInitiated: true)
+                        }
                     }.disabled(library.state == .inProgress)
                     if library.state == .inProgress {
                         ProgressView().progressViewStyle(.circular).scaleEffect(0.5).frame(height: 1)
@@ -269,7 +271,9 @@ struct Settings: View {
                 }
             } else {
                 Button(LocalString.catalog_settings_refresh_now_button) {
-                    library.start(isUserInitiated: true)
+                    Task { [weak library] in
+                        await library?.start(isUserInitiated: true)
+                    }
                 }
             }
             Toggle(LocalString.catalog_settings_auto_refresh_toggle, isOn: $libraryAutoRefresh)
