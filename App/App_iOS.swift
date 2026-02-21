@@ -31,8 +31,8 @@ struct Kiwix: App {
     private let fileMonitor: DirectoryMonitor
     
     init() {
-        Diagnostics.start()
         Task { @MainActor in
+            await Diagnostics.start()
             await WebContentBlocker.compilePolicy()
         }
         fileMonitor = DirectoryMonitor(url: URL.documentDirectory) { LibraryOperations.scanDirectory($0) }

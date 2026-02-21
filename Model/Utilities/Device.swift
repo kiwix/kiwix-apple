@@ -23,6 +23,7 @@ enum Device: String {
     case iPhone
     case iPad
 
+    @MainActor
     public static var current: Self {
         #if os(macOS)
         mac
