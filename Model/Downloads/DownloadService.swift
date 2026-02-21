@@ -18,26 +18,47 @@ import CoreData
 import UserNotifications
 import os
 
+@MainActor final class DownloadSessionDelegate: NSObject, URLSessionDelegate {
+    var backgroundCompletionHandler: (() -> Void)?
+    nonisolated func urlSessionDidFinishEvents(forBackgroundURLSession session: URLSession) {
+        Task { @MainActor [weak self] in
+            self?.backgroundCompletionHandler?()
+        }
+    }
+}
+
+
 // swiftlint:disable file_length
 
 // swiftlint:disable:next type_body_length
-final class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegate, URLSessionDownloadDelegate {
-    static let shared = DownloadService()
-    @MainActor let networkState = NetworkState()
+final class DownloadService: NSObject, URLSessionTaskDelegate, URLSessionDownloadDelegate {
+    @MainActor static let shared = DownloadService()
+    @MainActor let networkState: NetworkState
     private let queue = DispatchQueue(label: "downloads", qos: .background)
     @MainActor let progress = DownloadTasksPublisher()
     @MainActor private var heartbeat: Timer?
-    @MainActor var backgroundCompletionHandler: (() -> Void)?
     
-    private lazy var session: URLSession = {
+    @MainActor let sessionDelegate: DownloadSessionDelegate
+    
+    private let session: URLSession
+    
+    @MainActor
+    private override init() {
+        sessionDelegate = DownloadSessionDelegate()
         let configuration = URLSessionConfiguration.background(withIdentifier: "org.kiwix.background")
         configuration.allowsCellularAccess = true
         configuration.isDiscretionary = false
         configuration.sessionSendsLaunchEvents = true
         let operationQueue = OperationQueue()
         operationQueue.underlyingQueue = queue
-        return URLSession(configuration: configuration, delegate: self, delegateQueue: operationQueue)
-    }()
+        self.session = URLSession(
+            configuration: configuration,
+            delegate: sessionDelegate,
+            delegateQueue: operationQueue
+        )
+        self.networkState = NetworkState()
+        super.init()
+    }
 
     // MARK: - Heartbeat
 
@@ -447,14 +468,6 @@ due to: \(error.localizedDescription, privacy: .public)
             // schedule notification
             scheduleDownloadCompleteNotification(zimFileID: zimFileID)
             deleteDownloadTask(zimFileID: zimFileID)
-        }
-    }
-
-    // MARK: - URLSessionDelegate
-
-    nonisolated func urlSessionDidFinishEvents(forBackgroundURLSession session: URLSession) {
-        Task { @MainActor [weak self] in
-            self?.backgroundCompletionHandler?()
         }
     }
 }
