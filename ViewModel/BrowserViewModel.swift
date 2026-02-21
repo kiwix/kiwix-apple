@@ -272,16 +272,15 @@ import CoreKiwix
     }
 
     @MainActor
-    func updateLastOpened() {
+    func updateLastOpened() async {
         let currentTabID = tabID
-        Task {
-            Database.shared.performBackgroundTask { context in
-                guard let tab = try? context.existingObject(with: currentTabID) as? Tab else {
-                    return
-                }
-                tab.lastOpened = Date()
-                try? context.save()
+        await Database.shared.viewContext.perform {
+            let context = Database.shared.viewContext
+            guard let tab = try? context.existingObject(with: currentTabID) as? Tab else {
+                return
             }
+            tab.lastOpened = Date()
+            try? context.save()
         }
     }
 

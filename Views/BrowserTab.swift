@@ -146,8 +146,8 @@ struct BrowserTab: View {
             view
 #endif
         }
-        .onAppear { [weak browser] in
-            browser?.updateLastOpened()
+        .task { [weak browser] in
+            await browser?.updateLastOpened()
         }
         .onDisappear { [weak browser] in
             browser?.pauseVideoWhenNotInPIP()
