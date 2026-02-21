@@ -512,7 +512,7 @@ import CoreKiwix
         }
         webView.adjustTextSize()
 #else
-        persistState()
+        Task { await persistState() }
 #endif
     }
 
@@ -678,7 +678,8 @@ import CoreKiwix
         let title = webView.title
         Task {
             guard let metaData = await ZimFileService.shared.getContentMetaData(url: url) else { return }
-            Database.shared.performBackgroundTask { context in
+            await Database.shared.viewContext.perform {
+                let context = Database.shared.viewContext
                 let bookmark = Bookmark(context: context)
                 bookmark.articleURL = url
                 bookmark.created = Date()
@@ -693,11 +694,14 @@ import CoreKiwix
 
     func deleteBookmark(url: URL? = nil) {
         guard let url = url ?? webView.url else { return }
-        Database.shared.performBackgroundTask { context in
-            let request = Bookmark.fetchRequest(predicate: NSPredicate(format: "articleURL == %@", url as CVarArg))
-            guard let bookmark = try? context.fetch(request).first else { return }
-            context.delete(bookmark)
-            try? context.save()
+        Task {
+            await Database.shared.viewContext.perform {
+                let context = Database.shared.viewContext
+                let request = Bookmark.fetchRequest(predicate: NSPredicate(format: "articleURL == %@", url as CVarArg))
+                guard let bookmark = try? context.fetch(request).first else { return }
+                context.delete(bookmark)
+                try? context.save()
+            }
         }
     }
 

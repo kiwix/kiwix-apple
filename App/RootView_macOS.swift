@@ -221,7 +221,7 @@ struct RootView: View {
                 DownloadService.shared.restartHeartbeatIfNeeded()
             case let .custom(zimFileURL):
                 await LibraryOperations.open(url: zimFileURL)
-                ZimMigration.forCustomApps()
+                await ZimMigration.forCustomApps()
                 currentNavItem = .tab(objectID: navigation.currentTabId)
             }
             // MARK: - payment button init
