@@ -23,7 +23,10 @@ enum MacUser {
         Log.Environment.notice("MacUser name: \(userName, privacy: .public)")
     }
     
+    @MainActor
     private static var isAdminCached: Bool?
+    
+    @MainActor
     static func isUserAdmin() {
         if let value = isAdminCached {
             Log.Environment.notice("MacUser isAdmin: \(value, privacy: .public)")
@@ -31,7 +34,9 @@ enum MacUser {
             let backgroundQueue = DispatchQueue(label: "org.kiwix.macuser_background", qos: .background)
             backgroundQueue.async {
                 let value = isAdmin()
-                isAdminCached = value
+                Task { @MainActor in
+                    isAdminCached = value
+                }
                 Log.Environment.notice("MacUser isAdmin: \(value, privacy: .public)")
             }
         }

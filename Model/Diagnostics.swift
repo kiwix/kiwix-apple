@@ -196,8 +196,6 @@ final class DiagnosticsModel: ObservableObject {
 
 enum Diagnostics {
     
-    private static let byteCountFormatter = ByteCountFormatter().string(fromByteCount:)
-    
     /// Log the os and app related infos
     static func start() {
         Log.Environment.notice("app: \(appVersion(), privacy: .public)")
@@ -211,7 +209,7 @@ enum Diagnostics {
 #if os(macOS)
         guard !Task.isCancelled else { return [] }
         MacUser.name()
-        MacUser.isUserAdmin()
+        await MacUser.isUserAdmin()
 #endif
         guard !Task.isCancelled else { return [] }
         Log.Environment.notice("ProcessInfo.environment:\n\(processInfoEnvironment(), privacy: .public)")
@@ -289,6 +287,6 @@ enum Diagnostics {
         guard let freeSpace else {
             return "unknown"
         }
-        return byteCountFormatter(freeSpace)
+        return ByteCountFormatter().string(fromByteCount: freeSpace)
     }
 }
