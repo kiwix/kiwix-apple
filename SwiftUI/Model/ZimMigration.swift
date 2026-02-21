@@ -27,15 +27,17 @@ enum ZimMigration {
     /// and read back when updating URLS mapped from WebView interaction state,
     /// witch is saved as Data for each opened Tab
     @MainActor private static var newHost: String?
-    private static let requestLatestZimFile = ZimFile.fetchRequest(
-        predicate: ZimFile.Predicate.isDownloaded(),
-        sortDescriptors: [NSSortDescriptor(keyPath: \ZimFile.created, ascending: true)]
-    )
+    private static func requestLatestZimFile() -> NSFetchRequest<ZimFile> {
+        ZimFile.fetchRequest(
+            predicate: ZimFile.Predicate.isDownloaded(),
+            sortDescriptors: [NSSortDescriptor(keyPath: \ZimFile.created, ascending: true)]
+        )
+    }
 
     static func forCustomApps() {
         guard FeatureFlags.hasLibrary == false else { return }
         Database.shared.performBackgroundTask { context in
-            guard var zimFiles = try? requestLatestZimFile.execute(),
+            guard var zimFiles = try? requestLatestZimFile().execute(),
                   zimFiles.count > 1,
                   let latest = zimFiles.popLast() else {
                 return
@@ -80,7 +82,7 @@ enum ZimMigration {
     private static func latestZimFileHost() async -> String {
         if let newHost = Self.newHost { return newHost }
         // if it wasn't set before, set and return by the last ZimFile in DB:
-        guard let zimFile = try? Database.shared.viewContext.fetch(requestLatestZimFile).first else {
+        guard let zimFile = try? Database.shared.viewContext.fetch(requestLatestZimFile()).first else {
             fatalError("we should have at least 1 zim file for a custom app")
         }
         let newHost = zimFile.fileID.uuidString
