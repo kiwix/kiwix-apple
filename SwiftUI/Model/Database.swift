@@ -16,7 +16,7 @@
 import CoreData
 import os
 
-final class Database {
+struct Database {
     static let shared = Database()
     private let container: NSPersistentContainer
     private let backgroundContext: NSManagedObjectContext
