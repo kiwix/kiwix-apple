@@ -26,7 +26,7 @@ enum ZimMigration {
     /// Set during migration,
     /// and read back when updating URLS mapped from WebView interaction state,
     /// witch is saved as Data for each opened Tab
-    @MainActor private static var newHost: String?
+    nonisolated(unsafe) private static var newHost: String?
     private static func requestLatestZimFile() -> NSFetchRequest<ZimFile> {
         ZimFile.fetchRequest(
             predicate: ZimFile.Predicate.isDownloaded(),
@@ -34,16 +34,15 @@ enum ZimMigration {
         )
     }
 
-    static func forCustomApps() {
+    static func forCustomApps() async {
         guard FeatureFlags.hasLibrary == false else { return }
-        Database.shared.performBackgroundTask { context in
+        await Database.shared.viewContext.perform {
             guard var zimFiles = try? requestLatestZimFile().execute(),
                   zimFiles.count > 1,
                   let latest = zimFiles.popLast() else {
                 return
             }
-
-            context.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
+            let context = Database.shared.viewContext
             for zimFile in zimFiles {
                 migrateFrom(zimFile: zimFile, toZimFile: latest, using: context)
             }
@@ -59,11 +58,8 @@ enum ZimMigration {
         using context: NSManagedObjectContext
     ) {
         let newHost = toZim.fileID.uuidString
-        Task {
-            await MainActor.run {
-                Self.newHost = newHost
-            }
-        }
+        Self.newHost = newHost
+        
         fromZim.bookmarks.forEach { (bookmark: Bookmark) in
             bookmark.zimFile = toZim
             if let newArticleURL = bookmark.articleURL.updateHost(to: newHost) {
