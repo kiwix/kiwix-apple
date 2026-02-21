@@ -23,7 +23,7 @@ struct DiagnosticsView: View {
     
     @FetchRequest(
         sortDescriptors: [NSSortDescriptor(keyPath: \ZimFile.size, ascending: false)],
-        predicate: ZimFile.integrityCheckablePredicate
+        predicate: ZimFile.integrityCheckablePredicate()
     ) private var zimFiles: FetchedResults<ZimFile>
     @State private var logs: [String] = []
     @State private var isRunning: Bool = false

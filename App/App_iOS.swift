@@ -158,7 +158,7 @@ private struct RootView: UIViewControllerRepresentable {
     @EnvironmentObject private var navigation: NavigationViewModel
     @FetchRequest(
         sortDescriptors: [NSSortDescriptor(keyPath: \ZimFile.size, ascending: false)],
-        predicate: ZimFile.openedPredicate,
+        predicate: ZimFile.openedPredicate(),
         animation: .easeInOut
     ) private var zimFiles: FetchedResults<ZimFile>
 

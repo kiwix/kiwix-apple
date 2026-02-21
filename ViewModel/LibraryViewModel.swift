@@ -86,7 +86,7 @@ extension NSManagedObjectContext: DBObjectContext {
     func bulkDeleteNotDownloadedZims(notIncludedIn: Set<UUID>) throws -> Int {
         let fetchRequest: NSFetchRequest<NSFetchRequestResult> = ZimFile.fetchRequest()
         fetchRequest.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
-            ZimFile.Predicate.notDownloaded,
+            ZimFile.Predicate.notDownloaded(),
             NSPredicate(format: "NOT fileID IN %@", notIncludedIn)
         ])
         let deleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)

@@ -24,7 +24,7 @@ struct ZimFilesOpenedNavStack: View {
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     @FetchRequest(
         sortDescriptors: [NSSortDescriptor(keyPath: \ZimFile.size, ascending: false)],
-        predicate: ZimFile.Predicate.isDownloaded,
+        predicate: ZimFile.Predicate.isDownloaded(),
         animation: .easeInOut
     ) private var zimFiles: FetchedResults<ZimFile>
     @State private var isFileImporterPresented = false

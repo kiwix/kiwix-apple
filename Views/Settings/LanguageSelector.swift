@@ -159,7 +159,7 @@ class Languages {
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "ZimFile")
         // exclude the already downloaded files, they might have invalid language set
         // but we are mainly interested in fetched content
-        fetchRequest.predicate = ZimFile.Predicate.notDownloaded
+        fetchRequest.predicate = ZimFile.Predicate.notDownloaded()
         fetchRequest.propertiesToFetch = ["languageCode", count]
         fetchRequest.propertiesToGroupBy = ["languageCode"]
         fetchRequest.resultType = .dictionaryResultType

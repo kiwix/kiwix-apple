@@ -65,7 +65,7 @@ struct LibraryOperations {
     static func reValidate() async {
         var successCount = 0
         let context = Database.shared.viewContext
-        let request = ZimFile.fetchRequest(predicate: ZimFile.Predicate.isDownloaded)
+        let request = ZimFile.fetchRequest(predicate: ZimFile.Predicate.isDownloaded())
 
         guard let zimFiles = try? context.fetch(request) else {
             return

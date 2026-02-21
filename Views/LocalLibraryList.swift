@@ -26,7 +26,7 @@ struct LocalLibraryList: View {
     ) private var bookmarks: FetchedResults<Bookmark>
     @FetchRequest(
         sortDescriptors: [NSSortDescriptor(keyPath: \ZimFile.size, ascending: false)],
-        predicate: ZimFile.openedPredicate,
+        predicate: ZimFile.openedPredicate(),
         animation: .easeInOut
     ) private var zimFiles: FetchedResults<ZimFile>
     

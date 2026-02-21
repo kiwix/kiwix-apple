@@ -196,7 +196,7 @@ final class DiagnosticsModel: ObservableObject {
 
 enum Diagnostics {
     
-    private static let byteCountFormatter = ByteCountFormatter()
+    private static let byteCountFormatter = ByteCountFormatter().string(fromByteCount:)
     
     /// Log the os and app related infos
     static func start() {
@@ -289,6 +289,6 @@ enum Diagnostics {
         guard let freeSpace else {
             return "unknown"
         }
-        return byteCountFormatter.string(fromByteCount: freeSpace)
+        return byteCountFormatter(freeSpace)
     }
 }
