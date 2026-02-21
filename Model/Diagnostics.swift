@@ -197,7 +197,7 @@ final class DiagnosticsModel: ObservableObject {
 enum Diagnostics {
     
     /// Log the os and app related infos
-    static func start() {
+    @MainActor static func start() async {
         Log.Environment.notice("app: \(appVersion(), privacy: .public)")
         Log.Environment.notice("os: \(osName(), privacy: .public)")
         Log.Environment.notice("free space: \(freeSpace(), privacy: .public)")
@@ -251,6 +251,7 @@ enum Diagnostics {
         return "\(bundleIdentifier): \(releaseVersion) (\(buildNumber))"
     }
     
+    @MainActor
     private static func osName() -> String {
         let deviceType = Device.current.rawValue
         let osVersion = ProcessInfo.processInfo.operatingSystemVersionString

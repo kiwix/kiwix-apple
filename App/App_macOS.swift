@@ -49,8 +49,8 @@ struct Kiwix: App {
     @State private var settingsTab: Int = SettingsTab.reading.rawValue
 
     init() {
-        Diagnostics.start()
         Task { @MainActor in
+            await Diagnostics.start()
             await WebContentBlocker.compilePolicy()
         }
         UNUserNotificationCenter.current().delegate = notificationCenterDelegate
