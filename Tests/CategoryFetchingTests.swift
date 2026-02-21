@@ -30,8 +30,8 @@ final class CategoryFetchingTests: XCTestCase {
         // insert a zimFile
         let context = Database.shared.viewContext
         let zimFile = ZimFile(context: context)
-        let metadata = ZimFileMetaData.mock(languageCodes: "eng",
-                                            category: Category.other.rawValue)
+        let metadata = ZimFileMetaStruct.mock(languageCodes: "eng",
+                                              category: Category.other.rawValue)
         LibraryOperations.configureZimFile(zimFile, metadata: metadata)
         try? context.save()
         let request = NSFetchRequest<ZimFile>(entityName: ZimFile.entity().name!)
@@ -49,8 +49,8 @@ final class CategoryFetchingTests: XCTestCase {
         // insert a zimFile
         let context = Database.shared.viewContext
         let zimFile = ZimFile(context: context)
-        let metadata = ZimFileMetaData.mock(languageCodes: "eng",
-                                            category: Category.other.rawValue)
+        let metadata = ZimFileMetaStruct.mock(languageCodes: "eng",
+                                              category: Category.other.rawValue)
         LibraryOperations.configureZimFile(zimFile, metadata: metadata)
         try? context.save()
         let request = NSFetchRequest<ZimFile>(entityName: ZimFile.entity().name!)
@@ -68,8 +68,8 @@ final class CategoryFetchingTests: XCTestCase {
         // insert a zimFile
         let context = Database.shared.viewContext
         let zimFile = ZimFile(context: context)
-        let metadata = ZimFileMetaData.mock(languageCodes: "fra",
-                                            category: Category.other.rawValue)
+        let metadata = ZimFileMetaStruct.mock(languageCodes: "fra",
+                                              category: Category.other.rawValue)
         LibraryOperations.configureZimFile(zimFile, metadata: metadata)
         try? context.save()
         let request = NSFetchRequest<ZimFile>(entityName: ZimFile.entity().name!)
@@ -87,8 +87,8 @@ final class CategoryFetchingTests: XCTestCase {
         // insert a zimFile
         let context = Database.shared.viewContext
         let zimFile = ZimFile(context: context)
-        let metadata = ZimFileMetaData.mock(languageCodes: "eng,fra,deu,nld,spa,ita,por,pol,ara,vie,kor",
-                                            category: Category.other.rawValue)
+        let metadata = ZimFileMetaStruct.mock(languageCodes: "eng,fra,deu,nld,spa,ita,por,pol,ara,vie,kor",
+                                              category: Category.other.rawValue)
         LibraryOperations.configureZimFile(zimFile, metadata: metadata)
         try? context.save()
         let request = NSFetchRequest<ZimFile>(entityName: ZimFile.entity().name!)
@@ -106,8 +106,8 @@ final class CategoryFetchingTests: XCTestCase {
         // insert a zimFile
         let context = Database.shared.viewContext
         let zimFile = ZimFile(context: context)
-        let metadata = ZimFileMetaData.mock(languageCodes: "eng,fra,deu,nld,spa,ita,por,pol,ara,vie,kor",
-                                            category: Category.other.rawValue)
+        let metadata = ZimFileMetaStruct.mock(languageCodes: "eng,fra,deu,nld,spa,ita,por,pol,ara,vie,kor",
+                                              category: Category.other.rawValue)
         LibraryOperations.configureZimFile(zimFile, metadata: metadata)
         try? context.save()
         let request = NSFetchRequest<ZimFile>(entityName: ZimFile.entity().name!)
@@ -125,8 +125,8 @@ final class CategoryFetchingTests: XCTestCase {
         // insert a zimFile
         let context = Database.shared.viewContext
         let zimFile = ZimFile(context: context)
-        let metadata = ZimFileMetaData.mock(languageCodes: "eng,fra,deu,nld,spa,ita",
-                                            category: Category.other.rawValue)
+        let metadata = ZimFileMetaStruct.mock(languageCodes: "eng,fra,deu,nld,spa,ita",
+                                              category: Category.other.rawValue)
         LibraryOperations.configureZimFile(zimFile, metadata: metadata)
         try? context.save()
         let request = NSFetchRequest<ZimFile>(entityName: ZimFile.entity().name!)
@@ -149,7 +149,7 @@ final class CategoryFetchingTests: XCTestCase {
 
 }
 
-private extension ZimFileMetaData {
+private extension ZimFileMetaStruct {
     static func mock(fileID: UUID = UUID(),
                      groupIdentifier: String = "test_group_id",
                      title: String = "test ZIM title",
@@ -157,9 +157,9 @@ private extension ZimFileMetaData {
                      languageCodes: String,
                      category: String = "other",
                      creationDate: Date = .init(timeIntervalSince1970: 0),
-                     size: UInt = 1_234,
-                     articleCount: UInt = 99,
-                     mediaCount: UInt = 33,
+                     size: Int64 = 1_234,
+                     articleCount: Int64 = 99,
+                     mediaCount: Int64 = 33,
                      creator: String = "unit_test_creator",
                      publisher: String = "unit_test_publisher",
                      hasDetails: Bool = false,
@@ -169,8 +169,8 @@ private extension ZimFileMetaData {
                      downloadURL: URL? = nil,
                      faviconURL: URL? = nil,
                      faviconData: Data? = nil,
-                     flavor: String? = nil) -> ZimFileMetaData {
-        ZimFileMetaData(
+                     flavor: String? = nil) -> ZimFileMetaStruct {
+        ZimFileMetaStruct(
             fileID: fileID,
             groupIdentifier: groupIdentifier,
             title: title,
@@ -178,9 +178,9 @@ private extension ZimFileMetaData {
             languageCodes: languageCodes,
             category: category,
             creationDate: creationDate,
-            size: NSNumber(value: size),
-            articleCount: NSNumber(value: articleCount),
-            mediaCount: NSNumber(value: mediaCount),
+            size: size,
+            articleCount: articleCount,
+            mediaCount: mediaCount,
             creator: creator,
             publisher: publisher,
             downloadURL: downloadURL,

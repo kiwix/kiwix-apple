@@ -75,8 +75,8 @@ final class DatabaseTests: XCTestCase {
         
     }
     
-    private static func metadata(for uuid: UUID) -> ZimFileMetaData {
-        ZimFileMetaData(
+    private static func metadata(for uuid: UUID) -> ZimFileMetaStruct {
+        ZimFileMetaStruct(
             fileID: uuid,
             groupIdentifier: "group",
             title: "test-title",
