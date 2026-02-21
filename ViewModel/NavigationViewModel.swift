@@ -51,7 +51,7 @@ final class NavigationViewModel: ObservableObject {
 
     // MARK: - Tab Management
 
-    nonisolated static func makeTab(context: NSManagedObjectContext) -> Tab {
+    static func makeTab(context: NSManagedObjectContext) -> Tab {
         let tab = Tab(context: context)
         tab.created = Date()
         tab.lastOpened = Date()
@@ -66,9 +66,10 @@ final class NavigationViewModel: ObservableObject {
         }
     }
 
-    private func navigateToMostRecentTabAsync() async {
+    private func navigateToMostRecentTabAsync(
+        using context: NSManagedObjectContext = Database.shared.viewContext
+    ) async {
         let fetchRequest = Tab.fetchRequestLastOpened()
-        let context = Database.shared.viewContext
         let tab = (try? context.fetch(fetchRequest).first) ?? Self.makeTab(context: context)
         await MainActor.run { [weak self] in
             self?.currentItem = NavigationItem.tab(objectID: tab.objectID)
@@ -100,46 +101,56 @@ final class NavigationViewModel: ObservableObject {
     }
     
     func deleteTabsWithMissingZimFiles() async {
-        let tabIDsToClose: [NSManagedObjectID] = await Database.shared.viewContext.perform {
-            let predicate = Tab.Predicate.zimFileMissing()
-            let context = Database.shared.viewContext
+        await withCheckedContinuation { continuation in
+            deleteTabsBy(predicate: Tab.Predicate.zimFileMissing()) {
+                continuation.resume()
+            }
+        }
+    }
+    
+    private func deleteTabsBy(predicate: NSPredicate, onComplete: @escaping () -> Void) {
+        Database.shared.performBackgroundTask { [weak self] context in
             var tabIDsToClose: [NSManagedObjectID] = []
             let tabsRequest = Tab.fetchRequest(predicate: predicate)
             guard let tabs = try? context.fetch(tabsRequest), !tabs.isEmpty else {
-                return []
+                onComplete()
+                return
             }
             for tab in tabs {
                 tabIDsToClose.append(tab.objectID)
                 context.delete(tab)
                 // destroy the BrowserViewModel
+                BrowserViewModel.destroyTabById(id: tab.objectID)
             }
+            print("NavigationViewModel.deleteTabs by: \(tabIDsToClose)")
+            
             if context.hasChanges {
                 try? context.save()
             }
-            return tabIDsToClose
-        }
-        for tabID in tabIDsToClose {
-            BrowserViewModel.destroyTabById(id: tabID)
-        }
-        print("NavigationViewModel.deleteTabs by: \(tabIDsToClose)")
-        // if the currently selected tab was deleted
-        if case let .tab(tabID) = currentItem, tabIDsToClose.contains(tabID) {
-            await navigateToMostRecentTabAsync()
+            
+            // if the currently selected tab was deleted
+            if case let .tab(tabID) = self?.currentItem, tabIDsToClose.contains(tabID) {
+                Task { [weak self] in
+                    await self?.navigateToMostRecentTabAsync(using: context)
+                    onComplete()
+                }
+            } else {
+                onComplete()
+            }
         }
     }
 
     /// Delete a single tab, and select another tab
     /// Note: do not use in a loop to delete more than 1 tab
     /// - Parameter tabID: ID of the tab to delete
-    func deleteTab(tabID: NSManagedObjectID) async {
+    func deleteTab(tabID: NSManagedObjectID) {
         let currentItemValue = currentItem
-        let newTabId: NSManagedObjectID? = await Database.shared.viewContext.perform {
-            let context = Database.shared.viewContext
+        Database.shared.performBackgroundTask { context in
             let sortByCreation = [NSSortDescriptor(key: "created", ascending: false)]
             guard let tabs: [Tab] = try? context.fetch(Tab.fetchRequest(predicate: Tab.Predicate.notMissing(),
                                                                         sortDescriptors: sortByCreation)),
                   let tab: Tab = tabs.first(where: { $0.objectID == tabID }) else {
-                return nil
+                return
             }
             let newlySelectedTab: Tab?
             if case let .tab(selectedTabID) = currentItemValue, selectedTabID == tabID {
@@ -151,42 +162,41 @@ final class NavigationViewModel: ObservableObject {
             } else {
                 newlySelectedTab = nil // the current selection should remain
             }
+            
+            // destroy the BrowserViewModel
+            BrowserViewModel.destroyTabById(id: tabID)
+
             // delete tab
             context.delete(tab)
             try? context.save()
-            
-            return newlySelectedTab?.objectID
-        }
-            
-        // destroy the BrowserViewModel
-        BrowserViewModel.destroyTabById(id: tabID)
 
-        // update selection if needed
-        if let newTabId {
-            currentItem = NavigationItem.tab(objectID: newTabId)
+            // update selection if needed
+            if let newlySelectedTab {
+                Task {
+                    await MainActor.run {
+                        self.currentItem = NavigationItem.tab(objectID: newlySelectedTab.objectID)
+                    }
+                }
+            }
         }
     }
 
     /// Delete all tabs, and open a new tab
-    func deleteAllTabs() async {
-        let tabIdsToDelete = await Database.shared.viewContext.perform {
-            let context = Database.shared.viewContext
+    func deleteAllTabs() {
+        Database.shared.performBackgroundTask { [weak self] context in
             // delete all existing tabs
             let tabs = try? context.fetch(Tab.fetchRequest())
-            var tabIds: [NSManagedObjectID] = []
             tabs?.forEach {
-                tabIds.append($0.objectID)
+                // destroy the BrowserViewModel
+                BrowserViewModel.destroyTabById(id: $0.objectID)
                 context.delete($0)
             }
-            try? context.save()
-            return tabIds
+            
+            // create new tab via navigateToMostRecent fallback
+            Task { [weak self] in
+                await self?.navigateToMostRecentTabAsync(using: context)
+            }
         }
-        for tabId in tabIdsToDelete {
-            // destroy the BrowserViewModel
-            BrowserViewModel.destroyTabById(id: tabId)
-        }
-        // create new tab via navigateToMostRecent fallback
-        await navigateToMostRecentTabAsync()
     }
 
     #if os(macOS)

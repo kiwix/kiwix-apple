@@ -26,23 +26,22 @@ enum ZimMigration {
     /// Set during migration,
     /// and read back when updating URLS mapped from WebView interaction state,
     /// witch is saved as Data for each opened Tab
-    nonisolated(unsafe) private static var newHost: String?
-    private static func requestLatestZimFile() -> NSFetchRequest<ZimFile> {
-        ZimFile.fetchRequest(
-            predicate: ZimFile.Predicate.isDownloaded(),
-            sortDescriptors: [NSSortDescriptor(keyPath: \ZimFile.created, ascending: true)]
-        )
-    }
+    @MainActor private static var newHost: String?
+    private static let requestLatestZimFile = ZimFile.fetchRequest(
+        predicate: ZimFile.Predicate.isDownloaded(),
+        sortDescriptors: [NSSortDescriptor(keyPath: \ZimFile.created, ascending: true)]
+    )
 
-    static func forCustomApps() async {
+    static func forCustomApps() {
         guard FeatureFlags.hasLibrary == false else { return }
-        await Database.shared.viewContext.perform {
-            guard var zimFiles = try? requestLatestZimFile().execute(),
+        Database.shared.performBackgroundTask { context in
+            guard var zimFiles = try? requestLatestZimFile.execute(),
                   zimFiles.count > 1,
                   let latest = zimFiles.popLast() else {
                 return
             }
-            let context = Database.shared.viewContext
+
+            context.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
             for zimFile in zimFiles {
                 migrateFrom(zimFile: zimFile, toZimFile: latest, using: context)
             }
@@ -58,8 +57,11 @@ enum ZimMigration {
         using context: NSManagedObjectContext
     ) {
         let newHost = toZim.fileID.uuidString
-        Self.newHost = newHost
-        
+        Task {
+            await MainActor.run {
+                Self.newHost = newHost
+            }
+        }
         fromZim.bookmarks.forEach { (bookmark: Bookmark) in
             bookmark.zimFile = toZim
             if let newArticleURL = bookmark.articleURL.updateHost(to: newHost) {
@@ -78,7 +80,7 @@ enum ZimMigration {
     private static func latestZimFileHost() async -> String {
         if let newHost = Self.newHost { return newHost }
         // if it wasn't set before, set and return by the last ZimFile in DB:
-        guard let zimFile = try? Database.shared.viewContext.fetch(requestLatestZimFile()).first else {
+        guard let zimFile = try? Database.shared.viewContext.fetch(requestLatestZimFile).first else {
             fatalError("we should have at least 1 zim file for a custom app")
         }
         let newHost = zimFile.fileID.uuidString
