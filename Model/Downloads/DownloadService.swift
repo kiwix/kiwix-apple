@@ -27,7 +27,8 @@ final class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegat
     private let queue = DispatchQueue(label: "downloads", qos: .background)
     @MainActor let progress = DownloadTasksPublisher()
     @MainActor private var heartbeat: Timer?
-    var backgroundCompletionHandler: (@MainActor () -> Void)?
+    @MainActor var backgroundCompletionHandler: (() -> Void)?
+    
     private lazy var session: URLSession = {
         let configuration = URLSessionConfiguration.background(withIdentifier: "org.kiwix.background")
         configuration.allowsCellularAccess = true
@@ -252,7 +253,7 @@ final class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegat
     ///   - session: the current session
     ///   - task: if the task is cancelled / paused by the user it will be called because of that
     ///   - error: client-side errors, including task cancelled / paused
-    func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?) {
+    nonisolated func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?) {
         guard let taskDescription = task.taskDescription else {
             Log.DownloadService.fault("No taskDescription")
             return
@@ -330,7 +331,7 @@ final class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegat
 
     // MARK: - URLSessionDownloadDelegate
 
-    func urlSession(_ session: URLSession,
+    nonisolated func urlSession(_ session: URLSession,
                     downloadTask: URLSessionDownloadTask,
                     didWriteData bytesWritten: Int64,
                     totalBytesWritten: Int64,
@@ -359,7 +360,7 @@ final class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegat
     }
 
     // swiftlint:disable:next function_body_length
-    func urlSession(_ session: URLSession,
+    nonisolated func urlSession(_ session: URLSession,
                     downloadTask: URLSessionDownloadTask,
                     didFinishDownloadingTo location: URL) {
         let taskId = downloadTask.taskDescription ?? ""
@@ -451,7 +452,7 @@ due to: \(error.localizedDescription, privacy: .public)
 
     // MARK: - URLSessionDelegate
 
-    func urlSessionDidFinishEvents(forBackgroundURLSession session: URLSession) {
+    nonisolated func urlSessionDidFinishEvents(forBackgroundURLSession session: URLSession) {
         Task { @MainActor [weak self] in
             self?.backgroundCompletionHandler?()
         }
