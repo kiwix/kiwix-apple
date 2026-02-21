@@ -140,10 +140,6 @@ final class LibraryViewModel: ObservableObject {
         }.store(in: &cancellables)
     }
 
-    func start(isUserInitiated: Bool) {
-        Task { await start(isUserInitiated: isUserInitiated) }
-    }
-
     @MainActor
     func start(isUserInitiated: Bool) async {
         guard process.state != .inProgress else { return }

@@ -49,13 +49,13 @@ struct Kiwix: App {
     @State private var settingsTab: Int = SettingsTab.reading.rawValue
 
     init() {
+        UNUserNotificationCenter.current().delegate = notificationCenterDelegate
         Task { @MainActor in
             await Diagnostics.start()
             await WebContentBlocker.compilePolicy()
-        }
-        UNUserNotificationCenter.current().delegate = notificationCenterDelegate
-        if FeatureFlags.hasLibrary {
-            LibraryViewModel().start(isUserInitiated: false)
+            if FeatureFlags.hasLibrary {
+                await LibraryViewModel().start(isUserInitiated: false)
+            }
         }
     }
     

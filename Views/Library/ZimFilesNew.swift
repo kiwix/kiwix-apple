@@ -131,7 +131,9 @@ struct ZimFilesNew: View {
         .onAppear {
             viewModel.update(searchText: searchText)
             viewModel.update(languageCodes: languageCodes)
-            library.start(isUserInitiated: false)
+            Task {
+                await library.start(isUserInitiated: false)
+            }
         }
         .onChange(of: searchText) { _, newSearchText in
             viewModel.update(searchText: newSearchText)
@@ -160,7 +162,9 @@ struct ZimFilesNew: View {
                     #endif
                 } else {
                     Button {
-                        library.start(isUserInitiated: true)
+                        Task { [weak library] in
+                            await library?.start(isUserInitiated: true)
+                        }
                     } label: {
                         Label(LocalString.zim_file_new_button_refresh,
                               systemImage: "arrow.triangle.2.circlepath.circle")

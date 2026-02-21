@@ -54,7 +54,9 @@ struct ZimFilesCategories: View {
                     }
                 }
             }.onAppear {
-                LibraryViewModel().start(isUserInitiated: false)
+                Task {
+                    await LibraryViewModel().start(isUserInitiated: false)
+                }
             }
             .onDisappear {
                 hasSeenCategories = true
