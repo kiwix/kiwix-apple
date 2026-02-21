@@ -46,7 +46,9 @@ struct Email {
             URLQueryItem(name: "subject", value: subject),
             URLQueryItem(name: "body", value: body)
         ])
-        UIApplication.shared.open(url)
+        Task { @MainActor in
+            UIApplication.shared.open(url)
+        }
     }
 #endif
     
