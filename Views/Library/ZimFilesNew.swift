@@ -16,6 +16,7 @@
 import SwiftUI
 import Defaults
 
+@MainActor
 private final class ViewModel: ObservableObject {
     
     @Published private(set) var zimFiles: [ZimFile] = []
@@ -49,23 +50,22 @@ private final class ViewModel: ObservableObject {
     func update() async {
         let searchText = self.searchText
         let languageCodes = self.languageCodes
-        let newZimFiles: [ZimFile] = await withCheckedContinuation { continuation in
-            Database.shared.performBackgroundTask { context in
-                let predicate: NSPredicate = Self.buildPredicate(
-                    searchText: searchText,
-                    languageCodes: languageCodes
-                )
-                if let results = try? context.fetch(
-                    ZimFile.fetchRequest(
-                        predicate: predicate,
-                        sortDescriptors: self.sortDescriptors
-                    )
-                ) {
-                    continuation.resume(returning: results)
-                } else {
-                    continuation.resume(returning: [])
-                }
-            }
+        
+        let newZimFiles: [ZimFile]
+        let predicate: NSPredicate = Self.buildPredicate(
+            searchText: searchText,
+            languageCodes: languageCodes
+        )
+        let context = Database.shared.viewContext
+        if let results = try? context.fetch(
+            ZimFile.fetchRequest(
+                predicate: predicate,
+                sortDescriptors: self.sortDescriptors
+            )
+        ) {
+            newZimFiles = results
+        } else {
+            newZimFiles = []
         }
         withAnimation(.easeInOut) {
             self.zimFiles = newZimFiles
