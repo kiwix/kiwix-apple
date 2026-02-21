@@ -17,7 +17,7 @@ protocol Parser {
     var zimFileIDs: Set<UUID> { get }
     @ZimActor
     func parse(data: Data, urlHost: String) throws
-    func getMetaData(id: UUID, fetchFavicon: Bool) -> ZimFileMetaData?
+    func getMetaData(id: UUID, fetchFavicon: Bool) -> ZimFileMetaStruct?
 }
 
 extension OPDSParser: Parser {
@@ -32,8 +32,8 @@ extension OPDSParser: Parser {
         }
     }
 
-    func getMetaData(id: UUID, fetchFavicon: Bool) -> ZimFileMetaData? {
-        return __getZimFileMetaData(id, fetchFavicon: fetchFavicon)
+    func getMetaData(id: UUID, fetchFavicon: Bool) -> ZimFileMetaStruct? {
+        ZimFileService.metaStruct(from: __getZimFileMetaData(id, fetchFavicon: fetchFavicon))
     }
 }
 
@@ -47,7 +47,7 @@ struct DeletingParser: Parser {
     func parse(data: Data, urlHost: String) throws {
     }
 
-    func getMetaData(id: UUID, fetchFavicon: Bool) -> ZimFileMetaData? {
+    func getMetaData(id: UUID, fetchFavicon: Bool) -> ZimFileMetaStruct? {
         nil
     }
 }
