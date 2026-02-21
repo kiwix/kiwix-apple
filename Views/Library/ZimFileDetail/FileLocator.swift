@@ -28,7 +28,7 @@ extension ZimFileDetail {
                 allowsMultipleSelection: false
             ) { result in
                 guard case let .success(urls) = result, let url = urls.first else { return }
-                Task { await LibraryOperations.open(url: url) }
+                Task { let _ = await LibraryOperations.open(url: url) }
             }
         }
     }
