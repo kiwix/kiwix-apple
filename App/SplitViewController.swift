@@ -102,14 +102,19 @@ final class SplitViewController: UISplitViewController {
         ) { [weak self] notification in
             guard let url = notification.userInfo?["url"] as? URL else { return }
             let inNewTab = notification.userInfo?["inNewTab"] as? Bool ?? false
+            let deepLinkId: UUID?
+            if case .deepLink(.some(let linkID)) = notification.userInfo?["context"] as? OpenURLContext {
+                deepLinkId = linkID
+            } else {
+                deepLinkId = nil
+            }
             Task { @MainActor [weak self] in
                 if !inNewTab, case let .tab(tabID) = self?.navigationViewModel.currentItem {
                     BrowserViewModel.getCached(tabID: tabID).load(url: url)
                 } else if let tabID = self?.navigationViewModel.createTab() {
                     BrowserViewModel.getCached(tabID: tabID).load(url: url)
                 }
-                if let context = notification.userInfo?["context"] as? OpenURLContext,
-                   case .deepLink(.some(let deepLinkId)) = context {
+                if let deepLinkId {
                     DeepLinkService.shared.stopFor(uuid: deepLinkId)
                 }
             }
