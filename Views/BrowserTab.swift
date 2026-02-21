@@ -151,7 +151,9 @@ struct BrowserTab: View {
         }
         .onDisappear { [weak browser] in
             browser?.pauseVideoWhenNotInPIP()
-            browser?.persistState()
+            Task { [weak browser] in
+                await browser?.persistState()
+            }
         }
     }
 

@@ -285,18 +285,17 @@ import CoreKiwix
     }
 
     @MainActor
-    func persistState() {
+    func persistState() async {
         let webData = webView.interactionState as? Data
         let currentTabID = tabID
-        Task {
-            Database.shared.performBackgroundTask { context in
-                guard let tab = try? context.existingObject(with: currentTabID) as? Tab else {
-                    return
-                }
-                tab.interactionState = webData
-                if context.hasChanges {
-                    try? context.save()
-                }
+        await Database.shared.viewContext.perform {
+            let context = Database.shared.viewContext
+            guard let tab = try? context.existingObject(with: currentTabID) as? Tab else {
+                return
+            }
+            tab.interactionState = webData
+            if context.hasChanges {
+                try? context.save()
             }
         }
     }
