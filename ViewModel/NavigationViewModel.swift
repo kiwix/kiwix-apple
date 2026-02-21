@@ -102,7 +102,7 @@ final class NavigationViewModel: ObservableObject {
     
     func deleteTabsWithMissingZimFiles() async {
         await withCheckedContinuation { continuation in
-            deleteTabsBy(predicate: Tab.Predicate.zimFileMissing) {
+            deleteTabsBy(predicate: Tab.Predicate.zimFileMissing()) {
                 continuation.resume()
             }
         }
@@ -147,7 +147,7 @@ final class NavigationViewModel: ObservableObject {
         let currentItemValue = currentItem
         Database.shared.performBackgroundTask { context in
             let sortByCreation = [NSSortDescriptor(key: "created", ascending: false)]
-            guard let tabs: [Tab] = try? context.fetch(Tab.fetchRequest(predicate: Tab.Predicate.notMissing,
+            guard let tabs: [Tab] = try? context.fetch(Tab.fetchRequest(predicate: Tab.Predicate.notMissing(),
                                                                         sortDescriptors: sortByCreation)),
                   let tab: Tab = tabs.first(where: { $0.objectID == tabID }) else {
                 return

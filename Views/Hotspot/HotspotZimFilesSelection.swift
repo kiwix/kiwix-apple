@@ -20,7 +20,7 @@ import SwiftUI
 struct HotspotZimFilesSelection: View {
     @FetchRequest(
         sortDescriptors: [NSSortDescriptor(keyPath: \ZimFile.size, ascending: false)],
-        predicate: ZimFile.openedPredicate,
+        predicate: ZimFile.openedPredicate(),
         animation: .easeInOut
     ) private var zimFiles: FetchedResults<ZimFile>
     @StateObject private var selection: MultiSelectedZimFilesViewModel

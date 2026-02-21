@@ -153,7 +153,7 @@ final class Tab: NSManagedObject, Identifiable {
     
     static func fetchRequestLastOpened() -> NSFetchRequest<Tab> {
         let fetchRequest = Tab.fetchRequest(
-            predicate: Tab.Predicate.notMissing,
+            predicate: Tab.Predicate.notMissing(),
             sortDescriptors: [NSSortDescriptor(key: "lastOpened", ascending: false)]
         )
         fetchRequest.fetchLimit = 1
@@ -161,16 +161,23 @@ final class Tab: NSManagedObject, Identifiable {
     }
     
     enum Predicate {
-        static let zimFileMissing = NSPredicate(format: "zimFile.isMissing == true")
-        private static let zimFileNotMissing = NSPredicate(format: "zimFile.isMissing == false")
-        private static let noZimFile = NSPredicate(format: "zimFile == nil")
-        
+        static func zimFileMissing() -> NSPredicate {
+            NSPredicate(format: "zimFile.isMissing == true")
+        }
         /// Make sure it is either not referencing any zimFile (eg: new tab)
         /// or referencing an existing zimFile on disk
-        static var notMissing = NSCompoundPredicate(orPredicateWithSubpredicates: [
-            noZimFile,
-            zimFileNotMissing
-        ])
+        static func notMissing() -> NSPredicate {
+            NSCompoundPredicate(orPredicateWithSubpredicates: [
+                noZimFile(),
+                zimFileNotMissing()
+            ])
+        }
+        private static func zimFileNotMissing() -> NSPredicate {
+            NSPredicate(format: "zimFile.isMissing == false")
+        }
+        private static func noZimFile() -> NSPredicate {
+            NSPredicate(format: "zimFile == nil")
+        }
     }
 }
 
@@ -293,18 +300,28 @@ final class ZimFile: NSManagedObject {
     }
 
     enum Predicate {
-        static let isDownloaded = NSPredicate(format: "fileURLBookmark != nil")
-        static let notDownloaded = NSPredicate(format: "fileURLBookmark == nil")
-        static let notMissing = NSPredicate(format: "isMissing == false")
+        static func isDownloaded() -> NSPredicate {
+            NSPredicate(format: "fileURLBookmark != nil")
+        }
+        static func notDownloaded() -> NSPredicate {
+            NSPredicate(format: "fileURLBookmark == nil")
+        }
+        static func notMissing() -> NSPredicate {
+            NSPredicate(format: "isMissing == false")
+        }
     }
 
-    static var openedPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
-        Predicate.isDownloaded,
-        Predicate.notMissing
-    ])
+    static func openedPredicate() -> NSPredicate {
+        NSCompoundPredicate(andPredicateWithSubpredicates: [
+            Predicate.isDownloaded(),
+            Predicate.notMissing()
+        ])
+    }
     
     // it's the same condition, dowloaded, but not missing
-    static var integrityCheckablePredicate = openedPredicate
+    static func integrityCheckablePredicate() -> NSPredicate {
+        openedPredicate()
+    }
 
     static func fetchRequest(
         predicate: NSPredicate? = nil, sortDescriptors: [NSSortDescriptor] = []

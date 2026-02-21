@@ -27,10 +27,9 @@ enum ZimMigration {
     /// and read back when updating URLS mapped from WebView interaction state,
     /// witch is saved as Data for each opened Tab
     @MainActor private static var newHost: String?
-    private static let sortDescriptors = [NSSortDescriptor(keyPath: \ZimFile.created, ascending: true)]
     private static let requestLatestZimFile = ZimFile.fetchRequest(
-        predicate: ZimFile.Predicate.isDownloaded,
-        sortDescriptors: Self.sortDescriptors
+        predicate: ZimFile.Predicate.isDownloaded(),
+        sortDescriptors: [NSSortDescriptor(keyPath: \ZimFile.created, ascending: true)]
     )
 
     static func forCustomApps() {

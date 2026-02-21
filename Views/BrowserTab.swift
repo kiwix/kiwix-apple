@@ -162,7 +162,7 @@ struct BrowserTab: View {
         @EnvironmentObject private var navigation: NavigationViewModel
         @FetchRequest(
             sortDescriptors: [NSSortDescriptor(keyPath: \ZimFile.size, ascending: false)],
-            predicate: ZimFile.openedPredicate
+            predicate: ZimFile.openedPredicate()
         ) private var zimFiles: FetchedResults<ZimFile>
         /// this is still hacky a bit, as the change from here re-validates the view
         /// which triggers the model to be revalidated
