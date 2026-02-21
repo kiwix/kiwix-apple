@@ -39,7 +39,7 @@ struct Migration {
 struct MigrationService {
     let migrations: [Migration]
 
-    init(migrations: [Migration] = Migrations.all) {
+    init(migrations: [Migration] = Migrations.all()) {
         self.migrations = migrations
     }
 
