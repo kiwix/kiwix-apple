@@ -13,41 +13,33 @@
 // You should have received a copy of the GNU General Public License
 // along with Kiwix; If not, see https://www.gnu.org/licenses/.
 
-protocol Parser {
-    var zimFileIDs: Set<UUID> { get }
+extension OPDSParser {
+    
     @ZimActor
-    func parse(data: Data, urlHost: String) throws
-    func getMetaData(id: UUID, fetchFavicon: Bool) -> ZimFileMetaStruct?
-}
-
-extension OPDSParser: Parser {
-    var zimFileIDs: Set<UUID> {
-        __getZimFileIDs() as? Set<UUID> ?? Set<UUID>()
-    }
-
-    @ZimActor
-    func parse(data: Data, urlHost: String) throws {
+    func parse(data: Data, urlHost: String) async throws {
         if !self.__parseData(data, using: urlHost.removingSuffix("/")) {
             throw LibraryRefreshError.parse
         }
     }
-
+    
+    @ZimActor
+    func results() async -> Parsed {
+        let zimFileIDs = __getZimFileIDs() as? Set<UUID> ?? Set<UUID>()
+        
+        var dict: [UUID: ZimFileMetaStruct] = [:]
+        for uuid in zimFileIDs {
+            // for parsing the whole catalog
+            // we don't want to fetch the favicons
+            // as it takes forever by doing one after another
+            if let meta = getMetaData(id: uuid, fetchFavicon: false) {
+                dict[uuid] = meta
+            }
+        }
+        return Parsed(results: dict)
+    }
+    
+    @ZimActor
     func getMetaData(id: UUID, fetchFavicon: Bool) -> ZimFileMetaStruct? {
         ZimFileService.metaStruct(from: __getZimFileMetaData(id, fetchFavicon: fetchFavicon))
-    }
-}
-
-/// An empty Parser we can use to delete zim entries
-/// Based on the assumption we insert new ones, delete the ones not on the list
-/// Therefore an empty list will delete everything, using the same method
-/// @see: LibraryViewModel.process(parser: Parser)
-struct DeletingParser: Parser {
-    let zimFileIDs: Set<UUID> = .init()
-
-    func parse(data: Data, urlHost: String) throws {
-    }
-
-    func getMetaData(id: UUID, fetchFavicon: Bool) -> ZimFileMetaStruct? {
-        nil
     }
 }
