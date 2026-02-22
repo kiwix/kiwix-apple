@@ -19,18 +19,9 @@ import os
 struct Database {
     static let shared = Database()
     private let container: NSPersistentContainer
-    private let backgroundContext: NSManagedObjectContext
-    private let backgroundQueue = DispatchQueue(label: "database.background.queue",
-                                                qos: .utility)
 
     private init() {
         container = Self.createContainer()
-        backgroundContext = container.newBackgroundContext()
-        backgroundContext.persistentStoreCoordinator = container.persistentStoreCoordinator
-        backgroundContext.automaticallyMergesChangesFromParent = true
-        backgroundContext.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
-        backgroundContext.undoManager = nil
-        backgroundContext.shouldDeleteInaccessibleFaults = true
     }
 
     var viewContext: NSManagedObjectContext {
