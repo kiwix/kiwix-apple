@@ -79,7 +79,6 @@ struct OPDSParserTests {
         try await parser.parse(data: content.data(using: .utf8)!,
                                urlHost: responseTestURL.absoluteString)
         
-
         // check one zim file is populated
         let zimFileID = UUID(uuidString: "1ec90eab-5724-492b-9529-893959520de4")!
         #expect(Array(await parser.results().results.keys) == [zimFileID])
