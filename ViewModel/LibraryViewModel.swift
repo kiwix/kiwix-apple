@@ -260,6 +260,7 @@ total: \(totalCount, privacy: .public)
         return await parser.results()
     }
 
+    // swiftlint:disable:next function_body_length
     private func process(parsed: Parsed) async throws {
         let existingIds: [UUID] = await Database.shared.viewContext.perform {
             if let zimFiles = try? ZimFile.fetchRequest().execute() {
