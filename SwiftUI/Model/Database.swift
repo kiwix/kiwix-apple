@@ -37,14 +37,6 @@ struct Database {
         container.viewContext
     }
 
-    func performBackgroundTask(_ block: @escaping (NSManagedObjectContext) -> Void) {
-        backgroundQueue.sync { [self] in
-            backgroundContext.perform { [self] in
-                block(backgroundContext)
-            }
-        }
-    }
-
     /// A persistent container to set up the Core Data stack.
     private static func createContainer() -> NSPersistentContainer {
         let container = NSPersistentContainer(name: "DataModel")
