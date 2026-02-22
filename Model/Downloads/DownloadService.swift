@@ -59,9 +59,9 @@ final class DownloadService: NSObject, URLSessionTaskDelegate, URLSessionDownloa
         self.networkState = NetworkState()
         super.init()
     }
-
+    
     // MARK: - Heartbeat
-
+    
     /// Restart heartbeat if there are unfinished download task
     func restartHeartbeatIfNeeded() {
         session.getTasksWithCompletionHandler { [weak self] _, _, downloadTasks in
@@ -70,81 +70,82 @@ final class DownloadService: NSObject, URLSessionTaskDelegate, URLSessionDownloa
                 guard let taskDescription = task.taskDescription,
                       let zimFileID = UUID(uuidString: taskDescription) else { return }
                 Task { @MainActor [weak self] in
-                    self?.progress.updateFor(uuid: zimFileID, 
+                    self?.progress.updateFor(uuid: zimFileID,
                                              downloaded: task.countOfBytesReceived,
                                              total: task.countOfBytesExpectedToReceive)
                 }
             }
         }
     }
-
+    
     // MARK: - Download Actions
-
+    
     /// Start a zim file download task
     /// - Parameters:
     ///   - zimFile: the zim file to download
     ///   - allowsCellularAccess: if using cellular data is allowed
-    @MainActor func start(zimFileID: UUID, allowsCellularAccess: Bool) {
+    @MainActor func start(zimFileID: UUID, allowsCellularAccess: Bool) async {
         requestNotificationAuthorization()
-        Database.shared.performBackgroundTask { [self] context in
-            context.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
+        let downloadStruct = await Database.shared.viewContext.perform { () -> DownloadZimStruct? in
             let fetchRequest = ZimFile.fetchRequest(fileID: zimFileID)
-            guard let zimFile = try? context.fetch(fetchRequest).first,
+            guard let zimFile = try? fetchRequest.execute().first,
                   var url = zimFile.downloadURL else {
-                return
+                return nil
             }
+            let context = Database.shared.viewContext
             let downloadTask = DownloadTask(context: context)
             downloadTask.created = Date()
             downloadTask.fileID = zimFileID
             downloadTask.zimFile = zimFile
-            Task { @MainActor [weak context] in
-                try? context?.save()
-            }
-
+            try? context.save()
+            
             if url.lastPathComponent.hasSuffix(".meta4") {
                 url = url.deletingPathExtension()
             }
-            var urlRequest = URLRequest(url: url)
-            urlRequest.allowsCellularAccess = allowsCellularAccess
-            let task = self.session.downloadTask(with: urlRequest)
-            task.countOfBytesClientExpectsToReceive = zimFile.size
-            task.taskDescription = zimFileID.uuidString
-            
-            guard let destination = DownloadDestination.filePathFor(downloadURL: url) else {
-                let errorMessage = LocalString.download_service_error_option_directory
-                showAlert(.downloadErrorZIM(zimFileID: zimFileID, errorMessage: errorMessage))
-                task.cancel()
-                deleteDownloadTask(zimFileID: zimFileID)
-                return
-            }
-            
-            guard !FileManager.default.fileExists(atPath: destination.path()) else {
-                showQuestion(
-                    ActiveQuestion(
-                        text: questionText(destination: destination, zimFileName: zimFile.name),
-                        yes: LocalString.common_button_yes,
-                        cancel: LocalString.common_button_cancel,
-                        didConfirm: { [weak self] in
-                            self?.resumeTask(task, zimFileID: zimFileID)
-                        },
-                        didDismiss: { [weak self] in
-                            task.cancel()
-                            self?.deleteDownloadTask(zimFileID: zimFileID)
-                        }
-                    )
-                )
-                return
-            }
-
-            resumeTask(task, zimFileID: zimFileID)
+            return DownloadZimStruct(url: url, name: zimFile.name, size: zimFile.size)
         }
+        guard let downloadStruct else { return }
+        let url = downloadStruct.url
+        var urlRequest = URLRequest(url: url)
+        urlRequest.allowsCellularAccess = allowsCellularAccess
+        let task = self.session.downloadTask(with: urlRequest)
+        task.countOfBytesClientExpectsToReceive = downloadStruct.size
+        task.taskDescription = zimFileID.uuidString
+        
+        guard let destination = DownloadDestination.filePathFor(downloadURL: url) else {
+            let errorMessage = LocalString.download_service_error_option_directory
+            showAlert(.downloadErrorZIM(zimFileID: zimFileID, errorMessage: errorMessage))
+            task.cancel()
+            deleteDownloadTask(zimFileID: zimFileID)
+            return
+        }
+        
+        guard !FileManager.default.fileExists(atPath: destination.path()) else {
+            showQuestion(
+                ActiveQuestion(
+                    text: questionText(destination: destination, zimFileName: downloadStruct.name),
+                    yes: LocalString.common_button_yes,
+                    cancel: LocalString.common_button_cancel,
+                    didConfirm: { [weak self] in
+                        self?.resumeTask(task, zimFileID: zimFileID)
+                    },
+                    didDismiss: { [weak self] in
+                        task.cancel()
+                        self?.deleteDownloadTask(zimFileID: zimFileID)
+                    }
+                )
+            )
+            return
+        }
+        resumeTask(task, zimFileID: zimFileID)
+        
     }
     
     private func resumeTask(_ task: URLSessionDownloadTask, zimFileID: UUID) {
         Task { @MainActor [progress] in
             progress.updateFor(uuid: zimFileID,
-                                     downloaded: 0,
-                                     total: task.countOfBytesClientExpectsToReceive)
+                               downloaded: 0,
+                               total: task.countOfBytesClientExpectsToReceive)
             task.resume()
         }
     }
@@ -155,7 +156,7 @@ final class DownloadService: NSObject, URLSessionTaskDelegate, URLSessionDownloa
          LocalString.download_again_question_description_part_2(withArgs: zimFileName)
         ].joined(separator: "\n\n")
     }
-
+    
     /// Cancel a zim file download task
     /// - Parameter zimFileID: identifier of the zim file
     func cancel(zimFileID: UUID) {
@@ -166,7 +167,7 @@ final class DownloadService: NSObject, URLSessionTaskDelegate, URLSessionDownloa
             self.deleteDownloadTask(zimFileID: zimFileID)
         }
     }
-
+    
     /// Pause a zim file download task
     /// - Parameter zimFileID: identifier of the zim file
     func pause(zimFileID: UUID) {
@@ -179,41 +180,41 @@ final class DownloadService: NSObject, URLSessionTaskDelegate, URLSessionDownloa
             }
         }
     }
-
+    
     /// Resume a zim file download task and start heartbeat
     /// - Parameter zimFileID: identifier of the zim file
     @MainActor func resume(zimFileID: UUID) {
         requestNotificationAuthorization()
-
+        
         guard let resumeData = progress.resumeDataFor(uuid: zimFileID) else { return }
         progress.updateFor(uuid: zimFileID, withResumeData: nil)
-
+        
         Database.shared.performBackgroundTask { [self, resumeData] context in
             context.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
-
+            
             let request = DownloadTask.fetchRequest(fileID: zimFileID)
             guard let downloadTask = try? context.fetch(request).first else { return }
-
+            
             let task = self.session.downloadTask(withResumeData: resumeData)
             task.taskDescription = zimFileID.uuidString
             task.resume()
-
+            
             downloadTask.error = nil
             Task { @MainActor [weak context] in
                 try? context?.save()
             }
         }
     }
-
+    
     @MainActor
     func allowsCellularAccessFor(zimFileID: UUID) async -> Bool? {
         let (_, _, downloadTasks) = await session.tasks
         let task = downloadTasks.first(where: { $0.taskDescription == zimFileID.uuidString })
         return task?.originalRequest?.allowsCellularAccess
     }
-
+    
     // MARK: - Database
-
+    
     private func deleteDownloadTask(zimFileID: UUID) {
         Task { @MainActor [weak progress] in
             progress?.resetFor(uuid: zimFileID)
@@ -236,13 +237,13 @@ final class DownloadService: NSObject, URLSessionTaskDelegate, URLSessionDownloa
             }
         }
     }
-
+    
     // MARK: - Notification
-
+    
     @MainActor private func requestNotificationAuthorization() {
         UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound]) { _, _ in }
     }
-
+    
     private func scheduleDownloadCompleteNotification(zimFileID: UUID) {
         let center = UNUserNotificationCenter.current()
         center.getNotificationSettings { settings in
@@ -261,9 +262,9 @@ final class DownloadService: NSObject, URLSessionTaskDelegate, URLSessionDownloa
             }
         }
     }
-
+    
     // MARK: - URLSessionTaskDelegate
-        
+    
     // swiftlint:disable function_body_length
     /// This is called upon both successful and unsuccessful completion !
     /// "The only errors your delegate receives through the error parameter are client-side errors,
@@ -322,12 +323,12 @@ final class DownloadService: NSObject, URLSessionTaskDelegate, URLSessionDownloa
             // task.cancel { [progress] resumeData in
             return
         }
-
-       // Save the error description and resume data if there are new result data
+        
+        // Save the error description and resume data if there are new result data
         let resumeData = error.userInfo[NSURLSessionDownloadTaskResumeData] as? Data
         Task { @MainActor [progress] in
             progress.updateFor(uuid: zimFileID, withResumeData: resumeData)
-
+            
             Database.shared.performBackgroundTask { context in
                 context.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
                 let request = DownloadTask.fetchRequest(fileID: zimFileID)
@@ -349,14 +350,14 @@ final class DownloadService: NSObject, URLSessionTaskDelegate, URLSessionDownloa
                                     errorMessage: errorDesc))
     }
     // swiftlint:enable function_body_length
-
+    
     // MARK: - URLSessionDownloadDelegate
-
+    
     nonisolated func urlSession(_ session: URLSession,
-                    downloadTask: URLSessionDownloadTask,
-                    didWriteData bytesWritten: Int64,
-                    totalBytesWritten: Int64,
-                    totalBytesExpectedToWrite: Int64) {
+                                downloadTask: URLSessionDownloadTask,
+                                didWriteData bytesWritten: Int64,
+                                totalBytesWritten: Int64,
+                                totalBytesExpectedToWrite: Int64) {
         guard let taskDescription = downloadTask.taskDescription,
               let zimFileID = UUID(uuidString: taskDescription) else { return }
         Task { @MainActor [progress] in
@@ -379,11 +380,11 @@ final class DownloadService: NSObject, URLSessionTaskDelegate, URLSessionDownloa
             NotificationCenter.default.post(name: .question, object: nil, userInfo: ["question": question])
         }
     }
-
+    
     // swiftlint:disable:next function_body_length
     nonisolated func urlSession(_ session: URLSession,
-                    downloadTask: URLSessionDownloadTask,
-                    didFinishDownloadingTo location: URL) {
+                                downloadTask: URLSessionDownloadTask,
+                                didFinishDownloadingTo location: URL) {
         let taskId = downloadTask.taskDescription ?? ""
         guard let zimFileID = UUID(uuidString: taskId) else {
             Log.DownloadService.fault(
@@ -403,7 +404,7 @@ Response completed, but it is not an HTTPURLResponse URL: \(urlString, privacy: 
                                         errorMessage: errorMessage))
             return
         }
-
+        
         guard (200..<300).contains(httpResponse.statusCode) else {
             let statusCode = httpResponse.statusCode
             let url = httpResponse.url
@@ -419,7 +420,7 @@ Status code: \(statusCode, privacy: .public)
             return
         }
         guard let url = httpResponse.url,
-           var destination = DownloadDestination.filePathFor(downloadURL: url) else {
+              var destination = DownloadDestination.filePathFor(downloadURL: url) else {
             let errorMessage = LocalString.download_service_error_option_directory
             showAlert(.downloadErrorZIM(zimFileID: zimFileID,
                                         errorMessage: errorMessage))
