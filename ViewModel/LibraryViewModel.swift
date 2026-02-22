@@ -104,12 +104,13 @@ extension NSManagedObjectContext: DBObjectContext {
 
 // MARK: LibraryViewModel
 
+@MainActor
 final class LibraryViewModel: ObservableObject {
-    @MainActor @Published private(set) var error: Error?
+    @Published private(set) var error: Error?
     /// Note: due to multiple instances of LibraryViewModel,
     /// this `state` should not be changed directly, modify the `process.state` instead
-    @MainActor @Published var state: LibraryState
-    @MainActor private let process: LibraryProcess
+    @Published var state: LibraryState
+    private let process: LibraryProcess
     private var cancellables = Set<AnyCancellable>()
     private let defaults: Defaulting
     private let categories: CategoriesProtocol
@@ -121,7 +122,6 @@ final class LibraryViewModel: ObservableObject {
     
     private static let catalogURL = URL(string: "https://opds.library.kiwix.org/v2/entries?count=-1")!
 
-    @MainActor
     init(
         urlSession: URLSession = URLSession.shared,
         processFactory: @MainActor () -> LibraryProcess = { .shared },
@@ -140,7 +140,6 @@ final class LibraryViewModel: ObservableObject {
         }.store(in: &cancellables)
     }
 
-    @MainActor
     func start(isUserInitiated: Bool) async {
         guard process.state != .inProgress else { return }
         do {
