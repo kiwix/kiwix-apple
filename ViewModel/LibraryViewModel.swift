@@ -78,6 +78,7 @@ final class LibraryViewModel: ObservableObject {
         }.store(in: &cancellables)
     }
 
+    // swiftlint:disable:next function_body_length
     func start(isUserInitiated: Bool) async {
         guard process.state != .inProgress else { return }
         do {
