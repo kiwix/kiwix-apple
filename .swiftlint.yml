@@ -7,5 +7,6 @@ excluded:
   - UITests_iPhone
   - UITests_iPad
   - UITests_macOS
+  - Tests
 identifier_name:
   excluded: ["i", "k", "x", "y", "id"]
