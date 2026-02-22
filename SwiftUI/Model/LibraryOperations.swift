@@ -174,9 +174,7 @@ ZIM file cannot be opened: \(zimFile.name, privacy: .public) |\
             zimFile.isMissing = false
             zimFile.isIntegrityChecked = nil
             zimFile.tabs.forEach { context.delete($0) }
-            if context.hasChanges {
-                try? context.save()
-            }
+            try? context.save()
         }
         
         let tabIds: [NSManagedObjectID] = await Database.shared.viewContext.perform {
