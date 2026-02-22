@@ -27,7 +27,9 @@ extension ZimFileDetail {
         var body: some View {
             Group {
                 Action(title: LocalString.zim_file_download_task_action_title_cancel, isDestructive: true) {
-                    DownloadService.shared.cancel(zimFileID: downloadZimFile.fileID)
+                    Task {
+                        await DownloadService.shared.cancel(zimFileID: downloadZimFile.fileID)
+                    }
                     selection.reset()
                 }
                 if let error = downloadZimFile.downloadTask?.error {
