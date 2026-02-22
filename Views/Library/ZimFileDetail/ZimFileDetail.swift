@@ -302,8 +302,11 @@ struct ZimFileDetail: View {
             if let freeSpace = freeSpace, zimFile.size >= freeSpace - 10^9 {
                 isPresentingDownloadAlert = true
             } else {
-                DownloadService.shared.start(zimFileID: zimFile.fileID,
-                                             allowsCellularAccess: downloadUsingCellular)
+                let fileID = zimFile.fileID
+                Task {
+                    await DownloadService.shared.start(zimFileID: fileID,
+                                                       allowsCellularAccess: downloadUsingCellular)
+                }
             }
         }.alert(isPresented: $isPresentingDownloadAlert) {
             Alert(
@@ -316,10 +319,13 @@ struct ZimFileDetail: View {
                     }
                 }()),
                 primaryButton: .default(Text(LocalString.zim_file_action_download_button_anyway)) {
-                    DownloadService.shared.start(
-                        zimFileID: zimFile.fileID,
-                        allowsCellularAccess: downloadUsingCellular
-                    )
+                    let fileID = zimFile.fileID
+                    Task {
+                        await DownloadService.shared.start(
+                                zimFileID: fileID,
+                                allowsCellularAccess: downloadUsingCellular
+                        )
+                    }
                 },
                 secondaryButton: .cancel()
             )
