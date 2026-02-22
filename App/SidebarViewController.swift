@@ -19,6 +19,7 @@ import SwiftUI
 import UIKit
 
 final class SidebarViewController: UICollectionViewController, NSFetchedResultsControllerDelegate {
+    // swiftlint:disable closure_parameter_position
     private lazy var dataSource = {
         let cellRegistration = UICollectionView.CellRegistration<UICollectionViewListCell, MenuItem> {
             [unowned self] cell, indexPath, item in
@@ -38,6 +39,7 @@ final class SidebarViewController: UICollectionViewController, NSFetchedResultsC
         }
         return dataSource
     }()
+    // swiftlint:enable closure_parameter_position
     private let fetchedResultController = NSFetchedResultsController(
         fetchRequest: Tab.fetchRequest(
             predicate: Tab.Predicate.notMissing(),
@@ -114,22 +116,18 @@ final class SidebarViewController: UICollectionViewController, NSFetchedResultsC
                 navigationViewModel?.createTab()
             },
             menu: UIMenu(children: [
-                UIAction(
-                    title: LocalString.sidebar_view_navigation_button_close,
-                    image: UIImage(systemName: "xmark.square"),
-                    attributes: .destructive
-                ) { [unowned self] _ in
+                UIAction(title: LocalString.sidebar_view_navigation_button_close,
+                         image: UIImage(systemName: "xmark.square"),
+                         attributes: .destructive) { [unowned self] _ in
                     guard let navigationViewModel,
                           case let .tab(tabID) = navigationViewModel.currentItem else { return }
                     Task { [weak navigationViewModel] in
                         await navigationViewModel?.deleteTab(tabID: tabID)
                     }
                 },
-                UIAction(
-                    title: LocalString.sidebar_view_navigation_button_close_all,
-                    image: UIImage(systemName: "xmark.square.fill"),
-                    attributes: .destructive
-                ) { [unowned self] _ in
+                UIAction(title: LocalString.sidebar_view_navigation_button_close_all,
+                         image: UIImage(systemName: "xmark.square.fill"),
+                         attributes: .destructive) { [unowned self] _ in
                     Task { [weak navigationViewModel] in
                         await navigationViewModel?.deleteAllTabs()
                     }
