@@ -51,7 +51,7 @@ final class NavigationViewModel: ObservableObject {
 
     // MARK: - Tab Management
 
-    static func makeTab(context: NSManagedObjectContext) -> Tab {
+    nonisolated static func makeTab(context: NSManagedObjectContext) -> Tab {
         let tab = Tab(context: context)
         tab.created = Date()
         tab.lastOpened = Date()
@@ -131,14 +131,15 @@ final class NavigationViewModel: ObservableObject {
     /// Delete a single tab, and select another tab
     /// Note: do not use in a loop to delete more than 1 tab
     /// - Parameter tabID: ID of the tab to delete
-    func deleteTab(tabID: NSManagedObjectID) {
+    func deleteTab(tabID: NSManagedObjectID) async {
         let currentItemValue = currentItem
-        Database.shared.performBackgroundTask { context in
+        let newTabId: NSManagedObjectID? = await Database.shared.viewContext.perform {
+            let context = Database.shared.viewContext
             let sortByCreation = [NSSortDescriptor(key: "created", ascending: false)]
             guard let tabs: [Tab] = try? context.fetch(Tab.fetchRequest(predicate: Tab.Predicate.notMissing(),
                                                                         sortDescriptors: sortByCreation)),
                   let tab: Tab = tabs.first(where: { $0.objectID == tabID }) else {
-                return
+                return nil
             }
             let newlySelectedTab: Tab?
             if case let .tab(selectedTabID) = currentItemValue, selectedTabID == tabID {
@@ -150,22 +151,19 @@ final class NavigationViewModel: ObservableObject {
             } else {
                 newlySelectedTab = nil // the current selection should remain
             }
-            
-            // destroy the BrowserViewModel
-            BrowserViewModel.destroyTabById(id: tabID)
-
             // delete tab
             context.delete(tab)
             try? context.save()
+            
+            return newlySelectedTab?.objectID
+        }
+            
+        // destroy the BrowserViewModel
+        BrowserViewModel.destroyTabById(id: tabID)
 
-            // update selection if needed
-            if let newlySelectedTab {
-                Task {
-                    await MainActor.run {
-                        self.currentItem = NavigationItem.tab(objectID: newlySelectedTab.objectID)
-                    }
-                }
-            }
+        // update selection if needed
+        if let newTabId {
+            currentItem = NavigationItem.tab(objectID: newTabId)
         }
     }
 
