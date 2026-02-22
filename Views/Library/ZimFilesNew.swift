@@ -46,7 +46,12 @@ private final class ViewModel: ObservableObject {
         }
     }
     
-    @MainActor
+    func forceRefreshWith(searchText: String, languageCodes: Set<String>) async {
+        self.searchText = searchText
+        self.languageCodes = languageCodes
+        await update()
+    }
+    
     func update() async {
         let searchText = self.searchText
         let languageCodes = self.languageCodes
@@ -128,12 +133,9 @@ struct ZimFilesNew: View {
         .modifier(ToolbarRoleBrowser())
         .navigationTitle(MenuItem.new.name)
         .searchable(text: $searchText, prompt: LocalString.common_search)
-        .onAppear {
-            viewModel.update(searchText: searchText)
-            viewModel.update(languageCodes: languageCodes)
-            Task {
-                await library.start(isUserInitiated: false)
-            }
+        .task {
+            await viewModel.forceRefreshWith(searchText: searchText, languageCodes: languageCodes)
+            await library.start(isUserInitiated: false)
         }
         .onChange(of: searchText) { _, newSearchText in
             viewModel.update(searchText: newSearchText)
