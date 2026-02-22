@@ -92,14 +92,12 @@ final class DownloadSessionDelegate: NSObject, URLSessionDownloadDelegate {
         Task { @MainActor [progress] in
             progress.updateFor(uuid: zimFileID, withResumeData: resumeData)
             
-            Database.shared.performBackgroundTask { context in
-                context.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
+            await Database.shared.viewContext.perform {
                 let request = DownloadTask.fetchRequest(fileID: zimFileID)
-                guard let downloadTask = try? context.fetch(request).first else { return }
+                guard let downloadTask = try? request.execute().first else { return }
                 downloadTask.error = error.localizedDescription
-                Task { @MainActor [weak context] in
-                    try? context?.save()
-                }
+                let context = Database.shared.viewContext
+                try? context.save()
             }
         }
         let fileId = zimFileID.uuidString
@@ -234,22 +232,30 @@ due to: \(error.localizedDescription, privacy: .public)
     
     // MARK: - Notification
     
-    private func scheduleDownloadCompleteNotification(zimFileID: UUID) {
-        let center = UNUserNotificationCenter.current()
-        center.getNotificationSettings { settings in
-            guard settings.authorizationStatus != .denied else { return }
-            Database.shared.performBackgroundTask { context in
-                // configure notification content
-                let content = UNMutableNotificationContent()
-                content.title = LocalString.download_service_complete_title
-                content.sound = .default
-                if let zimFile = try? context.fetch(ZimFile.fetchRequest(fileID: zimFileID)).first {
-                    content.body = LocalString.download_service_complete_description(withArgs: zimFile.name)
-                }
-                // schedule notification
-                let request = UNNotificationRequest(identifier: zimFileID.uuidString, content: content, trigger: nil)
-                UNUserNotificationCenter.current().add(request)
+    private func scheduleDownloadCompleteNotification(zimFileID: UUID) async {
+        let center = UserNotifications.UNUserNotificationCenter.current()
+        let settings = await center.notificationSettings()
+        guard settings.authorizationStatus != .denied else { return }
+         
+        let zimFileName: String? = await Database.shared.viewContext.perform {
+            if let zimFile = try? ZimFile.fetchRequest(fileID: zimFileID).execute().first {
+                return zimFile.name
+            } else {
+                return nil
             }
         }
+        
+        // configure notification content
+        let content = UNMutableNotificationContent()
+        content.title = LocalString.download_service_complete_title
+        content.sound = .default
+        if let zimFileName {
+            content.body = LocalString.download_service_complete_description(withArgs: zimFileName)
+        }
+        // schedule notification
+        let request = UNNotificationRequest(identifier: zimFileID.uuidString,
+                                            content: content,
+                                            trigger: nil)
+        try? await center.add(request)
     }
 }

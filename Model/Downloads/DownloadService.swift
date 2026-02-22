@@ -172,26 +172,24 @@ final class DownloadService {
     
     /// Resume a zim file download task and start heartbeat
     /// - Parameter zimFileID: identifier of the zim file
-    func resume(zimFileID: UUID) {
+    func resume(zimFileID: UUID) async {
         requestNotificationAuthorization()
         
         guard let resumeData = progress.resumeDataFor(uuid: zimFileID) else { return }
         progress.updateFor(uuid: zimFileID, withResumeData: nil)
         
-        Database.shared.performBackgroundTask { [self, resumeData] context in
-            context.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
-            
+        await Database.shared.viewContext.perform { [resumeData] in
             let request = DownloadTask.fetchRequest(fileID: zimFileID)
-            guard let downloadTask = try? context.fetch(request).first else { return }
+            guard let downloadTask = try? request.execute().first else { return }
             
             let task = self.session.downloadTask(withResumeData: resumeData)
             task.taskDescription = zimFileID.uuidString
             task.resume()
             
             downloadTask.error = nil
-            Task { @MainActor [weak context] in
-                try? context?.save()
-            }
+            
+            let context = Database.shared.viewContext
+            try? context.save()
         }
     }
     
