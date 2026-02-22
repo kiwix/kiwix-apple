@@ -23,7 +23,30 @@ extension OPDSParser {
     }
     
     @ZimActor
+    func parseMeasure(data: Data, urlHost: String) throws {
+        if !self.__parseData(data, using: urlHost.removingSuffix("/")) {
+            throw LibraryRefreshError.parse
+        }
+    }
+    
+    @ZimActor
     func results() async -> Parsed {
+        let zimFileIDs = __getZimFileIDs() as? Set<UUID> ?? Set<UUID>()
+        
+        var dict: [UUID: ZimFileMetaStruct] = [:]
+        for uuid in zimFileIDs {
+            // for parsing the whole catalog
+            // we don't want to fetch the favicons
+            // as it takes forever by doing one after another
+            if let meta = getMetaData(id: uuid, fetchFavicon: false) {
+                dict[uuid] = meta
+            }
+        }
+        return Parsed(results: dict)
+    }
+    
+    @ZimActor
+    func resultsMeasure() -> Parsed {
         let zimFileIDs = __getZimFileIDs() as? Set<UUID> ?? Set<UUID>()
         
         var dict: [UUID: ZimFileMetaStruct] = [:]
