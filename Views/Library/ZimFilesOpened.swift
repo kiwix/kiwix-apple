@@ -18,15 +18,6 @@ import UniformTypeIdentifiers
 
 #if os(iOS)
 
-final class NavigationHelper {
-    weak var navigationController: UINavigationController?
-    @MainActor
-    func push<V: View>(@ViewBuilder _ view: () -> V) {
-        let hostingVC = UIHostingController(rootView: view())
-        navigationController?.pushViewController(hostingVC, animated: true)
-    }
-}
-
 /// A grid of zim files that are opened, or was open but is now missing
 /// iOS only, only iPad splitView
 /// the UINavigationController used in splitView doesn't work with
@@ -42,7 +33,6 @@ struct ZimFilesOpened: View {
     ) private var zimFiles: FetchedResults<ZimFile>
     @State private var isFileImporterPresented = false
     @EnvironmentObject var selection: SelectedZimFileViewModel
-    let navigationHelper: NavigationHelper
     private let selectFileById = NotificationCenter.default.publisher(for: .selectFile)
     @State private var fileIdToOpen: UUID?
 
@@ -93,13 +83,6 @@ struct ZimFilesOpened: View {
                 selection.reset()
             }
         }
-        .onReceive(selection.$selectedZimFile, perform: { selectedZimFile in
-            if let selectedZimFile {
-                navigationHelper.push {
-                    ZimFileDetail(zimFile: selectedZimFile, dismissParent: nil)
-                }
-            }
-        })
         // not using OpenFileButton here, because it does not work on iOS/iPadOS 15 when this view is in a modal
         .fileImporter(
             isPresented: $isFileImporterPresented,
