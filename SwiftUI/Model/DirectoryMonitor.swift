@@ -42,13 +42,13 @@ actor DirectoryMonitor {
             queue: queue
         )
         
-        source?.setEventHandler(handler: {
-            self.directoryContentDidChange()
+        source?.setEventHandler(handler: { [weak self] in
+            Task { [weak self] in await self?.directoryContentDidChange() }
         })
-        source?.setCancelHandler(handler: {
-            close(self.descriptor)
-            self.descriptor = -1
-            self.source = nil
+        source?.setCancelHandler(handler: { [weak self] in
+            Task { [weak self] in
+                await self?.cancel()
+            }
         })
         source?.resume()
     }
@@ -56,6 +56,12 @@ actor DirectoryMonitor {
     func stop() {
         guard let source = source else { return }
         source.cancel()
+    }
+    
+    private func cancel() {
+        close(descriptor)
+        descriptor = -1
+        source = nil
     }
     
     // MARK: - Custom Methods
