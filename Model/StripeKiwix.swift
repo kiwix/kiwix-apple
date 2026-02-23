@@ -14,7 +14,7 @@
 // along with Kiwix; If not, see https://www.gnu.org/licenses/.
 
 import Foundation
-import PassKit
+@preconcurrency import PassKit
 import os
 
 struct StripeKiwix {
@@ -41,8 +41,10 @@ struct StripeKiwix {
         return json.publishableKey
     }
 
-    @MainActor
-    func clientSecretForPayment(selectedAmount: SelectedAmount) async -> Result<String, Error> {
+    nonisolated static func clientSecretForPayment(
+        endPoint: URL,
+        selectedAmount: SelectedAmount
+    ) async -> Result<String, Error> {
         do {
             // for monthly we should create a setup-intent:
             // see: https://github.com/kiwix/kiwix-apple/issues/1032

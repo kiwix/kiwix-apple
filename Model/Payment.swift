@@ -14,10 +14,10 @@
 // along with Kiwix; If not, see https://www.gnu.org/licenses/.
 
 import Foundation
-import PassKit
+@preconcurrency import PassKit
 import SwiftUI
 import Combine
-import StripeApplePay
+@preconcurrency import StripeApplePay
 import os
 
 /// Payment processing based on:
@@ -211,10 +211,11 @@ struct Payment {
                 // we should update the return path for confirmations
                 // see: https://github.com/kiwix/kiwix-apple/issues/1032
                 let stripe = StripeApplePaySimple()
+                let endPoint = paymentServer.endPoint
                 let result = await stripe.complete(payment: payment,
                                                    returnURLPath: nil,
-                                                   usingClientSecretProvider: {
-                    await paymentServer.clientSecretForPayment(selectedAmount: selectedAmount)
+                                                   usingClientSecretProvider: { @Sendable in
+                    await StripeKiwix.clientSecretForPayment(endPoint: endPoint, selectedAmount: selectedAmount)
                 })
                 // calling any UI refreshing state / subject from here
                 // will block the UI in the payment state forever
