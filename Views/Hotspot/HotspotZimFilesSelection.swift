@@ -120,10 +120,12 @@ struct HotspotZimFilesSelection: View {
                 } label: {
                     Text(hotspot.buttonTitle)
                         .bold()
+                    #if os(macOS)
+                        .padding(selection.selectedZimFiles.count == 0 ? .horizontal : .trailing)
+                    #endif
                 }
 #if os(macOS)
                 .buttonStyle(.borderless)
-
 #endif
                 .disabled(selection.selectedZimFiles.isEmpty && !hotspot.state.isStarted)
                 .modifier(BadgeModifier(count: selection.selectedZimFiles.count))
