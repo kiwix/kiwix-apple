@@ -137,10 +137,19 @@
     }
 }
 
++ (NSDateFormatter *) dateFormatter {
+    static NSDateFormatter *sharedFormatter = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        sharedFormatter = [[NSDateFormatter alloc] init];
+        sharedFormatter.dateFormat = @"yyyy-MM-dd";
+        sharedFormatter.timeZone = [NSTimeZone timeZoneWithAbbreviation:@"UTC"];
+    });
+    return sharedFormatter;
+}
+
 - (NSDate *)getCreationDateFromBook:(kiwix::Book *)book {
-    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-    formatter.dateFormat = @"yyyy-MM-dd";
-    formatter.timeZone = [NSTimeZone timeZoneWithAbbreviation:@"UTC"];
+    NSDateFormatter *formatter = [ZimFileMetaData dateFormatter];
     return [formatter dateFromString:[NSString stringWithUTF8String:book->getDate().c_str()]];
 }
 
