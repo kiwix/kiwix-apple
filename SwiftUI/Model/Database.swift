@@ -16,33 +16,16 @@
 import CoreData
 import os
 
-final class Database {
+struct Database {
     static let shared = Database()
     private let container: NSPersistentContainer
-    private let backgroundContext: NSManagedObjectContext
-    private let backgroundQueue = DispatchQueue(label: "database.background.queue",
-                                                qos: .utility)
 
     private init() {
         container = Self.createContainer()
-        backgroundContext = container.newBackgroundContext()
-        backgroundContext.persistentStoreCoordinator = container.persistentStoreCoordinator
-        backgroundContext.automaticallyMergesChangesFromParent = true
-        backgroundContext.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
-        backgroundContext.undoManager = nil
-        backgroundContext.shouldDeleteInaccessibleFaults = true
     }
 
     var viewContext: NSManagedObjectContext {
         container.viewContext
-    }
-
-    func performBackgroundTask(_ block: @escaping (NSManagedObjectContext) -> Void) {
-        backgroundQueue.sync { [self] in
-            backgroundContext.perform { [self] in
-                block(backgroundContext)
-            }
-        }
     }
 
     /// A persistent container to set up the Core Data stack.
@@ -68,7 +51,7 @@ final class Database {
         container.viewContext.automaticallyMergesChangesFromParent = true
         container.viewContext.name = "viewContext"
         /// - Tag: viewContextMergePolicy
-        container.viewContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
+        container.viewContext.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
         container.viewContext.undoManager = nil
         container.viewContext.shouldDeleteInaccessibleFaults = true
         return container

@@ -13,21 +13,17 @@
 // You should have received a copy of the GNU General Public License
 // along with Kiwix; If not, see https://www.gnu.org/licenses/.
 
-#if os(macOS)
 import Foundation
-import UserNotifications
-import AppKit
 
-final class NotificationCenterDelegate: NSObject, UNUserNotificationCenterDelegate {
-    /// Handling file download complete notification
-    func userNotificationCenter(_ center: UNUserNotificationCenter,
-                                didReceive response: UNNotificationResponse) async {
-        if let zimFileID = UUID(uuidString: response.notification.request.identifier),
-           let mainPageURL = await ZimFileService.shared.getMainPageURL(zimFileID: zimFileID) {
-            await MainActor.run {
-                _ = NSWorkspace.shared.open(mainPageURL)
-            }
-        }
+/// Sendable data that is comming out of the OPDSParser
+struct Parsed {
+    let results: [UUID: ZimFileMetaStruct]
+    
+    /// An empty result we can use to delete zim entries
+    /// Based on the assumption we insert new ones, delete the ones not on the list
+    /// Therefore an empty list will delete everything, using the same method
+    /// @see: LibraryViewModel.process(parsed: Parsed)
+    static func deletingResult() -> Parsed {
+        Parsed(results: [:])
     }
 }
-#endif

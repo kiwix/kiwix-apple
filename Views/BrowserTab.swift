@@ -146,12 +146,14 @@ struct BrowserTab: View {
             view
 #endif
         }
-        .onAppear { [weak browser] in
-            browser?.updateLastOpened()
+        .task { [weak browser] in
+            await browser?.updateLastOpened()
         }
         .onDisappear { [weak browser] in
             browser?.pauseVideoWhenNotInPIP()
-            browser?.persistState()
+            Task { [weak browser] in
+                await browser?.persistState()
+            }
         }
     }
 
@@ -162,7 +164,7 @@ struct BrowserTab: View {
         @EnvironmentObject private var navigation: NavigationViewModel
         @FetchRequest(
             sortDescriptors: [NSSortDescriptor(keyPath: \ZimFile.size, ascending: false)],
-            predicate: ZimFile.openedPredicate
+            predicate: ZimFile.openedPredicate()
         ) private var zimFiles: FetchedResults<ZimFile>
         /// this is still hacky a bit, as the change from here re-validates the view
         /// which triggers the model to be revalidated

@@ -190,7 +190,9 @@ struct RootView: View {
             let browser = BrowserViewModel.getCached(tabID: tabID)
             // tab closed by user
             browser.pauseVideoWhenNotInPIP()
-            navigation.deleteTab(tabID: tabID)
+            Task { [weak navigation] in
+                await navigation?.deleteTab(tabID: tabID)
+            }
         }
         .onReceive(keepOnlyTabs) {notification in
             guard let tabsToKeep = notification.userInfo?["tabIds"] as? Set<NSManagedObjectID> else {
@@ -221,7 +223,7 @@ struct RootView: View {
                 DownloadService.shared.restartHeartbeatIfNeeded()
             case let .custom(zimFileURL):
                 await LibraryOperations.open(url: zimFileURL)
-                ZimMigration.forCustomApps()
+                await ZimMigration.forCustomApps()
                 currentNavItem = .tab(objectID: navigation.currentTabId)
             }
             // MARK: - payment button init

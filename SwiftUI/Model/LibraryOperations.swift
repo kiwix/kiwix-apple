@@ -29,34 +29,33 @@ struct LibraryOperations {
     /// Open a zim file with url
     /// - Parameter url: url of the zim file
     @discardableResult
-    static func open(url: URL) async -> ZimFileMetaData? {
+    static func open(url: URL) async -> ZimFileMetaStruct? {
         guard let fileURLBookmark = await ZimFileService.getFileURLBookmarkData(for: url),
-                let metadata = await ZimFileService.getMetaData(url: url) else { return nil }
+                let metastruct = await ZimFileService.getMetaData(url: url) else { return nil }
 
         // revalidate the file
         do {
-            try await ZimFileService.shared.revalidate(fileURLBookmark: fileURLBookmark, for: metadata.fileID)
+            try await ZimFileService.shared.revalidate(fileURLBookmark: fileURLBookmark, for: metastruct.fileID)
         } catch {
             return nil
         }
 
         // upsert zim file in the database
-        Database.shared.performBackgroundTask { context in
-            context.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
-            let predicate = NSPredicate(format: "fileID == %@", metadata.fileID as CVarArg)
+        await Database.shared.viewContext.perform {
+            let predicate = NSPredicate(format: "fileID == %@", metastruct.fileID as CVarArg)
             let fetchRequest = ZimFile.fetchRequest(predicate: predicate)
-            guard let zimFile = try? context.fetch(fetchRequest).first ?? ZimFile(context: context) else { return }
-            LibraryOperations.configureZimFile(zimFile, metadata: metadata)
+            let context = Database.shared.viewContext
+            guard let zimFile = try? fetchRequest.execute().first ?? ZimFile(context: context) else {
+                return
+            }
+            LibraryOperations.configureZimFile(zimFile, metadata: metastruct)
             zimFile.fileURLBookmark = fileURLBookmark
             zimFile.isMissing = false
-            Task {
-                await MainActor.run {
-                    if context.hasChanges { try? context.save() }
-                }
+            if context.hasChanges {
+                try? context.save()
             }
         }
-
-        return metadata
+        return metastruct
     }
 
     /// Revalidate ZIM files from url bookmark data
@@ -65,7 +64,7 @@ struct LibraryOperations {
     static func reValidate() async {
         var successCount = 0
         let context = Database.shared.viewContext
-        let request = ZimFile.fetchRequest(predicate: ZimFile.Predicate.isDownloaded)
+        let request = ZimFile.fetchRequest(predicate: ZimFile.Predicate.isDownloaded())
 
         guard let zimFiles = try? context.fetch(request) else {
             return
@@ -128,8 +127,8 @@ ZIM file cannot be opened: \(zimFile.name, privacy: .public) |\
     // MARK: - Configure
 
     /// Configure a zim file object based on its metadata.
-    static func configureZimFile(_ zimFile: ZimFile, metadata: ZimFileMetaData) {
-        zimFile.articleCount = metadata.articleCount.int64Value
+    nonisolated static func configureZimFile(_ zimFile: ZimFile, metadata: ZimFileMetaStruct) {
+        zimFile.articleCount = metadata.articleCount
         zimFile.category = (Category(rawValue: metadata.category) ?? .other).rawValue
         zimFile.created = metadata.creationDate
         zimFile.fileDescription = metadata.fileDescription
@@ -139,11 +138,11 @@ ZIM file cannot be opened: \(zimFile.name, privacy: .public) |\
         zimFile.hasPictures = metadata.hasPictures
         zimFile.hasVideos = metadata.hasVideos
         zimFile.languageCode = metadata.languageCodes
-        zimFile.mediaCount = metadata.mediaCount.int64Value
+        zimFile.mediaCount = metadata.mediaCount
         zimFile.name = metadata.title
         zimFile.persistentID = metadata.groupIdentifier
         zimFile.requiresServiceWorkers = metadata.requiresServiceWorkers
-        zimFile.size = metadata.size.int64Value
+        zimFile.size = metadata.size
 
         // Overwrite these, only if there are new values
         if let faviconURL = metadata.faviconURL { zimFile.faviconURL = faviconURL }
@@ -155,47 +154,60 @@ ZIM file cannot be opened: \(zimFile.name, privacy: .public) |\
 
     /// Unlink a zim file from library, delete associated bookmarks, and delete the file.
     /// - Parameter zimFile: the zim file to delete
-    @ZimActor static func delete(zimFileID: UUID) {
+    @ZimActor static func delete(zimFileID: UUID) async {
         guard let url = ZimFileService.shared.getFileURL(zimFileID: zimFileID) else { return }
         defer { try? FileManager.default.removeItem(at: url) }
-        LibraryOperations.unlink(zimFileID: zimFileID)
+        await LibraryOperations.unlink(zimFileID: zimFileID)
     }
 
     /// Unlink a zim file from library, delete associated bookmarks, but don't delete the file.
     /// - Parameter zimFile: the zim file to unlink
-    @ZimActor static func unlink(zimFileID: UUID) {
+    @ZimActor static func unlink(zimFileID: UUID) async {
         ZimFileService.shared.close(fileID: zimFileID)
-        Database.shared.performBackgroundTask { context in
-            context.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
-            guard let zimFile = try? ZimFile.fetchRequest(fileID: zimFileID).execute().first else { return }
+        await Database.shared.viewContext.perform {
+            guard let zimFile = try? ZimFile.fetchRequest(fileID: zimFileID).execute().first else {
+                return
+            }
+            let context = Database.shared.viewContext
             zimFile.bookmarks.forEach { context.delete($0) }
             zimFile.fileURLBookmark = nil
             zimFile.isMissing = false
             zimFile.isIntegrityChecked = nil
             zimFile.tabs.forEach { context.delete($0) }
-
-            if let tabs = try? Tab.fetchRequest().execute() {
-                let tabIds = tabs.map { $0.objectID }
-                // clear out all the browserViewModels of tabs no longer in use
-                BrowserViewModel.keepOnlyTabsByIds(Set(tabIds))
-
-                #if os(iOS)
-                // make sure we won't end up without any tabs
-                if tabs.count == 0 {
-                    let tab = Tab(context: context)
-                    tab.created = Date()
-                    tab.lastOpened = Date()
-                    try? context.obtainPermanentIDs(for: [tab])
-                }
-                #else
-                if context.hasChanges { try? context.save() }
-                Task { @MainActor in
-                    NotificationCenter.keepOnlyTabs(Set(tabIds))
-                }
-                #endif
-            }
-            if context.hasChanges { try? context.save() }
+            try? context.save()
         }
+        
+        let tabIds: [NSManagedObjectID] = await Database.shared.viewContext.perform {
+            let tabIdsRequest = NSFetchRequest<NSManagedObjectID>(entityName: "Tab")
+            tabIdsRequest.resultType = .managedObjectIDResultType
+            do {
+                let tabIds = try tabIdsRequest.execute()
+                return tabIds
+            } catch {
+                return []
+            }
+        }
+        
+        // clear out all the browserViewModels of tabs no longer in use
+        BrowserViewModel.keepOnlyTabsByIds(Set(tabIds))
+
+        #if os(iOS)
+        // make sure we won't end up without any tabs
+        if tabIds.count == 0 {
+            await Database.shared.viewContext.perform {
+                let context = Database.shared.viewContext
+                let tab = Tab(context: context)
+                tab.created = Date()
+                tab.lastOpened = Date()
+                try? context.obtainPermanentIDs(for: [tab])
+                try? context.save()
+            }
+        }
+        #else
+        await MainActor.run {
+            NotificationCenter.keepOnlyTabs(Set(tabIds))
+        }
+        #endif
     }
 
     // MARK: - Backup

@@ -45,7 +45,7 @@ enum WelcomeViewState: Equatable {
     case complete
 }
 
-protocol LaunchProtocol: ObservableObject {
+@MainActor protocol LaunchProtocol: ObservableObject {
     var state: LaunchSequence { get }
     func updateWith(hasZimFiles: Bool, hasSeenCategories: Bool)
 }
@@ -54,7 +54,7 @@ protocol LaunchProtocol: ObservableObject {
 
 /// Keeps us int the .loadingData state,
 /// while the main page is not fully loaded for the first time
-final class NoCatalogLaunchViewModel: LaunchViewModelBase {
+@MainActor final class NoCatalogLaunchViewModel: LaunchViewModelBase {
 
     private static var wasLoaded = false
 
@@ -89,7 +89,7 @@ final class NoCatalogLaunchViewModel: LaunchViewModelBase {
 }
 
 // MARK: With Catalog Library
-final class CatalogLaunchViewModel: LaunchViewModelBase {
+@MainActor final class CatalogLaunchViewModel: LaunchViewModelBase {
 
     private var hasZIMFiles = PassthroughSubject<Bool, Never>()
     private var hasSeenCategoriesOnce = PassthroughSubject<Bool, Never>()
@@ -157,7 +157,7 @@ final class CatalogLaunchViewModel: LaunchViewModelBase {
     }
 }
 
-class LaunchViewModelBase: LaunchProtocol, ObservableObject {
+@MainActor class LaunchViewModelBase: LaunchProtocol, ObservableObject {
     var state: LaunchSequence = .loadingData
     var cancellables = Set<AnyCancellable>()
 

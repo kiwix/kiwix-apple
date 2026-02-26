@@ -102,14 +102,19 @@ final class SplitViewController: UISplitViewController {
         ) { [weak self] notification in
             guard let url = notification.userInfo?["url"] as? URL else { return }
             let inNewTab = notification.userInfo?["inNewTab"] as? Bool ?? false
+            let deepLinkId: UUID?
+            if case .deepLink(.some(let linkID)) = notification.userInfo?["context"] as? OpenURLContext {
+                deepLinkId = linkID
+            } else {
+                deepLinkId = nil
+            }
             Task { @MainActor [weak self] in
                 if !inNewTab, case let .tab(tabID) = self?.navigationViewModel.currentItem {
                     BrowserViewModel.getCached(tabID: tabID).load(url: url)
                 } else if let tabID = self?.navigationViewModel.createTab() {
                     BrowserViewModel.getCached(tabID: tabID).load(url: url)
                 }
-                if let context = notification.userInfo?["context"] as? OpenURLContext,
-                   case .deepLink(.some(let deepLinkId)) = context {
+                if let deepLinkId {
                     DeepLinkService.shared.stopFor(uuid: deepLinkId)
                 }
             }
@@ -190,13 +195,8 @@ final class SplitViewController: UISplitViewController {
             }()
             setViewController(UINavigationController(rootViewController: controller), for: .secondary)
         case .opened:
-            // workaround for programatic triggering ZimFileDetails
-            // on iPad full screen view
-            let navHelper = NavigationHelper()
-            let controller = UIHostingController(rootView: ZimFilesOpened(navigationHelper: navHelper))
-            let navController = UINavigationController(rootViewController: controller)
-            navHelper.navigationController = navController
-            setViewController(navController, for: .secondary)
+            let controller = UIHostingController(rootView: ZimFilesOpened())
+            setViewController(UINavigationController(rootViewController: controller), for: .secondary)
         case .categories:
             let controller = UIHostingController(rootView: ZimFilesCategories(dismiss: nil))
             setViewController(UINavigationController(rootViewController: controller), for: .secondary)

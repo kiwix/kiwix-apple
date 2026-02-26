@@ -16,6 +16,7 @@
 import SwiftUI
 import Defaults
 
+@MainActor
 private final class ViewModel: ObservableObject {
     
     @Published private(set) var zimFiles: [ZimFile] = []
@@ -45,27 +46,31 @@ private final class ViewModel: ObservableObject {
         }
     }
     
-    @MainActor
+    func forceRefreshWith(searchText: String, languageCodes: Set<String>) async {
+        self.searchText = searchText
+        self.languageCodes = languageCodes
+        await update()
+    }
+    
     func update() async {
         let searchText = self.searchText
         let languageCodes = self.languageCodes
-        let newZimFiles: [ZimFile] = await withCheckedContinuation { continuation in
-            Database.shared.performBackgroundTask { context in
-                let predicate: NSPredicate = Self.buildPredicate(
-                    searchText: searchText,
-                    languageCodes: languageCodes
-                )
-                if let results = try? context.fetch(
-                    ZimFile.fetchRequest(
-                        predicate: predicate,
-                        sortDescriptors: self.sortDescriptors
-                    )
-                ) {
-                    continuation.resume(returning: results)
-                } else {
-                    continuation.resume(returning: [])
-                }
-            }
+        
+        let newZimFiles: [ZimFile]
+        let predicate: NSPredicate = Self.buildPredicate(
+            searchText: searchText,
+            languageCodes: languageCodes
+        )
+        let context = Database.shared.viewContext
+        if let results = try? context.fetch(
+            ZimFile.fetchRequest(
+                predicate: predicate,
+                sortDescriptors: self.sortDescriptors
+            )
+        ) {
+            newZimFiles = results
+        } else {
+            newZimFiles = []
         }
         withAnimation(.easeInOut) {
             self.zimFiles = newZimFiles
@@ -128,10 +133,9 @@ struct ZimFilesNew: View {
         .modifier(ToolbarRoleBrowser())
         .navigationTitle(MenuItem.new.name)
         .searchable(text: $searchText, prompt: LocalString.common_search)
-        .onAppear {
-            viewModel.update(searchText: searchText)
-            viewModel.update(languageCodes: languageCodes)
-            library.start(isUserInitiated: false)
+        .task {
+            await viewModel.forceRefreshWith(searchText: searchText, languageCodes: languageCodes)
+            await library.start(isUserInitiated: false)
         }
         .onChange(of: searchText) { _, newSearchText in
             viewModel.update(searchText: newSearchText)
@@ -160,7 +164,9 @@ struct ZimFilesNew: View {
                     #endif
                 } else {
                     Button {
-                        library.start(isUserInitiated: true)
+                        Task { [weak library] in
+                            await library?.start(isUserInitiated: true)
+                        }
                     } label: {
                         Label(LocalString.zim_file_new_button_refresh,
                               systemImage: "arrow.triangle.2.circlepath.circle")

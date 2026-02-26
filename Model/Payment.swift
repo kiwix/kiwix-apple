@@ -14,10 +14,10 @@
 // along with Kiwix; If not, see https://www.gnu.org/licenses/.
 
 import Foundation
-import PassKit
+@preconcurrency import PassKit
 import SwiftUI
 import Combine
-import StripeApplePay
+@preconcurrency import StripeApplePay
 import os
 
 /// Payment processing based on:
@@ -122,19 +122,25 @@ struct Payment {
     /// - Returns: Setup button if no cards added yet,
     /// nil if Apple Pay is not supported
     /// or donation button, if all is OK
-    static func paymentButtonType() -> PayWithApplePayButtonLabel? {
+    static private func paymentButtonType() -> ApplePaymentLabelType? {
         // only kiwix app is supporting donations atm.
         guard case .kiwix = AppType.current else { return nil }
         
         if PKPaymentAuthorizationController.canMakePayments() {
-            return PayWithApplePayButtonLabel.donate
+            return ApplePaymentLabelType.donate
         }
         if PKPaymentAuthorizationController.canMakePayments(
             usingNetworks: Payment.supportedNetworks,
             capabilities: Payment.capabilities) {
-            return PayWithApplePayButtonLabel.setUp
+            return ApplePaymentLabelType.setUp
         }
         return nil
+    }
+    
+    /// Sendable version of PayWithApplePayButtonLabel
+    private enum ApplePaymentLabelType: Sendable {
+        case donate
+        case setUp
     }
     
     /// Async version of ``paymentButtonType()`` with low priority
@@ -142,13 +148,18 @@ struct Payment {
     /// nil if Apple Pay is not supported
     /// or donation button, if all is OK
     static func paymentButtonTypeAsync() async -> PayWithApplePayButtonLabel? {
-        let task = Task<PayWithApplePayButtonLabel?, Never>(priority: .low) {
+        let task = Task<ApplePaymentLabelType?, Never>(priority: .low) {
             Self.paymentButtonType()
         }
         guard let buttonLabel = await task.result.get() else {
             return nil
         }
-        return buttonLabel
+        switch buttonLabel {
+        case .donate:
+            return PayWithApplePayButtonLabel.donate
+        case .setUp:
+            return PayWithApplePayButtonLabel.setUp
+        }
     }
 
     func donationRequest(for selectedAmount: SelectedAmount) -> PKPaymentRequest {
@@ -188,8 +199,7 @@ struct Payment {
             Log.Payment.info("onPaymentAuthPhase: .didAuthorize")
             // call our server to get payment / setup intent and return the client.secret
             Task { @MainActor [resultHandler] in
-                let paymentServer = StripeKiwix(endPoint: Self.kiwixPaymentServer,
-                                                payment: payment)
+                let paymentServer = StripeKiwix(endPoint: Self.kiwixPaymentServer)
                 do {
                     let publicKey = try await paymentServer.publishableKey()
                     StripeAPI.defaultPublishableKey = publicKey
@@ -201,10 +211,11 @@ struct Payment {
                 // we should update the return path for confirmations
                 // see: https://github.com/kiwix/kiwix-apple/issues/1032
                 let stripe = StripeApplePaySimple()
+                let endPoint = paymentServer.endPoint
                 let result = await stripe.complete(payment: payment,
                                                    returnURLPath: nil,
-                                                   usingClientSecretProvider: {
-                    await paymentServer.clientSecretForPayment(selectedAmount: selectedAmount)
+                                                   usingClientSecretProvider: { @Sendable in
+                    await StripeKiwix.clientSecretForPayment(endPoint: endPoint, selectedAmount: selectedAmount)
                 })
                 // calling any UI refreshing state / subject from here
                 // will block the UI in the payment state forever
@@ -228,11 +239,10 @@ struct Payment {
         }
     }
 
+    @MainActor
     func onMerchantSessionUpdate() async -> PKPaymentRequestMerchantSessionUpdate {
         guard let session = await StripeKiwix.stripeSession(endPoint: Self.kiwixPaymentServer) else {
-            await MainActor.run {
-                Self.finalResult = .error
-            }
+            Self.finalResult = .error
             return .init(status: .failure, merchantSession: nil)
         }
         return .init(status: .success, merchantSession: session)

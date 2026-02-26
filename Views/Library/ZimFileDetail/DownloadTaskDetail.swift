@@ -27,13 +27,17 @@ extension ZimFileDetail {
         var body: some View {
             Group {
                 Action(title: LocalString.zim_file_download_task_action_title_cancel, isDestructive: true) {
-                    DownloadService.shared.cancel(zimFileID: downloadZimFile.fileID)
+                    Task {
+                        await DownloadService.shared.cancel(zimFileID: downloadZimFile.fileID)
+                    }
                     selection.reset()
                 }
                 if let error = downloadZimFile.downloadTask?.error {
                     if downloadState.resumeData != nil {
                         Action(title: LocalString.zim_file_download_task_action_try_recover) {
-                            DownloadService.shared.resume(zimFileID: downloadZimFile.fileID)
+                            Task {
+                                await DownloadService.shared.resume(zimFileID: downloadZimFile.fileID)
+                            }
                         }
                     }
                     Attribute(title: LocalString.zim_file_download_task_action_failed, detail: detail)
@@ -46,7 +50,9 @@ extension ZimFileDetail {
                         }.disabled(downloadNetworkState != .online) // make sure cannot be paused mid-state
                     } else {
                         Action(title: LocalString.zim_file_download_task_action_resume) {
-                            DownloadService.shared.resume(zimFileID: downloadZimFile.fileID)
+                            Task {
+                                await DownloadService.shared.resume(zimFileID: downloadZimFile.fileID)
+                            }
                         }.disabled(downloadNetworkState != .online)
                     }
                     

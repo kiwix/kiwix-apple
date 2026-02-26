@@ -104,9 +104,10 @@ private enum Const {
     ]
 }
 
+@MainActor
 final class DiagnosticsModel: ObservableObject {
     
-    @MainActor @Published
+    @Published
     var items: [DiagnosticItem] = Const.defaultItems
     
     private var integrityModel = ZimIntegrityModel()
@@ -122,22 +123,22 @@ final class DiagnosticsModel: ObservableObject {
     }
     
     func start(using zimFiles: [ZimFile]) async -> [String] {
-        await updateItemBy(id: .listOfZimFiles, status: .complete(true))
-        await updateItemBy(id: .integrityCheck, status: .inProgress)
+        updateItemBy(id: .listOfZimFiles, status: .complete(true))
+        updateItemBy(id: .integrityCheck, status: .inProgress)
         cancellable = integrityModel.$checks.sink(receiveValue: { [weak self] (infos: [ZimIntegrityModel.Info]) in
             self?.didReceive(checkInfos: infos)
         })
         
         await integrityModel.check(zimFiles: zimFiles)
         guard !Task.isCancelled else { return [] }
-        await updateItemBy(id: .applicationLogs, status: .inProgress)
+        updateItemBy(id: .applicationLogs, status: .inProgress)
         guard !Task.isCancelled else { return [] }
         let entries = await Diagnostics.entriesSeparated()
         guard !Task.isCancelled else { return [] }
-        await updateItemBy(id: .applicationLogs, status: .complete(true))
-        await updateItemBy(id: .languageSettings, status: .complete(true))
-        await updateItemBy(id: .deviceDetails, status: .complete(true))
-        await updateItemBy(id: .fileSystemDetails, status: .complete(true))
+        updateItemBy(id: .applicationLogs, status: .complete(true))
+        updateItemBy(id: .languageSettings, status: .complete(true))
+        updateItemBy(id: .deviceDetails, status: .complete(true))
+        updateItemBy(id: .fileSystemDetails, status: .complete(true))
         return entries
     }
     
@@ -195,10 +196,8 @@ final class DiagnosticsModel: ObservableObject {
 
 enum Diagnostics {
     
-    private static let byteCountFormatter = ByteCountFormatter()
-    
     /// Log the os and app related infos
-    static func start() {
+    @MainActor static func start() async {
         Log.Environment.notice("app: \(appVersion(), privacy: .public)")
         Log.Environment.notice("os: \(osName(), privacy: .public)")
         Log.Environment.notice("free space: \(freeSpace(), privacy: .public)")
@@ -210,7 +209,7 @@ enum Diagnostics {
 #if os(macOS)
         guard !Task.isCancelled else { return [] }
         MacUser.name()
-        MacUser.isUserAdmin()
+        await MacUser.isUserAdmin()
 #endif
         guard !Task.isCancelled else { return [] }
         Log.Environment.notice("ProcessInfo.environment:\n\(processInfoEnvironment(), privacy: .public)")
@@ -252,6 +251,7 @@ enum Diagnostics {
         return "\(bundleIdentifier): \(releaseVersion) (\(buildNumber))"
     }
     
+    @MainActor
     private static func osName() -> String {
         let deviceType = Device.current.rawValue
         let osVersion = ProcessInfo.processInfo.operatingSystemVersionString
@@ -288,6 +288,6 @@ enum Diagnostics {
         guard let freeSpace else {
             return "unknown"
         }
-        return byteCountFormatter.string(fromByteCount: freeSpace)
+        return ByteCountFormatter().string(fromByteCount: freeSpace)
     }
 }

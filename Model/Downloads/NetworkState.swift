@@ -55,8 +55,8 @@ enum OnlineState {
     case online
 }
 
+@MainActor
 final class NetworkState: ObservableObject {
-    @MainActor
     @Published
     var onlineState: OnlineState = .online
     

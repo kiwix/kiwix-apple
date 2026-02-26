@@ -19,7 +19,7 @@ struct ArticleShortcutButtons: View {
     @Environment(\.dismissSearch) private var dismissSearch
     @FetchRequest(
         sortDescriptors: [NSSortDescriptor(keyPath: \ZimFile.size, ascending: false)],
-        predicate: ZimFile.openedPredicate
+        predicate: ZimFile.openedPredicate()
     ) private var zimFiles: FetchedResults<ZimFile>
 
     let displayMode: DisplayMode = Brand.hideRandomButton ? .mainArticle : .mainAndRandomArticle

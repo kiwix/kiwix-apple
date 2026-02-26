@@ -31,8 +31,8 @@ struct Kiwix: App {
     private let fileMonitor: DirectoryMonitor
     
     init() {
-        Diagnostics.start()
         Task { @MainActor in
+            await Diagnostics.start()
             await WebContentBlocker.compilePolicy()
         }
         fileMonitor = DirectoryMonitor(url: URL.documentDirectory) { LibraryOperations.scanDirectory($0) }
@@ -92,7 +92,7 @@ struct Kiwix: App {
                 .task {
                     switch AppType.current {
                     case .kiwix:
-                        fileMonitor.start()
+                        await fileMonitor.start()
                         await LibraryOperations.reValidate()
                         if !DeepLinkService.shared.isRunning() {
                             navigation.navigateToMostRecentTab()
@@ -102,7 +102,7 @@ struct Kiwix: App {
                         DownloadService.shared.restartHeartbeatIfNeeded()
                     case let .custom(zimFileURL):
                         await LibraryOperations.open(url: zimFileURL)
-                        ZimMigration.forCustomApps()
+                        await ZimMigration.forCustomApps()
                         navigation.navigateToMostRecentTab()
                     }
                 }
@@ -125,13 +125,13 @@ struct Kiwix: App {
         }
     }
 
-    private class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCenterDelegate {
+    private class AppDelegate: NSObject, UIApplicationDelegate, @MainActor UNUserNotificationCenterDelegate {
         
         /// Storing background download completion handler sent to application delegate
         func application(_ application: UIApplication,
                          handleEventsForBackgroundURLSession identifier: String,
                          completionHandler: @escaping () -> Void) {
-            DownloadService.shared.backgroundCompletionHandler = completionHandler
+            DownloadService.shared.sessionDelegate.backgroundCompletionHandler = completionHandler
         }
 
         /// Handling file download complete notification
@@ -158,7 +158,7 @@ private struct RootView: UIViewControllerRepresentable {
     @EnvironmentObject private var navigation: NavigationViewModel
     @FetchRequest(
         sortDescriptors: [NSSortDescriptor(keyPath: \ZimFile.size, ascending: false)],
-        predicate: ZimFile.openedPredicate,
+        predicate: ZimFile.openedPredicate(),
         animation: .easeInOut
     ) private var zimFiles: FetchedResults<ZimFile>
 

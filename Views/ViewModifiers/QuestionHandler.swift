@@ -15,6 +15,7 @@
 
 import SwiftUI
 
+@MainActor
 struct ActiveQuestion {
     let text: String
     let yes: String

@@ -71,8 +71,8 @@ struct Library: View {
                 .tag(tabItem)
                 .tabItem { Label(tabItem.name, systemImage: tabItem.icon) }
             }
-        }.onAppear {
-            viewModel.start(isUserInitiated: false)
+        }.task {
+            await viewModel.start(isUserInitiated: false)
         }.onDisappear {
             hasSeenCategories = true
         }.onReceive(navigation.showDownloads) { _ in

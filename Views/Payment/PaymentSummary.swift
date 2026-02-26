@@ -24,6 +24,7 @@ struct PaymentSummary: View {
     private let selectedAmount: SelectedAmount
     private let payment: Payment
     private let onComplete: @MainActor () -> Void
+    @State private var paymentButtonLabel: PayWithApplePayButtonLabel?
 
     init(selectedAmount: SelectedAmount,
          onComplete: @escaping @MainActor () -> Void) {
@@ -45,9 +46,9 @@ struct PaymentSummary: View {
                     .padding()
             }
             Text(selectedAmount.value.formatted(.currency(code: selectedAmount.currency))).font(.title).bold()
-            if let buttonLabel = Payment.paymentButtonType() {
+            if let paymentButtonLabel {
                 PayWithApplePayButton(
-                    buttonLabel,
+                    paymentButtonLabel,
                     request: payment.donationRequest(for: selectedAmount),
                     onPaymentAuthorizationChange: { phase in
                         payment.onPaymentAuthPhase(selectedAmount: selectedAmount,
@@ -64,6 +65,9 @@ struct PaymentSummary: View {
             }
         }.onReceive(payment.completeSubject) {
             onComplete()
+        }
+        .task {
+            paymentButtonLabel = await Payment.paymentButtonTypeAsync()
         }
     }
 }

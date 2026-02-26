@@ -67,8 +67,34 @@ struct ZimFileService {
 
     // MARK: - Metadata
 
-    static func getMetaData(url: URL) -> ZimFileMetaData? {
-        ZimService.__getMetaData(withFileURL: url)
+    static func getMetaData(url: URL) -> ZimFileMetaStruct? {
+        metaStruct(from: ZimService.__getMetaData(withFileURL: url))
+    }
+    
+    nonisolated static func metaStruct(from metadata: ZimFileMetaData?) -> ZimFileMetaStruct? {
+        guard let metadata else { return nil }
+        return ZimFileMetaStruct(
+            fileID: metadata.fileID,
+            groupIdentifier: metadata.groupIdentifier,
+            title: metadata.title,
+            fileDescription: metadata.fileDescription,
+            languageCodes: metadata.languageCodes,
+            category: metadata.category,
+            creationDate: metadata.creationDate,
+            size: metadata.size.int64Value,
+            articleCount: metadata.articleCount.int64Value,
+            mediaCount: metadata.mediaCount.int64Value,
+            creator: metadata.creator,
+            publisher: metadata.publisher,
+            downloadURL: metadata.downloadURL,
+            faviconURL: metadata.faviconURL,
+            faviconData: metadata.faviconData,
+            flavor: metadata.flavor,
+            hasDetails: metadata.hasDetails,
+            hasPictures: metadata.hasPictures,
+            hasVideos: metadata.hasVideos,
+            requiresServiceWorkers: metadata.requiresServiceWorkers
+        )
     }
 
     // MARK: - URL System Bookmark
@@ -101,7 +127,9 @@ struct ZimFileService {
 
     func getRedirectedURL(url: URL) -> URL? {
         guard let zimFileID = url.zimFileID,
-              let redirectedPath = instance.__getRedirectedPath(zimFileID, contentPath: url.contentPath) else { return nil }
+              let redirectedPath = instance.__getRedirectedPath(zimFileID, contentPath: url.contentPath) else {
+            return nil
+        }
         return URL(zimFileID: zimFileID.uuidString, contentPath: redirectedPath)
     }
 

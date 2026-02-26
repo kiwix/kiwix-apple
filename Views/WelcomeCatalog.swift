@@ -85,7 +85,9 @@ struct WelcomeCatalog: View {
 
     private var fetchCatalogButton: some View {
         Button {
-            library.start(isUserInitiated: true)
+            Task { [weak library] in
+                await library?.start(isUserInitiated: true)
+            }
         } label: {
             HStack {
                 Spacer()

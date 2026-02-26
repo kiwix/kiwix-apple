@@ -28,7 +28,7 @@ final class CompactViewController: UIHostingController<AnyView>, UISearchControl
     private let searchViewModel: SearchViewModel
     private let searchController: UISearchController
     private var searchTextObserver: AnyCancellable?
-    private var openURLObserver: NSObjectProtocol?
+    private var openURLTask: Task<Void, Error>?
 
     private var trailingNavItemGroups: [UIBarButtonItemGroup] = []
     private var rightNavItem: UIBarButtonItem?
@@ -90,16 +90,17 @@ final class CompactViewController: UIHostingController<AnyView>, UISearchControl
             guard self?.searchController.searchBar.text != searchText else { return }
             self?.searchController.searchBar.text = searchText
         }
-        openURLObserver = NotificationCenter.default.addObserver(
-            forName: .openURL, object: nil, queue: nil
-        ) { [weak self] _ in
-            self?.searchController.isActive = false
-            self?.navigationItem.setRightBarButton(nil, animated: true)
+        openURLTask = Task { @MainActor [weak self]  in
+            for await _ in NotificationCenter.default.notifications(named: .openURL) {
+                self?.searchController.isActive = false
+                self?.navigationController?.navigationItem.setRightBarButton(nil, animated: true)
+            }
         }
     }
 
     deinit {
-        NotificationCenter.default.removeObserver(self)
+        openURLTask?.cancel()
+        openURLTask = nil
     }
 
     func willPresentSearchController(_ searchController: UISearchController) {
@@ -296,7 +297,7 @@ private struct Content<LaunchModel>: View where LaunchModel: LaunchProtocol {
     @EnvironmentObject private var navigation: NavigationViewModel
     @FetchRequest(
         sortDescriptors: [NSSortDescriptor(keyPath: \ZimFile.size, ascending: false)],
-        predicate: ZimFile.openedPredicate
+        predicate: ZimFile.openedPredicate()
     ) private var zimFiles: FetchedResults<ZimFile>
     
     /// this is still hacky a bit, as the change from here re-validates the view
@@ -338,13 +339,15 @@ private struct Content<LaunchModel>: View where LaunchModel: LaunchProtocol {
         .focusedSceneValue(\.canGoForward, browser.canGoForward)
         .focusedSceneValue(\.hasZIMFiles, zimFiles.isEmpty == false)
         .modifier(ExternalLinkHandler(externalURL: $browser.externalURL))
-        .onAppear { [weak browser] in
-            browser?.updateLastOpened()
+        .task { [weak browser] in
+            await browser?.updateLastOpened()
         }
         .onDisappear { [weak browser] in
             if tabID != nil {
                 browser?.pauseVideoWhenNotInPIP()
-                browser?.persistState()
+                Task { @MainActor [weak browser] in
+                    await browser?.persistState()
+                }
             }
         }
         .toolbar {

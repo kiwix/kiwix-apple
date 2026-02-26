@@ -23,14 +23,12 @@ import CoreKiwix
 
 // swiftlint:disable file_length
 // swiftlint:disable:next type_body_length
-final class BrowserViewModel: NSObject, ObservableObject,
+@MainActor final class BrowserViewModel: NSObject, ObservableObject,
                               WKNavigationDelegate, WKScriptMessageHandler, WKUIDelegate,
                               NSFetchedResultsControllerDelegate {
 
-    @MainActor
     private static var cache: OrderedCache<NSManagedObjectID, BrowserViewModel>?
 
-    @MainActor
     static func getCached(tabID: NSManagedObjectID) -> BrowserViewModel {
         if let cachedModel = cache?.findBy(key: tabID) {
             return cachedModel
@@ -274,32 +272,30 @@ final class BrowserViewModel: NSObject, ObservableObject,
     }
 
     @MainActor
-    func updateLastOpened() {
+    func updateLastOpened() async {
         let currentTabID = tabID
-        Task {
-            Database.shared.performBackgroundTask { context in
-                guard let tab = try? context.existingObject(with: currentTabID) as? Tab else {
-                    return
-                }
-                tab.lastOpened = Date()
-                try? context.save()
+        await Database.shared.viewContext.perform {
+            let context = Database.shared.viewContext
+            guard let tab = try? context.existingObject(with: currentTabID) as? Tab else {
+                return
             }
+            tab.lastOpened = Date()
+            try? context.save()
         }
     }
 
     @MainActor
-    func persistState() {
+    func persistState() async {
         let webData = webView.interactionState as? Data
         let currentTabID = tabID
-        Task {
-            Database.shared.performBackgroundTask { context in
-                guard let tab = try? context.existingObject(with: currentTabID) as? Tab else {
-                    return
-                }
-                tab.interactionState = webData
-                if context.hasChanges {
-                    try? context.save()
-                }
+        await Database.shared.viewContext.perform {
+            let context = Database.shared.viewContext
+            guard let tab = try? context.existingObject(with: currentTabID) as? Tab else {
+                return
+            }
+            tab.interactionState = webData
+            if context.hasChanges {
+                try? context.save()
             }
         }
     }
@@ -495,7 +491,7 @@ final class BrowserViewModel: NSObject, ObservableObject,
     func webView(
         _ webView: WKWebView,
         decidePolicyFor navigationResponse: WKNavigationResponse,
-        decisionHandler: @escaping (WKNavigationResponsePolicy) -> Void
+        decisionHandler: @MainActor @escaping (WKNavigationResponsePolicy) -> Void
     ) {
         canShowMimeType = navigationResponse.canShowMIMEType
         guard canShowMimeType else {
@@ -516,7 +512,7 @@ final class BrowserViewModel: NSObject, ObservableObject,
         }
         webView.adjustTextSize()
 #else
-        persistState()
+        Task { await persistState() }
 #endif
     }
 
@@ -599,18 +595,18 @@ final class BrowserViewModel: NSObject, ObservableObject,
 #endif
 
 #if os(iOS)
+    
     // swiftlint:disable:next function_body_length
     func webView(
         _ webView: WKWebView,
-        contextMenuConfigurationForElement elementInfo: WKContextMenuElementInfo,
-        completionHandler: @escaping (UIContextMenuConfiguration?) -> Void
-    ) {
-        guard let url = elementInfo.linkURL, url.isZIMURL else { completionHandler(nil); return }
+        contextMenuConfigurationFor elementInfo: WKContextMenuElementInfo
+    ) async -> UIContextMenuConfiguration? {
+        guard let url = elementInfo.linkURL, url.isZIMURL else { return nil }
         let configuration = UIContextMenuConfiguration(
             previewProvider: {
                 let webView = WKWebView(frame: .zero, configuration: WebViewConfiguration())
                 if !Bundle.main.isProduction {
-                        webView.isInspectable = true
+                    webView.isInspectable = true
                 }
                 webView.load(URLRequest(url: url))
                 return WebViewController(webView: webView)
@@ -618,13 +614,13 @@ final class BrowserViewModel: NSObject, ObservableObject,
             actionProvider: { [weak self] _ in
                 guard let self else { return UIMenu(children: []) }
                 var actions = [UIAction]()
-
+                
                 // open url
                 actions.append(
                     UIAction(title: LocalString.common_dialog_button_open,
                              image: UIImage(systemName: "doc.text")) { [weak self] _ in
                                  self?.webView.load(URLRequest(url: url))
-                    }
+                             }
                 )
                 actions.append(
                     UIAction(title: LocalString.common_dialog_button_open_in_new_tab,
@@ -632,15 +628,15 @@ final class BrowserViewModel: NSObject, ObservableObject,
                                  Task { @MainActor in
                                      NotificationCenter.openURL(url, inNewTab: true)
                                  }
-                    }
+                             }
                 )
-
+                
                 // bookmark
                 let bookmarkAction: UIAction = { [weak self] in
                     let context = Database.shared.viewContext
                     let predicate = NSPredicate(format: "articleURL == %@", url as CVarArg)
                     let request = Bookmark.fetchRequest(predicate: predicate)
-
+                    
                     if let bookmarks = try? context.fetch(request),
                        !bookmarks.isEmpty {
                         return UIAction(title: LocalString.common_dialog_button_remove_bookmark,
@@ -657,19 +653,22 @@ final class BrowserViewModel: NSObject, ObservableObject,
                     }
                 }()
                 actions.append(bookmarkAction)
-
+                
                 return UIMenu(children: actions)
             }
         )
-        completionHandler(configuration)
+        return configuration
     }
 #endif
 
     // MARK: - Bookmark
 
-    func controller(_: NSFetchedResultsController<NSFetchRequestResult>,
-                    didChangeContentWith snapshot: NSDiffableDataSourceSnapshotReference) {
-        articleBookmarked = !snapshot.itemIdentifiers.isEmpty
+    nonisolated func controller(_: NSFetchedResultsController<NSFetchRequestResult>,
+                                didChangeContentWith snapshot: NSDiffableDataSourceSnapshotReference) {
+        let isEmpty: Bool = snapshot.itemIdentifiers.isEmpty
+        Task { @MainActor in
+            articleBookmarked = !isEmpty
+        }
     }
 
     @MainActor 
@@ -679,7 +678,8 @@ final class BrowserViewModel: NSObject, ObservableObject,
         let title = webView.title
         Task {
             guard let metaData = await ZimFileService.shared.getContentMetaData(url: url) else { return }
-            Database.shared.performBackgroundTask { context in
+            await Database.shared.viewContext.perform {
+                let context = Database.shared.viewContext
                 let bookmark = Bookmark(context: context)
                 bookmark.articleURL = url
                 bookmark.created = Date()
@@ -694,11 +694,14 @@ final class BrowserViewModel: NSObject, ObservableObject,
 
     func deleteBookmark(url: URL? = nil) {
         guard let url = url ?? webView.url else { return }
-        Database.shared.performBackgroundTask { context in
-            let request = Bookmark.fetchRequest(predicate: NSPredicate(format: "articleURL == %@", url as CVarArg))
-            guard let bookmark = try? context.fetch(request).first else { return }
-            context.delete(bookmark)
-            try? context.save()
+        Task {
+            await Database.shared.viewContext.perform {
+                let context = Database.shared.viewContext
+                let request = Bookmark.fetchRequest(predicate: NSPredicate(format: "articleURL == %@", url as CVarArg))
+                guard let bookmark = try? context.fetch(request).first else { return }
+                context.delete(bookmark)
+                try? context.save()
+            }
         }
     }
 

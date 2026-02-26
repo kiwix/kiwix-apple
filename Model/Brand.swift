@@ -47,7 +47,7 @@ enum Brand {
     static let appName: String = Config.value(for: .displayName) ?? "Kiwix"
     static let appStoreId: String = Config.value(for: .appStoreID) ?? "id997079563"
     static let loadingLogoImage: String = "welcomeLogo"
-    static var loadingLogoSize: CGSize = ImageInfo.sizeOf(imageName: loadingLogoImage)!
+    static let loadingLogoSize: CGSize = ImageInfo.sizeOf(imageName: loadingLogoImage)!
     static let hideFindInPage: Bool = Config.value(for: .hideFindInPage) ?? false
     static let hidePrintButton: Bool = Config.value(for: .hidePrintButton) ?? false
     static let hideRandomButton: Bool = Config.value(for: .hideRandomButton) ?? false

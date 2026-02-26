@@ -19,7 +19,9 @@ enum Migrations {
     
     /// A central place for all migrations
     /// they will be executed in the order specified here
-    static let all: [Migration] = [
-        Self.schemeToZIM(using: Database.shared.viewContext)
-    ]
+    static func all() -> [Migration] {
+        [
+            Self.schemeToZIM(using: Database.shared.viewContext)
+        ]
+    }
 }

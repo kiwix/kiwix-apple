@@ -13,40 +13,37 @@
 // You should have received a copy of the GNU General Public License
 // along with Kiwix; If not, see https://www.gnu.org/licenses/.
 
-import XCTest
+import Testing
 @testable import Kiwix
 
-final class OPDSParserTests: XCTestCase {
-    /// Test OPDSParser.parse throws error when OPDS data is invalid.
-    @ZimActor
-    func testInvalidOPDSData() {
+struct OPDSParserTests {
+    
+    @Test("OPDSParser.parse throws error when OPDS data is invalid.")
+    func invalidOPDSData() async throws {
         let content = "Invalid OPDS Data"
-        XCTAssertThrowsError(
-            try OPDSParser().parse(data: content.data(using: .utf8)!, urlHost: "")
-        )
-    }
-
-    @ZimActor
-    func testNonCompatibleDataWithUT8() throws {
-        let content = "any data"
-        let incompatibleEncodings: [String.Encoding] = [.unicode, .utf16, .utf32]
-        try incompatibleEncodings.forEach { encoding in
-            XCTAssertThrowsError(
-                try OPDSParser().parse(data: content.data(using: encoding)!, urlHost: ""),
-                "parsing with enconding \(encoding.description) should fail"
-            )
+        await #expect(throws: LibraryRefreshError.self) {
+            try await OPDSParser().parse(data: content.data(using: .utf8)!, urlHost: "")
         }
     }
 
-    /// Test OPDSParser.getMetaData returns nil when no metadata available with the given ID.
-    func testMetadataNotFound() {
-        let zimFileID = UUID(uuidString: "1ec90eab-5724-492b-9529-893959520de4")!
-        XCTAssertNil(OPDSParser().getMetaData(id: zimFileID, fetchFavicon: false))
+    @Test(arguments: [String.Encoding.unicode, .utf16, .utf32])
+    func nonCompatibleDataWithUT8(encoding: String.Encoding) async throws {
+        let content = "any data"
+        await #expect(throws: LibraryRefreshError.self) {
+            try await OPDSParser().parse(data: content.data(using: encoding)!, urlHost: "")
+        }
     }
 
-    /// Test OPDSParser can parse and extract zim file metadata.
-    @ZimActor
-    func test() throws {
+    @Test("OPDSParser.getMetaData returns nil when no metadata available with the given ID")
+    func metadataNotFound() async throws {
+        let zimFileID = UUID(uuidString: "1ec90eab-5724-492b-9529-893959520de4")!
+        let meta = await OPDSParser().getMetaData(id: zimFileID, fetchFavicon: false)
+        #expect(meta == nil)
+    }
+
+    
+    @Test("OPDSParser can parse and extract zim file metadata.")
+    @ZimActor func parseAndExtract() async throws {
         let content = """
         <feed xmlns="http://www.w3.org/2005/Atom"
               xmlns:dc="http://purl.org/dc/terms/"
@@ -79,45 +76,41 @@ final class OPDSParserTests: XCTestCase {
         // Parse data
         let responseTestURL = URL(string: "https://resp-test.org/")!
         let parser = OPDSParser()
-        XCTAssertNoThrow(
-            try parser.parse(
-                data: content.data(using: .utf8)!,
-                urlHost: responseTestURL.absoluteString
-            )
-        )
-
+        try await parser.parse(data: content.data(using: .utf8)!,
+                               urlHost: responseTestURL.absoluteString)
+        
         // check one zim file is populated
         let zimFileID = UUID(uuidString: "1ec90eab-5724-492b-9529-893959520de4")!
-        XCTAssertEqual(parser.zimFileIDs, Set([zimFileID]))
+        #expect(Array(await parser.results().results.keys) == [zimFileID])
 
         // check zim file metadata
-        let metadata = try XCTUnwrap(parser.getMetaData(id: zimFileID, fetchFavicon: false))
-        XCTAssertEqual(metadata.fileID, zimFileID)
-        XCTAssertEqual(metadata.groupIdentifier, "wikipedia_en_top")
-        XCTAssertEqual(metadata.title, "Best of Wikipedia")
-        XCTAssertEqual(metadata.fileDescription, "A selection of the best 50,000 Wikipedia articles")
+        let metadata = try #require(parser.getMetaData(id: zimFileID, fetchFavicon: false))
+        #expect(metadata.fileID == zimFileID)
+        #expect(metadata.groupIdentifier == "wikipedia_en_top")
+        #expect(metadata.title == "Best of Wikipedia")
+        #expect(metadata.fileDescription == "A selection of the best 50,000 Wikipedia articles")
         // !important make sure the language code is put into the DB as a 3 letter string
-        XCTAssertEqual(metadata.languageCodes, "eng")
-        XCTAssertEqual(metadata.category, "wikipedia")
-        XCTAssertEqual(metadata.creationDate, try! Date("2023-01-07T00:00:00Z", strategy: .iso8601))
-        XCTAssertEqual(metadata.size, 6515656704)
-        XCTAssertEqual(metadata.articleCount, 50001)
-        XCTAssertEqual(metadata.mediaCount, 566835)
-        XCTAssertEqual(metadata.creator, "Wikipedia")
-        XCTAssertEqual(metadata.publisher, "Kiwix")
-        XCTAssertEqual(metadata.hasDetails, true)
-        XCTAssertEqual(metadata.hasPictures, true)
-        XCTAssertEqual(metadata.hasVideos, false)
-        XCTAssertEqual(metadata.requiresServiceWorkers, false)
+        #expect(metadata.languageCodes == "eng")
+        #expect(metadata.category == "wikipedia")
+        #expect(metadata.creationDate == (try! Date("2023-01-07T00:00:00Z", strategy: .iso8601)))
+        #expect(metadata.size == 6515656704)
+        #expect(metadata.articleCount == 50001)
+        #expect(metadata.mediaCount == 566835)
+        #expect(metadata.creator == "Wikipedia")
+        #expect(metadata.publisher == "Kiwix")
+        #expect(metadata.hasDetails == true)
+        #expect(metadata.hasPictures == true)
+        #expect(metadata.hasVideos == false)
+        #expect(metadata.requiresServiceWorkers == false)
 
-        XCTAssertEqual(
-            metadata.downloadURL,
+        #expect(
+            metadata.downloadURL ==
             URL(string: "https://download.kiwix.org/zim/wikipedia/wikipedia_en_top_maxi_2023-01.zim.meta4")
         )
-        XCTAssertEqual(
-            metadata.faviconURL,
+        #expect(
+            metadata.faviconURL ==
             URL(string: "https://resp-test.org/catalog/v2/illustration/1ec90eab-5724-492b-9529-893959520de4/")
         )
-        XCTAssertEqual(metadata.flavor, "maxi")
+        #expect(metadata.flavor == "maxi")
     }
 }

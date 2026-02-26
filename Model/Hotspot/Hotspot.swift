@@ -17,9 +17,10 @@ import Foundation
 import Defaults
 import SwiftUI
 
+@MainActor
 final class Hotspot {
     
-    enum State: Equatable {
+    enum State: Equatable, Sendable {
         case started(zimFileIds: Set<UUID>)
         case stopped
         case error(title: String, description: String)
@@ -28,15 +29,18 @@ final class Hotspot {
     @MainActor
     static let shared = Hotspot()
     
-    static let minPort = 1
+    nonisolated static let minPort = 1
     nonisolated static let defaultPort = 80
-    static let maxPort = 65535
+    nonisolated static let maxPort = 65535
     
     @MainActor
     @Published var state: State = .stopped
     
     @ZimActor
     private let hotspot = KiwixHotspot()
+    
+    nonisolated init() {
+    }
 
     @ZimActor
     func startWith(zimFileIds: Set<UUID>, updating: Bool = true) async {
@@ -95,8 +99,9 @@ final class Hotspot {
         #endif
     }
     
+    @ZimActor
     func serverAddress() async -> URL? {
-        guard let address = await self.hotspot.__address() else {
+        guard let address = hotspot.__address() else {
             return nil
         }
         return URL(string: address)
