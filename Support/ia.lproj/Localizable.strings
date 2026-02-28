@@ -70,6 +70,7 @@
 "download_task_cell.status.downloading" = "Discargamento…";
 "download_task_cell.status.paused" = "Pausate";
 "download_task_cell.status.paused.device_offline" = "In pausa (le apparato es foras de linea)";
+"download_task_cell.status.paused.waiting_for_wifi" = "In pausa (attendente WiFi)";
 "download_again.question.title" = "Tu dispone ja de iste file.";
 "download_again.question.description_part_1" = "Sembla que %@ ha ja essite discargate.";
 "download_again.question.description_part_2" = "Vole tu totevia discargar “%@”? Tu file existente non essera delite.";
@@ -239,7 +240,7 @@
 "enum.external_link_loading_policy.always_load" = "Sempre cargar";
 "enum.external_link_loading_policy.never_load" = "Nunquam cargar";
 "enum.flavor.max" = "max";
-"enum.flavor.no_pic" = "necun imagine";
+"enum.flavor.no_pic" = "sin imagines";
 "enum.flavor.mini" = "mini";
 "enum.library_language_sorting_model.a-z" = "A-Z";
 "enum.library_language_sorting_model.by_count" = "Per numero";
