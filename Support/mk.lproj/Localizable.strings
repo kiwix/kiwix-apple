@@ -158,7 +158,6 @@
 "reading_settings.search_snippet.title" = "Пребарај го исечокот";
 "reading_settings.tab.reading" = "Читање";
 "library_settings.catalog.title" = "Каталог";
-"library_settings.downloads.title" = "Преземања";
 "library_settings.button.refresh_now" = "Поднови сега";
 "library_settings.last_refresh.text" = "Последна поднова";
 "library_settings.auto_refresh.toggle" = "Автоподнова";

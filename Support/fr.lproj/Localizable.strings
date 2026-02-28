@@ -175,7 +175,6 @@
 "reading_settings.search_snippet.title" = "Extrait de recherche";
 "reading_settings.tab.reading" = "Lecture";
 "library_settings.catalog.title" = "Catalogue";
-"library_settings.downloads.title" = "Téléchargements";
 "library_settings.button.refresh_now" = "Rafraîchir maintenant";
 "library_settings.last_refresh.text" = "Dernière actualisation";
 "library_settings.auto_refresh.toggle" = "Actualisation automatique";

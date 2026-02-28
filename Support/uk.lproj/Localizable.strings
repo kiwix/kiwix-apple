@@ -130,7 +130,6 @@
 "reading_settings.search_snippet.title" = "Фрагмент пошуку";
 "reading_settings.tab.reading" = "Читання";
 "library_settings.catalog.title" = "Каталог";
-"library_settings.downloads.title" = "Завантаження";
 "library_settings.button.refresh_now" = "Оновити зараз";
 "library_settings.last_refresh.text" = "Останнє оновлення";
 "library_settings.auto_refresh.toggle" = "Автоматичне оновлення";

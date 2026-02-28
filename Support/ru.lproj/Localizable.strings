@@ -130,7 +130,6 @@
 "reading_settings.search_snippet.title" = "Фрагмент поиска";
 "reading_settings.tab.reading" = "Чтение";
 "library_settings.catalog.title" = "Каталог";
-"library_settings.downloads.title" = "Загрузки";
 "library_settings.button.refresh_now" = "Обновить сейчас";
 "library_settings.last_refresh.text" = "Последнее обновление";
 "library_settings.auto_refresh.toggle" = "Автообновление";

@@ -1,6 +1,5 @@
 // Messages for Simplified Chinese (中文（简体）)
 // Exported from translatewiki.net
-// Author: 0x48fe75df30
 // Author: Cyanjiang
 // Author: Dream Star.cn
 // Author: ExoHyper2026
@@ -81,7 +80,6 @@
 "download_task_cell.status.downloading" = "正在下载...";
 "download_task_cell.status.paused" = "已暂停";
 "download_task_cell.status.paused.device_offline" = "已暂停（设备离线）";
-"download_task_cell.status.paused.waiting_for_wifi" = "已暂停（等待WiFi连接）";
 "download_again.question.title" = "您已经拥有这个文件。";
 "download_again.question.description_part_1" = "%@看起来已下载完毕。";
 "download_again.question.description_part_2" = "您仍要下载“%@”吗？您现有的文件不会被删除。";
@@ -170,7 +168,6 @@
 "reading_settings.search_snippet.title" = "搜索片段";
 "reading_settings.tab.reading" = "阅读";
 "library_settings.catalog.title" = "目录";
-"library_settings.downloads.title" = "下载";
 "library_settings.button.refresh_now" = "立即刷新";
 "library_settings.last_refresh.text" = "上次刷新";
 "library_settings.auto_refresh.toggle" = "自动刷新";

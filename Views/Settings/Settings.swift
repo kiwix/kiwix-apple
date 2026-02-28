@@ -180,15 +180,16 @@ struct Settings: View {
                 List {
                     if FeatureFlags.hasLibrary {
                         readingSettings
-                        downloadSettings
                         catalogSettings
-                        miscellaneous
+                        downloadSettings
                         hotspot.id("hotspot")
                         backupSettings
+                        miscellaneous
                     } else {
                         readingSettings
-                        miscellaneous
                         hotspot.id("hotspot")
+                        backupSettings
+                        miscellaneous
                     }
                 }
                 .modifier(ToolbarRoleBrowser())
@@ -240,8 +241,6 @@ struct Settings: View {
     var downloadSettings: some View {
         Section {
             Toggle(LocalString.library_settings_toggle_cellular, isOn: $downloadUsingCellular)
-        } header: {
-            Text(LocalString.library_settings_downloads_title)
         } footer: {
             Text(LocalString.library_settings_new_download_task_description)
         }

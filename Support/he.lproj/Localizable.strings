@@ -135,7 +135,6 @@
 "reading_settings.search_snippet.title" = "קטע חיפוש";
 "reading_settings.tab.reading" = "קריאה";
 "library_settings.catalog.title" = "קטלוג";
-"library_settings.downloads.title" = "הורדות";
 "library_settings.button.refresh_now" = "לרענן עכשיו";
 "library_settings.last_refresh.text" = "הרענון האחרון";
 "library_settings.auto_refresh.toggle" = "רענון אוטומטי";

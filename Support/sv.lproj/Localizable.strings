@@ -164,7 +164,6 @@
 "reading_settings.search_snippet.title" = "Sök utdrag";
 "reading_settings.tab.reading" = "Läsning";
 "library_settings.catalog.title" = "Katalog";
-"library_settings.downloads.title" = "Nedladdningar";
 "library_settings.button.refresh_now" = "Uppdatera nu";
 "library_settings.last_refresh.text" = "Senaste uppdatering";
 "library_settings.auto_refresh.toggle" = "Uppdatera automatiskt";

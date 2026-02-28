@@ -158,7 +158,6 @@
 "reading_settings.search_snippet.title" = "Søgeuddrag";
 "reading_settings.tab.reading" = "Læsning";
 "library_settings.catalog.title" = "Katalog";
-"library_settings.downloads.title" = "Downloads";
 "library_settings.button.refresh_now" = "Opdater nu";
 "library_settings.last_refresh.text" = "Seneste opdatering";
 "library_settings.auto_refresh.toggle" = "Automatisk opdatering";

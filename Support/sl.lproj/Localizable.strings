@@ -158,7 +158,6 @@
 "reading_settings.search_snippet.title" = "Delček iskanja";
 "reading_settings.tab.reading" = "Branje";
 "library_settings.catalog.title" = "Katalog";
-"library_settings.downloads.title" = "Prenosi";
 "library_settings.button.refresh_now" = "Osveži zdaj";
 "library_settings.last_refresh.text" = "Zadnja osvežitev";
 "library_settings.auto_refresh.toggle" = "Samodejno osveževanje";
