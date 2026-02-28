@@ -33,9 +33,14 @@ struct Action: View {
         AsyncButton(action: action, label: {
             HStack {
                 Spacer()
-                Text(title)
-                    .fontWeight(.medium)
-                    .foregroundColor(isDestructive ? .red : nil)
+                if isDestructive {
+                    Text(title)
+                        .fontWeight(.medium)
+                        .foregroundStyle(.red)
+                } else {
+                    Text(title)
+                        .fontWeight(.medium)
+                }
                 Spacer()
             }
         })
