@@ -235,7 +235,9 @@ enum NavigationItem: Hashable, Identifiable {
     case settings(scrollToHotspot: Bool)
 }
 
-enum MenuItem: Hashable {
+enum MenuItem: Hashable, Identifiable {
+    var id: Int { hashValue }
+    
     case tab(objectID: NSManagedObjectID)
     case bookmarks
     case opened

@@ -45,7 +45,7 @@ struct Kiwix: App {
 
     var body: some Scene {
         WindowGroup {
-            RootView()
+            RootView_iOS()
                 .ignoresSafeArea()
                 .environment(\.managedObjectContext, Database.shared.viewContext)
                 .environmentObject(library)
@@ -154,7 +154,7 @@ struct Kiwix: App {
     }
 }
 
-private struct RootView: UIViewControllerRepresentable {
+private struct RootViewOld: UIViewControllerRepresentable {
     @EnvironmentObject private var navigation: NavigationViewModel
     @FetchRequest(
         sortDescriptors: [NSSortDescriptor(keyPath: \ZimFile.size, ascending: false)],
