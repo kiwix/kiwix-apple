@@ -212,6 +212,7 @@
 "catalog_settings.header.text" = "Catalog";
 "catalog_settings.footer.text" = "When enabled, the library catalog will be refreshed automatically when outdated.";
 "backup_settings.toggle.title" = "Include ZIM files in backup";
+"backup_settings.header.text" = "Backup";
 "backup_settings.footer.text" = "Does not apply to files opened in place.";
 "settings.miscellaneous.title" = "Misc";
 "settings.miscellaneous.button.feedback" = "Feedback";

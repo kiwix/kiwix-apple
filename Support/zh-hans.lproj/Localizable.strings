@@ -1,6 +1,5 @@
 // Messages for Simplified Chinese (中文（简体）)
 // Exported from translatewiki.net
-// Author: 0x48fe75df30
 // Author: Cyanjiang
 // Author: Dream Star.cn
 // Author: ExoHyper2026
@@ -81,7 +80,6 @@
 "download_task_cell.status.downloading" = "正在下载...";
 "download_task_cell.status.paused" = "已暂停";
 "download_task_cell.status.paused.device_offline" = "已暂停（设备离线）";
-"download_task_cell.status.paused.waiting_for_wifi" = "已暂停（等待WiFi连接）";
 "download_again.question.title" = "您已经拥有这个文件。";
 "download_again.question.description_part_1" = "%@看起来已下载完毕。";
 "download_again.question.description_part_2" = "您仍要下载“%@”吗？您现有的文件不会被删除。";
@@ -185,6 +183,7 @@
 "catalog_settings.header.text" = "目录";
 "catalog_settings.footer.text" = "启用后，图书馆目录将在过期时自动刷新。";
 "backup_settings.toggle.title" = "在备份中包含 ZIM 文件";
+"backup_settings.header.text" = "备份";
 "backup_settings.footer.text" = "不适用于在这里打开的文件。";
 "settings.miscellaneous.title" = "杂项";
 "settings.miscellaneous.button.feedback" = "反馈";

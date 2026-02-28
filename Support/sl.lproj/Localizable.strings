@@ -173,6 +173,7 @@
 "catalog_settings.header.text" = "Katalog";
 "catalog_settings.footer.text" = "Če je omogočeno, se bo knjižnični katalog samodejno osvežil, ko bo zastarel.";
 "backup_settings.toggle.title" = "V varnostno kopijo vključi datoteko ZIM";
+"backup_settings.header.text" = "Varnostna kopija";
 "backup_settings.footer.text" = "Ne uporablja se za neposredno odprte datoteke.";
 "settings.miscellaneous.title" = "Razno";
 "settings.miscellaneous.button.feedback" = "Odziv";

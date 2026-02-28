@@ -170,6 +170,7 @@
 "catalog_settings.header.text" = "Katalog";
 "catalog_settings.footer.text" = "Wenn diese Option aktiviert ist, wird ein nicht aktueller Bibliothekskatalog automatisch aktualisiert.";
 "backup_settings.toggle.title" = "Beziehe ZIM-Dateien ins Backup ein";
+"backup_settings.header.text" = "Backup";
 "backup_settings.footer.text" = "Gilt nicht für direkt geöffnete Dateien.";
 "settings.miscellaneous.title" = "Verschiedenes";
 "settings.miscellaneous.button.feedback" = "Feedback";

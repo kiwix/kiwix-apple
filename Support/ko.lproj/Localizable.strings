@@ -141,6 +141,7 @@
 "catalog_settings.auto_refresh.toggle" = "자동 새로 고침";
 "catalog_settings.header.text" = "카탈로그";
 "backup_settings.toggle.title" = "백업에 ZIM 파일 포함";
+"backup_settings.header.text" = "백업";
 "settings.miscellaneous.title" = "기타";
 "settings.miscellaneous.button.feedback" = "피드백";
 "settings.miscellaneous.button.rate_app" = "앱 평가";

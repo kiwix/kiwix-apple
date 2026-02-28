@@ -176,6 +176,7 @@
 "catalog_settings.header.text" = "Title of section in settings";
 "catalog_settings.footer.text" = "Small print below the 'Auto refresh' toggle in settings";
 "backup_settings.toggle.title" = "Settings label for toggle";
+"backup_settings.header.text" = "Title of section in settings";
 "backup_settings.footer.text" = "Small print under 'Include zim files in backup' toggle in settings";
 "settings.miscellaneous.title" = "Title of section in settings";
 "settings.miscellaneous.button.feedback" = "Button title in settings";

@@ -179,6 +179,7 @@
 "catalog_settings.header.text" = "Katalog";
 "catalog_settings.footer.text" = "När den är aktiverad uppdateras bibliotekskatalogen automatiskt när den är föråldrad.";
 "backup_settings.toggle.title" = "Inkludera ZIM-filer i säkerhetskopian";
+"backup_settings.header.text" = "Säkerhetskopiering";
 "backup_settings.footer.text" = "Gäller inte filer som öppnas på plats.";
 "settings.miscellaneous.title" = "Övrigt";
 "settings.miscellaneous.button.feedback" = "Återkoppling";

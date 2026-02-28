@@ -72,7 +72,6 @@
 "download_task_cell.status.downloading" = "Aan het downloaden…";
 "download_task_cell.status.paused" = "Gepauzeerd";
 "download_task_cell.status.paused.device_offline" = "Gepauzeerd (apparaat is offline)";
-"download_task_cell.status.paused.waiting_for_wifi" = "Gepauzeerd (wacht op wifi)";
 "download_again.question.title" = "U beschikt al over dit bestand.";
 "download_again.question.description_part_1" = "Het lijkt erop dat %@ al is gedownload.";
 "download_again.question.description_part_2" = "Wilt u \"%@\" nog steeds downloaden? Uw bestaande bestand wordt niet verwijderd.";
@@ -176,6 +175,7 @@
 "catalog_settings.header.text" = "Catalogus";
 "catalog_settings.footer.text" = "Als dit is ingeschakeld, wordt de bibliotheekcatalogus automatisch vernieuwd bij veroudering.";
 "backup_settings.toggle.title" = "ZIM-bestanden opnemen in back-up";
+"backup_settings.header.text" = "Back-up";
 "backup_settings.footer.text" = "Geldt niet voor bestanden die ter plekke zijn geopend.";
 "settings.miscellaneous.title" = "Diversen";
 "settings.miscellaneous.button.feedback" = "Terugkoppeling";
