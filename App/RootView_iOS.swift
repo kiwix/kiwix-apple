@@ -25,23 +25,17 @@ struct RootView_iOS: View {
     var body: some View {
         NavigationSplitView {
             List(selection: $selection) {
-                ForEach(allSections) { (section: MenuSection) in
+                ForEach(allSections) { (section: MenuSection) -> Section in
                     let sectionItems: [MenuItem] = staticMenus[section]!
-                    if let headerText = section.header {
-                        Section(header: Text(headerText)) {
-                            ForEach(sectionItems, id: \.id) { item in
-                                NavigationLink(value: item) {
-                                    Label(item.name, systemImage: item.icon)
-                                }
+                    Section {
+                        ForEach(sectionItems, id: \.id) { (item: MenuItem) -> NavigationLink in
+                            NavigationLink(value: item) {
+                                labelFor(item: item)
                             }
                         }
-                    } else {
-                        Section {
-                            ForEach(sectionItems, id: \.id) { item in
-                                NavigationLink(value: item) {
-                                    Label(item.name, systemImage: item.icon)
-                                }
-                            }
+                    } header: {
+                        if let headerText = section.header {
+                            Text(headerText)
                         }
                     }
                 }
@@ -49,12 +43,41 @@ struct RootView_iOS: View {
         } detail: {
             Text("detail: \(String(describing: selection?.name))")
         }.task {
-            try? await Task.sleep(nanoseconds: 50_000_000)
-            selection = .new
+            //            try? await Task.sleep(nanoseconds: 50_000_000)
+            //            selection = .new
             // load tabs
             // load donations
+            
+            
         }
-        
+    }
+    
+    @ViewBuilder
+    private func labelFor(item: MenuItem) -> some View {
+        let isSelected: Bool = item == selection
+        switch item {
+        case .tab:
+            Label {
+                Text(item.name)
+            } icon: {
+                Image(systemName: "square")
+                    .symbolVariant(isSelected ? .fill : .none)
+                    .modifier(Symbol26Vairant())
+            }
+        case .donation:
+            Label {
+                Text(item.name)
+            } icon: {
+                Image(systemName: item.icon)
+                    .foregroundStyle(Color.red)
+                    .symbolVariant(isSelected ? .fill : .none)
+                    .modifier(Symbol26Vairant())
+            }
+        default:
+            Label(item.name, systemImage: item.icon)
+                .symbolVariant(isSelected ? .fill : .none)
+                .modifier(Symbol26Vairant())
+        }
     }
     
     private static func allItems() -> [MenuItem] {
@@ -67,30 +90,41 @@ struct RootView_iOS: View {
 }
 
 
+struct Symbol26Vairant: ViewModifier {
+    func body(content: Content) -> some View {
+        if #available(iOS 26, *) {
+            content.symbolColorRenderingMode(.gradient)
+        } else {
+            content
+        }
+    }
+}
+
+
 enum MenuSection: String, CaseIterable, Identifiable {
     var id: String { rawValue }
-//    case tabs
+    case tabs
     case primary
     case library
     case settings
-//    case donation
+    case donation
 
     static var allMenuSections: [MenuSection] {
-        if !FeatureFlags.hasLibrary {
-            return allCases.filter { $0 != .library }
-        } else {
-            return allCases
-        }
-//        switch (FeatureFlags.hasLibrary, Brand.hideDonation) {
-//        case (true, true):
-//            allCases.filter { ![.donation].contains($0) }
-//        case (false, true):
-//            allCases.filter { ![.donation, .library].contains($0) }
-//        case (true, false):
-//            allCases
-//        case (false, false):
-//            allCases.filter { ![.library].contains($0) }
+//        if !FeatureFlags.hasLibrary {
+//            return allCases.filter { $0 != .library }
+//        } else {
+//            return allCases
 //        }
+        switch (FeatureFlags.hasLibrary, Brand.hideDonation) {
+        case (true, true):
+            allCases.filter { ![.donation].contains($0) }
+        case (false, true):
+            allCases.filter { ![.donation, .library].contains($0) }
+        case (true, false):
+            allCases
+        case (false, false):
+            allCases.filter { ![.library].contains($0) }
+        }
     }
     
     var header: String? {
@@ -110,7 +144,7 @@ enum MenuSection: String, CaseIterable, Identifiable {
     
     static func itemsFor(_ section: MenuSection) -> [MenuItem] {
         switch section {
-//        case .tabs: return []
+        case .tabs: return []
         case .primary: return [.bookmarks]
         case .library: return [.opened, .categories, .downloads, .new, .hotspot]
         case .settings:
@@ -119,7 +153,7 @@ enum MenuSection: String, CaseIterable, Identifiable {
             } else {
                 return [.settings]
             }
-//        case .donation: return []
+        case .donation: return []
 //            if await Payment.paymentButtonTypeAsync() != nil {
 //                return [.donation]
 //            } else {
