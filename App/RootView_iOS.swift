@@ -18,55 +18,42 @@ import SwiftUI
 
 @MainActor
 struct RootView_iOS: View {
-//    @State private var allSections: [MenuSection] = MenuSection.allMenuSections
-//    @State private var staticMenus: [MenuSection: [MenuItem]] = MenuSection.staticDictionary
-    @State private var selectedItem: MenuItem?
-    @State private var items: [MenuItem] = allItems()
+    @State private var allSections: [MenuSection] = MenuSection.allMenuSections
+    @State private var staticMenus: [MenuSection: [MenuItem]] = MenuSection.staticDictionary
+    @State private var selection: MenuItem? = .opened
     
     var body: some View {
         NavigationSplitView {
-            List(items, selection: $selectedItem) { item in
-                NavigationLink(value: item) {
-                    Label(item.name, systemImage: item.icon)
+            List(selection: $selection) {
+                ForEach(allSections) { (section: MenuSection) in
+                    let sectionItems: [MenuItem] = staticMenus[section]!
+                    if let headerText = section.header {
+                        Section(header: Text(headerText)) {
+                            ForEach(sectionItems, id: \.id) { item in
+                                NavigationLink(value: item) {
+                                    Label(item.name, systemImage: item.icon)
+                                }
+                            }
+                        }
+                    } else {
+                        Section {
+                            ForEach(sectionItems, id: \.id) { item in
+                                NavigationLink(value: item) {
+                                    Label(item.name, systemImage: item.icon)
+                                }
+                            }
+                        }
+                    }
                 }
-            }
+            }.listStyle(.sidebar)
         } detail: {
-            Text("Selected: \(String(describing: selectedItem?.name))")
+            Text("detail: \(String(describing: selection?.name))")
+        }.task {
+            try? await Task.sleep(nanoseconds: 50_000_000)
+            selection = .new
+            // load tabs
+            // load donations
         }
-        .task {
-            selectedItem = .opened
-        }
-        
-        
-//        NavigationSplitView {
-//            List {
-//                ForEach(allSections) { (section: MenuSection) in
-//                    let sectionItems: [MenuItem] = staticMenus[section]!
-//                    if let headerText = section.header {
-//                        Section(header: Text(headerText)) {
-//                            ForEach(sectionItems, id: \.id) { item in
-//                                NavigationLink(value: item) {
-//                                    Label(item.name, systemImage: item.icon)
-//                                }
-//                            }
-//                        }
-//                    } else {
-//                        Section {
-//                            ForEach(sectionItems, id: \.id) { item in
-//                                NavigationLink(value: item) {
-//                                    Label(item.name, systemImage: item.icon)
-//                                }
-//                            }
-//                        }
-//                    }
-//                }
-//            }.listStyle(.sidebar)
-//        } detail: {
-//            Text("detail")
-//        }.task {
-//            // load tabs
-//            // load donations
-//        }
         
     }
     
