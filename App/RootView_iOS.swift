@@ -15,51 +15,88 @@
 
 #if os(iOS)
 import SwiftUI
+import CoreData
 
 @MainActor
 struct RootView_iOS: View {
     @State private var allSections: [MenuSection] = MenuSection.allMenuSections
     @State private var menuDict: [MenuSection: [MenuItem]] = MenuSection.staticDictionary
     @State private var selection: MenuItem? = .opened
+    @FetchRequest(
+        sortDescriptors: [NSSortDescriptor(keyPath: \Tab.lastOpened, ascending: false)],
+        predicate: Tab.Predicate.notMissing(),
+        animation: .easeInOut
+    ) private var tabs: FetchedResults<Tab>
     
     var body: some View {
         NavigationSplitView {
             List(selection: $selection) {
-                ForEach(allSections) { (section: MenuSection) -> Section in
-                    let sectionItems: [MenuItem] = menuDict[section]!
-                    Section {
-                        ForEach(sectionItems, id: \.id) { (item: MenuItem) -> NavigationLink in
-                            NavigationLink(value: item) {
-                                labelFor(item: item)
+                ForEach(allSections) { (section: MenuSection) in
+                    if section == .tabs {
+                        Section {
+                            ForEach(tabs) { (tab: Tab) in
+                                NavigationLink(value: MenuItem.tab(objectID: tab.objectID)) {
+                                    labelFor(tab: tab)
+                                }
                             }
                         }
-                    } header: {
-                        if let headerText = section.header {
-                            Text(headerText)
+                    } else {
+                        let sectionItems: [MenuItem] = menuDict[section]!
+                        Section {
+                            ForEach(sectionItems, id: \.id) { (item: MenuItem) -> NavigationLink in
+                                NavigationLink(value: item) {
+                                    labelFor(item: item)
+                                }
+                            }
+                        } header: {
+                            if let headerText = section.header {
+                                Text(headerText)
+                            }
                         }
                     }
                 }
             }.listStyle(.sidebar)
         } detail: {
             Text("detail: \(String(describing: selection?.name))")
-        }.task {
-//            await loadTabs()
+        }
+        .task {
             await loadDonations()
         }
     }
+    
+    @ViewBuilder
+    private func labelFor(tab: Tab) -> some View {
+        let text = tab.title ?? LocalString.common_tab_menu_new_tab
+        let image: UIImage = {
+            if let zimFile = tab.zimFile, let category = Category(rawValue: zimFile.category) {
+                if let imgData = zimFile.faviconData {
+                    UIImage(data: imgData) ?? UIImage(systemName: "square")!
+                } else {
+                    UIImage(named: category.icon) ?? UIImage(systemName: "square")!
+                }
+            } else {
+                UIImage(systemName: "square")!
+            }
+        }()
+            
+        Label {
+            Text(text)
+        } icon: {
+            Image(uiImage: image)
+                .resizable()
+                .frame(maxWidth: 22, maxHeight: 22)
+                .clipShape(RoundedRectangle(cornerSize: CGSize(width: 3, height: 3)))
+        }
+    }
+        
     
     @ViewBuilder
     private func labelFor(item: MenuItem) -> some View {
         let isSelected: Bool = item == selection
         switch item {
         case .tab:
-            Label {
-                Text(item.name)
-            } icon: {
-                Image(systemName: "square")
-                    .symbolVariant(isSelected ? .fill : .none)
-                    .modifier(Symbol26Vairant())
-            }
+            let _ = assertionFailure("use labelFor(zimFile:) instead")
+            EmptyView()
         case .donation:
             Label {
                 Text(item.name)
@@ -92,7 +129,6 @@ struct RootView_iOS: View {
     }
 }
 
-
 struct Symbol26Vairant: ViewModifier {
     func body(content: Content) -> some View {
         if #available(iOS 26, *) {
@@ -102,7 +138,6 @@ struct Symbol26Vairant: ViewModifier {
         }
     }
 }
-
 
 enum MenuSection: String, CaseIterable, Identifiable {
     var id: String { rawValue }
