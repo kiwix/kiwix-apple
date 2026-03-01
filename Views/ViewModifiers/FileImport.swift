@@ -116,6 +116,14 @@ struct OpenFileHandler: ViewModifier {
                 if !invalidURLs.isEmpty {
                     isAlertPresented = true
                     activeAlert = .unableToOpen(filenames: invalidURLs.map({ $0.lastPathComponent }))
+
+                    #if os(iOS)
+                    // if all we have is invalid file(s) from deeplink, we need to stop the deeplink handling
+                    // and proceed further with loading the application, otherwise we are stuck on Loading Data...
+                    if case .file(.some(let deepLinkID)) = context, openedZimFileIDs.isEmpty {
+                        DeepLinkService.shared.stopFor(uuid: deepLinkID)
+                    }
+                    #endif
                 }
             }
         }.alert(LocalString.file_import_alert_no_open_title,
