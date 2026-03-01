@@ -45,7 +45,7 @@ struct Kiwix: App {
 
     var body: some Scene {
         WindowGroup {
-            RootView_iOS()
+            RootViewiOS()
                 .ignoresSafeArea()
                 .environment(\.managedObjectContext, Database.shared.viewContext)
                 .environmentObject(library)

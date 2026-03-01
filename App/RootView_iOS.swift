@@ -18,12 +18,13 @@ import SwiftUI
 import CoreData
 
 @MainActor
-struct RootView_iOS: View {
+struct RootViewiOS: View {
+    @EnvironmentObject var navigation: NavigationViewModel
     @State private var allSections: [MenuSection] = MenuSection.allMenuSections
     @State private var menuDict: [MenuSection: [MenuItem]] = MenuSection.staticDictionary
     @State private var selection: MenuItem? = .opened
     @FetchRequest(
-        sortDescriptors: [], //[NSSortDescriptor(keyPath: \Tab.lastOpened, ascending: false)],
+        sortDescriptors: [],
         predicate: Tab.Predicate.notMissing(),
         animation: .easeInOut
     ) private var tabs: FetchedResults<Tab>
@@ -39,6 +40,7 @@ struct RootView_iOS: View {
                                     labelFor(tab: tab)
                                 }
                             }
+                            .onDelete(perform: deleteTab)
                         }
                     } else {
                         let sectionItems: [MenuItem] = menuDict[section]!
@@ -100,7 +102,7 @@ struct RootView_iOS: View {
                 UIImage(systemName: "square")!
             }
         }()
-            
+        
         Label {
             Text(text)
         } icon: {
@@ -110,14 +112,13 @@ struct RootView_iOS: View {
                 .clipShape(RoundedRectangle(cornerSize: CGSize(width: 3, height: 3)))
         }
     }
-        
     
     @ViewBuilder
     private func labelFor(item: MenuItem) -> some View {
         let isSelected: Bool = item == selection
         switch item {
         case .tab:
-            let _ = assertionFailure("use labelFor(zimFile:) instead")
+            // we use labelFor(zimFile:) instead
             EmptyView()
         case .donation:
             Label {
@@ -149,6 +150,17 @@ struct RootView_iOS: View {
             menuDict[.donation] = [.donation]
         }
     }
+    
+    private func deleteTab(at offsets: IndexSet) {
+        for offset in offsets {
+            if 0 <= offset && offset < tabs.count {
+                let tab = tabs[offset]
+                Task {
+                    await navigation.deleteTab(tabID: tab.objectID)
+                }
+            }
+        }
+    }
 }
 
 struct Symbol26Vairant: ViewModifier {
@@ -168,7 +180,7 @@ enum MenuSection: String, CaseIterable, Identifiable {
     case library
     case settings
     case donation
-
+    
     static var allMenuSections: [MenuSection] {
         switch (FeatureFlags.hasLibrary, Brand.hideDonation) {
         case (true, true):
@@ -190,7 +202,7 @@ enum MenuSection: String, CaseIterable, Identifiable {
     }
     
     static var staticDictionary: [MenuSection: [MenuItem]] {
-        var dict = Dictionary<MenuSection, Array<MenuItem>>()
+        var dict: [MenuSection: [MenuItem]] = [:]
         for section in allMenuSections {
             dict[section] = itemsFor(section)
         }
@@ -207,7 +219,7 @@ enum MenuSection: String, CaseIterable, Identifiable {
             } else {
                 return [.settings]
             }
-        // initially empty, we load them async
+            // initially empty, we load them async
         case .tabs: return []
         case .donation: return []
         }
@@ -215,6 +227,6 @@ enum MenuSection: String, CaseIterable, Identifiable {
 }
 
 #Preview {
-    RootView_iOS()
+    RootViewiOS()
 }
 #endif
