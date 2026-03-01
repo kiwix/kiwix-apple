@@ -18,43 +18,67 @@ import SwiftUI
 
 @MainActor
 struct RootView_iOS: View {
-    @State private var allSections: [MenuSection] = MenuSection.allMenuSections
-    @State private var staticMenus: [MenuSection: [MenuItem]] = MenuSection.staticDictionary
-    @State private var selection: MenuItem = .opened
+//    @State private var allSections: [MenuSection] = MenuSection.allMenuSections
+//    @State private var staticMenus: [MenuSection: [MenuItem]] = MenuSection.staticDictionary
+    @State private var selectedItem: MenuItem?
+    @State private var items: [MenuItem] = allItems()
     
     var body: some View {
         NavigationSplitView {
-            List {
-                ForEach(allSections) { (section: MenuSection) in
-                    let sectionItems: [MenuItem] = staticMenus[section]!
-                    if let headerText = section.header {
-                        Section(header: Text(headerText)) {
-                            ForEach(sectionItems, id: \.id) { item in
-                                NavigationLink(value: item) {
-                                    Label(item.name, systemImage: item.icon)
-                                }
-                            }
-                        }
-                    } else {
-                        Section {
-                            ForEach(sectionItems, id: \.id) { item in
-                                NavigationLink(value: item) {
-                                    Label(item.name, systemImage: item.icon)
-                                }
-                            }
-                        }
-                    }
+            List(items, selection: $selectedItem) { item in
+                NavigationLink(value: item) {
+                    Label(item.name, systemImage: item.icon)
                 }
-            }.listStyle(.sidebar)
+            }
         } detail: {
-            Text("detail")
-        }.task {
-            // load tabs
-            // load donations
+            Text("Selected: \(String(describing: selectedItem?.name))")
+        }
+        .task {
+            selectedItem = .opened
         }
         
+        
+//        NavigationSplitView {
+//            List {
+//                ForEach(allSections) { (section: MenuSection) in
+//                    let sectionItems: [MenuItem] = staticMenus[section]!
+//                    if let headerText = section.header {
+//                        Section(header: Text(headerText)) {
+//                            ForEach(sectionItems, id: \.id) { item in
+//                                NavigationLink(value: item) {
+//                                    Label(item.name, systemImage: item.icon)
+//                                }
+//                            }
+//                        }
+//                    } else {
+//                        Section {
+//                            ForEach(sectionItems, id: \.id) { item in
+//                                NavigationLink(value: item) {
+//                                    Label(item.name, systemImage: item.icon)
+//                                }
+//                            }
+//                        }
+//                    }
+//                }
+//            }.listStyle(.sidebar)
+//        } detail: {
+//            Text("detail")
+//        }.task {
+//            // load tabs
+//            // load donations
+//        }
+        
+    }
+    
+    private static func allItems() -> [MenuItem] {
+        if FeatureFlags.hasLibrary {
+            return [.bookmarks, .opened, .categories, .downloads, .new, .hotspot, .settings]
+        } else {
+            return [.bookmarks, .hotspot, .settings]
+        }
     }
 }
+
 
 enum MenuSection: String, CaseIterable, Identifiable {
     var id: String { rawValue }
