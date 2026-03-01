@@ -23,7 +23,7 @@ struct RootView_iOS: View {
     @State private var menuDict: [MenuSection: [MenuItem]] = MenuSection.staticDictionary
     @State private var selection: MenuItem? = .opened
     @FetchRequest(
-        sortDescriptors: [NSSortDescriptor(keyPath: \Tab.lastOpened, ascending: false)],
+        sortDescriptors: [], //[NSSortDescriptor(keyPath: \Tab.lastOpened, ascending: false)],
         predicate: Tab.Predicate.notMissing(),
         animation: .easeInOut
     ) private var tabs: FetchedResults<Tab>
@@ -57,7 +57,29 @@ struct RootView_iOS: View {
                 }
             }.listStyle(.sidebar)
         } detail: {
-            Text("detail: \(String(describing: selection?.name))")
+            let navSelection = selection?.navigationItem
+            switch navSelection {
+            case .loading:
+                LoadingDataView()
+            case .bookmarks:
+                Bookmarks()
+            case .tab(let tabID):
+                BrowserTab(tabID: tabID).id(tabID)
+            case .opened:
+                ZimFilesOpened()
+            case .categories:
+                ZimFilesCategories(dismiss: nil)
+            case .new:
+                ZimFilesNew(dismiss: nil)
+            case .downloads:
+                ZimFilesDownloads(dismiss: nil)
+            case .hotspot:
+                HotspotZimFilesSelection()
+            case .settings(let scrollToHotspot):
+                Settings(scrollToHotspot: scrollToHotspot)
+            case .map, nil:
+                EmptyView()
+            }
         }
         .task {
             await loadDonations()
