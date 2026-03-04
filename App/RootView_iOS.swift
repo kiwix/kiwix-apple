@@ -20,6 +20,7 @@ import CoreData
 @MainActor
 struct RootViewiOS: View {
     @EnvironmentObject var navigation: NavigationViewModel
+    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     @State private var allSections: [MenuSection] = MenuSection.allMenuSections
     @State private var menuDict: [MenuSection: [MenuItem]] = MenuSection.staticDictionary
     @State private var selection: MenuItem? = .opened
@@ -30,6 +31,15 @@ struct RootViewiOS: View {
     ) private var tabs: FetchedResults<Tab>
     
     var body: some View {
+        if horizontalSizeClass == .compact {
+            CompactViewWrapper()
+        } else {
+            ipadSplitView()
+        }
+    }
+
+    @ViewBuilder
+    func ipadSplitView() -> some View {
         NavigationSplitView {
             List(selection: $selection) {
                 ForEach(allSections) { (section: MenuSection) in
@@ -57,7 +67,9 @@ struct RootViewiOS: View {
                         }
                     }
                 }
-            }.listStyle(.sidebar)
+            }
+            .listStyle(.sidebar)
+            .navigationTitle(Brand.appName)
         } detail: {
             let navSelection = selection?.navigationItem
             switch navSelection {

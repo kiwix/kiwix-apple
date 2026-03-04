@@ -133,7 +133,8 @@ final class CompactViewController: UIHostingController<AnyView>, UISearchControl
     }
 }
 
-private struct CompactViewWrapper: View {
+// TODO: all above code should now go under CompactViewWrapper!
+struct CompactViewWrapper: View {
     @EnvironmentObject private var navigation: NavigationViewModel
     
     var body: some View {
