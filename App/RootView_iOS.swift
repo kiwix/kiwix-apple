@@ -70,6 +70,18 @@ struct RootViewiOS: View {
             }
             .listStyle(.sidebar)
             .navigationTitle(Brand.appName)
+            .toolbar {
+                ToolbarItem(id: "add_tab") {
+                    Button {
+                        navigation.createTab()
+                    } label: {
+                        Image(systemName: "plus.square")
+                    }
+                    .onLongPressGesture {
+                        // TODO: impement menu
+                    }
+                }
+            }
         } detail: {
             let navSelection = selection?.navigationItem
             switch navSelection {
