@@ -236,7 +236,9 @@ enum NavigationItem: Hashable, Identifiable {
 }
 
 enum MenuItem: Hashable, Identifiable {
-    var id: Int { hashValue }
+    var id: String {
+        name
+    }
     
     case tab(objectID: NSManagedObjectID)
     case bookmarks
@@ -244,7 +246,7 @@ enum MenuItem: Hashable, Identifiable {
     case categories
     case new
     case downloads
-    case settings
+    case settings(scrollToHotspot: Bool)
     case donation
     case hotspot
     
@@ -257,7 +259,7 @@ enum MenuItem: Hashable, Identifiable {
         case .categories: self = .categories
         case .new: self = .new
         case .downloads: self = .downloads
-        case .settings: self = .settings
+        case let .settings(scrollToHotspot): self = .settings(scrollToHotspot: scrollToHotspot)
         case .hotspot: self = .hotspot
         }
     }

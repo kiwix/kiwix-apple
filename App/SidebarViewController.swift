@@ -148,7 +148,7 @@ final class SidebarViewController: UICollectionViewController, NSFetchedResultsC
             if !FeatureFlags.hasLibrary {
                 snapshot.appendItems([.hotspot], toSection: .settings)
             }
-            snapshot.appendItems([.settings], toSection: .settings)
+            snapshot.appendItems([.settings(scrollToHotspot: false)], toSection: .settings)
         }
         
         // show the donation async

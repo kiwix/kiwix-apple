@@ -19,53 +19,35 @@ import CoreData
 
 @MainActor
 struct RootViewiOS: View {
-    @EnvironmentObject var navigation: NavigationViewModel
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
-    @State private var allSections: [MenuSection] = MenuSection.allMenuSections
-    @State private var menuDict: [MenuSection: [MenuItem]] = MenuSection.staticDictionary
-    @State private var selection: MenuItem? = .opened
-    @FetchRequest(
-        sortDescriptors: [],
-        predicate: Tab.Predicate.notMissing(),
-        animation: .easeInOut
-    ) private var tabs: FetchedResults<Tab>
-    
     var body: some View {
         if horizontalSizeClass == .compact {
             CompactViewWrapper()
         } else {
-            ipadSplitView()
+            SplitViewForiPad()
         }
     }
+}
 
-    @ViewBuilder
-    func ipadSplitView() -> some View {
+@MainActor
+struct SplitViewForiPad: View {
+    @EnvironmentObject var navigation: NavigationViewModel
+    @State private var allSections: [MenuSection] = MenuSection.allMenuSections
+    @State private var menuDict: [MenuSection: [MenuItem]] = MenuSection.staticDictionary
+    @State private var selection: MenuItem? = .opened
+    @State private var navPath = NavigationPath()
+    @FetchRequest(
+        sortDescriptors: [NSSortDescriptor(key: "created", ascending: true)],
+        predicate: Tab.Predicate.notMissing(),
+        animation: .easeInOut
+    ) private var tabs: FetchedResults<Tab>
+
+    var body: some View {
+        let _ = Self._logChanges()
         NavigationSplitView {
             List(selection: $selection) {
                 ForEach(allSections) { (section: MenuSection) in
-                    if section == .tabs {
-                        Section {
-                            ForEach(tabs) { (tab: Tab) in
-                                NavigationLink(value: MenuItem.tab(objectID: tab.objectID)) {
-                                    labelFor(tab: tab)
-                                }
-                            }
-                            .onDelete(perform: deleteTab)
-                        }
-                    } else {
-                        let sectionItems: [MenuItem] = menuDict[section]!
-                        Section {
-                            ForEach(sectionItems, id: \.id) { (item: MenuItem) -> NavigationLink in
-                                NavigationLink(value: item) {
-                                    labelFor(item: item)
-                                }
-                            }
-                        } header: {
-                            if let headerText = section.header {
-                                Text(headerText)
-                            }
-                        }
-                    }
+                    sectionFor(section)
                 }
             }
             .listStyle(.sidebar)
@@ -83,32 +65,83 @@ struct RootViewiOS: View {
                 }
             }
         } detail: {
-            let navSelection = selection?.navigationItem
-            switch navSelection {
-            case .loading:
-                LoadingDataView()
-            case .bookmarks:
-                Bookmarks()
-            case .tab(let tabID):
-                BrowserTab(tabID: tabID).id(tabID)
-            case .opened:
-                ZimFilesOpened()
-            case .categories:
-                ZimFilesCategories(dismiss: nil)
-            case .new:
-                ZimFilesNew(dismiss: nil)
-            case .downloads:
-                ZimFilesDownloads(dismiss: nil)
-            case .hotspot:
-                HotspotZimFilesSelection()
-            case .settings(let scrollToHotspot):
-                Settings(scrollToHotspot: scrollToHotspot)
-            case .map, nil:
-                EmptyView()
+            NavigationStack(path: $navPath) {
+                switch selection {
+                case .tab(let tabID):
+                    BrowserTab(tabID: tabID).id(tabID)
+                case .bookmarks:
+                    Bookmarks()
+                case .opened:
+                    ZimFilesOpened()
+                case .categories:
+                    ZimFilesCategories(dismiss: nil)
+                case .new:
+                    ZimFilesNew(dismiss: nil)
+                case .downloads:
+                    ZimFilesDownloads(dismiss: nil)
+                case let .settings(scrollToHotspot):
+                    Settings(scrollToHotspot: scrollToHotspot)
+                case .donation:
+                    // this should not be triggered
+                    let _ = assertionFailure("donation selection should not be triggerred")
+                    EmptyView()
+                case .hotspot:
+                    HotspotZimFilesSelection()
+                case nil:
+                    EmptyView()
+                }
             }
         }
         .task {
             await loadDonations()
+            await observeOpeningFiles()
+        }
+        .onChange(of: navigation.currentItem) { _, newValue in
+            updateSelection(newValue)
+        }
+    }
+    
+    @ViewBuilder
+    private func sectionFor(_ section: MenuSection) -> some View {
+        if section == .tabs {
+            Section {
+                ForEach(tabs) { (tab: Tab) in
+                    NavigationLink(value: MenuItem.tab(objectID: tab.objectID)) {
+                        labelFor(tab: tab)
+                    }.id(tab.id)
+                }
+                .onDelete(perform: deleteTab)
+            }
+        } else {
+            if let sectionItems: [MenuItem] = menuDict[section] {
+                Section {
+                    ForEach(sectionItems, id: \.id) { (item: MenuItem) in
+                        navigationLinkFor(item: item)
+                            .id(item.id)
+                    }
+                } header: {
+                    if let headerText = section.header {
+                        Text(headerText)
+                    }
+                }
+            }
+        }
+    }
+    
+    @ViewBuilder
+    private func navigationLinkFor(item: MenuItem) -> some View {
+        if case .donation = item {
+            Button {
+                // trigger the donation pop-up, but do not select the menu item itself
+                NotificationCenter.openDonations()
+            } label: {
+                labelFor(item: .donation)
+            }
+        } else {
+            NavigationLink(value: item) {
+                labelFor(item: item)
+            }
+            .id(item.id)
         }
     }
     
@@ -129,6 +162,8 @@ struct RootViewiOS: View {
         
         Label {
             Text(text)
+                .lineLimit(1)
+                .truncationMode(.tail)
         } icon: {
             Image(uiImage: image)
                 .resizable()
@@ -142,7 +177,7 @@ struct RootViewiOS: View {
         let isSelected: Bool = item == selection
         switch item {
         case .tab:
-            // we use labelFor(zimFile:) instead
+            // we use labelFor(tab:) instead
             EmptyView()
         case .donation:
             Label {
@@ -162,9 +197,9 @@ struct RootViewiOS: View {
     
     private static func allItems() -> [MenuItem] {
         if FeatureFlags.hasLibrary {
-            return [.bookmarks, .opened, .categories, .downloads, .new, .hotspot, .settings]
+            return [.bookmarks, .opened, .categories, .downloads, .new, .hotspot, .settings(scrollToHotspot: false)]
         } else {
-            return [.bookmarks, .hotspot, .settings]
+            return [.bookmarks, .hotspot, .settings(scrollToHotspot: false)]
         }
     }
     
@@ -181,6 +216,40 @@ struct RootViewiOS: View {
                 let tab = tabs[offset]
                 Task {
                     await navigation.deleteTab(tabID: tab.objectID)
+                }
+            }
+        }
+    }
+    
+    private func updateSelection(_ newNavItem: NavigationItem?) {
+        if let newNavItem, let newSelection = MenuItem(from: newNavItem) {
+            if selection != newSelection {
+                selection = newSelection
+            }
+        }
+    }
+    
+    @MainActor
+    private func observeOpeningFiles() async {
+        for await notification in NotificationCenter.default.notifications(named: .openURL) {
+            guard let url = notification.userInfo?["url"] as? URL else { return }
+            let inNewTab = notification.userInfo?["inNewTab"] as? Bool ?? false
+            let deepLinkId: UUID?
+            if case .deepLink(.some(let linkID)) = notification.userInfo?["context"] as? OpenURLContext {
+                deepLinkId = linkID
+            } else {
+                deepLinkId = nil
+            }
+            Task { @MainActor in
+                if !inNewTab, case let .tab(tabID) = navigation.currentItem {
+                    BrowserViewModel.getCached(tabID: tabID).load(url: url)
+                } else {
+                    let tabID = navigation.createTab()
+                    BrowserViewModel.getCached(tabID: tabID).load(url: url)
+                    navPath.append(ZimFileService.shared.get)
+                }
+                if let deepLinkId {
+                    DeepLinkService.shared.stopFor(uuid: deepLinkId)
                 }
             }
         }
@@ -239,9 +308,9 @@ enum MenuSection: String, CaseIterable, Identifiable {
         case .library: return [.opened, .categories, .downloads, .new, .hotspot]
         case .settings:
             if !FeatureFlags.hasLibrary {
-                return [.hotspot, .settings]
+                return [.hotspot, .settings(scrollToHotspot: false)]
             } else {
-                return [.settings]
+                return [.settings(scrollToHotspot: false)]
             }
             // initially empty, we load them async
         case .tabs: return []

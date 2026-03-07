@@ -44,6 +44,10 @@ struct ZimFilesOpened: View {
         ) {
             ForEach(zimFiles, id: \.fileID) { zimFile in
                 NavigationLink {
+                    // TODO: selectFileById / fileIdToOpen
+                    // should trigger the details
+                    // more SwiftUI way than:
+                    // https://github.com/kiwix/kiwix-apple/pull/1495/changes/d5fd1ff502924b01d10b6c4717a40c0f800f9c2b
                     ZimFileDetail(zimFile: zimFile, dismissParent: nil)
                 } label: {
                     ZimFileCell(
