@@ -34,13 +34,14 @@ struct SplitViewForiPad: View {
     @EnvironmentObject var navigation: NavigationViewModel
     @State private var allSections: [MenuSection] = MenuSection.allMenuSections
     @State private var menuDict: [MenuSection: [MenuItem]] = MenuSection.staticDictionary
-    @State private var selection: MenuItem? = .opened
+    @State private var selection: MenuItem?
     @State private var navPath = NavigationPath()
     @FetchRequest(
         sortDescriptors: [NSSortDescriptor(key: "created", ascending: true)],
         predicate: Tab.Predicate.notMissing(),
         animation: .easeInOut
     ) private var tabs: FetchedResults<Tab>
+    private let selectFileById = NotificationCenter.default.publisher(for: .selectFile)
 
     var body: some View {
         let _ = Self._logChanges()
@@ -99,6 +100,13 @@ struct SplitViewForiPad: View {
         .onChange(of: navigation.currentItem) { _, newValue in
             updateSelection(newValue)
         }
+        // open file details, after importing file
+        .onReceive(selectFileById, perform: { notification in
+            guard let fileId = notification.userInfo?["fileId"] as? UUID else {
+                return
+            }
+            navPath.append(fileId)
+        })
     }
     
     @ViewBuilder
@@ -229,8 +237,8 @@ struct SplitViewForiPad: View {
         }
     }
     
-    @MainActor
     private func observeOpeningFiles() async {
+        // open main page or open in new tab via long tap
         for await notification in NotificationCenter.default.notifications(named: .openURL) {
             guard let url = notification.userInfo?["url"] as? URL else { return }
             let inNewTab = notification.userInfo?["inNewTab"] as? Bool ?? false
@@ -246,7 +254,6 @@ struct SplitViewForiPad: View {
                 } else {
                     let tabID = navigation.createTab()
                     BrowserViewModel.getCached(tabID: tabID).load(url: url)
-                    navPath.append(ZimFileService.shared.get)
                 }
                 if let deepLinkId {
                     DeepLinkService.shared.stopFor(uuid: deepLinkId)

@@ -32,9 +32,11 @@ struct ZimFilesOpened: View {
         animation: .easeInOut
     ) private var zimFiles: FetchedResults<ZimFile>
     @State private var isFileImporterPresented = false
-    @EnvironmentObject var selection: SelectedZimFileViewModel
-    private let selectFileById = NotificationCenter.default.publisher(for: .selectFile)
-    @State private var fileIdToOpen: UUID?
+    // TODO: check on iPhone if this selection makes any sense, since we have the navPath ??
+//    @EnvironmentObject var selection: SelectedZimFileViewModel
+    // TODO: remove this
+//    private let selectFileById = NotificationCenter.default.publisher(for: .selectFile)
+//    @State private var fileIdToOpen: UUID?
 
     var body: some View {
         LazyVGrid(
@@ -43,19 +45,22 @@ struct ZimFilesOpened: View {
             spacing: 12
         ) {
             ForEach(zimFiles, id: \.fileID) { zimFile in
-                NavigationLink {
-                    // TODO: selectFileById / fileIdToOpen
-                    // should trigger the details
-                    // more SwiftUI way than:
-                    // https://github.com/kiwix/kiwix-apple/pull/1495/changes/d5fd1ff502924b01d10b6c4717a40c0f800f9c2b
-                    ZimFileDetail(zimFile: zimFile, dismissParent: nil)
-                } label: {
+                NavigationLink(value: zimFile.fileID) {
                     ZimFileCell(
                         zimFile,
                         prominent: .name,
-                        isSelected: selection.isSelected(zimFile)
+                        isSelected: false
                     )
-                } .accessibilityIdentifier(zimFile.name)
+                }.accessibilityIdentifier(zimFile.name)
+            }
+        }
+        // reacts to both the above navigation link
+        // and from the parent SplitViewForiPad's NavigationPath!
+        .navigationDestination(for: UUID.self) { zimFileId in
+            if let zimFile = zimFiles.first(where: { $0.fileID == zimFileId }) {
+                ZimFileDetail(zimFile: zimFile, dismissParent: nil)
+            } else {
+                let _ = debugPrint("couldn't find zimFileID: \(zimFileId)")
             }
         }
         .modifier(GridCommon(edges: .all))
@@ -66,27 +71,27 @@ struct ZimFilesOpened: View {
                 Message(text: LocalString.zim_file_opened_overlay_no_opened_message)
             }
         }
-        .onReceive(selectFileById, perform: { notification in
-            guard let fileId = notification.userInfo?["fileId"] as? UUID else {
-                fileIdToOpen = nil
-                return
-            }
-            fileIdToOpen = fileId
-        })
-        .onChange(of: zimFiles.count) {
-            let selectedZimFile: ZimFile?
-            if let fileIdToOpen {
-                selectedZimFile = zimFiles.first { $0.fileID == fileIdToOpen }
-                self.fileIdToOpen = nil
-            } else {
-                selectedZimFile = nil
-            }
-            if let selectedZimFile {
-                selection.selectedZimFile = selectedZimFile
-            } else {
-                selection.reset()
-            }
-        }
+//        .onReceive(selectFileById, perform: { notification in
+//            guard let fileId = notification.userInfo?["fileId"] as? UUID else {
+//                fileIdToOpen = nil
+//                return
+//            }
+//            fileIdToOpen = fileId
+//        })
+//        .onChange(of: zimFiles.count) {
+//            let selectedZimFile: ZimFile?
+////            if let fileIdToOpen {
+////                selectedZimFile = zimFiles.first { $0.fileID == fileIdToOpen }
+////                self.fileIdToOpen = nil
+////            } else {
+////                selectedZimFile = nil
+////            }
+//            if let selectedZimFile {
+//                selection.selectedZimFile = selectedZimFile
+//            } else {
+//                selection.reset()
+//            }
+//        }
         // not using OpenFileButton here, because it does not work on iOS/iPadOS 15 when this view is in a modal
         .fileImporter(
             isPresented: $isFileImporterPresented,
