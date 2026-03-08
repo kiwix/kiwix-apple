@@ -134,7 +134,6 @@
 "app_macos_commands.open_file" = "Apri...";
 "app_macos_commands.new" = "Nuova scheda";
 "app_macos_navigation.button.library" = "Libreria";
-"sidebar_view.navigation.button.close_all" = "Chiudi tutte le schede";
 "enum.category.wikipedia" = "Wikipedia";
 "enum.category.wikibooks" = "Wikibooks";
 "enum.category.wikinews" = "Wikinotizie";

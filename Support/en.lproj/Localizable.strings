@@ -269,7 +269,6 @@
 "app_macos_commands.new" = "New Tab";
 "app_macos_navigation.button.library" = "Library";
 
-"sidebar_view.navigation.button.close_all" = "Close All Tabs";
 "sidebar_view.navigation.button.close" = "Close";
 
 "enum.category.wikipedia" = "Wikipedia";

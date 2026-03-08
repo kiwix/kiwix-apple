@@ -222,7 +222,6 @@
 "app_macos_commands.open_file" = "Отвори...";
 "app_macos_commands.new" = "Ново јазиче";
 "app_macos_navigation.button.library" = "Библиотека";
-"sidebar_view.navigation.button.close_all" = "Затвори ги сите јазичиња";
 "sidebar_view.navigation.button.close" = "Затвори";
 "enum.category.wikipedia" = "Википедија";
 "enum.category.wikibooks" = "Викикниги";

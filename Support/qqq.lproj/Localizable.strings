@@ -225,7 +225,6 @@
 "app_macos_commands.open_file" = "MacOS command menu item";
 "app_macos_commands.new" = "MacOS command menu item";
 "app_macos_navigation.button.library" = "MacOS command menu item";
-"sidebar_view.navigation.button.close_all" = "Accessiblity title for navigation button icon";
 "sidebar_view.navigation.button.close" = "Accessiblity title for navigation button icon";
 "enum.category.wikipedia" = "{{Optional}}";
 "enum.category.wikibooks" = "{{Optional}}";
