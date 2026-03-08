@@ -98,6 +98,12 @@ struct SplitViewForiPad: View {
             await loadDonations()
             await observeHasZimFiles()
             observeOpeningFiles()
+            // set up the default selection
+            // as direct opening a file (when the app is not launched)
+            // won't trigger .onChange(of: navigation.currentItem)
+            if let currentItem = navigation.currentItem {
+                selection = MenuItem(from: currentItem)
+            }
         }
         .onChange(of: navigation.currentItem) { oldValue, newValue in
             debugPrint("\(#function): \((oldValue.debugDescription, newValue.debugDescription, hasZimFiles))")
@@ -248,9 +254,14 @@ struct SplitViewForiPad: View {
     }
     
     private func updateSelection(_ newNavItem: NavigationItem?) {
+        debugPrint("\(#function): \(newNavItem.debugDescription)")
         if let newNavItem, let newSelection = MenuItem(from: newNavItem) {
             if selection != newSelection {
                 selection = newSelection
+                while !navPath.isEmpty {
+                    navPath.removeLast()
+                }
+                navPath.append(newSelection)
             }
         }
     }
