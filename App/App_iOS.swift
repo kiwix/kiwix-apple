@@ -154,22 +154,4 @@ struct Kiwix: App {
     }
 }
 
-private struct RootViewOld: UIViewControllerRepresentable {
-    @EnvironmentObject private var navigation: NavigationViewModel
-    @FetchRequest(
-        sortDescriptors: [NSSortDescriptor(keyPath: \ZimFile.size, ascending: false)],
-        predicate: ZimFile.openedPredicate(),
-        animation: .easeInOut
-    ) private var zimFiles: FetchedResults<ZimFile>
-
-    func makeUIViewController(context: Context) -> SplitViewController {
-        SplitViewController(
-            navigationViewModel: navigation,
-            hasZimFiles: !zimFiles.isEmpty
-        )
-    }
-
-    func updateUIViewController(_ controller: SplitViewController, context: Context) {
-    }
-}
 #endif
