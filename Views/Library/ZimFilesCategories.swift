@@ -46,7 +46,7 @@ struct ZimFilesCategories: View {
             .modifier(ToolbarRoleBrowser())
             .navigationTitle(MenuItem.categories.name)
             .toolbar {
-                ToolbarItem {
+                ToolbarItem(id: "picker", placement: .navigation) {
                     Picker(LocalString.zim_file_category_title, selection: $selected) {
                         ForEach(categories) {
                             Text($0.name).tag($0)
