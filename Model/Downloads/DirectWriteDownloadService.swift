@@ -267,7 +267,12 @@ final class DirectWriteDownloadService: NSObject, ObservableObject {
         info.error = nil
         activeDownloads[zimFileID] = info
 
-        let currentOffset = await sessionDelegate.fileWriter.getBytesWritten(for: zimFileID)
+        // After app restart, fileWriter has no state — fall back to saved state
+        var currentOffset = await sessionDelegate.fileWriter.getBytesWritten(for: zimFileID)
+        if currentOffset == 0, let savedState = DirectWriteDownloadState.load(for: zimFileID),
+           savedState.validatePartialFile() {
+            currentOffset = savedState.bytesWritten
+        }
 
         DownloadService.shared.progress.updateFor(uuid: zimFileID, withResumeData: nil)
         DownloadService.shared.progress.updateFor(
