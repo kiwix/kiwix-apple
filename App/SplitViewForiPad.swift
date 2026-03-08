@@ -20,6 +20,8 @@ import SwiftUI
 @MainActor
 struct SplitViewForiPad: View {
     @EnvironmentObject var navigation: NavigationViewModel
+    // start with side menu collapsed state by default
+    @State private var columnVisibility: NavigationSplitViewVisibility = .detailOnly
     @State private var allSections: [MenuSection] = MenuSection.allMenuSections
     @State private var menuDict: [MenuSection: [MenuItem]] = MenuSection.staticDictionary
     @State private var selection: MenuItem?
@@ -30,9 +32,11 @@ struct SplitViewForiPad: View {
         animation: .easeInOut
     ) private var tabs: FetchedResults<Tab>
     private let selectFileById = NotificationCenter.default.publisher(for: .selectFile)
+    @State private var hasZimFiles: Bool?
+    @State private var openingFilesTask: Task<Void, Never>?
 
     var body: some View {
-        NavigationSplitView {
+        NavigationSplitView(columnVisibility: $columnVisibility) {
             List(selection: $selection) {
                 ForEach(allSections) { (section: MenuSection) in
                     sectionFor(section)
@@ -92,9 +96,19 @@ struct SplitViewForiPad: View {
         }
         .task {
             await loadDonations()
-            await observeOpeningFiles()
+            await observeHasZimFiles()
+            observeOpeningFiles()
         }
-        .onChange(of: navigation.currentItem) { _, newValue in
+        .onChange(of: navigation.currentItem) { oldValue, newValue in
+            debugPrint("\(#function): \((oldValue.debugDescription, newValue.debugDescription, hasZimFiles))")
+            if newValue != oldValue {
+                if hasZimFiles == true, newValue != .loading {
+                    // allow the side menu to be displayed
+                    columnVisibility = .automatic
+                } else if hasZimFiles == false {
+                    columnVisibility = .detailOnly
+                }
+            }
             updateSelection(newValue)
         }
         // open file details, after importing file
@@ -241,29 +255,44 @@ struct SplitViewForiPad: View {
         }
     }
     
-    private func observeOpeningFiles() async {
-        // open main page or open in new tab via long tap
-        for await notification in NotificationCenter.default.notifications(named: .openURL) {
-            guard let url = notification.userInfo?["url"] as? URL else { return }
-            let inNewTab = notification.userInfo?["inNewTab"] as? Bool ?? false
-            let deepLinkId: UUID?
-            if case .deepLink(.some(let linkID)) = notification.userInfo?["context"] as? OpenURLContext {
-                deepLinkId = linkID
-            } else {
-                deepLinkId = nil
-            }
-            Task { @MainActor in
-                if !inNewTab, case let .tab(tabID) = navigation.currentItem {
-                    BrowserViewModel.getCached(tabID: tabID).load(url: url)
+    private func observeOpeningFiles() {
+        openingFilesTask = Task {
+            // open main page or open in new tab via long tap
+            for await notification in NotificationCenter.default.notifications(named: .openURL) {
+                guard let url = notification.userInfo?["url"] as? URL else { return }
+                let inNewTab = notification.userInfo?["inNewTab"] as? Bool ?? false
+                let deepLinkId: UUID?
+                if case .deepLink(.some(let linkID)) = notification.userInfo?["context"] as? OpenURLContext {
+                    deepLinkId = linkID
                 } else {
-                    let tabID = navigation.createTab()
-                    BrowserViewModel.getCached(tabID: tabID).load(url: url)
+                    deepLinkId = nil
                 }
-                if let deepLinkId {
-                    DeepLinkService.shared.stopFor(uuid: deepLinkId)
+                Task { @MainActor in
+                    if !inNewTab, case let .tab(tabID) = navigation.currentItem {
+                        BrowserViewModel.getCached(tabID: tabID).load(url: url)
+                    } else {
+                        let tabID = navigation.createTab()
+                        BrowserViewModel.getCached(tabID: tabID).load(url: url)
+                    }
+                    if let deepLinkId {
+                        DeepLinkService.shared.stopFor(uuid: deepLinkId)
+                    }
                 }
             }
         }
+    }
+    
+    private func observeHasZimFiles() async {
+         let newValue = await Database.shared.viewContext.perform {
+            let request = ZimFile.fetchRequest(predicate: ZimFile.openedPredicate())
+            let context = Database.shared.viewContext
+            if let count = try? context.count(for: request) {
+                return count > 0
+            }
+            return false
+        }
+        debugPrint("\(#function): \(newValue)")
+        hasZimFiles = newValue
     }
 }
 
