@@ -106,7 +106,6 @@ struct SplitViewForiPad: View {
             }
         }
         .onChange(of: navigation.currentItem) { oldValue, newValue in
-            debugPrint("\(#function): \((oldValue.debugDescription, newValue.debugDescription, hasZimFiles))")
             if newValue != oldValue {
                 if hasZimFiles == true, newValue != .loading {
                     // allow the side menu to be displayed
@@ -254,7 +253,6 @@ struct SplitViewForiPad: View {
     }
     
     private func updateSelection(_ newNavItem: NavigationItem?) {
-        debugPrint("\(#function): \(newNavItem.debugDescription)")
         if let newNavItem, let newSelection = MenuItem(from: newNavItem) {
             if selection != newSelection {
                 selection = newSelection
@@ -302,7 +300,6 @@ struct SplitViewForiPad: View {
             }
             return false
         }
-        debugPrint("\(#function): \(newValue)")
         hasZimFiles = newValue
     }
 }
