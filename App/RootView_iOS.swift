@@ -22,10 +22,22 @@ struct RootViewiOS: View {
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     var body: some View {
         if horizontalSizeClass == .compact {
-            CompactViewWrapper()
+            RootCompactView()
         } else {
             SplitViewForiPad()
         }
+    }
+}
+
+// iPhone compact UIKit SearchController wrapped:
+private struct RootCompactView: UIViewControllerRepresentable {
+    @EnvironmentObject private var navigation: NavigationViewModel
+
+    func makeUIViewController(context: Context) -> UINavigationController {
+        UINavigationController(rootViewController: CompactViewController(navigation: navigation))
+    }
+
+    func updateUIViewController(_ controller: UINavigationController, context: Context) {
     }
 }
 

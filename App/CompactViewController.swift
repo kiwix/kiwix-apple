@@ -133,10 +133,10 @@ final class CompactViewController: UIHostingController<AnyView>, UISearchControl
     }
 }
 
-// TODO: all above code should now go under CompactViewWrapper!
+// TODO: all above code should now go under CompactView!
 struct CompactViewWrapper: View {
     @EnvironmentObject private var navigation: NavigationViewModel
-    
+    @State private var searchViewModel = SearchViewModel.shared
     var body: some View {
         if case .loading = navigation.currentItem {
             LoadingDataView()
@@ -145,6 +145,15 @@ struct CompactViewWrapper: View {
         }
     }
 }
+
+//        if #available(iOS 26, *) {
+//            content.searchToolbarBehavior(.minimize)
+//        } else {
+//            content
+////        }
+//    }
+//}
+
 
 private struct CompactView: View {
     @EnvironmentObject private var navigation: NavigationViewModel
