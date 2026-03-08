@@ -29,7 +29,7 @@ struct DownloadTaskInfo: Sendable {
     let destinationURL: URL
     let expectedTotalBytes: Int64
     var isPaused: Bool = false
-    var error: DirectWriteDownloadError? = nil
+    var error: DirectWriteDownloadError?
     var securityScopedAccess: Bool = false
     var retryCount: Int = 0
     var lastLoggedPercentage: Int = -1
