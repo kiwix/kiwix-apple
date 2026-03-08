@@ -24,6 +24,8 @@ final class NavigationViewModel: ObservableObject {
     @Published var currentItem: NavigationItem? = .loading
     private(set) var showDownloads = PassthroughSubject<Void, Never>()
     
+    private var openingFilesTask: Task<Void, Never>?
+    
     #if os(macOS)
     var isTerminating: Bool = false
     
@@ -202,6 +204,35 @@ final class NavigationViewModel: ObservableObject {
         // setting it to nil ensures a new tab (and webview) will be created
         // on accessing the public currentTabId
         currentTabIdValue = nil
+    }
+    #endif
+    
+    #if os(iOS)
+    func observeOpeningFiles() {
+        openingFilesTask = Task {
+            // open main page or open in new tab via long tap
+            for await notification in NotificationCenter.default.notifications(named: .openURL) {
+                guard let url = notification.userInfo?["url"] as? URL else { return }
+                let inNewTab = notification.userInfo?["inNewTab"] as? Bool ?? false
+                let deepLinkId: UUID?
+                if case .deepLink(.some(let linkID)) = notification.userInfo?["context"] as? OpenURLContext {
+                    deepLinkId = linkID
+                } else {
+                    deepLinkId = nil
+                }
+                Task { @MainActor in
+                    if !inNewTab, case let .tab(tabID) = currentItem {
+                        BrowserViewModel.getCached(tabID: tabID).load(url: url)
+                    } else {
+                        let tabID = createTab()
+                        BrowserViewModel.getCached(tabID: tabID).load(url: url)
+                    }
+                    if let deepLinkId {
+                        DeepLinkService.shared.stopFor(uuid: deepLinkId)
+                    }
+                }
+            }
+        }
     }
     #endif
 }

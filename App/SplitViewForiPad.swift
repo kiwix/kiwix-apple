@@ -97,7 +97,7 @@ struct SplitViewForiPad: View {
         .task {
             await loadDonations()
             await observeHasZimFiles()
-            observeOpeningFiles()
+            navigation.observeOpeningFiles()
             // set up the default selection
             // as direct opening a file (when the app is not launched)
             // won't trigger .onChange(of: navigation.currentItem)
@@ -260,33 +260,6 @@ struct SplitViewForiPad: View {
                     navPath.removeLast()
                 }
                 navPath.append(newSelection)
-            }
-        }
-    }
-    
-    private func observeOpeningFiles() {
-        openingFilesTask = Task {
-            // open main page or open in new tab via long tap
-            for await notification in NotificationCenter.default.notifications(named: .openURL) {
-                guard let url = notification.userInfo?["url"] as? URL else { return }
-                let inNewTab = notification.userInfo?["inNewTab"] as? Bool ?? false
-                let deepLinkId: UUID?
-                if case .deepLink(.some(let linkID)) = notification.userInfo?["context"] as? OpenURLContext {
-                    deepLinkId = linkID
-                } else {
-                    deepLinkId = nil
-                }
-                Task { @MainActor in
-                    if !inNewTab, case let .tab(tabID) = navigation.currentItem {
-                        BrowserViewModel.getCached(tabID: tabID).load(url: url)
-                    } else {
-                        let tabID = navigation.createTab()
-                        BrowserViewModel.getCached(tabID: tabID).load(url: url)
-                    }
-                    if let deepLinkId {
-                        DeepLinkService.shared.stopFor(uuid: deepLinkId)
-                    }
-                }
             }
         }
     }

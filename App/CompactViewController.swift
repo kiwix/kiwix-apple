@@ -50,7 +50,7 @@ final class CompactViewController: UIHostingController<AnyView>, UISearchControl
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        navigation.observeOpeningFiles()
         navigationItemObserver = navigation.$currentItem
             .receive(on: DispatchQueue.main)
             .sink(receiveValue: { [weak self] currentItem in
@@ -145,14 +145,6 @@ struct CompactViewWrapper: View {
         }
     }
 }
-
-//        if #available(iOS 26, *) {
-//            content.searchToolbarBehavior(.minimize)
-//        } else {
-//            content
-////        }
-//    }
-//}
 
 
 private struct CompactView: View {
