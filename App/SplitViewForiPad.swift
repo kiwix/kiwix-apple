@@ -90,7 +90,7 @@ struct SplitViewForiPad: View {
                 case .hotspot:
                     HotspotZimFilesSelection()
                 case nil:
-                    EmptyView()
+                    LoadingDataView()
                 }
             }
         }
