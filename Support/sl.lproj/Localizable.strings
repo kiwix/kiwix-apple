@@ -70,6 +70,7 @@
 "download_task_cell.status.downloading" = "Prenašam ...";
 "download_task_cell.status.paused" = "Zaustavljeno";
 "download_task_cell.status.paused.device_offline" = "Zaustavljeno (naprava je brez povezave)";
+"download_task_cell.status.paused.waiting_for_wifi" = "Zaustavljeno (čakanje na Wi-Fi)";
 "download_again.question.title" = "To datoteko že imate.";
 "download_again.question.description_part_1" = "Zdi se, da je datoteka %@ že prenesena.";
 "download_again.question.description_part_2" = "Ali še vedno želite prenesti »%@«? Vaša obstoječa datoteka ne bo izbrisana.";
