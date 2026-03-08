@@ -44,7 +44,6 @@ struct SplitViewForiPad: View {
     private let selectFileById = NotificationCenter.default.publisher(for: .selectFile)
 
     var body: some View {
-        let _ = Self._logChanges()
         NavigationSplitView {
             List(selection: $selection) {
                 ForEach(allSections) { (section: MenuSection) in
@@ -83,8 +82,7 @@ struct SplitViewForiPad: View {
                 case let .settings(scrollToHotspot):
                     Settings(scrollToHotspot: scrollToHotspot)
                 case .donation:
-                    // this should not be triggered
-                    let _ = assertionFailure("donation selection should not be triggerred")
+                    // this won't be triggered
                     EmptyView()
                 case .hotspot:
                     HotspotZimFilesSelection()

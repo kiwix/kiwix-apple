@@ -20,10 +20,6 @@ import UniformTypeIdentifiers
 
 /// A grid of zim files that are opened, or was open but is now missing
 /// iOS only, only iPad splitView
-/// the UINavigationController used in splitView doesn't work with
-/// NavigationStack
-/// therefore programatic selection of newly added file is with a
-/// workaround
 struct ZimFilesOpened: View {
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     @FetchRequest(
@@ -32,11 +28,6 @@ struct ZimFilesOpened: View {
         animation: .easeInOut
     ) private var zimFiles: FetchedResults<ZimFile>
     @State private var isFileImporterPresented = false
-    // TODO: check on iPhone if this selection makes any sense, since we have the navPath ??
-//    @EnvironmentObject var selection: SelectedZimFileViewModel
-    // TODO: remove this
-//    private let selectFileById = NotificationCenter.default.publisher(for: .selectFile)
-//    @State private var fileIdToOpen: UUID?
 
     var body: some View {
         LazyVGrid(
@@ -59,8 +50,6 @@ struct ZimFilesOpened: View {
         .navigationDestination(for: UUID.self) { zimFileId in
             if let zimFile = zimFiles.first(where: { $0.fileID == zimFileId }) {
                 ZimFileDetail(zimFile: zimFile, dismissParent: nil)
-            } else {
-                let _ = debugPrint("couldn't find zimFileID: \(zimFileId)")
             }
         }
         .modifier(GridCommon(edges: .all))
@@ -71,27 +60,6 @@ struct ZimFilesOpened: View {
                 Message(text: LocalString.zim_file_opened_overlay_no_opened_message)
             }
         }
-//        .onReceive(selectFileById, perform: { notification in
-//            guard let fileId = notification.userInfo?["fileId"] as? UUID else {
-//                fileIdToOpen = nil
-//                return
-//            }
-//            fileIdToOpen = fileId
-//        })
-//        .onChange(of: zimFiles.count) {
-//            let selectedZimFile: ZimFile?
-////            if let fileIdToOpen {
-////                selectedZimFile = zimFiles.first { $0.fileID == fileIdToOpen }
-////                self.fileIdToOpen = nil
-////            } else {
-////                selectedZimFile = nil
-////            }
-//            if let selectedZimFile {
-//                selection.selectedZimFile = selectedZimFile
-//            } else {
-//                selection.reset()
-//            }
-//        }
         // not using OpenFileButton here, because it does not work on iOS/iPadOS 15 when this view is in a modal
         .fileImporter(
             isPresented: $isFileImporterPresented,
