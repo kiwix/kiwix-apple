@@ -50,7 +50,7 @@ final class CompactViewController: UIHostingController<AnyView>, UISearchControl
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        navigation.observeOpeningFiles()
         navigationItemObserver = navigation.$currentItem
             .receive(on: DispatchQueue.main)
             .sink(receiveValue: { [weak self] currentItem in
@@ -135,7 +135,7 @@ final class CompactViewController: UIHostingController<AnyView>, UISearchControl
 
 private struct CompactViewWrapper: View {
     @EnvironmentObject private var navigation: NavigationViewModel
-    
+
     var body: some View {
         if case .loading = navigation.currentItem {
             LoadingDataView()

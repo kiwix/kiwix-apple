@@ -220,7 +220,6 @@
 "app_macos_commands.open_file" = "Åben...";
 "app_macos_commands.new" = "Ny Fane";
 "app_macos_navigation.button.library" = "Bibliotek";
-"sidebar_view.navigation.button.close_all" = "Luk alle faner";
 "sidebar_view.navigation.button.close" = "Luk";
 "enum.category.other" = "Andre";
 "enum.external_link_loading_policy.always_ask" = "Spørg Altid";

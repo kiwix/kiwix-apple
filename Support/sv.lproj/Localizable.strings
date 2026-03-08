@@ -228,7 +228,6 @@
 "app_macos_commands.open_file" = "Öppna...";
 "app_macos_commands.new" = "Ny flik";
 "app_macos_navigation.button.library" = "Bibliotek";
-"sidebar_view.navigation.button.close_all" = "Stäng alla flikar";
 "sidebar_view.navigation.button.close" = "Stäng";
 "enum.category.wikipedia" = "Wikipedia";
 "enum.category.wikibooks" = "Wikibooks";
