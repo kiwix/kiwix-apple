@@ -240,6 +240,9 @@ final class DirectWriteDownloadService: NSObject, ObservableObject {
         sessionTasks[zimFileID]?.cancel()
         sessionTasks.removeValue(forKey: zimFileID)
 
+        // Update UI immediately so the button switches to "Resume" without waiting for disk flush
+        DownloadService.shared.progress.updateFor(uuid: zimFileID, withResumeData: Data([0x01]))
+
         Task {
             let remaining = await sessionDelegate.buffer.drain(for: sessionTaskID)
             if !remaining.isEmpty {
@@ -248,10 +251,6 @@ final class DirectWriteDownloadService: NSObject, ObservableObject {
             await sessionDelegate.fileWriter.close(zimFileID: zimFileID)
 
             self.saveState(for: zimFileID)
-            let placeholderResumeData = Data([0x01])
-            DownloadService.shared.progress.updateFor(
-                uuid: zimFileID, withResumeData: placeholderResumeData
-            )
             Log.DownloadService.info(
                 "Paused download for \(zimFileID.uuidString, privacy: .public)"
             )
