@@ -34,6 +34,7 @@ struct SplitViewForiPad: View {
     private let selectFileById = NotificationCenter.default.publisher(for: .selectFile)
     @State private var hasZimFiles: Bool?
     @State private var openingFilesTask: Task<Void, Never>?
+    @State private var navigateToHotspotSettingsTask: Task<Void, Never>?
 
     var body: some View {
         NavigationSplitView(columnVisibility: $columnVisibility) {
@@ -97,6 +98,7 @@ struct SplitViewForiPad: View {
         .task {
             await loadDonations()
             await observeHasZimFiles()
+            observeNavigateToHotspotSettings()
             navigation.observeOpeningFiles()
             // set up the default selection
             // as direct opening a file (when the app is not launched)
@@ -274,6 +276,14 @@ struct SplitViewForiPad: View {
             return false
         }
         hasZimFiles = newValue
+    }
+    
+    private func observeNavigateToHotspotSettings() {
+        navigateToHotspotSettingsTask = Task {
+            for await _ in NotificationCenter.default.notifications(named: .navigateToHotspotSettings) {
+                navigation.currentItem = .settings(scrollToHotspot: true)
+            }
+        }
     }
 }
 
