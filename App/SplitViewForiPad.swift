@@ -113,9 +113,18 @@ struct SplitViewForiPad: View {
                 ForEach(tabs) { (tab: Tab) in
                     NavigationLink(value: MenuItem.tab(objectID: tab.objectID)) {
                         labelFor(tab: tab)
-                    }.id(tab.id)
+                    }
+                    .id(tab.id)
+                    .swipeActions(edge: .trailing, allowsFullSwipe: true) {
+                        Button(role: .destructive) {
+                            Task { [weak navigation] in
+                                await navigation?.deleteTab(tabID: tab.objectID)
+                            }
+                        } label: {
+                            Label(LocalString.sidebar_view_navigation_button_close, systemImage: "xmark")
+                        }
+                    }
                 }
-                .onDelete(perform: deleteTab)
             }
         } else {
             if let sectionItems: [MenuItem] = menuDict[section] {
@@ -221,17 +230,6 @@ struct SplitViewForiPad: View {
         guard allSections.contains(.donation) else { return }
         if await Payment.paymentButtonTypeAsync() != nil {
             menuDict[.donation] = [.donation]
-        }
-    }
-    
-    private func deleteTab(at offsets: IndexSet) {
-        for offset in offsets {
-            if 0 <= offset && offset < tabs.count {
-                let tab = tabs[offset]
-                Task {
-                    await navigation.deleteTab(tabID: tab.objectID)
-                }
-            }
         }
     }
     
