@@ -15,7 +15,7 @@
 
 import SwiftUI
 
-#if os(iOS)
+#if os(iOS) // iPhone only
 struct TabsManagerButton: View {
     @EnvironmentObject private var navigation: NavigationViewModel
     @State private var presentedSheet: PresentedSheet?

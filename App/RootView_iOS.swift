@@ -53,15 +53,26 @@ struct SplitViewForiPad: View {
             .listStyle(.sidebar)
             .navigationTitle(Brand.appName)
             .toolbar {
-                ToolbarItem(id: "add_tab") {
-                    Button {
-                        navigation.createTab()
+                Menu {
+                    Button(role: .destructive) {
+                        guard case let .tab(tabID) = navigation.currentItem else { return }
+                        Task { [weak navigation] in
+                            await navigation?.deleteTab(tabID: tabID)
+                        }
                     } label: {
-                        Image(systemName: "plus.square")
+                        Label(LocalString.common_tab_menu_close_this, systemImage: "xmark.square")
                     }
-                    .onLongPressGesture {
-                        // TODO: impement menu
+                    Button(role: .destructive) {
+                        Task { [weak navigation] in
+                            await navigation?.deleteAllTabs()
+                        }
+                    } label: {
+                        Label(LocalString.common_tab_menu_close_all, systemImage: "xmark.square.fill")
                     }
+                } label: {
+                    Label(LocalString.common_tab_menu_new_tab, systemImage: "plus.square")
+                } primaryAction: {
+                    navigation.createTab()
                 }
             }
         } detail: {
