@@ -197,7 +197,7 @@ final class DiagnosticsModel: ObservableObject {
 enum Diagnostics {
     
     /// Log the os and app related infos
-    static func start() {
+    @MainActor static func start() async {
         Log.Environment.notice("app: \(appVersion(), privacy: .public)")
         Log.Environment.notice("os: \(osName(), privacy: .public)")
         Log.Environment.notice("free space: \(freeSpace(), privacy: .public)")
@@ -251,6 +251,7 @@ enum Diagnostics {
         return "\(bundleIdentifier): \(releaseVersion) (\(buildNumber))"
     }
     
+    @MainActor
     private static func osName() -> String {
         let deviceType = Device.current.rawValue
         let osVersion = ProcessInfo.processInfo.operatingSystemVersionString
@@ -281,12 +282,15 @@ enum Diagnostics {
         #if os(macOS)
         let freeSpace = DownloadDestination.availableDiskSpace()
         #else
-        let directory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first
-        let freeSpace: Int64? = try? directory?.resourceValues(forKeys: [.volumeAvailableCapacityForImportantUsageKey])
+        let freeSpace: Int64? = try? FileManager.default
+            .urls(for: .documentDirectory, in: .userDomainMask)
+            .first?.resourceValues(forKeys: [.volumeAvailableCapacityForImportantUsageKey])
             .volumeAvailableCapacityForImportantUsage
         #endif
 
-        guard let freeSpace else { return "unknown" }
+        guard let freeSpace else {
+            return "unknown"
+        }
         return ByteCountFormatter().string(fromByteCount: freeSpace)
     }
 }
