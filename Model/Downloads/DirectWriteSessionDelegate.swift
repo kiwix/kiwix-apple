@@ -194,7 +194,7 @@ final class DirectWriteSessionDelegate: NSObject, URLSessionDataDelegate {
         Task { [buffer, fileWriter] in
             let remaining = await buffer.drain(for: taskID)
             if !remaining.isEmpty {
-                try? await fileWriter.write(remaining, for: zimFileID)
+                _ = try? await fileWriter.write(remaining, for: zimFileID)
             }
             await MainActor.run { [weak self] in
                 self?.onCompletion?(zimFileID, error)

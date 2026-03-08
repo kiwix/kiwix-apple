@@ -243,7 +243,7 @@ final class DirectWriteDownloadService: NSObject, ObservableObject {
         Task {
             let remaining = await sessionDelegate.buffer.drain(for: sessionTaskID)
             if !remaining.isEmpty {
-                try? await sessionDelegate.fileWriter.write(remaining, for: zimFileID)
+                _ = try? await sessionDelegate.fileWriter.write(remaining, for: zimFileID)
             }
             await sessionDelegate.fileWriter.close(zimFileID: zimFileID)
 
@@ -590,7 +590,7 @@ final class DirectWriteDownloadService: NSObject, ObservableObject {
             let taskID = sessionTasks[zimFileID]?.taskIdentifier ?? -1
             let remaining = await sessionDelegate.buffer.drain(for: taskID)
             if !remaining.isEmpty {
-                try? await sessionDelegate.fileWriter.write(remaining, for: zimFileID)
+                _ = try? await sessionDelegate.fileWriter.write(remaining, for: zimFileID)
             }
             saveState(for: zimFileID)
         }
@@ -647,9 +647,17 @@ final class DirectWriteDownloadService: NSObject, ObservableObject {
                 uuid: state.zimFileID, downloaded: state.bytesWritten,
                 total: state.expectedTotalBytes
             )
+            let placeholderResumeData = Data([0x01])
             DownloadService.shared.progress.updateFor(
-                uuid: state.zimFileID, withResumeData: Data([0x01])
+                uuid: state.zimFileID, withResumeData: placeholderResumeData
             )
+
+            // Auto-resume downloads that were actively running when the app quit
+            if !state.isPaused {
+                Task {
+                    await self.resume(zimFileID: state.zimFileID)
+                }
+            }
         }
     }
 }
