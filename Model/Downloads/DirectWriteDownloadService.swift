@@ -13,906 +13,638 @@
 // You should have received a copy of the GNU General Public License
 // along with Kiwix; If not, see https://www.gnu.org/licenses/.
 
+// swiftlint:disable file_length
+
 #if os(macOS)
 import Foundation
 import Combine
 import AppKit
 
+// MARK: - DownloadTaskInfo
+
+/// Lightweight, Sendable struct describing a download task's state.
+struct DownloadTaskInfo: Sendable {
+    let zimFileID: UUID
+    let downloadURL: URL
+    let destinationURL: URL
+    let expectedTotalBytes: Int64
+    var isPaused: Bool = false
+    var error: DirectWriteDownloadError? = nil
+    var securityScopedAccess: Bool = false
+    var retryCount: Int = 0
+    var lastLoggedPercentage: Int = -1
+}
+
+// MARK: - DirectWriteDownloadService
+
 /// Service for downloading files directly to a custom directory on macOS.
-/// Uses URLSessionDataDelegate with 16MB memory buffer for efficient disk writes.
 ///
-/// Performance note: URLSession delegates are called on a background queue.
-/// To avoid costly context switches to MainActor for every data chunk (~780/sec at 400Mbps),
-/// we maintain a thread-safe task registry separate from the @Published activeDownloads.
-final class DirectWriteDownloadService: NSObject, ObservableObject, URLSessionDataDelegate {
-    
-    // MARK: - Singleton
-    
+/// Architecture (mirrors upstream DownloadService / DownloadSessionDelegate split):
+/// - `DirectWriteSessionDelegate`: URLSessionDataDelegate handling the data flow
+///   - `DownloadDataBuffer` actor: buffers incoming data (hot path)
+///   - `DownloadFileWriter` actor: serializes all disk I/O
+/// - This class: download lifecycle (start/pause/resume/cancel), state, timers, sleep prevention
+@MainActor
+final class DirectWriteDownloadService: NSObject, ObservableObject {
+
     static let shared = DirectWriteDownloadService()
-    
-    // MARK: - Published Properties (UI only - updated infrequently)
-    
-    @MainActor @Published private(set) var activeDownloads: [UUID: DownloadTask] = [:]
-    
-    // MARK: - Configuration Constants
-    
-    /// Buffer size before flushing to disk (16MB - optimal for external drives)
+
+    @Published private(set) var activeDownloads: [UUID: DownloadTaskInfo] = [:]
+    private var sessionTasks: [UUID: URLSessionDataTask] = [:]
+
+    let sessionDelegate: DirectWriteSessionDelegate
+
     private let writeBufferSize = 16 * 1024 * 1024
-    
-    /// Maximum time between disk flushes (30 seconds)
-    private let maxFlushInterval: TimeInterval = 30
-    
-    /// Interval for state auto-save (30 seconds)
     private let stateAutoSaveInterval: TimeInterval = 30
-    
-    /// Maximum retry attempts for recoverable network errors
     private let maxRetryAttempts = 5
-    
-    /// Delay between retry attempts
     private let retryDelay: TimeInterval = 3.0
-    
-    // MARK: - Private Properties
-    
+
     private var urlSession: URLSession!
     private var sleepAssertion: NSObjectProtocol?
+    private var progressTimer: Timer?
     private var autoSaveTimer: Timer?
     private var wakeObserver: NSObjectProtocol?
-    
-    /// Thread-safe task registry - accessed from URLSession delegate without MainActor
-    /// Protected by tasksLock
-    private var tasks: [UUID: DownloadTask] = [:]
-    private let tasksLock = NSLock()
-    
-    /// Maps URLSessionTask identifiers to ZIM file IDs (for delegate callbacks)
-    /// Protected by tasksLock
-    private var taskIDToZimFileID: [Int: UUID] = [:]
-    
-    /// Dedicated queue for file I/O operations
-    private let fileIOQueue = DispatchQueue(label: "org.kiwix.directwrite.fileio", qos: .userInitiated)
-    
-    // MARK: - Nested Types
-    
-    /// Marked as @unchecked Sendable because we manage thread safety manually via tasksLock/fileIOQueue
-    class DownloadTask: @unchecked Sendable {
-        let zimFileID: UUID
-        let downloadURL: URL
-        let destinationURL: URL
-        let expectedTotalBytes: Int64
-        
-        /// Bytes confirmed written to disk (access via fileIOQueue)
-        var bytesWritten: Int64 = 0
-        
-        /// In-memory buffer for efficient disk writes (access via fileIOQueue)
-        var dataBuffer = Data()
-        
-        /// Paused state (access via tasksLock)
-        var isPaused: Bool = false
-        
-        /// Error state (access via tasksLock)
-        var error: DirectWriteDownloadError?
-        
-        var urlSessionTask: URLSessionDataTask?
-        var fileHandle: FileHandle?
-        var securityScopedAccess: Bool = false
-        var lastFlushTime: Date = Date()
-        var lastSaveTime: Date = Date()
-        var lastUIUpdateTime: Date = Date()
-        var lastLoggedPercentage: Int = -1
-        var retryCount: Int = 0
-        
-        var progress: Double {
-            guard expectedTotalBytes > 0 else { return 0 }
-            return Double(bytesWritten + Int64(dataBuffer.count)) / Double(expectedTotalBytes)
-        }
-        
-        var totalBytesReceived: Int64 {
-            return bytesWritten + Int64(dataBuffer.count)
-        }
-        
-        var isComplete: Bool {
-            bytesWritten >= expectedTotalBytes && expectedTotalBytes > 0
-        }
-        
-        init(zimFileID: UUID, downloadURL: URL, destinationURL: URL, expectedTotalBytes: Int64) {
-            self.zimFileID = zimFileID
-            self.downloadURL = downloadURL
-            self.destinationURL = destinationURL
-            self.expectedTotalBytes = expectedTotalBytes
-        }
-    }
-    
-    // MARK: - Thread-Safe Task Access
-    
-    /// Gets a task by ZIM file ID (thread-safe)
-    private func getTask(for zimFileID: UUID) -> DownloadTask? {
-        tasksLock.lock()
-        defer { tasksLock.unlock() }
-        return tasks[zimFileID]
-    }
-    
-    /// Gets a task by URLSessionTask identifier (thread-safe)
-    private func getTask(forSessionTaskID taskID: Int) -> DownloadTask? {
-        tasksLock.lock()
-        defer { tasksLock.unlock() }
-        guard let zimFileID = taskIDToZimFileID[taskID] else { return nil }
-        return tasks[zimFileID]
-    }
-    
-    /// Registers a task (thread-safe)
-    private func registerTask(_ task: DownloadTask) {
-        tasksLock.lock()
-        defer { tasksLock.unlock() }
-        tasks[task.zimFileID] = task
-    }
-    
-    /// Unregisters a task (thread-safe)
-    private func unregisterTask(for zimFileID: UUID) {
-        tasksLock.lock()
-        defer { tasksLock.unlock() }
-        tasks.removeValue(forKey: zimFileID)
-    }
-    
-    /// Maps URLSessionTask ID to ZIM file ID (thread-safe)
-    private func mapSessionTask(_ sessionTaskID: Int, to zimFileID: UUID) {
-        tasksLock.lock()
-        defer { tasksLock.unlock() }
-        taskIDToZimFileID[sessionTaskID] = zimFileID
-    }
-    
-    /// Removes URLSessionTask ID mapping and returns the ZIM file ID (thread-safe)
-    private func unmapSessionTask(_ sessionTaskID: Int) -> UUID? {
-        tasksLock.lock()
-        defer { tasksLock.unlock() }
-        return taskIDToZimFileID.removeValue(forKey: sessionTaskID)
-    }
-    
-    /// Checks if task is paused (thread-safe)
-    private func isTaskPaused(_ task: DownloadTask) -> Bool {
-        tasksLock.lock()
-        defer { tasksLock.unlock() }
-        return task.isPaused
-    }
-    
+
     // MARK: - Initialization
-    
+
     private override init() {
+        let buffer = DownloadDataBuffer(flushThreshold: writeBufferSize)
+        let fileWriter = DownloadFileWriter()
+        self.sessionDelegate = DirectWriteSessionDelegate(
+            buffer: buffer, fileWriter: fileWriter
+        )
         super.init()
-        
+
+        sessionDelegate.onFlush = { [weak self] zimFileID, bytesWritten in
+            self?.didFlush(zimFileID: zimFileID, bytesWritten: bytesWritten)
+        }
+        sessionDelegate.onCompletion = { [weak self] zimFileID, error in
+            self?.handleCompletion(zimFileID: zimFileID, error: error)
+        }
+
         let configuration = URLSessionConfiguration.default
         configuration.timeoutIntervalForRequest = 300
         configuration.timeoutIntervalForResource = 0
         configuration.allowsCellularAccess = true
         configuration.waitsForConnectivity = true
-        
-        // Use dedicated queue for URLSession callbacks (not main thread)
+
         let sessionQueue = OperationQueue()
         sessionQueue.name = "org.kiwix.directwrite.session"
         sessionQueue.maxConcurrentOperationCount = 1
-        
-        self.urlSession = URLSession(configuration: configuration, delegate: self, delegateQueue: sessionQueue)
-        
+
+        self.urlSession = URLSession(
+            configuration: configuration, delegate: sessionDelegate, delegateQueue: sessionQueue
+        )
+
         setupWakeObserver()
-        
-        Task { @MainActor in
-            restoreInterruptedDownloads()
-        }
+        Task { restoreInterruptedDownloads() }
     }
-    
-    deinit {
-        if let observer = wakeObserver {
-            NSWorkspace.shared.notificationCenter.removeObserver(observer)
-        }
-    }
-    
+
     // MARK: - Wake Observer
-    
+
     private func setupWakeObserver() {
         wakeObserver = NSWorkspace.shared.notificationCenter.addObserver(
             forName: NSWorkspace.didWakeNotification,
             object: nil,
             queue: .main
         ) { [weak self] _ in
-            self?.handleSystemWake()
-        }
-    }
-    
-    private func handleSystemWake() {
-        Log.DownloadService.info("System woke from sleep, checking downloads...")
-        
-        Task { @MainActor in
-            for (zimFileID, task) in activeDownloads {
-                if task.error != nil && !task.isPaused {
-                    Log.DownloadService.info("Auto-resuming download for \(zimFileID.uuidString, privacy: .public)")
-                    task.retryCount = 0
-                    task.error = nil
-                    await resume(zimFileID: zimFileID)
-                }
+            Task { @MainActor [weak self] in
+                self?.handleSystemWake()
             }
         }
     }
-    
+
+    private func handleSystemWake() {
+        Log.DownloadService.info("System woke from sleep, checking downloads...")
+        for (zimFileID, info) in activeDownloads where info.error != nil && !info.isPaused {
+            Log.DownloadService.info(
+                "Auto-resuming download for \(zimFileID.uuidString, privacy: .public)"
+            )
+            activeDownloads[zimFileID]?.retryCount = 0
+            activeDownloads[zimFileID]?.error = nil
+            Task { await resume(zimFileID: zimFileID) }
+        }
+    }
+
     // MARK: - Public Methods
-    
-    @MainActor
-    func start(zimFileID: UUID, downloadURL: URL, expectedSize: Int64, allowsCellularAccess: Bool = true) async {
+
+    func start(
+        zimFileID: UUID, downloadURL: URL, expectedSize: Int64, allowsCellularAccess: Bool = true
+    ) async {
         guard activeDownloads[zimFileID] == nil else {
-            Log.DownloadService.warning("Download already in progress for \(zimFileID.uuidString, privacy: .public)")
+            Log.DownloadService.warning(
+                "Download already in progress for \(zimFileID.uuidString, privacy: .public)"
+            )
             return
         }
-        
+
         guard let directory = DownloadDestination.effectiveDownloadFolder() else {
             Log.DownloadService.error("Cannot determine download directory")
             return
         }
-        
+
         var needsSecurityScope = false
         if let customDir = DownloadDestination.customDownloadDirectory() {
             needsSecurityScope = customDir.startAccessingSecurityScopedResource()
         }
-        
+
         let destinationURL = directory.appendingPathComponent(downloadURL.lastPathComponent)
-        
-        let validation = DownloadDestination.validateDestination(directory: directory, requiredBytes: expectedSize)
-        
+        let validation = DownloadDestination.validateDestination(
+            directory: directory, requiredBytes: expectedSize
+        )
+
         switch validation {
         case .valid:
             break
         case .notAccessible, .notWritable:
-            Log.DownloadService.error("Directory not accessible: \(directory.path, privacy: .public)")
-            await showError(.destinationNotAccessible(path: directory.path), for: zimFileID)
+            Log.DownloadService.error(
+                "Directory not accessible: \(directory.path, privacy: .public)"
+            )
+            showError(.destinationNotAccessible(path: directory.path), for: zimFileID)
             if needsSecurityScope { directory.stopAccessingSecurityScopedResource() }
             return
         case .insufficientSpace(let required, let available):
             Log.DownloadService.error("Insufficient disk space")
-            await showError(.insufficientDiskSpace(required: required, available: available), for: zimFileID)
+            showError(
+                .insufficientDiskSpace(required: required, available: available), for: zimFileID
+            )
             if needsSecurityScope { directory.stopAccessingSecurityScopedResource() }
             return
         }
-        
+
         var resumeOffset: Int64 = 0
-        if let state = DirectWriteDownloadState.load(for: zimFileID), state.validatePartialFile() {
+        if let state = DirectWriteDownloadState.load(for: zimFileID),
+           state.validatePartialFile() {
             resumeOffset = state.bytesWritten
             Log.DownloadService.info("Resuming download from byte \(resumeOffset)")
         }
-        
-        let task = DownloadTask(
-            zimFileID: zimFileID,
-            downloadURL: downloadURL,
-            destinationURL: destinationURL,
-            expectedTotalBytes: expectedSize
-        )
-        task.bytesWritten = resumeOffset
-        task.securityScopedAccess = needsSecurityScope
-        task.dataBuffer.reserveCapacity(writeBufferSize)
-        
+
         do {
-            try prepareFileForWriting(task: task, resumeFrom: resumeOffset)
+            try await sessionDelegate.fileWriter.prepare(
+                zimFileID: zimFileID, url: destinationURL, offset: resumeOffset
+            )
         } catch {
-            Log.DownloadService.error("Failed to prepare file: \(error.localizedDescription, privacy: .public)")
+            Log.DownloadService.error(
+                "Failed to prepare file: \(error.localizedDescription, privacy: .public)"
+            )
             if needsSecurityScope { directory.stopAccessingSecurityScopedResource() }
             return
         }
-        
-        // Register in both maps
-        registerTask(task)
-        activeDownloads[zimFileID] = task
-        
-        startDownloadTask(task, fromOffset: resumeOffset)
 
-        // Save initial state immediately so download survives early app termination
-        let initialState = DirectWriteDownloadState(
+        var info = DownloadTaskInfo(
             zimFileID: zimFileID,
             downloadURL: downloadURL,
             destinationURL: destinationURL,
             expectedTotalBytes: expectedSize
-        ).withBytesWritten(resumeOffset)
-        initialState.save()
+        )
+        info.securityScopedAccess = needsSecurityScope
+        activeDownloads[zimFileID] = info
 
-        // Initialize progress in UI immediately (same pattern as background downloads)
+        startURLSessionTask(zimFileID: zimFileID, url: downloadURL, fromOffset: resumeOffset)
+
+        DirectWriteDownloadState(
+            zimFileID: zimFileID,
+            downloadURL: downloadURL,
+            destinationURL: destinationURL,
+            expectedTotalBytes: expectedSize
+        ).withBytesWritten(resumeOffset).save()
+
         DownloadService.shared.progress.updateFor(
-            uuid: zimFileID,
-            downloaded: resumeOffset,
-            total: expectedSize
+            uuid: zimFileID, downloaded: resumeOffset, total: expectedSize
         )
 
-        Log.DownloadService.info("Started direct-write download for \(zimFileID.uuidString, privacy: .public) to \(destinationURL.path, privacy: .public)")
+        let fileID = zimFileID.uuidString
+        let destPath = destinationURL.path
+        Log.DownloadService.info(
+            "Started direct-write download for \(fileID, privacy: .public) to \(destPath, privacy: .public)"
+        )
 
-        // Log initial 0% progress
-        if task.expectedTotalBytes > 0 {
-            Log.DownloadService.info(
-                "Download progress: 0% (Zero KB / \(ByteCountFormatter.string(fromByteCount: task.expectedTotalBytes, countStyle: .file)))"
+        if expectedSize > 0 {
+            let sizeStr = ByteCountFormatter.string(
+                fromByteCount: expectedSize, countStyle: .file
             )
-            task.lastLoggedPercentage = 0
+            Log.DownloadService.info(
+                "Download progress: 0% (Zero KB / \(sizeStr))"
+            )
+            activeDownloads[zimFileID]?.lastLoggedPercentage = 0
         }
     }
-    
-    @MainActor
-    func pause(zimFileID: UUID) {
-        guard let task = activeDownloads[zimFileID], !task.isPaused else { return }
-        
-        // Mark as paused (thread-safe)
-        tasksLock.lock()
-        task.isPaused = true
-        tasksLock.unlock()
-        
-        task.urlSessionTask?.cancel()
-        
-        // Flush buffer to disk before pausing
-        fileIOQueue.sync {
-            self.flushBufferToDisk(task: task)
-        }
-        
-        saveState(for: task)
-        
-        // Signal to UI that download is paused
-        let placeholderResumeData = Data([0x01])
-        DownloadService.shared.progress.updateFor(uuid: zimFileID, withResumeData: placeholderResumeData)
-        
-        Log.DownloadService.info("Paused download for \(zimFileID.uuidString, privacy: .public) at \(task.bytesWritten) bytes")
-        
-        updateSleepPrevention()
-    }
-    
-    @MainActor
-    func resume(zimFileID: UUID) async {
-        guard let task = activeDownloads[zimFileID] else { return }
-        
-        // Check state (thread-safe)
-        tasksLock.lock()
-        let wasPausedOrError = task.isPaused || task.error != nil
-        task.isPaused = false
-        task.error = nil
-        tasksLock.unlock()
-        
-        guard wasPausedOrError else { return }
-        
-        // Get current offset from I/O queue
-        let currentOffset = fileIOQueue.sync { task.bytesWritten }
-        
-        // Clear resume data so UI switches from "Resume" back to "Pause"
-        DownloadService.shared.progress.updateFor(uuid: zimFileID, withResumeData: nil)
 
-        // Update progress with current offset
+    func pause(zimFileID: UUID) {
+        guard var info = activeDownloads[zimFileID], !info.isPaused else { return }
+
+        info.isPaused = true
+        activeDownloads[zimFileID] = info
+
+        let sessionTaskID = sessionTasks[zimFileID]?.taskIdentifier ?? -1
+        sessionTasks[zimFileID]?.cancel()
+        sessionTasks.removeValue(forKey: zimFileID)
+
+        Task {
+            let remaining = await sessionDelegate.buffer.drain(for: sessionTaskID)
+            if !remaining.isEmpty {
+                try? await sessionDelegate.fileWriter.write(remaining, for: zimFileID)
+            }
+            await sessionDelegate.fileWriter.close(zimFileID: zimFileID)
+
+            self.saveState(for: zimFileID)
+            let placeholderResumeData = Data([0x01])
+            DownloadService.shared.progress.updateFor(
+                uuid: zimFileID, withResumeData: placeholderResumeData
+            )
+            Log.DownloadService.info(
+                "Paused download for \(zimFileID.uuidString, privacy: .public)"
+            )
+            self.updateSleepPrevention()
+        }
+    }
+
+    func resume(zimFileID: UUID) async {
+        guard var info = activeDownloads[zimFileID],
+              info.isPaused || info.error != nil else { return }
+
+        info.isPaused = false
+        info.error = nil
+        activeDownloads[zimFileID] = info
+
+        let currentOffset = await sessionDelegate.fileWriter.getBytesWritten(for: zimFileID)
+
+        DownloadService.shared.progress.updateFor(uuid: zimFileID, withResumeData: nil)
         DownloadService.shared.progress.updateFor(
-            uuid: zimFileID,
-            downloaded: currentOffset,
-            total: task.expectedTotalBytes
+            uuid: zimFileID, downloaded: currentOffset, total: info.expectedTotalBytes
         )
-        
-        // Ensure security-scoped access from resolved bookmark before reopening file
-        if !task.securityScopedAccess {
+
+        if !info.securityScopedAccess {
             if let resolvedDir = DownloadDestination.customDownloadDirectory() {
-                task.securityScopedAccess = resolvedDir.startAccessingSecurityScopedResource()
+                activeDownloads[zimFileID]?.securityScopedAccess =
+                    resolvedDir.startAccessingSecurityScopedResource()
             }
         }
 
-        // Check if file handle needs reopening
-        let needsReopen = fileIOQueue.sync { task.fileHandle == nil }
+        do {
+            try await sessionDelegate.fileWriter.prepare(
+                zimFileID: zimFileID, url: info.destinationURL, offset: currentOffset
+            )
+        } catch {
+            Log.DownloadService.error(
+                "Failed to reopen file: \(error.localizedDescription, privacy: .public)"
+            )
+            activeDownloads[zimFileID]?.error = .cannotCreateFile(
+                path: info.destinationURL.path, underlyingError: error
+            )
+            return
+        }
 
-        if needsReopen {
-            do {
-                try prepareFileForWriting(task: task, resumeFrom: currentOffset)
-            } catch {
-                Log.DownloadService.error("Failed to reopen file: \(error.localizedDescription, privacy: .public)")
-                tasksLock.lock()
-                task.error = .cannotCreateFile(path: task.destinationURL.path, underlyingError: error)
-                tasksLock.unlock()
+        startURLSessionTask(
+            zimFileID: zimFileID, url: info.downloadURL, fromOffset: currentOffset
+        )
+        Log.DownloadService.info(
+            "Resumed download for \(zimFileID.uuidString, privacy: .public) from byte \(currentOffset)"
+        )
+    }
+
+    func cancel(zimFileID: UUID) {
+        guard let info = activeDownloads[zimFileID] else { return }
+
+        let sessionTaskID = sessionTasks[zimFileID]?.taskIdentifier ?? -1
+        sessionTasks[zimFileID]?.cancel()
+        sessionTasks.removeValue(forKey: zimFileID)
+
+        Task {
+            await sessionDelegate.buffer.remove(for: sessionTaskID)
+            await sessionDelegate.fileWriter.close(zimFileID: zimFileID)
+            await sessionDelegate.fileWriter.remove(zimFileID: zimFileID)
+
+            try? FileManager.default.removeItem(at: info.destinationURL)
+
+            if info.securityScopedAccess {
+                info.destinationURL.deletingLastPathComponent()
+                    .stopAccessingSecurityScopedResource()
+            }
+            DirectWriteDownloadState.remove(for: zimFileID)
+            self.activeDownloads.removeValue(forKey: zimFileID)
+            Log.DownloadService.info(
+                "Cancelled download for \(zimFileID.uuidString, privacy: .public)"
+            )
+            self.updateSleepPrevention()
+        }
+    }
+
+    // MARK: - Delegate Callbacks
+
+    private func didFlush(zimFileID: UUID, bytesWritten: Int64) {
+        guard var info = activeDownloads[zimFileID] else { return }
+
+        DownloadService.shared.progress.updateFor(
+            uuid: zimFileID, downloaded: bytesWritten, total: info.expectedTotalBytes
+        )
+
+        if info.expectedTotalBytes > 0 {
+            let percentage = Int(bytesWritten * 100 / info.expectedTotalBytes)
+            let milestone = percentage / 10 * 10
+            if milestone > info.lastLoggedPercentage {
+                info.lastLoggedPercentage = milestone
+                activeDownloads[zimFileID] = info
+                let writtenStr = ByteCountFormatter.string(
+                    fromByteCount: bytesWritten, countStyle: .file
+                )
+                let totalStr = ByteCountFormatter.string(
+                    fromByteCount: info.expectedTotalBytes, countStyle: .file
+                )
+                Log.DownloadService.info(
+                    "Download progress: \(milestone)% (\(writtenStr) / \(totalStr))"
+                )
+            }
+        }
+
+        saveState(for: zimFileID)
+    }
+
+    private func handleCompletion(zimFileID: UUID, error: (any Error)?) {
+        guard let info = activeDownloads[zimFileID] else { return }
+        saveState(for: zimFileID)
+
+        if let error = error {
+            let nsError = error as NSError
+
+            if nsError.code == NSURLErrorCancelled && info.isPaused {
+                Log.DownloadService.info(
+                    "Download paused for \(zimFileID.uuidString, privacy: .public)"
+                )
                 return
             }
+
+            let fileID = zimFileID.uuidString
+            let errorDesc = error.localizedDescription
+            Log.DownloadService.error(
+                "Download failed for \(fileID, privacy: .public): \(errorDesc, privacy: .public)"
+            )
+
+            let recoverableCodes = [
+                NSURLErrorNetworkConnectionLost, NSURLErrorNotConnectedToInternet,
+                NSURLErrorTimedOut, NSURLErrorCannotConnectToHost, NSURLErrorCannotFindHost
+            ]
+            if recoverableCodes.contains(nsError.code) {
+                scheduleRetry(for: zimFileID)
+                return
+            }
+
+            activeDownloads[zimFileID]?.isPaused = true
+            activeDownloads[zimFileID]?.error = .writeError(
+                path: info.destinationURL.path, underlyingError: error
+            )
+            updateSleepPrevention()
+            return
         }
-        
-        startDownloadTask(task, fromOffset: currentOffset)
-        
-        Log.DownloadService.info("Resumed download for \(zimFileID.uuidString, privacy: .public) from byte \(currentOffset)")
+
+        Task {
+            let written = await sessionDelegate.fileWriter.getBytesWritten(for: zimFileID)
+            let isComplete = written >= info.expectedTotalBytes && info.expectedTotalBytes > 0
+            if isComplete {
+                await self.downloadCompleted(zimFileID: zimFileID)
+            } else {
+                Log.DownloadService.warning(
+                    "Download incomplete: \(written)/\(info.expectedTotalBytes), retrying..."
+                )
+                self.scheduleRetry(for: zimFileID)
+            }
+        }
     }
-    
-    @MainActor
-    func cancel(zimFileID: UUID) {
-        guard let task = activeDownloads[zimFileID] else { return }
-        
-        task.urlSessionTask?.cancel()
-        
-        // Close file handle safely on I/O queue
-        fileIOQueue.sync {
-            try? task.fileHandle?.close()
-            task.fileHandle = nil
-        }
-        
-        try? FileManager.default.removeItem(at: task.destinationURL)
-        
-        if task.securityScopedAccess {
-            task.destinationURL.deletingLastPathComponent().stopAccessingSecurityScopedResource()
-        }
-        
-        // Unregister from both maps
-        if let taskId = task.urlSessionTask?.taskIdentifier {
-            _ = unmapSessionTask(taskId)
-        }
-        unregisterTask(for: zimFileID)
-        
-        DirectWriteDownloadState.remove(for: zimFileID)
-        activeDownloads.removeValue(forKey: zimFileID)
-        
-        Log.DownloadService.info("Cancelled download for \(zimFileID.uuidString, privacy: .public)")
-        
-        updateSleepPrevention()
-    }
-    
-    // MARK: - Private Methods - Download Control
-    
-    private func startDownloadTask(_ task: DownloadTask, fromOffset offset: Int64) {
-        var request = URLRequest(url: task.downloadURL)
+
+    // MARK: - Download Lifecycle
+
+    private func startURLSessionTask(zimFileID: UUID, url: URL, fromOffset offset: Int64) {
+        var request = URLRequest(url: url)
         if offset > 0 {
             request.setValue("bytes=\(offset)-", forHTTPHeaderField: "Range")
             Log.DownloadService.info("Requesting range from byte \(offset)")
         }
-        
+
         let urlTask = urlSession.dataTask(with: request)
-        task.urlSessionTask = urlTask
-        task.lastFlushTime = Date()
-        
-        mapSessionTask(urlTask.taskIdentifier, to: task.zimFileID)
-        
+        urlTask.taskDescription = zimFileID.uuidString
+        sessionTasks[zimFileID] = urlTask
+
         preventSystemSleep()
-        startAutoSaveTimer()
-        
+        startTimers()
         urlTask.resume()
     }
-    
-    /// Flushes the in-memory buffer to disk. Must be called on fileIOQueue.
-    private func flushBufferToDisk(task: DownloadTask) {
-        guard !task.dataBuffer.isEmpty, let fileHandle = task.fileHandle else { return }
 
-        let flushedBytes = Int64(task.dataBuffer.count)
+    private func downloadCompleted(zimFileID: UUID) async {
+        guard let info = activeDownloads[zimFileID] else { return }
 
-        do {
-            try fileHandle.write(contentsOf: task.dataBuffer)
-            let previousWritten = task.bytesWritten
-            task.bytesWritten += flushedBytes
-            task.dataBuffer.removeAll(keepingCapacity: true)
-            task.lastFlushTime = Date()
+        await sessionDelegate.fileWriter.close(zimFileID: zimFileID)
+        let written = await sessionDelegate.fileWriter.getBytesWritten(for: zimFileID)
 
-            // Log progress at 10% milestones (~10 lines per download, regardless of file size)
-            if task.expectedTotalBytes > 0 {
-                let percentage = Int(task.bytesWritten * 100 / task.expectedTotalBytes)
-                let milestone = percentage / 10 * 10
-                if milestone > task.lastLoggedPercentage {
-                    task.lastLoggedPercentage = milestone
-                    Log.DownloadService.info(
-                        "Download progress: \(milestone)% (\(ByteCountFormatter.string(fromByteCount: task.bytesWritten, countStyle: .file)) / \(ByteCountFormatter.string(fromByteCount: task.expectedTotalBytes, countStyle: .file)))"
-                    )
-                }
-            } else {
-                // Unknown total size: log every 500MB
-                let mb500 = Int64(500 * 1024 * 1024)
-                if task.bytesWritten / mb500 > previousWritten / mb500 {
-                    Log.DownloadService.info(
-                        "Download progress: \(ByteCountFormatter.string(fromByteCount: task.bytesWritten, countStyle: .file)) written"
-                    )
-                }
-            }
-        } catch {
-            Log.DownloadService.error("Failed to flush buffer: \(error.localizedDescription, privacy: .public)")
-        }
-    }
-    
-    private func scheduleRetry(for task: DownloadTask) {
-        task.retryCount += 1
-        
-        if task.retryCount > maxRetryAttempts {
-            Log.DownloadService.error("Max retry attempts reached for \(task.zimFileID.uuidString, privacy: .public)")
-            Task { @MainActor in
-                tasksLock.lock()
-                task.isPaused = true
-                task.error = .writeError(path: task.destinationURL.path, underlyingError: nil)
-                tasksLock.unlock()
-                updateSleepPrevention()
-            }
-            return
-        }
-        
-        Log.DownloadService.info("Scheduling retry \(task.retryCount)/\(self.maxRetryAttempts) for \(task.zimFileID.uuidString, privacy: .public)")
-        
-        Task {
-            try? await Task.sleep(nanoseconds: UInt64(retryDelay * 1_000_000_000))
-            
-            await MainActor.run {
-                // Check if still not paused
-                guard !self.isTaskPaused(task) else { return }
-                
-                let currentOffset = self.fileIOQueue.sync { task.bytesWritten }
-                
-                do {
-                    try self.prepareFileForWriting(task: task, resumeFrom: currentOffset)
-                    self.startDownloadTask(task, fromOffset: currentOffset)
-                } catch {
-                    self.tasksLock.lock()
-                    task.isPaused = true
-                    task.error = .writeError(path: task.destinationURL.path, underlyingError: error)
-                    self.tasksLock.unlock()
-                    self.updateSleepPrevention()
-                }
-            }
-        }
-    }
-    
-    // MARK: - URLSessionDataDelegate
-    
-    func urlSession(_ session: URLSession, dataTask: URLSessionDataTask, didReceive response: URLResponse, completionHandler: @escaping (URLSession.ResponseDisposition) -> Void) {
-        guard let httpResponse = response as? HTTPURLResponse else {
-            completionHandler(.cancel)
-            return
-        }
-        
-        let validCodes = [200, 206]
-        if validCodes.contains(httpResponse.statusCode) {
-            completionHandler(.allow)
-        } else {
-            Log.DownloadService.error("Invalid response code: \(httpResponse.statusCode)")
-            completionHandler(.cancel)
-        }
-    }
-    
-    /// Called for each chunk of data received.
-    /// PERFORMANCE CRITICAL: This is called ~780 times/second at 400Mbps.
-    /// We avoid MainActor dispatch here - all work happens on sessionQueue + fileIOQueue.
-    func urlSession(_ session: URLSession, dataTask: URLSessionDataTask, didReceive data: Data) {
-        // Get task without going through MainActor (thread-safe via tasksLock)
-        guard let task = getTask(forSessionTaskID: dataTask.taskIdentifier) else { return }
-        
-        // Check if paused (thread-safe)
-        if isTaskPaused(task) { return }
-        
-        // Process data on I/O queue (no MainActor involved)
-        fileIOQueue.async { [self] in
-            // Append to buffer
-            task.dataBuffer.append(data)
-            
-            // Update UI progress every ~1 second (lightweight, no disk I/O)
-            let now = Date()
-            if now.timeIntervalSince(task.lastUIUpdateTime) >= 1.0 {
-                task.lastUIUpdateTime = now
-                let totalReceived = task.bytesWritten + Int64(task.dataBuffer.count)
-                let total = task.expectedTotalBytes
-                let zimFileID = task.zimFileID
-                DispatchQueue.main.async {
-                    DownloadService.shared.progress.updateFor(
-                        uuid: zimFileID,
-                        downloaded: totalReceived,
-                        total: total
-                    )
-                }
-            }
+        Log.DownloadService.info(
+            "Download completed for \(zimFileID.uuidString, privacy: .public): \(written) bytes"
+        )
 
-            let bufferSize = task.dataBuffer.count
-            let timeSinceFlush = now.timeIntervalSince(task.lastFlushTime)
-            let shouldFlush = bufferSize >= writeBufferSize || timeSinceFlush >= maxFlushInterval
-
-            // Flush if buffer is full OR time threshold exceeded
-            if shouldFlush {
-                flushBufferToDisk(task: task)
-
-                // Save state after every flush (1 save per 16MB — negligible overhead)
-                DispatchQueue.main.async {
-                    self.saveState(for: task)
-                }
-
-                // Update progress only on flush (not every chunk)
-                // This reduces MainActor dispatches from ~780/s to ~3/s (every 16MB)
-                let totalWritten = task.bytesWritten
-                let total = task.expectedTotalBytes
-                let zimFileID = task.zimFileID
-                
-                DispatchQueue.main.async {
-                    DownloadService.shared.progress.updateFor(
-                        uuid: zimFileID,
-                        downloaded: totalWritten,
-                        total: total
-                    )
-                }
-            }
-        }
-    }
-    
-    func urlSession(_ session: URLSession, task urlSessionTask: URLSessionTask, didCompleteWithError error: Error?) {
-        // Get and unmap task
-        guard let zimFileID = unmapSessionTask(urlSessionTask.taskIdentifier),
-              let task = getTask(for: zimFileID) else { return }
-        
-        // Always flush remaining buffer first (on I/O queue)
-        fileIOQueue.sync {
-            flushBufferToDisk(task: task)
+        DirectWriteDownloadState.remove(for: zimFileID)
+        if info.securityScopedAccess {
+            info.destinationURL.deletingLastPathComponent().stopAccessingSecurityScopedResource()
         }
 
-        // Save state after final flush (ensures at least one save even for fast downloads)
-        DispatchQueue.main.async {
-            self.saveState(for: task)
-        }
-
-        if let error = error {
-            let nsError = error as NSError
-            
-            // Check if cancelled by user (pause)
-            if nsError.code == NSURLErrorCancelled && isTaskPaused(task) {
-                Log.DownloadService.info("Download paused for \(zimFileID.uuidString, privacy: .public)")
-                return
-            }
-            
-            Log.DownloadService.error("Download failed for \(zimFileID.uuidString, privacy: .public): \(error.localizedDescription, privacy: .public)")
-            
-            // Save current progress
-            Task { @MainActor in
-                self.saveState(for: task)
-            }
-            
-            // Check if recoverable
-            let recoverableCodes = [
-                NSURLErrorNetworkConnectionLost,
-                NSURLErrorNotConnectedToInternet,
-                NSURLErrorTimedOut,
-                NSURLErrorCannotConnectToHost,
-                NSURLErrorCannotFindHost
-            ]
-            
-            if recoverableCodes.contains(nsError.code) {
-                scheduleRetry(for: task)
-                return
-            }
-            
-            // Non-recoverable error
-            tasksLock.lock()
-            task.isPaused = true
-            task.error = .writeError(path: task.destinationURL.path, underlyingError: error)
-            tasksLock.unlock()
-            
-            Task { @MainActor in
-                self.updateSleepPrevention()
-            }
-            return
-        }
-        
-        // Success - check if complete
-        let (isComplete, bytesWritten) = fileIOQueue.sync {
-            (task.isComplete, task.bytesWritten)
-        }
-        
-        if isComplete {
-            // Close file handle safely on I/O queue
-            fileIOQueue.sync {
-                try? task.fileHandle?.synchronize()
-                try? task.fileHandle?.close()
-                task.fileHandle = nil
-            }
-            
-            Task { @MainActor in
-                await self.downloadCompleted(task: task)
-            }
-        } else {
-            // Server closed connection early - retry
-            Log.DownloadService.warning("Download incomplete: \(bytesWritten)/\(task.expectedTotalBytes), retrying...")
-            scheduleRetry(for: task)
-        }
-    }
-    
-    // MARK: - File Handling
-    
-    private func prepareFileForWriting(task: DownloadTask, resumeFrom offset: Int64) throws {
-        let fileManager = FileManager.default
-        let path = task.destinationURL.path
-        
-        // Close existing handle if any (safely)
-        try? task.fileHandle?.close()
-        task.fileHandle = nil
-        
-        if offset > 0 && fileManager.fileExists(atPath: path) {
-            task.fileHandle = try FileHandle(forWritingTo: task.destinationURL)
-            try task.fileHandle?.seek(toOffset: UInt64(offset))
-            Log.DownloadService.info("Opened existing file for resume at offset \(offset)")
-        } else {
-            if fileManager.fileExists(atPath: path) {
-                try fileManager.removeItem(at: task.destinationURL)
-            }
-            
-            guard fileManager.createFile(atPath: path, contents: nil, attributes: nil) else {
-                throw DirectWriteDownloadError.cannotCreateFile(path: path, underlyingError: nil)
-            }
-            
-            task.fileHandle = try FileHandle(forWritingTo: task.destinationURL)
-            task.bytesWritten = 0
-            Log.DownloadService.info("Created new file for download")
-        }
-    }
-    
-    @MainActor
-    private func downloadCompleted(task: DownloadTask) async {
-        Log.DownloadService.info("Download completed for \(task.zimFileID.uuidString, privacy: .public): \(task.bytesWritten) bytes")
-        
-        DirectWriteDownloadState.remove(for: task.zimFileID)
-        
-        if task.securityScopedAccess {
-            task.destinationURL.deletingLastPathComponent().stopAccessingSecurityScopedResource()
-        }
-        
-        // Unregister from both maps
-        unregisterTask(for: task.zimFileID)
-        activeDownloads.removeValue(forKey: task.zimFileID)
-        
+        activeDownloads.removeValue(forKey: zimFileID)
+        sessionTasks.removeValue(forKey: zimFileID)
         updateSleepPrevention()
-        
+
         NotificationCenter.default.post(
             name: .directWriteDownloadCompleted,
             object: nil,
-            userInfo: [
-                "zimFileID": task.zimFileID,
-                "fileURL": task.destinationURL
-            ]
+            userInfo: ["zimFileID": info.zimFileID, "fileURL": info.destinationURL]
         )
     }
-    
-    @MainActor
-    private func saveState(for task: DownloadTask) {
-        // Don't save state for tasks that have been cancelled or completed
-        guard activeDownloads[task.zimFileID] != nil else { return }
 
-        let bytesWritten = fileIOQueue.sync { task.bytesWritten }
-        let isPaused = isTaskPaused(task)
-        
-        let state = DirectWriteDownloadState(
-            zimFileID: task.zimFileID,
-            downloadURL: task.downloadURL,
-            destinationURL: task.destinationURL,
-            expectedTotalBytes: task.expectedTotalBytes
-        ).withBytesWritten(bytesWritten)
-         .withPaused(isPaused)
-        
-        state.save()
-        task.lastSaveTime = Date()
-    }
-    
-    private func showError(_ error: DirectWriteDownloadError, for zimFileID: UUID) async {
-        NotificationCenter.default.post(
-            name: .alert,
-            object: nil,
-            userInfo: [
-                "alert": ActiveAlert.downloadErrorZIM(
-                    zimFileID: zimFileID,
-                    errorMessage: error.localizedDescription
+    private func scheduleRetry(for zimFileID: UUID) {
+        guard var info = activeDownloads[zimFileID] else { return }
+        info.retryCount += 1
+        activeDownloads[zimFileID] = info
+
+        if info.retryCount > self.maxRetryAttempts {
+            Log.DownloadService.error(
+                "Max retry attempts reached for \(zimFileID.uuidString, privacy: .public)"
+            )
+            activeDownloads[zimFileID]?.isPaused = true
+            activeDownloads[zimFileID]?.error = .writeError(
+                path: info.destinationURL.path, underlyingError: nil
+            )
+            updateSleepPrevention()
+            return
+        }
+
+        Log.DownloadService.info(
+            "Scheduling retry \(info.retryCount)/\(self.maxRetryAttempts) for \(zimFileID.uuidString, privacy: .public)"
+        )
+
+        Task {
+            try? await Task.sleep(nanoseconds: UInt64(self.retryDelay * 1_000_000_000))
+            guard let currentInfo = self.activeDownloads[zimFileID],
+                  !currentInfo.isPaused else { return }
+
+            let currentOffset = await self.sessionDelegate.fileWriter.getBytesWritten(
+                for: zimFileID
+            )
+            do {
+                try await self.sessionDelegate.fileWriter.prepare(
+                    zimFileID: zimFileID, url: currentInfo.destinationURL, offset: currentOffset
                 )
-            ]
+                self.startURLSessionTask(
+                    zimFileID: zimFileID, url: currentInfo.downloadURL,
+                    fromOffset: currentOffset
+                )
+            } catch {
+                self.activeDownloads[zimFileID]?.isPaused = true
+                self.activeDownloads[zimFileID]?.error = .writeError(
+                    path: currentInfo.destinationURL.path, underlyingError: error
+                )
+                self.updateSleepPrevention()
+            }
+        }
+    }
+
+    // MARK: - State Persistence
+
+    private func saveState(for zimFileID: UUID) {
+        guard let info = activeDownloads[zimFileID] else { return }
+        Task {
+            let written = await sessionDelegate.fileWriter.getBytesWritten(for: zimFileID)
+            DirectWriteDownloadState(
+                zimFileID: info.zimFileID,
+                downloadURL: info.downloadURL,
+                destinationURL: info.destinationURL,
+                expectedTotalBytes: info.expectedTotalBytes
+            ).withBytesWritten(written).withPaused(info.isPaused).save()
+        }
+    }
+
+    private func showError(_ error: DirectWriteDownloadError, for zimFileID: UUID) {
+        DownloadUI.showAlert(
+            .downloadErrorZIM(zimFileID: zimFileID, errorMessage: error.localizedDescription)
         )
     }
-    
+
     // MARK: - System Sleep Prevention
-    
+
     private func preventSystemSleep() {
         guard sleepAssertion == nil else { return }
-        
         sleepAssertion = ProcessInfo.processInfo.beginActivity(
             options: [.userInitiated, .idleSystemSleepDisabled],
             reason: "Kiwix is downloading ZIM files"
         )
-        
-        Log.DownloadService.info("System sleep prevention enabled")
     }
-    
+
     private func allowSystemSleep() {
         guard let assertion = sleepAssertion else { return }
-        
         ProcessInfo.processInfo.endActivity(assertion)
         sleepAssertion = nil
-        
-        Log.DownloadService.info("System sleep prevention disabled")
     }
-    
-    @MainActor
+
     private func updateSleepPrevention() {
-        let hasActiveDownloads = activeDownloads.values.contains { !$0.isPaused && $0.error == nil }
-        
-        if hasActiveDownloads {
-            preventSystemSleep()
-        } else {
-            allowSystemSleep()
-            stopAutoSaveTimer()
+        let hasActive = activeDownloads.values.contains { !$0.isPaused && $0.error == nil }
+        if hasActive { preventSystemSleep() } else { allowSystemSleep(); stopTimers() }
+    }
+
+    // MARK: - Timers
+
+    private func startTimers() {
+        if progressTimer == nil {
+            progressTimer = Timer.scheduledTimer(
+                withTimeInterval: 1.0, repeats: true
+            ) { [weak self] _ in
+                Task { @MainActor [weak self] in await self?.updateProgress() }
+            }
         }
-    }
-    
-    // MARK: - Auto-Save Timer
-    
-    private func startAutoSaveTimer() {
-        guard autoSaveTimer == nil else { return }
-        
-        autoSaveTimer = Timer.scheduledTimer(withTimeInterval: stateAutoSaveInterval, repeats: true) { [weak self] _ in
-            self?.performPeriodicMaintenance()
-        }
-    }
-    
-    private func stopAutoSaveTimer() {
-        autoSaveTimer?.invalidate()
-        autoSaveTimer = nil
-    }
-    
-    /// Periodic maintenance: flush buffers and save state for all active downloads
-    private func performPeriodicMaintenance() {
-        Task { @MainActor in
-            for task in activeDownloads.values where !task.isPaused {
-                fileIOQueue.async { [self] in
-                    self.flushBufferToDisk(task: task)
-                    // Save state AFTER flush completes, on the same queue to avoid race condition
-                    if Date().timeIntervalSince(task.lastSaveTime) >= stateAutoSaveInterval {
-                        DispatchQueue.main.async {
-                            self.saveState(for: task)
-                        }
-                    }
-                }
+        if autoSaveTimer == nil {
+            autoSaveTimer = Timer.scheduledTimer(
+                withTimeInterval: stateAutoSaveInterval, repeats: true
+            ) { [weak self] _ in
+                Task { @MainActor [weak self] in await self?.performPeriodicMaintenance() }
             }
         }
     }
-    
-    // MARK: - Restore Interrupted Downloads
-    
-    @MainActor
-    private func restoreInterruptedDownloads() {
-        Log.DownloadService.info("restoreInterruptedDownloads() called")
 
-        guard DownloadDestination.shouldUseDirectWrite else {
-            Log.DownloadService.info("restoreInterruptedDownloads: skipped — no custom directory")
-            return
+    private func stopTimers() {
+        progressTimer?.invalidate(); progressTimer = nil
+        autoSaveTimer?.invalidate(); autoSaveTimer = nil
+    }
+
+    private func updateProgress() async {
+        for (zimFileID, info) in activeDownloads where !info.isPaused && info.error == nil {
+            let taskID = sessionTasks[zimFileID]?.taskIdentifier ?? -1
+            let written = await sessionDelegate.fileWriter.getBytesWritten(for: zimFileID)
+            let buffered = await sessionDelegate.buffer.currentSize(for: taskID)
+            DownloadService.shared.progress.updateFor(
+                uuid: zimFileID, downloaded: written + Int64(buffered),
+                total: info.expectedTotalBytes
+            )
         }
+    }
+
+    private func performPeriodicMaintenance() async {
+        for (zimFileID, info) in activeDownloads where !info.isPaused && info.error == nil {
+            let taskID = sessionTasks[zimFileID]?.taskIdentifier ?? -1
+            let remaining = await sessionDelegate.buffer.drain(for: taskID)
+            if !remaining.isEmpty {
+                try? await sessionDelegate.fileWriter.write(remaining, for: zimFileID)
+            }
+            saveState(for: zimFileID)
+        }
+    }
+
+    // MARK: - Restore Interrupted Downloads
+
+    private func restoreInterruptedDownloads() {
+        guard DownloadDestination.shouldUseDirectWrite else { return }
 
         let savedStates = DirectWriteDownloadState.loadAll()
+        guard !savedStates.isEmpty else { return }
 
-        if savedStates.isEmpty {
-            Log.DownloadService.info("restoreInterruptedDownloads: no saved states found")
-            return
-        }
-
-        Log.DownloadService.info("restoreInterruptedDownloads: found \(savedStates.count) saved state(s)")
+        Log.DownloadService.info(
+            "restoreInterruptedDownloads: found \(savedStates.count) saved state(s)"
+        )
 
         for state in savedStates where !state.isComplete {
-            // Activate security scope from resolved bookmark (plain URLs don't carry scope token)
             var hasScope = false
-            let resolvedDir = DownloadDestination.customDownloadDirectory()
-            if let resolvedDir {
+            if let resolvedDir = DownloadDestination.customDownloadDirectory() {
                 hasScope = resolvedDir.startAccessingSecurityScopedResource()
             }
 
-            // Validate partial file exists and matches saved state
             if !state.validatePartialFile() {
-                Log.DownloadService.info("Cleaning orphaned download state for \(state.zimFileID.uuidString, privacy: .public)")
+                Log.DownloadService.info(
+                    "Cleaning orphaned state for \(state.zimFileID.uuidString, privacy: .public)"
+                )
                 try? FileManager.default.removeItem(at: state.destinationURL)
                 DirectWriteDownloadState.remove(for: state.zimFileID)
-                if hasScope, let resolvedDir { resolvedDir.stopAccessingSecurityScopedResource() }
+                if hasScope {
+                    DownloadDestination.customDownloadDirectory()?
+                        .stopAccessingSecurityScopedResource()
+                }
                 continue
             }
 
+            let fileID = state.zimFileID.uuidString
+            let progress = "\(state.bytesWritten)/\(state.expectedTotalBytes)"
             Log.DownloadService.info(
-                "Found interrupted download for \(state.zimFileID.uuidString, privacy: .public): \(state.bytesWritten)/\(state.expectedTotalBytes) bytes"
+                "Found interrupted download for \(fileID, privacy: .public): \(progress) bytes"
             )
 
-            let task = DownloadTask(
+            var info = DownloadTaskInfo(
                 zimFileID: state.zimFileID,
                 downloadURL: state.downloadURL,
                 destinationURL: state.destinationURL,
                 expectedTotalBytes: state.expectedTotalBytes
             )
-            task.bytesWritten = state.bytesWritten
-            task.isPaused = true
-            task.securityScopedAccess = hasScope
-            task.dataBuffer.reserveCapacity(writeBufferSize)
-
-            // Register in both maps
-            registerTask(task)
-            activeDownloads[state.zimFileID] = task
+            info.isPaused = true
+            info.securityScopedAccess = hasScope
+            activeDownloads[state.zimFileID] = info
 
             DownloadService.shared.progress.updateFor(
-                uuid: task.zimFileID,
-                downloaded: task.bytesWritten,
-                total: task.expectedTotalBytes
+                uuid: state.zimFileID, downloaded: state.bytesWritten,
+                total: state.expectedTotalBytes
             )
-
-            // Mark as paused in UI
-            let placeholderResumeData = Data([0x01])
-            DownloadService.shared.progress.updateFor(uuid: task.zimFileID, withResumeData: placeholderResumeData)
+            DownloadService.shared.progress.updateFor(
+                uuid: state.zimFileID, withResumeData: Data([0x01])
+            )
         }
     }
 }
@@ -928,23 +660,22 @@ extension Notification.Name {
 extension DirectWriteDownloadError: Equatable {
     static func == (lhs: DirectWriteDownloadError, rhs: DirectWriteDownloadError) -> Bool {
         switch (lhs, rhs) {
-        case (.cancelled, .cancelled):
-            return true
-        case (.rangeRequestsNotSupported, .rangeRequestsNotSupported):
-            return true
-        case let (.destinationNotAccessible(p1), .destinationNotAccessible(p2)):
-            return p1 == p2
-        case let (.insufficientDiskSpace(r1, a1), .insufficientDiskSpace(r2, a2)):
-            return r1 == r2 && a1 == a2
-        case let (.volumeUnmounted(p1), .volumeUnmounted(p2)):
-            return p1 == p2
-        case let (.partialFileCorrupted(p1), .partialFileCorrupted(p2)):
-            return p1 == p2
-        case let (.invalidServerResponse(c1), .invalidServerResponse(c2)):
-            return c1 == c2
-        default:
-            return false
+        case (.cancelled, .cancelled): return true
+        case (.rangeRequestsNotSupported, .rangeRequestsNotSupported): return true
+        case let (.destinationNotAccessible(path1), .destinationNotAccessible(path2)):
+            return path1 == path2
+        case let (.insufficientDiskSpace(req1, avail1), .insufficientDiskSpace(req2, avail2)):
+            return req1 == req2 && avail1 == avail2
+        case let (.volumeUnmounted(path1), .volumeUnmounted(path2)):
+            return path1 == path2
+        case let (.partialFileCorrupted(path1), .partialFileCorrupted(path2)):
+            return path1 == path2
+        case let (.invalidServerResponse(code1), .invalidServerResponse(code2)):
+            return code1 == code2
+        default: return false
         }
     }
 }
 #endif
+
+// swiftlint:enable file_length
