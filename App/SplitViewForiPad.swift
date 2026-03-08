@@ -153,27 +153,36 @@ struct SplitViewForiPad: View {
     @ViewBuilder
     private func labelFor(tab: Tab) -> some View {
         let text = tab.title ?? LocalString.common_tab_menu_new_tab
-        let image: UIImage = {
-            if let zimFile = tab.zimFile, let category = Category(rawValue: zimFile.category) {
-                if let imgData = zimFile.faviconData {
-                    UIImage(data: imgData) ?? UIImage(systemName: "square")!
-                } else {
-                    UIImage(named: category.icon) ?? UIImage(systemName: "square")!
-                }
-            } else {
-                UIImage(systemName: "square")!
-            }
-        }()
-        
+
         Label {
             Text(text)
                 .lineLimit(1)
                 .truncationMode(.tail)
         } icon: {
-            Image(uiImage: image)
+            iconImageFor(tab: tab)
                 .resizable()
                 .frame(maxWidth: 22, maxHeight: 22)
                 .clipShape(RoundedRectangle(cornerSize: CGSize(width: 3, height: 3)))
+        }
+    }
+
+    private func iconImageFor(tab: Tab) -> Image {
+        let categoryImage: UIImage?
+        if let zimFile = tab.zimFile, let category = Category(rawValue: zimFile.category) {
+            if let imgData = zimFile.faviconData,
+               let image = UIImage(data: imgData) {
+                categoryImage = image
+            } else {
+                categoryImage = UIImage(named: category.icon)
+            }
+        } else {
+            categoryImage = nil
+        }
+        
+        if let categoryImage {
+            return Image(uiImage: categoryImage)
+        } else {
+            return Image(systemName: "square")
         }
     }
     
