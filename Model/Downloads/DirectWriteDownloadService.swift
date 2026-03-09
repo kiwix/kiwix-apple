@@ -27,7 +27,7 @@ struct DownloadTaskInfo: Sendable {
     let zimFileID: UUID
     let downloadURL: URL
     let destinationURL: URL
-    let expectedTotalBytes: Int64
+    let expectedTotalBytes: UInt64
     var isPaused: Bool = false
     var error: DirectWriteDownloadError?
     var securityScopedAccess: Bool = false
@@ -75,7 +75,7 @@ final class DirectWriteDownloadService: NSObject, ObservableObject {
         )
         super.init()
 
-        sessionDelegate.onFlush = { [weak self] zimFileID, bytesWritten in
+        sessionDelegate.onFlush = { [weak self] (zimFileID: UUID, bytesWritten: UInt64) in
             self?.didFlush(zimFileID: zimFileID, bytesWritten: bytesWritten)
         }
         sessionDelegate.onCompletion = { [weak self] zimFileID, error in
@@ -129,7 +129,7 @@ final class DirectWriteDownloadService: NSObject, ObservableObject {
     // MARK: - Public Methods
 
     func start(
-        zimFileID: UUID, downloadURL: URL, expectedSize: Int64, allowsCellularAccess: Bool = true
+        zimFileID: UUID, downloadURL: URL, expectedSize: UInt64, allowsCellularAccess: Bool = true
     ) async {
         guard activeDownloads[zimFileID] == nil else {
             Log.DownloadService.warning(
@@ -150,7 +150,7 @@ final class DirectWriteDownloadService: NSObject, ObservableObject {
 
         let destinationURL = directory.appendingPathComponent(downloadURL.lastPathComponent)
         let validation = DownloadDestination.validateDestination(
-            directory: directory, requiredBytes: expectedSize
+            directory: directory, requiredBytes: Int64(expectedSize)
         )
 
         switch validation {
@@ -172,7 +172,7 @@ final class DirectWriteDownloadService: NSObject, ObservableObject {
             return
         }
 
-        var resumeOffset: Int64 = 0
+        var resumeOffset: UInt64 = 0
         if let state = DirectWriteDownloadState.load(for: zimFileID),
            state.validatePartialFile() {
             resumeOffset = state.bytesWritten
@@ -210,7 +210,7 @@ final class DirectWriteDownloadService: NSObject, ObservableObject {
         ).withBytesWritten(resumeOffset).save()
 
         DownloadService.shared.progress.updateFor(
-            uuid: zimFileID, downloaded: resumeOffset, total: expectedSize
+            uuid: zimFileID, downloaded: Int64(resumeOffset), total: Int64(expectedSize)
         )
 
         let fileID = zimFileID.uuidString
@@ -221,7 +221,7 @@ final class DirectWriteDownloadService: NSObject, ObservableObject {
 
         if expectedSize > 0 {
             let sizeStr = ByteCountFormatter.string(
-                fromByteCount: expectedSize, countStyle: .file
+                fromByteCount: Int64(expectedSize), countStyle: .file
             )
             Log.DownloadService.info(
                 "Download progress: 0% (Zero KB / \(sizeStr))"
@@ -275,7 +275,7 @@ final class DirectWriteDownloadService: NSObject, ObservableObject {
 
         DownloadService.shared.progress.updateFor(uuid: zimFileID, withResumeData: nil)
         DownloadService.shared.progress.updateFor(
-            uuid: zimFileID, downloaded: currentOffset, total: info.expectedTotalBytes
+            uuid: zimFileID, downloaded: Int64(currentOffset), total: Int64(info.expectedTotalBytes)
         )
 
         if !info.securityScopedAccess {
@@ -336,11 +336,11 @@ final class DirectWriteDownloadService: NSObject, ObservableObject {
 
     // MARK: - Delegate Callbacks
 
-    private func didFlush(zimFileID: UUID, bytesWritten: Int64) {
+    private func didFlush(zimFileID: UUID, bytesWritten: UInt64) {
         guard var info = activeDownloads[zimFileID] else { return }
 
         DownloadService.shared.progress.updateFor(
-            uuid: zimFileID, downloaded: bytesWritten, total: info.expectedTotalBytes
+            uuid: zimFileID, downloaded: Int64(bytesWritten), total: Int64(info.expectedTotalBytes)
         )
 
         if info.expectedTotalBytes > 0 {
@@ -350,10 +350,10 @@ final class DirectWriteDownloadService: NSObject, ObservableObject {
                 info.lastLoggedPercentage = milestone
                 activeDownloads[zimFileID] = info
                 let writtenStr = ByteCountFormatter.string(
-                    fromByteCount: bytesWritten, countStyle: .file
+                    fromByteCount: Int64(bytesWritten), countStyle: .file
                 )
                 let totalStr = ByteCountFormatter.string(
-                    fromByteCount: info.expectedTotalBytes, countStyle: .file
+                    fromByteCount: Int64(info.expectedTotalBytes), countStyle: .file
                 )
                 Log.DownloadService.info(
                     "Download progress: \(milestone)% (\(writtenStr) / \(totalStr))"
@@ -417,7 +417,7 @@ final class DirectWriteDownloadService: NSObject, ObservableObject {
 
     // MARK: - Download Lifecycle
 
-    private func startURLSessionTask(zimFileID: UUID, url: URL, fromOffset offset: Int64) {
+    private func startURLSessionTask(zimFileID: UUID, url: URL, fromOffset offset: UInt64) {
         var request = URLRequest(url: url)
         if offset > 0 {
             request.setValue("bytes=\(offset)-", forHTTPHeaderField: "Range")
@@ -578,8 +578,8 @@ final class DirectWriteDownloadService: NSObject, ObservableObject {
             let written = await sessionDelegate.fileWriter.getBytesWritten(for: zimFileID)
             let buffered = await sessionDelegate.buffer.currentSize(for: taskID)
             DownloadService.shared.progress.updateFor(
-                uuid: zimFileID, downloaded: written + Int64(buffered),
-                total: info.expectedTotalBytes
+                uuid: zimFileID, downloaded: Int64(written) + Int64(buffered),
+                total: Int64(info.expectedTotalBytes)
             )
         }
     }
@@ -643,8 +643,8 @@ final class DirectWriteDownloadService: NSObject, ObservableObject {
             activeDownloads[state.zimFileID] = info
 
             DownloadService.shared.progress.updateFor(
-                uuid: state.zimFileID, downloaded: state.bytesWritten,
-                total: state.expectedTotalBytes
+                uuid: state.zimFileID, downloaded: Int64(state.bytesWritten),
+                total: Int64(state.expectedTotalBytes)
             )
             let placeholderResumeData = Data([0x01])
             DownloadService.shared.progress.updateFor(

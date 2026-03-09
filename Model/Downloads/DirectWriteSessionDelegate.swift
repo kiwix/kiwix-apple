@@ -61,10 +61,10 @@ actor DownloadDataBuffer {
 /// All disk writes are serialized through this actor.
 actor DownloadFileWriter {
     private var handles: [UUID: FileHandle] = [:]
-    private(set) var bytesWritten: [UUID: Int64] = [:]
+    private(set) var bytesWritten: [UUID: UInt64] = [:]
 
     /// Opens or creates a file for writing at the given offset.
-    func prepare(zimFileID: UUID, url: URL, offset: Int64) throws {
+    func prepare(zimFileID: UUID, url: URL, offset: UInt64) throws {
         try? handles[zimFileID]?.close()
         handles[zimFileID] = nil
 
@@ -73,7 +73,7 @@ actor DownloadFileWriter {
 
         if offset > 0 && fileManager.fileExists(atPath: path) {
             let handle = try FileHandle(forWritingTo: url)
-            try handle.seek(toOffset: UInt64(offset))
+            try handle.seek(toOffset: offset)
             handles[zimFileID] = handle
             bytesWritten[zimFileID] = offset
             Log.DownloadService.info("Opened existing file for resume at offset \(offset)")
@@ -94,12 +94,12 @@ actor DownloadFileWriter {
 
     /// Writes data to disk for a given download. Returns total bytes written.
     @discardableResult
-    func write(_ data: Data, for zimFileID: UUID) throws -> Int64 {
+    func write(_ data: Data, for zimFileID: UUID) throws -> UInt64 {
         guard let handle = handles[zimFileID], !data.isEmpty else {
             return bytesWritten[zimFileID] ?? 0
         }
         try handle.write(contentsOf: data)
-        bytesWritten[zimFileID, default: 0] += Int64(data.count)
+        bytesWritten[zimFileID, default: 0] += UInt64(data.count)
         return bytesWritten[zimFileID] ?? 0
     }
 
@@ -112,7 +112,7 @@ actor DownloadFileWriter {
         handles.removeValue(forKey: zimFileID)
     }
 
-    func getBytesWritten(for zimFileID: UUID) -> Int64 {
+    func getBytesWritten(for zimFileID: UUID) -> UInt64 {
         bytesWritten[zimFileID] ?? 0
     }
 
@@ -137,7 +137,7 @@ final class DirectWriteSessionDelegate: NSObject, URLSessionDataDelegate {
 
     /// Called on MainActor after a buffer flush writes data to disk.
     /// Parameters: (zimFileID, totalBytesWritten)
-    var onFlush: (@MainActor @Sendable (UUID, Int64) -> Void)?
+    var onFlush: (@MainActor @Sendable (UUID, UInt64) -> Void)?
 
     /// Called on MainActor when a URLSession task completes (success or error).
     /// Parameters: (zimFileID, error)

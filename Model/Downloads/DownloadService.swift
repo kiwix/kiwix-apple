@@ -257,7 +257,7 @@ final class DownloadService {
         await DirectWriteDownloadService.shared.start(
             zimFileID: zimFileID,
             downloadURL: downloadInfo.url,
-            expectedSize: downloadInfo.size,
+            expectedSize: UInt64(max(0, downloadInfo.size)),
             allowsCellularAccess: allowsCellularAccess
         )
     }

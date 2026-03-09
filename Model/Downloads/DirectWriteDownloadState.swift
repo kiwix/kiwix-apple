@@ -29,10 +29,10 @@ struct DirectWriteDownloadState: Codable {
     let destinationURL: URL
     
     /// Number of bytes successfully written to disk
-    var bytesWritten: Int64
-    
+    var bytesWritten: UInt64
+
     /// Expected total size of the file (from Content-Length header)
-    let expectedTotalBytes: Int64
+    let expectedTotalBytes: UInt64
     
     /// Whether the download is currently paused
     var isPaused: Bool
@@ -60,8 +60,8 @@ struct DirectWriteDownloadState: Codable {
     }
     
     /// Remaining bytes to download
-    var remainingBytes: Int64 {
-        max(0, expectedTotalBytes - bytesWritten)
+    var remainingBytes: UInt64 {
+        bytesWritten <= expectedTotalBytes ? expectedTotalBytes - bytesWritten : 0
     }
     
     // MARK: - Initialization
@@ -70,7 +70,7 @@ struct DirectWriteDownloadState: Codable {
         zimFileID: UUID,
         downloadURL: URL,
         destinationURL: URL,
-        expectedTotalBytes: Int64
+        expectedTotalBytes: UInt64
     ) {
         self.zimFileID = zimFileID
         self.downloadURL = downloadURL
@@ -86,7 +86,7 @@ struct DirectWriteDownloadState: Codable {
     // MARK: - State Updates
     
     /// Creates a new state with updated bytes written
-    func withBytesWritten(_ bytes: Int64) -> DirectWriteDownloadState {
+    func withBytesWritten(_ bytes: UInt64) -> DirectWriteDownloadState {
         var newState = self
         newState.bytesWritten = bytes
         newState.lastWriteTime = Date()
@@ -195,7 +195,7 @@ extension DirectWriteDownloadState {
         
         do {
             let attributes = try fileManager.attributesOfItem(atPath: destinationURL.path)
-            guard let fileSize = attributes[.size] as? Int64 else {
+            guard let fileSize = attributes[.size] as? UInt64 else {
                 return false
             }
             
