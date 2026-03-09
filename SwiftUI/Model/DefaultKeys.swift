@@ -53,5 +53,9 @@ extension Defaults.Keys {
     #if os(macOS)
     // window management:
     static let windowURLs = Key<[URL]>("windowURLs", default: [])
+    
+    // downloads - custom directory for direct-write downloads on macOS
+    // Stores security-scoped bookmark data to maintain access across app restarts
+    static let downloadDirectoryBookmark = Key<Data?>("downloadDirectoryBookmark")
     #endif
 }

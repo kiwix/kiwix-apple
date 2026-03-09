@@ -376,9 +376,12 @@ struct ZimFileDetail: View {
     }
 
     private var freeSpace: Int64? {
-        try? FileManager.default
-            .urls(for: .documentDirectory, in: .userDomainMask)
-            .first?.resourceValues(forKeys: [.volumeAvailableCapacityForImportantUsageKey])
+        #if os(macOS)
+        return DownloadDestination.availableDiskSpace()
+        #else
+        let directory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first
+        return try? directory?.resourceValues(forKeys: [.volumeAvailableCapacityForImportantUsageKey])
             .volumeAvailableCapacityForImportantUsage
+        #endif
     }
 }

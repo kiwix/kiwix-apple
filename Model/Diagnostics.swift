@@ -279,12 +279,15 @@ enum Diagnostics {
     }
     
     private static func freeSpace() -> String {
-        
+        #if os(macOS)
+        let freeSpace = DownloadDestination.availableDiskSpace()
+        #else
         let freeSpace: Int64? = try? FileManager.default
             .urls(for: .documentDirectory, in: .userDomainMask)
             .first?.resourceValues(forKeys: [.volumeAvailableCapacityForImportantUsageKey])
             .volumeAvailableCapacityForImportantUsage
-        
+        #endif
+
         guard let freeSpace else {
             return "unknown"
         }

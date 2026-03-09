@@ -369,3 +369,33 @@
 "download_service.error.client.cannotMoveFile" = "Cannot move file";
 "download_service.error.client.downloadDecodingFailedMidStream" = "Download decoding failed";
 "download_service.error.client.downloadDecodingFailedToComplete" = "Download decoding failed";
+
+// MARK: - Download Location (macOS)
+"download_location.available" = "available";
+"download_location.button.choose" = "Choose...";
+"download_location.button.reset" = "Reset";
+"download_location.info.custom" = "Downloads will be written directly to this location, enabling downloads larger than your available internal storage.";
+"download_location.info.default" = "Using default location. Choose a different folder to download large files directly to external drives.";
+"download_location.unknown" = "Unknown";
+"download_location.panel.title" = "Choose Download Location";
+"download_location.panel.message" = "Select a folder where ZIM files will be downloaded. You can choose an external drive to download files larger than your internal storage.";
+"download_location.error.title" = "Cannot Use This Location";
+"download_location.error.not_writable" = "The selected folder is not writable. Please choose a different location.";
+"download_location.error.save_failed" = "Failed to save the download location. Please try again.";
+
+// MARK: - Download Settings (macOS)
+"download_settings.location.title" = "Download Location";
+"download_settings.tab.title" = "Downloads";
+"download_settings.info.title" = "About Download Location";
+"download_settings.info.description" = "By default, downloads are saved to your Downloads folder. When downloading large ZIM files (like the full Wikipedia), macOS first saves the file to a temporary location on your internal storage before moving it to the final destination.\n\nIf you select a custom location (such as an external drive), Kiwix will write the file directly to that location. This allows you to download files larger than your available internal storage.";
+
+// MARK: - Direct Write Errors (macOS)
+"direct_write_error.destination_not_accessible" = "The download directory is not accessible: %@";
+"direct_write_error.insufficient_space" = "Not enough disk space. Required: %@, Available: %@";
+"direct_write_error.volume_unmounted" = "The volume was disconnected during download: %@";
+"direct_write_error.cannot_create_file" = "Cannot create file at: %@";
+"direct_write_error.write_error" = "Error writing to file: %@";
+"direct_write_error.range_not_supported" = "The server doesn't support resumable downloads";
+"direct_write_error.partial_corrupted" = "The partial download file is corrupted: %@";
+"direct_write_error.invalid_response" = "Invalid server response (HTTP %d)";
+"direct_write_error.cancelled" = "Download was cancelled";
