@@ -44,11 +44,11 @@ struct DonationViewModifier: ViewModifier {
                     donationPopUpState = .selection
                     return
                 case .some(let finalResult):
-                    Task {
+                    Task.detached(priority: .utility) {
                         // we need to close the sheet in order to dismiss ApplePay,
                         // and we need to re-open it again with a delay to show thank you state
                         // Swift UI cannot yet handle multiple sheets
-                        try? await Task.sleep(for: .milliseconds(100))
+                        try? await Task.sleep(for: .milliseconds(1000))
                         await MainActor.run {
                             switch finalResult {
                             case .thankYou:

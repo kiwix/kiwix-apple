@@ -202,7 +202,7 @@ struct Payment {
                 let paymentServer = StripeKiwix(endPoint: Self.kiwixPaymentServer)
                 do {
                     let publicKey = try await paymentServer.publishableKey()
-                    StripeAPI.defaultPublishableKey = publicKey
+                    StripeAPI.setDefault(publishableKey: publicKey)
                 } catch let serverError {
                     Self.finalResult = .error
                     resultHandler(.init(status: .failure, errors: [serverError]))
@@ -216,7 +216,7 @@ struct Payment {
                                                    returnURLPath: nil,
                                                    usingClientSecretProvider: { @Sendable in
                     await StripeKiwix.clientSecretForPayment(endPoint: endPoint, selectedAmount: selectedAmount)
-                })
+                }, withAPI: StripeAsyncAPI())
                 // calling any UI refreshing state / subject from here
                 // will block the UI in the payment state forever
                 // therefore it's defered via static finalResult
