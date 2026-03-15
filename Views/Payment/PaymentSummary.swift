@@ -24,6 +24,7 @@ struct PaymentSummary: View {
     private let selectedAmount: SelectedAmount
     private let payment: Payment
     private let onComplete: @MainActor () -> Void
+    @State private var paymentDetermined: Bool = false
     @State private var paymentButtonLabel: PayWithApplePayButtonLabel?
 
     init(selectedAmount: SelectedAmount,
@@ -46,28 +47,33 @@ struct PaymentSummary: View {
                     .padding()
             }
             Text(selectedAmount.value.formatted(.currency(code: selectedAmount.currency))).font(.title).bold()
-            if let paymentButtonLabel {
-                PayWithApplePayButton(
-                    paymentButtonLabel,
-                    request: payment.donationRequest(for: selectedAmount),
-                    onPaymentAuthorizationChange: { phase in
-                        payment.onPaymentAuthPhase(selectedAmount: selectedAmount,
-                                                   phase: phase)
-                    },
-                    onMerchantSessionRequested: payment.onMerchantSessionUpdate
-                )
-                .frame(width: 186, height: 44)
-                .padding()
+            if paymentDetermined {
+                if let paymentButtonLabel {
+                    PayWithApplePayButton(
+                        paymentButtonLabel,
+                        request: payment.donationRequest(for: selectedAmount),
+                        onPaymentAuthorizationChange: { phase in
+                            payment.onPaymentAuthPhase(selectedAmount: selectedAmount,
+                                                       phase: phase)
+                        },
+                        onMerchantSessionRequested: payment.onMerchantSessionUpdate
+                    )
+                    .frame(width: 186, height: 44)
+                    .padding()
+                } else {
+                    Text(LocalString.payment_support_fallback_message)
+                        .foregroundStyle(.red)
+                        .font(.callout)
+                }
             } else {
-                Text(LocalString.payment_support_fallback_message)
-                    .foregroundStyle(.red)
-                    .font(.callout)
+                LoadingProgressView()
             }
         }.onReceive(payment.completeSubject) {
             onComplete()
         }
         .task {
             paymentButtonLabel = await Payment.paymentButtonTypeAsync()
+            paymentDetermined = true
         }
     }
 }
