@@ -219,7 +219,7 @@ enum Diagnostics {
         guard !Task.isCancelled else { return [] }
         guard let logStore = try? OSLogStore(scope: .currentProcessIdentifier),
               let entries = try? logStore.getEntries(
-                matching: NSPredicate(format: "subsystem == %@", KiwixLogger.subsystem)
+//                matching: NSPredicate(format: "subsystem == %@", KiwixLogger.subsystem)
               ) else {
             Log.Environment.error("couldn't collect logs")
             return []
