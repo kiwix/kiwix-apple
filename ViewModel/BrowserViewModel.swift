@@ -513,7 +513,7 @@ import CoreKiwix
         webView.adjustTextSize()
 #else
         Task { await persistState() }
-        let js = """
+        let mapResizeScript = """
             (function() {
                 var el = document.getElementById('map');
                 var canvas = el && el.querySelector('canvas');
@@ -522,7 +522,7 @@ import CoreKiwix
                 setTimeout(function() { el.style.removeProperty('height'); }, 200);
             })();
             """
-        webView.evaluateJavaScript(js, completionHandler: nil)
+        webView.evaluateJavaScript(mapResizeScript, completionHandler: nil)
 #endif
     }
 
