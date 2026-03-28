@@ -21,14 +21,23 @@ import CoreData
 @MainActor
 struct DiagnosticsView: View {
     
+    private struct SharedState {
+        let task: Task<Void, Error>?
+        let model: DiagnosticsModel
+        let isRunning: Bool
+    }
+    
+    @MainActor
+    private static var shared = SharedState(task: nil, model: DiagnosticsModel(), isRunning: false)
+    
     @FetchRequest(
         sortDescriptors: [NSSortDescriptor(keyPath: \ZimFile.size, ascending: false)],
         predicate: ZimFile.integrityCheckablePredicate()
     ) private var zimFiles: FetchedResults<ZimFile>
     @State private var logs: [String] = []
-    @State private var isRunning: Bool = false
-    @State private var integrityTask: Task<Void, Error>?
-    @MainActor @ObservedObject private var model = DiagnosticsModel()
+    @State private var isRunning: Bool = Self.shared.isRunning
+    @State private var integrityTask: Task<Void, Error>? = Self.shared.task
+    @MainActor @ObservedObject private var model = Self.shared.model
     
     private enum Const {
         #if os(iOS)
@@ -80,7 +89,7 @@ struct DiagnosticsView: View {
         }
         .frame(maxWidth: 500)
         .navigationTitle("Diagnostic Items")
-        #if os(iOS)
+#if os(iOS)
         .toolbar {
             if logs.isEmpty {
                 if !isRunning {
@@ -96,9 +105,11 @@ struct DiagnosticsView: View {
                 }
             }
         }
-        #endif
+#endif
         .onDisappear(perform: {
-           cancel()
+            // save the current task into a shared state
+            // that will work when we re-visit this view
+            Self.shared = SharedState(task: integrityTask, model: model, isRunning: isRunning)
         })
 #if os(iOS)
         .navigationBarTitleDisplayMode(.inline)
@@ -111,6 +122,7 @@ struct DiagnosticsView: View {
     private func cancel() {
         model.cancel()
         integrityTask?.cancel()
+        Self.shared = SharedState(task: nil, model: DiagnosticsModel(), isRunning: false)
         logs = []
         isRunning = false
     }
