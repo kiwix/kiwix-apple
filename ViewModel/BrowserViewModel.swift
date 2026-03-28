@@ -513,6 +513,16 @@ import CoreKiwix
         webView.adjustTextSize()
 #else
         Task { await persistState() }
+        let js = """
+            (function() {
+                var el = document.getElementById('map');
+                var canvas = el && el.querySelector('canvas');
+                if (!canvas || canvas.clientHeight >= el.offsetHeight - 5) return;
+                el.style.setProperty('height', (el.offsetHeight + 1) + 'px', 'important');
+                setTimeout(function() { el.style.removeProperty('height'); }, 200);
+            })();
+            """
+        webView.evaluateJavaScript(js, completionHandler: nil)
 #endif
     }
 
