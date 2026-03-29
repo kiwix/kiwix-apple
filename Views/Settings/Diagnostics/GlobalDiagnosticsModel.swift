@@ -60,8 +60,12 @@ final class GlobalDiagnosticsModel: ObservableObject {
                 }
             }
             if let model = self?.model {
-                let logs = await model.start(using: zimFiles)
-                self?.state = .complete(logs: logs)
+                if !Task.isCancelled {
+                    let logs = await model.start(using: zimFiles)
+                    if !Task.isCancelled {
+                        self?.state = .complete(logs: logs)
+                    }
+                }
             }
         }
     }
@@ -83,9 +87,7 @@ final class GlobalDiagnosticsModel: ObservableObject {
     }
     
     private func cancelTask() {
-        if task?.isCancelled == false {
-            task?.cancel()
-        }
+        task?.cancel()
         task = nil
         cancellable?.cancel()
         cancellable = nil

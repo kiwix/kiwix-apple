@@ -119,12 +119,26 @@ struct DiagnosticsView: View {
             #endif
             .listStyle(.plain)
             .onChange(of: model.items) {
-                if let firstInitial = model.items.first(where: { item in
-                    item.status == .initial
-                }) {
-                    proxy.scrollTo(firstInitial.id)
+                scrollToFirstInitialItem(using: proxy)
+            }
+            .task {
+                switch model.state {
+                case .initial, .running:
+                    scrollToFirstInitialItem(using: proxy)
+                case .complete:
+                    if let lastItem = model.items.last {
+                        proxy.scrollTo(lastItem.id)
+                    }
                 }
             }
+        }
+    }
+    
+    private func scrollToFirstInitialItem(using proxy: ScrollViewProxy) {
+        if let firstInitial = model.items.first(where: { item in
+            item.status == .initial
+        }) {
+            proxy.scrollTo(firstInitial.id)
         }
     }
     
@@ -142,11 +156,12 @@ struct DiagnosticsView: View {
                 model.start(using: zimFiles.reversed())
             }
         } label: {
-            let title: String = again ? "Run check again" : "Run check"
             #if os(macOS)
+            let title: String = again ? "Run check again" : "Run check"
             Label(title, systemImage: "exclamationmark.bubble")
                 .symbolEffect(.bounce, value: model.state == .running)
             #else
+            let title: String = again ? "Run again" : "Run check"
             Text(title)
             #endif
         }
