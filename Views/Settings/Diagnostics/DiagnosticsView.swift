@@ -21,26 +21,12 @@ import Combine
 /// We want to make sure users only send us reports in English
 @MainActor
 struct DiagnosticsView: View {
-    
-    private struct SharedState {
-        let task: Task<Void, Error>?
-        let model: DiagnosticsModel
-        let isRunning: Bool
-        let logs: [String]
-    }
-    
-    
-    @MainActor
-    private static var shared = SharedState(task: nil, model: DiagnosticsModel(), isRunning: false, logs: [])
-    
+   
     @FetchRequest(
         sortDescriptors: [NSSortDescriptor(keyPath: \ZimFile.size, ascending: false)],
         predicate: ZimFile.integrityCheckablePredicate()
     ) private var zimFiles: FetchedResults<ZimFile>
-    @State private var logs: [String] = Self.shared.logs
-    @State private var isRunning: Bool = Self.shared.isRunning
-    @State private var integrityTask: Task<Void, Error>? = Self.shared.task
-    @MainActor @ObservedObject private var model = Self.shared.model
+    @ObservedObject var model = GlobalDiagnosticsModel.shared
     
     private enum Const {
         #if os(iOS)
@@ -56,36 +42,35 @@ struct DiagnosticsView: View {
             diagnosticItems
             Spacer(minLength: Const.verticalSpace)
             HStack(alignment: .firstTextBaseline, spacing: 24) {
-                if !logs.isEmpty {
-                    emailButton
+                switch model.state {
+                case .initial:
 #if os(macOS)
-                    saveButton
-#else
-                    shareButton
+                    runButton
 #endif
-                } else {
-                    if isRunning {
-                        VStack(alignment: .center) {
-                            ProgressView()
-                                .progressViewStyle(.circular)
-                            #if os(macOS)
-                                .scaleEffect(0.5)
-                                .padding(-8)
-                            #endif
-                            
-                            Text("Checking...")
-                                .foregroundStyle(.secondary)
-                            
-                            #if os(macOS)
-                            cancelButton
-                            #endif
-                        }
-                        .padding(.vertical)
-                    } else {
+                case .running:
+                    VStack(alignment: .center) {
+                        ProgressView()
+                            .progressViewStyle(.circular)
                         #if os(macOS)
-                        runButton
+                            .scaleEffect(0.5)
+                            .padding(-8)
+                        #endif
+                        
+                        Text("Checking...")
+                            .foregroundStyle(.secondary)
+                        
+                        #if os(macOS)
+                        cancelButton
                         #endif
                     }
+                    .padding(.vertical)
+                case let .complete(logs):
+                    emailButton(logs: logs)
+#if os(macOS)
+                    saveButton(logs: logs)
+#else
+                    shareButton(logs: logs)
+#endif
                 }
             }
             Spacer(minLength: Const.verticalSpace)
@@ -94,44 +79,24 @@ struct DiagnosticsView: View {
         .navigationTitle("Diagnostic Items")
 #if os(iOS)
         .toolbar {
-            if !isRunning {
-                ToolbarItem(placement: .topBarTrailing) {
+            ToolbarItem(placement: .topBarTrailing) {
+                switch model.state {
+                case .initial, .complete:
                     runButton
                         .padding(.horizontal)
-                }
-            } else if logs.isEmpty {
-                ToolbarItem(placement: .topBarTrailing) {
-                   cancelButton
+                case .running:
+                    cancelButton
                         .padding(.horizontal)
                 }
             }
         }
 #endif
-        .onDisappear(perform: {
-            // save the current task into a shared state
-            // that will work when we re-visit this view
-            Self.shared = SharedState(task: integrityTask, model: model, isRunning: isRunning, logs: logs)
-        })
-        .task {
-            integrityTask = Self.shared.task
-            model.items = Self.shared.model.items
-            isRunning = Self.shared.isRunning
-            logs = Self.shared.logs
-        }
 #if os(iOS)
         .navigationBarTitleDisplayMode(.inline)
         .padding(.horizontal, 40)
 #else
         .tabItem { Label("Diagnostics", systemImage: "exclamationmark.bubble") }
 #endif
-    }
-    
-    private func cancel() {
-        model.cancel()
-        integrityTask?.cancel()
-        Self.shared = SharedState(task: nil, model: DiagnosticsModel(), isRunning: false, logs: [])
-        logs = []
-        isRunning = false
     }
     
     @ViewBuilder
@@ -162,7 +127,7 @@ struct DiagnosticsView: View {
     @ViewBuilder
     var cancelButton: some View {
         Button(LocalString.common_button_cancel, role: .destructive) {
-            cancel()
+            model.cancel()
         }
     }
     
@@ -170,19 +135,12 @@ struct DiagnosticsView: View {
     var runButton: some View {
         AsyncButton {
             withAnimation {
-                isRunning = true
-                integrityTask = Task { @MainActor in
-                    let collectedLogs = await model.start(using: zimFiles.reversed())
-                    if !Task.isCancelled {
-                        logs = collectedLogs
-                        isRunning = false
-                    }
-                }
+                model.start(using: zimFiles.reversed())
             }
         } label: {
             #if os(macOS)
             Label("Run check", systemImage: "exclamationmark.bubble")
-                .symbolEffect(.bounce, value: isRunning)
+                .symbolEffect(.bounce, value: model.state == .running)
             #else
             Text("Run check")
             #endif
@@ -193,14 +151,14 @@ struct DiagnosticsView: View {
     }
     
     @ViewBuilder
-    var emailButton: some View {
+    func emailButton(logs: [String]) -> some View {
         AsyncButton {
             let emailLogs = logs.joined(separator: Email.separator())
             let email = Email(logs: emailLogs)
             email.create()
         } label: {
             Label("Email", systemImage: "paperplane")
-                .symbolEffect(.bounce, value: isRunning)
+                .symbolEffect(.bounce, value: model.state == .running)
         }
 #if os(iOS)
         .buttonStyle(.borderless)
@@ -209,7 +167,7 @@ struct DiagnosticsView: View {
     
 #if os(macOS)
     @ViewBuilder
-    var saveButton: some View {
+    func saveButton(logs: [String]) -> some View {
         AsyncButton {
             let fileLogs = logs.joined(separator: "\n")
             guard let data = fileLogs.data(using: .utf8) else { return }
@@ -222,14 +180,14 @@ struct DiagnosticsView: View {
             }
         } label: {
             Label("Save log file", systemImage: "square.and.arrow.down")
-                .symbolEffect(.bounce, value: isRunning)
+                .symbolEffect(.bounce, value: model.state == .running)
         }
     }
 #endif
     
 #if os(iOS)
     @ViewBuilder
-    var shareButton: some View {
+    func shareButton(logs: [String]) -> some View {
         AsyncButton {
             let fileLogs = logs.joined(separator: "\n")
             guard let data = fileLogs.data(using: .utf8) else { return }
@@ -241,7 +199,7 @@ struct DiagnosticsView: View {
             NotificationCenter.exportFileData(exportData)
         } label: {
             Label("Share", systemImage: "square.and.arrow.up")
-                .symbolEffect(.bounce, value: isRunning)
+                .symbolEffect(.bounce, value: model.state == .running)
         }
         .buttonStyle(.borderless)
     }
