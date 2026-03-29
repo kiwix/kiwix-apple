@@ -45,7 +45,7 @@ struct DiagnosticsView: View {
                 switch model.state {
                 case .initial:
 #if os(macOS)
-                    runButton
+                    runButton(again: false)
 #endif
                 case .running:
                     VStack(alignment: .center) {
@@ -68,6 +68,7 @@ struct DiagnosticsView: View {
                     emailButton(logs: logs)
 #if os(macOS)
                     saveButton(logs: logs)
+                    runButton(again: true)
 #else
                     shareButton(logs: logs)
 #endif
@@ -81,8 +82,11 @@ struct DiagnosticsView: View {
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
                 switch model.state {
-                case .initial, .complete:
-                    runButton
+                case .initial:
+                    runButton(again: false)
+                        .padding(.horizontal)
+                case .complete:
+                    runButton(again: true)
                         .padding(.horizontal)
                 case .running:
                     cancelButton
@@ -132,17 +136,18 @@ struct DiagnosticsView: View {
     }
     
     @ViewBuilder
-    var runButton: some View {
+    func runButton(again: Bool) -> some View {
         AsyncButton {
             withAnimation {
                 model.start(using: zimFiles.reversed())
             }
         } label: {
+            let title: String = again ? "Run check again" : "Run check"
             #if os(macOS)
-            Label("Run check", systemImage: "exclamationmark.bubble")
+            Label(title, systemImage: "exclamationmark.bubble")
                 .symbolEffect(.bounce, value: model.state == .running)
             #else
-            Text("Run check")
+            Text(title)
             #endif
         }
 #if os(iOS)
