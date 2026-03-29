@@ -25,16 +25,17 @@ struct DiagnosticsView: View {
         let task: Task<Void, Error>?
         let model: DiagnosticsModel
         let isRunning: Bool
+        let logs: [String]
     }
     
     @MainActor
-    private static var shared = SharedState(task: nil, model: DiagnosticsModel(), isRunning: false)
+    private static var shared = SharedState(task: nil, model: DiagnosticsModel(), isRunning: false, logs: [])
     
     @FetchRequest(
         sortDescriptors: [NSSortDescriptor(keyPath: \ZimFile.size, ascending: false)],
         predicate: ZimFile.integrityCheckablePredicate()
     ) private var zimFiles: FetchedResults<ZimFile>
-    @State private var logs: [String] = []
+    @State private var logs: [String] = Self.shared.logs
     @State private var isRunning: Bool = Self.shared.isRunning
     @State private var integrityTask: Task<Void, Error>? = Self.shared.task
     @MainActor @ObservedObject private var model = Self.shared.model
@@ -91,17 +92,15 @@ struct DiagnosticsView: View {
         .navigationTitle("Diagnostic Items")
 #if os(iOS)
         .toolbar {
-            if logs.isEmpty {
-                if !isRunning {
-                    ToolbarItem(placement: .topBarTrailing) {
-                        runButton
-                            .padding(.horizontal)
-                    }
-                } else {
-                    ToolbarItem(placement: .topBarTrailing) {
-                       cancelButton
-                            .padding(.horizontal)
-                    }
+            if !isRunning {
+                ToolbarItem(placement: .topBarTrailing) {
+                    runButton
+                        .padding(.horizontal)
+                }
+            } else if logs.isEmpty {
+                ToolbarItem(placement: .topBarTrailing) {
+                   cancelButton
+                        .padding(.horizontal)
                 }
             }
         }
@@ -109,8 +108,14 @@ struct DiagnosticsView: View {
         .onDisappear(perform: {
             // save the current task into a shared state
             // that will work when we re-visit this view
-            Self.shared = SharedState(task: integrityTask, model: model, isRunning: isRunning)
+            Self.shared = SharedState(task: integrityTask, model: model, isRunning: isRunning, logs: logs)
         })
+        .task {
+            integrityTask = Self.shared.task
+            model.items = Self.shared.model.items
+            isRunning = Self.shared.isRunning
+            logs = Self.shared.logs
+        }
 #if os(iOS)
         .navigationBarTitleDisplayMode(.inline)
         .padding(.horizontal, 40)
@@ -122,7 +127,7 @@ struct DiagnosticsView: View {
     private func cancel() {
         model.cancel()
         integrityTask?.cancel()
-        Self.shared = SharedState(task: nil, model: DiagnosticsModel(), isRunning: false)
+        Self.shared = SharedState(task: nil, model: DiagnosticsModel(), isRunning: false, logs: [])
         logs = []
         isRunning = false
     }
