@@ -114,12 +114,10 @@ final class DiagnosticsModel: ObservableObject {
     private var cancellable: AnyCancellable?
     
     func cancel() {
-        Task { @MainActor in
-            cancellable?.cancel()
-            integrityModel.reset()
-            items = Const.defaultItems
-            integrityModel = ZimIntegrityModel()
-        }
+        cancellable?.cancel()
+        integrityModel.reset()
+        items = Const.defaultItems
+        integrityModel = ZimIntegrityModel()
     }
     
     func start(using zimFiles: [ZimFile]) async -> [String] {
@@ -142,7 +140,6 @@ final class DiagnosticsModel: ObservableObject {
         return entries
     }
     
-    @MainActor
     private func integrityCheckProgress(title: String) {
         items = items.map { item in
             if item.id == .integrityCheck {
@@ -156,7 +153,6 @@ final class DiagnosticsModel: ObservableObject {
         }
     }
     
-    @MainActor
     private func updateItemBy(id: DiagnosticItem.Identifier, status: DiagnosticItem.Status) {
         items = items.map { item in
             if item.id == id {
@@ -170,26 +166,22 @@ final class DiagnosticsModel: ObservableObject {
     }
     
     private func didReceive(checkInfos: [ZimIntegrityModel.Info]) {
-        Task { @MainActor [weak self] in
-            guard var items = self?.items else { return }
-            if let integrityIndex = items.firstIndex(where: { $0.id == .integrityCheck }) {
-                items.remove(at: integrityIndex)
+        if let integrityIndex = items.firstIndex(where: { $0.id == .integrityCheck }) {
+            items.remove(at: integrityIndex)
+        }
+        for check in checkInfos {
+            if let index = items.firstIndex(where: { $0.id == .integrityZIM(check.id) }) {
+                var item: DiagnosticItem = items[index]
+                item.status = .from(checkState: check.state)
+                items[index] = item
+            } else {
+                let title = LocalString.zim_file_integrity_check_in_progress(withArgs: check.zimFile.name)
+                let newItem = DiagnosticItem(id: .integrityZIM(check.id),
+                                             title: title,
+                                             status: .from(checkState: check.state))
+                let insertIndex: Int = items.firstIndex(where: { $0.id == .applicationLogs }) ?? 0
+                items.insert(newItem, at: insertIndex)
             }
-            for check in checkInfos {
-                if let index = items.firstIndex(where: { $0.id == .integrityZIM(check.id) }) {
-                    var item: DiagnosticItem = items[index]
-                    item.status = .from(checkState: check.state)
-                    items[index] = item
-                } else {
-                    let title = LocalString.zim_file_integrity_check_in_progress(withArgs: check.zimFile.name)
-                    let newItem = DiagnosticItem(id: .integrityZIM(check.id),
-                                                 title: title,
-                                                 status: .from(checkState: check.state))
-                    let insertIndex: Int = items.firstIndex(where: { $0.id == .applicationLogs }) ?? 0
-                    items.insert(newItem, at: insertIndex)
-                }
-            }
-            self?.items = items
         }
     }
 }

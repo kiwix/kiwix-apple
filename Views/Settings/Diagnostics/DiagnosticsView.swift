@@ -15,6 +15,7 @@
 
 import SwiftUI
 import CoreData
+import Combine
 
 /// NOTE: This view is not translated on purpose.
 /// We want to make sure users only send us reports in English
@@ -27,6 +28,7 @@ struct DiagnosticsView: View {
         let isRunning: Bool
         let logs: [String]
     }
+    
     
     @MainActor
     private static var shared = SharedState(task: nil, model: DiagnosticsModel(), isRunning: false, logs: [])
