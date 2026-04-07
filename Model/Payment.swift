@@ -122,23 +122,22 @@ struct Payment {
     /// - Returns: Setup button if no cards added yet,
     /// nil if Apple Pay is not supported
     /// or donation button, if all is OK
-    static private func paymentButtonType() -> ApplePaymentLabelType? {
+    static private func paymentButtonType() -> ButtonLabelType? {
         // only kiwix app is supporting donations atm.
         guard case .kiwix = AppType.current else { return nil }
-        
         if PKPaymentAuthorizationController.canMakePayments() {
-            return ApplePaymentLabelType.donate
+            return ButtonLabelType.donate
         }
         if PKPaymentAuthorizationController.canMakePayments(
             usingNetworks: Payment.supportedNetworks,
             capabilities: Payment.capabilities) {
-            return ApplePaymentLabelType.setUp
+            return ButtonLabelType.setUp
         }
         return nil
     }
     
-    /// Sendable version of PayWithApplePayButtonLabel
-    private enum ApplePaymentLabelType: Sendable {
+    /// Sendable app-side representation of the Apple Pay button label.
+    enum ButtonLabelType: Sendable {
         case donate
         case setUp
     }
@@ -147,19 +146,11 @@ struct Payment {
     /// - Returns: Setup button if no cards added yet,
     /// nil if Apple Pay is not supported
     /// or donation button, if all is OK
-    static func paymentButtonTypeAsync() async -> PayWithApplePayButtonLabel? {
-        let task = Task<ApplePaymentLabelType?, Never>(priority: .low) {
+    static func paymentButtonTypeAsync() async -> ButtonLabelType? {
+        let task = Task<ButtonLabelType?, Never>(priority: .low) {
             Self.paymentButtonType()
         }
-        guard let buttonLabel = await task.result.get() else {
-            return nil
-        }
-        switch buttonLabel {
-        case .donate:
-            return PayWithApplePayButtonLabel.donate
-        case .setUp:
-            return PayWithApplePayButtonLabel.setUp
-        }
+        return await task.result.get()
     }
 
     func donationRequest(for selectedAmount: SelectedAmount) -> PKPaymentRequest {
@@ -190,6 +181,49 @@ struct Payment {
         return request
     }
 
+    @MainActor
+    func authorize(payment authorizedPayment: PKPayment,
+                   selectedAmount: SelectedAmount) async -> PKPaymentAuthorizationResult {
+        let paymentServer = StripeKiwix(endPoint: Self.kiwixPaymentServer)
+        do {
+            let publicKey = try await paymentServer.publishableKey()
+            StripeAPI.setDefault(publishableKey: publicKey)
+        } catch let serverError {
+            Self.finalResult = .error
+            return .init(status: .failure, errors: [serverError])
+        }
+        // we should update the return path for confirmations
+        // see: https://github.com/kiwix/kiwix-apple/issues/1032
+        let stripe = StripeApplePaySimple()
+        let endPoint = paymentServer.endPoint
+        let result = await stripe.complete(payment: authorizedPayment,
+                                           returnURLPath: nil,
+                                           usingClientSecretProvider: { @Sendable in
+            await StripeKiwix.clientSecretForPayment(endPoint: endPoint, selectedAmount: selectedAmount)
+        }, withAPI: StripeAsyncAPI())
+        switch result.status {
+        case .success:
+            Self.finalResult = .thankYou
+        case .failure:
+            Self.finalResult = .error
+        default:
+            Self.finalResult = nil
+        }
+        return result
+    }
+
+    @MainActor
+    func authorizationDidFinish() {
+        completeSubject.send(())
+    }
+
+    @MainActor
+    func authorizationPresentationDidFail() {
+        Self.finalResult = .error
+        completeSubject.send(())
+    }
+
+    #if os(iOS)
     func onPaymentAuthPhase(selectedAmount: SelectedAmount,
                             phase: PayWithApplePayButtonPaymentAuthorizationPhase) {
         switch phase {
@@ -197,47 +231,19 @@ struct Payment {
             Log.Payment.info("onPaymentAuthPhase: .willAuthorize")
         case .didAuthorize(let payment, let resultHandler):
             Log.Payment.info("onPaymentAuthPhase: .didAuthorize")
-            // call our server to get payment / setup intent and return the client.secret
             Task { @MainActor [resultHandler] in
-                let paymentServer = StripeKiwix(endPoint: Self.kiwixPaymentServer)
-                do {
-                    let publicKey = try await paymentServer.publishableKey()
-                    StripeAPI.setDefault(publishableKey: publicKey)
-                } catch let serverError {
-                    Self.finalResult = .error
-                    resultHandler(.init(status: .failure, errors: [serverError]))
-                    return
-                }
-                // we should update the return path for confirmations
-                // see: https://github.com/kiwix/kiwix-apple/issues/1032
-                let stripe = StripeApplePaySimple()
-                let endPoint = paymentServer.endPoint
-                let result = await stripe.complete(payment: payment,
-                                                   returnURLPath: nil,
-                                                   usingClientSecretProvider: { @Sendable in
-                    await StripeKiwix.clientSecretForPayment(endPoint: endPoint, selectedAmount: selectedAmount)
-                }, withAPI: StripeAsyncAPI())
-                // calling any UI refreshing state / subject from here
-                // will block the UI in the payment state forever
-                // therefore it's defered via static finalResult
-                switch result.status {
-                case .success:
-                    Self.finalResult = .thankYou
-                case .failure:
-                    Self.finalResult = .error
-                default:
-                    Self.finalResult = nil
-                }
+                let result = await authorize(payment: payment, selectedAmount: selectedAmount)
                 resultHandler(result)
                 Log.Payment.info("onPaymentAuthPhase: .didAuthorize: \(result.status == .success, privacy: .public)")
             }
         case .didFinish:
             Log.Payment.info("onPaymentAuthPhase: .didFinish")
-            completeSubject.send(())
+            authorizationDidFinish()
         @unknown default:
             Log.Payment.error("onPaymentAuthPhase: @unknown default")
         }
     }
+    #endif
 
     @MainActor
     func onMerchantSessionUpdate() async -> PKPaymentRequestMerchantSessionUpdate {
@@ -248,6 +254,33 @@ struct Payment {
         return .init(status: .success, merchantSession: session)
     }
 }
+
+#if os(iOS)
+extension Payment.ButtonLabelType {
+    @available(iOS 16.0, macOS 13.0, watchOS 9.0, *)
+    var payWithApplePayButtonLabel: PayWithApplePayButtonLabel {
+        switch self {
+        case .donate:
+            .donate
+        case .setUp:
+            .setUp
+        }
+    }
+}
+#endif
+
+#if os(macOS)
+extension Payment.ButtonLabelType {
+    var paymentButtonType: PKPaymentButtonType {
+        switch self {
+        case .donate:
+            .donate
+        case .setUp:
+            .setUp
+        }
+    }
+}
+#endif
 
 private enum MerchantSessionError: Error {
     case invalidStatus

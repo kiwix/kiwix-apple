@@ -14,8 +14,11 @@
 // along with Kiwix; If not, see https://www.gnu.org/licenses/.
 
 import SwiftUI
-import PassKit
 import Combine
+
+#if os(iOS) || os(macOS)
+import PassKit
+#endif
 
 struct PaymentSummary: View {
 
@@ -25,13 +28,25 @@ struct PaymentSummary: View {
     private let payment: Payment
     private let onComplete: @MainActor () -> Void
     @State private var paymentDetermined: Bool = false
-    @State private var paymentButtonLabel: PayWithApplePayButtonLabel?
+    @State private var paymentButtonLabel: Payment.ButtonLabelType?
+    #if os(macOS)
+    @State private var applePayCoordinator: MacApplePayCoordinator
+    #endif
 
     init(selectedAmount: SelectedAmount,
          onComplete: @escaping @MainActor () -> Void) {
         self.selectedAmount = selectedAmount
         self.onComplete = onComplete
-        payment = Payment()
+        let payment = Payment()
+        self.payment = payment
+        #if os(macOS)
+        _applePayCoordinator = State(
+            initialValue: MacApplePayCoordinator(
+                selectedAmount: selectedAmount,
+                payment: payment
+            )
+        )
+        #endif
     }
 
     var body: some View {
@@ -47,10 +62,11 @@ struct PaymentSummary: View {
                     .padding()
             }
             Text(selectedAmount.value.formatted(.currency(code: selectedAmount.currency))).font(.title).bold()
+            #if os(iOS)
             if paymentDetermined {
                 if let paymentButtonLabel {
                     PayWithApplePayButton(
-                        paymentButtonLabel,
+                        paymentButtonLabel.payWithApplePayButtonLabel,
                         request: payment.donationRequest(for: selectedAmount),
                         onPaymentAuthorizationChange: { phase in
                             payment.onPaymentAuthPhase(selectedAmount: selectedAmount,
@@ -68,6 +84,24 @@ struct PaymentSummary: View {
             } else {
                 LoadingProgressView()
             }
+            #elseif os(macOS)
+            if paymentDetermined {
+                if let paymentButtonLabel {
+                    MacApplePayButton(
+                        type: paymentButtonLabel.paymentButtonType,
+                        action: applePayCoordinator.present
+                    )
+                    .frame(width: 186, height: 44)
+                    .padding()
+                } else {
+                    Text(LocalString.payment_support_fallback_message)
+                        .foregroundStyle(.red)
+                        .font(.callout)
+                }
+            } else {
+                LoadingProgressView()
+            }
+            #endif
         }.onReceive(payment.completeSubject) {
             onComplete()
         }
@@ -75,8 +109,111 @@ struct PaymentSummary: View {
             paymentButtonLabel = await Payment.paymentButtonTypeAsync()
             paymentDetermined = true
         }
+        #if os(macOS)
+        .withHostingWindow { window in
+            applePayCoordinator.presentationWindow = window
+        }
+        #endif
     }
 }
+
+#if os(macOS)
+private struct MacApplePayButton: NSViewRepresentable {
+    let type: PKPaymentButtonType
+    let action: () -> Void
+
+    func makeCoordinator() -> Coordinator {
+        Coordinator(action: action)
+    }
+
+    func makeNSView(context: Context) -> PKPaymentButton {
+        let button = PKPaymentButton(paymentButtonType: type, paymentButtonStyle: .automatic)
+        button.target = context.coordinator
+        button.action = #selector(Coordinator.onTap)
+        return button
+    }
+
+    func updateNSView(_ button: PKPaymentButton, context: Context) {
+        button.target = context.coordinator
+        button.action = #selector(Coordinator.onTap)
+    }
+
+    final class Coordinator: NSObject {
+        private let action: () -> Void
+
+        init(action: @escaping () -> Void) {
+            self.action = action
+        }
+
+        @objc func onTap() {
+            action()
+        }
+    }
+}
+
+private final class MacApplePayCoordinator: NSObject, PKPaymentAuthorizationControllerDelegate, @unchecked Sendable {
+    let selectedAmount: SelectedAmount
+    let payment: Payment
+    var presentationWindow: NSWindow?
+
+    private var controller: PKPaymentAuthorizationController?
+
+    init(selectedAmount: SelectedAmount, payment: Payment) {
+        self.selectedAmount = selectedAmount
+        self.payment = payment
+    }
+
+    func present() {
+        let controller = PKPaymentAuthorizationController(paymentRequest: payment.donationRequest(for: selectedAmount))
+        controller.delegate = self
+        self.controller = controller
+        controller.present { [weak self] success in
+            guard let self, !success else { return }
+            Log.Payment.error("paymentAuthorizationController.presentWithCompletion failed")
+            Task { @MainActor [weak self] in
+                guard let self else { return }
+                self.controller = nil
+                self.payment.authorizationPresentationDidFail()
+            }
+        }
+    }
+
+    func paymentAuthorizationControllerDidFinish(_ controller: PKPaymentAuthorizationController) {
+        controller.dismiss { [weak self] in
+            Task { @MainActor [weak self] in
+                guard let self else { return }
+                self.controller = nil
+                self.payment.authorizationDidFinish()
+            }
+        }
+    }
+
+    func paymentAuthorizationControllerWillAuthorizePayment(_ controller: PKPaymentAuthorizationController) {
+        Log.Payment.info("paymentAuthorizationController: will authorize")
+    }
+
+    func paymentAuthorizationController(_ controller: PKPaymentAuthorizationController,
+                                        didRequestMerchantSessionUpdate handler: @escaping (PKPaymentRequestMerchantSessionUpdate) -> Void) {
+        Task { @MainActor [payment] in
+            handler(await payment.onMerchantSessionUpdate())
+        }
+    }
+
+    func paymentAuthorizationController(_ controller: PKPaymentAuthorizationController,
+                                        didAuthorizePayment authorizedPayment: PKPayment,
+                                        handler: @escaping (PKPaymentAuthorizationResult) -> Void) {
+        Task { @MainActor [payment, selectedAmount] in
+            let result = await payment.authorize(payment: authorizedPayment, selectedAmount: selectedAmount)
+            handler(result)
+            Log.Payment.info("paymentAuthorizationController: didAuthorize: \(result.status == .success, privacy: .public)")
+        }
+    }
+
+    func presentationWindow(for controller: PKPaymentAuthorizationController) -> NSWindow? {
+        presentationWindow
+    }
+}
+#endif
 
 #Preview {
     PaymentSummary(

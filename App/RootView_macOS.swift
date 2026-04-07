@@ -15,7 +15,6 @@
 
 #if os(macOS)
 import SwiftUI
-import PassKit
 
 struct RootView: View {
     @Environment(\.openWindow) var openWindow
@@ -23,7 +22,7 @@ struct RootView: View {
     @StateObject private var navigation = NavigationViewModel()
     @State private var currentNavItem: MenuItem?
     @StateObject private var windowTracker = WindowTracker()
-    @State private var paymentButtonLabel: PayWithApplePayButtonLabel?
+    @State private var paymentButtonLabel: Payment.ButtonLabelType?
     var isSearchFocused: FocusState<Bool>.Binding
     @StateObject private var selection = SelectedZimFileViewModel()
     // Open file alerts
