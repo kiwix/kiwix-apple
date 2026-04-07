@@ -150,7 +150,10 @@ struct DownloadsSettings: View {
                                 initialFolder = DownloadDestination.downloadLocalFolder() ??
                                     URL(fileURLWithPath: locationPath, isDirectory: true)
                             }
-                            guard let folder = await DownloadFolderPanel.chooseFolder(initialFolder: initialFolder, message: nil) else {
+                            guard let folder = await DownloadFolderPanel.chooseFolder(
+                                initialFolder: initialFolder,
+                                message: nil
+                            ) else {
                                 return
                             }
                             DownloadLocationSettings.save(folder: folder)

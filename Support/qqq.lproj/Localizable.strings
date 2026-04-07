@@ -171,10 +171,12 @@
 "library_settings.toggle.cellular" = "Label for toggle in settings";
 "library_settings.new-download-task-description" = "Small print under the toggle 'Download using cellular'";
 "download_settings.location.title" = "Settings label for the default download folder on macOS";
-"download_settings.always_ask.title" = "Settings label for the macOS toggle that asks for a location before each download";
+"download_settings.always_ask.title" =
+    "Settings label for the macOS toggle that asks for a location before each download";
 "download_settings.change.button" = "Button in macOS settings used to pick another default download folder";
 "download_settings.choose.title" = "Title of the macOS folder chooser used for download locations";
-"download_settings.prompt.message" = "Message shown in the macOS folder chooser before a download starts; it should mention Preferences and turning off the always-ask behavior";
+"download_settings.prompt.message" =
+    "Message shown before a macOS download starts; mention Preferences and the always-ask toggle.";
 "catalog_settings.last_refresh.text" = "Label text in settings, eg: Last refresh: 30 minutes ago";
 "catalog_settings.refreshing.text" = "Status text in settings, when refreshing is in progress";
 "catalog_settings.refresh_now.button" = "Button label in settings";

@@ -50,11 +50,18 @@ struct DownloadTaskDestinationSnapshot: Codable, Equatable {
 enum DownloadTaskDestinationStore {
     private static let key = "downloadTaskDestinations"
 
-    static func destination(for uuid: UUID, userDefaults: UserDefaults = .standard) -> DownloadTaskDestinationSnapshot? {
+    static func destination(
+        for uuid: UUID,
+        userDefaults: UserDefaults = .standard
+    ) -> DownloadTaskDestinationSnapshot? {
         read(userDefaults: userDefaults)[uuid.uuidString]
     }
 
-    static func save(_ snapshot: DownloadTaskDestinationSnapshot, for uuid: UUID, userDefaults: UserDefaults = .standard) {
+    static func save(
+        _ snapshot: DownloadTaskDestinationSnapshot,
+        for uuid: UUID,
+        userDefaults: UserDefaults = .standard
+    ) {
         var destinations = read(userDefaults: userDefaults)
         destinations[uuid.uuidString] = snapshot
         write(destinations, userDefaults: userDefaults)
