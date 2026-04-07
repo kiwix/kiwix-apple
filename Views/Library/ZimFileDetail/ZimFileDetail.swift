@@ -35,6 +35,10 @@ struct ZimFileDetail: View {
     @State private var isPresentingIntegrityCheckAlert = false
     @State private var isPresentingIntegrityCheckingProgress = false
     @State private var isInDocumentsDirectory = false
+    @State private var pendingDownloadAvailableCapacity: Int64?
+    #if os(macOS)
+    @State private var pendingDownloadFolder: URL?
+    #endif
     let dismissParent: (() -> Void)? // iOS only
 
     init(zimFile: ZimFile, dismissParent: (() -> Void)?) {
@@ -297,42 +301,86 @@ struct ZimFileDetail: View {
         }
     }
 
+    private static let downloadWarningThreshold: Int64 = 1_000_000_000
+
     private var downloadAction: some View {
         Action(title: LocalString.zim_file_action_download_title) {
-            if let freeSpace = freeSpace, zimFile.size >= freeSpace - 10^9 {
-                isPresentingDownloadAlert = true
-            } else {
-                let fileID = zimFile.fileID
-                Task {
-                    await DownloadService.shared.start(zimFileID: fileID,
-                                                       allowsCellularAccess: downloadUsingCellular)
-                }
+            Task {
+                await prepareDownload()
             }
         }.alert(isPresented: $isPresentingDownloadAlert) {
             Alert(
                 title: Text(LocalString.zim_file_action_download_warning_title),
                 message: Text({
-                    if let freeSpace = freeSpace, zimFile.size > freeSpace {
+                    if let freeSpace = pendingDownloadAvailableCapacity, zimFile.size > freeSpace {
                         return LocalString.zim_file_action_download_warning_message
                     } else {
                         return LocalString.zim_file_action_download_warning_message1
                     }
                 }()),
                 primaryButton: .default(Text(LocalString.zim_file_action_download_button_anyway)) {
-                    let fileID = zimFile.fileID
-                    Task {
-                        await DownloadService.shared.start(
-                                zimFileID: fileID,
-                                allowsCellularAccess: downloadUsingCellular
-                        )
-                    }
+                    startConfirmedDownload()
                 },
-                secondaryButton: .cancel()
+                secondaryButton: .cancel {
+                    pendingDownloadAvailableCapacity = nil
+                    #if os(macOS)
+                    pendingDownloadFolder = nil
+                    #endif
+                }
             )
         }
         #if os(macOS)
         .buttonStyle(.borderedProminent)
         #endif
+    }
+
+    private func prepareDownload() async {
+        #if os(macOS)
+        let selector = MacDownloadLocationSelector()
+        guard let folder = await selector.selectFolder(
+            message: LocalString.download_settings_prompt_message
+        ) else {
+            return
+        }
+        let availableCapacity = DownloadDestination.availableCapacity(in: folder)
+        pendingDownloadFolder = folder
+        pendingDownloadAvailableCapacity = availableCapacity
+        if let availableCapacity,
+           zimFile.size >= availableCapacity - Self.downloadWarningThreshold {
+            isPresentingDownloadAlert = true
+            return
+        }
+        startDownload(to: folder)
+        #else
+        pendingDownloadAvailableCapacity = freeSpace
+        if let freeSpace,
+           zimFile.size >= freeSpace - Self.downloadWarningThreshold {
+            isPresentingDownloadAlert = true
+            return
+        }
+        startDownload()
+        #endif
+    }
+
+    private func startConfirmedDownload() {
+        #if os(macOS)
+        startDownload(to: pendingDownloadFolder)
+        pendingDownloadFolder = nil
+        #else
+        startDownload()
+        #endif
+    }
+
+    private func startDownload(to folder: URL? = nil) {
+        pendingDownloadAvailableCapacity = nil
+        let fileID = zimFile.fileID
+        Task {
+            await DownloadService.shared.start(
+                zimFileID: fileID,
+                allowsCellularAccess: downloadUsingCellular,
+                destinationFolder: folder
+            )
+        }
     }
 
     @ViewBuilder
@@ -376,9 +424,11 @@ struct ZimFileDetail: View {
     }
 
     private var freeSpace: Int64? {
-        try? FileManager.default
+        guard let documentDirectory = FileManager.default
             .urls(for: .documentDirectory, in: .userDomainMask)
-            .first?.resourceValues(forKeys: [.volumeAvailableCapacityForImportantUsageKey])
-            .volumeAvailableCapacityForImportantUsage
+            .first else {
+            return nil
+        }
+        return DownloadDestination.availableCapacity(in: documentDirectory)
     }
 }

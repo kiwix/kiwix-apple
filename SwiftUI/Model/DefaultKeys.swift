@@ -53,6 +53,9 @@ extension Defaults.Keys {
 
     #if os(macOS)
     // window management:
+    static let downloadAlwaysAsk = Key<Bool>("downloadAlwaysAsk", default: true)
+    static let downloadDirectoryBookmark = Key<Data?>("downloadDirectoryBookmark")
+    static let downloadDirectoryPath = Key<String?>("downloadDirectoryPath")
     static let windowURLs = Key<[URL]>("windowURLs", default: [])
     #endif
     

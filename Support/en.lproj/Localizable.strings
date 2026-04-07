@@ -46,6 +46,7 @@
 "common.button.ok" = "Ok";
 "common.button.yes" = "Yes";
 "common.button.no" = "no";
+"common.button.choose" = "Choose";
 "common.button.print" = "Print";
 "common.button.copy" = "Copy";
 "common.button.copied" = "Copied";
@@ -205,6 +206,11 @@
 "settings.navigation.title" = "Settings";
 "library_settings.toggle.cellular" = "Download using cellular";
 "library_settings.new-download-task-description" = "Change will only apply to new download tasks.";
+"download_settings.location.title" = "Save files to";
+"download_settings.always_ask.title" = "Always ask where to save files";
+"download_settings.change.button" = "Change...";
+"download_settings.choose.title" = "Choose Download Location";
+"download_settings.prompt.message" = "Choose where to save this file. Turn off \"Always ask where to save files\" in Preferences to use your default location.";
 "catalog_settings.last_refresh.text" = "Last refresh";
 "catalog_settings.refreshing.text" = "Refreshing...";
 "catalog_settings.refresh_now.button" = "Refresh Now";

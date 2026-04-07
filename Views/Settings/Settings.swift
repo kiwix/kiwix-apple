@@ -121,6 +121,55 @@ struct LibrarySettings: View {
     }
 }
 
+struct DownloadsSettings: View {
+    @Default(.downloadAlwaysAsk) private var downloadAlwaysAsk
+
+    private var locationResolution: SavedDownloadLocationResolution {
+        DownloadLocationSettings.resolution()
+    }
+
+    private var locationPath: String {
+        locationResolution.displayPath
+    }
+
+    var body: some View {
+        VStack(spacing: 16) {
+            SettingSection(name: LocalString.download_settings_location_title, alignment: .top) {
+                VStack(alignment: .leading, spacing: 8) {
+                    Text(locationPath)
+                        .foregroundColor(.secondary)
+                        .textSelection(.enabled)
+                        .lineLimit(3)
+                    Button(LocalString.download_settings_change_button) {
+                        Task {
+                            let initialFolder: URL
+                            switch locationResolution.state {
+                            case .valid(let folder):
+                                initialFolder = folder
+                            case .missing, .invalid:
+                                initialFolder = DownloadDestination.downloadLocalFolder() ??
+                                    URL(fileURLWithPath: locationPath, isDirectory: true)
+                            }
+                            guard let folder = await DownloadFolderPanel.chooseFolder(initialFolder: initialFolder, message: nil) else {
+                                return
+                            }
+                            DownloadLocationSettings.save(folder: folder)
+                        }
+                    }
+                }
+            }
+            SettingSection(name: LocalString.download_settings_always_ask_title) {
+                Toggle(" ", isOn: $downloadAlwaysAsk)
+            }
+            Text(LocalString.library_settings_new_download_task_description)
+                .foregroundColor(.secondary)
+            Spacer()
+        }
+        .padding()
+        .tabItem { Label(LocalString.enum_navigation_item_downloads, systemImage: "arrow.down.circle") }
+    }
+}
+
 struct HotspotSettings: View {
     
     @State private var portNumber: Int
@@ -149,7 +198,6 @@ struct HotspotSettings: View {
 
 #elseif os(iOS)
 
-import PassKit
 import Combine
 
 struct Settings: View {

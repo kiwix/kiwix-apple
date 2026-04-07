@@ -17,7 +17,10 @@ import Foundation
 
 enum DownloadDestination {
     
-    static func downloadLocalFolder() -> URL? {
+    static func downloadLocalFolder(selectedFolder: URL? = nil) -> URL? {
+        if let selectedFolder {
+            return selectedFolder
+        }
         // determine which directory should the file be moved to
         #if os(macOS)
         let searchPath = FileManager.SearchPathDirectory.downloadsDirectory
@@ -35,8 +38,12 @@ enum DownloadDestination {
         return directory
     }
     
-    static func filePathFor(downloadURL: URL) -> URL? {
-        downloadLocalFolder()?.appendingPathComponent(downloadURL.lastPathComponent)
+    static func filePathFor(downloadURL: URL, in folder: URL? = nil) -> URL? {
+        downloadLocalFolder(selectedFolder: folder)?.appendingPathComponent(downloadURL.lastPathComponent)
+    }
+
+    static func partialFilePathFor(destination: URL) -> URL {
+        destination.appendingPathExtension("downloading")
     }
     
     static func alternateLocalPathFor(downloadURL url: URL, count: Int) -> URL {
@@ -49,4 +56,64 @@ enum DownloadDestination {
             .deletingLastPathComponent()
             .appendingPathComponent(newFileName, conformingTo: .zimFile)
     }
+
+    static func availableCapacity(in folder: URL) -> Int64? {
+        try? withFolderAccess(to: folder) {
+            try folder
+                .resourceValues(forKeys: [.volumeAvailableCapacityForImportantUsageKey])
+                .volumeAvailableCapacityForImportantUsage
+        }
+    }
+
+    static func fileExists(at url: URL, in folder: URL) -> Bool {
+        withFolderAccess(to: folder) {
+            FileManager.default.fileExists(atPath: url.path())
+        }
+    }
+
+    static func removeFileIfExists(at url: URL, in folder: URL) throws {
+        try withFolderAccess(to: folder) {
+            guard FileManager.default.fileExists(atPath: url.path()) else {
+                return
+            }
+            try FileManager.default.removeItem(at: url)
+        }
+    }
+
+    static func withFolderAccess<Result>(to folder: URL, _ body: () throws -> Result) rethrows -> Result {
+        #if os(macOS)
+        let didAccess = folder.startAccessingSecurityScopedResource()
+        defer {
+            if didAccess {
+                folder.stopAccessingSecurityScopedResource()
+            }
+        }
+        #endif
+        return try body()
+    }
+
+    #if os(macOS)
+    static func folderBookmarkData(for folder: URL) -> Data? {
+        _ = folder.startAccessingSecurityScopedResource()
+        defer { folder.stopAccessingSecurityScopedResource() }
+        return try? folder.bookmarkData(
+            options: [.withSecurityScope],
+            includingResourceValuesForKeys: nil,
+            relativeTo: nil
+        )
+    }
+
+    static func resolveFolderBookmarkData(_ data: Data) -> (url: URL, updatedBookmarkData: Data?)? {
+        var isStale = false
+        guard let url = try? URL(
+            resolvingBookmarkData: data,
+            options: [.withSecurityScope],
+            bookmarkDataIsStale: &isStale
+        ) else {
+            return nil
+        }
+        let updatedBookmarkData = isStale ? folderBookmarkData(for: url) : nil
+        return (url, updatedBookmarkData)
+    }
+    #endif
 }

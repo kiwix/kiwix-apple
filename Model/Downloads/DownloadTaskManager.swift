@@ -32,6 +32,10 @@ struct DownloadTaskManager {
     
     func deleteDownloadTaskAsync(zimFileID: UUID) async {
         progress.resetFor(uuid: zimFileID)
+        DownloadTaskDestinationStore.remove(for: zimFileID)
+        #if os(macOS)
+        MacStreamingDownloadStore.remove(for: zimFileID)
+        #endif
         await Database.shared.viewContext.perform {
             do {
                 let request = DownloadTask.fetchRequest(fileID: zimFileID)

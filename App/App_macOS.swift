@@ -29,6 +29,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
 enum SettingsTab: Int {
     case reading
     case catalog
+    case downloads
     case hotspot
     case about
     case diagnostics
@@ -125,6 +126,8 @@ struct Kiwix: App {
                     LibrarySettings()
                         .environmentObject(libraryRefreshViewModel)
                         .tag(SettingsTab.catalog.rawValue)
+                    DownloadsSettings()
+                        .tag(SettingsTab.downloads.rawValue)
                 }
                 HotspotSettings()
                     .tag(SettingsTab.hotspot.rawValue)

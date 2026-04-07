@@ -30,6 +30,7 @@
 "common.button.ok" = "Button label for dismissing without any further action, Ok";
 "common.button.yes" = "It is a title in the summary table on macOS: we list the attributes of a ZIM file: does it contain pictures yes/no, does it contain Videos yes/no, Details? yes/no";
 "common.button.no" = "It is a title in the summary table on macOS: we list the attributes of a ZIM file: does it contain pictures yes/no, does it contain Videos yes/no, Details? yes/no";
+"common.button.choose" = "Button label for choosing a folder";
 "common.button.print" = "Accessibility label for button to print the currently loaded article";
 "common.button.copy" = "Button label for copying a given item. The context is the same as the system's copy/paste acion.";
 "common.button.copied" = "Button label for confirming a given item was copied. The context is the same as the system's copy/paste acion.";
@@ -169,6 +170,11 @@
 "settings.navigation.title" = "Title of navigation item to Settings";
 "library_settings.toggle.cellular" = "Label for toggle in settings";
 "library_settings.new-download-task-description" = "Small print under the toggle 'Download using cellular'";
+"download_settings.location.title" = "Settings label for the default download folder on macOS";
+"download_settings.always_ask.title" = "Settings label for the macOS toggle that asks for a location before each download";
+"download_settings.change.button" = "Button in macOS settings used to pick another default download folder";
+"download_settings.choose.title" = "Title of the macOS folder chooser used for download locations";
+"download_settings.prompt.message" = "Message shown in the macOS folder chooser before a download starts; it should mention Preferences and turning off the always-ask behavior";
 "catalog_settings.last_refresh.text" = "Label text in settings, eg: Last refresh: 30 minutes ago";
 "catalog_settings.refreshing.text" = "Status text in settings, when refreshing is in progress";
 "catalog_settings.refresh_now.button" = "Button label in settings";

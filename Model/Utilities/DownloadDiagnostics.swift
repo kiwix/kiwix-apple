@@ -21,7 +21,21 @@ import SystemPackage
 enum DownloadDiagnostics {
     
     static func path() {
-        guard let url = DownloadDestination.downloadLocalFolder() else {
+        #if os(macOS)
+        let url: URL? = {
+            let resolution = DownloadLocationSettings.resolution()
+            switch resolution.state {
+            case .valid(let folder):
+                return folder
+            case .missing, .invalid:
+                return DownloadDestination.downloadLocalFolder()
+            }
+        }()
+        #else
+        let url = DownloadDestination.downloadLocalFolder()
+        #endif
+
+        guard let url else {
             return
         }
         let tempDir = ProcessInfo().environment["TMPDIR"] ?? "unknown"
@@ -31,7 +45,21 @@ enum DownloadDiagnostics {
     
     static func testWritingAFile() {
         let testURL = URL(string: "https://kiwix.org/diag.test")!
-        guard let destinationURL = DownloadDestination.filePathFor(downloadURL: testURL) else {
+        #if os(macOS)
+        let folder: URL? = {
+            let resolution = DownloadLocationSettings.resolution()
+            switch resolution.state {
+            case .valid(let folder):
+                return folder
+            case .missing, .invalid:
+                return DownloadDestination.downloadLocalFolder()
+            }
+        }()
+        #else
+        let folder = DownloadDestination.downloadLocalFolder()
+        #endif
+        guard let folder,
+              let destinationURL = DownloadDestination.filePathFor(downloadURL: testURL, in: folder) else {
             return
         }
         if let tempDir = ProcessInfo().environment["TMPDIR"],
@@ -43,9 +71,13 @@ enum DownloadDiagnostics {
             
             if FileManager.default.createFile(atPath: tempFileURL.path(), contents: Data("test".utf8)) {
                 do {
-                    try FileManager.default.moveItem(atPath: tempFileURL.path(), toPath: destinationURL.path())
+                    try DownloadDestination.withFolderAccess(to: folder) {
+                        try FileManager.default.moveItem(atPath: tempFileURL.path(), toPath: destinationURL.path())
+                    }
                     Log.DownloadService.notice("successfully moved test file to downloads folder")
-                    try FileManager.default.removeItem(at: destinationURL)
+                    try DownloadDestination.withFolderAccess(to: folder) {
+                        try FileManager.default.removeItem(at: destinationURL)
+                    }
                     Log.DownloadService.notice("successfully removed test file in downloads folder")
                 } catch {
                     Log.DownloadService.error("""
