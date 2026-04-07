@@ -192,8 +192,10 @@ private final class MacApplePayCoordinator: NSObject, PKPaymentAuthorizationCont
         Log.Payment.info("paymentAuthorizationController: will authorize")
     }
 
-    func paymentAuthorizationController(_ controller: PKPaymentAuthorizationController,
-                                        didRequestMerchantSessionUpdate handler: @escaping (PKPaymentRequestMerchantSessionUpdate) -> Void) {
+    func paymentAuthorizationController(
+        _ controller: PKPaymentAuthorizationController,
+        didRequestMerchantSessionUpdate handler: @escaping (PKPaymentRequestMerchantSessionUpdate) -> Void
+    ) {
         Task { @MainActor [payment] in
             handler(await payment.onMerchantSessionUpdate())
         }
@@ -203,9 +205,14 @@ private final class MacApplePayCoordinator: NSObject, PKPaymentAuthorizationCont
                                         didAuthorizePayment authorizedPayment: PKPayment,
                                         handler: @escaping (PKPaymentAuthorizationResult) -> Void) {
         Task { @MainActor [payment, selectedAmount] in
-            let result = await payment.authorize(payment: authorizedPayment, selectedAmount: selectedAmount)
+            let result = await payment.authorize(
+                payment: authorizedPayment,
+                selectedAmount: selectedAmount
+            )
             handler(result)
-            Log.Payment.info("paymentAuthorizationController: didAuthorize: \(result.status == .success, privacy: .public)")
+            Log.Payment.info(
+                "paymentAuthorizationController: didAuthorize: \(result.status == .success, privacy: .public)"
+            )
         }
     }
 
