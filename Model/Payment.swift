@@ -238,7 +238,9 @@ struct Payment {
             }
         case .didFinish:
             Log.Payment.info("onPaymentAuthPhase: .didFinish")
-            authorizationDidFinish()
+            Task { @MainActor in
+                authorizationDidFinish()
+            }
         @unknown default:
             Log.Payment.error("onPaymentAuthPhase: @unknown default")
         }
