@@ -30,7 +30,7 @@ struct Kiwix: App {
     @StateObject private var colorSchemeStore = UserColorSchemeStore()
     
     init() {
-        Task { @MainActor in
+        Task(priority: .utility) {
             await Diagnostics.start()
             await WebContentBlocker.compilePolicy()
         }

@@ -77,7 +77,7 @@ struct DiagnosticsView: View {
             Spacer(minLength: Const.verticalSpace)
         }
         .frame(maxWidth: 500)
-        .navigationTitle("Diagnostic Items")
+        .navigationTitle("Diagnostic Report")
 #if os(iOS)
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
@@ -166,11 +166,11 @@ struct DiagnosticsView: View {
             }
         } label: {
 #if os(macOS)
-            let title: String = again ? "Run check again" : "Run check"
+            let title: String = again ? "Run again" : "Run"
             Label(title, systemImage: "exclamationmark.bubble")
                 .symbolEffect(.bounce, value: model.state == .running)
 #else
-            let title: String = again ? "Run again" : "Run check"
+            let title: String = again ? "Run again" : "Run"
             Text(title)
 #endif
         }
