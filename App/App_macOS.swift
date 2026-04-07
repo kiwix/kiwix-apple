@@ -50,7 +50,7 @@ struct Kiwix: App {
 
     init() {
         UNUserNotificationCenter.current().delegate = notificationCenterDelegate
-        Task { @MainActor in
+        Task(priority: .utility) {
             await Diagnostics.start()
             await WebContentBlocker.compilePolicy()
             if FeatureFlags.hasLibrary {

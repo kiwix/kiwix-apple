@@ -189,12 +189,14 @@ final class DiagnosticsModel: ObservableObject {
 enum Diagnostics {
     
     /// Log the os and app related infos
-    @MainActor static func start() async {
+    static func start() async {
+        let device = await MainActor.run { Device.current }
         Log.Environment.notice("app: \(appVersion(), privacy: .public)")
-        Log.Environment.notice("os: \(osName(), privacy: .public)")
-        Log.Environment.notice("free space: \(freeSpace(), privacy: .public)")
+        Log.Environment.notice("os: \(osName(device: device), privacy: .public)")
         Log.Environment.notice("\(languageCurrent(), privacy: .public)")
         Log.Environment.notice("\(libraryLanguageCodes(), privacy: .public)")
+        let available = await freeSpace()
+        Log.Environment.notice("free space: \(available, privacy: .public)")
     }
     
     static func entriesSeparated() async -> [String] {
@@ -243,9 +245,8 @@ enum Diagnostics {
         return "\(bundleIdentifier): \(releaseVersion) (\(buildNumber))"
     }
     
-    @MainActor
-    private static func osName() -> String {
-        let deviceType = Device.current.rawValue
+    private static func osName(device: Device) -> String {
+        let deviceType = device.rawValue
         let osVersion = ProcessInfo.processInfo.operatingSystemVersionString
         return "\(deviceType): \(osVersion)"
     }
@@ -270,13 +271,11 @@ enum Diagnostics {
         return "Library language codes: \(languageCodes.joined(separator: ", "))"
     }
     
-    private static func freeSpace() -> String {
-        
+    private static func freeSpace() async -> String {
         let freeSpace: Int64? = try? FileManager.default
             .urls(for: .documentDirectory, in: .userDomainMask)
             .first?.resourceValues(forKeys: [.volumeAvailableCapacityForImportantUsageKey])
             .volumeAvailableCapacityForImportantUsage
-        
         guard let freeSpace else {
             return "unknown"
         }
