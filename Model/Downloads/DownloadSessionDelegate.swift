@@ -20,52 +20,16 @@ import UserNotifications
 @MainActor
 final class DownloadSessionDelegate: NSObject, URLSessionDownloadDelegate {
     var backgroundCompletionHandler: (() -> Void)?
-    private let progress: DownloadTasksPublisher
-    private let downloadManager: DownloadTaskManager
+    let progress: DownloadTasksPublisher
+    let downloadManager: DownloadTaskManager
     #if os(macOS)
-    private nonisolated(unsafe) let macStreamingRegistry = MacStreamingDownloadRegistry()
+    nonisolated(unsafe) let macStreamingRegistry = MacStreamingDownloadRegistry()
     #endif
 
     init(progress: DownloadTasksPublisher, downloadManager: DownloadTaskManager) {
         self.progress = progress
         self.downloadManager = downloadManager
     }
-
-    #if os(macOS)
-    func registerMacStreamingTask(
-        taskID: Int,
-        zimFileID: UUID,
-        sourceURL: URL,
-        allowsCellularAccess: Bool,
-        folderURL: URL,
-        didAccessSecurityScopedResource: Bool,
-        destinationSnapshot: DownloadTaskDestinationSnapshot,
-        destinationURL: URL,
-        partialFileURL: URL,
-        expectedTotalBytes: Int64,
-        downloadedBytes: Int64,
-        fileHandle: FileHandle
-    ) {
-        macStreamingRegistry.register(
-            taskID: taskID,
-            zimFileID: zimFileID,
-            sourceURL: sourceURL,
-            allowsCellularAccess: allowsCellularAccess,
-            folderURL: folderURL,
-            didAccessSecurityScopedResource: didAccessSecurityScopedResource,
-            destinationSnapshot: destinationSnapshot,
-            destinationURL: destinationURL,
-            partialFileURL: partialFileURL,
-            expectedTotalBytes: expectedTotalBytes,
-            downloadedBytes: downloadedBytes,
-            fileHandle: fileHandle
-        )
-    }
-
-    func cancelMacStreamingTask(taskID: Int) {
-        macStreamingRegistry.cancel(taskID: taskID)
-    }
-    #endif
 
     // swiftlint:disable function_body_length
     nonisolated func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?) {
@@ -140,81 +104,6 @@ final class DownloadSessionDelegate: NSObject, URLSessionDownloadDelegate {
                                                errorMessage: errorDesc))
     }
     // swiftlint:enable function_body_length
-
-    // MARK: - URLSessionDataDelegate
-
-    #if os(macOS)
-    nonisolated func urlSession(
-        _ session: URLSession,
-        dataTask: URLSessionDataTask,
-        didReceive response: URLResponse,
-        completionHandler: @escaping (URLSession.ResponseDisposition) -> Void
-    ) {
-        guard let taskDescription = dataTask.taskDescription,
-              let zimFileID = UUID(uuidString: taskDescription),
-              let httpResponse = response as? HTTPURLResponse else {
-            completionHandler(.cancel)
-            DownloadUI.showAlert(.downloadErrorGeneric(
-                description: LocalString.download_service_error_option_invalid_response
-            ))
-            return
-        }
-
-        do {
-            if let prepared = try macStreamingRegistry.prepareResponse(
-                taskID: dataTask.taskIdentifier,
-                response: httpResponse
-            ) {
-                Task { @MainActor [progress] in
-                    progress.updateFor(
-                        uuid: prepared.zimFileID,
-                        downloaded: prepared.downloadedBytes,
-                        total: prepared.totalBytes
-                    )
-                }
-            }
-            completionHandler(.allow)
-        } catch {
-            macStreamingRegistry.cancel(taskID: dataTask.taskIdentifier)
-            cleanupMacStreamingPartialFile(for: zimFileID)
-            downloadManager.deleteDownloadTask(zimFileID: zimFileID)
-            let message = errorMessage(for: error)
-            DownloadUI.showAlert(.downloadErrorZIM(zimFileID: zimFileID, errorMessage: message))
-            completionHandler(.cancel)
-        }
-    }
-
-    nonisolated func urlSession(_ session: URLSession, dataTask: URLSessionDataTask, didReceive data: Data) {
-        do {
-            guard let streamingProgress = try macStreamingRegistry.append(
-                data: data,
-                taskID: dataTask.taskIdentifier
-            ) else {
-                return
-            }
-            Task { @MainActor [progress] in
-                progress.updateFor(
-                    uuid: streamingProgress.zimFileID,
-                    downloaded: streamingProgress.downloadedBytes,
-                    total: streamingProgress.totalBytes
-                )
-            }
-        } catch {
-            guard let taskDescription = dataTask.taskDescription,
-                  let zimFileID = UUID(uuidString: taskDescription) else {
-                return
-            }
-            macStreamingRegistry.cancel(taskID: dataTask.taskIdentifier)
-            cleanupMacStreamingPartialFile(for: zimFileID)
-            downloadManager.deleteDownloadTask(zimFileID: zimFileID)
-            DownloadUI.showAlert(.downloadErrorZIM(
-                zimFileID: zimFileID,
-                errorMessage: errorMessage(for: error)
-            ))
-            dataTask.cancel()
-        }
-    }
-    #endif
 
     // MARK: - URLSessionDownloadDelegate
 
@@ -342,83 +231,9 @@ due to: \(error.localizedDescription, privacy: .public)
             self?.backgroundCompletionHandler?()
         }
     }
-
-    #if os(macOS)
-    private nonisolated func handleMacStreamingCompletion(
-        dataTask: URLSessionDataTask,
-        zimFileID: UUID,
-        error: NSError?
-    ) {
-        if let error {
-            guard error.code != NSURLErrorCancelled else {
-                return
-            }
-            macStreamingRegistry.cancel(taskID: dataTask.taskIdentifier)
-            cleanupMacStreamingPartialFile(for: zimFileID)
-            let errorDesc = DownloadErrors.localizedString(from: error)
-            downloadManager.deleteDownloadTask(zimFileID: zimFileID)
-            DownloadUI.showAlert(.downloadErrorZIM(zimFileID: zimFileID,
-                                                   errorMessage: errorDesc))
-            return
-        }
-
-        guard let metadata = macStreamingRegistry.finish(taskID: dataTask.taskIdentifier) else {
-            return
-        }
-
-        let folder = metadata.destinationSnapshot.resolvedFolderURL()
-        let partialFileURL = folder.appendingPathComponent(metadata.partialFileURL.lastPathComponent)
-        var destination = folder.appendingPathComponent(metadata.destinationURL.lastPathComponent)
-
-        do {
-            try DownloadDestination.withFolderAccess(to: folder) {
-                var count = 0
-                let maxAttempts = 3
-                var nextDestination = destination
-                while FileManager.default.fileExists(atPath: nextDestination.path()), count <= maxAttempts {
-                    nextDestination = DownloadDestination.alternateLocalPathFor(downloadURL: destination, count: count)
-                    count += 1
-                }
-                destination = nextDestination
-                try FileManager.default.moveItem(at: partialFileURL, to: destination)
-            }
-        } catch {
-            cleanupMacStreamingPartialFile(for: zimFileID)
-            let errorMessage = LocalString.download_service_error_option_unable_to_move_file
-            DownloadUI.showAlert(.downloadErrorZIM(zimFileID: zimFileID,
-                                                   errorMessage: errorMessage))
-            downloadManager.deleteDownloadTask(zimFileID: zimFileID)
-            return
-        }
-
-        Task {
-            await LibraryOperations.open(url: destination)
-            await scheduleDownloadCompleteNotification(zimFileID: zimFileID)
-            downloadManager.deleteDownloadTask(zimFileID: zimFileID)
-        }
-    }
-
-    private nonisolated func cleanupMacStreamingPartialFile(for zimFileID: UUID) {
-        guard let metadata = MacStreamingDownloadStore.metadata(for: zimFileID) else {
-            return
-        }
-        let folder = metadata.destinationSnapshot.resolvedFolderURL()
-        let partialFileURL = folder.appendingPathComponent(metadata.partialFileURL.lastPathComponent)
-        try? DownloadDestination.removeFileIfExists(at: partialFileURL, in: folder)
-    }
-
-    private nonisolated func errorMessage(for error: Error) -> String {
-        if let error = error as? MacStreamingDownloadError,
-           case .invalidHTTPStatus(let statusCode) = error {
-            return LocalString.download_service_error_option_http_status(withArgs: "\(statusCode)")
-        }
-        return LocalString.download_service_error_option_directory
-    }
-    #endif
-
     // MARK: - Notification
 
-    private func scheduleDownloadCompleteNotification(zimFileID: UUID) async {
+    func scheduleDownloadCompleteNotification(zimFileID: UUID) async {
         let center = UserNotifications.UNUserNotificationCenter.current()
         let settings = await center.notificationSettings()
         guard settings.authorizationStatus != .denied else { return }

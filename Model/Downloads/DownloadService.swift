@@ -26,16 +26,14 @@ final class DownloadService {
     let sessionDelegate: DownloadSessionDelegate
     let downloadManager: DownloadTaskManager
     private let queue: DispatchQueue
-    private var heartbeat: Timer?
 
     #if os(macOS)
-    private let backgroundSession: URLSession
-    private let directSession: URLSession
+    let directSession: URLSession
     #else
     private let session: URLSession
     #endif
 
-    private struct DestinationPlan {
+    struct DestinationPlan {
         let folder: URL
         let destination: URL
         let snapshot: DownloadTaskDestinationSnapshot
@@ -53,17 +51,7 @@ final class DownloadService {
         let operationQueue = OperationQueue()
         operationQueue.underlyingQueue = queue
 
-        let backgroundConfiguration = URLSessionConfiguration.background(withIdentifier: "org.kiwix.background")
-        backgroundConfiguration.allowsCellularAccess = true
-        backgroundConfiguration.isDiscretionary = false
-        backgroundConfiguration.sessionSendsLaunchEvents = true
         #if os(macOS)
-        backgroundSession = URLSession(
-            configuration: backgroundConfiguration,
-            delegate: sessionDelegate,
-            delegateQueue: operationQueue
-        )
-
         let directConfiguration = URLSessionConfiguration.default
         directConfiguration.allowsCellularAccess = true
         directConfiguration.waitsForConnectivity = true
@@ -73,6 +61,10 @@ final class DownloadService {
             delegateQueue: operationQueue
         )
         #else
+        let backgroundConfiguration = URLSessionConfiguration.background(withIdentifier: "org.kiwix.background")
+        backgroundConfiguration.allowsCellularAccess = true
+        backgroundConfiguration.isDiscretionary = false
+        backgroundConfiguration.sessionSendsLaunchEvents = true
         session = URLSession(
             configuration: backgroundConfiguration,
             delegate: sessionDelegate,
@@ -126,20 +118,6 @@ final class DownloadService {
         }
         #endif
     }
-
-    #if os(macOS)
-    private func restoreMacStreamingProgress() {
-        for (zimFileID, metadata) in MacStreamingDownloadStore.all() {
-            let downloaded = MacStreamingDownloadStore.partialFileSize(at: metadata.partialFileURL)
-            progress.updateFor(
-                uuid: zimFileID,
-                downloaded: downloaded,
-                total: max(metadata.expectedTotalBytes, downloaded)
-            )
-            progress.updateFor(uuid: zimFileID, withResumeData: metadata.resumeData(downloadedBytes: downloaded))
-        }
-    }
-    #endif
 
     // MARK: - Download Actions
 
@@ -256,107 +234,6 @@ final class DownloadService {
         #endif
     }
 
-    #if os(macOS)
-    private func startMacStreamingDownload(
-        zimFileID: UUID,
-        downloadStruct: DownloadZimStruct,
-        allowsCellularAccess: Bool,
-        plan: DestinationPlan
-    ) throws {
-        var request = URLRequest(url: downloadStruct.url)
-        request.allowsCellularAccess = allowsCellularAccess
-
-        let metadata = MacStreamingDownloadMetadata(
-            sourceURL: downloadStruct.url,
-            allowsCellularAccess: allowsCellularAccess,
-            destinationSnapshot: plan.snapshot,
-            destinationPath: plan.destination.path(),
-            partialFilePath: DownloadDestination.partialFilePathFor(destination: plan.destination).path(),
-            expectedTotalBytes: downloadStruct.size,
-            entityTag: nil,
-            lastModified: nil
-        )
-        let task = try makeMacStreamingTask(
-            request: request,
-            zimFileID: zimFileID,
-            metadata: metadata,
-            preservePartialFile: false
-        )
-        progress.updateFor(uuid: zimFileID, downloaded: 0, total: downloadStruct.size)
-        progress.updateFor(uuid: zimFileID, withResumeData: nil)
-        task.resume()
-    }
-
-    private func makeMacStreamingTask(
-        request: URLRequest,
-        zimFileID: UUID,
-        metadata: MacStreamingDownloadMetadata,
-        preservePartialFile: Bool
-    ) throws -> URLSessionDataTask {
-        let folder = metadata.destinationSnapshot.resolvedFolderURL()
-        let destination = folder.appendingPathComponent(metadata.destinationURL.lastPathComponent)
-        let partialFileURL = DownloadDestination.partialFilePathFor(destination: destination)
-        let downloadedBytes = preservePartialFile ? MacStreamingDownloadStore.partialFileSize(at: partialFileURL) : 0
-
-        let didAccess = folder.startAccessingSecurityScopedResource()
-        do {
-            if !preservePartialFile {
-                try DownloadDestination.removeFileIfExists(at: partialFileURL, in: folder)
-                guard FileManager.default.createFile(atPath: partialFileURL.path(), contents: nil) else {
-                    throw MacStreamingDownloadError.invalidPartialFilePath
-                }
-            }
-
-            let fileHandle = try FileHandle(forWritingTo: partialFileURL)
-            if preservePartialFile {
-                try fileHandle.seekToEnd()
-            } else {
-                try fileHandle.truncate(atOffset: 0)
-                try fileHandle.seek(toOffset: 0)
-            }
-
-            let updatedMetadata = MacStreamingDownloadMetadata(
-                sourceURL: metadata.sourceURL,
-                allowsCellularAccess: metadata.allowsCellularAccess,
-                destinationSnapshot: metadata.destinationSnapshot,
-                destinationPath: destination.path(),
-                partialFilePath: partialFileURL.path(),
-                expectedTotalBytes: max(metadata.expectedTotalBytes, downloadedBytes),
-                entityTag: metadata.entityTag,
-                lastModified: metadata.lastModified
-            )
-
-            let task = directSession.dataTask(with: request)
-            task.taskDescription = zimFileID.uuidString
-            task.countOfBytesClientExpectsToReceive = updatedMetadata.expectedTotalBytes
-
-            sessionDelegate.registerMacStreamingTask(
-                taskID: task.taskIdentifier,
-                zimFileID: zimFileID,
-                sourceURL: updatedMetadata.sourceURL,
-                allowsCellularAccess: updatedMetadata.allowsCellularAccess,
-                folderURL: folder,
-                didAccessSecurityScopedResource: didAccess,
-                destinationSnapshot: updatedMetadata.destinationSnapshot,
-                destinationURL: destination,
-                partialFileURL: partialFileURL,
-                expectedTotalBytes: updatedMetadata.expectedTotalBytes,
-                downloadedBytes: downloadedBytes,
-                fileHandle: fileHandle
-            )
-
-            DownloadTaskDestinationStore.save(updatedMetadata.destinationSnapshot, for: zimFileID)
-            MacStreamingDownloadStore.save(updatedMetadata, for: zimFileID)
-            return task
-        } catch {
-            if didAccess {
-                folder.stopAccessingSecurityScopedResource()
-            }
-            throw error
-        }
-    }
-    #endif
-
     private func resumeTask(
         _ task: URLSessionDownloadTask,
         zimFileID: UUID,
@@ -380,16 +257,7 @@ final class DownloadService {
     /// - Parameter zimFileID: identifier of the zim file
     func cancel(zimFileID: UUID) async {
         #if os(macOS)
-        let (dataTasks, _, _) = await directSession.tasks
-        if let task = dataTasks.first(where: { $0.taskDescription == zimFileID.uuidString }) {
-            sessionDelegate.cancelMacStreamingTask(taskID: task.taskIdentifier)
-            task.cancel()
-        }
-        if let metadata = MacStreamingDownloadStore.metadata(for: zimFileID) {
-            let folder = metadata.destinationSnapshot.resolvedFolderURL()
-            try? DownloadDestination.removeFileIfExists(at: metadata.partialFileURL, in: folder)
-        }
-        await downloadManager.deleteDownloadTaskAsync(zimFileID: zimFileID)
+        await cancelMacStreamingDownload(zimFileID: zimFileID)
         #else
         let (_, _, downloadTasks) = await session.tasks
         if let task = downloadTasks.filter({ $0.taskDescription == zimFileID.uuidString }).first {
@@ -403,15 +271,7 @@ final class DownloadService {
     /// - Parameter zimFileID: identifier of the zim file
     func pause(zimFileID: UUID) {
         #if os(macOS)
-        Task { @MainActor in
-            let (dataTasks, _, _) = await directSession.tasks
-            guard let task = dataTasks.first(where: { $0.taskDescription == zimFileID.uuidString }) else {
-                return
-            }
-            sessionDelegate.cancelMacStreamingTask(taskID: task.taskIdentifier)
-            task.cancel()
-            progress.updateFor(uuid: zimFileID, withResumeData: MacStreamingDownloadStore.resumeData(for: zimFileID))
-        }
+        pauseMacStreamingDownload(zimFileID: zimFileID)
         #else
         session.getTasksWithCompletionHandler { [progress] _, _, downloadTasks in
             guard let task = downloadTasks.filter({ $0.taskDescription == zimFileID.uuidString }).first else { return }
@@ -432,6 +292,18 @@ final class DownloadService {
         guard let resumeData = progress.resumeDataFor(uuid: zimFileID) else { return }
         progress.updateFor(uuid: zimFileID, withResumeData: nil)
 
+        await clearDownloadError(zimFileID: zimFileID)
+
+        #if os(macOS)
+        await resumeMacStreamingDownload(zimFileID: zimFileID, resumeData: resumeData)
+        #else
+        let task = session.downloadTask(withResumeData: resumeData)
+        task.taskDescription = zimFileID.uuidString
+        task.resume()
+        #endif
+    }
+
+    private func clearDownloadError(zimFileID: UUID) async {
         await Database.shared.viewContext.perform {
             let request = DownloadTask.fetchRequest(fileID: zimFileID)
             request.fetchLimit = 1
@@ -440,60 +312,6 @@ final class DownloadService {
             let context = Database.shared.viewContext
             try? context.save()
         }
-
-        #if os(macOS)
-        guard let payload = try? JSONDecoder().decode(MacStreamingResumeData.self, from: resumeData) else {
-            return
-        }
-
-        let folder = payload.destinationSnapshot.resolvedFolderURL()
-        let destination = folder.appendingPathComponent(payload.destinationURL.lastPathComponent)
-        let partialFileURL = DownloadDestination.partialFilePathFor(destination: destination)
-        let downloadedBytes = MacStreamingDownloadStore.partialFileSize(at: partialFileURL)
-
-        var request = URLRequest(url: payload.sourceURL)
-        request.allowsCellularAccess = payload.allowsCellularAccess
-        if downloadedBytes > 0 {
-            request.setValue("bytes=\(downloadedBytes)-", forHTTPHeaderField: "Range")
-            if let entityTag = payload.entityTag {
-                request.setValue(entityTag, forHTTPHeaderField: "If-Range")
-            } else if let lastModified = payload.lastModified {
-                request.setValue(lastModified, forHTTPHeaderField: "If-Range")
-            }
-        }
-
-        let metadata = MacStreamingDownloadMetadata(
-            sourceURL: payload.sourceURL,
-            allowsCellularAccess: payload.allowsCellularAccess,
-            destinationSnapshot: payload.destinationSnapshot,
-            destinationPath: destination.path(),
-            partialFilePath: partialFileURL.path(),
-            expectedTotalBytes: max(payload.expectedTotalBytes, downloadedBytes),
-            entityTag: payload.entityTag,
-            lastModified: payload.lastModified
-        )
-
-        do {
-            let task = try makeMacStreamingTask(
-                request: request,
-                zimFileID: zimFileID,
-                metadata: metadata,
-                preservePartialFile: true
-            )
-            progress.updateFor(
-                uuid: zimFileID,
-                downloaded: downloadedBytes,
-                total: max(metadata.expectedTotalBytes, downloadedBytes)
-            )
-            task.resume()
-        } catch {
-            progress.updateFor(uuid: zimFileID, withResumeData: resumeData)
-        }
-        #else
-        let task = session.downloadTask(withResumeData: resumeData)
-        task.taskDescription = zimFileID.uuidString
-        task.resume()
-        #endif
     }
 
     func allowsCellularAccessFor(zimFileID: UUID) async -> Bool? {
@@ -516,5 +334,3 @@ final class DownloadService {
         UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound]) { _, _ in }
     }
 }
-
-// swiftlint:enable file_length
