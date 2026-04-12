@@ -24,13 +24,22 @@ final class MacOSDownloadDataDelegate: NSObject, URLSessionDataDelegate {
         self.downloadManager = downloadManager
     }
     
+    func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: (any Error)?) {
+        DownloadCommonDelegate.handleCompleteWithError(
+            downloadManager: downloadManager,
+            progress: progress,
+            session: session,
+            task: task,
+            didCompleteWithError: error
+        )
+    }
+    
     func urlSession(
         _ session: URLSession,
-        dataTask: URLSessionDataTask,
-        willCacheResponse proposedResponse: CachedURLResponse
-    ) async -> CachedURLResponse? {
-        // we don't want any caching here
-        .none
+        task: URLSessionTask,
+        didReceiveInformationalResponse response: HTTPURLResponse
+    ) {
+        Log.DownloadService.debug("didReceiveInformationalResponse: \(response)")
     }
     
     func urlSession(
@@ -58,26 +67,38 @@ final class MacOSDownloadDataDelegate: NSObject, URLSessionDataDelegate {
     }
     
     func urlSession(_ session: URLSession, dataTask: URLSessionDataTask, didReceive data: Data) {
-        guard let zimFileID = dataTask.zimFileID else {
-            Log.DownloadService.error("cannot handle dataTaks received data: \(dataTask)")
+        guard let zimFileID = dataTask.zimFileID,
+              let progressData = Self.progressDataFrom(dataTask: dataTask) else {
+            Log.DownloadService.warning("didReceive dataTask data, but skipping progress for: \(dataTask)")
             return
         }
-        if let progressData = Self.progressDataFrom(dataTask: dataTask) {
-            Task { @MainActor [weak progress] in
-                progress?
-                    .updateFor(
-                        uuid: zimFileID,
-                        downloaded: progressData.downloaded,
-                        total: progressData.total
-                    )
+        Task { @MainActor [weak progress] in
+            progress?
+                .updateFor(
+                    uuid: zimFileID,
+                    downloaded: progressData.downloaded,
+                    total: progressData.total
+                )
+            
+            if progressData.isComplete() {
+                Log.DownloadService.debug("didReceive data completed for: \(zimFileID)")
+                // schedule notification
+                await DownloadCommonDelegate.scheduleDownloadCompleteNotification(zimFileID: zimFileID)
+                downloadManager.deleteDownloadTask(zimFileID: zimFileID)
+            } else {
                 Log.DownloadService.debug("didReceive data: \(progressData.downloaded) | \(progressData.total)")
             }
-        } else {
-            Log.DownloadService.warning("didReceive dataTask data, but skipping progress for: \(dataTask)")
-        }   
+        }
     }
     
-    private nonisolated static func progressDataFrom(dataTask: URLSessionDataTask) -> ProgressData? {
+    func urlSession(_ session: URLSession,
+                    dataTask: URLSessionDataTask,
+                    willCacheResponse proposedResponse: CachedURLResponse) async -> CachedURLResponse? {
+        // we don't want any caching here
+        .none
+    }
+    
+    private static func progressDataFrom(dataTask: URLSessionDataTask) -> ProgressData? {
         guard let response = dataTask.response else { return nil }
         if let range = rangeFrom(response: response) {
             return ProgressData(downloaded: range.start + dataTask.countOfBytesReceived,
@@ -88,7 +109,7 @@ final class MacOSDownloadDataDelegate: NSObject, URLSessionDataDelegate {
         }
     }
     
-    private nonisolated static func rangeFrom(response: URLResponse) -> ResponseRange? {
+    private static func rangeFrom(response: URLResponse) -> ResponseRange? {
         guard let httpResponse = response as? HTTPURLResponse,
               httpResponse.statusCode == 206, // range response
               let rangeString = httpResponse.value(forHTTPHeaderField: "Content-Range") else {
@@ -106,26 +127,15 @@ final class MacOSDownloadDataDelegate: NSObject, URLSessionDataDelegate {
             }
         }
         return nil
-
-    }
-    
-    // TODO: remove
-    func urlSession(
-        _ session: URLSession,
-        dataTask: URLSessionDataTask,
-        didBecome downloadTask: URLSessionDownloadTask
-    ) {
-        Log.DownloadService.debug("didBecome downloadTask: \(downloadTask)")
-    }
-    
-    // TODO: remove
-    func urlSession(_ session: URLSession, dataTask: URLSessionDataTask, didBecome streamTask: URLSessionStreamTask) {
-        Log.DownloadService.debug("didBecome streamTask: \(streamTask)")
     }
     
     private struct ProgressData {
         let downloaded: Int64
         let total: Int64
+        
+        func isComplete() -> Bool {
+            downloaded == total
+        }
     }
     
     private struct ResponseRange {
