@@ -46,6 +46,12 @@ final class DownloadTasksPublisher {
         publisher.send(states)
         saveState()
     }
+    
+    #if os(macOS)
+    func offsetFor(uuid: UUID) -> Int64? {
+        states[uuid]?.downloaded
+    }
+    #endif
 
     func isEmpty() -> Bool {
         states.isEmpty

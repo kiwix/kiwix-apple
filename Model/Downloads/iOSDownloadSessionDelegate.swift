@@ -13,12 +13,14 @@
 // You should have received a copy of the GNU General Public License
 // along with Kiwix; If not, see https://www.gnu.org/licenses/.
 
+#if os(iOS)
+
 import CoreData
 import Foundation
 import UserNotifications
 
 @MainActor
-final class DownloadSessionDelegate: NSObject, URLSessionDownloadDelegate {
+final class iOSDownloadSessionDelegate: NSObject, URLSessionDownloadDelegate {
     var backgroundCompletionHandler: (() -> Void)?
     private let progress: DownloadTasksPublisher
     private let downloadManager: DownloadTaskManager
@@ -262,3 +264,4 @@ due to: \(error.localizedDescription, privacy: .public)
         try? await center.add(request)
     }
 }
+#endif
