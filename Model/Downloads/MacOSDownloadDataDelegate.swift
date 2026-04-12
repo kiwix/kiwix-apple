@@ -36,20 +36,24 @@ final class MacOSDownloadDataDelegate: NSObject, URLSessionDataDelegate {
     func urlSession(
         _ session: URLSession,
         dataTask: URLSessionDataTask,
-        didReceive response: URLResponse
+        didReceive _: URLResponse // taking it from dataTask.response
     ) async -> URLSession.ResponseDisposition {
         guard let zimFileID = dataTask.zimFileID else {
-            Log.DownloadService.error("cannot handle dataTask received response: \(dataTask, )")
+            Log.DownloadService.error("cannot handle dataTask received response: \(dataTask)")
             return .cancel
+        }
+        guard let progressData = Self.progressDataFrom(dataTask: dataTask) else {
+            Log.DownloadService.warning("didReceive dataTask response, but skipping progress for \(dataTask)")
+            return .allow
         }
         Task { @MainActor [weak progress] in
             progress?.updateFor(
                 uuid: zimFileID,
-                downloaded: dataTask.countOfBytesReceived,
-                total: response.expectedContentLength
+                downloaded: progressData.downloaded,
+                total: progressData.total
             )
         }
-        Log.DownloadService.debug("didReceive dataTask response: \(response)")
+        Log.DownloadService.debug("didReceive dataTask response: \(progressData.downloaded) | \(progressData.total)")
         return .allow
     }
     
@@ -58,15 +62,51 @@ final class MacOSDownloadDataDelegate: NSObject, URLSessionDataDelegate {
             Log.DownloadService.error("cannot handle dataTaks received data: \(dataTask)")
             return
         }
-        Log.DownloadService.debug("didReceive dataTask data: \(dataTask) \(data.count)")
-        Task { @MainActor [weak progress] in
-            progress?
-                .updateFor(
-                    uuid: zimFileID,
-                    downloaded: dataTask.countOfBytesReceived,
-                    total: dataTask.response?.expectedContentLength ?? dataTask.countOfBytesExpectedToReceive
-                )
+        if let progressData = Self.progressDataFrom(dataTask: dataTask) {
+            Task { @MainActor [weak progress] in
+                progress?
+                    .updateFor(
+                        uuid: zimFileID,
+                        downloaded: progressData.downloaded,
+                        total: progressData.total
+                    )
+                Log.DownloadService.debug("didReceive data: \(progressData.downloaded) | \(progressData.total)")
+            }
+        } else {
+            Log.DownloadService.warning("didReceive dataTask data, but skipping progress for: \(dataTask)")
+        }   
+    }
+    
+    private nonisolated static func progressDataFrom(dataTask: URLSessionDataTask) -> ProgressData? {
+        guard let response = dataTask.response else { return nil }
+        if let range = rangeFrom(response: response) {
+            return ProgressData(downloaded: range.start + dataTask.countOfBytesReceived,
+                                total: range.total)
+        } else {
+            return ProgressData(downloaded: dataTask.countOfBytesReceived,
+                                total: dataTask.countOfBytesExpectedToReceive)
         }
+    }
+    
+    private nonisolated static func rangeFrom(response: URLResponse) -> ResponseRange? {
+        guard let httpResponse = response as? HTTPURLResponse,
+              httpResponse.statusCode == 206, // range response
+              let rangeString = httpResponse.value(forHTTPHeaderField: "Content-Range") else {
+            return nil
+        }
+        let regex = /bytes (\d+)-(\d+)\/(\d+)/
+        if let match = rangeString.firstMatch(of: regex) {
+            if let start = Int64(match.1),
+               let end = Int64(match.2),
+               let total = Int64(match.3),
+               0 <= start, start <= end, end <= total {
+                return ResponseRange(start: start, end: end, total: total)
+            } else {
+                return nil
+            }
+        }
+        return nil
+
     }
     
     // TODO: remove
@@ -81,5 +121,16 @@ final class MacOSDownloadDataDelegate: NSObject, URLSessionDataDelegate {
     // TODO: remove
     func urlSession(_ session: URLSession, dataTask: URLSessionDataTask, didBecome streamTask: URLSessionStreamTask) {
         Log.DownloadService.debug("didBecome streamTask: \(streamTask)")
+    }
+    
+    private struct ProgressData {
+        let downloaded: Int64
+        let total: Int64
+    }
+    
+    private struct ResponseRange {
+        let start: Int64
+        let end: Int64
+        let total: Int64
     }
 }
