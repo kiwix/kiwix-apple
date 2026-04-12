@@ -35,14 +35,14 @@ final class DownloadService {
         progress = DownloadTasksPublisher()
         downloadManager = DownloadTaskManager(progress: progress)
 #if os(iOS)
-        sessionDelegate = iOSDownloadSessionDelegate(progress: progress,
+        sessionDelegate = IOSDownloadSessionDelegate(progress: progress,
                                                      downloadManager: downloadManager)
+        let configuration = URLSessionConfiguration.background(withIdentifier: "org.kiwix.background")
 #else
         sessionDelegate = MacOSDownloadDataDelegate(progress: progress,
                                                     downloadManager: downloadManager)
+        let configuration = URLSessionConfiguration.default
 #endif
-        
-        let configuration = URLSessionConfiguration.background(withIdentifier: "org.kiwix.background")
         configuration.allowsCellularAccess = true
         configuration.isDiscretionary = false
         configuration.sessionSendsLaunchEvents = true
@@ -60,11 +60,10 @@ final class DownloadService {
     
     /// Restart heartbeat if there are unfinished download task
     func restartHeartbeatIfNeeded() {
-        sessionTasks { [weak progress] tasks in
+        session.getTasks { [weak progress] tasks in
             guard tasks.count > 0 else { return }
             for task in tasks {
-                guard let taskDescription = task.taskDescription,
-                      let zimFileID = UUID(uuidString: taskDescription) else { return }
+                guard let zimFileID = task.zimFileID else { return }
                 Task { @MainActor [weak progress] in
                     progress?.updateFor(uuid: zimFileID,
                                         downloaded: task.countOfBytesReceived,
@@ -111,7 +110,7 @@ final class DownloadService {
         let task: URLSessionTask = self.session.dataTask(with: urlRequest)
 #endif
         task.countOfBytesClientExpectsToReceive = downloadStruct.size
-        task.taskDescription = zimFileID.uuidString
+        task.set(zimFileID: zimFileID)
         
         guard let destination = DownloadDestination.filePathFor(downloadURL: url) else {
             let errorMessage = LocalString.download_service_error_option_directory
@@ -158,7 +157,7 @@ final class DownloadService {
     /// Cancel a zim file download task
     /// - Parameter zimFileID: identifier of the zim file
     func cancel(zimFileID: UUID) async {
-        await sessionTaskBy(zimFileID: zimFileID)?.cancel()
+        await session.taskBy(zimFileID: zimFileID)?.cancel()
         await downloadManager.deleteDownloadTaskAsync(zimFileID: zimFileID)
     }
     
@@ -166,8 +165,8 @@ final class DownloadService {
     /// - Parameter zimFileID: identifier of the zim file
     func pause(zimFileID: UUID) {
 #if os(iOS)
-        session.getTasksWithCompletionHandler { [progress] _, _, downloadTasks in
-            guard let task = downloadTasks.filter({ $0.taskDescription == zimFileID.uuidString }).first else { return }
+        sessionTaskBy(zimFileID: zimFileID) { [progress] task in
+            guard let task else { return }
             task.cancel { [progress] resumeData in
                 Task { @MainActor [progress] in
                     progress.updateFor(uuid: zimFileID, withResumeData: resumeData)
@@ -175,8 +174,10 @@ final class DownloadService {
             }
         }
 #else
-        session.getTasksWithCompletionHandler{ [progress] dataTasks, _, _ in
-            guard let task = dataTasks.filter({ $0.taskDescription == zimFileID.uuidString }).first else { return }
+        session.taskBy(zimFileID: zimFileID) { [progress] task in
+            guard let task else {
+                return
+            }
             task.cancel()
             Task { @MainActor [progress] in
                 // TODO: check if this is actually working as expected, when passing nil
@@ -209,7 +210,7 @@ final class DownloadService {
             guard let downloadTask = try? request.execute().first else { return }
             
             let task = self.session.downloadTask(withResumeData: resumeData)
-            task.taskDescription = zimFileID.uuidString
+            task.set(zimFileID: zimFileID)
             task.resume()
             
             downloadTask.error = nil
@@ -237,7 +238,7 @@ final class DownloadService {
                 Log.DownloadService.info("Requesting range from byte \(offset)")
             }
             let task = self.session.dataTask(with: urlRequest)
-            task.taskDescription = zimFileID.uuidString
+            task.set(zimFileID: zimFileID)
             task.resume()
             
             downloadTask.error = nil
@@ -249,7 +250,7 @@ final class DownloadService {
 #endif
     
     func allowsCellularAccessFor(zimFileID: UUID) async -> Bool? {
-        let task = await sessionTaskBy(zimFileID: zimFileID)
+        let task = await session.taskBy(zimFileID: zimFileID)
         return task?.originalRequest?.allowsCellularAccess
     }
     
@@ -257,40 +258,6 @@ final class DownloadService {
     
     private func requestNotificationAuthorization() {
         UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound]) { _, _ in }
-    }
-    
-    // MARK: - Unification between iOS and macOS
-    private func sessionTaskBy(zimFileID: UUID) async -> URLSessionTask? {
-#if os(iOS)
-        let (_, _, tasks) = await session.tasks
-#else
-        let (tasks, _, _) = await session.tasks
-#endif
-        return tasks.firstBy(zimFileID: zimFileID)
-    }
-    
-    private func sessionTasks(completion: @escaping @Sendable ([URLSessionTask]) -> Void) {
-#if os(iOS)
-        session.getTasksWithCompletionHandler { _, _, downloadTasks in
-            completion(downloadTasks)
-        }
-#else
-        session.getTasksWithCompletionHandler { dataTasks, _, _ in
-            completion(dataTasks)
-        }
-#endif
-    }
-    
-    private func sessionTaskBy(zimFileID: UUID, completion: @escaping @Sendable (URLSessionTask?) -> Void) {
-        sessionTasks { tasks in
-            completion(tasks.firstBy(zimFileID: zimFileID))
-        }
-    }
-}
-
-extension Collection where Element: URLSessionTask {
-    func firstBy(zimFileID: UUID) -> URLSessionTask? {
-        first(where: { $0.taskDescription == zimFileID.uuidString })
     }
 }
 

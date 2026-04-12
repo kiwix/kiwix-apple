@@ -20,7 +20,7 @@ import Foundation
 import UserNotifications
 
 @MainActor
-final class iOSDownloadSessionDelegate: NSObject, URLSessionDownloadDelegate {
+final class IOSDownloadSessionDelegate: NSObject, URLSessionDownloadDelegate {
     var backgroundCompletionHandler: (() -> Void)?
     private let progress: DownloadTasksPublisher
     private let downloadManager: DownloadTaskManager
