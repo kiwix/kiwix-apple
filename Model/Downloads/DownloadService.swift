@@ -180,8 +180,11 @@ final class DownloadService {
             }
             task.cancel()
             Task { @MainActor [progress] in
-                // TODO: check if this is actually working as expected, when passing nil
-                progress.updateFor(uuid: zimFileID, withResumeData: nil)
+                // faking the resume functionality
+                // this data is not really used for anything
+                // apart from knowing it's a paused state
+                let fakeResume = "fake".data(using: .utf8)
+                progress.updateFor(uuid: zimFileID, withResumeData: fakeResume)
             }
         }
 #endif
@@ -223,29 +226,43 @@ final class DownloadService {
 #else
     private func resumeMacOS(zimFileID: UUID) async {
         let offset = progress.offsetFor(uuid: zimFileID)
-        if offset == nil {
-            progress.updateFor(uuid: zimFileID, withResumeData: nil)
-        }
-        await Database.shared.viewContext.perform {
-            let request = DownloadTask.fetchRequest(fileID: zimFileID)
-            request.fetchLimit = 1
-            guard let downloadTask = try? request.execute().first,
-                  let url = downloadTask.zimFile?.downloadURL else { return }
-            
-            var urlRequest = URLRequest(url: url)
-            if let offset, 0 < offset {
-                urlRequest.setValue("bytes=\(offset)-", forHTTPHeaderField: "Range")
-                Log.DownloadService.info("Requesting range from byte \(offset)")
+        progress.updateFor(uuid: zimFileID, withResumeData: nil)
+        let context = Database.shared.viewContext
+        
+        // get the download URL, and reset any DownloadTask errors
+        let downloadStruct = await context.perform { () -> DownloadZimStruct? in
+            let fetchRequest = ZimFile.fetchRequest(fileID: zimFileID)
+            fetchRequest.fetchLimit = 1
+            guard let zimFile = try? fetchRequest.execute().first,
+                  var url = zimFile.downloadURL else {
+                return nil
             }
-            let task = self.session.dataTask(with: urlRequest)
-            task.set(zimFileID: zimFileID)
-            task.resume()
-            
-            downloadTask.error = nil
-            
-            let context = Database.shared.viewContext
-            try? context.save()
+            if url.lastPathComponent.hasSuffix(".meta4") {
+                url = url.deletingPathExtension()
+            }
+            let hasDownloadError = zimFile.downloadTask?.error != nil
+            if hasDownloadError {
+                zimFile.downloadTask?.error = nil
+                if context.hasChanges {
+                    try? context.save()
+                }
+            }
+            return DownloadZimStruct(url: url, name: zimFile.name, size: zimFile.size)
         }
+        
+        // re-create the URLRequest and dataTask
+        guard let downloadStruct else { return }
+        let url = downloadStruct.url
+        var urlRequest = URLRequest(url: url)
+        // adjust the offset with a range request
+        if let offset, 0 < offset {
+            urlRequest.setValue("bytes=\(offset)-", forHTTPHeaderField: "Range")
+            Log.DownloadService.info("Requesting range from byte \(offset)")
+        }
+        let task: URLSessionTask = self.session.dataTask(with: urlRequest)
+        task.countOfBytesClientExpectsToReceive = downloadStruct.size
+        task.set(zimFileID: zimFileID)
+        task.resume()
     }
 #endif
     
