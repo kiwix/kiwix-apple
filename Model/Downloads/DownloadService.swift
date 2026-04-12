@@ -188,7 +188,7 @@ final class DownloadService {
                 // faking the resume functionality
                 // this data is not really used for anything
                 // apart from knowing it's a paused state
-                let fakeResume = "fake".data(using: .utf8)
+                let fakeResume = Data("fake".utf8)
                 progress.updateFor(uuid: zimFileID, withResumeData: fakeResume)
             }
         }

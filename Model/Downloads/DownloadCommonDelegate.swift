@@ -109,7 +109,6 @@ enum DownloadCommonDelegate {
     }
     // swiftlint:enable function_body_length
     
-    
     // MARK: - Notification
     
     static func scheduleDownloadCompleteNotification(zimFileID: UUID) async {
