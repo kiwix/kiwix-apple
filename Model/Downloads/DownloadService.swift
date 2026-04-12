@@ -23,7 +23,7 @@ final class DownloadService {
     @MainActor static let shared = DownloadService()
     let networkState: NetworkState
     let progress: DownloadTasksPublisher
-    let sessionDelegate: DownloadSessionDelegate
+    let sessionDelegate: URLSessionTaskDelegate
     let downloadManager: DownloadTaskManager
     private let queue: DispatchQueue
     private var heartbeat: Timer?
@@ -101,7 +101,7 @@ final class DownloadService {
         let url = downloadStruct.url
         var urlRequest = URLRequest(url: url)
         urlRequest.allowsCellularAccess = allowsCellularAccess
-        let task = self.session.downloadTask(with: urlRequest)
+        let task: URLSessionTask = self.session.downloadTask(with: urlRequest)
         task.countOfBytesClientExpectsToReceive = downloadStruct.size
         task.taskDescription = zimFileID.uuidString
         
@@ -131,10 +131,9 @@ final class DownloadService {
             return
         }
         resumeTask(task, zimFileID: zimFileID)
-        
     }
     
-    private func resumeTask(_ task: URLSessionDownloadTask, zimFileID: UUID) {
+    private func resumeTask(_ task: URLSessionTask, zimFileID: UUID) {
         progress.updateFor(uuid: zimFileID,
                            downloaded: 0,
                            total: task.countOfBytesClientExpectsToReceive)
