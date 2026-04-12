@@ -27,8 +27,13 @@ final class DownloadService {
     let downloadManager: DownloadTaskManager
     private let queue: DispatchQueue
     private var heartbeat: Timer?
-    
     private let session: URLSession
+    
+    #if os(iOS)
+    var iOSSessionDelegate: IOSDownloadSessionDelegate? {
+        sessionDelegate as? IOSDownloadSessionDelegate
+    }
+    #endif
     
     private init() {
         queue = DispatchQueue(label: "downloads", qos: .background)
@@ -165,8 +170,8 @@ final class DownloadService {
     /// - Parameter zimFileID: identifier of the zim file
     func pause(zimFileID: UUID) {
 #if os(iOS)
-        sessionTaskBy(zimFileID: zimFileID) { [progress] task in
-            guard let task else { return }
+        session.taskBy(zimFileID: zimFileID) { [progress] task in
+            guard let task = task as? URLSessionDownloadTask else { return }
             task.cancel { [progress] resumeData in
                 Task { @MainActor [progress] in
                     progress.updateFor(uuid: zimFileID, withResumeData: resumeData)

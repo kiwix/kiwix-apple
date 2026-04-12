@@ -127,7 +127,7 @@ struct Kiwix: App {
         func application(_ application: UIApplication,
                          handleEventsForBackgroundURLSession identifier: String,
                          completionHandler: @escaping () -> Void) {
-            DownloadService.shared.sessionDelegate.backgroundCompletionHandler = completionHandler
+            DownloadService.shared.iOSSessionDelegate?.backgroundCompletionHandler = completionHandler
         }
 
         /// Handling file download complete notification
