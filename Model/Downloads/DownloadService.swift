@@ -68,11 +68,12 @@ final class DownloadService {
         session.getTasks { [weak progress] tasks in
             guard tasks.count > 0 else { return }
             for task in tasks {
-                guard let zimFileID = task.zimFileID else { return }
-                Task { @MainActor [weak progress] in
-                    progress?.updateFor(uuid: zimFileID,
-                                        downloaded: task.countOfBytesReceived,
-                                        total: task.countOfBytesExpectedToReceive)
+                if let zimFileID = task.zimFileID {
+                    Task { @MainActor [weak progress] in
+                        progress?.updateFor(uuid: zimFileID,
+                                            downloaded: task.countOfBytesReceived,
+                                            total: task.countOfBytesExpectedToReceive)
+                    }
                 }
             }
         }
