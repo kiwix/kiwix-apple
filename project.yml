@@ -107,6 +107,7 @@ targets:
     entitlements:
       properties:
         com.apple.security.files.downloads.read-write: true
+        com.apple.security.files.bookmarks.document-scope: true
         com.apple.developer.in-app-payments: [merchant.org.kiwix.apple] # this line is removed for macOS FTP
     settings:
       base:

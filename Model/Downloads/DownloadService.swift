@@ -65,19 +65,33 @@ final class DownloadService {
     
     /// Restart heartbeat if there are unfinished download task
     func restartHeartbeatIfNeeded() {
+        #if os(macOS)
+        Task { await recreateTasks() }
+        #endif
+        
         session.getTasks { [weak progress] tasks in
             guard tasks.count > 0 else { return }
             for task in tasks {
                 if let zimFileID = task.zimFileID {
                     Task { @MainActor [weak progress] in
                         progress?.updateFor(uuid: zimFileID,
-                                            downloaded: task.countOfBytesReceived,
-                                            total: task.countOfBytesExpectedToReceive)
+                                            downloaded: UInt(task.countOfBytesReceived),
+                                            total: UInt(task.countOfBytesExpectedToReceive))
                     }
                 }
             }
         }
     }
+    
+    #if os(macOS)
+    func recreateTasks() async {
+        let dictProgress = progress.publisher.value
+        let notPaused = dictProgress.filter { $0.value.isPaused == false }
+        for zimFileID in notPaused.keys {
+            await resume(zimFileID: zimFileID)
+        }
+    }
+    #endif
     
     // MARK: - Download Actions
     
@@ -106,7 +120,9 @@ final class DownloadService {
             }
             return DownloadZimStruct(url: url, name: zimFile.name, size: zimFile.size)
         }
-        guard let downloadStruct else { return }
+        guard let downloadStruct else {
+            return
+        }
         let url = downloadStruct.url
         var urlRequest = URLRequest(url: url)
         urlRequest.allowsCellularAccess = allowsCellularAccess
@@ -149,7 +165,7 @@ final class DownloadService {
     private func resumeTask(_ task: URLSessionTask, zimFileID: UUID) {
         progress.updateFor(uuid: zimFileID,
                            downloaded: 0,
-                           total: task.countOfBytesClientExpectsToReceive)
+                           total: UInt(task.countOfBytesClientExpectsToReceive))
         task.resume()
     }
     
@@ -163,8 +179,14 @@ final class DownloadService {
     /// Cancel a zim file download task
     /// - Parameter zimFileID: identifier of the zim file
     func cancel(zimFileID: UUID) async {
-        await session.taskBy(zimFileID: zimFileID)?.cancel()
+        if let task = await session.taskBy(zimFileID: zimFileID) {
+            task.taskDescription = nil
+            task.cancel()
+        }
         await downloadManager.deleteDownloadTaskAsync(zimFileID: zimFileID)
+        #if os(macOS)
+        (sessionDelegate as? MacOSDownloadDataDelegate)?.cancel(zimFileID: zimFileID)
+        #endif
     }
     
     /// Pause a zim file download task
@@ -180,17 +202,19 @@ final class DownloadService {
             }
         }
 #else
-        session.taskBy(zimFileID: zimFileID) { [progress] task in
+        session.taskBy(zimFileID: zimFileID) { [weak sessionDelegate] task in
             guard let task else {
+                Log.DownloadService.warning("cannot find data task for: \(zimFileID.uuidString)")
                 return
             }
-            task.cancel()
-            Task { @MainActor [progress] in
-                // faking the resume functionality
-                // this data is not really used for anything
-                // apart from knowing it's a paused state
-                let fakeResume = Data("fake".utf8)
-                progress.updateFor(uuid: zimFileID, withResumeData: fakeResume)
+            if let dataTask = task as? URLSessionDataTask {
+                dataTask.cancel()
+                Log.DownloadService.debug("cancelled task for: \(zimFileID.uuidString)")
+                Task { [weak sessionDelegate] in
+                    await (sessionDelegate as? MacOSDownloadDataDelegate)?.pause(zimFileID: zimFileID, task: dataTask)
+                }
+            } else {
+                assertionFailure("unexpected session task for macOS: \(task.debugDescription)")
             }
         }
 #endif

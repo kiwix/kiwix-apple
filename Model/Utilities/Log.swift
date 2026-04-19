@@ -25,6 +25,7 @@ struct Log {
     static let URLSchemeHandler = Logger(subsystem: subsystem, category: "URLSchemeHandler")
     static let Branding = Logger(subsystem: subsystem, category: "Branding")
     static let Payment = Logger(subsystem: subsystem, category: "Payment")
+    static let IO = Logger(subsystem: subsystem, category: "IO") // swiftlint:disable:this identifier_name
 }
 
 private let subsystem = KiwixLogger.subsystem

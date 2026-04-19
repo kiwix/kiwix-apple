@@ -33,8 +33,8 @@ struct DownloadTaskCell: View {
 
     var body: some View {
         let progress: Progress = {
-            let prog = Progress(totalUnitCount: downloadState.total)
-            prog.completedUnitCount = downloadState.downloaded
+            let prog = Progress(totalUnitCount: Int64(downloadState.total))
+            prog.completedUnitCount = Int64(downloadState.downloaded)
             prog.kind = .file
             prog.fileTotalCount = 1
             prog.fileOperationKind = .downloading

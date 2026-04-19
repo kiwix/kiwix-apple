@@ -35,7 +35,7 @@ extension Collection where Element: URLSessionTask {
     }
 }
 
-// Unification between iOS and macOS
+// Unified way of getting iOS (downloadTasks) or macOS (dataTasks) from URLSession
 extension URLSession {
     
     func getTasks(completion: @escaping @Sendable ([URLSessionTask]) -> Void) {

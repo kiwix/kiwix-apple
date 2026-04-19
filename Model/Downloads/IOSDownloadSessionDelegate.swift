@@ -99,7 +99,7 @@ Status code: \(statusCode, privacy: .public)
             return
         }
         guard let url = httpResponse.url,
-              var destination = DownloadDestination.filePathFor(downloadURL: url) else {
+              var destination = DownloadDestination.filePathWithFallbacksFor(downloadURL: url) else {
             let errorMessage = LocalString.download_service_error_option_directory
             DownloadUI.showAlert(.downloadErrorZIM(zimFileID: zimFileID,
                                                    errorMessage: errorMessage))
@@ -112,14 +112,6 @@ Status code: \(statusCode, privacy: .public)
             "Start moving zimFile: \(fileName, privacy: .public), \(zimFileID.uuidString, privacy: .public)"
         )
         do {
-            var count = 0
-            let maxAttempts = 3
-            var nextDestination = destination
-            while FileManager.default.fileExists(atPath: nextDestination.path()), count <= maxAttempts {
-                nextDestination = DownloadDestination.alternateLocalPathFor(downloadURL: destination, count: count)
-                count += 1
-            }
-            destination = nextDestination
             try FileManager.default.moveItem(at: location, to: destination)
         } catch {
             Log.DownloadService.error("""

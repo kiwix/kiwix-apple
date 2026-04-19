@@ -17,8 +17,8 @@ import Foundation
 import Combine
 
 struct DownloadState: Codable {
-    let downloaded: Int64
-    let total: Int64
+    let downloaded: UInt
+    let total: UInt
     let resumeData: Data?
     
     var isPaused: Bool {
@@ -29,7 +29,7 @@ struct DownloadState: Codable {
         .init(downloaded: 0, total: 1, resumeData: nil)
     }
 
-    init(downloaded: Int64, total: Int64, resumeData: Data?) {
+    init(downloaded: UInt, total: UInt, resumeData: Data?) {
         guard total >= downloaded, total >= 0 else {
             self.downloaded = downloaded
             self.total = downloaded
@@ -41,7 +41,7 @@ struct DownloadState: Codable {
         self.resumeData = resumeData
     }
 
-    func updatedWith(downloaded: Int64, total: Int64) -> DownloadState {
+    func updatedWith(downloaded: UInt, total: UInt) -> DownloadState {
         DownloadState(downloaded: downloaded, total: total, resumeData: resumeData)
     }
 
