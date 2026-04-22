@@ -24,6 +24,8 @@ settings:
     INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone: UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight
     INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad: UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight
     INFOPLIST_KEY_NSPhotoLibraryUsageDescription: "Kiwix needs permission to saves images to your photos app."
+    INFOPLIST_KEY_NSLocationWhenInUseUsageDescription: "Kiwix can share your location with map content from ZIM files you open."
+    INFOPLIST_KEY_NSLocationUsageDescription: "Kiwix can share your location with map content from ZIM files you open."
     INFOPLIST_KEY_LSSupportsOpeningDocumentsInPlace: YES
     INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents: YES
     SWIFT_OBJC_INTEROP_MODE: objcxx
@@ -67,6 +69,7 @@ targetTemplates:
         com.apple.security.network.client: true
         com.apple.security.network.server: true
         com.apple.security.print: true
+        com.apple.security.personal-information.location: true
     dependencies:
       - framework: CoreKiwix.xcframework
         embed: false

@@ -101,6 +101,9 @@ import CoreKiwix
 #endif
     let webView: WKWebView
     let tabID: NSManagedObjectID
+    // Created on first geolocation request so tabs whose ZIM never touches
+    // navigator.geolocation never instantiate CLLocationManager.
+    private var geolocationService: GeolocationService?
     private var isLoadingObserver: NSKeyValueObservation?
     private var canGoBackObserver: NSKeyValueObservation?
     private var canGoForwardObserver: NSKeyValueObservation?
@@ -130,8 +133,12 @@ import CoreKiwix
         // configure web view
         webView.allowsBackForwardNavigationGestures = true
         webView.configuration.defaultWebpagePreferences.preferredContentMode = .mobile // for font adjustment to work
+        // Re-init can reuse the same WKWebViewConfiguration; remove first so we
+        // don't hit "handler with name X already exists" on repeat init.
         webView.configuration.userContentController.removeScriptMessageHandler(forName: "headings")
         webView.configuration.userContentController.add(self, name: "headings")
+        webView.configuration.userContentController.removeScriptMessageHandler(forName: "geolocation")
+        webView.configuration.userContentController.add(self, name: "geolocation")
         webView.navigationDelegate = self
         webView.uiDelegate = self
 
@@ -187,8 +194,10 @@ import CoreKiwix
         canGoForwardObserver?.invalidate()
         titleURLObserver?.cancel()
         isLoadingObserver?.invalidate()
+        geolocationService?.stopAllWatches()
         let contentController = webView.configuration.userContentController
         contentController.removeScriptMessageHandler(forName: "headings")
+        contentController.removeScriptMessageHandler(forName: "geolocation")
         contentController.removeAllUserScripts()
         webView.navigationDelegate = nil
         webView.uiDelegate = nil
@@ -502,6 +511,13 @@ import CoreKiwix
     }
 
     @MainActor
+    func webView(_ webView: WKWebView, didCommit _: WKNavigation!) {
+        // The previous document's watchPosition callbacks are gone; stop feeding
+        // CoreLocation updates to the replaced page.
+        geolocationService?.stopAllWatches()
+    }
+
+    @MainActor
     func webView(_ webView: WKWebView, didFinish _: WKNavigation!) {
         webView.evaluateJavaScript("expandAllDetailTags(); getOutlineItems();")
 #if os(iOS)
@@ -548,6 +564,100 @@ import CoreKiwix
         if message.name == "headings", let headings = message.body as? [[String: String]] {
             self.generateOutlineList(headings: headings)
             self.generateOutlineTree(headings: headings)
+        } else if message.name == "geolocation", let payload = message.body as? [String: Any] {
+            handleGeolocationRequest(payload: payload)
+        }
+    }
+
+    @MainActor
+    private func handleGeolocationRequest(payload: [String: Any]) {
+        guard let type = payload["type"] as? String,
+              let id = (payload["id"] as? NSNumber)?.intValue else { return }
+        let highAccuracy = (payload["highAccuracy"] as? NSNumber)?.boolValue ?? false
+        let service = geolocationService ?? {
+            let new = GeolocationService()
+            geolocationService = new
+            return new
+        }()
+        switch type {
+        case "getCurrentPosition":
+            Task { [weak self] in
+                guard let self else { return }
+                do {
+                    let snapshot = try await service.requestLocation(highAccuracy: highAccuracy)
+                    self.resolveGeolocation(id: id, snapshot: snapshot)
+                } catch let error as GeolocationError {
+                    self.rejectGeolocation(id: id, code: error.rawValue, message: error.message)
+                } catch {
+                    self.rejectGeolocation(
+                        id: id,
+                        code: GeolocationError.positionUnavailable.rawValue,
+                        message: error.localizedDescription
+                    )
+                }
+            }
+        case "watchPosition":
+            Task { [weak self] in
+                guard let self else { return }
+                await service.startWatching(
+                    id: id,
+                    highAccuracy: highAccuracy
+                ) { [weak self] result in
+                    switch result {
+                    case .success(let snapshot):
+                        self?.resolveGeolocation(id: id, snapshot: snapshot)
+                    case .failure(let error):
+                        self?.rejectGeolocation(id: id, code: error.rawValue, message: error.message)
+                    }
+                }
+            }
+        case "clearWatch":
+            service.stopWatching(id: id)
+        default:
+            break
+        }
+    }
+
+    @MainActor
+    private func resolveGeolocation(id: Int, snapshot: LocationSnapshot) {
+        var coords: [String: Any] = [
+            "latitude": snapshot.latitude,
+            "longitude": snapshot.longitude,
+            "accuracy": snapshot.horizontalAccuracy
+        ]
+        if let altitude = snapshot.altitude { coords["altitude"] = altitude }
+        if let verticalAccuracy = snapshot.verticalAccuracy {
+            coords["altitudeAccuracy"] = verticalAccuracy
+        }
+        if let course = snapshot.course { coords["heading"] = course }
+        if let speed = snapshot.speed { coords["speed"] = speed }
+        let payload: [String: Any] = [
+            "coords": coords,
+            "timestamp": snapshot.timestamp.timeIntervalSince1970 * 1000
+        ]
+        deliverGeolocationCallback(id: id, payload: payload)
+    }
+
+    @MainActor
+    private func rejectGeolocation(id: Int, code: Int, message: String) {
+        let payload: [String: Any] = [
+            "error": ["code": code, "message": message]
+        ]
+        deliverGeolocationCallback(id: id, payload: payload)
+    }
+
+    @MainActor
+    private func deliverGeolocationCallback(id: Int, payload: [String: Any]) {
+        // callAsyncJavaScript bridges payload as a structured JS value, so we
+        // never have to interpolate JSON into JS source — sidesteps U+2028 /
+        // U+2029 hazards and any quoting bugs in error messages.
+        Task { [webView] in
+            _ = try? await webView.callAsyncJavaScript(
+                "window.__kiwixGeolocationResolve(id, payload);",
+                arguments: ["id": id, "payload": payload],
+                in: nil,
+                contentWorld: .page
+            )
         }
     }
 
