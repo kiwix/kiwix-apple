@@ -127,9 +127,8 @@ struct Kiwix: App {
                         .environmentObject(libraryRefreshViewModel)
                         .tag(SettingsTab.catalog.rawValue)
                 }
-//                enable as part of: https://github.com/kiwix/kiwix-apple/issues/1549
-//                DownloadsMacOsSettings()
-//                    .tag(SettingsTab.downloads.rawValue)
+                DownloadsMacOsSettings()
+                    .tag(SettingsTab.downloads.rawValue)
                 HotspotSettings()
                     .tag(SettingsTab.hotspot.rawValue)
                 About()

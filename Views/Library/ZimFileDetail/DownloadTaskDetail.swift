@@ -129,7 +129,7 @@ extension ZimFileDetail {
         }
         
         private var size: String {
-            Formatter.size.string(fromByteCount: downloadState.downloaded)
+            Formatter.size.string(fromByteCount: Int64(downloadState.downloaded))
         }
         
         private var percent: String? {

@@ -78,7 +78,7 @@ struct DownloadLocationMac {
     }
 }
 
-private enum MacDefaults {
+enum MacDefaults {
     static func saveBookmark(data: Data?) {
         Defaults[.downloadsMacDirectoryBookmark] = data
     }

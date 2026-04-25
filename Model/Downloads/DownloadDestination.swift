@@ -14,6 +14,9 @@
 // along with Kiwix; If not, see https://www.gnu.org/licenses/.
 
 import Foundation
+#if os(macOS)
+import Defaults
+#endif
 
 enum DownloadDestination {
     
@@ -39,10 +42,61 @@ enum DownloadDestination {
     static func isUsersDefaultDownloads(directory: URL?) -> Bool {
         directory?.resolvingSymlinksInPath() == downloadLocalFolder()?.resolvingSymlinksInPath()
     }
+    
+    static func macUserDefinedDownloadDir() -> URL? {
+        if let userDefinedBookmark = Defaults[.downloadsMacDirectoryBookmark] {
+            switch userDefinedBookmark.resolveBookmarkWithSecurityScope() {
+            case let .refreshed(newData, url):
+                Defaults[.downloadsMacDirectoryBookmark] = newData
+                return url
+            case let .url(.some(url)):
+                return url
+            case .url(.none):
+                return nil
+            }
+        } else {
+            return Self.downloadLocalFolder()
+        }
+    }
+    
+    static func tempFilePathFor(zimFileID: UUID) -> URL? {
+        let tempFileName = zimFileID.uuidString
+        guard let dir = macUserDefinedDownloadDir() else {
+            return nil
+        }
+        let access = dir.startAccessingSecurityScopedResource()
+        if !access {
+            Log.DownloadService.warning("accessing download folder is not possible")
+        }
+        return dir.appendingPathComponent(tempFileName, conformingTo: .zimFile)
+    }
+    
     #endif
     
     static func filePathFor(downloadURL: URL) -> URL? {
         downloadLocalFolder()?.appendingPathComponent(downloadURL.lastPathComponent)
+    }
+    
+    static func filePathWithFallbacksFor(downloadURL: URL) -> URL? {
+        #if os(iOS)
+        guard let destination = filePathFor(downloadURL: downloadURL) else {
+            return nil
+        }
+        #else
+        guard let destination = macUserDefinedDownloadDir()?
+            .appendingPathComponent(downloadURL.lastPathComponent) else {
+            return nil
+        }
+        #endif
+        
+        var count = 0
+        let maxAttempts = 3
+        var nextDestination = destination
+        while FileManager.default.fileExists(atPath: nextDestination.path()), count <= maxAttempts {
+            nextDestination = DownloadDestination.alternateLocalPathFor(downloadURL: destination, count: count)
+            count += 1
+        }
+        return nextDestination
     }
     
     static func alternateLocalPathFor(downloadURL url: URL, count: Int) -> URL {

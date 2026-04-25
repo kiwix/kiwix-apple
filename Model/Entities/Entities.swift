@@ -242,7 +242,7 @@ struct DirectAccessInfo {
     /// @see: ``zim::Item.getDirectAccessInformation()``
     /// - Parameters:
     ///   - path: filename path - cannot be empty
-    ///   - offset: where the reading should start in the file
+    ///   - offset: where the reading / writing should start in the file
     init?(path: String, offset: UInt) {
         guard !path.isEmpty else {
             return nil

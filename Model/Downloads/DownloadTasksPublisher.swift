@@ -31,7 +31,7 @@ final class DownloadTasksPublisher {
         }
     }
 
-    func updateFor(uuid: UUID, downloaded: Int64, total: Int64) {
+    func updateFor(uuid: UUID, downloaded: UInt, total: UInt) {
         if let state = states[uuid] {
             states[uuid] = state.updatedWith(downloaded: downloaded, total: total)
         } else {
@@ -46,6 +46,12 @@ final class DownloadTasksPublisher {
         publisher.send(states)
         saveState()
     }
+    
+    #if os(macOS)
+    func offsetFor(uuid: UUID) -> UInt? {
+        states[uuid]?.downloaded
+    }
+    #endif
 
     func isEmpty() -> Bool {
         states.isEmpty

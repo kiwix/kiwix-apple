@@ -150,7 +150,7 @@ extension URL {
     
     func bookmarkDataWithSecurityScope() -> Data? {
         let needsScope = startAccessingSecurityScopedResource()
-        defer { if needsScope { stopAccessingSecurityScopedResource() } }
+//        defer { if needsScope { stopAccessingSecurityScopedResource() } }
         return try? bookmarkData(options: .withSecurityScope)
     }
     
