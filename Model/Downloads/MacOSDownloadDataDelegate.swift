@@ -75,9 +75,19 @@ final class MacOSDownloadDataDelegate: NSObject, URLSessionDataDelegate {
             Log.DownloadService.warning("didReceive dataTask data, but skipping progress for: \(dataTask)")
             return
         }
+        
+        guard dataTask.state != .canceling else {
+            Log.DownloadService.debug("ignoring incomming data received for: \(dataTask)")
+            return
+        }
+        
         Task { [weak progress, downloadManager, weak self] in
             guard let writer = await self?.writerFor(zimFileID: zimFileID) else {
                 Log.DownloadService.error("there's no file writer for: \(zimFileID)")
+                return
+            }
+            guard await !writer.isPaused else {
+                Log.DownloadService.debug("write is paused for: \(zimFileID)")
                 return
             }
             
@@ -90,11 +100,12 @@ final class MacOSDownloadDataDelegate: NSObject, URLSessionDataDelegate {
                     dataTask.resume()
                 } else {
                     dataTask.cancel()
-                    try? FileManager.default.removeItem(at: writer.file)
-                    downloadManager.deleteDownloadTask(zimFileID: zimFileID)
-                    DownloadUI.showAlert(.downloadErrorZIM(
-                        zimFileID: zimFileID,
-                        errorMessage: LocalString.download_service_error_client_datanotallowed))
+                    await self?.pause(zimFileID: zimFileID, task: dataTask)
+//                    try? FileManager.default.removeItem(at: writer.file)
+//                    downloadManager.deleteDownloadTask(zimFileID: zimFileID)
+//                    DownloadUI.showAlert(.downloadErrorZIM(
+//                        zimFileID: zimFileID,
+//                        errorMessage: LocalString.download_service_error_client_datanotallowed))
                     return
                 }
             }
@@ -135,10 +146,10 @@ due to: \(error.localizedDescription, privacy: .public)
                     }
                 }
             } else {
-                Log.DownloadService
-                    .debug(
-                        "didReceive data: \(progressData.downloaded) | \(progressData.total) | \(zimFileID.uuidString)"
-                    )
+//                Log.DownloadService
+//                    .debug(
+//                        "didReceive data: \(progressData.downloaded) | \(progressData.total) | \(zimFileID.uuidString)"
+//                    )
             }
         }
     }
@@ -149,9 +160,19 @@ due to: \(error.localizedDescription, privacy: .public)
               let fileSize = await writer.fileSize() else {
             return
         }
+        await writer.pause()
         await progress.updateFor(uuid: zimFileID, downloaded: fileSize, total: progressData.total)
         let resumePointData = fileSize.description.data(using: .utf8)
         await progress.updateFor(uuid: zimFileID, withResumeData: resumePointData)
+        Log.DownloadService.debug("macOS Delegate updated progress for pause")
+    }
+    
+    // MARK: resume
+    func resume(zimFileID: UUID) async {
+        guard let writer = await writerFor(zimFileID: zimFileID) else {
+            return
+        }
+        await writer.resume()
     }
         
     // MARK: cancel

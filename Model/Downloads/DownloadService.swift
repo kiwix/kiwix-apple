@@ -202,6 +202,8 @@ final class DownloadService {
             }
         }
 #else
+        Log.DownloadService.debug("pause pressed")
+        progress.updateFor(uuid: zimFileID, withResumeData: "paused".data(using: .utf8))
         session.taskBy(zimFileID: zimFileID) { [weak sessionDelegate] task in
             guard let task else {
                 Log.DownloadService.warning("cannot find data task for: \(zimFileID.uuidString)")
@@ -278,6 +280,9 @@ final class DownloadService {
                 }
             }
             return DownloadZimStruct(url: url, name: zimFile.name, size: zimFile.size)
+        }
+        Task { [weak sessionDelegate] in
+            await (sessionDelegate as? MacOSDownloadDataDelegate)?.resume(zimFileID: zimFileID)
         }
         
         // re-create the URLRequest and dataTask

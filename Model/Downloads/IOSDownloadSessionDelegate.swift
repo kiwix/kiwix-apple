@@ -50,8 +50,8 @@ final class IOSDownloadSessionDelegate: NSObject, URLSessionDownloadDelegate {
               let zimFileID = UUID(uuidString: taskDescription) else { return }
         Task { @MainActor [progress] in
             progress.updateFor(uuid: zimFileID,
-                               downloaded: totalBytesWritten,
-                               total: totalBytesExpectedToWrite)
+                               downloaded: UInt(totalBytesWritten),
+                               total: UInt(totalBytesExpectedToWrite))
         }
     }
     
@@ -99,7 +99,7 @@ Status code: \(statusCode, privacy: .public)
             return
         }
         guard let url = httpResponse.url,
-              var destination = DownloadDestination.filePathWithFallbacksFor(downloadURL: url) else {
+              let destination = DownloadDestination.filePathWithFallbacksFor(downloadURL: url) else {
             let errorMessage = LocalString.download_service_error_option_directory
             DownloadUI.showAlert(.downloadErrorZIM(zimFileID: zimFileID,
                                                    errorMessage: errorMessage))

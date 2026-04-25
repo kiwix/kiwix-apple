@@ -77,7 +77,7 @@ enum DownloadCommonDelegate {
         // at this point we do know there was a client side error:
         
         // check if the task was cancelled / paused
-        guard error.code != NSURLErrorCancelled else {
+        guard error.code != NSURLErrorCancelled else { // TODO: it seems that for macOS this is not triggering
             // the resume data was already saved above with:
             // task.cancel { [progress] resumeData in
             return

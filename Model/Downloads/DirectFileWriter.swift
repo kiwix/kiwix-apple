@@ -42,10 +42,11 @@ enum AppendStatus: Sendable {
 }
 
 final actor DirectFileWriter {
-    static let cacheLimit: Int = 1_048_576 // 1MB * 5 // 5 MB
+    static let cacheLimit: Int = 1_048_576 // 1 MB
     
     let file: URL
     private var cachedData = Data()
+    private(set) var isPaused: Bool = false
     
     init?(directAccess: DirectDownloadInfo) {
         file = directAccess.file
@@ -69,6 +70,7 @@ final actor DirectFileWriter {
     }
     
     func writeToDisk() -> Bool {
+        guard !isPaused else { return false }
         do {
             try write(data: cachedData)
             Log.IO.info("writing: \(self.sizeOf(self.cachedData))")
@@ -78,6 +80,14 @@ final actor DirectFileWriter {
             Log.IO.error("cannot append data to \(self.file.path()): \(error.localizedDescription)")
             return false
         }
+    }
+    
+    func pause() {
+        isPaused = true
+    }
+    
+    func resume() {
+        isPaused = false
     }
     
     func fileSize() -> UInt? {
