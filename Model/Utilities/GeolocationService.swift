@@ -89,12 +89,15 @@ final class GeolocationService: NSObject {
     // MARK: - Authorization
 
     /// Returns the current CoreLocation authorization status, prompting the
-    /// user if it has not yet been decided.
+    /// user if it has not yet been decided. Concurrent callers share a single
+    /// system prompt — the second-and-subsequent calls just join the wait.
     func requestAuthorization() async -> CLAuthorizationStatus {
         let status = manager.authorizationStatus
         guard status == .notDetermined else { return status }
         return await withCheckedContinuation { continuation in
+            let isFirstWaiter = authorizationContinuations.isEmpty
             authorizationContinuations.append(continuation)
+            guard isFirstWaiter else { return }
             // When-in-use matches the user-initiated, web-driven nature of
             // navigator.geolocation on both platforms; Always would be
             // overreach for a web-content permission prompt.

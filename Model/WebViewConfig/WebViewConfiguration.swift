@@ -31,6 +31,14 @@ final class WebViewConfiguration: WKWebViewConfiguration {
             if let ruleList = WebContentBlocker.ruleList {
                 controller.add(ruleList)
             }
+            // The geolocation shim must be installed before page scripts call
+            // navigator.geolocation, including any inline <head> code, so it
+            // ships as its own .atDocumentStart script.
+            if let url = Bundle.main.url(forResource: "geolocation", withExtension: "js"),
+               let javascript = try? String(contentsOf: url) {
+                let script = WKUserScript(source: javascript, injectionTime: .atDocumentStart, forMainFrameOnly: false)
+                controller.addUserScript(script)
+            }
             if let url = Bundle.main.url(forResource: "injection", withExtension: "js"),
                let javascript = try? String(contentsOf: url) {
                 let script = WKUserScript(source: javascript, injectionTime: .atDocumentEnd, forMainFrameOnly: false)
