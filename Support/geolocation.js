@@ -47,12 +47,23 @@
         })
     }
 
+    function clearTimeoutFor(entry) {
+        if (entry && entry.timeoutHandle !== undefined) {
+            clearTimeout(entry.timeoutHandle)
+            entry.timeoutHandle = undefined
+        }
+    }
+
     window.__kiwixGeolocationResolve = function (id, payload) {
         const entry = pending.get(id)
         if (!entry) { return }
         if (payload && payload.coords) {
+            // Got a position — clear any pending timeout for this entry; for
+            // watches, the next update will rearm via callers as needed.
+            clearTimeoutFor(entry)
             deliverSuccess(entry.success, payload)
         } else if (payload && payload.error) {
+            clearTimeoutFor(entry)
             deliverError(entry.error, payload.error)
         }
         // One-shot requests are cleaned up after a single delivery. Watches
@@ -65,9 +76,29 @@
         }
     }
 
+    function armTimeoutFor(entry, options) {
+        // W3C Geolocation: if options.timeout is a positive finite number,
+        // fire the error callback with TIMEOUT (3) and stop trying. Native
+        // CoreLocation can take 30+ seconds (or never deliver) on a cold
+        // start with poor signal — without this, pages relying on a timeout
+        // hang forever and the pending entry leaks for the page lifetime.
+        if (!options || typeof options.timeout !== 'number') { return }
+        if (!isFinite(options.timeout) || options.timeout <= 0) { return }
+        entry.timeoutHandle = setTimeout(function () {
+            if (!pending.has(entry.id)) { return }
+            pending.delete(entry.id)
+            deliverError(entry.error, {
+                code: 3,
+                message: 'Location request timed out.'
+            })
+        }, options.timeout)
+    }
+
     function getCurrentPosition(success, error, options) {
         const id = nextId++
-        pending.set(id, { success: success, error: error, isWatch: false })
+        const entry = { id: id, success: success, error: error, isWatch: false }
+        pending.set(id, entry)
+        armTimeoutFor(entry, options)
         handler.postMessage({
             type: 'getCurrentPosition',
             id: id,
@@ -77,7 +108,11 @@
 
     function watchPosition(success, error, options) {
         const id = nextId++
-        pending.set(id, { success: success, error: error, isWatch: true })
+        // watchPosition's spec timeout fires on each acquisition attempt
+        // (not the watch as a whole) and the watch must continue trying. The
+        // current bridge doesn't model per-update timing, so we deliberately
+        // skip it here rather than implement a half-correct version.
+        pending.set(id, { id: id, success: success, error: error, isWatch: true })
         handler.postMessage({
             type: 'watchPosition',
             id: id,
@@ -87,7 +122,9 @@
     }
 
     function clearWatch(id) {
-        if (!pending.has(id)) { return }
+        const entry = pending.get(id)
+        if (!entry) { return }
+        clearTimeoutFor(entry)
         pending.delete(id)
         handler.postMessage({ type: 'clearWatch', id: id })
     }

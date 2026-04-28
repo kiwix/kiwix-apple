@@ -378,3 +378,8 @@
 "download_service.error.client.cannotMoveFile" = "Cannot move file";
 "download_service.error.client.downloadDecodingFailedMidStream" = "Download decoding failed";
 "download_service.error.client.downloadDecodingFailedToComplete" = "Download decoding failed";
+
+/* Geolocation bridge — surfaced to ZIM pages as the W3C PositionError.message */
+"geolocation_error.permission_denied" = "User denied geolocation permission.";
+"geolocation_error.position_unavailable" = "Location is unavailable.";
+"geolocation_error.timeout" = "Location request timed out.";

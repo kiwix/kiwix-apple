@@ -22,12 +22,25 @@ enum GeolocationError: Int, Error {
     case positionUnavailable = 2
     case timeout = 3
 
+    /// Surfaced to ZIM pages as `PositionError.message`, so it follows the
+    /// app's localization pipeline like other user-visible strings.
     var message: String {
         switch self {
-        case .permissionDenied: return "User denied geolocation permission."
-        case .positionUnavailable: return "Location is unavailable."
-        case .timeout: return "Location request timed out."
+        case .permissionDenied: return LocalString.geolocation_error_permission_denied
+        case .positionUnavailable: return LocalString.geolocation_error_position_unavailable
+        case .timeout: return LocalString.geolocation_error_timeout
         }
+    }
+}
+
+/// W3C-Geolocation `PositionError` payload shape used by the JS bridge.
+extension GeolocationError {
+    static func payload(code: Int, message: String) -> [String: Any] {
+        ["error": ["code": code, "message": message]]
+    }
+
+    var payload: [String: Any] {
+        Self.payload(code: rawValue, message: message)
     }
 }
 
@@ -56,6 +69,25 @@ struct LocationSnapshot: Sendable {
         course = location.course >= 0 ? location.course : nil
         speed = location.speed >= 0 ? location.speed : nil
         timestamp = location.timestamp
+    }
+
+    /// W3C-Geolocation `Position` payload shape used by the JS bridge. Optional
+    /// fields are omitted (rather than emitted as null) so the JS side sees the
+    /// same shape it would from a real `navigator.geolocation` implementation.
+    var payload: [String: Any] {
+        var coords: [String: Any] = [
+            "latitude": latitude,
+            "longitude": longitude,
+            "accuracy": horizontalAccuracy
+        ]
+        if let altitude { coords["altitude"] = altitude }
+        if let verticalAccuracy { coords["altitudeAccuracy"] = verticalAccuracy }
+        if let course { coords["heading"] = course }
+        if let speed { coords["speed"] = speed }
+        return [
+            "coords": coords,
+            "timestamp": timestamp.timeIntervalSince1970 * 1000
+        ]
     }
 }
 
@@ -120,18 +152,19 @@ final class GeolocationService: NSObject {
     // MARK: - One-shot
 
     /// Requests a one-shot location reading. Prompts the user for authorization
-    /// on first use. Does not disturb any active continuous watches.
+    /// on first use. A high-accuracy one-shot may temporarily promote (but
+    /// never demote) the desired accuracy of an in-flight watch; the watch's
+    /// configured accuracy is restored once the one-shot resolves.
     func requestLocation(highAccuracy: Bool) async throws -> LocationSnapshot {
         try await ensureAuthorized()
         return try await withCheckedThrowingContinuation { continuation in
             oneShotContinuations.append(continuation)
             if !isUpdatingContinuously {
-                // Only adjust accuracy when no watches are running, so one-shot
-                // requests don't downgrade a high-accuracy watch.
                 manager.desiredAccuracy = highAccuracy
                     ? kCLLocationAccuracyBest
                     : kCLLocationAccuracyHundredMeters
             } else if highAccuracy {
+                // Promote only — never downgrade an active high-accuracy watch.
                 manager.desiredAccuracy = kCLLocationAccuracyBest
             }
             manager.requestLocation()
@@ -197,15 +230,21 @@ final class GeolocationService: NSObject {
 
     fileprivate func didChangeAuthorization(status: CLAuthorizationStatus) {
         guard status != .notDetermined else { return }
-        let waiting = authorizationContinuations
+        let waitingAuth = authorizationContinuations
         authorizationContinuations.removeAll()
-        for continuation in waiting {
+        for continuation in waitingAuth {
             continuation.resume(returning: status)
         }
-        // If authorization is revoked while watching, notify watchers and stop.
+        // If authorization is revoked, drain in-flight one-shots and watches —
+        // CoreLocation may not fire didFailWithError before the next call, so
+        // any awaiting CheckedContinuation would leak.
         if status == .denied || status == .restricted {
-            let active = watchers
-            for handler in active.values {
+            let waitingOneShots = oneShotContinuations
+            oneShotContinuations.removeAll()
+            for continuation in waitingOneShots {
+                continuation.resume(throwing: GeolocationError.permissionDenied)
+            }
+            for handler in Array(watchers.values) {
                 handler(.failure(.permissionDenied))
             }
             stopAllWatches()
@@ -218,14 +257,36 @@ final class GeolocationService: NSObject {
         for continuation in waiting {
             continuation.resume(returning: snapshot)
         }
-        for handler in watchers.values {
+        // Snapshot before iterating: handlers may call stopWatching(id:),
+        // mutating the dict mid-iteration.
+        for handler in Array(watchers.values) {
             handler(.success(snapshot))
+        }
+        // A one-shot may have promoted desiredAccuracy above the watch's
+        // configured level; restore so the watch doesn't keep burning battery.
+        if !waiting.isEmpty, isUpdatingContinuously {
+            applyAccuracyForWatchers()
         }
     }
 
     fileprivate func didFail(code: Int, message: String) {
         let waiting = oneShotContinuations
         oneShotContinuations.removeAll()
+
+        // Map CLError codes to the W3C PositionError code the JS bridge expects.
+        // Unmapped codes fall through as positionUnavailable.
+        let geoError: GeolocationError
+        switch code {
+        case CLError.denied.rawValue:
+            geoError = .permissionDenied
+        case CLError.locationUnknown.rawValue:
+            // Per W3C: locationUnknown is transient — don't fire watch errors.
+            // For one-shots we still need to resolve; fall through.
+            geoError = .positionUnavailable
+        default:
+            geoError = .positionUnavailable
+        }
+
         let error = NSError(
             domain: "org.kiwix.geolocation",
             code: code,
@@ -234,14 +295,26 @@ final class GeolocationService: NSObject {
         for continuation in waiting {
             continuation.resume(throwing: error)
         }
-        // Forward errors to active watchers but keep the watch alive; the
-        // web page can call clearWatch if it wants to stop.
-        let geoError: GeolocationError = {
-            if code == CLError.denied.rawValue { return .permissionDenied }
-            return .positionUnavailable
-        }()
-        for handler in watchers.values {
+
+        // Restore accuracy for any active watch that a one-shot may have promoted.
+        if !waiting.isEmpty, isUpdatingContinuously {
+            applyAccuracyForWatchers()
+        }
+
+        // Watch error semantics:
+        //  - locationUnknown: transient; do not invoke watch error callbacks.
+        //  - denied: permanent; notify watchers, then stop CoreLocation so we
+        //    don't keep the GPS warm for a permission that won't come back.
+        //  - other: notify watchers, leave the watch running so the page can
+        //    decide whether to keep waiting or call clearWatch.
+        if code == CLError.locationUnknown.rawValue {
+            return
+        }
+        for handler in Array(watchers.values) {
             handler(.failure(geoError))
+        }
+        if code == CLError.denied.rawValue {
+            stopAllWatches()
         }
     }
 }

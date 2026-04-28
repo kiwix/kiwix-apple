@@ -25,6 +25,7 @@ struct Log {
     static let URLSchemeHandler = Logger(subsystem: subsystem, category: "URLSchemeHandler")
     static let Branding = Logger(subsystem: subsystem, category: "Branding")
     static let Payment = Logger(subsystem: subsystem, category: "Payment")
+    static let Geolocation = Logger(subsystem: subsystem, category: "Geolocation")
 }
 
 private let subsystem = KiwixLogger.subsystem

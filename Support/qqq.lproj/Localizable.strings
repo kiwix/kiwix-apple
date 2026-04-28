@@ -330,3 +330,7 @@
 "download_service.error.client.cannotMoveFile" = "Additional description of the download alert pop up, describing the specific system error, that occured.";
 "download_service.error.client.downloadDecodingFailedMidStream" = "Additional description of the download alert pop up, describing the specific system error, that occured.";
 "download_service.error.client.downloadDecodingFailedToComplete" = "Additional description of the download alert pop up, describing the specific system error, that occured.";
+
+"geolocation_error.permission_denied" = "Error message returned to a ZIM web page when the user has denied geolocation permission. Surfaced as the W3C PositionError.message field.";
+"geolocation_error.position_unavailable" = "Error message returned to a ZIM web page when CoreLocation reports the location is unavailable (e.g. no satellites). Surfaced as the W3C PositionError.message field.";
+"geolocation_error.timeout" = "Error message returned to a ZIM web page when a geolocation request times out. Surfaced as the W3C PositionError.message field.";
