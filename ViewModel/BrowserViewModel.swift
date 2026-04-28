@@ -660,8 +660,9 @@ import CoreKiwix
             } catch {
                 // Anything else (unknown shim state, JS exception inside the
                 // resolve function, etc.) is unexpected and worth surfacing.
+                let message = error.localizedDescription
                 Log.Geolocation.error(
-                    "callAsyncJavaScript failed for geolocation id \(id, privacy: .public): \(error.localizedDescription, privacy: .public)"
+                    "callAsyncJavaScript failed for id \(id, privacy: .public): \(message, privacy: .public)"
                 )
             }
         }
