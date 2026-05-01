@@ -16,31 +16,42 @@
 import CoreLocation
 import Foundation
 
-/// Errors matching the HTML5 Geolocation API `PositionError` codes.
-enum GeolocationError: Int, Error {
+/// Matching the DOM equivalent from:
+/// https://www.w3.org/TR/geolocation/#dom-geolocationpositionerror
+enum GeolocationPositionError: Int, Error {
     case permissionDenied = 1
     case positionUnavailable = 2
     case timeout = 3
 
-    /// Surfaced to ZIM pages as `PositionError.message`, so it follows the
-    /// app's localization pipeline like other user-visible strings.
-    var message: String {
+    var localizedDescription: String {
         switch self {
         case .permissionDenied: return LocalString.geolocation_error_permission_denied
         case .positionUnavailable: return LocalString.geolocation_error_position_unavailable
         case .timeout: return LocalString.geolocation_error_timeout
         }
     }
+
+    var jsResponse: [String: Any] {
+        ["error": ["code": rawValue, "message": localizedDescription]]
+    }
 }
 
-/// W3C-Geolocation `PositionError` payload shape used by the JS bridge.
-extension GeolocationError {
-    static func payload(code: Int, message: String) -> [String: Any] {
-        ["error": ["code": code, "message": message]]
+/// The incoming request from JS
+struct LocationRequest {
+    let type: RequestMethod
+    let highAccuracy: Bool
+    
+    enum RequestMethod: String {
+        case getCurrentPosition
+        case watchPosition
+        case clearWatch
     }
-
-    var payload: [String: Any] {
-        Self.payload(code: rawValue, message: message)
+    
+    init?(jsRequest payload: [String: Any]) {
+        guard let payloadType = payload["type"] as? String,
+              let requestMethod = RequestMethod(rawValue: payloadType) else { return nil }
+        type = requestMethod
+        highAccuracy = (payload["highAccuracy"] as? NSNumber)?.boolValue ?? false
     }
 }
 
@@ -71,10 +82,7 @@ struct LocationSnapshot: Sendable {
         timestamp = location.timestamp
     }
 
-    /// W3C-Geolocation `Position` payload shape used by the JS bridge. Optional
-    /// fields are omitted (rather than emitted as null) so the JS side sees the
-    /// same shape it would from a real `navigator.geolocation` implementation.
-    var payload: [String: Any] {
+    var jsResponse: [String: Any] {
         var coords: [String: Any] = [
             "latitude": latitude,
             "longitude": longitude,
@@ -100,7 +108,7 @@ struct LocationSnapshot: Sendable {
 @MainActor
 final class GeolocationService: NSObject, @MainActor CLLocationManagerDelegate {
 
-    typealias WatchHandler = @MainActor (Result<LocationSnapshot, GeolocationError>) -> Void
+    typealias WatchHandler = @MainActor (Result<LocationSnapshot, GeolocationPositionError>) -> Void
 
     private let manager: CLLocationManager
 
@@ -117,10 +125,6 @@ final class GeolocationService: NSObject, @MainActor CLLocationManagerDelegate {
     }
 
     // MARK: - Authorization
-
-    /// Returns the current CoreLocation authorization status, prompting the
-    /// user if it has not yet been decided. Concurrent callers share a single
-    /// system prompt — the second-and-subsequent calls just join the wait.
     func requestAuthorization() async -> CLAuthorizationStatus {
         let status = manager.authorizationStatus
         guard status == .notDetermined else { return status }
@@ -128,9 +132,6 @@ final class GeolocationService: NSObject, @MainActor CLLocationManagerDelegate {
             let isFirstWaiter = authorizationContinuation == nil
             authorizationContinuation = continuation
             guard isFirstWaiter else { return }
-            // When-in-use matches the user-initiated, web-driven nature of
-            // navigator.geolocation on both platforms; Always would be
-            // overreach for a web-content permission prompt.
             manager.requestWhenInUseAuthorization()
         }
     }
@@ -141,18 +142,12 @@ final class GeolocationService: NSObject, @MainActor CLLocationManagerDelegate {
         case .authorizedAlways, .authorizedWhenInUse:
             return
         case .denied, .restricted, .notDetermined:
-            throw GeolocationError.permissionDenied
+            throw GeolocationPositionError.permissionDenied
         @unknown default:
-            throw GeolocationError.positionUnavailable
+            throw GeolocationPositionError.positionUnavailable
         }
     }
 
-    // MARK: - One-shot
-
-    /// Requests a one-shot location reading. Prompts the user for authorization
-    /// on first use. A high-accuracy one-shot may temporarily promote (but
-    /// never demote) the desired accuracy of an in-flight watch; the watch's
-    /// configured accuracy is restored once the one-shot resolves.
     func requestLocation(highAccuracy: Bool) async throws -> LocationSnapshot {
         try await ensureAuthorized()
         return try await withCheckedThrowingContinuation { continuation in
@@ -170,14 +165,10 @@ final class GeolocationService: NSObject, @MainActor CLLocationManagerDelegate {
     }
 
     // MARK: - Continuous watch
-
-    /// Starts a continuous watch with the given id. `onUpdate` is invoked on
-    /// the main actor for every location update, and for errors (which do not
-    /// terminate the watch — stop with `stopWatching(id:)`).
     func startWatching(highAccuracy: Bool, onUpdate: @escaping WatchHandler) async {
         do {
             try await ensureAuthorized()
-        } catch let error as GeolocationError {
+        } catch let error as GeolocationPositionError {
             onUpdate(.failure(error))
             return
         } catch {
@@ -223,7 +214,7 @@ final class GeolocationService: NSObject, @MainActor CLLocationManagerDelegate {
         if status == .denied || status == .restricted {
             let waitingOneShot = oneShotContinuation
             oneShotContinuation = nil
-            waitingOneShot?.resume(throwing: GeolocationError.permissionDenied)
+            waitingOneShot?.resume(throwing: GeolocationPositionError.permissionDenied)
             watcher?(.failure(.permissionDenied))
             stopWatching()
         }
@@ -255,7 +246,7 @@ final class GeolocationService: NSObject, @MainActor CLLocationManagerDelegate {
 
         // Map CLError codes to the W3C PositionError code the JS bridge expects.
         // Unmapped codes fall through as positionUnavailable.
-        let geoError: GeolocationError
+        let geoError: GeolocationPositionError
         switch code {
         case CLError.denied.rawValue:
             geoError = .permissionDenied

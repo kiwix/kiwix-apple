@@ -563,28 +563,25 @@ import CoreKiwix
         if message.name == "headings", let headings = message.body as? [[String: String]] {
             self.generateOutlineList(headings: headings)
             self.generateOutlineTree(headings: headings)
-        } else if message.name == "geolocation", let payload = message.body as? [String: Any] {
-            handleGeolocationRequest(payload: payload)
+        } else if message.name == "geolocation", let body = message.body as? [String: Any] {
+            handleGeolocationRequest(jsRequest: body)
         }
     }
-
-    private func handleGeolocationRequest(payload: [String: Any]) {
-        guard let type = payload["type"] as? String else { return }
-        let highAccuracy = (payload["highAccuracy"] as? NSNumber)?.boolValue ?? false
+    
+    private func handleGeolocationRequest(jsRequest: [String: Any]) {
+        guard let request = LocationRequest(jsRequest: jsRequest) else { return }
         let service = ensureGeolocationService()
-        switch type {
-        case "getCurrentPosition":
+        switch request.type {
+        case .getCurrentPosition:
             Task { [weak self] in
-                await self?.handleGetCurrentPosition(service: service, highAccuracy: highAccuracy)
+                await self?.handleGetCurrentPosition(service: service, highAccuracy: request.highAccuracy)
             }
-        case "watchPosition":
+        case .watchPosition:
             Task { [weak self] in
-                await self?.handleWatchPosition(service: service, highAccuracy: highAccuracy)
+                await self?.handleWatchPosition(service: service, highAccuracy: request.highAccuracy)
             }
-        case "clearWatch":
+        case .clearWatch:
             service.stopWatching()
-        default:
-            break
         }
     }
 
@@ -599,13 +596,10 @@ import CoreKiwix
         do {
             let snapshot = try await service.requestLocation(highAccuracy: highAccuracy)
             resolveGeolocation(snapshot: snapshot)
-        } catch let error as GeolocationError {
-            rejectGeolocation(code: error.rawValue, message: error.message)
+        } catch let error as GeolocationPositionError {
+            rejectGeolocation(error: error)
         } catch {
-            rejectGeolocation(
-                code: GeolocationError.positionUnavailable.rawValue,
-                message: error.localizedDescription
-            )
+            rejectGeolocation(error: .positionUnavailable)
         }
     }
 
@@ -615,25 +609,20 @@ import CoreKiwix
             case .success(let snapshot):
                 self?.resolveGeolocation(snapshot: snapshot)
             case .failure(let error):
-                self?.rejectGeolocation(code: error.rawValue, message: error.message)
+                self?.rejectGeolocation(error: error)
             }
         }
     }
 
     private func resolveGeolocation(snapshot: LocationSnapshot) {
-        deliverGeolocationCallback(payload: snapshot.payload)
+        deliverGeolocationCallback(jsResponse: snapshot.jsResponse)
     }
 
-    private func rejectGeolocation(code: Int, message: String) {
-        deliverGeolocationCallback(
-            payload: GeolocationError.payload(code: code, message: message)
-        )
+    private func rejectGeolocation(error: GeolocationPositionError) {
+        deliverGeolocationCallback(jsResponse: error.jsResponse)
     }
 
-    private func deliverGeolocationCallback(payload: [String: Any]) {
-        // callAsyncJavaScript bridges payload as a structured JS value, so we
-        // never have to interpolate JSON into JS source — sidesteps U+2028 /
-        // U+2029 hazards and any quoting bugs in error messages.
+    private func deliverGeolocationCallback(jsResponse payload: [String: Any]) {
         Task { [webView] in
             do {
                 _ = try await webView.callAsyncJavaScript(
@@ -647,8 +636,6 @@ import CoreKiwix
                     || error.code == WKError.webViewInvalidated.rawValue) {
                 // Page is gone — expected during teardown, no signal worth keeping.
             } catch {
-                // Anything else (unknown shim state, JS exception inside the
-                // resolve function, etc.) is unexpected and worth surfacing.
                 let message = error.localizedDescription
                 Log.Geolocation.error(
                     "callAsyncJavaScript failed: \(message, privacy: .public)"

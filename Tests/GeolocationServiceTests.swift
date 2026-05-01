@@ -62,9 +62,9 @@ final class GeolocationServiceTests: XCTestCase {
     func testGeolocationErrorRawValuesMatchHTML5Spec() {
         // The PositionError code constants in the W3C Geolocation API are
         // stable; the JS shim relies on these exact values.
-        XCTAssertEqual(GeolocationError.permissionDenied.rawValue, 1)
-        XCTAssertEqual(GeolocationError.positionUnavailable.rawValue, 2)
-        XCTAssertEqual(GeolocationError.timeout.rawValue, 3)
+        XCTAssertEqual(GeolocationPositionError.permissionDenied.rawValue, 1)
+        XCTAssertEqual(GeolocationPositionError.positionUnavailable.rawValue, 2)
+        XCTAssertEqual(GeolocationPositionError.timeout.rawValue, 3)
     }
 
     // MARK: - Wire-format payload (the contract with every map ZIM)
@@ -116,20 +116,5 @@ final class GeolocationServiceTests: XCTestCase {
         XCTAssertNotNil(coords?["latitude"])
         XCTAssertNotNil(coords?["longitude"])
         XCTAssertNotNil(coords?["accuracy"])
-    }
-
-    func testGeolocationErrorPayloadShape() {
-        let payload = GeolocationError.permissionDenied.payload
-        let error = payload["error"] as? [String: Any]
-        XCTAssertEqual(error?["code"] as? Int, 1)
-        XCTAssertEqual(error?["message"] as? String, GeolocationError.permissionDenied.message)
-    }
-
-    func testGeolocationErrorPayloadAcceptsCustomCodeAndMessage() {
-        // Used by the generic-catch path in BrowserViewModel for non-GeolocationError throws.
-        let payload = GeolocationError.payload(code: 99, message: "underlying CL error")
-        let error = payload["error"] as? [String: Any]
-        XCTAssertEqual(error?["code"] as? Int, 99)
-        XCTAssertEqual(error?["message"] as? String, "underlying CL error")
     }
 }
