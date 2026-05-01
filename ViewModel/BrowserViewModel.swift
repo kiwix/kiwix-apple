@@ -564,23 +564,22 @@ import CoreKiwix
             self.generateOutlineList(headings: headings)
             self.generateOutlineTree(headings: headings)
         } else if message.name == "geolocation", let body = message.body as? [String: Any] {
-            handleGeolocationRequest(jsRequest: body)
+            guard let request = LocationRequest(jsRequest: body) else { return }
+            Task { [weak self] in
+                await self?.handleGeolocationRequest(request)
+            }
         }
     }
     
-    private func handleGeolocationRequest(jsRequest: [String: Any]) {
-        guard let request = LocationRequest(jsRequest: jsRequest) else { return }
-        let service = ensureGeolocationService()
+    private func handleGeolocationRequest(_ request: LocationRequest) async {
+        let highAccuracy = request.highAccuracy
         switch request.type {
         case .getCurrentPosition:
-            Task { [weak self] in
-                await self?.handleGetCurrentPosition(service: service, highAccuracy: request.highAccuracy)
-            }
+            await getCurrentPositionWith(highAccuracy: highAccuracy)
         case .watchPosition:
-            Task { [weak self] in
-                await self?.handleWatchPosition(service: service, highAccuracy: request.highAccuracy)
-            }
+            await watchPositionWith(highAccuracy: highAccuracy)
         case .clearWatch:
+            let service = ensureGeolocationService()
             service.stopWatching()
         }
     }
@@ -592,55 +591,50 @@ import CoreKiwix
         return service
     }
 
-    private func handleGetCurrentPosition(service: GeolocationService, highAccuracy: Bool) async {
+    private func getCurrentPositionWith(highAccuracy: Bool) async {
         do {
+            let service = ensureGeolocationService()
             let snapshot = try await service.requestLocation(highAccuracy: highAccuracy)
-            resolveGeolocation(snapshot: snapshot)
+            await respondToJS(with: snapshot)
         } catch let error as GeolocationPositionError {
-            rejectGeolocation(error: error)
+            await respondToJS(with: error)
         } catch {
-            rejectGeolocation(error: .positionUnavailable)
+            await respondToJS(with: GeolocationPositionError.positionUnavailable)
         }
     }
 
-    private func handleWatchPosition(service: GeolocationService, highAccuracy: Bool) async {
+    private func watchPositionWith(highAccuracy: Bool) async {
+        let service = ensureGeolocationService()
         await service.startWatching(highAccuracy: highAccuracy) { [weak self] result in
-            switch result {
-            case .success(let snapshot):
-                self?.resolveGeolocation(snapshot: snapshot)
-            case .failure(let error):
-                self?.rejectGeolocation(error: error)
+            Task { [weak self] in
+                switch result {
+                case let .success(snapshot):
+                    await self?.respondToJS(with: snapshot)
+                case let .failure(error):
+                    await self?.respondToJS(with: error)
+                }
             }
         }
     }
 
-    private func resolveGeolocation(snapshot: LocationSnapshot) {
-        deliverGeolocationCallback(jsResponse: snapshot.jsResponse)
-    }
-
-    private func rejectGeolocation(error: GeolocationPositionError) {
-        deliverGeolocationCallback(jsResponse: error.jsResponse)
-    }
-
-    private func deliverGeolocationCallback(jsResponse payload: [String: Any]) {
-        Task { [webView] in
-            do {
-                _ = try await webView.callAsyncJavaScript(
-                    "window.__kiwixGeolocationResolve(payload);",
-                    arguments: ["payload": payload],
-                    in: nil,
-                    contentWorld: .page
-                )
-            } catch let error as NSError where error.domain == WKError.errorDomain
-                && (error.code == WKError.webContentProcessTerminated.rawValue
-                    || error.code == WKError.webViewInvalidated.rawValue) {
-                // Page is gone — expected during teardown, no signal worth keeping.
-            } catch {
-                let message = error.localizedDescription
-                Log.Geolocation.error(
-                    "callAsyncJavaScript failed: \(message, privacy: .public)"
-                )
-            }
+    private func respondToJS(with response: JSRespondable) async {
+        let payload = response.jsResponse
+        do {
+            _ = try await webView.callAsyncJavaScript(
+                "window.__kiwixGeolocationResolve(payload);",
+                arguments: ["payload": payload],
+                in: nil,
+                contentWorld: .page
+            )
+        } catch let error as NSError where error.domain == WKError.errorDomain
+            && (error.code == WKError.webContentProcessTerminated.rawValue
+                || error.code == WKError.webViewInvalidated.rawValue) {
+            // Page is gone — expected during teardown, no signal worth keeping.
+        } catch {
+            let message = error.localizedDescription
+            Log.Geolocation.error(
+                "callAsyncJavaScript failed: \(message, privacy: .public)"
+            )
         }
     }
 

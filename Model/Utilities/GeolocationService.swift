@@ -16,9 +16,13 @@
 import CoreLocation
 import Foundation
 
+protocol JSRespondable {
+    var jsResponse: [String: Any] { get }
+}
+
 /// Matching the DOM equivalent from:
 /// https://www.w3.org/TR/geolocation/#dom-geolocationpositionerror
-enum GeolocationPositionError: Int, Error {
+enum GeolocationPositionError: Int, Error, JSRespondable {
     case permissionDenied = 1
     case positionUnavailable = 2
     case timeout = 3
@@ -37,7 +41,7 @@ enum GeolocationPositionError: Int, Error {
 }
 
 /// The incoming request from JS
-struct LocationRequest {
+struct LocationRequest: Sendable {
     let type: RequestMethod
     let highAccuracy: Bool
     
@@ -56,7 +60,7 @@ struct LocationRequest {
 }
 
 /// Sendable snapshot of a CLLocation, safe to pass across isolation domains.
-struct LocationSnapshot: Sendable {
+struct LocationSnapshot: Sendable, JSRespondable {
     let latitude: Double
     let longitude: Double
     let horizontalAccuracy: Double

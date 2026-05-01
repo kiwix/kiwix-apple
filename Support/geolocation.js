@@ -58,18 +58,12 @@
         const entry = pending
         if (!entry) { return }
         if (payload && payload.coords) {
-            // Got a position — clear any pending timeout; for
-            // watches, the next update will rearm via callers as needed.
             clearTimeout(entry)
             deliverSuccess(entry.success, payload)
         } else if (payload && payload.error) {
             clearTimeout(entry)
             deliverError(entry.error, payload.error)
         }
-        // One-shot requests are cleaned up after a single delivery. Watches
-        // are normally retained until clearWatch() — except permission denial,
-        // which the native side won't recover from, so drop the entry to
-        // avoid a stale handler hanging on for the page's lifetime.
         const isPermissionDenied = !!(payload && payload.error && payload.error.code === 1)
         if (!entry.isWatch || isPermissionDenied) {
             pending = null
