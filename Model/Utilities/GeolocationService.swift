@@ -16,13 +16,14 @@
 import CoreLocation
 import Foundation
 
+/// Groups the Geolocation response types we send to JS
 protocol JSRespondable {
     var jsResponse: [String: Any] { get }
 }
 
-/// Matching the DOM equivalent from:
-/// https://www.w3.org/TR/geolocation/#dom-geolocationpositionerror
 enum GeolocationPositionError: Int, Error, JSRespondable {
+    // Matching the DOM equivalent from:
+    // https://www.w3.org/TR/geolocation/#dom-geolocationpositionerror
     case permissionDenied = 1
     case positionUnavailable = 2
     case timeout = 3
@@ -40,27 +41,7 @@ enum GeolocationPositionError: Int, Error, JSRespondable {
     }
 }
 
-/// The incoming request from JS
-struct LocationRequest: Sendable {
-    let type: RequestMethod
-    let highAccuracy: Bool
-    
-    enum RequestMethod: String {
-        case getCurrentPosition
-        case watchPosition
-        case clearWatch
-    }
-    
-    init?(jsRequest payload: [String: Any]) {
-        guard let payloadType = payload["type"] as? String,
-              let requestMethod = RequestMethod(rawValue: payloadType) else { return nil }
-        type = requestMethod
-        highAccuracy = (payload["highAccuracy"] as? NSNumber)?.boolValue ?? false
-    }
-}
-
-/// Sendable snapshot of a CLLocation, safe to pass across isolation domains.
-struct Geolocation: Sendable, JSRespondable {
+struct Geolocation: JSRespondable {
     struct Vertical {
         let altitude: Double
         let accuracy: Double
@@ -106,27 +87,38 @@ struct Geolocation: Sendable, JSRespondable {
     }
 }
 
+/// The incoming Geolocation request from JS
+struct LocationRequest {
+    let type: RequestMethod
+    let highAccuracy: Bool
+    
+    enum RequestMethod: String {
+        case getCurrentPosition
+        case watchPosition
+        case clearWatch
+    }
+    
+    init?(jsRequest payload: [String: Any]) {
+        guard let payloadType = payload["type"] as? String,
+              let requestMethod = RequestMethod(rawValue: payloadType) else { return nil }
+        type = requestMethod
+        highAccuracy = (payload["highAccuracy"] as? NSNumber)?.boolValue ?? false
+    }
+}
+
 /// Provides geolocation to the WebKit viewer, bridging HTML5 Geolocation API
 /// calls from ZIM content (e.g. map ZIMs) to CoreLocation. Supports both
 /// one-shot (`getCurrentPosition`) and continuous (`watchPosition`) requests.
-///
-/// CoreLocation authorization is requested lazily on the first location request,
-/// so users of ZIMs that never touch `navigator.geolocation` are never prompted.
 @MainActor
 final class GeolocationService: NSObject, @MainActor CLLocationManagerDelegate {
-
-    typealias WatchHandler = @MainActor (Result<Geolocation, GeolocationPositionError>) -> Void
-
-    private let manager: CLLocationManager
-
+    private let manager = CLLocationManager()
     private var authorizationContinuation: CheckedContinuation<CLAuthorizationStatus, Never>?
     private var oneShotContinuation: CheckedContinuation<Geolocation, Error>?
-    private var watcher: WatchHandler?
-    private var watcherAccuracy: Bool = false
+    private var onLocationUpdate: ((Result<Geolocation, GeolocationPositionError>) -> Void)?
+    private var useHighAccuracy: Bool = false
     private var isUpdatingContinuously = false
 
     override init() {
-        manager = CLLocationManager()
         super.init()
         manager.delegate = self
     }
@@ -172,7 +164,10 @@ final class GeolocationService: NSObject, @MainActor CLLocationManagerDelegate {
     }
 
     // MARK: - Continuous watch
-    func startWatching(highAccuracy: Bool, onUpdate: @escaping WatchHandler) async {
+    func startWatching(
+        highAccuracy: Bool,
+        onUpdate: @escaping @MainActor (Result<Geolocation, GeolocationPositionError>) -> Void
+    ) async {
         do {
             try await ensureAuthorized()
         } catch let error as GeolocationPositionError {
@@ -182,8 +177,8 @@ final class GeolocationService: NSObject, @MainActor CLLocationManagerDelegate {
             onUpdate(.failure(.positionUnavailable))
             return
         }
-        watcher = onUpdate
-        watcherAccuracy = highAccuracy
+        onLocationUpdate = onUpdate
+        useHighAccuracy = highAccuracy
         applyAccuracyForWatchers()
         if !isUpdatingContinuously {
             isUpdatingContinuously = true
@@ -192,8 +187,8 @@ final class GeolocationService: NSObject, @MainActor CLLocationManagerDelegate {
     }
     
     func stopWatching() {
-        watcher = nil
-        watcherAccuracy = false
+        onLocationUpdate = nil
+        useHighAccuracy = false
         if isUpdatingContinuously {
             isUpdatingContinuously = false
             manager.stopUpdatingLocation()
@@ -201,7 +196,7 @@ final class GeolocationService: NSObject, @MainActor CLLocationManagerDelegate {
     }
 
     private func applyAccuracyForWatchers() {
-        manager.desiredAccuracy = watcherAccuracy
+        manager.desiredAccuracy = useHighAccuracy
             ? kCLLocationAccuracyBest
             : kCLLocationAccuracyHundredMeters
     }
@@ -222,7 +217,7 @@ final class GeolocationService: NSObject, @MainActor CLLocationManagerDelegate {
             let waitingOneShot = oneShotContinuation
             oneShotContinuation = nil
             waitingOneShot?.resume(throwing: GeolocationPositionError.permissionDenied)
-            watcher?(.failure(.permissionDenied))
+            onLocationUpdate?(.failure(.permissionDenied))
             stopWatching()
         }
     }
@@ -236,7 +231,7 @@ final class GeolocationService: NSObject, @MainActor CLLocationManagerDelegate {
         
         // Snapshot before iterating: handlers may call stopWatching(id:),
         // mutating the dict mid-iteration.
-        watcher?(.success(snapshot))
+        onLocationUpdate?(.success(snapshot))
         // A one-shot may have promoted desiredAccuracy above the watch's
         // configured level; restore so the watch doesn't keep burning battery.
         if waiting != nil, isUpdatingContinuously {
@@ -286,7 +281,7 @@ final class GeolocationService: NSObject, @MainActor CLLocationManagerDelegate {
         if code == CLError.locationUnknown.rawValue {
             return
         }
-        watcher?(.failure(geoError))
+        onLocationUpdate?(.failure(geoError))
         if code == CLError.denied.rawValue {
             stopWatching()
         }
