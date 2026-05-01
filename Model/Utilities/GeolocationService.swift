@@ -60,12 +60,15 @@ struct LocationRequest: Sendable {
 }
 
 /// Sendable snapshot of a CLLocation, safe to pass across isolation domains.
-struct LocationSnapshot: Sendable, JSRespondable {
+struct Geolocation: Sendable, JSRespondable {
+    struct Vertical {
+        let altitude: Double
+        let accuracy: Double
+    }
     let latitude: Double
     let longitude: Double
     let horizontalAccuracy: Double
-    let altitude: Double?
-    let verticalAccuracy: Double?
+    let vertical: Vertical?
     let course: Double?
     let speed: Double?
     let timestamp: Date
@@ -75,11 +78,9 @@ struct LocationSnapshot: Sendable, JSRespondable {
         longitude = location.coordinate.longitude
         horizontalAccuracy = location.horizontalAccuracy
         if location.verticalAccuracy >= 0 {
-            altitude = location.altitude
-            verticalAccuracy = location.verticalAccuracy
+            vertical = Vertical(altitude: location.altitude, accuracy: location.verticalAccuracy)
         } else {
-            altitude = nil
-            verticalAccuracy = nil
+            vertical = nil
         }
         course = location.course >= 0 ? location.course : nil
         speed = location.speed >= 0 ? location.speed : nil
@@ -92,8 +93,10 @@ struct LocationSnapshot: Sendable, JSRespondable {
             "longitude": longitude,
             "accuracy": horizontalAccuracy
         ]
-        if let altitude { coords["altitude"] = altitude }
-        if let verticalAccuracy { coords["altitudeAccuracy"] = verticalAccuracy }
+        if let vertical {
+            coords["altitude"] = vertical.altitude
+            coords["altitudeAccuracy"] = vertical.accuracy
+        }
         if let course { coords["heading"] = course }
         if let speed { coords["speed"] = speed }
         return [
@@ -112,12 +115,12 @@ struct LocationSnapshot: Sendable, JSRespondable {
 @MainActor
 final class GeolocationService: NSObject, @MainActor CLLocationManagerDelegate {
 
-    typealias WatchHandler = @MainActor (Result<LocationSnapshot, GeolocationPositionError>) -> Void
+    typealias WatchHandler = @MainActor (Result<Geolocation, GeolocationPositionError>) -> Void
 
     private let manager: CLLocationManager
 
     private var authorizationContinuation: CheckedContinuation<CLAuthorizationStatus, Never>?
-    private var oneShotContinuation: CheckedContinuation<LocationSnapshot, Error>?
+    private var oneShotContinuation: CheckedContinuation<Geolocation, Error>?
     private var watcher: WatchHandler?
     private var watcherAccuracy: Bool = false
     private var isUpdatingContinuously = false
@@ -152,7 +155,7 @@ final class GeolocationService: NSObject, @MainActor CLLocationManagerDelegate {
         }
     }
 
-    func requestLocation(highAccuracy: Bool) async throws -> LocationSnapshot {
+    func requestLocation(highAccuracy: Bool) async throws -> Geolocation {
         try await ensureAuthorized()
         return try await withCheckedThrowingContinuation { continuation in
             oneShotContinuation = continuation
@@ -226,7 +229,7 @@ final class GeolocationService: NSObject, @MainActor CLLocationManagerDelegate {
 
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         guard let latest = locations.last else { return }
-        let snapshot = LocationSnapshot(latest)
+        let snapshot = Geolocation(latest)
         let waiting = oneShotContinuation
         oneShotContinuation = nil
         waiting?.resume(returning: snapshot)
