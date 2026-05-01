@@ -98,24 +98,22 @@ struct LocationSnapshot: Sendable {
 /// CoreLocation authorization is requested lazily on the first location request,
 /// so users of ZIMs that never touch `navigator.geolocation` are never prompted.
 @MainActor
-final class GeolocationService: NSObject {
+final class GeolocationService: NSObject, @MainActor CLLocationManagerDelegate {
 
     typealias WatchHandler = @MainActor (Result<LocationSnapshot, GeolocationError>) -> Void
 
     private let manager: CLLocationManager
-    private let delegateShim = GeolocationDelegateShim()
 
-    private var authorizationContinuations: [CheckedContinuation<CLAuthorizationStatus, Never>] = []
-    private var oneShotContinuations: [CheckedContinuation<LocationSnapshot, Error>] = []
-    private var watchers: [Int: WatchHandler] = [:]
-    private var watcherAccuracies: [Int: Bool] = [:]
+    private var authorizationContinuation: CheckedContinuation<CLAuthorizationStatus, Never>?
+    private var oneShotContinuation: CheckedContinuation<LocationSnapshot, Error>?
+    private var watcher: WatchHandler?
+    private var watcherAccuracy: Bool = false
     private var isUpdatingContinuously = false
 
     override init() {
         manager = CLLocationManager()
         super.init()
-        delegateShim.owner = self
-        manager.delegate = delegateShim
+        manager.delegate = self
     }
 
     // MARK: - Authorization
@@ -127,8 +125,8 @@ final class GeolocationService: NSObject {
         let status = manager.authorizationStatus
         guard status == .notDetermined else { return status }
         return await withCheckedContinuation { continuation in
-            let isFirstWaiter = authorizationContinuations.isEmpty
-            authorizationContinuations.append(continuation)
+            let isFirstWaiter = authorizationContinuation == nil
+            authorizationContinuation = continuation
             guard isFirstWaiter else { return }
             // When-in-use matches the user-initiated, web-driven nature of
             // navigator.geolocation on both platforms; Always would be
@@ -158,7 +156,7 @@ final class GeolocationService: NSObject {
     func requestLocation(highAccuracy: Bool) async throws -> LocationSnapshot {
         try await ensureAuthorized()
         return try await withCheckedThrowingContinuation { continuation in
-            oneShotContinuations.append(continuation)
+            oneShotContinuation = continuation
             if !isUpdatingContinuously {
                 manager.desiredAccuracy = highAccuracy
                     ? kCLLocationAccuracyBest
@@ -176,7 +174,7 @@ final class GeolocationService: NSObject {
     /// Starts a continuous watch with the given id. `onUpdate` is invoked on
     /// the main actor for every location update, and for errors (which do not
     /// terminate the watch — stop with `stopWatching(id:)`).
-    func startWatching(id: Int, highAccuracy: Bool, onUpdate: @escaping WatchHandler) async {
+    func startWatching(highAccuracy: Bool, onUpdate: @escaping WatchHandler) async {
         do {
             try await ensureAuthorized()
         } catch let error as GeolocationError {
@@ -186,33 +184,18 @@ final class GeolocationService: NSObject {
             onUpdate(.failure(.positionUnavailable))
             return
         }
-        watchers[id] = onUpdate
-        watcherAccuracies[id] = highAccuracy
+        watcher = onUpdate
+        watcherAccuracy = highAccuracy
         applyAccuracyForWatchers()
         if !isUpdatingContinuously {
             isUpdatingContinuously = true
             manager.startUpdatingLocation()
         }
     }
-
-    /// Stops a specific watch. If no watches remain, CoreLocation updates stop.
-    func stopWatching(id: Int) {
-        watchers.removeValue(forKey: id)
-        watcherAccuracies.removeValue(forKey: id)
-        if watchers.isEmpty {
-            if isUpdatingContinuously {
-                isUpdatingContinuously = false
-                manager.stopUpdatingLocation()
-            }
-        } else {
-            applyAccuracyForWatchers()
-        }
-    }
-
-    /// Stops all watches (e.g. when the tab is torn down).
-    func stopAllWatches() {
-        watchers.removeAll()
-        watcherAccuracies.removeAll()
+    
+    func stopWatching() {
+        watcher = nil
+        watcherAccuracy = false
         if isUpdatingContinuously {
             isUpdatingContinuously = false
             manager.stopUpdatingLocation()
@@ -220,58 +203,55 @@ final class GeolocationService: NSObject {
     }
 
     private func applyAccuracyForWatchers() {
-        let wantsHigh = watcherAccuracies.values.contains(true)
-        manager.desiredAccuracy = wantsHigh
+        manager.desiredAccuracy = watcherAccuracy
             ? kCLLocationAccuracyBest
             : kCLLocationAccuracyHundredMeters
     }
 
-    // MARK: - Delegate callbacks (invoked from GeolocationDelegateShim)
-
-    fileprivate func didChangeAuthorization(status: CLAuthorizationStatus) {
+    // MARK: Geolocation delegate
+    
+    func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
+        let status = manager.authorizationStatus
         guard status != .notDetermined else { return }
-        let waitingAuth = authorizationContinuations
-        authorizationContinuations.removeAll()
-        for continuation in waitingAuth {
-            continuation.resume(returning: status)
-        }
+        let waitingAuth = authorizationContinuation
+        authorizationContinuation = nil
+        waitingAuth?.resume(returning: status)
+        
         // If authorization is revoked, drain in-flight one-shots and watches —
         // CoreLocation may not fire didFailWithError before the next call, so
         // any awaiting CheckedContinuation would leak.
         if status == .denied || status == .restricted {
-            let waitingOneShots = oneShotContinuations
-            oneShotContinuations.removeAll()
-            for continuation in waitingOneShots {
-                continuation.resume(throwing: GeolocationError.permissionDenied)
-            }
-            for handler in Array(watchers.values) {
-                handler(.failure(.permissionDenied))
-            }
-            stopAllWatches()
+            let waitingOneShot = oneShotContinuation
+            oneShotContinuation = nil
+            waitingOneShot?.resume(throwing: GeolocationError.permissionDenied)
+            watcher?(.failure(.permissionDenied))
+            stopWatching()
         }
     }
 
-    fileprivate func didUpdate(snapshot: LocationSnapshot) {
-        let waiting = oneShotContinuations
-        oneShotContinuations.removeAll()
-        for continuation in waiting {
-            continuation.resume(returning: snapshot)
-        }
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        guard let latest = locations.last else { return }
+        let snapshot = LocationSnapshot(latest)
+        let waiting = oneShotContinuation
+        oneShotContinuation = nil
+        waiting?.resume(returning: snapshot)
+        
         // Snapshot before iterating: handlers may call stopWatching(id:),
         // mutating the dict mid-iteration.
-        for handler in Array(watchers.values) {
-            handler(.success(snapshot))
-        }
+        watcher?(.success(snapshot))
         // A one-shot may have promoted desiredAccuracy above the watch's
         // configured level; restore so the watch doesn't keep burning battery.
-        if !waiting.isEmpty, isUpdatingContinuously {
+        if waiting != nil, isUpdatingContinuously {
             applyAccuracyForWatchers()
         }
     }
 
-    fileprivate func didFail(code: Int, message: String) {
-        let waiting = oneShotContinuations
-        oneShotContinuations.removeAll()
+    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+        let nsError = error as NSError
+        let code = nsError.code
+        let message = nsError.localizedDescription
+        let waiting = oneShotContinuation
+        oneShotContinuation = nil
 
         // Map CLError codes to the W3C PositionError code the JS bridge expects.
         // Unmapped codes fall through as positionUnavailable.
@@ -292,12 +272,10 @@ final class GeolocationService: NSObject {
             code: code,
             userInfo: [NSLocalizedDescriptionKey: message]
         )
-        for continuation in waiting {
-            continuation.resume(throwing: error)
-        }
+        waiting?.resume(throwing: error)
 
         // Restore accuracy for any active watch that a one-shot may have promoted.
-        if !waiting.isEmpty, isUpdatingContinuously {
+        if waiting != nil, isUpdatingContinuously {
             applyAccuracyForWatchers()
         }
 
@@ -310,41 +288,9 @@ final class GeolocationService: NSObject {
         if code == CLError.locationUnknown.rawValue {
             return
         }
-        for handler in Array(watchers.values) {
-            handler(.failure(geoError))
-        }
+        watcher?(.failure(geoError))
         if code == CLError.denied.rawValue {
-            stopAllWatches()
-        }
-    }
-}
-
-/// Nonisolated shim so CLLocationManager can invoke delegate methods from
-/// CoreLocation's internal queue while keeping GeolocationService on MainActor.
-private final class GeolocationDelegateShim: NSObject, CLLocationManagerDelegate {
-    weak var owner: GeolocationService?
-
-    func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
-        let status = manager.authorizationStatus
-        Task { @MainActor [weak owner] in
-            owner?.didChangeAuthorization(status: status)
-        }
-    }
-
-    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        guard let latest = locations.last else { return }
-        let snapshot = LocationSnapshot(latest)
-        Task { @MainActor [weak owner] in
-            owner?.didUpdate(snapshot: snapshot)
-        }
-    }
-
-    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
-        let nsError = error as NSError
-        let code = nsError.code
-        let message = nsError.localizedDescription
-        Task { @MainActor [weak owner] in
-            owner?.didFail(code: code, message: message)
+            stopWatching()
         }
     }
 }

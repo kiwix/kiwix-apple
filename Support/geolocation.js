@@ -17,7 +17,7 @@
         return
     }
 
-    const pending = new Map()
+    let pending = null
     let nextId = 1
 
     function deliverSuccess(success, payload) {
@@ -47,23 +47,23 @@
         })
     }
 
-    function clearTimeoutFor(entry) {
+    function clearTimeout(entry) {
         if (entry && entry.timeoutHandle !== undefined) {
             clearTimeout(entry.timeoutHandle)
             entry.timeoutHandle = undefined
         }
     }
 
-    window.__kiwixGeolocationResolve = function (id, payload) {
-        const entry = pending.get(id)
+    window.__kiwixGeolocationResolve = function (payload) {
+        const entry = pending
         if (!entry) { return }
         if (payload && payload.coords) {
-            // Got a position — clear any pending timeout for this entry; for
+            // Got a position — clear any pending timeout; for
             // watches, the next update will rearm via callers as needed.
-            clearTimeoutFor(entry)
+            clearTimeout(entry)
             deliverSuccess(entry.success, payload)
         } else if (payload && payload.error) {
-            clearTimeoutFor(entry)
+            clearTimeout(entry)
             deliverError(entry.error, payload.error)
         }
         // One-shot requests are cleaned up after a single delivery. Watches
@@ -72,7 +72,7 @@
         // avoid a stale handler hanging on for the page's lifetime.
         const isPermissionDenied = !!(payload && payload.error && payload.error.code === 1)
         if (!entry.isWatch || isPermissionDenied) {
-            pending.delete(id)
+            pending = null
         }
     }
 
@@ -85,8 +85,8 @@
         if (!options || typeof options.timeout !== 'number') { return }
         if (!isFinite(options.timeout) || options.timeout <= 0) { return }
         entry.timeoutHandle = setTimeout(function () {
-            if (!pending.has(entry.id)) { return }
-            pending.delete(entry.id)
+            if (!pending) { return }
+            pending = null
             deliverError(entry.error, {
                 code: 3,
                 message: 'Location request timed out.'
@@ -95,38 +95,34 @@
     }
 
     function getCurrentPosition(success, error, options) {
-        const id = nextId++
-        const entry = { id: id, success: success, error: error, isWatch: false }
-        pending.set(id, entry)
-        armTimeoutFor(entry, options)
+        pending = { success: success, error: error, isWatch: false }
+        armTimeoutFor(pending, options)
         handler.postMessage({
             type: 'getCurrentPosition',
-            id: id,
             highAccuracy: !!(options && options.enableHighAccuracy)
         })
     }
 
     function watchPosition(success, error, options) {
-        const id = nextId++
         // watchPosition's spec timeout fires on each acquisition attempt
         // (not the watch as a whole) and the watch must continue trying. The
         // current bridge doesn't model per-update timing, so we deliberately
         // skip it here rather than implement a half-correct version.
-        pending.set(id, { id: id, success: success, error: error, isWatch: true })
+        pending = { success: success, error: error, isWatch: true }
         handler.postMessage({
             type: 'watchPosition',
-            id: id,
             highAccuracy: !!(options && options.enableHighAccuracy)
         })
+        const id = nextId++
         return id
     }
 
-    function clearWatch(id) {
-        const entry = pending.get(id)
+    function clearWatch() {
+        const entry = pending
         if (!entry) { return }
-        clearTimeoutFor(entry)
-        pending.delete(id)
-        handler.postMessage({ type: 'clearWatch', id: id })
+        clearTimeout(entry)
+        pending = null
+        handler.postMessage({ type: 'clearWatch' })
     }
 
     const shim = {
