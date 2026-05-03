@@ -116,7 +116,8 @@ final class GeolocationService: NSObject, @MainActor CLLocationManagerDelegate {
     private var oneShotContinuation: CheckedContinuation<Geolocation, Error>?
     private var onLocationUpdate: ((Result<Geolocation, GeolocationPositionError>) -> Void)?
     private var useHighAccuracy: Bool = false
-    private var isUpdatingContinuously = false
+    private var isWatching = false
+    private var lastKnownLocation: Geolocation?
 
     override init() {
         super.init()
@@ -124,13 +125,12 @@ final class GeolocationService: NSObject, @MainActor CLLocationManagerDelegate {
     }
 
     // MARK: - Authorization
-    func requestAuthorization() async -> CLAuthorizationStatus {
+    private func requestAuthorization() async -> CLAuthorizationStatus {
         let status = manager.authorizationStatus
         guard status == .notDetermined else { return status }
         return await withCheckedContinuation { continuation in
-            let isFirstWaiter = authorizationContinuation == nil
+            guard authorizationContinuation == nil else { return }
             authorizationContinuation = continuation
-            guard isFirstWaiter else { return }
             manager.requestWhenInUseAuthorization()
         }
     }
@@ -148,10 +148,19 @@ final class GeolocationService: NSObject, @MainActor CLLocationManagerDelegate {
     }
 
     func requestLocation(highAccuracy: Bool) async throws -> Geolocation {
+        if isWatching, let lastKnownLocation {
+            return lastKnownLocation
+        }
+        // check any old continuations of the same type
+        guard oneShotContinuation == nil else {
+            Log.Geolocation.debug("requesting location again, when the previous one wasn't complete yet")
+            throw GeolocationPositionError.timeout
+        }
+        
         try await ensureAuthorized()
         return try await withCheckedThrowingContinuation { continuation in
             oneShotContinuation = continuation
-            if !isUpdatingContinuously {
+            if !isWatching {
                 manager.desiredAccuracy = highAccuracy
                     ? kCLLocationAccuracyBest
                     : kCLLocationAccuracyHundredMeters
@@ -168,6 +177,7 @@ final class GeolocationService: NSObject, @MainActor CLLocationManagerDelegate {
         highAccuracy: Bool,
         onUpdate: @escaping @MainActor (Result<Geolocation, GeolocationPositionError>) -> Void
     ) async {
+        debugPrint("\(#function)")
         do {
             try await ensureAuthorized()
         } catch let error as GeolocationPositionError {
@@ -180,28 +190,35 @@ final class GeolocationService: NSObject, @MainActor CLLocationManagerDelegate {
         onLocationUpdate = onUpdate
         useHighAccuracy = highAccuracy
         applyAccuracyForWatchers()
-        if !isUpdatingContinuously {
-            isUpdatingContinuously = true
+        if !isWatching {
+            isWatching = true
             manager.startUpdatingLocation()
         }
+    }
+    
+    func stopAll() {
+        oneShotContinuation?.resume(throwing: GeolocationPositionError.timeout)
+        oneShotContinuation = nil
+        stopWatching()
     }
     
     func stopWatching() {
         onLocationUpdate = nil
         useHighAccuracy = false
-        if isUpdatingContinuously {
-            isUpdatingContinuously = false
+        if isWatching {
+            isWatching = false
             manager.stopUpdatingLocation()
         }
     }
 
     private func applyAccuracyForWatchers() {
+        // Restore accuracy for any active watch that a one-shot may have promoted.
         manager.desiredAccuracy = useHighAccuracy
             ? kCLLocationAccuracyBest
             : kCLLocationAccuracyHundredMeters
     }
 
-    // MARK: Geolocation delegate
+    // MARK: CLLocationManagerDelegate
     
     func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
         let status = manager.authorizationStatus
@@ -210,13 +227,9 @@ final class GeolocationService: NSObject, @MainActor CLLocationManagerDelegate {
         authorizationContinuation = nil
         waitingAuth?.resume(returning: status)
         
-        // If authorization is revoked, drain in-flight one-shots and watches —
-        // CoreLocation may not fire didFailWithError before the next call, so
-        // any awaiting CheckedContinuation would leak.
         if status == .denied || status == .restricted {
-            let waitingOneShot = oneShotContinuation
+            oneShotContinuation?.resume(throwing: GeolocationPositionError.permissionDenied)
             oneShotContinuation = nil
-            waitingOneShot?.resume(throwing: GeolocationPositionError.permissionDenied)
             onLocationUpdate?(.failure(.permissionDenied))
             stopWatching()
         }
@@ -225,65 +238,44 @@ final class GeolocationService: NSObject, @MainActor CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         guard let latest = locations.last else { return }
         let snapshot = Geolocation(latest)
+        // store it for later
+        lastKnownLocation = snapshot
         let waiting = oneShotContinuation
         oneShotContinuation = nil
         waiting?.resume(returning: snapshot)
         
-        // Snapshot before iterating: handlers may call stopWatching(id:),
-        // mutating the dict mid-iteration.
         onLocationUpdate?(.success(snapshot))
         // A one-shot may have promoted desiredAccuracy above the watch's
         // configured level; restore so the watch doesn't keep burning battery.
-        if waiting != nil, isUpdatingContinuously {
+        if waiting != nil, isWatching {
             applyAccuracyForWatchers()
         }
     }
 
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
-        let nsError = error as NSError
-        let code = nsError.code
-        let message = nsError.localizedDescription
-        let waiting = oneShotContinuation
+        let oneShot = oneShotContinuation
         oneShotContinuation = nil
-
-        // Map CLError codes to the W3C PositionError code the JS bridge expects.
-        // Unmapped codes fall through as positionUnavailable.
-        let geoError: GeolocationPositionError
-        switch code {
-        case CLError.denied.rawValue:
-            geoError = .permissionDenied
-        case CLError.locationUnknown.rawValue:
-            // Per W3C: locationUnknown is transient — don't fire watch errors.
-            // For one-shots we still need to resolve; fall through.
-            geoError = .positionUnavailable
-        default:
-            geoError = .positionUnavailable
-        }
-
-        let error = NSError(
-            domain: "org.kiwix.geolocation",
-            code: code,
-            userInfo: [NSLocalizedDescriptionKey: message]
-        )
-        waiting?.resume(throwing: error)
-
-        // Restore accuracy for any active watch that a one-shot may have promoted.
-        if waiting != nil, isUpdatingContinuously {
+        if oneShot != nil, isWatching {
             applyAccuracyForWatchers()
         }
-
-        // Watch error semantics:
-        //  - locationUnknown: transient; do not invoke watch error callbacks.
-        //  - denied: permanent; notify watchers, then stop CoreLocation so we
-        //    don't keep the GPS warm for a permission that won't come back.
-        //  - other: notify watchers, leave the watch running so the page can
-        //    decide whether to keep waiting or call clearWatch.
-        if code == CLError.locationUnknown.rawValue {
-            return
-        }
-        onLocationUpdate?(.failure(geoError))
-        if code == CLError.denied.rawValue {
+        
+        let geolocationError: GeolocationPositionError
+        switch (error as NSError).code {
+        case CLError.denied.rawValue:
+            geolocationError = .permissionDenied
+            oneShot?.resume(throwing: geolocationError)
+            onLocationUpdate?(.failure(geolocationError))
             stopWatching()
+        case CLError.locationUnknown.rawValue:
+            geolocationError = .positionUnavailable
+            oneShot?.resume(throwing: geolocationError)
+            // don't inform watch about it
+            // don't stop watching
+        default:
+            geolocationError = .positionUnavailable
+            oneShot?.resume(throwing: geolocationError)
+            onLocationUpdate?(.failure(geolocationError))
+            // don't stop watching
         }
     }
 }

@@ -101,8 +101,6 @@ import CoreKiwix
 #endif
     let webView: WKWebView
     let tabID: NSManagedObjectID
-    // Created on first geolocation request so tabs whose ZIM never touches
-    // navigator.geolocation never instantiate CLLocationManager.
     private var geolocationService: GeolocationService?
     private var isLoadingObserver: NSKeyValueObservation?
     private var canGoBackObserver: NSKeyValueObservation?
@@ -194,7 +192,7 @@ import CoreKiwix
         canGoForwardObserver?.invalidate()
         titleURLObserver?.cancel()
         isLoadingObserver?.invalidate()
-        geolocationService?.stopWatching()
+        geolocationService?.stopAll()
         let contentController = webView.configuration.userContentController
         contentController.removeScriptMessageHandler(forName: "headings")
         contentController.removeScriptMessageHandler(forName: "geolocation")
@@ -511,9 +509,8 @@ import CoreKiwix
     }
 
     func webView(_ webView: WKWebView, didCommit _: WKNavigation!) {
-        // The previous document's watchPosition callbacks are gone; stop feeding
-        // CoreLocation updates to the replaced page.
-        geolocationService?.stopWatching()
+        // The previous document's geolocation callbacks are gone
+        geolocationService?.stopAll()
     }
 
     @MainActor
