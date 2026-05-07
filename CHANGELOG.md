@@ -1,5 +1,9 @@
 # 3.16.0
 
+# 3.15.1
+- FIX:
+    - Table of contents not accessible (@BPerlakiH #1568)
+
 # 3.15.0
 - NEW:
     - Add geolocation api (@BPerlakiH, @jasontitus #1562)

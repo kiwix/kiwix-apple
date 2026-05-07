@@ -37,7 +37,7 @@ final class WebViewConfiguration: WKWebViewConfiguration {
                    let javascript = try? String(contentsOf: url) {
                     let script = WKUserScript(
                         source: javascript,
-                        injectionTime: .atDocumentStart,
+                        injectionTime: .atDocumentEnd,
                         forMainFrameOnly: false
                     )
                     controller.addUserScript(script)
