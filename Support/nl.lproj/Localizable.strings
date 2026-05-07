@@ -296,11 +296,11 @@
 "download_service.error.client.networkConnectionLost" = "De netwerkverbinding is verbroken.";
 "download_service.error.client.dnsLookupFailed" = "DNS-zoekfout";
 "download_service.error.client.httpTooManyRedirects" = "te veel HTTP-omleidingen";
-"download_service.error.client.resourceUnavailable" = "resource niet beschikbaar";
+"download_service.error.client.resourceUnavailable" = "bron niet beschikbaar";
 "download_service.error.client.notConnectedToInternet" = "De internetverbinding is offline.";
 "download_service.error.client.redirectToNonExistentLocation" = "omgeleid naar nergens";
 "download_service.error.client.badServerResponse" = "De server heeft onjuist gereageerd.";
-"download_service.error.client.zeroByteResource" = "resource van nul bytes";
+"download_service.error.client.zeroByteResource" = "bron van nul bytes";
 "download_service.error.client.cannotDecodeRawData" = "kan raw-gegevens niet decoderen";
 "download_service.error.client.cannotDecodeContentData" = "kan materiaal niet decoderen";
 "download_service.error.client.cannotParseResponse" = "kan antwoord niet parsen";
@@ -310,8 +310,8 @@
 "download_service.error.client.requestBodyStreamExhausted" = "verzoek hoofdstroom uitgeput";
 "download_service.error.client.fileDoesNotExist" = "De opgegeven URL is niet op deze server gevonden.";
 "download_service.error.client.fileIsDirectory" = "bestand is een directory";
-"download_service.error.client.noPermissionsToReadFile" = "Toegang tot de gevraagde resource is niet toegestaan.";
-"download_service.error.client.dataLengthExceedsMaximum" = "resource overschrijdt maximale grootte";
+"download_service.error.client.noPermissionsToReadFile" = "Toegang tot de gevraagde bron is niet toegestaan.";
+"download_service.error.client.dataLengthExceedsMaximum" = "bron overschrijdt maximale grootte";
 "download_service.error.client.secureConnectionFailed" = "Er heeft zich een SSL-fout voorgedaan. Er kan geen veilige verbinding met de server tot stand worden gebracht.";
 "download_service.error.client.serverCertificateHasBadDate" = "Het certificaat voor deze server is verlopen.";
 "download_service.error.client.serverCertificateUntrusted" = "Het certificaat voor deze server is ongeldig.";
