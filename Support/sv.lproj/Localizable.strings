@@ -332,3 +332,6 @@
 "download_service.error.client.cannotMoveFile" = "Kan inte flytta fil";
 "download_service.error.client.downloadDecodingFailedMidStream" = "Avkodning vid hämtning misslyckades";
 "download_service.error.client.downloadDecodingFailedToComplete" = "Avkodning vid hämtning misslyckades";
+"geolocation_error.permission_denied" = "Användaren nekade geolokaliserad behörighet.";
+"geolocation_error.position_unavailable" = "Platsen är inte tillgänglig.";
+"geolocation_error.timeout" = "Platsbegäran har gått ut.";
