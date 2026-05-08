@@ -120,9 +120,6 @@ struct WebView: UIViewControllerRepresentable {
 final class WebViewController: UIViewController {
     private let webView: WKWebView
     private let pageZoomObserver: Defaults.Observation
-    private var topSafeAreaConstraint: NSLayoutConstraint?
-    private var layoutSubject = PassthroughSubject<Void, Never>()
-    private var layoutCancellable: AnyCancellable?
     
     init(webView: WKWebView) {
         self.webView = webView
@@ -139,49 +136,37 @@ final class WebViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         webView.scrollView.backgroundColor = .systemBackground
-    }
-
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
         webView.translatesAutoresizingMaskIntoConstraints = false
+        
+        // The contentInsetAdjustment .automatic is not properly working
+        // when we expand / collapse the side bar on iPad
+        // So we need a combination of auto-layout horizontally bound to safe-area
+        // and setting the top / bottom insets, when they change (eg: toolbar changes on scroll)
+        webView.scrollView.contentInsetAdjustmentBehavior = .never
         view.addSubview(webView)
-        webView.alpha = 0
-
-        /*
-         HACK: Make sure the webview content does not jump after state restoration
-         It appears the webview's state restoration does not properly take into account of the content inset.
-         To mitigate, first pin the webview's top against safe area top anchor, after all viewDidLayoutSubviews calls,
-         pin the webview's top against view's top anchor, so that content does not appears to move up.
-         */
         NSLayoutConstraint.activate([
-            view.leftAnchor.constraint(equalTo: webView.leftAnchor),
-            view.bottomAnchor.constraint(equalTo: webView.bottomAnchor),
-            view.rightAnchor.constraint(equalTo: webView.rightAnchor)
+            webView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+            webView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
+            webView.topAnchor.constraint(equalTo: view.topAnchor),
+            webView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
-        topSafeAreaConstraint = view.safeAreaLayoutGuide.topAnchor.constraint(equalTo: webView.topAnchor)
-        topSafeAreaConstraint?.isActive = true
-        layoutCancellable = layoutSubject
-            .debounce(for: .seconds(0.15), scheduler: RunLoop.main)
-            .sink { [weak self] _ in
-                guard let view = self?.view,
-                      let webView = self?.webView,
-                      view.subviews.contains(webView) else { return }
-                webView.alpha = 1
-                guard self?.topSafeAreaConstraint?.isActive == true else { return }
-                self?.topSafeAreaConstraint?.isActive = false
-                self?.view.topAnchor.constraint(equalTo: webView.topAnchor).isActive = true
-            }
-        if !Brand.disableImmersiveReading {
-            parent?.navigationController?.hidesBarsOnSwipe = true
-        }
     }
-
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        if #unavailable(iOS 18.0) {
-            webView.setValue(view.safeAreaInsets, forKey: "_obscuredInsets")
+    
+    override func viewSafeAreaInsetsDidChange() {
+        super.viewSafeAreaInsetsDidChange()
+        webView.scrollView.contentInset = UIEdgeInsets(
+            top: view.safeAreaInsets.top,
+            left: webView.scrollView.contentInset.left, // unchanged on purpose
+            bottom: view.safeAreaInsets.bottom,
+            right: webView.scrollView.contentInset.right // unchanged on purpose
+        )
+    }
+    
+    override func didMove(toParent parent: UIViewController?) {
+        super.didMove(toParent: parent)
+        if !Brand.disableImmersiveReading, let navController = parent?.navigationController {
+            navController.hidesBarsOnSwipe = true
         }
-        layoutSubject.send()
     }
 }
 
