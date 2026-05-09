@@ -3,6 +3,7 @@
 # 3.15.1
 - FIX:
     - Table of contents not accessible (@BPerlakiH #1568)
+    - Web content placement issues on iPad (@BPerlakiH #1574)
 
 # 3.15.0
 - NEW:
