@@ -53,13 +53,19 @@ struct PaymentForm: View {
         #endif
 
         VStack {
-            // Re-enable as part of: https://github.com/kiwix/kiwix-apple/issues/1032
-//            Picker("", selection: $isMonthly) {
-//                Label(LocalString.payment_selection_option_one_time, systemImage: "heart.circle").tag(false)
-//                Label(LocalString.payment_selection_option_monthly, systemImage: "arrow.clockwise.heart").tag(true)
-//            }.pickerStyle(.segmented)
-//                .padding([.leading, .trailing, .bottom])
-
+            Picker("", selection: $isMonthly) {
+                Label(
+                    LocalString.payment_selection_option_one_time,
+                    systemImage: "heart.circle"
+                )
+                .tag(false)
+                Label(
+                    LocalString.payment_selection_option_monthly,
+                    systemImage: "arrow.clockwise.heart"
+                )
+                .tag(true)
+            }.pickerStyle(.segmented)
+                .padding([.leading, .trailing, .bottom])
             ListOfAmounts(amountSelected: amountSelected, isMonthly: $isMonthly)
         }
         #if os(macOS)
