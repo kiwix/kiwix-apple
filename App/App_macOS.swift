@@ -203,10 +203,9 @@ struct Kiwix: App {
     }
 
     private func closeDonation() {
-        // after upgrading to macOS 14, use:
+        // even after upgrading to macOS 14,
         // @Environment(\.dismissWindow) var dismissWindow
-        // and call:
-        // dismissWindow(id: "donation")
+        // and calling: dismissWindow(id: "donation") is still not working as expected
         NSApplication.shared.windows.first { window in
             window.identifier?.rawValue == "donation"
         }?.close()
