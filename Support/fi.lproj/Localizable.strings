@@ -187,3 +187,6 @@
 "download_service.error.client.cannotMoveFile" = "Tiedostoa ei voida siirtää";
 "download_service.error.client.downloadDecodingFailedMidStream" = "Ladattavan tiedoston purkaminen epäonnistui";
 "download_service.error.client.downloadDecodingFailedToComplete" = "Ladattavan tiedoston purkaminen epäonnistui";
+"geolocation_error.permission_denied" = "Käyttäjä on estänyt maantieteellisen sijainnin käyttöoikeuden.";
+"geolocation_error.position_unavailable" = "Paikkatietoja ole saatavilla.";
+"geolocation_error.timeout" = "Sijaintipyyntö aikakatkaistiin.";

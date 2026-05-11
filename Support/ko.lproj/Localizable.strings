@@ -279,3 +279,4 @@
 "download_service.error.client.cannotMoveFile" = "파일을 이동할 수 없음";
 "download_service.error.client.downloadDecodingFailedMidStream" = "다운로드 디코딩 실패";
 "download_service.error.client.downloadDecodingFailedToComplete" = "다운로드 디코딩 실패";
+"geolocation_error.timeout" = "위치 요청 시간이 초과되었습니다.";
