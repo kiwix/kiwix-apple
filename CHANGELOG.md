@@ -1,6 +1,8 @@
 # 3.16.0
 
 # 3.15.1
+- UPDATED:
+    - To libkiwix 14.2.1 (@BPerlakiH #1576)
 - FIX:
     - Table of contents not accessible (@BPerlakiH #1568)
     - Web content placement issues on iPad (@BPerlakiH #1574)
