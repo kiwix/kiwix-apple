@@ -46,7 +46,7 @@ struct StripeKiwix {
         selectedAmount: SelectedAmount
     ) async -> Result<String, Error> {
         do {
-            let requestPath = "payment-intent" // selectedAmount.isMonthly ? "setup-intent" : "payment-intent"
+            let requestPath = selectedAmount.isMonthly ? "setup-intent" : "payment-intent"
             var request = URLRequest(url: endPoint.appending(path: requestPath))
             request.httpMethod = "POST"
             request.setValue("application/json", forHTTPHeaderField: "Content-Type")

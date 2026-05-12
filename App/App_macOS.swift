@@ -13,11 +13,11 @@
 // You should have received a copy of the GNU General Public License
 // along with Kiwix; If not, see https://www.gnu.org/licenses/.
 
+import Combine
+import CoreKiwix
+import Defaults
 import SwiftUI
 import UserNotifications
-import Combine
-import Defaults
-import CoreKiwix
 
 #if os(macOS)
 final class AppDelegate: NSObject, NSApplicationDelegate {
@@ -147,16 +147,21 @@ struct Kiwix: App {
         Window(LocalString.payment_donate_title, id: "donation") {
             Group {
                 if let selectedAmount {
-                    PaymentSummary(selectedAmount: selectedAmount, onComplete: {
-                        closeDonation()
-                        switch Payment.showResult() {
-                        case .none: break
-                        case .thankYou:
-                            openWindow(id: "donation-thank-you")
-                        case .error:
-                            openWindow(id: "donation-error")
-                        }
-                    })
+                    if selectedAmount.isMonthly {
+                        // check for apple sign in
+                        SignInWithAppleView()
+                    } else {
+                        PaymentSummary(selectedAmount: selectedAmount, onComplete: {
+                            closeDonation()
+                            switch Payment.showResult() {
+                            case .none: break
+                            case .thankYou:
+                                openWindow(id: "donation-thank-you")
+                            case .error:
+                                openWindow(id: "donation-error")
+                            }
+                        })
+                    }
                 } else {
                     PaymentForm(amountSelected: amountSelected)
                         .frame(width: 320, height: 320)
@@ -203,7 +208,7 @@ struct Kiwix: App {
     }
 
     private func closeDonation() {
-        // even after upgrading to macOS 14,
+        // even after upgxrading to macOS 14,
         // @Environment(\.dismissWindow) var dismissWindow
         // and calling: dismissWindow(id: "donation") is still not working as expected
         NSApplication.shared.windows.first { window in
