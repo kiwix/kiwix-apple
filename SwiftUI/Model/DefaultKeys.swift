@@ -50,7 +50,7 @@ extension Defaults.Keys {
     static let selectedCategory = Key<String?>("selectedCategory", default: nil)
     
     static let hotspotPortNumber = Key<Int>("hotspotPortNumber", default: Hotspot.defaultPort)
-    static let user = Key<User?>("user", default: nil)
+    static let userAccount = Key<UserAccount?>("userAccount", default: nil)
 
     #if os(macOS)
     // window management:

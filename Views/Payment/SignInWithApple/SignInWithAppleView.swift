@@ -17,20 +17,45 @@ import AuthenticationServices
 import Defaults
 import SwiftUI
 
-struct User: Codable, Defaults.Serializable {
+struct UserAccount: Codable, Defaults.Serializable {
+    static private let hours24: TimeInterval = 24 * 60 * 60 // in seconds
+    // instead of decoding the JWT token, we can set the expiry to the very same 24 hours
+    static func defaultExpiry() -> TimeInterval {
+        Date().addingTimeInterval(Self.hours24).timeIntervalSince1970
+    }
+    
+    let userId: String
     let email: String
     let fullName: String
+    let jwt: Data
+    let expiry: TimeInterval
+    
+    func updatingWith(jwt newJWT: Data) -> UserAccount {
+        UserAccount(
+            userId: userId,
+            email: email,
+            fullName: fullName,
+            jwt: newJWT,
+            expiry: Self.defaultExpiry()
+        )
+    }
+    
+    func isExpired() -> Bool {
+        expiry <= Date().timeIntervalSince1970
+    }
 }
 
 private enum AuthState {
     case loading
     case noAccount
-    case account(userId: String, user: User)
+    case expired(userId: String) // userId from ASAuthorizationAppleIDCredential.user
+    case loggedIn(userAccount: UserAccount)
+    case errorLogin(userId: String?)
 }
 
 struct SignInWithAppleView: View {
     
-    @Default(.user) private var user
+    @Default(.userAccount) private var userAccount
     @State private var authState: AuthState = .loading
     
     var body: some View {
@@ -39,48 +64,80 @@ struct SignInWithAppleView: View {
             case .loading:
                 LoadingProgressView()
             case .noAccount:
-                signInWithApple()
-            case let .account(_, user):
-                Text("Welcome back: \(user.fullName) (\(user.email))")
+                Text("To donate on a monthly basis, please")
                     .font(.headline)
+                signInWithApple()
+            case .expired(_):
+                continueWithApple()
+            case let .loggedIn(userAccount):
+                Text("Welcome back: \(userAccount.fullName) (\(userAccount.email))").font(.headline)
+            case .errorLogin:
+                Text("Ooops! Something went wrong.")
+                signInWithApple()
             }
         }
         .padding()
         .task {
-            if let user {
-                authState = .account(userId: "", user: user)
+            guard let userAccount else {
+                authState = .noAccount
+                return
             }
-            try? await Task.sleep(nanoseconds: 5_000_000)
-            authState = .noAccount
+            if userAccount.isExpired() {
+                authState = .expired(userId: userAccount.userId)
+            } else {
+                authState = .loggedIn(userAccount: userAccount)
+            }
         }
     }
     
     @ViewBuilder
+    private func continueWithApple() -> some View {
+        appleButton(label: .continue)
+    }
+    
+    @ViewBuilder
     private func signInWithApple() -> some View {
-        Text("To donate on a monthly basis, please")
-            .font(.headline)
-        
-        SignInWithAppleButton(.signUp) { authRequest in
+        appleButton(label: .signIn)
+    }
+    
+    @ViewBuilder
+    private func appleButton(label: SignInWithAppleButton.Label) -> some View {
+        SignInWithAppleButton(label) { authRequest in
             authRequest.requestedScopes = [.email, .fullName]
         } onCompletion: { result in
             switch result {
             case let .success(authorization):
                 switch authorization.credential {
-                case let appleIDCredential as ASAuthorizationAppleIDCredential:
-                    if let email = appleIDCredential.email,
-                       let fullName = appleIDCredential.fullName {
-                        let currentUser = User(email: email, fullName: fullName.formatted())
-                        user = currentUser
-                        authState = .account(userId: appleIDCredential.user, user: currentUser)
+                case let credential as ASAuthorizationAppleIDCredential:
+                    guard let token = credential.identityToken else {
+                        authState = .errorLogin(userId: credential.user)
+                        return
+                    }
+                    if let current = userAccount {
+                        let verifiedAccount = current.updatingWith(jwt: token)
+                        userAccount = verifiedAccount // save it
+                        authState = .loggedIn(userAccount: verifiedAccount)
+                    } else if let email = credential.email, let fullName = credential.fullName {
+                        let verifiedAccount = UserAccount(
+                            userId: credential.user,
+                            email: email,
+                            fullName: fullName.formatted(),
+                            jwt: token,
+                            expiry: UserAccount.defaultExpiry()
+                        )
+                        userAccount = verifiedAccount // save it
+                        authState = .loggedIn(userAccount: verifiedAccount)
                     } else {
-                        debugPrint("\(#function) no email, no fullName")
+                        authState = .errorLogin(userId: credential.user)
+                        debugPrint("\(#function) no current account locally, haven't received email and/or fullName")
                     }
                 default:
-                    // TODO: handle this
-                    break
+                    debugPrint("\(#function) invalid type of credentials recieved: \(authorization.credential)")
+                    authState = .errorLogin(userId: nil)
                 }
             case let .failure(error):
                 debugPrint("\(#function) error: \(error)")
+                authState = .errorLogin(userId: nil)
             }
         }
     }
