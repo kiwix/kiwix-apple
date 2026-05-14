@@ -40,6 +40,20 @@ struct UserAccount: Codable, Defaults.Serializable {
         )
     }
     
+    /// Check if the user deleted / revoked the Apple Sign In
+    /// account link to Kiwix in System Settings
+    /// - Returns: true if the account has been deleted
+    func isSignInRevoked() async -> Bool {
+        let state = try? await ASAuthorizationAppleIDProvider().credentialState(forUserID: userId)
+        switch state {
+        case .some(.revoked):
+            // the only case when we are certain we should delete user account details
+            return true
+        default:
+            return false
+        }
+    }
+    
     func isExpired() -> Bool {
         expiry <= Date().timeIntervalSince1970
     }
@@ -55,7 +69,7 @@ private enum AuthState {
 
 struct SignInWithAppleView: View {
     
-    @Default(.userAccount) private var userAccount
+    @Default(.userAccount) private var userAccount: UserAccount?
     @State private var authState: AuthState = .loading
     
     var body: some View {
@@ -66,19 +80,26 @@ struct SignInWithAppleView: View {
             case .noAccount:
                 Text("To donate on a monthly basis, please")
                     .font(.headline)
-                signInWithApple()
+                appleButton(label: .signUp)
             case .expired(_):
-                continueWithApple()
+                appleButton(label: .signIn)
             case let .loggedIn(userAccount):
                 Text("Welcome back: \(userAccount.fullName) (\(userAccount.email))").font(.headline)
             case .errorLogin:
                 Text("Ooops! Something went wrong.")
-                signInWithApple()
+                    .font(.headline)
+                    .foregroundStyle(.red)
+                appleButton(label: .signIn)
             }
         }
         .padding()
         .task {
             guard let userAccount else {
+                authState = .noAccount
+                return
+            }
+            guard await userAccount.isSignInRevoked() == false else {
+                self.userAccount = nil // delete it
                 authState = .noAccount
                 return
             }
@@ -88,16 +109,6 @@ struct SignInWithAppleView: View {
                 authState = .loggedIn(userAccount: userAccount)
             }
         }
-    }
-    
-    @ViewBuilder
-    private func continueWithApple() -> some View {
-        appleButton(label: .continue)
-    }
-    
-    @ViewBuilder
-    private func signInWithApple() -> some View {
-        appleButton(label: .signIn)
     }
     
     @ViewBuilder
@@ -129,14 +140,14 @@ struct SignInWithAppleView: View {
                         authState = .loggedIn(userAccount: verifiedAccount)
                     } else {
                         authState = .errorLogin(userId: credential.user)
-                        debugPrint("\(#function) no current account locally, haven't received email and/or fullName")
+                        Log.Payment.error("no current account locally, haven't received email and/or fullName")
                     }
                 default:
-                    debugPrint("\(#function) invalid type of credentials recieved: \(authorization.credential)")
+                    Log.Payment.error("invalid type of credentials recieved: \(authorization.credential.description)")
                     authState = .errorLogin(userId: nil)
                 }
             case let .failure(error):
-                debugPrint("\(#function) error: \(error)")
+                Log.Payment.error("Apple Sign in failed with: \(error.localizedDescription)")
                 authState = .errorLogin(userId: nil)
             }
         }
