@@ -5,6 +5,7 @@
 // Author: Tensama0415
 // Author: YeBoy371
 // Author: Ykhwong
+// Author: 解浪
 
 "library_refresh_error.retrieve.description" = "카탈로그 데이터를 검색하는 중 오류가 발생했습니다.";
 "library_refresh_error.parse.description" = "카탈로그 데이터의 구문을 분석하는 중 오류가 발생했습니다.";
