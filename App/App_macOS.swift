@@ -147,24 +147,19 @@ struct Kiwix: App {
         Window(LocalString.payment_donate_title, id: "donation") {
             Group {
                 if let selectedAmount {
-                    if selectedAmount.isMonthly {
-                        // check for apple sign in
-                        SignInWithAppleView()
-                    } else {
-                        PaymentSummary(selectedAmount: selectedAmount, onComplete: {
-                            closeDonation()
-                            switch Payment.showResult() {
-                            case .none: break
-                            case .thankYou:
-                                openWindow(id: "donation-thank-you")
-                            case .error:
-                                openWindow(id: "donation-error")
-                            }
-                        })
-                    }
+                    PaymentSummary(selectedAmount: selectedAmount, onComplete: {
+                        closeDonation()
+                        switch Payment.showResult() {
+                        case .none: break
+                        case .thankYou:
+                            openWindow(id: "donation-thank-you")
+                        case .error:
+                            openWindow(id: "donation-error")
+                        }
+                    })
                 } else {
                     PaymentForm(amountSelected: amountSelected)
-                        .frame(width: 320, height: 320)
+                        .frame(width: 360, height: 320)
                 }
             }
             .onReceive(amountSelected) { amount in
@@ -182,7 +177,7 @@ struct Kiwix: App {
         .windowResizability(.contentMinSize)
         .windowStyle(.titleBar)
         .commandsRemoved()
-        .defaultSize(width: 320, height: 400)
+        .defaultSize(width: 472, height: 400)
         .restorationBehaviourDisabled()
         .handlesExternalEvents(matching: [])
 
@@ -208,9 +203,10 @@ struct Kiwix: App {
     }
 
     private func closeDonation() {
-        // even after upgxrading to macOS 14,
+        // even after upgrading to macOS 14 with
         // @Environment(\.dismissWindow) var dismissWindow
-        // and calling: dismissWindow(id: "donation") is still not working as expected
+        // and calling: dismissWindow(id: "donation")
+        // it is still not working as expected
         NSApplication.shared.windows.first { window in
             window.identifier?.rawValue == "donation"
         }?.close()

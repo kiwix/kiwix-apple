@@ -66,8 +66,17 @@ struct PaymentForm: View {
                 .tag(true)
             }.pickerStyle(.segmented)
                 .padding([.leading, .trailing, .bottom])
-            ListOfAmounts(amountSelected: amountSelected, isMonthly: $isMonthly)
+            // make sure we sign in the user to show the monthly options
+            if isMonthly {
+                SignInWithAppleView { userAccount in
+                    ListOfAmounts(amountSelected: amountSelected, isMonthly: $isMonthly)
+                }
+                Spacer()
+            } else {
+                ListOfAmounts(amountSelected: amountSelected, isMonthly: $isMonthly)
+            }
         }
+    
         #if os(macOS)
         .padding()
         .navigationTitle(LocalString.payment_donate_title)

@@ -67,32 +67,35 @@ private enum AuthState {
     case errorLogin(userId: String?)
 }
 
-struct SignInWithAppleView: View {
+struct SignInWithAppleView<Content: View>: View {
     
     @Default(.userAccount) private var userAccount: UserAccount?
     @State private var authState: AuthState = .loading
+    private let didLogedInContent: (UserAccount) -> Content
+    
+    init(@ViewBuilder didLogedInContent: @escaping (UserAccount) -> Content) {
+        self.didLogedInContent = didLogedInContent
+    }
     
     var body: some View {
-        VStack {
+        VStack(alignment: .leading, spacing: 24) {
             switch authState {
             case .loading:
                 LoadingProgressView()
             case .noAccount:
-                Text("To donate on a monthly basis, please")
-                    .font(.headline)
+                title(text: "To donate on a monthly basis, please")
                 appleButton(label: .signUp)
             case .expired(_):
+                title(text: "To manage your monthly donations, please")
                 appleButton(label: .signIn)
             case let .loggedIn(userAccount):
-                Text("Welcome back: \(userAccount.fullName) (\(userAccount.email))").font(.headline)
+                didLogedInContent(userAccount)
             case .errorLogin:
-                Text("Ooops! Something went wrong.")
-                    .font(.headline)
+                title(text: "Ooops! Something went wrong.")
                     .foregroundStyle(.red)
                 appleButton(label: .signIn)
             }
         }
-        .padding()
         .task {
             guard let userAccount else {
                 authState = .noAccount
@@ -112,48 +115,77 @@ struct SignInWithAppleView: View {
     }
     
     @ViewBuilder
+    private func title(text: String) -> some View {
+        Text(text)
+            .font(.system(size: 22, weight: .semibold))
+            .multilineTextAlignment(.center)
+            .frame(maxWidth: 320)
+            .modifier(LineHeightModifier(value: 28))
+    }
+    
+    @ViewBuilder
     private func appleButton(label: SignInWithAppleButton.Label) -> some View {
-        SignInWithAppleButton(label) { authRequest in
-            authRequest.requestedScopes = [.email, .fullName]
-        } onCompletion: { result in
-            switch result {
-            case let .success(authorization):
-                switch authorization.credential {
-                case let credential as ASAuthorizationAppleIDCredential:
-                    guard let token = credential.identityToken else {
-                        authState = .errorLogin(userId: credential.user)
-                        return
+        VStack(spacing: 32) {
+            SignInWithAppleButton(label) { authRequest in
+                authRequest.requestedScopes = [.email, .fullName]
+            } onCompletion: { result in
+                switch result {
+                case let .success(authorization):
+                    switch authorization.credential {
+                    case let credential as ASAuthorizationAppleIDCredential:
+                        guard let token = credential.identityToken else {
+                            authState = .errorLogin(userId: credential.user)
+                            return
+                        }
+                        if let current = userAccount {
+                            let verifiedAccount = current.updatingWith(jwt: token)
+                            userAccount = verifiedAccount // save it
+                            authState = .loggedIn(userAccount: verifiedAccount)
+                        } else if let email = credential.email, let fullName = credential.fullName {
+                            let verifiedAccount = UserAccount(
+                                userId: credential.user,
+                                email: email,
+                                fullName: fullName.formatted(),
+                                jwt: token,
+                                expiry: UserAccount.defaultExpiry()
+                            )
+                            userAccount = verifiedAccount // save it
+                            authState = .loggedIn(userAccount: verifiedAccount)
+                        } else {
+                            authState = .errorLogin(userId: credential.user)
+                            Log.Payment.error("no current account locally, haven't received email and/or fullName")
+                        }
+                    default:
+                        Log.Payment.error("invalid type of credentials recieved: \(authorization.credential.description)")
+                        authState = .errorLogin(userId: nil)
                     }
-                    if let current = userAccount {
-                        let verifiedAccount = current.updatingWith(jwt: token)
-                        userAccount = verifiedAccount // save it
-                        authState = .loggedIn(userAccount: verifiedAccount)
-                    } else if let email = credential.email, let fullName = credential.fullName {
-                        let verifiedAccount = UserAccount(
-                            userId: credential.user,
-                            email: email,
-                            fullName: fullName.formatted(),
-                            jwt: token,
-                            expiry: UserAccount.defaultExpiry()
-                        )
-                        userAccount = verifiedAccount // save it
-                        authState = .loggedIn(userAccount: verifiedAccount)
-                    } else {
-                        authState = .errorLogin(userId: credential.user)
-                        Log.Payment.error("no current account locally, haven't received email and/or fullName")
-                    }
-                default:
-                    Log.Payment.error("invalid type of credentials recieved: \(authorization.credential.description)")
+                case let .failure(error):
+                    Log.Payment.error("Apple Sign in failed with: \(error.localizedDescription)")
                     authState = .errorLogin(userId: nil)
                 }
-            case let .failure(error):
-                Log.Payment.error("Apple Sign in failed with: \(error.localizedDescription)")
-                authState = .errorLogin(userId: nil)
             }
+            .frame(maxWidth: 320)
+            
+            // security note
+            Text("Apple Pay donations are securely encrypted and verified using native security frameworks.")
+                .foregroundStyle(.tertiary)
+                .lineLimit(nil)
+                .multilineTextAlignment(.center)
+                .font(.system(size: 12))
+                .fontWeight(.medium)
         }
     }
 }
 
-#Preview {
-    SignInWithAppleView()
+private struct LineHeightModifier: ViewModifier {
+    let value: CGFloat
+    
+    func body(content: Content) -> some View {
+        if #available(macOS 26.0, *) {
+            content
+                .lineHeight(.exact(points: value))
+        } else {
+            content
+        }
+    }
 }
