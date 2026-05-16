@@ -29,6 +29,7 @@ struct DonationViewModifier: ViewModifier {
     private var amountSelected = PassthroughSubject<SelectedAmount?, Never>()
     @State private var showDonationPopUp: Bool = false
     @State private var donationPopUpState: DonationPopupState = .selection
+    private let popupSize: PresentationDetent = if Device.current == .iPad { .fraction(0.83) } else { .fraction(0.65) }
     
     // swiftlint:disable:next function_body_length
     func body(content: Content) -> some View {
@@ -65,12 +66,12 @@ struct DonationViewModifier: ViewModifier {
                     switch donationPopUpState {
                     case .selection:
                         PaymentForm(amountSelected: amountSelected)
-                            .presentationDetents([.fraction(0.65)])
+                            .presentationDetents([popupSize])
                     case .selectedAmount(let selectedAmount):
                         PaymentSummary(selectedAmount: selectedAmount, onComplete: {
                             showDonationPopUp = false
                         })
-                        .presentationDetents([.fraction(0.65)])
+                        .presentationDetents([popupSize])
                     case .thankYou:
                         PaymentResultPopUp(state: .thankYou)
                             .presentationDetents([.fraction(0.33)])
