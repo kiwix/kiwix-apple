@@ -64,6 +64,8 @@ struct Payment {
     static let merchantSessionURL = URL(string: "https://apple-pay-gateway.apple.com" )!
     static let merchantId = "merchant.org.kiwix.apple"
     static let paymentSubscriptionManagingURL = "https://www.kiwix.org"
+    // TODO: verify if we need this
+//    static let paymentSubscriptionTokenCallbackURL = URL(string: "http://192.168.100.50:4242/token")!
     static let supportedNetworks: [PKPaymentNetwork] = [
         .amex,
         PKPaymentNetwork.pagoBancomat,
@@ -165,28 +167,15 @@ struct Payment {
     func donationRequest(for selectedAmount: SelectedAmount) -> PKPaymentRequest {
         let request = PKPaymentRequest()
         request.merchantIdentifier = Self.merchantId
-        request.merchantCapabilities = Self.capabilities
-        request.countryCode = "CH"
+        request.countryCode = Locale.Region.switzerland.identifier
         request.currencyCode = selectedAmount.currency
         request.supportedNetworks = Self.supportedNetworks
+        request.merchantCapabilities = Self.capabilities
+        // We have to require the shipping email, otherwise we don't get any email at all!
+        request.requiredShippingContactFields = [.emailAddress]
         request.requiredBillingContactFields = [.emailAddress]
-        let recurring: PKRecurringPaymentRequest? = if selectedAmount.isMonthly {
-            PKRecurringPaymentRequest(paymentDescription: LocalString.payment_description_label,
-                                      regularBilling: .init(label: LocalString.payment_monthly_support_label,
-                                                            amount: NSDecimalNumber(value: selectedAmount.value),
-                                                            type: .final),
-                                      managementURL: URL(string: Self.paymentSubscriptionManagingURL)!)
-        } else {
-            nil
-        }
-        request.recurringPaymentRequest = recurring
-        request.paymentSummaryItems = [
-            PKPaymentSummaryItem(
-                label: LocalString.payment_summary_title,
-                amount: NSDecimalNumber(value: selectedAmount.value),
-                type: .final
-            )
-        ]
+        request.recurringPaymentRequest = recurringPayment(for: selectedAmount)
+        request.paymentSummaryItems = summartItems(for: selectedAmount)
         return request
     }
 
@@ -246,6 +235,41 @@ struct Payment {
             return .init(status: .failure, merchantSession: nil)
         }
         return .init(status: .success, merchantSession: session)
+    }
+
+    private func recurringPayment(for selectedAmount: SelectedAmount) -> PKRecurringPaymentRequest? {
+        guard selectedAmount.isMonthly else { return nil }
+        let payRequest = PKRecurringPaymentRequest(
+            paymentDescription: LocalString.payment_description_label,
+            regularBilling: .init(
+                label: LocalString.payment_monthly_support_label,
+                amount: NSDecimalNumber(value: selectedAmount.value),
+                type: .final
+            ),
+            managementURL: URL(string: Self.paymentSubscriptionManagingURL)!
+        )
+        payRequest.regularBilling.intervalUnit = .month
+        // not yet sure how this is used, or if needed
+//        payRequest.tokenNotificationURL = Self.paymentSubscriptionTokenCallbackURL
+        return payRequest
+    }
+
+    private func summartItems(for selectedAmount: SelectedAmount) -> [PKPaymentSummaryItem] {
+        let item: PKPaymentSummaryItem
+        if selectedAmount.isMonthly {
+            let recurringItem = PKRecurringPaymentSummaryItem(label: LocalString.payment_monthly_support_label,
+                                                 amount: NSDecimalNumber(value: selectedAmount.value),
+                                                 type: .final)
+            recurringItem.startDate = Date() // starts now
+            recurringItem.intervalUnit = .month
+            recurringItem.endDate = nil // never ending
+            item = recurringItem
+        } else {
+            item = PKPaymentSummaryItem(label: LocalString.payment_summary_title,
+                                        amount: NSDecimalNumber(value: selectedAmount.value),
+                                        type: .final)
+        }
+        return [item]
     }
 }
 
