@@ -67,7 +67,7 @@ struct Payment {
     // optional to be implemented:
     // for reference see:
     // https://developer.apple.com/documentation/merchanttokennotificationservices
-    static let paymentSubscriptionTokenCallbackURL = URL(string: "http://api.donation.kiwix.org/v1/stripe/token-callback")!
+    static let subscriptionTokenCallbackURL = URL(string: "http://api.donation.kiwix.org/v1/stripe/token-callback")!
     static let supportedNetworks: [PKPaymentNetwork] = [
         .amex,
         PKPaymentNetwork.pagoBancomat,
@@ -253,7 +253,7 @@ struct Payment {
             managementURL: URL(string: Self.paymentSubscriptionManagingURL)!
         )
         payRequest.regularBilling.intervalUnit = .month
-        payRequest.tokenNotificationURL = Self.paymentSubscriptionTokenCallbackURL
+        payRequest.tokenNotificationURL = Self.subscriptionTokenCallbackURL
         return payRequest
     }
 
