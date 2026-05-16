@@ -86,6 +86,8 @@ struct DonationViewModifier: ViewModifier {
                         donationPopUpState = .selection
                     }
                 }
+                // make sure payment sheet is not confusingly transparent on iPhone
+                .presentationBackground(Color(.systemBackground))
             })
     }
 }
