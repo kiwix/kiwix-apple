@@ -64,8 +64,10 @@ struct Payment {
     static let merchantSessionURL = URL(string: "https://apple-pay-gateway.apple.com" )!
     static let merchantId = "merchant.org.kiwix.apple"
     static let paymentSubscriptionManagingURL = "https://www.kiwix.org"
-    // TODO: verify if we need this
-//    static let paymentSubscriptionTokenCallbackURL = URL(string: "http://192.168.100.50:4242/token")!
+    // optional to be implemented:
+    // for reference see:
+    // https://developer.apple.com/documentation/merchanttokennotificationservices
+    static let paymentSubscriptionTokenCallbackURL = URL(string: "http://api.donation.kiwix.org/v1/stripe/token-callback")!
     static let supportedNetworks: [PKPaymentNetwork] = [
         .amex,
         PKPaymentNetwork.pagoBancomat,
@@ -197,8 +199,10 @@ struct Payment {
                     resultHandler(.init(status: .failure, errors: [serverError]))
                     return
                 }
-                // we should update the return path for confirmations
-                // see: https://github.com/kiwix/kiwix-apple/issues/1032
+                // Note: the returnURL path is not needed, we are never leaving the app. According to stripe docs:
+                // "The URL to redirect your customer back to after they authenticate or cancel
+                // their payment on the payment method’s app or site.
+                // This should probably be a URL that opens your iOS app."
                 let stripe = StripeApplePaySimple()
                 let endPoint = paymentServer.endPoint
                 let result = await stripe.complete(payment: payment,
@@ -249,8 +253,7 @@ struct Payment {
             managementURL: URL(string: Self.paymentSubscriptionManagingURL)!
         )
         payRequest.regularBilling.intervalUnit = .month
-        // not yet sure how this is used, or if needed
-//        payRequest.tokenNotificationURL = Self.paymentSubscriptionTokenCallbackURL
+        payRequest.tokenNotificationURL = Self.paymentSubscriptionTokenCallbackURL
         return payRequest
     }
 
