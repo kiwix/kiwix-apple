@@ -13,11 +13,11 @@
 // You should have received a copy of the GNU General Public License
 // along with Kiwix; If not, see https://www.gnu.org/licenses/.
 
+import Combine
+import CoreKiwix
+import Defaults
 import SwiftUI
 import UserNotifications
-import Combine
-import Defaults
-import CoreKiwix
 
 #if os(macOS)
 final class AppDelegate: NSObject, NSApplicationDelegate {
@@ -203,10 +203,10 @@ struct Kiwix: App {
     }
 
     private func closeDonation() {
-        // after upgrading to macOS 14, use:
+        // even after upgrading to macOS 14 with
         // @Environment(\.dismissWindow) var dismissWindow
-        // and call:
-        // dismissWindow(id: "donation")
+        // and calling: dismissWindow(id: "donation")
+        // it is still not working as expected
         NSApplication.shared.windows.first { window in
             window.identifier?.rawValue == "donation"
         }?.close()
