@@ -79,7 +79,7 @@ enum ZimMigration {
         if let newHost = Self.newHost { return newHost }
         // if it wasn't set before, set and return by the last ZimFile in DB:
         guard let zimFile = try? Database.shared.viewContext.fetch(requestLatestZimFile()).first else {
-            fatalError("we should have at least 1 zim file for a custom app")
+            fatalError("we should have at least 1 zim file for a branded app")
         }
         let newHost = zimFile.fileID.uuidString
         // save the new host for later

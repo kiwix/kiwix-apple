@@ -220,7 +220,7 @@ struct RootView: View {
                 currentNavItem = .tab(objectID: navigation.currentTabId)
                 LibraryOperations.applyFileBackupSetting()
                 DownloadService.shared.restartHeartbeatIfNeeded()
-            case let .custom(zimFileURL):
+            case let .branded(zimFileURL):
                 await LibraryOperations.open(url: zimFileURL)
                 await ZimMigration.forCustomApps()
                 currentNavItem = .tab(objectID: navigation.currentTabId)

@@ -96,7 +96,7 @@ struct Kiwix: App {
                         }
                         LibraryOperations.applyFileBackupSetting()
                         DownloadService.shared.restartHeartbeatIfNeeded()
-                    case let .custom(zimFileURL):
+                    case let .branded(zimFileURL):
                         await LibraryOperations.open(url: zimFileURL)
                         await ZimMigration.forCustomApps()
                         navigation.navigateToMostRecentTab()

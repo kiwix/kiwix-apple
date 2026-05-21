@@ -21,7 +21,7 @@ struct MoreTabButton: View {
     @ObservedObject var browser: BrowserViewModel
     @FocusedValue(\.hasZIMFiles) var hasZimFiles
     
-    /// For custom apps, that have a dedicated hotspot toolbar button
+    /// For branded apps, that have a dedicated hotspot toolbar button
     let presentHotspot: () -> Void
     
     @State private var menuPopOver = false
