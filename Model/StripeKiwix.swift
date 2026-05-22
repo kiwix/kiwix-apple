@@ -43,14 +43,16 @@ struct StripeKiwix {
 
     nonisolated static func clientSecretForPayment(
         endPoint: URL,
-        selectedAmount: SelectedAmount
+        selectedAmount: SelectedAmount,
+        email: String?
     ) async -> Result<String, Error> {
         do {
             let requestPath = selectedAmount.isMonthly ? "setup-intent" : "payment-intent"
             var request = URLRequest(url: endPoint.appending(path: requestPath))
             request.httpMethod = "POST"
             request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-            request.httpBody = try JSONEncoder().encode(SelectedPaymentAmount(from: selectedAmount))
+            request.httpBody = try JSONEncoder()
+                .encode(SelectedPaymentAmount(from: selectedAmount, emailAddress: email))
             let (data, response) = try await URLSession.shared.data(for: request)
             guard let httpResponse = response as? HTTPURLResponse,
                   (200..<300).contains(httpResponse.statusCode) else {
@@ -103,8 +105,9 @@ private struct ClientSecretKey: Decodable {
 private struct SelectedPaymentAmount: Encodable {
     let amount: Int
     let currency: String
+    let email: String?
 
-    init(from selectedAmount: SelectedAmount) {
+    init(from selectedAmount: SelectedAmount, emailAddress: String?) {
         // Amount intended to be collected by this PaymentIntent.
         // A positive integer representing how much to charge in the smallest currency unit
         // (e.g., 100 cents to charge $1.00 or 100 to charge ¥100, a zero-decimal currency).
@@ -112,6 +115,7 @@ private struct SelectedPaymentAmount: Encodable {
         amount = Int(selectedAmount.value * 100.0)
         currency = selectedAmount.currency
         assert(Payment.currencyCodes.contains(currency))
+        email = emailAddress
     }
 }
 private struct SessionParams: Encodable {

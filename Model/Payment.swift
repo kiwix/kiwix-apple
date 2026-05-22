@@ -190,6 +190,9 @@ struct Payment {
             Log.Payment.info("onPaymentAuthPhase: .didAuthorize")
             // call our server to get payment / setup intent and return the client.secret
             Task { @MainActor [resultHandler] in
+                let emailAddress = payment.shippingContact!.emailAddress!
+                Log.Payment.info("Email? \(emailAddress)")
+                // let paymentServer = StripeKiwix(endPoint: URL(string: "http://localhost:8000/v1/stripe")!)
                 let paymentServer = StripeKiwix(endPoint: Self.kiwixPaymentServer)
                 do {
                     let publicKey = try await paymentServer.publishableKey()
@@ -208,7 +211,8 @@ struct Payment {
                 let result = await stripe.complete(payment: payment,
                                                    returnURLPath: nil,
                                                    usingClientSecretProvider: { @Sendable in
-                    await StripeKiwix.clientSecretForPayment(endPoint: endPoint, selectedAmount: selectedAmount)
+                    await StripeKiwix
+                        .clientSecretForPayment(endPoint: endPoint, selectedAmount: selectedAmount, email: emailAddress)
                 }, withAPI: StripeAsyncAPI())
                 // calling any UI refreshing state / subject from here
                 // will block the UI in the payment state forever
