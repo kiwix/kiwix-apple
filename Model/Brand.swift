@@ -18,28 +18,28 @@ import os
 
 enum AppType {
     case kiwix
-    case custom(zimFileURL: URL)
+    case branded(zimFileURL: URL)
 
     static let current = AppType()
 
-    static var isCustom: Bool {
+    static var isBranded: Bool {
         switch current {
         case .kiwix: return false
-        case .custom: return true
+        case .branded: return true
         }
     }
 
     private init() {
-        guard let zimFileName: String = Config.value(for: .customZimFile),
+        guard let zimFileName: String = Config.value(for: .brandedZimFile),
               !zimFileName.isEmpty else {
-            // it's not a custom app as it has no zim file set
+            // it's not a branded app as it has no zim file set
             self = .kiwix
             return
         }
         guard let zimURL: URL = Bundle.main.url(forResource: zimFileName, withExtension: "zim") else {
             fatalError("zim file named: \(zimFileName) cannot be found")
         }
-        self = .custom(zimFileURL: zimURL)
+        self = .branded(zimFileURL: zimURL)
     }
 }
 
@@ -62,7 +62,7 @@ enum Brand {
     // for non Kiwix brands, it has no effect
     static let hideDonation: Bool = Config.value(for: .hideDonation) ?? false
     
-    /// Some custom apps (eg: PhET) have a content that collides with immersive reading
+    /// Some branded apps (eg: PhET) have a content that collides with immersive reading
     /// we provide an optional way to turn this feature off.
     /// Immersive reading remains enabled by default, unless declared otherwise.
     static let disableImmersiveReading: Bool = Config.value(for: .disableImmersiveReading) ?? false
@@ -77,7 +77,7 @@ enum Brand {
 
     static var defaultSearchSnippetMode: SearchResultSnippetMode {
         guard FeatureFlags.showSearchSnippetInSettings else {
-            // for custom apps, where we do not show this in settings, it should be disabled by default
+            // for branded apps, where we do not show this in settings, it should be disabled by default
             return .disabled
         }
         return .matches
@@ -89,14 +89,14 @@ enum Config: String {
     case appStoreID = "APP_STORE_ID"
     case displayName = "CFBundleDisplayName"
 
-    // this marks if the app is custom or not
-    case customZimFile = "CUSTOM_ZIM_FILE"
+    // this marks if the app is branded or not
+    case brandedZimFile = "BRANDED_ZIM_FILE"
     case showExternalLinkSettings = "SETTINGS_SHOW_EXTERNAL_LINK_OPTION"
     case externalLinkDefaultPolicy = "SETTINGS_DEFAULT_EXTERNAL_LINK_TO"
     case showSearchSnippetInSettings = "SETTINGS_SHOW_SEARCH_SNIPPET"
     case showSearchSuggestionsSpellChecked = "SHOW_SEARCH_SUGGESTIONS_SPELLCHECKED"
-    case aboutText = "CUSTOM_ABOUT_TEXT"
-    case aboutWebsite = "CUSTOM_ABOUT_WEBSITE"
+    case aboutText = "BRANDED_ABOUT_TEXT"
+    case aboutWebsite = "BRANDED_ABOUT_WEBSITE"
     case disableImmersiveReading = "DISABLE_IMMERSIVE_READING"
     case hideDonation = "HIDE_DONATION"
     case hideFindInPage = "HIDE_FIND_IN_PAGE"

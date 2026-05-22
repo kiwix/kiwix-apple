@@ -50,7 +50,7 @@ enum WelcomeViewState: Equatable {
     func updateWith(hasZimFiles: Bool, hasSeenCategories: Bool)
 }
 
-// MARK: No Library (custom apps)
+// MARK: No Library (branded apps)
 
 /// Keeps us int the .loadingData state,
 /// while the main page is not fully loaded for the first time

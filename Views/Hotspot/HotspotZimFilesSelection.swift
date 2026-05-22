@@ -97,8 +97,8 @@ struct HotspotZimFilesSelection: View {
         .task {
             // make sure that our selection only contains still existing ZIM files
             selection.intersection(with: Set(zimFiles))
-            if !FeatureFlags.hasLibrary, let customZIM = zimFiles.first {
-                selection.singleSelect(zimFile: customZIM)
+            if !FeatureFlags.hasLibrary, let brandedZIM = zimFiles.first {
+                selection.singleSelect(zimFile: brandedZIM)
             }
         }
         .onReceive(hotspot.$state, perform: { state in
