@@ -44,7 +44,7 @@ struct StripeKiwix {
     nonisolated static func clientSecretForPayment(
         endPoint: URL,
         selectedAmount: SelectedAmount,
-        email: String?
+        email: String
     ) async -> Result<String, Error> {
         do {
             let requestPath = selectedAmount.isMonthly ? "setup-intent" : "payment-intent"
@@ -105,9 +105,9 @@ private struct ClientSecretKey: Decodable {
 private struct SelectedPaymentAmount: Encodable {
     let amount: Int
     let currency: String
-    let email: String?
+    let email: String
 
-    init(from selectedAmount: SelectedAmount, emailAddress: String?) {
+    init(from selectedAmount: SelectedAmount, emailAddress: String) {
         // Amount intended to be collected by this PaymentIntent.
         // A positive integer representing how much to charge in the smallest currency unit
         // (e.g., 100 cents to charge $1.00 or 100 to charge ¥100, a zero-decimal currency).

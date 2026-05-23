@@ -60,14 +60,19 @@ struct Payment {
 
     let completeSubject = PassthroughSubject<Void, Never>()
 
+    #if DEBUG
+    static let kiwixPaymentServer = URL(string: "https://staging.api.donation.kiwix.org/v1/stripe")!
+    static let subscriptionTokenCallbackURL = URL(string: "http://staging.api.donation.kiwix.org/v1/stripe/token-callback")!
+    #else
     static let kiwixPaymentServer = URL(string: "https://api.donation.kiwix.org/v1/stripe")!
+    static let subscriptionTokenCallbackURL = URL(string: "http://api.donation.kiwix.org/v1/stripe/token-callback")!
+    #endif
     static let merchantSessionURL = URL(string: "https://apple-pay-gateway.apple.com" )!
     static let merchantId = "merchant.org.kiwix.apple"
     static let paymentSubscriptionManagingURL = "https://www.kiwix.org"
     // optional to be implemented:
     // for reference see:
     // https://developer.apple.com/documentation/merchanttokennotificationservices
-    static let subscriptionTokenCallbackURL = URL(string: "http://api.donation.kiwix.org/v1/stripe/token-callback")!
     static let supportedNetworks: [PKPaymentNetwork] = [
         .amex,
         PKPaymentNetwork.pagoBancomat,
@@ -190,8 +195,6 @@ struct Payment {
             Log.Payment.info("onPaymentAuthPhase: .didAuthorize")
             // call our server to get payment / setup intent and return the client.secret
             Task { @MainActor [resultHandler] in
-                let emailAddress = payment.shippingContact!.emailAddress!
-                Log.Payment.info("Email? \(emailAddress)")
                 // let paymentServer = StripeKiwix(endPoint: URL(string: "http://localhost:8000/v1/stripe")!)
                 let paymentServer = StripeKiwix(endPoint: Self.kiwixPaymentServer)
                 do {
@@ -208,11 +211,12 @@ struct Payment {
                 // This should probably be a URL that opens your iOS app."
                 let stripe = StripeApplePaySimple()
                 let endPoint = paymentServer.endPoint
+                let email = payment.shippingContact?.emailAddress ?? ""
                 let result = await stripe.complete(payment: payment,
                                                    returnURLPath: nil,
                                                    usingClientSecretProvider: { @Sendable in
                     await StripeKiwix
-                        .clientSecretForPayment(endPoint: endPoint, selectedAmount: selectedAmount, email: emailAddress)
+                        .clientSecretForPayment(endPoint: endPoint, selectedAmount: selectedAmount, email: email)
                 }, withAPI: StripeAsyncAPI())
                 // calling any UI refreshing state / subject from here
                 // will block the UI in the payment state forever
