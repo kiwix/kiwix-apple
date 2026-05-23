@@ -23,8 +23,9 @@ struct StripeKiwix {
     /// see: https://docs.stripe.com/api/payment_intents/object#payment_intent_object-amount
     static let maxAmount: Int = 999999999
 
-    enum StripeError: Error {
+    enum StripeError: Int, Error {
         case serverError
+        case errorAlreadyHasSubscription
     }
 
     let endPoint: URL
@@ -40,6 +41,10 @@ struct StripeKiwix {
         let json = try decoder.decode(PublishableKey.self, from: data)
         return json.publishableKey
     }
+    
+    private struct ErrorData: Decodable {
+        let detail: String
+    }
 
     nonisolated static func clientSecretForPayment(
         endPoint: URL,
@@ -54,9 +59,15 @@ struct StripeKiwix {
             request.httpBody = try JSONEncoder()
                 .encode(SelectedPaymentAmount(from: selectedAmount, emailAddress: email))
             let (data, response) = try await URLSession.shared.data(for: request)
-            guard let httpResponse = response as? HTTPURLResponse,
-                  (200..<300).contains(httpResponse.statusCode) else {
+            guard let httpResponse = response as? HTTPURLResponse else {
                 throw StripeError.serverError
+            }
+            guard (200..<300).contains(httpResponse.statusCode) else {
+                if httpResponse.statusCode == 409 {
+                        throw StripeError.errorAlreadyHasSubscription
+                } else {
+                    throw StripeError.serverError
+                }
             }
             let json = try JSONDecoder().decode(ClientSecretKey.self, from: data)
             return .success(json.secret)

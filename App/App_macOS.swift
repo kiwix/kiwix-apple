@@ -147,16 +147,22 @@ struct Kiwix: App {
         Window(LocalString.payment_donate_title, id: "donation") {
             Group {
                 if let selectedAmount {
-                    PaymentSummary(selectedAmount: selectedAmount, onComplete: {
-                        closeDonation()
-                        switch Payment.showResult() {
-                        case .none: break
+                    PaymentSummary(selectedAmount: selectedAmount)
+                    .onReceive(NotificationCenter.default.publisher(for: .donationResult)) { notification in
+                        guard let finalResult = notification.userInfo?["result"] as? Payment.FinalResult else {
+                            return
+                        }
+                        switch finalResult {
                         case .thankYou:
                             openWindow(id: "donation-thank-you")
                         case .error:
                             openWindow(id: "donation-error")
+                        case .dismiss:
+                            closeDonation()
+                        case .errorAlreadyHasSubscription:
+                            openWindow(id: "donation-error-already-has-subscription")
                         }
-                    })
+                    }
                 } else {
                     PaymentForm(amountSelected: amountSelected)
                         .frame(width: 320, height: 320)
@@ -193,6 +199,16 @@ struct Kiwix: App {
 
         Window("", id: "donation-error") {
             PaymentResultPopUp(state: .error)
+                .padding()
+        }
+        .windowResizability(.contentMinSize)
+        .commandsRemoved()
+        .defaultSize(width: 320, height: 198)
+        .restorationBehaviourDisabled()
+        .handlesExternalEvents(matching: [])
+        
+        Window("", id: "donation-error-already-has-subscription") {
+            PaymentResultPopUp(state: .errorAlreadyHasSubscription)
                 .padding()
         }
         .windowResizability(.contentMinSize)

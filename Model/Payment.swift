@@ -41,27 +41,16 @@ import os
 /// https://github.com/CodeLikeW/stripe-core
 struct Payment {
 
-    enum FinalResult {
+    enum FinalResult: String {
         case thankYou
         case error
+        case errorAlreadyHasSubscription
+        case dismiss
     }
-
-    /// Decides if the Thank You / Error pop up should be shown
-    /// - Returns: `FinalResult` only once
-    @MainActor
-    static func showResult() -> FinalResult? {
-        // make sure `true` is "read only once"
-        let value = Self.finalResult
-        Self.finalResult = nil
-        return value
-    }
-    @MainActor
-    static private var finalResult: Payment.FinalResult?
-
-    let completeSubject = PassthroughSubject<Void, Never>()
 
     #if DEBUG
     static let kiwixPaymentServer = URL(string: "https://staging.api.donation.kiwix.org/v1/stripe")!
+    // swiftlint:disable:next line_length
     static let subscriptionTokenCallbackURL = URL(string: "http://staging.api.donation.kiwix.org/v1/stripe/token-callback")!
     #else
     static let kiwixPaymentServer = URL(string: "https://api.donation.kiwix.org/v1/stripe")!
@@ -195,13 +184,12 @@ struct Payment {
             Log.Payment.info("onPaymentAuthPhase: .didAuthorize")
             // call our server to get payment / setup intent and return the client.secret
             Task { @MainActor [resultHandler] in
-                // let paymentServer = StripeKiwix(endPoint: URL(string: "http://localhost:8000/v1/stripe")!)
                 let paymentServer = StripeKiwix(endPoint: Self.kiwixPaymentServer)
                 do {
                     let publicKey = try await paymentServer.publishableKey()
                     StripeAPI.setDefault(publishableKey: publicKey)
                 } catch let serverError {
-                    Self.finalResult = .error
+                    NotificationCenter.donationResult(.error)
                     resultHandler(.init(status: .failure, errors: [serverError]))
                     return
                 }
@@ -218,23 +206,27 @@ struct Payment {
                     await StripeKiwix
                         .clientSecretForPayment(endPoint: endPoint, selectedAmount: selectedAmount, email: email)
                 }, withAPI: StripeAsyncAPI())
-                // calling any UI refreshing state / subject from here
-                // will block the UI in the payment state forever
-                // therefore it's defered via static finalResult
+
                 switch result.status {
                 case .success:
-                    Self.finalResult = .thankYou
+                    NotificationCenter.donationResult(.thankYou)
                 case .failure:
-                    Self.finalResult = .error
+                    if let firstError = result.errors.first as? NSError,
+                       firstError.domain == "Kiwix.StripeKiwix.StripeError",
+                       firstError.code == StripeKiwix.StripeError.errorAlreadyHasSubscription.rawValue {
+                        NotificationCenter.donationResult(.errorAlreadyHasSubscription)
+                    } else {
+                        NotificationCenter.donationResult(.error)
+                    }
                 default:
-                    Self.finalResult = nil
+                    NotificationCenter.donationResult(.error)
                 }
-                resultHandler(result)
                 Log.Payment.info("onPaymentAuthPhase: .didAuthorize: \(result.status == .success, privacy: .public)")
+                resultHandler(result)
             }
         case .didFinish:
             Log.Payment.info("onPaymentAuthPhase: .didFinish")
-            completeSubject.send(())
+            NotificationCenter.donationResult(.dismiss)
         @unknown default:
             Log.Payment.error("onPaymentAuthPhase: @unknown default")
         }
@@ -243,7 +235,7 @@ struct Payment {
     @MainActor
     func onMerchantSessionUpdate() async -> PKPaymentRequestMerchantSessionUpdate {
         guard let session = await StripeKiwix.stripeSession(endPoint: Self.kiwixPaymentServer) else {
-            Self.finalResult = .error
+            NotificationCenter.donationResult(.error)
             return .init(status: .failure, merchantSession: nil)
         }
         return .init(status: .success, merchantSession: session)

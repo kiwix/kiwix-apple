@@ -84,6 +84,7 @@ extension Notification.Name {
     #endif
     static let goBack = Notification.Name("goBack")
     static let goForward = Notification.Name("goForward")
+    static let donationResult = Notification.Name("donationResult")
     #if os(iOS)
     static let openDonations = Notification.Name("openDonations")
     static let hotspotShareURL = Notification.Name("hotspotShareURL")
@@ -149,6 +150,15 @@ extension NotificationCenter {
                                         userInfo: ["tabIds": tabIds])
     }
     #endif
+    
+    nonisolated static func donationResult(_ finalResult: Payment.FinalResult) {
+        Task.detached(priority: .utility) {
+            try await Task.sleep(nanoseconds: 2000)
+            await MainActor.run {
+                NotificationCenter.default.post(name: .donationResult, object: nil, userInfo: ["result": finalResult])
+            }
+        }
+    }
     
     #if os(iOS)
     @MainActor static func openDonations() {

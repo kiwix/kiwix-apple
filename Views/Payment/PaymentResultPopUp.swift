@@ -28,6 +28,7 @@ struct PaymentResultPopUp: View {
     enum State {
         case thankYou
         case error
+        case errorAlreadyHasSubscription
     }
 
     var body: some View {
@@ -50,6 +51,11 @@ struct PaymentResultPopUp: View {
                     Text(LocalString.payment_error_title)
                         .font(.title)
                     Text(LocalString.payment_error_description)
+                        .font(.headline)
+                case .errorAlreadyHasSubscription:
+                    Text("It seems you already have a monthly donation.")
+                        .font(.title)
+                    Text("Please follow the email instructions sent earlier, to modify it.")
                         .font(.headline)
                 }
 
