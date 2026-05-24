@@ -95,7 +95,6 @@ struct DonationViewModifier: ViewModifier {
     
     private func process(_ finalResult: Payment.FinalResult) {
         guard finalResult != .dismiss else { return }
-        Log.Payment.debug("received finalResult: \(finalResult.rawValue)")
         Task(priority: .utility) {
             // we need to wait until ApplePay dismisses properly,
             // and we need to re-open the sheet again with a delay to show thank you / error state

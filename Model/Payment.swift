@@ -41,7 +41,7 @@ import os
 /// https://github.com/CodeLikeW/stripe-core
 struct Payment {
 
-    enum FinalResult: String {
+    enum FinalResult {
         case thankYou
         case error
         case errorAlreadyHasSubscription
@@ -180,6 +180,9 @@ struct Payment {
         switch phase {
         case .willAuthorize:
             Log.Payment.info("onPaymentAuthPhase: .willAuthorize")
+        // Important! do not attempt to do anything UI related after
+        // the resultHandler is called, it will block the Apple Pay pop-up
+        // and only background / foreground-ing the app will unblock it
         case .didAuthorize(let payment, let resultHandler):
             Log.Payment.info("onPaymentAuthPhase: .didAuthorize")
             // call our server to get payment / setup intent and return the client.secret
