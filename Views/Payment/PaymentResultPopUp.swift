@@ -53,12 +53,13 @@ struct PaymentResultPopUp: View {
                     Text(LocalString.payment_error_description)
                         .font(.headline)
                 case .errorAlreadyHasSubscription:
-                    Text("It seems you already have a monthly donation.")
+                    Text(
+                        LocalString.payment_error_already_subscribed_title)
                         .font(.title)
-                    Text("Please follow the email instructions sent earlier, to modify it.")
+                    Text(
+                        LocalString.payment_error_already_subscribed_description)
                         .font(.headline)
                 }
-
             }
             .multilineTextAlignment(.center)
         }

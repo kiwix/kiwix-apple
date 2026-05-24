@@ -335,6 +335,8 @@
 "payment.success.description" = "Your generosity means everything to us.";
 "payment.error.title" = "Well that's awkward.";
 "payment.error.description" = "There has been an issue with your payment. Please try again.";
+"payment.error_already_subscribed.title" = "You already have a monthly donation";
+"payment.error_already_subscribed.description" = "Use the instructions in the email we sent earlier to update it.";
 "download_service.error.client.backgroundSessionInUseByAnotherProcess" = "Could not communicate with background transfer service";
 "download_service.error.client.backgroundSessionWasDisconnected" = "Lost connection to background transfer service";
 "download_service.error.client.cancelled" = "cancelled";
