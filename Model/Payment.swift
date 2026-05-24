@@ -207,7 +207,11 @@ struct Payment {
                                                    returnURLPath: nil,
                                                    usingClientSecretProvider: { @Sendable in
                     await StripeKiwix
-                        .clientSecretForPayment(endPoint: endPoint, selectedAmount: selectedAmount, email: email)
+                        .clientSecretForPayment(endPoint: endPoint,
+                                                selectedAmount: selectedAmount,
+                                                email: email,
+                                                deviceName: Device.current.rawValue
+                        )
                 }, withAPI: StripeAsyncAPI())
 
                 switch result.status {
