@@ -69,7 +69,6 @@ targetTemplates:
         com.apple.security.network.client: true
         com.apple.security.network.server: true
         com.apple.security.print: true
-        com.apple.security.personal-information.location: true
     dependencies:
       - framework: CoreKiwix.xcframework
         embed: false
