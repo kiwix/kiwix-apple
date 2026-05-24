@@ -20,7 +20,7 @@ jobs:
       - run: true
   build:
     needs: authorize
-    runs-on: macos-15
+    runs-on: macos-26
     env:
       EXTRA_XCODEBUILD: ""
       APPLE_STORE_AUTH_KEY_PATH: /tmp/authkey.p8
@@ -32,7 +32,7 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Validate localizations
         run: python localizations.py validate
@@ -42,7 +42,7 @@ jobs:
 
       - name: Set EXTRA_XCODEBUILD for iOS
         if: matrix.platform == 'iOS'
-        run: echo "EXTRA_XCODEBUILD=-sdk iphoneos26.1 ${{ env.APPLE_AUTH_PARAMS }}" >> $GITHUB_ENV
+        run: echo "EXTRA_XCODEBUILD=-sdk iphoneos26.4 ${{ env.APPLE_AUTH_PARAMS }}" >> $GITHUB_ENV
 
       - name: Set EXTRA_XCODEBUILD for macOS
         if: matrix.platform == 'macOS'
@@ -65,14 +65,14 @@ jobs:
 
       - name: Run Unit Tests on iOS
         if: matrix.platform == 'iOS'
-        run: xcodebuild clean test -scheme Kiwix -destination 'platform=iOS Simulator,name=iPhone 16 Pro'
+        run: xcodebuild clean test -scheme Kiwix -destination 'platform=iOS Simulator,name=iPhone 17 Pro'
 
       - name: Run Unit Tests on macOS
         if: matrix.platform == 'macOS'
         run: xcodebuild clean test -scheme Kiwix -configuration Debug -destination 'platform=macOS' CODE_SIGNING_ALLOWED=NO
 
       - name: Upload code coverage
-        uses: codecov/codecov-action@v4.2.0
+        uses: codecov/codecov-action@v6
         env:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 

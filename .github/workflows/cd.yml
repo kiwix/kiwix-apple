@@ -48,12 +48,12 @@ jobs:
       matrix:
         platform: [iOS, macOS]
         destination: [app-store, ftp]
-    runs-on: macos-15
+    runs-on: macos-26
 
     steps:
 
     - name: Checkout code
-      uses: actions/checkout@v4
+      uses: actions/checkout@v6
 
     - name: Install python dependencies
       run: pip install pyyaml==6.0.1
@@ -127,7 +127,7 @@ jobs:
 
     - name: Set iOS extra xcode params
       if: matrix.platform == 'iOS' && contains(env.UPLOAD_TO, matrix.destination)
-      run: echo "EXTRA_XCODEBUILD=-sdk iphoneos26.1 ${{ env.APPLE_AUTH_PARAMS }}" >> $GITHUB_ENV
+      run: echo "EXTRA_XCODEBUILD=-sdk iphoneos26.4 ${{ env.APPLE_AUTH_PARAMS }}" >> $GITHUB_ENV
 
     - name: Set macOS extra xcode params
       if: matrix.platform == 'macOS' && contains(env.UPLOAD_TO, matrix.destination)
