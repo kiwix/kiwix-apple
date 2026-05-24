@@ -69,6 +69,7 @@ targetTemplates:
         com.apple.security.network.client: true
         com.apple.security.network.server: true
         com.apple.security.print: true
+        com.apple.security.personal-information.location: true
     dependencies:
       - framework: CoreKiwix.xcframework
         embed: false
@@ -109,7 +110,6 @@ targets:
     entitlements:
       properties:
         com.apple.security.files.downloads.read-write: true
-        com.apple.security.personal-information.location: true
         com.apple.developer.in-app-payments: [merchant.org.kiwix.apple] # this line is removed for macOS FTP
     settings:
       base:
