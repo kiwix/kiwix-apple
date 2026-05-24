@@ -175,6 +175,7 @@ struct Payment {
         return request
     }
 
+    // swiftlint:disable:next function_body_length
     func onPaymentAuthPhase(selectedAmount: SelectedAmount,
                             phase: PayWithApplePayButtonPaymentAuthorizationPhase) {
         switch phase {
