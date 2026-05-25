@@ -120,12 +120,8 @@ private struct SelectedPaymentAmount: Encodable {
     let amount: Int
     let currency: String
     let email: String
-    let device: String
-    #if os(macOS)
-    let locale: String = NSLocale.preferredLanguages.first ?? ""
-    #else
-    let locale: String = Locale.preferredLanguages.first ?? ""
-    #endif
+    let origin: String
+    let lang: String = Locale.current.language.languageCode?.identifier ?? ""
 
     init(from selectedAmount: SelectedAmount, emailAddress: String, deviceName: String) {
         // Amount intended to be collected by this PaymentIntent.
@@ -135,7 +131,7 @@ private struct SelectedPaymentAmount: Encodable {
         amount = Int(selectedAmount.value * 100.0)
         currency = selectedAmount.currency
         assert(Payment.currencyCodes.contains(currency))
-        device = deviceName
+        origin = deviceName
         email = emailAddress
     }
 }
