@@ -1,8 +1,12 @@
 name: CI
 
+permissions:
+  contents: read
+  pull-requests: write
+
 on:
-  pull_request_target:
   workflow_dispatch:
+  pull_request:
   push:
     branches:
       - main
@@ -10,7 +14,7 @@ on:
 jobs:
   authorize:
     # sets environment based on origin of PR: internal (non-existent) for own-repo or external (requires reviewer to run) for external repos
-    environment: ${{ github.event_name == 'pull_request_target' && github.event.pull_request.head.repo.full_name != github.repository && 'external' || 'internal' }}
+    environment: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name != github.repository && 'external' || 'internal' }}
     runs-on: ubuntu-22.04
     steps:
       - run: true
@@ -29,9 +33,6 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-        with:
-          # /!\ important: this checks out code from the HEAD of the PR instead of the main branch (for pull_request_target)
-          ref: ${{ github.event.pull_request.head.sha || github.ref }}
 
       - name: Validate localizations
         run: python localizations.py validate
