@@ -28,6 +28,7 @@ struct PaymentResultPopUp: View {
     enum State {
         case thankYou
         case error
+        case errorAlreadyHasSubscription
     }
 
     var body: some View {
@@ -51,8 +52,14 @@ struct PaymentResultPopUp: View {
                         .font(.title)
                     Text(LocalString.payment_error_description)
                         .font(.headline)
+                case .errorAlreadyHasSubscription:
+                    Text(
+                        LocalString.payment_error_already_subscribed_title)
+                        .font(.title)
+                    Text(
+                        LocalString.payment_error_already_subscribed_description)
+                        .font(.headline)
                 }
-
             }
             .multilineTextAlignment(.center)
         }

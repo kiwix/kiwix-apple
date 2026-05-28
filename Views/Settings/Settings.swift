@@ -165,6 +165,7 @@ struct Settings: View {
     @EnvironmentObject private var library: LibraryViewModel
     @Environment(\.horizontalSizeClass) var horizontalSizeClass
     @State private var paymentButtonLabel: PayWithApplePayButtonLabel?
+    @Environment(\.dismiss) private var dismiss
 
     enum Route {
         case languageSelector, about
@@ -298,7 +299,11 @@ struct Settings: View {
     var miscellaneous: some View {
         Section(LocalString.settings_miscellaneous_title) {
             if paymentButtonLabel != nil, horizontalSizeClass != .regular {
+                // on iPhone
                 SupportKiwixButton {
+                    // need to dismiss settings first!
+                    dismiss()
+                    // as only 1 sheet can be presented at any given time
                     openDonation()
                 }
             }

@@ -23,8 +23,9 @@ struct StripeKiwix {
     /// see: https://docs.stripe.com/api/payment_intents/object#payment_intent_object-amount
     static let maxAmount: Int = 999999999
 
-    enum StripeError: Error {
+    enum StripeError: Int, Error {
         case serverError
+        case errorAlreadyHasSubscription
     }
 
     let endPoint: URL
@@ -40,22 +41,36 @@ struct StripeKiwix {
         let json = try decoder.decode(PublishableKey.self, from: data)
         return json.publishableKey
     }
+    
+    private struct ErrorData: Decodable {
+        let detail: String
+    }
 
     nonisolated static func clientSecretForPayment(
         endPoint: URL,
-        selectedAmount: SelectedAmount
+        selectedAmount: SelectedAmount,
+        email: String,
+        deviceName: String
     ) async -> Result<String, Error> {
         do {
-            // for monthly we should create a setup-intent:
-            // see: https://github.com/kiwix/kiwix-apple/issues/1032
-            var request = URLRequest(url: endPoint.appending(path: "payment-intent"))
+            let requestPath = selectedAmount.isMonthly ? "setup-intent" : "payment-intent"
+            var request = URLRequest(url: endPoint.appending(path: requestPath))
             request.httpMethod = "POST"
             request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-            request.httpBody = try JSONEncoder().encode(SelectedPaymentAmount(from: selectedAmount))
+            request.httpBody = try JSONEncoder()
+                .encode(SelectedPaymentAmount(from: selectedAmount,
+                                              emailAddress: email,
+                                              deviceName: deviceName))
             let (data, response) = try await URLSession.shared.data(for: request)
-            guard let httpResponse = response as? HTTPURLResponse,
-                  (200..<300).contains(httpResponse.statusCode) else {
+            guard let httpResponse = response as? HTTPURLResponse else {
                 throw StripeError.serverError
+            }
+            guard (200..<300).contains(httpResponse.statusCode) else {
+                if httpResponse.statusCode == 409 {
+                        throw StripeError.errorAlreadyHasSubscription
+                } else {
+                    throw StripeError.serverError
+                }
             }
             let json = try JSONDecoder().decode(ClientSecretKey.self, from: data)
             return .success(json.secret)
@@ -104,8 +119,11 @@ private struct ClientSecretKey: Decodable {
 private struct SelectedPaymentAmount: Encodable {
     let amount: Int
     let currency: String
+    let email: String
+    let origin: String
+    let lang: String = Locale.current.language.languageCode?.identifier ?? ""
 
-    init(from selectedAmount: SelectedAmount) {
+    init(from selectedAmount: SelectedAmount, emailAddress: String, deviceName: String) {
         // Amount intended to be collected by this PaymentIntent.
         // A positive integer representing how much to charge in the smallest currency unit
         // (e.g., 100 cents to charge $1.00 or 100 to charge ¥100, a zero-decimal currency).
@@ -113,6 +131,8 @@ private struct SelectedPaymentAmount: Encodable {
         amount = Int(selectedAmount.value * 100.0)
         currency = selectedAmount.currency
         assert(Payment.currencyCodes.contains(currency))
+        origin = deviceName
+        email = emailAddress
     }
 }
 private struct SessionParams: Encodable {

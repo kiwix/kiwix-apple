@@ -20,20 +20,20 @@ struct PaymentForm: View {
     let amountSelected: PassthroughSubject<SelectedAmount?, Never>
     @State var isMonthly: Bool = false
     @Environment(\.dismiss) var dismiss
-    #if os(macOS)
+#if os(macOS)
     @EnvironmentObject var formReset: FormReset
-    #endif
-
+#endif
+    
     init(amountSelected: PassthroughSubject<SelectedAmount?, Never>) {
         self.amountSelected = amountSelected
     }
-
+    
     private func reset() {
         isMonthly = false
     }
-
+    
     var body: some View {
-        #if os(iOS)
+#if os(iOS)
         HStack {
             Spacer()
             Text(LocalString.payment_donate_title)
@@ -50,26 +50,31 @@ struct PaymentForm: View {
             .foregroundStyle(.tertiary)
             .padding()
         }
-        #endif
-
+#endif
+        
         VStack {
-            // Re-enable as part of: https://github.com/kiwix/kiwix-apple/issues/1032
-//            Picker("", selection: $isMonthly) {
-//                Label(LocalString.payment_selection_option_one_time, systemImage: "heart.circle").tag(false)
-//                Label(LocalString.payment_selection_option_monthly, systemImage: "arrow.clockwise.heart").tag(true)
-//            }.pickerStyle(.segmented)
-//                .padding([.leading, .trailing, .bottom])
-
+            Picker("", selection: $isMonthly) {
+                Label(
+                    LocalString.payment_selection_option_one_time,
+                    systemImage: "heart.circle"
+                )
+                .tag(false)
+                Label(
+                    LocalString.payment_selection_option_monthly,
+                    systemImage: "arrow.clockwise.heart"
+                )
+                .tag(true)
+            }.pickerStyle(.segmented)
+                .padding([.leading, .trailing, .bottom])
             ListOfAmounts(amountSelected: amountSelected, isMonthly: $isMonthly)
         }
-        #if os(macOS)
+#if os(macOS)
         .padding()
         .navigationTitle(LocalString.payment_donate_title)
         .onReceive(formReset.objectWillChange) { _ in
             reset()
         }
-        #endif
-
+#endif
     }
 }
 
@@ -81,7 +86,7 @@ struct SelectedAmount {
     let value: Double
     let currency: String
     let isMonthly: Bool
-
+    
     init(value: Double, currency: String, isMonthly: Bool) {
         // make sure we won't go over Stripe's max amount
         self.value = min(value, Double(StripeKiwix.maxAmount) * 100.0)
@@ -96,7 +101,7 @@ struct AmountOption: Identifiable {
     let id = UUID()
     let value: Double
     let isAverage: Bool
-
+    
     init(value: Double, isAverage: Bool = false) {
         self.value = value
         self.isAverage = isAverage

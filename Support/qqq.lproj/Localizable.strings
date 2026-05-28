@@ -287,6 +287,8 @@
 "payment.success.description" = "Confirmation text that the donation payment was successful and thanking the user for supporting us";
 "payment.error.title" = "Error message title, the user receives if the payment fails";
 "payment.error.description" = "Error message description, the user receives if the payment fails";
+"payment.error_already_subscribed.title" = "Error message title, when the user tries to subscribe to a monthly subscription, but an existing subscription is already in place, based on the email address provided.";
+"payment.error_already_subscribed.description" = "Error message description, under the title, explaining that the existing suscription can only be changed externally to the application, using the instructions in the email sent earlier.";
 "download_service.error.client.backgroundSessionInUseByAnotherProcess" = "Additional description of the download alert pop up, describing the specific system error, that occured.";
 "download_service.error.client.backgroundSessionWasDisconnected" = "Additional description of the download alert pop up, describing the specific system error, that occured.";
 "download_service.error.client.cancelled" = "Additional description of the download alert pop up, describing the specific system error, that occured.";

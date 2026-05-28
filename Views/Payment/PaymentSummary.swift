@@ -23,14 +23,11 @@ struct PaymentSummary: View {
 
     private let selectedAmount: SelectedAmount
     private let payment: Payment
-    private let onComplete: @MainActor () -> Void
     @State private var paymentDetermined: Bool = false
     @State private var paymentButtonLabel: PayWithApplePayButtonLabel?
 
-    init(selectedAmount: SelectedAmount,
-         onComplete: @escaping @MainActor () -> Void) {
+    init(selectedAmount: SelectedAmount) {
         self.selectedAmount = selectedAmount
-        self.onComplete = onComplete
         payment = Payment()
     }
 
@@ -68,8 +65,6 @@ struct PaymentSummary: View {
             } else {
                 LoadingProgressView()
             }
-        }.onReceive(payment.completeSubject) {
-            onComplete()
         }
         .task {
             paymentButtonLabel = await Payment.paymentButtonTypeAsync()
@@ -82,7 +77,6 @@ struct PaymentSummary: View {
     PaymentSummary(
         selectedAmount: SelectedAmount(value: 34,
                                        currency: "CHF",
-                                       isMonthly: true),
-        onComplete: {}
+                                       isMonthly: true)
     )
 }

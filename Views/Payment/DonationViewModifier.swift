@@ -19,74 +19,99 @@ import Combine
 
 struct DonationViewModifier: ViewModifier {
     
-    enum DonationPopupState {
+    enum DonationPopup: Identifiable {
         case selection
         case selectedAmount(SelectedAmount)
         case thankYou
         case error
+        case errorAlreadyHasSubscription
+        
+        var id: String {
+            switch self {
+            case .selection: "selection"
+            case .selectedAmount: "selectedAmount"
+            case .thankYou: "thankYou"
+            case .error: "error"
+            case .errorAlreadyHasSubscription: "errorAlreadyHasSubscription"
+            }
+        }
     }
-    private let openDonations = NotificationCenter.default.publisher(for: .openDonations)
-    private var amountSelected = PassthroughSubject<SelectedAmount?, Never>()
-    @State private var showDonationPopUp: Bool = false
-    @State private var donationPopUpState: DonationPopupState = .selection
     
-    // swiftlint:disable:next function_body_length
+    private let openDonations = NotificationCenter.default.publisher(for: .openDonations)
+    private let donationResult = NotificationCenter.default.publisher(for: .donationResult)
+    private var amountSelected = PassthroughSubject<SelectedAmount?, Never>()
+    @State private var donationPopup: DonationPopup?
+    private let popupSize: PresentationDetent = if Device.current == .iPad { .fraction(0.83) } else { .fraction(0.65) }
+    
     func body(content: Content) -> some View {
         content
             .onReceive(openDonations) { _ in
-                showDonationPopUp = true
+                donationPopup = .selection
             }
-            .sheet(isPresented: $showDonationPopUp, onDismiss: {
-                let result = Payment.showResult()
-                switch result {
-                case .none:
+            .onReceive(donationResult) { notification in
+                guard let finalResult = notification.userInfo?["result"] as? Payment.FinalResult else {
                     // reset
-                    donationPopUpState = .selection
+                    donationPopup = nil
                     return
-                case .some(let finalResult):
-                    Task.detached(priority: .utility) {
-                        // we need to close the sheet in order to dismiss ApplePay,
-                        // and we need to re-open it again with a delay to show thank you state
-                        // Swift UI cannot yet handle multiple sheets
-                        try? await Task.sleep(for: .milliseconds(1000))
-                        await MainActor.run {
-                            switch finalResult {
-                            case .thankYou:
-                                donationPopUpState = .thankYou
-                            case .error:
-                                donationPopUpState = .error
-                            }
-                            showDonationPopUp = true
-                        }
-                    }
                 }
-            }, content: {
+                if finalResult != .dismiss {
+                    process(finalResult)
+                }
+            }
+            .sheet(item: $donationPopup, onDismiss: {
+                Log.Payment.debug("sheet onDismiss")
+            },
+            content: { item in
                 Group {
-                    switch donationPopUpState {
+                    switch item {
                     case .selection:
                         PaymentForm(amountSelected: amountSelected)
-                            .presentationDetents([.fraction(0.65)])
+                            .presentationDetents([popupSize])
                     case .selectedAmount(let selectedAmount):
-                        PaymentSummary(selectedAmount: selectedAmount, onComplete: {
-                            showDonationPopUp = false
-                        })
-                        .presentationDetents([.fraction(0.65)])
+                        PaymentSummary(selectedAmount: selectedAmount)
+                        .presentationDetents([popupSize])
                     case .thankYou:
                         PaymentResultPopUp(state: .thankYou)
                             .presentationDetents([.fraction(0.33)])
                     case .error:
                         PaymentResultPopUp(state: .error)
                             .presentationDetents([.fraction(0.33)])
+                    case .errorAlreadyHasSubscription:
+                        PaymentResultPopUp(state: .errorAlreadyHasSubscription)
+                            .presentationDetents([.fraction(0.33)])
                     }
                 }
                 .onReceive(amountSelected) { value in
                     if let amount = value {
-                        donationPopUpState = .selectedAmount(amount)
+                        donationPopup = .selectedAmount(amount)
                     } else {
-                        donationPopUpState = .selection
+                        donationPopup = .selection
                     }
                 }
+                // make sure payment sheet is not confusingly transparent on iPhone
+                .presentationBackground(Color(.secondarySystemBackground))
             })
+    }
+    
+    private func process(_ finalResult: Payment.FinalResult) {
+        guard finalResult != .dismiss else { return }
+        Task(priority: .utility) {
+            // we need to wait until ApplePay dismisses properly,
+            // and we need to re-open the sheet again with a delay to show thank you / error state
+            // Swift UI cannot yet handle multiple sheets
+            try? await Task.sleep(for: .milliseconds(2000))
+            switch finalResult {
+            case .thankYou:
+                donationPopup = .thankYou
+            case .error:
+                donationPopup = .error
+            case .errorAlreadyHasSubscription:
+                donationPopup = .errorAlreadyHasSubscription
+            case .dismiss:
+                break // do nothing
+            }
+        }
+        
     }
 }
 #endif
