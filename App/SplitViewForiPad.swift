@@ -38,6 +38,7 @@ struct SplitViewForiPad: View { // swiftlint:disable:this type_body_length
     @State private var hasZimFiles: Bool?
     @State private var navigateToHotspotSettingsTask: Task<Void, Never>?
     @Environment(\.scenePhase) private var scenePhase
+    private let preloader = BrowserTabPreloader()
 
     var body: some View {
         NavigationSplitView(columnVisibility: $columnVisibility) {
@@ -285,12 +286,24 @@ struct SplitViewForiPad: View { // swiftlint:disable:this type_body_length
         if let newNavItem, let newSelection = MenuItem(from: newNavItem) {
             if selection != newSelection {
                 selection = newSelection
-                while !navPath.isEmpty {
-                    navPath.removeLast()
-                }
-                navPath.append(newSelection)
+                navPath = NavigationPath([newSelection])
+                preloadTabs()
             }
         }
+    }
+    
+    private func preloadTabs() {
+        guard FeatureFlags.hasLibrary, case let .tab(selectedTabId) = selection else {
+            return
+        }
+        let openTabDict: [NSManagedObjectID: UUID] = tabs.reduce(into: [:]) { partialDict, tab in
+            let tabId = tab.objectID
+            // preloading is only for inactive tabs with a ZIM file
+            if tabId != selectedTabId, let zimFileID = tab.zimFile?.fileID {
+                partialDict[tabId] = zimFileID
+            }
+        }
+        preloader.start(with: openTabDict)
     }
     
     private func observeHasZimFiles() async {

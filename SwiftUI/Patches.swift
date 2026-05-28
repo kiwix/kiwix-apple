@@ -85,6 +85,7 @@ extension Notification.Name {
     static let goBack = Notification.Name("goBack")
     static let goForward = Notification.Name("goForward")
     #if os(iOS)
+    static let browserTabLoaded = Notification.Name("browserTabLoaded")
     static let openDonations = Notification.Name("openDonations")
     static let hotspotShareURL = Notification.Name("hotspotShareURL")
     #endif

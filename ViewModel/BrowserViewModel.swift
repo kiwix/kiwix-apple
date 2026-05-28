@@ -169,12 +169,21 @@ import CoreKiwix
             guard let title, let url else { return }
             self?.didUpdate(title: title, url: url)
         }
+        
+        #if os(iOS)
+        let isIpad = Device.current == .iPad
+        #endif
 
         isLoadingObserver = webView.observe(\.isLoading, options: .new) { [weak self] _, change in
             Task { @MainActor [weak self] in
                 if change.newValue != self?.isLoading {
                     self?.isLoading = change.newValue
                 }
+                #if os(iOS)
+                if change.newValue == false, isIpad {
+                    NotificationCenter.default.post(name: .browserTabLoaded, object: nil)
+                }
+                #endif
             }
         }
     }
