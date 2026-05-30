@@ -60,7 +60,7 @@ final class LibraryViewModel: ObservableObject {
     private var insertionCount = 0
     private var deletionCount = 0
     
-    private static let catalogURL = URL(string: "https://opds.library.kiwix.org/v2/entries?count=-1")!
+    private static let catalogURL = URL(string: "https://opds.library.kiwix.org/catalog/v2/entries?count=-1")!
 
     init(
         urlSession: URLSession = URLSession.shared,
