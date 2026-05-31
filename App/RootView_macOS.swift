@@ -21,7 +21,7 @@ struct RootView: View {
     @Environment(\.openWindow) var openWindow
     @Environment(\.controlActiveState) var controlActiveState
     @StateObject private var navigation = NavigationViewModel()
-    @State private var currentNavItem: MenuItem?
+    @SceneStorage("org.kiwix.macos.root.menuitem") private var currentNavItem: MenuItem?
     @StateObject private var windowTracker = WindowTracker()
     @State private var paymentButtonLabel: PayWithApplePayButtonLabel?
     var isSearchFocused: FocusState<Bool>.Binding

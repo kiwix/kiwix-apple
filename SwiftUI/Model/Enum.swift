@@ -235,9 +235,51 @@ enum NavigationItem: Hashable, Identifiable {
     case settings(scrollToHotspot: Bool)
 }
 
-enum MenuItem: Hashable, Identifiable {
-    var id: String {
-        name
+enum MenuItem: Hashable, Identifiable, RawRepresentable {
+    typealias RawValue = String
+    init?(rawValue: String) {
+        guard let url = URL(string: rawValue) else {
+            return nil
+        }
+        if url.scheme == "menu" {
+            let identifier = url.absoluteString.trimmingPrefix("menu://")
+            if let item = [
+                MenuItem.bookmarks,
+                .categories,
+                .donation,
+                .downloads,
+                .hotspot,
+                .new,
+                .opened,
+                .settings(scrollToHotspot: false)
+            ].first(where: { $0.id == identifier }) {
+                self = item
+            } else {
+                return nil
+            }
+        } else {
+            let viewContext = Database.shared.viewContext
+            guard let objectID = viewContext.persistentStoreCoordinator?.managedObjectID(
+                forURIRepresentation: url
+            ) else {
+                return nil
+            }
+            self = .tab(objectID: objectID)
+        }
+    }
+
+    var rawValue: String {
+        switch self {
+        case let .tab(objectID):
+            return objectID.uriRepresentation().absoluteString
+        default:
+            return urlFor(id).absoluteString
+        }
+    }
+    
+    private func urlFor(_ value: String) -> URL {
+        // swiftlint:disable:next force_unwrap
+        URL(string: "menu://\(value)")!
     }
     
     case tab(objectID: NSManagedObjectID)
@@ -307,6 +349,10 @@ enum MenuItem: Hashable, Identifiable {
     }
     
     var accessibilityIdentifier: String {
+        id
+    }
+
+    var id: String {
         switch self {
         case .tab:
             "tab"
