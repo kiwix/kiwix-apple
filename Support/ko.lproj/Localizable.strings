@@ -275,7 +275,7 @@
 "payment.summary_page.title" = "Kiwix 지원하기";
 "payment.support_button.label" = "Kiwix 지원하기";
 "payment.monthly_support.label" = "Kiwix에 대한 월별 지원";
-"payment.summary.title" = "Kiwix";
+"payment.summary.title" = "키윅스";
 "payment.textfield.custom_amount.label" = "사용자 지정 금액";
 "payment.confirm.button.title" = "확인";
 "payment.selection.average_monthly_donation.subtitle" = "월 평균 기부금";
@@ -288,6 +288,8 @@
 "payment.success.description" = "당신의 너그러움은 저희에게 너무나 소중합니다.";
 "payment.error.title" = "음, 좀 난감하네요.";
 "payment.error.description" = "결제에 문제가 발생했습니다. 다시 시도해 주십시오.";
+"payment.error_already_subscribed.title" = "이미 월간 기부를 하는 중입니다";
+"payment.error_already_subscribed.description" = "앞서 보내드린 이메일의 안내에 따라 업데이트해 주세요.";
 "download_service.error.client.backgroundSessionInUseByAnotherProcess" = "백그라운드 전송 서비스와 통신할 수 없음";
 "download_service.error.client.backgroundSessionWasDisconnected" = "백그라운드 전송 서비스와의 연결이 끊어짐";
 "download_service.error.client.cancelled" = "취소됨";

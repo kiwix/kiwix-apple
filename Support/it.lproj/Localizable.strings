@@ -175,6 +175,7 @@
 "payment.success.title" = "Grazie mille per la tua donazione.";
 "payment.success.description" = "La tua generosità significa tutto per noi.";
 "payment.error.description" = "Si è verificato un problema con il pagamento. Riprova.";
+"payment.error_already_subscribed.title" = "Hai già una donazione mensile";
 "download_service.error.client.backgroundSessionInUseByAnotherProcess" = "Impossibile comunicare con il servizio di trasferimento in background";
 "download_service.error.client.backgroundSessionWasDisconnected" = "Connessione al servizio di trasferimento in background persa";
 "download_service.error.client.cancelled" = "annullato";
