@@ -285,6 +285,8 @@
 "payment.success.description" = "Uw vrijgevigheid betekent alles voor ons.";
 "payment.error.title" = "Nou, da’s pijnlijk.";
 "payment.error.description" = "Er is een probleem opgetreden met uw betaling. Probeer het a.u.b. opnieuw.";
+"payment.error_already_subscribed.title" = "U maakt al een maandelijkse donatie";
+"payment.error_already_subscribed.description" = "Gebruik de instructies in de e-mail die we eerder hebben verzonden om het bij te werken.";
 "download_service.error.client.backgroundSessionInUseByAnotherProcess" = "Geen communicatie mogelijk met de voorziening voor overdracht op de achtergrond";
 "download_service.error.client.backgroundSessionWasDisconnected" = "Verbinding met voorziening voor overdracht op de achtergrond is verbroken";
 "download_service.error.client.cancelled" = "geannuleerd";
