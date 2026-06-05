@@ -117,6 +117,8 @@
 "payment.support_button.label" = "د کيويکس ملاتړ کول";
 "payment.monthly_support.label" = "د کيويکس مياشتنی ملاتړ کول";
 "payment.support_fallback_message" = "بښنه غواړو، ستاسو سولگر د اپل تاديې ملاتړ نه کوي.";
+"payment.error_already_subscribed.title" = "تاسو لادمخه میاشتنۍ بسپنه لرئ";
+"payment.error_already_subscribed.description" = "د دې هممهالولو لپاره برېښليک لارښوونې وکاروئ چې موږ مخکې درلېږلې دي.";
 "download_service.error.client.cancelled" = "ناگارل شوی";
 "download_service.error.client.badURL" = "بد وېبتړ";
 "download_service.error.client.timedOut" = "د غوښتنې وخت پای ته ورسېد.";

@@ -344,3 +344,6 @@
 "download_service.error.client.cannotMoveFile" = "Impossible de déplacer le fichier";
 "download_service.error.client.downloadDecodingFailedMidStream" = "Le décodage du téléchargement a échoué.";
 "download_service.error.client.downloadDecodingFailedToComplete" = "Le décodage du téléchargement a échoué.";
+"geolocation_error.permission_denied" = "L'utilisateur a refusé l'autorisation de géolocalisation.";
+"geolocation_error.position_unavailable" = "La localisation n'est pas disponible.";
+"geolocation_error.timeout" = "Le délai de la demande de localisation a expiré.";

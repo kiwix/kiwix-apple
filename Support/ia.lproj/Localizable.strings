@@ -201,6 +201,14 @@
 "settings.about.our_website.button" = "Nostre sito web";
 "settings.about.source.title" = "Fonte";
 "settings.about.button.license" = "Licentia Public General de GNU v3";
+"download_mac_settings.tab.title" = "Discargamentos";
+"download_mac_folder.button.change" = "Cambiar";
+"download_mac_folder.button.reset" = "Reinitialisar al predefinition";
+"download_mac_folder.unknown" = "Incognite";
+"download_mac_folder.panel.message" = "Selige un dossier pro le discargamentos ZIM";
+"download_mac_folder.error.title" = "Iste dossier non es usabile.";
+"download_mac_folder.error.not_writable" = "Tu non ha le permission de salveguardar files hic.";
+"download_mac_folder.error.save_failed" = "Non poteva definir le dossier de discargamento. Tenta lo de novo.";
 "bookmark.navigation.title" = "Marcapaginas";
 "bookmark.overlay.empty.title" = "Necun marcapagina";
 "search_result.zimfile.empty.message" = "Necun file ZIM aperite";
@@ -275,6 +283,8 @@
 "payment.success.description" = "Tu generositate significa toto pro nos.";
 "payment.error.title" = "Ben, isto es embarassose.";
 "payment.error.description" = "Un problema ha occurrite con tu pagamento. Per favor tenta lo de novo.";
+"payment.error_already_subscribed.title" = "Tu ha ja un donation mensual";
+"payment.error_already_subscribed.description" = "Usa le instructiones in le message de e-mail que nos ha anteriormente inviate pro actualisar lo.";
 "download_service.error.client.backgroundSessionInUseByAnotherProcess" = "Non poteva communicar con le servicio de transferimento in secunde plano";
 "download_service.error.client.backgroundSessionWasDisconnected" = "Le connexion con le servicio de transferimento in secunde plano ha essite perdite";
 "download_service.error.client.cancelled" = "cancellate";
@@ -318,3 +328,6 @@
 "download_service.error.client.cannotMoveFile" = "Non pote displaciar file";
 "download_service.error.client.downloadDecodingFailedMidStream" = "Le decodification del discargamento ha fallite";
 "download_service.error.client.downloadDecodingFailedToComplete" = "Le decodification del discargamento ha fallite";
+"geolocation_error.permission_denied" = "Le usator ha refusate le permission de geolocalisation.";
+"geolocation_error.position_unavailable" = "Le position es indisponibile.";
+"geolocation_error.timeout" = "Le requesta de localisation ha expirate.";
