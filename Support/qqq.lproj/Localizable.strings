@@ -233,6 +233,7 @@
 "app_macos_commands.open_file" = "MacOS command menu item";
 "app_macos_commands.new" = "MacOS command menu item";
 "app_macos_navigation.button.library" = "MacOS command menu item";
+"app_macos_navigation.button.restore_previous_session" = "MacOS command menu item title, to restore the windows and navigation state from a previous session, when the application was last launched";
 "sidebar_view.navigation.button.close" = "Accessiblity title for navigation button icon";
 "enum.category.wikipedia" = "{{Optional}}";
 "enum.category.wikibooks" = "{{Optional}}";

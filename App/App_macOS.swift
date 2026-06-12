@@ -22,7 +22,13 @@ import UserNotifications
 #if os(macOS)
 final class AppDelegate: NSObject, NSApplicationDelegate {
     func applicationShouldTerminateAfterLastWindowClosed(_ sender: NSApplication) -> Bool {
-        true
+        if SessionRestore.shared.isRestoring {
+            return false
+        }
+        return true
+    }
+    func applicationWillTerminate(_ notification: Notification) {
+        SessionRestore.shared.saveWindows()
     }
 }
 
@@ -48,6 +54,7 @@ struct Kiwix: App {
     @FocusedValue(\.browserURL) var browserURL
     @StateObject private var colorSchemeStore = UserColorSchemeStore()
     @State private var settingsTab: Int = SettingsTab.reading.rawValue
+    @ObservedObject private var sessionRestore = SessionRestore.shared
 
     init() {
         UNUserNotificationCenter.current().delegate = notificationCenterDelegate
@@ -65,8 +72,8 @@ struct Kiwix: App {
     }
 
     var body: some Scene {
-        WindowGroup {
-            RootView(isSearchFocused: $isSearchFocused)
+        WindowGroup(id: "rootView", for: WindowState.self) { (windowState: Binding<WindowState?>) in
+            RootView(isSearchFocused: $isSearchFocused, openedWithWindowState: windowState.wrappedValue)
                 .environment(\.managedObjectContext, Database.shared.viewContext)
                 .environmentObject(libraryRefreshViewModel)
                 .task { colorSchemeStore.update() }
@@ -97,6 +104,13 @@ struct Kiwix: App {
                 Divider()
                 SidebarNavigationCommands()
                 Divider()
+                Button(LocalString.app_macos_navigation_button_restore_previous_session) {
+                    sessionRestore.restore(using: { windowState in
+                        openWindow(id: "rootView", value: windowState)
+                    })
+                }
+                .disabled(sessionRestore.canRestore == false)
+                Divider()
             }
             CommandGroup(after: .pasteboard) {
                 Button(LocalString.library_zim_file_context_copy_url) {
@@ -115,6 +129,7 @@ struct Kiwix: App {
                 .keyboardShortcut("f", modifiers: [.command])
             }
             CommandGroup(replacing: .help) {}
+            
         }
 
         Settings {

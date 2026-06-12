@@ -277,6 +277,7 @@
 "app_macos_commands.open_file" = "Open...";
 "app_macos_commands.new" = "New Tab";
 "app_macos_navigation.button.library" = "Library";
+"app_macos_navigation.button.restore_previous_session" = "Restore Previous Session";
 
 "sidebar_view.navigation.button.close" = "Close";
 
