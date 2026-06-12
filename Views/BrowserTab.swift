@@ -133,8 +133,17 @@ struct BrowserTab: View {
             prompt: LocalString.common_search
         )
         .onChange(of: scenePhase) { [weak browser] _, newValue in
-            if case .active = newValue {
+            switch newValue {
+            case .active:
                 browser?.refreshVideoState()
+            case .inactive:
+                Task { [weak browser] in
+                    await browser?.persistState()
+                }
+            case .background:
+                break
+            @unknown default:
+                break
             }
         }
         .modify { [weak browser] view in
