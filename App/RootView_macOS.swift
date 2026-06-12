@@ -17,11 +17,12 @@
 import SwiftUI
 import PassKit
 
+// swiftlint:disable:next type_body_length
 struct RootView: View {
     @Environment(\.openWindow) var openWindow
     @Environment(\.controlActiveState) var controlActiveState
     @StateObject private var navigation = NavigationViewModel()
-    @State private var currentNavItem: MenuItem?
+    @SceneStorage("org.kiwix.macos.root.menuitem") private var currentNavItem: MenuItem?
     @StateObject private var windowTracker = WindowTracker()
     @State private var paymentButtonLabel: PayWithApplePayButtonLabel?
     var isSearchFocused: FocusState<Bool>.Binding
@@ -29,6 +30,7 @@ struct RootView: View {
     // Open file alerts
     @State private var isOpenFileAlertPresented = false
     @State private var openFileAlert: OpenFileAlert?
+    let openedWithWindowState: WindowState?
     
     private let primaryItems: [MenuItem] = [.bookmarks]
     private let libraryItems: [MenuItem] = [.opened, .categories, .downloads, .new]
@@ -104,6 +106,7 @@ struct RootView: View {
         .environmentObject(navigation)
         .onChange(of: currentNavItem) { _, newValue in
             navigation.currentItem = newValue?.navigationItem
+            saveSelectionInSession()
         }
         .onChange(of: navigation.currentItem) { _, newValue in
             guard let newValue else { return }
@@ -112,11 +115,11 @@ struct RootView: View {
                 currentNavItem = navItem
             }
         }
-        .onOpenURL { url in
+        .onOpenURL { (url: URL) in
             /// if the app was just started via URL or file (wasn't open before)
             /// we want to load the content in the first window
             /// otherwise in a new tab (but within the currently active window)
-            let isAppStart = NSApplication.shared.windows.count == 1
+            let isAppStart: Bool = NSApplication.shared.windows.count == 1
             if url.isFileURL {
                 // from opening an external file
                 let browser = BrowserViewModel.getCached(tabID: navigation.currentTabId)
@@ -124,8 +127,8 @@ struct RootView: View {
                     browser.forceLoadingState()
                 }
                 Task { // open the ZIM file
-                    if let metadata = await LibraryOperations.open(url: url),
-                       let mainPageURL = await ZimFileService.shared.getMainPageURL(zimFileID: metadata.fileID) {
+                    if let metadata: ZimFileMetaStruct = await LibraryOperations.open(url: url),
+                       let mainPageURL: URL = await ZimFileService.shared.getMainPageURL(zimFileID: metadata.fileID) {
                         if isAppStart {
                             browser.load(url: mainPageURL)
                         } else {
@@ -134,7 +137,7 @@ struct RootView: View {
                     } else {
                         await browser.clear()
                         isOpenFileAlertPresented = true
-                        openFileAlert = .unableToOpen(filenames: [url.lastPathComponent])
+                        openFileAlert = OpenFileAlert.unableToOpen(filenames: [url.lastPathComponent])
                     }
                 }
             } else if url.isZIMURL {
@@ -180,7 +183,9 @@ struct RootView: View {
                 // but that's not comming from our window
                 return
             }
-            windowTracker.current = nil // remove the reference to this window, see guard above
+            defer {
+                windowTracker.current = nil // remove the reference to this window, see guard above
+            }
             
             guard !navigation.isTerminating else {
                 // tab closed by app termination
@@ -190,11 +195,15 @@ struct RootView: View {
             let browser = BrowserViewModel.getCached(tabID: tabID)
             // tab closed by user
             browser.pauseVideoWhenNotInPIP()
+            let currentWindow = windowTracker.current
             Task { [weak navigation] in
                 await navigation?.deleteTab(tabID: tabID)
+                if let currentWindow {
+                    SessionRestore.shared.didClose(window: currentWindow)
+                }
             }
         }
-        .onReceive(keepOnlyTabs) {notification in
+        .onReceive(keepOnlyTabs) { notification in
             guard let tabsToKeep = notification.userInfo?["tabIds"] as? Set<NSManagedObjectID> else {
                 return
             }
@@ -217,13 +226,13 @@ struct RootView: View {
             switch AppType.current {
             case .kiwix:
                 await LibraryOperations.reValidate()
-                currentNavItem = .tab(objectID: navigation.currentTabId)
+                restoreNavigationState()
                 LibraryOperations.applyFileBackupSetting()
                 DownloadService.shared.restartHeartbeatIfNeeded()
             case let .branded(zimFileURL):
                 await LibraryOperations.open(url: zimFileURL)
                 await ZimMigration.forCustomApps()
-                currentNavItem = .tab(objectID: navigation.currentTabId)
+                restoreNavigationState()
             }
             // MARK: - payment button init
             if Brand.hideDonation == false {
@@ -258,11 +267,68 @@ struct RootView: View {
         }
         .withHostingWindow { [weak windowTracker] hostWindow in
             windowTracker?.current = hostWindow
+            restoreWindow()
+            saveSelectionInSession()
         }
         .handlesExternalEvents(
             preferring: Set([Self.zimURL]),
             allowing: Set([Self.zimURL, "file:///"])
         )
+    }
+    
+    private func restoreNavigationState() {
+        if let openedWithWindowState {
+            if let restoredURL = URL(string: openedWithWindowState.menuItemId) {
+                currentNavItem = MenuItem(rawValue: restoredURL.absoluteString)
+                Log.SessionRestore.debug("restored on demand")
+            }
+            restoreWindow()
+        }
+        if currentNavItem == nil {
+            // only set it if we are not restoring any previous state at start
+            currentNavItem = .tab(objectID: navigation.currentTabId)
+        }
+    }
+    
+    private func restoreWindow() {
+        guard let window = windowTracker.current, let savedState = openedWithWindowState else {
+            return
+        }
+        // restore the window's identifier
+        window.setAccessibilityIdentifier(savedState.identifier)
+        window.setFrame(savedState.frame, display: true)
+        
+        // arrange the tabs
+        if let tabIndex = savedState.tabIndex, tabIndex > 0 {
+            let previousTabId = savedState.otherTabIds[tabIndex - 1]
+            if let previousTab = NSApplication.shared.windows.first(where: { window in
+                return window.accessibilityIdentifier() == previousTabId
+            }) {
+                previousTab.addTabbedWindow(window, ordered: .above)
+            }
+        }
+        
+        // once we created all tabs for this window tabgroup
+        if savedState.isLastTab {
+            // select the right tab
+            if let selectedTabId = savedState.selectedTabId {
+                window.tabGroup?.selectedWindow = NSApplication.shared.windows.first(where: { window in
+                    window.accessibilityIdentifier() == selectedTabId
+                })
+            }
+            // select the right window
+            if let keyWindowId = savedState.keyWindowId {
+                let nsWindow = NSApplication.shared.windows.first { $0.accessibilityIdentifier() == keyWindowId }
+                nsWindow?.makeKey()
+            }
+        }
+    }
+    
+    private func saveSelectionInSession() {
+        guard let currentWindow = windowTracker.current, let currentNavItem else {
+            return
+        }
+        SessionRestore.shared.didChangeMenuItem(currentNavItem, inWindow: currentWindow)
     }
 }
 

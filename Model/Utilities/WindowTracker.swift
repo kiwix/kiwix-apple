@@ -14,8 +14,9 @@
 // along with Kiwix; If not, see https://www.gnu.org/licenses/.
 
 #if os(macOS)
-import Foundation
 import AppKit
+import Combine
+import Foundation
 
 /// Stores the current window, and finds the last one from all windows
 final class WindowTracker: NSObject, ObservableObject {

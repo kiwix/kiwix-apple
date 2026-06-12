@@ -26,6 +26,9 @@ struct Log {
     static let Branding = Logger(subsystem: subsystem, category: "Branding")
     static let Payment = Logger(subsystem: subsystem, category: "Payment")
     static let Geolocation = Logger(subsystem: subsystem, category: "Geolocation")
+#if os(macOS)
+    static let SessionRestore = Logger(subsystem: subsystem, category: "SessionRestore")
+#endif
 }
 
 private let subsystem = KiwixLogger.subsystem
