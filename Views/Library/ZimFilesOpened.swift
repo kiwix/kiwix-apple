@@ -42,7 +42,7 @@ struct ZimFilesOpened: View {
                         prominent: .name,
                         isSelected: false
                     )
-                }.accessibilityIdentifier(zimFile.name)
+                }.accessibilityIdentifier("Open: " + zimFile.name)
             }
         }
         // reacts to both the above navigation link

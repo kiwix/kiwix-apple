@@ -23,7 +23,7 @@ struct Wait {
         "waiting for: \(element)"
     }
     
-    @discardableResult
+    @MainActor @discardableResult
     static func inApp(
         _ app: XCUIApplication,
         forElement element: XCUIElement,

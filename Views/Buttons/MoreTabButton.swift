@@ -69,6 +69,7 @@ struct MoreTabButton: View {
                systemImage: "die.face.5",
                action: { [weak browser] in browser?.loadRandomArticle() })
         .disabled(hasZimFiles == false)
+        .accessibilityIdentifier("random")
     }
     
     @ViewBuilder

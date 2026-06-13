@@ -158,6 +158,7 @@ struct SplitViewForiPad: View { // swiftlint:disable:this type_body_length
                         labelFor(tab: tab)
                     }
                     .id(tab.id)
+                    .accessibilityIdentifier(tab.title ?? LocalString.common_tab_menu_new_tab)
                     .swipeActions(edge: .trailing, allowsFullSwipe: true) {
                         Button(role: .destructive) {
                             Task { [weak navigation] in
@@ -175,6 +176,7 @@ struct SplitViewForiPad: View { // swiftlint:disable:this type_body_length
                     ForEach(sectionItems, id: \.id) { (item: MenuItem) in
                         navigationLinkFor(item: item)
                             .id(item.id)
+                            .accessibilityIdentifier(item.accessibilityIdentifier)
                     }
                 } header: {
                     if let headerText = section.header {
@@ -223,6 +225,7 @@ struct SplitViewForiPad: View { // swiftlint:disable:this type_body_length
                 .frame(maxWidth: 22, maxHeight: 22)
                 .clipShape(RoundedRectangle(cornerSize: CGSize(width: 3, height: 3)))
         }
+        .accessibilityIdentifier(labelText)
     }
 
     private func iconImageFor(tab: Tab) -> Image {
