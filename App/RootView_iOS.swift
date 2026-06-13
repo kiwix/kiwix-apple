@@ -24,7 +24,7 @@ struct RootViewiOS: View {
         if horizontalSizeClass == .compact {
             CompactView()
         } else {
-            SplitViewForiPad()
+            SplitViewForiPadContainer()
         }
     }
 }
