@@ -309,18 +309,31 @@ final class ZimFile: NSManagedObject {
         static func notMissing() -> NSPredicate {
             NSPredicate(format: "isMissing == false")
         }
+        static func missing() -> NSPredicate {
+            NSPredicate(format: "isMissing == true")
+        }
     }
 
-    static func openedPredicate() -> NSPredicate {
-        NSCompoundPredicate(andPredicateWithSubpredicates: [
-            Predicate.isDownloaded(),
-            Predicate.notMissing()
-        ])
+    static func openedPredicate(showBy: ZIMsShowBy = .onlyAvailable) -> NSPredicate {
+        switch showBy {
+        case .all:
+            Predicate.isDownloaded()
+        case .onlyAvailable:
+            NSCompoundPredicate(andPredicateWithSubpredicates: [
+                Predicate.isDownloaded(),
+                Predicate.notMissing()
+            ])
+        case .onlyMissing:
+            NSCompoundPredicate(andPredicateWithSubpredicates: [
+                Predicate.isDownloaded(),
+                Predicate.missing()
+            ])
+        }
     }
     
-    // it's the same condition, dowloaded, but not missing
+    // it's the same condition, dowloaded and available (not missing)
     static func integrityCheckablePredicate() -> NSPredicate {
-        openedPredicate()
+        openedPredicate(showBy: .onlyAvailable)
     }
 
     static func fetchRequest(

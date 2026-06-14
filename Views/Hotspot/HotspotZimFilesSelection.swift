@@ -49,7 +49,7 @@ struct HotspotZimFilesSelection: View {
     var body: some View {
         VStack(spacing: 0) {
             if zimFiles.isEmpty {
-                Message(text: LocalString.zim_file_opened_overlay_no_opened_message)
+                Message(text: LocalString.zim_file_opened_overlay_no_zim_files_at_all_message)
             } else {
                 if case .started(let address, let qrCodeImage) = hotspot.state {
                     ScrollView {

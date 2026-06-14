@@ -128,10 +128,17 @@
 "library.zim_file_context.random.label" = "Random Page";
 "library.zim_file_context.copy_url" = "Copy URL";
 
-"zim_file_opened.overlay.no-opened.message" = "No opened ZIM file";
+"zim_file_opened.overlay.no-zim-files-at-all.message" = "No ZIM files found.";
+"zim_file_opened.overlay.no-available-zim-files.message" = "No available ZIM files found.";
+"zim_file_opened.overlay.no-missing-zim-files.message" = "No missing ZIM files found.";
 "zim_file_opened.toolbar.open.title" = "Open...";
 "zim_file_opened.toolbar.open.help" = "Open a ZIM file";
 "zim_file_category.title" = "Category";
+"zim_file_opened.toolbar.filter.show_all" = "Show all";
+"zim_file_opened.toolbar.filter.show_only_available" = "Show only available";
+"zim_file_opened.toolbar.filter.show_only_missing" = "Show only missing";
+"zim_file_opened.toolbar.sort_by.name" = "Sort by name";
+"zim_file_opened.toolbar.sort_by.size" = "Sort by size";
 
 "zim_file_catalog.fetching.message" = "Fetching Catalog ...";
 "zim_file_category.section.empty.message" = "No ZIM file under this category.";

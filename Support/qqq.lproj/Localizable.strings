@@ -96,9 +96,16 @@
 "library.zim_file_context.main_page.label" = "Supplementary action title, when long pressing on a ZIM file";
 "library.zim_file_context.random.label" = "Supplementary action title, when long pressing on a ZIM file";
 "library.zim_file_context.copy_url" = "Suplementary action title, when long pressing a ZIM file. Also used as a button title to copy the hotspot URL. The context is the same as the system's copy/paste action.";
-"zim_file_opened.overlay.no-opened.message" = "Default placeholder text for center panel on macOS, when we have no history of opened files";
+"zim_file_opened.overlay.no-zim-files-at-all.message" = "Default placeholder text for center panel on macOS, when we have no opened ZIM files of any kind, missing or available";
+"zim_file_opened.overlay.no-available-zim-files.message" = "Default placeholder text for center panel on macOS, when we have no available, open ZIM files";
+"zim_file_opened.overlay.no-missing-zim-files.message" = "Default placeholder text for center panel on macOS, when we have no missing, open ZIM files";
 "zim_file_opened.toolbar.open.title" = "Accesissiblit label of a (+) icon on iOS, in the top right corner, to open a local file";
 "zim_file_opened.toolbar.open.help" = "Accessibility label of a (+) icon in the macOS app, in the top right corner, to open a local file";
+"zim_file_opened.toolbar.filter.show_all" = "Navigation toolbar button title to toggle between showing all, only available, only missing ZIM files in the listing";
+"zim_file_opened.toolbar.filter.show_only_available" = "Navigation toolbar button title to toggle between showing all, only available, only missing ZIM files in the listing";
+"zim_file_opened.toolbar.filter.show_only_missing" = "Navigation toolbar button title to toggle between showing all, only available, only missing ZIM files in the listing";
+"zim_file_opened.toolbar.sort_by.name" = "Navigation toolbar button title to activate sorting the list of ZIM files by name";
+"zim_file_opened.toolbar.sort_by.size" = "Navigation toolbar button title to activate sorting the list of ZIM files by file size";
 "zim_file_category.title" = "Accessiblity label for category picker";
 "zim_file_catalog.fetching.message" = "Fallback text for the case when the catalog of ZIM files is still being refreshed, and it will appear soon, as the operation completes.";
 "zim_file_category.section.empty.message" = "Fallback text for listing results";
