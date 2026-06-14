@@ -50,6 +50,7 @@ struct ZimFilesCategories: View {
                     Picker(LocalString.zim_file_category_title, selection: $selected) {
                         ForEach(categories) {
                             Text($0.name).tag($0)
+                                .accessibilityIdentifier($0.name)
                         }
                     }
                 }

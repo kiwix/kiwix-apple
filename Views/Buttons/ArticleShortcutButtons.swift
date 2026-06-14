@@ -97,6 +97,7 @@ struct ArticleShortcutButtons: View {
         }
         .disabled(zimFiles.isEmpty)
         .help(LocalString.article_shortcut_random_button_help)
+        .accessibilityIdentifier("nav_random")
         #endif
     }
 }
