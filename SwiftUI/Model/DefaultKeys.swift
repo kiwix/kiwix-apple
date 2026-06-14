@@ -61,7 +61,7 @@ extension Defaults.Keys {
     #if os(iOS)
     static let ipadSplitViewVisibility = Key<NavigationSplitViewVisibility>(
         "ipadSplitViewVisibility",
-        default: NavigationSplitViewVisibility.automatic
+        default: NavigationSplitViewVisibility.detailOnly
     )
     #endif
 }

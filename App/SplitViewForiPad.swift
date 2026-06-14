@@ -19,11 +19,24 @@ import Foundation
 import SwiftUI
 import Defaults
 
+struct SplitViewForiPadContainer: View {
+    @EnvironmentObject var navigation: NavigationViewModel
+    var body: some View {
+        if case .loading = navigation.currentItem {
+            LoadingDataView()
+                .task { [weak navigation] in
+                    navigation?.observeOpeningFiles()
+                }
+        } else {
+            SplitViewForiPad()
+        }
+    }
+}
+
 @MainActor
 struct SplitViewForiPad: View { // swiftlint:disable:this type_body_length
     @EnvironmentObject var navigation: NavigationViewModel
-    // start with side menu collapsed state by default
-    @State private var columnVisibility: NavigationSplitViewVisibility = .detailOnly
+    @State private var columnVisibility: NavigationSplitViewVisibility = Defaults[.ipadSplitViewVisibility]
     @State private var allSections: [MenuSection] = MenuSection.allMenuSections
     @State private var menuDict: [MenuSection: [MenuItem]] = MenuSection.staticDictionary
     @State private var selection: MenuItem?
@@ -104,19 +117,14 @@ struct SplitViewForiPad: View { // swiftlint:disable:this type_body_length
             await loadDonations()
             await observeHasZimFiles()
             observeNavigateToHotspotSettings()
-            navigation.observeOpeningFiles()
             // set up the default selection
             // as direct opening a file (when the app is not launched)
             // won't trigger .onChange(of: navigation.currentItem)
             if let currentItem = navigation.currentItem {
                 selection = MenuItem(from: currentItem)
             }
-            updateColumnVisibility()
         }
-        .onChange(of: navigation.currentItem) { oldValue, newValue in
-            if newValue != oldValue {
-                updateColumnVisibility()
-            }
+        .onChange(of: navigation.currentItem) { _, newValue in
             updateSelection(newValue)
         }
         // open file details, after importing file
@@ -126,6 +134,9 @@ struct SplitViewForiPad: View { // swiftlint:disable:this type_body_length
             }
             navPath.append(fileId)
         })
+        .onChange(of: columnVisibility) {
+            Defaults[.ipadSplitViewVisibility] = columnVisibility
+        }
         .onChange(of: scenePhase) { old, new in
             switch (old, new) {
             case (.active, .inactive):
@@ -135,15 +146,6 @@ struct SplitViewForiPad: View { // swiftlint:disable:this type_body_length
             default:
                 break
             }
-        }
-    }
-    
-    private func updateColumnVisibility() {
-        if hasZimFiles == true, navigation.currentItem != .loading {
-            // allow the side menu to be displayed
-            columnVisibility = Defaults[.ipadSplitViewVisibility]
-        } else if hasZimFiles == false {
-            columnVisibility = .detailOnly
         }
     }
     
