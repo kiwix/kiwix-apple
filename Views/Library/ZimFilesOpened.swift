@@ -13,21 +13,27 @@
 // You should have received a copy of the GNU General Public License
 // along with Kiwix; If not, see https://www.gnu.org/licenses/.
 
+#if os(iOS)
+import Defaults
 import SwiftUI
 import UniformTypeIdentifiers
-
-#if os(iOS)
 
 /// A grid of zim files that are opened, or was open but is now missing
 /// iOS only, only iPad splitView
 struct ZimFilesOpened: View {
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
-    @FetchRequest(
-        sortDescriptors: [NSSortDescriptor(keyPath: \ZimFile.size, ascending: false)],
-        predicate: ZimFile.Predicate.isDownloaded(),
-        animation: .easeInOut
-    ) private var zimFiles: FetchedResults<ZimFile>
     @State private var isFileImporterPresented = false
+    @State private var showBy: ZIMsShowBy = Defaults[.openZIMsShowBy]
+    @State private var sortBy: ZIMsSortBy = Defaults[.opneZIMsSorting]
+    @FetchRequest private var zimFiles: FetchedResults<ZimFile>
+    
+    init() {
+        _zimFiles = FetchRequest(
+            sortDescriptors: [Defaults[.opneZIMsSorting].sortDescriptor()],
+            predicate: ZimFile.openedPredicate(showBy: Defaults[.openZIMsShowBy]),
+            animation: .easeInOut
+        )
+    }
 
     var body: some View {
         LazyVGrid(
@@ -57,7 +63,7 @@ struct ZimFilesOpened: View {
         .navigationTitle(MenuItem.opened.name)
         .overlay {
             if zimFiles.isEmpty {
-                Message(text: LocalString.zim_file_opened_overlay_no_opened_message)
+                Message(text: showBy.noResultsMessage)
             }
         }
         // not using OpenFileButton here, because it does not work on iOS/iPadOS 15 when this view is in a modal
@@ -70,6 +76,9 @@ struct ZimFilesOpened: View {
             NotificationCenter.openFiles(urls, context: .library)
         }
         .toolbar {
+            ZimFilters(sortBy: $sortBy, showBy: $showBy)
+            
+            // import file
             ToolbarItem {
                 Button {
                     isFileImporterPresented = true
@@ -77,6 +86,15 @@ struct ZimFilesOpened: View {
                     Label(LocalString.zim_file_opened_toolbar_open_title, systemImage: "plus")
                 }.help(LocalString.zim_file_opened_toolbar_open_help)
             }
+        }
+        .controlGroupStyle(.palette)
+        .onChange(of: showBy) { (_, newValue: ZIMsShowBy) in
+            Defaults[.openZIMsShowBy] = newValue
+            zimFiles.nsPredicate = ZimFile.openedPredicate(showBy: newValue)
+        }
+        .onChange(of: sortBy) { (_, newValue: ZIMsSortBy) in
+            Defaults[.opneZIMsSorting] = newValue
+            zimFiles.sortDescriptors = [newValue.sortDescriptor()]
         }
     }
 }

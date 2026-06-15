@@ -14,7 +14,7 @@
 // along with Kiwix; If not, see https://www.gnu.org/licenses/.
 
 #if os(iOS)
-
+import Defaults
 import SwiftUI
 import UniformTypeIdentifiers
 
@@ -22,18 +22,25 @@ import UniformTypeIdentifiers
 /// iOS only
 struct ZimFilesOpenedNavStack: View {
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
-    @FetchRequest(
-        sortDescriptors: [NSSortDescriptor(keyPath: \ZimFile.size, ascending: false)],
-        predicate: ZimFile.Predicate.isDownloaded(),
-        animation: .easeInOut
-    ) private var zimFiles: FetchedResults<ZimFile>
     @State private var isFileImporterPresented = false
     @State private var navPath: [ZimFile] = []
     // opening the details of a freshly added zimFile
     private let selectFileById = NotificationCenter.default.publisher(for: .selectFile)
     @State private var fileIdToOpen: UUID?
+    @State private var showBy: ZIMsShowBy = Defaults[.openZIMsShowBy]
+    @State private var sortBy: ZIMsSortBy = Defaults[.opneZIMsSorting]
+    @FetchRequest private var zimFiles: FetchedResults<ZimFile>
     
     let dismiss: (() -> Void)?
+    
+    init(dismiss: (() -> Void)?) {
+        self.dismiss = dismiss
+        _zimFiles = FetchRequest(
+            sortDescriptors: [Defaults[.opneZIMsSorting].sortDescriptor()],
+            predicate: ZimFile.openedPredicate(showBy: Defaults[.openZIMsShowBy]),
+            animation: .easeInOut
+        )
+    }
     
     var body: some View {
         NavigationStack(path: $navPath) {
@@ -61,10 +68,11 @@ struct ZimFilesOpenedNavStack: View {
         .navigationTitle(MenuItem.opened.name)
         .overlay {
             if zimFiles.isEmpty {
-                Message(text: LocalString.zim_file_opened_overlay_no_opened_message)
+                Message(text: showBy.noResultsMessage)
             }
         }
         .toolbar {
+            ZimFilters(sortBy: $sortBy, showBy: $showBy)
             ToolbarItem(placement: .topBarTrailing) {
                 Button {
                     isFileImporterPresented = true
@@ -72,6 +80,15 @@ struct ZimFilesOpenedNavStack: View {
                     Label(LocalString.zim_file_opened_toolbar_open_title, systemImage: "plus")
                 }.help(LocalString.zim_file_opened_toolbar_open_help)
             }
+        }
+        .controlGroupStyle(.palette)
+        .onChange(of: showBy) { (_, newValue: ZIMsShowBy) in
+            Defaults[.openZIMsShowBy] = newValue
+            zimFiles.nsPredicate = ZimFile.openedPredicate(showBy: newValue)
+        }
+        .onChange(of: sortBy) { (_, newValue: ZIMsSortBy) in
+            Defaults[.opneZIMsSorting] = newValue
+            zimFiles.sortDescriptors = [newValue.sortDescriptor()]
         }
         // not using OpenFileButton here, because it does not work on iOS/iPadOS 15 when this view is in a modal
         .fileImporter(

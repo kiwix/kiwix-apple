@@ -13,6 +13,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Kiwix; If not, see https://www.gnu.org/licenses/.
 
+import Defaults
 import SwiftUI
 import UniformTypeIdentifiers
 
@@ -20,15 +21,21 @@ import UniformTypeIdentifiers
 /// A grid of zim files that are opened, or was open but is now missing.
 /// A macOS specific version of ZimFilesOpened, supporting multi selection
 struct ZimFilesMultiOpened: View {
-    @FetchRequest(
-        sortDescriptors: [NSSortDescriptor(keyPath: \ZimFile.size, ascending: false)],
-        predicate: ZimFile.Predicate.isDownloaded(),
-        animation: .easeInOut
-    ) private var zimFiles: FetchedResults<ZimFile>
     @State private var isFileImporterPresented = false
     @StateObject private var selection = MultiSelectedZimFilesViewModel()
     private let selectFileById = NotificationCenter.default.publisher(for: .selectFile)
     @State private var fileIdToOpen: UUID?
+    @State private var showBy: ZIMsShowBy = Defaults[.openZIMsShowBy]
+    @State private var sortBy: ZIMsSortBy = Defaults[.opneZIMsSorting]
+    @FetchRequest private var zimFiles: FetchedResults<ZimFile>
+    
+    init() {
+        _zimFiles = FetchRequest(
+            sortDescriptors: [Defaults[.opneZIMsSorting].sortDescriptor()],
+            predicate: ZimFile.openedPredicate(showBy: Defaults[.openZIMsShowBy]),
+            animation: .easeInOut
+        )
+    }
 
     var body: some View {
         VStack(spacing: 0) {
@@ -56,7 +63,7 @@ struct ZimFilesMultiOpened: View {
             .navigationTitle(MenuItem.opened.name)
             .overlay {
                 if zimFiles.isEmpty {
-                    Message(text: LocalString.zim_file_opened_overlay_no_opened_message)
+                    Message(text: showBy.noResultsMessage)
                 }
             }
             .onReceive(selectFileById, perform: { notification in
@@ -80,7 +87,6 @@ struct ZimFilesMultiOpened: View {
                     selection.reset()
                 }
             }
-            // not using OpenFileButton here, because it does not work on iOS/iPadOS 15 when this view is in a modal
             .fileImporter(
                 isPresented: $isFileImporterPresented,
                 allowedContentTypes: [UTType.zimFile],
@@ -90,6 +96,8 @@ struct ZimFilesMultiOpened: View {
                 NotificationCenter.openFiles(urls, context: .library)
             }
             .toolbar {
+                ZimFilters(sortBy: $sortBy, showBy: $showBy)
+                
                 ToolbarItem {
                     Button {
                         isFileImporterPresented = true
@@ -111,6 +119,14 @@ struct ZimFilesMultiOpened: View {
                         MultiZimFilesDetail(zimFiles: selection.selectedZimFiles)
                     }
                 }.frame(width: 275).background(.ultraThinMaterial)
+            }
+            .onChange(of: showBy) { (_, newValue: ZIMsShowBy) in
+                Defaults[.openZIMsShowBy] = newValue
+                zimFiles.nsPredicate = ZimFile.openedPredicate(showBy: newValue)
+            }
+            .onChange(of: sortBy) { (_, newValue: ZIMsSortBy) in
+                Defaults[.opneZIMsSorting] = newValue
+                zimFiles.sortDescriptors = [newValue.sortDescriptor()]
             }
         }
     }

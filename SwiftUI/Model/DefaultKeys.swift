@@ -50,6 +50,8 @@ extension Defaults.Keys {
     static let selectedCategory = Key<String?>("selectedCategory", default: nil)
     
     static let hotspotPortNumber = Key<Int>("hotspotPortNumber", default: Hotspot.defaultPort)
+    static let openZIMsShowBy = Key<ZIMsShowBy>("openZIMsShowBy", default: ZIMsShowBy.all)
+    static let opneZIMsSorting = Key<ZIMsSortBy>("openZIMsSortBy", default: ZIMsSortBy.size(.forward))
 
     #if os(macOS)
     // window management:
