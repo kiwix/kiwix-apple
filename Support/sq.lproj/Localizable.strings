@@ -70,7 +70,6 @@
 "library.zim_file_context.main_page.label" = "Faqja Kryesore";
 "library.zim_file_context.random.label" = "Faqe Kuturu";
 "library.zim_file_context.copy_url" = "Kopjo URL-në";
-"zim_file_opened.overlay.no-opened.message" = "S’ka kartelë ZIM të hapur";
 "zim_file_opened.toolbar.open.title" = "Hapni…";
 "zim_file_opened.toolbar.open.help" = "Hapni një kartelë Zim";
 "zim_file_category.title" = "Kategori";

@@ -65,7 +65,6 @@
 "hotspot.server_full_explanation" = "نورو سولگرو کې د دې زيم دوتنو لټون لپاره، ځان ډاډه کړئ چې ټول وسايل يا په ورته وای فای بکې کې دي يا ستاسو شخصي هاټسپاټ سره نښلېدلې دي.";
 "hotspot.server_active_warning" = "ّهاټسپاټ يوازې کارنده پاتې کېږي؛ په داسې حال کې چې کاريال پرانېستی او کارېږي.";
 "hotspot.server_wifi_only_explanation" = "په نورو وسيلو کې د دې زيم دوتنو پلټلو لپاره ځان ډاډه کړئ چې ټول وسايل په ورته وای فای شبکې کې دي.";
-"zim_file_opened.overlay.no-opened.message" = "زيم دوتنه نه ده پرانېستل شوې";
 "zim_file.action.download.title" = "راکښته‌کول";
 "zim_file.action.download.warning.title" = "تشيال گواښ";
 "zim_file.action.download.warning.message" = "ښايي ستاسو وسيله کې د دې زيم دوتنې لپاره کافي ځای نه وي.";

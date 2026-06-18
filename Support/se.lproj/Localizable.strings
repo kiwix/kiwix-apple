@@ -12,8 +12,10 @@
 "common.button.go_back" = "Ruovttoluotta";
 "common.button.done" = "Geargan";
 "common.button.cancel" = "Gaskkalduhte";
+"common.button.print" = "Prente";
 "common.button.share" = "Juoge";
 "common.search" = "Oza";
+"common.search.inpage" = "Oza siiddus";
 "common.tab.navigation.title" = "Leavggat";
 "common.tab.menu.new_tab" = "Ođđa leavga";
 "common.tab.menu.close_this" = "Gidde dán leavgga";
@@ -49,7 +51,12 @@
 "zim_file.bool_info.videos" = "Videot";
 "zim_file.bool_info.details" = "Lassedieđut";
 "zim_file.download_task.action.title.cancel" = "Gaskkalduhte";
+"multi.zim_files_selected.description_count" = "ZIM-fiillat";
+"theme_settings.title" = "Fárda";
+"theme_settings.option.dark" = "Seavdnjat";
 "theme_settings.option.light" = "Čuvges fárda";
+"reading_settings.external_link.title" = "Olgguldas liŋka";
+"reading_settings.tab.reading" = "Lohkan";
 "library_settings.languages.title" = "Gielat";
 "settings.navigation.title" = "Ásahusat";
 "settings.miscellaneous.button.feedback" = "Máhcahat";
@@ -63,6 +70,7 @@
 "settings.about.dependencies.version" = "Veršuvdna";
 "settings.about.appverion.title" = "Veršuvdna";
 "settings.about.source.title" = "Gáldokoda";
+"download_mac_folder.unknown" = "Dovdameahttun";
 "bookmark.navigation.title" = "Girjemearkkat";
 "bookmark.overlay.empty.title" = "Ii oktage girjemearka";
 "search_result.sidebar.button.remove" = "Sihko";
@@ -93,3 +101,5 @@
 "payment.donate.title" = "Skeŋke";
 "payment.confirm.button.title" = "Nanne";
 "payment.selection.option.monthly" = "Mánnosaččat";
+"download_service.error.client.cannotCreateFile" = "Fiilla ráhkadeapmi ii lihkostuvvan";
+"download_service.error.client.cannotOpenFile" = "Fiilla rahpan ii lihkostuvvan";

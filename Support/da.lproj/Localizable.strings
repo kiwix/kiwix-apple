@@ -93,7 +93,6 @@
 "library.zim_file_context.main_page.label" = "Forside";
 "library.zim_file_context.random.label" = "Tilfældig Side";
 "library.zim_file_context.copy_url" = "Kopiér URL";
-"zim_file_opened.overlay.no-opened.message" = "Ingen åbnet ZIM-fil";
 "zim_file_opened.toolbar.open.title" = "Åben...";
 "zim_file_opened.toolbar.open.help" = "Åbn en ZIM-fil";
 "zim_file_category.title" = "Kategori";

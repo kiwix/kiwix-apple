@@ -98,7 +98,6 @@
 "library.zim_file_context.main_page.label" = "Página principal";
 "library.zim_file_context.random.label" = "Página aleatoria";
 "library.zim_file_context.copy_url" = "Copiar enlace";
-"zim_file_opened.overlay.no-opened.message" = "No se ha abierto el archivo ZIM";
 "zim_file_opened.toolbar.open.title" = "Abrir...";
 "zim_file_opened.toolbar.open.help" = "Abrir un archivo ZIM";
 "zim_file_category.title" = "Categoría";

@@ -94,10 +94,17 @@
 "library.zim_file_context.main_page.label" = "Glavna stran";
 "library.zim_file_context.random.label" = "Naključna stran";
 "library.zim_file_context.copy_url" = "Kopiraj URL";
-"zim_file_opened.overlay.no-opened.message" = "Odprta ni nobena datoteka ZIM";
+"zim_file_opened.overlay.no-zim-files-at-all.message" = "Ni najdenih datotek ZIM.";
+"zim_file_opened.overlay.no-available-zim-files.message" = "Ni najdenih razpoložljivih datotek ZIM.";
+"zim_file_opened.overlay.no-missing-zim-files.message" = "Ni najdenih manjkajočih datotek ZIM.";
 "zim_file_opened.toolbar.open.title" = "Odpri ...";
 "zim_file_opened.toolbar.open.help" = "Odpri datoteko ZIM";
 "zim_file_category.title" = "Kategorija";
+"zim_file_opened.toolbar.filter.show_all" = "Prikaži vse";
+"zim_file_opened.toolbar.filter.show_only_available" = "Prikaži samo razpoložljive";
+"zim_file_opened.toolbar.filter.show_only_missing" = "Prikaži samo manjkajoče";
+"zim_file_opened.toolbar.sort_by.name" = "Razvrsti po imenu";
+"zim_file_opened.toolbar.sort_by.size" = "Razvrsti po velikosti";
 "zim_file_catalog.fetching.message" = "Pridobivanje kataloga ...";
 "zim_file_category.section.empty.message" = "V tej kategoriji ni datoteke ZIM.";
 "zim_file_downloads.overlay.empty.message" = "Ni opravil prenosa";
@@ -231,6 +238,7 @@
 "app_macos_commands.open_file" = "Odpri ...";
 "app_macos_commands.new" = "Nov zavihek";
 "app_macos_navigation.button.library" = "Knjižnica";
+"app_macos_navigation.button.restore_previous_session" = "Obnovi prejšnjo sejo";
 "sidebar_view.navigation.button.close" = "Zapri";
 "enum.category.wikipedia" = "Wikipedija";
 "enum.category.wikibooks" = "Wikiknjige";
@@ -283,6 +291,8 @@
 "payment.success.description" = "Vaša velikodušnost nam veliko pomeni.";
 "payment.error.title" = "To je nerodno.";
 "payment.error.description" = "Prišlo je do težave z vašim plačilom. Poskusite znova.";
+"payment.error_already_subscribed.title" = "Že imate mesečno donacijo";
+"payment.error_already_subscribed.description" = "Za posodobitev uporabite navodila v e-poštnem sporočilu, ki smo vam ga poslali prej.";
 "download_service.error.client.backgroundSessionInUseByAnotherProcess" = "Komunikacija s storitvijo prenosa v ozadju ni bila mogoča";
 "download_service.error.client.backgroundSessionWasDisconnected" = "Povezava s storitvijo prenosa v ozadju je bila prekinjena";
 "download_service.error.client.cancelled" = "preklicano";

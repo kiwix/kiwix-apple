@@ -101,12 +101,12 @@
 "zim_file_opened.overlay.no-missing-zim-files.message" = "Default placeholder text for center panel on macOS, when we have no missing, open ZIM files";
 "zim_file_opened.toolbar.open.title" = "Accesissiblit label of a (+) icon on iOS, in the top right corner, to open a local file";
 "zim_file_opened.toolbar.open.help" = "Accessibility label of a (+) icon in the macOS app, in the top right corner, to open a local file";
+"zim_file_category.title" = "Accessiblity label for category picker";
 "zim_file_opened.toolbar.filter.show_all" = "Navigation toolbar button title to toggle between showing all, only available, only missing ZIM files in the listing";
 "zim_file_opened.toolbar.filter.show_only_available" = "Navigation toolbar button title to toggle between showing all, only available, only missing ZIM files in the listing";
 "zim_file_opened.toolbar.filter.show_only_missing" = "Navigation toolbar button title to toggle between showing all, only available, only missing ZIM files in the listing";
 "zim_file_opened.toolbar.sort_by.name" = "Navigation toolbar button title to activate sorting the list of ZIM files by name";
 "zim_file_opened.toolbar.sort_by.size" = "Navigation toolbar button title to activate sorting the list of ZIM files by file size";
-"zim_file_category.title" = "Accessiblity label for category picker";
 "zim_file_catalog.fetching.message" = "Fallback text for the case when the catalog of ZIM files is still being refreshed, and it will appear soon, as the operation completes.";
 "zim_file_category.section.empty.message" = "Fallback text for listing results";
 "zim_file_downloads.overlay.empty.message" = "Fallback text for center panel, when downloads are selected from the side menu.";
