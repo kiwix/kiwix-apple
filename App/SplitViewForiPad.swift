@@ -114,8 +114,8 @@ struct SplitViewForiPad: View { // swiftlint:disable:this type_body_length
             }
         }
         .task {
-            await loadDonations()
             await observeHasZimFiles()
+            await loadDonations()
             observeNavigateToHotspotSettings()
             // set up the default selection
             // as direct opening a file (when the app is not launched)

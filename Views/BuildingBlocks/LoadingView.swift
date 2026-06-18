@@ -145,7 +145,7 @@ struct LogoView: View {
                     x: geometry.size.width * 0.5,
                     y: logoCalc.logoCenterY
                 )
-            }.ignoresSafeArea()
+        }.ignoresSafeArea(.all, edges: .vertical)
     }
 }
 
@@ -198,12 +198,12 @@ struct FetchingCatalogView: View {
     }
 }
 
-struct LoadingDataView: View {
+struct LoadingDataView: View {    
     var body: some View {
         ZStack {
             LogoView()
             LoadingMessageView(message: LocalString.welcome_loading_data_text)
-        }.ignoresSafeArea()
+        }.ignoresSafeArea(.all, edges: .vertical)
     }
 }
 

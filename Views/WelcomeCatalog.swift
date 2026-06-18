@@ -29,7 +29,7 @@ struct WelcomeCatalog: View {
         ZStack {
             LogoView()
             welcomeContent
-        }.ignoresSafeArea()
+        }.ignoresSafeArea(.all, edges: .vertical)
     }
 
     private var welcomeContent: some View {
