@@ -105,7 +105,6 @@
 "library.zim_file_context.main_page.label" = "首页";
 "library.zim_file_context.random.label" = "随机页面";
 "library.zim_file_context.copy_url" = "复制URL";
-"zim_file_opened.overlay.no-opened.message" = "没有打开任何 ZIM 文件";
 "zim_file_opened.toolbar.open.title" = "打开...";
 "zim_file_opened.toolbar.open.help" = "打开 ZIM 文件";
 "zim_file_category.title" = "分类";

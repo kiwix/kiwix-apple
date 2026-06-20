@@ -6,6 +6,7 @@
 // Author: Chpol
 // Author: Codeurluce
 // Author: Crochet.david
+// Author: Dash777
 // Author: Derugon
 // Author: Gomoko
 // Author: Goombiis
@@ -112,7 +113,6 @@
 "library.zim_file_context.main_page.label" = "Page principale";
 "library.zim_file_context.random.label" = "Page au hasard";
 "library.zim_file_context.copy_url" = "Copier l’URL";
-"zim_file_opened.overlay.no-opened.message" = "Aucun fichier ZIM ouvert";
 "zim_file_opened.toolbar.open.title" = "Ouvrir...";
 "zim_file_opened.toolbar.open.help" = "Ouvrir un fichier ZIM";
 "zim_file_category.title" = "Catégorie";
@@ -301,6 +301,8 @@
 "payment.success.description" = "Votre générosité signifie tout pour nous.";
 "payment.error.title" = "Eh bien, c'est gênant.";
 "payment.error.description" = "Il y a eu un problème avec votre paiement. Veuillez réessayer.";
+"payment.error_already_subscribed.title" = "Vous avez déjà souscrit à une donation mensuelle";
+"payment.error_already_subscribed.description" = "Suivez les instructions du courriel que nous vous avons envoyé précédemment pour la mettre à jour.";
 "download_service.error.client.backgroundSessionInUseByAnotherProcess" = "Impossible de communiquer avec le service de transfert en arrière-plan.";
 "download_service.error.client.backgroundSessionWasDisconnected" = "Connexion avec le service de transfert en arrière-plan interrompue";
 "download_service.error.client.cancelled" = "annulé";

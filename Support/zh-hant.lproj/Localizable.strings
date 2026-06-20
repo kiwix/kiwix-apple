@@ -98,7 +98,6 @@
 "library.zim_file_context.main_page.label" = "主頁";
 "library.zim_file_context.random.label" = "隨機頁面";
 "library.zim_file_context.copy_url" = "複製 URL";
-"zim_file_opened.overlay.no-opened.message" = "沒有開啟的 ZIM 檔案";
 "zim_file_opened.toolbar.open.title" = "開啟…";
 "zim_file_opened.toolbar.open.help" = "開啟一個 ZIM 檔案";
 "zim_file_category.title" = "分類";
@@ -205,6 +204,14 @@
 "settings.about.our_website.button" = "我們的網站";
 "settings.about.source.title" = "來源";
 "settings.about.button.license" = "GNU 通用公眾授權條款 v3";
+"download_mac_settings.tab.title" = "下載";
+"download_mac_folder.button.change" = "變更";
+"download_mac_folder.button.reset" = "重設成預設值";
+"download_mac_folder.unknown" = "未知";
+"download_mac_folder.panel.message" = "選擇一個用於存放 ZIM 下載檔案的資料夾";
+"download_mac_folder.error.title" = "無法使用此資料夾。";
+"download_mac_folder.error.not_writable" = "您沒有權限在此儲存檔案。";
+"download_mac_folder.error.save_failed" = "無法設定下載資料夾，請重試。";
 "bookmark.navigation.title" = "書籤";
 "bookmark.overlay.empty.title" = "沒有書籤";
 "search_result.zimfile.empty.message" = "沒有開啟的 ZIM 檔案";
@@ -227,6 +234,7 @@
 "app_macos_commands.open_file" = "開啟…";
 "app_macos_commands.new" = "新分頁";
 "app_macos_navigation.button.library" = "文庫";
+"app_macos_navigation.button.restore_previous_session" = "恢復上一次連線階段";
 "sidebar_view.navigation.button.close" = "關閉";
 "enum.category.wikipedia" = "維基百科";
 "enum.category.wikibooks" = "維基教科書";
@@ -279,6 +287,8 @@
 "payment.success.description" = "您的慷慨行為對我們至關重要。";
 "payment.error.title" = "唔，真尷尬。";
 "payment.error.description" = "您的付款出現了問題。請重試。";
+"payment.error_already_subscribed.title" = "您已有每月捐款";
+"payment.error_already_subscribed.description" = "請依照我們之前發送的電子郵件中的說明進行更新。";
 "download_service.error.client.backgroundSessionInUseByAnotherProcess" = "無法與背景傳輸服務通信";
 "download_service.error.client.backgroundSessionWasDisconnected" = "與背景傳輸服務斷開連線";
 "download_service.error.client.cancelled" = "已取消";
@@ -322,3 +332,6 @@
 "download_service.error.client.cannotMoveFile" = "無法移動檔案";
 "download_service.error.client.downloadDecodingFailedMidStream" = "下載解碼失敗";
 "download_service.error.client.downloadDecodingFailedToComplete" = "下載解碼失敗";
+"geolocation_error.permission_denied" = "使用者已拒絕地理位置權限。";
+"geolocation_error.position_unavailable" = "位置不可用。";
+"geolocation_error.timeout" = "位置請求逾時。";

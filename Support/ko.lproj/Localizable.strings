@@ -99,10 +99,17 @@
 "library.zim_file_context.main_page.label" = "대문";
 "library.zim_file_context.random.label" = "임의의 문서";
 "library.zim_file_context.copy_url" = "URL 복사";
-"zim_file_opened.overlay.no-opened.message" = "열린 ZIM 파일이 없습니다";
+"zim_file_opened.overlay.no-zim-files-at-all.message" = "ZIM 파일이 없습니다.";
+"zim_file_opened.overlay.no-available-zim-files.message" = "사용 가능한 ZIM 파일이 없습니다.";
+"zim_file_opened.overlay.no-missing-zim-files.message" = "누락된 ZIM 파일이 없습니다.";
 "zim_file_opened.toolbar.open.title" = "열기...";
 "zim_file_opened.toolbar.open.help" = "ZIM 파일 열기";
 "zim_file_category.title" = "분류";
+"zim_file_opened.toolbar.filter.show_all" = "모두 보기";
+"zim_file_opened.toolbar.filter.show_only_available" = "사용 가능한 것만 보기";
+"zim_file_opened.toolbar.filter.show_only_missing" = "누락된 것만 보기";
+"zim_file_opened.toolbar.sort_by.name" = "이름순으로 정렬";
+"zim_file_opened.toolbar.sort_by.size" = "날짜순으로 정렬";
 "zim_file_catalog.fetching.message" = "카탈로그를 가져오는 중 ...";
 "zim_file_category.section.empty.message" = "이 분류에 속하는 ZIM 파일이 없습니다.";
 "zim_file_downloads.overlay.empty.message" = "다운로드 작업 없음";
@@ -236,6 +243,7 @@
 "app_macos_commands.open_file" = "열기...";
 "app_macos_commands.new" = "새 탭";
 "app_macos_navigation.button.library" = "라이브러리";
+"app_macos_navigation.button.restore_previous_session" = "이전 세션 복원";
 "sidebar_view.navigation.button.close" = "닫기";
 "enum.category.wikipedia" = "위키백과";
 "enum.category.wikibooks" = "위키책";
