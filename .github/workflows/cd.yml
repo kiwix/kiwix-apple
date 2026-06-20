@@ -18,7 +18,7 @@ name: CD
 on:
   schedule:
   - cron: '32 1 * * *' # Nightly download.kiwix.org @ 01:32
-  - cron: '00 2 * * 1' # Weekly testflight          @ 02:00 on Monday
+  - cron: '00 2 * * *' # Nightly testflight         @ 02:00
   push:
     tags:
       - testflight     # On-demand TestFlight
@@ -95,7 +95,7 @@ jobs:
         with open(os.getenv("GITHUB_ENV"), "a") as fh:
           fh.write(f"HAS_CHANGED_LAST_WEEK={value}\n")
 
-    - name: Nightly setup # use ftp and overrwrite VERSION with current date
+    - name: download.kiwix.org nightly # Use FTP and overwrites VERSION with current date
       if: github.event_name == 'schedule' && github.event.schedule == '32 1 * * *'
       shell: python
       run: |
@@ -107,8 +107,8 @@ jobs:
           fh.write(f"UPLOAD_TO=\"ftp\"\n")
           fh.write(f"UPLOAD_FOLDER=nightly/{version}\n")
 
-    - name: Weekly setup
-      if: github.event_name == 'schedule' && github.event.schedule == '00 2 * * 1' && env.HAS_CHANGED_LAST_WEEK == 'yes'
+    - name: Testflight nightly
+      if: github.event_name == 'schedule' && github.event.schedule == '00 2 * * *' && env.HAS_CHANGED_LAST_WEEK == 'yes'
       run: echo 'UPLOAD_TO="app-store"' >> $GITHUB_ENV
 
     - name: Testflight tag setup
