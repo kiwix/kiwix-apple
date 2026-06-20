@@ -50,7 +50,12 @@ To get started, you will need the following:
 
 ### Steps
  1) clone this repository
- 2) from the project folder **run the following command: `brew bundle`**
+ 2) from the project folder **run the following commands:** 
+ ```
+ brew bundle
+ python localizations.py generate
+ xcodegen
+ ```
 
 ### Xcode settings
 
