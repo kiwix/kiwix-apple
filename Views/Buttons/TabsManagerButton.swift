@@ -13,9 +13,9 @@
 // You should have received a copy of the GNU General Public License
 // along with Kiwix; If not, see https://www.gnu.org/licenses/.
 
+#if os(iOS) // iPhone only
 import SwiftUI
 
-#if os(iOS) // iPhone only
 struct TabsManagerButton: View {
     @EnvironmentObject private var navigation: NavigationViewModel
     @State private var presentedSheet: PresentedSheet?
@@ -129,6 +129,12 @@ struct TabManager: View {
             } primaryAction: {
                 navigation.createTab()
             }
+        }
+        .task {
+            guard case let .tab(selectedTabId) = navigation.currentItem else {
+                return
+            }
+            BrowserTabPreloader.shared.start(with: tabs, selectedTabId: selectedTabId)
         }
     }
 }

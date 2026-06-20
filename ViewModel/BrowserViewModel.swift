@@ -169,11 +169,13 @@ import CoreKiwix
             guard let title, let url else { return }
             self?.didUpdate(title: title, url: url)
         }
-
         isLoadingObserver = webView.observe(\.isLoading, options: .new) { [weak self] _, change in
             Task { @MainActor [weak self] in
                 if change.newValue != self?.isLoading {
                     self?.isLoading = change.newValue
+                }
+                if change.newValue == false {
+                    BrowserTabPreloader.shared.didLoadFirstBrowserTab()                    
                 }
             }
         }

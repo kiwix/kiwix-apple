@@ -13,16 +13,12 @@
 // You should have received a copy of the GNU General Public License
 // along with Kiwix; If not, see https://www.gnu.org/licenses/.
 
-//
-//  CompactViewController.swift
-//  Kiwix
-
 #if os(iOS)
 import Combine
-import SwiftUI
-import UIKit
 import CoreData
 import Defaults
+import SwiftUI
+import UIKit
 
 // iPhone portrait only
 struct CompactTabView: View {
