@@ -123,6 +123,9 @@ struct SplitViewForiPad: View { // swiftlint:disable:this type_body_length
             if let currentItem = navigation.currentItem {
                 selection = MenuItem(from: currentItem)
             }
+            if case let .tab(selectedTabId) = selection {
+                BrowserTabPreloader.shared.start(with: tabs, selectedTabId: selectedTabId)
+            }
         }
         .onChange(of: navigation.currentItem) { _, newValue in
             updateSelection(newValue)
@@ -290,10 +293,7 @@ struct SplitViewForiPad: View { // swiftlint:disable:this type_body_length
         if let newNavItem, let newSelection = MenuItem(from: newNavItem) {
             if selection != newSelection {
                 selection = newSelection
-                while !navPath.isEmpty {
-                    navPath.removeLast()
-                }
-                navPath.append(newSelection)
+                navPath = NavigationPath([newSelection])
             }
         }
     }
