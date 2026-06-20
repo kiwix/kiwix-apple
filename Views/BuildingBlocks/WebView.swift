@@ -162,11 +162,31 @@ final class WebViewController: UIViewController {
         )
     }
     
+    private var navController: UINavigationController?
+    
+    /// We want to enable immerse reading experience for our webview
+    /// however simply modifying the navController from here has a knock-on effect
+    /// on other views, like Hotspot (where the toolbar items are crucial)
+    /// so we need to reset things, when we navigate away (parent == nil)
     override func didMove(toParent parent: UIViewController?) {
         super.didMove(toParent: parent)
-        if !Brand.disableImmersiveReading, let navController = parent?.navigationController {
-            navController.hidesBarsOnSwipe = true
+        // navigated to webView
+        if !Brand.disableImmersiveReading, let parent {
+            parent.navigationController?.hidesBarsOnSwipe = true
+            navController = parent.navigationController
         }
+    }
+    
+    override func willMove(toParent parent: UIViewController?) {
+        // we are moving away from the webview, reset things
+        if parent == nil {
+            navController?.isNavigationBarHidden = false
+            navController?.isToolbarHidden = false
+            navController?.hidesBarsOnSwipe = false
+            navController = nil
+        }
+        super.willMove(toParent: parent)
+        
     }
 }
 
