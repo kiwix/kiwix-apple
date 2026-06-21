@@ -58,9 +58,11 @@ struct Kiwix: App {
 
     init() {
         UNUserNotificationCenter.current().delegate = notificationCenterDelegate
+        Task {
+            await WebContentBlocker.compilePolicy()            
+        }
         Task(priority: .utility) {
             await Diagnostics.start()
-            await WebContentBlocker.compilePolicy()
             if FeatureFlags.hasLibrary {
                 await LibraryViewModel().start(isUserInitiated: false)
             }
