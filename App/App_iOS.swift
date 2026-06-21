@@ -30,9 +30,11 @@ struct Kiwix: App {
     @StateObject private var colorSchemeStore = UserColorSchemeStore()
     
     init() {
+        Task {
+            await WebContentBlocker.compilePolicy()
+        }
         Task(priority: .utility) {
             await Diagnostics.start()
-            await WebContentBlocker.compilePolicy()
         }
         UNUserNotificationCenter.current().delegate = appDelegate
         // MARK: - migrations
