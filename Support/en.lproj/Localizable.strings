@@ -57,7 +57,7 @@
 
 "common.tab.manager.title" = "Tabs Manager";
 "common.tab.navigation.title" = "Tabs";
-"common.tab.menu.new_tab" = "New Tab";
+"common.tab.menu.new_tab" = "Start Page";
 "common.tab.menu.close_this" = "Close This Tab";
 "common.tab.menu.close_all" = "Close All Tabs";
 "common.tab.list.close" = "Close Tab";
@@ -270,7 +270,7 @@
 "search_result.filter_hearder.button.none" = "None";
 "search_result.filter_hearder.button.all" = "All";
 
-"welcome.main_page.title" = "Main Page";
+"welcome.main_page.title" = "Start Page";
 "welcome.grid.bookmarks.title" = "Bookmarks";
 "welcome.actions.open_file" = "Open File";
 "welcome.loading.data.text" = "Loading Data...";
