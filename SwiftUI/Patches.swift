@@ -88,6 +88,7 @@ extension Notification.Name {
     #if os(iOS)
     static let openDonations = Notification.Name("openDonations")
     static let hotspotShareURL = Notification.Name("hotspotShareURL")
+    static let enforceOneEmptyTab = Notification.Name("enforceOneEmptyTab")
     #endif
 }
 
