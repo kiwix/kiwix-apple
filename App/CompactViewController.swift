@@ -27,6 +27,10 @@ struct CompactTabView: View {
     @State private var presentedSheet: PresentedSheet?
     @ObservedObject private var browser: BrowserViewModel
     @FocusedValue(\.hasZIMFiles) var hasZimFiles
+    @FetchRequest(
+        sortDescriptors: [],
+        predicate: Tab.Predicate.hasZimFile(),
+    ) private var tabs: FetchedResults<Tab>
     private let navigateToHotspotSettings = NotificationCenter.default.publisher(for: .navigateToHotspotSettings)
     private let hotspotShareURL = NotificationCenter.default.publisher(for: .hotspotShareURL)
     
@@ -87,8 +91,10 @@ struct CompactTabView: View {
                         browser?.webView.goForward()
                     })
                 SpacerBackCompatible()
-                TabsManagerButton()
-                SpacerBackCompatible()
+                if tabs.count > 0 {
+                    TabsManagerButton()
+                    SpacerBackCompatible()
+                }
                 if FeatureFlags.hasLibrary {
                     Button {
                         presentedSheet = .library(downloads: false)
