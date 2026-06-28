@@ -33,6 +33,7 @@ struct CompactTabView: View {
     private enum PresentedSheet: Identifiable {
         case library(downloads: Bool)
         case customHotspot // for custom iPhone apps only
+        case bookmarks
         case hotspotShare(url: URL)
         case settings(scrollToHotspot: Bool)
         var id: String {
@@ -41,6 +42,7 @@ struct CompactTabView: View {
             case .library(false): return "library"
             case .hotspotShare: return "hotspot-share"
             case .customHotspot: return "custom-hotspot"
+            case .bookmarks: return "bookmarks"
             case .settings: return "settings"
             }
         }
@@ -99,9 +101,10 @@ struct CompactTabView: View {
                     OutlineButton(browser: browser)
                     SpacerBackCompatible()
                 }
-                MoreTabButton(browser: browser,
-                              presentHotspot: {
+                TabbarMoreMenu(browser: browser, presentHotspot: {
                     presentedSheet = .customHotspot
+                }, presentBookmarks: {
+                    presentedSheet = .bookmarks
                 })
                 Spacer()
             }
@@ -115,6 +118,14 @@ struct CompactTabView: View {
             case .customHotspot:
                 SheetContent {
                     HotspotZimFilesSelection()
+                }
+            case .bookmarks:
+                SheetContent {
+                    BookmarksListing(articleBookmarked: browser.articleBookmarked,
+                                     isButtonDisabled: browser.zimFileName.isEmpty,
+                                     createBookmark: { [weak browser] in browser?.createBookmark() },
+                                     deleteBookmark: { [weak browser] in browser?.deleteBookmark() }
+                    )
                 }
             case .hotspotShare(let url):
                 // comes from HotspotZimFilesSelection
@@ -139,7 +150,7 @@ struct CompactTabView: View {
                 // switching to the downloads tab
                 // is done within Library
                 break
-            case .hotspotShare, .customHotspot:
+            case .hotspotShare, .customHotspot, .bookmarks:
                 // doesn't apply
                 break
             case .settings, nil:
