@@ -3,14 +3,12 @@
 // Author: Chqaz
 // Author: Hiroyasu Nishiyama
 // Author: MathXplore
+// Author: Tensama0415
 // Author: Whym
 
-// Fuzzy
-"library_refresh_error.retrieve.description" = "ライブラリデータの取得エラー";
-// Fuzzy
-"library_refresh_error.parse.description" = "ライブラリデータの解析エラー";
-// Fuzzy
-"library_refresh_error.process.description" = "ライブラリデータの処理エラー";
+"library_refresh_error.retrieve.description" = "カタログデータの取得エラー。";
+"library_refresh_error.parse.description" = "カタログデータの解析エラー。";
+"library_refresh_error.process.description" = "カタログデータの処理エラー。";
 "download_service.complete.title" = "ダウンロード完了";
 "download_service.complete.description" = "%@のダウンロードに成功しました";
 "common.dialog.button.open" = "オープン";
