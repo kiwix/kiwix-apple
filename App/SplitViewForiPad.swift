@@ -81,7 +81,7 @@ struct SplitViewForiPad: View { // swiftlint:disable:this type_body_length
                 } label: {
                     Label(LocalString.common_tab_menu_new_tab, systemImage: "plus.square")
                 } primaryAction: {
-                    navigation.createTab()
+                    navigation.openNewTab()
                 }
             }
         } detail: {

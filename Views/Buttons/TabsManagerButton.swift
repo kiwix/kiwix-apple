@@ -29,7 +29,7 @@ struct TabsManagerButton: View {
         Menu {
             Section {
                 Button {
-                    navigation.createTab()
+                    navigation.openNewTab()
                 } label: {
                     Label(LocalString.common_tab_menu_new_tab, systemImage: "plus.square")
                 }
@@ -79,7 +79,7 @@ struct TabManager: View {
     @Environment(\.dismiss) private var dismiss: DismissAction
     @EnvironmentObject private var navigation: NavigationViewModel
     @FetchRequest(
-        sortDescriptors: [SortDescriptor(\Tab.created, order: .reverse)],
+        sortDescriptors: [SortDescriptor(\Tab.created, order: .forward)],
         predicate: Tab.Predicate.notMissing(),
         animation: .easeInOut
     ) private var tabs: FetchedResults<Tab>
@@ -127,7 +127,7 @@ struct TabManager: View {
             } label: {
                 Label(LocalString.common_tab_menu_new_tab, systemImage: "plus.square")
             } primaryAction: {
-                navigation.createTab()
+                navigation.openNewTab()
             }
         }
         .task {

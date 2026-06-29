@@ -175,7 +175,7 @@ final class Tab: NSManagedObject, Identifiable {
         private static func zimFileNotMissing() -> NSPredicate {
             NSPredicate(format: "zimFile.isMissing == false")
         }
-        private static func noZimFile() -> NSPredicate {
+        static func noZimFile() -> NSPredicate {
             NSPredicate(format: "zimFile == nil")
         }
     }

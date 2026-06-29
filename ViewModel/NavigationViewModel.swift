@@ -77,6 +77,22 @@ final class NavigationViewModel: ObservableObject {
         }
     }
 
+    func openNewTab() {
+        let context = Database.shared.viewContext
+        let fetchRequest = Tab.fetchRequest(
+            predicate: Tab.Predicate.noZimFile(),
+            sortDescriptors: [NSSortDescriptor(key: "created", ascending: false)]
+        )
+        fetchRequest.fetchLimit = 1
+        if let existingTab = try? context.fetch(fetchRequest).first {
+            #if !os(macOS)
+            currentItem = NavigationItem.tab(objectID: existingTab.objectID)
+            #endif
+            return
+        }
+        createTab()
+    }
+
     @discardableResult
     func createTab() -> NSManagedObjectID {
         let context = Database.shared.viewContext
