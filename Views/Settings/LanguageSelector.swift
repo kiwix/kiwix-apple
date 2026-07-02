@@ -24,23 +24,36 @@ struct LanguageSelector: View {
     @EnvironmentObject private var library: LibraryViewModel
     @State private var languages = [Language]()
     @State private var sortOrder = [KeyPathComparator(\Language.count, order: .reverse)]
+    @State private var searchText: String = ""
+    @State private var onlySelected: Bool = false
 
     var body: some View {
-        Table(languages, sortOrder: $sortOrder) {
-            TableColumn("") { language in
-                Toggle("", isOn: Binding {
-                    selected.contains(language.code)
-                } set: { isSelected in
-                    if isSelected {
-                        selected.insert(language.code)
-                    } else if selected.count > 1 {
-                        selected.remove(language.code)
-                    }
+        VStack {
+            HStack {
+                TextField("", text: $searchText, prompt: Text(LocalString.common_search))
+                Toggle(isOn: $onlySelected, label: {
+                    Label("", systemImage: "checkmark.square")
+                        .labelStyle(.iconOnly)
                 })
-            }.width(14)
-            TableColumn(LocalString.language_selector_name_title, value: \.name)
-            TableColumn(LocalString.language_selector_count_table_title, value: \.count) { language in
-                Text(language.count.formatted())
+            }
+            Table(languages, sortOrder: $sortOrder) {
+                TableColumn("") { language in
+                    Toggle("", isOn: Binding {
+                        selected.contains(language.code)
+                    } set: { isSelected in
+                        if isSelected {
+                            selected.insert(language.code)
+                            reloadLanguages()
+                        } else if selected.count > 1 {
+                            selected.remove(language.code)
+                            reloadLanguages()
+                        }
+                    })
+                }.width(14)
+                TableColumn(LocalString.language_selector_name_title, value: \.name)
+                TableColumn(LocalString.language_selector_count_table_title, value: \.count) { language in
+                    Text(language.count.formatted())
+                }
             }
         }
         .opacity( library.state == .complete ? 1.0 : 0.3)
@@ -53,12 +66,42 @@ struct LanguageSelector: View {
         .onAppear {
             reloadLanguages()
         }
+        .onChange(of: searchText) { _, _ in
+            reloadLanguages()
+        }
+        .onChange(of: onlySelected) { _, _ in
+            reloadLanguages()
+        }
+    }
+    
+    private func reloadLanguages() {
+        reloadLanguages(searchText: searchText, onlySelected: onlySelected)
     }
 
-    private func reloadLanguages() {
+    private func reloadLanguages(searchText: String, onlySelected: Bool) {
         Task {
             languages = await Languages.fetch()
             languages.sort(using: sortOrder)
+            switch (searchText.isEmpty, onlySelected) {
+            case (true, false):
+                // nothing to filter
+                return
+            case (true, true):
+                // show only selected no search
+                languages = languages.filter { (lang: Language) in
+                    selected.contains(lang.code)
+                }
+            case (false, false):
+                // search by text, show all
+                languages = languages.filter { (lang: Language) in
+                    lang.name.lowercased().contains(searchText.lowercased())
+                }
+            case (false, true):
+                // search by text, but show only selected
+                languages = languages.filter { (lang: Language) in
+                    lang.name.lowercased().contains(searchText.lowercased()) && selected.contains(lang.code)
+                }
+            }
         }
     }
 }
@@ -67,6 +110,8 @@ struct LanguageSelector: View {
     @Default(.libraryLanguageSortingMode) private var sortingMode
     @State private var showing = [Language]()
     @State private var hiding = [Language]()
+    @State private var languages = [Language]()
+    @State private var searchText: String = ""
 
     var body: some View {
         List {
@@ -89,25 +134,40 @@ struct LanguageSelector: View {
         .navigationTitle(LocalString.language_selector_navitation_title)
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
-            Picker(selection: $sortingMode) {
-                ForEach(LibraryLanguageSortingMode.allCases) { sortingMode in
-                    Text(sortingMode.name).tag(sortingMode)
+            ToolbarItem(placement: .secondaryAction) {
+                Picker(selection: $sortingMode) {
+                    ForEach(LibraryLanguageSortingMode.allCases) { sortingMode in
+                        Text(sortingMode.name).tag(sortingMode)
+                    }
+                } label: {
+                    Label(LocalString.language_selector_toolbar_sorting, systemImage: "arrow.up.arrow.down")
+                        .labelStyle(.iconOnly)
                 }
-            } label: {
-                Label(LocalString.language_selector_toolbar_sorting, systemImage: "arrow.up.arrow.down")
-            }.pickerStyle(.menu)
+            }
         }
         .onAppear {
             Task {
-                var languages = await Languages.fetch()
+                languages = await Languages.fetch()
                 languages.sort(by: Languages.compare(lhs:rhs:))
                 showing = languages.filter { Defaults[.libraryLanguageCodes].contains($0.code) }
-                hiding = languages.filter { !Defaults[.libraryLanguageCodes].contains($0.code) }
+                hiding = hidingLanguages(searchText: searchText)
             }
         }
         .onChange(of: sortingMode) {
             showing.sort(by: Languages.compare(lhs:rhs:))
             hiding.sort(by: Languages.compare(lhs:rhs:))
+        }
+        .searchable(text: $searchText, prompt: LocalString.common_search)
+        .onChange(of: searchText) { _, newValue in
+            hiding = hidingLanguages(searchText: newValue)
+        }
+    }
+    
+    private func hidingLanguages(searchText: String) -> [Language] {
+        languages.filter { (lang: Language) in
+            guard !Defaults[.libraryLanguageCodes].contains(lang.code) else { return false }
+            guard !searchText.isEmpty else { return true }
+            return lang.name.lowercased().contains(searchText.lowercased())
         }
     }
 
