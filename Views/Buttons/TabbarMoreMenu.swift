@@ -37,16 +37,19 @@ struct TabbarMoreMenu: View {
     @ViewBuilder
     private func menuOfButtons() -> some View {
         Menu {
-            if !Brand.hideRandomButton {
-                randomButton()
+            ControlGroup {
+                if !Brand.hideRandomButton {
+                    randomButton()
+                }
+                if !Brand.hideShareButton {
+                    shareButton()
+                }
+                if !FeatureFlags.hasLibrary {
+                    hotspotButton()
+                }
+                bookmarkMenuButton()
             }
-            if !Brand.hideShareButton {
-                shareButton()
-            }
-            if !FeatureFlags.hasLibrary {
-                hotspotButton()
-            }
-            bookmarkMenuButton()
+            .controlGroupStyle(.compactMenu)
         } label: {
             Image(systemName: "ellipsis")
         }
@@ -94,12 +97,9 @@ struct TabbarMoreMenu: View {
     /// This is for the case when the bookmark button is under more (...) as a menu item
     @ViewBuilder
     private func bookmarkMenuButton() -> some View {
-        BookmarkMenuButtons(articleBookmarked: browser.articleBookmarked,
-                           isButtonDisabled: browser.zimFileName.isEmpty,
-                           createBookmark: { [weak browser] in browser?.createBookmark() },
-                           deleteBookmark: { [weak browser] in browser?.deleteBookmark() },
-                           showBookmarks: presentBookmarks
-        )
+        Button(LocalString.common_dialog_button_show_bookmarks, systemImage: "star") {
+            presentBookmarks()
+        }
     }
     
 }
