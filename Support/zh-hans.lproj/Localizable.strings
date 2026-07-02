@@ -105,9 +105,17 @@
 "library.zim_file_context.main_page.label" = "首页";
 "library.zim_file_context.random.label" = "随机页面";
 "library.zim_file_context.copy_url" = "复制URL";
+"zim_file_opened.overlay.no-zim-files-at-all.message" = "未找到 ZIM 文件。";
+"zim_file_opened.overlay.no-available-zim-files.message" = "未找到可用的 ZIM 文件。";
+"zim_file_opened.overlay.no-missing-zim-files.message" = "未找到缺失的 ZIM 文件。";
 "zim_file_opened.toolbar.open.title" = "打开...";
 "zim_file_opened.toolbar.open.help" = "打开 ZIM 文件";
 "zim_file_category.title" = "分类";
+"zim_file_opened.toolbar.filter.show_all" = "显示全部";
+"zim_file_opened.toolbar.filter.show_only_available" = "仅显示可用";
+"zim_file_opened.toolbar.filter.show_only_missing" = "仅显示缺失";
+"zim_file_opened.toolbar.sort_by.name" = "按名称排序";
+"zim_file_opened.toolbar.sort_by.size" = "按大小排序";
 "zim_file_catalog.fetching.message" = "正在获取目录…";
 "zim_file_category.section.empty.message" = "该类别下没有 ZIM 文件。";
 "zim_file_downloads.overlay.empty.message" = "没有下载任务";
@@ -211,6 +219,14 @@
 "settings.about.our_website.button" = "我们的网站";
 "settings.about.source.title" = "来源";
 "settings.about.button.license" = "GNU 通用公共许可证 v3";
+"download_mac_settings.tab.title" = "下载";
+"download_mac_folder.button.change" = "更改";
+"download_mac_folder.button.reset" = "重置为默认值";
+"download_mac_folder.unknown" = "未知";
+"download_mac_folder.panel.message" = "选择一个用于存放 ZIM 下载文件的文件夹";
+"download_mac_folder.error.title" = "无法使用此文件夹。";
+"download_mac_folder.error.not_writable" = "您没有权限在此保存文件。";
+"download_mac_folder.error.save_failed" = "无法设置下载文件夹。请重试。";
 "bookmark.navigation.title" = "书签";
 "bookmark.overlay.empty.title" = "没有书签";
 "search_result.zimfile.empty.message" = "没有打开任何 ZIM 文件";
@@ -233,6 +249,7 @@
 "app_macos_commands.open_file" = "打开...";
 "app_macos_commands.new" = "新建标签页";
 "app_macos_navigation.button.library" = "图书馆";
+"app_macos_navigation.button.restore_previous_session" = "恢复上一次会话";
 "sidebar_view.navigation.button.close" = "关闭";
 "enum.category.wikipedia" = "维基百科";
 "enum.category.wikibooks" = "维基教科书";
@@ -285,6 +302,8 @@
 "payment.success.description" = "您的慷慨对于我们来说意味着一切。";
 "payment.error.title" = "嗯，这很尴尬。";
 "payment.error.description" = "您的付款出现问题。请重试。";
+"payment.error_already_subscribed.title" = "您已有每月捐款";
+"payment.error_already_subscribed.description" = "请按照我们之前发送的电子邮件中的说明进行更新。";
 "download_service.error.client.backgroundSessionInUseByAnotherProcess" = "无法与后台传输服务通信";
 "download_service.error.client.backgroundSessionWasDisconnected" = "与后台传输服务断开连接";
 "download_service.error.client.cancelled" = "已取消";
@@ -328,3 +347,6 @@
 "download_service.error.client.cannotMoveFile" = "无法移动文件";
 "download_service.error.client.downloadDecodingFailedMidStream" = "下载解码失败";
 "download_service.error.client.downloadDecodingFailedToComplete" = "下载解码失败";
+"geolocation_error.permission_denied" = "用户已拒绝地理位置权限。";
+"geolocation_error.position_unavailable" = "位置不可用。";
+"geolocation_error.timeout" = "位置请求超时。";
