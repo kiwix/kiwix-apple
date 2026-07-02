@@ -82,7 +82,7 @@
 "zim_file_category.section.empty.message" = "אין קובץ ZIM בקטגוריה הזאת.";
 "zim_file_downloads.overlay.empty.message" = "אין משימות הורדה";
 "zim_file_new_overlay.empty" = "אין קובץ ZIM חדש";
-"zim_file_new.button.refresh" = "רענון";
+"zim_file_new.button.refresh" = "ריענון";
 "zim_file.list.name.text" = "שם";
 "zim_file.list.description.text" = "תיאור";
 "zim_file.list.actions.text" = "פעולות";

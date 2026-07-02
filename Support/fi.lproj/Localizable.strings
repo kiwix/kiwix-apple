@@ -57,9 +57,17 @@
 "library.zim_file_context.main_page.label" = "Etusivu";
 "library.zim_file_context.random.label" = "Satunnainen sivu";
 "library.zim_file_context.copy_url" = "Kopioi URL";
+"zim_file_opened.overlay.no-zim-files-at-all.message" = "ZIM-tiedostoja ei löytynyt.";
+"zim_file_opened.overlay.no-available-zim-files.message" = "Saatavilla olevia ZIM-tiedostoja ei löytynyt.";
+"zim_file_opened.overlay.no-missing-zim-files.message" = "Puuttuvia ZIM-tiedostoja ei löytynyt.";
 "zim_file_opened.toolbar.open.title" = "Avaa...";
 "zim_file_opened.toolbar.open.help" = "Avaa ZIM-tiedosto";
 "zim_file_category.title" = "Luokka";
+"zim_file_opened.toolbar.filter.show_all" = "Näytä kaikki";
+"zim_file_opened.toolbar.filter.show_only_available" = "Näytä vain saatavilla olevat";
+"zim_file_opened.toolbar.filter.show_only_missing" = "Näytä vain puuttuvat";
+"zim_file_opened.toolbar.sort_by.name" = "Järjestä nimen mukaan";
+"zim_file_opened.toolbar.sort_by.size" = "Järjestä koon mukaan";
 "zim_file.list.name.text" = "Nimi";
 "zim_file.list.description.text" = "Kuvaus";
 "zim_file.action.open_main_page.title" = "Avaa etusivu";
