@@ -15,6 +15,8 @@
 
 import SwiftUI
 
+/// A single star icon button that is used on macOS
+/// or a star icon on iOS when it's placed directly on the tab bar (not in the more ... a menu)
 struct BookmarkButton: View {
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     @State private var isShowingPopOver = false

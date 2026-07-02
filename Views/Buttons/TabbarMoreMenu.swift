@@ -16,34 +16,28 @@
 #if os(iOS)
 import SwiftUI
 
-struct MoreTabButton: View {
+struct TabbarMoreMenu: View {
     
     @ObservedObject var browser: BrowserViewModel
     @FocusedValue(\.hasZIMFiles) var hasZimFiles
     
     /// For branded apps, that have a dedicated hotspot toolbar button
     let presentHotspot: () -> Void
-    
-    @State private var menuPopOver = false
+    /// When the bookmark button is under more ... tab menu item
+    let presentBookmarks: () -> Void
     
     var body: some View {
         if Brand.hideRandomButton && Brand.hideShareButton && FeatureFlags.hasLibrary {
             bookmarkButton()
         } else {
-            withPopOverForMoreButtons()
+            menuOfButtons()
         }
     }
     
     @ViewBuilder
-    private func withPopOverForMoreButtons() -> some View {
-        Button {
-            menuPopOver = true
-        } label: {
-            Image(systemName: "ellipsis")
-        }.popover(isPresented: $menuPopOver,
-                  attachmentAnchor: .rect(.rect(CGRect(x: 0, y: 0, width: 184, height: 184)))
-        ) {
-            HStack(spacing: 24) {
+    private func menuOfButtons() -> some View {
+        Menu {
+            ControlGroup {
                 if !Brand.hideRandomButton {
                     randomButton()
                 }
@@ -53,13 +47,11 @@ struct MoreTabButton: View {
                 if !FeatureFlags.hasLibrary {
                     hotspotButton()
                 }
-                bookmarkButton()
+                bookmarkMenuButton()
             }
-            .labelStyle(.iconOnly)
-            .buttonStyle(.borderless)
-            .tint(.primary)
-            .padding(24)
-            .presentationCompactAdaptation(.popover)
+            .controlGroupStyle(.compactMenu)
+        } label: {
+            Image(systemName: "ellipsis")
         }
     }
     
@@ -78,10 +70,7 @@ struct MoreTabButton: View {
             articleTitle: browser.articleTitle,
             webViewURL: browser.webView.url,
             pageDataWithExtension: browser.pageDataWithExtension,
-            isButtonDisabled: browser.zimFileName.isEmpty,
-            actionCallback: {
-                menuPopOver = false
-            }
+            isButtonDisabled: browser.zimFileName.isEmpty
         )
     }
     
@@ -91,17 +80,26 @@ struct MoreTabButton: View {
             LocalString.enum_navigation_item_hotspot,
             systemImage: "wifi",
             action: {
-                menuPopOver = false
                 presentHotspot()
             })
     }
     
+    /// This is for the case when we have the star icon button on the tab bar directly (eg: custom apps)
     @ViewBuilder
     private func bookmarkButton() -> some View {
         BookmarkButton(articleBookmarked: browser.articleBookmarked,
                        isButtonDisabled: browser.zimFileName.isEmpty,
                        createBookmark: { [weak browser] in browser?.createBookmark() },
-                       deleteBookmark: { [weak browser] in browser?.deleteBookmark() })
+                       deleteBookmark: { [weak browser] in browser?.deleteBookmark() }
+        )
+    }
+    
+    /// This is for the case when the bookmark button is under more (...) as a menu item
+    @ViewBuilder
+    private func bookmarkMenuButton() -> some View {
+        Button(LocalString.common_dialog_button_show_bookmarks, systemImage: "star") {
+            presentBookmarks()
+        }
     }
     
 }
