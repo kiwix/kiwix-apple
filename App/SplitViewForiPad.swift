@@ -62,26 +62,18 @@ struct SplitViewForiPad: View { // swiftlint:disable:this type_body_length
             .listStyle(.sidebar)
             .navigationTitle(Brand.appName)
             .toolbar {
-                Menu {
-                    Button(role: .destructive) {
-                        guard case let .tab(tabID) = navigation.currentItem else { return }
-                        Task { [weak navigation] in
-                            await navigation?.deleteTab(tabID: tabID)
+                if hasNonEmptyTab() {
+                    Menu {
+                        Button(role: .destructive) {
+                            Task { [weak navigation] in
+                                await navigation?.deleteAllTabs(keepEmpty: true)
+                            }
+                        } label: {
+                            Label(LocalString.common_tab_menu_close_all, systemImage: "xmark.square.fill")
                         }
                     } label: {
-                        Label(LocalString.common_tab_menu_close_this, systemImage: "xmark.square")
+                        Label(LocalString.common_tab_menu_close_all, systemImage: "xmark.square")
                     }
-                    Button(role: .destructive) {
-                        Task { [weak navigation] in
-                            await navigation?.deleteAllTabs()
-                        }
-                    } label: {
-                        Label(LocalString.common_tab_menu_close_all, systemImage: "xmark.square.fill")
-                    }
-                } label: {
-                    Label(LocalString.common_tab_menu_new_tab, systemImage: "plus.square")
-                } primaryAction: {
-                    navigation.createTab()
                 }
             }
         } detail: {
@@ -152,6 +144,12 @@ struct SplitViewForiPad: View { // swiftlint:disable:this type_body_length
         }
     }
     
+    private func hasNonEmptyTab() -> Bool {
+        tabs.contains { tab in
+            tab.zimFile != nil
+        }
+    }
+    
     @ViewBuilder
     private func sectionFor(_ section: MenuSection) -> some View {
         if section == .tabs {
@@ -163,12 +161,14 @@ struct SplitViewForiPad: View { // swiftlint:disable:this type_body_length
                     .id(tab.id)
                     .accessibilityIdentifier(tab.title ?? LocalString.common_tab_menu_new_tab)
                     .swipeActions(edge: .trailing, allowsFullSwipe: true) {
-                        Button(role: .destructive) {
-                            Task { [weak navigation] in
-                                await navigation?.deleteTab(tabID: tab.objectID)
+                        if tab.zimFile != nil {
+                            Button(role: .destructive) {
+                                Task { [weak navigation] in
+                                    await navigation?.deleteTab(tabID: tab.objectID)
+                                }
+                            } label: {
+                                Label(LocalString.sidebar_view_navigation_button_close, systemImage: "xmark")
                             }
-                        } label: {
-                            Label(LocalString.sidebar_view_navigation_button_close, systemImage: "xmark")
                         }
                     }
                 }

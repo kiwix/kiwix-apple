@@ -50,12 +50,58 @@ final class NavigationViewModel: ObservableObject {
 
     private var currentTabIdValue: NSManagedObjectID?
     #endif
+    
+    #if os(iOS)
+    
+    private var emptyTabChangedTask: Task<Void, Never>?
+    
+    init() {
+        enforceOneOnlyOneEmptyTab()
+        emptyTabChangedTask = Task {
+            for await _ in NotificationCenter.default.notifications(named: .enforceOneEmptyTab) {
+                enforceOneOnlyOneEmptyTab()
+            }
+        }
+    }
+    
+    /// make sure we have 1 and only 1 empty tab
+    private func enforceOneOnlyOneEmptyTab() {
+        let context = Database.shared.viewContext
+        if var emptyTabs = try? context.fetch(Tab.fetchRequestEmptyTabs()) {
+            switch emptyTabs.count {
+            case 0:
+                _ = Self.makeTab(context: context)
+            case 1:
+                // this is what we want
+                // but make sure it's the first in the list
+                // with a distant date no other tab can match
+                emptyTabs.first?.created = Date.distantFuture
+            default:
+                // remove all the extra ones
+                while emptyTabs.count > 1 {
+                    let tabToDelete = emptyTabs.removeFirst()
+                    context.delete(tabToDelete)
+                }
+                if context.hasChanges {
+                    try? context.save()
+                }
+            }
+        }
+    }
+    
+    #endif
 
     // MARK: - Tab Management
 
     nonisolated static func makeTab(context: NSManagedObjectContext) -> Tab {
         let tab = Tab(context: context)
+        #if os(iOS)
+        // make sure it's always ordered as first
+        // with a creation date, no other tab can match
+        tab.created = Date.distantFuture
+        #else
         tab.created = Date()
+        #endif
         tab.lastOpened = Date()
         try? context.obtainPermanentIDs(for: [tab])
         try? context.save()
@@ -170,11 +216,18 @@ final class NavigationViewModel: ObservableObject {
     }
 
     /// Delete all tabs, and open a new tab
-    func deleteAllTabs() async {
+    /// - Parameter keepEmpty: on iOS we do want to keep the empty one
+    func deleteAllTabs(keepEmpty: Bool = false) async {
         let tabIdsToDelete = await Database.shared.viewContext.perform {
             let context = Database.shared.viewContext
-            // delete all existing tabs
-            let tabs = try? context.fetch(Tab.fetchRequest())
+            let request = if keepEmpty {
+                // delete all non empty ones
+                Tab.fetchRequestNonEmptyTabs()
+            } else {
+                // delete all existing tabs
+                Tab.fetchRequest()
+            }
+            let tabs = try? context.fetch(request)
             var tabIds: [NSManagedObjectID] = []
             tabs?.forEach {
                 tabIds.append($0.objectID)

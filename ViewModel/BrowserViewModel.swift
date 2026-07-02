@@ -267,6 +267,21 @@ import CoreKiwix
             let context = Database.shared.viewContext
             if let tab = try? context.existingObject(with: tabID) as? Tab {
                 tab.title = articleTitle
+#if os(iOS)
+                // navigating from empty tab to a zimfile
+                let isNavigatingAwayFromEmptyTab = tab.zimFile == nil && zimFile != nil
+                if isNavigatingAwayFromEmptyTab {
+                    // set back the date of creation of this tab to now
+                    // new tabs are created with a distant future date
+                    // so they always come first
+                    tab.created = Date()
+                }
+                defer {
+                    if isNavigatingAwayFromEmptyTab {
+                        NotificationCenter.default.post(name: .enforceOneEmptyTab, object: nil)
+                    }
+                }
+#endif
                 tab.zimFile = zimFile
             }
             if context.hasChanges {
