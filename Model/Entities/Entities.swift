@@ -144,6 +144,20 @@ final class Tab: NSManagedObject, Identifiable {
         return request
     }
     
+    static func fetchRequestEmptyTabs() -> NSFetchRequest<Tab> {
+        // swiftlint:disable:next force_cast
+        let request = super.fetchRequest() as! NSFetchRequest<Tab>
+        request.predicate = Predicate.noZimFile()
+        return request
+    }
+    
+    static func fetchRequestNonEmptyTabs() -> NSFetchRequest<Tab> {
+        // swiftlint:disable:next force_cast
+        let request = super.fetchRequest() as! NSFetchRequest<Tab>
+        request.predicate = Predicate.hasZimFile()
+        return request
+    }
+    
     static func fetchRequest(byZimFileIds zimFileIds: [UUID]) -> NSFetchRequest<Tab> {
         // swiftlint:disable:next force_cast
         let request = super.fetchRequest() as! NSFetchRequest<Tab>
@@ -175,8 +189,11 @@ final class Tab: NSManagedObject, Identifiable {
         private static func zimFileNotMissing() -> NSPredicate {
             NSPredicate(format: "zimFile.isMissing == false")
         }
-        private static func noZimFile() -> NSPredicate {
+        static func noZimFile() -> NSPredicate {
             NSPredicate(format: "zimFile == nil")
+        }
+        static func hasZimFile() -> NSPredicate {
+            NSPredicate(format: "zimFile != nil")
         }
     }
 }
