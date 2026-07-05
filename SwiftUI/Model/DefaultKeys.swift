@@ -18,7 +18,7 @@ import Foundation
 import SwiftUI
 
 extension Defaults.Keys {
-//    // reading
+    // reading
     static let webViewTextSizeAdjustFactor = Key<Double>("webViewZoomScale", default: 1)
     static let webViewPageZoom = Key<Double>("webViewPageZoom", default: 1)
     static let externalLinkLoadingPolicy = Key<ExternalLinkLoadingPolicy>(
@@ -32,7 +32,10 @@ extension Defaults.Keys {
     static let recentSearchTexts = Key<[String]>("recentSearchTexts", default: [])
 
     // library
-    static let libraryLanguageCodes = Key<Set<String>>("libraryLanguageCodes", default: Set())
+    /// deprecated, migrated to ordered [String]
+    static let libraryLanguageCodesSet = Key<Set<String>>("libraryLanguageCodes", default: Set())
+    static let libraryLanguageCodes = Key<[String]>("libraryLanguageCodesSorted", default: [])
+    
     static let libraryETag = Key<String>("libraryETag", default: "")
     static let libraryLanguageSortingMode = Key<LibraryLanguageSortingMode>(
         "libraryLanguageSortingMode", default: LibraryLanguageSortingMode.byCounts

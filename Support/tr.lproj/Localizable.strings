@@ -117,7 +117,6 @@
 "library_settings.last_refresh.text" = "Son yenileme";
 "library_settings.auto_refresh.toggle" = "Otomatik yenileme";
 "library_settings.catalog_warning.text" = "Etkinleştirildiğinde kütüphane kataloğu güncelliğini yitirdiğinde otomatik olarak yenilenecektir.";
-"library_settings.languages.title" = "Diller";
 "settings.navigation.title" = "Ayarlar";
 "library_settings.toggle.cellular" = "Hücresel kullanarak indir";
 "library_settings.new-download-task-description" = "Değişiklik yalnızca yeni indirme görevlerine uygulanacaktır.";
@@ -141,7 +140,6 @@
 "language_selector.showing.header" = "Gösteriliyor";
 "language_selector.hiding.header" = "Gizleniyor";
 "language_selector.navitation.title" = "Dil";
-"language_selector.toolbar.sorting" = "Sıralama";
 "settings.about.title" = "Hakkında";
 "settings.about.release" = "Sürüm";
 "settings.about.dependencies" = "Bağımlılıklar";

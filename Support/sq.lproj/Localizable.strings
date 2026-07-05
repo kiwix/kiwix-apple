@@ -123,7 +123,6 @@
 "library_settings.last_refresh.text" = "Rifreskimi i fundit";
 "library_settings.auto_refresh.toggle" = "Vetërifreskoje";
 "library_settings.catalog_warning.text" = "Kur aktivizohet, katalogu i bibliotekës do të rifreskohet vetvetiu, kur vjetrohet.";
-"library_settings.languages.title" = "Gjuhë";
 "settings.navigation.title" = "Rregullime";
 "library_settings.toggle.cellular" = "Shkarkojeni duke përdorur celularin";
 "library_settings.new-download-task-description" = "Ndryshimi do të aplikohet vetëm mbi akte të rinj shkarkimesh.";
@@ -147,7 +146,6 @@
 "language_selector.showing.header" = "Shfaqet";
 "language_selector.hiding.header" = "Fshihet";
 "language_selector.navitation.title" = "Gjuhë";
-"language_selector.toolbar.sorting" = "Renditje";
 "settings.about.title" = "Mbi";
 "settings.about.release" = "Hedhje në qarkullim";
 "settings.about.dependencies" = "Varësi";

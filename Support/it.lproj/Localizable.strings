@@ -105,7 +105,6 @@
 "theme_settings.option.system" = "Sistema";
 "reading_settings.zoom.title" = "Zoom della pagina";
 "library_settings.button.refresh_now" = "Aggiorna ora";
-"library_settings.languages.title" = "Lingue";
 "settings.navigation.title" = "Impostazioni";
 "library_settings.toggle.cellular" = "Scarica tramite cellulare";
 "catalog_settings.last_refresh.text" = "Ultimo aggiornamento";
@@ -120,7 +119,6 @@
 "language_selector.no_language.title" = "Nessuna lingua";
 "language_selector.showing.header" = "Sto mostrando:";
 "language_selector.navitation.title" = "Lingua";
-"language_selector.toolbar.sorting" = "Ordinamento";
 "settings.about.title" = "Informazioni";
 "settings.about.dependencies.name" = "Nome";
 "settings.about.description" = "Kiwix è un lettore offline per contenuti online come Wikipedia, Project Gutenberg o TED Talks. Rende la conoscenza disponibile a persone che non hanno o hanno un accesso limitato a Internet. Il software e il contenuto sono gratuiti per chiunque.";

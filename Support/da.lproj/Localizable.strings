@@ -161,7 +161,6 @@
 "library_settings.last_refresh.text" = "Seneste opdatering";
 "library_settings.auto_refresh.toggle" = "Automatisk opdatering";
 "library_settings.catalog_warning.text" = "Når det er aktiveret, opdateres bibliotekskataloget automatisk, når det er forældet.";
-"library_settings.languages.title" = "Sprog";
 "settings.navigation.title" = "Indstillinger";
 "library_settings.toggle.cellular" = "Download via mobildata";
 "catalog_settings.last_refresh.text" = "Seneste opdatering";
@@ -183,7 +182,6 @@
 "language_selector.showing.header" = "Viser";
 "language_selector.hiding.header" = "Skjuler";
 "language_selector.navitation.title" = "Sprog";
-"language_selector.toolbar.sorting" = "Sortering";
 "settings.about.title" = "Om";
 "settings.about.release" = "Udgiv";
 "settings.about.dependencies" = "Afhængigheder";

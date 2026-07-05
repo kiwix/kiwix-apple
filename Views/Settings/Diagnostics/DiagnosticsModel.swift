@@ -267,7 +267,7 @@ enum Diagnostics {
     }
     
     private static func libraryLanguageCodes() -> String {
-        let languageCodes: Set<String> = Defaults[.libraryLanguageCodes]
+        let languageCodes: [String] = Defaults[.libraryLanguageCodes]
         return "Library language codes: \(languageCodes.joined(separator: ", "))"
     }
     

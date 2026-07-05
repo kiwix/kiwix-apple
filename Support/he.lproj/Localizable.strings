@@ -138,7 +138,6 @@
 "library_settings.last_refresh.text" = "הרענון האחרון";
 "library_settings.auto_refresh.toggle" = "רענון אוטומטי";
 "library_settings.catalog_warning.text" = "כשזה מופעל, קטלוג הספרייה ירוענן אוטומטית כאשר הוא מתיישן.";
-"library_settings.languages.title" = "שפות";
 "settings.navigation.title" = "הגדרות";
 "library_settings.toggle.cellular" = "להוריד באמצעות הרשת הסלולרית";
 "library_settings.new-download-task-description" = "השינוי יחול רק על משימות הורדה חדשות.";
@@ -162,7 +161,6 @@
 "language_selector.showing.header" = "מוצגות";
 "language_selector.hiding.header" = "מוסתרות";
 "language_selector.navitation.title" = "שפה";
-"language_selector.toolbar.sorting" = "מיון";
 "settings.about.title" = "אודות";
 "settings.about.release" = "מהדורה";
 "settings.about.dependencies" = "תלויות";

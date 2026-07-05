@@ -21,7 +21,7 @@ private final class ViewModel: ObservableObject {
     
     @Published private(set) var zimFiles: [ZimFile] = []
     
-    private var languageCodes = Set<String>()
+    private var languageCodes: [String] = []
     private var searchText: String = ""
     
     private let sortDescriptors = [
@@ -30,7 +30,7 @@ private final class ViewModel: ObservableObject {
         NSSortDescriptor(keyPath: \ZimFile.size, ascending: false)
     ]
     
-    func update(languageCodes: Set<String>) {
+    func update(languageCodes: [String]) {
         guard languageCodes != self.languageCodes else { return }
         self.languageCodes = languageCodes
         Task {
@@ -46,7 +46,7 @@ private final class ViewModel: ObservableObject {
         }
     }
     
-    func forceRefreshWith(searchText: String, languageCodes: Set<String>) async {
+    func forceRefreshWith(searchText: String, languageCodes: [String]) async {
         self.searchText = searchText
         self.languageCodes = languageCodes
         await update()
@@ -77,7 +77,7 @@ private final class ViewModel: ObservableObject {
         }
     }
     
-    private static func buildPredicate(searchText: String, languageCodes: Set<String>) -> NSPredicate {
+    private static func buildPredicate(searchText: String, languageCodes: [String]) -> NSPredicate {
         var predicates = [
             NSPredicate(format: "languageCode IN %@", languageCodes),
             NSPredicate(format: "requiresServiceWorkers == false")

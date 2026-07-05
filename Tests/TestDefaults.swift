@@ -26,7 +26,7 @@ final class TestDefaults: NSObject, Defaulting {
         self[.libraryAutoRefresh] = false
         self[.libraryETag] = ""
         self[.libraryUsingOldISOLangCodes] = false
-        self[.libraryLanguageCodes] = Set<String>()
+        self[.libraryLanguageCodes] = []
     }
     
     subscript<Value>(key: Defaults.Key<Value>) -> Value {

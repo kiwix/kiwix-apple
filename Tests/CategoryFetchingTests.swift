@@ -38,7 +38,7 @@ final class CategoryFetchingTests: XCTestCase {
         request.predicate = ZimFilesCategory.buildPredicate(
             category: .other,
             searchText: "",
-            languageCodes: Set(["x"])
+            languageCodes: ["x"]
         )
         let results = try! context.fetch(request)
         XCTAssertTrue(results.isEmpty)
@@ -57,7 +57,7 @@ final class CategoryFetchingTests: XCTestCase {
         request.predicate = ZimFilesCategory.buildPredicate(
             category: .other,
             searchText: "",
-            languageCodes: Set(["eng"])
+            languageCodes: ["eng"]
         )
         let results = try! context.fetch(request)
         XCTAssertEqual(results.count, 1)
@@ -76,7 +76,7 @@ final class CategoryFetchingTests: XCTestCase {
         request.predicate = ZimFilesCategory.buildPredicate(
             category: .other,
             searchText: "",
-            languageCodes: Set(["eng", "deu", "fra", "ita", "por"])
+            languageCodes: ["eng", "deu", "fra", "ita", "por"]
         )
         let results = try! context.fetch(request)
         XCTAssertEqual(results.count, 1)
@@ -95,7 +95,7 @@ final class CategoryFetchingTests: XCTestCase {
         request.predicate = ZimFilesCategory.buildPredicate(
             category: .other,
             searchText: "",
-            languageCodes: Set(["spa"])
+            languageCodes: ["spa"]
         )
         let results = try! context.fetch(request)
         XCTAssertEqual(results.count, 1)
@@ -114,7 +114,7 @@ final class CategoryFetchingTests: XCTestCase {
         request.predicate = ZimFilesCategory.buildPredicate(
             category: .other,
             searchText: "",
-            languageCodes: Set(["nld", "por", "fra"])
+            languageCodes: ["nld", "por", "fra"]
         )
         let results = try! context.fetch(request)
         XCTAssertEqual(results.count, 1)
@@ -133,7 +133,7 @@ final class CategoryFetchingTests: XCTestCase {
         request.predicate = ZimFilesCategory.buildPredicate(
             category: .other,
             searchText: "",
-            languageCodes: Set(["por", "pol", "ara", "vie", "kor"])
+            languageCodes: ["por", "pol", "ara", "vie", "kor"]
         )
         let results = try! context.fetch(request)
         XCTAssertTrue(results.isEmpty)

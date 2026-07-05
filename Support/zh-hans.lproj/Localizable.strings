@@ -181,7 +181,6 @@
 "library_settings.last_refresh.text" = "上次刷新";
 "library_settings.auto_refresh.toggle" = "自动刷新";
 "library_settings.catalog_warning.text" = "启用后，图书馆目录将在过期时自动刷新。";
-"library_settings.languages.title" = "语言";
 "settings.navigation.title" = "设置";
 "library_settings.toggle.cellular" = "使用蜂窝数据下载";
 "library_settings.new-download-task-description" = "更改仅适用于新的下载任务。";
@@ -205,7 +204,6 @@
 "language_selector.showing.header" = "显示";
 "language_selector.hiding.header" = "隐藏";
 "language_selector.navitation.title" = "语言";
-"language_selector.toolbar.sorting" = "排序";
 "settings.about.title" = "关于";
 "settings.about.release" = "发行";
 "settings.about.dependencies" = "依赖项";

@@ -161,7 +161,6 @@
 "library_settings.last_refresh.text" = "Последна поднова";
 "library_settings.auto_refresh.toggle" = "Автоподнова";
 "library_settings.catalog_warning.text" = "Кога е овозможен, библиотечниот каталог ќе биде автоматски подновуван кога ќе застари.";
-"library_settings.languages.title" = "Јазици";
 "settings.navigation.title" = "Нагодувања";
 "library_settings.toggle.cellular" = "Преземи на мобилен";
 "library_settings.new-download-task-description" = "Промената ќе важи само за новите задачи за преземање.";
@@ -185,7 +184,6 @@
 "language_selector.showing.header" = "Приказ на";
 "language_selector.hiding.header" = "Скривање";
 "language_selector.navitation.title" = "Јазик";
-"language_selector.toolbar.sorting" = "Подредување";
 "settings.about.title" = "За прилогот";
 "settings.about.release" = "Издание";
 "settings.about.dependencies" = "Зависности";

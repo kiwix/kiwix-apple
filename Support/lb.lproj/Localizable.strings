@@ -116,7 +116,6 @@
 "reading_settings.tab.reading" = "Liesen";
 "library_settings.catalog.title" = "Katalog";
 "library_settings.button.refresh_now" = "Elo aktualiséieren";
-"library_settings.languages.title" = "Sproochen";
 "settings.navigation.title" = "Astellungen";
 "catalog_settings.refreshing.text" = "Aktualiséieren...";
 "catalog_settings.header.text" = "Katalog";
@@ -131,7 +130,6 @@
 "language_selector.no_language.title" = "Keng Sprooch";
 "language_selector.hiding.header" = "Verstoppen";
 "language_selector.navitation.title" = "Sprooch";
-"language_selector.toolbar.sorting" = "Sortéierung";
 "settings.about.title" = "Iwwer";
 "settings.about.release" = "Release";
 "settings.about.dependencies" = "Ofhängegkeeten";

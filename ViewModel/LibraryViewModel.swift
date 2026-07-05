@@ -195,12 +195,19 @@ total: \(totalCount, privacy: .public)
         let validCodes = Set<String>(languages.map { $0.code })
         // preserve only valid selections by:
         // converting earlier user selections, and filtering out invalid ones
-        defaults[.libraryLanguageCodes] = LanguagesConverter.convert(codes: defaults[.libraryLanguageCodes],
-                                                                     validCodes: validCodes)
+        let validForUser = LanguagesConverter.convert(codes: Set(defaults[.libraryLanguageCodes]),
+                                                        validCodes: validCodes)
+        // save it back to user defaults, but preserve the ordering
+        defaults[.libraryLanguageCodes] = defaults[.libraryLanguageCodes].filter { code in
+            validForUser.contains(code)
+        }
 
         guard defaults[.libraryLanguageCodes].isEmpty else {
-            return // what was earlier set by the user or picked by default is valid
+            // what was earlier set by the user or picked by default is valid
+            return
         }
+        // since the user defaults are empty,
+        // from this point below, the original ordering doesn't matter anymore
 
         // Nothing was set earlier, or validation filtered it out to empty
         // Try to set it to the device language,
@@ -215,7 +222,7 @@ total: \(totalCount, privacy: .public)
         if validDefaults.isEmpty { // meaning the device language isn't valid (or nil)
             defaults[.libraryLanguageCodes] = [fallbackToEnglish]
         } else {
-            defaults[.libraryLanguageCodes] = validDefaults
+            defaults[.libraryLanguageCodes] = validDefaults.sorted() // sorted, but just to make it an array
         }
     }
 

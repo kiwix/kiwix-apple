@@ -162,7 +162,6 @@
 "library_settings.last_refresh.text" = "Ultime refrescamento";
 "library_settings.auto_refresh.toggle" = "Auto-refrescar";
 "library_settings.catalog_warning.text" = "Si es activate, le catalogo del bibliotheca essera refrescate automaticamente quando es obsolete.";
-"library_settings.languages.title" = "Linguas";
 "settings.navigation.title" = "Parametros";
 "library_settings.toggle.cellular" = "Discargar per rete mobile";
 "library_settings.new-download-task-description" = "Le cambiamento se applicara solmente al nove discargamentos.";
@@ -186,7 +185,6 @@
 "language_selector.showing.header" = "Es monstrate:";
 "language_selector.hiding.header" = "Celamento";
 "language_selector.navitation.title" = "Lingua";
-"language_selector.toolbar.sorting" = "Ordinamento";
 "settings.about.title" = "A proposito";
 "settings.about.release" = "Edition";
 "settings.about.dependencies" = "Dependentias";

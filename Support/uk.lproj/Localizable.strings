@@ -133,7 +133,6 @@
 "library_settings.last_refresh.text" = "Останнє оновлення";
 "library_settings.auto_refresh.toggle" = "Автоматичне оновлення";
 "library_settings.catalog_warning.text" = "Коли ввімкнено, каталог бібліотеки оновлюватиметься автоматично, якщо він застарів.";
-"library_settings.languages.title" = "Мови";
 "settings.navigation.title" = "Налаштування";
 "library_settings.toggle.cellular" = "Завантажувати використовуючи стільникові дані";
 "library_settings.new-download-task-description" = "Зміни застосовуватимуться лише до нових завантажень.";
@@ -156,7 +155,6 @@
 "language_selector.showing.header" = "Показуються";
 "language_selector.hiding.header" = "Приховуються";
 "language_selector.navitation.title" = "Мова";
-"language_selector.toolbar.sorting" = "Сортування";
 "settings.about.title" = "Про застосунок";
 "settings.about.release" = "Реліз";
 "settings.about.dependencies" = "Залежності";
