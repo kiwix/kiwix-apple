@@ -133,7 +133,6 @@
 "library_settings.last_refresh.text" = "Последнее обновление";
 "library_settings.auto_refresh.toggle" = "Автообновление";
 "library_settings.catalog_warning.text" = "Если эта опция включена, каталог библиотеки будет обновляться автоматически, если он устареет.";
-"library_settings.languages.title" = "Языки";
 "settings.navigation.title" = "Настройки";
 "library_settings.toggle.cellular" = "Загрузка через мобильный интернет";
 "library_settings.new-download-task-description" = "Изменение будет применяться только к новым задачам загрузки.";
@@ -157,7 +156,6 @@
 "language_selector.showing.header" = "Показано";
 "language_selector.hiding.header" = "Скрыто";
 "language_selector.navitation.title" = "Язык";
-"language_selector.toolbar.sorting" = "Сортировка";
 "settings.about.title" = "О приложении";
 "settings.about.release" = "Релиз";
 "settings.about.dependencies" = "Зависимости";

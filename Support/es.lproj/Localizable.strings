@@ -166,7 +166,6 @@
 "library_settings.last_refresh.text" = "Última actualización";
 "library_settings.auto_refresh.toggle" = "Actualización automática";
 "library_settings.catalog_warning.text" = "Si esta opción está activada, el catálogo de la biblioteca se actualizará automáticamente cuando quede obsoleto.";
-"library_settings.languages.title" = "Idiomas";
 "settings.navigation.title" = "Ajustes";
 "library_settings.toggle.cellular" = "Descargar usando el móvil";
 "library_settings.new-download-task-description" = "El cambio sólo se aplicará a las nuevas tareas de descarga.";
@@ -190,7 +189,6 @@
 "language_selector.showing.header" = "Mostrando";
 "language_selector.hiding.header" = "Ocultando";
 "language_selector.navitation.title" = "Idioma";
-"language_selector.toolbar.sorting" = "Clasificación";
 "settings.about.title" = "Acerca de";
 "settings.about.release" = "Lanzamiento";
 "settings.about.dependencies" = "Dependencias";

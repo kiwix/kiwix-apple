@@ -170,7 +170,6 @@
 "library_settings.last_refresh.text" = "Posledné obnovenie";
 "library_settings.auto_refresh.toggle" = "Automatické obnovovanie";
 "library_settings.catalog_warning.text" = "Keď je zapnuté, katalóg knižnice sa automaticky obnoví, keď je zastaraný.";
-"library_settings.languages.title" = "Jazyky";
 "settings.navigation.title" = "Nastavenia";
 "library_settings.toggle.cellular" = "Sťahovať cez mobilné dáta";
 "library_settings.new-download-task-description" = "Zmena sa uplatní iba na nové sťahovacie úlohy.";
@@ -194,7 +193,6 @@
 "language_selector.showing.header" = "Zobrazuje sa";
 "language_selector.hiding.header" = "Skrýva sa";
 "language_selector.navitation.title" = "Jazyk";
-"language_selector.toolbar.sorting" = "Zoraďovanie";
 "settings.about.title" = "O aplikácii";
 "settings.about.release" = "Vydanie";
 "settings.about.dependencies" = "Závislosti";

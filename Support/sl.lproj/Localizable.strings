@@ -170,7 +170,6 @@
 "library_settings.last_refresh.text" = "Zadnja osvežitev";
 "library_settings.auto_refresh.toggle" = "Samodejno osveževanje";
 "library_settings.catalog_warning.text" = "Če je omogočeno, se bo knjižnični katalog samodejno osvežil, ko bo zastarel.";
-"library_settings.languages.title" = "Jeziki";
 "settings.navigation.title" = "Nastavitve";
 "library_settings.toggle.cellular" = "Mobilni prenos";
 "library_settings.new-download-task-description" = "Sprememba bo veljala samo za nova opravila prenosa.";
@@ -194,7 +193,6 @@
 "language_selector.showing.header" = "Prikazano:";
 "language_selector.hiding.header" = "Skrivanje";
 "language_selector.navitation.title" = "Jezik";
-"language_selector.toolbar.sorting" = "Razvrščanje";
 "settings.about.title" = "O aplikaciji";
 "settings.about.release" = "Izdaja";
 "settings.about.dependencies" = "Odvisnosti";

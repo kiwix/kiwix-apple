@@ -166,7 +166,6 @@
 "library_settings.last_refresh.text" = "上一次重整";
 "library_settings.auto_refresh.toggle" = "自動重整";
 "library_settings.catalog_warning.text" = "啟用後，在文庫目錄過期時會自動重整。";
-"library_settings.languages.title" = "語言";
 "settings.navigation.title" = "設定";
 "library_settings.toggle.cellular" = "使用蜂巢式網路下載";
 "library_settings.new-download-task-description" = "更改內容僅套用到新的下載任務。";
@@ -190,7 +189,6 @@
 "language_selector.showing.header" = "顯示";
 "language_selector.hiding.header" = "隱藏";
 "language_selector.navitation.title" = "語言";
-"language_selector.toolbar.sorting" = "排序";
 "settings.about.title" = "關於";
 "settings.about.release" = "發行";
 "settings.about.dependencies" = "相依";

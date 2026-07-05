@@ -208,7 +208,6 @@
 "library_settings.last_refresh.text" = "Last refresh";
 "library_settings.auto_refresh.toggle" = "Auto refresh";
 "library_settings.catalog_warning.text" = "When enabled, the library catalog will be refreshed automatically when outdated.";
-"library_settings.languages.title" = "Languages";
 "settings.navigation.title" = "Settings";
 "library_settings.toggle.cellular" = "Download using cellular";
 "library_settings.new-download-task-description" = "Change will only apply to new download tasks.";
@@ -232,7 +231,6 @@
 "language_selector.showing.header" = "Showing";
 "language_selector.hiding.header" = "Hiding";
 "language_selector.navitation.title" = "Language";
-"language_selector.toolbar.sorting" = "Sorting";
 
 "settings.about.title" = "About";
 "settings.about.release" = "Release";

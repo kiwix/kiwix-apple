@@ -117,7 +117,6 @@
 "library_settings.last_refresh.text" = "Bahigu kahigibu";
 "library_settings.auto_refresh.toggle" = "Toli kahigibu";
 "library_settings.catalog_warning.text" = "A yi niŋ, karimbu shee yuya pii doli taba nyɛla din yɛn kahigi di toli";
-"library_settings.languages.title" = "Balla";
 "settings.navigation.title" = "Bintaɣindisi";
 "library_settings.toggle.cellular" = "Zaŋmi cɛllular deegi";
 "library_settings.new-download-task-description" = "Taɣibu nyɛla din yɛn niŋ n-ti deeri palli koŋko.";
@@ -141,7 +140,6 @@
 "language_selector.showing.header" = "N-wuhira";
 "language_selector.hiding.header" = "Sɔɣibu";
 "language_selector.navitation.title" = "Balli";
-"language_selector.toolbar.sorting" = "Waligibu";
 "settings.about.title" = "Jɛndi";
 "settings.about.release" = "Bahima";
 "settings.about.dependencies" = "Doliba";

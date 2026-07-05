@@ -175,7 +175,6 @@
 "library_settings.last_refresh.text" = "마지막 갱신";
 "library_settings.auto_refresh.toggle" = "자동 새로 고침";
 "library_settings.catalog_warning.text" = "이 기능을 활성화하면 도서관 목록이 최신 정보가 아닐 경우 자동으로 업데이트됩니다.";
-"library_settings.languages.title" = "언어";
 "settings.navigation.title" = "설정";
 "library_settings.toggle.cellular" = "셀룰러를 사용하여 다운로드";
 "library_settings.new-download-task-description" = "변경사항은 새로운 다운로드 작업에만 적용됩니다.";
@@ -199,7 +198,6 @@
 "language_selector.showing.header" = "표시 중";
 "language_selector.hiding.header" = "숨기는 중";
 "language_selector.navitation.title" = "언어";
-"language_selector.toolbar.sorting" = "정렬 중";
 "settings.about.title" = "정보";
 "settings.about.release" = "릴리스";
 "settings.about.dependencies" = "의존성";

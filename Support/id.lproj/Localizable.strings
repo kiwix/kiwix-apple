@@ -130,7 +130,6 @@
 "library_settings.last_refresh.text" = "Pemuatan ulang terakhir";
 "library_settings.auto_refresh.toggle" = "Pemuatan ulang otomatis";
 "library_settings.catalog_warning.text" = "Jika diaktifkan, katalog perpustakaan akan diperbarui secara otomatis jika sudah kedaluwarsa.";
-"library_settings.languages.title" = "Bahasa";
 "settings.navigation.title" = "Pengaturan";
 "library_settings.toggle.cellular" = "Unduh menggunakan seluler";
 "library_settings.new-download-task-description" = "Perubahan hanya akan berlaku untuk tugas pengunduhan baru.";
@@ -154,7 +153,6 @@
 "language_selector.showing.header" = "Menampilkan";
 "language_selector.hiding.header" = "Menyembunyikan";
 "language_selector.navitation.title" = "Bahasa";
-"language_selector.toolbar.sorting" = "Urutkan";
 "settings.about.title" = "Tentang";
 "settings.about.release" = "Rilis";
 "settings.about.dependencies" = "Ketergantungan";

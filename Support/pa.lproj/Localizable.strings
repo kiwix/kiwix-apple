@@ -90,7 +90,6 @@
 "reading_settings.external_link.title" = "ਬਾਹਰੀ ਕੜੀ";
 "reading_settings.tab.reading" = "ਪੜ੍ਹ ਰਿਹਾ ਏ";
 "library_settings.button.refresh_now" = "ਹੁਣੇ ਤਾਜ਼ਾ ਕਰੋ";
-"library_settings.languages.title" = "ਬੋਲੀਆਂ";
 "settings.navigation.title" = "ਤਰਜੀਹਾਂ";
 "library_settings.toggle.cellular" = "ਸੈਲੂਲਰ ਦੀ ਵਰਤੋਂ ਕਰਕੇ ਲਾਹੋ (ਉਤਾਰਾ ਕਰੋ)";
 "library_settings.new-download-task-description" = "ਬਦਲਾਅ ਸਿਰਫ਼ ਨਵੇਂ ਲਾਹੇ ਕਾਰਜਾਂ 'ਤੇ ਲਾਗੂ ਹੋਵੇਗਾ।";
@@ -107,7 +106,6 @@
 "language_selector.showing.header" = "ਵਿਖਾ ਰਿਹਾ ਐ";
 "language_selector.hiding.header" = "ਲੁਕਾ ਰਿਹਾ ਐ";
 "language_selector.navitation.title" = "ਬੋਲੀ";
-"language_selector.toolbar.sorting" = "ਛਾਂਟੀ";
 "settings.about.title" = "ਬਾਰੇ";
 "settings.about.dependencies.name" = "ਨਾਂ";
 "settings.about.dependencies.license" = "ਲਸੰਸ";

@@ -83,6 +83,7 @@ struct ReadingSettings: View {
 struct LibrarySettings: View {
     @Default(.libraryAutoRefresh) private var libraryAutoRefresh
     @EnvironmentObject private var library: LibraryViewModel
+    @FocusState var isSearchFocused: Bool
 
     var body: some View {
         VStack(spacing: 16) {
@@ -111,10 +112,7 @@ struct LibrarySettings: View {
                         .foregroundColor(.secondary)
                 }
             }
-            SettingSection(name: LocalString.library_settings_languages_title, alignment: .top) {
-                LanguageSelector()
-                    .environmentObject(library)
-            }
+            LanguageSelector(isSearchFocused: _isSearchFocused).environmentObject(library)
         }
         .padding()
         .tabItem { Label(LocalString.library_settings_catalog_title, systemImage: "folder.badge.gearshape") }

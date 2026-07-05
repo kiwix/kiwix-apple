@@ -172,7 +172,6 @@
 "library_settings.last_refresh.text" = "Laatste vernieuwing";
 "library_settings.auto_refresh.toggle" = "Automatisch vernieuwen";
 "library_settings.catalog_warning.text" = "Als dit is ingeschakeld, wordt de bibliotheekcatalogus automatisch vernieuwd bij veroudering.";
-"library_settings.languages.title" = "Talen";
 "settings.navigation.title" = "Instellingen";
 "library_settings.toggle.cellular" = "Downloaden via mobiel";
 "library_settings.new-download-task-description" = "Deze wijziging is alleen van toepassing op nieuwe downloadtaken.";
@@ -196,7 +195,6 @@
 "language_selector.showing.header" = "Weergegeven";
 "language_selector.hiding.header" = "Verborgen";
 "language_selector.navitation.title" = "Taal";
-"language_selector.toolbar.sorting" = "Sortering";
 "settings.about.title" = "Over";
 "settings.about.release" = "Uitgave";
 "settings.about.dependencies" = "Afhankelijkheden";

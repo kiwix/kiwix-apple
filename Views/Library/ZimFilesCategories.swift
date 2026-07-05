@@ -84,7 +84,7 @@ struct ZimFilesCategory: View {
     static func buildPredicate(
         category: Category,
         searchText: String,
-        languageCodes: Set<String> = Defaults[.libraryLanguageCodes]
+        languageCodes: [String] = Defaults[.libraryLanguageCodes]
     ) -> NSPredicate {
         let langPredicates = languageCodes.map { langCode -> NSPredicate in
             let regex = String(format: "(.*,)?%@(,.*)?", langCode)

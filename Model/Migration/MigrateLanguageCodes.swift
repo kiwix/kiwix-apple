@@ -14,15 +14,17 @@
 // along with Kiwix; If not, see https://www.gnu.org/licenses/.
 
 import Foundation
+import Defaults
 
-enum Migrations {
+extension Migrations {
     
-    /// A central place for all migrations
-    /// they will be executed in the order specified here
-    static func all() -> [Migration] {
-        [
-            Self.languageCodes(),
-            Self.schemeToZIM(using: Database.shared.viewContext)
-        ]
+    static func languageCodes() -> Migration {
+        Migration(userDefaultsKey: "migrate_to_sorted_language_codes") {
+            // migrate from the old language codes set to the new sorted one
+            Defaults[.libraryLanguageCodes] = Defaults[.libraryLanguageCodesSet].sorted()
+            // we can remove the old values
+            Defaults[.libraryLanguageCodesSet] = []
+            return true
+        }
     }
 }
