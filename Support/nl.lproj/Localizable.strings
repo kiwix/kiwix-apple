@@ -55,7 +55,7 @@
 "bookmark_button.show.help" = "Het bladwijzerblad weergeven, waar de huidige pagina aan de bladwijzers kan worden toegevoegd of eruit kan worden verwijderd.";
 "article_shortcut.main.button.title" = "Hoofdartikel";
 "article_shortcut.main.button.help" = "Hoofdartikel weergeven";
-"article_shortcut.random.button.title.mac" = "Willekeurig artikel";
+"article_shortcut.random.button.title.mac" = "Willekeurige pagina";
 "article_shortcut.random.button.title.ios" = "Willekeurige pagina";
 "article_shortcut.random.button.help" = "Willekeurig artikel weergeven";
 "alert_handler.alert.failed.title" = "Het gevraagde artikel kan niet worden geladen.";
