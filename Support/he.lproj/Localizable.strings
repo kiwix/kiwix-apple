@@ -237,10 +237,6 @@
 "payment.monthly_support.label" = "תמיכה חודשית בקיוויקס";
 "payment.summary.title" = "קיוויקס";
 "payment.textfield.custom_amount.label" = "כמות מותאמת אישית";
-"payment.confirm.button.title" = "אישור";
-"payment.selection.average_monthly_donation.subtitle" = "תרומה חודשית ממוצעת";
-"payment.selection.last_year_average.subtitle" = "הממוצע של השנה שעברה";
-"payment.selection.custom_amount" = "כמות מותאמת אישית";
 "payment.selection.option.one_time" = "חד־פעמי";
 "payment.selection.option.monthly" = "מדי חודש";
 "payment.support_fallback_message" = "אנו מצטערים, המכשיר שלך אינו תומך ב־Apple Pay.";

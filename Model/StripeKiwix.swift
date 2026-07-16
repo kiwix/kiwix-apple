@@ -129,8 +129,7 @@ private struct SelectedPaymentAmount: Encodable {
         // (e.g., 100 cents to charge $1.00 or 100 to charge ¥100, a zero-decimal currency).
         // The minimum amount is $0.50 US or equivalent in charge currency.
         amount = Int(selectedAmount.value * 100.0)
-        currency = selectedAmount.currency
-        assert(Payment.currencyCodes.contains(currency))
+        currency = selectedAmount.currency.rawValue
         origin = deviceName
         email = emailAddress
     }

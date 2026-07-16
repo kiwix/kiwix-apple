@@ -230,9 +230,6 @@
 "payment.monthly_support.label" = "Щомісячна підтримка Kiwix";
 "payment.summary.title" = "Kiwix";
 "payment.textfield.custom_amount.label" = "Власна сума";
-"payment.confirm.button.title" = "Підтвердити";
-"payment.selection.average_monthly_donation.subtitle" = "Середня щомісячна пожертва";
-"payment.selection.custom_amount" = "Власна сума";
 "payment.selection.option.one_time" = "Одноразова";
 "payment.selection.option.monthly" = "Щомісячно";
 "payment.support_fallback_message" = "На жаль, ваш пристрій не підтримує Apple Pay.";

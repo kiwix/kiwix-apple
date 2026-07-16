@@ -220,10 +220,6 @@
 "payment.monthly_support.label" = "Suport lunar pentru Kiwix";
 "payment.summary.title" = "Kiwix";
 "payment.textfield.custom_amount.label" = "Sumă personalizată";
-"payment.confirm.button.title" = "Confirmă";
-"payment.selection.average_monthly_donation.subtitle" = "Donația medie lunară";
-"payment.selection.last_year_average.subtitle" = "Media de anul trecut";
-"payment.selection.custom_amount" = "Sumă personalizată";
 "payment.selection.option.one_time" = "O dată";
 "payment.selection.option.monthly" = "Lunar";
 "payment.support_fallback_message" = "Ne pare rău, dispozitivul dvs. nu acceptă Apple Pay.";

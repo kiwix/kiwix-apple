@@ -48,8 +48,6 @@ struct Kiwix: App {
     @StateObject private var libraryRefreshViewModel = LibraryViewModel()
     private let notificationCenterDelegate = NotificationCenterDelegate()
     private var amountSelected = PassthroughSubject<SelectedAmount?, Never>()
-    @State private var selectedAmount: SelectedAmount?
-    @StateObject var formReset = FormReset()
     @FocusState private var isSearchFocused: Bool
     @FocusState private var isSettingsSearchFocused: Bool
     @FocusedValue(\.browserURL) var browserURL
@@ -174,9 +172,8 @@ struct Kiwix: App {
         .handlesExternalEvents(matching: [])
         
         Window(LocalString.payment_donate_title, id: "donation") {
-            Group {
-                if let selectedAmount {
-                    PaymentSummary(selectedAmount: selectedAmount)
+            NavigationStack {
+                DonationForm()
                     .onReceive(NotificationCenter.default.publisher(for: .donationResult)) { notification in
                         guard let finalResult = notification.userInfo?["result"] as? Payment.FinalResult else {
                             return
@@ -186,33 +183,16 @@ struct Kiwix: App {
                             openWindow(id: "donation-thank-you")
                         case .error:
                             openWindow(id: "donation-error")
-                        case .dismiss:
-                            closeDonation()
                         case .errorAlreadyHasSubscription:
                             openWindow(id: "donation-error-already-has-subscription")
                         }
                     }
-                } else {
-                    PaymentForm(amountSelected: amountSelected)
-                        .frame(width: 320, height: 320)
-                }
             }
-            .onReceive(amountSelected) { amount in
-                selectedAmount = amount
-            }
-            .onReceive(NotificationCenter.default.publisher(for: NSWindow.willCloseNotification)) { notification in
-                if let window = notification.object as? NSWindow,
-                   window.identifier?.rawValue == "donation" {
-                    formReset.reset()
-                    selectedAmount = nil
-                }
-            }
-            .environmentObject(formReset)
+            .frame(minWidth: 438, minHeight: 440)
         }
         .windowResizability(.contentMinSize)
-        .windowStyle(.titleBar)
         .commandsRemoved()
-        .defaultSize(width: 320, height: 400)
+        .defaultSize(width: 438, height: 440)
         .restorationBehaviourDisabled()
         .handlesExternalEvents(matching: [])
 
@@ -245,16 +225,6 @@ struct Kiwix: App {
         .defaultSize(width: 320, height: 198)
         .restorationBehaviourDisabled()
         .handlesExternalEvents(matching: [])
-    }
-
-    private func closeDonation() {
-        // even after upgrading to macOS 14 with
-        // @Environment(\.dismissWindow) var dismissWindow
-        // and calling: dismissWindow(id: "donation")
-        // it is still not working as expected
-        NSApplication.shared.windows.first { window in
-            window.identifier?.rawValue == "donation"
-        }?.close()
     }
 }
 

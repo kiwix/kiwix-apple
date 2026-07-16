@@ -14,80 +14,95 @@
 // along with Kiwix; If not, see https://www.gnu.org/licenses/.
 
 import SwiftUI
-import Combine
 
 struct CustomAmount: View {
-    private let selected: PassthroughSubject<SelectedAmount?, Never>
-    private let isMonthly: Bool
-    @State private var customAmount: Double?
-    @State private var customCurrency: String = Payment.defaultCurrencyCode
-    @FocusState private var focusedField: FocusedField?
-    private var currencies = Payment.currencyCodes
-
-    public init(selected: PassthroughSubject<SelectedAmount?, Never>, isMonthly: Bool) {
-        self.selected = selected
-        self.isMonthly = isMonthly
-    }
+    @Binding var selectedAmount: SelectedAmountState
+    @State private var inputAmount: Double?
+    @FocusState private var isFocused: Bool
 
     var body: some View {
-        VStack {
+        HStack {
             Spacer()
-            List {
-                HStack {
-                    TextField(LocalString.payment_textfield_custom_amount_label,
-                              value: $customAmount,
-                              format: .number.precision(.fractionLength(2)))
-                    .focused($focusedField, equals: .customAmount)
-#if os(iOS)
-                    .padding(6)
-                    .keyboardType(.decimalPad)
-#else
-                    .textFieldStyle(.plain)
-                    .fontWeight(.bold)
-                    .font(Font.headline)
-                    .padding(4)
-                    .border(Color.accentColor.opacity(0.618), width: 2)
-#endif
-                    Picker("", selection: $customCurrency) {
-                        ForEach(currencies, id: \.self) {
-                            Text(Locale.current.localizedString(forCurrencyCode: $0) ?? $0)
-                        }
-                    }
-                }
-            }.frame(maxHeight: 100)
-            Spacer()
-            HStack {
-                Spacer()
-                Button {
-                    if let customAmount {
-                        selected.send(
-                            SelectedAmount(
-                                value: customAmount,
-                                currency: customCurrency,
-                                isMonthly: isMonthly
-                            )
-                        )
-                    }
-                } label: {
-                    Text(LocalString.payment_confirm_button_title)
-                }
-                .buttonStyle(BorderedProminentButtonStyle())
-                .padding()
-                .disabled( !Payment.isInValidRange(amount: customAmount) )
+            Group {
+                inputField
             }
+            .modifier(inputFieldModifier())
             Spacer()
         }
-        .task { @MainActor in
-            focusedField = .customAmount
+        .onChange(of: isFocused, initial: false) { oldValue, newValue in
+            if !oldValue, newValue {
+                updateWithCustom()
+            }
+        }
+        .onChange(of: inputAmount) { _, _ in
+            if isFocused, selectedAmount.isCustom {
+                updateWithCustom()
+            }
+        }
+        .onChange(of: selectedAmount) { (_, newValue: SelectedAmountState) in
+            if case .predefined = newValue {
+                // reset the whole custom part
+                withAnimation {
+                    isFocused = false
+                    inputAmount = nil
+                }
+            }
+        }
+    }
+    
+    private func updateWithCustom() {
+        withAnimation {
+            switch inputAmount {
+            case .none:
+                selectedAmount = .editingCustom
+            case let .some(amount):
+                selectedAmount = .custom(amount: amount, valid: Payment.validRangeOf(amount))
+            }
         }
     }
 
+    @ViewBuilder
+    private var inputField: some View {
+        TextField(LocalString.payment_textfield_custom_amount_label,
+                  value: $inputAmount,
+                  format: .number.precision(.fractionLength(2)).locale(.current))
+            .focused($isFocused)
+            .focusable(isFocused, interactions: .activate)
+            .padding()
+#if os(iOS)
+            .keyboardType(.decimalPad)
+#else
+            .textFieldStyle(.plain)
+            .font(.title3)
+#endif
+    }
+    
+    private func inputFieldModifier() -> InputBackgroundModifier {
+        switch selectedAmount {
+        case .predefined:
+            InputBackgroundModifier(.secondary.opacity(0.15))
+        case .editingCustom, .custom(_, .valid):
+            InputBackgroundModifier(.accentColor.opacity(0.25))
+        case .custom(_, .above), .custom(_, .below):
+            InputBackgroundModifier(.red.opacity(0.25))
+        }
+    }
 }
 
-private enum FocusedField: String {
-    case customAmount
-}
+private struct InputBackgroundModifier: ViewModifier {
+    private let backgroundColor: Color
+    init(_ backgroundColor: Color) {
+        self.backgroundColor = backgroundColor
+    }
 
-#Preview {
-    CustomAmount(selected: PassthroughSubject<SelectedAmount?, Never>(), isMonthly: true)
+    func body(content: Content) -> some View {
+        content
+            .background(
+                backgroundColor,
+                in: RoundedRectangle(
+                    cornerSize: CGSize(width: 10, height: 10),
+                    style: .continuous
+                )
+            )
+    }
 }

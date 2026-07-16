@@ -17,20 +17,34 @@ import Foundation
 import SwiftUI
 
 struct PaymentResultPopUp: View {
-
-    @Environment(\.dismiss) var dismiss
-    #if os(iOS)
-    @Environment(\.verticalSizeClass) var verticalSizeClass: UserInterfaceSizeClass?
-    #endif
-
-    let state: State
-
     enum State {
         case thankYou
         case error
         case errorAlreadyHasSubscription
     }
 
+    @Environment(\.dismiss) var dismiss
+    #if os(iOS)
+    @Environment(\.verticalSizeClass) var verticalSizeClass: UserInterfaceSizeClass?
+    #endif
+    
+    private let title: String
+    private let description: String
+    
+    init(state: State) {
+        switch state {
+        case .thankYou:
+            title = LocalString.payment_success_title
+            description = LocalString.payment_success_description
+        case .error:
+            title = LocalString.payment_error_title
+            description = LocalString.payment_error_description
+        case .errorAlreadyHasSubscription:
+            title = LocalString.payment_error_already_subscribed_title
+            description = LocalString.payment_error_already_subscribed_description
+        }
+    }
+    
     var body: some View {
         Group {
             #if os(iOS)
@@ -41,25 +55,10 @@ struct PaymentResultPopUp: View {
             }
             #endif
             VStack(spacing: 16) {
-                switch state {
-                case .thankYou:
-                    Text(LocalString.payment_success_title)
-                        .font(.title)
-                    Text(LocalString.payment_success_description)
-                        .font(.headline)
-                case .error:
-                    Text(LocalString.payment_error_title)
-                        .font(.title)
-                    Text(LocalString.payment_error_description)
-                        .font(.headline)
-                case .errorAlreadyHasSubscription:
-                    Text(
-                        LocalString.payment_error_already_subscribed_title)
-                        .font(.title)
-                    Text(
-                        LocalString.payment_error_already_subscribed_description)
-                        .font(.headline)
-                }
+                Text(title).padding()
+                    .font(.title)
+                Text(description).padding()
+                    .font(.headline)
             }
             .multilineTextAlignment(.center)
         }

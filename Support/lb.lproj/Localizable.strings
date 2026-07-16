@@ -195,10 +195,6 @@
 "payment.summary_page.title" = "Kiwix ënnerstëtzen";
 "payment.support_button.label" = "Kiwix ënnerstëtzen";
 "payment.summary.title" = "Kiwix";
-"payment.confirm.button.title" = "Confirméieren";
-"payment.selection.average_monthly_donation.subtitle" = "Duerchschnëttlechen Don pro Mount";
-"payment.selection.last_year_average.subtitle" = "Duerchschnëtt vum leschte Joer";
-"payment.selection.custom_amount" = "Anere Betrag";
 "payment.selection.option.one_time" = "Eemoleg";
 "payment.selection.option.monthly" = "All Mount";
 "payment.support_fallback_message" = "Et deet eis leed, mee Apple Pay gëtt vun Ärem Apparat net ënnerstëtzt.";

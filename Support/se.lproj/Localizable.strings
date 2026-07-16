@@ -98,7 +98,6 @@
 "enum.navigation_item.settings" = "Ásahusat";
 "enum.search_result_snippet_mode.disabled" = "Váldojuvvon eret anus";
 "payment.donate.title" = "Skeŋke";
-"payment.confirm.button.title" = "Nanne";
 "payment.selection.option.monthly" = "Mánnosaččat";
 "download_service.error.client.cannotCreateFile" = "Fiilla ráhkadeapmi ii lihkostuvvan";
 "download_service.error.client.cannotOpenFile" = "Fiilla rahpan ii lihkostuvvan";

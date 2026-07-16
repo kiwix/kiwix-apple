@@ -289,10 +289,6 @@
 "payment.monthly_support.label" = "Kiwix的每月支持";
 "payment.summary.title" = "Kiwix";
 "payment.textfield.custom_amount.label" = "自定义金额";
-"payment.confirm.button.title" = "确认";
-"payment.selection.average_monthly_donation.subtitle" = "平均每月捐款";
-"payment.selection.last_year_average.subtitle" = "去年的平均水平";
-"payment.selection.custom_amount" = "自定义金额";
 "payment.selection.option.one_time" = "单次";
 "payment.selection.option.monthly" = "每月";
 "payment.support_fallback_message" = "很抱歉，您的设备不支持Apple Pay。";

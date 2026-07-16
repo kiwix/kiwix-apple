@@ -142,5 +142,4 @@
 "enum.navigation_item.settings" = "Configurações";
 "enum.search_result_snippet_mode.disabled" = "Desativado";
 "payment.donate.title" = "Doar";
-"payment.confirm.button.title" = "Confirmar";
 "payment.selection.option.monthly" = "Mensalmente";

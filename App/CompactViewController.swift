@@ -139,7 +139,7 @@ struct CompactTabView: View {
             case .settings(let scrollToHotspot):
                 NavigationStack {
                     Settings(scrollToHotspot: scrollToHotspot).toolbar {
-                        ToolbarItem(placement: .navigationBarLeading) {
+                        ToolbarItem(placement: .destructiveAction) {
                             Button {
                                 self.presentedSheet = nil
                             } label: {

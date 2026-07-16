@@ -171,10 +171,6 @@
 "payment.monthly_support.label" = "Sostegno mensile per Kiwix";
 "payment.summary.title" = "Kiwix";
 "payment.textfield.custom_amount.label" = "Importo personalizzato";
-"payment.confirm.button.title" = "Conferma";
-"payment.selection.average_monthly_donation.subtitle" = "Donazione media mensile";
-"payment.selection.last_year_average.subtitle" = "Media dell'anno scorso";
-"payment.selection.custom_amount" = "Importo personalizzato";
 "payment.selection.option.one_time" = "Una volta";
 "payment.selection.option.monthly" = "Mensile";
 "payment.success.title" = "Grazie mille per la tua donazione.";

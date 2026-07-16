@@ -88,7 +88,7 @@ struct ZimFileCell: View {
                 }
                 HStack(alignment: .bottom) {
                     VStack(alignment: .leading) {
-                        Text("\(zimFile.articleCount.formatted(.number.notation(.compactName))) " +
+                        Text("\(zimFile.articleCount.formatted(.number.notation(.compactName).locale(.current))) " +
                              LocalString.zim_file_cell_article_count_suffix)
                             .font(.caption)
                         Text(ZimFileCell.dateFormatter.string(from: zimFile.created))

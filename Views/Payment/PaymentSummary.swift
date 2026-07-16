@@ -43,7 +43,12 @@ struct PaymentSummary: View {
                 Text(LocalString.payment_selection_option_one_time).font(.title)
                     .padding()
             }
-            Text(selectedAmount.value.formatted(.currency(code: selectedAmount.currency))).font(.title).bold()
+            Text(
+                selectedAmount.value
+                    .formatted(.currency(code: selectedAmount.currency.rawValue).locale(.current))
+            )
+                .font(.title)
+                .bold()
             if paymentDetermined {
                 if let paymentButtonLabel {
                     PayWithApplePayButton(
@@ -64,7 +69,15 @@ struct PaymentSummary: View {
                 }
             } else {
                 LoadingProgressView()
+                    .frame(width: 186, height: 44)
+                    .padding()
             }
+            Text(LocalString.payment_donation_is_encrypted)
+                .multilineTextAlignment(.center)
+                .font(.callout)
+                .foregroundStyle(.tertiary)
+                .padding(.vertical, 32)
+                .padding(.horizontal, 48)
         }
         .task {
             paymentButtonLabel = await Payment.paymentButtonTypeAsync()
@@ -74,9 +87,13 @@ struct PaymentSummary: View {
 }
 
 #Preview {
-    PaymentSummary(
-        selectedAmount: SelectedAmount(value: 34,
-                                       currency: "CHF",
-                                       isMonthly: true)
-    )
+    Rectangle()
+        .background(Color.white)
+        .frame(minWidth: .infinity, minHeight: .infinity)
+        .sheet(isPresented: Binding<Bool>.constant(true)) {
+            PaymentSummary(
+                selectedAmount: SelectedAmount(value: 34, currency: .chf, isMonthly: true)
+            )
+            .presentationDetents([.fraction(0.83)])
+        }
 }
