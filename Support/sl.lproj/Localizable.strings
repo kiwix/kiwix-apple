@@ -278,10 +278,6 @@
 "payment.monthly_support.label" = "Mesečna podpora za Kiwix";
 "payment.summary.title" = "Kiwix";
 "payment.textfield.custom_amount.label" = "Drug znesek";
-"payment.confirm.button.title" = "Potrdi";
-"payment.selection.average_monthly_donation.subtitle" = "Povprečna mesečna donacija";
-"payment.selection.last_year_average.subtitle" = "Lanskoletno povprečje";
-"payment.selection.custom_amount" = "Drug znesek";
 "payment.selection.option.one_time" = "Enkratno";
 "payment.selection.option.monthly" = "Mesečno";
 "payment.support_fallback_message" = "Žal vaša naprava ne podpira Apple Pay.";

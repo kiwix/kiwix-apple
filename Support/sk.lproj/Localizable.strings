@@ -280,10 +280,6 @@
 "payment.monthly_support.label" = "Mesačná podpora pre Kiwix";
 "payment.summary.title" = "Kiwix";
 "payment.textfield.custom_amount.label" = "Vlastná suma";
-"payment.confirm.button.title" = "Potvrdiť";
-"payment.selection.average_monthly_donation.subtitle" = "Priemerný mesačný dar";
-"payment.selection.last_year_average.subtitle" = "Minuloročný priemer";
-"payment.selection.custom_amount" = "Vlastná suma";
 "payment.selection.option.one_time" = "Jednorazovo";
 "payment.selection.option.monthly" = "Mesačne";
 "payment.support_fallback_message" = "Je nám ľúto, vaše zariadenie nepodporuje Apple Pay.";

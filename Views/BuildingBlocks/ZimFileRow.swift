@@ -36,7 +36,7 @@ struct ZimFileRow: View {
                     Formatter.dateShort.string(from: zimFile.created),
                     Formatter.size.string(fromByteCount: zimFile.size),
                     {
-                        "\(zimFile.articleCount.formatted(.number.notation(.compactName))) " +
+                        "\(zimFile.articleCount.formatted(.number.notation(.compactName).locale(.current))) " +
                         LocalString.zim_file_cell_article_count_suffix
                     }()
                 ].joined(separator: ", ")).font(.caption)

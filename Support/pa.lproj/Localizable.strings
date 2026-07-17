@@ -153,6 +153,5 @@
 "enum.search_result_snippet_mode.disabled" = "ਅਸਮਰੱਥ";
 "enum.search_result_snippet_mode.matches" = "ਮੇਲ ਖਾਂਦਾਂ";
 "payment.donate.title" = "ਦਾਨ ਕਰੋ";
-"payment.confirm.button.title" = "ਤਸਦੀਕ ਕਰੋ";
 "payment.selection.option.one_time" = "ਇੱਕ ਵਾਰ";
 "payment.error.title" = "ਖੈਰ, ਇਹ ਅਜੀਬ ਹੈ।";

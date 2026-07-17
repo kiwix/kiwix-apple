@@ -260,10 +260,6 @@
 "payment.monthly_support.label" = "Месечна поддршка за Кивикс";
 "payment.summary.title" = "Кивикс";
 "payment.textfield.custom_amount.label" = "Прилагоден износ";
-"payment.confirm.button.title" = "Потврди";
-"payment.selection.average_monthly_donation.subtitle" = "Просечен месечен прилог";
-"payment.selection.last_year_average.subtitle" = "Лански просек";
-"payment.selection.custom_amount" = "Прилагоден износ";
 "payment.selection.option.one_time" = "Еднократно";
 "payment.selection.option.monthly" = "Месечно";
 "payment.support_fallback_message" = "За жал, вашиот уред не поддржува Apple Pay.";

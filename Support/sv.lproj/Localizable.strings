@@ -275,10 +275,6 @@
 "payment.monthly_support.label" = "Månadsstöd för Kiwix";
 "payment.summary.title" = "Kiwix";
 "payment.textfield.custom_amount.label" = "Anpassat belopp";
-"payment.confirm.button.title" = "Bekräfta";
-"payment.selection.average_monthly_donation.subtitle" = "Genomsnittlig månadsdonation";
-"payment.selection.last_year_average.subtitle" = "Förra årets genomsnitt";
-"payment.selection.custom_amount" = "Anpassat belopp";
 "payment.selection.option.one_time" = "En gång";
 "payment.selection.option.monthly" = "Månadsvis";
 "payment.support_fallback_message" = "Vi beklagar, din enhet stödjer inte Apple Pay.";

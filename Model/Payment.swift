@@ -45,7 +45,6 @@ struct Payment {
         case thankYou
         case error
         case errorAlreadyHasSubscription
-        case dismiss
     }
 
     #if DEBUG
@@ -92,29 +91,55 @@ struct Payment {
     /// NOTE: consider that these currencies support double precision, eg: 5.25 USD.
     /// Revisit `SelectedAmount`, and `SelectedPaymentAmount`
     /// before adding a zero-decimal currency such as: ¥100
-    static let currencyCodes = ["USD", "EUR", "CHF"]
-    static let defaultCurrencyCode = "USD"
+    enum Currency: String, CaseIterable, Identifiable {
+        case usd = "USD"
+        case eur = "EUR"
+        case chf = "CHF"
+        
+        var id: String { rawValue }
+        
+        var label: String {
+            switch self {
+            case .usd: "$ USD"
+            case .eur: "€ EUR"
+            case .chf: "  CHF"
+            }
+        }
+    }
+    static let defaultCurrencyCode = Currency.usd
     private static let minimumAmount: Double = 5
     /// The Sripe `amount` value supports up to eight digits
-    /// (e.g., a value of 99999999 for a USD charge of $999,999.99).
+    /// (e.g., a value of 999_999_99 for a USD charge of $999,999.99).
     /// see: https://docs.stripe.com/api/payment_intents/object#payment_intent_object-amount
-    static let maximumAmount: Int = 99999999
-    static func isInValidRange(amount: Double?) -> Bool {
-        guard let amount else { return false }
-        return minimumAmount <= amount && amount <= Double(maximumAmount)*100.0
+    static let maximumAmount: Int = 999_999_99
+    static func validRangeOf(_ amount: Double) -> ValidRange {
+        if amount < minimumAmount {
+            return .below
+        }
+        if amount > Double(maximumAmount)/100.0 {
+            return .above
+        }
+        return .valid
     }
-
-    static let oneTimes: [AmountOption] = [
-        .init(value: 10),
-        .init(value: 34, isAverage: true),
-        .init(value: 50)
-    ]
-
-    static let monthlies: [AmountOption] = [
-        .init(value: 5),
-        .init(value: 8, isAverage: true),
-        .init(value: 10)
-    ]
+    
+    enum ValidRange {
+        case valid
+        case below
+        case above
+        
+        var isValid: Bool {
+            self == .valid
+        }
+    }
+    
+    static var errorMessageBelow: String {
+        "Minimum is \(minimumAmount.formatted(.number.precision(.fractionLength(2)).locale(.current)))"
+    }
+    
+    static var errorMessageAbove: String {
+        let maxDouble = Double(maximumAmount)/100.0
+        return "Maximum is \(maxDouble.formatted(.number.precision(.fractionLength(2)).locale(.current)))"
+    }
 
     /// Checks Apple Pay capabilities, and returns the button label accordingly
     /// - Returns: Setup button if no cards added yet,
@@ -164,7 +189,7 @@ struct Payment {
         let request = PKPaymentRequest()
         request.merchantIdentifier = Self.merchantId
         request.countryCode = Locale.Region.switzerland.identifier
-        request.currencyCode = selectedAmount.currency
+        request.currencyCode = selectedAmount.currency.rawValue
         request.supportedNetworks = Self.supportedNetworks
         request.merchantCapabilities = Self.capabilities
         // We have to require the shipping email, otherwise we don't get any email at all!
@@ -175,7 +200,6 @@ struct Payment {
         return request
     }
 
-    // swiftlint:disable:next function_body_length
     func onPaymentAuthPhase(selectedAmount: SelectedAmount,
                             phase: PayWithApplePayButtonPaymentAuthorizationPhase) {
         switch phase {
@@ -234,7 +258,6 @@ struct Payment {
             }
         case .didFinish:
             Log.Payment.info("onPaymentAuthPhase: .didFinish")
-            NotificationCenter.donationResult(.dismiss)
         @unknown default:
             Log.Payment.error("onPaymentAuthPhase: @unknown default")
         }

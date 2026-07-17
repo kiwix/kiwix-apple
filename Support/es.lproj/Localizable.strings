@@ -267,10 +267,6 @@
 "payment.monthly_support.label" = "Pago mensual a Kiwix";
 "payment.summary.title" = "Kiwix";
 "payment.textfield.custom_amount.label" = "Cantidad personalizada";
-"payment.confirm.button.title" = "Confirmar";
-"payment.selection.average_monthly_donation.subtitle" = "Donación mensual promedio";
-"payment.selection.last_year_average.subtitle" = "Promedio del año pasado";
-"payment.selection.custom_amount" = "Cantidad personalizada";
 "payment.selection.option.one_time" = "Una vez";
 "payment.selection.option.monthly" = "Mensual";
 "payment.support_fallback_message" = "Lo sentimos, su dispositivo no soporta Apple Pay.";

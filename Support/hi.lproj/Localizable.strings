@@ -82,7 +82,6 @@
 "enum.navigation_item.new" = "नया";
 "enum.navigation_item.downloads" = "डाउनलोड";
 "enum.search_result_snippet_mode.disabled" = "अक्षम किया गया";
-"payment.confirm.button.title" = "पुष्टि करें";
 "download_service.error.client.backgroundSessionInUseByAnotherProcess" = "बैकग्राउंड ट्रांसफ़र सेवा से संपर्क नहीं हो सका";
 "download_service.error.client.backgroundSessionWasDisconnected" = "बैकग्राउंड ट्रांसफ़र सेवा से कनेक्शन अनुपलब्ध हो गया";
 "download_service.error.client.cancelled" = "रद्द";

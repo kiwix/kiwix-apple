@@ -228,7 +228,6 @@
 "payment.support_button.label" = "Поддержать Kiwix";
 "payment.monthly_support.label" = "Ежемесячная поддержка Kiwix";
 "payment.summary.title" = "Kiwix";
-"payment.confirm.button.title" = "Подтвердить";
 "payment.selection.option.one_time" = "Единожды";
 "payment.selection.option.monthly" = "Ежемесячно";
 "download_service.error.client.backgroundSessionInUseByAnotherProcess" = "Не удалось установить связь со службой фоновой передачи файлов";

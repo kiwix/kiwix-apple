@@ -280,10 +280,6 @@
 "payment.monthly_support.label" = "Maandelijkse steun voor Kiwix";
 "payment.summary.title" = "Kiwix";
 "payment.textfield.custom_amount.label" = "Aangepast bedrag";
-"payment.confirm.button.title" = "Bevestigen";
-"payment.selection.average_monthly_donation.subtitle" = "Gemiddelde maandelijkse donatie";
-"payment.selection.last_year_average.subtitle" = "Gemiddelde van vorig jaar";
-"payment.selection.custom_amount" = "Aangepast bedrag";
 "payment.selection.option.one_time" = "Eenmalig";
 "payment.selection.option.monthly" = "Maandelijks";
 "payment.support_fallback_message" = "Helaas ondersteunt uw apparaat Apple Pay niet.";

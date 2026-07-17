@@ -282,10 +282,7 @@
 "payment.monthly_support.label" = "Label to describe the already selected option, that the user will be charged a recurring monthly payment";
 "payment.summary.title" = "Text for the payment summary item of the payment. It is required to display the total of the payment, and the items included. In our case it's a single donation item";
 "payment.textfield.custom_amount.label" = "Label text for the input text field, where the user can type in their custom donation amount, eg: 7.55$";
-"payment.confirm.button.title" = "Confirmation button title, when the payment amount is selected";
-"payment.selection.average_monthly_donation.subtitle" = "Subtitle hint for the user, informing what was the average recurring monthly donation by other users, when selecting a custom (user defined) amount for donation";
-"payment.selection.last_year_average.subtitle" = "Subtitle hint for the user, informing what was the average one time donation by other users, when selecting a custom (user defined) amount for donation";
-"payment.selection.custom_amount" = "Selectable option title: define a custom amount, the user wants to donate (eg: 7.55$ instead of picking one of the pre-defined amounts from a list: 5$, 10$, 15$...)";
+"payment.continue.button.title" = "Continue button title, when the payment amount is selected. It takes the user to the payment confirmation page.";
 "payment.selection.option.one_time" = "Option to pick for the user: a one time payment (not recurring)";
 "payment.selection.option.monthly" = "Selectable option title: a monthly recurring payment (not one time)";
 "payment.support_fallback_message" = "It is a fallback user message on devices that do not support Apple Pay";
@@ -295,6 +292,8 @@
 "payment.error.description" = "Error message description, the user receives if the payment fails";
 "payment.error_already_subscribed.title" = "Error message title, when the user tries to subscribe to a monthly subscription, but an existing subscription is already in place, based on the email address provided.";
 "payment.error_already_subscribed.description" = "Error message description, under the title, explaining that the existing suscription can only be changed externally to the application, using the instructions in the email sent earlier.";
+"payment.donation_reason.title" = "Label text explaining how donations can help Kiwix and ZIM files updated.";
+"payment.donation_is_encrypted" = "A footer text under Apple Pay donation button, re-assuring the user that the financial transaction itself is secure.";
 "download_service.error.client.backgroundSessionInUseByAnotherProcess" = "Additional description of the download alert pop up, describing the specific system error, that occured.";
 "download_service.error.client.backgroundSessionWasDisconnected" = "Additional description of the download alert pop up, describing the specific system error, that occured.";
 "download_service.error.client.cancelled" = "Additional description of the download alert pop up, describing the specific system error, that occured.";
