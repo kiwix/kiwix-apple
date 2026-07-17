@@ -117,6 +117,7 @@
 "hotspot.action.start_hotspot.title" = "Start Hotspot";
 "hotspot.action.stop_hotspot.title" = "Stop Hotspot";
 "hotspot.settings.port_number" = "Port number";
+"hotspot.select_zim_files.message" = "Select ZIM files to start your Hotspot service.";
 "hotspot.settings.recommended_port_range" = "The network port used by the Hotspot, should be between %@ and %@";
 "hotspot.error.port_already_used_by_another_app_title" = "Hotspot can't start because port %@ is in use.";
 "hotspot.error.port_already_used_by_another_app_description" = "To fix this, close the app using it or change the Kiwix Hotspot port in settings.";

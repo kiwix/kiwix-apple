@@ -48,6 +48,10 @@ struct HotspotZimFilesSelection: View {
     
     var body: some View {
         VStack(spacing: 0) {
+            if #unavailable(iOS 26.0) {
+                Text(LocalString.hotspot_select_zim_files_message)
+                    .font(.callout)
+            }
             if zimFiles.isEmpty {
                 Message(text: LocalString.zim_file_opened_overlay_no_zim_files_at_all_message)
             } else {
@@ -94,6 +98,7 @@ struct HotspotZimFilesSelection: View {
         }
         .modifier(ToolbarRoleBrowser())
         .navigationTitle(MenuItem.hotspot.name)
+        .modifier(NavigationSubtitleModifier(LocalString.hotspot_select_zim_files_message))
         .task {
             // make sure that our selection only contains still existing ZIM files
             selection.intersection(with: Set(zimFiles))
@@ -160,5 +165,22 @@ struct HotspotZimFilesSelection: View {
         // at the end resetError is also setting hotspotError to nil
         // but it's just too slow for UI
         hotspot.resetError()
+    }
+}
+
+private struct NavigationSubtitleModifier: ViewModifier {
+    private let subtitle: String
+    
+    init(_ subtitle: String) {
+        self.subtitle = subtitle
+    }
+    
+    func body(content: Content) -> some View {
+        if #available(iOS 26.0, *) {
+            content
+                .navigationSubtitle(subtitle)
+        } else {
+            content
+        }
     }
 }
