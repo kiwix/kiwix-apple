@@ -78,7 +78,6 @@ final class LibraryViewModel: ObservableObject {
         }.store(in: &cancellables)
     }
 
-    // swiftlint:disable:next function_body_length
     func start(isUserInitiated: Bool) async {
         guard process.state != .inProgress else { return }
         do {
@@ -120,11 +119,6 @@ final class LibraryViewModel: ObservableObject {
                 }
             }
             let parsed = try await parse(data: data, urlHost: responseURL)
-            // delete all old ISO Lang Code entries if needed, by passing in an empty result
-            if defaults[.libraryUsingOldISOLangCodes] {
-                try await process(parsed: Parsed.deletingResult())
-                defaults[.libraryUsingOldISOLangCodes] = false
-            }
             // process the feed
             try await process(parsed: parsed)
 
