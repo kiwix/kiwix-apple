@@ -33,9 +33,14 @@ struct PaymentSummary: View {
 
     var body: some View {
         VStack {
+            Text(LocalString.payment_donation_reason_title)
+                .font(.callout)
+                .padding()
+
             Text(LocalString.payment_summary_page_title)
                 .font(.largeTitle)
                 .padding()
+            
             if selectedAmount.isMonthly {
                 Text(LocalString.payment_selection_option_monthly).font(.title)
                     .padding()
