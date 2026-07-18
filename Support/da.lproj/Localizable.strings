@@ -1,6 +1,7 @@
 // Messages for Danish (dansk)
 // Exported from translatewiki.net
 // Author: Peterleth
+// Author: Steenth
 // Author: Zakawer2
 
 "library_refresh_error.retrieve.description" = "Fejl ved hentning af biblioteksdata.";
@@ -153,7 +154,7 @@
 "theme_settings.option.system" = "System";
 "reading_settings.zoom.title" = "Sidezoom";
 "reading_settings.zoom.reset.button" = "Nulstil";
-"reading_settings.external_link.title" = "Eksterne links";
+"reading_settings.external_link.title" = "Ekstern henvisning";
 "reading_settings.search_snippet.title" = "Søgeuddrag";
 "reading_settings.tab.reading" = "Læsning";
 "library_settings.catalog.title" = "Katalog";

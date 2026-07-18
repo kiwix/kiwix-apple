@@ -98,9 +98,17 @@
 "library.zim_file_context.main_page.label" = "主頁";
 "library.zim_file_context.random.label" = "隨機頁面";
 "library.zim_file_context.copy_url" = "複製 URL";
+"zim_file_opened.overlay.no-zim-files-at-all.message" = "找不到 ZIM 檔案。";
+"zim_file_opened.overlay.no-available-zim-files.message" = "找不到可用的 ZIM 檔案。";
+"zim_file_opened.overlay.no-missing-zim-files.message" = "找不到缺少的 ZIM 檔案。";
 "zim_file_opened.toolbar.open.title" = "開啟…";
 "zim_file_opened.toolbar.open.help" = "開啟一個 ZIM 檔案";
 "zim_file_category.title" = "分類";
+"zim_file_opened.toolbar.filter.show_all" = "顯示全部";
+"zim_file_opened.toolbar.filter.show_only_available" = "僅顯示可用檔案";
+"zim_file_opened.toolbar.filter.show_only_missing" = "僅顯示缺少檔案";
+"zim_file_opened.toolbar.sort_by.name" = "依名稱排序";
+"zim_file_opened.toolbar.sort_by.size" = "依大小排序";
 "zim_file_catalog.fetching.message" = "正在抓取目錄…";
 "zim_file_category.section.empty.message" = "此分類下沒有 ZIM 檔案。";
 "zim_file_downloads.overlay.empty.message" = "沒有下載任務";
