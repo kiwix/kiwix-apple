@@ -32,7 +32,7 @@ final class LoadingUI_iPad_Test: XCTestCase {
         app.buttons["Wikipedia"].tap()
         app.buttons["Other"].tap()
         
-        let zimMini = app.buttons["Apache Pig Docs"].firstMatch
+        let zimMini = app.buttons["Alpine Linux Wiki"].firstMatch
         Wait.inApp(app, forElement: zimMini)
         zimMini.tap()
         
@@ -56,7 +56,7 @@ final class LoadingUI_iPad_Test: XCTestCase {
         
         // open another tab as well
         app.buttons["opened"].tap()
-        app.buttons["Open: Apache Pig Docs"].tap()
+        app.buttons["Open: Alpine Linux Wiki"].tap()
         Wait.inApp(app, forElement: openMainPageButton)
         openMainPageButton.tap()
         
@@ -76,7 +76,7 @@ final class LoadingUI_iPad_Test: XCTestCase {
     private func testAfterRelaunch(_ app: XCUIApplication) {
         // show sidebar
         app.navigationBars.buttons.firstMatch.tap()
-        let zimFileTab = app.buttons["Apache Pig Documentation"].firstMatch
+        let zimFileTab = app.buttons["Main Page"].firstMatch
         Wait.inApp(app, forElement: zimFileTab)
         XCTAssert(zimFileTab.isSelected)
         
