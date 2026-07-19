@@ -180,7 +180,6 @@
 "language_selector.no_language.title" = "Keine Sprachangabe";
 "language_selector.showing.header" = "Eingeblendet:";
 "language_selector.hiding.header" = "Ausgeblendet:";
-"language_selector.navitation.title" = "Sprache";
 "settings.about.title" = "Über";
 "settings.about.release" = "Release";
 "settings.about.dependencies" = "Abhängigkeiten";

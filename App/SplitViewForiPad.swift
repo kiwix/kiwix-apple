@@ -40,6 +40,8 @@ struct SplitViewForiPad: View { // swiftlint:disable:this type_body_length
     @State private var allSections: [MenuSection] = MenuSection.allMenuSections
     @State private var menuDict: [MenuSection: [MenuItem]] = MenuSection.staticDictionary
     @State private var selection: MenuItem?
+    @State private var languages = Defaults[.libraryLanguageCodes]
+    @State private var selectedLang: String = Defaults[.libraryLanguageCodes].first ?? "eng"
     @State private var navPath = NavigationPath()
     @State private var titleUpdate: (NSManagedObjectID, String)?
     @FetchRequest(
@@ -88,7 +90,12 @@ struct SplitViewForiPad: View { // swiftlint:disable:this type_body_length
                 case .opened:
                     ZimFilesOpened()
                 case .categories:
-                    ZimFilesCategories(dismiss: nil)
+                    ZimFilesCategories(languageCode: $selectedLang, dismiss: nil)
+                        .toolbar {
+                            ToolbarItem(placement: .secondaryAction) {
+                                ToggleAroundLanguageButton(items: $languages, selection: $selectedLang)
+                            }
+                        }
                 case .new:
                     ZimFilesNew(dismiss: nil)
                 case .downloads:

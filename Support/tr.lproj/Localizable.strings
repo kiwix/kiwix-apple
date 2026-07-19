@@ -139,7 +139,6 @@
 "language_selector.no_language.title" = "Dil yok";
 "language_selector.showing.header" = "Gösteriliyor";
 "language_selector.hiding.header" = "Gizleniyor";
-"language_selector.navitation.title" = "Dil";
 "settings.about.title" = "Hakkında";
 "settings.about.release" = "Sürüm";
 "settings.about.dependencies" = "Bağımlılıklar";

@@ -118,7 +118,6 @@
 "language_selector.count.table.title" = "Conteggio";
 "language_selector.no_language.title" = "Nessuna lingua";
 "language_selector.showing.header" = "Sto mostrando:";
-"language_selector.navitation.title" = "Lingua";
 "settings.about.title" = "Informazioni";
 "settings.about.dependencies.name" = "Nome";
 "settings.about.description" = "Kiwix è un lettore offline per contenuti online come Wikipedia, Project Gutenberg o TED Talks. Rende la conoscenza disponibile a persone che non hanno o hanno un accesso limitato a Internet. Il software e il contenuto sono gratuiti per chiunque.";

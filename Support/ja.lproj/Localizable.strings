@@ -148,7 +148,6 @@
 "language_selector.no_language.title" = "言語なし";
 "language_selector.showing.header" = "表示";
 "language_selector.hiding.header" = "非表示";
-"language_selector.navitation.title" = "言語";
 "settings.about.title" = "このアプリについて";
 "settings.about.release" = "リリース";
 "settings.about.dependencies" = "依存関係";

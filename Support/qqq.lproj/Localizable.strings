@@ -195,7 +195,6 @@
 "language_selector.no_language.title" = "Fallback title for listing the languages of ZIM files in settings";
 "language_selector.showing.header" = "Section title for listing the languages in settings";
 "language_selector.hiding.header" = "Section title for listing the languages in settings";
-"language_selector.navitation.title" = "Page title for Language settings";
 "settings.about.title" = "Page title for About page in settings";
 "settings.about.release" = "Section title on About page";
 "settings.about.dependencies" = "Section title on About page";

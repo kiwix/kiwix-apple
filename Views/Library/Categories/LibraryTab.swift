@@ -19,22 +19,25 @@ import Defaults
 
 #if os(iOS)
 /// Tabbed library view on iOS & iPadOS
-struct Library: View {
+struct LibraryTab: View {
     @EnvironmentObject private var viewModel: LibraryViewModel
     @EnvironmentObject private var navigation: NavigationViewModel
+    @Default(.libraryLanguageCodes) private var libraryLanguageCodes
+    @State private var selectedLang: String
     @State private var tabItem: LibraryTabItem
     @Default(.hasSeenCategories) private var hasSeenCategories
-    private let categories: [Category]
+    @State private var categories: [Category]
     let dismiss: (() -> Void)?
 
     init(
         dismiss: (() -> Void)?,
-        tabItem: LibraryTabItem = .categories,
-        categories: [Category] = CategoriesToLanguages().allCategories()
+        tabItem: LibraryTabItem = .categories
     ) {
         self.dismiss = dismiss
         self.tabItem = tabItem
-        self.categories = categories
+        let selectedCode = Defaults[.libraryLanguageCodes].first ?? "eng"
+        self.selectedLang = selectedCode
+        self.categories = CategoriesToLanguages().categoriesIn(languageCode: selectedCode)
     }
 
     var body: some View {
@@ -45,7 +48,11 @@ struct Library: View {
                     case .categories:
                         List(categories) { category in
                             NavigationLink {
-                                ZimFilesCategory(category: .constant(category), dismiss: dismiss)
+                                ZimFilesCategory(
+                                    category: .constant(category),
+                                    languageCode: $selectedLang,
+                                    dismiss: dismiss
+                                )
                                     .navigationTitle(category.name)
                                     .navigationBarTitleDisplayMode(.inline)
                             } label: {
@@ -55,8 +62,18 @@ struct Library: View {
                                 }
                             }
                         }
+                        .toolbar {
+                            if libraryLanguageCodes.count > 1 {
+                                ToolbarItem(id: "language_picker", placement: .confirmationAction) {
+                                    ToggleAroundLanguageButton(items: $libraryLanguageCodes, selection: $selectedLang)
+                                }
+                            }
+                        }
                         .listStyle(.plain)
                         .navigationTitle(MenuItem.categories.name)
+                        .onChange(of: selectedLang) { _, newValue in
+                            categories = CategoriesToLanguages().categoriesIn(languageCode: newValue)
+                        }
                     case .opened:
                         ZimFilesOpenedNavStack(dismiss: dismiss)
                     case .downloads:
@@ -86,7 +103,7 @@ struct Library: View {
 struct Library_Previews: PreviewProvider {
     static var previews: some View {
         NavigationStack {
-            Library(dismiss: nil)
+            LibraryTab(dismiss: nil)
                 .environmentObject(LibraryViewModel())
                 .environment(\.managedObjectContext, Database.shared.viewContext)
         }

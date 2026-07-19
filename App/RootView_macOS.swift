@@ -16,6 +16,7 @@
 #if os(macOS)
 import SwiftUI
 import PassKit
+import Defaults
 
 // swiftlint:disable:next type_body_length
 struct RootView: View {
@@ -30,6 +31,8 @@ struct RootView: View {
     // Open file alerts
     @State private var isOpenFileAlertPresented = false
     @State private var openFileAlert: OpenFileAlert?
+    @State private var selectedLanguage: String = Defaults[.libraryLanguageCodes].first ?? "eng"
+    @Default(.libraryLanguageCodes) private var languages
     let openedWithWindowState: WindowState?
     
     private let primaryItems: [MenuItem] = [.bookmarks]
@@ -84,7 +87,16 @@ struct RootView: View {
             case .opened:
                 ZimFilesMultiOpened()
             case .categories:
-                DetailSidePanel(content: { ZimFilesCategories(dismiss: nil) })
+                DetailSidePanel(content: {
+                    ZimFilesCategories(languageCode: $selectedLanguage, dismiss: nil)
+                        .toolbar {
+                            if $languages.count > 1 {
+                                ToolbarItem(placement: .secondaryAction) {
+                                    ToggleAroundLanguageButton(items: $languages, selection: $selectedLanguage)
+                                }
+                            }
+                        }
+                })
                     .modifier(SearchFocused(isSearchFocused: isSearchFocused))
             case .downloads:
                 DetailSidePanel(content: { ZimFilesDownloads(dismiss: nil) })
@@ -95,6 +107,11 @@ struct RootView: View {
                 HotspotZimFilesSelection()
             default:
                 EmptyView()
+            }
+        }
+        .onChange(of: languages) {
+            if languages.count == 1 {
+                selectedLanguage = languages.first!
             }
         }
         .frame(minWidth: 650, minHeight: 500)

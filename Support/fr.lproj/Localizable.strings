@@ -203,7 +203,6 @@
 "language_selector.no_language.title" = "Pas de langue";
 "language_selector.showing.header" = "Affichage";
 "language_selector.hiding.header" = "Masquage";
-"language_selector.navitation.title" = "Langue";
 "settings.about.title" = "À propos";
 "settings.about.release" = "Publication";
 "settings.about.dependencies" = "Dépendances";

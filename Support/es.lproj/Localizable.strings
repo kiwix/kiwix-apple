@@ -188,7 +188,6 @@
 "language_selector.no_language.title" = "Idiomas Disponibles";
 "language_selector.showing.header" = "Mostrando";
 "language_selector.hiding.header" = "Ocultando";
-"language_selector.navitation.title" = "Idioma";
 "settings.about.title" = "Acerca de";
 "settings.about.release" = "Lanzamiento";
 "settings.about.dependencies" = "Dependencias";

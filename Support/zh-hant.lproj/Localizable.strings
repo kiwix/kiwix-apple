@@ -196,7 +196,6 @@
 "language_selector.no_language.title" = "沒有語言";
 "language_selector.showing.header" = "顯示";
 "language_selector.hiding.header" = "隱藏";
-"language_selector.navitation.title" = "語言";
 "settings.about.title" = "關於";
 "settings.about.release" = "發行";
 "settings.about.dependencies" = "相依";

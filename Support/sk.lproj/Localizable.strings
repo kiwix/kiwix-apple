@@ -192,7 +192,6 @@
 "language_selector.no_language.title" = "Žiadny jazyk";
 "language_selector.showing.header" = "Zobrazuje sa";
 "language_selector.hiding.header" = "Skrýva sa";
-"language_selector.navitation.title" = "Jazyk";
 "settings.about.title" = "O aplikácii";
 "settings.about.release" = "Vydanie";
 "settings.about.dependencies" = "Závislosti";

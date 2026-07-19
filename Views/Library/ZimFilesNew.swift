@@ -104,6 +104,7 @@ struct ZimFilesNew: View {
     @EnvironmentObject private var selection: SelectedZimFileViewModel
     @EnvironmentObject var library: LibraryViewModel
     @Default(.libraryLanguageCodes) private var languageCodes
+    @State private var selectedLanguage: String = Defaults[.libraryLanguageCodes].first ?? "eng"
     @StateObject private var viewModel = ViewModel()
     @State private var searchText = ""
     let dismiss: (() -> Void)? // iOS only
@@ -134,14 +135,19 @@ struct ZimFilesNew: View {
         .navigationTitle(MenuItem.new.name)
         .searchable(text: $searchText, prompt: LocalString.common_search)
         .task {
-            await viewModel.forceRefreshWith(searchText: searchText, languageCodes: languageCodes)
+            await viewModel.forceRefreshWith(searchText: searchText, languageCodes: [selectedLanguage])
             await library.start(isUserInitiated: false)
         }
         .onChange(of: searchText) { _, newSearchText in
             viewModel.update(searchText: newSearchText)
         }
-        .onChange(of: languageCodes) { _, newLanguageCodes in
-            viewModel.update(languageCodes: newLanguageCodes)
+        .onChange(of: selectedLanguage) {
+            viewModel.update(languageCodes: [selectedLanguage])
+        }
+        .onChange(of: languageCodes) {
+            if !languageCodes.contains(selectedLanguage) {
+                selectedLanguage = languageCodes.first ?? "eng"
+            }
         }
         .overlay {
             if viewModel.zimFiles.isEmpty {
@@ -156,12 +162,27 @@ struct ZimFilesNew: View {
             }
         }
         .toolbar {
-            ToolbarItem {
+#if os(iOS)
+            let languagePlacement: ToolbarItemPlacement = .topBarTrailing
+#else
+            let languagePlacement: ToolbarItemPlacement = .automatic
+#endif
+            ToolbarItem(placement: languagePlacement) {
+                if languageCodes.count > 1 {
+                    ToggleAroundLanguageButton(items: $languageCodes, selection: $selectedLanguage)
+                }
+            }
+#if os(iOS)
+            let refreshPlacement: ToolbarItemPlacement = .title
+#else
+            let refreshPlacement: ToolbarItemPlacement = .automatic
+#endif
+            ToolbarItem(placement: refreshPlacement) {
                 if library.state == .inProgress {
                     ProgressView()
-                    #if os(macOS)
+#if os(macOS)
                         .scaleEffect(0.5)
-                    #endif
+#endif
                 } else {
                     Button {
                         Task { [weak library] in
