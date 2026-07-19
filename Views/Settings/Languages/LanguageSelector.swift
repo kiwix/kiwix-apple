@@ -105,7 +105,7 @@ struct LanguageSelector: View {
         }
 #if os(iOS)
         .listStyle(.insetGrouped)
-        .navigationTitle(LocalString.language_selector_navitation_title)
+        .navigationTitle(LocalString.settings_selected_language_title)
         .navigationBarTitleDisplayMode(.inline)
         .searchable(text: $searchText, isPresented: $isSearching, prompt: LocalString.common_search)
 #else

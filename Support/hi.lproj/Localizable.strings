@@ -53,7 +53,6 @@
 "settings.selected_language.title" = "भाषाएँ";
 "language_selector.name.title" = "नाम";
 "language_selector.count.table.title" = "गणना";
-"language_selector.navitation.title" = "भाषा";
 "settings.about.dependencies.name" = "नाम";
 "settings.about.dependencies.license" = "लाइसेंस";
 "settings.about.dependencies.version" = "संस्करण";

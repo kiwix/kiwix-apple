@@ -114,7 +114,6 @@
 "settings.selected_language.title" = "Języki";
 "language_selector.name.title" = "Nazwa";
 "language_selector.no_language.title" = "Brak języka";
-"language_selector.navitation.title" = "Język";
 "settings.about.title" = "O aplikacji";
 "settings.about.release" = "Wydanie";
 "settings.about.dependencies" = "Zależności";

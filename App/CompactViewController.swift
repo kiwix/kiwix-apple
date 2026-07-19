@@ -118,9 +118,9 @@ struct CompactTabView: View {
         .sheet(item: $presentedSheet) { presentedSheet in
             switch presentedSheet {
             case .library(downloads: false):
-                Library(dismiss: dismiss)
+                LibraryTab(dismiss: dismiss)
             case .library(downloads: true):
-                Library(dismiss: dismiss, tabItem: .downloads)
+                LibraryTab(dismiss: dismiss, tabItem: .downloads)
             case .customHotspot:
                 SheetContent {
                     HotspotZimFilesSelection()

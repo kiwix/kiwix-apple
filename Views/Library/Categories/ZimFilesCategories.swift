@@ -20,15 +20,17 @@ import Defaults
 /// A grid of zim files under each category.
 struct ZimFilesCategories: View {
     @State private var selected: Category
+    @Binding private var languageCode: String
     @Default(.hasSeenCategories) private var hasSeenCategories
     private var categories: [Category]
     private let dismiss: (() -> Void)?
 
     init(
-        dismiss: (() -> Void)?,
-        categories: [Category] = CategoriesToLanguages().allCategories()
+        languageCode selectedLangCode: Binding<String>,
+        dismiss: (() -> Void)?
     ) {
-        self.categories = categories
+        _languageCode = selectedLangCode
+        let categories = CategoriesToLanguages().categoriesIn(languageCode: selectedLangCode.wrappedValue)
         let selectedCategory: Category? = {
             guard let selectedCategoryId = Defaults[.selectedCategory] else {
                 return nil
@@ -37,12 +39,13 @@ struct ZimFilesCategories: View {
                 category.id == selectedCategoryId
             }
         }()
+        self.categories = categories
         selected = selectedCategory ?? categories.first ?? .wikipedia
         self.dismiss = dismiss
     }
 
     var body: some View {
-        ZimFilesCategory(category: $selected, dismiss: dismiss)
+        ZimFilesCategory(category: $selected, languageCode: $languageCode, dismiss: dismiss)
             .modifier(ToolbarRoleBrowser())
             .navigationTitle(MenuItem.categories.name)
             .toolbar {
@@ -69,14 +72,25 @@ struct ZimFilesCategories: View {
 /// A grid or list of zim files under a single category.
 struct ZimFilesCategory: View {
     @Binding var category: Category
+    @Binding var languageCode: String
     @State private var searchText = ""
     let dismiss: (() -> Void)? // iOS only
 
     var body: some View {
         if category == .ted || category == .stackExchange || category == .other {
-            CategoryList(category: $category, searchText: $searchText, dismiss: dismiss)
+            CategoryList(
+                category: $category,
+                selectedLanguage: $languageCode,
+                searchText: $searchText,
+                dismiss: dismiss
+            )
         } else {
-            CategoryGrid(category: $category, searchText: $searchText, dismiss: dismiss)
+            CategoryGrid(
+                category: $category,
+                selectedLanguage: $languageCode,
+                searchText: $searchText,
+                dismiss: dismiss
+            )
         }
     }
 
@@ -84,15 +98,13 @@ struct ZimFilesCategory: View {
     static func buildPredicate(
         category: Category,
         searchText: String,
-        languageCodes: [String] = Defaults[.libraryLanguageCodes]
+        languageCode: String
     ) -> NSPredicate {
-        let langPredicates = languageCodes.map { langCode -> NSPredicate in
-            let regex = String(format: "(.*,)?%@(,.*)?", langCode)
-            return NSPredicate(format: "languageCode MATCHES %@", regex)
-        }
+        let regex = String(format: "(.*,)?%@(,.*)?", languageCode)
+        let langPredicate = NSPredicate(format: "languageCode MATCHES %@", regex)
         var predicates = [
             NSPredicate(format: "category == %@", category.rawValue),
-            NSCompoundPredicate(orPredicateWithSubpredicates: langPredicates),
+            langPredicate,
             NSPredicate(format: "requiresServiceWorkers == false")
         ]
         if !searchText.isEmpty {
@@ -104,15 +116,21 @@ struct ZimFilesCategory: View {
 
 private struct CategoryGrid: View {
     @Binding var category: Category
+    @Binding var selectedLanguage: String
     @Binding var searchText: String
     @Default(.libraryLanguageCodes) private var languageCodes
-    @EnvironmentObject private var viewModel: LibraryViewModel
     @EnvironmentObject private var selection: SelectedZimFileViewModel
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     @SectionedFetchRequest private var sections: SectionedFetchResults<String, ZimFile>
     private let dismiss: (() -> Void)? // iOS only
 
-    init(category: Binding<Category>, searchText: Binding<String>, dismiss: (() -> Void)?) {
+    init(
+        category: Binding<Category>,
+        selectedLanguage: Binding<String>,
+        searchText: Binding<String>,
+        dismiss: (() -> Void)?
+    ) {
+        self._selectedLanguage = selectedLanguage
         self._category = category
         self._searchText = searchText
         self.dismiss = dismiss
@@ -120,7 +138,9 @@ private struct CategoryGrid: View {
             sectionIdentifier: \.name,
             sortDescriptors: [SortDescriptor(\ZimFile.name), SortDescriptor(\.size, order: .reverse)],
             predicate: ZimFilesCategory.buildPredicate(
-                category: category.wrappedValue, searchText: searchText.wrappedValue
+                category: category.wrappedValue,
+                searchText: searchText.wrappedValue,
+                languageCode: selectedLanguage.wrappedValue
             ),
             animation: .easeInOut
         )
@@ -129,14 +149,7 @@ private struct CategoryGrid: View {
     var body: some View {
         Group {
             if sections.isEmpty {
-                switch viewModel.state {
-                case .inProgress:
-                    Message(text: LocalString.zim_file_catalog_fetching_message)
-                case .error:
-                    Message(text: LocalString.library_refresh_error_retrieve_description, color: .red)
-                case .initial, .complete:
-                    Message(text: LocalString.zim_file_category_section_empty_message)
-                }
+                CategoryEmptySection()
             } else {
                 LazyVGrid(columns: ([gridItem]), alignment: .leading, spacing: 12) {
                     ForEach(sections) { section in
@@ -175,10 +188,17 @@ private struct CategoryGrid: View {
         .searchable(text: $searchText, prompt: LocalString.common_search)
         .onChange(of: category) { selection.reset() }
         .onChange(of: searchText) { _, newValue in
-            sections.nsPredicate = ZimFilesCategory.buildPredicate(category: category, searchText: newValue)
+            sections.nsPredicate = ZimFilesCategory
+                .buildPredicate(category: category, searchText: newValue, languageCode: selectedLanguage)
+        }
+        .onChange(of: selectedLanguage) {
+            sections.nsPredicate = ZimFilesCategory
+                .buildPredicate(category: category, searchText: searchText, languageCode: selectedLanguage)
         }
         .onChange(of: languageCodes) {
-            sections.nsPredicate = ZimFilesCategory.buildPredicate(category: category, searchText: searchText)
+            if !languageCodes.contains(selectedLanguage) {
+                selectedLanguage = languageCodes.first ?? "eng"
+            }
         }
     }
 
@@ -208,17 +228,19 @@ private struct CategoryGrid: View {
 
 private struct CategoryList: View {
     @Binding var category: Category
+    @Binding var selectedLanguage: String
     @Binding var searchText: String
     @Default(.libraryLanguageCodes) private var languageCodes
-    @EnvironmentObject private var viewModel: LibraryViewModel
     @EnvironmentObject private var selection: SelectedZimFileViewModel
     @FetchRequest private var zimFiles: FetchedResults<ZimFile>
     private let dismiss: (() -> Void)?
 
-    init(category: Binding<Category>, 
+    init(category: Binding<Category>,
+         selectedLanguage: Binding<String>,
          searchText: Binding<String>,
          dismiss: (() -> Void)?
     ) {
+        self._selectedLanguage = selectedLanguage
         self._category = category
         self._searchText = searchText
         self.dismiss = dismiss
@@ -230,7 +252,9 @@ private struct CategoryList: View {
                 NSSortDescriptor(keyPath: \ZimFile.size, ascending: false)
             ],
             predicate: ZimFilesCategory.buildPredicate(
-                category: category.wrappedValue, searchText: searchText.wrappedValue
+                category: category.wrappedValue,
+                searchText: searchText.wrappedValue,
+                languageCode: selectedLanguage.wrappedValue
             ),
             animation: .easeInOut
         )
@@ -239,14 +263,7 @@ private struct CategoryList: View {
     var body: some View {
         Group {
             if zimFiles.isEmpty {
-                switch viewModel.state {
-                case .inProgress:
-                    Message(text: LocalString.zim_file_catalog_fetching_message)
-                case .error:
-                    Message(text: LocalString.library_refresh_error_retrieve_description, color: .red)
-                case .initial, .complete:
-                    Message(text: LocalString.zim_file_category_section_empty_message)
-                }
+                CategoryEmptySection()
             } else {
                 List(zimFiles, id: \.self, selection: $selection.selectedZimFile) { zimFile in
                     LibraryZimFileContext(
@@ -265,10 +282,25 @@ private struct CategoryList: View {
         .searchable(text: $searchText, prompt: LocalString.common_search)
         .onChange(of: category) { selection.reset() }
         .onChange(of: searchText) { _, newValue in
-            zimFiles.nsPredicate = ZimFilesCategory.buildPredicate(category: category, searchText: newValue)
+            zimFiles.nsPredicate = ZimFilesCategory
+                .buildPredicate(
+                    category: category,
+                    searchText: newValue,
+                    languageCode: selectedLanguage
+                )
+        }
+        .onChange(of: selectedLanguage) {
+            zimFiles.nsPredicate = ZimFilesCategory
+                .buildPredicate(
+                    category: category,
+                    searchText: searchText,
+                    languageCode: selectedLanguage
+                )
         }
         .onChange(of: languageCodes) {
-            zimFiles.nsPredicate = ZimFilesCategory.buildPredicate(category: category, searchText: searchText)
+            if !languageCodes.contains(selectedLanguage) {
+                selectedLanguage = languageCodes.first ?? "eng"
+            }
         }
     }
 }

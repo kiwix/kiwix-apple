@@ -155,7 +155,6 @@
 "language_selector.no_language.title" = "Нет языка";
 "language_selector.showing.header" = "Показано";
 "language_selector.hiding.header" = "Скрыто";
-"language_selector.navitation.title" = "Язык";
 "settings.about.title" = "О приложении";
 "settings.about.release" = "Релиз";
 "settings.about.dependencies" = "Зависимости";

@@ -154,7 +154,6 @@
 "language_selector.no_language.title" = "Немає мов";
 "language_selector.showing.header" = "Показуються";
 "language_selector.hiding.header" = "Приховуються";
-"language_selector.navitation.title" = "Мова";
 "settings.about.title" = "Про застосунок";
 "settings.about.release" = "Реліз";
 "settings.about.dependencies" = "Залежності";

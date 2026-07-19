@@ -190,7 +190,6 @@
 "language_selector.no_language.title" = "Inget språk";
 "language_selector.showing.header" = "Visar";
 "language_selector.hiding.header" = "Döljer";
-"language_selector.navitation.title" = "Språk";
 "settings.about.title" = "Om";
 "settings.about.release" = "Utgåva";
 "settings.about.dependencies" = "Beroenden";
