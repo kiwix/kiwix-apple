@@ -55,6 +55,16 @@ struct LibraryTab: View {
                                 )
                                     .navigationTitle(category.name)
                                     .navigationBarTitleDisplayMode(.inline)
+                                    .toolbar {
+                                        if libraryLanguageCodes.count > 1 {
+                                            ToolbarItem(id: "language_picker", placement: .confirmationAction) {
+                                                ToggleAroundLanguageButton(
+                                                    items: $libraryLanguageCodes,
+                                                    selection: $selectedLang
+                                                )
+                                            }
+                                        }
+                                    }
                             } label: {
                                 HStack {
                                     Favicon(category: category).frame(height: 26)
