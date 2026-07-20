@@ -1,4 +1,35 @@
+# 3.17.0
+
 # 3.16.0
+- NEW:
+    - Recurring donation payments using apple pay email (@BPerlakiH #1579)
+    - macOS window restoration (@BPerlakiH #1603)
+    - Persist state of tabs when backgrounding the app (@BPerlakiH #1606)
+    - Sort and filter opened ZIM files (@BPerlakiH #1609)
+    - Make languages searchable (@BPerlakiH #1625, @BPerlakiH #1634)
+    - Donation redesign (@BPerlakiH #1642, @BPerlakiH #1645)
+    - Multi-language category filtering (@BPerlakiH #1647)
+- FIX:
+    - Stop using pull_request_target trigger in CI (@kelson42 #1590)
+    - iPad initial navigation issues (@BPerlakiH #1608)
+    - Center welcome screen (@BPerlakiH #1611)
+    - BrowserTab and content preloading for quicker switching (@BPerlakiH #1587)
+    - Fix disappearing toolbars on iPad (@BPerlakiH #1616)
+    - Block external resources earlier - fix (@BPerlakiH #1617)
+    - Update tab bar menu for iOS, replace crashing overlay sheets (@BPerlakiH #1623)
+    - Enforce a single empty tab always on iOS (@BPerlakiH #1622)
+- UPDATED:
+    - Rename from custom apps to branded apps (@BPerlakiH #1581)
+    - Move location capability to Kiwix target only (@BPerlakiH #1582)
+    - Update dependencies (@BPerlakiH #1586)
+    - Use libkiwix_xcframework-14.2.1-2 (@BPerlakiH #1594)
+    - Update OPDS URL (@rgaudin #1599)
+    - Update README (@BPerlakiH #1612)
+    - Release each night testflight (@kelson42 #1615)
+    - Change photos permission to write only (@BPerlakiH #1626)
+    - Add PR template (@BPerlakiH #1635)
+    - Add subtitle to Hotspot service (@BPerlakiH #1638)
+    - Localisation updates from https://translatewiki.net (@translatewiki #1578, #1591, #1596, #1602, #1619, #1627, #1630, #1640)
 
 # 3.15.1
 - UPDATED:
