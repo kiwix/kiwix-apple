@@ -262,7 +262,9 @@
 "payment.selection.option.one_time" = "Еднократно";
 "payment.selection.option.monthly" = "Месечно";
 "payment.support_fallback_message" = "За жал, вашиот уред не поддржува Apple Pay.";
+// Fuzzy
 "payment.success.title" = "Ви благодариме за прилогот.";
+// Fuzzy
 "payment.success.description" = "Вашата великодушност ни значи многу.";
 "payment.error.title" = "Ова е незгодно.";
 "payment.error.description" = "Се јави проблем со вашата уплата. Обидете се повторно.";

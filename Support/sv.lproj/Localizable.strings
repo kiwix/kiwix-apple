@@ -277,7 +277,9 @@
 "payment.selection.option.one_time" = "En gång";
 "payment.selection.option.monthly" = "Månadsvis";
 "payment.support_fallback_message" = "Vi beklagar, din enhet stödjer inte Apple Pay.";
+// Fuzzy
 "payment.success.title" = "Tack så mycket för din donation.";
+// Fuzzy
 "payment.success.description" = "Din generositet betyder allt för oss.";
 "payment.error.title" = "Det här är stelt.";
 "payment.error.description" = "Det har uppstått ett problem med din betalning. Försök igen.";

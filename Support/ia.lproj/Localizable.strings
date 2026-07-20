@@ -271,7 +271,9 @@
 "payment.selection.option.one_time" = "Unic";
 "payment.selection.option.monthly" = "Mensual";
 "payment.support_fallback_message" = "Regrettabilemente, tu apparato non supporta Apple Pay.";
+// Fuzzy
 "payment.success.title" = "Multe gratias pro tu donation.";
+// Fuzzy
 "payment.success.description" = "Tu generositate significa toto pro nos.";
 "payment.error.title" = "Ben, isto es embarassose.";
 "payment.error.description" = "Un problema ha occurrite con tu pagamento. Per favor tenta lo de novo.";

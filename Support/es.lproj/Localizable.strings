@@ -269,7 +269,9 @@
 "payment.selection.option.one_time" = "Una vez";
 "payment.selection.option.monthly" = "Mensual";
 "payment.support_fallback_message" = "Lo sentimos, su dispositivo no soporta Apple Pay.";
+// Fuzzy
 "payment.success.title" = "Muchas grácias por su donación.";
+// Fuzzy
 "payment.success.description" = "Su generosidad significa todo para nosotros.";
 "payment.error.title" = "Bueno, esto es incómodo.";
 "payment.error.description" = "Ha habido un problema con su pago. Por favor, inténtelo de nuevo.";

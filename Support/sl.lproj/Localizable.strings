@@ -280,7 +280,9 @@
 "payment.selection.option.one_time" = "Enkratno";
 "payment.selection.option.monthly" = "Mesečno";
 "payment.support_fallback_message" = "Žal vaša naprava ne podpira Apple Pay.";
+// Fuzzy
 "payment.success.title" = "Zahvaljujemo se vam za vašo donacijo!";
+// Fuzzy
 "payment.success.description" = "Vaša velikodušnost nam veliko pomeni.";
 "payment.error.title" = "To je nerodno.";
 "payment.error.description" = "Prišlo je do težave z vašim plačilom. Poskusite znova.";

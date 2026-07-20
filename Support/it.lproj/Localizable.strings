@@ -172,8 +172,8 @@
 "payment.textfield.custom_amount.label" = "Importo personalizzato";
 "payment.selection.option.one_time" = "Una volta";
 "payment.selection.option.monthly" = "Mensile";
-"payment.success.title" = "Grazie mille per la tua donazione.";
-"payment.success.description" = "La tua generosità significa tutto per noi.";
+"payment.success.title" = "Grazie per la tua donazione.";
+"payment.success.description" = "Il tuo supporto aiuta a mantenere la conoscenza libera e accessibile anche offline.";
 "payment.error.description" = "Si è verificato un problema con il pagamento. Riprova.";
 "payment.error_already_subscribed.title" = "Hai già una donazione mensile";
 "download_service.error.client.backgroundSessionInUseByAnotherProcess" = "Impossibile comunicare con il servizio di trasferimento in background";

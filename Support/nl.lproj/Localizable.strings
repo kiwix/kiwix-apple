@@ -282,7 +282,9 @@
 "payment.selection.option.one_time" = "Eenmalig";
 "payment.selection.option.monthly" = "Maandelijks";
 "payment.support_fallback_message" = "Helaas ondersteunt uw apparaat Apple Pay niet.";
+// Fuzzy
 "payment.success.title" = "Hartelijk dank voor uw donatie.";
+// Fuzzy
 "payment.success.description" = "Uw vrijgevigheid betekent alles voor ons.";
 "payment.error.title" = "Nou, da’s pijnlijk.";
 "payment.error.description" = "Er is een probleem opgetreden met uw betaling. Probeer het a.u.b. opnieuw.";

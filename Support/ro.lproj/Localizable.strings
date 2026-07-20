@@ -222,7 +222,9 @@
 "payment.selection.option.one_time" = "O dată";
 "payment.selection.option.monthly" = "Lunar";
 "payment.support_fallback_message" = "Ne pare rău, dispozitivul dvs. nu acceptă Apple Pay.";
+// Fuzzy
 "payment.success.title" = "Vă mulțumesc mult pentru donație.";
+// Fuzzy
 "payment.success.description" = "Generozitatea ta înseamnă totul pentru noi.";
 "payment.error.title" = "Ei bine, asta e ciudat.";
 "payment.error.description" = "A apărut o problemă cu plata dvs. Vă rugăm să încercați din nou.";

@@ -194,10 +194,13 @@
 "payment.summary_page.title" = "Kiwix ënnerstëtzen";
 "payment.support_button.label" = "Kiwix ënnerstëtzen";
 "payment.summary.title" = "Kiwix";
+"payment.continue.button.title" = "Virufueren";
 "payment.selection.option.one_time" = "Eemoleg";
 "payment.selection.option.monthly" = "All Mount";
 "payment.support_fallback_message" = "Et deet eis leed, mee Apple Pay gëtt vun Ärem Apparat net ënnerstëtzt.";
-"payment.success.title" = "Villmools Merci fir Ären Don.";
+"payment.success.title" = "Merci fir Ären Don.";
+"payment.success.description" = "Är Ënnerstëtzung hëlleft, fir Wësse gratis an offline zougänglech ze halen.";
+"payment.donation_reason.title" = "Hëlleft eis, fir Kiwix- a ZIM-Fichieren um aktuelle Stand ze halen.";
 "download_service.error.client.cancelled" = "ofgebrach";
 "download_service.error.client.httpTooManyRedirects" = "ze vill HTTP-Viruleedungen";
 "download_service.error.client.resourceUnavailable" = "Ressource net disponibel";
