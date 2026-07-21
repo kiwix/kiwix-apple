@@ -1,5 +1,9 @@
 # 3.17.0
 
+# 3.16.1
+- FIX:
+    - Apple pay button crash on unsupported platforms (@BPerlakiH #1653)
+
 # 3.16.0
 - NEW:
     - Recurring donation payments using apple pay email (@BPerlakiH #1579)
