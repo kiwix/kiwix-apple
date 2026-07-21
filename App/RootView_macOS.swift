@@ -25,7 +25,7 @@ struct RootView: View {
     @StateObject private var navigation = NavigationViewModel()
     @SceneStorage("org.kiwix.macos.root.menuitem") private var currentNavItem: MenuItem?
     @StateObject private var windowTracker = WindowTracker()
-    @State private var paymentButtonLabel: PayWithApplePayButtonLabel?
+    @State private var paymentButtonLabel: PaymentButtonType?
     var isSearchFocused: FocusState<Bool>.Binding
     @StateObject private var selection = SelectedZimFileViewModel()
     // Open file alerts

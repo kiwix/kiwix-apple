@@ -24,7 +24,7 @@ struct PaymentSummary: View {
     private let selectedAmount: SelectedAmount
     private let payment: Payment
     @State private var paymentDetermined: Bool = false
-    @State private var paymentButtonLabel: PayWithApplePayButtonLabel?
+    @State private var paymentButtonLabel: PaymentButtonType?
 
     init(selectedAmount: SelectedAmount) {
         self.selectedAmount = selectedAmount
@@ -56,8 +56,14 @@ struct PaymentSummary: View {
                 .bold()
             if paymentDetermined {
                 if let paymentButtonLabel {
+                    let label = {
+                        switch paymentButtonLabel {
+                        case .setUp: PayWithApplePayButtonLabel.setUp
+                        case .donate: PayWithApplePayButtonLabel.donate
+                        }
+                    }()
                     PayWithApplePayButton(
-                        paymentButtonLabel,
+                        label,
                         request: payment.donationRequest(for: selectedAmount),
                         onPaymentAuthorizationChange: { phase in
                             payment.onPaymentAuthPhase(selectedAmount: selectedAmount,

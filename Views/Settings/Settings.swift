@@ -162,7 +162,7 @@ struct Settings: View {
     @EnvironmentObject private var colorSchemeStore: UserColorSchemeStore
     @EnvironmentObject private var library: LibraryViewModel
     @Environment(\.horizontalSizeClass) var horizontalSizeClass
-    @State private var paymentButtonLabel: PayWithApplePayButtonLabel?
+    @State private var paymentButtonLabel: PaymentButtonType?
     @Environment(\.dismiss) private var dismiss
 
     enum Route {
