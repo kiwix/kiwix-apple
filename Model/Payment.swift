@@ -145,17 +145,17 @@ struct Payment {
     /// - Returns: Setup button if no cards added yet,
     /// nil if Apple Pay is not supported
     /// or donation button, if all is OK
-    static private func paymentButtonType() -> ApplePaymentLabelType? {
+    static private func paymentButtonType() -> PaymentButtonType? {
         // only kiwix app is supporting donations atm.
         guard case .kiwix = AppType.current else { return nil }
         
         if PKPaymentAuthorizationController.canMakePayments() {
-            return ApplePaymentLabelType.donate
+            return PaymentButtonType.donate
         }
         if PKPaymentAuthorizationController.canMakePayments(
             usingNetworks: Payment.supportedNetworks,
             capabilities: Payment.capabilities) {
-            return ApplePaymentLabelType.setUp
+            return PaymentButtonType.setUp
         }
         return nil
     }
@@ -170,8 +170,8 @@ struct Payment {
     /// - Returns: Setup button if no cards added yet,
     /// nil if Apple Pay is not supported
     /// or donation button, if all is OK
-    static func paymentButtonTypeAsync() async -> PayWithApplePayButtonLabel? {
-        let task = Task<ApplePaymentLabelType?, Never>(priority: .low) {
+    static func paymentButtonTypeAsync() async -> PaymentButtonType? {
+        let task = Task<PaymentButtonType?, Never>(priority: .low) {
             Self.paymentButtonType()
         }
         guard let buttonLabel = await task.result.get() else {
@@ -179,9 +179,9 @@ struct Payment {
         }
         switch buttonLabel {
         case .donate:
-            return PayWithApplePayButtonLabel.donate
+            return PaymentButtonType.donate
         case .setUp:
-            return PayWithApplePayButtonLabel.setUp
+            return PaymentButtonType.setUp
         }
     }
 
