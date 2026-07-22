@@ -232,6 +232,7 @@
 "payment.selection.option.one_time" = "Одноразова";
 "payment.selection.option.monthly" = "Щомісячно";
 "payment.support_fallback_message" = "На жаль, ваш пристрій не підтримує Apple Pay.";
+// Fuzzy
 "payment.success.title" = "Дякуємо за вашу пожертву.";
 "payment.error.title" = "Незручно вийшло.";
 "download_service.error.client.backgroundSessionInUseByAnotherProcess" = "Не вдалося звʼязатися зі службою фонового передавання";

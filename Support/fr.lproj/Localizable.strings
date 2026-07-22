@@ -290,7 +290,9 @@
 "payment.selection.option.one_time" = "Une fois";
 "payment.selection.option.monthly" = "Mensuel";
 "payment.support_fallback_message" = "Nous sommes désolés, votre appareil ne prend pas en charge Apple Pay.";
+// Fuzzy
 "payment.success.title" = "Merci beaucoup pour votre don.";
+// Fuzzy
 "payment.success.description" = "Votre générosité signifie tout pour nous.";
 "payment.error.title" = "Eh bien, c'est gênant.";
 "payment.error.description" = "Il y a eu un problème avec votre paiement. Veuillez réessayer.";

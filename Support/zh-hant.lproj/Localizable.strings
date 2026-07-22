@@ -284,7 +284,9 @@
 "payment.selection.option.one_time" = "單筆";
 "payment.selection.option.monthly" = "每月";
 "payment.support_fallback_message" = "很抱歉，您的裝置不支援 Apple Pay。";
+// Fuzzy
 "payment.success.title" = "非常感謝您的捐款！";
+// Fuzzy
 "payment.success.description" = "您的慷慨行為對我們至關重要。";
 "payment.error.title" = "唔，真尷尬。";
 "payment.error.description" = "您的付款出現了問題。請重試。";

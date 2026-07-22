@@ -228,7 +228,9 @@
 "payment.selection.option.one_time" = "Sekali saja";
 "payment.selection.option.monthly" = "Bulanan";
 "payment.support_fallback_message" = "Maaf, perangkat Anda tidak mendukung Apple Pay.";
+// Fuzzy
 "payment.success.title" = "Terima kasih banyak atas sumbangan Anda.";
+// Fuzzy
 "payment.success.description" = "Kemurahan hati Anda sangat berarti bagi kami.";
 "payment.error.title" = "Wah, itu aneh.";
 "payment.error.description" = "Ada masalah dengan pembayaran Anda. Silakan coba lagi.";
