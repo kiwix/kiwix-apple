@@ -47,6 +47,12 @@ enum LibraryState {
 
 @MainActor
 final class LibraryViewModel: ObservableObject {
+    private struct SyncCount {
+        var inserted: UInt = 0
+        var deleted: UInt = 0
+        var updated: UInt = 0
+    }
+    
     @Published private(set) var error: Error?
     /// Note: due to multiple instances of LibraryViewModel,
     /// this `state` should not be changed directly, modify the `process.state` instead
@@ -57,8 +63,7 @@ final class LibraryViewModel: ObservableObject {
     private let categories: CategoriesProtocol
 
     private let urlSession: URLSession
-    private var insertionCount = 0
-    private var deletionCount = 0
+    private var syncCount = SyncCount()
     
     private static let catalogURL = URL(string: "https://opds.library.kiwix.org/catalog/v2/entries?count=-1")!
 
@@ -78,7 +83,6 @@ final class LibraryViewModel: ObservableObject {
         }.store(in: &cancellables)
     }
 
-    // swiftlint:disable:next function_body_length
     func start(isUserInitiated: Bool) async {
         guard process.state != .inProgress else { return }
         do {
@@ -120,11 +124,6 @@ final class LibraryViewModel: ObservableObject {
                 }
             }
             let parsed = try await parse(data: data, urlHost: responseURL)
-            // delete all old ISO Lang Code entries if needed, by passing in an empty result
-            if defaults[.libraryUsingOldISOLangCodes] {
-                try await process(parsed: Parsed.deletingResult())
-                defaults[.libraryUsingOldISOLangCodes] = false
-            }
             // process the feed
             try await process(parsed: parsed)
 
@@ -141,12 +140,11 @@ final class LibraryViewModel: ObservableObject {
             process.state = .complete
 
             // logging
-            let insertedCount = insertionCount
-            let deletedCount = deletionCount
             let totalCount = parsed.results.count
             Log.OPDS.notice("""
-Refresh finished -- insertion: \(insertedCount, privacy: .public), \
-deletion: \(deletedCount, privacy: .public), \
+Refresh finished -- insertion: \(self.syncCount.inserted, privacy: .public), \
+deletion: \(self.syncCount.deleted, privacy: .public), \
+update: \(self.syncCount.updated, privacy: .public), \
 total: \(totalCount, privacy: .public)
 """)
         } catch {
@@ -269,20 +267,43 @@ total: \(totalCount, privacy: .public)
 
     // swiftlint:disable:next function_body_length
     private func process(parsed: Parsed) async throws {
-        let existingIds: [UUID] = await Database.shared.viewContext.perform {
-            if let zimFiles = try? ZimFile.fetchRequest().execute() {
+        // Sync the local DB entries with the parsed feed:
+        // 1) delete everything from the DB, that has no downloaded file already
+        // 2) insert new entries from the feed: we had no record of those yet in the DB
+        // 3) for already downloaded entries, only update their download URL
+        // their metadata and other local values should not be touched
+        // In case of deleting and re-downloading them we want to have the right URL.
+        // Otherwise if those are removed locally (no longer downloaded), the next sync will update them in full
+        let downloadedIds: [UUID] = await Database.shared.viewContext.perform {
+            if let zimFiles = try? ZimFile.fetchRequest(predicate: ZimFile.Predicate.isDownloaded()).execute() {
                 return zimFiles.map { $0.fileID }
             } else {
                 return []
             }
         }
         let parsedIds: Set<UUID> = Set(parsed.results.keys)
-        let remainingIds: Set<UUID> = parsedIds.subtracting(existingIds)
+        let insertIds: Set<UUID> = parsedIds.subtracting(downloadedIds)
+        let downloadURLUpdates: [UUID: URL?] = downloadedIds.reduce(into: [:]) { partialResult, uuid in
+            partialResult[uuid] = parsed.results[uuid]?.downloadURL
+        }
     
         do {
-            // insert new zim files
+            // delete everything from the DB, that has no downloaded file already
+            let deleteCount: Int = try await Database.shared.viewContext.perform(schedule: .enqueued) {
+                let fetchRequest: NSFetchRequest<NSFetchRequestResult> = ZimFile.fetchRequest()
+                fetchRequest.predicate = ZimFile.Predicate.notDownloaded()
+                let deleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
+                deleteRequest.resultType = .resultTypeCount
+                let context = Database.shared.viewContext
+                if let result = try context.execute(deleteRequest) as? NSBatchDeleteResult {
+                    return result.result as? Int ?? 0
+                }
+                return 0
+            }
+            
+            // insert new entries from the feed
             let insertCount: Int = try await Database.shared.viewContext.perform(schedule: .enqueued) {
-                var zimFileIDs = remainingIds
+                var zimFileIDs = insertIds
                 let insertRequest = NSBatchInsertRequest(
                     entity: ZimFile.entity(),
                     managedObjectHandler: { zimFile in
@@ -305,24 +326,30 @@ total: \(totalCount, privacy: .public)
                 }
             }
             
-            // delete old zim entries not included in the feed
-            let deleteCount = try await Database.shared.viewContext.perform(schedule: .enqueued) {
-                let notIncludedIn = parsedIds
-                let fetchRequest: NSFetchRequest<NSFetchRequestResult> = ZimFile.fetchRequest()
-                fetchRequest.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
-                    ZimFile.Predicate.notDownloaded(),
-                    NSPredicate(format: "NOT fileID IN %@", notIncludedIn)
-                ])
-                let deleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
-                deleteRequest.resultType = .resultTypeCount
+            // for the download entries, only update their download URL
+            let updateCount: Int = await Database.shared.viewContext.perform(schedule: .enqueued) {
                 let context = Database.shared.viewContext
-                if let result = try context.execute(deleteRequest) as? NSBatchDeleteResult {
-                    return result.result as? Int ?? 0
+                var count: Int = 0
+                for (fileID, url) in downloadURLUpdates {
+                    guard let url else { continue } // don't update with a nil url value
+                    let request = NSBatchUpdateRequest(
+                        entity: ZimFile.entity(),
+                    )
+                    request.predicate = NSPredicate(format: "fileID == %@", fileID as CVarArg)
+                    request.propertiesToUpdate = ["downloadURL": url as CVarArg]
+                    request.includesSubentities = false
+                    request.resultType = .updatedObjectsCountResultType
+                    if let result = try? context.execute(request) as? NSBatchUpdateResult {
+                        assert(result.result as? Int == 1)
+                        count += 1
+                    }
                 }
-                return 0
+                return count
             }
-            self.insertionCount = insertCount
-            self.deletionCount = deleteCount
+            
+            syncCount.inserted = UInt(insertCount)
+            syncCount.deleted = UInt(deleteCount)
+            syncCount.updated = UInt(updateCount)
         } catch {
             Log.OPDS.error("Error saving OPDS Data: \(error.localizedDescription, privacy: .public)")
             throw LibraryRefreshError.process
