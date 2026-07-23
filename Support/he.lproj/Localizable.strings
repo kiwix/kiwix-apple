@@ -1,6 +1,7 @@
 // Messages for Hebrew (עברית)
 // Exported from translatewiki.net
 // Author: Amire80
+// Author: Neriah
 // Author: YaronSh
 
 "library_refresh_error.retrieve.description" = "שגיאה באחזור נתוני קטלוג.";
@@ -239,8 +240,7 @@
 "payment.selection.option.one_time" = "חד־פעמי";
 "payment.selection.option.monthly" = "מדי חודש";
 "payment.support_fallback_message" = "אנו מצטערים, המכשיר שלך אינו תומך ב־Apple Pay.";
-// Fuzzy
-"payment.success.title" = "תודה רבה על תרומתך.";
+"payment.success.title" = "תודה על תרומתך.";
 // Fuzzy
 "payment.success.description" = "הנדיבות שלך חשובה לנו כל־כך.";
 "payment.error.title" = "טוב, זה מביך.";
