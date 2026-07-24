@@ -33,7 +33,7 @@ env:
   APPLE_STORE_AUTH_KEY_PATH: /tmp/authkey.p8
   APPLE_AUTH_PARAMS: "-authenticationKeyPath /tmp/authkey.p8 -authenticationKeyID ${{ secrets.APPLE_STORE_AUTH_KEY_ID }} -authenticationKeyIssuerID ${{ secrets.APPLE_STORE_AUTH_KEY_ISSUER_ID }}"
   # conditionally updated later:
-  EXPORT_METHOD: "app-store"
+  EXPORT_METHOD: "app-store-connect"
   EXTRA_XCODEBUILD: ""
   UPLOAD_TO: "" # !important this filters down the matrix combinations
   VERSION: ""
