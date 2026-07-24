@@ -92,7 +92,7 @@ struct SplitViewForiPad: View { // swiftlint:disable:this type_body_length
                 case .categories:
                     ZimFilesCategories(languageCode: $selectedLang, dismiss: nil)
                         .toolbar {
-                            ToolbarItem(placement: .secondaryAction) {
+                            ToolbarItem(placement: .topBarTrailing) {
                                 ToggleAroundLanguageButton(items: $languages, selection: $selectedLang)
                             }
                         }
