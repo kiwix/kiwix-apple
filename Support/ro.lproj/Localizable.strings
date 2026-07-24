@@ -1,5 +1,6 @@
 // Messages for Romanian (română)
 // Exported from translatewiki.net
+// Author: Chemballs
 // Author: MSClaudiu
 // Author: SZ475
 
@@ -222,8 +223,7 @@
 "payment.selection.option.one_time" = "O dată";
 "payment.selection.option.monthly" = "Lunar";
 "payment.support_fallback_message" = "Ne pare rău, dispozitivul dvs. nu acceptă Apple Pay.";
-// Fuzzy
-"payment.success.title" = "Vă mulțumesc mult pentru donație.";
+"payment.success.title" = "Vă mulțumim pentru donație.";
 // Fuzzy
 "payment.success.description" = "Generozitatea ta înseamnă totul pentru noi.";
 "payment.error.title" = "Ei bine, asta e ciudat.";

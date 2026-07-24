@@ -88,6 +88,7 @@
 "hotspot.action.start_hotspot.title" = "啟動熱點";
 "hotspot.action.stop_hotspot.title" = "停止熱點";
 "hotspot.settings.port_number" = "埠號";
+"hotspot.select_zim_files.message" = "選擇 ZIM 檔案來啟動您的熱點服務。";
 "hotspot.settings.recommended_port_range" = "熱點使用的網路埠號應介於 %@ 和 %@ 之間";
 "hotspot.error.port_already_used_by_another_app_title" = "由於埠號 %@ 已被佔用，熱點無法啟動。";
 "hotspot.error.port_already_used_by_another_app_description" = "要解決此問題，請關閉正在使用熱點的應用程式，或在設定中更改 Kiwix 熱點埠號。";
@@ -281,17 +282,18 @@
 "payment.monthly_support.label" = "每月支持 Kiwix";
 "payment.summary.title" = "Kiwix";
 "payment.textfield.custom_amount.label" = "自訂金額";
+"payment.continue.button.title" = "繼續";
 "payment.selection.option.one_time" = "單筆";
 "payment.selection.option.monthly" = "每月";
 "payment.support_fallback_message" = "很抱歉，您的裝置不支援 Apple Pay。";
-// Fuzzy
-"payment.success.title" = "非常感謝您的捐款！";
-// Fuzzy
-"payment.success.description" = "您的慷慨行為對我們至關重要。";
+"payment.success.title" = "非常感謝您的捐款。";
+"payment.success.description" = "您的支持，幫助到知識能持續自由開放，並可在離線情況下取得。";
 "payment.error.title" = "唔，真尷尬。";
 "payment.error.description" = "您的付款出現了問題。請重試。";
 "payment.error_already_subscribed.title" = "您已有每月捐款";
 "payment.error_already_subscribed.description" = "請依照我們之前發送的電子郵件中的說明進行更新。";
+"payment.donation_reason.title" = "協助我們持續更新 Kiwix 與 ZIM 檔案。";
+"payment.donation_is_encrypted" = "您的捐款會以 Apple 內建的安全機制加密。";
 "download_service.error.client.backgroundSessionInUseByAnotherProcess" = "無法與背景傳輸服務通信";
 "download_service.error.client.backgroundSessionWasDisconnected" = "與背景傳輸服務斷開連線";
 "download_service.error.client.cancelled" = "已取消";

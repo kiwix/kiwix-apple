@@ -205,5 +205,6 @@
 "download_service.error.client.httpTooManyRedirects" = "ze vill HTTP-Viruleedungen";
 "download_service.error.client.resourceUnavailable" = "Ressource net disponibel";
 "download_service.error.client.notConnectedToInternet" = "Et schéngt keng Internetverbindung ze bestoen.";
+"download_service.error.client.noPermissionsToReadFile" = "Dir hutt net d'Recht, fir op déi ugefrote Ressourcen zouzegräifen.";
 "download_service.error.client.serverCertificateUntrusted" = "De Certificat fir dëse Server ass ongülteg.";
 "download_service.error.client.clientCertificateRejected" = "De Server huet de Certificat net akzeptéiert.";
