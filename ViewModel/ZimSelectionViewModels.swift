@@ -13,11 +13,36 @@
 // You should have received a copy of the GNU General Public License
 // along with Kiwix; If not, see https://www.gnu.org/licenses/.
 
+import Defaults
 import SwiftUI
 
 @MainActor
 final class MultiSelectedZimFilesViewModel: ObservableObject {
-    @Published private(set) var selectedZimFiles = Set<ZimFile>()
+    private let persistKey: Defaults.Key<Set<UUID>>?
+    
+    @Published private(set) var selectedZimFiles = Set<ZimFile>() {
+        didSet {
+            if let persistKey {
+                Defaults[persistKey] = Set(selectedZimFiles.map { $0.fileID })
+            }
+        }
+    }
+    
+    init(persistUsing: Defaults.Key<Set<UUID>>? = nil) {
+        guard FeatureFlags.hasLibrary, let persistUsing else {
+            persistKey = nil
+            return
+        }
+        persistKey = persistUsing
+        let savedIds = Defaults[persistUsing].sorted()
+        guard !savedIds.isEmpty else { return }
+        let fetchedZimFiles: [ZimFile] = Database.shared.viewContext.performAndWait {
+            let fetchRequest = ZimFile.fetchRequest(fileIDs: savedIds)
+            return try? fetchRequest.execute()
+        } ?? []
+        
+        selectedZimFiles = Set(fetchedZimFiles)
+    }
     
     func toggleMultiSelect(of zimFile: ZimFile) {
         guard FeatureFlags.hasLibrary else { return }
