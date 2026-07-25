@@ -13,11 +13,12 @@
 // You should have received a copy of the GNU General Public License
 // along with Kiwix; If not, see https://www.gnu.org/licenses/.
 
-import SwiftUI
 import Combine
+import Defaults
+import SwiftUI
 
 enum HotspotState: Equatable {
-    @MainActor static let selection = MultiSelectedZimFilesViewModel()
+    @MainActor static let selection = MultiSelectedZimFilesViewModel(persistUsing: .selectedHotspotIds)
     
     case started(URL, CGImage?)
     case stopped
