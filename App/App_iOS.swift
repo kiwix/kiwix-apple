@@ -89,21 +89,6 @@ struct Kiwix: App {
                         NotificationCenter.openURL(url)
                     }
                 }
-                .task {
-                    switch AppType.current {
-                    case .kiwix:
-                        await LibraryOperations.reValidate()
-                        if !DeepLinkService.shared.isRunning() {
-                            navigation.navigateToMostRecentTab()
-                        }
-                        LibraryOperations.applyFileBackupSetting()
-                        DownloadService.shared.restartHeartbeatIfNeeded()
-                    case let .branded(zimFileURL):
-                        await LibraryOperations.open(url: zimFileURL)
-                        await ZimMigration.forCustomApps()
-                        navigation.navigateToMostRecentTab()
-                    }
-                }
                 .onAppear {
                     colorSchemeStore.update()
                 }

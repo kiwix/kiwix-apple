@@ -65,6 +65,7 @@ extension Defaults.Keys {
     #endif
     
     #if os(iOS)
+    static let savedMenuNavigation = Key<MenuItem?>("savedMenuNavigation", default: nil)
     static let ipadSplitViewVisibility = Key<NavigationSplitViewVisibility>(
         "ipadSplitViewVisibility",
         default: NavigationSplitViewVisibility.detailOnly
