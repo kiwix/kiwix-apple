@@ -14,17 +14,48 @@
 // along with Kiwix; If not, see https://www.gnu.org/licenses/.
 
 #if os(iOS)
-import SwiftUI
 import CoreData
+import Defaults
+import SwiftUI
 
 @MainActor
 struct RootViewiOS: View {
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
+    @EnvironmentObject private var navigation: NavigationViewModel
+    @Default(.savedMenuNavigation) private var selection: MenuItem?
+    
     var body: some View {
         if horizontalSizeClass == .compact {
             CompactView()
+                .task {
+                    await onStart(isCompact: true)
+                }
         } else {
             SplitViewForiPadContainer()
+                .task {
+                    await onStart(isCompact: false)
+                }
+        }
+    }
+    
+    private func onStart(isCompact: Bool) async {
+        switch AppType.current {
+        case .kiwix:
+            await LibraryOperations.reValidate()
+            let toRecentTab: Bool = isCompact || selection == nil
+            if !DeepLinkService.shared.isRunning(), toRecentTab {
+                navigation.navigateToMostRecentTab()
+            } else if let selection {
+                navigation.currentItem = selection.navigationItem
+            }
+            LibraryOperations.applyFileBackupSetting()
+            DownloadService.shared.restartHeartbeatIfNeeded()
+        case let .branded(zimFileURL):
+            await LibraryOperations.open(url: zimFileURL)
+            await ZimMigration.forCustomApps()
+            if !DeepLinkService.shared.isRunning() {
+                navigation.navigateToMostRecentTab()
+            }
         }
     }
 }

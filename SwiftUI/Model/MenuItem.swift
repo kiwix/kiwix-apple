@@ -14,10 +14,11 @@
 // along with Kiwix; If not, see https://www.gnu.org/licenses/.
 
 import CoreData
+import Defaults
 import Foundation
 import SwiftUI
 
-enum MenuItem: Hashable, Identifiable, RawRepresentable {
+enum MenuItem: Hashable, Identifiable, RawRepresentable, Defaults.Serializable {
     typealias RawValue = String
 
     init?(rawValue: String) {
