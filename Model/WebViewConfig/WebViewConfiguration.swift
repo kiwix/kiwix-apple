@@ -43,6 +43,17 @@ final class WebViewConfiguration: WKWebViewConfiguration {
                     controller.addUserScript(script)
                 }
             }
+            
+            if let url = Bundle.main.url(forResource: "zimCookies", withExtension: "js"),
+               let javascript = try? String(contentsOf: url) {
+                let script = WKUserScript(
+                    source: javascript,
+                    injectionTime: .atDocumentStart,
+                    forMainFrameOnly: false
+                )
+                controller.addUserScript(script)
+            }
+            
             return controller
         }()
     }
