@@ -100,3 +100,4 @@
 "payment.selection.option.monthly" = "Mánnosaččat";
 "download_service.error.client.cannotCreateFile" = "Fiilla ráhkadeapmi ii lihkostuvvan";
 "download_service.error.client.cannotOpenFile" = "Fiilla rahpan ii lihkostuvvan";
+"download_service.error.client.cannotWriteToFile" = "Fiilla ráhkadeapmi ii lihkostuvvan";
