@@ -135,9 +135,7 @@ extension NotificationCenter {
     }
     
     static func navigateToHotspotSettings() {
-        if FeatureFlags.hasLibrary {
-            NotificationCenter.default.post(name: .navigateToHotspotSettings, object: nil, userInfo: nil)
-        }
+        NotificationCenter.default.post(name: .navigateToHotspotSettings, object: nil, userInfo: nil)
     }
 
     static func toggleSidebar() {
