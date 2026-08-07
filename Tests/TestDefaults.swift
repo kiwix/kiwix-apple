@@ -25,7 +25,6 @@ final class TestDefaults: NSObject, Defaulting {
         self[.categoriesToLanguages] = [:]
         self[.libraryAutoRefresh] = false
         self[.libraryETag] = ""
-        self[.libraryUsingOldISOLangCodes] = false
         self[.libraryLanguageCodes] = []
     }
     

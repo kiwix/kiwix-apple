@@ -18,12 +18,4 @@ import Foundation
 /// Sendable data that is comming out of the OPDSParser
 struct Parsed {
     let results: [UUID: ZimFileMetaStruct]
-    
-    /// An empty result we can use to delete zim entries
-    /// Based on the assumption we insert new ones, delete the ones not on the list
-    /// Therefore an empty list will delete everything, using the same method
-    /// @see: LibraryViewModel.process(parsed: Parsed)
-    static func deletingResult() -> Parsed {
-        Parsed(results: [:])
-    }
 }
