@@ -49,16 +49,12 @@ final class ZimCookieStore {
     func updateRaw(zimFileID: UUID, cookie newValues: String) {
         if newValues.isEmpty { return }
         Log.Cookies.debug("\(#function): \(newValues)")
-        let values = newValues.split(separator: ";")
-        guard let value = values.first else { return }
-        let keyValue = value.split(separator: "=")
+        let keyValues = newValues.split(separator: ";")
+        guard let keyAndValue = keyValues.first else { return }
+        let keyValue = keyAndValue.split(separator: "=")
         guard let key = keyValue.first else { return }
-        if keyValue.count == 2, !keyValue[1].isEmpty {
-            let value = keyValue[1]
-            update(zimFileID: zimFileID, key: String(key), value: String(value))
-        } else {
-            delete(zimFileID: zimFileID, key: String(key))
-        }
+        let value = keyValue.secondOrEmpty
+        update(zimFileID: zimFileID, key: String(key), value: String(value))
     }
     
     func deleteAllFor(zimFileID: UUID) {
@@ -86,5 +82,14 @@ final class ZimCookieStore {
     /// saving the whole store itself on changes
     private func saveStore() {
         persistance.save(store)
+    }
+}
+
+private extension Array where Element == Substring {
+    var secondOrEmpty: Substring {
+        guard count > 1 else {
+            return ""
+        }
+        return self[1]
     }
 }

@@ -55,15 +55,29 @@ struct ZimCookieStoreTest {
         )
         #expect(storage.getAllFor(zimFileID: fileID) == test.expectedResult)
     }
+    
+    @Test("Set empty value", arguments: ["theme", "theme;", "theme=", "theme=;"])
+    fileprivate func setsEmptyValue(input: String) async throws {
+        let fileID = UUID()
+        let initialState = [fileID: ["theme": "dark"]]
+        let mockPersistance = MockPersistance()
+        mockPersistance.save(initialState)
+        let storage = ZimCookieStore(persistance: mockPersistance)
+        storage.updateRaw(
+            zimFileID: fileID,
+            cookie: input
+        )
+        #expect(mockPersistance.stored == [fileID: ["theme": ""]])
+    }
 }
 
 private final class MockPersistance: ZIMCookiePersistance {
     private(set) var stored: [UUID: [String: String]] = [:]
     
-    func load() -> [UUID : [String : String]] {
+    func load() -> [UUID: [String: String]] {
         [:]
     }
-    func save(_ values: [UUID : [String : String]]) {
+    func save(_ values: [UUID: [String: String]]) {
         stored = values
     }
 }
