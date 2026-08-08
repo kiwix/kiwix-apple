@@ -13,6 +13,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Kiwix; If not, see https://www.gnu.org/licenses/.
 
+import CoreData
 import Foundation
 
 @MainActor
@@ -30,22 +31,48 @@ struct DownloadTaskManager {
         }
     }
     
-    func deleteDownloadTaskAsync(zimFileID: UUID) async {
-        progress.resetFor(uuid: zimFileID)
-        await Database.shared.viewContext.perform {
+    private func deleteDownloadTaskAsync(zimFileID: UUID) async {
+        // What we really want is to update the ZimFile entry
+        // to indicate that it has no more ZimFile.downloadTask associated with it
+        // The UI relies on this fact in it's display hierarchy.
+        // Deleting the DownloadTask directly poorly propagates upwards to the ZimFile.
+        // So instead let's set ZimFile.downloadTask = nil, which instantly updates the UI,
+        // and then we can do the deletion of the DownloadTask itself
+        let downloadTaskObjectId: NSManagedObjectID? = await Database.shared.viewContext.perform {
             do {
-                let request = DownloadTask.fetchRequest(fileID: zimFileID)
-                request.fetchLimit = 1
-                guard let downloadTask = try request.execute().first else { return }
                 let context = Database.shared.viewContext
-                context.delete(downloadTask)
+                let zimRequest = ZimFile.fetchRequest(fileID: zimFileID)
+                zimRequest.fetchLimit = 1
+                let zimFile: ZimFile? = try context.fetch(zimRequest).first
+                let downloadTaskObjectId = zimFile?.downloadTask?.objectID
+                zimFile?.downloadTask = nil
                 try context.save()
+                return downloadTaskObjectId
             } catch {
-                let fileId = zimFileID.uuidString
-                let errorDesc = error.localizedDescription
+                let errorDesc = "\(zimFileID.uuidString), \(error.localizedDescription)"
                 Log.DownloadService.error(
-                    "Error deleting download task for: \(fileId, privacy: .public), \(errorDesc, privacy: .public)"
+                    "Could not set ZimFile's downloadTask to nil for: \(errorDesc, privacy: .public)"
                 )
+                return nil
+            }
+        }
+       
+        if let downloadTaskObjectId {
+            // Update the UI now
+            progress.resetFor(uuid: zimFileID)
+            
+            // Clean up the now orphaned DownloadTask
+            let context = Database.shared.viewContext
+            await context.perform {
+                do {
+                    try context.execute(NSBatchDeleteRequest(objectIDs: [downloadTaskObjectId]))
+                } catch {
+                    let fileId = zimFileID.uuidString
+                    let errorDesc = error.localizedDescription
+                    Log.DownloadService.error(
+                        "Error deleting download task for: \(fileId, privacy: .public), \(errorDesc, privacy: .public)"
+                    )
+                }
             }
         }
     }
