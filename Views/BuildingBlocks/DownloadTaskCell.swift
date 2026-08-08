@@ -27,8 +27,10 @@ struct DownloadTaskCell: View {
     @State private var downloadNetworkState: DownloadTaskNetworkState = .online
 
     let downloadZimFile: ZimFile
+    private let zimFileID: UUID
     init(_ downloadZimFile: ZimFile) {
         self.downloadZimFile = downloadZimFile
+        self.zimFileID = downloadZimFile.fileID
     }
 
     var body: some View {
@@ -86,7 +88,7 @@ struct DownloadTaskCell: View {
         .clipShape(CellBackground.clipShapeRectangle)
         .onHover { self.isHovering = $0 }
         .onReceive(DownloadService.shared.progress.publisher) { states in
-            if !states.isEmpty, let state = states[downloadZimFile.fileID] {
+            if !states.isEmpty, let state = states[zimFileID] {
                 self.downloadState = state
             }
         }
