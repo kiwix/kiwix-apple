@@ -13,25 +13,17 @@
 // You should have received a copy of the GNU General Public License
 // along with Kiwix; If not, see https://www.gnu.org/licenses/.
 
-import Defaults
 import Foundation
 
 @MainActor
-final class CookieStore {
+final class ZimCookieStore {
     
-    @MainActor
-    static let shared = CookieStore()
+    private let persistance: ZIMCookiePersistance
+    private var store: [UUID: [String: String]]
     
-    private var store: [UUID: [String: String]] = [:]
-    
-    private init() {
-        let storedValues: [String: [String: String]] = Defaults[.cookieStore]
-        store = storedValues.reduce(into: .init(), { partialResult, zimFileIdCookies in
-            if let zimFileId = UUID(uuidString: zimFileIdCookies.key) {
-                let cookies = zimFileIdCookies.value
-                partialResult.updateValue(cookies, forKey: zimFileId)
-            }
-        })
+    init(persistance: ZIMCookiePersistance) {
+        self.persistance = persistance
+        store = persistance.load()
     }
     
     /// Return the whole cookie store for a given ZIM file
@@ -56,6 +48,7 @@ final class CookieStore {
     ///   - cookie: the raw cookie value as in JS: document.cookie = value
     func updateRaw(zimFileID: UUID, cookie newValues: String) {
         if newValues.isEmpty { return }
+        Log.Cookies.debug("\(#function): \(newValues)")
         let values = newValues.split(separator: ";")
         guard let value = values.first else { return }
         let keyValue = value.split(separator: "=")
@@ -92,14 +85,6 @@ final class CookieStore {
     
     /// saving the whole store itself on changes
     private func saveStore() {
-        // map it to a serializable format:
-        let storedValues: [String: [String: String]] = store.reduce(.init(), { partialResult, zimFileIDValue in
-            let zimFileId: UUID = zimFileIDValue.key
-            let cookies: [String: String] = zimFileIDValue.value
-            var newResults = partialResult
-            newResults.updateValue(cookies, forKey: zimFileId.uuidString)
-            return newResults
-        })
-        Defaults[.cookieStore] = storedValues
+        persistance.save(store)
     }
 }

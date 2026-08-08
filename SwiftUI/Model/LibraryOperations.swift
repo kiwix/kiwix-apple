@@ -161,7 +161,7 @@ ZIM file cannot be opened: \(zimFile.name, privacy: .public) |\
     /// - Parameter zimFile: the zim file to unlink
     @ZimActor static func unlink(zimFileID: UUID) async {
         ZimFileService.shared.close(fileID: zimFileID)
-        await CookieStore.shared.deleteAllFor(zimFileID: zimFileID)
+        await MainActor.run { CookieStore.shared.deleteAllFor(zimFileID: zimFileID) }
         await Database.shared.viewContext.perform {
             let request = ZimFile.fetchRequest(fileID: zimFileID)
             request.fetchLimit = 1
