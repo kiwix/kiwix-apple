@@ -28,7 +28,7 @@ final class CookiePersistanceInDefaults: ZIMCookiePersistance {
         let decoder = JSONDecoder()
         return storedValues.reduce(into: .init(), { partialResult, zimFileIdCookies in
             if let zimFileId = UUID(uuidString: zimFileIdCookies.key) {
-                if let zCookie: [String: ZCookie] = try? decoder.decode([String: ZCookie].self, from: zimFileIdCookies.value) {
+                if let zCookie = try? decoder.decode([String: ZCookie].self, from: zimFileIdCookies.value) {
                     partialResult.updateValue(zCookie, forKey: zimFileId)
                 }
             }

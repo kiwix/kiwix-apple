@@ -50,7 +50,8 @@ enum CookieParserResult {
     
     /// Parse the raw value of the cookie
     /// - Parameter rawValues: as in JS document.cookie = "value ...."
-    /// - Returns: the main key for the cookie (the first in the list) if found, and the remaning lowercase(key)/values in a dict
+    /// - Returns: the main key for the cookie (the first in the list) if found,
+    /// and the remaning lowercase(key)/values in a dict
     static private func asMainKeyAndDictionary(_ rawValues: String) -> (String?, [String: String]) {
         var dict: [String: String] = [:]
         // the first key is special

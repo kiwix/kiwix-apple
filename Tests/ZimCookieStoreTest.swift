@@ -24,14 +24,9 @@ private struct Cookie {
     let value: String
     let expectedResult: [[String]]
 }
-
+// swiftlint:disable:line_lenght
 @MainActor
 struct ZimCookieStoreTest {
-    
-    // TODO:
-    // ;expires=date-in-UTCString-format: The expiry date of the cookie.
-    // ;max-age=max-age-in-seconds: The maximum age of the cookie in seconds (e.g., 60*60*24*365 or 31536000 for a year).
-    // - If neither expires nor max-age is specified, it will expire at the end of session.
     
     // Our reference, stable "now" for testing
     // Sun, 02 Aug 2026 08:08:08 GMT
@@ -107,6 +102,7 @@ struct ZimCookieStoreTest {
         #expect(mockPersistance.stored == [fileID: [:]])
     }
 }
+//swiftlint:enable:line_length
 
 private final class MockPersistance: ZIMCookiePersistance {
     private(set) var stored: [UUID: [String: ZCookie]] = [:]
