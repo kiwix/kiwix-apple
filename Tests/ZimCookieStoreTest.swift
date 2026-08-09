@@ -59,7 +59,7 @@ struct ZimCookieStoreTest {
     @Test("Set empty value", arguments: ["theme", "theme;", "theme=", "theme=;"])
     fileprivate func setsEmptyValue(input: String) async throws {
         let fileID = UUID()
-        let initialState = [fileID: ["theme": "dark"]]
+        let initialState = [fileID: ["theme": ZCookie(value: "dark", expiry: nil)]]
         let mockPersistance = MockPersistance()
         mockPersistance.save(initialState)
         let storage = ZimCookieStore(persistance: mockPersistance)
@@ -67,17 +67,23 @@ struct ZimCookieStoreTest {
             zimFileID: fileID,
             cookie: input
         )
-        #expect(mockPersistance.stored == [fileID: ["theme": ""]])
+        #expect(mockPersistance.stored == [fileID: ["theme": ZCookie(value: "", expiry: nil)]])
     }
 }
 
 private final class MockPersistance: ZIMCookiePersistance {
-    private(set) var stored: [UUID: [String: String]] = [:]
+    private(set) var stored: [UUID: [String: ZCookie]] = [:]
     
-    func load() -> [UUID: [String: String]] {
+    func load() -> [UUID: [String: ZCookie]] {
         [:]
     }
-    func save(_ values: [UUID: [String: String]]) {
+    func save(_ values: [UUID: [String: ZCookie]]) {
         stored = values
+    }
+}
+
+extension ZCookie: @retroactive Equatable {
+    public static func == (lhs: ZCookie, rhs: ZCookie) -> Bool {
+        lhs.value == rhs.value && lhs.expiry == rhs.expiry
     }
 }

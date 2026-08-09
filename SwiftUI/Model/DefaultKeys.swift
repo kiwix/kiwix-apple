@@ -56,7 +56,7 @@ extension Defaults.Keys {
     static let openZIMsShowBy = Key<ZIMsShowBy>("openZIMsShowBy", default: ZIMsShowBy.all)
     static let opneZIMsSorting = Key<ZIMsSortBy>("openZIMsSortBy", default: ZIMsSortBy.size(.forward))
     
-    static let cookieStore = Key<[String: [String: String]]>("cookieStore", default: [:])
+    static let cookieStore = Key<[String: Data]>("cookieStore", default: [:])
 
     #if os(macOS)
     // window management:

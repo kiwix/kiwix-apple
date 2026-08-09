@@ -17,29 +17,35 @@ import Defaults
 import Foundation
 
 @MainActor protocol ZIMCookiePersistance {
-    func load() -> [UUID: [String: String]]
-    func save(_ values: [UUID: [String: String]])
+    func load() -> [UUID: [String: ZCookie]]
+    func save(_ values: [UUID: [String: ZCookie]])
 }
 
 @MainActor
 final class CookiePersistanceInDefaults: ZIMCookiePersistance {
-    func load() -> [UUID: [String: String]] {
-        let storedValues: [String: [String: String]] = Defaults[.cookieStore]
+    func load() -> [UUID: [String: ZCookie]] {
+        let storedValues: [String: Data] = Defaults[.cookieStore]
+        let decoder = JSONDecoder()
         return storedValues.reduce(into: .init(), { partialResult, zimFileIdCookies in
             if let zimFileId = UUID(uuidString: zimFileIdCookies.key) {
-                let cookies = zimFileIdCookies.value
-                partialResult.updateValue(cookies, forKey: zimFileId)
+                if let zCookie: [String: ZCookie] = try? decoder.decode([String: ZCookie].self, from: zimFileIdCookies.value) {
+                    partialResult.updateValue(zCookie, forKey: zimFileId)
+                }
             }
         })
     }
-    func save(_ values: [UUID: [String: String]]) {
+    func save(_ values: [UUID: [String: ZCookie]]) {
+        let encoder = JSONEncoder()
         // map it to a serializable format:
-        let storedValues: [String: [String: String]] = values.reduce(.init(), { partialResult, zimFileIDValue in
+        let storedValues: [String: Data] = values.reduce(.init(), { partialResult, zimFileIDValue in
             let zimFileId: UUID = zimFileIDValue.key
-            let cookies: [String: String] = zimFileIDValue.value
-            var newResults = partialResult
-            newResults.updateValue(cookies, forKey: zimFileId.uuidString)
-            return newResults
+            if let data = try? encoder.encode(zimFileIDValue.value) {
+                var newResults = partialResult
+                newResults.updateValue(data, forKey: zimFileId.uuidString)
+                return newResults
+            } else {
+                return partialResult
+            }
         })
         Defaults[.cookieStore] = storedValues
     }

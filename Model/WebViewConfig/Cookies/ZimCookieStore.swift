@@ -13,13 +13,37 @@
 // You should have received a copy of the GNU General Public License
 // along with Kiwix; If not, see https://www.gnu.org/licenses/.
 
+import Defaults
 import Foundation
+
+enum CookieParserResult {
+    case delete(key: String)
+    case insert(key: String, cookie: ZCookie)
+    case invalid
+    
+    /// Parse a raw JS cookie value, as of document.cookie = "value...."
+    /// - Parameter rawValues: JS raw cookie values in a single string
+    /// - Returns: a CookieParseResult (either insert key+ZCookie, or delete(by key)
+    static func parse(rawValues: String) -> CookieParserResult {
+        let keyValues = rawValues.split(separator: ";")
+        guard let keyAndValue = keyValues.first else { return .invalid }
+        let keyValue = keyAndValue.split(separator: "=")
+        guard let key = keyValue.first else { return .invalid }
+        let value = keyValue.secondOrEmpty
+        return .insert(key: String(key), cookie: ZCookie(value: String(value), expiry: nil))
+    }
+}
+
+struct ZCookie: Codable {
+    let value: String
+    let expiry: Date?
+}
 
 @MainActor
 final class ZimCookieStore {
     
     private let persistance: ZIMCookiePersistance
-    private var store: [UUID: [String: String]]
+    private var store: [UUID: [String: ZCookie]]
     
     init(persistance: ZIMCookiePersistance) {
         self.persistance = persistance
@@ -31,9 +55,9 @@ final class ZimCookieStore {
     /// - Returns: in a JS convenient form of nested arrays [[key1, value1], [key2, value2]]
     /// eg: [["theme", "dark"], ["width", "wide"]]
     func getAllFor(zimFileID: UUID) -> [[String]] {
-        if let cookies = store[zimFileID] {
-            return cookies.map { (key: String, value: String) in
-                [key, value]
+        if let cookies: [String: ZCookie] = store[zimFileID] {
+            return cookies.map { (key: String, value: ZCookie) in
+                [key, value.value]
             }
         } else {
             return []
@@ -49,12 +73,14 @@ final class ZimCookieStore {
     func updateRaw(zimFileID: UUID, cookie newValues: String) {
         if newValues.isEmpty { return }
         Log.Cookies.debug("\(#function): \(newValues)")
-        let keyValues = newValues.split(separator: ";")
-        guard let keyAndValue = keyValues.first else { return }
-        let keyValue = keyAndValue.split(separator: "=")
-        guard let key = keyValue.first else { return }
-        let value = keyValue.secondOrEmpty
-        update(zimFileID: zimFileID, key: String(key), value: String(value))
+        switch CookieParserResult.parse(rawValues: newValues) {
+        case .invalid:
+            return
+        case let .delete(key):
+            delete(zimFileID: zimFileID, key: key)
+        case let .insert(key, cookie):
+            update(zimFileID: zimFileID, key: key, cookie: cookie)
+        }
     }
     
     func deleteAllFor(zimFileID: UUID) {
@@ -63,13 +89,13 @@ final class ZimCookieStore {
         saveStore()
     }
     
-    private func update(zimFileID: UUID, key: String, value: String) {
+    private func update(zimFileID: UUID, key: String, cookie: ZCookie) {
         if store[zimFileID] == nil {
-            store[zimFileID] = [key: value]
+            store[zimFileID] = [key: cookie]
         } else {
-            store[zimFileID]?[key] = value
+            store[zimFileID]?[key] = cookie
         }
-        Log.Cookies.debug("update cookie for zimFileID: \(zimFileID), key: \(key) with value: \(value)")
+        Log.Cookies.debug("update cookie for zimFileID: \(zimFileID), key: \(key) with value: \(cookie.value)")
         saveStore()
     }
     
