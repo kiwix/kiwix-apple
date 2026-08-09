@@ -40,7 +40,7 @@ struct ZimCookieStoreTest {
     @Test(
         "Valid raw input",
         arguments: [
-            Cookie(                                 // v--- notice the deliberate space before the ";"
+            Cookie(                                  // v--- notice the deliberate space before the ";"
                 "_pk_id.3.d4b8=b40a88a69a2c73b3.0.1.0.0.; Expires=Sun, 05 Sep 2027 19:14:17 GMT; Path=/doc.ubuntu-fr.org/;SameSite=Lax",
                 [["_pk_id.3.d4b8", "b40a88a69a2c73b3.0.1.0.0."]]
             ),
@@ -90,10 +90,11 @@ struct ZimCookieStoreTest {
         #expect(mockPersistance.stored == [fileID: ["theme": ZCookie(value: "", expires: nil)]])
     }
     
+    // starts with a cookie of red=apple
     @Test("Deleting a specific value", arguments: [
         "red=blue; max-age=0",
         "red=oranage; max-age=-1;",
-        "red=yellow; expires=Sun, 02 Aug 2026 08:08:06 GMT"])
+        "red=yellow; expires=Sun, 02 Aug 2026 08:08:06 GMT"]) // 2 seconds ago
     fileprivate func deletesAValue(input: String) async throws {
         let fileID = UUID()
         let mockPersistance = MockPersistance()
