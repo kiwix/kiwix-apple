@@ -595,7 +595,7 @@ import CoreKiwix
             ensureGeolocationService().handle(request: request)
         } else if message.name == "zimCookies", let body = message.body as? String {
             if let zimFileId {
-                cookieStore.updateRaw(zimFileID: zimFileId, cookie: body)
+                cookieStore.updateRaw(zimFileID: zimFileId, cookie: body, now: Date())
             }
         }
     }

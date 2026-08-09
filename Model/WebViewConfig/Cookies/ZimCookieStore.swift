@@ -16,6 +16,11 @@
 import Defaults
 import Foundation
 
+private enum CookieAttribute {
+    static let expires = "expires"
+    static let maxAge = "max-age"
+}
+
 enum CookieParserResult {
     case delete(key: String)
     case insert(key: String, cookie: ZCookie)
@@ -24,40 +29,99 @@ enum CookieParserResult {
     /// Parse a raw JS cookie value, as of document.cookie = "value...."
     /// - Parameter rawValues: JS raw cookie values in a single string
     /// - Returns: a CookieParseResult (either insert key+ZCookie, or delete(by key)
-    static func parse(rawValues: String) -> CookieParserResult {
+    static func parse(rawValues: String, now: Date) -> CookieParserResult {
         let (mainKey, dict) = asMainKeyAndDictionary(rawValues)
         guard let mainKey else {
             // it's not a valid cookie if there's no main key
             return .invalid
         }
-        let expiryDate = expiryDateFrom(dict)
-        let mainValue = dict[mainKey] ?? ""
-        return .insert(key: String(mainKey), cookie: ZCookie(value: mainValue, expiry: expiryDate))
+        let key = String(mainKey)
+        let dateResult: DateResult = expiryDateFrom(dict, now: now)
+        let value = dict[key] ?? ""
+        switch dateResult {
+        case .expired:
+            return .delete(key: key)
+        case .session:
+            return .insert(key: key, cookie: ZCookie(value: value, expires: nil))
+        case let .valid(date):
+            return .insert(key: key, cookie: ZCookie(value: value, expires: date))
+        }
     }
     
     /// Parse the raw value of the cookie
     /// - Parameter rawValues: as in JS document.cookie = "value ...."
-    /// - Returns: the main key for the cookie (the first in the list) if found, and the remaning key/values in a dict
+    /// - Returns: the main key for the cookie (the first in the list) if found, and the remaning lowercase(key)/values in a dict
     static private func asMainKeyAndDictionary(_ rawValues: String) -> (String?, [String: String]) {
         var dict: [String: String] = [:]
+        // the first key is special
+        // that's the main key that points to the value
+        // we actually store in the cookie
         var firstKey: String?
-        rawValues.split(separator: ";").enumerated().forEach { i, keyAndValue in
-            let keyValue = keyAndValue.split(separator: "=")
-            if let key = keyValue.first {
-                if i == 0, !key.isEmpty {
-                    firstKey = String(key)
+        rawValues.split(separator: ";").enumerated().forEach { (index: Int, keyAndValue: Substring) in
+            let keyValue: [String.SubSequence] = String(keyAndValue).split(separator: "=")
+            // keyValue is an array pair [key, value]
+            if let jsKey: Substring = keyValue.first {
+                let key = String(jsKey)
+                if index == 0 {
+                    if key.isEmpty {
+                        // ignore it, it's not valid
+                    } else {
+                        // store the main key without any modification
+                        firstKey = key
+                        dict[key] = String(keyValue.secondOrEmpty)
+                    }
+                } else {
+                    // for other keys, process them
+                    if let key: String = keyFrom(String(jsKey)) {
+                        dict[key] = String(keyValue.secondOrEmpty)
+                    }
                 }
-                dict[String(key)] = String(keyValue.secondOrEmpty)
             }
         }
         return (firstKey, dict)
     }
     
-    static private func expiryDateFrom(_ dict: [String: String]) -> Date? {
-        if let expiresString = dict["Expires"], let expiryDate = dateFrom(httpValue: expiresString) {
-            return expiryDate
+    /// Process the parse keys from raw cookie string
+    /// - Parameter key: parsed out from key1=value1; key2=value2;
+    /// - Returns: lower cased for keys defined in CookieAttribute, for others nil
+    static private func keyFrom(_ input: String) -> String? {
+        // for expires | max-age
+        // make sure they are lowercased for easier look-up
+        let key = String(input.lowercased().trimmingPrefix(" "))
+        guard [CookieAttribute.expires, CookieAttribute.maxAge].contains(key) else {
+            // it's not a cookie attribute we care about, so ignore it
+            return nil
         }
-        return nil
+        return key
+    }
+    
+    // MARK: - Date
+    
+    private enum DateResult {
+        // You can delete a cookie by updating its expiration time to zero.
+        case expired
+        // If neither expires nor max-age is specified, it will expire at the end of session.
+        case session
+        case valid(date: Date)
+    }
+    
+    static private func expiryDateFrom(_ dict: [String: String], now: Date) -> DateResult {
+        if let expiresString = dict["expires"], let expiryDate = dateFrom(httpValue: expiresString) {
+            if now < expiryDate {
+                return DateResult.valid(date: expiryDate)
+            } else {
+                return DateResult.expired
+            }
+        }
+        // max-age: in seconds
+        if let maxAgeString = dict["max-age"], let maxAge: Int = Int(maxAgeString) {
+            guard 0 < maxAge else {
+                return DateResult.expired
+            }
+            return DateResult.valid(date: Date().advanced(by: TimeInterval(maxAge)))
+        }
+        // If neither expires nor max-age is specified, it will expire at the end of session.
+        return DateResult.session
     }
     
     static func dateFrom(httpValue: String) -> Date? {
@@ -80,7 +144,8 @@ enum CookieParserResult {
 
 struct ZCookie: Codable {
     let value: String
-    let expiry: Date?
+    // nil means it's a session cookie
+    let expires: Date?
 }
 
 @MainActor
@@ -114,10 +179,10 @@ final class ZimCookieStore {
     /// - Parameters:
     ///   - zimFileID: the associated content
     ///   - cookie: the raw cookie value as in JS: document.cookie = value
-    func updateRaw(zimFileID: UUID, cookie newValues: String) {
+    func updateRaw(zimFileID: UUID, cookie newValues: String, now: Date) {
         if newValues.isEmpty { return }
         Log.Cookies.debug("\(#function): \(newValues)")
-        switch CookieParserResult.parse(rawValues: newValues) {
+        switch CookieParserResult.parse(rawValues: newValues, now: now) {
         case .invalid:
             return
         case let .delete(key):
