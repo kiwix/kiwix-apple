@@ -25,13 +25,57 @@ enum CookieParserResult {
     /// - Parameter rawValues: JS raw cookie values in a single string
     /// - Returns: a CookieParseResult (either insert key+ZCookie, or delete(by key)
     static func parse(rawValues: String) -> CookieParserResult {
-        let keyValues = rawValues.split(separator: ";")
-        guard let keyAndValue = keyValues.first else { return .invalid }
-        let keyValue = keyAndValue.split(separator: "=")
-        guard let key = keyValue.first else { return .invalid }
-        let value = keyValue.secondOrEmpty
-        return .insert(key: String(key), cookie: ZCookie(value: String(value), expiry: nil))
+        let (mainKey, dict) = asMainKeyAndDictionary(rawValues)
+        guard let mainKey else {
+            // it's not a valid cookie if there's no main key
+            return .invalid
+        }
+        let expiryDate = expiryDateFrom(dict)
+        let mainValue = dict[mainKey] ?? ""
+        return .insert(key: String(mainKey), cookie: ZCookie(value: mainValue, expiry: expiryDate))
     }
+    
+    /// Parse the raw value of the cookie
+    /// - Parameter rawValues: as in JS document.cookie = "value ...."
+    /// - Returns: the main key for the cookie (the first in the list) if found, and the remaning key/values in a dict
+    static private func asMainKeyAndDictionary(_ rawValues: String) -> (String?, [String: String]) {
+        var dict: [String: String] = [:]
+        var firstKey: String?
+        rawValues.split(separator: ";").enumerated().forEach { i, keyAndValue in
+            let keyValue = keyAndValue.split(separator: "=")
+            if let key = keyValue.first {
+                if i == 0, !key.isEmpty {
+                    firstKey = String(key)
+                }
+                dict[String(key)] = String(keyValue.secondOrEmpty)
+            }
+        }
+        return (firstKey, dict)
+    }
+    
+    static private func expiryDateFrom(_ dict: [String: String]) -> Date? {
+        if let expiresString = dict["Expires"], let expiryDate = dateFrom(httpValue: expiresString) {
+            return expiryDate
+        }
+        return nil
+    }
+    
+    static func dateFrom(httpValue: String) -> Date? {
+        if #available(iOS 26, macOS 26, *) {
+            return try? Date(httpValue, strategy: .http)
+        } else {
+            return httpDateFormatter.date(from: httpValue)
+        }
+    }
+    
+    /// For versions below iOS 26, macOS 26
+    private static let httpDateFormatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "E, dd MMM yyyy HH:mm:ss zzz"
+        formatter.locale = Locale(identifier: "en_US")
+        formatter.timeZone = .gmt
+        return formatter
+    }()
 }
 
 struct ZCookie: Codable {
