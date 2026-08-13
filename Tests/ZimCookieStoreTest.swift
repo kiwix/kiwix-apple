@@ -24,7 +24,7 @@ private struct CookieT {
     let value: String
     let expectedResult: [[String]]
 }
-// swiftlint:disable:line_lenght
+// swiftlint:disable line_length
 @MainActor
 struct ZimCookieStoreTest {
     
@@ -104,7 +104,7 @@ struct ZimCookieStoreTest {
         #expect(mockPersistance.stored == [fileID: [:]])
     }
     
-    @Test("Session only cookies, should not be persisted", arguments:[
+    @Test("Session only cookies, should not be persisted", arguments: [
         "kiwix_cookie=session only"
     ])
     fileprivate func sessionOnly(input: String) async throws {
@@ -118,7 +118,7 @@ struct ZimCookieStoreTest {
         #expect(mockPersistance.stored == [fileID: [:]])
     }
 }
-// swiftlint:enable:line_length
+// swiftlint:enable line_length
 
 private final class MockPersistance: ZIMCookiePersistance {
     private(set) var stored: [UUID: [String: ZCookiePersisted]] = [:]
