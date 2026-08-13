@@ -16,25 +16,30 @@
 import Defaults
 import Foundation
 
+struct ZCookiePersisted: Codable {
+    let value: String
+    let expires: Date
+}
+
 @MainActor protocol ZIMCookiePersistance {
-    func load() -> [UUID: [String: ZCookie]]
-    func save(_ values: [UUID: [String: ZCookie]])
+    func load() -> [UUID: [String: ZCookiePersisted]]
+    func save(_ values: [UUID: [String: ZCookiePersisted]])
 }
 
 @MainActor
 final class CookiePersistanceInDefaults: ZIMCookiePersistance {
-    func load() -> [UUID: [String: ZCookie]] {
+    func load() -> [UUID: [String: ZCookiePersisted]] {
         let storedValues: [String: Data] = Defaults[.cookieStore]
         let decoder = JSONDecoder()
         return storedValues.reduce(into: .init(), { partialResult, zimFileIdCookies in
             if let zimFileId = UUID(uuidString: zimFileIdCookies.key) {
-                if let zCookie = try? decoder.decode([String: ZCookie].self, from: zimFileIdCookies.value) {
+                if let zCookie = try? decoder.decode([String: ZCookiePersisted].self, from: zimFileIdCookies.value) {
                     partialResult.updateValue(zCookie, forKey: zimFileId)
                 }
             }
         })
     }
-    func save(_ values: [UUID: [String: ZCookie]]) {
+    func save(_ values: [UUID: [String: ZCookiePersisted]]) {
         let encoder = JSONEncoder()
         // map it to a serializable format:
         let storedValues: [String: Data] = values.reduce(.init(), { partialResult, zimFileIDValue in

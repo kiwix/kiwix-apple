@@ -157,14 +157,20 @@ final class ZimCookieStore {
     
     init(persistance: ZIMCookiePersistance) {
         self.persistance = persistance
-        store = persistance.load()
+        // we only persist cookies with a date (ZCookiePersisted)
+        // but in memory we might have session only cookies (with expiry date being nil)
+        store = persistance.load().mapValues({ (value: [String: ZCookiePersisted]) -> [String: ZCookie] in
+            value.mapValues { (persisted: ZCookiePersisted) in
+                ZCookie(value: persisted.value, expires: persisted.expires)
+            }
+        })
     }
     
     /// Return the whole cookie store for a given ZIM file
     /// - Parameter zimFileID: the associated content
     /// - Returns: in a JS convenient form of nested arrays [[key1, value1], [key2, value2]]
     /// eg: [["theme", "dark"], ["width", "wide"]]
-    func getAllFor(zimFileID: UUID) -> [[String]] {
+    func getAllFor(zimFileID: UUID, now: Date = Date()) -> [[String]] {
         if let cookies: [String: ZCookie] = store[zimFileID] {
             return cookies.map { (key: String, value: ZCookie) in
                 [key, value.value]
@@ -217,7 +223,14 @@ final class ZimCookieStore {
     
     /// saving the whole store itself on changes
     private func saveStore() {
-        persistance.save(store)
+        persistance.save(store.mapValues({ (values: [String: ZCookie]) -> [String: ZCookiePersisted] in
+            values.compactMapValues { (memCookie: ZCookie) -> ZCookiePersisted? in
+                guard let expires = memCookie.expires else {
+                    return nil
+                }
+                return ZCookiePersisted(value: memCookie.value, expires: expires)
+            }
+        }))
     }
 }
 

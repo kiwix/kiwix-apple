@@ -16,7 +16,7 @@
 import Testing
 @testable import Kiwix
 
-private struct Cookie {
+private struct CookieT {
     init(_ value: String, _ expectedResult: [[String]]) {
         self.value = value
         self.expectedResult = expectedResult
@@ -35,30 +35,30 @@ struct ZimCookieStoreTest {
     @Test(
         "Valid raw input",
         arguments: [
-            Cookie(                                  // v--- notice the deliberate space before the ";"
+            CookieT(                                  // v--- notice the deliberate space before the ";"
                 "_pk_id.3.d4b8=b40a88a69a2c73b3.0.1.0.0.; Expires=Sun, 05 Sep 2027 19:14:17 GMT; Path=/doc.ubuntu-fr.org/;SameSite=Lax",
                 [["_pk_id.3.d4b8", "b40a88a69a2c73b3.0.1.0.0."]]
             ),
-            Cookie(
+            CookieT(
                 "_pk_ses.3.d4b8=1;Expires=Sat, 08 Aug 2026 19:44:17 GMT;Path=/doc.ubuntu-fr.org/;SameSite=Lax",
                 [["_pk_ses.3.d4b8", "1"]]
             ),
-            Cookie(
+            CookieT(
                 "theme=dark;;max-age=31536000;Path=/doc.ubuntu-fr.org/",
                 [["theme", "dark"]]
             ),
             // expired ones should not be set
-            Cookie(
+            CookieT(
                 "myKey=oldValue; max-age=0;",
                 []
             ),
-            Cookie(
+            CookieT(
                 "myKey=oldValue; expires=Sun, 02 Aug 2026 08:08:07 GMT", // a second ago
                 []
             )
         ]
     )
-    fileprivate func firstInput(test: Cookie) async throws {
+    fileprivate func firstInput(test: CookieT) async throws {
         let mockPersistance = MockPersistance()
         let storage = ZimCookieStore(persistance: mockPersistance)
         let fileID = UUID()
@@ -73,16 +73,16 @@ struct ZimCookieStoreTest {
     @Test("Set empty value", arguments: ["theme", "theme;", "theme=", "theme=;"])
     fileprivate func setsEmptyValue(input: String) async throws {
         let fileID = UUID()
-        let initialState = [fileID: ["theme": ZCookie(value: "dark", expires: nil)]]
         let mockPersistance = MockPersistance()
-        mockPersistance.save(initialState)
         let storage = ZimCookieStore(persistance: mockPersistance)
+        // set an initial value, date doesn't matter
+        storage.updateRaw(zimFileID: fileID, cookie: "theme=dark;", now: Self.now)
         storage.updateRaw(
             zimFileID: fileID,
             cookie: input,
-            now: Date() // doesn't matter in this case
+            now: Self.now // date doesn't matter in this case
         )
-        #expect(mockPersistance.stored == [fileID: ["theme": ZCookie(value: "", expires: nil)]])
+        #expect(storage.getAllFor(zimFileID: fileID, now: Self.now) == [["theme", ""]])
     }
     
     // starts with a cookie of red=apple
@@ -96,27 +96,43 @@ struct ZimCookieStoreTest {
         let storage = ZimCookieStore(persistance: mockPersistance)
         // store some initial value
         storage.updateRaw(zimFileID: fileID, cookie: "red=apple", now: Self.now)
-        #expect(mockPersistance.stored == [fileID: ["red": ZCookie(value: "apple", expires: nil)]])
+        #expect(storage.getAllFor(zimFileID: fileID, now: Self.now) == [["red", "apple"]])
         storage.updateRaw(zimFileID: fileID, cookie: input, now: Self.now)
-        // make sure it's deleted
+        // make sure it's not stored in memory
+        #expect(storage.getAllFor(zimFileID: fileID, now: Self.now).isEmpty)
+        // make sure it's not persisted
+        #expect(mockPersistance.stored == [fileID: [:]])
+    }
+    
+    @Test("Session only cookies, should not be persisted", arguments:[
+        "kiwix_cookie=session only"
+    ])
+    fileprivate func sessionOnly(input: String) async throws {
+        let fileID = UUID()
+        let mockPersistance = MockPersistance()
+        let storage = ZimCookieStore(persistance: mockPersistance)
+        storage.updateRaw(zimFileID: fileID, cookie: input, now: Self.now)
+        let inMemory: [[String]] = storage.getAllFor(zimFileID: fileID)
+        #expect(inMemory == [["kiwix_cookie", "session only"]])
+        // make sure it's not stored
         #expect(mockPersistance.stored == [fileID: [:]])
     }
 }
-//swiftlint:enable:line_length
+// swiftlint:enable:line_length
 
 private final class MockPersistance: ZIMCookiePersistance {
-    private(set) var stored: [UUID: [String: ZCookie]] = [:]
+    private(set) var stored: [UUID: [String: ZCookiePersisted]] = [:]
     
-    func load() -> [UUID: [String: ZCookie]] {
+    func load() -> [UUID: [String: ZCookiePersisted]] {
         [:]
     }
-    func save(_ values: [UUID: [String: ZCookie]]) {
+    func save(_ values: [UUID: [String: ZCookiePersisted]]) {
         stored = values
     }
 }
 
-extension ZCookie: @retroactive Equatable {
-    public static func == (lhs: ZCookie, rhs: ZCookie) -> Bool {
+extension ZCookiePersisted: @retroactive Equatable {
+    public static func == (lhs: ZCookiePersisted, rhs: ZCookiePersisted) -> Bool {
         lhs.value == rhs.value && lhs.expires == rhs.expires
     }
 }
