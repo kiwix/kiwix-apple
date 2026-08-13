@@ -119,7 +119,7 @@ enum CookieParserResult {
             guard 0 < maxAge else {
                 return DateResult.expired
             }
-            return DateResult.valid(date: Date().advanced(by: TimeInterval(maxAge)))
+            return DateResult.valid(date: now.advanced(by: TimeInterval(maxAge)))
         }
         // If neither expires nor max-age is specified, it will expire at the end of session.
         return DateResult.session
