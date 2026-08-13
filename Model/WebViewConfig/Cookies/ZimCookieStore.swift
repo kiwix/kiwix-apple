@@ -59,7 +59,8 @@ enum CookieParserResult {
         // we actually store in the cookie
         var firstKey: String?
         rawValues.split(separator: ";").enumerated().forEach { (index: Int, keyAndValue: Substring) in
-            let keyValue: [String.SubSequence] = String(keyAndValue).split(separator: "=")
+            let keyValue: [String.SubSequence] = String(keyAndValue)
+                .split(separator: "=", maxSplits: 1, omittingEmptySubsequences: false)
             // keyValue is an array pair [key, value]
             if let jsKey: Substring = keyValue.first {
                 let key = String(jsKey)
