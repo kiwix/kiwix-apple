@@ -22,6 +22,7 @@ struct LocalLibraryList: View {
     private let load: (URL) -> Void
     @FetchRequest(
         sortDescriptors: [NSSortDescriptor(keyPath: \Bookmark.created, ascending: false)],
+        predicate: NSPredicate(format: "zimFile.isMissing == false"),
         animation: .easeInOut
     ) private var bookmarks: FetchedResults<Bookmark>
     @FetchRequest(
