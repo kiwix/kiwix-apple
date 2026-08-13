@@ -339,8 +339,9 @@ import CoreKiwix
     @MainActor
     func injectCookies() {
         guard let zimFileID = webView.url?.zimFileID else { return }
-        let cookieValues: [[String]] = cookieStore.getAllFor(zimFileID: zimFileID)
-        let jsCmd = "setZIMCookies(\(cookieValues));"
+        let jsonValues: String = cookieStore.getAllForJS(zimFileID: zimFileID)
+        Log.Cookies.debug("setting ZIM Cookies: \(jsonValues)")
+        let jsCmd = "setZIMCookies(\(jsonValues));"
         webView.evaluateJavaScript(jsCmd)
     }
 

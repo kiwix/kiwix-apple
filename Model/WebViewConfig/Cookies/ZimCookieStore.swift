@@ -180,6 +180,16 @@ final class ZimCookieStore {
         }
     }
     
+    func getAllForJS(zimFileID: UUID, now: Date = Date()) -> String {
+        let cookies = getAllFor(zimFileID: zimFileID, now: now)
+        guard let data = try? JSONEncoder().encode(cookies),
+              let jsonString = String(data: data, encoding: .utf8) else {
+            Log.Cookies.error("cannot serialize cookies for JS: \(cookies)")
+            return ""
+        }
+        return jsonString
+    }
+    
     /// Update the store with raw cookie value
     /// at the moment we are only interested in the key, value
     /// the rest is ignored
