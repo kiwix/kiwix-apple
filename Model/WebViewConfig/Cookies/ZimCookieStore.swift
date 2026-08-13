@@ -153,10 +153,10 @@ struct ZCookie: Codable {
 @MainActor
 final class ZimCookieStore {
     
-    private let persistance: ZIMCookiePersistance
+    private let persistance: ZIMCookiePersistence
     private var store: [UUID: [String: ZCookie]]
     
-    init(persistance: ZIMCookiePersistance) {
+    init(persistance: ZIMCookiePersistence) {
         self.persistance = persistance
         // we only persist cookies with a date (ZCookiePersisted)
         // but in memory we might have session only cookies (with expiry date being nil)

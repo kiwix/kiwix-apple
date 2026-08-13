@@ -21,13 +21,13 @@ struct ZCookiePersisted: Codable {
     let expires: Date
 }
 
-@MainActor protocol ZIMCookiePersistance {
+@MainActor protocol ZIMCookiePersistence {
     func load() -> [UUID: [String: ZCookiePersisted]]
     func save(_ values: [UUID: [String: ZCookiePersisted]])
 }
 
 @MainActor
-final class CookiePersistanceInDefaults: ZIMCookiePersistance {
+final class CookiePersistenceInDefaults: ZIMCookiePersistence {
     func load() -> [UUID: [String: ZCookiePersisted]] {
         let storedValues: [String: Data] = Defaults[.cookieStore]
         let decoder = JSONDecoder()

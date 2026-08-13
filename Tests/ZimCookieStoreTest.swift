@@ -59,7 +59,7 @@ struct ZimCookieStoreTest {
         ]
     )
     fileprivate func firstInput(test: CookieT) async throws {
-        let mockPersistance = MockPersistance()
+        let mockPersistance = MockPersistence()
         let storage = ZimCookieStore(persistance: mockPersistance)
         let fileID = UUID()
         storage.updateRaw(
@@ -73,7 +73,7 @@ struct ZimCookieStoreTest {
     @Test("Set empty value", arguments: ["theme", "theme;", "theme=", "theme=;"])
     fileprivate func setsEmptyValue(input: String) async throws {
         let fileID = UUID()
-        let mockPersistance = MockPersistance()
+        let mockPersistance = MockPersistence()
         let storage = ZimCookieStore(persistance: mockPersistance)
         // set an initial value, date doesn't matter
         storage.updateRaw(zimFileID: fileID, cookie: "theme=dark;", now: Self.now)
@@ -92,7 +92,7 @@ struct ZimCookieStoreTest {
         "red=yellow; expires=Sun, 02 Aug 2026 08:08:06 GMT"]) // 2 seconds ago
     fileprivate func deletesAValue(input: String) async throws {
         let fileID = UUID()
-        let mockPersistance = MockPersistance()
+        let mockPersistance = MockPersistence()
         let storage = ZimCookieStore(persistance: mockPersistance)
         // store some initial value
         storage.updateRaw(zimFileID: fileID, cookie: "red=apple", now: Self.now)
@@ -109,7 +109,7 @@ struct ZimCookieStoreTest {
     ])
     fileprivate func sessionOnly(input: String) async throws {
         let fileID = UUID()
-        let mockPersistance = MockPersistance()
+        let mockPersistance = MockPersistence()
         let storage = ZimCookieStore(persistance: mockPersistance)
         storage.updateRaw(zimFileID: fileID, cookie: input, now: Self.now)
         let inMemory: [[String]] = storage.getAllFor(zimFileID: fileID)
@@ -120,7 +120,7 @@ struct ZimCookieStoreTest {
 }
 // swiftlint:enable line_length
 
-private final class MockPersistance: ZIMCookiePersistance {
+private final class MockPersistence: ZIMCookiePersistence {
     private(set) var stored: [UUID: [String: ZCookiePersisted]] = [:]
     
     func load() -> [UUID: [String: ZCookiePersisted]] {
