@@ -42,16 +42,12 @@ final class CookiePersistenceInDefaults: ZIMCookiePersistence {
     func save(_ values: [UUID: [String: ZCookiePersisted]]) {
         let encoder = JSONEncoder()
         // map it to a serializable format:
-        let storedValues: [String: Data] = values.reduce(.init(), { partialResult, zimFileIDValue in
+        let storedValues: [String: Data] = values.reduce(into: [:]) { nextPartialResult, zimFileIDValue in
             let zimFileId: UUID = zimFileIDValue.key
             if let data = try? encoder.encode(zimFileIDValue.value) {
-                var newResults = partialResult
-                newResults.updateValue(data, forKey: zimFileId.uuidString)
-                return newResults
-            } else {
-                return partialResult
+                nextPartialResult.updateValue(data, forKey: zimFileId.uuidString)
             }
-        })
+        }
         Defaults[.cookieStore] = storedValues
     }
 }
