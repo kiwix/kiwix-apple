@@ -67,7 +67,7 @@ struct ZimCookieStoreTest {
             cookie: test.value,
             now: Self.now
         )
-        #expect(storage.getAllFor(zimFileID: fileID) == test.expectedResult)
+        #expect(storage.getAllFor(zimFileID: fileID, now: Self.now) == test.expectedResult)
     }
     
     @Test("Set empty value", arguments: ["theme", "theme;", "theme=", "theme=;"])
@@ -88,7 +88,7 @@ struct ZimCookieStoreTest {
     // starts with a cookie of red=apple
     @Test("Deleting a specific value", arguments: [
         "red=blue; max-age=0",
-        "red=oranage; max-age=-1;",
+        "red=orange; max-age=-1;",
         "red=yellow; expires=Sun, 02 Aug 2026 08:08:06 GMT"]) // 2 seconds ago
     fileprivate func deletesAValue(input: String) async throws {
         let fileID = UUID()

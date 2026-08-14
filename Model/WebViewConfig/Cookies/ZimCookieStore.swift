@@ -173,8 +173,16 @@ final class ZimCookieStore {
     /// eg: [["theme", "dark"], ["width", "wide"]]
     func getAllFor(zimFileID: UUID, now: Date = Date()) -> [[String]] {
         if let cookies: [String: ZCookie] = store[zimFileID] {
-            return cookies.map { (key: String, value: ZCookie) in
-                [key, value.value]
+            return cookies.compactMap { (key: String, value: ZCookie) in
+                if let expiryDate = value.expires {
+                    if now <= expiryDate {
+                        return [key, value.value]
+                    } else {
+                        return nil
+                    }
+                } else {
+                    return [key, value.value]
+                }
             }
         } else {
             return []
