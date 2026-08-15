@@ -93,6 +93,7 @@ import CoreKiwix
     @MainActor var zimFileId: UUID? { url?.zimFileID }
     @Published var externalURL: URL?
     private var metaData: URLContentMetaData?
+    private let cookieStore = CookieStore.shared
 
 #if os(macOS)
     private var windowURLs: [URL] {
@@ -135,6 +136,8 @@ import CoreKiwix
         webView.configuration.userContentController.add(self, name: "headings")
         webView.configuration.userContentController.removeScriptMessageHandler(forName: "geolocation")
         webView.configuration.userContentController.add(self, name: "geolocation")
+        webView.configuration.userContentController.removeScriptMessageHandler(forName: "zimCookies")
+        webView.configuration.userContentController.add(self, name: "zimCookies")
         webView.navigationDelegate = self
         webView.uiDelegate = self
 
@@ -175,7 +178,7 @@ import CoreKiwix
                     self?.isLoading = change.newValue
                 }
                 if change.newValue == false {
-                    BrowserTabPreloader.shared.didLoadFirstBrowserTab()                    
+                    BrowserTabPreloader.shared.didLoadFirstBrowserTab()
                 }
             }
         }
@@ -196,6 +199,7 @@ import CoreKiwix
         let contentController = webView.configuration.userContentController
         contentController.removeScriptMessageHandler(forName: "headings")
         contentController.removeScriptMessageHandler(forName: "geolocation")
+        contentController.removeScriptMessageHandler(forName: "zimCookies")
         contentController.removeAllUserScripts()
         webView.navigationDelegate = nil
         webView.uiDelegate = nil
@@ -330,6 +334,18 @@ import CoreKiwix
         }
         webView.load(URLRequest(url: url))
         self.url = url
+    }
+    
+    @MainActor
+    func injectCookies() {
+        guard let zimFileID = webView.url?.zimFileID else { return }
+        guard let jsonValues: String = cookieStore.getAllFor(zimFileID: zimFileID) else {
+            Log.Cookies.debug("no ZIM Cookies for: \(zimFileID.uuidString)")
+            return
+        }
+        Log.Cookies.debug("setting ZIM Cookies: \(jsonValues)")
+        let jsCmd = "setZIMCookies('\(jsonValues)');"
+        webView.evaluateJavaScript(jsCmd)
     }
 
     @MainActor
@@ -524,6 +540,9 @@ import CoreKiwix
     }
 
     func webView(_ webView: WKWebView, didCommit _: WKNavigation!) {
+        // this is the earliest point in time we can inject the stored cookies
+        // webView(:didFinish:) is too late for it
+        injectCookies()
         // The previous document's geolocation callbacks are gone
         geolocationService?.stopAll()
     }
@@ -578,6 +597,10 @@ import CoreKiwix
         } else if message.name == "geolocation", let body = message.body as? [String: Any] {
             guard let request = GeolocationRequest(jsRequest: body) else { return }
             ensureGeolocationService().handle(request: request)
+        } else if message.name == "zimCookies", let body = message.body as? String {
+            if let zimFileId {
+                cookieStore.save(zimFileID: zimFileId, cookies: body)
+            }
         }
     }
     

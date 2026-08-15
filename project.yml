@@ -124,6 +124,7 @@ targets:
           - "**/qqq.lproj"
           - "**/igl.lproj"
           - "**/dag.lproj"
+          - "zimCookieTests/**"
       - path: Kiwix/SplashScreenKiwix.storyboard
         destinationFilters:
           - iOS
