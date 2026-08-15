@@ -15,6 +15,12 @@ it("sets up the cookie store with json values", () => {
   );
 });
 
+it("handles invalid load data gracefully", () => {
+  const store = new ZimCookieStore();
+  store.load('invalid_data');
+  return assertEqual(store.cookies(), "");
+});
+
 it("stores a cookie with a value", () => {
   const store = new ZimCookieStore();
   const testCookie = "myKey=value;";

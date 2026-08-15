@@ -93,7 +93,12 @@ class ZimCookieStore {
   }
 
   load(values) {
-    this.store = new Map(JSON.parse(values));
+    try {
+      this.store = new Map(JSON.parse(values));
+    } catch (e) {
+      console.warn('Invalid ZIM cookies payload, resetting store:', e);
+      this.store = new Map();
+    }
   }
 }
 
