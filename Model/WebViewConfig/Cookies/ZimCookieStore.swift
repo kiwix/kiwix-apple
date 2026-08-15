@@ -19,12 +19,12 @@ import Foundation
 @MainActor
 final class ZimCookieStore {
     
-    private let persistance: ZIMCookiePersistence
+    private let persistence: ZIMCookiePersistence
     private var store: [UUID: String]
     
-    init(persistance: ZIMCookiePersistence) {
-        self.persistance = persistance
-        store = persistance.load()
+    init(persistence: ZIMCookiePersistence) {
+        self.persistence = persistence
+        store = persistence.load()
     }
     
     /// Return the whole cookie store for a given ZIM file
@@ -54,6 +54,6 @@ final class ZimCookieStore {
     
     /// saving the whole store itself on changes
     private func saveStore() {
-        persistance.save(store)
+        persistence.save(store)
     }
 }

@@ -17,5 +17,5 @@ import Foundation
 
 enum CookieStore {
     @MainActor
-    static let shared = ZimCookieStore(persistance: CookiePersistenceInDefaults())
+    static let shared = ZimCookieStore(persistence: CookiePersistenceInDefaults())
 }
