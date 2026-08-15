@@ -344,8 +344,12 @@ import CoreKiwix
             return
         }
         Log.Cookies.debug("setting ZIM Cookies: \(jsonValues)")
-        let jsCmd = "setZIMCookies('\(jsonValues)');"
-        webView.evaluateJavaScript(jsCmd)
+        let jsCmd = "setZIMCookies(\(String(reflecting: jsonValues)));"
+        webView.evaluateJavaScript(jsCmd) { _, error in
+            if let error {
+                Log.Cookies.error("injectCookies: \(jsCmd)\nfailed: \(error.localizedDescription, privacy: .public)")
+            }
+        }
     }
 
     @MainActor
