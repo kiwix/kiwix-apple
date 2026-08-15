@@ -37,11 +37,11 @@ final class ZimCookieStore {
     ///   - zimFileID: the associated content
     ///   - cookie: the JSON encoded cookie values
     func save(zimFileID: UUID, cookies jsonValues: String) {
-        Log.Cookies.debug("\(#function): \(jsonValues)")
-        guard !jsonValues.isEmpty else {
+        guard !jsonValues.isEmpty, jsonValues != "[]" else {
             deleteAllFor(zimFileID: zimFileID)
             return
         }
+        Log.Cookies.debug("\(#function): \(jsonValues)")
         store[zimFileID] = jsonValues
         saveStore()
     }
