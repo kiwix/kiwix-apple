@@ -149,7 +149,7 @@ ZIM file cannot be opened: \(zimFile.name, privacy: .public) |\
 
     // MARK: - Deletion
 
-    /// Unlink a zim file from library, delete associated bookmarks, and delete the file.
+    /// Unlink a zim file from library, delete associated bookmarks, cookies and delete the file.
     /// - Parameter zimFile: the zim file to delete
     @ZimActor static func delete(zimFileID: UUID) async {
         guard let url = ZimFileService.shared.getFileURL(zimFileID: zimFileID) else { return }
@@ -157,10 +157,11 @@ ZIM file cannot be opened: \(zimFile.name, privacy: .public) |\
         await LibraryOperations.unlink(zimFileID: zimFileID)
     }
 
-    /// Unlink a zim file from library, delete associated bookmarks, but don't delete the file.
+    /// Unlink a zim file from library, delete associated bookmarks, cookies, but don't delete the file.
     /// - Parameter zimFile: the zim file to unlink
     @ZimActor static func unlink(zimFileID: UUID) async {
         ZimFileService.shared.close(fileID: zimFileID)
+        await MainActor.run { CookieStore.shared.deleteAllFor(zimFileID: zimFileID) }
         await Database.shared.viewContext.perform {
             let request = ZimFile.fetchRequest(fileID: zimFileID)
             request.fetchLimit = 1

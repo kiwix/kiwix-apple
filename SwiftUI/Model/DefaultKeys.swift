@@ -55,6 +55,8 @@ extension Defaults.Keys {
     static let selectedHotspotIds = Key<Set<UUID>>("slectedHotspotIds", default: Set<UUID>())
     static let openZIMsShowBy = Key<ZIMsShowBy>("openZIMsShowBy", default: ZIMsShowBy.all)
     static let opneZIMsSorting = Key<ZIMsSortBy>("openZIMsSortBy", default: ZIMsSortBy.size(.forward))
+    
+    static let cookieStore = Key<[String: String]>("cookieStore", default: [:])
 
     #if os(macOS)
     // window management:
