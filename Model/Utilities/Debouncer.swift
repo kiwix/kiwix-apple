@@ -15,7 +15,18 @@
 
 import Foundation
 
-enum CookieStore {
-    @MainActor
-    static let shared = ZimCookieStore(persistence: CookiePersistenceInFiles())
+@MainActor
+final class Debouncer {
+    private var task: Task<Void, Never>?
+    
+    func debounce(milliseconds: UInt64, action: @escaping @Sendable () async -> Void) {
+        task?.cancel()
+        let nanoseconds = milliseconds * 1_000_000
+        task = Task(priority: .utility, operation: {
+            try? await Task.sleep(nanoseconds: nanoseconds)
+            if !Task.isCancelled {
+                await action()
+            }
+        })
+    }
 }
