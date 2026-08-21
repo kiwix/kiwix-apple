@@ -336,20 +336,24 @@ import CoreKiwix
         self.url = url
     }
     
-    @MainActor
-    func injectCookies() {
-        guard let zimFileID = webView.url?.zimFileID else { return }
-        guard let jsonValues: String = cookieStore.getAllFor(zimFileID: zimFileID) else {
-            Log.Cookies.debug("no ZIM Cookies for: \(zimFileID.uuidString)")
-            return
-        }
-        Log.Cookies.debug("setting ZIM Cookies: \(jsonValues)")
-        let jsCmd = "setZIMCookies(\(String(reflecting: jsonValues)));"
-        webView.evaluateJavaScript(jsCmd) { _, error in
-            if let error {
-                Log.Cookies.error("injectCookies: \(jsCmd)\nfailed: \(error.localizedDescription, privacy: .public)")
+    private func injectCookiesFor(url: URL) {
+        if let zimFileID = url.zimFileID, let jsScript = injectCookieJSScriptFor(zimFileID: zimFileID) {
+            webView.evaluateJavaScript(jsScript) { _, error in
+                if let error {
+                    Log.Cookies.error("unable to inject zimCookies: \(error.localizedDescription, privacy: .public)")
+                } else {
+                    Log.Cookies.debug("injected cookies for: \(zimFileID.uuidString)\n\(jsScript)")
+                }
             }
         }
+    }
+    
+    private func injectCookieJSScriptFor(zimFileID: UUID) -> String? {
+        guard let jsonValues: String = cookieStore.getAllFor(zimFileID: zimFileID) else {
+            Log.Cookies.debug("no ZIM Cookies for: \(zimFileID.uuidString)")
+            return nil
+        }
+        return "setZIMCookies(\(String(reflecting: jsonValues)));"
     }
 
     @MainActor
@@ -543,10 +547,7 @@ import CoreKiwix
         decisionHandler(.allow)
     }
 
-    func webView(_ webView: WKWebView, didCommit _: WKNavigation!) {
-        // this is the earliest point in time we can inject the stored cookies
-        // webView(:didFinish:) is too late for it
-        injectCookies()
+    func webView(_ webView: WKWebView, didCommit navigation: WKNavigation!) {
         // The previous document's geolocation callbacks are gone
         geolocationService?.stopAll()
     }
@@ -602,7 +603,12 @@ import CoreKiwix
             guard let request = GeolocationRequest(jsRequest: body) else { return }
             ensureGeolocationService().handle(request: request)
         } else if message.name == "zimCookies", let body = message.body as? String {
-            if let zimFileId {
+            if body == "zimCookieStoreReady" {
+                Log.Cookies.debug("zimCookieStoreReady")
+                if let url = webView.url {
+                    injectCookiesFor(url: url)
+                }
+            } else if let zimFileId {
                 cookieStore.save(zimFileID: zimFileId, cookies: body)
             }
         }
