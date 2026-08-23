@@ -29,7 +29,9 @@ struct ZimFileRow: View {
                 category: Category(rawValue: zimFile.category) ?? .other,
                 imageData: zimFile.faviconData,
                 imageURL: zimFile.faviconURL
-            ).frame(height: 26)
+            )
+            .frame(height: 26)
+            .accessibilityHidden(true)
             VStack(alignment: .leading, spacing: 2) {
                 Text(zimFile.name).lineLimit(1)
                 Text([
@@ -44,6 +46,9 @@ struct ZimFileRow: View {
             Spacer()
             if zimFile.isMissing { ZimFileMissingIndicator() }
         }
+        .accessibilityElement()
+        .accessibilityAddTraits(.isButton)
+        .accessibilityLabel(ZimFileCell.cellAccessibilityLabel(for: zimFile))
     }
 }
 
