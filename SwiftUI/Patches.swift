@@ -78,6 +78,7 @@ extension Notification.Name {
     static let saveContent = Notification.Name("saveContent")
     static let navigateToHotspotSettings = Notification.Name("navigateToHotspotSettings")
     static let toggleSidebar = Notification.Name("toggleSidebar")
+    static let webViewDidScroll = Notification.Name("webViewDidScroll")
     #if os(macOS)
     static let keepOnlyTabs = Notification.Name("keepOnlyTabs")
     static let zimSearch = Notification.Name("zimSearch")

@@ -108,6 +108,8 @@ import CoreKiwix
     private var canGoForwardObserver: NSKeyValueObservation?
     private var titleURLObserver: AnyCancellable?
     private let bookmarkFetchedResultsController: NSFetchedResultsController<Bookmark>
+    /// Maps to injected javascript: window.webkit?.messageHandlers.*
+    private let jsHandlers = ["headings", "geolocation", "scrollHandler", "zimCookies"]
 
     // MARK: - Lifecycle
 
@@ -132,12 +134,10 @@ import CoreKiwix
         // configure web view
         webView.allowsBackForwardNavigationGestures = true
         webView.configuration.defaultWebpagePreferences.preferredContentMode = .mobile // for font adjustment to work
-        webView.configuration.userContentController.removeScriptMessageHandler(forName: "headings")
-        webView.configuration.userContentController.add(self, name: "headings")
-        webView.configuration.userContentController.removeScriptMessageHandler(forName: "geolocation")
-        webView.configuration.userContentController.add(self, name: "geolocation")
-        webView.configuration.userContentController.removeScriptMessageHandler(forName: "zimCookies")
-        webView.configuration.userContentController.add(self, name: "zimCookies")
+        jsHandlers.forEach { handler in
+            webView.configuration.userContentController.removeScriptMessageHandler(forName: handler)
+            webView.configuration.userContentController.add(self, name: handler)
+        }
         webView.navigationDelegate = self
         webView.uiDelegate = self
 
@@ -197,9 +197,9 @@ import CoreKiwix
         isLoadingObserver?.invalidate()
         geolocationService?.stopAll()
         let contentController = webView.configuration.userContentController
-        contentController.removeScriptMessageHandler(forName: "headings")
-        contentController.removeScriptMessageHandler(forName: "geolocation")
-        contentController.removeScriptMessageHandler(forName: "zimCookies")
+        jsHandlers.forEach { handler in
+            contentController.removeScriptMessageHandler(forName: handler)
+        }
         contentController.removeAllUserScripts()
         webView.navigationDelegate = nil
         webView.uiDelegate = nil
@@ -594,7 +594,7 @@ import CoreKiwix
 
     // MARK: - WKScriptMessageHandler
 
-    @MainActor
+    @MainActor // swiftlint:disable:next cyclomatic_complexity
     func userContentController(_: WKUserContentController, didReceive message: WKScriptMessage) {
         if message.name == "headings", let headings = message.body as? [[String: String]] {
             self.generateOutlineList(headings: headings)
@@ -610,6 +610,14 @@ import CoreKiwix
                 }
             } else if let zimFileId {
                 cookieStore.save(zimFileID: zimFileId, cookies: body)
+            }
+        } else if !Brand.disableImmersiveReading, message.name == "scrollHandler" {
+            switch message.body as? String {
+            case "up": NotificationCenter.default
+                    .post(name: .webViewDidScroll, object: webView, userInfo: ["direction": "up"])
+            case "down": NotificationCenter.default
+                    .post(name: .webViewDidScroll, object: webView, userInfo: ["direction": "down"])
+            default: break
             }
         }
     }
