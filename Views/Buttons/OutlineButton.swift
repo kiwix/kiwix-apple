@@ -42,6 +42,7 @@ struct OutlineButton: View {
         } label: {
             Label(LocalString.outline_button_outline_title, systemImage: "list.bullet")
         }
+        .accessibilityLabel(LocalString.outline_button_outline_title)
         .disabled(items.isEmpty)
         .help(LocalString.outline_button_outline_help)
         #elseif os(iOS)
