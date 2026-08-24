@@ -19,6 +19,8 @@
 "common.button.copied" = "نقل تھی ڳئے";
 "common.button.share" = "شیئر";
 "common.search" = "ڳولو";
+"common.find_next" = "اڳلا لبھو";
+"common.find_previous" = "پچھلا لبھو";
 "common.tab.navigation.title" = "ٹیباں";
 "common.tab.menu.new_tab" = "نویں ٹیب";
 "common.tab.menu.close_this" = "ایہ ٹیب بند کرو";
