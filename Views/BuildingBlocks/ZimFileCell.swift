@@ -104,6 +104,10 @@ struct ZimFileCell: View {
         .clipShape(CellBackground.clipShapeRectangle)
         .modifier(LoadingOverlay(isLoading: isLoading))
         .onHover { self.isHovering = $0 }
+        .accessibilityAddTraits(isSelected ? .isSelected : .isButton)
+        .accessibilityElement()
+        .accessibilityLabel(Self.cellAccessibilityLabel(for: zimFile))
+        .accessibilityAddTraits(.isButton)
     }
 
     @MainActor
@@ -123,6 +127,17 @@ struct ZimFileCell: View {
 
     enum Prominent {
         case name, size
+    }
+    
+    static func cellAccessibilityLabel(for zimFile: ZimFile) -> String {
+        [zimFile.name,
+         ZimFileCell.sizeFormatter.string(fromByteCount: zimFile.size),
+         Flavor(rawValue: zimFile.flavor)?.description,
+         "\(zimFile.articleCount.formatted(.number.notation(.compactName).locale(.current)))" + " "
+                                        + LocalString.zim_file_cell_article_count_suffix,
+         ZimFileCell.dateFormatter.string(from: zimFile.created),
+         zimFile.isMissing ? LocalString.zim_file_missing_indicator_help : nil
+        ].compactMap { $0 }.joined(separator: ", ")
     }
 }
 
