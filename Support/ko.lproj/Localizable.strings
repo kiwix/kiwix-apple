@@ -40,6 +40,8 @@
 "common.button.share_as_pdf" = "PDF로 공유";
 "common.search" = "검색";
 "common.search.inpage" = "페이지 내 검색";
+"common.find_next" = "다음 찾기";
+"common.find_previous" = "이전 찾기";
 "common.search.suggestion" = "이것을 찾으셨습니까:";
 "common.tab.manager.title" = "탭 관리자";
 "common.tab.navigation.title" = "탭";

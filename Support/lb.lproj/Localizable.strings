@@ -28,6 +28,8 @@
 "common.button.share" = "Deelen";
 "common.button.share_as_pdf" = "Als PDF deelen";
 "common.search" = "Sichen";
+"common.find_next" = "Nächst fannen";
+"common.find_previous" = "Vireg fannen";
 "common.tab.manager.title" = "Tabs-Manager";
 "common.tab.navigation.title" = "Tabs";
 "common.tab.menu.new_tab" = "Neien Tab";
