@@ -25,6 +25,8 @@
 "common.button.share" = "Jaa";
 "common.button.share_as_pdf" = "Jaa PDF-muodossa";
 "common.search" = "Hae";
+"common.find_next" = "Etsi seuraava";
+"common.find_previous" = "Etsi edellinen";
 "common.tab.navigation.title" = "Välilehdet";
 "common.tab.menu.new_tab" = "Uusi välilehti";
 "common.tab.menu.close_this" = "Sulje tämä välilehti";
