@@ -28,14 +28,23 @@ let observer = new IntersectionObserver(function(entries) {
 	}
 }, { rootMargin: '-50px 0 -35% 0', threshold: 1.0 });
 
-// register scroll view to handle heading on top of the page
+// register scroll view to handle custom show/hide navigation bars
+var lastYOffset = 0;
+var lastDirection = undefined;
 window.onscroll = function() {
-	if (document.documentElement.scrollTop <= 0) {
-		const headingVisible = window.webkit.messageHandlers.headingVisible
-		if(headingVisible !== undefined && headingVisible.postMessage !== undefined) {
-			headingVisible.postMessage({id: headings[0].id})
-		}
-	}
+    const element = document.documentElement;
+    const maxYOffset = element.scrollHeight - element.clientHeight;
+    // trim off the values created by bounce-back animation at the top & bottom of the page
+    // which are over the normal scroll min/max values
+    const yOffset = Math.min(Math.max(element.scrollTop, 0), maxYOffset);
+    if(lastYOffset < yOffset && 50 < yOffset && lastDirection != "down") {
+        lastDirection = "down";
+        window.webkit?.messageHandlers?.scrollHandler?.postMessage("down");
+    } else if(yOffset < lastYOffset && lastDirection != "up") {
+        lastDirection = "up";
+        window.webkit?.messageHandlers?.scrollHandler?.postMessage("up");
+    }
+    lastYOffset = yOffset;
 }
 
 // expand all detail tags

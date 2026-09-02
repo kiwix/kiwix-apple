@@ -63,6 +63,7 @@ struct ContentSearchBar: View {
             Image(systemName: "text.page.badge.magnifyingglass")
                 .font(.system(size: 18))
         }
+        .accessibilityLabel(LocalString.common_search_inpage)
         .buttonStyle(PlainButtonStyle())
         .padding(24)
     }
@@ -88,6 +89,7 @@ struct ContentSearchBar: View {
     private var searchImage: some View {
         Image(systemName: "magnifyingglass")
             .foregroundColor(.primary)
+            .accessibilityHidden(true)
     }
 
     private var leftButton: some View {
@@ -96,6 +98,7 @@ struct ContentSearchBar: View {
         } label: {
             Image(systemName: "arrowshape.left").foregroundColor(.primary)
         }
+        .accessibilityLabel(LocalString.common_find_previous)
         .keyboardShortcut("g", modifiers: EventModifiers(arrayLiteral: .command, .shift))
     }
 
@@ -105,6 +108,7 @@ struct ContentSearchBar: View {
         } label: {
             Image(systemName: "arrowshape.right").foregroundColor(.primary)
         }
+        .accessibilityLabel(LocalString.common_find_next)
         .keyboardShortcut("g")
     }
 

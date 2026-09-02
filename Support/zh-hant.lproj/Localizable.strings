@@ -2,6 +2,7 @@
 // Exported from translatewiki.net
 // Author: Key0121
 // Author: Kly
+// Author: LowensteinYang
 // Author: Winston Sung
 // Author: 列维劳德
 // Author: 臺灣象象
@@ -39,6 +40,8 @@
 "common.button.share_as_pdf" = "以 PDF 格式分享";
 "common.search" = "搜尋";
 "common.search.inpage" = "在頁面搜尋";
+"common.find_next" = "尋找下一筆";
+"common.find_previous" = "尋找上一筆";
 "common.search.suggestion" = "您是不是指：";
 "common.tab.manager.title" = "分頁管理器";
 "common.tab.navigation.title" = "分頁";

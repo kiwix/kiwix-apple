@@ -120,6 +120,7 @@ struct WebView: UIViewControllerRepresentable {
 final class WebViewController: UIViewController {
     private let webView: WKWebView
     private let pageZoomObserver: Defaults.Observation
+    private var didScrollTask: Task<Void, Never>?
     
     init(webView: WKWebView) {
         self.webView = webView
@@ -172,8 +173,21 @@ final class WebViewController: UIViewController {
         super.didMove(toParent: parent)
         // navigated to webView
         if !Brand.disableImmersiveReading, let parent {
-            parent.navigationController?.hidesBarsOnSwipe = true
             navController = parent.navigationController
+            didScrollTask = Task { @MainActor in
+                for await notif in NotificationCenter.default
+                    .notifications(named: .webViewDidScroll) where (notif.object as? WKWebView) === webView {
+                    switch notif.userInfo?["direction"] as? String {
+                    case "up":
+                        navController?.setNavigationBarHidden(false, animated: true)
+                        navController?.setToolbarHidden(false, animated: true)
+                    case "down":
+                        navController?.setNavigationBarHidden(true, animated: true)
+                        navController?.setToolbarHidden(true, animated: true)
+                    default: break
+                    }
+                }
+            }
         }
     }
     
@@ -184,6 +198,8 @@ final class WebViewController: UIViewController {
             navController?.isToolbarHidden = false
             navController?.hidesBarsOnSwipe = false
             navController = nil
+            didScrollTask?.cancel()
+            didScrollTask = nil
         }
         super.willMove(toParent: parent)
         

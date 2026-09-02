@@ -53,6 +53,8 @@
 "common.button.share_as_pdf" = "Share as PDF";
 "common.search" = "Search";
 "common.search.inpage" = "Search in page";
+"common.find_next" = "Find next";
+"common.find_previous" = "Find previous";
 "common.search.suggestion" = "Did you mean:";
 
 "common.tab.manager.title" = "Tabs Manager";
