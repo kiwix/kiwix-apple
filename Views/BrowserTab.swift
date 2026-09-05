@@ -25,159 +25,80 @@ struct BrowserTab: View {
     @StateObject private var search = SearchViewModel.shared
     /// used on iPad
     private let didChangeTitle: ((NSManagedObjectID, String) -> Void)?
-
+    
     init(tabID: NSManagedObjectID, didChangeTitle: ((NSManagedObjectID, String) -> Void)? = nil) {
         self.didChangeTitle = didChangeTitle
         self.browser = BrowserViewModel.getCached(tabID: tabID)
     }
-
+    
     var body: some View {
         let model = if FeatureFlags.hasLibrary {
             CatalogLaunchViewModel(library: library, browser: browser)
         } else {
             NoCatalogLaunchViewModel(browser: browser)
         }
-        Content(browser: browser, model: model).toolbar {
+        Content(browser: browser, model: model)
+            .environmentObject(search)
+            .focusedSceneValue(\.isBrowserURLSet, browser.url != nil)
 #if os(macOS)
-            ToolbarItemGroup(placement: .navigation) {
-                NavigationButtons(
-                    goBack: { [weak browser] in
-                        browser?.webView.goBack()
-                    },
-                    goForward: { [weak browser] in
-                        browser?.webView.goForward()
-                    })
+            .focusedSceneValue(\.browserURL, browser.url)
+#endif
+            .focusedSceneValue(\.canGoBack, browser.canGoBack)
+            .focusedSceneValue(\.canGoForward, browser.canGoForward)
+            .modifier(ExternalLinkHandler(externalURL: $browser.externalURL))
+            .searchable(
+                text: $search.searchText,
+                placement: .toolbarPrincipal,
+                prompt: LocalString.common_search
+            )
+            .onChange(of: scenePhase) { [weak browser] _, newValue in
+                switch newValue {
+                case .active:
+                    browser?.refreshVideoState()
+                case .inactive:
+                    Task { [weak browser] in
+                        await browser?.persistState()
+                    }
+                case .background:
+                    break
+                @unknown default:
+                    break
+                }
             }
+            .modify { [weak browser] view in
+#if os(macOS)
+                if let browser {
+                    view.navigationTitle(browser.articleTitle.isEmpty ? Brand.appName : browser.articleTitle)
+                        .navigationSubtitle(browser.zimFileName)
+                } else {
+                    view
+                }
 #elseif os(iOS)
-            ToolbarItemGroup(placement: .navigationBarLeading) {
-                NavigationButtons(
-                    goBack: { [weak browser] in
-                        browser?.webView.goBack()
-                    },
-                    goForward: { [weak browser] in
-                        browser?.webView.goForward()
-                    })
+                view
+#endif
             }
-#endif
-            ToolbarItemGroup(placement: .primaryAction) {
-                if !Brand.hideTOCButton {
-                    OutlineButton(browser: browser)
-                }
-#if os(iOS)
-                if !Brand.hideShareButton {
-                    ExportButton(
-                        articleTitle: browser.articleTitle,
-                        webViewURL: browser.webView.url,
-                        pageDataWithExtension: { [weak browser] in await browser?.pageDataWithExtension() },
-                        isButtonDisabled: browser.zimFileName.isEmpty
-                    )
-                }
-#else
-                if !Brand.hideShareButton {
-                    Menu {
-                        ExportButton(
-                            relativeToView: browser.webView,
-                            articleTitle: browser.articleTitle,
-                            webViewURL: browser.webView.url,
-                            pageDataWithExtension: { [weak browser] in await browser?.pageDataWithExtension() },
-                            isButtonDisabled: browser.zimFileName.isEmpty,
-                            buttonLabel: LocalString.common_button_share_as_pdf
-                        )
-                        if let url = browser.webView.url {
-                            Button(LocalString.common_button_copy) {
-                                CopyPaste.copyToPasteBoard(url: url)
-                            }
-                            .keyboardShortcut("c", modifiers: [.command, .shift])
-                        }
-                    } label: {
-                        Label(LocalString.common_button_share, systemImage: "square.and.arrow.up")
-                    }.disabled(browser.webView.url == nil)
-                }
-                if !Brand.hidePrintButton {
-                    PrintButton(articleTitle: { [weak browser] in
-                        browser?.articleTitle
-                    }, browserDataAsPDF: { [weak browser] in
-                        try await browser?.webView.pdf()
-                    })
-                }
-#endif
-                BookmarkButton(articleBookmarked: browser.articleBookmarked,
-                               isButtonDisabled: browser.zimFileName.isEmpty,
-                               createBookmark: { [weak browser] in browser?.createBookmark() },
-                               deleteBookmark: { [weak browser] in browser?.deleteBookmark() })
-#if os(iOS)
-                if !Brand.hideFindInPage {
-                    ContentSearchButton(browser: browser)
-                }
-#endif
-                ArticleShortcutButtons(
-                    loadMainArticle: { [weak browser] zimFileID in
-                        browser?.loadMainArticle(zimFileID: zimFileID)
-                    },
-                    loadRandomArticle: { [weak browser] zimFileID in
-                        browser?.loadRandomArticle(zimFileID: zimFileID)
-                    })
+            .task { [weak browser] in
+                await browser?.updateLastOpened()
             }
-        }
-        .environmentObject(search)
-        .focusedSceneValue(\.isBrowserURLSet, browser.url != nil)
-#if os(macOS)
-        .focusedSceneValue(\.browserURL, browser.url)
-#endif
-        .focusedSceneValue(\.canGoBack, browser.canGoBack)
-        .focusedSceneValue(\.canGoForward, browser.canGoForward)
-        .modifier(ExternalLinkHandler(externalURL: $browser.externalURL))
-        .searchable(
-            text: $search.searchText,
-            placement: .toolbarPrincipal,
-            prompt: LocalString.common_search
-        )
-        .onChange(of: scenePhase) { [weak browser] _, newValue in
-            switch newValue {
-            case .active:
-                browser?.refreshVideoState()
-            case .inactive:
+            .onChange(of: browser.articleTitle) { [weak browser] oldTitle, newTitle in
+                guard let browser, newTitle != oldTitle else { return }
+                didChangeTitle?(browser.tabID, newTitle)
+            }
+            .onDisappear { [weak browser] in
+                browser?.pauseVideoWhenNotInPIP()
                 Task { [weak browser] in
                     await browser?.persistState()
                 }
-            case .background:
-                break
-            @unknown default:
-                break
             }
-        }
-        .modify { [weak browser] view in
-#if os(macOS)
-            if let browser {
-                view.navigationTitle(browser.articleTitle.isEmpty ? Brand.appName : browser.articleTitle)
-                    .navigationSubtitle(browser.zimFileName)
-            } else {
-                view
-            }
-#elseif os(iOS)
-            view
-#endif
-        }
-        .task { [weak browser] in
-            await browser?.updateLastOpened()
-        }
-        .onChange(of: browser.articleTitle) { [weak browser] oldTitle, newTitle in
-            guard let browser, newTitle != oldTitle else { return }
-            didChangeTitle?(browser.tabID, newTitle)
-        }
-        .onDisappear { [weak browser] in
-            browser?.pauseVideoWhenNotInPIP()
-            Task { [weak browser] in
-                await browser?.persistState()
-            }
-        }
     }
-
+    
     private struct Content<LaunchModel>: View where LaunchModel: LaunchProtocol {
         @Environment(\.horizontalSizeClass) private var horizontalSizeClass
         let browser: BrowserViewModel
         @EnvironmentObject private var library: LibraryViewModel
         @EnvironmentObject private var navigation: NavigationViewModel
+        @Environment(\.isSearching) private var isSearching
+        @Environment(\.dismissSearch) private var dismissSearch
         @FetchRequest(
             sortDescriptors: [NSSortDescriptor(keyPath: \ZimFile.size, ascending: false)],
             predicate: ZimFile.openedPredicate()
@@ -187,14 +108,18 @@ struct BrowserTab: View {
         @Default(.hasSeenCategories) private var hasSeenCategories
         @ObservedObject var model: LaunchModel
         @StateObject private var search = SearchViewModel.shared
-
+        
+        private var isSearchingState: Bool {
+            isSearching || !search.searchText.isEmpty
+        }
+        
         var body: some View {
             // swiftlint:disable:next redundant_discardable_let
             let _ = model.updateWith(hasZimFiles: !zimFiles.isEmpty,
                                      hasSeenCategories: hasSeenCategories)
             GeometryReader { proxy in
                 Group {
-                    if !search.searchText.isEmpty {
+                    if isSearchingState {
                         SearchResults()
                             .environment(\.horizontalSizeClass, proxy.size.width > 650 ? .regular : .compact)
                     } else {
@@ -237,6 +162,90 @@ struct BrowserTab: View {
             .onChange(of: library.state) { _, state in
                 guard state == .complete else { return }
                 showTheLibrary()
+            }
+            .toolbar {
+                if !isSearchingState {
+#if os(macOS)
+                    ToolbarItemGroup(placement: .navigation) {
+                        NavigationButtons(
+                            goBack: { [weak browser] in
+                                browser?.webView.goBack()
+                            },
+                            goForward: { [weak browser] in
+                                browser?.webView.goForward()
+                            })
+                    }
+#elseif os(iOS)
+                    ToolbarItemGroup(placement: .navigationBarLeading) {
+                        NavigationButtons(
+                            goBack: { [weak browser] in
+                                browser?.webView.goBack()
+                            },
+                            goForward: { [weak browser] in
+                                browser?.webView.goForward()
+                            })
+                    }
+#endif
+                    ToolbarItemGroup(placement: .primaryAction) {
+                        if !Brand.hideTOCButton {
+                            OutlineButton(browser: browser)
+                        }
+#if os(iOS)
+                        if !Brand.hideShareButton {
+                            ExportButton(
+                                articleTitle: browser.articleTitle,
+                                webViewURL: browser.webView.url,
+                                pageDataWithExtension: { [weak browser] in await browser?.pageDataWithExtension() },
+                                isButtonDisabled: browser.zimFileName.isEmpty
+                            )
+                        }
+#else
+                        if !Brand.hideShareButton {
+                            Menu {
+                                ExportButton(
+                                    relativeToView: browser.webView,
+                                    articleTitle: browser.articleTitle,
+                                    webViewURL: browser.webView.url,
+                                    pageDataWithExtension: { [weak browser] in await browser?.pageDataWithExtension() },
+                                    isButtonDisabled: browser.zimFileName.isEmpty,
+                                    buttonLabel: LocalString.common_button_share_as_pdf
+                                )
+                                if let url = browser.webView.url {
+                                    Button(LocalString.common_button_copy) {
+                                        CopyPaste.copyToPasteBoard(url: url)
+                                    }
+                                    .keyboardShortcut("c", modifiers: [.command, .shift])
+                                }
+                            } label: {
+                                Label(LocalString.common_button_share, systemImage: "square.and.arrow.up")
+                            }.disabled(browser.webView.url == nil)
+                        }
+                        if !Brand.hidePrintButton {
+                            PrintButton(articleTitle: { [weak browser] in
+                                browser?.articleTitle
+                            }, browserDataAsPDF: { [weak browser] in
+                                try await browser?.webView.pdf()
+                            })
+                        }
+#endif
+                        BookmarkButton(articleBookmarked: browser.articleBookmarked,
+                                       isButtonDisabled: browser.zimFileName.isEmpty,
+                                       createBookmark: { [weak browser] in browser?.createBookmark() },
+                                       deleteBookmark: { [weak browser] in browser?.deleteBookmark() })
+#if os(iOS)
+                        if !Brand.hideFindInPage {
+                            ContentSearchButton(browser: browser)
+                        }
+#endif
+                        ArticleShortcutButtons(
+                            loadMainArticle: { [weak browser] zimFileID in
+                                browser?.loadMainArticle(zimFileID: zimFileID)
+                            },
+                            loadRandomArticle: { [weak browser] zimFileID in
+                                browser?.loadRandomArticle(zimFileID: zimFileID)
+                            })
+                    }
+                }
             }
         }
 
