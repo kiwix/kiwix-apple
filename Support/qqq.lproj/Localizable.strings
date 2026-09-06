@@ -222,6 +222,7 @@
 "bookmark.overlay.empty.title" = "Fallback text displayed in center, when there are no bookmarks";
 "search_result.zimfile.empty.message" = "Fallback text on search results";
 "search_result.zimfile.no_result.message" = "Fallback text on search results";
+"search_result.zimfile.voice_over_count" = "Voice over / accessibility text to announce the count of results found.";
 "search_result.sidebar.button.remove" = "Button text on search results, to remove former results";
 "search_result.header.text" = "Title for listing the recent search results";
 "search_result.button.clear" = "Button title for clearing the recent search results";

@@ -52,13 +52,13 @@ struct SearchResults: View {
                 content
             }
         }
-        .onChange(of: viewModel.results.count, { _, newValue in
-            switch newValue {
+        .onReceive(viewModel.$results, perform: { (results: SearchResultItems) in
+            switch results.count {
             case 0:
                 voiceOver(announcement: LocalString.search_result_zimfile_no_result_message)
             default:
-                // TODO: localisation
-                voiceOver(announcement: "Found results: \(newValue)")
+                let resultCountText = LocalString.search_result_zimfile_voice_over_count(withArgs: "\(results.count)")
+                voiceOver(announcement: resultCountText)
             }
         })
         .background(Color.background)
