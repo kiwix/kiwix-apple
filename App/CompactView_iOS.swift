@@ -20,7 +20,7 @@ import CoreData
 struct CompactView: View {
     @EnvironmentObject private var navigation: NavigationViewModel
     @Environment(\.dismissSearch) private var dismissSearch
-    @ObservedObject private var searchViewModel = SearchViewModel.shared
+    @StateObject var searchViewModel = SearchViewModel()
     private let openURL = NotificationCenter.default.publisher(for: .openURL)
     
     var body: some View {
@@ -31,8 +31,7 @@ struct CompactView: View {
                 }
         } else if case let .tab(tabID) = navigation.currentItem {
             NavigationStack {
-                SearchableContent(tabID: tabID)
-                    .environmentObject(searchViewModel)
+                SearchableContent(viewModel: searchViewModel, tabID: tabID)
                     .searchable(
                         text: $searchViewModel.searchText,
                         placement: .navigationBarDrawer(displayMode: .automatic),
@@ -47,7 +46,7 @@ struct CompactView: View {
 }
 
 private struct SearchableContent: View {
-    @EnvironmentObject private var searchViewModel: SearchViewModel
+    @ObservedObject var viewModel: SearchViewModel
     @Environment(\.isSearching) private var isSearching
     let tabID: NSManagedObjectID
     
@@ -55,8 +54,7 @@ private struct SearchableContent: View {
         CompactTabView(tabID: tabID)
             .overlay {
                 if isSearching {
-                    SearchResults()
-                        .environmentObject(searchViewModel)
+                    SearchResults(viewModel: viewModel)
                 }
             }
     }

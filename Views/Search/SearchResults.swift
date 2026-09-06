@@ -23,7 +23,7 @@ struct SearchResults: View {
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     @Environment(\.managedObjectContext) private var managedObjectContext
     @Environment(\.isSearching) private var isSearching
-    @EnvironmentObject private var viewModel: SearchViewModel
+    @ObservedObject var viewModel: SearchViewModel
     @EnvironmentObject private var navigation: NavigationViewModel
     @FocusState private var focusedSearchItem: String? // macOS only
     @FetchRequest(
@@ -52,6 +52,15 @@ struct SearchResults: View {
                 content
             }
         }
+        .onChange(of: viewModel.results.count, { _, newValue in
+            switch newValue {
+            case 0:
+                voiceOver(announcement: LocalString.search_result_zimfile_no_result_message)
+            default:
+                // TODO: localisation
+                voiceOver(announcement: "Found results: \(newValue)")
+            }
+        })
         .background(Color.background)
     }
     
@@ -81,6 +90,8 @@ struct SearchResults: View {
                                 } label: {
                                     ArticleCell(result: result, zimData: viewModel.zimDataDict[result.zimFileID])
                                 }
+                                .accessibilityLabel(result.title)
+                                .accessibilityHint(result.snippet?.string ?? "")
                                 .buttonStyle(.plain)
                                 .modifier(
                                     Focusable( // macOS only
@@ -138,6 +149,12 @@ struct SearchResults: View {
                 }
             }
         }
+    }
+    
+    private func voiceOver(announcement: String) {
+        var attributed = AttributedString(announcement)
+        attributed.accessibilitySpeechAnnouncementPriority = .low
+        AccessibilityNotification.Announcement(attributed).post()
     }
     
     // macOS only

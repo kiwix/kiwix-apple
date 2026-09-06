@@ -22,7 +22,7 @@ struct BrowserTab: View {
     @ObservedObject var browser: BrowserViewModel
     @Environment(\.scenePhase) private var scenePhase
     @EnvironmentObject private var library: LibraryViewModel
-    @StateObject private var search = SearchViewModel.shared
+    @StateObject private var search = SearchViewModel()
     /// used on iPad
     private let didChangeTitle: ((NSManagedObjectID, String) -> Void)?
     
@@ -37,7 +37,7 @@ struct BrowserTab: View {
         } else {
             NoCatalogLaunchViewModel(browser: browser)
         }
-        Content(browser: browser, model: model)
+        Content(browser: browser, model: model, search: search)
             .environmentObject(search)
             .focusedSceneValue(\.isBrowserURLSet, browser.url != nil)
 #if os(macOS)
@@ -107,7 +107,7 @@ struct BrowserTab: View {
         /// which triggers the model to be revalidated
         @Default(.hasSeenCategories) private var hasSeenCategories
         @ObservedObject var model: LaunchModel
-        @StateObject private var search = SearchViewModel.shared
+        @ObservedObject var search: SearchViewModel
         
         private var isSearchingState: Bool {
             isSearching || !search.searchText.isEmpty
@@ -119,8 +119,8 @@ struct BrowserTab: View {
                                      hasSeenCategories: hasSeenCategories)
             GeometryReader { proxy in
                 Group {
-                    if isSearchingState {
-                        SearchResults()
+                    if !search.searchText.isEmpty {
+                        SearchResults(viewModel: search)
                             .environment(\.horizontalSizeClass, proxy.size.width > 650 ? .regular : .compact)
                     } else {
                         switch model.state {
