@@ -1,12 +1,16 @@
 let headings = Array.from(document.querySelectorAll('h1, h2, h3, h4, h5, h6'))
 
 // generate id for all headings if there isn't one already
-headings.forEach( (heading, index) => {
-	if (!heading.id) {
-		let parts = heading.textContent.trim().split(' ').concat([index])
-		heading.id = parts.join('_')
-	}
-})
+headings.forEach((heading, index) => {
+    if (!heading.id) {
+        heading.id = convertToId(heading.textContent, index);
+    }
+});
+
+function convertToId(textContent, index) {
+  let parts = textContent.trim().split(" ").concat([index]);
+  return parts.join("_");
+}
 
 // create observer
 let observer = new IntersectionObserver(function(entries) {
