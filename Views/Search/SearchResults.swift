@@ -23,7 +23,7 @@ struct SearchResults: View {
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     @Environment(\.managedObjectContext) private var managedObjectContext
     @Environment(\.isSearching) private var isSearching
-    @EnvironmentObject private var viewModel: SearchViewModel
+    @ObservedObject var viewModel: SearchViewModel
     @EnvironmentObject private var navigation: NavigationViewModel
     @FocusState private var focusedSearchItem: String? // macOS only
     @FetchRequest(
@@ -34,22 +34,6 @@ struct SearchResults: View {
 
     var body: some View {
         Group {
-#if os(macOS)
-            // Special hidden button to enable down key response when
-            // search is active, to go to search results
-            if isSearching, focusedSearchItem == nil {
-                Button(action: {
-                    switch viewModel.results {
-                    case let .results(results):
-                        focusedSearchItem = results.first?.url.absoluteString
-                    case let .suggestions(suggestions):
-                        focusedSearchItem = suggestions.first
-                    }
-                }, label: {})
-                .hidden()
-                .keyboardShortcut(.downArrow, modifiers: [])
-            }
-#endif
             if zimFiles.isEmpty {
                 Message(text: LocalString.search_result_zimfile_empty_message)
             } else if horizontalSizeClass == .regular {
@@ -68,6 +52,15 @@ struct SearchResults: View {
                 content
             }
         }
+        .onReceive(viewModel.$results, perform: { (results: SearchResultItems) in
+            switch results.count {
+            case 0:
+                voiceOver(announcement: LocalString.search_result_zimfile_no_result_message)
+            default:
+                let resultCountText = LocalString.search_result_zimfile_voice_over_count(withArgs: "\(results.count)")
+                voiceOver(announcement: resultCountText)
+            }
+        })
         .background(Color.background)
     }
     
@@ -88,8 +81,7 @@ struct SearchResults: View {
         } else {
             ScrollViewReader { scrollReader in
                 ScrollView {
-                    LazyVGrid(columns: [GridItem(.flexible(minimum: 300, maximum: 700), alignment: .center)]) {
-                        
+                    SearchList {
                         switch viewModel.results {
                         case let .results(results):
                             ForEach(results, id: \.url.absoluteString) { result in
@@ -98,6 +90,8 @@ struct SearchResults: View {
                                 } label: {
                                     ArticleCell(result: result, zimData: viewModel.zimDataDict[result.zimFileID])
                                 }
+                                .accessibilityLabel(result.title)
+                                .accessibilityHint(result.snippet?.string ?? "")
                                 .buttonStyle(.plain)
                                 .modifier(
                                     Focusable( // macOS only
@@ -146,29 +140,7 @@ struct SearchResults: View {
                     scrollReader.scrollTo(focusedURL, anchor: .center)
                 }
                 .modifier(MoveCommand(perform: { direction in
-                    // macOS only
-                    if let focusedSearchItem,
-                       let index = viewModel.results.firstIndex(where: focusedSearchItem) {
-                        let nextIndex: Int
-                        switch direction {
-                        case .up: nextIndex = viewModel.results.index(before: index)
-                        case .down: nextIndex = viewModel.results.index(after: index)
-                        default: nextIndex = viewModel.results.startIndex
-                        }
-                        if nextIndex < viewModel.results.startIndex {
-                            $focusedSearchItem.wrappedValue = nil
-#if os(macOS)
-                            NotificationCenter.default.post(name: .zimSearch, object: nil)
-#endif
-                        } else if (viewModel.results.startIndex..<viewModel.results.endIndex).contains(nextIndex) {
-                            switch viewModel.results {
-                            case let .results(results):
-                                $focusedSearchItem.wrappedValue = results[nextIndex].url.absoluteString
-                            case let .suggestions(suggestions):
-                                $focusedSearchItem.wrappedValue = suggestions[nextIndex]
-                            }
-                        }
-                    }
+                    onMove(direction: direction) // macOS only
                 }))
                 .overlay(alignment: .center) {
                     if viewModel.inProgress {
@@ -179,6 +151,36 @@ struct SearchResults: View {
         }
     }
     
+    private func voiceOver(announcement: String) {
+        var attributed = AttributedString(announcement)
+        attributed.accessibilitySpeechAnnouncementPriority = .low
+        AccessibilityNotification.Announcement(attributed).post()
+    }
+    
+    // macOS only
+    private func onMove(direction: MoveDirection) {
+        let index: Int = if let item = focusedSearchItem {
+            viewModel.results.firstIndex(where: item) ?? -1
+        } else {
+            -1
+        }
+        let nextIndex: Int
+        switch direction {
+        case .up: nextIndex = viewModel.results.index(before: index)
+        case .down: nextIndex = viewModel.results.index(after: index)
+        default: nextIndex = viewModel.results.startIndex
+        }
+        if (viewModel.results.startIndex..<viewModel.results.endIndex).contains(nextIndex) {
+            switch viewModel.results {
+            case let .results(results):
+                let urlString = results[nextIndex].url.absoluteString
+                focusedSearchItem = urlString
+            case let .suggestions(suggestions):
+                focusedSearchItem = suggestions[nextIndex]
+            }
+        }
+    }
+
     private func openResult(result: SearchResult) {
         recentSearchTexts = {
             var searchTexts = Defaults[.recentSearchTexts]

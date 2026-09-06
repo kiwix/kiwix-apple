@@ -66,6 +66,15 @@ enum SearchResultItems {
             suggestions.endIndex
         }
     }
+    
+    var count: Int {
+        switch self {
+        case let .results(results):
+            results.count
+        case let .suggestions(suggestions):
+            suggestions.count
+        }
+    }
 }
 
 @MainActor
@@ -74,16 +83,13 @@ final class SearchViewModel: NSObject, ObservableObject, NSFetchedResultsControl
     @Published private(set) var zimDataDict: [UUID: ZimArticleData]  // ID of zim files that are included in search
     @Published private(set) var inProgress = false
     @Published private(set) var results: SearchResultItems = .results([])
-    
-    @MainActor
-    static let shared = SearchViewModel()
 
     private let fetchedResultsController: NSFetchedResultsController<ZimFile>
     private var searchSubscriber: AnyCancellable?
     @ZimActor
     private let queue = OperationQueue()
 
-    override private init() {
+    override init() {
         // initialize fetched results controller
         let predicate = NSPredicate(
             format: "includedInSearch == true AND fileURLBookmark != nil"

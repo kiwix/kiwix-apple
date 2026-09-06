@@ -263,6 +263,7 @@
 
 "search_result.zimfile.empty.message" = "No opened ZIM file";
 "search_result.zimfile.no_result.message" = "No result";
+"search_result.zimfile.voice_over_count" = "Found results: %@";
 "search_result.sidebar.button.remove" = "Remove";
 "search_result.header.text" = "Recent Search";
 "search_result.button.clear" = "Clear";
