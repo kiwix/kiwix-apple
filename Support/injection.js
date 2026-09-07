@@ -8,8 +8,8 @@ headings.forEach((heading, index) => {
 });
 
 function convertToId(textContent, index) {
-  let parts = textContent.trim().split(" ").concat([index]);
-  return parts.join("_");
+    let parts = textContent.trim().replace(/[\W_]+/g, "_").split("_").concat([index]);
+    return parts.join("_");
 }
 
 // create observer
