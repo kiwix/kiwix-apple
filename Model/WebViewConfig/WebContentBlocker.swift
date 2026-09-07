@@ -45,18 +45,25 @@ enum WebContentBlocker {
             "type": "ignore-previous-rules"
         },
         "trigger": {
-            "url-filter": "zim://"
+            "url-filter": "^zim://",
+            "load-type": ["first-party"]
         }
     }
 ]
 """
-        guard let ruleList: WKContentRuleList = try? await blockListStore.compileContentRuleList(
-            forIdentifier: "externalUrls",
-            encodedContentRuleList: contentRules
-        ) else {
-            Log.URLSchemeHandler.error("blockList failed to compile")
-            return
+        do {
+            guard let ruleList: WKContentRuleList = try await blockListStore.compileContentRuleList(
+                forIdentifier: "externalUrls",
+                encodedContentRuleList: contentRules
+            ) else {
+                Log.URLSchemeHandler.error("blockList failed to compile")
+                assertionFailure("blockList failed to compile")
+                return
+            }
+            Self.ruleList = ruleList
+        } catch {
+            Log.URLSchemeHandler.error("blockList failed to compile: \(error)")
+            assertionFailure("blockList failed to compile: \(error)")
         }
-        Self.ruleList = ruleList
     }
 }
