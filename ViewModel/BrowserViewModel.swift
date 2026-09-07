@@ -464,8 +464,12 @@ import CoreKiwix
         decidePolicyFor navigationAction: WKNavigationAction
     ) async -> WKNavigationActionPolicy {
         guard navigationAction.targetFrame?.isMainFrame == true else {
-            // Allow to load iFrame content via src-doc instead of external src
-            return .allow
+            if navigationAction.request.url?.isZIMURL == true {
+                // Allow to load iFrame content via src-doc instead of external src
+                return .allow
+            } else {
+                return .cancel
+            }
         }
         guard let url = navigationAction.request.url?.updatedToZIMSheme() else {
             return .cancel
