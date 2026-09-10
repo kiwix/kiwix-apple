@@ -231,6 +231,7 @@
 "bookmark.overlay.empty.title" = "没有书签";
 "search_result.zimfile.empty.message" = "没有打开任何 ZIM 文件";
 "search_result.zimfile.no_result.message" = "无结果";
+"search_result.zimfile.voice_over_count" = "找到结果数：%@";
 "search_result.sidebar.button.remove" = "移除";
 "search_result.header.text" = "最近搜索";
 "search_result.button.clear" = "清除";
