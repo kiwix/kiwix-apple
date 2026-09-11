@@ -554,6 +554,7 @@ import CoreKiwix
     func webView(_ webView: WKWebView, didCommit navigation: WKNavigation!) {
         // The previous document's geolocation callbacks are gone
         geolocationService?.stopAll()
+        outlineItems = []
     }
 
     @MainActor
