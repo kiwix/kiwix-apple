@@ -107,7 +107,7 @@
 "zim_file.bool_info.details" = "Bayanai";
 "zim_file.bool_info.require_service_workers" = "Yana buƙatar Ma'aikatan Sabis";
 "zim_file.counts.article_count" = "Ƙididdigar labarin";
-"zim_file.counts.article.media_count" = "Ƙididdigar Mai jarida";
+"zim_file.counts.media_count" = "Ƙididdigar Mai jarida";
 "zim_file.detail.id.title" = "ID";
 "zim_file.download_task.action.title.cancel" = "Soke";
 "zim_file.download_task.action.try_recover" = "Yi ƙoƙarin farfadowa";

@@ -113,7 +113,7 @@
 "zim_file.bool_info.details" = "פרטים";
 "zim_file.bool_info.require_service_workers" = "נדרשים Service Workers";
 "zim_file.counts.article_count" = "מונה הערכים";
-"zim_file.counts.article.media_count" = "מונה המדיה";
+"zim_file.counts.media_count" = "מונה המדיה";
 "zim_file.detail.id.title" = "מזהה";
 "zim_file.download_task.action.title.cancel" = "ביטול";
 "zim_file.download_task.action.try_recover" = "לנסות לשחזר";

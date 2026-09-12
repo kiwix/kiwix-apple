@@ -108,7 +108,7 @@
 "zim_file.bool_info.details" = "Rincian";
 "zim_file.bool_info.require_service_workers" = "Membutuhkan Pekerja Layanan";
 "zim_file.counts.article_count" = "Jumlah Artikel";
-"zim_file.counts.article.media_count" = "Jumlah Media";
+"zim_file.counts.media_count" = "Jumlah Media";
 "zim_file.detail.id.title" = "ID";
 "zim_file.download_task.action.title.cancel" = "Batal";
 "zim_file.download_task.action.try_recover" = "Coba Memulihkan";

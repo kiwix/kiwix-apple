@@ -135,7 +135,7 @@
 "zim_file.bool_info.require_service_workers" = "Бара застапнички служби";
 "zim_file.bool_info.zim_archive_integrity" = "Интегритет на ZIM-архивот";
 "zim_file.counts.article_count" = "Број на статии";
-"zim_file.counts.article.media_count" = "Број на податотеки";
+"zim_file.counts.media_count" = "Број на податотеки";
 "zim_file.detail.id.title" = "Назнака";
 "zim_file.download_task.action.title.cancel" = "Откажи";
 "zim_file.download_task.action.try_recover" = "Пробај да ја вратиш";

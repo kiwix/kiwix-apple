@@ -361,11 +361,11 @@ struct ZimFileDetail: View {
     @ViewBuilder
     private var counts: some View {
         Attribute(
-            title: LocalString.zim_file_counts_article_count,
+            title: LocalString.zim_file_counts_pages_count,
             detail: Formatter.number.string(from: NSNumber(value: zimFile.articleCount))
         )
         Attribute(
-            title: LocalString.zim_file_counts_article_media_count,
+            title: LocalString.zim_file_counts_media_count,
             detail: Formatter.number.string(from: NSNumber(value: zimFile.mediaCount))
         )
     }

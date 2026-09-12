@@ -145,7 +145,7 @@
 "zim_file.bool_info.require_service_workers" = "Vyžaduje Service Workers";
 "zim_file.bool_info.zim_archive_integrity" = "Integrita archívu ZIM";
 "zim_file.counts.article_count" = "Počet článkov";
-"zim_file.counts.article.media_count" = "Počet médií";
+"zim_file.counts.media_count" = "Počet médií";
 "zim_file.detail.id.title" = "ID";
 "zim_file.download_task.action.title.cancel" = "Zrušiť";
 "zim_file.download_task.action.try_recover" = "Skúsiť obnoviť";

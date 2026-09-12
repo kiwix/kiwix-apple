@@ -98,7 +98,7 @@
 "zim_file.bool_info.details" = "Bayana";
 "zim_file.bool_info.require_service_workers" = "Bɔrila saandi tum tumdiba";
 "zim_file.counts.article_count" = "Lahabali kalinli";
-"zim_file.counts.article.media_count" = "Pɔhim zuɣu kalinli";
+"zim_file.counts.media_count" = "Pɔhim zuɣu kalinli";
 "zim_file.download_task.action.title.cancel" = "Kpihim";
 "zim_file.download_task.action.try_recover" = "Wolisi labisi";
 "zim_file.download_task.action.failed" = "Pooi";

@@ -136,7 +136,7 @@
 "zim_file.bool_info.require_service_workers" = "Kræver servicemedarbejdere";
 "zim_file.bool_info.zim_archive_integrity" = "ZIM-arkivintegritet";
 "zim_file.counts.article_count" = "Antal Artikler";
-"zim_file.counts.article.media_count" = "Antal Medier";
+"zim_file.counts.media_count" = "Antal Medier";
 "zim_file.detail.id.title" = "ID";
 "zim_file.download_task.action.title.cancel" = "Fortryd";
 "zim_file.download_task.action.try_recover" = "Prøv at Gendanne";

@@ -79,7 +79,7 @@
 "zim_file.bool_info.videos" = "Videoioù";
 "zim_file.bool_info.details" = "Munudoù";
 "zim_file.counts.article_count" = "Niver a bennadoù";
-"zim_file.counts.article.media_count" = "Niver a restroù media";
+"zim_file.counts.media_count" = "Niver a restroù media";
 "zim_file.detail.id.title" = "ID";
 "zim_file.download_task.action.title.cancel" = "Nullañ";
 "zim_file.download_task.action.failed" = "C’hwitet";

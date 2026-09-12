@@ -185,8 +185,8 @@
 "zim_file.bool_info.details" = "Details";
 "zim_file.bool_info.require_service_workers" = "Requires Service Workers";
 "zim_file.bool_info.zim_archive_integrity" = "ZIM archive integrity";
-"zim_file.counts.article_count" = "Article Count";
-"zim_file.counts.article.media_count" = "Media Count";
+"zim_file.counts.pages_count" = "Pages count";
+"zim_file.counts.media_count" = "Media count";
 "zim_file.detail.id.title" = "ID";
 "zim_file.download_task.action.title.cancel" = "Cancel";
 "zim_file.download_task.action.try_recover" = "Try to Recover";

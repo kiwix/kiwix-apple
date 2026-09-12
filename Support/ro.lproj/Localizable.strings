@@ -103,7 +103,7 @@
 "zim_file.bool_info.details" = "Detalii";
 "zim_file.bool_info.require_service_workers" = "Necesită Lucrători de Serviciu";
 "zim_file.counts.article_count" = "Număr de Articole";
-"zim_file.counts.article.media_count" = "Numărul Media";
+"zim_file.counts.media_count" = "Numărul Media";
 "zim_file.detail.id.title" = "ID";
 "zim_file.download_task.action.title.cancel" = "Anulare";
 "zim_file.download_task.action.try_recover" = "Încearcă Recuperarea";

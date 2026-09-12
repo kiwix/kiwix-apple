@@ -109,7 +109,7 @@
 "zim_file.bool_info.details" = "Подробности";
 "zim_file.bool_info.require_service_workers" = "Требуются сервисные работники";
 "zim_file.counts.article_count" = "Количество статей";
-"zim_file.counts.article.media_count" = "Количество медиа";
+"zim_file.counts.media_count" = "Количество медиа";
 "zim_file.detail.id.title" = "ID";
 "zim_file.download_task.action.title.cancel" = "Отмена";
 "zim_file.download_task.action.try_recover" = "Попробуйте восстановить";

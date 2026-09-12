@@ -112,7 +112,7 @@
 "zim_file.bool_info.details" = "Nkọwa zuru ezu";
 "zim_file.bool_info.require_service_workers" = "Achọrọ ndị ọrụ ọrụ";
 "zim_file.counts.article_count" = "Ọnụ ọgụgụ ederede";
-"zim_file.counts.article.media_count" = "Ọnụọgụ mgbasa ozi";
+"zim_file.counts.media_count" = "Ọnụọgụ mgbasa ozi";
 "zim_file.detail.id.title" = "ID";
 "zim_file.download_task.action.title.cancel" = "Kagbuo";
 "zim_file.download_task.action.try_recover" = "Gbalịa ka ị nwetachaa";

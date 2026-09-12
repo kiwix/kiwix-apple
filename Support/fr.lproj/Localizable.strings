@@ -155,7 +155,7 @@
 "zim_file.bool_info.require_service_workers" = "Nécessite des travailleurs pour le service";
 "zim_file.bool_info.zim_archive_integrity" = "Intégrité de l'archive ZIM";
 "zim_file.counts.article_count" = "Nombre d’articles";
-"zim_file.counts.article.media_count" = "Nombre de médias";
+"zim_file.counts.media_count" = "Nombre de médias";
 "zim_file.detail.id.title" = "ID";
 "zim_file.download_task.action.title.cancel" = "Annuler";
 "zim_file.download_task.action.try_recover" = "Essayez de récupérer";

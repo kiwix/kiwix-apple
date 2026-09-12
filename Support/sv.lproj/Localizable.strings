@@ -142,7 +142,7 @@
 "zim_file.bool_info.require_service_workers" = "Kräver serviceskript";
 "zim_file.bool_info.zim_archive_integrity" = "ZIM-arkiv integritet";
 "zim_file.counts.article_count" = "Antal artiklar";
-"zim_file.counts.article.media_count" = "Antal media";
+"zim_file.counts.media_count" = "Antal media";
 "zim_file.detail.id.title" = "ID";
 "zim_file.download_task.action.title.cancel" = "Avbryt";
 "zim_file.download_task.action.try_recover" = "Försök återskapa";

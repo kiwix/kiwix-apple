@@ -132,7 +132,7 @@
 "zim_file.bool_info.details" = "Details";
 "zim_file.bool_info.require_service_workers" = "Erfordert Service Workers";
 "zim_file.counts.article_count" = "Artikelanzahl";
-"zim_file.counts.article.media_count" = "Medienanzahl";
+"zim_file.counts.media_count" = "Medienanzahl";
 "zim_file.detail.id.title" = "ID";
 "zim_file.download_task.action.title.cancel" = "Abbrechen";
 "zim_file.download_task.action.try_recover" = "Wiederherstellung versuchen";

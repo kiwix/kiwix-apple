@@ -150,8 +150,8 @@
 "zim_file.bool_info.details" = "ZIM file details title, displayed in 2 columns, eg: Details: no";
 "zim_file.bool_info.require_service_workers" = "ZIM file details title, displayed in 2 columns, eg: Requires Service Workers: yes";
 "zim_file.bool_info.zim_archive_integrity" = "ZIM file details title, displayed in 2 columns, eg: ZIM archive integrity: checked";
-"zim_file.counts.article_count" = "ZIM file details title, displayed in 2 columns, eg: Article Count:  8 799";
-"zim_file.counts.article.media_count" = "ZIM file details title, displayed in 2 columns, eg: Media Count: 1 154";
+"zim_file.counts.pages_count" = "ZIM file details title, displayed in 2 columns, eg: Pages count:  8 799";
+"zim_file.counts.media_count" = "ZIM file details title, displayed in 2 columns, eg: Media count: 1 154";
 "zim_file.detail.id.title" = "ZIM file details title, displayed in 2 columns, eg: ID: 11223345";
 "zim_file.download_task.action.title.cancel" = "Button title to cancel the ongoing download";
 "zim_file.download_task.action.try_recover" = "Button title in case of a download error";

@@ -106,7 +106,7 @@
 "zim_file.bool_info.details" = "詳細";
 "zim_file.bool_info.require_service_workers" = "サービスワーカーを必要とする";
 "zim_file.counts.article_count" = "記事数";
-"zim_file.counts.article.media_count" = "メディア数";
+"zim_file.counts.media_count" = "メディア数";
 "zim_file.detail.id.title" = "ID";
 "zim_file.download_task.action.title.cancel" = "キャンセル";
 "zim_file.download_task.action.try_recover" = "再度試す";

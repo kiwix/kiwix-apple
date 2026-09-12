@@ -152,7 +152,7 @@
 "zim_file.bool_info.require_service_workers" = "서비스 워커 필요";
 "zim_file.bool_info.zim_archive_integrity" = "ZIM 아카이브 무결성";
 "zim_file.counts.article_count" = "문서 수";
-"zim_file.counts.article.media_count" = "미디어 수";
+"zim_file.counts.media_count" = "미디어 수";
 "zim_file.detail.id.title" = "ID";
 "zim_file.download_task.action.title.cancel" = "취소";
 "zim_file.download_task.action.try_recover" = "복구 시도";

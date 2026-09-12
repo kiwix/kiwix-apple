@@ -97,7 +97,7 @@
 "zim_file.bool_info.details" = "Ayrıntılar";
 "zim_file.bool_info.require_service_workers" = "Servis Çalışanları Gerektirir";
 "zim_file.counts.article_count" = "Makale Sayısı";
-"zim_file.counts.article.media_count" = "Medya Sayısı";
+"zim_file.counts.media_count" = "Medya Sayısı";
 "zim_file.detail.id.title" = "Kimlik";
 "zim_file.download_task.action.title.cancel" = "İptal";
 "zim_file.download_task.action.try_recover" = "Kurtarmayı Dene";
