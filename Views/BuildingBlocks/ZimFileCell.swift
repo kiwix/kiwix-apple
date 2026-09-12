@@ -48,6 +48,7 @@ struct ZimFileCell: View {
                         .font(.subheadline)
                         .foregroundColor(.secondary)
                         .lineLimit(2, reservesSpace: true)
+                        .multilineTextAlignment(.leading)
                 }
                 Spacer()
                 Favicon(
