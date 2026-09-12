@@ -36,7 +36,7 @@ struct ZimFileCell: View {
     }
 
     var body: some View {
-        VStack(spacing: 8) {
+        VStack(alignment: .leading, spacing: 8) {
             HStack(alignment: .top) {
                 VStack(alignment: .leading) {
                     Text(
@@ -44,11 +44,6 @@ struct ZimFileCell: View {
                         zimFile.name.replacingOccurrences(of: "Stack Exchange", with: "") :
                             zimFile.name
                     ).fontWeight(.semibold).foregroundColor(.primary).lineLimit(1)
-                    Text(zimFile.fileDescription.replacingOccurrences(of: "Stack Exchange ", with: ""))
-                        .font(.subheadline)
-                        .foregroundColor(.secondary)
-                        .lineLimit(2, reservesSpace: true)
-                        .multilineTextAlignment(.leading)
                 }
                 Spacer()
                 Favicon(
@@ -57,11 +52,18 @@ struct ZimFileCell: View {
                     imageURL: zimFile.faviconURL
                 ).frame(height: 20)
             }
+            Text(zimFile.fileDescription.replacingOccurrences(of: "Stack Exchange ", with: ""))
+                .font(.subheadline)
+                .foregroundColor(.secondary)
+                .lineLimit(2, reservesSpace: true)
+                .multilineTextAlignment(.leading)
             HStack(alignment: .bottom) {
                 VStack(alignment: .leading) {
+                    HStack {
+                        Text(LocalString.zim_file_cell_page_count(withArgs: zimFile.pageCountFormatted))
+                        Text(LocalString.zim_file_cell_media_count(withArgs: zimFile.mediaCountFormatted))
+                    }
                     Text(ZimFileCell.sizeFormatter.string(fromByteCount: zimFile.size))
-                    Text(LocalString.zim_file_cell_page_count(withArgs: zimFile.pageCountFormatted))
-                    Text(LocalString.zim_file_cell_media_count(withArgs: zimFile.mediaCountFormatted))
                 }
                 .foregroundColor(.secondary)
                 .font(.caption)

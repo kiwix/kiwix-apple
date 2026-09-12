@@ -203,7 +203,6 @@
 "enum.external_link_loading_policy.always_load" = "Всегда загружать";
 "enum.external_link_loading_policy.never_load" = "Никогда не загружать";
 "enum.flavor.max" = "макс.";
-"enum.flavor.no_pic" = "нет картинки";
 "enum.flavor.mini" = "мини";
 "enum.library_language_sorting_model.a-z" = "A-Z";
 "enum.library_language_sorting_model.by_count" = "По количеству";

@@ -23,15 +23,23 @@ struct FlavorTag: View {
     }
 
     var body: some View {
-        Text(flavor.description)
-            .fontWeight(.medium)
-            .font(.caption)
-            .foregroundColor(.white)
-            .padding(EdgeInsets(top: 2, leading: 6, bottom: 2, trailing: 6))
-            .background(backgroundColor)
-            .clipShape(Capsule(style: .continuous))
-            .overlay(Capsule(style: .continuous).stroke(Color.gray, lineWidth: 0.5))
-            .help(help)
+        Group {
+            switch flavor {
+            case .max, .mini:
+                Text(flavor.description)
+                    .padding(EdgeInsets(top: 2, leading: 6, bottom: 2, trailing: 6))
+            case .noPic:
+                Image(systemName: "nosign")
+                    .padding(EdgeInsets(top: 2, leading: 10, bottom: 2, trailing: 10))
+            }
+        }
+        .fontWeight(.medium)
+        .font(.caption)
+        .foregroundColor(.white)
+        .background(backgroundColor)
+        .clipShape(Capsule(style: .continuous))
+        .overlay(Capsule(style: .continuous).stroke(Color.gray, lineWidth: 0.5))
+        .help(help)
     }
 
     var backgroundColor: Color {

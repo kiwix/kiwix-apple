@@ -265,7 +265,6 @@
 "enum.external_link_loading_policy.always_load" = "始终加载";
 "enum.external_link_loading_policy.never_load" = "永不加载";
 "enum.flavor.max" = "最大";
-"enum.flavor.no_pic" = "没有图片";
 "enum.flavor.mini" = "最小";
 "enum.library_language_sorting_model.a-z" = "A-Z";
 "enum.library_language_sorting_model.by_count" = "按数量";

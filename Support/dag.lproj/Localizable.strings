@@ -175,7 +175,6 @@
 "enum.external_link_loading_policy.always_load" = "Ʒilimi saha kam";
 "enum.external_link_loading_policy.never_load" = "Abada ni ʒili";
 "enum.flavor.max" = "Pam";
-"enum.flavor.no_pic" = "Anfooni kani";
 "enum.flavor.mini" = "Zaɣibilla";
 "enum.library_language_sorting_model.by_count" = "Diyi yan kali";
 "enum.libray_tab_item.opened" = "Yooi";

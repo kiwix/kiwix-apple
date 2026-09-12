@@ -149,7 +149,6 @@
 "enum.external_link_loading_policy.always_load" = "Zawsze ładuj";
 "enum.external_link_loading_policy.never_load" = "Nigdy nie ładuj";
 "enum.flavor.max" = "maks";
-"enum.flavor.no_pic" = "bez zdjecia";
 "enum.flavor.mini" = "mini";
 "enum.library_language_sorting_model.a-z" = "A-Z";
 "enum.libray_tab_item.opened" = "Otwarte";

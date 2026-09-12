@@ -210,7 +210,6 @@
 "enum.external_link_loading_policy.always_load" = "תמיד לטעון";
 "enum.external_link_loading_policy.never_load" = "לעולם לא לטעון";
 "enum.flavor.max" = "לכל היותר";
-"enum.flavor.no_pic" = "אין תמונה";
 "enum.flavor.mini" = "מיני";
 "enum.library_language_sorting_model.a-z" = "א–ת";
 "enum.library_language_sorting_model.by_count" = "לפי ספירה";

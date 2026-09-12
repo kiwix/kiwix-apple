@@ -253,7 +253,6 @@
 "enum.external_link_loading_policy.always_load" = "Vždy načítať";
 "enum.external_link_loading_policy.never_load" = "Nikdy nenačítať";
 "enum.flavor.max" = "max";
-"enum.flavor.no_pic" = "bez obrázkov";
 "enum.flavor.mini" = "mini";
 "enum.library_language_sorting_model.a-z" = "A – Z";
 "enum.library_language_sorting_model.by_count" = "Podľa počtu";

@@ -167,7 +167,7 @@ enum Flavor: String, CustomStringConvertible {
         case .max:
             return LocalString.enum_flavor_max
         case .noPic:
-            return LocalString.enum_flavor_no_pic
+            return "" // not in use anymore
         case .mini:
             return LocalString.enum_flavor_mini
         }

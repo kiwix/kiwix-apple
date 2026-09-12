@@ -135,7 +135,6 @@
 "enum.category.other" = "ਹੋਰ";
 "enum.external_link_loading_policy.always_ask" = "ਹਮੇਸ਼ਾ ਪੁੱਛੋ";
 "enum.flavor.max" = "ਵੱਧ ਤੋਂ ਵੱਧ";
-"enum.flavor.no_pic" = "ਕੋਈ ਤਸਵੀਰ ਨਹੀਂ";
 "enum.flavor.mini" = "ਛੋਟਾ";
 "enum.library_language_sorting_model.by_count" = "ਗਿਣਤੀ ਨਾਲ";
 "enum.libray_tab_item.opened" = "ਖੋਲ੍ਹਿਆ ਗਿਆ";

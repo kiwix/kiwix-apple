@@ -232,7 +232,6 @@
 "enum.external_link_loading_policy.always_load" = "Секогаш вчитувај";
 "enum.external_link_loading_policy.never_load" = "Никогаш не вчитувај";
 "enum.flavor.max" = "најв.";
-"enum.flavor.no_pic" = "нема слика";
 "enum.flavor.mini" = "мини";
 "enum.library_language_sorting_model.a-z" = "А-Ш";
 "enum.library_language_sorting_model.by_count" = "По број";

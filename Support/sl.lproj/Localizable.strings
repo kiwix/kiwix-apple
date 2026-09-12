@@ -250,7 +250,6 @@
 "enum.external_link_loading_policy.always_load" = "Vedno naloži";
 "enum.external_link_loading_policy.never_load" = "Nikoli ne naloži";
 "enum.flavor.max" = "najv.";
-"enum.flavor.no_pic" = "brez slike";
 "enum.flavor.mini" = "mini";
 "enum.library_language_sorting_model.a-z" = "A–Z";
 "enum.library_language_sorting_model.by_count" = "Po številu";

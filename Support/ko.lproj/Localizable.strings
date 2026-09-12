@@ -259,7 +259,6 @@
 "enum.external_link_loading_policy.always_load" = "무조건 불러오기";
 "enum.external_link_loading_policy.never_load" = "불러오지 않기";
 "enum.flavor.max" = "최대";
-"enum.flavor.no_pic" = "사진 없음";
 "enum.flavor.mini" = "최소";
 "enum.library_language_sorting_model.a-z" = "A-Z";
 "enum.library_language_sorting_model.by_count" = "개수";
