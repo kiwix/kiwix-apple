@@ -102,7 +102,7 @@ struct ZimFilesCategory: View {
             sortDescriptors: [SortDescriptor(\ZimFile.name), SortDescriptor(\.size, order: .reverse)],
             predicate: ZimFilesCategory.buildPredicate(
                 category: category.wrappedValue,
-                searchText: searchText.wrappedValue,
+                searchText: "",
                 languageCode: selectedLanguage.wrappedValue
             ),
             animation: .easeInOut
