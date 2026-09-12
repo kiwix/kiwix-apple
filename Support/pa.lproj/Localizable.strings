@@ -43,7 +43,6 @@
 "download_task_cell.status.paused" = "ਰੋਕਿਆ ਗਿਆ";
 "library_refresh_time.last" = "ਹੁਣੇ ਹੀ";
 "library_refresh_time.never" = "ਕਦੇ ਨਹੀਂ";
-"zim_file_cell.article_count.suffix" = "ਲੇਖ";
 "library.zim_file_context.main_page.label" = "ਮੁੱਖ ਸਫ਼ਾ";
 "library.zim_file_context.random.label" = "ਬੇਤਰਤੀਬ ਸਫ਼ਾ";
 "library.zim_file_context.copy_url" = "URL ਨਕਲ ਕਰੋ";

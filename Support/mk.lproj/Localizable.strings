@@ -78,7 +78,6 @@
 "flavor_tag.help.mini" = "достапен е само дел од текстот, веројатно првиот";
 "library_refresh_time.last" = "Штотуку";
 "library_refresh_time.never" = "Никогаш";
-"zim_file_cell.article_count.suffix" = "статии";
 "zim_file_missing_indicator.help" = "ZIM-податотеката недостасува.";
 "hotspot.action.start_hotspot.title" = "Пушти пристапна точка";
 "hotspot.action.stop_hotspot.title" = "Запри пристапна точка";

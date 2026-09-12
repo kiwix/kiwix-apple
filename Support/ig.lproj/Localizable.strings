@@ -64,7 +64,6 @@
 "flavor_tag.help.mini" = "naanị obere akụkụ nke ederede dị, ma eleghị anya ngalaba nke mbụ";
 "library_refresh_time.last" = "Ugbu a";
 "library_refresh_time.never" = "Ọ dịghị mgbe";
-"zim_file_cell.article_count.suffix" = "ederede";
 "zim_file_missing_indicator.help" = "Zim faịlụ na-efu efu.";
 // Fuzzy
 "library.zim_file_details.side_panel.message" = "Họrọ faịlụ zim ka ịhụ nkọwa ihe ndị ozọ";

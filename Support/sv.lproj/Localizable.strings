@@ -85,7 +85,6 @@
 "flavor_tag.help.mini" = "endast en del av texten är tillgänglig, förmodligen det första avsnittet";
 "library_refresh_time.last" = "Alldeles nyss";
 "library_refresh_time.never" = "Aldrig";
-"zim_file_cell.article_count.suffix" = "artiklar";
 "zim_file_missing_indicator.help" = "Zim-fil saknas.";
 "hotspot.action.start_hotspot.title" = "Starta Hotspot";
 "hotspot.action.stop_hotspot.title" = "Stoppa Hotspot";

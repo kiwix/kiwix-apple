@@ -65,7 +65,6 @@
 "flavor_tag.help.mini" = "hanya sebagian kecil teks yang tersedia, mungkin bagian pertama";
 "library_refresh_time.last" = "Baru Saja";
 "library_refresh_time.never" = "Tidak pernah";
-"zim_file_cell.article_count.suffix" = "artikel";
 "zim_file_missing_indicator.help" = "Berkas Zim hilang.";
 "library.zim_file_details.side_panel.message" = "Pilih berkas ZIM untuk melihat detailnya";
 "library.zim_file_context.main_page.label" = "Halaman Utama";

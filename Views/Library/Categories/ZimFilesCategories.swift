@@ -109,7 +109,6 @@ struct ZimFilesCategory: View {
                         LibraryZimFileContext(
                             content: { ZimFileCell(
                                 zimFile,
-                                prominent: .name,
                                 isSelected: selection.isSelected(zimFile)
                             )},
                             zimFile: zimFile,

@@ -68,7 +68,6 @@
 "flavor_tag.help.mini" = "доступна только часть текста, вероятно, первый раздел";
 "library_refresh_time.last" = "Прямо сейчас";
 "library_refresh_time.never" = "Никогда";
-"zim_file_cell.article_count.suffix" = "статей";
 "zim_file_missing_indicator.help" = "Zim-файл отсутствует.";
 "library.zim_file_details.side_panel.message" = "Выберите ZIM-файл, чтобы просмотреть подробности.";
 "library.zim_file_context.main_page.label" = "Заглавная страница";

@@ -120,7 +120,6 @@ struct ZimFilesNew: View {
                     content: {
                         ZimFileCell(
                             zimFile,
-                            prominent: .name,
                             isSelected: selection.isSelected(zimFile)
                         )
                     },

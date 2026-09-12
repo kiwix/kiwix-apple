@@ -83,7 +83,8 @@
 "flavor_tag.help.mini" = "Accessibility label for ZIM file results, explaining the different flavours of the same ZIM file (mini|max|nopic)";
 "library_refresh_time.last" = "Just Now";
 "library_refresh_time.never" = "Never";
-"zim_file_cell.article_count.suffix" = "Part of the ZIM file description, when we list ZIM files (as card results), eg: '246K articles', the word articles is added after the number";
+"zim_file_cell.page_count" = "Part of the ZIM file description, when we list ZIM files (as card results), eg: '246K articles', the parameter is the number to display";
+"zim_file_cell.media_count" = "Part of the ZIM file description, when we list ZIM files (as card results), eg: '242 media', the paremeter is the number to display";
 "zim_file_missing_indicator.help" = "Accessibility label for a warning (!) icon";
 "hotspot.action.start_hotspot.title" = "A button title to start the Kiwix Hotspot with the selected files";
 "hotspot.action.stop_hotspot.title" = "A button title to stop the Kiwix Hotspot";

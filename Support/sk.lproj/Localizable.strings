@@ -79,7 +79,6 @@
 "flavor_tag.help.mini" = "dostupná je iba časť textu, pravdepodobne prvá sekcia";
 "library_refresh_time.last" = "Práve teraz";
 "library_refresh_time.never" = "Nikdy";
-"zim_file_cell.article_count.suffix" = "článkov";
 "zim_file_missing_indicator.help" = "Súbor ZIM chýba.";
 "hotspot.action.start_hotspot.title" = "Spustiť hotspot";
 "hotspot.action.stop_hotspot.title" = "Zastaviť hotspot";

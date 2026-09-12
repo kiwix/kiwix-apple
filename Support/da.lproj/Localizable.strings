@@ -79,7 +79,6 @@
 "flavor_tag.help.mini" = "kun en delmængde af teksten er tilgængelig, sandsynligvis den første del";
 "library_refresh_time.last" = "Netop Nu";
 "library_refresh_time.never" = "Aldrig";
-"zim_file_cell.article_count.suffix" = "artikler";
 "zim_file_missing_indicator.help" = "Zim-fil mangler.";
 "hotspot.action.start_hotspot.title" = "Start Hotspot";
 "hotspot.action.stop_hotspot.title" = "Stop Hotspot";

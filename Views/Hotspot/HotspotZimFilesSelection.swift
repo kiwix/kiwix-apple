@@ -82,7 +82,6 @@ struct HotspotZimFilesSelection: View {
                                 content: {
                                     ZimFileCell(
                                         zimFile,
-                                        prominent: .name,
                                         isSelected: selection.isSelected(zimFile),
                                         backgroundColoring: CellBackground.hotspotSelectionColorFor
                                     )

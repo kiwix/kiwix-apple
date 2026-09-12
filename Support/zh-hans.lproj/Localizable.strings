@@ -92,7 +92,6 @@
 "flavor_tag.help.mini" = "仅有部分文本可用，这可能是第一部分";
 "library_refresh_time.last" = "刚刚";
 "library_refresh_time.never" = "从不";
-"zim_file_cell.article_count.suffix" = "条目";
 "zim_file_missing_indicator.help" = "Zim 文件丢失";
 "hotspot.action.start_hotspot.title" = "启动热点";
 "hotspot.action.stop_hotspot.title" = "停止热点";

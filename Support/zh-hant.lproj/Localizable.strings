@@ -86,7 +86,6 @@
 "flavor_tag.help.mini" = "僅有文字的子集合可用，有可能是第一段落";
 "library_refresh_time.last" = "現在";
 "library_refresh_time.never" = "永不";
-"zim_file_cell.article_count.suffix" = "條目";
 "zim_file_missing_indicator.help" = "遺失 Zim 檔案。";
 "hotspot.action.start_hotspot.title" = "啟動熱點";
 "hotspot.action.stop_hotspot.title" = "停止熱點";

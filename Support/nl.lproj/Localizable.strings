@@ -83,7 +83,6 @@
 "flavor_tag.help.mini" = "slechts een deel van de tekst is beschikbaar, waarschijnlijk het eerste gedeelte";
 "library_refresh_time.last" = "Zojuist";
 "library_refresh_time.never" = "Nooit";
-"zim_file_cell.article_count.suffix" = "pagina's";
 "zim_file_missing_indicator.help" = "Zim-bestand ontbreekt.";
 "hotspot.action.start_hotspot.title" = "Hotspot opstarten";
 "hotspot.action.stop_hotspot.title" = "Hotspot stoppen";

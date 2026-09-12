@@ -45,7 +45,6 @@ struct ZimFilesOpened: View {
                 NavigationLink(value: zimFile.fileID) {
                     ZimFileCell(
                         zimFile,
-                        prominent: .name,
                         isSelected: false
                     )
                 }.accessibilityIdentifier("Open: " + zimFile.name)

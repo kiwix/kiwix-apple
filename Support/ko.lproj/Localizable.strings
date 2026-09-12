@@ -86,7 +86,6 @@
 "flavor_tag.help.mini" = "텍스트의 일부, 아마도 첫 번째 부분만 이용 가능";
 "library_refresh_time.last" = "즉시";
 "library_refresh_time.never" = "없음";
-"zim_file_cell.article_count.suffix" = "문서";
 "zim_file_missing_indicator.help" = "Zim 파일이 없습니다.";
 "hotspot.action.start_hotspot.title" = "핫스팟 시작";
 "hotspot.action.stop_hotspot.title" = "핫스팟 중지";

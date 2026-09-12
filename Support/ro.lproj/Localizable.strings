@@ -62,7 +62,6 @@
 "flavor_tag.help.mini" = "doar un subset al textului este disponibil, probabil prima secțiune";
 "library_refresh_time.last" = "Chiar Acum";
 "library_refresh_time.never" = "Niciodată";
-"zim_file_cell.article_count.suffix" = "articole";
 "zim_file_missing_indicator.help" = "Fișierul Zim lipsește.";
 "library.zim_file_details.side_panel.message" = "Selectați un fișier ZIM pentru a vedea detalii";
 "library.zim_file_context.main_page.label" = "Pagina Principală";

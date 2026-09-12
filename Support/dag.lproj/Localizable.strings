@@ -57,7 +57,6 @@
 "flavor_tag.help.mini" = "Sabbu ŋɔ bela koŋko nyɛ din be ni, di yi pa shɛli tuuli yaɣili";
 "library_refresh_time.last" = "Kulla saha ŋɔ";
 "library_refresh_time.never" = "Abada";
-"zim_file_cell.article_count.suffix" = "Lahabaya";
 "zim_file_missing_indicator.help" = "Zim fasara nyɛla din kani.";
 // Fuzzy
 "library.zim_file_details.side_panel.message" = "Piimi zim fasara n- nya bayana";

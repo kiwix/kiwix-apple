@@ -80,7 +80,6 @@
 "flavor_tag.help.mini" = "Es ist nur ein Teil des Textes verfügbar, wahrscheinlich der erste Abschnitt";
 "library_refresh_time.last" = "Soeben";
 "library_refresh_time.never" = "Niemals";
-"zim_file_cell.article_count.suffix" = "Artikel";
 "zim_file_missing_indicator.help" = "Zim-Datei fehlt.";
 "hotspot.action.start_hotspot.title" = "Hotspot starten";
 "hotspot.action.stop_hotspot.title" = "Hotspot beenden";

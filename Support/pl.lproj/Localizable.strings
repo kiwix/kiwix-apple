@@ -49,7 +49,6 @@
 "flavor_tag.help.mini" = "dostępny jest tylko podzbiór tekstu, prawdopodobnie pierwsza sekcja";
 "library_refresh_time.last" = "Dopiero co";
 "library_refresh_time.never" = "Nigdy";
-"zim_file_cell.article_count.suffix" = "artykuły";
 "zim_file_missing_indicator.help" = "Brak pliku Zim.";
 // Fuzzy
 "library.zim_file_details.side_panel.message" = "Wybierz plik zim, aby zobaczyć szczegóły";

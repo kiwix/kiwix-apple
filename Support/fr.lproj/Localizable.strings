@@ -98,7 +98,6 @@
 "flavor_tag.help.mini" = "seul un sous-ensemble du texte est disponible, probablement la première section";
 "library_refresh_time.last" = "À l’instant";
 "library_refresh_time.never" = "Jamais";
-"zim_file_cell.article_count.suffix" = "articles";
 "zim_file_missing_indicator.help" = "Le fichier Zim est manquant.";
 "hotspot.action.start_hotspot.title" = "Démarrer le point d’accès";
 "hotspot.action.stop_hotspot.title" = "Arrêter le point d’accès";

@@ -112,7 +112,8 @@
 "library_refresh_time.last" = "Just Now";
 "library_refresh_time.never" = "Never";
 
-"zim_file_cell.article_count.suffix" = "articles";
+"zim_file_cell.page_count" = "%@ pages";
+"zim_file_cell.media_count" = "%@ media";
 
 "zim_file_missing_indicator.help" = "Zim file is missing.";
 

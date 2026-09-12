@@ -54,7 +54,6 @@
 "download_task_cell.status.paused" = "Pausado";
 "library_refresh_time.last" = "Agora mesmo";
 "library_refresh_time.never" = "Nunca";
-"zim_file_cell.article_count.suffix" = "artigos";
 "zim_file_missing_indicator.help" = "Está faltando o arquivo zim.";
 "library.zim_file_details.side_panel.message" = "Selecione um arquivo ZIM para ver mais detalhes";
 "library.zim_file_context.main_page.label" = "Página principal";

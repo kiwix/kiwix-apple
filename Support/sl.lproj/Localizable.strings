@@ -79,7 +79,6 @@
 "flavor_tag.help.mini" = "na voljo je samo del besedila, verjetno prvi razdelek";
 "library_refresh_time.last" = "Pravkar";
 "library_refresh_time.never" = "Nikoli";
-"zim_file_cell.article_count.suffix" = "članki";
 "zim_file_missing_indicator.help" = "Datoteka Zim manjka.";
 "hotspot.action.start_hotspot.title" = "Začni dostopno točko";
 "hotspot.action.stop_hotspot.title" = "Ustavi dostopno točko";

@@ -79,7 +79,6 @@
 "flavor_tag.help.mini" = "solmente un parte del texto es disponibile, probabilemente le prime section";
 "library_refresh_time.last" = "Justo ora";
 "library_refresh_time.never" = "Nunquam";
-"zim_file_cell.article_count.suffix" = "articulos";
 "zim_file_missing_indicator.help" = "Le file ZIM manca.";
 "hotspot.action.start_hotspot.title" = "Aperir puncto de accesso";
 "hotspot.action.stop_hotspot.title" = "Clauder puncto de accesso";

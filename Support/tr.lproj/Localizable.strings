@@ -57,7 +57,6 @@
 "flavor_tag.help.mini" = "metnin yalnızca bir alt kümesi mevcut, muhtemelen ilk bölüm";
 "library_refresh_time.last" = "Şu anda";
 "library_refresh_time.never" = "Asla";
-"zim_file_cell.article_count.suffix" = "makale";
 "zim_file_missing_indicator.help" = "Zim dosyası eksik.";
 "library.zim_file_details.side_panel.message" = "Ayrıntıları görmek için bir ZIM dosyası seçin";
 "library.zim_file_context.main_page.label" = "Anasayfa";

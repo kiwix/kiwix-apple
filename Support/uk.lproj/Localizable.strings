@@ -64,7 +64,6 @@
 "flavor_tag.help.no_pic" = "більшість зображень було видалено";
 "library_refresh_time.last" = "Щойно";
 "library_refresh_time.never" = "Ніколи";
-"zim_file_cell.article_count.suffix" = "статей";
 "zim_file_missing_indicator.help" = "Файл Zim відсутній.";
 "hotspot.action.start_hotspot.title" = "Запустити точку доступу";
 "hotspot.action.stop_hotspot.title" = "Зупинити точку доступу";

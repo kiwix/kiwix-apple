@@ -83,7 +83,6 @@
 "flavor_tag.help.mini" = "sólo está disponible un subconjunto del texto, probablemente la primera sección";
 "library_refresh_time.last" = "Ahora mismo";
 "library_refresh_time.never" = "Nunca";
-"zim_file_cell.article_count.suffix" = "artículos";
 "zim_file_missing_indicator.help" = "Falta el archivo Zim.";
 "hotspot.action.start_hotspot.title" = "Iniciar servidor";
 "hotspot.action.stop_hotspot.title" = "Parar servidor";

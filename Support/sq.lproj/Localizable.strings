@@ -64,7 +64,6 @@
 "flavor_tag.help.mini" = "është i gatshëm vetëm një nëngrup i tekstit, me gjasa ndarja e parë";
 "library_refresh_time.last" = "Mu Tani";
 "library_refresh_time.never" = "Kurrë";
-"zim_file_cell.article_count.suffix" = "artikuj";
 "zim_file_missing_indicator.help" = "Mungon kartelë ZIM.";
 "library.zim_file_details.side_panel.message" = "Që të shihni hollësi, përzgjidhni një kartelë ZIM";
 "library.zim_file_context.main_page.label" = "Faqja Kryesore";

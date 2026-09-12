@@ -21,19 +21,15 @@ struct ZimFileCell: View {
     @State private var isHovering: Bool = false
     let isLoading: Bool
     let isSelected: Bool
-
-    let prominent: Prominent
     private let backgroundColoring: (_ isHovering: Bool, _ isSelected: Bool) -> Color
 
     init(
         _ zimFile: ZimFile,
-        prominent: Prominent,
         isSelected: Bool,
         isLoading: Bool = false,
         backgroundColoring: @escaping (_ isHovering: Bool, _ isSelected: Bool) -> Color = CellBackground.colorFor
     ) {
         self.zimFile = zimFile
-        self.prominent = prominent
         self.isSelected = isSelected
         self.isLoading = isLoading
         self.backgroundColoring = backgroundColoring
@@ -41,62 +37,45 @@ struct ZimFileCell: View {
 
     var body: some View {
         VStack(spacing: 8) {
-            switch prominent {
-            case .name:
-                HStack {
+            HStack(alignment: .top) {
+                VStack(alignment: .leading) {
                     Text(
                         zimFile.category == Category.stackExchange.rawValue ?
                         zimFile.name.replacingOccurrences(of: "Stack Exchange", with: "") :
-                        zimFile.name
+                            zimFile.name
                     ).fontWeight(.semibold).foregroundColor(.primary).lineLimit(1)
-                    Spacer()
-                    Favicon(
-                        category: Category(rawValue: zimFile.category) ?? .other,
-                        imageData: zimFile.faviconData,
-                        imageURL: zimFile.faviconURL
-                    ).frame(height: 20)
+                    Text(zimFile.fileDescription)
+                        .font(.subheadline)
+                        .foregroundColor(.secondary)
+                        .lineLimit(2, reservesSpace: true)
                 }
-                HStack(alignment: .bottom) {
-                    VStack(alignment: .leading) {
-                        Text(ZimFileCell.sizeFormatter.string(fromByteCount: zimFile.size))
-                            .font(.caption)
-                        Text(ZimFileCell.dateFormatter.string(from: zimFile.created))
-                            .font(.caption)
-                    }.foregroundColor(.secondary)
-                    if !zimFile.isMissing, let isIntegrityChecked = zimFile.isIntegrityChecked {
-                        if isIntegrityChecked {
-                            Image(systemName: "checkmark.circle.fill")
-                                .foregroundStyle(Color.green)
-                        } else {
-                            Image(systemName: "xmark.circle.fill")
-                                .foregroundStyle(Color.red)
-                        }
-                    }
-                    Spacer()
-                    if zimFile.isMissing { ZimFileMissingIndicator() }
-                    if let flavor = Flavor(rawValue: zimFile.flavor) { FlavorTag(flavor) }
-                }
-            case .size:
-                HStack(alignment: .top) {
+                Spacer()
+                Favicon(
+                    category: Category(rawValue: zimFile.category) ?? .other,
+                    imageData: zimFile.faviconData,
+                    imageURL: zimFile.faviconURL
+                ).frame(height: 20)
+            }
+            HStack(alignment: .bottom) {
+                VStack(alignment: .leading) {
                     Text(ZimFileCell.sizeFormatter.string(fromByteCount: zimFile.size))
-                        .fontWeight(.semibold)
-                        .foregroundColor(.primary)
-                    Spacer()
-                    if let flavor = Flavor(rawValue: zimFile.flavor) {
-                        FlavorTag(flavor)
+                    Text(LocalString.zim_file_cell_page_count(withArgs: zimFile.pageCountFormatted))
+                    Text(LocalString.zim_file_cell_media_count(withArgs: zimFile.mediaCountFormatted))
+                }
+                .foregroundColor(.secondary)
+                .font(.caption)
+                if !zimFile.isMissing, let isIntegrityChecked = zimFile.isIntegrityChecked {
+                    if isIntegrityChecked {
+                        Image(systemName: "checkmark.circle.fill")
+                            .foregroundStyle(Color.green)
+                    } else {
+                        Image(systemName: "xmark.circle.fill")
+                            .foregroundStyle(Color.red)
                     }
                 }
-                HStack(alignment: .bottom) {
-                    VStack(alignment: .leading) {
-                        Text("\(zimFile.articleCount.formatted(.number.notation(.compactName).locale(.current))) " +
-                             LocalString.zim_file_cell_article_count_suffix)
-                            .font(.caption)
-                        Text(ZimFileCell.dateFormatter.string(from: zimFile.created))
-                            .font(.caption)
-                    }.foregroundColor(.secondary)
-                    Spacer()
-                    if zimFile.isMissing { ZimFileMissingIndicator() }
-                }
+                Spacer()
+                if zimFile.isMissing { ZimFileMissingIndicator() }
+                if let flavor = Flavor(rawValue: zimFile.flavor) { FlavorTag(flavor) }
             }
         }
         .padding()
@@ -124,18 +103,14 @@ struct ZimFileCell: View {
         formatter.countStyle = .file
         return formatter
     }()
-
-    enum Prominent {
-        case name, size
-    }
     
     static func cellAccessibilityLabel(for zimFile: ZimFile) -> String {
         [zimFile.name,
+         zimFile.fileDescription,
          ZimFileCell.sizeFormatter.string(fromByteCount: zimFile.size),
          Flavor(rawValue: zimFile.flavor)?.description,
-         "\(zimFile.articleCount.formatted(.number.notation(.compactName).locale(.current)))" + " "
-                                        + LocalString.zim_file_cell_article_count_suffix,
-         ZimFileCell.dateFormatter.string(from: zimFile.created),
+         LocalString.zim_file_cell_page_count(withArgs: zimFile.pageCountFormatted),
+         LocalString.zim_file_cell_media_count(withArgs: zimFile.mediaCountFormatted),
          zimFile.isMissing ? LocalString.zim_file_missing_indicator_help : nil
         ].compactMap { $0 }.joined(separator: ", ")
     }
@@ -162,30 +137,19 @@ struct ZimFileCell_Previews: PreviewProvider {
 
     static var previews: some View {
         Group {
-            ZimFileCell(ZimFileCell_Previews.zimFile, prominent: .name, isSelected: false)
+            ZimFileCell(ZimFileCell_Previews.zimFile, isSelected: false)
                 .preferredColorScheme(.light)
                 .padding()
                 .frame(width: 300, height: 100)
                 .previewLayout(.sizeThatFits)
-            ZimFileCell(ZimFileCell_Previews.zimFile, 
-                        prominent: .name,
+            ZimFileCell(ZimFileCell_Previews.zimFile,
                         isSelected: true,
                         isLoading: true)
                 .preferredColorScheme(.light)
                 .padding()
                 .frame(width: 300, height: 100)
                 .previewLayout(.sizeThatFits)
-            ZimFileCell(ZimFileCell_Previews.zimFile, prominent: .name, isSelected: false)
-                .preferredColorScheme(.dark)
-                .padding()
-                .frame(width: 300, height: 100)
-                .previewLayout(.sizeThatFits)
-            ZimFileCell(ZimFileCell_Previews.zimFile, prominent: .size, isSelected: false)
-                .preferredColorScheme(.light)
-                .padding()
-                .frame(width: 300, height: 100)
-                .previewLayout(.sizeThatFits)
-            ZimFileCell(ZimFileCell_Previews.zimFile, prominent: .size, isSelected: true)
+            ZimFileCell(ZimFileCell_Previews.zimFile, isSelected: false)
                 .preferredColorScheme(.dark)
                 .padding()
                 .frame(width: 300, height: 100)

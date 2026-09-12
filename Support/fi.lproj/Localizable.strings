@@ -54,7 +54,6 @@
 "download_task_cell.status.paused" = "Pysäytetty";
 "library_refresh_time.last" = "Juuri nyt";
 "library_refresh_time.never" = "Ei koskaan";
-"zim_file_cell.article_count.suffix" = "artikkelia";
 "zim_file_missing_indicator.help" = "Zim-tiedosto puuttuu.";
 "library.zim_file_context.main_page.label" = "Etusivu";
 "library.zim_file_context.random.label" = "Satunnainen sivu";

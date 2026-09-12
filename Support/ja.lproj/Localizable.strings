@@ -65,7 +65,6 @@
 "flavor_tag.help.mini" = "文章の一部のみ(多くの場合最初の段落)が利用可能です。";
 "library_refresh_time.last" = "今すぐ";
 "library_refresh_time.never" = "なし";
-"zim_file_cell.article_count.suffix" = "記事";
 "zim_file_missing_indicator.help" = "ZIMファイルがありません。";
 "library.zim_file_details.side_panel.message" = "詳細を参照したいZIMファイルを選択";
 "library.zim_file_context.main_page.label" = "メインページ";
