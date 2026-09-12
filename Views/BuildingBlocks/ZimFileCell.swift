@@ -44,7 +44,7 @@ struct ZimFileCell: View {
                         zimFile.name.replacingOccurrences(of: "Stack Exchange", with: "") :
                             zimFile.name
                     ).fontWeight(.semibold).foregroundColor(.primary).lineLimit(1)
-                    Text(zimFile.fileDescription)
+                    Text(zimFile.fileDescription.replacingOccurrences(of: "Stack Exchange ", with: ""))
                         .font(.subheadline)
                         .foregroundColor(.secondary)
                         .lineLimit(2, reservesSpace: true)
