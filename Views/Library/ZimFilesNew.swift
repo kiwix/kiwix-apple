@@ -168,9 +168,8 @@ struct ZimFilesNew: View {
             let languagePlacement: ToolbarItemPlacement = .automatic
 #endif
             ToolbarItem(placement: languagePlacement) {
-                if languageCodes.count > 1 {
-                    ToggleAroundLanguageButton(items: $languageCodes, selection: $selectedLanguage)
-                }
+                ToggleAroundLanguageButton(items: $languageCodes, selection: $selectedLanguage)
+                    .disabled(languageCodes.count <= 1)
             }
 #if os(iOS)
             let refreshPlacement: ToolbarItemPlacement = .title
