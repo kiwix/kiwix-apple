@@ -19,6 +19,7 @@ import Defaults
 
 /// A grid of zim files under each category.
 struct ZimFilesCategories: View {
+    @State private var searchText = ""
     @State private var selected: Category
     @Binding private var languageCode: String
     @Default(.hasSeenCategories) private var hasSeenCategories
@@ -45,15 +46,18 @@ struct ZimFilesCategories: View {
     }
 
     var body: some View {
-        ZimFilesCategory(category: $selected, selectedLanguage: $languageCode, dismiss: dismiss)
+        ZimFilesCategory(category: $selected, searchText: $searchText, selectedLanguage: $languageCode, dismiss: dismiss)
             .modifier(ToolbarRoleBrowser())
             .navigationTitle(MenuItem.categories.name)
+            .searchable(text: $searchText, prompt: LocalString.common_search)
             .toolbar {
                 ToolbarItem(id: "picker", placement: .principal) {
-                    Picker(LocalString.zim_file_category_title, selection: $selected) {
-                        ForEach(categories) {
-                            Text($0.name).tag($0)
-                                .accessibilityIdentifier($0.name)
+                    if searchText.isEmpty {
+                        Picker(LocalString.zim_file_category_title, selection: $selected) {
+                            ForEach(categories) {
+                                Text($0.name).tag($0)
+                                    .accessibilityIdentifier($0.name)
+                            }
                         }
                     }
                 }
@@ -71,7 +75,7 @@ struct ZimFilesCategories: View {
 
 /// A grid of zim files under a single category, or as a search result
 struct ZimFilesCategory: View {
-    @State private var searchText = ""
+    @Binding var searchText: String
     @Binding var category: Category
     @Binding var selectedLanguage: String
     @Default(.libraryLanguageCodes) private var languageCodes
@@ -82,16 +86,18 @@ struct ZimFilesCategory: View {
     
     init(
         category: Binding<Category>,
+        searchText: Binding<String>,
         selectedLanguage: Binding<String>,
         dismiss: (() -> Void)?
     ) {
         self._category = category
+        self._searchText = searchText
         self._selectedLanguage = selectedLanguage
         self._results = FetchRequest<ZimFile>(
             sortDescriptors: [SortDescriptor(\ZimFile.name), SortDescriptor(\.size, order: .reverse)],
             predicate: ZimFilesCategory.buildPredicate(
                 category: category.wrappedValue,
-                searchText: "",
+                searchText: searchText.wrappedValue,
                 languageCode: selectedLanguage.wrappedValue
             ),
             animation: .easeInOut
@@ -118,7 +124,6 @@ struct ZimFilesCategory: View {
                 }.modifier(GridCommon())
             }
         }
-        .searchable(text: $searchText, prompt: LocalString.common_search)
         .onChange(of: category) { selection.reset() }
         .onChange(of: searchText) { _, newValue in
             results.nsPredicate = ZimFilesCategory
