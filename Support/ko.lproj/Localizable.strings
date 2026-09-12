@@ -225,6 +225,7 @@
 "bookmark.overlay.empty.title" = "북마크 없음";
 "search_result.zimfile.empty.message" = "열린 ZIM 파일이 없습니다";
 "search_result.zimfile.no_result.message" = "결과 없음";
+"search_result.zimfile.voice_over_count" = "검색 결과: %@";
 "search_result.sidebar.button.remove" = "제거";
 "search_result.header.text" = "최근 검색";
 "search_result.button.clear" = "지우기";

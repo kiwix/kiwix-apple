@@ -222,6 +222,7 @@
 "bookmark.overlay.empty.title" = "Geen bladwijzers";
 "search_result.zimfile.empty.message" = "Geen geopend ZIM-bestand";
 "search_result.zimfile.no_result.message" = "Geen resultaat";
+"search_result.zimfile.voice_over_count" = "Gevonden resultaten: %@";
 "search_result.sidebar.button.remove" = "Verwijderen";
 "search_result.header.text" = "Recente zoekopdracht";
 "search_result.button.clear" = "Wissen";
