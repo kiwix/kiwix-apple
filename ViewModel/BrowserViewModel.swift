@@ -840,43 +840,7 @@ import CoreKiwix
     /// Convert flattened heading element data to a tree of OutlineItems.
     /// - Parameter headings: list of heading element data retrieved from webview
     @MainActor private func generateOutlineTree(headings: [[String: String]]) {
-        let root = OutlineItem(index: -1, text: "", level: 0)
-        var stack: [OutlineItem] = [root]
-
-        headings.enumerated().forEach { index, heading in
-            guard let id = heading["id"],
-                  let text = heading["text"],
-                  let tag = heading["tag"], let level = Int(tag.suffix(1)) else { return }
-            let item = OutlineItem(id: id, index: index, text: text, level: level)
-
-            // get last item in stack
-            // if last item is child of item's sibling, unwind stack until a sibling is found
-            guard var lastItem = stack.last else { return }
-            while lastItem.level > item.level {
-                stack.removeLast()
-                lastItem = stack[stack.count - 1]
-            }
-
-            // if item is last item's sibling, add item to parent and replace last item with itself in stack
-            // if item is last item's child, add item to parent and add item to stack
-            if lastItem.level == item.level {
-                stack[stack.count - 2].addChild(item)
-                stack[stack.count - 1] = item
-            } else if lastItem.level < item.level {
-                stack[stack.count - 1].addChild(item)
-                stack.append(item)
-            }
-        }
-
-        // if there is only one item at top level, with the same text as the article title
-        // do not display it only it's children
-        if let rootChildren = root.children, rootChildren.count == 1,
-            let rootFirstChild = rootChildren.first,
-           rootFirstChild.text.lowercased() == articleTitle.lowercased() {
-            self.outlineItemTree = rootFirstChild.children ?? []
-        } else {
-            self.outlineItemTree = root.children ?? []
-        }
+        outlineItemTree = TableOfContents.generateOutlineTree(headings: headings, articleTitle: articleTitle)
     }
 
     private static func bookmarksPredicateFor(url: URL?) -> NSPredicate? {

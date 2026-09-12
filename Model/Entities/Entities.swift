@@ -84,41 +84,6 @@ struct Language: Identifiable, Comparable {
     }
 }
 
-final class OutlineItem: ObservableObject, Identifiable {
-    let id: String
-    let index: Int
-    let text: String
-    let level: Int
-    private(set) var children: [OutlineItem]?
-
-    @Published var isExpanded = true
-
-    init(id: String, index: Int, text: String, level: Int) {
-        self.id = id
-        self.index = index
-        self.text = text
-        self.level = level
-    }
-
-    convenience init(index: Int, text: String, level: Int) {
-        self.init(id: String(index), index: index, text: text, level: level)
-    }
-
-    func addChild(_ item: OutlineItem) {
-        if children != nil {
-            children?.append(item)
-        } else {
-            children = [item]
-        }
-    }
-
-    @discardableResult
-    func removeAllChildren() -> [OutlineItem] {
-        defer { children = nil }
-        return children ?? []
-    }
-}
-
 final class Tab: NSManagedObject, Identifiable {
     @NSManaged var created: Date
     @NSManaged var interactionState: Data?
