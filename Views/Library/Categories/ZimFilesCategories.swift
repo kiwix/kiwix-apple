@@ -25,7 +25,7 @@ struct ZimFilesCategories: View {
     @Default(.hasSeenCategories) private var hasSeenCategories
     private var categories: [Category]
     private let dismiss: (() -> Void)?
-
+    
     init(
         languageCode selectedLangCode: Binding<String>,
         dismiss: (() -> Void)?
@@ -44,32 +44,37 @@ struct ZimFilesCategories: View {
         selected = selectedCategory ?? categories.first ?? .wikipedia
         self.dismiss = dismiss
     }
-
+    
     var body: some View {
-        ZimFilesCategory(category: $selected, searchText: $searchText, selectedLanguage: $languageCode, dismiss: dismiss)
-            .modifier(ToolbarRoleBrowser())
-            .navigationTitle(MenuItem.categories.name)
-            .searchable(text: $searchText, prompt: LocalString.common_search)
-            .toolbar {
-                ToolbarItem(id: "picker", placement: .principal) {
-                    if searchText.isEmpty {
-                        Picker(LocalString.zim_file_category_title, selection: $selected) {
-                            ForEach(categories) {
-                                Text($0.name).tag($0)
-                                    .accessibilityIdentifier($0.name)
-                            }
+        ZimFilesCategory(
+            category: $selected,
+            searchText: $searchText,
+            selectedLanguage: $languageCode,
+            dismiss: dismiss
+        )
+        .modifier(ToolbarRoleBrowser())
+        .navigationTitle(MenuItem.categories.name)
+        .searchable(text: $searchText, prompt: LocalString.common_search)
+        .toolbar {
+            ToolbarItem(id: "picker", placement: .principal) {
+                if searchText.isEmpty {
+                    Picker(LocalString.zim_file_category_title, selection: $selected) {
+                        ForEach(categories) {
+                            Text($0.name).tag($0)
+                                .accessibilityIdentifier($0.name)
                         }
                     }
                 }
-            }.onAppear {
-                Task {
-                    await LibraryViewModel().start(isUserInitiated: false)
-                }
             }
-            .onDisappear {
-                hasSeenCategories = true
-                Defaults[.selectedCategory] = selected.id
+        }.onAppear {
+            Task {
+                await LibraryViewModel().start(isUserInitiated: false)
             }
+        }
+        .onDisappear {
+            hasSeenCategories = true
+            Defaults[.selectedCategory] = selected.id
+        }
     }
 }
 
@@ -104,7 +109,7 @@ struct ZimFilesCategory: View {
         )
         self.dismiss = dismiss
     }
-
+    
     var body: some View {
         Group {
             if results.isEmpty {
@@ -141,7 +146,7 @@ struct ZimFilesCategory: View {
     }
     
     private static let gridItem = GridItem(.adaptive(minimum: 250, maximum: 500), spacing: 12)
-
+    
     @MainActor
     static func buildPredicate(
         category: Category,
