@@ -111,6 +111,7 @@ struct DonationForm: View {
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
                 closeButton
+                    .accessibilityIdentifier("close_payment_button")
             }
         }
         .toolbarRole(.navigationStack)

@@ -29,16 +29,25 @@ final class LoadingUI_iPhone_Test: XCTestCase {
         Wait.inApp(app, forElement: categoriesButton)
         XCTAssertTrue(categoriesButton.isSelected)
         
-        app.buttons["New"].tap()
+        let newButton = app.buttons["New"]
+        Wait.inApp(app, forElement: newButton)
+        newButton.tap()
+        
         app.buttons["Downloads"].tap()
         app.buttons["Opened"].tap()
+        app.buttons["Hotspot"].tap()
         categoriesButton.tap()
         app.buttons["Done"].tap()
         
         XCTAssertFalse(app.buttons["Go Back"].isEnabled)
-        XCTAssertFalse(app.buttons["Go Forward"].isEnabled)
-        XCTAssertFalse(app.buttons["Share"].isEnabled)
+        XCTAssertFalse(app.buttons["Search in page"].isEnabled)
         XCTAssertFalse(app.buttons["List"].isEnabled)
+        XCTAssertTrue(app.buttons["More"].isEnabled)
+        
+        app.buttons["More"].firstMatch.tap()
+        
         XCTAssertFalse(app.buttons["Random Page"].isEnabled)
+        XCTAssertFalse(app.buttons["Share"].isEnabled)
+        XCTAssertTrue(app.buttons["Show Bookmarks"].isEnabled)
     }
 }

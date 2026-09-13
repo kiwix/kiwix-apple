@@ -15,6 +15,7 @@
 
 import XCTest
 
+@MainActor
 final class LoadingUI_macOS_Test: XCTestCase {
 
     func testSideBarItems() throws {
