@@ -70,18 +70,18 @@
 "common.export_file.alert.button.title" = "Export";
 
 "outline_button.outline.title" = "Outline";
-"outline_button.outline.help" = "Show article outline";
+"outline_button.outline.help" = "Show page outline";
 "outline_button.outline.empty.message" = "No outline available";
 
-"bookmark_button.show.help" = "Show the bookmark sheet, where the current article can be added or removed from bookmarks.";
+"bookmark_button.show.help" = "Show the bookmark sheet, where the current page can be added or removed from bookmarks.";
 
-"article_shortcut.main.button.title" = "Main Article";
-"article_shortcut.main.button.help" = "Show main article";
-"article_shortcut.random.button.title.mac" = "Random Article";
+"article_shortcut.main.button.title" = "Main Page";
+"article_shortcut.main.button.help" = "Show main page";
+"article_shortcut.random.button.title.mac" = "Random Page";
 "article_shortcut.random.button.title.ios" = "Random Page";
-"article_shortcut.random.button.help" = "Show random article";
+"article_shortcut.random.button.help" = "Show random page";
 
-"alert_handler.alert.failed.title" = "Unable to load the article requested.";
+"alert_handler.alert.failed.title" = "Unable to load the page requested.";
 
 "bookmark_context_menu.view.title" = "View";
 "bookmark_context_menu.remove.title" = "Remove";
@@ -160,12 +160,12 @@
 "zim_file.action.reveal_in_finder.title" = "Reveal in Finder";
 "zim_file.action.toggle_cellular" = "Download using cellular";
 "zim_file.action.unlink.title" = "Unlink";
-"zim_file.action.unlink.message" = "All bookmarked articles linked to this ZIM file will be deleted, but the original file will remain in place.";
+"zim_file.action.unlink.message" = "All bookmarked pages linked to this ZIM file will be deleted, but the original file will remain in place.";
 "zim_file.action.unlink.multi_title" = "Unlink %@ ZIM files";
-"zim_file.action.unlink.multi_message" = "All bookmarked articles linked to these %@ ZIM files will be deleted, but the original files will remain in place.";
+"zim_file.action.unlink.multi_message" = "All bookmarked pages linked to these %@ ZIM files will be deleted, but the original files will remain in place.";
 "zim_file.action.unlink.button.title" = "Unlink";
 "zim_file.action.delete.title" = "Delete";
-"zim_file.action.delete.message" = "The ZIM file and all bookmarked articles linked to this ZIM file will be deleted.";
+"zim_file.action.delete.message" = "The ZIM file and all bookmarked pages linked to this ZIM file will be deleted.";
 "zim_file.action.delete.button.title" = "Delete";
 "zim_file.action.download.title" = "Download";
 "zim_file.action.download.warning.title" = "Space Warning";
