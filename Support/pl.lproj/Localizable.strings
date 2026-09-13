@@ -49,7 +49,6 @@
 "flavor_tag.help.mini" = "dostępny jest tylko podzbiór tekstu, prawdopodobnie pierwsza sekcja";
 "library_refresh_time.last" = "Dopiero co";
 "library_refresh_time.never" = "Nigdy";
-"zim_file_cell.article_count.suffix" = "artykuły";
 "zim_file_missing_indicator.help" = "Brak pliku Zim.";
 // Fuzzy
 "library.zim_file_details.side_panel.message" = "Wybierz plik zim, aby zobaczyć szczegóły";
@@ -150,7 +149,6 @@
 "enum.external_link_loading_policy.always_load" = "Zawsze ładuj";
 "enum.external_link_loading_policy.never_load" = "Nigdy nie ładuj";
 "enum.flavor.max" = "maks";
-"enum.flavor.no_pic" = "bez zdjecia";
 "enum.flavor.mini" = "mini";
 "enum.library_language_sorting_model.a-z" = "A-Z";
 "enum.libray_tab_item.opened" = "Otwarte";

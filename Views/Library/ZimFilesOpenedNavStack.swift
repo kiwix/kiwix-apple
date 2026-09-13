@@ -53,7 +53,6 @@ struct ZimFilesOpenedNavStack: View {
                     NavigationLink(value: zimFile) {
                         ZimFileCell(
                             zimFile,
-                            prominent: .name,
                             isSelected: navPath.contains(where: { $0.fileID == zimFile.fileID })
                         )
                     }.accessibilityIdentifier(zimFile.name)

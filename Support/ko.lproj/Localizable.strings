@@ -86,7 +86,6 @@
 "flavor_tag.help.mini" = "텍스트의 일부, 아마도 첫 번째 부분만 이용 가능";
 "library_refresh_time.last" = "즉시";
 "library_refresh_time.never" = "없음";
-"zim_file_cell.article_count.suffix" = "문서";
 "zim_file_missing_indicator.help" = "Zim 파일이 없습니다.";
 "hotspot.action.start_hotspot.title" = "핫스팟 시작";
 "hotspot.action.stop_hotspot.title" = "핫스팟 중지";
@@ -153,7 +152,7 @@
 "zim_file.bool_info.require_service_workers" = "서비스 워커 필요";
 "zim_file.bool_info.zim_archive_integrity" = "ZIM 아카이브 무결성";
 "zim_file.counts.article_count" = "문서 수";
-"zim_file.counts.article.media_count" = "미디어 수";
+"zim_file.counts.media_count" = "미디어 수";
 "zim_file.detail.id.title" = "ID";
 "zim_file.download_task.action.title.cancel" = "취소";
 "zim_file.download_task.action.try_recover" = "복구 시도";
@@ -260,7 +259,6 @@
 "enum.external_link_loading_policy.always_load" = "무조건 불러오기";
 "enum.external_link_loading_policy.never_load" = "불러오지 않기";
 "enum.flavor.max" = "최대";
-"enum.flavor.no_pic" = "사진 없음";
 "enum.flavor.mini" = "최소";
 "enum.library_language_sorting_model.a-z" = "A-Z";
 "enum.library_language_sorting_model.by_count" = "개수";

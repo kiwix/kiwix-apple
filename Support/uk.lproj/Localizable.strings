@@ -64,7 +64,6 @@
 "flavor_tag.help.no_pic" = "більшість зображень було видалено";
 "library_refresh_time.last" = "Щойно";
 "library_refresh_time.never" = "Ніколи";
-"zim_file_cell.article_count.suffix" = "статей";
 "zim_file_missing_indicator.help" = "Файл Zim відсутній.";
 "hotspot.action.start_hotspot.title" = "Запустити точку доступу";
 "hotspot.action.stop_hotspot.title" = "Зупинити точку доступу";
@@ -110,7 +109,7 @@
 "zim_file.bool_info.videos" = "Відео";
 "zim_file.bool_info.details" = "Деталі";
 "zim_file.counts.article_count" = "Кількість статей";
-"zim_file.counts.article.media_count" = "Кількість мультимедіа";
+"zim_file.counts.media_count" = "Кількість мультимедіа";
 "zim_file.detail.id.title" = "ID";
 "zim_file.download_task.action.title.cancel" = "Скасувати";
 "zim_file.download_task.action.try_recover" = "Спробувати відновити";
@@ -203,7 +202,6 @@
 "enum.external_link_loading_policy.always_load" = "Завжди завантажувати";
 "enum.external_link_loading_policy.never_load" = "Ніколи не завантажувати";
 "enum.flavor.max" = "макс";
-"enum.flavor.no_pic" = "без фото";
 "enum.flavor.mini" = "міні";
 "enum.library_language_sorting_model.a-z" = "А-Я";
 "enum.library_language_sorting_model.by_count" = "За кількістю";

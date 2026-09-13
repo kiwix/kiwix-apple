@@ -83,7 +83,6 @@
 "flavor_tag.help.mini" = "sólo está disponible un subconjunto del texto, probablemente la primera sección";
 "library_refresh_time.last" = "Ahora mismo";
 "library_refresh_time.never" = "Nunca";
-"zim_file_cell.article_count.suffix" = "artículos";
 "zim_file_missing_indicator.help" = "Falta el archivo Zim.";
 "hotspot.action.start_hotspot.title" = "Iniciar servidor";
 "hotspot.action.stop_hotspot.title" = "Parar servidor";
@@ -141,7 +140,7 @@
 "zim_file.bool_info.require_service_workers" = "Requiere trabajadores de servicio";
 "zim_file.bool_info.zim_archive_integrity" = "Integridad del archivo ZIM";
 "zim_file.counts.article_count" = "Número de artículos";
-"zim_file.counts.article.media_count" = "Recuento de medios";
+"zim_file.counts.media_count" = "Recuento de medios";
 "zim_file.detail.id.title" = "ID";
 "zim_file.download_task.action.title.cancel" = "Cancelar";
 "zim_file.download_task.action.try_recover" = "Intentar recuperar";
@@ -240,7 +239,6 @@
 "enum.external_link_loading_policy.always_load" = "Cargar siempre";
 "enum.external_link_loading_policy.never_load" = "No cargar nunca";
 "enum.flavor.max" = "máximo";
-"enum.flavor.no_pic" = "sin imágen";
 "enum.flavor.mini" = "mini";
 "enum.library_language_sorting_model.a-z" = "A-Z";
 "enum.library_language_sorting_model.by_count" = "Por conteo";

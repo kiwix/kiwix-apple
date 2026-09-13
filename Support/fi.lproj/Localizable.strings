@@ -54,7 +54,6 @@
 "download_task_cell.status.paused" = "Pysäytetty";
 "library_refresh_time.last" = "Juuri nyt";
 "library_refresh_time.never" = "Ei koskaan";
-"zim_file_cell.article_count.suffix" = "artikkelia";
 "zim_file_missing_indicator.help" = "Zim-tiedosto puuttuu.";
 "library.zim_file_context.main_page.label" = "Etusivu";
 "library.zim_file_context.random.label" = "Satunnainen sivu";
@@ -87,7 +86,7 @@
 "zim_file.bool_info.videos" = "Videot";
 "zim_file.bool_info.details" = "Tiedot";
 "zim_file.counts.article_count" = "Artikkelien määrä";
-"zim_file.counts.article.media_count" = "Median määrä";
+"zim_file.counts.media_count" = "Median määrä";
 "zim_file.download_task.action.title.cancel" = "Peruuta";
 "zim_file.download_task.action.pause" = "Tauko";
 "zim_file.download_task.action.downloading" = "Ladataan...";

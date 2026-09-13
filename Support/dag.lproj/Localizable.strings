@@ -57,7 +57,6 @@
 "flavor_tag.help.mini" = "Sabbu ŋɔ bela koŋko nyɛ din be ni, di yi pa shɛli tuuli yaɣili";
 "library_refresh_time.last" = "Kulla saha ŋɔ";
 "library_refresh_time.never" = "Abada";
-"zim_file_cell.article_count.suffix" = "Lahabaya";
 "zim_file_missing_indicator.help" = "Zim fasara nyɛla din kani.";
 // Fuzzy
 "library.zim_file_details.side_panel.message" = "Piimi zim fasara n- nya bayana";
@@ -99,7 +98,7 @@
 "zim_file.bool_info.details" = "Bayana";
 "zim_file.bool_info.require_service_workers" = "Bɔrila saandi tum tumdiba";
 "zim_file.counts.article_count" = "Lahabali kalinli";
-"zim_file.counts.article.media_count" = "Pɔhim zuɣu kalinli";
+"zim_file.counts.media_count" = "Pɔhim zuɣu kalinli";
 "zim_file.download_task.action.title.cancel" = "Kpihim";
 "zim_file.download_task.action.try_recover" = "Wolisi labisi";
 "zim_file.download_task.action.failed" = "Pooi";
@@ -176,7 +175,6 @@
 "enum.external_link_loading_policy.always_load" = "Ʒilimi saha kam";
 "enum.external_link_loading_policy.never_load" = "Abada ni ʒili";
 "enum.flavor.max" = "Pam";
-"enum.flavor.no_pic" = "Anfooni kani";
 "enum.flavor.mini" = "Zaɣibilla";
 "enum.library_language_sorting_model.by_count" = "Diyi yan kali";
 "enum.libray_tab_item.opened" = "Yooi";

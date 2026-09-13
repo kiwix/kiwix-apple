@@ -83,7 +83,8 @@
 "flavor_tag.help.mini" = "Accessibility label for ZIM file results, explaining the different flavours of the same ZIM file (mini|max|nopic)";
 "library_refresh_time.last" = "Just Now";
 "library_refresh_time.never" = "Never";
-"zim_file_cell.article_count.suffix" = "Part of the ZIM file description, when we list ZIM files (as card results), eg: '246K articles', the word articles is added after the number";
+"zim_file_cell.page_count" = "Part of the ZIM file description, when we list ZIM files (as card results), eg: '246K articles', the parameter is the number to display";
+"zim_file_cell.media_count" = "Part of the ZIM file description, when we list ZIM files (as card results), eg: '242 media', the paremeter is the number to display";
 "zim_file_missing_indicator.help" = "Accessibility label for a warning (!) icon";
 "hotspot.action.start_hotspot.title" = "A button title to start the Kiwix Hotspot with the selected files";
 "hotspot.action.stop_hotspot.title" = "A button title to stop the Kiwix Hotspot";
@@ -149,8 +150,8 @@
 "zim_file.bool_info.details" = "ZIM file details title, displayed in 2 columns, eg: Details: no";
 "zim_file.bool_info.require_service_workers" = "ZIM file details title, displayed in 2 columns, eg: Requires Service Workers: yes";
 "zim_file.bool_info.zim_archive_integrity" = "ZIM file details title, displayed in 2 columns, eg: ZIM archive integrity: checked";
-"zim_file.counts.article_count" = "ZIM file details title, displayed in 2 columns, eg: Article Count:  8 799";
-"zim_file.counts.article.media_count" = "ZIM file details title, displayed in 2 columns, eg: Media Count: 1 154";
+"zim_file.counts.pages_count" = "ZIM file details title, displayed in 2 columns, eg: Pages count:  8 799";
+"zim_file.counts.media_count" = "ZIM file details title, displayed in 2 columns, eg: Media count: 1 154";
 "zim_file.detail.id.title" = "ZIM file details title, displayed in 2 columns, eg: ID: 11223345";
 "zim_file.download_task.action.title.cancel" = "Button title to cancel the ongoing download";
 "zim_file.download_task.action.try_recover" = "Button title in case of a download error";
@@ -259,7 +260,6 @@
 "enum.external_link_loading_policy.always_load" = "Settings picker option title: how external links should be treated";
 "enum.external_link_loading_policy.never_load" = "Settings picker option title: how external links should be treated";
 "enum.flavor.max" = "short, abreviated label displayed in the corner of zim file cards, describing the flavour of the file. The shorter the better.";
-"enum.flavor.no_pic" = "short, abreviated label displayed in the corner of zim file cards, describing the flavour of the file. The shorter the better.";
 "enum.flavor.mini" = "short, abreviated label displayed in the corner of zim file cards, describing the flavour of the file. The shorter the better.";
 "enum.library_language_sorting_model.a-z" = "Option title for picker to sort languages displayed alphabetically";
 "enum.library_language_sorting_model.by_count" = "Option title for picker to sort languages by ZIM files count";

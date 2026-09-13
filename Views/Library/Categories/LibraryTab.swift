@@ -20,6 +20,7 @@ import Defaults
 #if os(iOS)
 /// Tabbed library view on iOS & iPadOS
 struct LibraryTab: View {
+    @State private var searchText: String = ""
     @EnvironmentObject private var viewModel: LibraryViewModel
     @EnvironmentObject private var navigation: NavigationViewModel
     @Default(.libraryLanguageCodes) private var libraryLanguageCodes
@@ -50,7 +51,8 @@ struct LibraryTab: View {
                             NavigationLink {
                                 ZimFilesCategory(
                                     category: .constant(category),
-                                    languageCode: $selectedLang,
+                                    searchText: $searchText,
+                                    selectedLanguage: $selectedLang,
                                     dismiss: dismiss
                                 )
                                     .navigationTitle(category.name)
@@ -65,6 +67,7 @@ struct LibraryTab: View {
                                             }
                                         }
                                     }
+                                    .searchable(text: $searchText, prompt: LocalString.common_search)
                             } label: {
                                 HStack {
                                     Favicon(category: category).frame(height: 26)

@@ -65,7 +65,6 @@
 "flavor_tag.help.mini" = "Juzu'in rubutu ne kawai yaka samuwa, tayiyu da  farkon sashi";
 "library_refresh_time.last" = "Yanxu yanxu";
 "library_refresh_time.never" = "Ba a taɓa yin hakan ba";
-"zim_file_cell.article_count.suffix" = "Makalu";
 "zim_file_missing_indicator.help" = "Fayil ɗin Zim ya ɓace.";
 "hotspot.server_full_explanation" = "Don bincika waɗannan fayilolin ZIM akan wasu na'urori, tabbatar da cewa duk na'urorin suna kan hanyar sadarwar WiFi iri ɗaya ko kuma an haɗa su zuwa Keɓaɓɓen Hotspot.";
 // Fuzzy
@@ -108,7 +107,7 @@
 "zim_file.bool_info.details" = "Bayanai";
 "zim_file.bool_info.require_service_workers" = "Yana buƙatar Ma'aikatan Sabis";
 "zim_file.counts.article_count" = "Ƙididdigar labarin";
-"zim_file.counts.article.media_count" = "Ƙididdigar Mai jarida";
+"zim_file.counts.media_count" = "Ƙididdigar Mai jarida";
 "zim_file.detail.id.title" = "ID";
 "zim_file.download_task.action.title.cancel" = "Soke";
 "zim_file.download_task.action.try_recover" = "Yi ƙoƙarin farfadowa";
@@ -197,7 +196,6 @@
 "enum.external_link_loading_policy.always_load" = "Koyaushe Loda";
 "enum.external_link_loading_policy.never_load" = "Kar a taɓa Loda";
 "enum.flavor.max" = "max";
-"enum.flavor.no_pic" = "babu hoto";
 "enum.flavor.mini" = "ƙarami";
 "enum.library_language_sorting_model.a-z" = "A-Z";
 "enum.library_language_sorting_model.by_count" = "Ta hanyar lissafi";

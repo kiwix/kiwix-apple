@@ -51,7 +51,6 @@
 "flavor_tag.help.no_pic" = "lamet eo bet darn vrasañ ar skeudennoù";
 "library_refresh_time.last" = "Nevez zo";
 "library_refresh_time.never" = "James";
-"zim_file_cell.article_count.suffix" = "pennadoù";
 "zim_file_missing_indicator.help" = "Ar restr ZIM a vank.";
 "library.zim_file_context.main_page.label" = "Degemer";
 "library.zim_file_context.random.label" = "Pajenn dre zegouezh";
@@ -80,7 +79,7 @@
 "zim_file.bool_info.videos" = "Videoioù";
 "zim_file.bool_info.details" = "Munudoù";
 "zim_file.counts.article_count" = "Niver a bennadoù";
-"zim_file.counts.article.media_count" = "Niver a restroù media";
+"zim_file.counts.media_count" = "Niver a restroù media";
 "zim_file.detail.id.title" = "ID";
 "zim_file.download_task.action.title.cancel" = "Nullañ";
 "zim_file.download_task.action.failed" = "C’hwitet";
@@ -147,7 +146,6 @@
 "enum.category.other" = "Re all";
 "enum.external_link_loading_policy.always_ask" = "Goulenn bepred";
 "enum.flavor.max" = "brasañ";
-"enum.flavor.no_pic" = "skeud. ebet";
 "enum.flavor.mini" = "bihanañ";
 "enum.library_language_sorting_model.a-z" = "A-Z";
 "enum.libray_tab_item.opened" = "Digor";

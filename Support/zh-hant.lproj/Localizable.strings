@@ -86,7 +86,6 @@
 "flavor_tag.help.mini" = "僅有文字的子集合可用，有可能是第一段落";
 "library_refresh_time.last" = "現在";
 "library_refresh_time.never" = "永不";
-"zim_file_cell.article_count.suffix" = "條目";
 "zim_file_missing_indicator.help" = "遺失 Zim 檔案。";
 "hotspot.action.start_hotspot.title" = "啟動熱點";
 "hotspot.action.stop_hotspot.title" = "停止熱點";
@@ -153,7 +152,7 @@
 "zim_file.bool_info.require_service_workers" = "需要 service worker";
 "zim_file.bool_info.zim_archive_integrity" = "ZIM 存檔完整性";
 "zim_file.counts.article_count" = "條目總計";
-"zim_file.counts.article.media_count" = "多媒體總計";
+"zim_file.counts.media_count" = "多媒體總計";
 "zim_file.detail.id.title" = "ID";
 "zim_file.download_task.action.title.cancel" = "取消";
 "zim_file.download_task.action.try_recover" = "嘗試恢復";
@@ -259,7 +258,6 @@
 "enum.external_link_loading_policy.always_load" = "永遠載入";
 "enum.external_link_loading_policy.never_load" = "永不載入";
 "enum.flavor.max" = "最大";
-"enum.flavor.no_pic" = "沒有圖片";
 "enum.flavor.mini" = "最小";
 "enum.library_language_sorting_model.a-z" = "A 到 Z";
 "enum.library_language_sorting_model.by_count" = "依總計";

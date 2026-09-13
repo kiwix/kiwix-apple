@@ -64,7 +64,6 @@
 "flavor_tag.help.mini" = "është i gatshëm vetëm një nëngrup i tekstit, me gjasa ndarja e parë";
 "library_refresh_time.last" = "Mu Tani";
 "library_refresh_time.never" = "Kurrë";
-"zim_file_cell.article_count.suffix" = "artikuj";
 "zim_file_missing_indicator.help" = "Mungon kartelë ZIM.";
 "library.zim_file_details.side_panel.message" = "Që të shihni hollësi, përzgjidhni një kartelë ZIM";
 "library.zim_file_context.main_page.label" = "Faqja Kryesore";
@@ -106,7 +105,7 @@
 "zim_file.bool_info.details" = "Hollësi";
 "zim_file.bool_info.require_service_workers" = "Lyp <em>Service Workers</em>";
 "zim_file.counts.article_count" = "Numër Artikujsh";
-"zim_file.counts.article.media_count" = "Numër Objektesh Media";
+"zim_file.counts.media_count" = "Numër Objektesh Media";
 "zim_file.detail.id.title" = "ID";
 "zim_file.download_task.action.title.cancel" = "Anuloje";
 "zim_file.download_task.action.try_recover" = "Provo ta Rikthesh";
@@ -195,7 +194,6 @@
 "enum.external_link_loading_policy.always_load" = "Shkarkoje Përherë";
 "enum.external_link_loading_policy.never_load" = "Mos e Ngarko Kurrë";
 "enum.flavor.max" = "maks.";
-"enum.flavor.no_pic" = "pa foto";
 "enum.flavor.mini" = "mini";
 "enum.library_language_sorting_model.a-z" = "A-Z";
 "enum.library_language_sorting_model.by_count" = "Sipas Numrash";

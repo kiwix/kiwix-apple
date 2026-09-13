@@ -280,6 +280,14 @@ final class ZimFile: NSManagedObject {
             return Locale.current.localizedString(forIdentifier: String(code))
         }.joined(separator: ",")
     }
+    
+    var pageCountFormatted: String {
+        articleCount.formatted(.number.notation(.compactName).locale(.current))
+    }
+    
+    var mediaCountFormatted: String {
+        mediaCount.formatted(.number.notation(.compactName).locale(.current))
+    }
 
     enum Predicate {
         static func isDownloaded() -> NSPredicate {

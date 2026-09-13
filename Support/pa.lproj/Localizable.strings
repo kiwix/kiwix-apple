@@ -43,7 +43,6 @@
 "download_task_cell.status.paused" = "ਰੋਕਿਆ ਗਿਆ";
 "library_refresh_time.last" = "ਹੁਣੇ ਹੀ";
 "library_refresh_time.never" = "ਕਦੇ ਨਹੀਂ";
-"zim_file_cell.article_count.suffix" = "ਲੇਖ";
 "library.zim_file_context.main_page.label" = "ਮੁੱਖ ਸਫ਼ਾ";
 "library.zim_file_context.random.label" = "ਬੇਤਰਤੀਬ ਸਫ਼ਾ";
 "library.zim_file_context.copy_url" = "URL ਨਕਲ ਕਰੋ";
@@ -75,7 +74,7 @@
 "zim_file.bool_info.details" = "ਵੇਰਵੇ";
 "zim_file.bool_info.require_service_workers" = "ਸੇਵਾ ਕਰਮਚਾਰੀਆਂ ਦੀ ਲੋੜ ਐ";
 "zim_file.counts.article_count" = "ਲੇਖਾਂ ਦੀ ਗਿਣਤੀ";
-"zim_file.counts.article.media_count" = "ਮੀਡੀਆ ਗਿਣਤੀ";
+"zim_file.counts.media_count" = "ਮੀਡੀਆ ਗਿਣਤੀ";
 "zim_file.detail.id.title" = "ਸ਼ਨਾਖ਼ਤ";
 "zim_file.download_task.action.title.cancel" = "ਰੱਦ ਕਰੋ";
 "zim_file.download_task.action.try_recover" = "ਮੁੜ ਪ੍ਰਾਪਤ ਕਰਨ ਦੀ ਕੋਸ਼ਿਸ਼ ਕਰੋ";
@@ -136,7 +135,6 @@
 "enum.category.other" = "ਹੋਰ";
 "enum.external_link_loading_policy.always_ask" = "ਹਮੇਸ਼ਾ ਪੁੱਛੋ";
 "enum.flavor.max" = "ਵੱਧ ਤੋਂ ਵੱਧ";
-"enum.flavor.no_pic" = "ਕੋਈ ਤਸਵੀਰ ਨਹੀਂ";
 "enum.flavor.mini" = "ਛੋਟਾ";
 "enum.library_language_sorting_model.by_count" = "ਗਿਣਤੀ ਨਾਲ";
 "enum.libray_tab_item.opened" = "ਖੋਲ੍ਹਿਆ ਗਿਆ";

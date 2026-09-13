@@ -65,7 +65,6 @@
 "flavor_tag.help.mini" = "文章の一部のみ(多くの場合最初の段落)が利用可能です。";
 "library_refresh_time.last" = "今すぐ";
 "library_refresh_time.never" = "なし";
-"zim_file_cell.article_count.suffix" = "記事";
 "zim_file_missing_indicator.help" = "ZIMファイルがありません。";
 "library.zim_file_details.side_panel.message" = "詳細を参照したいZIMファイルを選択";
 "library.zim_file_context.main_page.label" = "メインページ";
@@ -107,7 +106,7 @@
 "zim_file.bool_info.details" = "詳細";
 "zim_file.bool_info.require_service_workers" = "サービスワーカーを必要とする";
 "zim_file.counts.article_count" = "記事数";
-"zim_file.counts.article.media_count" = "メディア数";
+"zim_file.counts.media_count" = "メディア数";
 "zim_file.detail.id.title" = "ID";
 "zim_file.download_task.action.title.cancel" = "キャンセル";
 "zim_file.download_task.action.try_recover" = "再度試す";

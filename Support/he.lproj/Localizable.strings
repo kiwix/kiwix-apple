@@ -64,7 +64,6 @@
 "flavor_tag.help.mini" = "רק חלק מהטקסט זמין, כנראה הפרק הראשון";
 "library_refresh_time.last" = "זה עתה";
 "library_refresh_time.never" = "מעולם לא";
-"zim_file_cell.article_count.suffix" = "ערכים";
 "zim_file_missing_indicator.help" = "קובץ ה־zim חסר.";
 "hotspot.action.start_hotspot.title" = "התחלת נקודה חמה";
 "hotspot.action.stop_hotspot.title" = "עצירת נקודה חמה";
@@ -114,7 +113,7 @@
 "zim_file.bool_info.details" = "פרטים";
 "zim_file.bool_info.require_service_workers" = "נדרשים Service Workers";
 "zim_file.counts.article_count" = "מונה הערכים";
-"zim_file.counts.article.media_count" = "מונה המדיה";
+"zim_file.counts.media_count" = "מונה המדיה";
 "zim_file.detail.id.title" = "מזהה";
 "zim_file.download_task.action.title.cancel" = "ביטול";
 "zim_file.download_task.action.try_recover" = "לנסות לשחזר";
@@ -211,7 +210,6 @@
 "enum.external_link_loading_policy.always_load" = "תמיד לטעון";
 "enum.external_link_loading_policy.never_load" = "לעולם לא לטעון";
 "enum.flavor.max" = "לכל היותר";
-"enum.flavor.no_pic" = "אין תמונה";
 "enum.flavor.mini" = "מיני";
 "enum.library_language_sorting_model.a-z" = "א–ת";
 "enum.library_language_sorting_model.by_count" = "לפי ספירה";

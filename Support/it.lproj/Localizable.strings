@@ -54,7 +54,6 @@
 "flavor_tag.help.mini" = "è disponibile solo una parte del testo, probabilmente la prima sezione";
 "library_refresh_time.last" = "Proprio adesso";
 "library_refresh_time.never" = "Mai";
-"zim_file_cell.article_count.suffix" = "voci";
 "zim_file_missing_indicator.help" = "Manca il file Zim.";
 "hotspot.action.start_hotspot.title" = "Avvia hotspot";
 "hotspot.action.stop_hotspot.title" = "Arresta hotspot";
@@ -152,7 +151,6 @@
 "enum.category.wiktionary" = "Wikizionario";
 "enum.category.vikidia" = "Vikidia";
 "enum.external_link_loading_policy.never_load" = "Non caricare mai";
-"enum.flavor.no_pic" = "nessuna foto";
 "enum.flavor.mini" = "mini";
 "enum.library_language_sorting_model.a-z" = "A-Z";
 "enum.libray_tab_item.opened" = "Aperto";
