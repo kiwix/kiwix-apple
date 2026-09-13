@@ -80,7 +80,8 @@ private final class ViewModel: ObservableObject {
     private static func buildPredicate(searchText: String, languageCodes: [String]) -> NSPredicate {
         var predicates = [
             NSPredicate(format: "languageCode IN %@", languageCodes),
-            NSPredicate(format: "requiresServiceWorkers == false")
+            NSPredicate(format: "requiresServiceWorkers == false"),
+            ZimFile.Predicate.notDownloaded()
         ]
         if let aMonthAgo = Calendar.current.date(byAdding: .month, value: -3, to: Date()) {
             predicates.append(NSPredicate(format: "created > %@", aMonthAgo as CVarArg))

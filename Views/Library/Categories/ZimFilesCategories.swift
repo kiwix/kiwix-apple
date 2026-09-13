@@ -159,6 +159,7 @@ struct ZimFilesCategory: View {
         if searchText.isEmpty {
             predicates.append(NSPredicate(format: "category == %@", category.rawValue))
         }
+        predicates.append(ZimFile.Predicate.notDownloaded())
         predicates.append(langPredicate)
         predicates.append(NSPredicate(format: "requiresServiceWorkers == false"))
         if !searchText.isEmpty {
