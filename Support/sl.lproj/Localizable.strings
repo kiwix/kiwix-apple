@@ -48,14 +48,21 @@
 "common.export_file.alert.description" = "Ali želite izvoziti datoteko %@?";
 "common.export_file.alert.button.title" = "Izvoz";
 "outline_button.outline.title" = "Oris";
+// Fuzzy
 "outline_button.outline.help" = "Prikaži oris članka";
 "outline_button.outline.empty.message" = "Oris ni na voljo";
+// Fuzzy
 "bookmark_button.show.help" = "Prikaži list z zaznamki, kjer je mogoče trenutni članek dodati ali odstraniti iz zaznamkov.";
+// Fuzzy
 "article_shortcut.main.button.title" = "Glavni članek";
+// Fuzzy
 "article_shortcut.main.button.help" = "Prikaži glavni članek";
+// Fuzzy
 "article_shortcut.random.button.title.mac" = "Naključni članek";
 "article_shortcut.random.button.title.ios" = "Naključna stran";
+// Fuzzy
 "article_shortcut.random.button.help" = "Prikaži naključni članek";
+// Fuzzy
 "alert_handler.alert.failed.title" = "Zahtevanega članka ni mogoče naložiti.";
 "bookmark_context_menu.view.title" = "Ogled";
 "bookmark_context_menu.remove.title" = "Odstrani";
@@ -118,11 +125,14 @@
 "zim_file.action.reveal_in_finder.title" = "Razkrij v Finderju";
 "zim_file.action.toggle_cellular" = "Mobilni prenos";
 "zim_file.action.unlink.title" = "Odstrani povezavo";
+// Fuzzy
 "zim_file.action.unlink.message" = "Vsi označeni članki, povezani s to datoteko ZIM, bodo izbrisani, vendar bo izvorna datoteka ostala na mestu.";
 "zim_file.action.unlink.multi_title" = "Prekini povezavo z datotekami %@ ZIM";
+// Fuzzy
 "zim_file.action.unlink.multi_message" = "Vsi zaznamovani članki, povezani s temi %@ datotekami ZIM, bodo izbrisani, vendar bodo izvorne datoteke ostale shranjene.";
 "zim_file.action.unlink.button.title" = "Odstrani povezavo";
 "zim_file.action.delete.title" = "Izbriši";
+// Fuzzy
 "zim_file.action.delete.message" = "Datoteka ZIM in vsi zaznamovani članki, povezani s to datoteko ZIM, bodo odstranjeni.";
 "zim_file.action.delete.button.title" = "Izbriši";
 "zim_file.action.download.title" = "Prenos";
@@ -143,7 +153,6 @@
 "zim_file.bool_info.details" = "Podrobnosti";
 "zim_file.bool_info.require_service_workers" = "Potrebuje Service Workers";
 "zim_file.bool_info.zim_archive_integrity" = "Integriteta arhiva ZIM";
-"zim_file.counts.article_count" = "Število člankov";
 "zim_file.counts.media_count" = "Število medijev";
 "zim_file.detail.id.title" = "ID";
 "zim_file.download_task.action.title.cancel" = "Prekliči";

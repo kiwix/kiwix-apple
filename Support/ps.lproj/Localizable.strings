@@ -39,12 +39,17 @@
 "common.export_file.alert.description" = "ايا تاسو %@ دوتنه بهرلېږل غواړئ؟";
 "common.export_file.alert.button.title" = "بهرلېږل";
 "outline_button.outline.title" = "لنډيز";
+// Fuzzy
 "outline_button.outline.help" = "د ليکنې لنډيز ښودل";
 "outline_button.outline.empty.message" = "هېڅ لنډيز د لاسرسي وړ نه دی";
+// Fuzzy
 "article_shortcut.main.button.title" = "اره ليکنه";
+// Fuzzy
 "article_shortcut.main.button.help" = "اره ليکنه ښودل";
+// Fuzzy
 "article_shortcut.random.button.title.mac" = "ناټاکلې ليکنه";
 "article_shortcut.random.button.title.ios" = "ناټاکلی مخ";
+// Fuzzy
 "article_shortcut.random.button.help" = "نورې ناڅاپي ليکنې";
 "bookmark_context_menu.view.title" = "کتل";
 "bookmark_context_menu.remove.title" = "لرې‌کول";

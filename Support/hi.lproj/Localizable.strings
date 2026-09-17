@@ -19,6 +19,7 @@
 "common.tab.list.close" = "टैब बंद करें";
 "common.tab.menu.library" = "पुस्तकालय";
 "common.tab.menu.settings" = "सेटिंग्स";
+"article_shortcut.main.button.title" = "मुख्य पृष्ठ";
 "bookmark_context_menu.view.title" = "देखें";
 "bookmark_context_menu.remove.title" = "हटाएँ";
 "external_link_handler.alert.title" = "बाहरी कड़ियाँ";

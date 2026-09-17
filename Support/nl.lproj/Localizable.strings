@@ -55,8 +55,8 @@
 "outline_button.outline.help" = "Pagina-overzicht weergeven";
 "outline_button.outline.empty.message" = "Geen overzicht beschikbaar";
 "bookmark_button.show.help" = "Het bladwijzerblad weergeven, waar de huidige pagina aan de bladwijzers kan worden toegevoegd of eruit kan worden verwijderd.";
-"article_shortcut.main.button.title" = "Hoofdartikel";
-"article_shortcut.main.button.help" = "Hoofdartikel weergeven";
+"article_shortcut.main.button.title" = "Hoofdpagina";
+"article_shortcut.main.button.help" = "Hoofdpagina weergeven";
 "article_shortcut.random.button.title.mac" = "Willekeurige pagina";
 "article_shortcut.random.button.title.ios" = "Willekeurige pagina";
 "article_shortcut.random.button.help" = "Willekeurige pagina weergeven";
@@ -83,6 +83,8 @@
 "flavor_tag.help.mini" = "slechts een deel van de tekst is beschikbaar, waarschijnlijk het eerste gedeelte";
 "library_refresh_time.last" = "Zojuist";
 "library_refresh_time.never" = "Nooit";
+"zim_file_cell.page_count" = "%@ pagina's";
+"zim_file_cell.media_count" = "%@ media";
 "zim_file_missing_indicator.help" = "Zim-bestand ontbreekt.";
 "hotspot.action.start_hotspot.title" = "Hotspot opstarten";
 "hotspot.action.stop_hotspot.title" = "Hotspot stoppen";
@@ -148,7 +150,7 @@
 "zim_file.bool_info.details" = "Details";
 "zim_file.bool_info.require_service_workers" = "Vereist ‘service workers’";
 "zim_file.bool_info.zim_archive_integrity" = "Integriteit van het ZIM-archief";
-"zim_file.counts.article_count" = "Aantal pagina's";
+"zim_file.counts.pages_count" = "Aantal pagina's";
 "zim_file.counts.media_count" = "Aantal media";
 "zim_file.detail.id.title" = "ID";
 "zim_file.download_task.action.title.cancel" = "Annuleren";

@@ -49,14 +49,21 @@
 "common.export_file.alert.description" = "Vil du eksportere filen %@?";
 "common.export_file.alert.button.title" = "Eksportér";
 "outline_button.outline.title" = "Oversigt";
+// Fuzzy
 "outline_button.outline.help" = "Vis artikeloversigt";
 "outline_button.outline.empty.message" = "Ingen oversigt tilgængelig";
+// Fuzzy
 "bookmark_button.show.help" = "Vis bogmærkearket, hvor den aktuelle artikel kan tilføjes eller fjernes fra bogmærker.";
+// Fuzzy
 "article_shortcut.main.button.title" = "Hovedartikel";
+// Fuzzy
 "article_shortcut.main.button.help" = "Vis hovedartikel";
+// Fuzzy
 "article_shortcut.random.button.title.mac" = "Tilfældig artikel";
 "article_shortcut.random.button.title.ios" = "Tilfældig side";
+// Fuzzy
 "article_shortcut.random.button.help" = "Vis tilfældig artikel";
+// Fuzzy
 "alert_handler.alert.failed.title" = "Den ønskede artikel kunne ikke indlæses.";
 "bookmark_context_menu.view.title" = "Vis";
 "bookmark_context_menu.remove.title" = "Fjern";
@@ -110,11 +117,14 @@
 "zim_file.action.reveal_in_finder.title" = "Vis i Finder";
 "zim_file.action.toggle_cellular" = "Download via mobildata";
 "zim_file.action.unlink.title" = "Fjern link";
+// Fuzzy
 "zim_file.action.unlink.message" = "Alle bogmærkede artikler, der er linket til denne ZIM-fil, vil blive slettet, men den originale fil forbliver på plads.";
 "zim_file.action.unlink.multi_title" = "Fjern linket til %@ ZIM-filer";
+// Fuzzy
 "zim_file.action.unlink.multi_message" = "Alle bogmærkede artikler, der er linket til disse %@ ZIM-filer, vil blive slettet, men de originale filer vil forblive på deres plads.";
 "zim_file.action.unlink.button.title" = "Fjern link";
 "zim_file.action.delete.title" = "Slet";
+// Fuzzy
 "zim_file.action.delete.message" = "ZIM-filen og alle bogmærkede artikler, der er linket til denne ZIM-fil, vil blive slettet.";
 "zim_file.action.delete.button.title" = "Slet";
 "zim_file.action.download.title" = "Download";
@@ -135,7 +145,6 @@
 "zim_file.bool_info.details" = "Detaljer";
 "zim_file.bool_info.require_service_workers" = "Kræver servicemedarbejdere";
 "zim_file.bool_info.zim_archive_integrity" = "ZIM-arkivintegritet";
-"zim_file.counts.article_count" = "Antal Artikler";
 "zim_file.counts.media_count" = "Antal Medier";
 "zim_file.detail.id.title" = "ID";
 "zim_file.download_task.action.title.cancel" = "Fortryd";

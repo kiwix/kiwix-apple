@@ -39,9 +39,12 @@
 "common.export_file.alert.description" = "Você deseja exportar o arquivo %@?";
 "common.export_file.alert.button.title" = "Exportar";
 "outline_button.outline.title" = "Contorno";
+// Fuzzy
 "article_shortcut.main.button.title" = "Artigo Principal";
+// Fuzzy
 "article_shortcut.random.button.title.mac" = "Artigo Aleatório";
 "article_shortcut.random.button.title.ios" = "Página Aleatória";
+// Fuzzy
 "article_shortcut.random.button.help" = "Mostrar um artigo aleatório";
 "bookmark_context_menu.view.title" = "Visualizar";
 "bookmark_context_menu.remove.title" = "Remover";

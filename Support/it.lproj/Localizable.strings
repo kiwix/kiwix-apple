@@ -36,10 +36,13 @@
 "common.tab.list.close" = "Chiudi scheda";
 "common.tab.menu.library" = "Libreria";
 "common.tab.menu.settings" = "Impostazioni";
-"bookmark_button.show.help" = "Mostra il foglio dei segnalibri, dove la voce attuale può essere aggiunta o rimossa dai segnalibri.";
+"bookmark_button.show.help" = "Mostra il foglio dei segnalibri, dove la pagina attuale può essere aggiunta o rimossa dai segnalibri.";
+"article_shortcut.main.button.title" = "Pagina principale";
+"article_shortcut.main.button.help" = "Mostra la pagina principale";
+"article_shortcut.random.button.title.mac" = "Una pagina a caso";
 "article_shortcut.random.button.title.ios" = "Una pagina a caso";
-"article_shortcut.random.button.help" = "Una voce a caso";
-"alert_handler.alert.failed.title" = "Impossibile caricare la voce richiesta.";
+"article_shortcut.random.button.help" = "Mostra una pagina a caso";
+"alert_handler.alert.failed.title" = "Impossibile caricare la pagina richiesta.";
 "bookmark_context_menu.view.title" = "Visualizza";
 "external_link_handler.alert.title" = "Collegamento esterno";
 "file_import.alert.no_open.message" = "%@ non può essere aperto.";
@@ -54,6 +57,7 @@
 "flavor_tag.help.mini" = "è disponibile solo una parte del testo, probabilmente la prima sezione";
 "library_refresh_time.last" = "Proprio adesso";
 "library_refresh_time.never" = "Mai";
+"zim_file_cell.page_count" = "%@ pagine";
 "zim_file_missing_indicator.help" = "Manca il file Zim.";
 "hotspot.action.start_hotspot.title" = "Avvia hotspot";
 "hotspot.action.stop_hotspot.title" = "Arresta hotspot";

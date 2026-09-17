@@ -38,15 +38,21 @@
 "common.tab.menu.library" = "Laburare";
 "common.tab.menu.settings" = "Saituttuka";
 "outline_button.outline.title" = "Bayani";
+// Fuzzy
 "outline_button.outline.help" = "Nuna jigon labarin";
 "outline_button.outline.empty.message" = "Babu wani tsari da ke akwai";
 // Fuzzy
 "bookmark_button.show.help" = "Nuna alamun shafi. Dogon danna don alamar shafi ko cire alamar labarin na yanzu.";
+// Fuzzy
 "article_shortcut.main.button.title" = "Babban Labari";
+// Fuzzy
 "article_shortcut.main.button.help" = "Nuna babban labarin";
+// Fuzzy
 "article_shortcut.random.button.title.mac" = "Bazuwar Labari";
 "article_shortcut.random.button.title.ios" = "Shafin da ba a sani ba";
+// Fuzzy
 "article_shortcut.random.button.help" = "Ƙarin labarai na bazuwar";
+// Fuzzy
 "alert_handler.alert.failed.title" = "Ba za a iya ɗora labarin da aka nema ba.";
 "bookmark_context_menu.view.title" = "Duba";
 "bookmark_context_menu.remove.title" = "Cirewa";
@@ -88,9 +94,11 @@
 "zim_file.action.reveal_in_finder.title" = "Bayyana a manemin";
 "zim_file.action.toggle_cellular" = "Zazzagewa ta amfani da salon salula";
 "zim_file.action.unlink.title" = "Cire mahada";
+// Fuzzy
 "zim_file.action.unlink.message" = "Duk labaran da aka yiwa alama masu alaƙa da wannan fayil ɗin zim za a share su, amma ainihin fayil ɗin zai ci gaba da kasancewa a wurin.";
 "zim_file.action.unlink.button.title" = "Cire mahada";
 "zim_file.action.delete.title" = "Goge";
+// Fuzzy
 "zim_file.action.delete.message" = "Za a share fayil ɗin zim da duk labaran da aka yi wa laƙabi da ke da alaƙa da wannan fayil ɗin Zim.";
 "zim_file.action.delete.button.title" = "Goge";
 "zim_file.action.download.title" = "Saukewa";
@@ -106,7 +114,6 @@
 "zim_file.bool_info.videos" = "Bidiyo";
 "zim_file.bool_info.details" = "Bayanai";
 "zim_file.bool_info.require_service_workers" = "Yana buƙatar Ma'aikatan Sabis";
-"zim_file.counts.article_count" = "Ƙididdigar labarin";
 "zim_file.counts.media_count" = "Ƙididdigar Mai jarida";
 "zim_file.detail.id.title" = "ID";
 "zim_file.download_task.action.title.cancel" = "Soke";

@@ -41,12 +41,12 @@
 "common.export_file.alert.title" = "Fichier exportéieren";
 "common.export_file.alert.description" = "Wëllt Dir de Fichier %@ exportéieren?";
 "common.export_file.alert.button.title" = "Exportéieren";
-"article_shortcut.main.button.title" = "Haaptartikel";
-"article_shortcut.main.button.help" = "Haaptartikel weisen";
-"article_shortcut.random.button.title.mac" = "Zoufällegen Artikel";
+"article_shortcut.main.button.title" = "Haaptsäit";
+"article_shortcut.main.button.help" = "Haaptsäit weisen";
+"article_shortcut.random.button.title.mac" = "Zoufälleg Säit";
 "article_shortcut.random.button.title.ios" = "Zoufälleg Säit";
-"article_shortcut.random.button.help" = "Zoufällegen Artikel weisen";
-"alert_handler.alert.failed.title" = "Den ugefroten Artikel konnt net geluede ginn.";
+"article_shortcut.random.button.help" = "Zoufälleg Säit weisen";
+"alert_handler.alert.failed.title" = "Déi ugefrote Säit konnt net geluede ginn.";
 "bookmark_context_menu.view.title" = "Weisen";
 "bookmark_context_menu.remove.title" = "Ewechhuelen";
 "external_link_handler.alert.title" = "Externe Link";
@@ -62,6 +62,8 @@
 "flavor_tag.help.mini" = "nëmmen een Deel vum Text ass verfügbar, warscheinlech den éischten Abschnitt";
 "library_refresh_time.last" = "Elo just";
 "library_refresh_time.never" = "Ni";
+"zim_file_cell.page_count" = "%@ Säiten";
+"zim_file_cell.media_count" = "%@ Medien";
 "hotspot.action.start_hotspot.title" = "Hotspot aktivéieren";
 "hotspot.action.stop_hotspot.title" = "Hotspot desaktivéieren";
 "hotspot.error.port_already_used_by_another_app_title" = "Den Hotspot kann net aktivéiert ginn, well de Port %@ grad benotzt gëtt.";
@@ -99,7 +101,6 @@
 "zim_file.bool_info.pictures" = "Biller";
 "zim_file.bool_info.videos" = "Videoen";
 "zim_file.bool_info.details" = "Detailer";
-"zim_file.counts.article_count" = "Artikelzuel";
 "zim_file.counts.media_count" = "Medienzuel";
 "zim_file.detail.id.title" = "ID";
 "zim_file.download_task.action.title.cancel" = "Ofbriechen";

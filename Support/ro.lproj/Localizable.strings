@@ -36,14 +36,21 @@
 "common.export_file.alert.description" = "Doriți să exportați fișierul %@?";
 "common.export_file.alert.button.title" = "Exportă";
 "outline_button.outline.title" = "Descriere";
+// Fuzzy
 "outline_button.outline.help" = "Afișează descrierea articolului";
 "outline_button.outline.empty.message" = "Nu există descriere disponibilă";
+// Fuzzy
 "bookmark_button.show.help" = "Afișați fișa semnelor de carte, unde articolul curent poate fi adăugat sau eliminat din semne de carte.";
+// Fuzzy
 "article_shortcut.main.button.title" = "Articolul Principal";
+// Fuzzy
 "article_shortcut.main.button.help" = "Afișează articolul principal";
+// Fuzzy
 "article_shortcut.random.button.title.mac" = "Articol Aleatoriu";
 "article_shortcut.random.button.title.ios" = "Pagina Aleatorie";
+// Fuzzy
 "article_shortcut.random.button.help" = "Arată articolul aleatoriu";
+// Fuzzy
 "alert_handler.alert.failed.title" = "Nu se poate încărca articolul solicitat.";
 "bookmark_context_menu.view.title" = "Vizualizare";
 "bookmark_context_menu.remove.title" = "Elimină";
@@ -84,9 +91,11 @@
 "zim_file.action.reveal_in_finder.title" = "Afișează în Finder";
 "zim_file.action.toggle_cellular" = "Descărcați folosind telefonul mobil";
 "zim_file.action.unlink.title" = "Deconectează";
+// Fuzzy
 "zim_file.action.unlink.message" = "Toate articolele marcate legate de acest fișier ZIM vor fi șterse, dar fișierul original va rămâne pe loc.";
 "zim_file.action.unlink.button.title" = "Deconectare";
 "zim_file.action.delete.title" = "Șterge";
+// Fuzzy
 "zim_file.action.delete.message" = "Fișierul ZIM și toate articolele marcate legate de acest fișier ZIM vor fi șterse.";
 "zim_file.action.delete.button.title" = "Șterge";
 "zim_file.action.download.title" = "Descărcare";
@@ -102,7 +111,6 @@
 "zim_file.bool_info.videos" = "Videouri";
 "zim_file.bool_info.details" = "Detalii";
 "zim_file.bool_info.require_service_workers" = "Necesită Lucrători de Serviciu";
-"zim_file.counts.article_count" = "Număr de Articole";
 "zim_file.counts.media_count" = "Numărul Media";
 "zim_file.detail.id.title" = "ID";
 "zim_file.download_task.action.title.cancel" = "Anulare";

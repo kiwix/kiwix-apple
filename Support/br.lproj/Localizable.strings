@@ -33,11 +33,16 @@
 "common.export_file.alert.title" = "Ezporzhiañ ar restr";
 "common.export_file.alert.description" = "Fellout a ra deoc'h ezporzhiañ ar restr %@?";
 "common.export_file.alert.button.title" = "Ezporzhiañ";
+// Fuzzy
 "article_shortcut.main.button.title" = "Pennad pennañ";
+// Fuzzy
 "article_shortcut.main.button.help" = "Diskouez ar pennad pennañ";
+// Fuzzy
 "article_shortcut.random.button.title.mac" = "Pennad dre zegouezh";
 "article_shortcut.random.button.title.ios" = "Pajenn dre zegouezh";
+// Fuzzy
 "article_shortcut.random.button.help" = "Diskouez ur pennad dre zegouezh";
+// Fuzzy
 "alert_handler.alert.failed.title" = "N’haller ket kargañ ar pennad goulennet.";
 "bookmark_context_menu.view.title" = "Gwelet";
 "bookmark_context_menu.remove.title" = "Dilemel";
@@ -78,7 +83,6 @@
 "zim_file.bool_info.pictures" = "Skeudennoù";
 "zim_file.bool_info.videos" = "Videoioù";
 "zim_file.bool_info.details" = "Munudoù";
-"zim_file.counts.article_count" = "Niver a bennadoù";
 "zim_file.counts.media_count" = "Niver a restroù media";
 "zim_file.detail.id.title" = "ID";
 "zim_file.download_task.action.title.cancel" = "Nullañ";
