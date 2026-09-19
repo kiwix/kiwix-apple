@@ -167,9 +167,20 @@ enum Flavor: String, CustomStringConvertible {
         case .max:
             return LocalString.enum_flavor_max
         case .noPic:
-            return "" // not in use anymore
+            return LocalString.enum_flavor_no_pic
         case .mini:
             return LocalString.enum_flavor_mini
+        }
+    }
+    
+    var help: String {
+        switch self {
+        case .max:
+            return LocalString.flavor_tag_help_max
+        case .noPic:
+            return LocalString.flavor_tag_help_no_pic
+        case .mini:
+            return LocalString.flavor_tag_help_mini
         }
     }
 }

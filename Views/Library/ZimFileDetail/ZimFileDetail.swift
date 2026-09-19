@@ -15,9 +15,10 @@
 
 import Combine
 import CoreData
+import Defaults
 import SwiftUI
 
-import Defaults
+// swiftlint:disable file_length
 
 // Details of a one single ZIM file
 // swiftlint:disable:next type_body_length
@@ -50,10 +51,10 @@ struct ZimFileDetail: View {
                 Text(zimFile.fileDescription).lineLimit(nil)
             }.collapsible(false)
             Section(LocalString.zim_file_list_actions_text) { actions }.collapsible(false)
+            sectionContentMacOS()
             Section(LocalString.zim_file_list_info_text) {
-                basicInfo
-                boolInfo
-                counts
+                categorySizeCreated
+                serviceWorkers
                 id
             }.collapsible(false)
             if isIntegrityCheckable(zimFile) {
@@ -86,15 +87,15 @@ struct ZimFileDetail: View {
             Section {
                 actions.alignmentGuide(.listRowSeparatorLeading) { $0[.leading] }
             }
-            Section { basicInfo }
+            sectionContentIOS()
+            Section { categorySizeCreated }
             Section {
-                boolInfo
+                serviceWorkers
             } footer: {
                 if zimFile.requiresServiceWorkers {
                     ServiceWorkerWarning()
                 }
             }
-            Section { counts }
             Section { id }
             if isIntegrityCheckable(zimFile) {
                 Section {
@@ -128,6 +129,49 @@ struct ZimFileDetail: View {
         }
         #endif
     }
+  
+#if os(macOS)
+    @ViewBuilder
+    private func sectionContentMacOS() -> some View {
+        if let flavor = Flavor(rawValue: zimFile.flavor) {
+            Section {
+                Text(flavor.help)
+                    .multilineTextAlignment(.leading)
+                    .lineLimit(nil)
+                content
+            } header: {
+                HStack(alignment: .top) {
+                    Text(LocalString.zim_file_list_content_text)
+                    Spacer()
+                    FlavorTag(flavor)
+                        .padding(.trailing, 16)
+                }
+            }
+            .collapsible(false)
+        } else {
+            Section(LocalString.zim_file_list_content_text) {
+                content
+            }
+            .collapsible(false)
+        }
+    }
+#else
+    @ViewBuilder
+    private func sectionContentIOS() -> some View {
+        Section {
+            if let flavor = Flavor(rawValue: zimFile.flavor) {
+                HStack(alignment: .center) {
+                    Text(flavor.help)
+                        .multilineTextAlignment(.leading)
+                        .lineLimit(nil)
+                    Spacer()
+                    FlavorTag(flavor)
+                }
+            }
+            content
+        }
+    }
+#endif
 
     @ViewBuilder
     private var actions: some View {
@@ -204,7 +248,7 @@ struct ZimFileDetail: View {
         .alert(LocalString.zim_file_integrity_check_in_progress(withArgs: zimFile.name),
                isPresented: $isPresentingIntegrityCheckingProgress) {
             Button(LocalString.common_button_cancel, role: .cancel) {
-               cancelntegrityCheck()
+               cancelIntegrityCheck()
             }
         }
     }
@@ -230,7 +274,7 @@ struct ZimFileDetail: View {
         }
     }
     
-    private func cancelntegrityCheck() {
+    private func cancelIntegrityCheck() {
         integrityTask?.cancel()
         zimIntegrityModel.reset()
         isPresentingIntegrityCheckingProgress = false
@@ -334,11 +378,19 @@ struct ZimFileDetail: View {
         .buttonStyle(.borderedProminent)
         #endif
     }
-
+    
     @ViewBuilder
-    private var basicInfo: some View {
+    private var content: some View {
         Attribute(title: LocalString.zim_file_base_info_attribute_language,
                   detail: zimFile.languageCodesListed)
+        AttributeBool(title: LocalString.zim_file_bool_info_pictures, detail: zimFile.hasPictures)
+        AttributeBool(title: LocalString.zim_file_bool_info_videos, detail: zimFile.hasVideos)
+        AttributeBool(title: LocalString.zim_file_bool_info_details, detail: zimFile.hasDetails)
+        pageAndMediaCounts
+    }
+
+    @ViewBuilder
+    private var categorySizeCreated: some View {
         Attribute(title: LocalString.zim_file_base_info_attribute_category,
                   detail: Category(rawValue: zimFile.category)?.name)
         Attribute(title: LocalString.zim_file_base_info_attribute_size,
@@ -348,10 +400,7 @@ struct ZimFileDetail: View {
     }
 
     @ViewBuilder
-    private var boolInfo: some View {
-        AttributeBool(title: LocalString.zim_file_bool_info_pictures, detail: zimFile.hasPictures)
-        AttributeBool(title: LocalString.zim_file_bool_info_videos, detail: zimFile.hasVideos)
-        AttributeBool(title: LocalString.zim_file_bool_info_details, detail: zimFile.hasDetails)
+    private var serviceWorkers: some View {
         if zimFile.requiresServiceWorkers {
             AttributeBool(title: LocalString.zim_file_bool_info_require_service_workers,
                           detail: zimFile.requiresServiceWorkers)
@@ -359,7 +408,7 @@ struct ZimFileDetail: View {
     }
 
     @ViewBuilder
-    private var counts: some View {
+    private var pageAndMediaCounts: some View {
         Attribute(
             title: LocalString.zim_file_counts_pages_count,
             detail: Formatter.number.string(from: NSNumber(value: zimFile.articleCount))
@@ -382,3 +431,4 @@ struct ZimFileDetail: View {
             .volumeAvailableCapacityForImportantUsage
     }
 }
+// swiftlint:enable file_length

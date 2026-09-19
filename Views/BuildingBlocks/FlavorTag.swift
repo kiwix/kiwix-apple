@@ -23,23 +23,15 @@ struct FlavorTag: View {
     }
 
     var body: some View {
-        Group {
-            switch flavor {
-            case .max, .mini:
-                Text(flavor.description)
-                    .padding(EdgeInsets(top: 2, leading: 6, bottom: 2, trailing: 6))
-            case .noPic:
-                Image(systemName: "nosign")
-                    .padding(EdgeInsets(top: 2, leading: 10, bottom: 2, trailing: 10))
-            }
-        }
-        .fontWeight(.medium)
-        .font(.caption)
-        .foregroundColor(.white)
-        .background(backgroundColor)
-        .clipShape(Capsule(style: .continuous))
-        .overlay(Capsule(style: .continuous).stroke(Color.gray, lineWidth: 0.5))
-        .help(help)
+        Text(flavor.description)
+            .fontWeight(.medium)
+            .font(.caption)
+            .foregroundColor(.white)
+            .padding(EdgeInsets(top: 2, leading: 6, bottom: 2, trailing: 6))
+            .background(backgroundColor)
+            .clipShape(Capsule(style: .continuous))
+            .overlay(Capsule(style: .continuous).stroke(Color.gray, lineWidth: 0.5))
+            .help(flavor.help)
     }
 
     var backgroundColor: Color {
@@ -47,20 +39,9 @@ struct FlavorTag: View {
         case .max:
             return .green
         case .noPic:
-            return .blue
+            return .brown
         case .mini:
             return .orange
-        }
-    }
-
-    var help: String {
-        switch flavor {
-        case .max:
-            return LocalString.flavor_tag_help_max
-        case .noPic:
-            return LocalString.flavor_tag_help_no_pic
-        case .mini:
-            return LocalString.flavor_tag_help_mini
         }
     }
 }
