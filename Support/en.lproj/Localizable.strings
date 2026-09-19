@@ -105,9 +105,9 @@
 "download_again.question.description_part_1" = "It looks like %@ is already downloaded.";
 "download_again.question.description_part_2" = "Do you still want to download \"%@\"? Your existing file won't be deleted.";
 
-"flavor_tag.help.max" = "everything except large media files like video/audio";
-"flavor_tag.help.no_pic" = "most pictures have been removed";
-"flavor_tag.help.mini" = "only a subset of the text is available, probably the first section";
+"flavor_tag.help.max" = "Everything except large media files like video/audio";
+"flavor_tag.help.no_pic" = "Most pictures have been removed";
+"flavor_tag.help.mini" = "Only a subset of the text is available, probably the first section";
 
 "library_refresh_time.last" = "Just Now";
 "library_refresh_time.never" = "Never";
@@ -155,6 +155,7 @@
 "zim_file.list.description.text" = "Description";
 "zim_file.list.actions.text" = "Actions";
 "zim_file.list.info.text" = "Info";
+"zim_file.list.content.text" = "Content";
 "zim_file.action.locate.title" = "Locate";
 "zim_file.action.open_main_page.title" = "Open Main Page";
 "zim_file.action.reveal_in_finder.title" = "Reveal in Finder";
@@ -305,7 +306,8 @@
 "enum.external_link_loading_policy.always_ask" = "Always Ask";
 "enum.external_link_loading_policy.always_load" = "Always Load";
 "enum.external_link_loading_policy.never_load" = "Never Load";
-"enum.flavor.max" = "max";
+"enum.flavor.max" = "maxi";
+"enum.flavor.no_pic" = "nopic";
 "enum.flavor.mini" = "mini";
 "enum.library_language_sorting_model.a-z" = "A-Z";
 "enum.library_language_sorting_model.by_count" = "By Count";

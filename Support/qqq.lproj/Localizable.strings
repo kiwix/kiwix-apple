@@ -119,7 +119,8 @@
 "zim_file.list.name.text" = "Title for displaying the details of a ZIM file";
 "zim_file.list.description.text" = "Title for displaying the details of a ZIM file";
 "zim_file.list.actions.text" = "Title for displaying the possible actions to a selected ZIM file. Eg. The 'Download' button is below this.";
-"zim_file.list.info.text" = "Title for displaying the details of a ZIM file, below this we list all the attributes of the file, like Language|Category|Size|Created ...";
+"zim_file.list.info.text" = "Title for displaying the detailed information of a ZIM file, below this we list all the attributes of the file, like Language|Category|Size|Created ...";
+"zim_file.list.content.text" = "Title for displaying the details of the content of a ZIM file, below this we list attributes such as: Pages Count, Media Count, Flavor, Videos/images included or not ....";
 "zim_file.action.locate.title" = "Button title, in case a ZIM file was opened, but now missing";
 "zim_file.action.open_main_page.title" = "Button title, in place of the Download button, once the ZIM file is already downloaded";
 "zim_file.action.reveal_in_finder.title" = "Secondary button title on macOS, when the ZIM file is already downloaded";
@@ -260,6 +261,7 @@
 "enum.external_link_loading_policy.always_load" = "Settings picker option title: how external links should be treated";
 "enum.external_link_loading_policy.never_load" = "Settings picker option title: how external links should be treated";
 "enum.flavor.max" = "short, abreviated label displayed in the corner of zim file cards, describing the flavour of the file. The shorter the better.";
+"enum.flavor.no_pic" = "short, abreviated label displayed in the corner of zim file cards, describing the flavour of the file. The shorter the better.";
 "enum.flavor.mini" = "short, abreviated label displayed in the corner of zim file cards, describing the flavour of the file. The shorter the better.";
 "enum.library_language_sorting_model.a-z" = "Option title for picker to sort languages displayed alphabetically";
 "enum.library_language_sorting_model.by_count" = "Option title for picker to sort languages by ZIM files count";
