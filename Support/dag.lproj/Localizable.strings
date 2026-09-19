@@ -33,15 +33,21 @@
 "common.tab.menu.library" = "Karimbu shee";
 "common.tab.menu.settings" = "Bintaɣindisi";
 "outline_button.outline.title" = "Ŋmahiŋgbana";
+// Fuzzy
 "outline_button.outline.help" = "Wuhimi lahabali ŋmahiŋgbana";
 "outline_button.outline.empty.message" = "Ŋmahiŋgbana kani";
 // Fuzzy
 "bookmark_button.show.help" = "Wuhimi buku'dalima. Dihi yuugi n-ti buku'daliŋ bee ka buku'daliŋ saha ŋɔ lahabali.";
+// Fuzzy
 "article_shortcut.main.button.title" = "Lahabali kpani";
+// Fuzzy
 "article_shortcut.main.button.help" = "Wuhimi lahabali kpani";
+// Fuzzy
 "article_shortcut.random.button.title.mac" = "Gahim piigi lahabali";
 "article_shortcut.random.button.title.ios" = "Gahim piigi yaɣili";
+// Fuzzy
 "article_shortcut.random.button.help" = "Wuhimi gahim piigi lahabali";
+// Fuzzy
 "alert_handler.alert.failed.title" = "Di bi tooi niŋ lahabali ŋɔ suhibu.";
 "bookmark_context_menu.view.title" = "Lihi";
 "bookmark_context_menu.remove.title" = "Yihi";
@@ -79,9 +85,11 @@
 "zim_file.action.reveal_in_finder.title" = "Kahigimi ŋun nya ni";
 "zim_file.action.toggle_cellular" = "Zaŋmi cɛllular deegi";
 "zim_file.action.unlink.title" = "Din ka taɣili";
+// Fuzzy
 "zim_file.action.unlink.message" = "Buku'daliŋ lahabaya zaa din taɣili n-ti zim fasara ŋɔ nyɛla din yɛn yihi, amaa fasara ŋɔ maŋmaŋ nyɛla din yɛn kpalim.";
 "zim_file.action.unlink.button.title" = "Din bi taɣili";
 "zim_file.action.delete.title" = "Nyɛhi";
+// Fuzzy
 "zim_file.action.delete.message" = "Zim fasara mini buku'daliŋ lahabaya kam din niŋ jɛndi zim fasara ŋɔ nyɛla din yɛn nyɛhi";
 "zim_file.action.delete.button.title" = "Nyɛhi";
 "zim_file.action.download.title" = "Deebu";
@@ -97,7 +105,6 @@
 "zim_file.bool_info.videos" = "Sinii nima";
 "zim_file.bool_info.details" = "Bayana";
 "zim_file.bool_info.require_service_workers" = "Bɔrila saandi tum tumdiba";
-"zim_file.counts.article_count" = "Lahabali kalinli";
 "zim_file.counts.media_count" = "Pɔhim zuɣu kalinli";
 "zim_file.download_task.action.title.cancel" = "Kpihim";
 "zim_file.download_task.action.try_recover" = "Wolisi labisi";

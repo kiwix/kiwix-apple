@@ -37,15 +37,21 @@
 "common.tab.menu.library" = "Ọ́bá Akwụkwọ";
 "common.tab.menu.settings" = "Nhazi";
 "outline_button.outline.title" = "Nkọwapụta";
+// Fuzzy
 "outline_button.outline.help" = "Gosi ndepụta isiakụkọ";
 "outline_button.outline.empty.message" = "Enweghị nkọwapụta isiokwu dị";
 // Fuzzy
 "bookmark_button.show.help" = "Gosi akara akwụkwọ. ịpị Ogologo oge iji  hụba  akwụkwọ ama maọbụ wepụ akara akwụkwọ edemede nke ugbu a.";
+// Fuzzy
 "article_shortcut.main.button.title" = "Isi ederede";
+// Fuzzy
 "article_shortcut.main.button.help" = "Gosi isi ederede";
+// Fuzzy
 "article_shortcut.random.button.title.mac" = "Ederede na enweghị usoro";
 "article_shortcut.random.button.title.ios" = "Peeji na enweghị usoro";
+// Fuzzy
 "article_shortcut.random.button.help" = "Gosi ederede na enweghị usoro";
+// Fuzzy
 "alert_handler.alert.failed.title" = "Enweghị ike ibunye ederede a chọrọ.";
 "bookmark_context_menu.view.title" = "Lee";
 "bookmark_context_menu.remove.title" = "Wepụ";
@@ -111,7 +117,6 @@
 "zim_file.bool_info.videos" = "Vidiyo";
 "zim_file.bool_info.details" = "Nkọwa zuru ezu";
 "zim_file.bool_info.require_service_workers" = "Achọrọ ndị ọrụ ọrụ";
-"zim_file.counts.article_count" = "Ọnụ ọgụgụ ederede";
 "zim_file.counts.media_count" = "Ọnụọgụ mgbasa ozi";
 "zim_file.detail.id.title" = "ID";
 "zim_file.download_task.action.title.cancel" = "Kagbuo";

@@ -26,12 +26,17 @@
 "common.export_file.alert.description" = "ਕੀ ਤੁਸੀਂ %@ ਫਾਈਲ ਨੂੰ ਬਰਾਮਦ ਕਰਨਾ ਚਾਹੁੰਦੇ ਹੋ?";
 "common.export_file.alert.button.title" = "ਬਰਾਮਦ";
 "outline_button.outline.title" = "ਰੂਪਰੇਖਾ";
+// Fuzzy
 "outline_button.outline.help" = "ਲੇਖ ਦੀ ਰੂਪ-ਰੇਖਾ ਵਿਖਾਓ";
 "outline_button.outline.empty.message" = "ਕੋਈ ਰੂਪ-ਰੇਖਾ ਉਪਲਬਧ ਨਹੀਂ ਐ";
+// Fuzzy
 "article_shortcut.main.button.title" = "ਮੁੱਖ ਲੇਖ";
+// Fuzzy
 "article_shortcut.main.button.help" = "ਮੁੱਢਲਾ ਲੇਖ ਵਿਖਾਓ";
+// Fuzzy
 "article_shortcut.random.button.title.mac" = "ਬੇਤਰਤੀਬ ਲੇਖ";
 "article_shortcut.random.button.title.ios" = "ਬੇਤਰਤੀਬ ਸਫ਼ਾ";
+// Fuzzy
 "article_shortcut.random.button.help" = "ਬੇਤਰਤੀਬ ਲੇਖ ਵਿਖਾਓ";
 "bookmark_context_menu.view.title" = "ਵੇਖੋ";
 "bookmark_context_menu.remove.title" = "ਹਟਾਓ";
@@ -73,7 +78,6 @@
 "zim_file.bool_info.videos" = "ਵੀਡੀਓਆਂ";
 "zim_file.bool_info.details" = "ਵੇਰਵੇ";
 "zim_file.bool_info.require_service_workers" = "ਸੇਵਾ ਕਰਮਚਾਰੀਆਂ ਦੀ ਲੋੜ ਐ";
-"zim_file.counts.article_count" = "ਲੇਖਾਂ ਦੀ ਗਿਣਤੀ";
 "zim_file.counts.media_count" = "ਮੀਡੀਆ ਗਿਣਤੀ";
 "zim_file.detail.id.title" = "ਸ਼ਨਾਖ਼ਤ";
 "zim_file.download_task.action.title.cancel" = "ਰੱਦ ਕਰੋ";

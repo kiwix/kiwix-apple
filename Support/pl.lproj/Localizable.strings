@@ -2,6 +2,7 @@
 // Exported from translatewiki.net
 // Author: Atvalerie
 // Author: Loran
+// Author: PanWor
 // Author: WaldiSt
 
 // Fuzzy
@@ -35,6 +36,11 @@
 "common.tab.menu.settings" = "Ustawienia";
 "common.export_file.alert.title" = "Eksportuj plik";
 "common.export_file.alert.button.title" = "Eksportuj";
+"article_shortcut.main.button.title" = "Strona główna";
+"article_shortcut.main.button.help" = "Pokaż stronę główną";
+"article_shortcut.random.button.title.mac" = "Losuj stronę";
+"article_shortcut.random.button.help" = "Pokaż losową stronę";
+"alert_handler.alert.failed.title" = "Nie udało się załadować żądanej strony.";
 "bookmark_context_menu.view.title" = "Podgląd";
 "bookmark_context_menu.remove.title" = "Usuń";
 "external_link_handler.alert.title" = "Link zewnętrzny";
@@ -49,6 +55,7 @@
 "flavor_tag.help.mini" = "dostępny jest tylko podzbiór tekstu, prawdopodobnie pierwsza sekcja";
 "library_refresh_time.last" = "Dopiero co";
 "library_refresh_time.never" = "Nigdy";
+"zim_file_cell.page_count" = "Liczba stron: %@";
 "zim_file_missing_indicator.help" = "Brak pliku Zim.";
 // Fuzzy
 "library.zim_file_details.side_panel.message" = "Wybierz plik zim, aby zobaczyć szczegóły";
@@ -77,6 +84,7 @@
 "zim_file.bool_info.pictures" = "Zdjęcia";
 "zim_file.bool_info.videos" = "Filmy";
 "zim_file.bool_info.details" = "Szczegóły";
+"zim_file.counts.pages_count" = "Liczba stron";
 "zim_file.detail.id.title" = "ID";
 "zim_file.download_task.action.title.cancel" = "Anuluj";
 "zim_file.download_task.action.try_recover" = "Spróbuj odzyskać";

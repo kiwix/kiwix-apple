@@ -55,14 +55,21 @@
 "common.export_file.alert.description" = "%@ 파일을 내보내시겠습니까?";
 "common.export_file.alert.button.title" = "내보내기";
 "outline_button.outline.title" = "개요";
+// Fuzzy
 "outline_button.outline.help" = "문서 개요 표시";
 "outline_button.outline.empty.message" = "개요가 없습니다";
+// Fuzzy
 "bookmark_button.show.help" = "현재 문서를 북마크에 추가하거나 제거할 수 있는 북마크 시트를 표시합니다.";
+// Fuzzy
 "article_shortcut.main.button.title" = "일반 문서";
+// Fuzzy
 "article_shortcut.main.button.help" = "더 많은 글 보기";
+// Fuzzy
 "article_shortcut.random.button.title.mac" = "임의의 일반 문서";
 "article_shortcut.random.button.title.ios" = "임의의 문서";
+// Fuzzy
 "article_shortcut.random.button.help" = "임의의 문서 표시";
+// Fuzzy
 "alert_handler.alert.failed.title" = "요청한 문서를 불러올 수 없습니다.";
 "bookmark_context_menu.view.title" = "보기";
 "bookmark_context_menu.remove.title" = "제거";
@@ -126,11 +133,14 @@
 "zim_file.action.reveal_in_finder.title" = "파인더에서 보기";
 "zim_file.action.toggle_cellular" = "휴대 전화를 이용하여 다운로드";
 "zim_file.action.unlink.title" = "링크 해제";
+// Fuzzy
 "zim_file.action.unlink.message" = "이 ZIM 파일에 연결된 모든 북마크된 문서는 삭제되지만 원본 파일은 그대로 유지됩니다.";
 "zim_file.action.unlink.multi_title" = "%@개 ZIM 파일 연결 해제";
+// Fuzzy
 "zim_file.action.unlink.multi_message" = "이 %@개 ZIM 파일에 연결된 모든 북마크된 문서는 삭제되지만 원본 파일은 그대로 유지됩니다.";
 "zim_file.action.unlink.button.title" = "링크 해제";
 "zim_file.action.delete.title" = "삭제";
+// Fuzzy
 "zim_file.action.delete.message" = "ZIM 파일과 이 ZIM 파일에 연결된 모든 북마크된 문서가 삭제됩니다.";
 "zim_file.action.delete.button.title" = "삭제";
 "zim_file.action.download.title" = "다운로드";
@@ -151,7 +161,6 @@
 "zim_file.bool_info.details" = "세부 정보";
 "zim_file.bool_info.require_service_workers" = "서비스 워커 필요";
 "zim_file.bool_info.zim_archive_integrity" = "ZIM 아카이브 무결성";
-"zim_file.counts.article_count" = "문서 수";
 "zim_file.counts.media_count" = "미디어 수";
 "zim_file.detail.id.title" = "ID";
 "zim_file.download_task.action.title.cancel" = "취소";
