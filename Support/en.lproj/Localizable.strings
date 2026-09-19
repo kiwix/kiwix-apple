@@ -344,6 +344,7 @@
 "payment.error_already_subscribed.title" = "You already have a monthly donation";
 "payment.error_already_subscribed.description" = "Use the instructions in the email we sent earlier to update it.";
 "payment.donation_reason.title" = "Help us keep Kiwix and ZIM files updated.";
+"payment.donation_cell.description" = "No ads, no trackers, funded by donations";
 "payment.donation_is_encrypted" = "Your donation is encrypted with Apple's built-in security.";
 "download_service.error.client.backgroundSessionInUseByAnotherProcess" = "Could not communicate with background transfer service";
 "download_service.error.client.backgroundSessionWasDisconnected" = "Lost connection to background transfer service";
