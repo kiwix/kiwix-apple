@@ -19,6 +19,7 @@ import Defaults
 
 /// Displays a grid of available local ZIM files. Used on new tab.
 struct LocalLibraryList: View {
+    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     private let load: (URL) -> Void
     @FetchRequest(
         sortDescriptors: [NSSortDescriptor(keyPath: \Bookmark.created, ascending: false)],
@@ -30,6 +31,9 @@ struct LocalLibraryList: View {
         predicate: ZimFile.openedPredicate(),
         animation: .easeInOut
     ) private var zimFiles: FetchedResults<ZimFile>
+    #if os(iOS)
+    @State private var paymentButtonLabel: PaymentButtonType?
+    #endif
     
     init(browser: BrowserViewModel) {
         load = browser.load(url:)
@@ -41,6 +45,7 @@ struct LocalLibraryList: View {
             alignment: .leading,
             spacing: 12
         ) {
+            
             GridSection(title: LocalString.welcome_main_page_title) {
                 ForEach(zimFiles, id: \.fileID) { zimFile in
                     AsyncButtonView {
@@ -54,6 +59,18 @@ struct LocalLibraryList: View {
                     }
                     .buttonStyle(.plain)
                 }
+#if os(iOS)
+                if paymentButtonLabel != nil, horizontalSizeClass == .compact {
+                    AsyncButtonView {
+                        NotificationCenter.default.post(name: .openDonations, object: nil, userInfo: nil)
+                    } label: {
+                        DonationCell(isLoading: false, isSelected: false)
+                    } loading: {
+                        DonationCell(isLoading: true, isSelected: true)
+                    }
+                }
+#endif
+
             }
             if !bookmarks.isEmpty {
                 GridSection(title: LocalString.welcome_grid_bookmarks_title) {
@@ -69,5 +86,10 @@ struct LocalLibraryList: View {
                 }
             }
         }.modifier(GridCommon(edges: .all))
+        #if os(iOS)
+            .task {
+                paymentButtonLabel = await Payment.paymentButtonTypeAsync()
+            }
+        #endif
     }
 }
