@@ -39,7 +39,11 @@ struct SplitViewForiPad: View { // swiftlint:disable:this type_body_length
     @State private var columnVisibility: NavigationSplitViewVisibility = Defaults[.ipadSplitViewVisibility]
     @State private var allSections: [MenuSection] = MenuSection.allMenuSections
     @State private var menuDict: [MenuSection: [MenuItem]] = MenuSection.staticDictionary
-    @Default(.savedMenuNavigation) private var selection: MenuItem?
+    @State private var selection: MenuItem? {
+        didSet {
+            Log.Navigation.debug("\(#file) \(#function): \(selection.debugDescription)")
+        }
+    }
     @Default(.libraryLanguageCodes) private var languages
     @State private var selectedLang: String = Defaults[.libraryLanguageCodes].first ?? "eng"
     @State private var navPath = NavigationPath()
@@ -114,23 +118,28 @@ struct SplitViewForiPad: View { // swiftlint:disable:this type_body_length
             }
         }
         .task {
-            await observeHasZimFiles()
-            await loadDonations()
-            observeNavigateToHotspotSettings()
-            if let selection {
-                // restore navigation point from saved selection
-                navigation.currentItem = selection.navigationItem
-            } else if let currentItem = navigation.currentItem {
+            if let currentItem = navigation.currentItem {
                 // set up the default selection
                 // as direct opening a file (when the app is not launched)
                 // won't trigger .onChange(of: navigation.currentItem)
-                selection = MenuItem(from: currentItem)
+                Log.Navigation.debug("\(#file) set up the default selection")
+                updateSelection(currentItem)
+            } else if let navItem = Defaults[.savedMenuNavigation]?.navigationItem {
+                // restore navigation point from saved selection
+                Log.Navigation.debug("\(#file) restore navigation point from saved selection")
+                updateSelection(navItem)
+            } else {
+                Log.Navigation.error("\(#file) no navigation item found")
             }
             if case let .tab(selectedTabId) = selection {
                 BrowserTabPreloader.shared.start(with: tabs, selectedTabId: selectedTabId)
             }
+            await observeHasZimFiles()
+            await loadDonations()
+            observeNavigateToHotspotSettings()
         }
         .onChange(of: navigation.currentItem) { _, newValue in
+            Log.Navigation.debug("\(#file) \(#function) update selection")
             updateSelection(newValue)
         }
         // open file details, after importing file
@@ -147,6 +156,9 @@ struct SplitViewForiPad: View { // swiftlint:disable:this type_body_length
             switch (old, new) {
             case (.active, .inactive):
                 Defaults[.ipadSplitViewVisibility] = columnVisibility
+                if let selection {
+                    Defaults[.savedMenuNavigation] = selection
+                }
             case (_, .inactive):
                 columnVisibility = Defaults[.ipadSplitViewVisibility]
             default:
@@ -309,6 +321,7 @@ struct SplitViewForiPad: View { // swiftlint:disable:this type_body_length
         if let newNavItem, let newSelection = MenuItem(from: newNavItem) {
             if selection != newSelection {
                 selection = newSelection
+                Defaults[.savedMenuNavigation] = selection
                 navPath = NavigationPath([newSelection])
             }
         }
