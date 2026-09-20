@@ -15,7 +15,8 @@
 
 import XCTest
 
-final class LoadingUI_macOS_Test: XCTestCase {
+// swiftlint:disable:next type_name
+@MainActor final class LoadingUI_macOS_Test: XCTestCase {
 
     func testSideBarItems() throws {
         // UI tests must launch the application that they test.

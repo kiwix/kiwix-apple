@@ -15,8 +15,8 @@
 
 import XCTest
 
-@MainActor
-final class LoadingUI_iPad_Test: XCTestCase {
+// swiftlint:disable:next type_name
+@MainActor final class LoadingUI_iPad_Test: XCTestCase {
 
     func testLaunchingApp_on_iPad() throws {
         let app = XCUIApplication()
@@ -28,17 +28,20 @@ final class LoadingUI_iPad_Test: XCTestCase {
         
         // show sidebar
         app.navigationBars.buttons.firstMatch.tap()
-        let _ = app.buttons["Wikipadia"].waitForExistence(timeout: 5)
-        app.buttons["Wikipedia"].tap()
-        app.buttons["Other"].tap()
+        let searchField = app.navigationBars.searchFields.firstMatch
+        _ = searchField.waitForExistence(timeout: 5)
+        searchField.tap()
+        searchField.typeText("Alpine")
+//        let _ = app.buttons["Wikipadia"].waitForExistence(timeout: 5)
+//        app.buttons["Wikipedia"].tap()
+//        app.buttons["Other"].tap()
         
-        let zimMini = app.buttons["Apache Pig Docs"].firstMatch
+        let zimMini = app.buttons["Alpine Linux Wiki"].firstMatch
         Wait.inApp(app, forElement: zimMini)
         zimMini.tap()
         
         let downloadButton = app.buttons["Download"].firstMatch
         Wait.inApp(app, forElement: downloadButton)
-        downloadButton.tap()
 
         addUIInterruptionMonitor(withDescription: "\"Kiwix\" Would Like To Send You Notifications") { (alert) -> Bool in
             let alertButton = alert.buttons["Allow"]
@@ -48,6 +51,8 @@ final class LoadingUI_iPad_Test: XCTestCase {
             }
             return false
         }
+        downloadButton.tap()
+        
         let openMainPageButton = app.buttons["Open Main Page"]
         Wait.inApp(app, forElement: openMainPageButton)
         openMainPageButton.tap()
@@ -56,7 +61,7 @@ final class LoadingUI_iPad_Test: XCTestCase {
         
         // open another tab as well
         app.buttons["opened"].tap()
-        app.buttons["Open: Apache Pig Docs"].tap()
+        app.buttons["Open: Alpine Linux Wiki"].tap()
         Wait.inApp(app, forElement: openMainPageButton)
         openMainPageButton.tap()
         
@@ -68,17 +73,18 @@ final class LoadingUI_iPad_Test: XCTestCase {
         app.activate()
         
         testAfterRelaunch(app)
-        
-        app.terminate()
-        
+        testForegroundViaFinderDeeplink(app)
+        testLaunchViaDeeplink(app)
     }
     
     private func testAfterRelaunch(_ app: XCUIApplication) {
         // show sidebar
         app.navigationBars.buttons.firstMatch.tap()
-        let zimFileTab = app.buttons["Apache Pig Documentation"].firstMatch
+        let zimFileTab = app.collectionViews["Sidebar"].cells.buttons["Main Page"].firstMatch
         Wait.inApp(app, forElement: zimFileTab)
         XCTAssert(zimFileTab.isSelected)
+        // switch to a random page
+        app.navigationBars.buttons["nav_random"].tap()
         
         app.buttons["bookmarks"].tap()
         app.buttons["opened"].tap()
@@ -89,5 +95,51 @@ final class LoadingUI_iPad_Test: XCTestCase {
         app.buttons["settings"].tap()
         app.buttons["donation"].tap()
         app.buttons["close_payment_button"].tap()
+    }
+    
+    private func testForegroundViaFinderDeeplink(_ app: XCUIApplication) {
+        XCUIDevice.shared.press(.home)
+        XCUIDevice.shared.press(.home)
+
+        let documentsApp = XCUIApplication(bundleIdentifier: "com.apple.DocumentsApp")
+        documentsApp.activate()
+        documentsApp.collectionViews["Browse View"].firstMatch.cells["On My iPad"].firstMatch.tap()
+        documentsApp.cells["Kiwix, Container"].firstMatch.tap()
+        // find the zim file, something like: alpinelinux_en_all_maxi_2026-07.zim
+        let alpineFile = documentsApp.cells.matching(
+            NSPredicate(format: "identifier MATCHES[c] %@",
+                        String(format: ".*\\b%@.*", "alpinelinux"))
+        ).firstMatch
+        
+        alpineFile.tap()
+        
+        let zimFileTab = app.collectionViews["Sidebar"].cells.buttons["Main Page"].firstMatch
+        Wait.inApp(app, forElement: zimFileTab)
+        XCTAssert(zimFileTab.isSelected)
+        // switch to a random page
+        app.navigationBars.buttons["nav_random"].tap()
+    }
+    
+    private func testLaunchViaDeeplink(_ app: XCUIApplication) {
+        
+        app.terminate()
+        XCUIDevice.shared.press(.home)
+        
+        let documentsApp = XCUIApplication(bundleIdentifier: "com.apple.DocumentsApp")
+        documentsApp.activate()
+        documentsApp.collectionViews["Browse View"].firstMatch.cells["On My iPad"].firstMatch.tap()
+        documentsApp.cells["Kiwix, Container"].firstMatch.tap()
+        // find the zim file, something like: alpinelinux_en_all_maxi_2026-07.zim
+        let alpineFile = documentsApp.cells.matching(
+            NSPredicate(format: "identifier MATCHES[c] %@",
+                        String(format: ".*\\b%@.*", "alpinelinux"))
+        ).firstMatch
+        
+        alpineFile.tap()
+        let zimFileTab = app.collectionViews["Sidebar"].cells.buttons["Main Page"].firstMatch
+        Wait.inApp(app, forElement: zimFileTab)
+        XCTAssert(zimFileTab.isSelected)
+        // switch to a random page
+        app.navigationBars.buttons["nav_random"].tap()
     }
 }
