@@ -21,7 +21,11 @@ import Combine
 final class NavigationViewModel: ObservableObject {
     let uuid = UUID()
     // remained optional due to focusedSceneValue conformance
-    @Published var currentItem: NavigationItem? = .loading
+    @Published var currentItem: NavigationItem? = .loading {
+        didSet {
+            Log.Navigation.debug("\(#file) \(#function): \(self.currentItem.debugDescription)")
+        }
+    }
     private(set) var showDownloads = PassthroughSubject<Void, Never>()
     
     private var openingFilesTask: Task<Void, Never>?
@@ -119,6 +123,7 @@ final class NavigationViewModel: ObservableObject {
         let context = Database.shared.viewContext
         let tab = (try? context.fetch(fetchRequest).first) ?? Self.makeTab(context: context)
         await MainActor.run { [weak self] in
+            Log.Navigation.debug("\(#function)")
             self?.currentItem = NavigationItem.tab(objectID: tab.objectID)
         }
     }
@@ -128,6 +133,7 @@ final class NavigationViewModel: ObservableObject {
         let context = Database.shared.viewContext
         let tab = Self.makeTab(context: context)
         #if !os(macOS)
+        Log.Navigation.debug("\(#function)")
         currentItem = NavigationItem.tab(objectID: tab.objectID)
         #endif
         return tab.objectID
@@ -211,6 +217,7 @@ final class NavigationViewModel: ObservableObject {
 
         // update selection if needed
         if let newTabId {
+            Log.Navigation.debug("\(#function)")
             currentItem = NavigationItem.tab(objectID: newTabId)
         }
     }

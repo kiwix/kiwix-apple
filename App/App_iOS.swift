@@ -96,9 +96,11 @@ struct Kiwix: App {
                     case .kiwix:
                         await LibraryOperations.reValidate()
                         if !DeepLinkService.shared.isRunning() {
-                            navigation.navigateToMostRecentTab()
-                        } else if let savedMenuSelection {
-                            navigation.currentItem = savedMenuSelection.navigationItem
+                            if navigation.currentItem == .loading, let savedMenuSelection {
+                                navigation.currentItem = savedMenuSelection.navigationItem
+                            } else {
+                                navigation.navigateToMostRecentTab()
+                            }
                         }
                         LibraryOperations.applyFileBackupSetting()
                         DownloadService.shared.restartHeartbeatIfNeeded()

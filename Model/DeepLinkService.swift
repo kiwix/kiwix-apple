@@ -29,10 +29,12 @@ final class DeepLinkService {
     private init() {}
     
     func startFor(uuid: UUID) {
+        Log.Navigation.debug("Deeplink start for: \(uuid.uuidString)")
         ids.insert(uuid)
     }
     
     func stopFor(uuid: UUID) {
+        Log.Navigation.debug("Deeplink stop for: \(uuid.uuidString)")
         ids.remove(uuid)
     }
     
