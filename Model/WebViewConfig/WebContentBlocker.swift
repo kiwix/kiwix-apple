@@ -32,23 +32,10 @@ enum WebContentBlocker {
         let contentRules =
 """
 [
-    {
-        "action": {
-            "type": "block"
-        },
-        "trigger": {
-            "url-filter": ".*"
-        }
-    },
-    {
-        "action": {
-            "type": "ignore-previous-rules"
-        },
-        "trigger": {
-            "url-filter": "^zim://",
-            "load-type": ["first-party"]
-        }
-    }
+  { "action": { "type": "block" }, "trigger": { "url-filter": ".*" } },
+  { "action": { "type": "ignore-previous-rules" }, "trigger": { "url-filter": "^zim://" } },
+  { "action": { "type": "ignore-previous-rules" }, "trigger": { "url-filter": "^blob:" } },
+  { "action": { "type": "ignore-previous-rules" }, "trigger": { "url-filter": "^data:" } }
 ]
 """
         do {
