@@ -138,7 +138,9 @@
 "enum.category.wiktionary" = "ਵਿਕਸ਼ਨਰੀ";
 "enum.category.other" = "ਹੋਰ";
 "enum.external_link_loading_policy.always_ask" = "ਹਮੇਸ਼ਾ ਪੁੱਛੋ";
+// Fuzzy
 "enum.flavor.max" = "ਵੱਧ ਤੋਂ ਵੱਧ";
+// Fuzzy
 "enum.flavor.no_pic" = "ਕੋਈ ਤਸਵੀਰ ਨਹੀਂ";
 "enum.flavor.mini" = "ਛੋਟਾ";
 "enum.library_language_sorting_model.by_count" = "ਗਿਣਤੀ ਨਾਲ";

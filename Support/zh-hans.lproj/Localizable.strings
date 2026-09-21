@@ -87,8 +87,11 @@
 "download_again.question.title" = "您已经拥有这个文件。";
 "download_again.question.description_part_1" = "%@看起来已下载完毕。";
 "download_again.question.description_part_2" = "您仍要下载“%@”吗？您现有的文件不会被删除。";
+// Fuzzy
 "flavor_tag.help.max" = "除视频/音频等大型媒体文件之外的所有内容";
+// Fuzzy
 "flavor_tag.help.no_pic" = "大多数照片已被删除";
+// Fuzzy
 "flavor_tag.help.mini" = "仅有部分文本可用，这可能是第一部分";
 "library_refresh_time.last" = "刚刚";
 "library_refresh_time.never" = "从不";
@@ -266,7 +269,9 @@
 "enum.external_link_loading_policy.always_ask" = "总是询问";
 "enum.external_link_loading_policy.always_load" = "始终加载";
 "enum.external_link_loading_policy.never_load" = "永不加载";
+// Fuzzy
 "enum.flavor.max" = "最大";
+// Fuzzy
 "enum.flavor.no_pic" = "没有图片";
 "enum.flavor.mini" = "最小";
 "enum.library_language_sorting_model.a-z" = "A-Z";

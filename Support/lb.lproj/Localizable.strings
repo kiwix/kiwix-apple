@@ -57,9 +57,9 @@
 "download_task_cell.status.downloading" = "Eroflueden...";
 "download_task_cell.status.paused" = "Pauséiert";
 "download_again.question.title" = "Dir hutt dëse Fichier schonn.";
-"flavor_tag.help.max" = "alles ausser grouss Mediefichiere wéi Video an Audio";
-"flavor_tag.help.no_pic" = "déi meeschte Biller goufen erausgeholl";
-"flavor_tag.help.mini" = "nëmmen een Deel vum Text ass verfügbar, warscheinlech den éischten Abschnitt";
+"flavor_tag.help.max" = "Alles ausser grouss Mediefichiere wéi Video an Audio";
+"flavor_tag.help.no_pic" = "Déi meeschte Biller goufen erausgeholl";
+"flavor_tag.help.mini" = "Nëmmen en Deel vum Text ass verfügbar, warscheinlech den éischten Abschnitt";
 "library_refresh_time.last" = "Elo just";
 "library_refresh_time.never" = "Ni";
 "zim_file_cell.page_count" = "%@ Säiten";
@@ -87,6 +87,7 @@
 "zim_file.list.name.text" = "Numm";
 "zim_file.list.description.text" = "Beschreiwung";
 "zim_file.list.actions.text" = "Aktiounen";
+"zim_file.list.content.text" = "Inhalt";
 "zim_file.action.open_main_page.title" = "Haaptsäit opmaachen";
 "zim_file.action.delete.title" = "Läschen";
 "zim_file.action.delete.button.title" = "Läschen";
@@ -173,6 +174,7 @@
 "enum.category.other" = "Anerer";
 "enum.external_link_loading_policy.always_ask" = "Allkéiers froen";
 "enum.external_link_loading_policy.always_load" = "Ëmmer Lueden";
+// Fuzzy
 "enum.flavor.max" = "max.";
 "enum.flavor.no_pic" = "kee Bild";
 "enum.flavor.mini" = "min.";

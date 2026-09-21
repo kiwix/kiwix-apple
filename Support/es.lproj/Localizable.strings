@@ -85,8 +85,11 @@
 "download_again.question.title" = "Ya tiene este archivo.";
 "download_again.question.description_part_1" = "Parece que %@ ya está descargado.";
 "download_again.question.description_part_2" = "¿Aún desea descargar \"%@\"? Su archivo existente no se eliminará.";
+// Fuzzy
 "flavor_tag.help.max" = "todo excepto archivos multimedia grandes como vídeo/audio";
+// Fuzzy
 "flavor_tag.help.no_pic" = "la mayoría de las imágenes han sido eliminadas";
+// Fuzzy
 "flavor_tag.help.mini" = "sólo está disponible un subconjunto del texto, probablemente la primera sección";
 "library_refresh_time.last" = "Ahora mismo";
 "library_refresh_time.never" = "Nunca";
@@ -247,6 +250,7 @@
 "enum.external_link_loading_policy.always_ask" = "Pregunta siempre";
 "enum.external_link_loading_policy.always_load" = "Cargar siempre";
 "enum.external_link_loading_policy.never_load" = "No cargar nunca";
+// Fuzzy
 "enum.flavor.max" = "máximo";
 "enum.flavor.no_pic" = "sin imágen";
 "enum.flavor.mini" = "mini";

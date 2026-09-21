@@ -81,8 +81,11 @@
 "download_again.question.title" = "Du har allerede denne fil.";
 "download_again.question.description_part_1" = "Det ser ud til, at %@ allerede er downloadet.";
 "download_again.question.description_part_2" = "Vil du stadig downloade \"%@\"? Din eksisterende fil vil ikke blive slettet.";
+// Fuzzy
 "flavor_tag.help.max" = "alt undtagen store mediefiler som video/lyd";
+// Fuzzy
 "flavor_tag.help.no_pic" = "de fleste billeder er blevet fjernet";
+// Fuzzy
 "flavor_tag.help.mini" = "kun en delmængde af teksten er tilgængelig, sandsynligvis den første del";
 "library_refresh_time.last" = "Netop Nu";
 "library_refresh_time.never" = "Aldrig";
@@ -230,7 +233,9 @@
 "enum.external_link_loading_policy.always_ask" = "Spørg Altid";
 "enum.external_link_loading_policy.always_load" = "Indlæs Altid";
 "enum.external_link_loading_policy.never_load" = "Indlæs Aldrig";
+// Fuzzy
 "enum.flavor.max" = "max";
+// Fuzzy
 "enum.flavor.no_pic" = "intet billede";
 "enum.flavor.mini" = "mini";
 "enum.library_language_sorting_model.a-z" = "A-Z";

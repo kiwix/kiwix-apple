@@ -67,8 +67,11 @@
 "download_task_cell.status.failed" = "Gagal";
 "download_task_cell.status.downloading" = "Mengunduh...";
 "download_task_cell.status.paused" = "Dijeda";
+// Fuzzy
 "flavor_tag.help.max" = "semua kecuali berkas media besar seperti video/audio";
+// Fuzzy
 "flavor_tag.help.no_pic" = "sebagian besar gambar telah dihapus";
+// Fuzzy
 "flavor_tag.help.mini" = "hanya sebagian kecil teks yang tersedia, mungkin bagian pertama";
 "library_refresh_time.last" = "Baru Saja";
 "library_refresh_time.never" = "Tidak pernah";
@@ -207,7 +210,9 @@
 "enum.external_link_loading_policy.always_ask" = "Selalu Tanya";
 "enum.external_link_loading_policy.always_load" = "Selalu Muat";
 "enum.external_link_loading_policy.never_load" = "Jangan Pernah Memuat";
+// Fuzzy
 "enum.flavor.max" = "maks";
+// Fuzzy
 "enum.flavor.no_pic" = "tidak ada gambar";
 "enum.flavor.mini" = "mini";
 "enum.library_language_sorting_model.a-z" = "A-Z";

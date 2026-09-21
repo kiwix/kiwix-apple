@@ -87,8 +87,11 @@
 "download_again.question.title" = "Du har redan den här filen.";
 "download_again.question.description_part_1" = "Det ser ut som att %@ redan laddats ned.";
 "download_again.question.description_part_2" = "Vill du fortfarande ladda ned \"%@\"? Din befintliga fil kommer inte att raderas.";
+// Fuzzy
 "flavor_tag.help.max" = "förutom stora mediafiler som video/ljud";
+// Fuzzy
 "flavor_tag.help.no_pic" = "de flesta bilderna har tagits bort";
+// Fuzzy
 "flavor_tag.help.mini" = "endast en del av texten är tillgänglig, förmodligen det första avsnittet";
 "library_refresh_time.last" = "Alldeles nyss";
 "library_refresh_time.never" = "Aldrig";
@@ -255,7 +258,9 @@
 "enum.external_link_loading_policy.always_ask" = "Fråga alltid";
 "enum.external_link_loading_policy.always_load" = "Ladda alltid";
 "enum.external_link_loading_policy.never_load" = "Ladda aldrig";
+// Fuzzy
 "enum.flavor.max" = "max";
+// Fuzzy
 "enum.flavor.no_pic" = "ingen bild";
 "enum.flavor.mini" = "mini";
 "enum.library_language_sorting_model.a-z" = "A-Ö";

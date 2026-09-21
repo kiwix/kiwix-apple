@@ -59,8 +59,11 @@
 "download_task_cell.status.failed" = "Başarısız";
 "download_task_cell.status.downloading" = "Yükleniyor...";
 "download_task_cell.status.paused" = "Durduruldu";
+// Fuzzy
 "flavor_tag.help.max" = "video/ses gibi büyük medya dosyaları dışındaki her şey";
+// Fuzzy
 "flavor_tag.help.no_pic" = "resimlerin çoğu kaldırıldı";
+// Fuzzy
 "flavor_tag.help.mini" = "metnin yalnızca bir alt kümesi mevcut, muhtemelen ilk bölüm";
 "library_refresh_time.last" = "Şu anda";
 "library_refresh_time.never" = "Asla";
@@ -193,7 +196,9 @@
 "enum.external_link_loading_policy.always_ask" = "Her Zaman Sor";
 "enum.external_link_loading_policy.always_load" = "Her Zaman Yükle";
 "enum.external_link_loading_policy.never_load" = "Asla Yükleme";
+// Fuzzy
 "enum.flavor.max" = "maks.";
+// Fuzzy
 "enum.flavor.no_pic" = "resim yok";
 "enum.flavor.mini" = "mini";
 "enum.library_language_sorting_model.a-z" = "A-Z";
