@@ -66,8 +66,11 @@
 "download_task_cell.status.failed" = "fadi";
 "download_task_cell.status.downloading" = "Saukowa...";
 "download_task_cell.status.paused" = "Dakata";
+// Fuzzy
 "flavor_tag.help.max" = "komai sai manyan fayilolin mai jarida kamar bidiyo/audio";
+// Fuzzy
 "flavor_tag.help.no_pic" = "an cire yawancin hotuna";
+// Fuzzy
 "flavor_tag.help.mini" = "Juzu'in rubutu ne kawai yaka samuwa, tayiyu da  farkon sashi";
 "library_refresh_time.last" = "Yanxu yanxu";
 "library_refresh_time.never" = "Ba a taɓa yin hakan ba";
@@ -202,7 +205,9 @@
 "enum.external_link_loading_policy.always_ask" = "Koyaushe Tambayi";
 "enum.external_link_loading_policy.always_load" = "Koyaushe Loda";
 "enum.external_link_loading_policy.never_load" = "Kar a taɓa Loda";
+// Fuzzy
 "enum.flavor.max" = "max";
+// Fuzzy
 "enum.flavor.no_pic" = "babu hoto";
 "enum.flavor.mini" = "ƙarami";
 "enum.library_language_sorting_model.a-z" = "A-Z";

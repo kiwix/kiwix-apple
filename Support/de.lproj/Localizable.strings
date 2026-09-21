@@ -82,8 +82,11 @@
 "download_task_cell.status.failed" = "Fehlgeschlagen";
 "download_task_cell.status.downloading" = "Herunterladen …";
 "download_task_cell.status.paused" = "Pausiert";
+// Fuzzy
 "flavor_tag.help.max" = "alles außer große Mediendateien wie Video/Audio";
+// Fuzzy
 "flavor_tag.help.no_pic" = "Die meisten Bilder wurden entfernt";
+// Fuzzy
 "flavor_tag.help.mini" = "Es ist nur ein Teil des Textes verfügbar, wahrscheinlich der erste Abschnitt";
 "library_refresh_time.last" = "Soeben";
 "library_refresh_time.never" = "Niemals";
@@ -237,7 +240,9 @@
 "enum.external_link_loading_policy.always_ask" = "Immer fragen";
 "enum.external_link_loading_policy.always_load" = "Immer laden";
 "enum.external_link_loading_policy.never_load" = "Niemals laden";
+// Fuzzy
 "enum.flavor.max" = "max.";
+// Fuzzy
 "enum.flavor.no_pic" = "kein Bild";
 "enum.flavor.mini" = "Mini";
 "enum.library_language_sorting_model.a-z" = "A–Z";

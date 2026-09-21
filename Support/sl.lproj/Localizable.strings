@@ -81,8 +81,11 @@
 "download_again.question.title" = "To datoteko že imate.";
 "download_again.question.description_part_1" = "Zdi se, da je datoteka %@ že prenesena.";
 "download_again.question.description_part_2" = "Ali še vedno želite prenesti »%@«? Vaša obstoječa datoteka ne bo izbrisana.";
+// Fuzzy
 "flavor_tag.help.max" = "vse, razen velikih predstavnostnih datotek, kot je video/avdio";
+// Fuzzy
 "flavor_tag.help.no_pic" = "večina slik je bila odstranjena";
+// Fuzzy
 "flavor_tag.help.mini" = "na voljo je samo del besedila, verjetno prvi razdelek";
 "library_refresh_time.last" = "Pravkar";
 "library_refresh_time.never" = "Nikoli";
@@ -258,7 +261,9 @@
 "enum.external_link_loading_policy.always_ask" = "Vedno vprašaj";
 "enum.external_link_loading_policy.always_load" = "Vedno naloži";
 "enum.external_link_loading_policy.never_load" = "Nikoli ne naloži";
+// Fuzzy
 "enum.flavor.max" = "najv.";
+// Fuzzy
 "enum.flavor.no_pic" = "brez slike";
 "enum.flavor.mini" = "mini";
 "enum.library_language_sorting_model.a-z" = "A–Z";

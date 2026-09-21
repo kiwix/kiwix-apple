@@ -81,8 +81,11 @@
 "download_again.question.title" = "Tento súbor už máte.";
 "download_again.question.description_part_1" = "Zdá sa, že %@ je už stiahnutý.";
 "download_again.question.description_part_2" = "Chcete napriek tomu stiahnuť „%@“? Váš existujúci súbor nebude zmazaný.";
+// Fuzzy
 "flavor_tag.help.max" = "všetko okrem veľkých mediálnych súborov, ako je video/zvuk";
+// Fuzzy
 "flavor_tag.help.no_pic" = "väčšina obrázkov bola odstránená";
+// Fuzzy
 "flavor_tag.help.mini" = "dostupná je iba časť textu, pravdepodobne prvá sekcia";
 "library_refresh_time.last" = "Práve teraz";
 "library_refresh_time.never" = "Nikdy";
@@ -261,7 +264,9 @@
 "enum.external_link_loading_policy.always_ask" = "Vždy sa opýtať";
 "enum.external_link_loading_policy.always_load" = "Vždy načítať";
 "enum.external_link_loading_policy.never_load" = "Nikdy nenačítať";
+// Fuzzy
 "enum.flavor.max" = "max";
+// Fuzzy
 "enum.flavor.no_pic" = "bez obrázkov";
 "enum.flavor.mini" = "mini";
 "enum.library_language_sorting_model.a-z" = "A – Z";

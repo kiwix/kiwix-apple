@@ -100,8 +100,11 @@
 "download_again.question.title" = "Vous avez déjà ce fichier.";
 "download_again.question.description_part_1" = "Il semble que %@ a déjà été téléchargé.";
 "download_again.question.description_part_2" = "Vous voulez toujours télécharger \"%@\" ? Votre fichier existant ne sera pas supprimé.";
+// Fuzzy
 "flavor_tag.help.max" = "tout sauf les gros fichiers multimédias comme la vidéo/audio";
+// Fuzzy
 "flavor_tag.help.no_pic" = "la plupart des photos ont été supprimées";
+// Fuzzy
 "flavor_tag.help.mini" = "seul un sous-ensemble du texte est disponible, probablement la première section";
 "library_refresh_time.last" = "À l’instant";
 "library_refresh_time.never" = "Jamais";
@@ -268,7 +271,9 @@
 "enum.external_link_loading_policy.always_ask" = "Toujours demander";
 "enum.external_link_loading_policy.always_load" = "Toujours charger";
 "enum.external_link_loading_policy.never_load" = "Ne jamais charger";
+// Fuzzy
 "enum.flavor.max" = "max";
+// Fuzzy
 "enum.flavor.no_pic" = "aucune image";
 "enum.flavor.mini" = "mini";
 "enum.library_language_sorting_model.a-z" = "A-Z";

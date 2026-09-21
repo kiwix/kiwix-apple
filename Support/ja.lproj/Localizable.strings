@@ -67,8 +67,11 @@
 "download_task_cell.status.failed" = "失敗しました";
 "download_task_cell.status.downloading" = "ダウンロード中...";
 "download_task_cell.status.paused" = "一時停止";
+// Fuzzy
 "flavor_tag.help.max" = "動画/音声など大きなメディアファイル以外";
+// Fuzzy
 "flavor_tag.help.no_pic" = "画像のほとんどが削除されています";
+// Fuzzy
 "flavor_tag.help.mini" = "文章の一部のみ(多くの場合最初の段落)が利用可能です。";
 "library_refresh_time.last" = "今すぐ";
 "library_refresh_time.never" = "なし";

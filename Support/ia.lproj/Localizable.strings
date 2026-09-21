@@ -74,8 +74,11 @@
 "download_again.question.title" = "Tu dispone ja de iste file.";
 "download_again.question.description_part_1" = "Sembla que %@ ha ja essite discargate.";
 "download_again.question.description_part_2" = "Vole tu totevia discargar “%@”? Tu file existente non essera delite.";
+// Fuzzy
 "flavor_tag.help.max" = "toto excepte grande files multimedial como video/audio";
+// Fuzzy
 "flavor_tag.help.no_pic" = "le major parte de imagines ha essite removite";
+// Fuzzy
 "flavor_tag.help.mini" = "solmente un parte del texto es disponibile, probabilemente le prime section";
 "library_refresh_time.last" = "Justo ora";
 "library_refresh_time.never" = "Nunquam";
@@ -239,7 +242,9 @@
 "enum.external_link_loading_policy.always_ask" = "Sempre demandar";
 "enum.external_link_loading_policy.always_load" = "Sempre cargar";
 "enum.external_link_loading_policy.never_load" = "Nunquam cargar";
+// Fuzzy
 "enum.flavor.max" = "max";
+// Fuzzy
 "enum.flavor.no_pic" = "necun imagine";
 "enum.flavor.mini" = "mini";
 "enum.library_language_sorting_model.a-z" = "A-Z";

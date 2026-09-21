@@ -78,9 +78,9 @@
 "download_again.question.title" = "U beschikt al over dit bestand.";
 "download_again.question.description_part_1" = "Het lijkt erop dat %@ al is gedownload.";
 "download_again.question.description_part_2" = "Wilt u \"%@\" nog steeds downloaden? Uw bestaande bestand wordt niet verwijderd.";
-"flavor_tag.help.max" = "alles behalve grote multimedia-bestanden zoals video/audio";
-"flavor_tag.help.no_pic" = "de meeste foto’s zijn verwijderd";
-"flavor_tag.help.mini" = "slechts een deel van de tekst is beschikbaar, waarschijnlijk het eerste gedeelte";
+"flavor_tag.help.max" = "Alles behalve grote multimedia-bestanden zoals video/audio";
+"flavor_tag.help.no_pic" = "De meeste foto’s zijn verwijderd";
+"flavor_tag.help.mini" = "Slechts een deel van de tekst is beschikbaar, waarschijnlijk het eerste gedeelte";
 "library_refresh_time.last" = "Zojuist";
 "library_refresh_time.never" = "Nooit";
 "zim_file_cell.page_count" = "%@ pagina's";
@@ -257,7 +257,7 @@
 "enum.external_link_loading_policy.always_ask" = "Altijd vragen";
 "enum.external_link_loading_policy.always_load" = "Altijd laden";
 "enum.external_link_loading_policy.never_load" = "Nooit laden";
-"enum.flavor.max" = "max";
+"enum.flavor.max" = "maxi";
 "enum.flavor.no_pic" = "geen afb.";
 "enum.flavor.mini" = "mini";
 "enum.library_language_sorting_model.a-z" = "A-Z";

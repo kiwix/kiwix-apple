@@ -66,8 +66,11 @@
 "download_task_cell.status.failed" = "Dështoi";
 "download_task_cell.status.downloading" = "Po shkarkohet…";
 "download_task_cell.status.paused" = "Ndalur";
+// Fuzzy
 "flavor_tag.help.max" = "gjithçka, hiq kartela të mëdha media, bie fjala, video/audio";
+// Fuzzy
 "flavor_tag.help.no_pic" = "shumica e fotove janë hequr";
+// Fuzzy
 "flavor_tag.help.mini" = "është i gatshëm vetëm një nëngrup i tekstit, me gjasa ndarja e parë";
 "library_refresh_time.last" = "Mu Tani";
 "library_refresh_time.never" = "Kurrë";
@@ -201,6 +204,7 @@
 "enum.external_link_loading_policy.always_ask" = "Pyet Përherë";
 "enum.external_link_loading_policy.always_load" = "Shkarkoje Përherë";
 "enum.external_link_loading_policy.never_load" = "Mos e Ngarko Kurrë";
+// Fuzzy
 "enum.flavor.max" = "maks.";
 "enum.flavor.no_pic" = "pa foto";
 "enum.flavor.mini" = "mini";

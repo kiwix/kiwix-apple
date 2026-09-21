@@ -65,7 +65,9 @@
 "download_task_cell.status.paused" = "Призупинено";
 "download_again.question.title" = "У вас вже є цей файл.";
 "download_again.question.description_part_1" = "Схоже, що %@ вже завантажено.";
+// Fuzzy
 "flavor_tag.help.max" = "усе, крім великих медіафайлів, таких як відео/аудіо";
+// Fuzzy
 "flavor_tag.help.no_pic" = "більшість зображень було видалено";
 "library_refresh_time.last" = "Щойно";
 "library_refresh_time.never" = "Ніколи";
@@ -207,7 +209,9 @@
 "enum.external_link_loading_policy.always_ask" = "Завжди запитувати";
 "enum.external_link_loading_policy.always_load" = "Завжди завантажувати";
 "enum.external_link_loading_policy.never_load" = "Ніколи не завантажувати";
+// Fuzzy
 "enum.flavor.max" = "макс";
+// Fuzzy
 "enum.flavor.no_pic" = "без фото";
 "enum.flavor.mini" = "міні";
 "enum.library_language_sorting_model.a-z" = "А-Я";

@@ -52,9 +52,9 @@
 "download_again.question.title" = "Hai già questo file.";
 "download_again.question.description_part_1" = "Sembra che %@ sia già stato scaricato.";
 "download_again.question.description_part_2" = "Vuoi comunque scaricare \"%@\"? Il file esistente non verrà cancellato.";
-"flavor_tag.help.max" = "ogni cosa eccetto i file multimediali di grandi dimensioni, come video/audio";
-"flavor_tag.help.no_pic" = "la maggior parte delle immagini sono state rimosse";
-"flavor_tag.help.mini" = "è disponibile solo una parte del testo, probabilmente la prima sezione";
+"flavor_tag.help.max" = "Tutto tranne i file multimediali di grandi dimensioni come video/audio";
+"flavor_tag.help.no_pic" = "La maggior parte delle immagini è stata rimossa";
+"flavor_tag.help.mini" = "È disponibile solo una parte del testo, probabilmente la prima sezione.";
 "library_refresh_time.last" = "Proprio adesso";
 "library_refresh_time.never" = "Mai";
 "zim_file_cell.page_count" = "%@ pagine";
@@ -87,6 +87,7 @@
 "zim_file.list.description.text" = "Descrizione";
 "zim_file.list.actions.text" = "Azioni";
 "zim_file.list.info.text" = "Informazioni";
+"zim_file.list.content.text" = "Contenuto";
 "zim_file.action.locate.title" = "Localizza";
 "zim_file.action.open_main_page.title" = "Apri pagina principale";
 "zim_file.action.unlink.multi_title" = "Scollega %@ file ZIM";

@@ -64,8 +64,11 @@
 "download_task_cell.status.failed" = "Nu a reușit";
 "download_task_cell.status.downloading" = "Descărcare...";
 "download_task_cell.status.paused" = "Pauză";
+// Fuzzy
 "flavor_tag.help.max" = "totul, cu excepția fișierelor media mari, cum ar fi video/audio";
+// Fuzzy
 "flavor_tag.help.no_pic" = "majoritatea pozelor au fost eliminate";
+// Fuzzy
 "flavor_tag.help.mini" = "doar un subset al textului este disponibil, probabil prima secțiune";
 "library_refresh_time.last" = "Chiar Acum";
 "library_refresh_time.never" = "Niciodată";
@@ -201,7 +204,9 @@
 "enum.external_link_loading_policy.always_ask" = "Întreabă Întotdeauna";
 "enum.external_link_loading_policy.always_load" = "Încărcați Întotdeauna";
 "enum.external_link_loading_policy.never_load" = "Nu Încărcați Niciodată";
+// Fuzzy
 "enum.flavor.max" = "max";
+// Fuzzy
 "enum.flavor.no_pic" = "nicio poza";
 "enum.flavor.mini" = "mini";
 "enum.library_language_sorting_model.a-z" = "A-Z";

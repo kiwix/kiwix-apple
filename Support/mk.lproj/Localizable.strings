@@ -80,8 +80,11 @@
 "download_again.question.title" = "Веќе ја имате оваа податотека.";
 "download_again.question.description_part_1" = "Се чини дека %@ е веќе преземана.";
 "download_again.question.description_part_2" = "Дали сепак сакате да ја преземете „%@“? Постоечката податотека нема да се избрише.";
+// Fuzzy
 "flavor_tag.help.max" = "сè освен големи медиумски податотеки како видео/звучни";
+// Fuzzy
 "flavor_tag.help.no_pic" = "највеќето слики се отстранети";
+// Fuzzy
 "flavor_tag.help.mini" = "достапен е само дел од текстот, веројатно првиот";
 "library_refresh_time.last" = "Штотуку";
 "library_refresh_time.never" = "Никогаш";
@@ -240,7 +243,9 @@
 "enum.external_link_loading_policy.always_ask" = "Секогаш прашувај";
 "enum.external_link_loading_policy.always_load" = "Секогаш вчитувај";
 "enum.external_link_loading_policy.never_load" = "Никогаш не вчитувај";
+// Fuzzy
 "enum.flavor.max" = "најв.";
+// Fuzzy
 "enum.flavor.no_pic" = "нема слика";
 "enum.flavor.mini" = "мини";
 "enum.library_language_sorting_model.a-z" = "А-Ш";

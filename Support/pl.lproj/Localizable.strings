@@ -50,8 +50,11 @@
 "download_task_cell.status.failed" = "Błąd";
 "download_task_cell.status.downloading" = "Pobieranie...";
 "download_task_cell.status.paused" = "Wstrzymano";
+// Fuzzy
 "flavor_tag.help.max" = "wszystko z wyjątkiem dużych plików multimedialnych, takich jak wideo/audio";
+// Fuzzy
 "flavor_tag.help.no_pic" = "większość zdjęć została usunięta";
+// Fuzzy
 "flavor_tag.help.mini" = "dostępny jest tylko podzbiór tekstu, prawdopodobnie pierwsza sekcja";
 "library_refresh_time.last" = "Dopiero co";
 "library_refresh_time.never" = "Nigdy";
@@ -156,7 +159,9 @@
 "enum.external_link_loading_policy.always_ask" = "Zawsze pytaj";
 "enum.external_link_loading_policy.always_load" = "Zawsze ładuj";
 "enum.external_link_loading_policy.never_load" = "Nigdy nie ładuj";
+// Fuzzy
 "enum.flavor.max" = "maks";
+// Fuzzy
 "enum.flavor.no_pic" = "bez zdjecia";
 "enum.flavor.mini" = "mini";
 "enum.library_language_sorting_model.a-z" = "A-Z";

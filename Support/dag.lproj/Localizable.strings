@@ -58,8 +58,11 @@
 "download_task_cell.status.failed" = "Zaɣisiya";
 "download_task_cell.status.downloading" = "Deebu...";
 "download_task_cell.status.paused" = "Zanibu";
+// Fuzzy
 "flavor_tag.help.max" = "Binshɛɣ'kam gbaai yihi fasara shɛŋa din bara kamani sinii/ yili";
+// Fuzzy
 "flavor_tag.help.no_pic" = "Anfooni nima pam nyɛla bɛ ni yihi shɛli";
+// Fuzzy
 "flavor_tag.help.mini" = "Sabbu ŋɔ bela koŋko nyɛ din be ni, di yi pa shɛli tuuli yaɣili";
 "library_refresh_time.last" = "Kulla saha ŋɔ";
 "library_refresh_time.never" = "Abada";
@@ -181,7 +184,9 @@
 "enum.external_link_loading_policy.always_ask" = "Bɔhimi saha kam";
 "enum.external_link_loading_policy.always_load" = "Ʒilimi saha kam";
 "enum.external_link_loading_policy.never_load" = "Abada ni ʒili";
+// Fuzzy
 "enum.flavor.max" = "Pam";
+// Fuzzy
 "enum.flavor.no_pic" = "Anfooni kani";
 "enum.flavor.mini" = "Zaɣibilla";
 "enum.library_language_sorting_model.by_count" = "Diyi yan kali";

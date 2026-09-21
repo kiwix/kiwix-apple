@@ -53,6 +53,7 @@
 "download_task_cell.status.failed" = "C’hwitet";
 "download_task_cell.status.downloading" = "O pellgargañ...";
 "download_task_cell.status.paused" = "Ehanet";
+// Fuzzy
 "flavor_tag.help.no_pic" = "lamet eo bet darn vrasañ ar skeudennoù";
 "library_refresh_time.last" = "Nevez zo";
 "library_refresh_time.never" = "James";
@@ -149,7 +150,9 @@
 "enum.category.vikidia" = "Vikidia";
 "enum.category.other" = "Re all";
 "enum.external_link_loading_policy.always_ask" = "Goulenn bepred";
+// Fuzzy
 "enum.flavor.max" = "brasañ";
+// Fuzzy
 "enum.flavor.no_pic" = "skeud. ebet";
 "enum.flavor.mini" = "bihanañ";
 "enum.library_language_sorting_model.a-z" = "A-Z";
