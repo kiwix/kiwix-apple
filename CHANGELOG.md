@@ -1,3 +1,11 @@
+# 3.17.1
+
+- FIX:
+    - ZIM maps data loading (@BPerlakiH #1743)
+
+- UPDATED:
+    - Localisation updates from https://translatewiki.net (@translatewiki #1740)
+
 # 3.17.0
 
 - NEW:
