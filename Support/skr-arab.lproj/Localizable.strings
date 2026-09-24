@@ -118,7 +118,6 @@
 "enum.category.wiktionary" = "وکشنری";
 "enum.category.vikidia" = "وکی ڈیا";
 "enum.category.other" = "ٻیا";
-// Fuzzy
 "enum.libray_tab_item.opened" = "کھُل ڳیا";
 "enum.libray_tab_item.categories" = "ونکیاں";
 "enum.libray_tab_item.downloads" = "ڈاؤن لوڈ";

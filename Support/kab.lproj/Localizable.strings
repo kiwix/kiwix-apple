@@ -37,6 +37,7 @@
 "zim_file.list.description.text" = "Aglam";
 "zim_file.list.actions.text" = "Tigawin";
 "zim_file.list.info.text" = "Talɣut";
+"zim_file.list.content.text" = "Agbur";
 "zim_file.action.delete.title" = "Kkes";
 "zim_file.action.delete.button.title" = "Kkes";
 "zim_file.action.download.title" = "Zdem";

@@ -210,8 +210,6 @@
 "enum.external_link_loading_policy.always_ask" = "Selalu Tanya";
 "enum.external_link_loading_policy.always_load" = "Selalu Muat";
 "enum.external_link_loading_policy.never_load" = "Jangan Pernah Memuat";
-// Fuzzy
-// Fuzzy
 "enum.library_language_sorting_model.a-z" = "A-Z";
 "enum.library_language_sorting_model.by_count" = "Berdasarkan Hitungan";
 "enum.libray_tab_item.opened" = "Dibuka";

@@ -138,8 +138,6 @@
 "enum.category.wiktionary" = "ਵਿਕਸ਼ਨਰੀ";
 "enum.category.other" = "ਹੋਰ";
 "enum.external_link_loading_policy.always_ask" = "ਹਮੇਸ਼ਾ ਪੁੱਛੋ";
-// Fuzzy
-// Fuzzy
 "enum.library_language_sorting_model.by_count" = "ਗਿਣਤੀ ਨਾਲ";
 "enum.libray_tab_item.opened" = "ਖੋਲ੍ਹਿਆ ਗਿਆ";
 "enum.libray_tab_item.categories" = "ਸ਼੍ਰੇਣੀਆਂ";

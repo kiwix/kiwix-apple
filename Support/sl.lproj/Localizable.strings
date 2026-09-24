@@ -261,8 +261,6 @@
 "enum.external_link_loading_policy.always_ask" = "Vedno vprašaj";
 "enum.external_link_loading_policy.always_load" = "Vedno naloži";
 "enum.external_link_loading_policy.never_load" = "Nikoli ne naloži";
-// Fuzzy
-// Fuzzy
 "enum.library_language_sorting_model.a-z" = "A–Z";
 "enum.library_language_sorting_model.by_count" = "Po številu";
 "enum.libray_tab_item.opened" = "Odprto";

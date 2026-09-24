@@ -212,8 +212,6 @@
 "enum.external_link_loading_policy.always_ask" = "תמיד לשאול";
 "enum.external_link_loading_policy.always_load" = "תמיד לטעון";
 "enum.external_link_loading_policy.never_load" = "לעולם לא לטעון";
-// Fuzzy
-// Fuzzy
 "enum.library_language_sorting_model.a-z" = "א–ת";
 "enum.library_language_sorting_model.by_count" = "לפי ספירה";
 "enum.libray_tab_item.opened" = "פתוחות";

@@ -174,7 +174,6 @@
 "enum.category.other" = "Anerer";
 "enum.external_link_loading_policy.always_ask" = "Allkéiers froen";
 "enum.external_link_loading_policy.always_load" = "Ëmmer Lueden";
-// Fuzzy
 "enum.library_language_sorting_model.a-z" = "A-Z";
 "enum.library_language_sorting_model.by_count" = "No Zuel";
 "enum.libray_tab_item.opened" = "Opgemaach";

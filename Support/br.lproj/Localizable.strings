@@ -150,8 +150,6 @@
 "enum.category.vikidia" = "Vikidia";
 "enum.category.other" = "Re all";
 "enum.external_link_loading_policy.always_ask" = "Goulenn bepred";
-// Fuzzy
-// Fuzzy
 "enum.library_language_sorting_model.a-z" = "A-Z";
 "enum.libray_tab_item.opened" = "Digor";
 "enum.libray_tab_item.categories" = "Rummadoù";
