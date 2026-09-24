@@ -209,8 +209,6 @@
 "enum.external_link_loading_policy.always_ask" = "Всегда спрашивать";
 "enum.external_link_loading_policy.always_load" = "Всегда загружать";
 "enum.external_link_loading_policy.never_load" = "Никогда не загружать";
-// Fuzzy
-// Fuzzy
 "enum.library_language_sorting_model.a-z" = "A-Z";
 "enum.library_language_sorting_model.by_count" = "По количеству";
 "enum.libray_tab_item.opened" = "Открыто";

@@ -258,8 +258,6 @@
 "enum.external_link_loading_policy.always_ask" = "Fråga alltid";
 "enum.external_link_loading_policy.always_load" = "Ladda alltid";
 "enum.external_link_loading_policy.never_load" = "Ladda aldrig";
-// Fuzzy
-// Fuzzy
 "enum.library_language_sorting_model.a-z" = "A-Ö";
 "enum.library_language_sorting_model.by_count" = "Efter antal";
 "enum.libray_tab_item.opened" = "Öppnade";

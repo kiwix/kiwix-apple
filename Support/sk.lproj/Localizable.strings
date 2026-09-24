@@ -264,8 +264,6 @@
 "enum.external_link_loading_policy.always_ask" = "Vždy sa opýtať";
 "enum.external_link_loading_policy.always_load" = "Vždy načítať";
 "enum.external_link_loading_policy.never_load" = "Nikdy nenačítať";
-// Fuzzy
-// Fuzzy
 "enum.library_language_sorting_model.a-z" = "A – Z";
 "enum.library_language_sorting_model.by_count" = "Podľa počtu";
 "enum.libray_tab_item.opened" = "Otvorené";

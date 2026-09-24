@@ -49,7 +49,6 @@
 "enum.category.vikidia" = "Vikidia";
 "enum.category.other" = "Mosúsu";
 "enum.external_link_loading_policy.always_ask" = "Tuna ntango nyonso";
-// Fuzzy
 "enum.library_language_sorting_model.a-z" = "A-Z";
 "enum.library_language_sorting_model.by_count" = "Na kolanda motango";
 "enum.libray_tab_item.opened" = "Efungolami";

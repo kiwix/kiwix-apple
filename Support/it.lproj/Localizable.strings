@@ -4,6 +4,7 @@
 // Author: Clorofolle
 // Author: LametinoWiki
 // Author: Luca.favorido
+// Author: Matroz
 // Author: Wheelygay
 
 "library_refresh_error.retrieve.description" = "Errore durante il recupero dei dati del catalogo.";
@@ -180,6 +181,7 @@
 "payment.success.description" = "Il tuo supporto aiuta a mantenere la conoscenza libera e accessibile anche offline.";
 "payment.error.description" = "Si è verificato un problema con il pagamento. Riprova.";
 "payment.error_already_subscribed.title" = "Hai già una donazione mensile";
+"payment.donation_cell.description" = "Nessuna pubblicità, nessun sistema di tracciamento, finanziato dalle donazioni";
 "download_service.error.client.backgroundSessionInUseByAnotherProcess" = "Impossibile comunicare con il servizio di trasferimento in background";
 "download_service.error.client.backgroundSessionWasDisconnected" = "Connessione al servizio di trasferimento in background persa";
 "download_service.error.client.cancelled" = "annullato";

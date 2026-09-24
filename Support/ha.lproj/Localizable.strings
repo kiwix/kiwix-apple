@@ -205,8 +205,6 @@
 "enum.external_link_loading_policy.always_ask" = "Koyaushe Tambayi";
 "enum.external_link_loading_policy.always_load" = "Koyaushe Loda";
 "enum.external_link_loading_policy.never_load" = "Kar a taɓa Loda";
-// Fuzzy
-// Fuzzy
 "enum.library_language_sorting_model.a-z" = "A-Z";
 "enum.library_language_sorting_model.by_count" = "Ta hanyar lissafi";
 "enum.libray_tab_item.opened" = "Bude";

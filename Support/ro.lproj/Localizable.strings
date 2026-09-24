@@ -204,8 +204,6 @@
 "enum.external_link_loading_policy.always_ask" = "Întreabă Întotdeauna";
 "enum.external_link_loading_policy.always_load" = "Încărcați Întotdeauna";
 "enum.external_link_loading_policy.never_load" = "Nu Încărcați Niciodată";
-// Fuzzy
-// Fuzzy
 "enum.library_language_sorting_model.a-z" = "A-Z";
 "enum.library_language_sorting_model.by_count" = "După Număr";
 "enum.libray_tab_item.opened" = "Deschis";

@@ -204,7 +204,6 @@
 "enum.external_link_loading_policy.always_ask" = "Pyet Përherë";
 "enum.external_link_loading_policy.always_load" = "Shkarkoje Përherë";
 "enum.external_link_loading_policy.never_load" = "Mos e Ngarko Kurrë";
-// Fuzzy
 "enum.library_language_sorting_model.a-z" = "A-Z";
 "enum.library_language_sorting_model.by_count" = "Sipas Numrash";
 "enum.libray_tab_item.opened" = "Hapur";

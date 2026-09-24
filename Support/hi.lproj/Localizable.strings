@@ -76,7 +76,6 @@
 "enum.category.wikivoyage" = "विकियात्रा";
 "enum.category.other" = "अन्य";
 "enum.external_link_loading_policy.always_ask" = "हमेशा पूछें";
-// Fuzzy
 "enum.libray_tab_item.categories" = "श्रेणियाँ";
 "enum.libray_tab_item.new" = "नया";
 "enum.navigation_item.new" = "नया";

@@ -87,11 +87,8 @@
 "download_again.question.title" = "您已经拥有这个文件。";
 "download_again.question.description_part_1" = "%@看起来已下载完毕。";
 "download_again.question.description_part_2" = "您仍要下载“%@”吗？您现有的文件不会被删除。";
-// Fuzzy
 "flavor_tag.help.max" = "除视频/音频等大型媒体文件之外的所有内容";
-// Fuzzy
 "flavor_tag.help.no_pic" = "大多数照片已被删除";
-// Fuzzy
 "flavor_tag.help.mini" = "仅有部分文本可用，这可能是第一部分";
 "library_refresh_time.last" = "刚刚";
 "library_refresh_time.never" = "从不";
@@ -132,6 +129,7 @@
 "zim_file.list.description.text" = "描述";
 "zim_file.list.actions.text" = "操作";
 "zim_file.list.info.text" = "信息";
+"zim_file.list.content.text" = "内容";
 "zim_file.action.locate.title" = "定位";
 "zim_file.action.open_main_page.title" = "打开首页";
 "zim_file.action.reveal_in_finder.title" = "在 Finder 中显示";
@@ -269,8 +267,6 @@
 "enum.external_link_loading_policy.always_ask" = "总是询问";
 "enum.external_link_loading_policy.always_load" = "始终加载";
 "enum.external_link_loading_policy.never_load" = "永不加载";
-// Fuzzy
-// Fuzzy
 "enum.library_language_sorting_model.a-z" = "A-Z";
 "enum.library_language_sorting_model.by_count" = "按数量";
 "enum.libray_tab_item.opened" = "已打开";
@@ -306,6 +302,7 @@
 "payment.error_already_subscribed.title" = "您已有每月捐款";
 "payment.error_already_subscribed.description" = "请按照我们之前发送的电子邮件中的说明进行更新。";
 "payment.donation_reason.title" = "请帮助我们保持 Kiwix 和 ZIM 文件的更新。";
+"payment.donation_cell.description" = "无广告，无追踪器，由捐赠资助";
 "payment.donation_is_encrypted" = "您的捐赠已通过 Apple 内置的安全机制进行加密。";
 "download_service.error.client.backgroundSessionInUseByAnotherProcess" = "无法与后台传输服务通信";
 "download_service.error.client.backgroundSessionWasDisconnected" = "与后台传输服务断开连接";
