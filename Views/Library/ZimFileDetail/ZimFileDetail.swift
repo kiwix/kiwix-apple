@@ -343,7 +343,7 @@ struct ZimFileDetail: View {
 
     private var downloadAction: some View {
         Action(title: LocalString.zim_file_action_download_title) {
-            if let freeSpace = freeSpace, zimFile.size >= freeSpace - 10^9 {
+            if let freeSpace = freeSpace, zimFile.size >= freeSpace - 1_000_000_000 {
                 isPresentingDownloadAlert = true
             } else {
                 let fileID = zimFile.fileID
