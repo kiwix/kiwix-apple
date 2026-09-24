@@ -163,14 +163,7 @@ enum Flavor: String, CustomStringConvertible {
     }
 
     var description: String {
-        switch self {
-        case .max:
-            return LocalString.enum_flavor_max
-        case .noPic:
-            return LocalString.enum_flavor_no_pic
-        case .mini:
-            return LocalString.enum_flavor_mini
-        }
+        rawValue
     }
     
     var help: String {

@@ -210,10 +210,7 @@
 "enum.external_link_loading_policy.always_load" = "Завжди завантажувати";
 "enum.external_link_loading_policy.never_load" = "Ніколи не завантажувати";
 // Fuzzy
-"enum.flavor.max" = "макс";
 // Fuzzy
-"enum.flavor.no_pic" = "без фото";
-"enum.flavor.mini" = "міні";
 "enum.library_language_sorting_model.a-z" = "А-Я";
 "enum.library_language_sorting_model.by_count" = "За кількістю";
 "enum.libray_tab_item.opened" = "Відкрито";

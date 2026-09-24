@@ -259,10 +259,7 @@
 "enum.external_link_loading_policy.always_load" = "Ladda alltid";
 "enum.external_link_loading_policy.never_load" = "Ladda aldrig";
 // Fuzzy
-"enum.flavor.max" = "max";
 // Fuzzy
-"enum.flavor.no_pic" = "ingen bild";
-"enum.flavor.mini" = "mini";
 "enum.library_language_sorting_model.a-z" = "A-Ö";
 "enum.library_language_sorting_model.by_count" = "Efter antal";
 "enum.libray_tab_item.opened" = "Öppnade";

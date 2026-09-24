@@ -241,10 +241,7 @@
 "enum.external_link_loading_policy.always_load" = "Immer laden";
 "enum.external_link_loading_policy.never_load" = "Niemals laden";
 // Fuzzy
-"enum.flavor.max" = "max.";
 // Fuzzy
-"enum.flavor.no_pic" = "kein Bild";
-"enum.flavor.mini" = "Mini";
 "enum.library_language_sorting_model.a-z" = "A–Z";
 "enum.library_language_sorting_model.by_count" = "Nach Anzahl";
 "enum.libray_tab_item.opened" = "Geöffnet";

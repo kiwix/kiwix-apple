@@ -270,10 +270,7 @@
 "enum.external_link_loading_policy.always_load" = "永遠載入";
 "enum.external_link_loading_policy.never_load" = "永不載入";
 // Fuzzy
-"enum.flavor.max" = "最大";
 // Fuzzy
-"enum.flavor.no_pic" = "沒有圖片";
-"enum.flavor.mini" = "最小";
 "enum.library_language_sorting_model.a-z" = "A 到 Z";
 "enum.library_language_sorting_model.by_count" = "依總計";
 "enum.libray_tab_item.opened" = "已開啟";
