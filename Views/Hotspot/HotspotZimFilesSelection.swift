@@ -48,7 +48,7 @@ struct HotspotZimFilesSelection: View {
     
     var body: some View {
         VStack(spacing: 0) {
-            if #unavailable(iOS 26.0) {
+            if #unavailable(iOS 26.0), FeatureFlags.hasLibrary {
                 Text(LocalString.hotspot_select_zim_files_message)
                     .font(.callout)
             }
@@ -175,7 +175,7 @@ private struct NavigationSubtitleModifier: ViewModifier {
     }
     
     func body(content: Content) -> some View {
-        if #available(iOS 26.0, *) {
+        if #available(iOS 26.0, *), FeatureFlags.hasLibrary {
             content
                 .navigationSubtitle(subtitle)
         } else {
