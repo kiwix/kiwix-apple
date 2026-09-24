@@ -119,7 +119,6 @@
 "enum.category.vikidia" = "وکی ڈیا";
 "enum.category.other" = "ٻیا";
 // Fuzzy
-"enum.flavor.max" = "ودھ و ودھ";
 "enum.libray_tab_item.opened" = "کھُل ڳیا";
 "enum.libray_tab_item.categories" = "ونکیاں";
 "enum.libray_tab_item.downloads" = "ڈاؤن لوڈ";

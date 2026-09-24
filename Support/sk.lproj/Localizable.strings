@@ -265,10 +265,7 @@
 "enum.external_link_loading_policy.always_load" = "Vždy načítať";
 "enum.external_link_loading_policy.never_load" = "Nikdy nenačítať";
 // Fuzzy
-"enum.flavor.max" = "max";
 // Fuzzy
-"enum.flavor.no_pic" = "bez obrázkov";
-"enum.flavor.mini" = "mini";
 "enum.library_language_sorting_model.a-z" = "A – Z";
 "enum.library_language_sorting_model.by_count" = "Podľa počtu";
 "enum.libray_tab_item.opened" = "Otvorené";

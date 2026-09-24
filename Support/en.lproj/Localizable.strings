@@ -306,9 +306,6 @@
 "enum.external_link_loading_policy.always_ask" = "Always Ask";
 "enum.external_link_loading_policy.always_load" = "Always Load";
 "enum.external_link_loading_policy.never_load" = "Never Load";
-"enum.flavor.max" = "maxi";
-"enum.flavor.no_pic" = "nopic";
-"enum.flavor.mini" = "mini";
 "enum.library_language_sorting_model.a-z" = "A-Z";
 "enum.library_language_sorting_model.by_count" = "By Count";
 "enum.libray_tab_item.opened" = "Opened";

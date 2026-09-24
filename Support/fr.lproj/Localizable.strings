@@ -272,10 +272,7 @@
 "enum.external_link_loading_policy.always_load" = "Toujours charger";
 "enum.external_link_loading_policy.never_load" = "Ne jamais charger";
 // Fuzzy
-"enum.flavor.max" = "max";
 // Fuzzy
-"enum.flavor.no_pic" = "aucune image";
-"enum.flavor.mini" = "mini";
 "enum.library_language_sorting_model.a-z" = "A-Z";
 "enum.library_language_sorting_model.by_count" = "Par nombre";
 "enum.libray_tab_item.opened" = "Ouvert";

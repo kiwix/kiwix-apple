@@ -211,10 +211,7 @@
 "enum.external_link_loading_policy.always_load" = "Na-ebu mgbe niile";
 "enum.external_link_loading_policy.never_load" = "Ebukwala ya";
 // Fuzzy
-"enum.flavor.max" = "max";
 // Fuzzy
-"enum.flavor.no_pic" = "enweghị foto";
-"enum.flavor.mini" = "Obere";
 "enum.library_language_sorting_model.a-z" = "A-Z";
 "enum.library_language_sorting_model.by_count" = "Site na ọnụ ọgụgụ";
 "enum.libray_tab_item.opened" = "Mepere";

@@ -197,10 +197,7 @@
 "enum.external_link_loading_policy.always_load" = "Her Zaman Yükle";
 "enum.external_link_loading_policy.never_load" = "Asla Yükleme";
 // Fuzzy
-"enum.flavor.max" = "maks.";
 // Fuzzy
-"enum.flavor.no_pic" = "resim yok";
-"enum.flavor.mini" = "mini";
 "enum.library_language_sorting_model.a-z" = "A-Z";
 "enum.library_language_sorting_model.by_count" = "Sayıma göre";
 "enum.libray_tab_item.opened" = "Açıldı";
