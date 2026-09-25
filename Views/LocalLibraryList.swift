@@ -64,9 +64,9 @@ struct LocalLibraryList: View {
                     AsyncButtonView {
                         NotificationCenter.default.post(name: .openDonations, object: nil, userInfo: nil)
                     } label: {
-                        DonationCell(isLoading: false, isSelected: false)
+                        DonationCell(isLoading: false)
                     } loading: {
-                        DonationCell(isLoading: true, isSelected: true)
+                        DonationCell(isLoading: true)
                     }
                 }
 #endif

@@ -18,8 +18,6 @@ import SwiftUI
 struct DonationCell: View {
     @State private var isHovering: Bool = false
     let isLoading: Bool
-    let isSelected: Bool
-    private let backgroundColoring = CellBackground.colorFor
     
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
@@ -43,12 +41,11 @@ struct DonationCell: View {
         .padding()
         .background {
             CellBackground.clipShapeRectangle
-                .fill(backgroundColoring(isHovering, isSelected).opacity(0.5))
-                .stroke(.red.opacity(0.33), lineWidth: 1)
+                .fill(Color.cyan.opacity(0.1682))
         }
         .modifier(LoadingOverlay(isLoading: isLoading))
         .onHover { self.isHovering = $0 }
-        .accessibilityAddTraits(isSelected ? .isSelected : .isButton)
+        .accessibilityAddTraits(.isButton)
         .accessibilityElement()
         .accessibilityLabel(Self.cellAccessibilityLabel())
         .accessibilityAddTraits(.isButton)
