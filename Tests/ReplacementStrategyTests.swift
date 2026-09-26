@@ -19,6 +19,7 @@ import XCTest
 
 final class ReplacementStrategyTests: XCTestCase {
 
+    // swiftlint:disable:next identifier_name
     private let gb: Int64 = 1_000_000_000
 
     override func tearDownWithError() throws {

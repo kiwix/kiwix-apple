@@ -77,9 +77,9 @@ final class DownloadService {
     ///   - zimFile: the zim file to download
     ///   - allowsCellularAccess: if using cellular data is allowed
     ///   - replacing: fileID of an older version of the same ZIM file, to be replaced once the download succeeded
-    func start(zimFileID: UUID,
+    func start(zimFileID: UUID, // swiftlint:disable:this function_body_length
                allowsCellularAccess: Bool,
-               replacing oldFileID: UUID? = nil) async { // swiftlint:disable:this function_body_length
+               replacing oldFileID: UUID? = nil) async {
         requestNotificationAuthorization()
         if let oldFileID {
             ZimReplacement.setPending(newFileID: zimFileID, oldFileID: oldFileID)

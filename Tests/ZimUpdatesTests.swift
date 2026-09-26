@@ -18,7 +18,21 @@ import Defaults
 import XCTest
 @testable import Kiwix
 
+private struct RecordState {
+    let count: Int
+    let missing: Bool?
+    let hasBookmark: Bool
+    let integrity: Bool?
+}
+
+private struct ReplacedState {
+    let oldState: String
+    let bookmarkHost: String?
+    let bookmarkOwner: UUID?
+}
+
 // swiftlint:disable force_try
+// swiftlint:disable:next type_body_length
 final class ZimUpdatesTests: XCTestCase {
 
     private static let day: TimeInterval = 24 * 60 * 60
@@ -219,16 +233,17 @@ final class ZimUpdatesTests: XCTestCase {
         let deleted = await ZimReplacement.deleteFileKeepingRecord(oldFileID: fileID)
 
         XCTAssertTrue(deleted)
-        let (count, missing, hasBookmark, integrity) = await MainActor.run {
-            () -> (Int, Bool?, Bool, Bool?) in
+        let state = await MainActor.run { () -> RecordState in
             let all = (try? Database.shared.viewContext.fetch(ZimFile.fetchRequest(fileID: fileID))) ?? []
             let total = (try? Database.shared.viewContext.count(for: ZimFile.fetchRequest())) ?? -1
-            return (total, all.first?.isMissing, all.first?.fileURLBookmark != nil, all.first?.isIntegrityChecked)
+            return RecordState(count: total, missing: all.first?.isMissing,
+                               hasBookmark: all.first?.fileURLBookmark != nil,
+                               integrity: all.first?.isIntegrityChecked)
         }
-        XCTAssertEqual(count, 1)
-        XCTAssertEqual(missing, true)
-        XCTAssertTrue(hasBookmark)
-        XCTAssertNil(integrity)
+        XCTAssertEqual(state.count, 1)
+        XCTAssertEqual(state.missing, true)
+        XCTAssertTrue(state.hasBookmark)
+        XCTAssertNil(state.integrity)
     }
 
     func test_deleteFileKeepingRecord_reportsFailureAndLeavesTheRecordAlone() async throws {
@@ -243,13 +258,16 @@ final class ZimUpdatesTests: XCTestCase {
         let deleted = await ZimReplacement.deleteFileKeepingRecord(oldFileID: fileID)
 
         XCTAssertFalse(deleted)
-        let (missing, hasBookmark, integrity) = await MainActor.run { () -> (Bool?, Bool, Bool?) in
+        let state = await MainActor.run { () -> RecordState in
             let all = (try? Database.shared.viewContext.fetch(ZimFile.fetchRequest(fileID: fileID))) ?? []
-            return (all.first?.isMissing, all.first?.fileURLBookmark != nil, all.first?.isIntegrityChecked)
+            return RecordState(count: all.count, missing: all.first?.isMissing,
+                               hasBookmark: all.first?.fileURLBookmark != nil,
+                               integrity: all.first?.isIntegrityChecked)
         }
-        XCTAssertEqual(missing, false, "the record must not be marked missing while the file is still there")
-        XCTAssertTrue(hasBookmark)
-        XCTAssertEqual(integrity, true, "nothing at all should have changed")
+        XCTAssertEqual(state.missing, false,
+                       "the record must not be marked missing while the file is still there")
+        XCTAssertTrue(state.hasBookmark)
+        XCTAssertEqual(state.integrity, true, "nothing at all should have changed")
     }
 
     func test_replace_migratesBookmarksAndUnlinksOldRecord_evenWhenTheFileStays() async throws {
@@ -269,7 +287,7 @@ final class ZimUpdatesTests: XCTestCase {
 
         await ZimReplacement.replace(oldFileID: oldID, with: newID)
 
-        let (oldState, bookmarkHost, bookmarkOwner) = await MainActor.run { () -> (String, String?, UUID?) in
+        let result = await MainActor.run { () -> ReplacedState in
             let context = Database.shared.viewContext
             let old = (try? context.fetch(ZimFile.fetchRequest(fileID: oldID)))?.first
             let bookmark = (try? context.fetch(Bookmark.fetchRequest()))?.first
@@ -278,12 +296,13 @@ final class ZimUpdatesTests: XCTestCase {
             } else {
                 "deleted"
             }
-            return (state, bookmark?.articleURL.host(), bookmark?.zimFile?.fileID)
+            return ReplacedState(oldState: state, bookmarkHost: bookmark?.articleURL.host(),
+                                 bookmarkOwner: bookmark?.zimFile?.fileID)
         }
-        XCTAssertEqual(oldState, "unlinked",
+        XCTAssertEqual(result.oldState, "unlinked",
                        "the old record is unlinked, not deleted, so no list or selection holding it can trap")
-        XCTAssertEqual(bookmarkOwner, newID)
-        XCTAssertEqual(bookmarkHost, newID.uuidString)
+        XCTAssertEqual(result.bookmarkOwner, newID)
+        XCTAssertEqual(result.bookmarkHost, newID.uuidString)
     }
 
     // MARK: - Helpers
@@ -291,10 +310,11 @@ final class ZimUpdatesTests: XCTestCase {
     @MainActor
     @discardableResult
     private static func insert(name: String,
-                        flavor: String?,
-                        daysAgo: Double,
-                        downloaded: Bool = false,
-                        downloadURL: URL? = URL(string: "https://download.kiwix.org/zim/test.zim.meta4")) -> ZimFile {
+                               flavor: String?,
+                               daysAgo: Double,
+                               downloaded: Bool = false,
+                               downloadURL: URL? = URL(string: "https://download.kiwix.org/zim/test.zim.meta4")
+    ) -> ZimFile {
         let context = Database.shared.viewContext
         let zimFile = ZimFile(context: context)
         let metadata = ZimFileMetaStruct(
