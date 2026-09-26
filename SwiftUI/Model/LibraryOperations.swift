@@ -140,6 +140,7 @@ ZIM file cannot be opened: \(zimFile.name, privacy: .public) |\
         zimFile.persistentID = metadata.groupIdentifier
         zimFile.requiresServiceWorkers = metadata.requiresServiceWorkers
         zimFile.size = metadata.size
+        zimFile.tags = metadata.tags.joined(separator: ";")
 
         // Overwrite these, only if there are new values
         if let faviconURL = metadata.faviconURL { zimFile.faviconURL = faviconURL }

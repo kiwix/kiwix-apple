@@ -30,6 +30,7 @@
 @property (nonatomic, strong, nonnull) NSNumber *mediaCount;
 @property (nonatomic, strong, nonnull) NSString *creator;
 @property (nonatomic, strong, nonnull) NSString *publisher;
+@property (nonatomic, strong, nonnull) NSString *tags;
 
 // nullable attributes
 @property (nonatomic, strong, nullable) NSURL *downloadURL;
@@ -58,6 +59,7 @@
                              mediaCount:(NSNumber * _Nonnull)mediaCount
                                 creator:(NSString * _Nonnull)creator
                               publisher:(NSString * _Nonnull)publisher
+                                   tags:(NSString * _Nonnull)tags
                             downloadURL:(NSURL * _Nullable)downloadURL
                              faviconURL:(NSURL * _Nullable)faviconURL
                             faviconData:(NSData * _Nullable)faviconData

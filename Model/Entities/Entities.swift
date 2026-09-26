@@ -274,11 +274,16 @@ final class ZimFile: NSManagedObject {
     @NSManaged var bookmarks: Set<Bookmark>
     @NSManaged var downloadTask: DownloadTask?
     @NSManaged var tabs: Set<Tab>
+    @NSManaged var tags: String
 
     var languageCodesListed: String {
         return languageCode.split(separator: ",").compactMap { code -> String? in
             return Locale.current.localizedString(forIdentifier: String(code))
         }.joined(separator: ",")
+    }
+    
+    var tagsListed: String {
+        tags.split(separator: ";").joined(separator: ", ")
     }
     
     var pageCountFormatted: String {

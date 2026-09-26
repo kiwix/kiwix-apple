@@ -90,6 +90,7 @@ struct ZimFileService {
             mediaCount: metadata.mediaCount.int64Value,
             creator: metadata.creator,
             publisher: metadata.publisher,
+            tags: Self.parse(tags: metadata.tags),
             downloadURL: metadata.downloadURL,
             faviconURL: metadata.faviconURL,
             faviconData: metadata.faviconData,
@@ -99,6 +100,13 @@ struct ZimFileService {
             hasVideos: metadata.hasVideos,
             requiresServiceWorkers: metadata.requiresServiceWorkers
         )
+    }
+    
+    nonisolated static func parse(tags: String) -> [String] {
+        tags.split(separator: ";").compactMap { tag -> String? in
+            guard !tag.starts(with: "_") else { return nil }
+            return String(tag)
+        }
     }
 
     // MARK: - URL System Bookmark

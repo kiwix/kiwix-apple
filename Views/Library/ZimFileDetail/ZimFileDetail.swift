@@ -383,6 +383,9 @@ struct ZimFileDetail: View {
     private var content: some View {
         Attribute(title: LocalString.zim_file_base_info_attribute_language,
                   detail: zimFile.languageCodesListed)
+        if !zimFile.tagsListed.isEmpty {
+            Attribute(title: "Tags", detail: zimFile.tagsListed)
+        }
         AttributeBool(title: LocalString.zim_file_bool_info_pictures, detail: zimFile.hasPictures)
         AttributeBool(title: LocalString.zim_file_bool_info_videos, detail: zimFile.hasVideos)
         AttributeBool(title: LocalString.zim_file_bool_info_details, detail: zimFile.hasDetails)
