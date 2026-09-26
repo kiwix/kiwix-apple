@@ -23,15 +23,19 @@ private struct RecordState {
     let missing: Bool?
     let hasBookmark: Bool
     let integrity: Bool?
+    let bookmarkOwner: UUID?
 }
 
 private struct ReplacedState {
     let oldState: String
+    let bookmarkCount: Int
     let bookmarkHost: String?
     let bookmarkOwner: UUID?
+    let tabsOnOld: Int
+    let tabsOnNew: Int
 }
 
-// swiftlint:disable force_try
+// swiftlint:disable force_try file_length
 // swiftlint:disable:next type_body_length
 final class ZimUpdatesTests: XCTestCase {
 
@@ -221,11 +225,13 @@ final class ZimUpdatesTests: XCTestCase {
         XCTAssertEqual(ZimUpdates.fileIDsWithUpdates(in: stored), [good])
     }
 
-    func test_deleteFileKeepingRecord_marksMissingAndKeepsRecord() async throws {
+    func test_deleteFileKeepingRecord_marksMissingAndKeepsRecordAndItsBookmarks() async throws {
         let fileID = await MainActor.run { () -> UUID in
+            let context = Database.shared.viewContext
             let zimFile = Self.insert(name: Self.zimName, flavor: "maxi", daysAgo: 30, downloaded: true)
             zimFile.isIntegrityChecked = true
-            try? Database.shared.viewContext.save()
+            Self.insertBookmark(on: zimFile)
+            try? context.save()
             return zimFile.fileID
         }
         ZimReplacement.removeFile = { _ in true }
@@ -234,16 +240,20 @@ final class ZimUpdatesTests: XCTestCase {
 
         XCTAssertTrue(deleted)
         let state = await MainActor.run { () -> RecordState in
-            let all = (try? Database.shared.viewContext.fetch(ZimFile.fetchRequest(fileID: fileID))) ?? []
-            let total = (try? Database.shared.viewContext.count(for: ZimFile.fetchRequest())) ?? -1
+            let context = Database.shared.viewContext
+            let all = (try? context.fetch(ZimFile.fetchRequest(fileID: fileID))) ?? []
+            let total = (try? context.count(for: ZimFile.fetchRequest())) ?? -1
+            let bookmark = (try? context.fetch(Bookmark.fetchRequest()))?.first
             return RecordState(count: total, missing: all.first?.isMissing,
                                hasBookmark: all.first?.fileURLBookmark != nil,
-                               integrity: all.first?.isIntegrityChecked)
+                               integrity: all.first?.isIntegrityChecked,
+                               bookmarkOwner: bookmark?.zimFile?.fileID)
         }
         XCTAssertEqual(state.count, 1)
         XCTAssertEqual(state.missing, true)
         XCTAssertTrue(state.hasBookmark)
         XCTAssertNil(state.integrity)
+        XCTAssertEqual(state.bookmarkOwner, fileID, "the record is kept so that its bookmarks survive the download")
     }
 
     func test_deleteFileKeepingRecord_reportsFailureAndLeavesTheRecordAlone() async throws {
@@ -262,52 +272,102 @@ final class ZimUpdatesTests: XCTestCase {
             let all = (try? Database.shared.viewContext.fetch(ZimFile.fetchRequest(fileID: fileID))) ?? []
             return RecordState(count: all.count, missing: all.first?.isMissing,
                                hasBookmark: all.first?.fileURLBookmark != nil,
-                               integrity: all.first?.isIntegrityChecked)
+                               integrity: all.first?.isIntegrityChecked,
+                               bookmarkOwner: nil)
         }
+        XCTAssertEqual(state.count, 1)
         XCTAssertEqual(state.missing, false,
                        "the record must not be marked missing while the file is still there")
         XCTAssertTrue(state.hasBookmark)
         XCTAssertEqual(state.integrity, true, "nothing at all should have changed")
     }
 
+    func test_replace_migratesBookmarksAndUnlinksOldRecord_whenTheFileWasRemoved() async throws {
+        await assertReplace(fileRemoved: true)
+    }
+
     func test_replace_migratesBookmarksAndUnlinksOldRecord_evenWhenTheFileStays() async throws {
+        await assertReplace(fileRemoved: false)
+    }
+
+    private func assertReplace(fileRemoved: Bool) async {
         let (oldID, newID) = await MainActor.run { () -> (UUID, UUID) in
             let context = Database.shared.viewContext
             let old = Self.insert(name: Self.zimName, flavor: "maxi", daysAgo: 30, downloaded: true)
             let new = Self.insert(name: Self.zimName, flavor: "maxi", daysAgo: 1, downloaded: true)
-            let bookmark = Bookmark(context: context)
-            bookmark.articleURL = URL(string: "kiwix://\(old.fileID.uuidString)/wb/Saftladen")!
-            bookmark.title = "Saftladen"
-            bookmark.created = Date()
-            bookmark.zimFile = old
+            Self.insertBookmark(on: old)
+            let tab = Tab(context: context)
+            tab.created = Date()
+            tab.lastOpened = Date()
+            tab.zimFile = old
             try? context.save()
             return (old.fileID, new.fileID)
         }
-        ZimReplacement.removeFile = { _ in false }
+        Defaults[.zimUpdatesAvailable] = [oldID.uuidString: newID.uuidString]
+        ZimReplacement.removeFile = { _ in fileRemoved }
 
         await ZimReplacement.replace(oldFileID: oldID, with: newID)
 
         let result = await MainActor.run { () -> ReplacedState in
             let context = Database.shared.viewContext
             let old = (try? context.fetch(ZimFile.fetchRequest(fileID: oldID)))?.first
-            let bookmark = (try? context.fetch(Bookmark.fetchRequest()))?.first
+            let new = (try? context.fetch(ZimFile.fetchRequest(fileID: newID)))?.first
+            let bookmarks = (try? context.fetch(Bookmark.fetchRequest())) ?? []
             let state: String = if let old {
                 old.fileURLBookmark == nil ? "unlinked" : "still linked"
             } else {
                 "deleted"
             }
-            return ReplacedState(oldState: state, bookmarkHost: bookmark?.articleURL.host(),
-                                 bookmarkOwner: bookmark?.zimFile?.fileID)
+            return ReplacedState(oldState: state,
+                                 bookmarkCount: bookmarks.count,
+                                 bookmarkHost: bookmarks.first?.articleURL.host(),
+                                 bookmarkOwner: bookmarks.first?.zimFile?.fileID,
+                                 tabsOnOld: old?.tabs.count ?? -1,
+                                 tabsOnNew: new?.tabs.count ?? -1)
         }
         XCTAssertEqual(result.oldState, "unlinked",
                        "the old record is unlinked, not deleted, so no list or selection holding it can trap")
+        XCTAssertEqual(result.bookmarkCount, 1, "the bookmark is moved, neither duplicated nor deleted")
         XCTAssertEqual(result.bookmarkOwner, newID)
         XCTAssertEqual(result.bookmarkHost, newID.uuidString)
+        XCTAssertEqual(result.tabsOnOld, 0, "tabs showing the old version are closed by the unlink")
+        XCTAssertEqual(result.tabsOnNew, 0, "tabs are not moved over: a live web view keeps its own history")
+        XCTAssertTrue(Defaults[.zimUpdatesAvailable].isEmpty, "the replaced file no longer has an update")
+    }
+
+    func test_completePendingIfNeeded_replacesAndClearsThePendingEntry() async throws {
+        let (oldID, newID) = await MainActor.run { () -> (UUID, UUID) in
+            let old = Self.insert(name: Self.zimName, flavor: "maxi", daysAgo: 30, downloaded: true)
+            let new = Self.insert(name: Self.zimName, flavor: "maxi", daysAgo: 1, downloaded: true)
+            try? Database.shared.viewContext.save()
+            return (old.fileID, new.fileID)
+        }
+        ZimReplacement.setPending(newFileID: newID, oldFileID: oldID)
+        ZimReplacement.removeFile = { _ in true }
+
+        await ZimReplacement.completePendingIfNeeded(newFileID: newID)
+
+        XCTAssertNil(ZimReplacement.pendingOldFileID(for: newID), "a completed replacement is no longer pending")
+        let oldIsLinked = await MainActor.run { () -> Bool? in
+            let old = (try? Database.shared.viewContext.fetch(ZimFile.fetchRequest(fileID: oldID)))?.first
+            return old.map { $0.fileURLBookmark != nil }
+        }
+        XCTAssertEqual(oldIsLinked, false, "the old record is unlinked once the replacement completed")
     }
 
     // MARK: - Helpers
 
     @MainActor
+    @discardableResult
+    private static func insertBookmark(on zimFile: ZimFile) -> Bookmark {
+        let bookmark = Bookmark(context: Database.shared.viewContext)
+        bookmark.articleURL = URL(string: "kiwix://\(zimFile.fileID.uuidString)/wb/Saftladen")!
+        bookmark.title = "Saftladen"
+        bookmark.created = Date()
+        bookmark.zimFile = zimFile
+        return bookmark
+    }
+
     @discardableResult
     private static func insert(name: String,
                                flavor: String?,
