@@ -14,10 +14,12 @@
 // along with Kiwix; If not, see https://www.gnu.org/licenses/.
 
 import CoreData
+import Defaults
 import SwiftUI
 
 struct ZimFileCell: View {
     @MainActor @ObservedObject var zimFile: ZimFile
+    @Default(.zimUpdatesAvailable) private var updates
     @State private var isHovering: Bool = false
     let isLoading: Bool
     let isSelected: Bool
@@ -79,6 +81,7 @@ struct ZimFileCell: View {
                 Spacer()
                 if zimFile.isMissing { ZimFileMissingIndicator() }
                 if let flavor = Flavor(rawValue: zimFile.flavor) { FlavorTag(flavor) }
+                if hasUpdate { UpdateAvailableTag() }
             }
         }
         .padding()
@@ -88,7 +91,7 @@ struct ZimFileCell: View {
         .onHover { self.isHovering = $0 }
         .accessibilityAddTraits(isSelected ? .isSelected : .isButton)
         .accessibilityElement()
-        .accessibilityLabel(Self.cellAccessibilityLabel(for: zimFile))
+        .accessibilityLabel(Self.cellAccessibilityLabel(for: zimFile, hasUpdate: hasUpdate))
         .accessibilityAddTraits(.isButton)
     }
 
@@ -107,14 +110,22 @@ struct ZimFileCell: View {
         return formatter
     }()
     
-    static func cellAccessibilityLabel(for zimFile: ZimFile) -> String {
+    private var hasUpdate: Bool {
+        // only downloaded files can have an update, and checking the (optional) file link first
+        // keeps this from reading the fileID of a catalog row the sync has just removed
+        guard zimFile.fileURLBookmark != nil else { return false }
+        return ZimUpdates.availableUpdate(for: zimFile.fileID, in: updates) != nil
+    }
+
+    static func cellAccessibilityLabel(for zimFile: ZimFile, hasUpdate: Bool = false) -> String {
         [zimFile.name,
          zimFile.fileDescription,
          ZimFileCell.sizeFormatter.string(fromByteCount: zimFile.size),
          Flavor(rawValue: zimFile.flavor)?.description,
          LocalString.zim_file_cell_page_count(withArgs: zimFile.pageCountFormatted),
          LocalString.zim_file_cell_media_count(withArgs: zimFile.mediaCountFormatted),
-         zimFile.isMissing ? LocalString.zim_file_missing_indicator_help : nil
+         zimFile.isMissing ? LocalString.zim_file_missing_indicator_help : nil,
+         hasUpdate ? LocalString.zim_file_update_tag : nil
         ].compactMap { $0 }.joined(separator: ", ")
     }
 }
