@@ -69,6 +69,7 @@ extension Defaults.Keys {
         "ipadSplitViewVisibility",
         default: NavigationSplitViewVisibility.detailOnly
     )
+    static let lastDonationTime = Key<Date?>("lastDonationTime", default: nil)
     #endif
 }
 
