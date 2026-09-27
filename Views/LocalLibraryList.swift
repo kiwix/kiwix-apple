@@ -32,9 +32,6 @@ struct LocalLibraryList: View {
         predicate: ZimFile.openedPredicate(),
         animation: .easeInOut
     ) private var zimFiles: FetchedResults<ZimFile>
-    #if os(iOS)
-    @State private var paymentButtonLabel: PaymentButtonType?
-    #endif
     
     init(browser: BrowserViewModel) {
         load = browser.load(url:)
@@ -61,7 +58,7 @@ struct LocalLibraryList: View {
                     .buttonStyle(.plain)
                 }
 #if os(iOS)
-                if paymentButtonLabel != nil, horizontalSizeClass == .compact {
+                if Brand.showDonations, horizontalSizeClass == .compact {
                     VStack {
                         AsyncButtonView {
                             NotificationCenter.default.post(name: .openDonations, object: nil, userInfo: nil)
@@ -90,10 +87,5 @@ struct LocalLibraryList: View {
                 }
             }
         }.modifier(GridCommon(edges: .all))
-        #if os(iOS)
-            .task {
-                paymentButtonLabel = await Payment.paymentButtonTypeAsync()
-            }
-        #endif
     }
 }
