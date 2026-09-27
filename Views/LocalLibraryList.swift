@@ -13,9 +13,10 @@
 // You should have received a copy of the GNU General Public License
 // along with Kiwix; If not, see https://www.gnu.org/licenses/.
 
-import SwiftUI
 import Combine
+import CoreData
 import Defaults
+import SwiftUI
 
 /// Displays a grid of available local ZIM files. Used on new tab.
 struct LocalLibraryList: View {

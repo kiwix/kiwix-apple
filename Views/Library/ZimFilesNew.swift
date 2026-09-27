@@ -183,7 +183,7 @@ struct ZimFilesNew: View {
                         .scaleEffect(0.5)
 #endif
                 } else {
-                    Button {
+                    Button { [weak library] in
                         Task { [weak library] in
                             await library?.start(isUserInitiated: true)
                         }

@@ -13,9 +13,9 @@
 // You should have received a copy of the GNU General Public License
 // along with Kiwix; If not, see https://www.gnu.org/licenses/.
 
-import SwiftUI
-
+import CoreData
 import Defaults
+import SwiftUI
 
 struct SearchResults: View {
     @Default(.recentSearchTexts) private var recentSearchTexts

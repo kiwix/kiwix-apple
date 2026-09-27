@@ -89,7 +89,7 @@ struct LibrarySettings: View {
         VStack(spacing: 16) {
             SettingSection(name: LocalString.library_settings_catalog_title, alignment: .top) {
                 HStack(spacing: 6) {
-                    Button(LocalString.library_settings_button_refresh_now) {
+                    Button(LocalString.library_settings_button_refresh_now) { [library] in
                         Task { [weak library] in
                             await library?.start(isUserInitiated: true)
                         }
@@ -268,7 +268,7 @@ struct Settings: View {
                     ProgressView().progressViewStyle(.circular)
                 }
             } else {
-                Button(LocalString.catalog_settings_refresh_now_button) {
+                Button(LocalString.catalog_settings_refresh_now_button) { [weak library] in
                     Task { [weak library] in
                         await library?.start(isUserInitiated: true)
                     }

@@ -152,7 +152,7 @@ extension NotificationCenter {
     #endif
     
     nonisolated static func donationResult(_ finalResult: Payment.FinalResult) {
-        Task.detached(priority: .utility) {
+        _ = Task.detached(priority: .utility) {
             try await Task.sleep(nanoseconds: 2000)
             await MainActor.run {
                 NotificationCenter.default.post(name: .donationResult, object: nil, userInfo: ["result": finalResult])

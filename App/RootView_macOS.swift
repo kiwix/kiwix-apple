@@ -193,7 +193,7 @@ struct RootView: View {
             currentNavItem = .tab(objectID: tabID)
             BrowserViewModel.getCached(tabID: tabID).load(url: url)
         }
-        .onReceive(tabCloses) { publisher in
+        .onReceive(tabCloses) { [navigation] publisher in
             // closing one window either by CMD+W || red(X) close button
             guard windowTracker.current == publisher.object as? NSWindow else {
                 // when exiting full screen video, we get the same notification
