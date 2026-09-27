@@ -44,6 +44,7 @@
             self.mediaCount = [NSNumber numberWithUnsignedLongLong:_book->getMediaCount()];
             self.creator = [NSString stringWithUTF8String:_book->getCreator().c_str()];
             self.publisher = [NSString stringWithUTF8String:_book->getPublisher().c_str()];
+            self.tags = [NSString stringWithUTF8String: _book->getTags().c_str()];
         } catch (std::exception) {
             return nil;
         }
@@ -84,6 +85,7 @@
                             mediaCount:(NSNumber * _Nonnull)mediaCount
                                creator:(NSString * _Nonnull)creator
                              publisher:(NSString * _Nonnull)publisher
+                                  tags:(NSString * _Nonnull)tags
                            downloadURL:(NSURL * _Nullable)downloadURL
                             faviconURL:(NSURL * _Nullable)faviconURL
                            faviconData:(NSData * _Nullable)faviconData
@@ -107,6 +109,7 @@
         _mediaCount = mediaCount;
         _creator = creator;
         _publisher = publisher;
+        _tags = tags;
         _downloadURL = downloadURL;
         _faviconURL = faviconURL;
         _faviconData = faviconData;

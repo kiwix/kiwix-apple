@@ -22,7 +22,8 @@ enum Migrations {
     static func all() -> [Migration] {
         [
             Self.languageCodes(),
-            Self.schemeToZIM(using: Database.shared.viewContext)
+            Self.schemeToZIM(using: Database.shared.viewContext),
+            Self.tags(using: Database.shared.viewContext)
         ]
     }
 }

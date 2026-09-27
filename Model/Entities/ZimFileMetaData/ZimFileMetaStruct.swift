@@ -29,6 +29,7 @@ struct ZimFileMetaStruct: Sendable {
     let mediaCount: Int64
     let creator: String
     let publisher: String
+    let tags: [String]
     
     // nullable attributes
     let downloadURL: URL?

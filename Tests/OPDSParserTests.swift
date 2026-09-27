@@ -98,6 +98,7 @@ struct OPDSParserTests {
         #expect(metadata.mediaCount == 566835)
         #expect(metadata.creator == "Wikipedia")
         #expect(metadata.publisher == "Kiwix")
+        #expect(metadata.tags == ["wikipedia"])
         #expect(metadata.hasDetails == true)
         #expect(metadata.hasPictures == true)
         #expect(metadata.hasVideos == false)
