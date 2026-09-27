@@ -61,12 +61,15 @@ struct LocalLibraryList: View {
                 }
 #if os(iOS)
                 if paymentButtonLabel != nil, horizontalSizeClass == .compact {
-                    AsyncButtonView {
-                        NotificationCenter.default.post(name: .openDonations, object: nil, userInfo: nil)
-                    } label: {
-                        DonationCell(isLoading: false)
-                    } loading: {
-                        DonationCell(isLoading: true)
+                    VStack {
+                        AsyncButtonView {
+                            NotificationCenter.default.post(name: .openDonations, object: nil, userInfo: nil)
+                        } label: {
+                            DonationCell(isLoading: false)
+                        } loading: {
+                            DonationCell(isLoading: true)
+                        }
+                        Spacer()
                     }
                 }
 #endif
