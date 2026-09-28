@@ -67,7 +67,7 @@ struct SplitViewForiPad: View { // swiftlint:disable:this type_body_length
             }
             .listStyle(.sidebar)
             .navigationTitle(Brand.appName)
-            .toolbar {
+            .toolbar { [weak navigation] in
                 if hasNonEmptyTab() {
                     Menu {
                         Button(role: .destructive) {
@@ -188,7 +188,7 @@ struct SplitViewForiPad: View { // swiftlint:disable:this type_body_length
                     }
                     .id(tab.id)
                     .accessibilityIdentifier(tab.title ?? LocalString.common_tab_menu_new_tab)
-                    .swipeActions(edge: .trailing, allowsFullSwipe: true) {
+                    .swipeActions(edge: .trailing, allowsFullSwipe: true) { [weak navigation] in
                         if tab.zimFile != nil {
                             Button(role: .destructive) {
                                 Task { [weak navigation] in

@@ -15,6 +15,7 @@
  * along with Kiwix; If not, see https://www.gnu.org/licenses/.
 */
 
+import CoreData
 import SwiftUI
 
 struct BookmarkContextMenu: ViewModifier {
