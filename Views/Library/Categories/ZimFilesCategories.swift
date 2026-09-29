@@ -163,7 +163,10 @@ struct ZimFilesCategory: View {
         predicates.append(langPredicate)
         predicates.append(NSPredicate(format: "requiresServiceWorkers == false"))
         if !searchText.isEmpty {
-            predicates.append(NSPredicate(format: "name CONTAINS[cd] %@", searchText))
+            predicates.append(NSCompoundPredicate(orPredicateWithSubpredicates: [
+                NSPredicate(format: "name CONTAINS[cd] %@", searchText),
+                NSPredicate(format: "fileDescription CONTAINS[cd] %@", searchText)
+            ]))
         }
         return NSCompoundPredicate(andPredicateWithSubpredicates: predicates)
     }
