@@ -27,16 +27,14 @@ enum MenuSection: String, CaseIterable, Identifiable {
     case donation
     
     static var allMenuSections: [MenuSection] {
-        switch (FeatureFlags.hasLibrary, Brand.hideDonation) {
-        case (true, true):
-            allCases.filter { ![.donation].contains($0) }
-        case (false, true):
-            allCases.filter { ![.donation, .library].contains($0) }
-        case (true, false):
-            allCases
-        case (false, false):
-            allCases.filter { ![.library].contains($0) }
+        var sections = allCases
+        if !FeatureFlags.hasLibrary {
+            sections = sections.filter { ![.library].contains($0) }
         }
+        if !Brand.showDonations {
+            sections = sections.filter { ![.donation].contains($0) }
+        }
+        return sections
     }
     
     var header: String? {

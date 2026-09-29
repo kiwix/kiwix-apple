@@ -25,7 +25,6 @@ struct RootView: View {
     @StateObject private var navigation = NavigationViewModel()
     @SceneStorage("org.kiwix.macos.root.menuitem") private var currentNavItem: MenuItem?
     @StateObject private var windowTracker = WindowTracker()
-    @State private var paymentButtonLabel: PaymentButtonType?
     var isSearchFocused: FocusState<Bool>.Binding
     @StateObject private var selection = SelectedZimFileViewModel()
     // Open file alerts
@@ -68,9 +67,15 @@ struct RootView: View {
             }
             .frame(minWidth: 160)
             .safeAreaInset(edge: .bottom) {
-                if paymentButtonLabel != nil && Brand.hideDonation != true {
+                if Brand.showDonations {
                     SupportKiwixButton {
-                        openWindow(id: "donation")
+                        Task {
+                            if !Brand.replaceDonation, await Payment.paymentButtonTypeAsync() != nil {
+                                openWindow(id: "donation")
+                            } else {
+                                _ = NSWorkspace.shared.open(Brand.donationURL)
+                            }
+                        }
                     }
                 }
             }
@@ -250,10 +255,6 @@ struct RootView: View {
                 await LibraryOperations.open(url: zimFileURL)
                 await ZimMigration.forCustomApps()
                 restoreNavigationState()
-            }
-            // MARK: - payment button init
-            if Brand.hideDonation == false {
-                paymentButtonLabel = await Payment.paymentButtonTypeAsync()
             }
             
             // MARK: - migrations

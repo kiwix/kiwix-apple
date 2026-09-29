@@ -162,7 +162,6 @@ struct Settings: View {
     @EnvironmentObject private var colorSchemeStore: UserColorSchemeStore
     @EnvironmentObject private var library: LibraryViewModel
     @Environment(\.horizontalSizeClass) var horizontalSizeClass
-    @State private var paymentButtonLabel: PaymentButtonType?
     @Environment(\.dismiss) private var dismiss
 
     enum Route {
@@ -197,7 +196,6 @@ struct Settings: View {
                     if scrollToHotspot {
                         proxy.scrollTo("hotspot", anchor: .top)
                     }
-                    paymentButtonLabel = await Payment.paymentButtonTypeAsync()
                 }
             }
         }
@@ -296,7 +294,7 @@ struct Settings: View {
 
     var miscellaneous: some View {
         Section(LocalString.settings_miscellaneous_title) {
-            if paymentButtonLabel != nil, horizontalSizeClass != .regular {
+            if Brand.showDonations, horizontalSizeClass != .regular {
                 // on iPhone
                 SupportKiwixButton {
                     // need to dismiss settings first!

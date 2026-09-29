@@ -56,11 +56,17 @@ enum Brand {
 
     static let aboutText: String = Config.value(for: .aboutText) ?? LocalString.settings_about_description
     static let aboutWebsite: String = Config.value(for: .aboutWebsite) ?? "https://www.kiwix.org"
-    // currently only used under the Kiwix brand
-    // if this is set to true in Support/Info.plist the support/donation button is hidden (for macOS FTP)
-    // if not set, we fall back to false, and display the support/donation button
-    // for non Kiwix brands, it has no effect
-    static let hideDonation: Bool = Config.value(for: .hideDonation) ?? false
+    
+    // Donations are only shown under the Kiwix brand
+    static let showDonations: Bool = !AppType.isBranded
+    
+    // Based on REPLACE_DONATION set to true in Support/Info.plist, if not set we fallback to false.
+    // If set, the Apple Pay route to donation is replaced with an external link, regardless of device capabilities.
+    // It is for macOS .dmg builds / FTP, where Apple Pay cannot be supported due to signing constraints.
+    // For non Kiwix brands, it has no effect!
+    static let replaceDonation: Bool = Config.value(for: .replaceDonation) ?? false
+    
+    static let donationURL: URL = URL(string: "https://donate.kiwix.org")!
     
     /// Some branded apps (eg: PhET) have a content that collides with immersive reading
     /// we provide an optional way to turn this feature off.
@@ -98,7 +104,7 @@ enum Config: String {
     case aboutText = "BRANDED_ABOUT_TEXT"
     case aboutWebsite = "BRANDED_ABOUT_WEBSITE"
     case disableImmersiveReading = "DISABLE_IMMERSIVE_READING"
-    case hideDonation = "HIDE_DONATION"
+    case replaceDonation = "REPLACE_DONATION" // for .dmg Kiwix mac builds, it replaces Apple Pay
     case hideFindInPage = "HIDE_FIND_IN_PAGE"
     case hidePrintButton = "HIDE_PRINT_BUTTON"
     case hideRandomButton = "HIDE_RANDOM_BUTTON"

@@ -20,6 +20,9 @@ import SwiftUI
 
 /// Displays a grid of available local ZIM files. Used on new tab.
 struct LocalLibraryList: View {
+    #if os(iOS)
+    private let donationPromo = DonationPromo.shared
+    #endif
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     private let load: (URL) -> Void
     @FetchRequest(
@@ -32,9 +35,6 @@ struct LocalLibraryList: View {
         predicate: ZimFile.openedPredicate(),
         animation: .easeInOut
     ) private var zimFiles: FetchedResults<ZimFile>
-    #if os(iOS)
-    @State private var paymentButtonLabel: PaymentButtonType?
-    #endif
     
     init(browser: BrowserViewModel) {
         load = browser.load(url:)
@@ -61,7 +61,7 @@ struct LocalLibraryList: View {
                     .buttonStyle(.plain)
                 }
 #if os(iOS)
-                if paymentButtonLabel != nil, horizontalSizeClass == .compact {
+                if donationPromo.showCell(), horizontalSizeClass == .compact {
                     VStack {
                         AsyncButtonView {
                             NotificationCenter.default.post(name: .openDonations, object: nil, userInfo: nil)
@@ -90,10 +90,5 @@ struct LocalLibraryList: View {
                 }
             }
         }.modifier(GridCommon(edges: .all))
-        #if os(iOS)
-            .task {
-                paymentButtonLabel = await Payment.paymentButtonTypeAsync()
-            }
-        #endif
     }
 }

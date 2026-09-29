@@ -134,8 +134,8 @@ struct SplitViewForiPad: View { // swiftlint:disable:this type_body_length
             if case let .tab(selectedTabId) = selection {
                 BrowserTabPreloader.shared.start(with: tabs, selectedTabId: selectedTabId)
             }
+            showDonationButton()
             await observeHasZimFiles()
-            await loadDonations()
             observeNavigateToHotspotSettings()
         }
         .onChange(of: navigation.currentItem) { _, newValue in
@@ -310,11 +310,9 @@ struct SplitViewForiPad: View { // swiftlint:disable:this type_body_length
         }
     }
     
-    private func loadDonations() async {
+    private func showDonationButton() {
         guard allSections.contains(.donation) else { return }
-        if await Payment.paymentButtonTypeAsync() != nil {
-            menuDict[.donation] = [.donation]
-        }
+        menuDict[.donation] = [.donation]
     }
     
     private func updateSelection(_ newNavItem: NavigationItem?) {
