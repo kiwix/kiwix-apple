@@ -55,6 +55,10 @@ extension Defaults.Keys {
     static let selectedHotspotIds = Key<Set<UUID>>("slectedHotspotIds", default: Set<UUID>())
     static let openZIMsShowBy = Key<ZIMsShowBy>("openZIMsShowBy", default: ZIMsShowBy.all)
     static let opneZIMsSorting = Key<ZIMsSortBy>("openZIMsSortBy", default: ZIMsSortBy.size(.forward))
+    /// downloaded ZIM fileID -> newest catalog fileID of the same content (as uuidStrings)
+    static let zimUpdatesAvailable = Key<[String: String]>("zimUpdatesAvailable", default: [:])
+    /// new ZIM fileID being downloaded -> old fileID to be replaced once done (as uuidStrings)
+    static let pendingZimReplacements = Key<[String: String]>("pendingZimReplacements", default: [:])
 
     #if os(macOS)
     // window management:

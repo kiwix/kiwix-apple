@@ -343,3 +343,28 @@
 "geolocation_error.permission_denied" = "Error message returned to a ZIM web page when the user has denied geolocation permission.";
 "geolocation_error.position_unavailable" = "Error message returned to a ZIM web page when CoreLocation reports the location is unavailable (e.g. no satellites).";
 "geolocation_error.timeout" = "Error message returned to a ZIM web page when a geolocation request times out.";
+
+"zim_file.update.tag" = "Small tag shown on a downloaded ZIM file cell, when the catalog has a newer version of it";
+"zim_file_opened.overlay.no-updates-zim-files.message" = "Message shown in the opened ZIM files list, when the filter is set to show only ZIM files with an available update, and there are none";
+"zim_file_opened.toolbar.filter.show_only_updates" = "Navigation toolbar button title to show only the downloaded ZIM files that have a newer version in the catalog";
+"zim_file.update.action.title" = "Button title on the ZIM file detail page, to update the downloaded ZIM file to the newer version found in the catalog";
+"zim_file.update.installed" = "Label on the ZIM file detail page, %@ is the creation date of the currently downloaded version";
+"zim_file.update.available" = "Label on the ZIM file detail page, %@ is the creation date of the newer version available in the catalog";
+"zim_file.update.dialog.title" = "Title of the dialog asking how the ZIM file should be updated";
+"zim_file.update.dialog.new_size" = "Line in the update dialog, %@ is the file size of the new version";
+"zim_file.update.dialog.current_size" = "Line in the update dialog, %@ is the file size of the currently downloaded version";
+"zim_file.update.dialog.free_space" = "Line in the update dialog, %@ is the free space on the device";
+"zim_file.update.dialog.free_space_unknown" = "Line in the update dialog, when the free space on the device cannot be read";
+"zim_file.update.dialog.not_enough_space" = "Line in the update dialog, when the new version does not fit on the device even if the current one is deleted";
+"zim_file.update.dialog.keep" = "Update dialog button: download the new version while keeping the current one, the current one is deleted only after the download succeeded";
+"zim_file.update.dialog.delete_first" = "Update dialog button: delete the current version first to free up space, then download the new version";
+"zim_file.update.delete_first.confirm.title" = "Title of the confirmation shown before the current version of a ZIM file is deleted to make room for the update";
+"zim_file.update.delete_first.confirm.message" = "Explanation in the confirmation shown before the current version of a ZIM file is deleted to make room for the update";
+"zim_file.update.delete_first.confirm.button" = "Destructive confirmation button: delete the current version and start downloading the new one";
+
+"zim_file.update.dialog.cannot_delete_current" = "Line in the update dialog, when the app is not allowed to remove the currently downloaded version of the ZIM file";
+"zim_file.update.dialog.not_enough_space_keep" = "Line in the update dialog, when the new version does not fit, and the current one cannot be removed by the app to make room";
+"zim_file.update.dialog.free_up_folder" = "Line in the update dialog telling the user where to free up space, %@ is the folder path the ZIM files are downloaded to";
+"zim_file.update.not_removed.title" = "Title of the alert shown when the previous version of an updated ZIM file could not be removed from the device";
+"zim_file.update.not_removed.message" = "Message of the alert shown when the previous version of an updated ZIM file could not be removed, %@ is the file path it is left at";
+"zim_file.update.downloading" = "Line on the ZIM file detail page, shown while the newer version of this ZIM file is being downloaded to replace it";
