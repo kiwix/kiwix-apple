@@ -77,8 +77,6 @@
 "zim_file_category.title" = "Pubu";
 "zim_file_category.section.empty.message" = "Zim fasara kani pubu ŋɔ ni.";
 "zim_file_downloads.overlay.empty.message" = "Deebu tuma nima kani";
-"zim_file_new_overlay.empty" = "Zim fasara palli kani";
-"zim_file_new.button.refresh" = "Kahigi";
 "zim_file.list.name.text" = "Yuli";
 "zim_file.list.description.text" = "Buɣisibu";
 "zim_file.list.actions.text" = "Niŋsim";
@@ -188,13 +186,11 @@
 "enum.libray_tab_item.opened" = "Yooi";
 "enum.libray_tab_item.categories" = "Pubu nima";
 "enum.libray_tab_item.downloads" = "Deebu";
-"enum.libray_tab_item.new" = "Palli";
 "enum.navigation_item.reading" = "Kariŋ";
 "enum.navigation_item.bookmarks" = "Buku'dalima";
 "enum.navigation_item.new_tab" = "Binshɛɣ'kam palli";
 "enum.navigation_item.opened" = "Yooma";
 "enum.navigation_item.categories" = "Pubu nima";
-"enum.navigation_item.new" = "Palli";
 "enum.navigation_item.downloads" = "Deebu";
 "enum.navigation_item.settings" = "Bintaɣindisi";
 "enum.search_result_snippet_mode.disabled" = "Zaɣisibu";

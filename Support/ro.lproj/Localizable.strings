@@ -83,8 +83,6 @@
 "zim_file_catalog.fetching.message" = "Preia Catalogul...";
 "zim_file_category.section.empty.message" = "Niciun fișier ZIM în această categorie.";
 "zim_file_downloads.overlay.empty.message" = "Fără sarcini de descărcare";
-"zim_file_new_overlay.empty" = "Niciun fișier ZIM deschis";
-"zim_file_new.button.refresh" = "Reîmprospătare";
 "zim_file.list.name.text" = "Nume";
 "zim_file.list.description.text" = "Descriere";
 "zim_file.list.actions.text" = "Acțiuni";
@@ -209,13 +207,11 @@
 "enum.libray_tab_item.opened" = "Deschis";
 "enum.libray_tab_item.categories" = "Categorii";
 "enum.libray_tab_item.downloads" = "Descărcări";
-"enum.libray_tab_item.new" = "Nou";
 "enum.navigation_item.reading" = "Lectură";
 "enum.navigation_item.bookmarks" = "Semne de carte";
 "enum.navigation_item.new_tab" = "Filă Nouă";
 "enum.navigation_item.opened" = "Deschis";
 "enum.navigation_item.categories" = "Categorii";
-"enum.navigation_item.new" = "Nou";
 "enum.navigation_item.downloads" = "Descărcări";
 "enum.navigation_item.settings" = "Setări";
 "enum.search_result_snippet_mode.disabled" = "Dezactivat";

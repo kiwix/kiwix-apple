@@ -117,8 +117,6 @@
 "zim_file_catalog.fetching.message" = "Pridobivanje kataloga ...";
 "zim_file_category.section.empty.message" = "V tej kategoriji ni datoteke ZIM.";
 "zim_file_downloads.overlay.empty.message" = "Ni opravil prenosa";
-"zim_file_new_overlay.empty" = "Ni novih datotek ZIM";
-"zim_file_new.button.refresh" = "Osveži";
 "zim_file.list.name.text" = "Ime";
 "zim_file.list.description.text" = "Opis";
 "zim_file.list.actions.text" = "Dejanja";
@@ -266,13 +264,11 @@
 "enum.libray_tab_item.opened" = "Odprto";
 "enum.libray_tab_item.categories" = "Kategorije";
 "enum.libray_tab_item.downloads" = "Prenosi";
-"enum.libray_tab_item.new" = "Novo";
 "enum.navigation_item.reading" = "Branje";
 "enum.navigation_item.bookmarks" = "Zaznamki";
 "enum.navigation_item.new_tab" = "Nov zavihek";
 "enum.navigation_item.opened" = "Odprto";
 "enum.navigation_item.categories" = "Kategorije";
-"enum.navigation_item.new" = "Novo";
 "enum.navigation_item.downloads" = "Prenosi";
 "enum.navigation_item.settings" = "Nastavitve";
 "enum.navigation_item.hotspot" = "Dostopna točka";
