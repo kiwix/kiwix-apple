@@ -85,8 +85,6 @@
 "zim_file_catalog.fetching.message" = "Po Sillet Katalog…";
 "zim_file_category.section.empty.message" = "S’ka kartelë ZIM nën këtë kategori.";
 "zim_file_downloads.overlay.empty.message" = "S’ka akte shkarkimi";
-"zim_file_new_overlay.empty" = "Pa kartelë të re ZIM";
-"zim_file_new.button.refresh" = "Rifreskoje";
 "zim_file.list.name.text" = "Emër";
 "zim_file.list.description.text" = "Përshkrim";
 "zim_file.list.actions.text" = "Veprime";
@@ -209,13 +207,11 @@
 "enum.libray_tab_item.opened" = "Hapur";
 "enum.libray_tab_item.categories" = "Kategori";
 "enum.libray_tab_item.downloads" = "Shkarkime";
-"enum.libray_tab_item.new" = "E re";
 "enum.navigation_item.reading" = "Lexim";
 "enum.navigation_item.bookmarks" = "Faqerojtës";
 "enum.navigation_item.new_tab" = "Skedë e Re";
 "enum.navigation_item.opened" = "Hapur";
 "enum.navigation_item.categories" = "Kategori";
-"enum.navigation_item.new" = "E re";
 "enum.navigation_item.downloads" = "Shkarkime";
 "enum.navigation_item.settings" = "Rregullime";
 "enum.search_result_snippet_mode.disabled" = "Çaktivizuar";

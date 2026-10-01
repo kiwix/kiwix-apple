@@ -65,7 +65,6 @@
 "zim_file_opened.toolbar.open.title" = "Abrir...";
 "zim_file_opened.toolbar.open.help" = "Abrir arquivo ZIM";
 "zim_file_category.title" = "Categoria";
-"zim_file_new.button.refresh" = "Atualizar";
 "zim_file.list.name.text" = "Nome";
 "zim_file.list.description.text" = "Descrição";
 "zim_file.list.actions.text" = "Ações";
@@ -132,13 +131,11 @@
 "enum.category.wiktionary" = "Wikcionário";
 "enum.category.vikidia" = "Vikidia";
 "enum.category.other" = "Outros";
-"enum.libray_tab_item.new" = "Novo";
 "enum.navigation_item.reading" = "Leitura";
 "enum.navigation_item.bookmarks" = "Favoritos";
 "enum.navigation_item.new_tab" = "Nova guia";
 "enum.navigation_item.opened" = "Aberto";
 "enum.navigation_item.categories" = "Categorias";
-"enum.navigation_item.new" = "Novo";
 "enum.navigation_item.downloads" = "Downloads";
 "enum.navigation_item.settings" = "Configurações";
 "enum.search_result_snippet_mode.disabled" = "Desativado";

@@ -27,6 +27,5 @@ import XCTest
         app.staticTexts["Opened"].click()
         app.staticTexts["Categories"].click()
         app.staticTexts["Downloads"].click()
-        app.staticTexts["New"].click()
     }
 }

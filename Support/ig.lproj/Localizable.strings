@@ -87,8 +87,6 @@
 "zim_file_category.section.empty.message" = "Enweghị zim faịlụ na katigori a.";
 "zim_file_downloads.overlay.empty.message" = "Enweghị ọrụ aga ebudata";
 // Fuzzy
-"zim_file_new_overlay.empty" = "Enweghị zim faịlụ ọhụrụ";
-"zim_file_new.button.refresh" = "Tụnyegharia";
 "zim_file.list.name.text" = "Aha";
 "zim_file.list.description.text" = "Nkọwa";
 "zim_file.list.actions.text" = "Omume ihe";
@@ -215,13 +213,11 @@
 "enum.libray_tab_item.opened" = "Mepere";
 "enum.libray_tab_item.categories" = "Otu";
 "enum.libray_tab_item.downloads" = "Nbudata";
-"enum.libray_tab_item.new" = "Ọhụrụ";
 "enum.navigation_item.reading" = "Ọgụgụ";
 "enum.navigation_item.bookmarks" = "Akara Akwụkwọ";
 "enum.navigation_item.new_tab" = "Taabụ ọhụrụ";
 "enum.navigation_item.opened" = "Mepere";
 "enum.navigation_item.categories" = "Otu";
-"enum.navigation_item.new" = "Ọhụrụ";
 "enum.navigation_item.downloads" = "Nbudata";
 "enum.navigation_item.settings" = "Ntọala";
 "enum.search_result_snippet_mode.disabled" = "Agbanyụrụ";
