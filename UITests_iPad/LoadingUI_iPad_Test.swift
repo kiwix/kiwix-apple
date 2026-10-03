@@ -41,7 +41,7 @@ import XCTest
         zimMini.tap()
         
         let downloadButton = app.buttons["Download"].firstMatch
-        Wait.inApp(app, forElement: downloadButton)
+        Wait.inApp(app, forElement: downloadButton, timeout: 80)
 
         addUIInterruptionMonitor(withDescription: "\"Kiwix\" Would Like To Send You Notifications") { (alert) -> Bool in
             let alertButton = alert.buttons["Allow"]
@@ -54,7 +54,7 @@ import XCTest
         downloadButton.tap()
         
         let openMainPageButton = app.buttons["Open Main Page"]
-        Wait.inApp(app, forElement: openMainPageButton)
+        Wait.inApp(app, forElement: openMainPageButton, timeout: 120)
         openMainPageButton.tap()
         // switch to a random page
         app.navigationBars.buttons["nav_random"].tap()

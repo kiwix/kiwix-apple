@@ -80,15 +80,14 @@ jobs:
         if: matrix.platform == 'macOS'
         run: xcodebuild test -scheme UITests_macOS -destination 'platform=macOS'
 
-      # - name: Run UI Tests on iPhone
-      #   if: matrix.platform == 'iOS'
-      #   env:
-      #     DEVICE_NAME: "iPhone 16 Pro Max"
-      #   run: xcodebuild test -scheme UITests_iPhone -destination "platform=iOS Simulator,name=$DEVICE_NAME"
+      - name: Run UI Tests on iPhone
+        if: matrix.platform == 'iOS'
+        env:
+          DEVICE_NAME: "iPhone 17 Pro Max"
+        run: xcodebuild test -scheme UITests_iPhone -destination "platform=iOS Simulator,name=$DEVICE_NAME"
 
-      # - name: Run UI Tests on iPad
-      #   if: matrix.platform == 'iOS'
-      #   env:
-      #     DEVICE_NAME: "iPad Pro 13-inch (M4)"
-      #   run: xcodebuild test -scheme UITests_iPad -destination "platform=iOS Simulator,name=$DEVICE_NAME"
-
+      - name: Run UI Tests on iPad
+        if: matrix.platform == 'iOS'
+        env:
+          DEVICE_NAME: "iPad Pro 13-inch (M5)"
+        run: xcodebuild test -scheme UITests_iPad -destination "platform=iOS Simulator,name=$DEVICE_NAME"
