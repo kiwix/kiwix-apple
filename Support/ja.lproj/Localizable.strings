@@ -86,8 +86,6 @@
 "zim_file_catalog.fetching.message" = "カタログを取得しています...";
 "zim_file_category.section.empty.message" = "このカテゴリーに ZIMファイルはありません。";
 "zim_file_downloads.overlay.empty.message" = "ダウンロード処理はありません";
-"zim_file_new_overlay.empty" = "新しいZIMファイルはありません";
-"zim_file_new.button.refresh" = "更新";
 "zim_file.list.name.text" = "名前";
 "zim_file.list.description.text" = "概要";
 "zim_file.list.actions.text" = "操作";
@@ -208,13 +206,11 @@
 "enum.libray_tab_item.opened" = "読み込み済み";
 "enum.libray_tab_item.categories" = "カテゴリ";
 "enum.libray_tab_item.downloads" = "ダウンロード";
-"enum.libray_tab_item.new" = "新規";
 "enum.navigation_item.reading" = "閲覧";
 "enum.navigation_item.bookmarks" = "ブックマーク";
 "enum.navigation_item.new_tab" = "新規タブ";
 "enum.navigation_item.opened" = "読み込み済み";
 "enum.navigation_item.categories" = "カテゴリ";
-"enum.navigation_item.new" = "新規";
 "enum.navigation_item.downloads" = "ダウンロード";
 "enum.navigation_item.settings" = "設定";
 "enum.search_result_snippet_mode.disabled" = "無効化";

@@ -108,8 +108,6 @@
 "zim_file_catalog.fetching.message" = "Го добивам каталогот ...";
 "zim_file_category.section.empty.message" = "Нема ZIM-податотека во оваа категорија.";
 "zim_file_downloads.overlay.empty.message" = "Нема задачи за преземање";
-"zim_file_new_overlay.empty" = "Нема нова ZIM-податотека";
-"zim_file_new.button.refresh" = "Превчитај";
 "zim_file.list.name.text" = "Име";
 "zim_file.list.description.text" = "Опис";
 "zim_file.list.actions.text" = "Дејства";
@@ -248,13 +246,11 @@
 "enum.libray_tab_item.opened" = "Отворено";
 "enum.libray_tab_item.categories" = "Категории";
 "enum.libray_tab_item.downloads" = "Преземања";
-"enum.libray_tab_item.new" = "Ново";
 "enum.navigation_item.reading" = "Читање";
 "enum.navigation_item.bookmarks" = "Обележани";
 "enum.navigation_item.new_tab" = "Ново јазиче";
 "enum.navigation_item.opened" = "Отворено";
 "enum.navigation_item.categories" = "Категории";
-"enum.navigation_item.new" = "Ново";
 "enum.navigation_item.downloads" = "Преземања";
 "enum.navigation_item.settings" = "Нагодувања";
 "enum.navigation_item.hotspot" = "Пристапна точка";

@@ -86,8 +86,6 @@
 "zim_file_catalog.fetching.message" = "Mengambil Katalog ...";
 "zim_file_category.section.empty.message" = "Tidak ada berkas ZIM dalam kategori ini.";
 "zim_file_downloads.overlay.empty.message" = "Tidak ada tugas unduhan";
-"zim_file_new_overlay.empty" = "Tidak ada berkas ZIM baru";
-"zim_file_new.button.refresh" = "Muat ulang";
 "zim_file.list.name.text" = "Nama";
 "zim_file.list.description.text" = "Deskripsi";
 "zim_file.list.actions.text" = "Tindakan";
@@ -215,13 +213,11 @@
 "enum.libray_tab_item.opened" = "Dibuka";
 "enum.libray_tab_item.categories" = "Kategori";
 "enum.libray_tab_item.downloads" = "Unduhan";
-"enum.libray_tab_item.new" = "Baru";
 "enum.navigation_item.reading" = "Membaca";
 "enum.navigation_item.bookmarks" = "Markah";
 "enum.navigation_item.new_tab" = "Tab Baru";
 "enum.navigation_item.opened" = "Dibuka";
 "enum.navigation_item.categories" = "Kategori";
-"enum.navigation_item.new" = "Baru";
 "enum.navigation_item.downloads" = "Unduhan";
 "enum.navigation_item.settings" = "Pengaturan";
 "enum.search_result_snippet_mode.disabled" = "Nonaktif";

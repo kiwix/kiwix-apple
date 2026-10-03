@@ -114,8 +114,6 @@
 "zim_file_catalog.fetching.message" = "Fallback text for the case when the catalog of ZIM files is still being refreshed, and it will appear soon, as the operation completes.";
 "zim_file_category.section.empty.message" = "Fallback text for listing results";
 "zim_file_downloads.overlay.empty.message" = "Fallback text for center panel, when downloads are selected from the side menu.";
-"zim_file_new_overlay.empty" = "Fallback text for listing new ZIM files available for download";
-"zim_file_new.button.refresh" = "Accessibility label for refresh button on the top nav bar to refresh the list of new ZIM files";
 "zim_file.list.name.text" = "Title for displaying the details of a ZIM file";
 "zim_file.list.description.text" = "Title for displaying the details of a ZIM file";
 "zim_file.list.actions.text" = "Title for displaying the possible actions to a selected ZIM file. Eg. The 'Download' button is below this.";
@@ -265,13 +263,11 @@
 "enum.libray_tab_item.opened" = "Bottom Tab bar item title under Library on iOS";
 "enum.libray_tab_item.categories" = "Bottom Tab bar item title under Library on iOS";
 "enum.libray_tab_item.downloads" = "Bottom Tab bar item title under Library on iOS";
-"enum.libray_tab_item.new" = "Bottom Tab bar item title under Library on iOS";
 "enum.navigation_item.reading" = "Side navigation menu item title";
 "enum.navigation_item.bookmarks" = "Side navigation menu item title";
 "enum.navigation_item.new_tab" = "Side navigation menu item title";
 "enum.navigation_item.opened" = "Side navigation menu item title";
 "enum.navigation_item.categories" = "Side navigation menu item title";
-"enum.navigation_item.new" = "Side navigation menu item title";
 "enum.navigation_item.downloads" = "Side navigation menu item title";
 "enum.navigation_item.settings" = "Side navigation menu item title";
 "enum.navigation_item.hotspot" = "Side navigation menu item title";
