@@ -39,6 +39,7 @@ final class DownloadService {
             downloadManager: downloadManager)
         
         let configuration = URLSessionConfiguration.background(withIdentifier: "org.kiwix.background")
+        configuration.httpAdditionalHeaders = ["User-Agent": UserAgent.current]
         configuration.allowsCellularAccess = true
         configuration.isDiscretionary = false
         configuration.sessionSendsLaunchEvents = true

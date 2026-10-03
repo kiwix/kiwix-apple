@@ -225,7 +225,7 @@ total: \(totalCount, privacy: .public)
     private func fetchData() async throws -> (Data, URL)? {
         do {
             var request = URLRequest(url: Self.catalogURL, timeoutInterval: 20)
-            request.allHTTPHeaderFields = ["If-None-Match": defaults[.libraryETag]]
+            request.allHTTPHeaderFields = ["If-None-Match": defaults[.libraryETag], "User-Agent": UserAgent.current]
             let (data, response) = try await self.urlSession.data(for: request)
             guard let response = response as? HTTPURLResponse else { return nil }
             switch response.statusCode {

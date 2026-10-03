@@ -57,7 +57,9 @@ struct Favicon: View {
     }
     
     static func asyncImageData(url: URL) async throws -> Data? {
-        let (data, response) = try await URLSession.shared.data(from: url)
+        var request = URLRequest(url: url)
+        request.allHTTPHeaderFields = ["User-Agent": UserAgent.current]
+        let (data, response) = try await URLSession.shared.data(for: request)
         guard let response = response as? HTTPURLResponse,
               response.statusCode == 200,
               let mimeType = response.mimeType,
