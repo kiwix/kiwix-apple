@@ -176,7 +176,7 @@ struct LoadingProgressView: View {
         GeometryReader { geometry in
             ProgressView()
                 .progressViewStyle(.circular)
-                .tint(Color.primary)
+                .tint(.gray)
                 .frame(
                     width: geometry.size.width * 0.618,
                     height: geometry.size.height * 0.191
