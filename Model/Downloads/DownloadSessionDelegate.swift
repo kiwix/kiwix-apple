@@ -74,6 +74,7 @@ final class DownloadSessionDelegate: NSObject, URLSessionDownloadDelegate {
                 Error: \(httpResponse.debugDescription, privacy: .public)
                 """)
                 downloadManager.deleteDownloadTask(zimFileID: zimFileID)
+                ZimReplacement.clearPending(newFileID: zimFileID)
             }
             return
         }
@@ -108,6 +109,7 @@ final class DownloadSessionDelegate: NSObject, URLSessionDownloadDelegate {
         
         let errorDesc = DownloadErrors.localizedString(from: error)
         downloadManager.deleteDownloadTask(zimFileID: zimFileID)
+        ZimReplacement.clearPending(newFileID: zimFileID)
         DownloadUI.showAlert(.downloadErrorZIM(zimFileID: zimFileID,
                                                errorMessage: errorDesc))
     }
@@ -170,6 +172,7 @@ Status code: \(statusCode, privacy: .public)
                                                    errorMessage: errorMessage))
             
             downloadManager.deleteDownloadTask(zimFileID: zimFileID)
+            ZimReplacement.clearPending(newFileID: zimFileID)
             return
         }
         guard let url = httpResponse.url,
@@ -178,6 +181,7 @@ Status code: \(statusCode, privacy: .public)
             DownloadUI.showAlert(.downloadErrorZIM(zimFileID: zimFileID,
                                                    errorMessage: errorMessage))
             downloadManager.deleteDownloadTask(zimFileID: zimFileID)
+            ZimReplacement.clearPending(newFileID: zimFileID)
             return
         }
         let fileName = destination.lastPathComponent
@@ -205,6 +209,8 @@ due to: \(error.localizedDescription, privacy: .public)
             DownloadUI.showAlert(.downloadErrorZIM(zimFileID: zimFileID,
                                                    errorMessage: errorMessage))
             downloadManager.deleteDownloadTask(zimFileID: zimFileID)
+            ZimReplacement.clearPending(newFileID: zimFileID)
+            return
         }
         Log.DownloadService.info(
             "Completed moving zimFile: \(zimFileID.uuidString, privacy: .public)"
@@ -215,7 +221,11 @@ due to: \(error.localizedDescription, privacy: .public)
             Log.DownloadService.info(
                 "start opening zimFile: \(zimFileID.uuidString, privacy: .public)"
             )
-            await LibraryOperations.open(url: destination)
+            if await LibraryOperations.open(url: destination) != nil {
+                await ZimReplacement.completePendingIfNeeded(newFileID: zimFileID)
+            } else {
+                ZimReplacement.clearPending(newFileID: zimFileID)
+            }
             Log.DownloadService.info(
                 "opened downloaded zimFile: \(zimFileID.uuidString, privacy: .public)"
             )
