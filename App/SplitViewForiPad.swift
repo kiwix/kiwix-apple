@@ -115,7 +115,7 @@ struct SplitViewForiPad: View { // swiftlint:disable:this type_body_length
                 case nil:
                     LoadingDataView()
                 }
-            }
+            }.animation(.easeInOut(duration: 0.2), value: selection)
         }
         .task {
             if let currentItem = navigation.currentItem {
