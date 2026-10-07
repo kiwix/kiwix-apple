@@ -55,7 +55,7 @@ enum MenuSection: String, CaseIterable, Identifiable {
     static func itemsFor(_ section: MenuSection) -> [MenuItem] {
         switch section {
         case .primary: return [.bookmarks]
-        case .library: return [.opened, .categories, .downloads, .new, .hotspot]
+        case .library: return [.opened, .categories, .downloads, .hotspot]
         case .settings:
             if !FeatureFlags.hasLibrary {
                 return [.hotspot, .settings(scrollToHotspot: false)]

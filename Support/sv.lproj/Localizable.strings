@@ -115,8 +115,6 @@
 "zim_file_catalog.fetching.message" = "Hämtar katalog...";
 "zim_file_category.section.empty.message" = "Ingen ZIM-fil under denna kategori.";
 "zim_file_downloads.overlay.empty.message" = "Inga nedladdningsuppgifter";
-"zim_file_new_overlay.empty" = "Ingen ny ZIM-fil";
-"zim_file_new.button.refresh" = "Uppdatera";
 "zim_file.list.name.text" = "Namn";
 "zim_file.list.description.text" = "Beskrivning";
 "zim_file.list.actions.text" = "Åtgärder";
@@ -263,13 +261,11 @@
 "enum.libray_tab_item.opened" = "Öppnade";
 "enum.libray_tab_item.categories" = "Kategorier";
 "enum.libray_tab_item.downloads" = "Nedladdningar";
-"enum.libray_tab_item.new" = "Nytt";
 "enum.navigation_item.reading" = "Läser";
 "enum.navigation_item.bookmarks" = "Bokmärken";
 "enum.navigation_item.new_tab" = "Ny flik";
 "enum.navigation_item.opened" = "Öppnade";
 "enum.navigation_item.categories" = "Kategorier";
-"enum.navigation_item.new" = "Nytt";
 "enum.navigation_item.downloads" = "Nedladdningar";
 "enum.navigation_item.settings" = "Inställningar";
 "enum.navigation_item.hotspot" = "Hotspot";

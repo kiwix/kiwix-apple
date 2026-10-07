@@ -90,7 +90,6 @@ import XCTest
         app.buttons["opened"].tap()
         app.buttons["categories"].tap()
         app.buttons["downloads"].tap()
-        app.buttons["new"].tap()
         app.buttons["hotspot"].tap()
         app.buttons["settings"].tap()
         app.buttons["donation"].tap()

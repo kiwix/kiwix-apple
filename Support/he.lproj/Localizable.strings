@@ -85,8 +85,6 @@
 "zim_file_catalog.fetching.message" = "הקטלוג מאוחזר...";
 "zim_file_category.section.empty.message" = "אין קובץ ZIM בקטגוריה הזאת.";
 "zim_file_downloads.overlay.empty.message" = "אין משימות הורדה";
-"zim_file_new_overlay.empty" = "אין קובץ ZIM חדש";
-"zim_file_new.button.refresh" = "ריענון";
 "zim_file.list.name.text" = "שם";
 "zim_file.list.description.text" = "תיאור";
 "zim_file.list.actions.text" = "פעולות";
@@ -217,13 +215,11 @@
 "enum.libray_tab_item.opened" = "פתוחות";
 "enum.libray_tab_item.categories" = "קטגוריות";
 "enum.libray_tab_item.downloads" = "הורדות";
-"enum.libray_tab_item.new" = "חדש";
 "enum.navigation_item.reading" = "קריאה";
 "enum.navigation_item.bookmarks" = "סימניות";
 "enum.navigation_item.new_tab" = "לשונית חדשה";
 "enum.navigation_item.opened" = "פתוחים";
 "enum.navigation_item.categories" = "קטגוריות";
-"enum.navigation_item.new" = "חדש";
 "enum.navigation_item.downloads" = "הורדות";
 "enum.navigation_item.settings" = "הגדרות";
 "enum.navigation_item.hotspot" = "נקודה חמה";

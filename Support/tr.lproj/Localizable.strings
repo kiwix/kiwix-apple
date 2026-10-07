@@ -77,8 +77,6 @@
 "zim_file_category.title" = "Kategori";
 "zim_file_category.section.empty.message" = "Bu kategori altında ZIM dosyası yok.";
 "zim_file_downloads.overlay.empty.message" = "İndirme görevi yok";
-"zim_file_new_overlay.empty" = "Yeni ZIM dosyası yok";
-"zim_file_new.button.refresh" = "Yenile";
 "zim_file.list.name.text" = "Ad";
 "zim_file.list.description.text" = "Açıklama";
 "zim_file.list.actions.text" = "Eylemler";
@@ -201,13 +199,11 @@
 "enum.libray_tab_item.opened" = "Açıldı";
 "enum.libray_tab_item.categories" = "Kategoriler";
 "enum.libray_tab_item.downloads" = "İndirilenler";
-"enum.libray_tab_item.new" = "Yeni";
 "enum.navigation_item.reading" = "Okuma";
 "enum.navigation_item.bookmarks" = "Yer İşaretleri";
 "enum.navigation_item.new_tab" = "Yeni Sekme";
 "enum.navigation_item.opened" = "Açıldı";
 "enum.navigation_item.categories" = "Kategoriler";
-"enum.navigation_item.new" = "Yeni";
 "enum.navigation_item.downloads" = "İndirilenler";
 "enum.navigation_item.settings" = "Ayarlar";
 "enum.search_result_snippet_mode.disabled" = "Devre dışı";

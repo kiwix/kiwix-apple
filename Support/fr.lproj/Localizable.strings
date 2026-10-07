@@ -128,8 +128,6 @@
 "zim_file_catalog.fetching.message" = "Récupération du catalogue...";
 "zim_file_category.section.empty.message" = "Aucun fichier ZIM dans cette catégorie.";
 "zim_file_downloads.overlay.empty.message" = "Aucune tâche de téléchargement";
-"zim_file_new_overlay.empty" = "Pas de nouveau fichier ZIM";
-"zim_file_new.button.refresh" = "Actualiser";
 "zim_file.list.name.text" = "Nom";
 "zim_file.list.description.text" = "Description";
 "zim_file.list.actions.text" = "Actions";
@@ -276,13 +274,11 @@
 "enum.libray_tab_item.opened" = "Ouvert";
 "enum.libray_tab_item.categories" = "Catégories";
 "enum.libray_tab_item.downloads" = "Téléchargements";
-"enum.libray_tab_item.new" = "Nouveau";
 "enum.navigation_item.reading" = "Lecture";
 "enum.navigation_item.bookmarks" = "Signets";
 "enum.navigation_item.new_tab" = "Nouvel onglet";
 "enum.navigation_item.opened" = "Ouvert";
 "enum.navigation_item.categories" = "Catégories";
-"enum.navigation_item.new" = "Nouveau";
 "enum.navigation_item.downloads" = "Téléchargements";
 "enum.navigation_item.settings" = "Paramètres";
 "enum.navigation_item.hotspot" = "Borne WiFi";
