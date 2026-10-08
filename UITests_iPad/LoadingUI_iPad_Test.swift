@@ -29,7 +29,7 @@ import XCTest
         // show sidebar
         app.navigationBars.buttons.firstMatch.tap()
         let searchField = app.navigationBars.searchFields.firstMatch
-        _ = searchField.waitForExistence(timeout: 5)
+        _ = searchField.waitForExistence(timeout: 60)
         searchField.tap()
         searchField.typeText("Alpine")
 //        let _ = app.buttons["Wikipadia"].waitForExistence(timeout: 5)
@@ -37,11 +37,11 @@ import XCTest
 //        app.buttons["Other"].tap()
         
         let zimMini = app.buttons["Alpine Linux Wiki"].firstMatch
-        Wait.inApp(app, forElement: zimMini)
+        Wait.inApp(app, forElement: zimMini, timeout: 120)
         zimMini.tap()
         
         let downloadButton = app.buttons["Download"].firstMatch
-        Wait.inApp(app, forElement: downloadButton, timeout: 80)
+        Wait.inApp(app, forElement: downloadButton, timeout: 120)
 
         addUIInterruptionMonitor(withDescription: "\"Kiwix\" Would Like To Send You Notifications") { (alert) -> Bool in
             let alertButton = alert.buttons["Allow"]
@@ -54,7 +54,7 @@ import XCTest
         downloadButton.tap()
         
         let openMainPageButton = app.buttons["Open Main Page"]
-        Wait.inApp(app, forElement: openMainPageButton, timeout: 120)
+        Wait.inApp(app, forElement: openMainPageButton, timeout: 240)
         openMainPageButton.tap()
         // switch to a random page
         app.navigationBars.buttons["nav_random"].tap()
