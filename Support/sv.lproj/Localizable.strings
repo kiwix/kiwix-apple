@@ -41,6 +41,8 @@
 "common.button.share_as_pdf" = "Dela som PDF";
 "common.search" = "Sök";
 "common.search.inpage" = "Sök i sida";
+"common.find_next" = "Hitta text";
+"common.find_previous" = "Hitta föregående";
 "common.search.suggestion" = "Menade du:";
 "common.tab.manager.title" = "Flikhanterare";
 "common.tab.navigation.title" = "Flikar";
@@ -54,22 +56,15 @@
 "common.export_file.alert.description" = "Vill du exportera filen %@?";
 "common.export_file.alert.button.title" = "Exportera";
 "outline_button.outline.title" = "Översikt";
-// Fuzzy
-"outline_button.outline.help" = "Visa artikelöversikt";
+"outline_button.outline.help" = "Visa sidöversikt";
 "outline_button.outline.empty.message" = "Ingen översikt tillgänglig";
-// Fuzzy
-"bookmark_button.show.help" = "Visa bokmärken, där den nuvarande artikeln kan läggas till eller tas bort från bokmärken.";
-// Fuzzy
-"article_shortcut.main.button.title" = "Huvudartikel";
-// Fuzzy
-"article_shortcut.main.button.help" = "Visa huvudartikel";
-// Fuzzy
-"article_shortcut.random.button.title.mac" = "Slumpartikel";
+"bookmark_button.show.help" = "Visa bokmärken, där den nuvarande sidan kan läggas till eller tas bort från bokmärken.";
+"article_shortcut.main.button.title" = "Huvudsida";
+"article_shortcut.main.button.help" = "Visa huvudsida";
+"article_shortcut.random.button.title.mac" = "Slumpsida";
 "article_shortcut.random.button.title.ios" = "Slumpsida";
-// Fuzzy
-"article_shortcut.random.button.help" = "Visa slumpartikel";
-// Fuzzy
-"alert_handler.alert.failed.title" = "Kunde inte att ladda begärd artikel.";
+"article_shortcut.random.button.help" = "Visa slumpsida";
+"alert_handler.alert.failed.title" = "Kunde inte ladda in begärd sida.";
 "bookmark_context_menu.view.title" = "Visa";
 "bookmark_context_menu.remove.title" = "Ta bort";
 "external_link_handler.alert.title" = "Extern länk";
@@ -87,18 +82,18 @@
 "download_again.question.title" = "Du har redan den här filen.";
 "download_again.question.description_part_1" = "Det ser ut som att %@ redan laddats ned.";
 "download_again.question.description_part_2" = "Vill du fortfarande ladda ned \"%@\"? Din befintliga fil kommer inte att raderas.";
-// Fuzzy
-"flavor_tag.help.max" = "förutom stora mediafiler som video/ljud";
-// Fuzzy
-"flavor_tag.help.no_pic" = "de flesta bilderna har tagits bort";
-// Fuzzy
-"flavor_tag.help.mini" = "endast en del av texten är tillgänglig, förmodligen det första avsnittet";
+"flavor_tag.help.max" = "Förutom stora mediafiler som video/ljud";
+"flavor_tag.help.no_pic" = "De flesta bilder har tagits bort";
+"flavor_tag.help.mini" = "Endast en del av texten är tillgänglig, förmodligen det första avsnittet";
 "library_refresh_time.last" = "Alldeles nyss";
 "library_refresh_time.never" = "Aldrig";
+"zim_file_cell.page_count" = "%@ sidor";
+"zim_file_cell.media_count" = "%@ media";
 "zim_file_missing_indicator.help" = "Zim-fil saknas.";
 "hotspot.action.start_hotspot.title" = "Starta Hotspot";
 "hotspot.action.stop_hotspot.title" = "Stoppa Hotspot";
 "hotspot.settings.port_number" = "Portnummer";
+"hotspot.select_zim_files.message" = "Välj ZIM-filer för att påbörja din Hotspot-tjänst.";
 "hotspot.settings.recommended_port_range" = "Nätverksporten som används av Hotspoten ska vara mellan %@ och %@";
 "hotspot.error.port_already_used_by_another_app_title" = "Hotspot kan inte starta eftersom port %@ används.";
 "hotspot.error.port_already_used_by_another_app_description" = "För att åtgärda detta, stäng appen som använder den eller ändra Kiwix Hotspot-porten i inställningarna.";
@@ -109,9 +104,17 @@
 "library.zim_file_context.main_page.label" = "Huvudsida";
 "library.zim_file_context.random.label" = "Slumpsida";
 "library.zim_file_context.copy_url" = "Kopiera webbadress";
+"zim_file_opened.overlay.no-zim-files-at-all.message" = "Inga ZIM-filer hittades.";
+"zim_file_opened.overlay.no-available-zim-files.message" = "Inga tillgängliga ZIM-filer hittades.";
+"zim_file_opened.overlay.no-missing-zim-files.message" = "Inga saknade ZIM-filer hittades.";
 "zim_file_opened.toolbar.open.title" = "Öppna...";
 "zim_file_opened.toolbar.open.help" = "Öppna en ZIM-fil";
 "zim_file_category.title" = "Kategori";
+"zim_file_opened.toolbar.filter.show_all" = "Visa alla";
+"zim_file_opened.toolbar.filter.show_only_available" = "Visa endast tillgängliga";
+"zim_file_opened.toolbar.filter.show_only_missing" = "Visa endast saknade";
+"zim_file_opened.toolbar.sort_by.name" = "Sortera efter namn";
+"zim_file_opened.toolbar.sort_by.size" = "Sortera efter storlek";
 "zim_file_catalog.fetching.message" = "Hämtar katalog...";
 "zim_file_category.section.empty.message" = "Ingen ZIM-fil under denna kategori.";
 "zim_file_downloads.overlay.empty.message" = "Inga nedladdningsuppgifter";
@@ -121,20 +124,18 @@
 "zim_file.list.description.text" = "Beskrivning";
 "zim_file.list.actions.text" = "Åtgärder";
 "zim_file.list.info.text" = "Information";
+"zim_file.list.content.text" = "Innehåll";
 "zim_file.action.locate.title" = "Lokalisera";
 "zim_file.action.open_main_page.title" = "Öppna huvudsidan";
 "zim_file.action.reveal_in_finder.title" = "Upptäck i Finder";
 "zim_file.action.toggle_cellular" = "Ladda ned med mobildata";
 "zim_file.action.unlink.title" = "Ta bort länk";
-// Fuzzy
-"zim_file.action.unlink.message" = "Alla bokmärkta artiklar som är länkade till denna ZIM-fil kommer att raderas, men originalfilen kommer att finnas kvar.";
+"zim_file.action.unlink.message" = "Alla bokmärkta sidor som är länkade till denna ZIM-fil kommer att raderas, men originalfilen kommer att finnas kvar.";
 "zim_file.action.unlink.multi_title" = "Ta bort referensen till %@ ZIM-filer";
-// Fuzzy
-"zim_file.action.unlink.multi_message" = "Alla bokmärkta artiklar som är länkade till dessa %@ ZIM-filer kommer att raderas, men originalfilerna kommer att finnas kvar.";
+"zim_file.action.unlink.multi_message" = "Alla bokmärkta sidor som är länkade till dessa %@ ZIM-filer kommer att raderas, men originalfilerna kommer att finnas kvar.";
 "zim_file.action.unlink.button.title" = "Ta bort länk";
 "zim_file.action.delete.title" = "Radera";
-// Fuzzy
-"zim_file.action.delete.message" = "ZIM-filen och alla bokmärkta artiklar som är länkade till denna ZIM-fil kommer att raderas.";
+"zim_file.action.delete.message" = "ZIM-filen och alla bokmärkta sidor som är länkade till denna ZIM-fil kommer att raderas.";
 "zim_file.action.delete.button.title" = "Radera";
 "zim_file.action.download.title" = "Ladda ned";
 "zim_file.action.download.warning.title" = "Utrymmesvarning";
@@ -154,6 +155,7 @@
 "zim_file.bool_info.details" = "Detaljer";
 "zim_file.bool_info.require_service_workers" = "Kräver serviceskript";
 "zim_file.bool_info.zim_archive_integrity" = "ZIM-arkiv integritet";
+"zim_file.counts.pages_count" = "Antal sidor";
 "zim_file.counts.media_count" = "Antal media";
 "zim_file.detail.id.title" = "ID";
 "zim_file.download_task.action.title.cancel" = "Avbryt";
@@ -226,6 +228,7 @@
 "bookmark.overlay.empty.title" = "Inga bokmärken";
 "search_result.zimfile.empty.message" = "Ingen öppnad ZIM-fil";
 "search_result.zimfile.no_result.message" = "Inga resultat";
+"search_result.zimfile.voice_over_count" = "Hittade resultat: %@";
 "search_result.sidebar.button.remove" = "Ta bort";
 "search_result.header.text" = "Senaste sökning";
 "search_result.button.clear" = "Rensa";
@@ -244,6 +247,7 @@
 "app_macos_commands.open_file" = "Öppna...";
 "app_macos_commands.new" = "Ny flik";
 "app_macos_navigation.button.library" = "Bibliotek";
+"app_macos_navigation.button.restore_previous_session" = "Återställ föregående session";
 "sidebar_view.navigation.button.close" = "Stäng";
 "enum.category.wikipedia" = "Wikipedia";
 "enum.category.wikibooks" = "Wikibooks";
@@ -282,15 +286,19 @@
 "payment.monthly_support.label" = "Månadsstöd för Kiwix";
 "payment.summary.title" = "Kiwix";
 "payment.textfield.custom_amount.label" = "Anpassat belopp";
+"payment.continue.button.title" = "Fortsätt";
 "payment.selection.option.one_time" = "En gång";
 "payment.selection.option.monthly" = "Månadsvis";
 "payment.support_fallback_message" = "Vi beklagar, din enhet stödjer inte Apple Pay.";
-// Fuzzy
-"payment.success.title" = "Tack så mycket för din donation.";
-// Fuzzy
-"payment.success.description" = "Din generositet betyder allt för oss.";
+"payment.success.title" = "Tack för din donation.";
+"payment.success.description" = "Ditt stöd hjälper till att hålla kunskap fritt och tillgängligt offline.";
 "payment.error.title" = "Det här är stelt.";
 "payment.error.description" = "Det har uppstått ett problem med din betalning. Försök igen.";
+"payment.error_already_subscribed.title" = "Du har redan en månatlig donation";
+"payment.error_already_subscribed.description" = "Använd instruktionerna i e-postmeddelandet vi skickade tidigare för att uppdatera det.";
+"payment.donation_reason.title" = "Hjälp oss hålla Kiwix och ZIM-filer uppdaterade.";
+"payment.donation_cell.description" = "Ingen reklam, inga spårare, finansierad av donationer";
+"payment.donation_is_encrypted" = "Din donation är krypterad med Apples inbyggda säkerhet.";
 "download_service.error.client.backgroundSessionInUseByAnotherProcess" = "Kunde inte kommunicera med bakgrundöverföringstjänsten";
 "download_service.error.client.backgroundSessionWasDisconnected" = "Förlorade kontakten med bakgrundöverföringstjänsten";
 "download_service.error.client.cancelled" = "avbruten";
