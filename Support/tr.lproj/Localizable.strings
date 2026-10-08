@@ -1,5 +1,6 @@
 // Messages for Turkish (Türkçe)
 // Exported from translatewiki.net
+// Author: Efygz
 // Author: Hedda
 // Author: Rofiatmustapha12
 // Author: SaldırganSincap
@@ -9,6 +10,14 @@
 "library_refresh_error.process.description" = "Katalog verileri işlenirken hata oluştu.";
 "download_service.complete.title" = "İndirme tamamlandı";
 "download_service.complete.description" = "%@ başarıyla indirildi.";
+"download_service.error.general.title" = "İndirme başarısız oldu.";
+"download_service.error.zimfile.title" = "\"%@\" indirilemiyor";
+"download_service.error.footer" = "İndirme tamamlanamadı.";
+"download_service.error.option_http_status" = "HTTP Durum Kodu: %@";
+"download_service.error.option_directory" = "İndirme dizini bulunamadı";
+"download_service.error.option_invalid_taskid" = "Geçersiz indirme görev kimliği";
+"download_service.error.option_invalid_response" = "Geçersiz cevap";
+"download_service.error.option_unable_to_move_file" = "İndirilen dosya taşınamadı";
 "common.dialog.button.open" = "Aç";
 "common.dialog.button.open_in_new_tab" = "Yeni Sekmede Aç";
 "common.dialog.button.add_bookmark" = "Yer İşaretlerine Ekle";
@@ -17,11 +26,21 @@
 "common.dialog.button.bookmark" = "Yer İşaretleri";
 "common.button.go_back" = "Geri Git";
 "common.button.go_forward" = "İleriye Git";
-"common.button.done" = "Yapıldı";
+"common.button.done" = "Tamam";
 "common.button.cancel" = "İptal";
+"common.button.ok" = "Tamam";
 "common.button.yes" = "Evet";
 "common.button.no" = "hayır";
+"common.button.print" = "Yazdır";
+"common.button.copy" = "Kopyala";
+"common.button.copied" = "Kopyalandı";
+"common.button.share" = "Paylaş";
+"common.button.share_as_pdf" = "PDF olarak paylaş";
 "common.search" = "Ara";
+"common.search.inpage" = "Sayfada ara";
+"common.find_next" = "Sonraki";
+"common.find_previous" = "Önceki";
+"common.search.suggestion" = "Bunu mu demek istediniz:";
 "common.tab.manager.title" = "Sekme Yöneticisi";
 "common.tab.navigation.title" = "Sekmeler";
 "common.tab.menu.new_tab" = "Yeni Sekme";
@@ -30,23 +49,19 @@
 "common.tab.list.close" = "Sekmeyi Kapat";
 "common.tab.menu.library" = "Kütüphane";
 "common.tab.menu.settings" = "Ayarlar";
+"common.export_file.alert.title" = "Dosyayı dışa aktar";
+"common.export_file.alert.description" = "%@ dosyasını dışa aktarmak istiyor musunuz?";
+"common.export_file.alert.button.title" = "Dışa Aktar";
 "outline_button.outline.title" = "Özet";
-// Fuzzy
-"outline_button.outline.help" = "Makale özetini göster";
+"outline_button.outline.help" = "Sayfa özetini göster";
 "outline_button.outline.empty.message" = "Özet bulunamadı";
-// Fuzzy
-"bookmark_button.show.help" = "Mevcut maddenin yer imlerine eklenebileceği veya yer imlerinden çıkarılabileceği yer imi sayfasını göster.";
-// Fuzzy
-"article_shortcut.main.button.title" = "Ana Makale";
-// Fuzzy
-"article_shortcut.main.button.help" = "Ana makaleyi göster";
-// Fuzzy
-"article_shortcut.random.button.title.mac" = "Rastgele Makale";
+"bookmark_button.show.help" = "Geçerli sayfanın yer imlerine eklenebileceği veya kaldırılabileceği çizelge sayfasını göster.";
+"article_shortcut.main.button.title" = "Ana Sayfa";
+"article_shortcut.main.button.help" = "Ana sayfayı göster";
+"article_shortcut.random.button.title.mac" = "Rastgele Sayfa";
 "article_shortcut.random.button.title.ios" = "Rastgele Sayfa";
-// Fuzzy
-"article_shortcut.random.button.help" = "Rastgele makaleyi göster";
-// Fuzzy
-"alert_handler.alert.failed.title" = "İstenen makale yüklenemiyor.";
+"article_shortcut.random.button.help" = "Rastgele sayfa görüntüle";
+"alert_handler.alert.failed.title" = "İstenen sayfa yüklenemedi.";
 "bookmark_context_menu.view.title" = "Görüntüle";
 "bookmark_context_menu.remove.title" = "Kaldır";
 "external_link_handler.alert.title" = "Dış Bağlantı";
@@ -59,22 +74,45 @@
 "download_task_cell.status.failed" = "Başarısız";
 "download_task_cell.status.downloading" = "Yükleniyor...";
 "download_task_cell.status.paused" = "Durduruldu";
-// Fuzzy
-"flavor_tag.help.max" = "video/ses gibi büyük medya dosyaları dışındaki her şey";
-// Fuzzy
-"flavor_tag.help.no_pic" = "resimlerin çoğu kaldırıldı";
-// Fuzzy
-"flavor_tag.help.mini" = "metnin yalnızca bir alt kümesi mevcut, muhtemelen ilk bölüm";
-"library_refresh_time.last" = "Şu anda";
+"download_task_cell.status.paused.device_offline" = "Duraklatıldı (cihaz çevrimdışı)";
+"download_task_cell.status.paused.waiting_for_wifi" = "Duraklatıldı (WiFi bekleniyor)";
+"download_again.question.title" = "Bu dosyaya zaten sahipsiniz.";
+"download_again.question.description_part_1" = "Görünüşe göre %@ zaten indirilmiş.";
+"download_again.question.description_part_2" = "\"%@\" dosyasını yine de indirmek istiyor musunuz? Mevcut dosyanız silinmeyecek.";
+"flavor_tag.help.max" = "Video/ses gibi büyük medya dosyaları hariç her şey";
+"flavor_tag.help.no_pic" = "Resimlerin çoğu kaldırıldı";
+"flavor_tag.help.mini" = "Metnin yalnızca bir bölümü, muhtemelen ilk kısmı mevcut";
+"library_refresh_time.last" = "Şimdi";
 "library_refresh_time.never" = "Asla";
+"zim_file_cell.page_count" = "%@ sayfa";
+"zim_file_cell.media_count" = "%@ medya";
 "zim_file_missing_indicator.help" = "Zim dosyası eksik.";
+"hotspot.action.start_hotspot.title" = "Paylaşım/Hotspot Başlat";
+"hotspot.action.stop_hotspot.title" = "Paylaşım/Hotspot durdur";
+"hotspot.settings.port_number" = "Port numarası";
+"hotspot.select_zim_files.message" = "Paylaşım hizmetinizi başlatmak için ZIM dosyalarını seçin.";
+"hotspot.settings.recommended_port_range" = "Paylaşım tarafından kullanılan ağ bağlantı noktası (port) %@ ile %@ arasında olmalıdır.";
+"hotspot.error.port_already_used_by_another_app_title" = "Paylaşım %@ port’u kullanıldığı için başlatılamıyor.";
+"hotspot.error.port_already_used_by_another_app_description" = "Bunu düzeltmek için, ilgili uygulamayı kapatın veya ayarlardan Kiwix paylaşım port’unu değiştirin.";
+"hotspot.server_full_explanation" = "Bu ZIM dosyalarına diğer cihazlarda erişebilmek için, tüm cihazların ya aynı WiFi ağında veya kişisel erişim noktanızla bağlantılı olduğundan emin olun.";
+"hotspot.server_active_warning" = "Paylaşım yalnızca uygulama açık ve kullanımdayken aktif kalır.";
+"hotspot.server_wifi_only_explanation" = "Bu ZIM dosyalarına diğer cihazlardan erişebilmek için tüm cihazların aynı Wi-Fi ağına bağlı olduğundan emin olun.";
 "library.zim_file_details.side_panel.message" = "Ayrıntıları görmek için bir ZIM dosyası seçin";
-"library.zim_file_context.main_page.label" = "Anasayfa";
+"library.zim_file_context.main_page.label" = "Ana Sayfa";
 "library.zim_file_context.random.label" = "Rastgele Sayfa";
 "library.zim_file_context.copy_url" = "URL'yi kopyala";
-"zim_file_opened.toolbar.open.title" = "Açık...";
-"zim_file_opened.toolbar.open.help" = "Bir ZIM dosyasını açın";
+"zim_file_opened.overlay.no-zim-files-at-all.message" = "ZIM dosyası bulunamadı.";
+"zim_file_opened.overlay.no-available-zim-files.message" = "Kullanılabilir ZIM dosyası bulunamadı.";
+"zim_file_opened.overlay.no-missing-zim-files.message" = "Eksik ZIM dosyası bulunamadı.";
+"zim_file_opened.toolbar.open.title" = "Aç...";
+"zim_file_opened.toolbar.open.help" = "Bir ZIM dosyası aç";
 "zim_file_category.title" = "Kategori";
+"zim_file_opened.toolbar.filter.show_all" = "Tümünü göster";
+"zim_file_opened.toolbar.filter.show_only_available" = "Yalnızca mevcut olanları göster";
+"zim_file_opened.toolbar.filter.show_only_missing" = "Yalnızca eksik olanları göster";
+"zim_file_opened.toolbar.sort_by.name" = "İsme göre sırala";
+"zim_file_opened.toolbar.sort_by.size" = "Boyuta göre sırala";
+"zim_file_catalog.fetching.message" = "Katalog yükleniyor...";
 "zim_file_category.section.empty.message" = "Bu kategori altında ZIM dosyası yok.";
 "zim_file_downloads.overlay.empty.message" = "İndirme görevi yok";
 "zim_file_new_overlay.empty" = "Yeni ZIM dosyası yok";
@@ -83,16 +121,17 @@
 "zim_file.list.description.text" = "Açıklama";
 "zim_file.list.actions.text" = "Eylemler";
 "zim_file.list.info.text" = "Bilgi";
+"zim_file.list.content.text" = "İçerik";
 "zim_file.action.locate.title" = "Konumlandırma";
-"zim_file.action.open_main_page.title" = "Anasayfayı Aç";
+"zim_file.action.open_main_page.title" = "Ana Sayfayı Aç";
 "zim_file.action.reveal_in_finder.title" = "Finder'da Göster";
 "zim_file.action.toggle_cellular" = "Hücresel kullanarak indirme";
 "zim_file.action.unlink.title" = "Bağlantıyı Kaldır";
-// Fuzzy
-"zim_file.action.unlink.message" = "Bu ZIM dosyasına bağlı, yer imlerine eklenmiş tüm maddeler silinecek ancak orijinal dosya yerinde kalacaktır.";
+"zim_file.action.unlink.message" = "Bu ZIM dosyasına bağlı tüm yer imli sayfalar silinecek, ancak özgün dosyalar yerinde kalacak.";
+"zim_file.action.unlink.multi_title" = "%@ ZIM dosyasının bağlantısını kes";
+"zim_file.action.unlink.multi_message" = "Bu %@ ZIM dosyasına bağlı tüm yer imli sayfalar silinecek, ancak özgün dosyalar yerinde kalacak.";
 "zim_file.action.unlink.button.title" = "Bağlantıyı Kaldır";
 "zim_file.action.delete.title" = "Sil";
-// Fuzzy
 "zim_file.action.delete.message" = "ZIM dosyası ve bu ZIM dosyasına bağlı yer imlerine eklenmiş tüm makaleler silinecektir.";
 "zim_file.action.delete.button.title" = "Sil";
 "zim_file.action.download.title" = "İndir";
@@ -100,6 +139,10 @@
 "zim_file.action.download.warning.message" = "Bu ZIM dosyası için cihazınızda yeterli alan olmayabilir.";
 "zim_file.action.download.warning.message1" = "ZIM dosyası indirildikten sonra 1GB'tan az alan kalacaktır.";
 "zim_file.action.download.button.anyway" = "Yine de İndir";
+"zim_file.action.integrity_check.title" = "Kontrol et";
+"zim_file.action.integrity_recheck.title" = "Yeniden kontrol et";
+"zim_file.action.integrity_check.alert.title" = "Bu işlem birkaç dakika sürebilir. Bütünlük kontrolü tamamlanana kadar Kiwix kullanılamayacaktır.";
+"zim_file.integrity_check.in_progress" = "Bütünlük kontrolü: \"%@\" ...";
 "zim_file.base_info.attribute.language" = "Dil";
 "zim_file.base_info.attribute.category" = "Kategori";
 "zim_file.base_info.attribute.size" = "Boyut";
@@ -108,6 +151,8 @@
 "zim_file.bool_info.videos" = "Videolar";
 "zim_file.bool_info.details" = "Ayrıntılar";
 "zim_file.bool_info.require_service_workers" = "Servis Çalışanları Gerektirir";
+"zim_file.bool_info.zim_archive_integrity" = "ZIM arşiv bütünlüğü";
+"zim_file.counts.pages_count" = "Sayfa sayısı";
 "zim_file.counts.media_count" = "Medya Sayısı";
 "zim_file.detail.id.title" = "Kimlik";
 "zim_file.download_task.action.title.cancel" = "İptal";
@@ -117,10 +162,16 @@
 "zim_file.download_task.action.downloading" = "Yükleniyor...";
 "zim_file.download_task.action.resume" = "Devam et";
 "service_worker_warning.label.description" = "Servis çalışanlarını gerektiren Zim dosyaları desteklenmez.";
+"multi.zim_files_selected.sidebar_title" = "Seçili";
+"multi.zim_files_selected.description_count" = "ZIM dosyaları";
+"theme_settings.title" = "Tema";
+"theme_settings.option.dark" = "Koyu";
+"theme_settings.option.light" = "Açık";
+"theme_settings.option.system" = "Sistem";
 "reading_settings.zoom.title" = "Sayfa yakınlaştırma";
 "reading_settings.zoom.reset.button" = "Sıfırla";
-"reading_settings.external_link.title" = "Dış Bağlantı";
-"reading_settings.search_snippet.title" = "Arama snippet'i";
+"reading_settings.external_link.title" = "Dış Bağlantılar";
+"reading_settings.search_snippet.title" = "Aramada sayfadan kesitler";
 "reading_settings.tab.reading" = "Okuma";
 "library_settings.catalog.title" = "Kataloglar";
 "library_settings.button.refresh_now" = "Şimdi Yenile";
@@ -162,19 +213,30 @@
 "settings.about.our_website.button" = "Web Sitemiz";
 "settings.about.source.title" = "Kaynak";
 "settings.about.button.license" = "GNU Genel Kamu Lisansı v3";
+"download_mac_settings.tab.title" = "İndirmeler";
+"download_mac_folder.button.change" = "Değiştir";
+"download_mac_folder.button.reset" = "Varsayılana sıfırla";
+"download_mac_folder.unknown" = "Bilinmiyor";
+"download_mac_folder.panel.message" = "ZIM dosyalarını indirmek için bir klasör seçin.";
+"download_mac_folder.error.title" = "Bu klasör kullanılamıyor.";
+"download_mac_folder.error.not_writable" = "Buraya dosya kaydetme izniniz yok.";
+"download_mac_folder.error.save_failed" = "İndirme klasörü ayarlanamadı. Tekrar deneyin.";
 "bookmark.navigation.title" = "Yer İşaretleri";
 "bookmark.overlay.empty.title" = "Yer işareti yok";
 "search_result.zimfile.empty.message" = "Açık ZIM dosyası yok";
 "search_result.zimfile.no_result.message" = "Sonuç yok";
+"search_result.zimfile.voice_over_count" = "%@ eşleşme";
 "search_result.sidebar.button.remove" = "Kaldır";
 "search_result.header.text" = "Son Arama";
 "search_result.button.clear" = "Temizle";
 "search_result.filter_hearder.text" = "Aramaya dahil edildi";
 "search_result.filter_hearder.button.none" = "Hiçbiri";
 "search_result.filter_hearder.button.all" = "Hepsi";
-"welcome.main_page.title" = "Anasayfa";
+"welcome.main_page.title" = "Ana Sayfa";
 "welcome.grid.bookmarks.title" = "Yer İşaretleri";
 "welcome.actions.open_file" = "Dosyayı Aç";
+"welcome.loading.data.text" = "Veri yükleniyor...";
+"welcome.button.status.fetching_catalog.text" = "Katalog alınıyor…";
 "welcome.button.status.fetch_catalog.text" = "Kataloğu Getir";
 "commands.button.actual_size" = "Gerçek Boyut";
 "comments.button.zoom_in" = "Yakınlaştır";
@@ -182,6 +244,7 @@
 "app_macos_commands.open_file" = "Aç...";
 "app_macos_commands.new" = "Yeni Sekme";
 "app_macos_navigation.button.library" = "Kütüphane";
+"app_macos_navigation.button.restore_previous_session" = "Önceki Oturumu Geri Yükle";
 "sidebar_view.navigation.button.close" = "Kapat";
 "enum.category.wikipedia" = "Vikipedi";
 "enum.category.wikibooks" = "Vikikitap";
@@ -198,20 +261,41 @@
 "enum.external_link_loading_policy.never_load" = "Asla Yükleme";
 "enum.library_language_sorting_model.a-z" = "A-Z";
 "enum.library_language_sorting_model.by_count" = "Sayıma göre";
-"enum.libray_tab_item.opened" = "Açıldı";
+"enum.libray_tab_item.opened" = "Açılmış";
 "enum.libray_tab_item.categories" = "Kategoriler";
 "enum.libray_tab_item.downloads" = "İndirilenler";
 "enum.libray_tab_item.new" = "Yeni";
 "enum.navigation_item.reading" = "Okuma";
 "enum.navigation_item.bookmarks" = "Yer İşaretleri";
 "enum.navigation_item.new_tab" = "Yeni Sekme";
-"enum.navigation_item.opened" = "Açıldı";
+"enum.navigation_item.opened" = "Açılmış";
 "enum.navigation_item.categories" = "Kategoriler";
 "enum.navigation_item.new" = "Yeni";
 "enum.navigation_item.downloads" = "İndirilenler";
 "enum.navigation_item.settings" = "Ayarlar";
+"enum.navigation_item.hotspot" = "Paylaşım";
 "enum.search_result_snippet_mode.disabled" = "Devre dışı";
 "enum.search_result_snippet_mode.matches" = "Eşleşmeler";
+"payment.donate.title" = "Bağış Yap";
+"payment.description.label" = "Kiwix'i Destekleyin";
+"payment.summary_page.title" = "Kiwix'i Destekleyin";
+"payment.support_button.label" = "Kiwix'i Destekleyin";
+"payment.monthly_support.label" = "Kiwix için aylık destek";
+"payment.summary.title" = "Kiwix";
+"payment.textfield.custom_amount.label" = "Diğer miktar";
+"payment.continue.button.title" = "Devam et";
+"payment.selection.option.one_time" = "Tek seferlik";
+"payment.selection.option.monthly" = "Aylık";
+"payment.support_fallback_message" = "Üzgünüz, cihazınız Apple Pay'i desteklemiyor.";
+"payment.success.title" = "Bağışınız için teşekkürler.";
+"payment.success.description" = "Desteğiniz, bilginin çevrimdışı, ücretsiz ve erişilebilir kalmasına yardımcı oluyor.";
+"payment.error.title" = "İşte bu değişik oldu.";
+"payment.error.description" = "Ödemenizde bir sorun oluştu. Lütfen tekrar deneyin.";
+"payment.error_already_subscribed.title" = "Zaten aylık bağış emriniz var.";
+"payment.error_already_subscribed.description" = "Daha önce gönderdiğimiz e-postadaki talimatları kullanarak güncelleyebilirsiniz.";
+"payment.donation_reason.title" = "Kiwix ve ZIM dosyalarını güncel tutmamıza yardımcı olun.";
+"payment.donation_cell.description" = "Reklam yok, takip yok, bağışlarla finanse.";
+"payment.donation_is_encrypted" = "Bağışınız Apple'ın yerleşik güvenlik sistemiyle şifrelidir.";
 "download_service.error.client.backgroundSessionInUseByAnotherProcess" = "Arka planda aktarım servisiyle iletişim kurulamadı";
 "download_service.error.client.backgroundSessionWasDisconnected" = "Arka planda aktarım servisiyle bağlantı kesildi";
 "download_service.error.client.cancelled" = "vazgeçildi";
@@ -255,3 +339,6 @@
 "download_service.error.client.cannotMoveFile" = "Dosya taşınamıyor";
 "download_service.error.client.downloadDecodingFailedMidStream" = "İndirilenin kodu çözülemedi";
 "download_service.error.client.downloadDecodingFailedToComplete" = "İndirilenin kodu çözülemedi";
+"geolocation_error.permission_denied" = "Kullanıcı konum izni vermedi.";
+"geolocation_error.position_unavailable" = "Konum bilgisi mevcut değil.";
+"geolocation_error.timeout" = "Konum isteği zaman aşımına uğradı.";
