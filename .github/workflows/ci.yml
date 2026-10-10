@@ -90,4 +90,4 @@ jobs:
         if: matrix.platform == 'iOS'
         env:
           DEVICE_NAME: "iPad Pro 13-inch (M5)"
-        run: xcodebuild test -scheme UITests_iPad -destination "platform=iOS Simulator,name=$DEVICE_NAME"
+        run: xcodebuild test -scheme UITests_iPad -destination "platform=iOS Simulator,OS=26.4.1,name=$DEVICE_NAME"

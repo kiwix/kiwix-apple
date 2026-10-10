@@ -28,13 +28,14 @@ import XCTest
         
         // show sidebar
         app.navigationBars.buttons.firstMatch.tap()
+        
+        // select categories (might not be selected)
+        app.buttons["categories"].tap()
+        
         let searchField = app.navigationBars.searchFields.firstMatch
         _ = searchField.waitForExistence(timeout: 60)
         searchField.tap()
         searchField.typeText("Alpine")
-//        let _ = app.buttons["Wikipadia"].waitForExistence(timeout: 5)
-//        app.buttons["Wikipedia"].tap()
-//        app.buttons["Other"].tap()
         
         let zimMini = app.buttons["Alpine Linux Wiki"].firstMatch
         Wait.inApp(app, forElement: zimMini, timeout: 120)
@@ -56,8 +57,10 @@ import XCTest
         let openMainPageButton = app.buttons["Open Main Page"]
         Wait.inApp(app, forElement: openMainPageButton, timeout: 240)
         openMainPageButton.tap()
-        // switch to a random page
-        app.navigationBars.buttons["nav_random"].tap()
+
+        app.webViews.firstMatch.tap()
+        
+        switchToARandomPage(app)
         
         // open another tab as well
         app.buttons["opened"].tap()
@@ -78,13 +81,11 @@ import XCTest
     }
     
     private func testAfterRelaunch(_ app: XCUIApplication) {
-        // show sidebar
-        app.navigationBars.buttons.firstMatch.tap()
         let zimFileTab = app.collectionViews["Sidebar"].cells.buttons["Main Page"].firstMatch
         Wait.inApp(app, forElement: zimFileTab)
         XCTAssert(zimFileTab.isSelected)
-        // switch to a random page
-        app.navigationBars.buttons["nav_random"].tap()
+        switchToARandomPage(app)
+        usleep(1)
         
         app.buttons["bookmarks"].tap()
         app.buttons["opened"].tap()
@@ -116,8 +117,8 @@ import XCTest
         let zimFileTab = app.collectionViews["Sidebar"].cells.buttons["Main Page"].firstMatch
         Wait.inApp(app, forElement: zimFileTab)
         XCTAssert(zimFileTab.isSelected)
-        // switch to a random page
-        app.navigationBars.buttons["nav_random"].tap()
+        switchToARandomPage(app)
+        usleep(1)
     }
     
     private func testLaunchViaDeeplink(_ app: XCUIApplication) {
@@ -136,10 +137,21 @@ import XCTest
         ).firstMatch
         
         alpineFile.tap()
+        usleep(1)
+        
         let zimFileTab = app.collectionViews["Sidebar"].cells.buttons["Main Page"].firstMatch
         Wait.inApp(app, forElement: zimFileTab)
         XCTAssert(zimFileTab.isSelected)
-        // switch to a random page
-        app.navigationBars.buttons["nav_random"].tap()
+        switchToARandomPage(app)
+    }
+    
+    private func switchToARandomPage(_ app: XCUIApplication) {
+        let installLink = app.links["Installation"].firstMatch
+        Wait.inApp(app, forElement: installLink)
+        installLink.tap()
+        let randomButton = app.navigationBars.buttons["nav_random"]
+        Wait.inApp(app, forElement: randomButton)
+        randomButton.tap()
+        usleep(1)
     }
 }
