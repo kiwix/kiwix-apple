@@ -77,7 +77,9 @@ import XCTest
         }
         usleep(750_000)
         testAfterRelaunch(app)
+        usleep(1)
         testForegroundViaFinderDeeplink(app)
+        usleep(1)
         testLaunchViaDeeplink(app)
     }
     
