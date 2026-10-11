@@ -86,8 +86,19 @@ jobs:
           DEVICE_NAME: "iPhone 17 Pro Max"
         run: xcodebuild test -scheme UITests_iPhone -destination "platform=iOS Simulator,name=$DEVICE_NAME"
 
-      - name: Run UI Tests on iPad
+      - name: Get iPad Device ID
         if: matrix.platform == 'iOS'
         env:
           DEVICE_NAME: "iPad Pro 13-inch (M5)"
-        run: xcodebuild test -scheme UITests_iPad -destination "platform=iOS Simulator,OS=26.4.1,name=$DEVICE_NAME"
+          DEVICE_OS: "26.4"
+        run: |
+          echo "IPAD_DEVICE_ID=`xcrun simctl list devices available '${{ env.DEVICE_OS }}' | grep '${{ env.DEVICE_NAME }}' | sort -r | head -1 | awk -F'[()]' '{print $4}'`" >> $GITHUB_ENV
+
+      - name: Run UI Tests on iPad
+        if: matrix.platform == 'iOS'
+        env:
+          DEVICE_ID: ${{ env.IPAD_DEVICE_ID }}
+        run: |
+            xcrun simctl boot ${{ env.DEVICE_ID }}
+            xcrun simctl uninstall ${{ env.DEVICE_ID }} self.Kiwix
+            xcodebuild test -scheme UITests_iPad -destination "platform=iOS Simulator,id=${{ env.DEVICE_ID }}"
