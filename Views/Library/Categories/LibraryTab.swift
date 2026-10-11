@@ -92,8 +92,6 @@ struct LibraryTab: View {
                     case .downloads:
                         ZimFilesDownloads(dismiss: dismiss)
                             .environment(\.managedObjectContext, Database.shared.viewContext)
-                    case .new:
-                        ZimFilesNew(dismiss: dismiss)
                     case .hotspot:
                         HotspotZimFilesSelection()
                     }

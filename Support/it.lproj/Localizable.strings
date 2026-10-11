@@ -82,8 +82,6 @@
 "zim_file_catalog.fetching.message" = "Recupero del catalogo in corso...";
 "zim_file_category.section.empty.message" = "Nessun file ZIM in questa categoria.";
 "zim_file_downloads.overlay.empty.message" = "Nessuna attività di download";
-"zim_file_new_overlay.empty" = "Nessun nuovo file ZIM";
-"zim_file_new.button.refresh" = "Aggiorna";
 "zim_file.list.name.text" = "Nome";
 "zim_file.list.description.text" = "Descrizione";
 "zim_file.list.actions.text" = "Azioni";
@@ -160,12 +158,10 @@
 "enum.library_language_sorting_model.a-z" = "A-Z";
 "enum.libray_tab_item.opened" = "Aperto";
 "enum.libray_tab_item.categories" = "Categorie";
-"enum.libray_tab_item.new" = "Nuovo";
 "enum.navigation_item.bookmarks" = "Segnalibri";
 "enum.navigation_item.new_tab" = "Nuova scheda";
 "enum.navigation_item.opened" = "Aperto";
 "enum.navigation_item.categories" = "Categorie";
-"enum.navigation_item.new" = "Nuovo";
 "enum.navigation_item.settings" = "Impostazioni";
 "enum.search_result_snippet_mode.disabled" = "Disattivato";
 "payment.donate.title" = "Dona";

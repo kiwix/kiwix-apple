@@ -115,8 +115,6 @@
 "zim_file_catalog.fetching.message" = "카탈로그를 가져오는 중 ...";
 "zim_file_category.section.empty.message" = "이 분류에 속하는 ZIM 파일이 없습니다.";
 "zim_file_downloads.overlay.empty.message" = "다운로드 작업 없음";
-"zim_file_new_overlay.empty" = "새 ZIM 파일 없습니다";
-"zim_file_new.button.refresh" = "새로 고침";
 "zim_file.list.name.text" = "이름";
 "zim_file.list.description.text" = "설명";
 "zim_file.list.actions.text" = "동작";
@@ -262,13 +260,11 @@
 "enum.libray_tab_item.opened" = "열림";
 "enum.libray_tab_item.categories" = "분류";
 "enum.libray_tab_item.downloads" = "다운로드";
-"enum.libray_tab_item.new" = "새 항목";
 "enum.navigation_item.reading" = "읽기";
 "enum.navigation_item.bookmarks" = "북마크";
 "enum.navigation_item.new_tab" = "새 탭";
 "enum.navigation_item.opened" = "열림";
 "enum.navigation_item.categories" = "분류";
-"enum.navigation_item.new" = "새 항목";
 "enum.navigation_item.downloads" = "다운로드";
 "enum.navigation_item.settings" = "설정";
 "enum.navigation_item.hotspot" = "핫스팟";

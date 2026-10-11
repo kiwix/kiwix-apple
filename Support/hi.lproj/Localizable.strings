@@ -29,7 +29,6 @@
 "library.zim_file_context.main_page.label" = "मुखपृष्ठ";
 "zim_file_opened.toolbar.open.title" = "खोलें...";
 "zim_file_category.title" = "श्रेणी";
-"zim_file_new.button.refresh" = "ताजा करें";
 "zim_file.list.name.text" = "नाम";
 "zim_file.list.description.text" = "विवरण";
 "zim_file.list.actions.text" = "क्रियाएँ";
@@ -77,8 +76,6 @@
 "enum.category.other" = "अन्य";
 "enum.external_link_loading_policy.always_ask" = "हमेशा पूछें";
 "enum.libray_tab_item.categories" = "श्रेणियाँ";
-"enum.libray_tab_item.new" = "नया";
-"enum.navigation_item.new" = "नया";
 "enum.navigation_item.downloads" = "डाउनलोड";
 "enum.search_result_snippet_mode.disabled" = "अक्षम किया गया";
 "download_service.error.client.backgroundSessionInUseByAnotherProcess" = "बैकग्राउंड ट्रांसफ़र सेवा से संपर्क नहीं हो सका";

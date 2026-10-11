@@ -101,8 +101,6 @@ struct SplitViewForiPad: View { // swiftlint:disable:this type_body_length
                                     .disabled(languages.count <= 1)
                             }
                         }
-                case .new:
-                    ZimFilesNew(dismiss: nil)
                 case .downloads:
                     ZimFilesDownloads(dismiss: nil)
                 case let .settings(scrollToHotspot):
@@ -304,7 +302,7 @@ struct SplitViewForiPad: View { // swiftlint:disable:this type_body_length
     
     private static func allItems() -> [MenuItem] {
         if FeatureFlags.hasLibrary {
-            return [.bookmarks, .opened, .categories, .downloads, .new, .hotspot, .settings(scrollToHotspot: false)]
+            return [.bookmarks, .opened, .categories, .downloads, .hotspot, .settings(scrollToHotspot: false)]
         } else {
             return [.bookmarks, .hotspot, .settings(scrollToHotspot: false)]
         }

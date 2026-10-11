@@ -123,8 +123,6 @@
 "zim_file_catalog.fetching.message" = "正在获取目录…";
 "zim_file_category.section.empty.message" = "该类别下没有 ZIM 文件。";
 "zim_file_downloads.overlay.empty.message" = "没有下载任务";
-"zim_file_new_overlay.empty" = "没有新的 ZIM 文件";
-"zim_file_new.button.refresh" = "刷新";
 "zim_file.list.name.text" = "名称";
 "zim_file.list.description.text" = "描述";
 "zim_file.list.actions.text" = "操作";
@@ -272,13 +270,11 @@
 "enum.libray_tab_item.opened" = "已打开";
 "enum.libray_tab_item.categories" = "分类";
 "enum.libray_tab_item.downloads" = "下载";
-"enum.libray_tab_item.new" = "新";
 "enum.navigation_item.reading" = "阅读";
 "enum.navigation_item.bookmarks" = "书签";
 "enum.navigation_item.new_tab" = "新建标签页";
 "enum.navigation_item.opened" = "已打开";
 "enum.navigation_item.categories" = "分类";
-"enum.navigation_item.new" = "新";
 "enum.navigation_item.downloads" = "下载";
 "enum.navigation_item.settings" = "设置";
 "enum.navigation_item.hotspot" = "热点";

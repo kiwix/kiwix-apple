@@ -56,8 +56,6 @@
 "zim_file_category.title" = "ਸ਼੍ਰੇਣੀ";
 "zim_file_category.section.empty.message" = "ਇਸ ਸ਼੍ਰੇਣੀ ਵਿੱਚ ਕੋਈ ZIM ਫਾਇਲ ਨਹੀਂ ਐ।";
 "zim_file_downloads.overlay.empty.message" = "ਕੋਈ ਉਤਾਰਾ ਕਾਰਜ ਨਹੀਂ ਹਨ";
-"zim_file_new_overlay.empty" = "ਕੋਈ ਨਵੀਂ ZIM ਫਾਇਲ ਨਹੀਂ";
-"zim_file_new.button.refresh" = "ਤਾਜ਼ਾ ਕਰੋ";
 "zim_file.list.name.text" = "ਨਾਂ";
 "zim_file.list.description.text" = "ਵੇਰਵਾ";
 "zim_file.list.actions.text" = "ਕਾਰਵਾਈਆਂ";
@@ -142,11 +140,9 @@
 "enum.libray_tab_item.opened" = "ਖੋਲ੍ਹਿਆ ਗਿਆ";
 "enum.libray_tab_item.categories" = "ਸ਼੍ਰੇਣੀਆਂ";
 "enum.libray_tab_item.downloads" = "ਉਤਾਰੋ/ਲਾਹੋ";
-"enum.libray_tab_item.new" = "ਨਵਾਂ";
 "enum.navigation_item.reading" = "ਪੜ੍ਹ ਰਿਹਾ ਏ";
 "enum.navigation_item.opened" = "ਖੋਲ੍ਹਿਆ ਗਿਆ";
 "enum.navigation_item.categories" = "ਸ਼੍ਰੇਣੀਆਂ";
-"enum.navigation_item.new" = "ਨਵਾਂ";
 "enum.navigation_item.downloads" = "ਉਤਾਰੋ/ਲਾਹੋ";
 "enum.navigation_item.settings" = "ਤਰਜੀਹਾਂ";
 "enum.search_result_snippet_mode.disabled" = "ਅਸਮਰੱਥ";

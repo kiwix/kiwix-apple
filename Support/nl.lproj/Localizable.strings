@@ -114,8 +114,6 @@
 "zim_file_catalog.fetching.message" = "Catalogus wordt opgehaald…";
 "zim_file_category.section.empty.message" = "Geen ZIM-bestand in deze categorie.";
 "zim_file_downloads.overlay.empty.message" = "Geen downloadtaken";
-"zim_file_new_overlay.empty" = "Geen nieuw ZIM-bestand";
-"zim_file_new.button.refresh" = "Vernieuwen";
 "zim_file.list.name.text" = "Naam";
 "zim_file.list.description.text" = "Beschrijving";
 "zim_file.list.actions.text" = "Handelingen";
@@ -263,13 +261,11 @@
 "enum.libray_tab_item.opened" = "Geopend";
 "enum.libray_tab_item.categories" = "Categorieën";
 "enum.libray_tab_item.downloads" = "Downloads";
-"enum.libray_tab_item.new" = "Nieuw";
 "enum.navigation_item.reading" = "Lezen";
 "enum.navigation_item.bookmarks" = "Bladwijzers";
 "enum.navigation_item.new_tab" = "Nieuw tabblad";
 "enum.navigation_item.opened" = "Geopend";
 "enum.navigation_item.categories" = "Categorieën";
-"enum.navigation_item.new" = "Nieuw";
 "enum.navigation_item.downloads" = "Downloads";
 "enum.navigation_item.settings" = "Instellingen";
 "enum.navigation_item.hotspot" = "Hotspot";

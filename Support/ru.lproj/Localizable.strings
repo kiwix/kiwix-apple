@@ -85,8 +85,6 @@
 "zim_file_catalog.fetching.message" = "Загрузка каталога...";
 "zim_file_category.section.empty.message" = "В этой категории нет ZIM-файла.";
 "zim_file_downloads.overlay.empty.message" = "Нет задач по загрузке";
-"zim_file_new_overlay.empty" = "Нет нового ZIM-файла";
-"zim_file_new.button.refresh" = "Обновить";
 "zim_file.list.name.text" = "Имя";
 "zim_file.list.description.text" = "Описание";
 "zim_file.list.actions.text" = "Действия";
@@ -214,13 +212,11 @@
 "enum.libray_tab_item.opened" = "Открыто";
 "enum.libray_tab_item.categories" = "Категории";
 "enum.libray_tab_item.downloads" = "Загрузки";
-"enum.libray_tab_item.new" = "Новое";
 "enum.navigation_item.reading" = "Чтение";
 "enum.navigation_item.bookmarks" = "Закладки";
 "enum.navigation_item.new_tab" = "Новая вкладка";
 "enum.navigation_item.opened" = "Открыто";
 "enum.navigation_item.categories" = "Категории";
-"enum.navigation_item.new" = "Новый";
 "enum.navigation_item.downloads" = "Скачать";
 "enum.navigation_item.settings" = "Настройки";
 "enum.search_result_snippet_mode.disabled" = "Выключен";
