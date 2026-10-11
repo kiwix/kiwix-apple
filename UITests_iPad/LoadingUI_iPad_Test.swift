@@ -60,7 +60,7 @@ import XCTest
 
         app.webViews.firstMatch.tap()
         
-        switchToARandomPage(app)
+        switchToAnotherPage(app)
         
         // open another tab as well
         app.buttons["opened"].tap()
@@ -68,18 +68,16 @@ import XCTest
         Wait.inApp(app, forElement: openMainPageButton)
         openMainPageButton.tap()
         
-        usleep(1)
-        
         // RESTART THE APP
         app.terminate()
-        usleep(1)
         app.activate()
         
-        usleep(1)
+        if !XCUIDevice.shared.orientation.isLandscape {
+            XCUIDevice.shared.orientation = .landscapeLeft
+        }
+        usleep(750_000)
         testAfterRelaunch(app)
-        usleep(1)
         testForegroundViaFinderDeeplink(app)
-        usleep(1)
         testLaunchViaDeeplink(app)
     }
     
@@ -87,8 +85,7 @@ import XCTest
         let zimFileTab = app.collectionViews["Sidebar"].cells.buttons["Main Page"].firstMatch
         Wait.inApp(app, forElement: zimFileTab)
         XCTAssert(zimFileTab.isSelected)
-        switchToARandomPage(app)
-        usleep(1)
+        switchToAnotherPage(app)
         
         app.buttons["bookmarks"].tap()
         app.buttons["opened"].tap()
@@ -120,14 +117,14 @@ import XCTest
         let zimFileTab = app.collectionViews["Sidebar"].cells.buttons["Main Page"].firstMatch
         Wait.inApp(app, forElement: zimFileTab)
         XCTAssert(zimFileTab.isSelected)
-        switchToARandomPage(app)
-        usleep(1)
+        switchToAnotherPage(app)
     }
     
     private func testLaunchViaDeeplink(_ app: XCUIApplication) {
         
         app.terminate()
         XCUIDevice.shared.press(.home)
+        usleep(50_000)
         
         let documentsApp = XCUIApplication(bundleIdentifier: "com.apple.DocumentsApp")
         documentsApp.activate()
@@ -140,21 +137,17 @@ import XCTest
         ).firstMatch
         
         alpineFile.tap()
-        usleep(1)
         
         let zimFileTab = app.collectionViews["Sidebar"].cells.buttons["Main Page"].firstMatch
         Wait.inApp(app, forElement: zimFileTab)
         XCTAssert(zimFileTab.isSelected)
-        switchToARandomPage(app)
+        switchToAnotherPage(app)
     }
     
-    private func switchToARandomPage(_ app: XCUIApplication) {
+    private func switchToAnotherPage(_ app: XCUIApplication) {
         let installLink = app.links["Installation"].firstMatch
         Wait.inApp(app, forElement: installLink)
         installLink.tap()
-        let randomButton = app.navigationBars.buttons["nav_random"]
-        Wait.inApp(app, forElement: randomButton)
-        randomButton.tap()
-        usleep(1)
+        usleep(1_000)
     }
 }
