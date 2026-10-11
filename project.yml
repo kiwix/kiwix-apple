@@ -49,7 +49,7 @@ settings:
 packages:
   Defaults:
     url: https://github.com/sindresorhus/Defaults
-    majorVersion: 8.2.0
+    majorVersion: 9.0.9
   StripeApplePay:
     url: https://github.com/CodeLikeW/stripe-apple-pay
     majorVersion: 25.7.2
