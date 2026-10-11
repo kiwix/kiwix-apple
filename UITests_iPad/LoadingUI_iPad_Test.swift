@@ -75,8 +75,11 @@ import XCTest
         usleep(1)
         app.activate()
         
+        usleep(1)
         testAfterRelaunch(app)
+        usleep(1)
         testForegroundViaFinderDeeplink(app)
+        usleep(1)
         testLaunchViaDeeplink(app)
     }
     
