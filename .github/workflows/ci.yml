@@ -84,7 +84,14 @@ jobs:
         if: matrix.platform == 'iOS'
         env:
           DEVICE_NAME: "iPhone 17 Pro Max"
-        run: xcodebuild test -scheme UITests_iPhone -destination "platform=iOS Simulator,name=$DEVICE_NAME"
+        run: xcodebuild test -scheme UITests_iPhone -destination "platform=iOS Simulator,name=$DEVICE_NAME" -resultBundlePath Kiwix-UITests-IPhone.xcresult
+      
+      - name: Upload UI Tests xcresult file
+        if: ${{ matrix.platform == 'iOS' && failure() }}
+        uses: actions/upload-artifact@v7
+        with:
+          name: Kiwix-UITests-IPhone-${{ github.run_number }}.xcresult
+          path: Kiwix-UITests-IPhone.xcresult
 
       - name: Get iPad Device ID
         if: matrix.platform == 'iOS'
@@ -101,4 +108,11 @@ jobs:
         run: |
             xcrun simctl boot ${{ env.DEVICE_ID }}
             xcrun simctl uninstall ${{ env.DEVICE_ID }} self.Kiwix
-            xcodebuild test -scheme UITests_iPad -destination "platform=iOS Simulator,id=${{ env.DEVICE_ID }}"
+            xcodebuild test -scheme UITests_iPad -destination "platform=iOS Simulator,id=${{ env.DEVICE_ID }}" -resultBundlePath Kiwix-UITests-IPad.xcresult
+      
+      - name: Upload UI Tests xcresult file
+        if: ${{ matrix.platform == 'iOS' && failure() }}
+        uses: actions/upload-artifact@v7
+        with:
+          name: Kiwix-UITests-IPad-${{ github.run_number }}.xcresult
+          path: Kiwix-UITests-IPad.xcresult
