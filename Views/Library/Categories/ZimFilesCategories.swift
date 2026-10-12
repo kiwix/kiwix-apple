@@ -13,9 +13,9 @@
 // You should have received a copy of the GNU General Public License
 // along with Kiwix; If not, see https://www.gnu.org/licenses/.
 
-import SwiftUI
-
+import CoreData
 import Defaults
+import SwiftUI
 
 /// A grid of zim files under each category.
 struct ZimFilesCategories: View {
@@ -163,7 +163,10 @@ struct ZimFilesCategory: View {
         predicates.append(langPredicate)
         predicates.append(NSPredicate(format: "requiresServiceWorkers == false"))
         if !searchText.isEmpty {
-            predicates.append(NSPredicate(format: "name CONTAINS[cd] %@", searchText))
+            predicates.append(NSCompoundPredicate(orPredicateWithSubpredicates: [
+                NSPredicate(format: "name CONTAINS[cd] %@", searchText),
+                NSPredicate(format: "fileDescription CONTAINS[cd] %@", searchText)
+            ]))
         }
         return NSCompoundPredicate(andPredicateWithSubpredicates: predicates)
     }

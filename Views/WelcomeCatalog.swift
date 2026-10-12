@@ -84,7 +84,7 @@ struct WelcomeCatalog: View {
     }
 
     private var fetchCatalogButton: some View {
-        Button {
+        Button { [weak library] in
             Task { [weak library] in
                 await library?.start(isUserInitiated: true)
             }

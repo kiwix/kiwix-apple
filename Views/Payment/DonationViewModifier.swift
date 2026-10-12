@@ -35,7 +35,13 @@ struct DonationViewModifier: ViewModifier {
     func body(content: Content) -> some View {
         content
             .onReceive(openDonations) { _ in
-                donationPopup = .inputForm
+                Task {
+                    if !Brand.replaceDonation, await Payment.paymentButtonTypeAsync() != nil {
+                        donationPopup = .inputForm
+                    } else {
+                        _ = await UIApplication.shared.open(Brand.donationURL)
+                    }
+                }
             }
             .onReceive(donationResult) { notification in
                 guard let finalResult = notification.userInfo?["result"] as? Payment.FinalResult else {

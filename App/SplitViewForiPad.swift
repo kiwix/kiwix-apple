@@ -67,7 +67,7 @@ struct SplitViewForiPad: View { // swiftlint:disable:this type_body_length
             }
             .listStyle(.sidebar)
             .navigationTitle(Brand.appName)
-            .toolbar {
+            .toolbar { [weak navigation] in
                 if hasNonEmptyTab() {
                     Menu {
                         Button(role: .destructive) {
@@ -115,7 +115,7 @@ struct SplitViewForiPad: View { // swiftlint:disable:this type_body_length
                 case nil:
                     LoadingDataView()
                 }
-            }
+            }.animation(.easeInOut(duration: 0.2), value: selection)
         }
         .task {
             if let currentItem = navigation.currentItem {
@@ -134,8 +134,8 @@ struct SplitViewForiPad: View { // swiftlint:disable:this type_body_length
             if case let .tab(selectedTabId) = selection {
                 BrowserTabPreloader.shared.start(with: tabs, selectedTabId: selectedTabId)
             }
+            showDonationButton()
             await observeHasZimFiles()
-            await loadDonations()
             observeNavigateToHotspotSettings()
         }
         .onChange(of: navigation.currentItem) { _, newValue in
@@ -188,7 +188,7 @@ struct SplitViewForiPad: View { // swiftlint:disable:this type_body_length
                     }
                     .id(tab.id)
                     .accessibilityIdentifier(tab.title ?? LocalString.common_tab_menu_new_tab)
-                    .swipeActions(edge: .trailing, allowsFullSwipe: true) {
+                    .swipeActions(edge: .trailing, allowsFullSwipe: true) { [weak navigation] in
                         if tab.zimFile != nil {
                             Button(role: .destructive) {
                                 Task { [weak navigation] in
@@ -310,11 +310,9 @@ struct SplitViewForiPad: View { // swiftlint:disable:this type_body_length
         }
     }
     
-    private func loadDonations() async {
+    private func showDonationButton() {
         guard allSections.contains(.donation) else { return }
-        if await Payment.paymentButtonTypeAsync() != nil {
-            menuDict[.donation] = [.donation]
-        }
+        menuDict[.donation] = [.donation]
     }
     
     private func updateSelection(_ newNavItem: NavigationItem?) {

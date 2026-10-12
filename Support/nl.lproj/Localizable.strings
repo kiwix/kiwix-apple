@@ -120,6 +120,7 @@
 "zim_file.list.description.text" = "Beschrijving";
 "zim_file.list.actions.text" = "Handelingen";
 "zim_file.list.info.text" = "Informatie";
+"zim_file.list.content.text" = "Inhoud";
 "zim_file.action.locate.title" = "Opzoeken";
 "zim_file.action.open_main_page.title" = "Hoofdpagina openen";
 "zim_file.action.reveal_in_finder.title" = "Weergeven in Finder";
@@ -292,6 +293,7 @@
 "payment.error_already_subscribed.title" = "U maakt al een maandelijkse donatie";
 "payment.error_already_subscribed.description" = "Gebruik de instructies in de e-mail die we eerder hebben verzonden om het bij te werken.";
 "payment.donation_reason.title" = "Help ons de Kiwix- en ZIM-bestanden bijgewerkt te houden.";
+"payment.donation_cell.description" = "Geen advertenties, geen trackers, gefinancierd door donaties";
 "payment.donation_is_encrypted" = "Uw donatie wordt versleuteld met de ingebouwde beveiliging van Apple.";
 "download_service.error.client.backgroundSessionInUseByAnotherProcess" = "Geen communicatie mogelijk met de voorziening voor overdracht op de achtergrond";
 "download_service.error.client.backgroundSessionWasDisconnected" = "Verbinding met voorziening voor overdracht op de achtergrond is verbroken";

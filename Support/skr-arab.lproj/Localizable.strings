@@ -47,6 +47,7 @@
 "zim_file.list.description.text" = "تفصیل";
 "zim_file.list.actions.text" = "عمل";
 "zim_file.list.info.text" = "معلومات";
+"zim_file.list.content.text" = "شامل حصے";
 "zim_file.action.delete.title" = "مٹاؤ";
 "zim_file.action.delete.button.title" = "مٹاؤ";
 "zim_file.action.download.title" = "ڈاؤن لوڈ";

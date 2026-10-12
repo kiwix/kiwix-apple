@@ -14,6 +14,7 @@
 // along with Kiwix; If not, see https://www.gnu.org/licenses/.
 
 #if os(iOS) // iPhone only
+import CoreData
 import SwiftUI
 
 struct TabsManagerButton: View {
@@ -28,15 +29,15 @@ struct TabsManagerButton: View {
     var body: some View {
         Menu {
             Section {
-                Button(role: .destructive) {
-                    guard case .tab(let tabID) = navigation.currentItem else { return }
+                Button(role: .destructive) { [weak navigation] in
+                    guard case .tab(let tabID) = navigation?.currentItem else { return }
                     Task { [weak navigation] in
                         await navigation?.deleteTab(tabID: tabID)
                     }
                 } label: {
                     Label(LocalString.common_tab_menu_close_this, systemImage: "xmark.square")
                 }
-                Button(role: .destructive) {
+                Button(role: .destructive) { [weak navigation] in
                     Task { [weak navigation] in
                         await navigation?.deleteAllTabs(keepEmpty: true)
                     }
@@ -89,7 +90,7 @@ struct TabManager: View {
             .listRowBackground(
                 navigation.currentItem == NavigationItem.tab(objectID: tab.objectID) ? Color.blue.opacity(0.2) : nil
             )
-            .swipeActions {
+            .swipeActions { [weak navigation] in
                 if tab.zimFile != nil {
                     Button(role: .destructive) {
                         Task { [weak navigation] in
@@ -104,7 +105,7 @@ struct TabManager: View {
         .listStyle(.plain)
         .navigationTitle(LocalString.common_tab_navigation_title)
         .navigationBarTitleDisplayMode(.inline)
-        .toolbar {
+        .toolbar { [weak navigation] in
             Menu {
                 Button(role: .destructive) {
                     Task { [weak navigation] in

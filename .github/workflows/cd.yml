@@ -63,7 +63,7 @@ jobs:
       if: matrix.platform == 'macOS' && matrix.destination == 'ftp'
       run: |
         sed -i '' '/in-app-payments/d' project.yml
-        plutil -insert HIDE_DONATION -bool true Support/Info.plist
+        plutil -insert REPLACE_DONATION -bool true Support/Info.plist
 
     - name: Set BUILD NUMBER by date
       run: |

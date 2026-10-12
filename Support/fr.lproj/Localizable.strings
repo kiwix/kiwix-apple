@@ -54,6 +54,8 @@
 "common.button.share_as_pdf" = "Partager au format PDF";
 "common.search" = "Rechercher";
 "common.search.inpage" = "Rechercher dans la page";
+"common.find_next" = "Trouver le suivant";
+"common.find_previous" = "Trouver le précédent";
 "common.search.suggestion" = "Voulez-vous dire :";
 "common.tab.manager.title" = "Gestionnaire d'onglets";
 "common.tab.navigation.title" = "Onglets";
@@ -67,21 +69,14 @@
 "common.export_file.alert.description" = "Voulez-vous exporter le fichier %@ ?";
 "common.export_file.alert.button.title" = "Exporter";
 "outline_button.outline.title" = "Vue d’ensemble";
-// Fuzzy
 "outline_button.outline.help" = "Afficher la vue d’ensemble de l’article";
 "outline_button.outline.empty.message" = "Aucune vue d’ensemble disponible";
-// Fuzzy
 "bookmark_button.show.help" = "Afficher la feuille de signets, où l'article actuel peut être ajouté ou supprimé des signets.";
-// Fuzzy
 "article_shortcut.main.button.title" = "Article principal";
-// Fuzzy
 "article_shortcut.main.button.help" = "Afficher l'article principal";
-// Fuzzy
 "article_shortcut.random.button.title.mac" = "Article au hasard";
 "article_shortcut.random.button.title.ios" = "Page au hasard";
-// Fuzzy
 "article_shortcut.random.button.help" = "Afficher un article aléatoire";
-// Fuzzy
 "alert_handler.alert.failed.title" = "Impossible de charger l'article demandé.";
 "bookmark_context_menu.view.title" = "Afficher";
 "bookmark_context_menu.remove.title" = "Supprimer";
@@ -100,18 +95,18 @@
 "download_again.question.title" = "Vous avez déjà ce fichier.";
 "download_again.question.description_part_1" = "Il semble que %@ a déjà été téléchargé.";
 "download_again.question.description_part_2" = "Vous voulez toujours télécharger \"%@\" ? Votre fichier existant ne sera pas supprimé.";
-// Fuzzy
 "flavor_tag.help.max" = "tout sauf les gros fichiers multimédias comme la vidéo/audio";
-// Fuzzy
 "flavor_tag.help.no_pic" = "la plupart des photos ont été supprimées";
-// Fuzzy
 "flavor_tag.help.mini" = "seul un sous-ensemble du texte est disponible, probablement la première section";
 "library_refresh_time.last" = "À l’instant";
 "library_refresh_time.never" = "Jamais";
+"zim_file_cell.page_count" = "%@ pages";
+"zim_file_cell.media_count" = "%@ médias";
 "zim_file_missing_indicator.help" = "Le fichier Zim est manquant.";
 "hotspot.action.start_hotspot.title" = "Démarrer le point d’accès";
 "hotspot.action.stop_hotspot.title" = "Arrêter le point d’accès";
 "hotspot.settings.port_number" = "Numéro de port";
+"hotspot.select_zim_files.message" = "Sélectionnez les fichiers ZIM pour démarrer votre service Hotspot.";
 "hotspot.settings.recommended_port_range" = "Le numéro de port réseau utilisé par le points d’accès, doit être compris entre %@ et %@";
 "hotspot.error.port_already_used_by_another_app_title" = "Le point d’accès ne peut pas être démarré car le port %@ est utilisé.";
 "hotspot.error.port_already_used_by_another_app_description" = "Pour résoudre ce problème, fermez l’application qui utilise ce port ou changez le numéro de port du point d’accès Kiwix dans les paramètres.";
@@ -122,9 +117,17 @@
 "library.zim_file_context.main_page.label" = "Page principale";
 "library.zim_file_context.random.label" = "Page au hasard";
 "library.zim_file_context.copy_url" = "Copier l’URL";
+"zim_file_opened.overlay.no-zim-files-at-all.message" = "Aucun fichier ZIM trouvé.";
+"zim_file_opened.overlay.no-available-zim-files.message" = "Aucun fichier ZIM disponible.";
+"zim_file_opened.overlay.no-missing-zim-files.message" = "Aucun fichier ZIM manquant n'a été trouvé.";
 "zim_file_opened.toolbar.open.title" = "Ouvrir...";
 "zim_file_opened.toolbar.open.help" = "Ouvrir un fichier ZIM";
 "zim_file_category.title" = "Catégorie";
+"zim_file_opened.toolbar.filter.show_all" = "Tout afficher";
+"zim_file_opened.toolbar.filter.show_only_available" = "Afficher uniquement les disponibilités";
+"zim_file_opened.toolbar.filter.show_only_missing" = "Afficher uniquement les éléments manquants";
+"zim_file_opened.toolbar.sort_by.name" = "Trier par nom";
+"zim_file_opened.toolbar.sort_by.size" = "Trier par taille";
 "zim_file_catalog.fetching.message" = "Récupération du catalogue...";
 "zim_file_category.section.empty.message" = "Aucun fichier ZIM dans cette catégorie.";
 "zim_file_downloads.overlay.empty.message" = "Aucune tâche de téléchargement";
@@ -134,19 +137,17 @@
 "zim_file.list.description.text" = "Description";
 "zim_file.list.actions.text" = "Actions";
 "zim_file.list.info.text" = "Info";
+"zim_file.list.content.text" = "Description";
 "zim_file.action.locate.title" = "Localiser";
 "zim_file.action.open_main_page.title" = "Ouvrir la page principale";
 "zim_file.action.reveal_in_finder.title" = "Révéler dans le Finder";
 "zim_file.action.toggle_cellular" = "Télécharger en utilisant le téléphone cellulaire";
 "zim_file.action.unlink.title" = "Délier";
-// Fuzzy
 "zim_file.action.unlink.message" = "Tous les articles mis en signet liés à ce fichier ZIM seront supprimés, mais le fichier d'origine restera en place.";
 "zim_file.action.unlink.multi_title" = "Délier %@ fichiers ZIM";
-// Fuzzy
 "zim_file.action.unlink.multi_message" = "Tous les articles mis en signet liés à ces %@ fichiers ZIM seront supprimés, mais les fichiers d'origine resteront en place.";
 "zim_file.action.unlink.button.title" = "Délier";
 "zim_file.action.delete.title" = "Supprimer";
-// Fuzzy
 "zim_file.action.delete.message" = "Le fichier ZIM et tous les articles mis en favoris liés à ce fichier ZIM seront supprimés.";
 "zim_file.action.delete.button.title" = "Supprimer";
 "zim_file.action.download.title" = "Télécharger";
@@ -167,6 +168,7 @@
 "zim_file.bool_info.details" = "Détails";
 "zim_file.bool_info.require_service_workers" = "Nécessite des travailleurs pour le service";
 "zim_file.bool_info.zim_archive_integrity" = "Intégrité de l'archive ZIM";
+"zim_file.counts.pages_count" = "Nombre de pages";
 "zim_file.counts.media_count" = "Nombre de médias";
 "zim_file.detail.id.title" = "ID";
 "zim_file.download_task.action.title.cancel" = "Annuler";
@@ -239,6 +241,7 @@
 "bookmark.overlay.empty.title" = "Aucun signet";
 "search_result.zimfile.empty.message" = "Aucun fichier ZIM ouvert";
 "search_result.zimfile.no_result.message" = "Aucun résultat";
+"search_result.zimfile.voice_over_count" = "Résultats trouvés : %@";
 "search_result.sidebar.button.remove" = "Retirer";
 "search_result.header.text" = "Recherche récente";
 "search_result.button.clear" = "Effacer";
@@ -257,6 +260,7 @@
 "app_macos_commands.open_file" = "Ouvrir...";
 "app_macos_commands.new" = "Nouvel onglet";
 "app_macos_navigation.button.library" = "Bibliothèque";
+"app_macos_navigation.button.restore_previous_session" = "Restaurer la session précédente";
 "sidebar_view.navigation.button.close" = "Fermer";
 "enum.category.wikipedia" = "Wikipédia";
 "enum.category.wikibooks" = "Wikibooks";
@@ -295,17 +299,19 @@
 "payment.monthly_support.label" = "Don mensuel pour Kiwix";
 "payment.summary.title" = "Kiwix";
 "payment.textfield.custom_amount.label" = "Montant personnalisé";
+"payment.continue.button.title" = "Continuer";
 "payment.selection.option.one_time" = "Une fois";
 "payment.selection.option.monthly" = "Mensuel";
 "payment.support_fallback_message" = "Nous sommes désolés, votre appareil ne prend pas en charge Apple Pay.";
-// Fuzzy
 "payment.success.title" = "Merci beaucoup pour votre don.";
-// Fuzzy
-"payment.success.description" = "Votre générosité signifie tout pour nous.";
+"payment.success.description" = "Votre soutien contribue à maintenir le savoir libre et accessible hors ligne.";
 "payment.error.title" = "Eh bien, c'est gênant.";
 "payment.error.description" = "Il y a eu un problème avec votre paiement. Veuillez réessayer.";
 "payment.error_already_subscribed.title" = "Vous avez déjà souscrit à une donation mensuelle";
 "payment.error_already_subscribed.description" = "Suivez les instructions du courriel que nous vous avons envoyé précédemment pour la mettre à jour.";
+"payment.donation_reason.title" = "Aidez-nous à maintenir les fichiers Kiwix et ZIM à jour.";
+"payment.donation_cell.description" = "Pas de publicité, pas de traqueurs, financé par des dons";
+"payment.donation_is_encrypted" = "Votre don est crypté grâce au système de sécurité intégré d'Apple.";
 "download_service.error.client.backgroundSessionInUseByAnotherProcess" = "Impossible de communiquer avec le service de transfert en arrière-plan.";
 "download_service.error.client.backgroundSessionWasDisconnected" = "Connexion avec le service de transfert en arrière-plan interrompue";
 "download_service.error.client.cancelled" = "annulé";

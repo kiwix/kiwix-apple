@@ -126,7 +126,7 @@ struct CompactTabView: View {
                     HotspotZimFilesSelection()
                 }
             case .bookmarks:
-                SheetContent {
+                SheetContent { [browser] in
                     BookmarksListing(articleBookmarked: browser.articleBookmarked,
                                      isButtonDisabled: browser.zimFileName.isEmpty,
                                      createBookmark: { [weak browser] in browser?.createBookmark() },

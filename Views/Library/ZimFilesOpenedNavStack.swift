@@ -14,6 +14,7 @@
 // along with Kiwix; If not, see https://www.gnu.org/licenses/.
 
 #if os(iOS)
+import CoreData
 import Defaults
 import SwiftUI
 import UniformTypeIdentifiers

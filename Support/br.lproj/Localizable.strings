@@ -1,6 +1,7 @@
 // Messages for Breton (brezhoneg)
 // Exported from translatewiki.net
 // Author: Adriendelucca
+// Author: Ar choler
 // Author: Troer56
 
 // Fuzzy
@@ -23,11 +24,11 @@
 "common.button.share" = "Rannañ";
 "common.search" = "Klask";
 "common.tab.manager.title" = "Merañ an steudennoù";
-"common.tab.navigation.title" = "Steudennoù";
+"common.tab.navigation.title" = "Ivinelloù";
 "common.tab.menu.new_tab" = "Steudenn nevez";
 "common.tab.menu.close_this" = "Serriñ ar steudenn-mañ";
 "common.tab.menu.close_all" = "Serriñ an holl steudennoù";
-"common.tab.list.close" = "Serriñ ar steudenn";
+"common.tab.list.close" = "Serriñ an ivinell";
 "common.tab.menu.library" = "Levraoueg";
 "common.tab.menu.settings" = "Arventennoù";
 "common.export_file.alert.title" = "Ezporzhiañ ar restr";
