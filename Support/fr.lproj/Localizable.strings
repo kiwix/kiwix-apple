@@ -137,7 +137,7 @@
 "zim_file.list.description.text" = "Description";
 "zim_file.list.actions.text" = "Actions";
 "zim_file.list.info.text" = "Info";
-"zim_file.list.content.text" = "Description";
+"zim_file.list.content.text" = "Contenu";
 "zim_file.action.locate.title" = "Localiser";
 "zim_file.action.open_main_page.title" = "Ouvrir la page principale";
 "zim_file.action.reveal_in_finder.title" = "Révéler dans le Finder";
