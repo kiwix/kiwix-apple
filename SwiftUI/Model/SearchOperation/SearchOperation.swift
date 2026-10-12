@@ -33,6 +33,7 @@ extension SearchOperation {
         // perform index and title search
         guard !searchText.isEmpty else { return }
         performSearch()
+        guard !isCancelled else { return }
 
         // reduce to unique results by URL
         let uniqueDict = Dictionary(grouping: searchResults, by: { $0.url })
@@ -42,6 +43,7 @@ extension SearchOperation {
         // parse and extract search result snippet
         if case .matches = Defaults[.searchResultSnippetMode] {
             for result in searchResults {
+                guard !isCancelled else { return }
                 guard let html = result.htmlSnippet,
                       let data = html.data(using: .utf8) else { continue }
                 result.snippet = try? NSAttributedString(
