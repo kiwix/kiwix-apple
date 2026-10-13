@@ -273,7 +273,7 @@ total: \(totalCount, privacy: .public)
         // 0) get all downloaded ids from the local DB
         // 1) delete not downloaded entries from the DB
         // 2) insert new entries from the feed, exluding the already downloaded ones
-        // 3) already downloaded entries, do not touch those
+        // 3) already downloaded entries, do not touch those, apart from adopting their title ID
         
         // 0) get all downloaded ids from the local DB
         let downloadedIds = await downloadedIds()
@@ -320,6 +320,19 @@ total: \(totalCount, privacy: .public)
                 }
             }
             
+            // 3) already downloaded entries still listed in the feed learn their title ID,
+            // best effort: the catalog itself is already synced, so a failure here is not a failed refresh
+            await Database.shared.viewContext.perform(schedule: .enqueued) {
+                let context = Database.shared.viewContext
+                ZimUpdates.adoptTitleIDs(from: parsed.results, in: context)
+                guard context.hasChanges else { return }
+                do {
+                    try context.save()
+                } catch {
+                    Log.OPDS.error("Error saving title IDs: \(error.localizedDescription, privacy: .public)")
+                }
+            }
+
             syncCount.inserted = UInt(insertCount)
             syncCount.deleted = UInt(deleteCount)
         } catch {

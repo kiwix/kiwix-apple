@@ -58,7 +58,7 @@ final class ZimUpdatesTests: XCTestCase {
     }
 
     @MainActor
-    func test_newerVersionWithSameNameAndFlavor_isMapped() throws {
+    func test_newerVersionWithSameTitleIDAndFlavor_isMapped() throws {
         let old = Self.insert(name: zimName, flavor: "maxi", daysAgo: 30, downloaded: true)
         let new = Self.insert(name: zimName, flavor: "maxi", daysAgo: 1)
         let updates = ZimUpdates.findUpdates(in: Database.shared.viewContext)
@@ -83,10 +83,31 @@ final class ZimUpdatesTests: XCTestCase {
     }
 
     @MainActor
-    func test_differentName_isNotMapped() throws {
+    func test_differentTitle_isNotMapped() throws {
+        // name and title ID both differ here, test_sameNameButDifferentTitleID_isNotMapped tells the two apart
         _ = Self.insert(name: zimName, flavor: "maxi", daysAgo: 30, downloaded: true)
         _ = Self.insert(name: "wikipedia_de_all", flavor: "maxi", daysAgo: 1)
         XCTAssertTrue(ZimUpdates.findUpdates(in: Database.shared.viewContext).isEmpty)
+    }
+
+    @MainActor
+    func test_sameNameButDifferentTitleID_isNotMapped() throws {
+        // e.g. two publishers using the same ZIM name for unrelated content
+        _ = Self.insert(name: zimName, flavor: "maxi", daysAgo: 30, downloaded: true)
+        _ = Self.insert(name: zimName, titleID: "title-other-publisher", flavor: "maxi", daysAgo: 1)
+        XCTAssertTrue(ZimUpdates.findUpdates(in: Database.shared.viewContext).isEmpty)
+    }
+
+    @MainActor
+    func test_renamedTitle_withSameTitleID_isMapped() throws {
+        // the catalog keeps the title ID when a title is renamed, e.g. proofwiki_en_all -> proofwiki.org_en_all
+        let old = Self.insert(name: "proofwiki_en_all", flavor: "maxi", daysAgo: 30, downloaded: true)
+        let new = Self.insert(name: "proofwiki.org_en_all",
+                              titleID: Self.titleID(for: "proofwiki_en_all"),
+                              flavor: "maxi",
+                              daysAgo: 1)
+        let updates = ZimUpdates.findUpdates(in: Database.shared.viewContext)
+        XCTAssertEqual(updates, [old.fileID: new.fileID])
     }
 
     @MainActor
@@ -116,6 +137,14 @@ final class ZimUpdatesTests: XCTestCase {
         // local files report a missing flavor as "", catalog entries as nil
         let old = Self.insert(name: zimName, flavor: "", daysAgo: 30, downloaded: true)
         let new = Self.insert(name: zimName, flavor: nil, daysAgo: 1)
+        let updates = ZimUpdates.findUpdates(in: Database.shared.viewContext)
+        XCTAssertEqual(updates, [old.fileID: new.fileID])
+    }
+
+    @MainActor
+    func test_nilAndEmptyFlavor_areTreatedAsTheSame() throws {
+        let old = Self.insert(name: zimName, flavor: nil, daysAgo: 30, downloaded: true)
+        let new = Self.insert(name: zimName, flavor: "", daysAgo: 1)
         let updates = ZimUpdates.findUpdates(in: Database.shared.viewContext)
         XCTAssertEqual(updates, [old.fileID: new.fileID])
     }
@@ -203,10 +232,126 @@ final class ZimUpdatesTests: XCTestCase {
     }
 
     @MainActor
-    func test_emptyPersistentID_neverMatches() throws {
-        _ = Self.insert(name: "", flavor: "maxi", daysAgo: 30, downloaded: true)
-        _ = Self.insert(name: "", flavor: "maxi", daysAgo: 1)
+    func test_downloadedFileWithoutTitleID_hasNoUpdate() throws {
+        // a sideloaded file, or one downloaded before the catalog had title IDs
+        let old = Self.insert(name: zimName, flavor: "maxi", daysAgo: 30, downloaded: true)
+        Self.setTitleID(nil, on: old)
+        _ = Self.insert(name: zimName, flavor: "maxi", daysAgo: 1)
         XCTAssertTrue(ZimUpdates.findUpdates(in: Database.shared.viewContext).isEmpty)
+    }
+
+    @MainActor
+    func test_filesWithoutTitleID_neverMatchEachOther() throws {
+        let old = Self.insert(name: zimName, flavor: "maxi", daysAgo: 30, downloaded: true)
+        let new = Self.insert(name: zimName, flavor: "maxi", daysAgo: 1)
+        Self.setTitleID(nil, on: old, new)
+        XCTAssertTrue(ZimUpdates.findUpdates(in: Database.shared.viewContext).isEmpty)
+
+        Self.setTitleID("", on: old, new)
+        XCTAssertTrue(ZimUpdates.findUpdates(in: Database.shared.viewContext).isEmpty)
+    }
+
+    @MainActor
+    func test_catalogEntryWithoutTitleID_isNeverAnUpdate() throws {
+        _ = Self.insert(name: zimName, flavor: "maxi", daysAgo: 30, downloaded: true)
+        let new = Self.insert(name: zimName, flavor: "maxi", daysAgo: 1)
+        Self.setTitleID(nil, on: new)
+        XCTAssertTrue(ZimUpdates.findUpdates(in: Database.shared.viewContext).isEmpty)
+
+        Self.setTitleID("", on: new)
+        XCTAssertTrue(ZimUpdates.findUpdates(in: Database.shared.viewContext).isEmpty)
+    }
+
+    // MARK: - Storing the title ID
+
+    @MainActor
+    func test_configure_storesTitleID_andNeverClearsIt() throws {
+        let zimFile = ZimFile(context: Database.shared.viewContext)
+        let fileID = UUID()
+        LibraryOperations.configureZimFile(zimFile, metadata: Self.metadata(fileID: fileID, titleID: "T"))
+        XCTAssertEqual(zimFile.titleID, "T")
+
+        // re-opening the downloaded file: the ZIM itself carries no title ID
+        LibraryOperations.configureZimFile(zimFile, metadata: Self.metadata(fileID: fileID, titleID: nil))
+        XCTAssertEqual(zimFile.titleID, "T")
+        LibraryOperations.configureZimFile(zimFile, metadata: Self.metadata(fileID: fileID, titleID: ""))
+        XCTAssertEqual(zimFile.titleID, "T")
+
+        // a new value from the catalog does replace it
+        LibraryOperations.configureZimFile(zimFile, metadata: Self.metadata(fileID: fileID, titleID: "U"))
+        XCTAssertEqual(zimFile.titleID, "U")
+    }
+
+    @MainActor
+    func test_adoptTitleIDs_fillsDownloadedFilesStillInTheCatalog() throws {
+        let context = Database.shared.viewContext
+        let old = Self.insert(name: zimName, flavor: "maxi", daysAgo: 30, downloaded: true)
+        Self.setTitleID(nil, on: old)
+        let new = Self.insert(name: zimName, flavor: "maxi", daysAgo: 1)
+        XCTAssertTrue(ZimUpdates.findUpdates(in: context).isEmpty)
+
+        let catalog = [
+            old.fileID: Self.metadata(fileID: old.fileID, titleID: Self.titleID(for: zimName)),
+            new.fileID: Self.metadata(fileID: new.fileID, titleID: Self.titleID(for: zimName))
+        ]
+        XCTAssertEqual(ZimUpdates.adoptTitleIDs(from: catalog, in: context), 1)
+        XCTAssertEqual(old.titleID, Self.titleID(for: zimName))
+        // once adopted, the newer release is found
+        XCTAssertEqual(ZimUpdates.findUpdates(in: context), [old.fileID: new.fileID])
+    }
+
+    @MainActor
+    func test_adoptTitleIDs_leavesOtherRecordsAlone() throws {
+        let context = Database.shared.viewContext
+        let notInCatalog = Self.insert(name: zimName, flavor: "maxi", daysAgo: 30, downloaded: true)
+        let notDownloaded = Self.insert(name: zimName, flavor: "maxi", daysAgo: 1)
+        Self.setTitleID(nil, on: notInCatalog, notDownloaded)
+        let keepsItsID = Self.insert(name: "wikipedia_fr_all", flavor: "maxi", daysAgo: 30, downloaded: true)
+        let keepsItsIDToo = Self.insert(name: "wikipedia_es_all", flavor: "maxi", daysAgo: 30, downloaded: true)
+
+        let otherRelease = UUID()
+        let catalog = [
+            notDownloaded.fileID: Self.metadata(fileID: notDownloaded.fileID, titleID: "T"),
+            keepsItsID.fileID: Self.metadata(fileID: keepsItsID.fileID, titleID: nil),
+            keepsItsIDToo.fileID: Self.metadata(fileID: keepsItsIDToo.fileID, titleID: ""),
+            // same title as notInCatalog, but a different release: matching is by fileID only
+            otherRelease: Self.metadata(fileID: otherRelease, titleID: Self.titleID(for: zimName))
+        ]
+        XCTAssertEqual(ZimUpdates.adoptTitleIDs(from: catalog, in: context), 0)
+        XCTAssertNil(notInCatalog.titleID)
+        XCTAssertNil(notDownloaded.titleID, "catalog rows get their title ID when inserted, not here")
+        XCTAssertEqual(keepsItsID.titleID, Self.titleID(for: "wikipedia_fr_all"))
+        XCTAssertEqual(keepsItsIDToo.titleID, Self.titleID(for: "wikipedia_es_all"))
+    }
+
+    @MainActor
+    func test_adoptTitleIDs_countsOnlyChangedRecords() throws {
+        let context = Database.shared.viewContext
+        let unchanged = Self.insert(name: zimName, flavor: "maxi", daysAgo: 30, downloaded: true)
+        let reassigned = Self.insert(name: "wikipedia_fr_all", flavor: "maxi", daysAgo: 30, downloaded: true)
+
+        let catalog = [
+            unchanged.fileID: Self.metadata(fileID: unchanged.fileID, titleID: Self.titleID(for: zimName)),
+            reassigned.fileID: Self.metadata(fileID: reassigned.fileID, titleID: "title-reassigned")
+        ]
+        // the catalog is the authority: a different value replaces the stored one
+        XCTAssertEqual(ZimUpdates.adoptTitleIDs(from: catalog, in: context), 1)
+        XCTAssertEqual(unchanged.titleID, Self.titleID(for: zimName))
+        XCTAssertEqual(reassigned.titleID, "title-reassigned")
+    }
+
+    func test_metaStruct_hasNoTitleIDUntilLibkiwixProvidesIt() throws {
+        // replace with a real value once kiwix/libkiwix#1356 is available
+        let metadata = ZimFileMetaData(
+            fileID: UUID(), groupIdentifier: zimName, title: "Test ZIM", fileDescription: "test",
+            languageCodes: "eng", category: "wikipedia", creationDate: Self.now,
+            size: 1_000, articleCount: 10, mediaCount: 5, creator: "test", publisher: "test", tags: "",
+            downloadURL: nil, faviconURL: nil, faviconData: nil, flavor: "maxi",
+            hasDetails: false, hasPictures: false, hasVideos: false, requiresServiceWorkers: false
+        )
+        let metaStruct = try XCTUnwrap(ZimFileService.metaStruct(from: metadata))
+        XCTAssertEqual(metaStruct.flavor, "maxi")
+        XCTAssertNil(metaStruct.titleID)
     }
 
     @MainActor
@@ -368,8 +513,22 @@ final class ZimUpdatesTests: XCTestCase {
         return bookmark
     }
 
+    /// sets the title ID directly, bypassing configureZimFile which never clears it, and saves like insert does
+    @MainActor
+    private static func setTitleID(_ titleID: String?, on zimFiles: ZimFile...) {
+        zimFiles.forEach { $0.titleID = titleID }
+        try! Database.shared.viewContext.save()
+    }
+
+    /// a stable title ID per ZIM name, so books with different names are different titles unless a test says otherwise
+    private static func titleID(for name: String) -> String {
+        "title-\(name)"
+    }
+
+    // swiftlint:disable:next function_parameter_count
     @discardableResult
     private static func insert(name: String,
+                               titleID: String? = nil,
                                flavor: String?,
                                daysAgo: Double,
                                downloaded: Bool = false,
@@ -377,8 +536,29 @@ final class ZimUpdatesTests: XCTestCase {
     ) -> ZimFile {
         let context = Database.shared.viewContext
         let zimFile = ZimFile(context: context)
-        let metadata = ZimFileMetaStruct(
-            fileID: UUID(),
+        let metadata = metadata(name: name,
+                                titleID: titleID ?? Self.titleID(for: name),
+                                flavor: flavor,
+                                daysAgo: daysAgo,
+                                downloadURL: downloadURL)
+        LibraryOperations.configureZimFile(zimFile, metadata: metadata)
+        if downloaded {
+            zimFile.fileURLBookmark = Data([0x01])
+        }
+        try! context.save()
+        return zimFile
+    }
+
+    // swiftlint:disable:next function_parameter_count
+    private static func metadata(fileID: UUID = UUID(),
+                                 name: String = zimName,
+                                 titleID: String?,
+                                 flavor: String? = "maxi",
+                                 daysAgo: Double = 1,
+                                 downloadURL: URL? = URL(string: "https://download.kiwix.org/zim/test.zim.meta4")
+    ) -> ZimFileMetaStruct {
+        ZimFileMetaStruct(
+            fileID: fileID,
             groupIdentifier: name,
             title: "Test ZIM",
             fileDescription: "test description",
@@ -395,18 +575,12 @@ final class ZimUpdatesTests: XCTestCase {
             faviconURL: nil,
             faviconData: nil,
             flavor: flavor,
-            titleID: nil,
+            titleID: titleID,
             hasDetails: false,
             hasPictures: false,
             hasVideos: false,
             requiresServiceWorkers: false
         )
-        LibraryOperations.configureZimFile(zimFile, metadata: metadata)
-        if downloaded {
-            zimFile.fileURLBookmark = Data([0x01])
-        }
-        try! context.save()
-        return zimFile
     }
 
     /// Deletes through the context (not a batch delete), so the app's fetched results controllers

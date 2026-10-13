@@ -20,8 +20,8 @@ import Foundation
 /// Detects downloaded ZIM files that have a newer version listed in the catalog.
 ///
 /// Two ZIM files are considered versions of the same content when they share
-/// the same `persistentID` (the ZIM `Name` metadata) and the same `flavor`.
-/// The result is persisted in `Defaults[.zimUpdatesAvailable]`, so it is
+/// the same `titleID` (assigned by the catalog, see kiwix/libkiwix#1356) and the same `flavor`.
+/// A ZIM file without a title ID never has an update. The result is persisted in `Defaults[.zimUpdatesAvailable]`, so it is
 /// available immediately on launch and observable by SwiftUI views.
 ///
 /// Detection only runs after the catalog refresh and on local library changes,
@@ -35,9 +35,10 @@ enum ZimUpdates {
         let downloadedRequest = ZimFile.fetchRequest(predicate: ZimFile.Predicate.isDownloaded())
         guard let downloaded = try? context.fetch(downloadedRequest) else { return [:] }
         var updates: [UUID: UUID] = [:]
-        for zimFile in downloaded where !zimFile.persistentID.isEmpty {
+        for zimFile in downloaded {
+            guard let titleID = zimFile.titleID, !titleID.isEmpty else { continue }
             let request = ZimFile.fetchRequest(
-                predicate: newerVersionPredicate(for: zimFile),
+                predicate: newerVersionPredicate(for: zimFile, titleID: titleID),
                 sortDescriptors: [NSSortDescriptor(keyPath: \ZimFile.created, ascending: false)]
             )
             request.fetchLimit = 1
@@ -48,9 +49,9 @@ enum ZimUpdates {
         return updates
     }
 
-    private static func newerVersionPredicate(for zimFile: ZimFile) -> NSPredicate {
+    private static func newerVersionPredicate(for zimFile: ZimFile, titleID: String) -> NSPredicate {
         var predicates = [
-            NSPredicate(format: "persistentID == %@", zimFile.persistentID),
+            NSPredicate(format: "titleID == %@", titleID),
             NSPredicate(format: "created > %@", zimFile.created as CVarArg),
             NSPredicate(format: "downloadURL != nil"),
             ZimFile.Predicate.notDownloaded()
@@ -61,6 +62,33 @@ enum ZimUpdates {
             predicates.append(NSPredicate(format: "flavor == nil OR flavor == ''"))
         }
         return NSCompoundPredicate(andPredicateWithSubpredicates: predicates)
+    }
+
+    /// Copies the catalog's title IDs onto downloaded ZIM files that are still listed in the catalog.
+    ///
+    /// The catalog sync does not touch downloaded records, and a ZIM file itself carries no title ID,
+    /// so this is how a file downloaded before title IDs existed can learn its own. It only works while
+    /// that exact release is still listed: the catalog lists current releases only, so a file that is
+    /// already outdated stays without a title ID, and without an update, until a lookup by fileID exists.
+    /// A catalog entry without a title ID never clears a stored one.
+    /// - Parameters:
+    ///   - catalog: the parsed catalog entries by fileID
+    ///   - context: the context to update (must be called on the context's queue, saving is up to the caller)
+    /// - Returns: the number of records that got a new title ID
+    @discardableResult
+    static func adoptTitleIDs(from catalog: [UUID: ZimFileMetaStruct], in context: NSManagedObjectContext) -> Int {
+        // downloaded files are few, the catalog has thousands of entries: look each file up instead of filtering by ID
+        let request = ZimFile.fetchRequest(predicate: ZimFile.Predicate.isDownloaded())
+        guard let downloaded = try? context.fetch(request) else { return 0 }
+        var adopted = 0
+        for zimFile in downloaded {
+            guard let titleID = catalog[zimFile.fileID]?.titleID,
+                  !titleID.isEmpty,
+                  zimFile.titleID != titleID else { continue }
+            zimFile.titleID = titleID
+            adopted += 1
+        }
+        return adopted
     }
 
     /// Recomputes the available updates and stores them in `Defaults`
