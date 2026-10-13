@@ -390,6 +390,7 @@ final class ZimUpdatesTests: XCTestCase {
             mediaCount: 5,
             creator: "test",
             publisher: "test",
+            tags: [],
             downloadURL: downloadURL,
             faviconURL: nil,
             faviconData: nil,
