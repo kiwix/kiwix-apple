@@ -148,6 +148,8 @@ ZIM file cannot be opened: \(zimFile.name, privacy: .public) |\
         if let faviconURL = metadata.faviconURL { zimFile.faviconURL = faviconURL }
         if let faviconData = metadata.faviconData { zimFile.faviconData = faviconData }
         if let downloadURL = metadata.downloadURL { zimFile.downloadURL = downloadURL }
+        // only the catalog knows the title ID, re-reading a downloaded file must not clear it
+        if let titleID = metadata.titleID, !titleID.isEmpty { zimFile.titleID = titleID }
     }
 
     // MARK: - Deletion

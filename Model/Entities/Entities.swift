@@ -271,6 +271,8 @@ final class ZimFile: NSManagedObject {
     @NSManaged var persistentID: String
     @NSManaged var requiresServiceWorkers: Bool
     @NSManaged var size: Int64
+    /// CMS title ID from the catalog, nil for books the catalog never described
+    @NSManaged var titleID: String?
 
     @NSManaged var bookmarks: Set<Bookmark>
     @NSManaged var downloadTask: DownloadTask?

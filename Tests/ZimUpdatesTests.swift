@@ -395,6 +395,7 @@ final class ZimUpdatesTests: XCTestCase {
             faviconURL: nil,
             faviconData: nil,
             flavor: flavor,
+            titleID: nil,
             hasDetails: false,
             hasPictures: false,
             hasVideos: false,

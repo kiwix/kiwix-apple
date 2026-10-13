@@ -132,6 +132,7 @@ private extension ZimFileMetaStruct {
             faviconURL: faviconURL,
             faviconData: faviconData,
             flavor: flavor,
+            titleID: nil,
             hasDetails: hasDetails,
             hasPictures: hasPictures,
             hasVideos: hasVideos,
