@@ -150,14 +150,18 @@ struct SplitViewForiPad: View { // swiftlint:disable:this type_body_length
             navPath.append(fileId)
         })
         .onChange(of: columnVisibility) {
-            Defaults[.ipadSplitViewVisibility] = columnVisibility
+            Task(priority: .background) {
+                Defaults[.ipadSplitViewVisibility] = columnVisibility
+            }
         }
         .onChange(of: scenePhase) { old, new in
             switch (old, new) {
             case (.active, .inactive):
-                Defaults[.ipadSplitViewVisibility] = columnVisibility
-                if let selection {
-                    Defaults[.savedMenuNavigation] = selection
+                Task(priority: .background) {
+                    Defaults[.ipadSplitViewVisibility] = columnVisibility
+                    if let selection {
+                        Defaults[.savedMenuNavigation] = selection
+                    }
                 }
             case (_, .inactive):
                 columnVisibility = Defaults[.ipadSplitViewVisibility]
@@ -251,32 +255,9 @@ struct SplitViewForiPad: View { // swiftlint:disable:this type_body_length
                 .lineLimit(1)
                 .truncationMode(.tail)
         } icon: {
-            iconImageFor(tab: tab)
-                .resizable()
-                .frame(maxWidth: 22, maxHeight: 22)
-                .clipShape(RoundedRectangle(cornerSize: CGSize(width: 3, height: 3)))
+            IconImageAsync(tab: tab)
         }
         .accessibilityIdentifier(labelText)
-    }
-
-    private func iconImageFor(tab: Tab) -> Image {
-        let categoryImage: UIImage?
-        if let zimFile = tab.zimFile, let category = Category(rawValue: zimFile.category) {
-            if let imgData = zimFile.faviconData,
-               let image = UIImage(data: imgData) {
-                categoryImage = image
-            } else {
-                categoryImage = UIImage(named: category.icon)
-            }
-        } else {
-            categoryImage = nil
-        }
-        
-        if let categoryImage {
-            return Image(uiImage: categoryImage)
-        } else {
-            return Image(systemName: "square")
-        }
     }
     
     @ViewBuilder
@@ -319,8 +300,10 @@ struct SplitViewForiPad: View { // swiftlint:disable:this type_body_length
         if let newNavItem, let newSelection = MenuItem(from: newNavItem) {
             if selection != newSelection {
                 selection = newSelection
-                Defaults[.savedMenuNavigation] = selection
                 navPath = NavigationPath([newSelection])
+                Task(priority: .background) {
+                    Defaults[.savedMenuNavigation] = selection
+                }
             }
         }
     }
