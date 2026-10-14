@@ -114,6 +114,7 @@ struct SplitViewForiPad: View { // swiftlint:disable:this type_body_length
                     HotspotZimFilesSelection()
                 case nil:
                     LoadingDataView()
+                        .animation(nil, body: { _ in })
                 }
             }.animation(.easeInOut(duration: 0.2), value: selection)
         }

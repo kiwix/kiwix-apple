@@ -246,6 +246,9 @@ struct BrowserTab: View {
                     }
                 }
             }
+            .transaction { transaction in
+                transaction.animation = nil
+            }
         }
 
         private func showTheLibrary() {
