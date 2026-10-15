@@ -77,7 +77,7 @@ struct BrowserTab: View {
                 view
 #endif
             }
-            .task { [weak browser] in
+            .task(priority: .utility) { [weak browser] in
                 await browser?.updateLastOpened()
             }
             .onChange(of: browser.articleTitle) { [weak browser] oldTitle, newTitle in
