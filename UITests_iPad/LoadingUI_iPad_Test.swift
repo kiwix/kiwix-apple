@@ -77,15 +77,14 @@ import XCTest
         }
         usleep(750_000)
         testAfterRelaunch(app)
-        usleep(1)
         testForegroundViaFinderDeeplink(app)
-        usleep(1)
         testLaunchViaDeeplink(app)
     }
     
     private func testAfterRelaunch(_ app: XCUIApplication) {
         let zimFileTab = app.collectionViews["Sidebar"].cells.buttons["Main Page"].firstMatch
         Wait.inApp(app, forElement: zimFileTab)
+        usleep(750_000)
         XCTAssert(zimFileTab.isSelected)
         switchToAnotherPage(app)
         
@@ -142,7 +141,9 @@ import XCTest
         
         let zimFileTab = app.collectionViews["Sidebar"].cells.buttons["Main Page"].firstMatch
         Wait.inApp(app, forElement: zimFileTab)
+        usleep(750_000)
         XCTAssert(zimFileTab.isSelected)
+        usleep(50_000)
         switchToAnotherPage(app)
     }
     
