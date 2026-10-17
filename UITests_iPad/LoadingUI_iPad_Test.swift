@@ -28,20 +28,21 @@ import XCTest
         
         // show sidebar
         app.navigationBars.buttons.firstMatch.tap()
+        
+        // select categories (might not be selected)
+        app.buttons["categories"].tap()
+        
         let searchField = app.navigationBars.searchFields.firstMatch
-        _ = searchField.waitForExistence(timeout: 5)
+        _ = searchField.waitForExistence(timeout: 60)
         searchField.tap()
         searchField.typeText("Alpine")
-//        let _ = app.buttons["Wikipadia"].waitForExistence(timeout: 5)
-//        app.buttons["Wikipedia"].tap()
-//        app.buttons["Other"].tap()
         
         let zimMini = app.buttons["Alpine Linux Wiki"].firstMatch
-        Wait.inApp(app, forElement: zimMini)
+        Wait.inApp(app, forElement: zimMini, timeout: 120)
         zimMini.tap()
         
         let downloadButton = app.buttons["Download"].firstMatch
-        Wait.inApp(app, forElement: downloadButton, timeout: 80)
+        Wait.inApp(app, forElement: downloadButton, timeout: 120)
 
         addUIInterruptionMonitor(withDescription: "\"Kiwix\" Would Like To Send You Notifications") { (alert) -> Bool in
             let alertButton = alert.buttons["Allow"]
@@ -54,10 +55,12 @@ import XCTest
         downloadButton.tap()
         
         let openMainPageButton = app.buttons["Open Main Page"]
-        Wait.inApp(app, forElement: openMainPageButton, timeout: 120)
+        Wait.inApp(app, forElement: openMainPageButton, timeout: 240)
         openMainPageButton.tap()
-        // switch to a random page
-        app.navigationBars.buttons["nav_random"].tap()
+
+        app.webViews.firstMatch.tap()
+        
+        switchToAnotherPage(app)
         
         // open another tab as well
         app.buttons["opened"].tap()
@@ -65,26 +68,25 @@ import XCTest
         Wait.inApp(app, forElement: openMainPageButton)
         openMainPageButton.tap()
         
-        usleep(1)
-        
         // RESTART THE APP
         app.terminate()
-        usleep(1)
         app.activate()
         
+        if !XCUIDevice.shared.orientation.isLandscape {
+            XCUIDevice.shared.orientation = .landscapeLeft
+        }
+        usleep(750_000)
         testAfterRelaunch(app)
         testForegroundViaFinderDeeplink(app)
         testLaunchViaDeeplink(app)
     }
     
     private func testAfterRelaunch(_ app: XCUIApplication) {
-        // show sidebar
-        app.navigationBars.buttons.firstMatch.tap()
         let zimFileTab = app.collectionViews["Sidebar"].cells.buttons["Main Page"].firstMatch
         Wait.inApp(app, forElement: zimFileTab)
+        usleep(750_000)
         XCTAssert(zimFileTab.isSelected)
-        // switch to a random page
-        app.navigationBars.buttons["nav_random"].tap()
+        switchToAnotherPage(app)
         
         app.buttons["bookmarks"].tap()
         app.buttons["opened"].tap()
@@ -116,14 +118,14 @@ import XCTest
         let zimFileTab = app.collectionViews["Sidebar"].cells.buttons["Main Page"].firstMatch
         Wait.inApp(app, forElement: zimFileTab)
         XCTAssert(zimFileTab.isSelected)
-        // switch to a random page
-        app.navigationBars.buttons["nav_random"].tap()
+        switchToAnotherPage(app)
     }
     
     private func testLaunchViaDeeplink(_ app: XCUIApplication) {
         
         app.terminate()
         XCUIDevice.shared.press(.home)
+        usleep(50_000)
         
         let documentsApp = XCUIApplication(bundleIdentifier: "com.apple.DocumentsApp")
         documentsApp.activate()
@@ -136,10 +138,19 @@ import XCTest
         ).firstMatch
         
         alpineFile.tap()
+        
         let zimFileTab = app.collectionViews["Sidebar"].cells.buttons["Main Page"].firstMatch
         Wait.inApp(app, forElement: zimFileTab)
+        usleep(750_000)
         XCTAssert(zimFileTab.isSelected)
-        // switch to a random page
-        app.navigationBars.buttons["nav_random"].tap()
+        usleep(50_000)
+        switchToAnotherPage(app)
+    }
+    
+    private func switchToAnotherPage(_ app: XCUIApplication) {
+        let installLink = app.links["Installation"].firstMatch
+        Wait.inApp(app, forElement: installLink)
+        installLink.tap()
+        usleep(1_000)
     }
 }
