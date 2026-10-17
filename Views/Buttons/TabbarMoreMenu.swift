@@ -15,19 +15,25 @@
 
 #if os(iOS)
 import SwiftUI
+import Defaults
 
 struct TabbarMoreMenu: View {
     
     @ObservedObject var browser: BrowserViewModel
     @FocusedValue(\.hasZIMFiles) var hasZimFiles
+    @Default(.showRandomButtonOnMainPage) var randomOnMainPage
     
     /// For branded apps, that have a dedicated hotspot toolbar button
     let presentHotspot: () -> Void
     /// When the bookmark button is under more ... tab menu item
     let presentBookmarks: () -> Void
     
+    private var hideRandomButton: Bool {
+        Brand.hideRandomButton || randomOnMainPage
+    }
+    
     var body: some View {
-        if Brand.hideRandomButton && Brand.hideShareButton && FeatureFlags.hasLibrary {
+        if hideRandomButton && Brand.hideShareButton && FeatureFlags.hasLibrary {
             bookmarkButton()
         } else {
             menuOfButtons()
@@ -38,7 +44,7 @@ struct TabbarMoreMenu: View {
     private func menuOfButtons() -> some View {
         Menu {
             ControlGroup {
-                if !Brand.hideRandomButton {
+                if !hideRandomButton {
                     randomButton()
                 }
                 if !Brand.hideShareButton {

@@ -159,6 +159,7 @@ struct Settings: View {
     @Default(.libraryAutoRefresh) private var libraryAutoRefresh
     @Default(.searchResultSnippetMode) private var searchResultSnippetMode
     @Default(.webViewPageZoom) private var webViewPageZoom
+    @Default(.showRandomButtonOnMainPage) private var randomOnMainPage
     @EnvironmentObject private var colorSchemeStore: UserColorSchemeStore
     @EnvironmentObject private var library: LibraryViewModel
     @Environment(\.horizontalSizeClass) var horizontalSizeClass
@@ -231,6 +232,12 @@ struct Settings: View {
             }
             if FeatureFlags.showSearchSnippetInSettings {
                 Toggle(LocalString.reading_settings_search_snippet_title, isOn: isSnippet)
+            }
+            if horizontalSizeClass == .compact, !Brand.hideRandomButton {
+                Toggle(
+                    LocalString.reading_settings_random_button_on_main_page_title,
+                    isOn: $randomOnMainPage
+                )
             }
         }
     }

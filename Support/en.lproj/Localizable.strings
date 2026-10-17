@@ -207,6 +207,7 @@
 "reading_settings.zoom.reset.button" = "Reset";
 "reading_settings.external_link.title" = "External Link";
 "reading_settings.search_snippet.title" = "Search snippet";
+"reading_settings.random_button_on_main_page.title" = "Random button on main screen";
 "reading_settings.tab.reading" = "Reading";
 "library_settings.catalog.title" = "Catalog";
 "library_settings.button.refresh_now" = "Refresh Now";

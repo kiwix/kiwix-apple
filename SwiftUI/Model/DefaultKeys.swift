@@ -56,7 +56,7 @@ extension Defaults.Keys {
     static let openZIMsShowBy = Key<ZIMsShowBy>("openZIMsShowBy", default: ZIMsShowBy.all)
     static let openZIMsSorting = Key<ZIMsSortBy>("openZIMsSortBy", default: ZIMsSortBy.size(.forward))
     
-    
+    static let showRandomButtonOnMainPage = Key<Bool>("showRandomButtonOnMainPage", default: false)
 
     #if os(macOS)
     // window management:

@@ -192,6 +192,7 @@ private struct Content<LaunchModel>: View where LaunchModel: LaunchProtocol {
     /// this is still hacky a bit, as the change from here re-validates the view
     /// which triggers the model to be revalidated
     @Default(.hasSeenCategories) private var hasSeenCategories
+    @Default(.showRandomButtonOnMainPage) var randomOnMainPage
 
     var body: some View {
         Group {
@@ -244,6 +245,10 @@ private struct Content<LaunchModel>: View where LaunchModel: LaunchProtocol {
                 if !Brand.hideFindInPage {
                     ContentSearchButton(browser: browser)
                 }
+                if randomOnMainPage {
+                    randomButton()
+                }
+                
                 Button {
                     showSettings()
                 } label: {
@@ -269,6 +274,15 @@ private struct Content<LaunchModel>: View where LaunchModel: LaunchProtocol {
         } else {
             showLibrary()
         }
+    }
+    
+    @ViewBuilder
+    private func randomButton() -> some View {
+        Button(LocalString.article_shortcut_random_button_title_ios,
+               systemImage: "die.face.5",
+               action: { [weak browser] in browser?.loadRandomArticle() })
+        .disabled(zimFiles.isEmpty)
+        .accessibilityIdentifier("random")
     }
 }
 #endif
