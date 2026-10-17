@@ -29,7 +29,7 @@ struct ZimFilesOpenedNavStack: View {
     private let selectFileById = NotificationCenter.default.publisher(for: .selectFile)
     @State private var fileIdToOpen: UUID?
     @State private var showBy: ZIMsShowBy = Defaults[.openZIMsShowBy]
-    @State private var sortBy: ZIMsSortBy = Defaults[.opneZIMsSorting]
+    @State private var sortBy: ZIMsSortBy = Defaults[.openZIMsSorting]
     @FetchRequest private var zimFiles: FetchedResults<ZimFile>
     
     let dismiss: (() -> Void)?
@@ -37,7 +37,7 @@ struct ZimFilesOpenedNavStack: View {
     init(dismiss: (() -> Void)?) {
         self.dismiss = dismiss
         _zimFiles = FetchRequest(
-            sortDescriptors: [Defaults[.opneZIMsSorting].sortDescriptor()],
+            sortDescriptors: [Defaults[.openZIMsSorting].sortDescriptor()],
             predicate: ZimFile.openedPredicate(showBy: Defaults[.openZIMsShowBy]),
             animation: .easeInOut
         )
@@ -87,7 +87,7 @@ struct ZimFilesOpenedNavStack: View {
             zimFiles.nsPredicate = ZimFile.openedPredicate(showBy: newValue)
         }
         .onChange(of: sortBy) { (_, newValue: ZIMsSortBy) in
-            Defaults[.opneZIMsSorting] = newValue
+            Defaults[.openZIMsSorting] = newValue
             zimFiles.sortDescriptors = [newValue.sortDescriptor()]
         }
         // not using OpenFileButton here, because it does not work on iOS/iPadOS 15 when this view is in a modal

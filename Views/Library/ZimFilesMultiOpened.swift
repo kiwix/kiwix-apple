@@ -26,12 +26,12 @@ struct ZimFilesMultiOpened: View {
     private let selectFileById = NotificationCenter.default.publisher(for: .selectFile)
     @State private var fileIdToOpen: UUID?
     @State private var showBy: ZIMsShowBy = Defaults[.openZIMsShowBy]
-    @State private var sortBy: ZIMsSortBy = Defaults[.opneZIMsSorting]
+    @State private var sortBy: ZIMsSortBy = Defaults[.openZIMsSorting]
     @FetchRequest private var zimFiles: FetchedResults<ZimFile>
     
     init() {
         _zimFiles = FetchRequest(
-            sortDescriptors: [Defaults[.opneZIMsSorting].sortDescriptor()],
+            sortDescriptors: [Defaults[.openZIMsSorting].sortDescriptor()],
             predicate: ZimFile.openedPredicate(showBy: Defaults[.openZIMsShowBy]),
             animation: .easeInOut
         )
@@ -124,7 +124,7 @@ struct ZimFilesMultiOpened: View {
                 zimFiles.nsPredicate = ZimFile.openedPredicate(showBy: newValue)
             }
             .onChange(of: sortBy) { (_, newValue: ZIMsSortBy) in
-                Defaults[.opneZIMsSorting] = newValue
+                Defaults[.openZIMsSorting] = newValue
                 zimFiles.sortDescriptors = [newValue.sortDescriptor()]
             }
         }
