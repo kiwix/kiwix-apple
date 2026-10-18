@@ -102,8 +102,6 @@
 "zim_file_catalog.fetching.message" = "Obtention del catalogo…";
 "zim_file_category.section.empty.message" = "Necun file ZIM in iste categoria.";
 "zim_file_downloads.overlay.empty.message" = "Necun discargamento";
-"zim_file_new_overlay.empty" = "Necun nove file ZIM";
-"zim_file_new.button.refresh" = "Refrescar";
 "zim_file.list.name.text" = "Nomine";
 "zim_file.list.description.text" = "Description";
 "zim_file.list.actions.text" = "Actiones";
@@ -247,13 +245,11 @@
 "enum.libray_tab_item.opened" = "Aperite";
 "enum.libray_tab_item.categories" = "Categorias";
 "enum.libray_tab_item.downloads" = "Discargamentos";
-"enum.libray_tab_item.new" = "Nove";
 "enum.navigation_item.reading" = "Lectura";
 "enum.navigation_item.bookmarks" = "Marcapaginas";
 "enum.navigation_item.new_tab" = "Nove scheda";
 "enum.navigation_item.opened" = "Aperite";
 "enum.navigation_item.categories" = "Categorias";
-"enum.navigation_item.new" = "Nove";
 "enum.navigation_item.downloads" = "Discargamentos";
 "enum.navigation_item.settings" = "Parametros";
 "enum.navigation_item.hotspot" = "Puncto de accesso";

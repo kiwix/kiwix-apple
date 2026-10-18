@@ -113,8 +113,6 @@
 "zim_file_catalog.fetching.message" = "Buscando catálogo...";
 "zim_file_category.section.empty.message" = "No hay archivo ZIM en esta categoría.";
 "zim_file_downloads.overlay.empty.message" = "Sin tareas de descarga";
-"zim_file_new_overlay.empty" = "No hay un nuevo archivo ZIM";
-"zim_file_new.button.refresh" = "Actualizar";
 "zim_file.list.name.text" = "Nombre";
 "zim_file.list.description.text" = "Descripción";
 "zim_file.list.actions.text" = "Acciones";
@@ -255,13 +253,11 @@
 "enum.libray_tab_item.opened" = "Abierto";
 "enum.libray_tab_item.categories" = "Categorías";
 "enum.libray_tab_item.downloads" = "Descargas";
-"enum.libray_tab_item.new" = "Nuevo";
 "enum.navigation_item.reading" = "Lectura";
 "enum.navigation_item.bookmarks" = "Marcadores";
 "enum.navigation_item.new_tab" = "Pestaña nueva";
 "enum.navigation_item.opened" = "Abierto";
 "enum.navigation_item.categories" = "Categorías";
-"enum.navigation_item.new" = "Nuevo";
 "enum.navigation_item.downloads" = "Descargas";
 "enum.navigation_item.settings" = "Ajustes";
 "enum.navigation_item.hotspot" = "Servidor";
