@@ -57,7 +57,17 @@
     NSMutableArray *uuids = [[NSMutableArray alloc] initWithCapacity:self.library->getBookCount(false, true)];
     for (std::string identifierC: self.library->getBooksIds()) {
         NSString *identifier = [NSString stringWithUTF8String:identifierC.c_str()];
-        [uuids addObject:[[NSUUID alloc] initWithUUIDString:identifier]];
+        if (identifier == nil) {
+            // Skip entries whose id cannot be decoded as UTF-8 instead of crashing.
+            continue;
+        }
+        NSUUID *uuid = [[NSUUID alloc] initWithUUIDString:identifier];
+        if (uuid == nil) {
+            // Skip malformed ids coming from OPDS feeds (e.g. custom third-party
+            // catalogs) instead of crashing on nil insertion.
+            continue;
+        }
+        [uuids addObject:uuid];
     }
     return [[NSSet alloc] initWithArray:uuids];
 }
