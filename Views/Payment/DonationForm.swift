@@ -39,7 +39,7 @@ private enum PaymentType: String, CaseIterable, Identifiable {
 
 struct DonationForm: View {
     @Environment(\.dismiss) var dismiss
-    @State private var currencyType: Payment.Currency = .usd
+    @State private var currencyType: Payment.Currency = Payment.Currency.allLocalCases.first!
     @State private var paymentType: PaymentType = .monthly
     @State private var selectedAmount: SelectedAmountState = Self.defaultFor(.monthly)
         
@@ -148,7 +148,7 @@ struct DonationForm: View {
     @ViewBuilder
     private var currencyPicker: some View {
         Picker("", selection: $currencyType) {
-            ForEach(Payment.Currency.allCases) { currency in
+            ForEach(Payment.Currency.allLocalCases) { currency in
                 Text(currency.label)
                     .tag(currency)
             }
