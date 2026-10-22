@@ -53,7 +53,7 @@ import XCTest
             return false
         }
         downloadButton.tap()
-        
+        usleep(100_000)
         let openMainPageButton = app.buttons["Open Main Page"]
         Wait.inApp(app, forElement: openMainPageButton, timeout: 240)
         openMainPageButton.tap()
@@ -67,7 +67,7 @@ import XCTest
         app.buttons["Open: Alpine Linux Wiki"].tap()
         Wait.inApp(app, forElement: openMainPageButton)
         openMainPageButton.tap()
-        
+        usleep(500_000)
         // RESTART THE APP
         app.terminate()
         app.activate()
@@ -77,15 +77,14 @@ import XCTest
         }
         usleep(750_000)
         testAfterRelaunch(app)
-        usleep(1)
         testForegroundViaFinderDeeplink(app)
-        usleep(1)
         testLaunchViaDeeplink(app)
     }
     
     private func testAfterRelaunch(_ app: XCUIApplication) {
         let zimFileTab = app.collectionViews["Sidebar"].cells.buttons["Main Page"].firstMatch
         Wait.inApp(app, forElement: zimFileTab)
+        usleep(900_000)
         XCTAssert(zimFileTab.isSelected)
         switchToAnotherPage(app)
         
@@ -115,7 +114,7 @@ import XCTest
         ).firstMatch
         
         alpineFile.tap()
-        
+        usleep(500_000)
         let zimFileTab = app.collectionViews["Sidebar"].cells.buttons["Main Page"].firstMatch
         Wait.inApp(app, forElement: zimFileTab)
         XCTAssert(zimFileTab.isSelected)
@@ -139,10 +138,14 @@ import XCTest
         ).firstMatch
         
         alpineFile.tap()
-        
+        usleep(500_000)
         let zimFileTab = app.collectionViews["Sidebar"].cells.buttons["Main Page"].firstMatch
         Wait.inApp(app, forElement: zimFileTab)
+        usleep(500_000)
+        usleep(500_000)
+        usleep(500_000)
         XCTAssert(zimFileTab.isSelected)
+        usleep(50_000)
         switchToAnotherPage(app)
     }
     
