@@ -114,4 +114,46 @@ struct OPDSParserTests {
         )
         #expect(metadata.flavor == "maxi")
     }
+    
+    @Test("OPDSParser should not crash on non UTF-8 ids")
+    @ParserActor func parseAndExtractNonUTF8() async throws {
+        let content = """
+        <feed xmlns="http://www.w3.org/2005/Atom"
+              xmlns:dc="http://purl.org/dc/terms/"
+              xmlns:opds="http://opds-spec.org/2010/catalog">
+          <entry>
+            <id>😵😩😂</id>
+            <title>Best of Wikipedia</title>
+            <updated>2023-01-07T00:00:00Z</updated>
+            <summary>A selection of the best 50,000 Wikipedia articles</summary>
+            <language>eng</language>
+            <name>wikipedia_en_top</name>
+            <flavour>maxi</flavour>
+            <category>wikipedia</category>
+            <tags>wikipedia;_category:wikipedia;_pictures:yes;_videos:no;_details:yes;_ftindex:yes</tags>
+            <articleCount>50001</articleCount>
+            <mediaCount>566835</mediaCount>
+            <link rel="http://opds-spec.org/image/thumbnail"
+                  href="/catalog/v2/illustration/1ec90eab-5724-492b-9529-893959520de4/"
+                  type="image/png;width=48;height=48;scale=1"/>
+            <link type="text/html" href="/content/wikipedia_en_top_maxi_2023-01"/>
+            <author><name>Wikipedia</name></author>
+            <publisher><name>Kiwix</name></publisher>
+            <dc:issued>2023-01-07T00:00:00Z</dc:issued>
+            <link rel="http://opds-spec.org/acquisition/open-access" type="application/x-zim"
+              href="https://download.kiwix.org/zim/wikipedia/wikipedia_en_top_maxi_2023-01.zim.meta4"
+              length="6515656704"/>
+          </entry>
+        </feed>
+        """
+        
+        // Parse data
+        let responseTestURL = URL(string: "https://resp-test.org/")!
+        let parser = OPDSParser()
+        try await parser.parse(data: content.data(using: .utf8)!,
+                               urlHost: responseTestURL.absoluteString)
+        
+        // the zim file with invalid book id is skipped
+        #expect(await parser.results().results.isEmpty)
+    }
 }
