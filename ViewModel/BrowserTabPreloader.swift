@@ -57,7 +57,7 @@ import SwiftUI
         
         let zimFileIds = Set(openTabs.values)
         let tabIDs = openTabs.keys
-        Task.detached(priority: .utility) {
+        Task.detached(priority: .utility) { [weak self] in
             for zimFileId in zimFileIds {
                 _ = await ZimFileService.shared.openArchive(zimFileID: zimFileId)
                 // pre-heat the ZIM file cache
@@ -65,13 +65,12 @@ import SwiftUI
                     _ = await ZimFileService.shared.getURLContent(url: mainURL)
                 }
             }
-            for tabID in tabIDs {
-                await MainActor.run {
+            Task { @MainActor [weak self] in
+                for tabID in tabIDs {
+                    await Task.yield()
                     _ = BrowserViewModel.getCached(tabID: tabID)
                 }
-            }
-            await MainActor.run {
-                self.cleanUp()
+                self?.cleanUp()
             }
         }
     }
