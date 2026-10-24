@@ -36,15 +36,14 @@ struct SplitViewForiPadContainer: View {
 @MainActor
 struct SplitViewForiPad: View { // swiftlint:disable:this type_body_length
     @EnvironmentObject var navigation: NavigationViewModel
-    @State private var columnVisibility: NavigationSplitViewVisibility = Defaults[.ipadSplitViewVisibility]
-    @State private var allSections: [MenuSection] = MenuSection.allMenuSections
-    @State private var menuDict: [MenuSection: [MenuItem]] = MenuSection.staticDictionary
+    @Default(.ipadSplitViewVisibility) private var columnVisibility
+    private let allSections: [MenuSection] = MenuSection.allMenuSections
+    private let menuDict: [MenuSection: [MenuItem]] = MenuSection.staticDictionary
     @State private var selection: MenuItem? {
         didSet {
             Log.Navigation.debug("\(#file) \(#function): \(selection.debugDescription)")
         }
     }
-    @Default(.libraryLanguageCodes) private var languages
     @State private var selectedLang: String = Defaults[.libraryLanguageCodes].first ?? "eng"
     @State private var navPath = NavigationPath()
     @State private var titleUpdate: (NSManagedObjectID, String)?
@@ -59,6 +58,7 @@ struct SplitViewForiPad: View { // swiftlint:disable:this type_body_length
     @Environment(\.scenePhase) private var scenePhase
 
     var body: some View {
+        let _ = Self._printChanges()
         NavigationSplitView(columnVisibility: $columnVisibility) {
             List(selection: $selection) {
                 ForEach(allSections) { (section: MenuSection) in
@@ -94,13 +94,7 @@ struct SplitViewForiPad: View { // swiftlint:disable:this type_body_length
                 case .opened:
                     ZimFilesOpened()
                 case .categories:
-                    ZimFilesCategories(languageCode: $selectedLang, dismiss: nil)
-                        .toolbar {
-                            ToolbarItem(placement: .topBarTrailing) {
-                                ToggleAroundLanguageButton(items: $languages, selection: $selectedLang)
-                                    .disabled(languages.count <= 1)
-                            }
-                        }
+                    ZimFilesCategories()
                 case .downloads:
                     ZimFilesDownloads(dismiss: nil)
                 case let .settings(scrollToHotspot):
@@ -133,7 +127,6 @@ struct SplitViewForiPad: View { // swiftlint:disable:this type_body_length
             if case let .tab(selectedTabId) = selection {
                 BrowserTabPreloader.shared.start(with: tabs, selectedTabId: selectedTabId)
             }
-            showDonationButton()
             await observeHasZimFiles()
             observeNavigateToHotspotSettings()
         }
@@ -148,25 +141,14 @@ struct SplitViewForiPad: View { // swiftlint:disable:this type_body_length
             }
             navPath.append(fileId)
         })
-        .onChange(of: columnVisibility) {
-            Defaults[.ipadSplitViewVisibility] = columnVisibility
-        }
         .onChange(of: scenePhase) { old, new in
             switch (old, new) {
             case (.active, .inactive):
-                Defaults[.ipadSplitViewVisibility] = columnVisibility
                 if let selection {
                     Defaults[.savedMenuNavigation] = selection
                 }
-            case (_, .inactive):
-                columnVisibility = Defaults[.ipadSplitViewVisibility]
             default:
                 break
-            }
-        }
-        .onChange(of: languages) { (_, new: [String]) in
-            if !new.contains(selectedLang) {
-                selectedLang = new.first ?? "eng"
             }
         }
     }
@@ -307,11 +289,6 @@ struct SplitViewForiPad: View { // swiftlint:disable:this type_body_length
         } else {
             return [.bookmarks, .hotspot, .settings(scrollToHotspot: false)]
         }
-    }
-    
-    private func showDonationButton() {
-        guard allSections.contains(.donation) else { return }
-        menuDict[.donation] = [.donation]
     }
     
     private func updateSelection(_ newNavItem: NavigationItem?) {

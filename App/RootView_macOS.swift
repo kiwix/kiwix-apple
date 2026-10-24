@@ -30,8 +30,6 @@ struct RootView: View {
     // Open file alerts
     @State private var isOpenFileAlertPresented = false
     @State private var openFileAlert: OpenFileAlert?
-    @State private var selectedLanguage: String = Defaults[.libraryLanguageCodes].first ?? "eng"
-    @Default(.libraryLanguageCodes) private var languages
     let openedWithWindowState: WindowState?
     
     private let primaryItems: [MenuItem] = [.bookmarks]
@@ -93,14 +91,7 @@ struct RootView: View {
                 ZimFilesMultiOpened()
             case .categories:
                 DetailSidePanel(content: {
-                    ZimFilesCategories(languageCode: $selectedLanguage, dismiss: nil)
-                        .toolbar {
-                            if $languages.count > 1 {
-                                ToolbarItem(placement: .secondaryAction) {
-                                    ToggleAroundLanguageButton(items: $languages, selection: $selectedLanguage)
-                                }
-                            }
-                        }
+                    ZimFilesCategories()
                 })
                     .modifier(SearchFocused(isSearchFocused: isSearchFocused))
             case .downloads:
@@ -109,11 +100,6 @@ struct RootView: View {
                 HotspotZimFilesSelection()
             default:
                 EmptyView()
-            }
-        }
-        .onChange(of: languages) {
-            if languages.count == 1 {
-                selectedLanguage = languages.first!
             }
         }
         .frame(minWidth: 650, minHeight: 500)

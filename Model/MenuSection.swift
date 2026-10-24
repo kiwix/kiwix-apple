@@ -64,7 +64,7 @@ enum MenuSection: String, CaseIterable, Identifiable {
             }
             // initially empty, we load them async
         case .tabs: return []
-        case .donation: return []
+        case .donation: return [.donation]
         }
     }
 }

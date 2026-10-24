@@ -24,10 +24,14 @@ final class DownloadTasksPublisher {
 
     init() {
         publisher = CurrentValueSubject(states)
-        if let jsonData = UserDefaults.standard.object(forKey: "downloadStates") as? Data,
-           let storedStates = try? JSONDecoder().decode([UUID: DownloadState].self, from: jsonData) {
-            states = storedStates
-            publisher.send(states)
+        Task.detached { [weak self] in
+            if let jsonData = UserDefaults.standard.object(forKey: "downloadStates") as? Data,
+               let storedStates = try? JSONDecoder().decode([UUID: DownloadState].self, from: jsonData) {
+                await MainActor.run { [weak self] in
+                    self?.states = storedStates
+                    self?.publisher.send(storedStates)
+                }
+            }
         }
     }
 
