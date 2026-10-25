@@ -56,6 +56,7 @@ struct LibraryOperations {
                 try? context.save()
             }
         }
+        await ZimUpdates.refresh()
         return metastruct
     }
     
@@ -119,6 +120,7 @@ ZIM file cannot be opened: \(zimFile.name, privacy: .public) |\
         Log.LibraryOperations.info(
             "Re-validated \(successCount, privacy: .public) out of \(zimFiles.count, privacy: .public) zim files"
         )
+        await ZimUpdates.refresh()
     }
 
     // MARK: - Configure
@@ -177,6 +179,7 @@ ZIM file cannot be opened: \(zimFile.name, privacy: .public) |\
             zimFile.tabs.forEach { context.delete($0) }
             try? context.save()
         }
+        await ZimUpdates.refresh()
         
         let tabIds: [NSManagedObjectID] = await Database.shared.viewContext.perform {
             let tabIdsRequest = NSFetchRequest<NSManagedObjectID>(entityName: "Tab")

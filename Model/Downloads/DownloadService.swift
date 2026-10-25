@@ -77,8 +77,14 @@ final class DownloadService {
     /// - Parameters:
     ///   - zimFile: the zim file to download
     ///   - allowsCellularAccess: if using cellular data is allowed
-    func start(zimFileID: UUID, allowsCellularAccess: Bool) async { // swiftlint:disable:this function_body_length
+    ///   - replacing: fileID of an older version of the same ZIM file, to be replaced once the download succeeded
+    func start(zimFileID: UUID, // swiftlint:disable:this function_body_length
+               allowsCellularAccess: Bool,
+               replacing oldFileID: UUID? = nil) async {
         requestNotificationAuthorization()
+        if let oldFileID {
+            ZimReplacement.setPending(newFileID: zimFileID, oldFileID: oldFileID)
+        }
         let downloadStruct = await Database.shared.viewContext.perform { () -> DownloadZimStruct? in
             let fetchRequest = ZimFile.fetchRequest(fileID: zimFileID)
             fetchRequest.fetchLimit = 1
@@ -98,7 +104,10 @@ final class DownloadService {
             }
             return DownloadZimStruct(url: url, name: zimFile.name, size: zimFile.size)
         }
-        guard let downloadStruct else { return }
+        guard let downloadStruct else {
+            ZimReplacement.clearPending(newFileID: zimFileID)
+            return
+        }
         let url = downloadStruct.url
         var urlRequest = URLRequest(url: url)
         urlRequest.allowsCellularAccess = allowsCellularAccess
@@ -111,6 +120,7 @@ final class DownloadService {
             DownloadUI.showAlert(.downloadErrorZIM(zimFileID: zimFileID, errorMessage: errorMessage))
             task.cancel()
             downloadManager.deleteDownloadTask(zimFileID: zimFileID)
+            ZimReplacement.clearPending(newFileID: zimFileID)
             return
         }
         
@@ -126,6 +136,7 @@ final class DownloadService {
                     didDismiss: { [weak self] in
                         task.cancel()
                         self?.downloadManager.deleteDownloadTask(zimFileID: zimFileID)
+                        ZimReplacement.clearPending(newFileID: zimFileID)
                     }
                 )
             )
@@ -157,6 +168,7 @@ final class DownloadService {
             task.cancel()
         }
         downloadManager.deleteDownloadTask(zimFileID: zimFileID)
+        ZimReplacement.clearPending(newFileID: zimFileID)
     }
     
     /// Pause a zim file download task

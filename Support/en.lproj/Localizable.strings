@@ -391,3 +391,28 @@
 "geolocation_error.permission_denied" = "User denied geolocation permission.";
 "geolocation_error.position_unavailable" = "Location is unavailable.";
 "geolocation_error.timeout" = "Location request timed out.";
+
+"zim_file.update.tag" = "update available";
+"zim_file_opened.overlay.no-updates-zim-files.message" = "No ZIM files with an available update found.";
+"zim_file_opened.toolbar.filter.show_only_updates" = "Show only with updates";
+"zim_file.update.action.title" = "Update available";
+"zim_file.update.installed" = "Installed: %@";
+"zim_file.update.available" = "Available: %@";
+"zim_file.update.dialog.title" = "Update ZIM file";
+"zim_file.update.dialog.new_size" = "New version: %@";
+"zim_file.update.dialog.current_size" = "Current version: %@";
+"zim_file.update.dialog.free_space" = "Free space: %@";
+"zim_file.update.dialog.free_space_unknown" = "Free space could not be determined.";
+"zim_file.update.dialog.not_enough_space" = "There is not enough free space for the new version, even after deleting the current one.";
+"zim_file.update.dialog.keep" = "Keep current until update completes";
+"zim_file.update.dialog.delete_first" = "Delete current, then download";
+"zim_file.update.delete_first.confirm.title" = "Delete current version now?";
+"zim_file.update.delete_first.confirm.message" = "The current version is deleted right away to free up space. Its bookmarks are moved to the new version once the download completes. Until then this content is not available, and if the download fails it stays listed as missing.";
+"zim_file.update.delete_first.confirm.button" = "Delete and download";
+
+"zim_file.update.dialog.cannot_delete_current" = "The current version cannot be removed automatically, it will stay on your device.";
+"zim_file.update.dialog.not_enough_space_keep" = "There is not enough free space for the new version.";
+"zim_file.update.dialog.free_up_folder" = "Free up space in %@ and try again.";
+"zim_file.update.not_removed.title" = "ZIM file could not be removed";
+"zim_file.update.not_removed.message" = "This ZIM file is still on your device and takes up space, it could not be removed automatically:\n%@";
+"zim_file.update.downloading" = "Downloading the new version, it replaces this one when it completes.";
