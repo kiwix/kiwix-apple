@@ -428,10 +428,7 @@ struct ZimFileDetail: View {
     }
 
     private var freeSpace: Int64? {
-        try? FileManager.default
-            .urls(for: .documentDirectory, in: .userDomainMask)
-            .first?.resourceValues(forKeys: [.volumeAvailableCapacityForImportantUsageKey])
-            .volumeAvailableCapacityForImportantUsage
+        DownloadService.shared.availableFreeSpace()
     }
 }
 // swiftlint:enable file_length
