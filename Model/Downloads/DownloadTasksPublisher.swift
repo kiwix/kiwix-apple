@@ -54,6 +54,12 @@ final class DownloadTasksPublisher {
     func resumeDataFor(uuid: UUID) -> Data? {
         states[uuid]?.resumeData
     }
+    
+    func totalDownloadSize() -> Int64 {
+        states.reduce(Int64(0)) { partialResult, download in
+            partialResult + download.value.total
+        }
+    }
 
     func updateFor(uuid: UUID, withResumeData resumeData: Data?) {
         if let state = states[uuid] {

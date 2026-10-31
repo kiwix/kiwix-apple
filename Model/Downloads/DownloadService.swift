@@ -202,6 +202,16 @@ final class DownloadService {
         return task?.originalRequest?.allowsCellularAccess
     }
     
+    // MARK: - Free space
+    func availableFreeSpace() -> Int64? {
+        let fullFreeSpace = try? FileManager.default
+            .urls(for: .documentDirectory, in: .userDomainMask)
+            .first?.resourceValues(forKeys: [.volumeAvailableCapacityForImportantUsageKey])
+            .volumeAvailableCapacityForImportantUsage
+        guard let fullFreeSpace else { return nil }
+        return fullFreeSpace - progress.totalDownloadSize()
+    }
+    
     // MARK: - Notification
     
     private func requestNotificationAuthorization() {
