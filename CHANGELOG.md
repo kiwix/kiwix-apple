@@ -1,4 +1,30 @@
+# 3.19.0
+
 # 3.18.0
+- NEW:
+  - Use alternative browser URL when Apple Pay is not supported (@BPerlakiH #1764)
+  - Search catalog by name OR description (@BPerlakiH #1772)
+  - Smooth tab switch animation (@BPerlakiH #1783)
+- FIX:
+  - Fix 1 GB headroom in pre-download free-space check (@rps #1760)
+  - Fix warnings (@BPerlakiH #1766)
+  - Stop parsing snippets after search cancellation (@ivan-magda #1792)
+  - Fix tab animation side-effect (@BPerlakiH #1790)
+  - Fix iPad UI tests (@BPerlakiH #1786)
+  - Fix: harden OPDS parser against malformed ids (crash fix) (@awaisdev5765 #1795)
+  - Fix immerse reading by reset after navigation (@BPerlakiH #1804)
+  - Calculate freespace according to in progress downloads (@BPerlakiH #1807)
+- UPDATED:
+  - Remove translation from Flavor tags (@BPerlakiH #1754)
+  - Remove Hotspot selection explanation from branded apps (@BPerlakiH #1758)
+  - Change DonationCell background color, and simplify it (@BPerlakiH #1759)
+  - 1739 display tags in details view (@BPerlakiH #1761)
+  - Donation cell alignment (@BPerlakiH #1769)
+  - Deactivate donation cell (@BPerlakiH #1767)
+  - Set User-Agent HTTP headers (@BPerlakiH #1781)
+  - Enable UI tests (@BPerlakiH #1782)
+  - Pick user locale currency by default (@BPerlakiH #1798)
+  - Localisation updates from https://translatewiki.net (@translatewiki #1756, #1770, #1778, #1785, #1793, #1799, #1802)
 
 # 3.17.1
 
