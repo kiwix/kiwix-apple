@@ -55,7 +55,7 @@ packages:
     majorVersion: 25.7.2
   SwiftSystem:
     url: https://github.com/apple/swift-system
-    revision: b083113aef646d9d35403ca17e9789b750e42d1d
+    majorVersion: 1.8.1
 
 targetTemplates:
   ApplicationTemplate:
