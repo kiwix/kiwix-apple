@@ -148,7 +148,6 @@
 "enum.navigation_item.bookmarks" = "Kirjanmerkit";
 "enum.navigation_item.new_tab" = "Uusi välilehti";
 "enum.navigation_item.opened" = "Avattu";
-"enum.navigation_item.categories" = "Luokat";
 "enum.navigation_item.downloads" = "Lataukset";
 "enum.navigation_item.settings" = "Asetukset";
 "enum.search_result_snippet_mode.disabled" = "Pois käytöstä";

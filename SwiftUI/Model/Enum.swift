@@ -194,7 +194,7 @@ enum LibraryLanguageSortingMode: String, CaseIterable, Identifiable, Defaults.Se
 }
 
 enum LibraryTabItem: String, CaseIterable, Identifiable {
-    case categories, downloads, opened, hotspot
+    case explore, downloads, opened, hotspot
 
     var id: String { self.rawValue }
 
@@ -202,8 +202,8 @@ enum LibraryTabItem: String, CaseIterable, Identifiable {
         switch self {
         case .opened:
             return LocalString.enum_libray_tab_item_opened
-        case .categories:
-            return LocalString.enum_libray_tab_item_categories
+        case .explore:
+            return LocalString.enum_libray_tab_item_explore
         case .downloads:
             return LocalString.enum_libray_tab_item_downloads
         case .hotspot:
@@ -215,8 +215,8 @@ enum LibraryTabItem: String, CaseIterable, Identifiable {
         switch self {
         case .opened:
             return "folder"
-        case .categories:
-            return "books.vertical"
+        case .explore:
+            return "safari"
         case .downloads:
             return "tray.and.arrow.down"
         case .hotspot:
@@ -230,7 +230,7 @@ enum NavigationItem: Hashable, Identifiable {
 
     case loading
     case bookmarks, map(location: CLLocation?), tab(objectID: NSManagedObjectID)
-    case opened, categories, downloads
+    case opened, explore, downloads
     case hotspot
     case settings(scrollToHotspot: Bool)
 }

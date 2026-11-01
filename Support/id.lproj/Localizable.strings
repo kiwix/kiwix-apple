@@ -211,13 +211,11 @@
 "enum.library_language_sorting_model.a-z" = "A-Z";
 "enum.library_language_sorting_model.by_count" = "Berdasarkan Hitungan";
 "enum.libray_tab_item.opened" = "Dibuka";
-"enum.libray_tab_item.categories" = "Kategori";
 "enum.libray_tab_item.downloads" = "Unduhan";
 "enum.navigation_item.reading" = "Membaca";
 "enum.navigation_item.bookmarks" = "Markah";
 "enum.navigation_item.new_tab" = "Tab Baru";
 "enum.navigation_item.opened" = "Dibuka";
-"enum.navigation_item.categories" = "Kategori";
 "enum.navigation_item.downloads" = "Unduhan";
 "enum.navigation_item.settings" = "Pengaturan";
 "enum.search_result_snippet_mode.disabled" = "Nonaktif";

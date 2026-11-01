@@ -52,12 +52,10 @@
 "enum.library_language_sorting_model.a-z" = "A-Z";
 "enum.library_language_sorting_model.by_count" = "Na kolanda motango";
 "enum.libray_tab_item.opened" = "Efungolami";
-"enum.libray_tab_item.categories" = "Ndéngé";
 "enum.libray_tab_item.downloads" = "Bokɔ́ngɔli";
 "enum.navigation_item.reading" = "Kotanga";
 "enum.navigation_item.bookmarks" = "Makomi ya mikanda";
 "enum.navigation_item.opened" = "Efungolami";
-"enum.navigation_item.categories" = "Ndéngé";
 "enum.navigation_item.downloads" = "Bokɔ́ngɔli";
 "enum.navigation_item.settings" = "Palamɛ́tɛlɛ";
 "enum.search_result_snippet_mode.disabled" = "Bakanga";

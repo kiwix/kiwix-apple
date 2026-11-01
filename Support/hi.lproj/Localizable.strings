@@ -75,7 +75,6 @@
 "enum.category.wikivoyage" = "विकियात्रा";
 "enum.category.other" = "अन्य";
 "enum.external_link_loading_policy.always_ask" = "हमेशा पूछें";
-"enum.libray_tab_item.categories" = "श्रेणियाँ";
 "enum.navigation_item.downloads" = "डाउनलोड";
 "enum.search_result_snippet_mode.disabled" = "अक्षम किया गया";
 "download_service.error.client.backgroundSessionInUseByAnotherProcess" = "बैकग्राउंड ट्रांसफ़र सेवा से संपर्क नहीं हो सका";

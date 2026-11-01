@@ -138,11 +138,9 @@
 "enum.external_link_loading_policy.always_ask" = "ਹਮੇਸ਼ਾ ਪੁੱਛੋ";
 "enum.library_language_sorting_model.by_count" = "ਗਿਣਤੀ ਨਾਲ";
 "enum.libray_tab_item.opened" = "ਖੋਲ੍ਹਿਆ ਗਿਆ";
-"enum.libray_tab_item.categories" = "ਸ਼੍ਰੇਣੀਆਂ";
 "enum.libray_tab_item.downloads" = "ਉਤਾਰੋ/ਲਾਹੋ";
 "enum.navigation_item.reading" = "ਪੜ੍ਹ ਰਿਹਾ ਏ";
 "enum.navigation_item.opened" = "ਖੋਲ੍ਹਿਆ ਗਿਆ";
-"enum.navigation_item.categories" = "ਸ਼੍ਰੇਣੀਆਂ";
 "enum.navigation_item.downloads" = "ਉਤਾਰੋ/ਲਾਹੋ";
 "enum.navigation_item.settings" = "ਤਰਜੀਹਾਂ";
 "enum.search_result_snippet_mode.disabled" = "ਅਸਮਰੱਥ";

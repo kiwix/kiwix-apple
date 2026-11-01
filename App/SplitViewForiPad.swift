@@ -93,7 +93,7 @@ struct SplitViewForiPad: View { // swiftlint:disable:this type_body_length
                     Bookmarks()
                 case .opened:
                     ZimFilesOpened()
-                case .categories:
+                case .explore:
                     ZimFilesCategories(languageCode: $selectedLang, dismiss: nil)
                         .toolbar {
                             ToolbarItem(placement: .topBarTrailing) {
@@ -303,7 +303,7 @@ struct SplitViewForiPad: View { // swiftlint:disable:this type_body_length
     
     private static func allItems() -> [MenuItem] {
         if FeatureFlags.hasLibrary {
-            return [.bookmarks, .opened, .categories, .downloads, .hotspot, .settings(scrollToHotspot: false)]
+            return [.bookmarks, .opened, .explore, .downloads, .hotspot, .settings(scrollToHotspot: false)]
         } else {
             return [.bookmarks, .hotspot, .settings(scrollToHotspot: false)]
         }

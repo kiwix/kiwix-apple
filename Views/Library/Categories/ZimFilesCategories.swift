@@ -53,7 +53,7 @@ struct ZimFilesCategories: View {
             dismiss: dismiss
         )
         .modifier(ToolbarRoleBrowser())
-        .navigationTitle(MenuItem.categories.name)
+        .navigationTitle(MenuItem.explore.name)
         .searchable(text: $searchText, prompt: LocalString.common_search)
         .toolbar {
             ToolbarItem(id: "picker", placement: .principal) {

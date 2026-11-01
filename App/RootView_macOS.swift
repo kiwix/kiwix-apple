@@ -35,7 +35,7 @@ struct RootView: View {
     let openedWithWindowState: WindowState?
     
     private let primaryItems: [MenuItem] = [.bookmarks]
-    private let libraryItems: [MenuItem] = [.opened, .categories, .downloads]
+    private let libraryItems: [MenuItem] = [.opened, .explore, .downloads]
     private let openURL = NotificationCenter.default.publisher(for: .openURL)
     private let appTerminates = NotificationCenter.default.publisher(for: NSApplication.willTerminateNotification)
     private let tabCloses = NotificationCenter.default.publisher(for: NSWindow.willCloseNotification)
@@ -91,7 +91,7 @@ struct RootView: View {
                     .modifier(SearchFocused(isSearchFocused: isSearchFocused))
             case .opened:
                 ZimFilesMultiOpened()
-            case .categories:
+            case .explore:
                 DetailSidePanel(content: {
                     ZimFilesCategories(languageCode: $selectedLanguage, dismiss: nil)
                         .toolbar {

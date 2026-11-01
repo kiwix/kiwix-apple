@@ -32,7 +32,7 @@ struct LibraryTab: View {
 
     init(
         dismiss: (() -> Void)?,
-        tabItem: LibraryTabItem = .categories
+        tabItem: LibraryTabItem = .explore
     ) {
         self.dismiss = dismiss
         self.tabItem = tabItem
@@ -46,7 +46,7 @@ struct LibraryTab: View {
             ForEach(LibraryTabItem.allCases) { tabItem in
                 SheetContent {
                     switch tabItem {
-                    case .categories:
+                    case .explore:
                         List(categories) { category in
                             NavigationLink {
                                 ZimFilesCategory(
@@ -83,7 +83,7 @@ struct LibraryTab: View {
                             }
                         }
                         .listStyle(.plain)
-                        .navigationTitle(MenuItem.categories.name)
+                        .navigationTitle(MenuItem.explore.name)
                         .onChange(of: selectedLang) { _, newValue in
                             categories = CategoriesToLanguages().categoriesIn(languageCode: newValue)
                         }

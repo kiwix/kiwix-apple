@@ -82,8 +82,6 @@
 "enum.category.vikidia" = "Vikidia";
 "enum.category.other" = "Wayeḍ";
 "enum.library_language_sorting_model.a-z" = "A-Z";
-"enum.libray_tab_item.categories" = "Taggayin";
-"enum.navigation_item.categories" = "Taggayin";
 "enum.navigation_item.settings" = "Iɣewwaren";
 "payment.donate.title" = "Mudd tawsa";
 "payment.summary.title" = "Kiwix";

@@ -205,13 +205,11 @@
 "enum.library_language_sorting_model.a-z" = "A-Z";
 "enum.library_language_sorting_model.by_count" = "După Număr";
 "enum.libray_tab_item.opened" = "Deschis";
-"enum.libray_tab_item.categories" = "Categorii";
 "enum.libray_tab_item.downloads" = "Descărcări";
 "enum.navigation_item.reading" = "Lectură";
 "enum.navigation_item.bookmarks" = "Semne de carte";
 "enum.navigation_item.new_tab" = "Filă Nouă";
 "enum.navigation_item.opened" = "Deschis";
-"enum.navigation_item.categories" = "Categorii";
 "enum.navigation_item.downloads" = "Descărcări";
 "enum.navigation_item.settings" = "Setări";
 "enum.search_result_snippet_mode.disabled" = "Dezactivat";
