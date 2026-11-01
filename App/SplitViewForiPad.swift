@@ -44,7 +44,6 @@ struct SplitViewForiPad: View { // swiftlint:disable:this type_body_length
             Log.Navigation.debug("\(#file) \(#function): \(selection.debugDescription)")
         }
     }
-    @Default(.libraryLanguageCodes) private var languages
     @State private var selectedLang: String = Defaults[.libraryLanguageCodes].first ?? "eng"
     @State private var navPath = NavigationPath()
     @State private var titleUpdate: (NSManagedObjectID, String)?
@@ -94,13 +93,7 @@ struct SplitViewForiPad: View { // swiftlint:disable:this type_body_length
                 case .opened:
                     ZimFilesOpened()
                 case .explore:
-                    ZimFilesCategories(languageCode: $selectedLang, dismiss: nil)
-                        .toolbar {
-                            ToolbarItem(placement: .topBarTrailing) {
-                                ToggleAroundLanguageButton(items: $languages, selection: $selectedLang)
-                                    .disabled(languages.count <= 1)
-                            }
-                        }
+                    ZimFilesCategories()
                 case .downloads:
                     ZimFilesDownloads(dismiss: nil)
                 case let .settings(scrollToHotspot):
@@ -162,11 +155,6 @@ struct SplitViewForiPad: View { // swiftlint:disable:this type_body_length
                 columnVisibility = Defaults[.ipadSplitViewVisibility]
             default:
                 break
-            }
-        }
-        .onChange(of: languages) { (_, new: [String]) in
-            if !new.contains(selectedLang) {
-                selectedLang = new.first ?? "eng"
             }
         }
     }
