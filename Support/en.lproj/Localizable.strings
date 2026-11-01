@@ -148,8 +148,6 @@
 "zim_file_category.section.empty.message" = "No ZIM file under this category.";
 "zim_file_downloads.overlay.empty.message" = "No download tasks";
 
-"zim_file_new_overlay.empty" = "No new ZIM file";
-"zim_file_new.button.refresh" = "Refresh";
 
 "zim_file.list.name.text" = "Name";
 "zim_file.list.description.text" = "Description";
@@ -311,14 +309,12 @@
 "enum.libray_tab_item.opened" = "Opened";
 "enum.libray_tab_item.categories" = "Categories";
 "enum.libray_tab_item.downloads" = "Downloads";
-"enum.libray_tab_item.new" = "New";
 
 "enum.navigation_item.reading" = "Reading";
 "enum.navigation_item.bookmarks" = "Bookmarks";
 "enum.navigation_item.new_tab" = "New Tab";
 "enum.navigation_item.opened" = "Opened";
 "enum.navigation_item.categories" = "Categories";
-"enum.navigation_item.new" = "New";
 "enum.navigation_item.downloads" = "Downloads";
 "enum.navigation_item.settings" = "Settings";
 "enum.navigation_item.hotspot" = "Hotspot";

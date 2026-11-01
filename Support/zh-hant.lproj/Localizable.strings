@@ -117,8 +117,6 @@
 "zim_file_catalog.fetching.message" = "正在抓取目錄…";
 "zim_file_category.section.empty.message" = "此分類下沒有 ZIM 檔案。";
 "zim_file_downloads.overlay.empty.message" = "沒有下載任務";
-"zim_file_new_overlay.empty" = "沒有新的 ZIM 檔案";
-"zim_file_new.button.refresh" = "重整";
 "zim_file.list.name.text" = "名稱";
 "zim_file.list.description.text" = "描述";
 "zim_file.list.actions.text" = "操作";
@@ -266,13 +264,11 @@
 "enum.libray_tab_item.opened" = "已開啟";
 "enum.libray_tab_item.categories" = "分類";
 "enum.libray_tab_item.downloads" = "下載";
-"enum.libray_tab_item.new" = "新內容";
 "enum.navigation_item.reading" = "閱讀";
 "enum.navigation_item.bookmarks" = "書籤";
 "enum.navigation_item.new_tab" = "新分頁";
 "enum.navigation_item.opened" = "已開啟";
 "enum.navigation_item.categories" = "分類";
-"enum.navigation_item.new" = "新內容";
 "enum.navigation_item.downloads" = "下載";
 "enum.navigation_item.settings" = "設定";
 "enum.navigation_item.hotspot" = "熱點";

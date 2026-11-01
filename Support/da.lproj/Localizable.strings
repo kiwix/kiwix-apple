@@ -109,8 +109,6 @@
 "zim_file_catalog.fetching.message" = "Henter Katalog ...";
 "zim_file_category.section.empty.message" = "Ingen ZIM-fil i denne kategori.";
 "zim_file_downloads.overlay.empty.message" = "Ingen downloadopgaver";
-"zim_file_new_overlay.empty" = "Ingen ny ZIM-fil";
-"zim_file_new.button.refresh" = "Opdatér";
 "zim_file.list.name.text" = "Navn";
 "zim_file.list.description.text" = "Beskrivelse";
 "zim_file.list.actions.text" = "Handlinger";
@@ -238,13 +236,11 @@
 "enum.libray_tab_item.opened" = "Åbnet";
 "enum.libray_tab_item.categories" = "Kategorier";
 "enum.libray_tab_item.downloads" = "Downloads";
-"enum.libray_tab_item.new" = "Ny";
 "enum.navigation_item.reading" = "Læser";
 "enum.navigation_item.bookmarks" = "Bogmærker";
 "enum.navigation_item.new_tab" = "Ny Fane";
 "enum.navigation_item.opened" = "Åbnet";
 "enum.navigation_item.categories" = "Kategorier";
-"enum.navigation_item.new" = "Ny";
 "enum.navigation_item.downloads" = "Downloads";
 "enum.navigation_item.settings" = "Indstillinger";
 "enum.navigation_item.hotspot" = "Hotspot";

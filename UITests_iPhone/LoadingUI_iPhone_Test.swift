@@ -30,10 +30,6 @@ final class LoadingUI_iPhone_Test: XCTestCase {
         Wait.inApp(app, forElement: categoriesButton)
         XCTAssertTrue(categoriesButton.isSelected)
         
-        let newButton = app.buttons["New"]
-        Wait.inApp(app, forElement: newButton)
-        newButton.tap()
-        
         app.buttons["Downloads"].tap()
         app.buttons["Opened"].tap()
         app.buttons["Hotspot"].tap()

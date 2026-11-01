@@ -82,8 +82,6 @@
 "zim_file_opened.toolbar.sort_by.name" = "Nom Numm sortéieren";
 "zim_file_opened.toolbar.sort_by.size" = "No der Gréisst sortéieren";
 "zim_file_category.section.empty.message" = "Keen ZIM-Fichier an dëser Kategorie.";
-"zim_file_new_overlay.empty" = "Keng nei ZIM-Datei";
-"zim_file_new.button.refresh" = "Aktualiséieren";
 "zim_file.list.name.text" = "Numm";
 "zim_file.list.description.text" = "Beschreiwung";
 "zim_file.list.actions.text" = "Aktiounen";
@@ -178,13 +176,11 @@
 "enum.library_language_sorting_model.by_count" = "No Zuel";
 "enum.libray_tab_item.opened" = "Opgemaach";
 "enum.libray_tab_item.categories" = "Kategorien";
-"enum.libray_tab_item.new" = "Nei";
 "enum.navigation_item.reading" = "Liesen";
 "enum.navigation_item.bookmarks" = "Lieszeechen";
 "enum.navigation_item.new_tab" = "Neien Tab";
 "enum.navigation_item.opened" = "Opgemaach";
 "enum.navigation_item.categories" = "Kategorien";
-"enum.navigation_item.new" = "Nei";
 "enum.navigation_item.settings" = "Astellungen";
 "enum.navigation_item.hotspot" = "Hotspot";
 "enum.search_result_snippet_mode.disabled" = "Desaktivéiert";
