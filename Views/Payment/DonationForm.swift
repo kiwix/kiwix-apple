@@ -42,6 +42,7 @@ struct DonationForm: View {
     @State private var currencyType: Payment.Currency = Payment.Currency.allLocalCases.first!
     @State private var paymentType: PaymentType = .monthly
     @State private var selectedAmount: SelectedAmountState = Self.defaultFor(.monthly)
+    var useInlineTitle: Bool = true
         
     private static func defaultFor(_ paymentType: PaymentType) -> SelectedAmountState {
         switch paymentType {
@@ -107,7 +108,7 @@ struct DonationForm: View {
         }
         .navigationTitle(LocalString.payment_donate_title)
 #if os(iOS)
-        .navigationBarTitleDisplayMode(.inline)
+        .navigationBarTitleDisplayMode(useInlineTitle ? .inline : .large)
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
                 closeButton
