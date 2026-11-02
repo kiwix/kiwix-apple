@@ -30,7 +30,7 @@ import XCTest
         app.navigationBars.buttons.firstMatch.tap()
         
         // select categories (might not be selected)
-        app.buttons["categories"].tap()
+        app.buttons["Explore"].tap()
         
         let searchField = app.navigationBars.searchFields.firstMatch
         _ = searchField.waitForExistence(timeout: 60)
