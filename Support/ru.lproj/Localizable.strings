@@ -210,13 +210,11 @@
 "enum.library_language_sorting_model.a-z" = "A-Z";
 "enum.library_language_sorting_model.by_count" = "По количеству";
 "enum.libray_tab_item.opened" = "Открыто";
-"enum.libray_tab_item.categories" = "Категории";
 "enum.libray_tab_item.downloads" = "Загрузки";
 "enum.navigation_item.reading" = "Чтение";
 "enum.navigation_item.bookmarks" = "Закладки";
 "enum.navigation_item.new_tab" = "Новая вкладка";
 "enum.navigation_item.opened" = "Открыто";
-"enum.navigation_item.categories" = "Категории";
 "enum.navigation_item.downloads" = "Скачать";
 "enum.navigation_item.settings" = "Настройки";
 "enum.search_result_snippet_mode.disabled" = "Выключен";

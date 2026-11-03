@@ -210,13 +210,11 @@
 "enum.library_language_sorting_model.a-z" = "А-Я";
 "enum.library_language_sorting_model.by_count" = "За кількістю";
 "enum.libray_tab_item.opened" = "Відкрито";
-"enum.libray_tab_item.categories" = "Категорії";
 "enum.libray_tab_item.downloads" = "Завантаження";
 "enum.navigation_item.reading" = "Читання";
 "enum.navigation_item.bookmarks" = "Закладки";
 "enum.navigation_item.new_tab" = "Нова вкладка";
 "enum.navigation_item.opened" = "Відкрито";
-"enum.navigation_item.categories" = "Категорії";
 "enum.navigation_item.downloads" = "Завантаження";
 "enum.navigation_item.settings" = "Налаштування";
 "enum.navigation_item.hotspot" = "Точка доступу";

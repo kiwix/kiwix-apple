@@ -44,7 +44,6 @@ struct SplitViewForiPad: View { // swiftlint:disable:this type_body_length
             Log.Navigation.debug("\(#file) \(#function): \(selection.debugDescription)")
         }
     }
-    @Default(.libraryLanguageCodes) private var languages
     @State private var selectedLang: String = Defaults[.libraryLanguageCodes].first ?? "eng"
     @State private var navPath = NavigationPath()
     @State private var titleUpdate: (NSManagedObjectID, String)?
@@ -93,14 +92,8 @@ struct SplitViewForiPad: View { // swiftlint:disable:this type_body_length
                     Bookmarks()
                 case .opened:
                     ZimFilesOpened()
-                case .categories:
-                    ZimFilesCategories(languageCode: $selectedLang, dismiss: nil)
-                        .toolbar {
-                            ToolbarItem(placement: .topBarTrailing) {
-                                ToggleAroundLanguageButton(items: $languages, selection: $selectedLang)
-                                    .disabled(languages.count <= 1)
-                            }
-                        }
+                case .explore:
+                    ZimFilesCategories()
                 case .downloads:
                     ZimFilesDownloads(dismiss: nil)
                 case let .settings(scrollToHotspot):
@@ -162,11 +155,6 @@ struct SplitViewForiPad: View { // swiftlint:disable:this type_body_length
                 columnVisibility = Defaults[.ipadSplitViewVisibility]
             default:
                 break
-            }
-        }
-        .onChange(of: languages) { (_, new: [String]) in
-            if !new.contains(selectedLang) {
-                selectedLang = new.first ?? "eng"
             }
         }
     }
@@ -289,21 +277,28 @@ struct SplitViewForiPad: View { // swiftlint:disable:this type_body_length
             Label {
                 Text(item.name)
             } icon: {
-                Image(systemName: item.icon)
+                Image(systemName: "heart.fill")
                     .foregroundStyle(Color.red)
                     .symbolVariant(isSelected ? .fill : .none)
                     .modifier(Symbol26Vairant())
             }
         default:
-            Label(item.name, systemImage: item.icon)
-                .symbolVariant(isSelected ? .fill : .none)
-                .modifier(Symbol26Vairant())
+            switch item.icon {
+            case .system(let systemImage):
+                Label(item.name, systemImage: systemImage)
+                    .symbolVariant(isSelected ? .fill : .none)
+                    .modifier(Symbol26Vairant())
+            case .image(let imageName):
+                Label(item.name, image: imageName)
+                    .symbolVariant(isSelected ? .fill : .none)
+                    .modifier(Symbol26Vairant())
+            }
         }
     }
     
     private static func allItems() -> [MenuItem] {
         if FeatureFlags.hasLibrary {
-            return [.bookmarks, .opened, .categories, .downloads, .hotspot, .settings(scrollToHotspot: false)]
+            return [.bookmarks, .opened, .explore, .downloads, .hotspot, .settings(scrollToHotspot: false)]
         } else {
             return [.bookmarks, .hotspot, .settings(scrollToHotspot: false)]
         }

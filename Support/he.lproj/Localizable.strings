@@ -210,13 +210,11 @@
 "enum.library_language_sorting_model.a-z" = "א–ת";
 "enum.library_language_sorting_model.by_count" = "לפי ספירה";
 "enum.libray_tab_item.opened" = "פתוחות";
-"enum.libray_tab_item.categories" = "קטגוריות";
 "enum.libray_tab_item.downloads" = "הורדות";
 "enum.navigation_item.reading" = "קריאה";
 "enum.navigation_item.bookmarks" = "סימניות";
 "enum.navigation_item.new_tab" = "לשונית חדשה";
 "enum.navigation_item.opened" = "פתוחים";
-"enum.navigation_item.categories" = "קטגוריות";
 "enum.navigation_item.downloads" = "הורדות";
 "enum.navigation_item.settings" = "הגדרות";
 "enum.navigation_item.hotspot" = "נקודה חמה";

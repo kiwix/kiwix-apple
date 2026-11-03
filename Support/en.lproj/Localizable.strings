@@ -307,14 +307,14 @@
 "enum.library_language_sorting_model.a-z" = "A-Z";
 "enum.library_language_sorting_model.by_count" = "By Count";
 "enum.libray_tab_item.opened" = "Opened";
-"enum.libray_tab_item.categories" = "Categories";
+"enum.libray_tab_item.explore" = "Explore";
 "enum.libray_tab_item.downloads" = "Downloads";
 
 "enum.navigation_item.reading" = "Reading";
 "enum.navigation_item.bookmarks" = "Bookmarks";
 "enum.navigation_item.new_tab" = "New Tab";
 "enum.navigation_item.opened" = "Opened";
-"enum.navigation_item.categories" = "Categories";
+"enum.navigation_item.explore" = "Explore";
 "enum.navigation_item.downloads" = "Downloads";
 "enum.navigation_item.settings" = "Settings";
 "enum.navigation_item.hotspot" = "Hotspot";

@@ -21,17 +21,15 @@ import SwiftUI
 struct ZimFilesCategories: View {
     @State private var searchText = ""
     @State private var selected: Category
-    @Binding private var languageCode: String
+    @State private var selectedLanguage: String
+    @Default(.libraryLanguageCodes) private var languages
     @Default(.hasSeenCategories) private var hasSeenCategories
     private var categories: [Category]
-    private let dismiss: (() -> Void)?
     
-    init(
-        languageCode selectedLangCode: Binding<String>,
-        dismiss: (() -> Void)?
-    ) {
-        _languageCode = selectedLangCode
-        let categories = CategoriesToLanguages().categoriesIn(languageCode: selectedLangCode.wrappedValue)
+    init() {
+        let selectedLanguage = Defaults[.libraryLanguageCodes].first ?? "eng"
+        let categories = CategoriesToLanguages().categoriesIn(languageCode: selectedLanguage)
+        self.selectedLanguage = selectedLanguage
         let selectedCategory: Category? = {
             guard let selectedCategoryId = Defaults[.selectedCategory] else {
                 return nil
@@ -42,18 +40,17 @@ struct ZimFilesCategories: View {
         }()
         self.categories = categories
         selected = selectedCategory ?? categories.first ?? .wikipedia
-        self.dismiss = dismiss
     }
     
     var body: some View {
         ZimFilesCategory(
             category: $selected,
             searchText: $searchText,
-            selectedLanguage: $languageCode,
-            dismiss: dismiss
+            selectedLanguage: $selectedLanguage,
+            dismiss: nil
         )
         .modifier(ToolbarRoleBrowser())
-        .navigationTitle(MenuItem.categories.name)
+        .navigationTitle(MenuItem.explore.name)
         .searchable(text: $searchText, prompt: LocalString.common_search)
         .toolbar {
             ToolbarItem(id: "picker", placement: .principal) {
@@ -66,6 +63,18 @@ struct ZimFilesCategories: View {
                     }
                 }
             }
+            #if os(iOS)
+                ToolbarItem(placement: .topBarTrailing) {
+                    ToggleAroundLanguageButton(items: $languages, selection: $selectedLanguage)
+                        .disabled(languages.count <= 1)
+                }
+            #else
+                if $languages.count > 1 {
+                    ToolbarItem(placement: .secondaryAction) {
+                        ToggleAroundLanguageButton(items: $languages, selection: $selectedLanguage)
+                    }
+                }
+            #endif
         }.onAppear {
             Task {
                 await LibraryViewModel().start(isUserInitiated: false)
@@ -74,6 +83,11 @@ struct ZimFilesCategories: View {
         .onDisappear {
             hasSeenCategories = true
             Defaults[.selectedCategory] = selected.id
+        }
+        .onChange(of: languages) { (_, new: [String]) in
+            if !new.contains(selectedLanguage) {
+                selectedLanguage = new.first ?? "eng"
+            }
         }
     }
 }

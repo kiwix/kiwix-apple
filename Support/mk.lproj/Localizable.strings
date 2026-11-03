@@ -244,13 +244,11 @@
 "enum.library_language_sorting_model.a-z" = "А-Ш";
 "enum.library_language_sorting_model.by_count" = "По број";
 "enum.libray_tab_item.opened" = "Отворено";
-"enum.libray_tab_item.categories" = "Категории";
 "enum.libray_tab_item.downloads" = "Преземања";
 "enum.navigation_item.reading" = "Читање";
 "enum.navigation_item.bookmarks" = "Обележани";
 "enum.navigation_item.new_tab" = "Ново јазиче";
 "enum.navigation_item.opened" = "Отворено";
-"enum.navigation_item.categories" = "Категории";
 "enum.navigation_item.downloads" = "Преземања";
 "enum.navigation_item.settings" = "Нагодувања";
 "enum.navigation_item.hotspot" = "Пристапна точка";

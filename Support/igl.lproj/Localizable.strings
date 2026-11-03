@@ -54,11 +54,9 @@
 "enum.library_language_sorting_model.a-z" = "A-Z";
 "enum.library_language_sorting_model.by_count" = "U ka lu ka";
 "enum.libray_tab_item.opened" = "Bite";
-"enum.libray_tab_item.categories" = "Amí gbúgbe";
 "enum.libray_tab_item.downloads" = "Downloadu";
 "enum.navigation_item.reading" = "Egba";
 "enum.navigation_item.opened" = "Bi";
-"enum.navigation_item.categories" = "Amí gbúgbe";
 "enum.navigation_item.downloads" = "Downloadu";
 "enum.navigation_item.settings" = "Eñoche";
 "enum.search_result_snippet_mode.disabled" = "Nyo ló";

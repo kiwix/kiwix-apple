@@ -135,7 +135,6 @@
 "enum.navigation_item.bookmarks" = "Favoritos";
 "enum.navigation_item.new_tab" = "Nova guia";
 "enum.navigation_item.opened" = "Aberto";
-"enum.navigation_item.categories" = "Categorias";
 "enum.navigation_item.downloads" = "Downloads";
 "enum.navigation_item.settings" = "Configurações";
 "enum.search_result_snippet_mode.disabled" = "Desativado";

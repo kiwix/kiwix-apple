@@ -259,13 +259,11 @@
 "enum.library_language_sorting_model.a-z" = "A – Z";
 "enum.library_language_sorting_model.by_count" = "Podľa počtu";
 "enum.libray_tab_item.opened" = "Otvorené";
-"enum.libray_tab_item.categories" = "Kategórie";
 "enum.libray_tab_item.downloads" = "Sťahovania";
 "enum.navigation_item.reading" = "Čítanie";
 "enum.navigation_item.bookmarks" = "Záložky";
 "enum.navigation_item.new_tab" = "Nová karta";
 "enum.navigation_item.opened" = "Otvorené";
-"enum.navigation_item.categories" = "Kategórie";
 "enum.navigation_item.downloads" = "Sťahovania";
 "enum.navigation_item.settings" = "Nastavenia";
 "enum.navigation_item.hotspot" = "Hotspot";

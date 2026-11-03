@@ -251,13 +251,11 @@
 "enum.library_language_sorting_model.a-z" = "A-Z";
 "enum.library_language_sorting_model.by_count" = "Por conteo";
 "enum.libray_tab_item.opened" = "Abierto";
-"enum.libray_tab_item.categories" = "Categorías";
 "enum.libray_tab_item.downloads" = "Descargas";
 "enum.navigation_item.reading" = "Lectura";
 "enum.navigation_item.bookmarks" = "Marcadores";
 "enum.navigation_item.new_tab" = "Pestaña nueva";
 "enum.navigation_item.opened" = "Abierto";
-"enum.navigation_item.categories" = "Categorías";
 "enum.navigation_item.downloads" = "Descargas";
 "enum.navigation_item.settings" = "Ajustes";
 "enum.navigation_item.hotspot" = "Servidor";

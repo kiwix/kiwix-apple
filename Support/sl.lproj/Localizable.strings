@@ -262,13 +262,11 @@
 "enum.library_language_sorting_model.a-z" = "A–Z";
 "enum.library_language_sorting_model.by_count" = "Po številu";
 "enum.libray_tab_item.opened" = "Odprto";
-"enum.libray_tab_item.categories" = "Kategorije";
 "enum.libray_tab_item.downloads" = "Prenosi";
 "enum.navigation_item.reading" = "Branje";
 "enum.navigation_item.bookmarks" = "Zaznamki";
 "enum.navigation_item.new_tab" = "Nov zavihek";
 "enum.navigation_item.opened" = "Odprto";
-"enum.navigation_item.categories" = "Kategorije";
 "enum.navigation_item.downloads" = "Prenosi";
 "enum.navigation_item.settings" = "Nastavitve";
 "enum.navigation_item.hotspot" = "Dostopna točka";

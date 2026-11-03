@@ -32,7 +32,7 @@ struct LibraryTab: View {
 
     init(
         dismiss: (() -> Void)?,
-        tabItem: LibraryTabItem = .categories
+        tabItem: LibraryTabItem = .explore
     ) {
         self.dismiss = dismiss
         self.tabItem = tabItem
@@ -46,7 +46,7 @@ struct LibraryTab: View {
             ForEach(LibraryTabItem.allCases) { tabItem in
                 SheetContent {
                     switch tabItem {
-                    case .categories:
+                    case .explore:
                         List(categories) { category in
                             NavigationLink {
                                 ZimFilesCategory(
@@ -83,7 +83,7 @@ struct LibraryTab: View {
                             }
                         }
                         .listStyle(.plain)
-                        .navigationTitle(MenuItem.categories.name)
+                        .navigationTitle(MenuItem.explore.name)
                         .onChange(of: selectedLang) { _, newValue in
                             categories = CategoriesToLanguages().categoriesIn(languageCode: newValue)
                         }
@@ -97,7 +97,7 @@ struct LibraryTab: View {
                     }
                 }
                 .tag(tabItem)
-                .tabItem { Label(tabItem.name, systemImage: tabItem.icon) }
+                .tabItem { labelFor(tabItem: tabItem) }
             }
         }.task {
             await viewModel.start(isUserInitiated: false)
@@ -107,6 +107,16 @@ struct LibraryTab: View {
             if tabItem != .downloads {
                 tabItem = .downloads
             }
+        }
+    }
+    
+    @ViewBuilder
+    private func labelFor(tabItem: LibraryTabItem) -> some View {
+        switch tabItem.icon {
+        case let .system(systemImage):
+            Label(tabItem.name, systemImage: systemImage)
+        case let .image(imageName):
+            Label(tabItem.name, image: imageName)
         }
     }
 }

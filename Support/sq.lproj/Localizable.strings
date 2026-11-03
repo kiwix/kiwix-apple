@@ -205,13 +205,11 @@
 "enum.library_language_sorting_model.a-z" = "A-Z";
 "enum.library_language_sorting_model.by_count" = "Sipas Numrash";
 "enum.libray_tab_item.opened" = "Hapur";
-"enum.libray_tab_item.categories" = "Kategori";
 "enum.libray_tab_item.downloads" = "Shkarkime";
 "enum.navigation_item.reading" = "Lexim";
 "enum.navigation_item.bookmarks" = "Faqerojtës";
 "enum.navigation_item.new_tab" = "Skedë e Re";
 "enum.navigation_item.opened" = "Hapur";
-"enum.navigation_item.categories" = "Kategori";
 "enum.navigation_item.downloads" = "Shkarkime";
 "enum.navigation_item.settings" = "Rregullime";
 "enum.search_result_snippet_mode.disabled" = "Çaktivizuar";
