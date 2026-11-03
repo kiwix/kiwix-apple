@@ -211,16 +211,16 @@ enum LibraryTabItem: String, CaseIterable, Identifiable {
         }
     }
 
-    var icon: String {
+    var icon: IconSource {
         switch self {
         case .opened:
-            return "folder"
+            return .system("folder")
         case .explore:
-            return "safari"
+            return .image("telescope")
         case .downloads:
-            return "tray.and.arrow.down"
+            return .system("tray.and.arrow.down")
         case .hotspot:
-            return "wifi"
+            return .system("wifi")
         }
     }
 }

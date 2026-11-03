@@ -18,6 +18,11 @@ import Defaults
 import Foundation
 import SwiftUI
 
+enum IconSource {
+    case system(String)
+    case image(String)
+}
+
 enum MenuItem: Hashable, Identifiable, RawRepresentable, Defaults.Serializable {
     typealias RawValue = String
 
@@ -150,28 +155,28 @@ enum MenuItem: Hashable, Identifiable, RawRepresentable, Defaults.Serializable {
         }
     }
     
-    var icon: String {
+    var icon: IconSource {
         switch self {
         case .bookmarks:
-            return "star"
+            return IconSource.system("star")
         case .tab:
             #if os(macOS)
-            return "book"
+            return IconSource.system("book")
             #else
-            return "square"
+            return IconSource.system("square")
             #endif
         case .opened:
-            return "folder"
+            return IconSource.system("folder")
         case .explore:
-            return "safari"
+            return IconSource.image("telescope")
         case .downloads:
-            return "tray.and.arrow.down"
+            return IconSource.system("tray.and.arrow.down")
         case .settings:
-            return "gear"
+            return IconSource.system("gear")
         case .donation:
-            return "heart.fill"
+            return IconSource.system("heart.fill")
         case .hotspot:
-            return "wifi"
+            return IconSource.system("wifi")
         }
     }
     #if os(iOS)

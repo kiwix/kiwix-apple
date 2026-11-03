@@ -97,7 +97,7 @@ struct LibraryTab: View {
                     }
                 }
                 .tag(tabItem)
-                .tabItem { Label(tabItem.name, systemImage: tabItem.icon) }
+                .tabItem { labelFor(tabItem: tabItem) }
             }
         }.task {
             await viewModel.start(isUserInitiated: false)
@@ -107,6 +107,16 @@ struct LibraryTab: View {
             if tabItem != .downloads {
                 tabItem = .downloads
             }
+        }
+    }
+    
+    @ViewBuilder
+    private func labelFor(tabItem: LibraryTabItem) -> some View {
+        switch tabItem.icon {
+        case let .system(systemImage):
+            Label(tabItem.name, systemImage: systemImage)
+        case let .image(imageName):
+            Label(tabItem.name, image: imageName)
         }
     }
 }

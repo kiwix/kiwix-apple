@@ -277,15 +277,22 @@ struct SplitViewForiPad: View { // swiftlint:disable:this type_body_length
             Label {
                 Text(item.name)
             } icon: {
-                Image(systemName: item.icon)
+                Image(systemName: "heart.fill")
                     .foregroundStyle(Color.red)
                     .symbolVariant(isSelected ? .fill : .none)
                     .modifier(Symbol26Vairant())
             }
         default:
-            Label(item.name, systemImage: item.icon)
-                .symbolVariant(isSelected ? .fill : .none)
-                .modifier(Symbol26Vairant())
+            switch item.icon {
+            case .system(let systemImage):
+                Label(item.name, systemImage: systemImage)
+                    .symbolVariant(isSelected ? .fill : .none)
+                    .modifier(Symbol26Vairant())
+            case .image(let imageName):
+                Label(item.name, image: imageName)
+                    .symbolVariant(isSelected ? .fill : .none)
+                    .modifier(Symbol26Vairant())
+            }
         }
     }
     

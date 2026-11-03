@@ -51,16 +51,16 @@ struct RootView: View {
                     [MenuItem.tab(objectID: navigation.currentTabId)] + primaryItems,
                     id: \.self
                 ) { menuItem in
-                    Label(menuItem.name, systemImage: menuItem.icon)
+                    labelFor(menuItem: menuItem)
                 }
                 if FeatureFlags.hasLibrary {
                     Section(LocalString.app_macos_navigation_button_library) {
                         ForEach(libraryItems + [MenuItem.hotspot], id: \.self) { menuItem in
-                            Label(menuItem.name, systemImage: menuItem.icon)
+                            labelFor(menuItem: menuItem)
                         }
                     }
                 } else {
-                    Label(MenuItem.hotspot.name, systemImage: MenuItem.hotspot.icon).id(MenuItem.hotspot)
+                    labelFor(menuItem: MenuItem.hotspot).id(MenuItem.hotspot)
                 }
             }
             .frame(minWidth: 160)
@@ -330,6 +330,16 @@ struct RootView: View {
             return
         }
         SessionRestore.shared.didChangeMenuItem(currentNavItem, inWindow: currentWindow)
+    }
+    
+    @ViewBuilder
+    private func labelFor(menuItem: MenuItem) -> some View {
+        switch menuItem.icon {
+        case let .system(systemImage):
+            Label(menuItem.name, systemImage: systemImage)
+        case let .image(imageName):
+            Label(menuItem.name, image: imageName)
+        }
     }
 }
 
