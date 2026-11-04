@@ -107,6 +107,7 @@ final class LibraryViewModel: ObservableObject {
                         saveCategoryAvailableInLanguages(fromDBZimFiles: zimFiles)
                         // populate library language code if there isn't one set already
                         await setDefaultContentFilterLanguage()
+                        await ZimUpdates.refresh()
                         
                         error = nil
                         process.state = .complete
@@ -117,6 +118,7 @@ final class LibraryViewModel: ObservableObject {
                         return
                     }
                 } else {
+                    await ZimUpdates.refresh()
                     error = nil
                     process.state = .complete
                     return
@@ -133,6 +135,9 @@ final class LibraryViewModel: ObservableObject {
 
             // populate library language code if there isn't one set already
             await setDefaultContentFilterLanguage()
+
+            // detect newer versions of downloaded ZIM files
+            await ZimUpdates.refresh()
 
             // reset error
             error = nil

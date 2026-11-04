@@ -52,9 +52,27 @@ enum ZimMigration {
     /// Migrates the bookmars from an old to new zim file,
     /// also updates the bookmark urls accordingly (based on the new zim id as the host of those URLs)
     /// deletes the old zim file in the DB
-    private static func migrateFrom(
+    static func migrateFrom(
         zimFile fromZim: ZimFile,
         toZimFile toZim: ZimFile,
+        using context: NSManagedObjectContext
+    ) {
+        moveBookmarks(from: fromZim, to: toZim, using: context)
+        let newHost = toZim.fileID.uuidString
+        fromZim.tabs.forEach { (tab: Tab) in
+            tab.zimFile = toZim
+            tab.interactionState = tab.interactionState?.updateHost(to: newHost)
+        }
+        context.delete(fromZim)
+        if context.hasChanges { try? context.save() }
+    }
+
+    /// Moves the bookmarks from an old to a new zim file,
+    /// and updates their urls accordingly (based on the new zim id as the host of those URLs).
+    /// The old zim file record and its tabs are left in place.
+    static func moveBookmarks(
+        from fromZim: ZimFile,
+        to toZim: ZimFile,
         using context: NSManagedObjectContext
     ) {
         let newHost = toZim.fileID.uuidString
@@ -66,11 +84,6 @@ enum ZimMigration {
                 bookmark.articleURL = newArticleURL
             }
         }
-        fromZim.tabs.forEach { (tab: Tab) in
-            tab.zimFile = toZim
-            tab.interactionState = tab.interactionState?.updateHost(to: newHost)
-        }
-        context.delete(fromZim)
         if context.hasChanges { try? context.save() }
     }
 

@@ -20,12 +20,14 @@ enum ZIMsShowBy: Codable, Equatable, Defaults.Serializable {
     case all
     case onlyAvailable
     case onlyMissing
+    case updatesAvailable
     
     func toggleNext() -> ZIMsShowBy {
         switch self {
         case .all: .onlyAvailable
         case .onlyAvailable: .onlyMissing
-        case .onlyMissing: .all
+        case .onlyMissing: .updatesAvailable
+        case .updatesAvailable: .all
         }
     }
     
@@ -37,6 +39,8 @@ enum ZIMsShowBy: Codable, Equatable, Defaults.Serializable {
             LocalString.zim_file_opened_toolbar_filter_show_only_available
         case .onlyMissing:
             LocalString.zim_file_opened_toolbar_filter_show_only_missing
+        case .updatesAvailable:
+            LocalString.zim_file_opened_toolbar_filter_show_only_updates
         }
     }
     
@@ -48,6 +52,8 @@ enum ZIMsShowBy: Codable, Equatable, Defaults.Serializable {
             LocalString.zim_file_opened_overlay_no_available_zim_files_message
         case .onlyMissing:
             LocalString.zim_file_opened_overlay_no_missing_zim_files_message
+        case .updatesAvailable:
+            LocalString.zim_file_opened_overlay_no_updates_zim_files_message
         }
     }
     
@@ -59,6 +65,8 @@ enum ZIMsShowBy: Codable, Equatable, Defaults.Serializable {
             "square.grid.3x3.topleft.filled"
         case .onlyMissing:
             "exclamationmark.triangle.fill"
+        case .updatesAvailable:
+            "arrow.down.circle.fill"
         }
     }
     
@@ -67,7 +75,7 @@ enum ZIMsShowBy: Codable, Equatable, Defaults.Serializable {
         switch self {
         case .all:
             "line.3.horizontal.decrease.circle"
-        case .onlyAvailable, .onlyMissing:
+        case .onlyAvailable, .onlyMissing, .updatesAvailable:
             "line.3.horizontal.decrease.circle.fill"
         }
     }
