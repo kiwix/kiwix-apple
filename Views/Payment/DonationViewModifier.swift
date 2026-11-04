@@ -61,7 +61,7 @@ struct DonationViewModifier: ViewModifier {
                         NavigationStack {
                             DonationForm()
                         }
-                        .presentationDetents([.fraction(0.83)])
+                        .modifier(DonationLayoutModifier())
                     case .thankYou:
                         PaymentResultPopUp(state: .thankYou)
                             .presentationDetents([.fraction(0.43)])
@@ -96,4 +96,56 @@ struct DonationViewModifier: ViewModifier {
         
     }
 }
+
+private struct DonationLayoutModifier: ViewModifier {
+    func body(content: Content) -> some View {
+        if #available(iOS 27.1, *) {
+            GeometryReader { proxy in
+                if isPartiallyFoldedPortrait(proxy) {
+                    // don't allow the donation sheet to run through the fold (50%)
+                    content.presentationDetents([.fraction(0.5)])
+                } else if isFolded(proxy) {
+                    // NOTE: we are redifining the `content` here
+                    // to use large title
+                    // and a full screen sheet
+                    NavigationStack {
+                        DonationForm(useInlineTitle: false)
+                    }
+                } else {
+                    content.presentationDetents([.fraction(0.83)])
+                }
+            }
+        } else {
+            content.presentationDetents([.fraction(0.83)])
+        }
+    }
+    
+    /// iPhone DUO: detect a partially folded portrait mode
+    /// - Parameter proxy: Geomertry reader
+    /// - Returns: true when there's an active division, that is distintly wider than tall
+    @available(anyAppleOS 27.1, *)
+    private func isPartiallyFoldedPortrait(_ proxy: GeometryProxy) -> Bool {
+        let divisions = proxy.reservedRegions(kind: .division)
+        guard !divisions.isEmpty else { return false }
+        return divisions.contains { div in
+            div.frame.width > div.frame.height * 2
+        }
+    }
+    
+    /// iPhone DUO: detect full folded mode
+    /// - Parameter proxy: Geometry reader
+    /// - Returns: true when there's an asymetric leading / trailing inset larger than 50
+    private func isFolded(_ proxy: GeometryProxy) -> Bool {
+        let insets = proxy.safeAreaInsets
+        switch (insets.leading, insets.trailing) {
+        case let (0, trail):
+            return trail > 50
+        case let (lead, 0):
+            return lead > 50
+        default:
+            return false
+        }
+    }
+}
+
 #endif
