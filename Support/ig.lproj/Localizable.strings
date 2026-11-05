@@ -86,7 +86,6 @@
 // Fuzzy
 "zim_file_category.section.empty.message" = "Enweghị zim faịlụ na katigori a.";
 "zim_file_downloads.overlay.empty.message" = "Enweghị ọrụ aga ebudata";
-// Fuzzy
 "zim_file.list.name.text" = "Aha";
 "zim_file.list.description.text" = "Nkọwa";
 "zim_file.list.actions.text" = "Omume ihe";
