@@ -69,7 +69,6 @@
 // Fuzzy
 "zim_file_category.section.empty.message" = "Brak pliku zim w tej kategorii.";
 "zim_file_downloads.overlay.empty.message" = "Brak zadań pobierania";
-// Fuzzy
 "zim_file.list.name.text" = "Nazwa";
 "zim_file.list.description.text" = "Opis";
 "zim_file.action.delete.title" = "Usuń";
