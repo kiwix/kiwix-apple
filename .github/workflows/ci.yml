@@ -65,7 +65,7 @@ jobs:
 
       - name: Run Unit Tests on iOS
         if: matrix.platform == 'iOS'
-        run: xcodebuild clean test -scheme Kiwix -destination 'platform=iOS Simulator,name=iPhone 17 Pro'
+        run: xcodebuild clean test -scheme Kiwix -destination 'platform=iOS Simulator,name=iPhone 17 Pro' CODE_SIGNING_ALLOWED=NO
 
       - name: Run Unit Tests on macOS
         if: matrix.platform == 'macOS'
@@ -78,14 +78,14 @@ jobs:
 
       - name: Run UI Tests on macOS
         if: matrix.platform == 'macOS'
-        run: xcodebuild test -scheme UITests_macOS -destination 'platform=macOS'
+        run: xcodebuild test -scheme UITests_macOS -destination 'platform=macOS' CODE_SIGNING_ALLOWED=NO
 
       - name: Run UI Tests on iPhone
         if: matrix.platform == 'iOS'
         env:
           DEVICE_NAME: "iPhone 17 Pro Max"
-        run: xcodebuild test -scheme UITests_iPhone -destination "platform=iOS Simulator,name=$DEVICE_NAME" -resultBundlePath Kiwix-UITests-IPhone.xcresult
-      
+        run: xcodebuild test -scheme UITests_iPhone -destination "platform=iOS Simulator,name=$DEVICE_NAME" -resultBundlePath Kiwix-UITests-IPhone.xcresult CODE_SIGNING_ALLOWED=NO
+
       - name: Upload UI Tests xcresult file
         if: ${{ matrix.platform == 'iOS' && failure() }}
         uses: actions/upload-artifact@v7
@@ -108,8 +108,8 @@ jobs:
         run: |
             xcrun simctl boot ${{ env.DEVICE_ID }}
             xcrun simctl uninstall ${{ env.DEVICE_ID }} self.Kiwix
-            xcodebuild test -scheme UITests_iPad -destination "platform=iOS Simulator,id=${{ env.DEVICE_ID }}" -resultBundlePath Kiwix-UITests-IPad.xcresult
-      
+            xcodebuild test -scheme UITests_iPad -destination "platform=iOS Simulator,id=${{ env.DEVICE_ID }}" -resultBundlePath Kiwix-UITests-IPad.xcresult CODE_SIGNING_ALLOWED=NO
+
       - name: Upload UI Tests xcresult file
         if: ${{ matrix.platform == 'iOS' && failure() }}
         uses: actions/upload-artifact@v7
