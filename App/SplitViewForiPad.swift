@@ -179,6 +179,7 @@ struct SplitViewForiPad: View { // swiftlint:disable:this type_body_length
                         if tab.zimFile != nil {
                             Button(role: .destructive) {
                                 Task { [weak navigation] in
+                                    navigation?.currentItem = selection?.navigationItem
                                     await navigation?.deleteTab(tabID: tab.objectID)
                                 }
                             } label: {
