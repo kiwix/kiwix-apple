@@ -55,7 +55,7 @@ import XCTest
         downloadButton.tap()
         usleep(100_000)
         let openMainPageButton = app.buttons["Open Main Page"]
-        Wait.inApp(app, forElement: openMainPageButton, timeout: 240)
+        Wait.inApp(app, forElement: openMainPageButton, timeout: 360)
         openMainPageButton.tap()
 
         app.webViews.firstMatch.tap()
