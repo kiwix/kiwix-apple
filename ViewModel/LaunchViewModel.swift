@@ -129,11 +129,7 @@ enum WelcomeViewState: Equatable {
                     updateTo(.catalog(.fetching))
                 }
             case (_, false, .complete):
-                if hasSeenCategories {
-                    updateTo(.catalog(.welcome(.complete)))
-                } else {
-                    updateTo(.catalog(.fetching))
-                }
+                updateTo(.catalog(.welcome(.complete)))
             case (_, false, .error):
                 // safety path to display the welcome buttons
                 // in case of a fetch error, the user can try again

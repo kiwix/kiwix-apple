@@ -115,8 +115,10 @@ struct LibraryTab: View {
         switch tabItem.icon {
         case let .system(systemImage):
             Label(tabItem.name, systemImage: systemImage)
+                .accessibilityIdentifier(tabItem.id)
         case let .image(imageName):
             Label(tabItem.name, image: imageName)
+                .accessibilityIdentifier(tabItem.id)
         }
     }
 }

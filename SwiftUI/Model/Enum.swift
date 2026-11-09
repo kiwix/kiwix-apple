@@ -196,7 +196,9 @@ enum LibraryLanguageSortingMode: String, CaseIterable, Identifiable, Defaults.Se
 enum LibraryTabItem: String, CaseIterable, Identifiable {
     case explore, downloads, library, hotspot
 
-    var id: String { self.rawValue }
+    var id: String {
+        rawValue.appending("-tab")
+    }
 
     var name: String {
         switch self {
