@@ -43,15 +43,15 @@ runs:
   steps:
 
     # not necessary on github runner but serves as documentation for local setup
-    - name: Update Apple Intermediate Certificate
-      shell: bash
-      run: |
-        curl -L -o ~/Downloads/AppleWWDRCAG3.cer https://www.apple.com/certificateauthority/AppleWWDRCAG3.cer
-        sudo security import ~/Downloads/AppleWWDRCAG3.cer \
-          -k /Library/Keychains/System.keychain \
-          -T /usr/bin/codesign \
-          -T /usr/bin/security \
-          -T /usr/bin/productbuild || true
+    # - name: Update Apple Intermediate Certificate
+    #   shell: bash
+    #   run: |
+    #     curl -L -o ~/Downloads/AppleWWDRCAG3.cer https://www.apple.com/certificateauthority/AppleWWDRCAG3.cer
+    #     sudo security import ~/Downloads/AppleWWDRCAG3.cer \
+    #       -k /Library/Keychains/System.keychain \
+    #       -T /usr/bin/codesign \
+    #       -T /usr/bin/security \
+    #       -T /usr/bin/productbuild || true
 
     - name: Set Xcode version (26.4.1)
       shell: bash
@@ -86,8 +86,16 @@ runs:
         KEYCHAIN: ${{ inputs.KEYCHAIN }}
         KEYCHAIN_PASSWORD: ${{ inputs.KEYCHAIN_PASSWORD }}
 
-    - name: Download dependencies if needed
+    - name: Cache xcframework
+      id: cache-xcframework
       if: ${{ inputs.DOWNLOAD_DEPENDENCIES == 'true' }}
+      uses: actions/cache@v6.1.0
+      with:
+        path: CoreKiwix.xcframework
+        key: ${{ hashFiles('Brewfile') }}
+
+    - name: Download dependencies if needed
+      if: ${{ inputs.DOWNLOAD_DEPENDENCIES == 'true' && steps.cache-xcframework.outputs.cache-hit != 'true' }}
       shell: bash
       run: | # remove pre-commit, it's not needed for CI
         cat Brewfile | grep -v -e pre-commit > Brewfile_CI
@@ -95,6 +103,17 @@ runs:
         cp Support/CoreKiwix.modulemap CoreKiwix.xcframework/ios-arm64/Headers/module.modulemap
         cp Support/CoreKiwix.modulemap CoreKiwix.xcframework/ios-arm64_x86_64-simulator/Headers/module.modulemap
         cp Support/CoreKiwix.modulemap CoreKiwix.xcframework/macos-arm64_x86_64/Headers/module.modulemap
+
+    - name: Setup xcodegen
+      if: ${{ inputs.DOWNLOAD_DEPENDENCIES == 'true' && steps.cache-xcframework.outputs.cache-hit == 'true' }}
+      shell: bash
+      run: |
+        brew install xcodegen
+
+    - name: Setup project
+      if: ${{ inputs.DOWNLOAD_DEPENDENCIES == 'true' }}
+      shell: bash
+      run: |
         python localizations.py generate
         xcodegen
 
