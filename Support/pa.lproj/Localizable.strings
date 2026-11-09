@@ -124,7 +124,6 @@
 "welcome.actions.open_file" = "ਫ਼ਾਈਲ ਖੋਲ੍ਹੋ";
 "welcome.loading.data.text" = "ਡਾਟਾ ਲੋਡ ਕੀਤਾ ਜਾ ਰਿਹਾ ਐ...";
 "app_macos_commands.open_file" = "ਖੋਲ੍ਹੋ...";
-"app_macos_navigation.button.library" = "ਕਿਤਾਬਘਰ";
 "sidebar_view.navigation.button.close" = "ਬੰਦ ਕਰੋ";
 "enum.category.wikipedia" = "ਵਿਕੀਪੀਡੀਆ";
 "enum.category.wikibooks" = "ਵਿਕੀਕਿਤਾਬਾਂ";
@@ -137,10 +136,8 @@
 "enum.category.other" = "ਹੋਰ";
 "enum.external_link_loading_policy.always_ask" = "ਹਮੇਸ਼ਾ ਪੁੱਛੋ";
 "enum.library_language_sorting_model.by_count" = "ਗਿਣਤੀ ਨਾਲ";
-"enum.libray_tab_item.opened" = "ਖੋਲ੍ਹਿਆ ਗਿਆ";
 "enum.libray_tab_item.downloads" = "ਉਤਾਰੋ/ਲਾਹੋ";
 "enum.navigation_item.reading" = "ਪੜ੍ਹ ਰਿਹਾ ਏ";
-"enum.navigation_item.opened" = "ਖੋਲ੍ਹਿਆ ਗਿਆ";
 "enum.navigation_item.downloads" = "ਉਤਾਰੋ/ਲਾਹੋ";
 "enum.navigation_item.settings" = "ਤਰਜੀਹਾਂ";
 "enum.search_result_snippet_mode.disabled" = "ਅਸਮਰੱਥ";

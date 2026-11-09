@@ -192,7 +192,6 @@
 "comments.button.zoom_out" = "Отдалить";
 "app_macos_commands.open_file" = "Открыть...";
 "app_macos_commands.new" = "Новая вкладка";
-"app_macos_navigation.button.library" = "Библиотека";
 "sidebar_view.navigation.button.close" = "Закрыть";
 "enum.category.wikipedia" = "Википедия";
 "enum.category.wikibooks" = "Викиучебник";
@@ -209,12 +208,10 @@
 "enum.external_link_loading_policy.never_load" = "Никогда не загружать";
 "enum.library_language_sorting_model.a-z" = "A-Z";
 "enum.library_language_sorting_model.by_count" = "По количеству";
-"enum.libray_tab_item.opened" = "Открыто";
 "enum.libray_tab_item.downloads" = "Загрузки";
 "enum.navigation_item.reading" = "Чтение";
 "enum.navigation_item.bookmarks" = "Закладки";
 "enum.navigation_item.new_tab" = "Новая вкладка";
-"enum.navigation_item.opened" = "Открыто";
 "enum.navigation_item.downloads" = "Скачать";
 "enum.navigation_item.settings" = "Настройки";
 "enum.search_result_snippet_mode.disabled" = "Выключен";

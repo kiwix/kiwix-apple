@@ -192,7 +192,6 @@
 "comments.button.zoom_out" = "Mbupụ";
 "app_macos_commands.open_file" = "Mepee...";
 "app_macos_commands.new" = "Taabụ ọhụrụ";
-"app_macos_navigation.button.library" = "Ọ́bá Akwụkwọ";
 "sidebar_view.navigation.button.close" = "Mechie";
 "enum.category.wikipedia" = "Wikipidịa";
 "enum.category.wikibooks" = "Akwụkwọ Wiki";
@@ -209,12 +208,10 @@
 "enum.external_link_loading_policy.never_load" = "Ebukwala ya";
 "enum.library_language_sorting_model.a-z" = "A-Z";
 "enum.library_language_sorting_model.by_count" = "Site na ọnụ ọgụgụ";
-"enum.libray_tab_item.opened" = "Mepere";
 "enum.libray_tab_item.downloads" = "Nbudata";
 "enum.navigation_item.reading" = "Ọgụgụ";
 "enum.navigation_item.bookmarks" = "Akara Akwụkwọ";
 "enum.navigation_item.new_tab" = "Taabụ ọhụrụ";
-"enum.navigation_item.opened" = "Mepere";
 "enum.navigation_item.downloads" = "Nbudata";
 "enum.navigation_item.settings" = "Ntọala";
 "enum.search_result_snippet_mode.disabled" = "Agbanyụrụ";

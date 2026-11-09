@@ -158,7 +158,6 @@
 "comments.button.zoom_out" = "Verklengeren";
 "app_macos_commands.open_file" = "Opmaachen...";
 "app_macos_commands.new" = "Neien Tab";
-"app_macos_navigation.button.library" = "Bibliothéik";
 "sidebar_view.navigation.button.close" = "Zoumaachen";
 "enum.category.wikipedia" = "Wikipedia";
 "enum.category.wikibooks" = "Wikibooks";
@@ -174,11 +173,9 @@
 "enum.external_link_loading_policy.always_load" = "Ëmmer Lueden";
 "enum.library_language_sorting_model.a-z" = "A-Z";
 "enum.library_language_sorting_model.by_count" = "No Zuel";
-"enum.libray_tab_item.opened" = "Opgemaach";
 "enum.navigation_item.reading" = "Liesen";
 "enum.navigation_item.bookmarks" = "Lieszeechen";
 "enum.navigation_item.new_tab" = "Neien Tab";
-"enum.navigation_item.opened" = "Opgemaach";
 "enum.navigation_item.settings" = "Astellungen";
 "enum.navigation_item.hotspot" = "Hotspot";
 "enum.search_result_snippet_mode.disabled" = "Desaktivéiert";

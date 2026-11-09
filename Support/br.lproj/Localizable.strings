@@ -136,7 +136,6 @@
 "comments.button.zoom_out" = "Dizoumañ";
 "app_macos_commands.open_file" = "Digeriñ...";
 "app_macos_commands.new" = "Steudenn nevez";
-"app_macos_navigation.button.library" = "Levraoueg";
 "sidebar_view.navigation.button.close" = "Serriñ";
 "enum.category.wikipedia" = "Wikipedia";
 "enum.category.wikibooks" = "Wikilevrioù";
@@ -150,11 +149,9 @@
 "enum.category.other" = "Re all";
 "enum.external_link_loading_policy.always_ask" = "Goulenn bepred";
 "enum.library_language_sorting_model.a-z" = "A-Z";
-"enum.libray_tab_item.opened" = "Digor";
 "enum.libray_tab_item.downloads" = "Pellgargadurioù";
 "enum.navigation_item.bookmarks" = "Sinedoù";
 "enum.navigation_item.new_tab" = "Steudenn nevez";
-"enum.navigation_item.opened" = "Digor";
 "enum.navigation_item.downloads" = "Pellgargadurioù";
 "enum.navigation_item.settings" = "Arventennoù";
 "enum.search_result_snippet_mode.disabled" = "Diweredekaet";

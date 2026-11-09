@@ -147,7 +147,6 @@
 "comments.button.zoom_out" = "Zoom indietro";
 "app_macos_commands.open_file" = "Apri...";
 "app_macos_commands.new" = "Nuova scheda";
-"app_macos_navigation.button.library" = "Libreria";
 "enum.category.wikipedia" = "Wikipedia";
 "enum.category.wikibooks" = "Wikibooks";
 "enum.category.wikinews" = "Wikinotizie";
@@ -156,10 +155,8 @@
 "enum.category.vikidia" = "Vikidia";
 "enum.external_link_loading_policy.never_load" = "Non caricare mai";
 "enum.library_language_sorting_model.a-z" = "A-Z";
-"enum.libray_tab_item.opened" = "Aperto";
 "enum.navigation_item.bookmarks" = "Segnalibri";
 "enum.navigation_item.new_tab" = "Nuova scheda";
-"enum.navigation_item.opened" = "Aperto";
 "enum.navigation_item.settings" = "Impostazioni";
 "enum.search_result_snippet_mode.disabled" = "Disattivato";
 "payment.donate.title" = "Dona";

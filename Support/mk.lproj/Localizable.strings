@@ -226,7 +226,6 @@
 "comments.button.zoom_out" = "Оддалечи";
 "app_macos_commands.open_file" = "Отвори...";
 "app_macos_commands.new" = "Ново јазиче";
-"app_macos_navigation.button.library" = "Библиотека";
 "sidebar_view.navigation.button.close" = "Затвори";
 "enum.category.wikipedia" = "Википедија";
 "enum.category.wikibooks" = "Викикниги";
@@ -243,12 +242,10 @@
 "enum.external_link_loading_policy.never_load" = "Никогаш не вчитувај";
 "enum.library_language_sorting_model.a-z" = "А-Ш";
 "enum.library_language_sorting_model.by_count" = "По број";
-"enum.libray_tab_item.opened" = "Отворено";
 "enum.libray_tab_item.downloads" = "Преземања";
 "enum.navigation_item.reading" = "Читање";
 "enum.navigation_item.bookmarks" = "Обележани";
 "enum.navigation_item.new_tab" = "Ново јазиче";
-"enum.navigation_item.opened" = "Отворено";
 "enum.navigation_item.downloads" = "Преземања";
 "enum.navigation_item.settings" = "Нагодувања";
 "enum.navigation_item.hotspot" = "Пристапна точка";

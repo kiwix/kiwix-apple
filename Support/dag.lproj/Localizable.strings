@@ -172,7 +172,6 @@
 "comments.button.zoom_out" = "Vooyina";
 "app_macos_commands.open_file" = "Yooma";
 "app_macos_commands.new" = "Binshɛɣ'kam palli";
-"app_macos_navigation.button.library" = "Karimbu shee";
 "sidebar_view.navigation.button.close" = "Kpihim";
 "enum.category.wikipedia" = "Wikipɛdea";
 "enum.category.wikibooks" = "Wikibuku nima";
@@ -183,12 +182,10 @@
 "enum.external_link_loading_policy.always_load" = "Ʒilimi saha kam";
 "enum.external_link_loading_policy.never_load" = "Abada ni ʒili";
 "enum.library_language_sorting_model.by_count" = "Diyi yan kali";
-"enum.libray_tab_item.opened" = "Yooi";
 "enum.libray_tab_item.downloads" = "Deebu";
 "enum.navigation_item.reading" = "Kariŋ";
 "enum.navigation_item.bookmarks" = "Buku'dalima";
 "enum.navigation_item.new_tab" = "Binshɛɣ'kam palli";
-"enum.navigation_item.opened" = "Yooma";
 "enum.navigation_item.downloads" = "Deebu";
 "enum.navigation_item.settings" = "Bintaɣindisi";
 "enum.search_result_snippet_mode.disabled" = "Zaɣisibu";

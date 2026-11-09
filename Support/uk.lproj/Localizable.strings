@@ -192,7 +192,6 @@
 "comments.button.zoom_out" = "Віддалити";
 "app_macos_commands.open_file" = "Відкрити...";
 "app_macos_commands.new" = "Нова вкладка";
-"app_macos_navigation.button.library" = "Бібліотека";
 "sidebar_view.navigation.button.close" = "Закрити";
 "enum.category.wikipedia" = "Вікіпедія";
 "enum.category.wikibooks" = "Вікіпідручник";
@@ -209,12 +208,10 @@
 "enum.external_link_loading_policy.never_load" = "Ніколи не завантажувати";
 "enum.library_language_sorting_model.a-z" = "А-Я";
 "enum.library_language_sorting_model.by_count" = "За кількістю";
-"enum.libray_tab_item.opened" = "Відкрито";
 "enum.libray_tab_item.downloads" = "Завантаження";
 "enum.navigation_item.reading" = "Читання";
 "enum.navigation_item.bookmarks" = "Закладки";
 "enum.navigation_item.new_tab" = "Нова вкладка";
-"enum.navigation_item.opened" = "Відкрито";
 "enum.navigation_item.downloads" = "Завантаження";
 "enum.navigation_item.settings" = "Налаштування";
 "enum.navigation_item.hotspot" = "Точка доступу";

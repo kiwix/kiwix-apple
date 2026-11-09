@@ -37,7 +37,6 @@
 "welcome.grid.bookmarks.title" = "Makomi ya mikanda";
 "commands.button.actual_size" = "Bonene ya solo";
 "app_macos_commands.open_file" = "Kofungola...";
-"app_macos_navigation.button.library" = "Ebómbelo múku";
 "sidebar_view.navigation.button.close" = "Kokanga";
 "enum.category.wikipedia" = "Wikipedia";
 "enum.category.wikinews" = "Wikinews";
@@ -51,11 +50,9 @@
 "enum.external_link_loading_policy.always_ask" = "Tuna ntango nyonso";
 "enum.library_language_sorting_model.a-z" = "A-Z";
 "enum.library_language_sorting_model.by_count" = "Na kolanda motango";
-"enum.libray_tab_item.opened" = "Efungolami";
 "enum.libray_tab_item.downloads" = "Bokɔ́ngɔli";
 "enum.navigation_item.reading" = "Kotanga";
 "enum.navigation_item.bookmarks" = "Makomi ya mikanda";
-"enum.navigation_item.opened" = "Efungolami";
 "enum.navigation_item.downloads" = "Bokɔ́ngɔli";
 "enum.navigation_item.settings" = "Palamɛ́tɛlɛ";
 "enum.search_result_snippet_mode.disabled" = "Bakanga";

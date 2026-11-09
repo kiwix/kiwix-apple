@@ -131,7 +131,6 @@
 "comments.button.zoom_out" = "Loitonna";
 "app_macos_commands.open_file" = "Avaa...";
 "app_macos_commands.new" = "Uusi välilehti";
-"app_macos_navigation.button.library" = "Kirjasto";
 "sidebar_view.navigation.button.close" = "Sulje";
 "enum.category.wikibooks" = "Wikikirjasto";
 "enum.category.wikinews" = "Wikiuutiset";
@@ -147,7 +146,6 @@
 "enum.library_language_sorting_model.a-z" = "A-Ö";
 "enum.navigation_item.bookmarks" = "Kirjanmerkit";
 "enum.navigation_item.new_tab" = "Uusi välilehti";
-"enum.navigation_item.opened" = "Avattu";
 "enum.navigation_item.downloads" = "Lataukset";
 "enum.navigation_item.settings" = "Asetukset";
 "enum.search_result_snippet_mode.disabled" = "Pois käytöstä";

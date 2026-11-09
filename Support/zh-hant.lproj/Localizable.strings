@@ -243,7 +243,6 @@
 "comments.button.zoom_out" = "縮小";
 "app_macos_commands.open_file" = "開啟…";
 "app_macos_commands.new" = "新分頁";
-"app_macos_navigation.button.library" = "文庫";
 "app_macos_navigation.button.restore_previous_session" = "恢復上一次連線階段";
 "sidebar_view.navigation.button.close" = "關閉";
 "enum.category.wikipedia" = "維基百科";
@@ -261,12 +260,10 @@
 "enum.external_link_loading_policy.never_load" = "永不載入";
 "enum.library_language_sorting_model.a-z" = "A 到 Z";
 "enum.library_language_sorting_model.by_count" = "依總計";
-"enum.libray_tab_item.opened" = "已開啟";
 "enum.libray_tab_item.downloads" = "下載";
 "enum.navigation_item.reading" = "閱讀";
 "enum.navigation_item.bookmarks" = "書籤";
 "enum.navigation_item.new_tab" = "新分頁";
-"enum.navigation_item.opened" = "已開啟";
 "enum.navigation_item.downloads" = "下載";
 "enum.navigation_item.settings" = "設定";
 "enum.navigation_item.hotspot" = "熱點";

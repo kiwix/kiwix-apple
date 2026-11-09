@@ -33,7 +33,7 @@ struct RootView: View {
     let openedWithWindowState: WindowState?
     
     private let primaryItems: [MenuItem] = [.bookmarks]
-    private let libraryItems: [MenuItem] = [.opened, .explore, .downloads]
+    private let libraryItems: [MenuItem] = [.library, .explore, .downloads]
     private let openURL = NotificationCenter.default.publisher(for: .openURL)
     private let appTerminates = NotificationCenter.default.publisher(for: NSApplication.willTerminateNotification)
     private let tabCloses = NotificationCenter.default.publisher(for: NSWindow.willCloseNotification)
@@ -54,7 +54,7 @@ struct RootView: View {
                     labelFor(menuItem: menuItem)
                 }
                 if FeatureFlags.hasLibrary {
-                    Section(LocalString.app_macos_navigation_button_library) {
+                    Section {
                         ForEach(libraryItems + [MenuItem.hotspot], id: \.self) { menuItem in
                             labelFor(menuItem: menuItem)
                         }
