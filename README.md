@@ -53,7 +53,7 @@ To get started, you will need the following:
  2) from the project folder **run the following commands:** 
  ```
  brew bundle
- python localizations.py generate
+ python3 localizations.py generate
  xcodegen
  ```
 
