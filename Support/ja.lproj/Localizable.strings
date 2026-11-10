@@ -188,7 +188,6 @@
 "comments.button.zoom_out" = "ズームアウト";
 "app_macos_commands.open_file" = "開く...";
 "app_macos_commands.new" = "新規タブ";
-"app_macos_navigation.button.library" = "ライブラリ";
 "sidebar_view.navigation.button.close" = "閉じる";
 "enum.category.wikipedia" = "ウィキペディア";
 "enum.category.wikibooks" = "ウィキブックス";
@@ -203,12 +202,10 @@
 "enum.external_link_loading_policy.always_load" = "常に読み込み";
 "enum.external_link_loading_policy.never_load" = "読み込まない";
 "enum.library_language_sorting_model.by_count" = "ファイル数";
-"enum.libray_tab_item.opened" = "読み込み済み";
 "enum.libray_tab_item.downloads" = "ダウンロード";
 "enum.navigation_item.reading" = "閲覧";
 "enum.navigation_item.bookmarks" = "ブックマーク";
 "enum.navigation_item.new_tab" = "新規タブ";
-"enum.navigation_item.opened" = "読み込み済み";
 "enum.navigation_item.downloads" = "ダウンロード";
 "enum.navigation_item.settings" = "設定";
 "enum.search_result_snippet_mode.disabled" = "無効化";

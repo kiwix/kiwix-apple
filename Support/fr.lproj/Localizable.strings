@@ -257,7 +257,6 @@
 "comments.button.zoom_out" = "Zoom arrière";
 "app_macos_commands.open_file" = "Ouvrir...";
 "app_macos_commands.new" = "Nouvel onglet";
-"app_macos_navigation.button.library" = "Bibliothèque";
 "app_macos_navigation.button.restore_previous_session" = "Restaurer la session précédente";
 "sidebar_view.navigation.button.close" = "Fermer";
 "enum.category.wikipedia" = "Wikipédia";
@@ -275,12 +274,10 @@
 "enum.external_link_loading_policy.never_load" = "Ne jamais charger";
 "enum.library_language_sorting_model.a-z" = "A-Z";
 "enum.library_language_sorting_model.by_count" = "Par nombre";
-"enum.libray_tab_item.opened" = "Ouvert";
 "enum.libray_tab_item.downloads" = "Téléchargements";
 "enum.navigation_item.reading" = "Lecture";
 "enum.navigation_item.bookmarks" = "Signets";
 "enum.navigation_item.new_tab" = "Nouvel onglet";
-"enum.navigation_item.opened" = "Ouvert";
 "enum.navigation_item.downloads" = "Téléchargements";
 "enum.navigation_item.settings" = "Paramètres";
 "enum.navigation_item.hotspot" = "Borne WiFi";

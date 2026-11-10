@@ -243,7 +243,6 @@
 "comments.button.zoom_out" = "Oddalji";
 "app_macos_commands.open_file" = "Odpri ...";
 "app_macos_commands.new" = "Nov zavihek";
-"app_macos_navigation.button.library" = "Knjižnica";
 "app_macos_navigation.button.restore_previous_session" = "Obnovi prejšnjo sejo";
 "sidebar_view.navigation.button.close" = "Zapri";
 "enum.category.wikipedia" = "Wikipedija";
@@ -261,12 +260,10 @@
 "enum.external_link_loading_policy.never_load" = "Nikoli ne naloži";
 "enum.library_language_sorting_model.a-z" = "A–Z";
 "enum.library_language_sorting_model.by_count" = "Po številu";
-"enum.libray_tab_item.opened" = "Odprto";
 "enum.libray_tab_item.downloads" = "Prenosi";
 "enum.navigation_item.reading" = "Branje";
 "enum.navigation_item.bookmarks" = "Zaznamki";
 "enum.navigation_item.new_tab" = "Nov zavihek";
-"enum.navigation_item.opened" = "Odprto";
 "enum.navigation_item.downloads" = "Prenosi";
 "enum.navigation_item.settings" = "Nastavitve";
 "enum.navigation_item.hotspot" = "Dostopna točka";

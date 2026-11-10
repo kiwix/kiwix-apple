@@ -241,7 +241,6 @@
 "comments.button.zoom_out" = "축소";
 "app_macos_commands.open_file" = "열기...";
 "app_macos_commands.new" = "새 탭";
-"app_macos_navigation.button.library" = "라이브러리";
 "app_macos_navigation.button.restore_previous_session" = "이전 세션 복원";
 "sidebar_view.navigation.button.close" = "닫기";
 "enum.category.wikipedia" = "위키백과";
@@ -259,12 +258,10 @@
 "enum.external_link_loading_policy.never_load" = "불러오지 않기";
 "enum.library_language_sorting_model.a-z" = "A-Z";
 "enum.library_language_sorting_model.by_count" = "개수";
-"enum.libray_tab_item.opened" = "열림";
 "enum.libray_tab_item.downloads" = "다운로드";
 "enum.navigation_item.reading" = "읽기";
 "enum.navigation_item.bookmarks" = "북마크";
 "enum.navigation_item.new_tab" = "새 탭";
-"enum.navigation_item.opened" = "열림";
 "enum.navigation_item.downloads" = "다운로드";
 "enum.navigation_item.settings" = "설정";
 "enum.navigation_item.hotspot" = "핫스팟";

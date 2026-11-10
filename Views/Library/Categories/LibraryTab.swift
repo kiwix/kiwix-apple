@@ -87,7 +87,7 @@ struct LibraryTab: View {
                         .onChange(of: selectedLang) { _, newValue in
                             categories = CategoriesToLanguages().categoriesIn(languageCode: newValue)
                         }
-                    case .opened:
+                    case .library:
                         ZimFilesOpenedNavStack(dismiss: dismiss)
                     case .downloads:
                         ZimFilesDownloads(dismiss: dismiss)
@@ -115,8 +115,10 @@ struct LibraryTab: View {
         switch tabItem.icon {
         case let .system(systemImage):
             Label(tabItem.name, systemImage: systemImage)
+                .accessibilityIdentifier(tabItem.id)
         case let .image(imageName):
             Label(tabItem.name, image: imageName)
+                .accessibilityIdentifier(tabItem.id)
         }
     }
 }

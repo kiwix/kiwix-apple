@@ -90,7 +90,7 @@ struct SplitViewForiPad: View { // swiftlint:disable:this type_body_length
                     }).id(tabID)
                 case .bookmarks:
                     Bookmarks()
-                case .opened:
+                case .library:
                     ZimFilesOpened()
                 case .explore:
                     ZimFilesCategories()
@@ -197,10 +197,6 @@ struct SplitViewForiPad: View { // swiftlint:disable:this type_body_length
                             .id(item.id)
                             .accessibilityIdentifier(item.accessibilityIdentifier)
                     }
-                } header: {
-                    if let headerText = section.header {
-                        Text(headerText)
-                    }
                 }
             }
         }
@@ -299,7 +295,7 @@ struct SplitViewForiPad: View { // swiftlint:disable:this type_body_length
     
     private static func allItems() -> [MenuItem] {
         if FeatureFlags.hasLibrary {
-            return [.bookmarks, .opened, .explore, .downloads, .hotspot, .settings(scrollToHotspot: false)]
+            return [.bookmarks, .library, .explore, .downloads, .hotspot, .settings(scrollToHotspot: false)]
         } else {
             return [.bookmarks, .hotspot, .settings(scrollToHotspot: false)]
         }

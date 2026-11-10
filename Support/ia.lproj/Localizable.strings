@@ -225,7 +225,6 @@
 "comments.button.zoom_out" = "Zoom retro";
 "app_macos_commands.open_file" = "Aperir…";
 "app_macos_commands.new" = "Nove scheda";
-"app_macos_navigation.button.library" = "Bibliotheca";
 "sidebar_view.navigation.button.close" = "Clauder";
 "enum.category.wikipedia" = "Wikipedia";
 "enum.category.wikibooks" = "Wikilibros";
@@ -242,12 +241,10 @@
 "enum.external_link_loading_policy.never_load" = "Nunquam cargar";
 "enum.library_language_sorting_model.a-z" = "A-Z";
 "enum.library_language_sorting_model.by_count" = "Per numero";
-"enum.libray_tab_item.opened" = "Aperite";
 "enum.libray_tab_item.downloads" = "Discargamentos";
 "enum.navigation_item.reading" = "Lectura";
 "enum.navigation_item.bookmarks" = "Marcapaginas";
 "enum.navigation_item.new_tab" = "Nove scheda";
-"enum.navigation_item.opened" = "Aperite";
 "enum.navigation_item.downloads" = "Discargamentos";
 "enum.navigation_item.settings" = "Parametros";
 "enum.navigation_item.hotspot" = "Puncto de accesso";

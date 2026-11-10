@@ -26,13 +26,13 @@ final class LoadingUI_iPhone_Test: XCTestCase {
         
         let app = XCUIApplication()
         app.activate()
-        let exploreButton = app.buttons["Explore"]
+        let exploreButton = app.buttons["explore-tab"]
         Wait.inApp(app, forElement: exploreButton)
         XCTAssertTrue(exploreButton.isSelected)
         
-        app.buttons["Downloads"].tap()
-        app.buttons["Opened"].tap()
-        app.buttons["Hotspot"].tap()
+        app.buttons["downloads-tab"].tap()
+        app.buttons["library-tab"].tap()
+        app.buttons["hotspot-tab"].tap()
         exploreButton.tap()
         app.buttons["Done"].tap()
         

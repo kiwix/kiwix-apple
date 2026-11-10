@@ -241,7 +241,6 @@
 "comments.button.zoom_out" = "Uzaklaştır";
 "app_macos_commands.open_file" = "Aç...";
 "app_macos_commands.new" = "Yeni Sekme";
-"app_macos_navigation.button.library" = "Kütüphane";
 "app_macos_navigation.button.restore_previous_session" = "Önceki Oturumu Geri Yükle";
 "sidebar_view.navigation.button.close" = "Kapat";
 "enum.category.wikipedia" = "Vikipedi";
@@ -259,12 +258,10 @@
 "enum.external_link_loading_policy.never_load" = "Asla Yükleme";
 "enum.library_language_sorting_model.a-z" = "A-Z";
 "enum.library_language_sorting_model.by_count" = "Sayıma göre";
-"enum.libray_tab_item.opened" = "Açılmış";
 "enum.libray_tab_item.downloads" = "İndirilenler";
 "enum.navigation_item.reading" = "Okuma";
 "enum.navigation_item.bookmarks" = "Yer İşaretleri";
 "enum.navigation_item.new_tab" = "Yeni Sekme";
-"enum.navigation_item.opened" = "Açılmış";
 "enum.navigation_item.downloads" = "İndirilenler";
 "enum.navigation_item.settings" = "Ayarlar";
 "enum.navigation_item.hotspot" = "Paylaşım";

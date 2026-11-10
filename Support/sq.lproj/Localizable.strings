@@ -187,7 +187,6 @@
 "comments.button.zoom_out" = "Zvogëloje";
 "app_macos_commands.open_file" = "Hapni…";
 "app_macos_commands.new" = "Skedë e Re";
-"app_macos_navigation.button.library" = "Bibliotekë";
 "sidebar_view.navigation.button.close" = "Mbylle";
 "enum.category.wikipedia" = "Wikipedia";
 "enum.category.wikibooks" = "Wikibooks";
@@ -204,12 +203,10 @@
 "enum.external_link_loading_policy.never_load" = "Mos e Ngarko Kurrë";
 "enum.library_language_sorting_model.a-z" = "A-Z";
 "enum.library_language_sorting_model.by_count" = "Sipas Numrash";
-"enum.libray_tab_item.opened" = "Hapur";
 "enum.libray_tab_item.downloads" = "Shkarkime";
 "enum.navigation_item.reading" = "Lexim";
 "enum.navigation_item.bookmarks" = "Faqerojtës";
 "enum.navigation_item.new_tab" = "Skedë e Re";
-"enum.navigation_item.opened" = "Hapur";
 "enum.navigation_item.downloads" = "Shkarkime";
 "enum.navigation_item.settings" = "Rregullime";
 "enum.search_result_snippet_mode.disabled" = "Çaktivizuar";

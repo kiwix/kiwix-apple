@@ -240,7 +240,6 @@
 "comments.button.zoom_out" = "MacOS command menu item";
 "app_macos_commands.open_file" = "MacOS command menu item";
 "app_macos_commands.new" = "MacOS command menu item";
-"app_macos_navigation.button.library" = "MacOS command menu item";
 "app_macos_navigation.button.restore_previous_session" = "MacOS command menu item title, to restore the windows and navigation state from a previous session, when the application was last launched";
 "sidebar_view.navigation.button.close" = "Accessiblity title for navigation button icon";
 "enum.category.wikipedia" = "{{Optional}}";
@@ -260,13 +259,13 @@
 "enum.external_link_loading_policy.never_load" = "Settings picker option title: how external links should be treated";
 "enum.library_language_sorting_model.a-z" = "Option title for picker to sort languages displayed alphabetically";
 "enum.library_language_sorting_model.by_count" = "Option title for picker to sort languages by ZIM files count";
-"enum.libray_tab_item.opened" = "Bottom Tab bar item title under Library on iOS";
+"enum.libray_tab_item.library" = "Bottom Tab bar item title under Library on iOS";
 "enum.libray_tab_item.explore" = "Bottom Tab bar item title under Library on iOS";
 "enum.libray_tab_item.downloads" = "Bottom Tab bar item title under Library on iOS";
 "enum.navigation_item.reading" = "Side navigation menu item title";
 "enum.navigation_item.bookmarks" = "Side navigation menu item title";
 "enum.navigation_item.new_tab" = "Side navigation menu item title";
-"enum.navigation_item.opened" = "Side navigation menu item title";
+"enum.navigation_item.library" = "Side navigation menu item title";
 "enum.navigation_item.explore" = "Side navigation menu item title";
 "enum.navigation_item.downloads" = "Side navigation menu item title";
 "enum.navigation_item.settings" = "Side navigation menu item title";

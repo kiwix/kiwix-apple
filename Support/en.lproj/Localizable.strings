@@ -284,7 +284,6 @@
 
 "app_macos_commands.open_file" = "Open...";
 "app_macos_commands.new" = "New Tab";
-"app_macos_navigation.button.library" = "Library";
 "app_macos_navigation.button.restore_previous_session" = "Restore Previous Session";
 
 "sidebar_view.navigation.button.close" = "Close";
@@ -306,14 +305,14 @@
 "enum.external_link_loading_policy.never_load" = "Never Load";
 "enum.library_language_sorting_model.a-z" = "A-Z";
 "enum.library_language_sorting_model.by_count" = "By Count";
-"enum.libray_tab_item.opened" = "Opened";
+"enum.libray_tab_item.library" = "Library";
 "enum.libray_tab_item.explore" = "Explore";
 "enum.libray_tab_item.downloads" = "Downloads";
 
 "enum.navigation_item.reading" = "Reading";
 "enum.navigation_item.bookmarks" = "Bookmarks";
 "enum.navigation_item.new_tab" = "New Tab";
-"enum.navigation_item.opened" = "Opened";
+"enum.navigation_item.library" = "Library";
 "enum.navigation_item.explore" = "Explore";
 "enum.navigation_item.downloads" = "Downloads";
 "enum.navigation_item.settings" = "Settings";

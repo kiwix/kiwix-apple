@@ -37,13 +37,6 @@ enum MenuSection: String, CaseIterable, Identifiable {
         return sections
     }
     
-    var header: String? {
-        switch self {
-        case .library: return LocalString.common_tab_menu_library
-        default: return nil
-        }
-    }
-    
     static var staticDictionary: [MenuSection: [MenuItem]] {
         var dict: [MenuSection: [MenuItem]] = [:]
         for section in allMenuSections {
@@ -55,7 +48,7 @@ enum MenuSection: String, CaseIterable, Identifiable {
     static func itemsFor(_ section: MenuSection) -> [MenuItem] {
         switch section {
         case .primary: return [.bookmarks]
-        case .library: return [.opened, .explore, .downloads, .hotspot]
+        case .library: return [.library, .explore, .downloads, .hotspot]
         case .settings:
             if !FeatureFlags.hasLibrary {
                 return [.hotspot, .settings(scrollToHotspot: false)]

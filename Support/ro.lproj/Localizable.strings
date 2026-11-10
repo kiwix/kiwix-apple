@@ -187,7 +187,6 @@
 "comments.button.zoom_out" = "Micșorează";
 "app_macos_commands.open_file" = "Deschide...";
 "app_macos_commands.new" = "Filă Nouă";
-"app_macos_navigation.button.library" = "Bibliotecă";
 "sidebar_view.navigation.button.close" = "Închide";
 "enum.category.wikipedia" = "Wikipedia";
 "enum.category.wikibooks" = "Wikimanuale";
@@ -204,12 +203,10 @@
 "enum.external_link_loading_policy.never_load" = "Nu Încărcați Niciodată";
 "enum.library_language_sorting_model.a-z" = "A-Z";
 "enum.library_language_sorting_model.by_count" = "După Număr";
-"enum.libray_tab_item.opened" = "Deschis";
 "enum.libray_tab_item.downloads" = "Descărcări";
 "enum.navigation_item.reading" = "Lectură";
 "enum.navigation_item.bookmarks" = "Semne de carte";
 "enum.navigation_item.new_tab" = "Filă Nouă";
-"enum.navigation_item.opened" = "Deschis";
 "enum.navigation_item.downloads" = "Descărcări";
 "enum.navigation_item.settings" = "Setări";
 "enum.search_result_snippet_mode.disabled" = "Dezactivat";

@@ -238,7 +238,6 @@
 "comments.button.zoom_out" = "Oddialiť";
 "app_macos_commands.open_file" = "Otvoriť...";
 "app_macos_commands.new" = "Nová karta";
-"app_macos_navigation.button.library" = "Knižnica";
 "app_macos_navigation.button.restore_previous_session" = "Obnoviť predchádzajúcu reláciu";
 "sidebar_view.navigation.button.close" = "Zavrieť";
 "enum.category.wikipedia" = "Wikipedia";
@@ -258,12 +257,10 @@
 "enum.external_link_loading_policy.never_load" = "Nikdy nenačítať";
 "enum.library_language_sorting_model.a-z" = "A – Z";
 "enum.library_language_sorting_model.by_count" = "Podľa počtu";
-"enum.libray_tab_item.opened" = "Otvorené";
 "enum.libray_tab_item.downloads" = "Sťahovania";
 "enum.navigation_item.reading" = "Čítanie";
 "enum.navigation_item.bookmarks" = "Záložky";
 "enum.navigation_item.new_tab" = "Nová karta";
-"enum.navigation_item.opened" = "Otvorené";
 "enum.navigation_item.downloads" = "Sťahovania";
 "enum.navigation_item.settings" = "Nastavenia";
 "enum.navigation_item.hotspot" = "Hotspot";

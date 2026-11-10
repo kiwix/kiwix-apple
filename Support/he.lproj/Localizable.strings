@@ -192,7 +192,6 @@
 "comments.button.zoom_out" = "התרחקות";
 "app_macos_commands.open_file" = "פתיחה...";
 "app_macos_commands.new" = "לשונית חדשה";
-"app_macos_navigation.button.library" = "ספרייה";
 "sidebar_view.navigation.button.close" = "סגירה";
 "enum.category.wikipedia" = "ויקיפדיה";
 "enum.category.wikibooks" = "ויקיספר";
@@ -209,12 +208,10 @@
 "enum.external_link_loading_policy.never_load" = "לעולם לא לטעון";
 "enum.library_language_sorting_model.a-z" = "א–ת";
 "enum.library_language_sorting_model.by_count" = "לפי ספירה";
-"enum.libray_tab_item.opened" = "פתוחות";
 "enum.libray_tab_item.downloads" = "הורדות";
 "enum.navigation_item.reading" = "קריאה";
 "enum.navigation_item.bookmarks" = "סימניות";
 "enum.navigation_item.new_tab" = "לשונית חדשה";
-"enum.navigation_item.opened" = "פתוחים";
 "enum.navigation_item.downloads" = "הורדות";
 "enum.navigation_item.settings" = "הגדרות";
 "enum.navigation_item.hotspot" = "נקודה חמה";

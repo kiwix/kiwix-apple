@@ -24,7 +24,7 @@ import XCTest
         app.activate()
         
         app.staticTexts["Bookmarks"].click()
-        app.staticTexts["Opened"].click()
+        app.staticTexts["Library"].click()
         app.staticTexts["Explore"].click()
         app.staticTexts["Downloads"].click()
     }

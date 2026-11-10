@@ -128,8 +128,6 @@ import XCTest
         
         let documentsApp = XCUIApplication(bundleIdentifier: "com.apple.DocumentsApp")
         documentsApp.activate()
-        documentsApp.collectionViews["Browse View"].firstMatch.cells["On My iPad"].firstMatch.tap()
-        documentsApp.cells["Kiwix, Container"].firstMatch.tap()
         // find the zim file, something like: alpinelinux_en_all_maxi_2026-07.zim
         let alpineFile = documentsApp.cells.matching(
             NSPredicate(format: "identifier MATCHES[c] %@",

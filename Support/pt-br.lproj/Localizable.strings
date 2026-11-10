@@ -119,7 +119,6 @@
 "comments.button.zoom_out" = "Afastar";
 "app_macos_commands.open_file" = "Abrir...";
 "app_macos_commands.new" = "Nova guia";
-"app_macos_navigation.button.library" = "Biblioteca";
 "sidebar_view.navigation.button.close" = "Fechar";
 "enum.category.wikipedia" = "Wikipédia";
 "enum.category.wikibooks" = "Wikilivros";
@@ -134,7 +133,6 @@
 "enum.navigation_item.reading" = "Leitura";
 "enum.navigation_item.bookmarks" = "Favoritos";
 "enum.navigation_item.new_tab" = "Nova guia";
-"enum.navigation_item.opened" = "Aberto";
 "enum.navigation_item.downloads" = "Downloads";
 "enum.navigation_item.settings" = "Configurações";
 "enum.search_result_snippet_mode.disabled" = "Desativado";

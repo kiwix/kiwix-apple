@@ -225,7 +225,6 @@
 "comments.button.zoom_out" = "Zoom Ud";
 "app_macos_commands.open_file" = "Åben...";
 "app_macos_commands.new" = "Ny Fane";
-"app_macos_navigation.button.library" = "Bibliotek";
 "sidebar_view.navigation.button.close" = "Luk";
 "enum.category.other" = "Andre";
 "enum.external_link_loading_policy.always_ask" = "Spørg Altid";
@@ -233,12 +232,10 @@
 "enum.external_link_loading_policy.never_load" = "Indlæs Aldrig";
 "enum.library_language_sorting_model.a-z" = "A-Z";
 "enum.library_language_sorting_model.by_count" = "Efter optælling";
-"enum.libray_tab_item.opened" = "Åbnet";
 "enum.libray_tab_item.downloads" = "Downloads";
 "enum.navigation_item.reading" = "Læser";
 "enum.navigation_item.bookmarks" = "Bogmærker";
 "enum.navigation_item.new_tab" = "Ny Fane";
-"enum.navigation_item.opened" = "Åbnet";
 "enum.navigation_item.downloads" = "Downloads";
 "enum.navigation_item.settings" = "Indstillinger";
 "enum.navigation_item.hotspot" = "Hotspot";

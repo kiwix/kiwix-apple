@@ -194,14 +194,16 @@ enum LibraryLanguageSortingMode: String, CaseIterable, Identifiable, Defaults.Se
 }
 
 enum LibraryTabItem: String, CaseIterable, Identifiable {
-    case explore, downloads, opened, hotspot
+    case explore, downloads, library, hotspot
 
-    var id: String { self.rawValue }
+    var id: String {
+        rawValue.appending("-tab")
+    }
 
     var name: String {
         switch self {
-        case .opened:
-            return LocalString.enum_libray_tab_item_opened
+        case .library:
+            return LocalString.enum_libray_tab_item_library
         case .explore:
             return LocalString.enum_libray_tab_item_explore
         case .downloads:
@@ -213,8 +215,8 @@ enum LibraryTabItem: String, CaseIterable, Identifiable {
 
     var icon: IconSource {
         switch self {
-        case .opened:
-            return .system("folder")
+        case .library:
+            return .system("books.vertical")
         case .explore:
             return .image("telescope")
         case .downloads:
