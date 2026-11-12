@@ -242,6 +242,7 @@
 "enum.external_link_loading_policy.never_load" = "Никогаш не вчитувај";
 "enum.library_language_sorting_model.a-z" = "А-Ш";
 "enum.library_language_sorting_model.by_count" = "По број";
+"enum.libray_tab_item.library" = "Библиотека";
 "enum.libray_tab_item.downloads" = "Преземања";
 "enum.navigation_item.reading" = "Читање";
 "enum.navigation_item.bookmarks" = "Обележани";

@@ -258,6 +258,7 @@
 "enum.external_link_loading_policy.never_load" = "Asla Yükleme";
 "enum.library_language_sorting_model.a-z" = "A-Z";
 "enum.library_language_sorting_model.by_count" = "Sayıma göre";
+"enum.libray_tab_item.library" = "Kütüphane";
 "enum.libray_tab_item.downloads" = "İndirilenler";
 "enum.navigation_item.reading" = "Okuma";
 "enum.navigation_item.bookmarks" = "Yer İşaretleri";

@@ -239,6 +239,7 @@
 "enum.external_link_loading_policy.never_load" = "Niemals laden";
 "enum.library_language_sorting_model.a-z" = "A–Z";
 "enum.library_language_sorting_model.by_count" = "Nach Anzahl";
+"enum.libray_tab_item.library" = "Bibliothek";
 "enum.libray_tab_item.downloads" = "Downloads";
 "enum.navigation_item.reading" = "Lese …";
 "enum.navigation_item.bookmarks" = "Lesezeichen";

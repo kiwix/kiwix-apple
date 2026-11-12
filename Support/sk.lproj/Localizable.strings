@@ -257,6 +257,7 @@
 "enum.external_link_loading_policy.never_load" = "Nikdy nenačítať";
 "enum.library_language_sorting_model.a-z" = "A – Z";
 "enum.library_language_sorting_model.by_count" = "Podľa počtu";
+"enum.libray_tab_item.library" = "Knižnica";
 "enum.libray_tab_item.downloads" = "Sťahovania";
 "enum.navigation_item.reading" = "Čítanie";
 "enum.navigation_item.bookmarks" = "Záložky";

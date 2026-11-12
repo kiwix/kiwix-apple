@@ -203,6 +203,7 @@
 "enum.external_link_loading_policy.never_load" = "Mos e Ngarko Kurrë";
 "enum.library_language_sorting_model.a-z" = "A-Z";
 "enum.library_language_sorting_model.by_count" = "Sipas Numrash";
+"enum.libray_tab_item.library" = "Bibliotekë";
 "enum.libray_tab_item.downloads" = "Shkarkime";
 "enum.navigation_item.reading" = "Lexim";
 "enum.navigation_item.bookmarks" = "Faqerojtës";

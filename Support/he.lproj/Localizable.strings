@@ -208,6 +208,7 @@
 "enum.external_link_loading_policy.never_load" = "לעולם לא לטעון";
 "enum.library_language_sorting_model.a-z" = "א–ת";
 "enum.library_language_sorting_model.by_count" = "לפי ספירה";
+"enum.libray_tab_item.library" = "ספרייה";
 "enum.libray_tab_item.downloads" = "הורדות";
 "enum.navigation_item.reading" = "קריאה";
 "enum.navigation_item.bookmarks" = "סימניות";

@@ -173,6 +173,7 @@
 "enum.external_link_loading_policy.always_load" = "Ëmmer Lueden";
 "enum.library_language_sorting_model.a-z" = "A-Z";
 "enum.library_language_sorting_model.by_count" = "No Zuel";
+"enum.libray_tab_item.library" = "Bibliothéik";
 "enum.navigation_item.reading" = "Liesen";
 "enum.navigation_item.bookmarks" = "Lieszeechen";
 "enum.navigation_item.new_tab" = "Neien Tab";

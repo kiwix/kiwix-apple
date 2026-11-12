@@ -204,6 +204,7 @@
 "enum.external_link_loading_policy.never_load" = "Kar a taɓa Loda";
 "enum.library_language_sorting_model.a-z" = "A-Z";
 "enum.library_language_sorting_model.by_count" = "Ta hanyar lissafi";
+"enum.libray_tab_item.library" = "Laburare";
 "enum.libray_tab_item.downloads" = "Saukewa";
 "enum.navigation_item.reading" = "Karatu";
 "enum.navigation_item.bookmarks" = "Alamomi";

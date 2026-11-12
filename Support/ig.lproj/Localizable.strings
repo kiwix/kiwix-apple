@@ -208,6 +208,7 @@
 "enum.external_link_loading_policy.never_load" = "Ebukwala ya";
 "enum.library_language_sorting_model.a-z" = "A-Z";
 "enum.library_language_sorting_model.by_count" = "Site na ọnụ ọgụgụ";
+"enum.libray_tab_item.library" = "Ọ́bá Akwụkwọ";
 "enum.libray_tab_item.downloads" = "Nbudata";
 "enum.navigation_item.reading" = "Ọgụgụ";
 "enum.navigation_item.bookmarks" = "Akara Akwụkwọ";

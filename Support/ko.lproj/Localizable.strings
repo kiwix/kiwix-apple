@@ -258,6 +258,7 @@
 "enum.external_link_loading_policy.never_load" = "불러오지 않기";
 "enum.library_language_sorting_model.a-z" = "A-Z";
 "enum.library_language_sorting_model.by_count" = "개수";
+"enum.libray_tab_item.library" = "라이브러리";
 "enum.libray_tab_item.downloads" = "다운로드";
 "enum.navigation_item.reading" = "읽기";
 "enum.navigation_item.bookmarks" = "북마크";

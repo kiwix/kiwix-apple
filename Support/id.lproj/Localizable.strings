@@ -209,6 +209,7 @@
 "enum.external_link_loading_policy.never_load" = "Jangan Pernah Memuat";
 "enum.library_language_sorting_model.a-z" = "A-Z";
 "enum.library_language_sorting_model.by_count" = "Berdasarkan Hitungan";
+"enum.libray_tab_item.library" = "Perpustakaan";
 "enum.libray_tab_item.downloads" = "Unduhan";
 "enum.navigation_item.reading" = "Membaca";
 "enum.navigation_item.bookmarks" = "Markah";

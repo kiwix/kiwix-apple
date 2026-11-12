@@ -155,8 +155,10 @@
 "enum.category.vikidia" = "Vikidia";
 "enum.external_link_loading_policy.never_load" = "Non caricare mai";
 "enum.library_language_sorting_model.a-z" = "A-Z";
+"enum.libray_tab_item.library" = "Libreria";
 "enum.navigation_item.bookmarks" = "Segnalibri";
 "enum.navigation_item.new_tab" = "Nuova scheda";
+"enum.navigation_item.library" = "Biblioteca";
 "enum.navigation_item.settings" = "Impostazioni";
 "enum.search_result_snippet_mode.disabled" = "Disattivato";
 "payment.donate.title" = "Dona";

@@ -266,11 +266,13 @@
 "enum.external_link_loading_policy.never_load" = "永不加载";
 "enum.library_language_sorting_model.a-z" = "A-Z";
 "enum.library_language_sorting_model.by_count" = "按数量";
+"enum.libray_tab_item.library" = "图书馆";
 "enum.libray_tab_item.explore" = "探索";
 "enum.libray_tab_item.downloads" = "下载";
 "enum.navigation_item.reading" = "阅读";
 "enum.navigation_item.bookmarks" = "书签";
 "enum.navigation_item.new_tab" = "新建标签页";
+"enum.navigation_item.library" = "文库";
 "enum.navigation_item.explore" = "探索";
 "enum.navigation_item.downloads" = "下载";
 "enum.navigation_item.settings" = "设置";

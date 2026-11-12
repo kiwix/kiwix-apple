@@ -208,6 +208,7 @@
 "enum.external_link_loading_policy.never_load" = "Никогда не загружать";
 "enum.library_language_sorting_model.a-z" = "A-Z";
 "enum.library_language_sorting_model.by_count" = "По количеству";
+"enum.libray_tab_item.library" = "Библиотека";
 "enum.libray_tab_item.downloads" = "Загрузки";
 "enum.navigation_item.reading" = "Чтение";
 "enum.navigation_item.bookmarks" = "Закладки";

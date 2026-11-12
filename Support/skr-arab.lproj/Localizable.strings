@@ -117,11 +117,13 @@
 "enum.category.wiktionary" = "وکشنری";
 "enum.category.vikidia" = "وکی ڈیا";
 "enum.category.other" = "ٻیا";
+"enum.libray_tab_item.library" = "لائبریری";
 "enum.libray_tab_item.explore" = "پھلورو";
 "enum.libray_tab_item.downloads" = "ڈاؤن لوڈ";
 "enum.navigation_item.reading" = "پڑھݨ";
 "enum.navigation_item.bookmarks" = "نشانیاں";
 "enum.navigation_item.new_tab" = "نویں ٹیب";
+"enum.navigation_item.library" = "لائبریری";
 "enum.navigation_item.explore" = "پھلورو";
 "enum.navigation_item.downloads" = "ڈاؤن لوڈ";
 "enum.navigation_item.settings" = "ترتیباں";
