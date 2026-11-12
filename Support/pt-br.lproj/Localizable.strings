@@ -130,6 +130,7 @@
 "enum.category.wiktionary" = "Wikcionário";
 "enum.category.vikidia" = "Vikidia";
 "enum.category.other" = "Outros";
+"enum.libray_tab_item.library" = "Biblioteca";
 "enum.navigation_item.reading" = "Leitura";
 "enum.navigation_item.bookmarks" = "Favoritos";
 "enum.navigation_item.new_tab" = "Nova guia";

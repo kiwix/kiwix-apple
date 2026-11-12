@@ -232,6 +232,7 @@
 "enum.external_link_loading_policy.never_load" = "Indlæs Aldrig";
 "enum.library_language_sorting_model.a-z" = "A-Z";
 "enum.library_language_sorting_model.by_count" = "Efter optælling";
+"enum.libray_tab_item.library" = "Bibliotek";
 "enum.libray_tab_item.downloads" = "Downloads";
 "enum.navigation_item.reading" = "Læser";
 "enum.navigation_item.bookmarks" = "Bogmærker";

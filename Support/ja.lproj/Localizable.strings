@@ -202,6 +202,7 @@
 "enum.external_link_loading_policy.always_load" = "常に読み込み";
 "enum.external_link_loading_policy.never_load" = "読み込まない";
 "enum.library_language_sorting_model.by_count" = "ファイル数";
+"enum.libray_tab_item.library" = "ライブラリ";
 "enum.libray_tab_item.downloads" = "ダウンロード";
 "enum.navigation_item.reading" = "閲覧";
 "enum.navigation_item.bookmarks" = "ブックマーク";

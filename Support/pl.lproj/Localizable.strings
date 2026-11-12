@@ -156,6 +156,7 @@
 "enum.external_link_loading_policy.always_load" = "Zawsze ładuj";
 "enum.external_link_loading_policy.never_load" = "Nigdy nie ładuj";
 "enum.library_language_sorting_model.a-z" = "A-Z";
+"enum.libray_tab_item.library" = "Biblioteka";
 "enum.libray_tab_item.downloads" = "Pobierz";
 "enum.navigation_item.reading" = "Czytanie";
 "enum.navigation_item.bookmarks" = "Zakładki";

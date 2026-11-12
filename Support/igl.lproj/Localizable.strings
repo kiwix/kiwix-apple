@@ -52,6 +52,7 @@
 "enum.external_link_loading_policy.never_load" = "Èki na dun";
 "enum.library_language_sorting_model.a-z" = "A-Z";
 "enum.library_language_sorting_model.by_count" = "U ka lu ka";
+"enum.libray_tab_item.library" = "U gbo egba";
 "enum.libray_tab_item.downloads" = "Downloadu";
 "enum.navigation_item.reading" = "Egba";
 "enum.navigation_item.downloads" = "Downloadu";

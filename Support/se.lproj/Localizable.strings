@@ -86,6 +86,7 @@
 "enum.category.wikiquote" = "Wikisitáhtat";
 "enum.category.wikiversity" = "Wikiversitehta";
 "enum.category.wiktionary" = "Wikisátnegirji";
+"enum.libray_tab_item.library" = "Girjerádju";
 "enum.navigation_item.bookmarks" = "Girjemearkkat";
 "enum.navigation_item.new_tab" = "Ođđa leavga";
 "enum.navigation_item.settings" = "Ásahusat";

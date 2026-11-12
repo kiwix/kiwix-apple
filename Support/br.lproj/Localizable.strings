@@ -149,6 +149,7 @@
 "enum.category.other" = "Re all";
 "enum.external_link_loading_policy.always_ask" = "Goulenn bepred";
 "enum.library_language_sorting_model.a-z" = "A-Z";
+"enum.libray_tab_item.library" = "Levraoueg";
 "enum.libray_tab_item.downloads" = "Pellgargadurioù";
 "enum.navigation_item.bookmarks" = "Sinedoù";
 "enum.navigation_item.new_tab" = "Steudenn nevez";

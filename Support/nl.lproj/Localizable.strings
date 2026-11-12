@@ -257,6 +257,7 @@
 "enum.external_link_loading_policy.never_load" = "Nooit laden";
 "enum.library_language_sorting_model.a-z" = "A-Z";
 "enum.library_language_sorting_model.by_count" = "Op aantal";
+"enum.libray_tab_item.library" = "Bibliotheek";
 "enum.libray_tab_item.downloads" = "Downloads";
 "enum.navigation_item.reading" = "Lezen";
 "enum.navigation_item.bookmarks" = "Bladwijzers";

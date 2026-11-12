@@ -261,6 +261,7 @@
 "enum.external_link_loading_policy.never_load" = "Ladda aldrig";
 "enum.library_language_sorting_model.a-z" = "A-Ö";
 "enum.library_language_sorting_model.by_count" = "Efter antal";
+"enum.libray_tab_item.library" = "Bibliotek";
 "enum.libray_tab_item.downloads" = "Nedladdningar";
 "enum.navigation_item.reading" = "Läser";
 "enum.navigation_item.bookmarks" = "Bokmärken";

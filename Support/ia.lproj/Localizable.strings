@@ -241,6 +241,7 @@
 "enum.external_link_loading_policy.never_load" = "Nunquam cargar";
 "enum.library_language_sorting_model.a-z" = "A-Z";
 "enum.library_language_sorting_model.by_count" = "Per numero";
+"enum.libray_tab_item.library" = "Bibliotheca";
 "enum.libray_tab_item.downloads" = "Discargamentos";
 "enum.navigation_item.reading" = "Lectura";
 "enum.navigation_item.bookmarks" = "Marcapaginas";
