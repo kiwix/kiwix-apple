@@ -43,44 +43,7 @@ struct LibraryTab: View {
                     switch tabItem {
                     case .explore:
                         CategoriesGrid(dismiss: dismiss)
-                            .searchable(text: $searchText, prompt: LocalString.common_search)
-//                        List(categories) { category in
-//                            NavigationLink {
-//                                ZimFilesCategory(
-//                                    category: .constant(category),
-//                                    searchText: $searchText,
-//                                    selectedLanguage: $selectedLang,
-//                                    dismiss: dismiss
-//                                )
-//                                    .navigationTitle(category.name)
-//                                    .navigationBarTitleDisplayMode(.inline)
-//                                    .toolbar {
-//                                        if libraryLanguageCodes.count > 1 {
-//                                            ToolbarItem(id: "language_picker", placement: .confirmationAction) {
-//                                                ToggleAroundLanguageButton(
-//                                                    items: $libraryLanguageCodes,
-//                                                    selection: $selectedLang
-//                                                )
-//                                            }
-//                                        }
-//                                    }
-//                                    .searchable(text: $searchText, prompt: LocalString.common_search)
-//                            } label: {
-//                                HStack {
-//                                    Favicon(category: category).frame(height: 26)
-//                                    Text(category.name)
-//                                }
-//                            }
-//                        }
-//                        .toolbar {
-//                            if libraryLanguageCodes.count > 1 {
-//                                ToolbarItem(id: "language_picker", placement: .confirmationAction) {
-//                                    ToggleAroundLanguageButton(items: $libraryLanguageCodes, selection: $selectedLang)
-//                                }
-//                            }
-//                        }
-                        
-                        
+                            .searchable(text: $searchText, prompt: LocalString.common_search)                                                
                     case .library:
                         ZimFilesOpenedNavStack(dismiss: dismiss)
                     case .downloads:

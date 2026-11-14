@@ -19,10 +19,11 @@ import Foundation
 import SwiftUI
 
 struct CategoriesGrid: View {
+    @State private var searchText = ""
     @State private var selectedLanguage: String
     @Default(.libraryLanguageCodes) private var libraryLanguageCodes
     @State private var categories: [Category]
-    let dismiss: (() -> Void)?
+    let dismiss: (@MainActor @Sendable () -> Void)?
     
     init(dismiss: (@MainActor @Sendable () -> Void)?) {
         let selectedCode = Defaults[.libraryLanguageCodes].first ?? "eng"
@@ -32,39 +33,61 @@ struct CategoriesGrid: View {
     }
     
     var body: some View {
-        ScrollView {
-            CategorySection(title: "Categories") {
-                LazyVGrid(columns: [GridItem(.adaptive(minimum: 160, maximum: 320)),
-                                    GridItem(.adaptive(minimum: 160, maximum: 320))]) {
-                    ForEach(categories) { category in
-                        NavigationLink {
-                            ZimFilesCategory(
-                                category: Binding.constant(category),
-                                searchText: Binding.constant(""),
-                                selectedLanguage: $selectedLanguage,
-                                dismiss: nil // TODO: hook up
-                            )
-                        } label: {
-                            CategoryGridCell(category: category)
-                        }
-                        
+        Group {
+            if searchText.isEmpty {
+                ScrollView {
+                    CategorySection(title: "Categories") {
+                        LazyVGrid(columns: [GridItem(.adaptive(minimum: 160, maximum: 320)),
+                                            GridItem(.adaptive(minimum: 160, maximum: 320))]) {
+                            ForEach(categories) { category in
+                                NavigationLink {
+                                    ZimFileSingleCategory(
+                                        category: category,
+                                        selectedLanguage: $selectedLanguage,
+                                        libraryLanguageCodes: libraryLanguageCodes,
+                                        dimiss: self.dismiss
+                                    )
+                                } label: {
+                                    CategoryGridCell(category: category)
+                                }
+                            }
+                        }.padding(.horizontal)
                     }
                 }
-                                    .padding(.horizontal)
+                .navigationTitle(MenuItem.explore.name)
+            } else { // searching
+                ZimFilesCategoryResult(categoryBy: CategoryBy.search(searchText),
+                                       selectedLanguage: $selectedLanguage,
+                                       dismiss: self.dismiss
+                )
+                .navigationTitle(LocalString.search_result_header_text)
             }
         }
-        .navigationTitle(MenuItem.explore.name)
-        #if os(iOS)
+        
+#if os(iOS)
         .navigationBarTitleDisplayMode(.inline)
-        #endif
+#endif
         .onChange(of: selectedLanguage) { _, newValue in
             categories = CategoriesToLanguages().categoriesIn(languageCode: newValue)
         }
+        .searchable(text: $searchText, prompt: LocalString.common_search)
         .toolbar {
-            if libraryLanguageCodes.count > 1 {
-                ToolbarItem(id: "language_picker", placement: .confirmationAction) {
+#if os(iOS)
+            ToolbarItem(placement: .topBarTrailing) {
+                ToggleAroundLanguageButton(items: $libraryLanguageCodes, selection: $selectedLanguage)
+                    .disabled($libraryLanguageCodes.count <= 1)
+            }
+#else
+            if $languages.count > 1 {
+                ToolbarItem(placement: .secondaryAction) {
                     ToggleAroundLanguageButton(items: $libraryLanguageCodes, selection: $selectedLanguage)
                 }
+            }
+#endif
+        }
+        .onAppear {
+            Task {
+                await LibraryViewModel().start(isUserInitiated: false)
             }
         }
     }

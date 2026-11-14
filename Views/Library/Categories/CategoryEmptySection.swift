@@ -29,3 +29,9 @@ struct CategoryEmptySection: View {
         }
     }
 }
+
+struct CateogoryNoResultSection: View {
+    var body: some View {
+        Message(text: LocalString.search_result_zimfile_no_result_message)
+    }
+}
