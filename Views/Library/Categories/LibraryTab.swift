@@ -23,22 +23,17 @@ struct LibraryTab: View {
     @State private var searchText: String = ""
     @EnvironmentObject private var viewModel: LibraryViewModel
     @EnvironmentObject private var navigation: NavigationViewModel
-    @Default(.libraryLanguageCodes) private var libraryLanguageCodes
-    @State private var selectedLang: String
+    
     @State private var tabItem: LibraryTabItem
     @Default(.hasSeenCategories) private var hasSeenCategories
-    @State private var categories: [Category]
-    let dismiss: (() -> Void)?
+    let dismiss: (@MainActor @Sendable () -> Void)?
 
     init(
-        dismiss: (() -> Void)?,
+        dismiss: (@MainActor @Sendable() -> Void)?,
         tabItem: LibraryTabItem = .explore
     ) {
         self.dismiss = dismiss
         self.tabItem = tabItem
-        let selectedCode = Defaults[.libraryLanguageCodes].first ?? "eng"
-        self.selectedLang = selectedCode
-        self.categories = CategoriesToLanguages().categoriesIn(languageCode: selectedCode)
     }
 
     var body: some View {
@@ -47,46 +42,45 @@ struct LibraryTab: View {
                 SheetContent {
                     switch tabItem {
                     case .explore:
-                        List(categories) { category in
-                            NavigationLink {
-                                ZimFilesCategory(
-                                    category: .constant(category),
-                                    searchText: $searchText,
-                                    selectedLanguage: $selectedLang,
-                                    dismiss: dismiss
-                                )
-                                    .navigationTitle(category.name)
-                                    .navigationBarTitleDisplayMode(.inline)
-                                    .toolbar {
-                                        if libraryLanguageCodes.count > 1 {
-                                            ToolbarItem(id: "language_picker", placement: .confirmationAction) {
-                                                ToggleAroundLanguageButton(
-                                                    items: $libraryLanguageCodes,
-                                                    selection: $selectedLang
-                                                )
-                                            }
-                                        }
-                                    }
-                                    .searchable(text: $searchText, prompt: LocalString.common_search)
-                            } label: {
-                                HStack {
-                                    Favicon(category: category).frame(height: 26)
-                                    Text(category.name)
-                                }
-                            }
-                        }
-                        .toolbar {
-                            if libraryLanguageCodes.count > 1 {
-                                ToolbarItem(id: "language_picker", placement: .confirmationAction) {
-                                    ToggleAroundLanguageButton(items: $libraryLanguageCodes, selection: $selectedLang)
-                                }
-                            }
-                        }
-                        .listStyle(.plain)
-                        .navigationTitle(MenuItem.explore.name)
-                        .onChange(of: selectedLang) { _, newValue in
-                            categories = CategoriesToLanguages().categoriesIn(languageCode: newValue)
-                        }
+                        CategoriesGrid(dismiss: dismiss)
+                            .searchable(text: $searchText, prompt: LocalString.common_search)
+//                        List(categories) { category in
+//                            NavigationLink {
+//                                ZimFilesCategory(
+//                                    category: .constant(category),
+//                                    searchText: $searchText,
+//                                    selectedLanguage: $selectedLang,
+//                                    dismiss: dismiss
+//                                )
+//                                    .navigationTitle(category.name)
+//                                    .navigationBarTitleDisplayMode(.inline)
+//                                    .toolbar {
+//                                        if libraryLanguageCodes.count > 1 {
+//                                            ToolbarItem(id: "language_picker", placement: .confirmationAction) {
+//                                                ToggleAroundLanguageButton(
+//                                                    items: $libraryLanguageCodes,
+//                                                    selection: $selectedLang
+//                                                )
+//                                            }
+//                                        }
+//                                    }
+//                                    .searchable(text: $searchText, prompt: LocalString.common_search)
+//                            } label: {
+//                                HStack {
+//                                    Favicon(category: category).frame(height: 26)
+//                                    Text(category.name)
+//                                }
+//                            }
+//                        }
+//                        .toolbar {
+//                            if libraryLanguageCodes.count > 1 {
+//                                ToolbarItem(id: "language_picker", placement: .confirmationAction) {
+//                                    ToggleAroundLanguageButton(items: $libraryLanguageCodes, selection: $selectedLang)
+//                                }
+//                            }
+//                        }
+                        
+                        
                     case .library:
                         ZimFilesOpenedNavStack(dismiss: dismiss)
                     case .downloads:
