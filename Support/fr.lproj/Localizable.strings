@@ -122,7 +122,6 @@
 "zim_file_opened.overlay.no-missing-zim-files.message" = "Aucun fichier ZIM manquant n'a été trouvé.";
 "zim_file_opened.toolbar.open.title" = "Ouvrir...";
 "zim_file_opened.toolbar.open.help" = "Ouvrir un fichier ZIM";
-"zim_file_category.title" = "Catégorie";
 "zim_file_opened.toolbar.filter.show_all" = "Tout afficher";
 "zim_file_opened.toolbar.filter.show_only_available" = "Afficher uniquement les disponibilités";
 "zim_file_opened.toolbar.filter.show_only_missing" = "Afficher uniquement les éléments manquants";

@@ -82,7 +82,6 @@
 "library.zim_file_context.copy_url" = "Salin URL";
 "zim_file_opened.toolbar.open.title" = "Buka...";
 "zim_file_opened.toolbar.open.help" = "Buka berkas ZIM";
-"zim_file_category.title" = "Kategori";
 "zim_file_catalog.fetching.message" = "Mengambil Katalog ...";
 "zim_file_category.section.empty.message" = "Tidak ada berkas ZIM dalam kategori ini.";
 "zim_file_downloads.overlay.empty.message" = "Tidak ada tugas unduhan";

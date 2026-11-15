@@ -81,7 +81,6 @@
 "library.zim_file_context.copy_url" = "Kopjo URL-në";
 "zim_file_opened.toolbar.open.title" = "Hapni…";
 "zim_file_opened.toolbar.open.help" = "Hapni një kartelë Zim";
-"zim_file_category.title" = "Kategori";
 "zim_file_catalog.fetching.message" = "Po Sillet Katalog…";
 "zim_file_category.section.empty.message" = "S’ka kartelë ZIM nën këtë kategori.";
 "zim_file_downloads.overlay.empty.message" = "S’ka akte shkarkimi";

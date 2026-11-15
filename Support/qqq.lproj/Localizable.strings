@@ -67,6 +67,7 @@
 "external_link_handler.alert.button.load.link" = "Button option for alert if an external link should be opened";
 "external_link_handler.alert.ask.description" = "Description for an external link alert.";
 "external_link_handler.alert.not_loading.description" = "Alternative description for external link alert.";
+"explore.categories.section.title" = "Page title where the user can explore the list of categories of the downloadable online content";
 "file_import.alert.no_open.title" = "Alert title when user fails to open a local file";
 "file_import.alert.no_open.message" = "%@ is one or more filenames.";
 "attribute.detail.unknown" = "We list the attributes of each ZIM file: pictures yes/no, etc. If the attribute name is missing eg. 'pictures', this is the fallback text used";
@@ -105,7 +106,6 @@
 "zim_file_opened.overlay.no-missing-zim-files.message" = "Default placeholder text for center panel on macOS, when we have no missing, open ZIM files";
 "zim_file_opened.toolbar.open.title" = "Accesissiblit label of a (+) icon on iOS, in the top right corner, to open a local file";
 "zim_file_opened.toolbar.open.help" = "Accessibility label of a (+) icon in the macOS app, in the top right corner, to open a local file";
-"zim_file_category.title" = "Accessiblity label for category picker";
 "zim_file_opened.toolbar.filter.show_all" = "Navigation toolbar button title to toggle between showing all, only available, only missing ZIM files in the listing";
 "zim_file_opened.toolbar.filter.show_only_available" = "Navigation toolbar button title to toggle between showing all, only available, only missing ZIM files in the listing";
 "zim_file_opened.toolbar.filter.show_only_missing" = "Navigation toolbar button title to toggle between showing all, only available, only missing ZIM files in the listing";

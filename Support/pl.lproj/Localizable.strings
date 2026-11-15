@@ -65,7 +65,6 @@
 "library.zim_file_context.main_page.label" = "Strona główna";
 "library.zim_file_context.random.label" = "Losowa strona";
 "library.zim_file_context.copy_url" = "Kopiuj URL";
-"zim_file_category.title" = "Kategoria";
 // Fuzzy
 "zim_file_category.section.empty.message" = "Brak pliku zim w tej kategorii.";
 "zim_file_downloads.overlay.empty.message" = "Brak zadań pobierania";

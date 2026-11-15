@@ -106,7 +106,6 @@
 "zim_file_opened.overlay.no-missing-zim-files.message" = "Eksik ZIM dosyası bulunamadı.";
 "zim_file_opened.toolbar.open.title" = "Aç...";
 "zim_file_opened.toolbar.open.help" = "Bir ZIM dosyası aç";
-"zim_file_category.title" = "Kategori";
 "zim_file_opened.toolbar.filter.show_all" = "Tümünü göster";
 "zim_file_opened.toolbar.filter.show_only_available" = "Yalnızca mevcut olanları göster";
 "zim_file_opened.toolbar.filter.show_only_missing" = "Yalnızca eksik olanları göster";

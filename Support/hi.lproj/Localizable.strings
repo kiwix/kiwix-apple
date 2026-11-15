@@ -28,7 +28,6 @@
 "library_refresh_time.never" = "कभी नहीं";
 "library.zim_file_context.main_page.label" = "मुखपृष्ठ";
 "zim_file_opened.toolbar.open.title" = "खोलें...";
-"zim_file_category.title" = "श्रेणी";
 "zim_file.list.name.text" = "नाम";
 "zim_file.list.description.text" = "विवरण";
 "zim_file.list.actions.text" = "क्रियाएँ";

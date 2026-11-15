@@ -75,7 +75,6 @@
 "zim_file_opened.overlay.no-missing-zim-files.message" = "Keng feelend ZIM-Fichiere fonnt.";
 "zim_file_opened.toolbar.open.title" = "Opmaachen...";
 "zim_file_opened.toolbar.open.help" = "ZIM-Fichier opmaachen";
-"zim_file_category.title" = "Kategorie";
 "zim_file_opened.toolbar.filter.show_all" = "All weisen";
 "zim_file_opened.toolbar.filter.show_only_available" = "Nëmmen déi disponibel weisen";
 "zim_file_opened.toolbar.filter.show_only_missing" = "Nëmmen déi feelend weisen";

@@ -26,7 +26,6 @@ struct RootView: View {
     @SceneStorage("org.kiwix.macos.root.menuitem") private var currentNavItem: MenuItem?
     @StateObject private var windowTracker = WindowTracker()
     var isSearchFocused: FocusState<Bool>.Binding
-    @StateObject private var selection = SelectedZimFileViewModel()
     // Open file alerts
     @State private var isOpenFileAlertPresented = false
     @State private var openFileAlert: OpenFileAlert?
@@ -90,10 +89,10 @@ struct RootView: View {
             case .opened:
                 ZimFilesMultiOpened()
             case .explore:
-                DetailSidePanel(content: {
-                    ZimFilesCategories()
-                })
-                    .modifier(SearchFocused(isSearchFocused: isSearchFocused))
+                NavigationStack {
+                    CategoriesGrid(dismiss: nil)
+                }
+                .modifier(SearchFocused(isSearchFocused: isSearchFocused))
             case .downloads:
                 DetailSidePanel(content: { ZimFilesDownloads(dismiss: nil) })
             case .hotspot:

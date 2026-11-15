@@ -81,7 +81,6 @@
 "library.zim_file_context.copy_url" = "Скопировать URL-адрес";
 "zim_file_opened.toolbar.open.title" = "Открыть...";
 "zim_file_opened.toolbar.open.help" = "Открыть ZIM-файл";
-"zim_file_category.title" = "Категория";
 "zim_file_catalog.fetching.message" = "Загрузка каталога...";
 "zim_file_category.section.empty.message" = "В этой категории нет ZIM-файла.";
 "zim_file_downloads.overlay.empty.message" = "Нет задач по загрузке";

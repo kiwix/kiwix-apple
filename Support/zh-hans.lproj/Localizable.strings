@@ -114,7 +114,6 @@
 "zim_file_opened.overlay.no-missing-zim-files.message" = "未找到缺失的 ZIM 文件。";
 "zim_file_opened.toolbar.open.title" = "打开...";
 "zim_file_opened.toolbar.open.help" = "打开 ZIM 文件";
-"zim_file_category.title" = "分类";
 "zim_file_opened.toolbar.filter.show_all" = "显示全部";
 "zim_file_opened.toolbar.filter.show_only_available" = "仅显示可用";
 "zim_file_opened.toolbar.filter.show_only_missing" = "仅显示缺失";

@@ -82,7 +82,6 @@
 "library.zim_file_context.copy_url" = "URLをコピー";
 "zim_file_opened.toolbar.open.title" = "開く...";
 "zim_file_opened.toolbar.open.help" = "ZIMファイルを開く";
-"zim_file_category.title" = "カテゴリ";
 "zim_file_catalog.fetching.message" = "カタログを取得しています...";
 "zim_file_category.section.empty.message" = "このカテゴリーに ZIMファイルはありません。";
 "zim_file_downloads.overlay.empty.message" = "ダウンロード処理はありません";
