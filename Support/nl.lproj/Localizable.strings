@@ -105,7 +105,6 @@
 "zim_file_opened.overlay.no-missing-zim-files.message" = "Er zijn geen ontbrekende ZIM-bestanden gevonden.";
 "zim_file_opened.toolbar.open.title" = "Openen...";
 "zim_file_opened.toolbar.open.help" = "ZIM-bestand openen";
-"zim_file_category.title" = "Categorie";
 "zim_file_opened.toolbar.filter.show_all" = "Alles weergeven";
 "zim_file_opened.toolbar.filter.show_only_available" = "Alleen beschikbaar weergeven";
 "zim_file_opened.toolbar.filter.show_only_missing" = "Alleen ontbrekend weergeven";

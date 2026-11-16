@@ -53,7 +53,6 @@
 "library.zim_file_context.copy_url" = "URL ਨਕਲ ਕਰੋ";
 "zim_file_opened.toolbar.open.title" = "ਖੋਲ੍ਹੋ...";
 "zim_file_opened.toolbar.open.help" = "ਇੱਕ ZIM ਫਾਈਲ ਖੋਲ੍ਹੋ";
-"zim_file_category.title" = "ਸ਼੍ਰੇਣੀ";
 "zim_file_category.section.empty.message" = "ਇਸ ਸ਼੍ਰੇਣੀ ਵਿੱਚ ਕੋਈ ZIM ਫਾਇਲ ਨਹੀਂ ਐ।";
 "zim_file_downloads.overlay.empty.message" = "ਕੋਈ ਉਤਾਰਾ ਕਾਰਜ ਨਹੀਂ ਹਨ";
 "zim_file.list.name.text" = "ਨਾਂ";

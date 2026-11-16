@@ -105,7 +105,6 @@
 "library.zim_file_context.copy_url" = "Kopiér URL";
 "zim_file_opened.toolbar.open.title" = "Åben...";
 "zim_file_opened.toolbar.open.help" = "Åbn en ZIM-fil";
-"zim_file_category.title" = "Kategori";
 "zim_file_catalog.fetching.message" = "Henter Katalog ...";
 "zim_file_category.section.empty.message" = "Ingen ZIM-fil i denne kategori.";
 "zim_file_downloads.overlay.empty.message" = "Ingen downloadopgaver";

@@ -84,7 +84,6 @@
 "library.zim_file_context.copy_url" = "Скопіювати URL";
 "zim_file_opened.toolbar.open.title" = "Відкрити...";
 "zim_file_opened.toolbar.open.help" = "Відкрити файл ZIM";
-"zim_file_category.title" = "Категорія";
 "zim_file_category.section.empty.message" = "У цій категорії немає файлу ZIM.";
 "zim_file_downloads.overlay.empty.message" = "Немає завдань завантаження";
 "zim_file.list.name.text" = "Назва";

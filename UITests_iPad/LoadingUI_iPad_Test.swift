@@ -53,7 +53,8 @@ import XCTest
             return false
         }
         downloadButton.tap()
-        usleep(100_000)
+        usleep(500_000)
+        usleep(500_000)
         let openMainPageButton = app.buttons["Open Main Page"]
         Wait.inApp(app, forElement: openMainPageButton, timeout: 360)
         openMainPageButton.tap()
@@ -150,6 +151,7 @@ import XCTest
         let installLink = app.links["Installation"].firstMatch
         Wait.inApp(app, forElement: installLink)
         installLink.tap()
-        usleep(1_000)
+        usleep(500_000)
+        usleep(500_000)
     }
 }

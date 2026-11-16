@@ -67,7 +67,6 @@
 "zim_file_opened.overlay.no-missing-zim-files.message" = "Puuttuvia ZIM-tiedostoja ei löytynyt.";
 "zim_file_opened.toolbar.open.title" = "Avaa...";
 "zim_file_opened.toolbar.open.help" = "Avaa ZIM-tiedosto";
-"zim_file_category.title" = "Luokka";
 "zim_file_opened.toolbar.filter.show_all" = "Näytä kaikki";
 "zim_file_opened.toolbar.filter.show_only_available" = "Näytä vain saatavilla olevat";
 "zim_file_opened.toolbar.filter.show_only_missing" = "Näytä vain puuttuvat";

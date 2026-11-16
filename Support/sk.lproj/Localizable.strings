@@ -103,7 +103,6 @@
 "zim_file_opened.overlay.no-missing-zim-files.message" = "Nenašli sa žiadne chýbajúce súbory ZIM.";
 "zim_file_opened.toolbar.open.title" = "Otvoriť...";
 "zim_file_opened.toolbar.open.help" = "Otvoriť súbor ZIM";
-"zim_file_category.title" = "Kategória";
 "zim_file_opened.toolbar.filter.show_all" = "Zobraziť všetko";
 "zim_file_opened.toolbar.filter.show_only_available" = "Zobraziť iba dostupné";
 "zim_file_opened.toolbar.filter.show_only_missing" = "Zobraziť iba chýbajúce";

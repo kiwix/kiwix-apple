@@ -83,7 +83,6 @@
 "library.zim_file_context.copy_url" = "Kwafi URL";
 "zim_file_opened.toolbar.open.title" = "Bude..";
 "zim_file_opened.toolbar.open.help" = "Bude fayil ɗin zim";
-"zim_file_category.title" = "Rukuni";
 "zim_file_category.section.empty.message" = "Babu fayil ɗin zim a ƙarƙashin wannan rukunin";
 "zim_file_downloads.overlay.empty.message" = "Babu ayyukan zazzagewa";
 "zim_file.list.name.text" = "Suna";

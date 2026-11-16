@@ -109,7 +109,6 @@
 "zim_file_opened.overlay.no-missing-zim-files.message" = "Inga saknade ZIM-filer hittades.";
 "zim_file_opened.toolbar.open.title" = "Öppna...";
 "zim_file_opened.toolbar.open.help" = "Öppna en ZIM-fil";
-"zim_file_category.title" = "Kategori";
 "zim_file_opened.toolbar.filter.show_all" = "Visa alla";
 "zim_file_opened.toolbar.filter.show_only_available" = "Visa endast tillgängliga";
 "zim_file_opened.toolbar.filter.show_only_missing" = "Visa endast saknade";

@@ -79,7 +79,6 @@
 "library.zim_file_context.copy_url" = "Copiază URL";
 "zim_file_opened.toolbar.open.title" = "Deschide...";
 "zim_file_opened.toolbar.open.help" = "Deschide Fișierul Zim";
-"zim_file_category.title" = "Categorie";
 "zim_file_catalog.fetching.message" = "Preia Catalogul...";
 "zim_file_category.section.empty.message" = "Niciun fișier ZIM în această categorie.";
 "zim_file_downloads.overlay.empty.message" = "Fără sarcini de descărcare";

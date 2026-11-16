@@ -35,9 +35,8 @@ final class CategoryFetchingTests: XCTestCase {
         LibraryOperations.configureZimFile(zimFile, metadata: metadata)
         try? context.save()
         let request = NSFetchRequest<ZimFile>(entityName: ZimFile.entity().name!)
-        request.predicate = ZimFilesCategory.buildPredicate(
-            category: .other,
-            searchText: "",
+        request.predicate = ZimFilesCategoryResult.buildPredicate(
+            by: CategoryBy.category(.other),
             languageCode: "x"
         )
         let results = try! context.fetch(request)
@@ -54,9 +53,8 @@ final class CategoryFetchingTests: XCTestCase {
         LibraryOperations.configureZimFile(zimFile, metadata: metadata)
         try? context.save()
         let request = NSFetchRequest<ZimFile>(entityName: ZimFile.entity().name!)
-        request.predicate = ZimFilesCategory.buildPredicate(
-            category: .other,
-            searchText: "",
+        request.predicate = ZimFilesCategoryResult.buildPredicate(
+            by: CategoryBy.category(.other),
             languageCode: "eng"
         )
         let results = try! context.fetch(request)
@@ -73,9 +71,8 @@ final class CategoryFetchingTests: XCTestCase {
         LibraryOperations.configureZimFile(zimFile, metadata: metadata)
         try? context.save()
         let request = NSFetchRequest<ZimFile>(entityName: ZimFile.entity().name!)
-        request.predicate = ZimFilesCategory.buildPredicate(
-            category: .other,
-            searchText: "",
+        request.predicate = ZimFilesCategoryResult.buildPredicate(
+            by: CategoryBy.category(.other),
             languageCode: "spa"
         )
         let results = try! context.fetch(request)

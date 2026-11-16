@@ -64,7 +64,6 @@
 "library.zim_file_context.copy_url" = "Eilañ an URL";
 "zim_file_opened.toolbar.open.title" = "Digeriñ...";
 "zim_file_opened.toolbar.open.help" = "Digeriñ ur restr ZIM";
-"zim_file_category.title" = "Rummad";
 "zim_file_category.section.empty.message" = "Restr ZIM ebet er rummad-mañ.";
 "zim_file.list.name.text" = "Anv";
 "zim_file.list.description.text" = "Deskrivadur";

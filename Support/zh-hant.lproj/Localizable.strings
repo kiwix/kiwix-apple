@@ -108,7 +108,6 @@
 "zim_file_opened.overlay.no-missing-zim-files.message" = "找不到缺少的 ZIM 檔案。";
 "zim_file_opened.toolbar.open.title" = "開啟…";
 "zim_file_opened.toolbar.open.help" = "開啟一個 ZIM 檔案";
-"zim_file_category.title" = "分類";
 "zim_file_opened.toolbar.filter.show_all" = "顯示全部";
 "zim_file_opened.toolbar.filter.show_only_available" = "僅顯示可用檔案";
 "zim_file_opened.toolbar.filter.show_only_missing" = "僅顯示缺少檔案";

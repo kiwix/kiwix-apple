@@ -37,7 +37,6 @@
 "library.zim_file_context.random.label" = "Summalis siidu";
 "zim_file_opened.toolbar.open.title" = "Raba...";
 "zim_file_opened.toolbar.open.help" = "Raba ZIM-fiilla";
-"zim_file_category.title" = "Kategoriija";
 "zim_file.list.name.text" = "Namma";
 "zim_file.list.description.text" = "Govvádus";
 "zim_file.action.delete.title" = "Sihko";

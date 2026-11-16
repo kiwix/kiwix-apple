@@ -93,7 +93,7 @@ struct SplitViewForiPad: View { // swiftlint:disable:this type_body_length
                 case .library:
                     ZimFilesOpened()
                 case .explore:
-                    ZimFilesCategories()
+                    CategoriesGrid(dismiss: nil)
                 case .downloads:
                     ZimFilesDownloads(dismiss: nil)
                 case let .settings(scrollToHotspot):

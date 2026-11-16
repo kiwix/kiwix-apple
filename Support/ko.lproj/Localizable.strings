@@ -106,7 +106,6 @@
 "zim_file_opened.overlay.no-missing-zim-files.message" = "누락된 ZIM 파일이 없습니다.";
 "zim_file_opened.toolbar.open.title" = "열기...";
 "zim_file_opened.toolbar.open.help" = "ZIM 파일 열기";
-"zim_file_category.title" = "분류";
 "zim_file_opened.toolbar.filter.show_all" = "모두 보기";
 "zim_file_opened.toolbar.filter.show_only_available" = "사용 가능한 것만 보기";
 "zim_file_opened.toolbar.filter.show_only_missing" = "누락된 것만 보기";
