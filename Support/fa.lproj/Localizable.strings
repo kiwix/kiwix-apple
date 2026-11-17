@@ -105,7 +105,6 @@
 "zim_file_opened.overlay.no-missing-zim-files.message" = "هیچ پروندهٔ ZIM گمشده‌ای پیدا نشد.";
 "zim_file_opened.toolbar.open.title" = "بازکردن…";
 "zim_file_opened.toolbar.open.help" = "بازکردن پروندهٔ ZIM";
-"zim_file_category.title" = "رده";
 "zim_file_opened.toolbar.filter.show_all" = "نمایش همه";
 "zim_file_opened.toolbar.filter.show_only_available" = "فقط نمایش موارد دردسترس";
 "zim_file_opened.toolbar.filter.show_only_missing" = "فقط نمایش موارد گمشده";

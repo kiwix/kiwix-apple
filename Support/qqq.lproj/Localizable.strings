@@ -67,7 +67,6 @@
 "external_link_handler.alert.button.load.link" = "Button option for alert if an external link should be opened";
 "external_link_handler.alert.ask.description" = "Description for an external link alert.";
 "external_link_handler.alert.not_loading.description" = "Alternative description for external link alert.";
-"explore.categories.section.title" = "Page title where the user can explore the list of categories of the downloadable online content";
 "file_import.alert.no_open.title" = "Alert title when user fails to open a local file";
 "file_import.alert.no_open.message" = "%@ is one or more filenames.";
 "attribute.detail.unknown" = "We list the attributes of each ZIM file: pictures yes/no, etc. If the attribute name is missing eg. 'pictures', this is the fallback text used";
@@ -87,6 +86,7 @@
 "zim_file_cell.page_count" = "Part of the ZIM file description, when we list ZIM files (as card results), eg: '246K articles', the parameter is the number to display";
 "zim_file_cell.media_count" = "Part of the ZIM file description, when we list ZIM files (as card results), eg: '242 media', the paremeter is the number to display";
 "zim_file_missing_indicator.help" = "Accessibility label for a warning (!) icon";
+"explore.categories.section.title" = "Page title where the user can explore the list of categories of the downloadable online content";
 "hotspot.action.start_hotspot.title" = "A button title to start the Kiwix Hotspot with the selected files";
 "hotspot.action.stop_hotspot.title" = "A button title to stop the Kiwix Hotspot";
 "hotspot.settings.port_number" = "Label for setting the default port number for Kiwix Hotspot in settings. Eg: Port number: 4567";
