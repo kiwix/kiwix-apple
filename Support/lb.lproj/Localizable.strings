@@ -64,6 +64,7 @@
 "library_refresh_time.never" = "Ni";
 "zim_file_cell.page_count" = "%@ Säiten";
 "zim_file_cell.media_count" = "%@ Medien";
+"explore.categories.section.title" = "Kategorien";
 "hotspot.action.start_hotspot.title" = "Hotspot aktivéieren";
 "hotspot.action.stop_hotspot.title" = "Hotspot desaktivéieren";
 "hotspot.error.port_already_used_by_another_app_title" = "Den Hotspot kann net aktivéiert ginn, well de Port %@ grad benotzt gëtt.";

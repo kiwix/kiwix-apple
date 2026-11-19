@@ -86,6 +86,7 @@
 "zim_file_cell.page_count" = "%@ صفحه";
 "zim_file_cell.media_count" = "%@ رسانه";
 "zim_file_missing_indicator.help" = "پروندهٔ ZIM پیدا نشد.";
+"explore.categories.section.title" = "دسته‌ها";
 "hotspot.action.start_hotspot.title" = "راه‌اندازی نقطهٔ اتصال";
 "hotspot.action.stop_hotspot.title" = "توقف نقطهٔ اتصال";
 "hotspot.settings.port_number" = "شمارهٔ درگاه";
@@ -249,7 +250,9 @@
 "enum.category.wikiversity" = "ویکی‌دانشگاه";
 "enum.category.wikivoyage" = "ویکی‌سفر";
 "enum.category.wiktionary" = "ویکی‌واژه";
+"enum.category.ted" = "تد";
 "enum.category.vikidia" = "ویکیدیا";
+"enum.category.stackexchange" = "استک اکسچنج";
 "enum.category.other" = "سایر";
 "enum.external_link_loading_policy.always_ask" = "همیشه بپرس";
 "enum.external_link_loading_policy.always_load" = "همیشه باز کن";

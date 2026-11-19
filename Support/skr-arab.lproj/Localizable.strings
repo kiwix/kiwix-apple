@@ -39,6 +39,7 @@
 "download_task_cell.status.paused" = "جمب ڳیا";
 "library_refresh_time.last" = "ہُݨے ہُݨے";
 "library_refresh_time.never" = "کݙاہیں وی کائناں";
+"explore.categories.section.title" = "ونکیاں";
 "library.zim_file_context.main_page.label" = "پہلا پرت";
 "zim_file_opened.toolbar.open.title" = "کھولو۔۔۔";
 "zim_file.list.name.text" = "ناں";
