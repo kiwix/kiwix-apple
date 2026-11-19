@@ -95,6 +95,7 @@
 "zim_file_cell.page_count" = "%@ 页";
 "zim_file_cell.media_count" = "%@ 个媒体";
 "zim_file_missing_indicator.help" = "Zim 文件丢失";
+"explore.categories.section.title" = "分类";
 "hotspot.action.start_hotspot.title" = "启动热点";
 "hotspot.action.stop_hotspot.title" = "停止热点";
 "hotspot.settings.port_number" = "端口号";

@@ -103,6 +103,7 @@
 "zim_file_cell.page_count" = "%@ pages";
 "zim_file_cell.media_count" = "%@ médias";
 "zim_file_missing_indicator.help" = "Le fichier Zim est manquant.";
+"explore.categories.section.title" = "Catégories";
 "hotspot.action.start_hotspot.title" = "Démarrer le point d’accès";
 "hotspot.action.stop_hotspot.title" = "Arrêter le point d’accès";
 "hotspot.settings.port_number" = "Numéro de port";
@@ -274,10 +275,13 @@
 "enum.library_language_sorting_model.a-z" = "A-Z";
 "enum.library_language_sorting_model.by_count" = "Par nombre";
 "enum.libray_tab_item.library" = "Bibliothèque";
+"enum.libray_tab_item.explore" = "Explorer";
 "enum.libray_tab_item.downloads" = "Téléchargements";
 "enum.navigation_item.reading" = "Lecture";
 "enum.navigation_item.bookmarks" = "Signets";
 "enum.navigation_item.new_tab" = "Nouvel onglet";
+"enum.navigation_item.library" = "Bibliothèque";
+"enum.navigation_item.explore" = "Explorer";
 "enum.navigation_item.downloads" = "Téléchargements";
 "enum.navigation_item.settings" = "Paramètres";
 "enum.navigation_item.hotspot" = "Borne WiFi";

@@ -87,6 +87,7 @@
 "zim_file_cell.page_count" = "%@ sayfa";
 "zim_file_cell.media_count" = "%@ medya";
 "zim_file_missing_indicator.help" = "Zim dosyası eksik.";
+"explore.categories.section.title" = "Kategoriler";
 "hotspot.action.start_hotspot.title" = "Paylaşım/Hotspot Başlat";
 "hotspot.action.stop_hotspot.title" = "Paylaşım/Hotspot durdur";
 "hotspot.settings.port_number" = "Port numarası";
@@ -258,10 +259,13 @@
 "enum.library_language_sorting_model.a-z" = "A-Z";
 "enum.library_language_sorting_model.by_count" = "Sayıma göre";
 "enum.libray_tab_item.library" = "Kütüphane";
+"enum.libray_tab_item.explore" = "Keşfet";
 "enum.libray_tab_item.downloads" = "İndirilenler";
 "enum.navigation_item.reading" = "Okuma";
 "enum.navigation_item.bookmarks" = "Yer İşaretleri";
 "enum.navigation_item.new_tab" = "Yeni Sekme";
+"enum.navigation_item.library" = "Kütüphane";
+"enum.navigation_item.explore" = "Keşfet";
 "enum.navigation_item.downloads" = "İndirilenler";
 "enum.navigation_item.settings" = "Ayarlar";
 "enum.navigation_item.hotspot" = "Paylaşım";

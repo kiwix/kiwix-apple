@@ -87,6 +87,7 @@
 "library_refresh_time.last" = "즉시";
 "library_refresh_time.never" = "없음";
 "zim_file_missing_indicator.help" = "Zim 파일이 없습니다.";
+"explore.categories.section.title" = "분류";
 "hotspot.action.start_hotspot.title" = "핫스팟 시작";
 "hotspot.action.stop_hotspot.title" = "핫스팟 중지";
 "hotspot.settings.port_number" = "포트 번호";
@@ -258,10 +259,13 @@
 "enum.library_language_sorting_model.a-z" = "A-Z";
 "enum.library_language_sorting_model.by_count" = "개수";
 "enum.libray_tab_item.library" = "라이브러리";
+"enum.libray_tab_item.explore" = "찾아보기";
 "enum.libray_tab_item.downloads" = "다운로드";
 "enum.navigation_item.reading" = "읽기";
 "enum.navigation_item.bookmarks" = "북마크";
 "enum.navigation_item.new_tab" = "새 탭";
+"enum.navigation_item.library" = "라이브러리";
+"enum.navigation_item.explore" = "찾아보기";
 "enum.navigation_item.downloads" = "다운로드";
 "enum.navigation_item.settings" = "설정";
 "enum.navigation_item.hotspot" = "핫스팟";
