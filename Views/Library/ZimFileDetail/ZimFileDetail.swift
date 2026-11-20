@@ -110,7 +110,14 @@ struct ZimFileDetail: View {
         .modifier(FileLocator(isPresenting: $isPresentingFileLocator))
         .navigationTitle(zimFile.name)
         .navigationBarTitleDisplayMode(.inline)
-        .onReceive(zimFile.publisher(for: \.fileURLBookmark)) { _ in
+        .onReceive(zimFile.publisher(for: \.fileURLBookmark)) { fileURLBookmark in
+            if fileURLBookmark == nil,
+               Defaults[.pendingZimReplacements].values.contains(zimFile.fileID.uuidString) {
+                // this ZIM file was just replaced by its newer version and unlinked,
+                // leave its page the way the Unlink action does
+                dismiss()
+                return
+            }
             Task { @MainActor in
                 if let zimFileName = await ZimFileService.shared.getFileURL(
                     zimFileID: zimFile.fileID
@@ -190,6 +197,7 @@ struct ZimFileDetail: View {
             #if os(macOS)
             .buttonStyle(.borderedProminent)
             #endif
+            ZimFileUpdateAction(zimFile: zimFile, downloadUsingCellular: downloadUsingCellular)
             #if os(macOS)
             Action(title: LocalString.zim_file_action_reveal_in_finder_title) {
                 guard let url = await ZimFileService.shared.getFileURL(zimFileID: zimFile.fileID) else { return }

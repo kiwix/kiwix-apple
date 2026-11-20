@@ -24,6 +24,8 @@ enum ActiveAlert: Hashable, Identifiable {
     case articleFailedToLoad
     case downloadErrorGeneric(description: String)
     case downloadErrorZIM(zimFileID: UUID, errorMessage: String)
+    /// the file of a replaced ZIM file is still on disk, the app was not allowed to remove it
+    case zimFileNotRemoved(path: String)
 }
 
 enum ActiveSheet: Hashable, Identifiable {
