@@ -17,6 +17,7 @@ import SwiftUI
 
 struct Favicon: View {
     @State private var imageData: Data?
+    @Environment(\.colorScheme) private var colorScheme
 
     private let category: Category
     private let imageURL: URL?
@@ -28,8 +29,15 @@ struct Favicon: View {
     }
 
     var body: some View {
-        image.scaledToFit().cornerRadius(3)
-        .aspectRatio(1, contentMode: .fit)
+        ZStack {
+            if colorScheme == .dark {
+                RoundedRectangle(cornerSize: CGSize(width: 3, height: 3))
+                    .fill(Color.white)
+                    .scaledToFit()
+            }
+            image.scaledToFit().cornerRadius(3)
+                .aspectRatio(1, contentMode: .fit)
+        }
         .task {
             guard let imageURL = imageURL, imageData == nil else { return }
             if let imgData = try? await Self.asyncImageData(url: imageURL) {
