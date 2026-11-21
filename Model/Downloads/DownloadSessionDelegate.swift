@@ -98,7 +98,9 @@ final class DownloadSessionDelegate: NSObject, URLSessionDownloadDelegate {
                 let request = DownloadTask.fetchRequest(fileID: zimFileID)
                 request.fetchLimit = 1
                 guard let downloadTask = try? request.execute().first else { return }
-                downloadTask.error = error.localizedDescription
+                if !didUserForceQuit {
+                    downloadTask.error = error.localizedDescription
+                }
                 let context = Database.shared.viewContext
                 try? context.save()
             }
