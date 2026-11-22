@@ -111,8 +111,11 @@ final class DownloadSessionDelegate: NSObject, URLSessionDownloadDelegate {
             "Finished for zimId: \(fileId, privacy: .public). with: \(errorDebugDesc, privacy: .public)")
         
         guard !didUserForceQuit else {
-            // for this case do not show an error
-            // do not delete the task yet
+            // in case of a download which was cancelled in user force quiting the app,
+            // do not show an error, but auto-restart it
+            Task { @MainActor in
+                await DownloadService.shared.resume(zimFileID: zimFileID)
+            }
             return
         }
         
