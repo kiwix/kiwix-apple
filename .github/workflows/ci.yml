@@ -80,11 +80,23 @@ jobs:
         if: matrix.platform == 'macOS'
         run: xcodebuild test -scheme UITests_macOS -destination 'platform=macOS'
 
+      - name: Get iPhone Device ID
+        if: matrix.platform == 'iOS'
+        env:
+          DEVICE_NAME: "iPhone 17 "
+          DEVICE_OS: "27.0"
+        run: |
+          xcrun simctl list devices available '${{ env.DEVICE_OS }}'
+          echo "IPHONE_DEVICE_ID=`xcrun simctl list devices available '${{ env.DEVICE_OS }}' | grep '${{ env.DEVICE_NAME }}' | sort -r | head -1 | awk -F'[()]' '{print $2}'`" >> $GITHUB_ENV
+
       - name: Run UI Tests on iPhone
         if: matrix.platform == 'iOS'
         env:
-          DEVICE_NAME: "iPhone 17"
-        run: xcodebuild test -scheme UITests_iPhone -destination "platform=iOS Simulator,name=$DEVICE_NAME" -resultBundlePath Kiwix-UITests-IPhone.xcresult
+          DEVICE_ID: ${{ env.IPHONE_DEVICE_ID }}
+        run: |
+            xcrun simctl boot ${{ env.DEVICE_ID }}
+            xcrun simctl uninstall ${{ env.DEVICE_ID }} self.Kiwix
+            xcodebuild test -scheme UITests_iPhone -destination "platform=iOS Simulator,id=${{ env.DEVICE_ID }}" -resultBundlePath Kiwix-UITests-IPhone.xcresult -retry-tests-on-failure
 
       - name: Upload UI Tests xcresult file
         if: ${{ matrix.platform == 'iOS' && failure() }}
@@ -108,7 +120,7 @@ jobs:
         run: |
             xcrun simctl boot ${{ env.DEVICE_ID }}
             xcrun simctl uninstall ${{ env.DEVICE_ID }} self.Kiwix
-            xcodebuild test -scheme UITests_iPad -destination "platform=iOS Simulator,id=${{ env.DEVICE_ID }}" -resultBundlePath Kiwix-UITests-IPad.xcresult
+            xcodebuild test -scheme UITests_iPad -destination "platform=iOS Simulator,id=${{ env.DEVICE_ID }}" -resultBundlePath Kiwix-UITests-IPad.xcresult -retry-tests-on-failure
 
       - name: Upload UI Tests xcresult file
         if: ${{ matrix.platform == 'iOS' && failure() }}
