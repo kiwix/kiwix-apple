@@ -1,4 +1,27 @@
+# 3.20.0
+
 # 3.19.0
+- NEW:
+  - Categories and content discovery (@BPerlakiH #1834)
+- FIX:
+  - Auto restart downloads that were cancelled in force quit (@BPerlakiH #1844, #1846)
+  - Fix iPad closing active tab (@BPerlakiH #1821)
+  - Fix DB migration crash (@BPerlakiH #1827)
+  - Increase time-out for download time on iPad tests (@BPerlakiH #1823)
+  - Fix app killed downloads on relaunch (@BPerlakiH #1840)
+  - Fix calculation for ongoing download size (@BPerlakiH #1845)
+  - Fix donation view for iPhone Duo (@BPerlakiH #1812)
+  - 1837 icon background color (@BPerlakiH #1842)
+- UPDATED:
+  - Switch to Xcode 27.1 (@BPerlakiH #1815)
+  - Use python3 to run localizations.py in the setup steps (@nu11waredev #1831)
+  - Use action cache as a build step (@BPerlakiH #1830)
+  - Rename Opened to Library (@BPerlakiH #1829)
+  - Remove New section (@BPerlakiH #1776)
+  - Rename categories to explore (@BPerlakiH #1814)
+  - Update Defaults package (@BPerlakiH #1816)
+  - Update swift-systems dependency (@BPerlakiH #1809)
+  - Localisation updates from https://translatewiki.net (@translatewiki #1817, #1832, #1836, #1839)
 
 # 3.18.0
 - NEW:
