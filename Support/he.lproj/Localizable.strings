@@ -1,5 +1,6 @@
 // Messages for Hebrew (עברית)
 // Exported from translatewiki.net
+// Author: A100Star
 // Author: Amire80
 // Author: Neriah
 // Author: YaronSh
@@ -228,8 +229,7 @@
 "payment.selection.option.monthly" = "מדי חודש";
 "payment.support_fallback_message" = "אנו מצטערים, המכשיר שלך אינו תומך ב־Apple Pay.";
 "payment.success.title" = "תודה על תרומתך.";
-// Fuzzy
-"payment.success.description" = "הנדיבות שלך חשובה לנו כל־כך.";
+"payment.success.description" = "התמיכה שלך עוזרת לשמור על הידע חופשי ונגיש גם ללא חיבור לאינטרנט.";
 "payment.error.title" = "טוב, זה מביך.";
 "payment.error.description" = "הייתה בעיה עם תשלום שלך. נא לנסות שוב.";
 "download_service.error.client.backgroundSessionInUseByAnotherProcess" = "הייתה בעיה בתקשורת עם שירות ההעברה ברקע";

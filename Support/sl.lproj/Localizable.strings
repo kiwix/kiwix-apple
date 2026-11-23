@@ -90,6 +90,7 @@
 "library_refresh_time.last" = "Pravkar";
 "library_refresh_time.never" = "Nikoli";
 "zim_file_missing_indicator.help" = "Datoteka Zim manjka.";
+"explore.categories.section.title" = "Kategorije";
 "hotspot.action.start_hotspot.title" = "Začni dostopno točko";
 "hotspot.action.stop_hotspot.title" = "Ustavi dostopno točko";
 "hotspot.settings.port_number" = "Številka vrat";
