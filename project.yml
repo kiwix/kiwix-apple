@@ -26,6 +26,7 @@ settings:
     INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription: "Kiwix needs permission to save images to your photos app."
     INFOPLIST_KEY_NSLocationWhenInUseUsageDescription: "Kiwix can share your location with map content from ZIM files you open."
     INFOPLIST_KEY_NSLocationUsageDescription: "Kiwix can share your location with map content from ZIM files you open."
+    INFOPLIST_KEY_NSCameraUsageDescription: "Kiwix can let ZIM content use a photo you take, for example to search a map with a picture of a sign."
     INFOPLIST_KEY_LSSupportsOpeningDocumentsInPlace: YES
     INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents: YES
     SWIFT_OBJC_INTEROP_MODE: objcxx
