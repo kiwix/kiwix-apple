@@ -1,5 +1,6 @@
 // Messages for Hebrew (עברית)
 // Exported from translatewiki.net
+// Author: A100Star
 // Author: Amire80
 // Author: Neriah
 // Author: YaronSh
@@ -59,11 +60,8 @@
 "download_task_cell.status.failed" = "נכשל";
 "download_task_cell.status.downloading" = "בהורדה...";
 "download_task_cell.status.paused" = "מושהה";
-// Fuzzy
 "flavor_tag.help.max" = "הכול חוץ מקובצי מדיה גדולים כמו וידאו/אודיו";
-// Fuzzy
 "flavor_tag.help.no_pic" = "רוב התמונות הוסרו";
-// Fuzzy
 "flavor_tag.help.mini" = "רק חלק מהטקסט זמין, כנראה הפרק הראשון";
 "library_refresh_time.last" = "זה עתה";
 "library_refresh_time.never" = "מעולם לא";
@@ -81,12 +79,9 @@
 "library.zim_file_context.copy_url" = "העתקת URL";
 "zim_file_opened.toolbar.open.title" = "פתיחה...";
 "zim_file_opened.toolbar.open.help" = "פתיחת קובץ ZIM";
-"zim_file_category.title" = "קטגוריה";
 "zim_file_catalog.fetching.message" = "הקטלוג מאוחזר...";
 "zim_file_category.section.empty.message" = "אין קובץ ZIM בקטגוריה הזאת.";
 "zim_file_downloads.overlay.empty.message" = "אין משימות הורדה";
-"zim_file_new_overlay.empty" = "אין קובץ ZIM חדש";
-"zim_file_new.button.refresh" = "ריענון";
 "zim_file.list.name.text" = "שם";
 "zim_file.list.description.text" = "תיאור";
 "zim_file.list.actions.text" = "פעולות";
@@ -197,7 +192,6 @@
 "comments.button.zoom_out" = "התרחקות";
 "app_macos_commands.open_file" = "פתיחה...";
 "app_macos_commands.new" = "לשונית חדשה";
-"app_macos_navigation.button.library" = "ספרייה";
 "sidebar_view.navigation.button.close" = "סגירה";
 "enum.category.wikipedia" = "ויקיפדיה";
 "enum.category.wikibooks" = "ויקיספר";
@@ -214,16 +208,11 @@
 "enum.external_link_loading_policy.never_load" = "לעולם לא לטעון";
 "enum.library_language_sorting_model.a-z" = "א–ת";
 "enum.library_language_sorting_model.by_count" = "לפי ספירה";
-"enum.libray_tab_item.opened" = "פתוחות";
-"enum.libray_tab_item.categories" = "קטגוריות";
+"enum.libray_tab_item.library" = "ספרייה";
 "enum.libray_tab_item.downloads" = "הורדות";
-"enum.libray_tab_item.new" = "חדש";
 "enum.navigation_item.reading" = "קריאה";
 "enum.navigation_item.bookmarks" = "סימניות";
 "enum.navigation_item.new_tab" = "לשונית חדשה";
-"enum.navigation_item.opened" = "פתוחים";
-"enum.navigation_item.categories" = "קטגוריות";
-"enum.navigation_item.new" = "חדש";
 "enum.navigation_item.downloads" = "הורדות";
 "enum.navigation_item.settings" = "הגדרות";
 "enum.navigation_item.hotspot" = "נקודה חמה";
@@ -240,8 +229,7 @@
 "payment.selection.option.monthly" = "מדי חודש";
 "payment.support_fallback_message" = "אנו מצטערים, המכשיר שלך אינו תומך ב־Apple Pay.";
 "payment.success.title" = "תודה על תרומתך.";
-// Fuzzy
-"payment.success.description" = "הנדיבות שלך חשובה לנו כל־כך.";
+"payment.success.description" = "התמיכה שלך עוזרת לשמור על הידע חופשי ונגיש גם ללא חיבור לאינטרנט.";
 "payment.error.title" = "טוב, זה מביך.";
 "payment.error.description" = "הייתה בעיה עם תשלום שלך. נא לנסות שוב.";
 "download_service.error.client.backgroundSessionInUseByAnotherProcess" = "הייתה בעיה בתקשורת עם שירות ההעברה ברקע";

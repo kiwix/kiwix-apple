@@ -90,6 +90,7 @@
 "library_refresh_time.last" = "Pravkar";
 "library_refresh_time.never" = "Nikoli";
 "zim_file_missing_indicator.help" = "Datoteka Zim manjka.";
+"explore.categories.section.title" = "Kategorije";
 "hotspot.action.start_hotspot.title" = "Začni dostopno točko";
 "hotspot.action.stop_hotspot.title" = "Ustavi dostopno točko";
 "hotspot.settings.port_number" = "Številka vrat";
@@ -108,7 +109,6 @@
 "zim_file_opened.overlay.no-missing-zim-files.message" = "Ni najdenih manjkajočih datotek ZIM.";
 "zim_file_opened.toolbar.open.title" = "Odpri ...";
 "zim_file_opened.toolbar.open.help" = "Odpri datoteko ZIM";
-"zim_file_category.title" = "Kategorija";
 "zim_file_opened.toolbar.filter.show_all" = "Prikaži vse";
 "zim_file_opened.toolbar.filter.show_only_available" = "Prikaži samo razpoložljive";
 "zim_file_opened.toolbar.filter.show_only_missing" = "Prikaži samo manjkajoče";
@@ -117,8 +117,6 @@
 "zim_file_catalog.fetching.message" = "Pridobivanje kataloga ...";
 "zim_file_category.section.empty.message" = "V tej kategoriji ni datoteke ZIM.";
 "zim_file_downloads.overlay.empty.message" = "Ni opravil prenosa";
-"zim_file_new_overlay.empty" = "Ni novih datotek ZIM";
-"zim_file_new.button.refresh" = "Osveži";
 "zim_file.list.name.text" = "Ime";
 "zim_file.list.description.text" = "Opis";
 "zim_file.list.actions.text" = "Dejanja";
@@ -245,7 +243,6 @@
 "comments.button.zoom_out" = "Oddalji";
 "app_macos_commands.open_file" = "Odpri ...";
 "app_macos_commands.new" = "Nov zavihek";
-"app_macos_navigation.button.library" = "Knjižnica";
 "app_macos_navigation.button.restore_previous_session" = "Obnovi prejšnjo sejo";
 "sidebar_view.navigation.button.close" = "Zapri";
 "enum.category.wikipedia" = "Wikipedija";
@@ -263,16 +260,11 @@
 "enum.external_link_loading_policy.never_load" = "Nikoli ne naloži";
 "enum.library_language_sorting_model.a-z" = "A–Z";
 "enum.library_language_sorting_model.by_count" = "Po številu";
-"enum.libray_tab_item.opened" = "Odprto";
-"enum.libray_tab_item.categories" = "Kategorije";
+"enum.libray_tab_item.library" = "Knjižnica";
 "enum.libray_tab_item.downloads" = "Prenosi";
-"enum.libray_tab_item.new" = "Novo";
 "enum.navigation_item.reading" = "Branje";
 "enum.navigation_item.bookmarks" = "Zaznamki";
 "enum.navigation_item.new_tab" = "Nov zavihek";
-"enum.navigation_item.opened" = "Odprto";
-"enum.navigation_item.categories" = "Kategorije";
-"enum.navigation_item.new" = "Novo";
 "enum.navigation_item.downloads" = "Prenosi";
 "enum.navigation_item.settings" = "Nastavitve";
 "enum.navigation_item.hotspot" = "Dostopna točka";

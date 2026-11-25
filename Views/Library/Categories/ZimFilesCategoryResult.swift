@@ -17,71 +17,9 @@ import CoreData
 import Defaults
 import SwiftUI
 
-/// A grid of zim files under each category.
-struct ZimFilesCategories: View {
-    @State private var searchText = ""
-    @State private var selected: Category
-    @Binding private var languageCode: String
-    @Default(.hasSeenCategories) private var hasSeenCategories
-    private var categories: [Category]
-    private let dismiss: (() -> Void)?
-    
-    init(
-        languageCode selectedLangCode: Binding<String>,
-        dismiss: (() -> Void)?
-    ) {
-        _languageCode = selectedLangCode
-        let categories = CategoriesToLanguages().categoriesIn(languageCode: selectedLangCode.wrappedValue)
-        let selectedCategory: Category? = {
-            guard let selectedCategoryId = Defaults[.selectedCategory] else {
-                return nil
-            }
-            return categories.first { category in
-                category.id == selectedCategoryId
-            }
-        }()
-        self.categories = categories
-        selected = selectedCategory ?? categories.first ?? .wikipedia
-        self.dismiss = dismiss
-    }
-    
-    var body: some View {
-        ZimFilesCategory(
-            category: $selected,
-            searchText: $searchText,
-            selectedLanguage: $languageCode,
-            dismiss: dismiss
-        )
-        .modifier(ToolbarRoleBrowser())
-        .navigationTitle(MenuItem.categories.name)
-        .searchable(text: $searchText, prompt: LocalString.common_search)
-        .toolbar {
-            ToolbarItem(id: "picker", placement: .principal) {
-                if searchText.isEmpty {
-                    Picker(LocalString.zim_file_category_title, selection: $selected) {
-                        ForEach(categories) {
-                            Text($0.name).tag($0)
-                                .accessibilityIdentifier($0.name)
-                        }
-                    }
-                }
-            }
-        }.onAppear {
-            Task {
-                await LibraryViewModel().start(isUserInitiated: false)
-            }
-        }
-        .onDisappear {
-            hasSeenCategories = true
-            Defaults[.selectedCategory] = selected.id
-        }
-    }
-}
-
-/// A grid of zim files under a single category, or as a search result
-struct ZimFilesCategory: View {
-    @Binding var searchText: String
-    @Binding var category: Category
+/// A grid of zim files under a single category as a result, or as a search result in the same format
+struct ZimFilesCategoryResult: View {
+    @State var categoryBy: CategoryBy
     @Binding var selectedLanguage: String
     @Default(.libraryLanguageCodes) private var languageCodes
     @EnvironmentObject private var selection: SelectedZimFileViewModel
@@ -90,19 +28,16 @@ struct ZimFilesCategory: View {
     let dismiss: (() -> Void)? // iOS only
     
     init(
-        category: Binding<Category>,
-        searchText: Binding<String>,
+        categoryBy: CategoryBy,
         selectedLanguage: Binding<String>,
         dismiss: (() -> Void)?
     ) {
-        self._category = category
-        self._searchText = searchText
+        self.categoryBy = categoryBy
         self._selectedLanguage = selectedLanguage
         self._results = FetchRequest<ZimFile>(
             sortDescriptors: [SortDescriptor(\ZimFile.name), SortDescriptor(\.size, order: .reverse)],
-            predicate: ZimFilesCategory.buildPredicate(
-                category: category.wrappedValue,
-                searchText: searchText.wrappedValue,
+            predicate: ZimFilesCategoryResult.buildPredicate(
+                by: categoryBy,
                 languageCode: selectedLanguage.wrappedValue
             ),
             animation: .easeInOut
@@ -113,7 +48,12 @@ struct ZimFilesCategory: View {
     var body: some View {
         Group {
             if results.isEmpty {
-                CategoryEmptySection()
+                switch categoryBy {
+                case .category:
+                    CategoryEmptySection()
+                case .search:
+                    CateogoryNoResultSection()
+                }
             } else {
                 LazyVGrid(columns: ([Self.gridItem]), alignment: .leading, spacing: 12) {
                     ForEach(results, id: \.fileID) { zimFile in
@@ -129,45 +69,71 @@ struct ZimFilesCategory: View {
                 }.modifier(GridCommon())
             }
         }
-        .onChange(of: category) { selection.reset() }
-        .onChange(of: searchText) { _, newValue in
-            results.nsPredicate = ZimFilesCategory
-                .buildPredicate(category: category, searchText: newValue, languageCode: selectedLanguage)
+        .onChange(of: categoryBy) {
+            selection.reset() // reset the ZIM selection in macOS sidebar
+            results.nsPredicate = ZimFilesCategoryResult
+                .buildPredicate(by: categoryBy, languageCode: selectedLanguage)
         }
         .onChange(of: selectedLanguage) {
-            results.nsPredicate = ZimFilesCategory
-                .buildPredicate(category: category, searchText: searchText, languageCode: selectedLanguage)
+            selection.reset() // reset the ZIM selection in macOS sidebar
+            results.nsPredicate = ZimFilesCategoryResult
+                .buildPredicate(by: categoryBy, languageCode: selectedLanguage)
         }
         .onChange(of: languageCodes) {
             if !languageCodes.contains(selectedLanguage) {
+                selection.reset() // reset the ZIM selection in macOS sidebar
                 selectedLanguage = languageCodes.first ?? "eng"
             }
         }
     }
-    
+        
     private static let gridItem = GridItem(.adaptive(minimum: 250, maximum: 500), spacing: 12)
     
     @MainActor
     static func buildPredicate(
-        category: Category,
-        searchText: String,
+        by categoryBy: CategoryBy,
         languageCode: String
     ) -> NSPredicate {
         let regex = String(format: "(.*,)?%@(,.*)?", languageCode)
         let langPredicate = NSPredicate(format: "languageCode MATCHES %@", regex)
         var predicates: [NSPredicate] = []
-        if searchText.isEmpty {
-            predicates.append(NSPredicate(format: "category == %@", category.rawValue))
-        }
         predicates.append(ZimFile.Predicate.notDownloaded())
         predicates.append(langPredicate)
         predicates.append(NSPredicate(format: "requiresServiceWorkers == false"))
-        if !searchText.isEmpty {
+        switch categoryBy {
+        case let .category(category):
+            predicates.append(NSPredicate(format: "category == %@", category.rawValue))
+        case let .search(searchText):
             predicates.append(NSCompoundPredicate(orPredicateWithSubpredicates: [
                 NSPredicate(format: "name CONTAINS[cd] %@", searchText),
                 NSPredicate(format: "fileDescription CONTAINS[cd] %@", searchText)
             ]))
         }
         return NSCompoundPredicate(andPredicateWithSubpredicates: predicates)
+    }
+}
+
+enum CategoryBy: Equatable {
+    case category(Category)
+    case search(String)
+    
+    static func == (lhs: Self, rhs: Self) -> Bool {
+        switch (lhs, rhs) {
+        case (let .category(lhsCat), let .category(rhsCat)):
+            return lhsCat == rhsCat
+        case (let .search(lhsText), let .search(rhsText)):
+            return lhsText == rhsText
+        default:
+            return false
+        }
+    }
+    
+    func navTitle() -> String {
+        switch self {
+        case .category(let category):
+            return category.name
+        case .search:
+            return LocalString.search_result_header_text
+        }
     }
 }

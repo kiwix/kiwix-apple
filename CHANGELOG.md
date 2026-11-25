@@ -1,4 +1,53 @@
+# 3.20.0
+
+# 3.19.0
+- NEW:
+  - Categories and content discovery (@BPerlakiH #1834)
+- FIX:
+  - Auto restart downloads that were cancelled in force quit (@BPerlakiH #1844, #1846)
+  - Fix iPad closing active tab (@BPerlakiH #1821)
+  - Fix DB migration crash (@BPerlakiH #1827)
+  - Increase time-out for download time on iPad tests (@BPerlakiH #1823)
+  - Fix app killed downloads on relaunch (@BPerlakiH #1840)
+  - Fix calculation for ongoing download size (@BPerlakiH #1845)
+  - Fix donation view for iPhone Duo (@BPerlakiH #1812)
+  - 1837 icon background color (@BPerlakiH #1842)
+- UPDATED:
+  - Switch to Xcode 27.1 (@BPerlakiH #1815)
+  - Use python3 to run localizations.py in the setup steps (@nu11waredev #1831)
+  - Use action cache as a build step (@BPerlakiH #1830)
+  - Rename Opened to Library (@BPerlakiH #1829)
+  - Remove New section (@BPerlakiH #1776)
+  - Rename categories to explore (@BPerlakiH #1814)
+  - Update Defaults package (@BPerlakiH #1816)
+  - Update swift-systems dependency (@BPerlakiH #1809)
+  - Localisation updates from https://translatewiki.net (@translatewiki #1817, #1832, #1836, #1839)
+
 # 3.18.0
+- NEW:
+  - Use alternative browser URL when Apple Pay is not supported (@BPerlakiH #1764)
+  - Search catalog by name OR description (@BPerlakiH #1772)
+  - Smooth tab switch animation (@BPerlakiH #1783)
+- FIX:
+  - Fix 1 GB headroom in pre-download free-space check (@rps #1760)
+  - Fix warnings (@BPerlakiH #1766)
+  - Stop parsing snippets after search cancellation (@ivan-magda #1792)
+  - Fix tab animation side-effect (@BPerlakiH #1790)
+  - Fix iPad UI tests (@BPerlakiH #1786)
+  - Fix: harden OPDS parser against malformed ids (crash fix) (@awaisdev5765 #1795)
+  - Fix immerse reading by reset after navigation (@BPerlakiH #1804)
+  - Calculate freespace according to in progress downloads (@BPerlakiH #1807)
+- UPDATED:
+  - Remove translation from Flavor tags (@BPerlakiH #1754)
+  - Remove Hotspot selection explanation from branded apps (@BPerlakiH #1758)
+  - Change DonationCell background color, and simplify it (@BPerlakiH #1759)
+  - 1739 display tags in details view (@BPerlakiH #1761)
+  - Donation cell alignment (@BPerlakiH #1769)
+  - Deactivate donation cell (@BPerlakiH #1767)
+  - Set User-Agent HTTP headers (@BPerlakiH #1781)
+  - Enable UI tests (@BPerlakiH #1782)
+  - Pick user locale currency by default (@BPerlakiH #1798)
+  - Localisation updates from https://translatewiki.net (@translatewiki #1756, #1770, #1778, #1785, #1793, #1799, #1802)
 
 # 3.17.1
 

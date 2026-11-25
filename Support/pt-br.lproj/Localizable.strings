@@ -64,8 +64,6 @@
 "library.zim_file_context.copy_url" = "Copiar URL";
 "zim_file_opened.toolbar.open.title" = "Abrir...";
 "zim_file_opened.toolbar.open.help" = "Abrir arquivo ZIM";
-"zim_file_category.title" = "Categoria";
-"zim_file_new.button.refresh" = "Atualizar";
 "zim_file.list.name.text" = "Nome";
 "zim_file.list.description.text" = "Descrição";
 "zim_file.list.actions.text" = "Ações";
@@ -120,7 +118,6 @@
 "comments.button.zoom_out" = "Afastar";
 "app_macos_commands.open_file" = "Abrir...";
 "app_macos_commands.new" = "Nova guia";
-"app_macos_navigation.button.library" = "Biblioteca";
 "sidebar_view.navigation.button.close" = "Fechar";
 "enum.category.wikipedia" = "Wikipédia";
 "enum.category.wikibooks" = "Wikilivros";
@@ -132,13 +129,10 @@
 "enum.category.wiktionary" = "Wikcionário";
 "enum.category.vikidia" = "Vikidia";
 "enum.category.other" = "Outros";
-"enum.libray_tab_item.new" = "Novo";
+"enum.libray_tab_item.library" = "Biblioteca";
 "enum.navigation_item.reading" = "Leitura";
 "enum.navigation_item.bookmarks" = "Favoritos";
 "enum.navigation_item.new_tab" = "Nova guia";
-"enum.navigation_item.opened" = "Aberto";
-"enum.navigation_item.categories" = "Categorias";
-"enum.navigation_item.new" = "Novo";
 "enum.navigation_item.downloads" = "Downloads";
 "enum.navigation_item.settings" = "Configurações";
 "enum.search_result_snippet_mode.disabled" = "Desativado";

@@ -23,22 +23,17 @@ struct LibraryTab: View {
     @State private var searchText: String = ""
     @EnvironmentObject private var viewModel: LibraryViewModel
     @EnvironmentObject private var navigation: NavigationViewModel
-    @Default(.libraryLanguageCodes) private var libraryLanguageCodes
-    @State private var selectedLang: String
+    
     @State private var tabItem: LibraryTabItem
     @Default(.hasSeenCategories) private var hasSeenCategories
-    @State private var categories: [Category]
-    let dismiss: (() -> Void)?
+    let dismiss: (@MainActor @Sendable () -> Void)?
 
     init(
-        dismiss: (() -> Void)?,
-        tabItem: LibraryTabItem = .categories
+        dismiss: (@MainActor @Sendable() -> Void)?,
+        tabItem: LibraryTabItem = .explore
     ) {
         self.dismiss = dismiss
         self.tabItem = tabItem
-        let selectedCode = Defaults[.libraryLanguageCodes].first ?? "eng"
-        self.selectedLang = selectedCode
-        self.categories = CategoriesToLanguages().categoriesIn(languageCode: selectedCode)
     }
 
     var body: some View {
@@ -46,60 +41,23 @@ struct LibraryTab: View {
             ForEach(LibraryTabItem.allCases) { tabItem in
                 SheetContent {
                     switch tabItem {
-                    case .categories:
-                        List(categories) { category in
-                            NavigationLink {
-                                ZimFilesCategory(
-                                    category: .constant(category),
-                                    searchText: $searchText,
-                                    selectedLanguage: $selectedLang,
-                                    dismiss: dismiss
-                                )
-                                    .navigationTitle(category.name)
-                                    .navigationBarTitleDisplayMode(.inline)
-                                    .toolbar {
-                                        if libraryLanguageCodes.count > 1 {
-                                            ToolbarItem(id: "language_picker", placement: .confirmationAction) {
-                                                ToggleAroundLanguageButton(
-                                                    items: $libraryLanguageCodes,
-                                                    selection: $selectedLang
-                                                )
-                                            }
-                                        }
-                                    }
-                                    .searchable(text: $searchText, prompt: LocalString.common_search)
-                            } label: {
-                                HStack {
-                                    Favicon(category: category).frame(height: 26)
-                                    Text(category.name)
-                                }
-                            }
-                        }
-                        .toolbar {
-                            if libraryLanguageCodes.count > 1 {
-                                ToolbarItem(id: "language_picker", placement: .confirmationAction) {
-                                    ToggleAroundLanguageButton(items: $libraryLanguageCodes, selection: $selectedLang)
-                                }
-                            }
-                        }
-                        .listStyle(.plain)
-                        .navigationTitle(MenuItem.categories.name)
-                        .onChange(of: selectedLang) { _, newValue in
-                            categories = CategoriesToLanguages().categoriesIn(languageCode: newValue)
-                        }
-                    case .opened:
+                    case .explore:
+                        CategoriesGrid(dismiss: dismiss)
+                            .searchable(
+                                text: $searchText,
+                                prompt: LocalString.common_search
+                            )                                                
+                    case .library:
                         ZimFilesOpenedNavStack(dismiss: dismiss)
                     case .downloads:
                         ZimFilesDownloads(dismiss: dismiss)
                             .environment(\.managedObjectContext, Database.shared.viewContext)
-                    case .new:
-                        ZimFilesNew(dismiss: dismiss)
                     case .hotspot:
                         HotspotZimFilesSelection()
                     }
                 }
                 .tag(tabItem)
-                .tabItem { Label(tabItem.name, systemImage: tabItem.icon) }
+                .tabItem { labelFor(tabItem: tabItem) }
             }
         }.task {
             await viewModel.start(isUserInitiated: false)
@@ -109,6 +67,18 @@ struct LibraryTab: View {
             if tabItem != .downloads {
                 tabItem = .downloads
             }
+        }
+    }
+    
+    @ViewBuilder
+    private func labelFor(tabItem: LibraryTabItem) -> some View {
+        switch tabItem.icon {
+        case let .system(systemImage):
+            Label(tabItem.name, systemImage: systemImage)
+                .accessibilityIdentifier(tabItem.id)
+        case let .image(imageName):
+            Label(tabItem.name, image: imageName)
+                .accessibilityIdentifier(tabItem.id)
         }
     }
 }

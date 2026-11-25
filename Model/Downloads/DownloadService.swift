@@ -61,7 +61,7 @@ final class DownloadService {
             guard downloadTasks.count > 0 else { return }
             for task in downloadTasks {
                 guard let taskDescription = task.taskDescription,
-                      let zimFileID = UUID(uuidString: taskDescription) else { return }
+                      let zimFileID = UUID(uuidString: taskDescription) else { continue }
                 Task { @MainActor [weak progress] in
                     progress?.updateFor(uuid: zimFileID,
                                         downloaded: task.countOfBytesReceived,
@@ -212,6 +212,16 @@ final class DownloadService {
         let (_, _, downloadTasks) = await session.tasks
         let task = downloadTasks.first(where: { $0.taskDescription == zimFileID.uuidString })
         return task?.originalRequest?.allowsCellularAccess
+    }
+    
+    // MARK: - Free space
+    func availableFreeSpace() -> Int64? {
+        let fullFreeSpace = try? FileManager.default
+            .urls(for: .documentDirectory, in: .userDomainMask)
+            .first?.resourceValues(forKeys: [.volumeAvailableCapacityForImportantUsageKey])
+            .volumeAvailableCapacityForImportantUsage
+        guard let fullFreeSpace else { return nil }
+        return fullFreeSpace - progress.totalDownloadSize()
     }
     
     // MARK: - Notification

@@ -117,6 +117,8 @@
 
 "zim_file_missing_indicator.help" = "Zim file is missing.";
 
+"explore.categories.section.title" = "Categories";
+
 "hotspot.action.start_hotspot.title" = "Start Hotspot";
 "hotspot.action.stop_hotspot.title" = "Stop Hotspot";
 "hotspot.settings.port_number" = "Port number";
@@ -137,7 +139,6 @@
 "zim_file_opened.overlay.no-missing-zim-files.message" = "No missing ZIM files found.";
 "zim_file_opened.toolbar.open.title" = "Open...";
 "zim_file_opened.toolbar.open.help" = "Open a ZIM file";
-"zim_file_category.title" = "Category";
 "zim_file_opened.toolbar.filter.show_all" = "Show all";
 "zim_file_opened.toolbar.filter.show_only_available" = "Show only available";
 "zim_file_opened.toolbar.filter.show_only_missing" = "Show only missing";
@@ -148,8 +149,6 @@
 "zim_file_category.section.empty.message" = "No ZIM file under this category.";
 "zim_file_downloads.overlay.empty.message" = "No download tasks";
 
-"zim_file_new_overlay.empty" = "No new ZIM file";
-"zim_file_new.button.refresh" = "Refresh";
 
 "zim_file.list.name.text" = "Name";
 "zim_file.list.description.text" = "Description";
@@ -286,7 +285,6 @@
 
 "app_macos_commands.open_file" = "Open...";
 "app_macos_commands.new" = "New Tab";
-"app_macos_navigation.button.library" = "Library";
 "app_macos_navigation.button.restore_previous_session" = "Restore Previous Session";
 
 "sidebar_view.navigation.button.close" = "Close";
@@ -308,17 +306,15 @@
 "enum.external_link_loading_policy.never_load" = "Never Load";
 "enum.library_language_sorting_model.a-z" = "A-Z";
 "enum.library_language_sorting_model.by_count" = "By Count";
-"enum.libray_tab_item.opened" = "Opened";
-"enum.libray_tab_item.categories" = "Categories";
+"enum.libray_tab_item.library" = "Library";
+"enum.libray_tab_item.explore" = "Explore";
 "enum.libray_tab_item.downloads" = "Downloads";
-"enum.libray_tab_item.new" = "New";
 
 "enum.navigation_item.reading" = "Reading";
 "enum.navigation_item.bookmarks" = "Bookmarks";
 "enum.navigation_item.new_tab" = "New Tab";
-"enum.navigation_item.opened" = "Opened";
-"enum.navigation_item.categories" = "Categories";
-"enum.navigation_item.new" = "New";
+"enum.navigation_item.library" = "Library";
+"enum.navigation_item.explore" = "Explore";
 "enum.navigation_item.downloads" = "Downloads";
 "enum.navigation_item.settings" = "Settings";
 "enum.navigation_item.hotspot" = "Hotspot";

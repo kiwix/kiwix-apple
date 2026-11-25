@@ -79,12 +79,14 @@ final class DownloadSessionDelegate: NSObject, URLSessionDownloadDelegate {
             return
         }
         
-        // at this point we do know there was a client side error:
+        // at this point we do know there was a client side error
+        
+        // distinquish between force quiting the app in the former session from other errors
+        let cancelReason = error.userInfo[NSURLErrorBackgroundTaskCancelledReasonKey] as? Int
+        let didUserForceQuit = cancelReason == NSURLErrorCancelledReasonUserForceQuitApplication
         
         // check if the task was cancelled / paused
-        guard error.code != NSURLErrorCancelled else {
-            // the resume data was already saved above with:
-            // task.cancel { [progress] resumeData in
+        if error.code == NSURLErrorCancelled, !didUserForceQuit {
             return
         }
         
@@ -97,7 +99,9 @@ final class DownloadSessionDelegate: NSObject, URLSessionDownloadDelegate {
                 let request = DownloadTask.fetchRequest(fileID: zimFileID)
                 request.fetchLimit = 1
                 guard let downloadTask = try? request.execute().first else { return }
-                downloadTask.error = error.localizedDescription
+                if !didUserForceQuit {
+                    downloadTask.error = error.localizedDescription
+                }
                 let context = Database.shared.viewContext
                 try? context.save()
             }
@@ -106,6 +110,15 @@ final class DownloadSessionDelegate: NSObject, URLSessionDownloadDelegate {
         let errorDebugDesc = error.debugDescription
         Log.DownloadService.error(
             "Finished for zimId: \(fileId, privacy: .public). with: \(errorDebugDesc, privacy: .public)")
+        
+        guard !didUserForceQuit else {
+            // in case of a download which was cancelled in user force quiting the app,
+            // do not show an error, but auto-restart it
+            Task { @MainActor in
+                await DownloadService.shared.resume(zimFileID: zimFileID)
+            }
+            return
+        }
         
         let errorDesc = DownloadErrors.localizedString(from: error)
         downloadManager.deleteDownloadTask(zimFileID: zimFileID)

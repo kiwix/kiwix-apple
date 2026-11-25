@@ -196,37 +196,35 @@ enum LibraryLanguageSortingMode: String, CaseIterable, Identifiable, Defaults.Se
 }
 
 enum LibraryTabItem: String, CaseIterable, Identifiable {
-    case categories, new, downloads, opened, hotspot
+    case explore, downloads, library, hotspot
 
-    var id: String { self.rawValue }
+    var id: String {
+        rawValue.appending("-tab")
+    }
 
     var name: String {
         switch self {
-        case .opened:
-            return LocalString.enum_libray_tab_item_opened
-        case .categories:
-            return LocalString.enum_libray_tab_item_categories
+        case .library:
+            return LocalString.enum_libray_tab_item_library
+        case .explore:
+            return LocalString.enum_libray_tab_item_explore
         case .downloads:
             return LocalString.enum_libray_tab_item_downloads
-        case .new:
-            return LocalString.enum_libray_tab_item_new
         case .hotspot:
             return LocalString.enum_navigation_item_hotspot
         }
     }
 
-    var icon: String {
+    var icon: IconSource {
         switch self {
-        case .opened:
-            return "folder"
-        case .categories:
-            return "books.vertical"
+        case .library:
+            return .system("books.vertical")
+        case .explore:
+            return .image("telescope")
         case .downloads:
-            return "tray.and.arrow.down"
-        case .new:
-            return "newspaper"
+            return .system("tray.and.arrow.down")
         case .hotspot:
-            return "wifi"
+            return .system("wifi")
         }
     }
 }
@@ -236,7 +234,7 @@ enum NavigationItem: Hashable, Identifiable {
 
     case loading
     case bookmarks, map(location: CLLocation?), tab(objectID: NSManagedObjectID)
-    case opened, categories, new, downloads
+    case opened, explore, downloads
     case hotspot
     case settings(scrollToHotspot: Bool)
 }

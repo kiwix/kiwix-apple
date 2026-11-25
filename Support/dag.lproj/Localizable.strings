@@ -74,11 +74,8 @@
 "library.zim_file_context.copy_url" = "Yaai URL";
 "zim_file_opened.toolbar.open.title" = "Yooi...";
 "zim_file_opened.toolbar.open.help" = "Yoomi zim fasara";
-"zim_file_category.title" = "Pubu";
 "zim_file_category.section.empty.message" = "Zim fasara kani pubu ŋɔ ni.";
 "zim_file_downloads.overlay.empty.message" = "Deebu tuma nima kani";
-"zim_file_new_overlay.empty" = "Zim fasara palli kani";
-"zim_file_new.button.refresh" = "Kahigi";
 "zim_file.list.name.text" = "Yuli";
 "zim_file.list.description.text" = "Buɣisibu";
 "zim_file.list.actions.text" = "Niŋsim";
@@ -174,7 +171,6 @@
 "comments.button.zoom_out" = "Vooyina";
 "app_macos_commands.open_file" = "Yooma";
 "app_macos_commands.new" = "Binshɛɣ'kam palli";
-"app_macos_navigation.button.library" = "Karimbu shee";
 "sidebar_view.navigation.button.close" = "Kpihim";
 "enum.category.wikipedia" = "Wikipɛdea";
 "enum.category.wikibooks" = "Wikibuku nima";
@@ -185,16 +181,11 @@
 "enum.external_link_loading_policy.always_load" = "Ʒilimi saha kam";
 "enum.external_link_loading_policy.never_load" = "Abada ni ʒili";
 "enum.library_language_sorting_model.by_count" = "Diyi yan kali";
-"enum.libray_tab_item.opened" = "Yooi";
-"enum.libray_tab_item.categories" = "Pubu nima";
+"enum.libray_tab_item.library" = "Karimbu shee";
 "enum.libray_tab_item.downloads" = "Deebu";
-"enum.libray_tab_item.new" = "Palli";
 "enum.navigation_item.reading" = "Kariŋ";
 "enum.navigation_item.bookmarks" = "Buku'dalima";
 "enum.navigation_item.new_tab" = "Binshɛɣ'kam palli";
-"enum.navigation_item.opened" = "Yooma";
-"enum.navigation_item.categories" = "Pubu nima";
-"enum.navigation_item.new" = "Palli";
 "enum.navigation_item.downloads" = "Deebu";
 "enum.navigation_item.settings" = "Bintaɣindisi";
 "enum.search_result_snippet_mode.disabled" = "Zaɣisibu";

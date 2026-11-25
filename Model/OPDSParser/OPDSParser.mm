@@ -57,7 +57,12 @@
     NSMutableArray *uuids = [[NSMutableArray alloc] initWithCapacity:self.library->getBookCount(false, true)];
     for (std::string identifierC: self.library->getBooksIds()) {
         NSString *identifier = [NSString stringWithUTF8String:identifierC.c_str()];
-        [uuids addObject:[[NSUUID alloc] initWithUUIDString:identifier]];
+        NSUUID *uuid = [[NSUUID alloc] initWithUUIDString:identifier];
+        @try {
+            [uuids addObject:uuid];
+        } @catch (NSException *exception) {
+            NSLog(@"OPDSParser::getZimFileIDs invalid book id: %@", exception.reason);
+        }
     }
     return [[NSSet alloc] initWithArray:uuids];
 }

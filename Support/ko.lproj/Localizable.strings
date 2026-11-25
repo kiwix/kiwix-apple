@@ -87,6 +87,7 @@
 "library_refresh_time.last" = "즉시";
 "library_refresh_time.never" = "없음";
 "zim_file_missing_indicator.help" = "Zim 파일이 없습니다.";
+"explore.categories.section.title" = "분류";
 "hotspot.action.start_hotspot.title" = "핫스팟 시작";
 "hotspot.action.stop_hotspot.title" = "핫스팟 중지";
 "hotspot.settings.port_number" = "포트 번호";
@@ -106,7 +107,6 @@
 "zim_file_opened.overlay.no-missing-zim-files.message" = "누락된 ZIM 파일이 없습니다.";
 "zim_file_opened.toolbar.open.title" = "열기...";
 "zim_file_opened.toolbar.open.help" = "ZIM 파일 열기";
-"zim_file_category.title" = "분류";
 "zim_file_opened.toolbar.filter.show_all" = "모두 보기";
 "zim_file_opened.toolbar.filter.show_only_available" = "사용 가능한 것만 보기";
 "zim_file_opened.toolbar.filter.show_only_missing" = "누락된 것만 보기";
@@ -115,12 +115,11 @@
 "zim_file_catalog.fetching.message" = "카탈로그를 가져오는 중 ...";
 "zim_file_category.section.empty.message" = "이 분류에 속하는 ZIM 파일이 없습니다.";
 "zim_file_downloads.overlay.empty.message" = "다운로드 작업 없음";
-"zim_file_new_overlay.empty" = "새 ZIM 파일 없습니다";
-"zim_file_new.button.refresh" = "새로 고침";
 "zim_file.list.name.text" = "이름";
 "zim_file.list.description.text" = "설명";
 "zim_file.list.actions.text" = "동작";
 "zim_file.list.info.text" = "정보";
+"zim_file.list.content.text" = "내용";
 "zim_file.action.locate.title" = "위치 지정";
 "zim_file.action.open_main_page.title" = "대문 열기";
 "zim_file.action.reveal_in_finder.title" = "파인더에서 보기";
@@ -151,6 +150,7 @@
 "zim_file.bool_info.details" = "세부 정보";
 "zim_file.bool_info.require_service_workers" = "서비스 워커 필요";
 "zim_file.bool_info.zim_archive_integrity" = "ZIM 아카이브 무결성";
+"zim_file.counts.pages_count" = "문서 수";
 "zim_file.counts.media_count" = "미디어 수";
 "zim_file.detail.id.title" = "ID";
 "zim_file.download_task.action.title.cancel" = "취소";
@@ -241,7 +241,6 @@
 "comments.button.zoom_out" = "축소";
 "app_macos_commands.open_file" = "열기...";
 "app_macos_commands.new" = "새 탭";
-"app_macos_navigation.button.library" = "라이브러리";
 "app_macos_navigation.button.restore_previous_session" = "이전 세션 복원";
 "sidebar_view.navigation.button.close" = "닫기";
 "enum.category.wikipedia" = "위키백과";
@@ -259,16 +258,14 @@
 "enum.external_link_loading_policy.never_load" = "불러오지 않기";
 "enum.library_language_sorting_model.a-z" = "A-Z";
 "enum.library_language_sorting_model.by_count" = "개수";
-"enum.libray_tab_item.opened" = "열림";
-"enum.libray_tab_item.categories" = "분류";
+"enum.libray_tab_item.library" = "라이브러리";
+"enum.libray_tab_item.explore" = "찾아보기";
 "enum.libray_tab_item.downloads" = "다운로드";
-"enum.libray_tab_item.new" = "새 항목";
 "enum.navigation_item.reading" = "읽기";
 "enum.navigation_item.bookmarks" = "북마크";
 "enum.navigation_item.new_tab" = "새 탭";
-"enum.navigation_item.opened" = "열림";
-"enum.navigation_item.categories" = "분류";
-"enum.navigation_item.new" = "새 항목";
+"enum.navigation_item.library" = "라이브러리";
+"enum.navigation_item.explore" = "찾아보기";
 "enum.navigation_item.downloads" = "다운로드";
 "enum.navigation_item.settings" = "설정";
 "enum.navigation_item.hotspot" = "핫스팟";

@@ -109,7 +109,6 @@
 "zim_file_opened.overlay.no-missing-zim-files.message" = "Inga saknade ZIM-filer hittades.";
 "zim_file_opened.toolbar.open.title" = "Öppna...";
 "zim_file_opened.toolbar.open.help" = "Öppna en ZIM-fil";
-"zim_file_category.title" = "Kategori";
 "zim_file_opened.toolbar.filter.show_all" = "Visa alla";
 "zim_file_opened.toolbar.filter.show_only_available" = "Visa endast tillgängliga";
 "zim_file_opened.toolbar.filter.show_only_missing" = "Visa endast saknade";
@@ -118,8 +117,6 @@
 "zim_file_catalog.fetching.message" = "Hämtar katalog...";
 "zim_file_category.section.empty.message" = "Ingen ZIM-fil under denna kategori.";
 "zim_file_downloads.overlay.empty.message" = "Inga nedladdningsuppgifter";
-"zim_file_new_overlay.empty" = "Ingen ny ZIM-fil";
-"zim_file_new.button.refresh" = "Uppdatera";
 "zim_file.list.name.text" = "Namn";
 "zim_file.list.description.text" = "Beskrivning";
 "zim_file.list.actions.text" = "Åtgärder";
@@ -246,7 +243,6 @@
 "comments.button.zoom_out" = "Zooma ut";
 "app_macos_commands.open_file" = "Öppna...";
 "app_macos_commands.new" = "Ny flik";
-"app_macos_navigation.button.library" = "Bibliotek";
 "app_macos_navigation.button.restore_previous_session" = "Återställ föregående session";
 "sidebar_view.navigation.button.close" = "Stäng";
 "enum.category.wikipedia" = "Wikipedia";
@@ -264,16 +260,11 @@
 "enum.external_link_loading_policy.never_load" = "Ladda aldrig";
 "enum.library_language_sorting_model.a-z" = "A-Ö";
 "enum.library_language_sorting_model.by_count" = "Efter antal";
-"enum.libray_tab_item.opened" = "Öppnade";
-"enum.libray_tab_item.categories" = "Kategorier";
+"enum.libray_tab_item.library" = "Bibliotek";
 "enum.libray_tab_item.downloads" = "Nedladdningar";
-"enum.libray_tab_item.new" = "Nytt";
 "enum.navigation_item.reading" = "Läser";
 "enum.navigation_item.bookmarks" = "Bokmärken";
 "enum.navigation_item.new_tab" = "Ny flik";
-"enum.navigation_item.opened" = "Öppnade";
-"enum.navigation_item.categories" = "Kategorier";
-"enum.navigation_item.new" = "Nytt";
 "enum.navigation_item.downloads" = "Nedladdningar";
 "enum.navigation_item.settings" = "Inställningar";
 "enum.navigation_item.hotspot" = "Hotspot";

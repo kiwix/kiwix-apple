@@ -32,7 +32,6 @@
 "library.zim_file_context.copy_url" = "Nɣel URL";
 "zim_file_opened.toolbar.open.title" = "Ldi...";
 "zim_file_opened.toolbar.open.help" = "Ldi afaylu ZIM";
-"zim_file_category.title" = "Taggayt";
 "zim_file.list.name.text" = "Isem";
 "zim_file.list.description.text" = "Aglam";
 "zim_file.list.actions.text" = "Tigawin";
@@ -82,10 +81,6 @@
 "enum.category.vikidia" = "Vikidia";
 "enum.category.other" = "Wayeḍ";
 "enum.library_language_sorting_model.a-z" = "A-Z";
-"enum.libray_tab_item.categories" = "Taggayin";
-"enum.libray_tab_item.new" = "Amaynut";
-"enum.navigation_item.categories" = "Taggayin";
-"enum.navigation_item.new" = "Amaynut";
 "enum.navigation_item.settings" = "Iɣewwaren";
 "payment.donate.title" = "Mudd tawsa";
 "payment.summary.title" = "Kiwix";

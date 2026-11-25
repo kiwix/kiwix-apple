@@ -59,7 +59,7 @@ struct ZimFilesMultiOpened: View {
             }
             .modifier(GridCommon(edges: .all))
             .modifier(ToolbarRoleBrowser())
-            .navigationTitle(MenuItem.opened.name)
+            .navigationTitle(MenuItem.library.name)
             .overlay {
                 if zimFiles.isEmpty {
                     Message(text: showBy.noResultsMessage)

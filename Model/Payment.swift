@@ -105,6 +105,18 @@ struct Payment {
             case .chf: "  CHF"
             }
         }
+        
+        static var allLocalCases: [Currency] {
+            let all = Self.allCases
+            guard let localeCurrencyId = Locale.current.currency?.identifier.uppercased(),
+                  let localeCurrency = Currency(rawValue: localeCurrencyId) else {
+                return all
+            }
+            let otherCurrencies: [Currency] = all.filter { $0 != localeCurrency }
+            var sorted = [localeCurrency]
+            sorted.append(contentsOf: otherCurrencies)
+            return sorted
+        }
     }
     static let defaultCurrencyCode = Currency.usd
     private static let minimumAmount: Double = 5

@@ -555,6 +555,11 @@ import CoreKiwix
         // The previous document's geolocation callbacks are gone
         geolocationService?.stopAll()
         outlineItems = []
+        // Reset immerse reading on navigating to a new page
+        if !Brand.disableImmersiveReading {
+            NotificationCenter.default
+                .post(name: .webViewDidScroll, object: webView, userInfo: ["direction": "up"])
+        }
     }
 
     @MainActor

@@ -87,6 +87,7 @@
 "zim_file_cell.page_count" = "%@ sayfa";
 "zim_file_cell.media_count" = "%@ medya";
 "zim_file_missing_indicator.help" = "Zim dosyası eksik.";
+"explore.categories.section.title" = "Kategoriler";
 "hotspot.action.start_hotspot.title" = "Paylaşım/Hotspot Başlat";
 "hotspot.action.stop_hotspot.title" = "Paylaşım/Hotspot durdur";
 "hotspot.settings.port_number" = "Port numarası";
@@ -106,7 +107,6 @@
 "zim_file_opened.overlay.no-missing-zim-files.message" = "Eksik ZIM dosyası bulunamadı.";
 "zim_file_opened.toolbar.open.title" = "Aç...";
 "zim_file_opened.toolbar.open.help" = "Bir ZIM dosyası aç";
-"zim_file_category.title" = "Kategori";
 "zim_file_opened.toolbar.filter.show_all" = "Tümünü göster";
 "zim_file_opened.toolbar.filter.show_only_available" = "Yalnızca mevcut olanları göster";
 "zim_file_opened.toolbar.filter.show_only_missing" = "Yalnızca eksik olanları göster";
@@ -115,8 +115,6 @@
 "zim_file_catalog.fetching.message" = "Katalog yükleniyor...";
 "zim_file_category.section.empty.message" = "Bu kategori altında ZIM dosyası yok.";
 "zim_file_downloads.overlay.empty.message" = "İndirme görevi yok";
-"zim_file_new_overlay.empty" = "Yeni ZIM dosyası yok";
-"zim_file_new.button.refresh" = "Yenile";
 "zim_file.list.name.text" = "Ad";
 "zim_file.list.description.text" = "Açıklama";
 "zim_file.list.actions.text" = "Eylemler";
@@ -243,7 +241,6 @@
 "comments.button.zoom_out" = "Uzaklaştır";
 "app_macos_commands.open_file" = "Aç...";
 "app_macos_commands.new" = "Yeni Sekme";
-"app_macos_navigation.button.library" = "Kütüphane";
 "app_macos_navigation.button.restore_previous_session" = "Önceki Oturumu Geri Yükle";
 "sidebar_view.navigation.button.close" = "Kapat";
 "enum.category.wikipedia" = "Vikipedi";
@@ -261,16 +258,14 @@
 "enum.external_link_loading_policy.never_load" = "Asla Yükleme";
 "enum.library_language_sorting_model.a-z" = "A-Z";
 "enum.library_language_sorting_model.by_count" = "Sayıma göre";
-"enum.libray_tab_item.opened" = "Açılmış";
-"enum.libray_tab_item.categories" = "Kategoriler";
+"enum.libray_tab_item.library" = "Kütüphane";
+"enum.libray_tab_item.explore" = "Keşfet";
 "enum.libray_tab_item.downloads" = "İndirilenler";
-"enum.libray_tab_item.new" = "Yeni";
 "enum.navigation_item.reading" = "Okuma";
 "enum.navigation_item.bookmarks" = "Yer İşaretleri";
 "enum.navigation_item.new_tab" = "Yeni Sekme";
-"enum.navigation_item.opened" = "Açılmış";
-"enum.navigation_item.categories" = "Kategoriler";
-"enum.navigation_item.new" = "Yeni";
+"enum.navigation_item.library" = "Kütüphane";
+"enum.navigation_item.explore" = "Keşfet";
 "enum.navigation_item.downloads" = "İndirilenler";
 "enum.navigation_item.settings" = "Ayarlar";
 "enum.navigation_item.hotspot" = "Paylaşım";

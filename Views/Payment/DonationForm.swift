@@ -39,9 +39,10 @@ private enum PaymentType: String, CaseIterable, Identifiable {
 
 struct DonationForm: View {
     @Environment(\.dismiss) var dismiss
-    @State private var currencyType: Payment.Currency = .usd
+    @State private var currencyType: Payment.Currency = Payment.Currency.allLocalCases.first!
     @State private var paymentType: PaymentType = .monthly
     @State private var selectedAmount: SelectedAmountState = Self.defaultFor(.monthly)
+    var useInlineTitle: Bool = true
         
     private static func defaultFor(_ paymentType: PaymentType) -> SelectedAmountState {
         switch paymentType {
@@ -107,7 +108,7 @@ struct DonationForm: View {
         }
         .navigationTitle(LocalString.payment_donate_title)
 #if os(iOS)
-        .navigationBarTitleDisplayMode(.inline)
+        .navigationBarTitleDisplayMode(useInlineTitle ? .inline : .large)
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
                 closeButton
@@ -148,7 +149,7 @@ struct DonationForm: View {
     @ViewBuilder
     private var currencyPicker: some View {
         Picker("", selection: $currencyType) {
-            ForEach(Payment.Currency.allCases) { currency in
+            ForEach(Payment.Currency.allLocalCases) { currency in
                 Text(currency.label)
                     .tag(currency)
             }

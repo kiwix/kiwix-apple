@@ -49,13 +49,13 @@ settings:
 packages:
   Defaults:
     url: https://github.com/sindresorhus/Defaults
-    majorVersion: 8.2.0
+    majorVersion: 9.0.9
   StripeApplePay:
     url: https://github.com/CodeLikeW/stripe-apple-pay
     majorVersion: 25.7.2
   SwiftSystem:
     url: https://github.com/apple/swift-system
-    revision: b083113aef646d9d35403ca17e9789b750e42d1d
+    majorVersion: 1.8.1
 
 targetTemplates:
   ApplicationTemplate:
@@ -113,7 +113,7 @@ targets:
         com.apple.developer.in-app-payments: [merchant.org.kiwix.apple] # this line is removed for macOS FTP
     settings:
       base:
-        MARKETING_VERSION: "3.18.0"
+        MARKETING_VERSION: "3.20.0"
         PRODUCT_BUNDLE_IDENTIFIER: self.Kiwix
         INFOPLIST_KEY_CFBundleDisplayName: Kiwix
         INFOPLIST_FILE: Support/Info.plist

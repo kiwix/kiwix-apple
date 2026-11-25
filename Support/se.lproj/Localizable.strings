@@ -37,7 +37,6 @@
 "library.zim_file_context.random.label" = "Summalis siidu";
 "zim_file_opened.toolbar.open.title" = "Raba...";
 "zim_file_opened.toolbar.open.help" = "Raba ZIM-fiilla";
-"zim_file_category.title" = "Kategoriija";
 "zim_file.list.name.text" = "Namma";
 "zim_file.list.description.text" = "Govvádus";
 "zim_file.action.delete.title" = "Sihko";
@@ -79,7 +78,6 @@
 "welcome.actions.open_file" = "Raba fiilla";
 "app_macos_commands.open_file" = "Raba...";
 "app_macos_commands.new" = "Ođđa leavga";
-"app_macos_navigation.button.library" = "Girjerádju";
 "sidebar_view.navigation.button.close" = "Gidde";
 "enum.category.wikipedia" = "Wikipedia";
 "enum.category.wikibooks" = "Wikigirjjit";
@@ -87,12 +85,9 @@
 "enum.category.wikiquote" = "Wikisitáhtat";
 "enum.category.wikiversity" = "Wikiversitehta";
 "enum.category.wiktionary" = "Wikisátnegirji";
-"enum.libray_tab_item.categories" = "Kategoriijat";
-"enum.libray_tab_item.new" = "Ođđa";
+"enum.libray_tab_item.library" = "Girjerádju";
 "enum.navigation_item.bookmarks" = "Girjemearkkat";
 "enum.navigation_item.new_tab" = "Ođđa leavga";
-"enum.navigation_item.categories" = "Kategoriijat";
-"enum.navigation_item.new" = "Ođđa";
 "enum.navigation_item.settings" = "Ásahusat";
 "enum.search_result_snippet_mode.disabled" = "Váldojuvvon eret anus";
 "payment.donate.title" = "Skeŋke";

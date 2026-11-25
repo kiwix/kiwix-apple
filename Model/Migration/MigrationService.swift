@@ -36,6 +36,7 @@ struct Migration {
     }
 }
 
+@MainActor
 struct MigrationService {
     let migrations: [Migration]
 

@@ -73,7 +73,6 @@
 "zim_file_opened.overlay.no-missing-zim-files.message" = "Non sono stati trovati file ZIM mancanti.";
 "zim_file_opened.toolbar.open.title" = "Apri...";
 "zim_file_opened.toolbar.open.help" = "Apri un file ZIM";
-"zim_file_category.title" = "Categoria";
 "zim_file_opened.toolbar.filter.show_all" = "Mostra tutto";
 "zim_file_opened.toolbar.filter.show_only_available" = "Mostra solo disponibili";
 "zim_file_opened.toolbar.filter.show_only_missing" = "Mostra solo mancanti";
@@ -82,8 +81,6 @@
 "zim_file_catalog.fetching.message" = "Recupero del catalogo in corso...";
 "zim_file_category.section.empty.message" = "Nessun file ZIM in questa categoria.";
 "zim_file_downloads.overlay.empty.message" = "Nessuna attività di download";
-"zim_file_new_overlay.empty" = "Nessun nuovo file ZIM";
-"zim_file_new.button.refresh" = "Aggiorna";
 "zim_file.list.name.text" = "Nome";
 "zim_file.list.description.text" = "Descrizione";
 "zim_file.list.actions.text" = "Azioni";
@@ -149,7 +146,6 @@
 "comments.button.zoom_out" = "Zoom indietro";
 "app_macos_commands.open_file" = "Apri...";
 "app_macos_commands.new" = "Nuova scheda";
-"app_macos_navigation.button.library" = "Libreria";
 "enum.category.wikipedia" = "Wikipedia";
 "enum.category.wikibooks" = "Wikibooks";
 "enum.category.wikinews" = "Wikinotizie";
@@ -158,14 +154,10 @@
 "enum.category.vikidia" = "Vikidia";
 "enum.external_link_loading_policy.never_load" = "Non caricare mai";
 "enum.library_language_sorting_model.a-z" = "A-Z";
-"enum.libray_tab_item.opened" = "Aperto";
-"enum.libray_tab_item.categories" = "Categorie";
-"enum.libray_tab_item.new" = "Nuovo";
+"enum.libray_tab_item.library" = "Libreria";
 "enum.navigation_item.bookmarks" = "Segnalibri";
 "enum.navigation_item.new_tab" = "Nuova scheda";
-"enum.navigation_item.opened" = "Aperto";
-"enum.navigation_item.categories" = "Categorie";
-"enum.navigation_item.new" = "Nuovo";
+"enum.navigation_item.library" = "Biblioteca";
 "enum.navigation_item.settings" = "Impostazioni";
 "enum.search_result_snippet_mode.disabled" = "Disattivato";
 "payment.donate.title" = "Dona";

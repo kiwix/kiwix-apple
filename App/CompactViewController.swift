@@ -265,7 +265,7 @@ private struct Content<LaunchModel>: View where LaunchModel: LaunchProtocol {
     private func showTheLibrary() {
         guard model.state.shouldShowCatalog else { return }
         if horizontalSizeClass == .regular {
-            navigation.currentItem = .categories
+            navigation.currentItem = .explore
         } else {
             showLibrary()
         }

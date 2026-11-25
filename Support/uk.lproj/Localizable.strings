@@ -84,11 +84,8 @@
 "library.zim_file_context.copy_url" = "Скопіювати URL";
 "zim_file_opened.toolbar.open.title" = "Відкрити...";
 "zim_file_opened.toolbar.open.help" = "Відкрити файл ZIM";
-"zim_file_category.title" = "Категорія";
 "zim_file_category.section.empty.message" = "У цій категорії немає файлу ZIM.";
 "zim_file_downloads.overlay.empty.message" = "Немає завдань завантаження";
-"zim_file_new_overlay.empty" = "Немає нового файлу ZIM";
-"zim_file_new.button.refresh" = "Оновити";
 "zim_file.list.name.text" = "Назва";
 "zim_file.list.description.text" = "Опис";
 "zim_file.list.actions.text" = "Дії";
@@ -194,7 +191,6 @@
 "comments.button.zoom_out" = "Віддалити";
 "app_macos_commands.open_file" = "Відкрити...";
 "app_macos_commands.new" = "Нова вкладка";
-"app_macos_navigation.button.library" = "Бібліотека";
 "sidebar_view.navigation.button.close" = "Закрити";
 "enum.category.wikipedia" = "Вікіпедія";
 "enum.category.wikibooks" = "Вікіпідручник";
@@ -211,16 +207,11 @@
 "enum.external_link_loading_policy.never_load" = "Ніколи не завантажувати";
 "enum.library_language_sorting_model.a-z" = "А-Я";
 "enum.library_language_sorting_model.by_count" = "За кількістю";
-"enum.libray_tab_item.opened" = "Відкрито";
-"enum.libray_tab_item.categories" = "Категорії";
+"enum.libray_tab_item.library" = "Бібліотека";
 "enum.libray_tab_item.downloads" = "Завантаження";
-"enum.libray_tab_item.new" = "Нове";
 "enum.navigation_item.reading" = "Читання";
 "enum.navigation_item.bookmarks" = "Закладки";
 "enum.navigation_item.new_tab" = "Нова вкладка";
-"enum.navigation_item.opened" = "Відкрито";
-"enum.navigation_item.categories" = "Категорії";
-"enum.navigation_item.new" = "Нове";
 "enum.navigation_item.downloads" = "Завантаження";
 "enum.navigation_item.settings" = "Налаштування";
 "enum.navigation_item.hotspot" = "Точка доступу";

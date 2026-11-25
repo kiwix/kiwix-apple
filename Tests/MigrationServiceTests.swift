@@ -16,6 +16,7 @@
 import XCTest
 @testable import Kiwix
 
+@MainActor
 final class MigrationServiceTests: XCTestCase {
 
     func test_no_migrations() {

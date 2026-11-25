@@ -67,7 +67,6 @@
 "zim_file_opened.overlay.no-missing-zim-files.message" = "Puuttuvia ZIM-tiedostoja ei löytynyt.";
 "zim_file_opened.toolbar.open.title" = "Avaa...";
 "zim_file_opened.toolbar.open.help" = "Avaa ZIM-tiedosto";
-"zim_file_category.title" = "Luokka";
 "zim_file_opened.toolbar.filter.show_all" = "Näytä kaikki";
 "zim_file_opened.toolbar.filter.show_only_available" = "Näytä vain saatavilla olevat";
 "zim_file_opened.toolbar.filter.show_only_missing" = "Näytä vain puuttuvat";
@@ -131,7 +130,6 @@
 "comments.button.zoom_out" = "Loitonna";
 "app_macos_commands.open_file" = "Avaa...";
 "app_macos_commands.new" = "Uusi välilehti";
-"app_macos_navigation.button.library" = "Kirjasto";
 "sidebar_view.navigation.button.close" = "Sulje";
 "enum.category.wikibooks" = "Wikikirjasto";
 "enum.category.wikinews" = "Wikiuutiset";
@@ -145,12 +143,9 @@
 "enum.external_link_loading_policy.always_load" = "Lataa aina";
 "enum.external_link_loading_policy.never_load" = "Älä koskaan lataa";
 "enum.library_language_sorting_model.a-z" = "A-Ö";
-"enum.libray_tab_item.new" = "Uusi";
+"enum.libray_tab_item.library" = "Kirjasto";
 "enum.navigation_item.bookmarks" = "Kirjanmerkit";
 "enum.navigation_item.new_tab" = "Uusi välilehti";
-"enum.navigation_item.opened" = "Avattu";
-"enum.navigation_item.categories" = "Luokat";
-"enum.navigation_item.new" = "Uusi";
 "enum.navigation_item.downloads" = "Lataukset";
 "enum.navigation_item.settings" = "Asetukset";
 "enum.search_result_snippet_mode.disabled" = "Pois käytöstä";

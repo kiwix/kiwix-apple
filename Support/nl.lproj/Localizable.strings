@@ -105,7 +105,6 @@
 "zim_file_opened.overlay.no-missing-zim-files.message" = "Er zijn geen ontbrekende ZIM-bestanden gevonden.";
 "zim_file_opened.toolbar.open.title" = "Openen...";
 "zim_file_opened.toolbar.open.help" = "ZIM-bestand openen";
-"zim_file_category.title" = "Categorie";
 "zim_file_opened.toolbar.filter.show_all" = "Alles weergeven";
 "zim_file_opened.toolbar.filter.show_only_available" = "Alleen beschikbaar weergeven";
 "zim_file_opened.toolbar.filter.show_only_missing" = "Alleen ontbrekend weergeven";
@@ -114,8 +113,6 @@
 "zim_file_catalog.fetching.message" = "Catalogus wordt opgehaald…";
 "zim_file_category.section.empty.message" = "Geen ZIM-bestand in deze categorie.";
 "zim_file_downloads.overlay.empty.message" = "Geen downloadtaken";
-"zim_file_new_overlay.empty" = "Geen nieuw ZIM-bestand";
-"zim_file_new.button.refresh" = "Vernieuwen";
 "zim_file.list.name.text" = "Naam";
 "zim_file.list.description.text" = "Beschrijving";
 "zim_file.list.actions.text" = "Handelingen";
@@ -242,7 +239,6 @@
 "comments.button.zoom_out" = "Uitzoomen";
 "app_macos_commands.open_file" = "Openen…";
 "app_macos_commands.new" = "Nieuw tabblad";
-"app_macos_navigation.button.library" = "Bibliotheek";
 "app_macos_navigation.button.restore_previous_session" = "Vorige sessie herstellen";
 "sidebar_view.navigation.button.close" = "Sluiten";
 "enum.category.wikipedia" = "Wikipedia";
@@ -260,16 +256,11 @@
 "enum.external_link_loading_policy.never_load" = "Nooit laden";
 "enum.library_language_sorting_model.a-z" = "A-Z";
 "enum.library_language_sorting_model.by_count" = "Op aantal";
-"enum.libray_tab_item.opened" = "Geopend";
-"enum.libray_tab_item.categories" = "Categorieën";
+"enum.libray_tab_item.library" = "Bibliotheek";
 "enum.libray_tab_item.downloads" = "Downloads";
-"enum.libray_tab_item.new" = "Nieuw";
 "enum.navigation_item.reading" = "Lezen";
 "enum.navigation_item.bookmarks" = "Bladwijzers";
 "enum.navigation_item.new_tab" = "Nieuw tabblad";
-"enum.navigation_item.opened" = "Geopend";
-"enum.navigation_item.categories" = "Categorieën";
-"enum.navigation_item.new" = "Nieuw";
 "enum.navigation_item.downloads" = "Downloads";
 "enum.navigation_item.settings" = "Instellingen";
 "enum.navigation_item.hotspot" = "Hotspot";

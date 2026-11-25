@@ -86,6 +86,7 @@
 "zim_file_cell.page_count" = "Part of the ZIM file description, when we list ZIM files (as card results), eg: '246K articles', the parameter is the number to display";
 "zim_file_cell.media_count" = "Part of the ZIM file description, when we list ZIM files (as card results), eg: '242 media', the paremeter is the number to display";
 "zim_file_missing_indicator.help" = "Accessibility label for a warning (!) icon";
+"explore.categories.section.title" = "Page title where the user can explore the list of categories of the downloadable online content";
 "hotspot.action.start_hotspot.title" = "A button title to start the Kiwix Hotspot with the selected files";
 "hotspot.action.stop_hotspot.title" = "A button title to stop the Kiwix Hotspot";
 "hotspot.settings.port_number" = "Label for setting the default port number for Kiwix Hotspot in settings. Eg: Port number: 4567";
@@ -105,7 +106,6 @@
 "zim_file_opened.overlay.no-missing-zim-files.message" = "Default placeholder text for center panel on macOS, when we have no missing, open ZIM files";
 "zim_file_opened.toolbar.open.title" = "Accesissiblit label of a (+) icon on iOS, in the top right corner, to open a local file";
 "zim_file_opened.toolbar.open.help" = "Accessibility label of a (+) icon in the macOS app, in the top right corner, to open a local file";
-"zim_file_category.title" = "Accessiblity label for category picker";
 "zim_file_opened.toolbar.filter.show_all" = "Navigation toolbar button title to toggle between showing all, only available, only missing ZIM files in the listing";
 "zim_file_opened.toolbar.filter.show_only_available" = "Navigation toolbar button title to toggle between showing all, only available, only missing ZIM files in the listing";
 "zim_file_opened.toolbar.filter.show_only_missing" = "Navigation toolbar button title to toggle between showing all, only available, only missing ZIM files in the listing";
@@ -114,8 +114,6 @@
 "zim_file_catalog.fetching.message" = "Fallback text for the case when the catalog of ZIM files is still being refreshed, and it will appear soon, as the operation completes.";
 "zim_file_category.section.empty.message" = "Fallback text for listing results";
 "zim_file_downloads.overlay.empty.message" = "Fallback text for center panel, when downloads are selected from the side menu.";
-"zim_file_new_overlay.empty" = "Fallback text for listing new ZIM files available for download";
-"zim_file_new.button.refresh" = "Accessibility label for refresh button on the top nav bar to refresh the list of new ZIM files";
 "zim_file.list.name.text" = "Title for displaying the details of a ZIM file";
 "zim_file.list.description.text" = "Title for displaying the details of a ZIM file";
 "zim_file.list.actions.text" = "Title for displaying the possible actions to a selected ZIM file. Eg. The 'Download' button is below this.";
@@ -242,7 +240,6 @@
 "comments.button.zoom_out" = "MacOS command menu item";
 "app_macos_commands.open_file" = "MacOS command menu item";
 "app_macos_commands.new" = "MacOS command menu item";
-"app_macos_navigation.button.library" = "MacOS command menu item";
 "app_macos_navigation.button.restore_previous_session" = "MacOS command menu item title, to restore the windows and navigation state from a previous session, when the application was last launched";
 "sidebar_view.navigation.button.close" = "Accessiblity title for navigation button icon";
 "enum.category.wikipedia" = "{{Optional}}";
@@ -262,16 +259,14 @@
 "enum.external_link_loading_policy.never_load" = "Settings picker option title: how external links should be treated";
 "enum.library_language_sorting_model.a-z" = "Option title for picker to sort languages displayed alphabetically";
 "enum.library_language_sorting_model.by_count" = "Option title for picker to sort languages by ZIM files count";
-"enum.libray_tab_item.opened" = "Bottom Tab bar item title under Library on iOS";
-"enum.libray_tab_item.categories" = "Bottom Tab bar item title under Library on iOS";
+"enum.libray_tab_item.library" = "Bottom Tab bar item title under Library on iOS";
+"enum.libray_tab_item.explore" = "Bottom Tab bar item title under Library on iOS";
 "enum.libray_tab_item.downloads" = "Bottom Tab bar item title under Library on iOS";
-"enum.libray_tab_item.new" = "Bottom Tab bar item title under Library on iOS";
 "enum.navigation_item.reading" = "Side navigation menu item title";
 "enum.navigation_item.bookmarks" = "Side navigation menu item title";
 "enum.navigation_item.new_tab" = "Side navigation menu item title";
-"enum.navigation_item.opened" = "Side navigation menu item title";
-"enum.navigation_item.categories" = "Side navigation menu item title";
-"enum.navigation_item.new" = "Side navigation menu item title";
+"enum.navigation_item.library" = "Side navigation menu item title";
+"enum.navigation_item.explore" = "Side navigation menu item title";
 "enum.navigation_item.downloads" = "Side navigation menu item title";
 "enum.navigation_item.settings" = "Side navigation menu item title";
 "enum.navigation_item.hotspot" = "Side navigation menu item title";

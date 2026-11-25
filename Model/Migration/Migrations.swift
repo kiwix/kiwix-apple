@@ -19,7 +19,7 @@ enum Migrations {
     
     /// A central place for all migrations
     /// they will be executed in the order specified here
-    static func all() -> [Migration] {
+    @MainActor static func all() -> [Migration] {
         [
             Self.languageCodes(),
             Self.schemeToZIM(using: Database.shared.viewContext),

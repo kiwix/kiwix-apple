@@ -108,7 +108,6 @@
 "zim_file_opened.overlay.no-missing-zim-files.message" = "找不到缺少的 ZIM 檔案。";
 "zim_file_opened.toolbar.open.title" = "開啟…";
 "zim_file_opened.toolbar.open.help" = "開啟一個 ZIM 檔案";
-"zim_file_category.title" = "分類";
 "zim_file_opened.toolbar.filter.show_all" = "顯示全部";
 "zim_file_opened.toolbar.filter.show_only_available" = "僅顯示可用檔案";
 "zim_file_opened.toolbar.filter.show_only_missing" = "僅顯示缺少檔案";
@@ -117,8 +116,6 @@
 "zim_file_catalog.fetching.message" = "正在抓取目錄…";
 "zim_file_category.section.empty.message" = "此分類下沒有 ZIM 檔案。";
 "zim_file_downloads.overlay.empty.message" = "沒有下載任務";
-"zim_file_new_overlay.empty" = "沒有新的 ZIM 檔案";
-"zim_file_new.button.refresh" = "重整";
 "zim_file.list.name.text" = "名稱";
 "zim_file.list.description.text" = "描述";
 "zim_file.list.actions.text" = "操作";
@@ -245,7 +242,6 @@
 "comments.button.zoom_out" = "縮小";
 "app_macos_commands.open_file" = "開啟…";
 "app_macos_commands.new" = "新分頁";
-"app_macos_navigation.button.library" = "文庫";
 "app_macos_navigation.button.restore_previous_session" = "恢復上一次連線階段";
 "sidebar_view.navigation.button.close" = "關閉";
 "enum.category.wikipedia" = "維基百科";
@@ -263,16 +259,11 @@
 "enum.external_link_loading_policy.never_load" = "永不載入";
 "enum.library_language_sorting_model.a-z" = "A 到 Z";
 "enum.library_language_sorting_model.by_count" = "依總計";
-"enum.libray_tab_item.opened" = "已開啟";
-"enum.libray_tab_item.categories" = "分類";
+"enum.libray_tab_item.library" = "文庫";
 "enum.libray_tab_item.downloads" = "下載";
-"enum.libray_tab_item.new" = "新內容";
 "enum.navigation_item.reading" = "閱讀";
 "enum.navigation_item.bookmarks" = "書籤";
 "enum.navigation_item.new_tab" = "新分頁";
-"enum.navigation_item.opened" = "已開啟";
-"enum.navigation_item.categories" = "分類";
-"enum.navigation_item.new" = "新內容";
 "enum.navigation_item.downloads" = "下載";
 "enum.navigation_item.settings" = "設定";
 "enum.navigation_item.hotspot" = "熱點";

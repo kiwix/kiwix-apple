@@ -26,16 +26,13 @@ struct RootView: View {
     @SceneStorage("org.kiwix.macos.root.menuitem") private var currentNavItem: MenuItem?
     @StateObject private var windowTracker = WindowTracker()
     var isSearchFocused: FocusState<Bool>.Binding
-    @StateObject private var selection = SelectedZimFileViewModel()
     // Open file alerts
     @State private var isOpenFileAlertPresented = false
     @State private var openFileAlert: OpenFileAlert?
-    @State private var selectedLanguage: String = Defaults[.libraryLanguageCodes].first ?? "eng"
-    @Default(.libraryLanguageCodes) private var languages
     let openedWithWindowState: WindowState?
     
     private let primaryItems: [MenuItem] = [.bookmarks]
-    private let libraryItems: [MenuItem] = [.opened, .categories, .downloads, .new]
+    private let libraryItems: [MenuItem] = [.library, .explore, .downloads]
     private let openURL = NotificationCenter.default.publisher(for: .openURL)
     private let appTerminates = NotificationCenter.default.publisher(for: NSApplication.willTerminateNotification)
     private let tabCloses = NotificationCenter.default.publisher(for: NSWindow.willCloseNotification)
@@ -53,16 +50,16 @@ struct RootView: View {
                     [MenuItem.tab(objectID: navigation.currentTabId)] + primaryItems,
                     id: \.self
                 ) { menuItem in
-                    Label(menuItem.name, systemImage: menuItem.icon)
+                    labelFor(menuItem: menuItem)
                 }
                 if FeatureFlags.hasLibrary {
-                    Section(LocalString.app_macos_navigation_button_library) {
+                    Section {
                         ForEach(libraryItems + [MenuItem.hotspot], id: \.self) { menuItem in
-                            Label(menuItem.name, systemImage: menuItem.icon)
+                            labelFor(menuItem: menuItem)
                         }
                     }
                 } else {
-                    Label(MenuItem.hotspot.name, systemImage: MenuItem.hotspot.icon).id(MenuItem.hotspot)
+                    labelFor(menuItem: MenuItem.hotspot).id(MenuItem.hotspot)
                 }
             }
             .frame(minWidth: 160)
@@ -91,32 +88,17 @@ struct RootView: View {
                     .modifier(SearchFocused(isSearchFocused: isSearchFocused))
             case .opened:
                 ZimFilesMultiOpened()
-            case .categories:
-                DetailSidePanel(content: {
-                    ZimFilesCategories(languageCode: $selectedLanguage, dismiss: nil)
-                        .toolbar {
-                            if $languages.count > 1 {
-                                ToolbarItem(placement: .secondaryAction) {
-                                    ToggleAroundLanguageButton(items: $languages, selection: $selectedLanguage)
-                                }
-                            }
-                        }
-                })
-                    .modifier(SearchFocused(isSearchFocused: isSearchFocused))
+            case .explore:
+                NavigationStack {
+                    CategoriesGrid(dismiss: nil)
+                }
+                .modifier(SearchFocused(isSearchFocused: isSearchFocused))
             case .downloads:
                 DetailSidePanel(content: { ZimFilesDownloads(dismiss: nil) })
-            case .new:
-                DetailSidePanel(content: { ZimFilesNew(dismiss: nil) })
-                    .modifier(SearchFocused(isSearchFocused: isSearchFocused))
             case .hotspot:
                 HotspotZimFilesSelection()
             default:
                 EmptyView()
-            }
-        }
-        .onChange(of: languages) {
-            if languages.count == 1 {
-                selectedLanguage = languages.first!
             }
         }
         .frame(minWidth: 650, minHeight: 500)
@@ -347,6 +329,16 @@ struct RootView: View {
             return
         }
         SessionRestore.shared.didChangeMenuItem(currentNavItem, inWindow: currentWindow)
+    }
+    
+    @ViewBuilder
+    private func labelFor(menuItem: MenuItem) -> some View {
+        switch menuItem.icon {
+        case let .system(systemImage):
+            Label(menuItem.name, systemImage: systemImage)
+        case let .image(imageName):
+            Label(menuItem.name, image: imageName)
+        }
     }
 }
 

@@ -83,11 +83,8 @@
 "library.zim_file_context.copy_url" = "Kwafi URL";
 "zim_file_opened.toolbar.open.title" = "Bude..";
 "zim_file_opened.toolbar.open.help" = "Bude fayil ɗin zim";
-"zim_file_category.title" = "Rukuni";
 "zim_file_category.section.empty.message" = "Babu fayil ɗin zim a ƙarƙashin wannan rukunin";
 "zim_file_downloads.overlay.empty.message" = "Babu ayyukan zazzagewa";
-"zim_file_new_overlay.empty" = "Babu sabon fayil ɗin Zim";
-"zim_file_new.button.refresh" = "Wartsake";
 "zim_file.list.name.text" = "Suna";
 "zim_file.list.description.text" = "Bayani";
 "zim_file.list.actions.text" = "Ayyuka";
@@ -190,7 +187,6 @@
 "comments.button.zoom_out" = "Zuƙo waje";
 "app_macos_commands.open_file" = "Bude..";
 "app_macos_commands.new" = "Sabon shafi";
-"app_macos_navigation.button.library" = "Laburare";
 "sidebar_view.navigation.button.close" = "Kulle";
 "enum.category.wikipedia" = "Wikipedia";
 "enum.category.wikibooks" = "WikiLittattafai";
@@ -207,16 +203,11 @@
 "enum.external_link_loading_policy.never_load" = "Kar a taɓa Loda";
 "enum.library_language_sorting_model.a-z" = "A-Z";
 "enum.library_language_sorting_model.by_count" = "Ta hanyar lissafi";
-"enum.libray_tab_item.opened" = "Bude";
-"enum.libray_tab_item.categories" = "Bangarori";
+"enum.libray_tab_item.library" = "Laburare";
 "enum.libray_tab_item.downloads" = "Saukewa";
-"enum.libray_tab_item.new" = "Sabo";
 "enum.navigation_item.reading" = "Karatu";
 "enum.navigation_item.bookmarks" = "Alamomi";
 "enum.navigation_item.new_tab" = "Sabon shafi";
-"enum.navigation_item.opened" = "An buɗe shi";
-"enum.navigation_item.categories" = "Bangarori";
-"enum.navigation_item.new" = "Sabo";
 "enum.navigation_item.downloads" = "Saukewa";
 "enum.navigation_item.settings" = "Saituttuka";
 "enum.search_result_snippet_mode.disabled" = "An kashe";
