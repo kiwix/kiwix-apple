@@ -525,7 +525,6 @@ final class ZimUpdatesTests: XCTestCase {
         "title-\(name)"
     }
 
-    // swiftlint:disable:next function_parameter_count
     @discardableResult
     private static func insert(name: String,
                                titleID: String? = nil,
@@ -549,7 +548,6 @@ final class ZimUpdatesTests: XCTestCase {
         return zimFile
     }
 
-    // swiftlint:disable:next function_parameter_count
     private static func metadata(fileID: UUID = UUID(),
                                  name: String = zimName,
                                  titleID: String?,

@@ -268,6 +268,19 @@ total: \(totalCount, privacy: .public)
         return await parser.results()
     }
 
+    private func adoptTitleIDs(from parsed: Parsed) async {
+        await Database.shared.viewContext.perform(schedule: .enqueued) {
+            let context = Database.shared.viewContext
+            ZimUpdates.adoptTitleIDs(from: parsed.results, in: context)
+            guard context.hasChanges else { return }
+            do {
+                try context.save()
+            } catch {
+                Log.OPDS.error("Error saving title IDs: \(error.localizedDescription, privacy: .public)")
+            }
+        }
+    }
+
     private func process(parsed: Parsed) async throws {
         // Sync the local DB entries with the parsed feed:
         // 0) get all downloaded ids from the local DB
@@ -322,16 +335,7 @@ total: \(totalCount, privacy: .public)
             
             // 3) already downloaded entries still listed in the feed learn their title ID,
             // best effort: the catalog itself is already synced, so a failure here is not a failed refresh
-            await Database.shared.viewContext.perform(schedule: .enqueued) {
-                let context = Database.shared.viewContext
-                ZimUpdates.adoptTitleIDs(from: parsed.results, in: context)
-                guard context.hasChanges else { return }
-                do {
-                    try context.save()
-                } catch {
-                    Log.OPDS.error("Error saving title IDs: \(error.localizedDescription, privacy: .public)")
-                }
-            }
+            await adoptTitleIDs(from: parsed)
 
             syncCount.inserted = UInt(insertCount)
             syncCount.deleted = UInt(deleteCount)

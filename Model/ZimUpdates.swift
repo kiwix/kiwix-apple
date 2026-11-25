@@ -21,8 +21,8 @@ import Foundation
 ///
 /// Two ZIM files are considered versions of the same content when they share
 /// the same `titleID` (assigned by the catalog, see kiwix/libkiwix#1356) and the same `flavor`.
-/// A ZIM file without a title ID never has an update. The result is persisted in `Defaults[.zimUpdatesAvailable]`, so it is
-/// available immediately on launch and observable by SwiftUI views.
+/// A ZIM file without a title ID never has an update. The result is persisted in
+/// `Defaults[.zimUpdatesAvailable]`, so it is available immediately on launch and observable by SwiftUI views.
 ///
 /// Detection only runs after the catalog refresh and on local library changes,
 /// it never triggers a network request on its own.
