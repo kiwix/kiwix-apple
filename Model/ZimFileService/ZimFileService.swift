@@ -95,7 +95,7 @@ struct ZimFileService {
             faviconURL: metadata.faviconURL,
             faviconData: metadata.faviconData,
             flavor: metadata.flavor,
-            titleID: nil, // not yet provided by libkiwix (kiwix/libkiwix#1356)
+            titleID: metadata.titleID.flatMap { $0.isEmpty ? nil : $0 },
             hasDetails: metadata.hasDetails,
             hasPictures: metadata.hasPictures,
             hasVideos: metadata.hasVideos,

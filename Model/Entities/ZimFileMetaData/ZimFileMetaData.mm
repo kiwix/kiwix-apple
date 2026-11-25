@@ -64,6 +64,7 @@
             SAFE_READ(self.faviconData, [self getFaviconDataFromBook:_book]);
         }
         SAFE_READ(self.flavor, [self getFlavorFromBook:_book]);
+        SAFE_READ(self.titleID, [NSString stringWithUTF8String:_book->getTitleId().c_str()]);
         
         SAFE_READ_BOOL(self.hasDetails, _book->getTagBool("details"));
         SAFE_READ_BOOL(self.hasPictures, _book->getTagBool("pictures"));
