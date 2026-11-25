@@ -61,7 +61,7 @@ final class DownloadService {
             guard downloadTasks.count > 0 else { return }
             for task in downloadTasks {
                 guard let taskDescription = task.taskDescription,
-                      let zimFileID = UUID(uuidString: taskDescription) else { return }
+                      let zimFileID = UUID(uuidString: taskDescription) else { continue }
                 Task { @MainActor [weak progress] in
                     progress?.updateFor(uuid: zimFileID,
                                         downloaded: task.countOfBytesReceived,
