@@ -687,6 +687,28 @@ import CoreKiwix
         createNewWindow(with: newUrl)
         return nil
     }
+
+    /// Shows an Open panel for `<input type="file">` in ZIM content.
+    /// Without this, WebKit on macOS cancels the file chooser straight away.
+    @MainActor
+    func webView(
+        _ webView: WKWebView,
+        runOpenPanelWith parameters: WKOpenPanelParameters,
+        initiatedByFrame _: WKFrameInfo,
+        completionHandler: @MainActor @escaping ([URL]?) -> Void
+    ) {
+        guard let window = webView.window else {
+            completionHandler(nil)
+            return
+        }
+        let panel = NSOpenPanel()
+        panel.allowsMultipleSelection = parameters.allowsMultipleSelection
+        panel.canChooseDirectories = parameters.allowsDirectories
+        panel.beginSheetModal(for: window) { response in
+            // nil means cancelled: WebKit leaves the input's current files unchanged
+            completionHandler(response == .OK ? panel.urls : nil)
+        }
+    }
 #else
     @MainActor
     func webView(
