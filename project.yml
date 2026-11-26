@@ -118,6 +118,9 @@ targets:
         INFOPLIST_KEY_CFBundleDisplayName: Kiwix
         INFOPLIST_FILE: Support/Info.plist
         INFOPLIST_KEY_UILaunchStoryboardName: SplashScreenKiwix.storyboard
+        INFOPLIST_KEY_NSCameraUsageDescription: "Kiwix can let ZIM content use a photo you take, for example to search a map with a picture of a sign."
+        destinationFilters:
+          - iOS
     sources:
       - path: Support
         excludes:
