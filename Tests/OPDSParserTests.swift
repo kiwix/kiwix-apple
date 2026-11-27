@@ -128,7 +128,7 @@ struct OPDSParserTests {
         let content = """
         <feed xmlns="http://www.w3.org/2005/Atom"
               xmlns:dc="http://purl.org/dc/terms/"
-              xmlns:kiwix="https://kiwix.org/opds/v3"
+              xmlns:kiwix="https://kiwix.org/namespace/opds"
               xmlns:opds="http://opds-spec.org/2010/catalog">
           <entry>
             <id>urn:uuid:1ec90eab-5724-492b-9529-893959520de4</id>
