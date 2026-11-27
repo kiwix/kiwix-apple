@@ -15,6 +15,7 @@
 
 import Combine
 import CoreData
+import Defaults
 import UniformTypeIdentifiers
 
 class Bookmark: NSManagedObject, Identifiable {
@@ -270,6 +271,8 @@ final class ZimFile: NSManagedObject {
     @NSManaged var persistentID: String
     @NSManaged var requiresServiceWorkers: Bool
     @NSManaged var size: Int64
+    /// CMS title ID from the catalog, nil for books the catalog never described
+    @NSManaged var titleID: String?
 
     @NSManaged var bookmarks: Set<Bookmark>
     @NSManaged var downloadTask: DownloadTask?
@@ -307,6 +310,9 @@ final class ZimFile: NSManagedObject {
         static func missing() -> NSPredicate {
             NSPredicate(format: "isMissing == true")
         }
+        static func hasUpdate() -> NSPredicate {
+            NSPredicate(format: "fileID IN %@", ZimUpdates.fileIDsWithUpdates(in: Defaults[.zimUpdatesAvailable]))
+        }
     }
 
     static func openedPredicate(showBy: ZIMsShowBy = .onlyAvailable) -> NSPredicate {
@@ -322,6 +328,12 @@ final class ZimFile: NSManagedObject {
             NSCompoundPredicate(andPredicateWithSubpredicates: [
                 Predicate.isDownloaded(),
                 Predicate.missing()
+            ])
+        case .updatesAvailable:
+            NSCompoundPredicate(andPredicateWithSubpredicates: [
+                Predicate.isDownloaded(),
+                Predicate.notMissing(),
+                Predicate.hasUpdate()
             ])
         }
     }

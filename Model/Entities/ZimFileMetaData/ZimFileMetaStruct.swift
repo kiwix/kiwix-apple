@@ -36,6 +36,8 @@ struct ZimFileMetaStruct: Sendable {
     let faviconURL: URL?
     let faviconData: Data?
     let flavor: String?
+    /// CMS title ID, shared by all releases and flavours of a title, only known for catalog books
+    let titleID: String?
     
     // assigned attributes
     let hasDetails: Bool

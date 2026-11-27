@@ -37,6 +37,7 @@
 @property (nonatomic, strong, nullable) NSURL *faviconURL;
 @property (nonatomic, strong, nullable) NSData *faviconData;
 @property (nonatomic, strong, nullable) NSString *flavor;
+@property (nonatomic, strong, nullable) NSString *titleID;
 
 // assigned attributes
 @property (nonatomic, assign) BOOL hasDetails;

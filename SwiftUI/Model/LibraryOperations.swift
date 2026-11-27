@@ -56,6 +56,7 @@ struct LibraryOperations {
                 try? context.save()
             }
         }
+        await ZimUpdates.refresh()
         return metastruct
     }
     
@@ -119,6 +120,7 @@ ZIM file cannot be opened: \(zimFile.name, privacy: .public) |\
         Log.LibraryOperations.info(
             "Re-validated \(successCount, privacy: .public) out of \(zimFiles.count, privacy: .public) zim files"
         )
+        await ZimUpdates.refresh()
     }
 
     // MARK: - Configure
@@ -146,6 +148,8 @@ ZIM file cannot be opened: \(zimFile.name, privacy: .public) |\
         if let faviconURL = metadata.faviconURL { zimFile.faviconURL = faviconURL }
         if let faviconData = metadata.faviconData { zimFile.faviconData = faviconData }
         if let downloadURL = metadata.downloadURL { zimFile.downloadURL = downloadURL }
+        // only the catalog knows the title ID, re-reading a downloaded file must not clear it
+        if let titleID = metadata.titleID, !titleID.isEmpty { zimFile.titleID = titleID }
     }
 
     // MARK: - Deletion
@@ -177,6 +181,7 @@ ZIM file cannot be opened: \(zimFile.name, privacy: .public) |\
             zimFile.tabs.forEach { context.delete($0) }
             try? context.save()
         }
+        await ZimUpdates.refresh()
         
         let tabIds: [NSManagedObjectID] = await Database.shared.viewContext.perform {
             let tabIdsRequest = NSFetchRequest<NSManagedObjectID>(entityName: "Tab")

@@ -14,6 +14,9 @@
 // along with Kiwix; If not, see https://www.gnu.org/licenses/.
 
 import SwiftUI
+#if os(macOS)
+import AppKit
+#endif
 
 struct AlertHandler: ViewModifier {
     @State private var activeAlert: ActiveAlert?
@@ -35,6 +38,14 @@ struct AlertHandler: ViewModifier {
             }
         }
         .alert(alertTitle(), isPresented: Binding<Bool>.constant(activeAlert != nil), actions: {
+            #if os(macOS)
+            if case let .zimFileNotRemoved(path) = activeAlert {
+                Button(LocalString.zim_file_action_reveal_in_finder_title) {
+                    NSWorkspace.shared.activateFileViewerSelecting([URL(fileURLWithPath: path)])
+                    activeAlert = nil
+                }
+            }
+            #endif
             Button(LocalString.common_button_ok) {
                 activeAlert = nil
             }
@@ -51,6 +62,8 @@ struct AlertHandler: ViewModifier {
             LocalString.download_service_error_general_title
         case .downloadErrorZIM:
             LocalString.download_service_error_zimfile_title(withArgs: zimFileName)
+        case .zimFileNotRemoved:
+            LocalString.zim_file_update_not_removed_title
         case nil:
             ""
         }
@@ -64,6 +77,8 @@ struct AlertHandler: ViewModifier {
             [description, LocalString.download_service_error_footer].joined(separator: "\n\n")
         case let .downloadErrorZIM(_, errorMessage):
             [errorMessage, LocalString.download_service_error_footer].joined(separator: "\n\n")
+        case let .zimFileNotRemoved(path):
+            LocalString.zim_file_update_not_removed_message(withArgs: path)
         case nil:
             ""
         }

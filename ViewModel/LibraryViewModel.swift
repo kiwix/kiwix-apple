@@ -64,7 +64,7 @@ final class LibraryViewModel: ObservableObject {
     private let urlSession: URLSession
     private var syncCount = SyncCount()
     
-    private static let catalogURL = URL(string: "https://opds.library.kiwix.org/catalog/v2/entries?count=-1")!
+    private static let catalogURL = URL(string: "https://opds.nightly.library.kiwix.org/catalog/v3/entries?count=-1")!
 
     init(
         urlSession: URLSession = URLSession.shared,
@@ -107,6 +107,7 @@ final class LibraryViewModel: ObservableObject {
                         saveCategoryAvailableInLanguages(fromDBZimFiles: zimFiles)
                         // populate library language code if there isn't one set already
                         await setDefaultContentFilterLanguage()
+                        await ZimUpdates.refresh()
                         
                         error = nil
                         process.state = .complete
@@ -117,6 +118,7 @@ final class LibraryViewModel: ObservableObject {
                         return
                     }
                 } else {
+                    await ZimUpdates.refresh()
                     error = nil
                     process.state = .complete
                     return
@@ -133,6 +135,9 @@ final class LibraryViewModel: ObservableObject {
 
             // populate library language code if there isn't one set already
             await setDefaultContentFilterLanguage()
+
+            // detect newer versions of downloaded ZIM files
+            await ZimUpdates.refresh()
 
             // reset error
             error = nil
@@ -257,10 +262,23 @@ total: \(totalCount, privacy: .public)
         let parser = OPDSParser()
         let urlHostString = urlHost
             .withoutQueryParams()
-            .trim(pathComponents: ["catalog", "v2", "entries"])
+            .trim(pathComponents: ["catalog", "v3", "entries"])
             .absoluteString
         try await parser.parse(data: data, urlHost: urlHostString)
         return await parser.results()
+    }
+
+    private func adoptTitleIDs(from parsed: Parsed) async {
+        await Database.shared.viewContext.perform(schedule: .enqueued) {
+            let context = Database.shared.viewContext
+            ZimUpdates.adoptTitleIDs(from: parsed.results, in: context)
+            guard context.hasChanges else { return }
+            do {
+                try context.save()
+            } catch {
+                Log.OPDS.error("Error saving title IDs: \(error.localizedDescription, privacy: .public)")
+            }
+        }
     }
 
     private func process(parsed: Parsed) async throws {
@@ -268,7 +286,7 @@ total: \(totalCount, privacy: .public)
         // 0) get all downloaded ids from the local DB
         // 1) delete not downloaded entries from the DB
         // 2) insert new entries from the feed, exluding the already downloaded ones
-        // 3) already downloaded entries, do not touch those
+        // 3) already downloaded entries, do not touch those, apart from adopting their title ID
         
         // 0) get all downloaded ids from the local DB
         let downloadedIds = await downloadedIds()
@@ -315,6 +333,10 @@ total: \(totalCount, privacy: .public)
                 }
             }
             
+            // 3) already downloaded entries still listed in the feed learn their title ID,
+            // best effort: the catalog itself is already synced, so a failure here is not a failed refresh
+            await adoptTitleIDs(from: parsed)
+
             syncCount.inserted = UInt(insertCount)
             syncCount.deleted = UInt(deleteCount)
         } catch {

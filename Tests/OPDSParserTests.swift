@@ -115,6 +115,54 @@ struct OPDSParserTests {
         #expect(metadata.flavor == "maxi")
     }
     
+    @Test(
+        "OPDSParser reads the catalog title ID, and reports a missing or empty one as nil",
+        arguments: [
+            ("<kiwix:titleid>5f2c1d7e-8a4b-4c3d-9e6f-0a1b2c3d4e5f</kiwix:titleid>",
+             "5f2c1d7e-8a4b-4c3d-9e6f-0a1b2c3d4e5f"),
+            ("", nil),
+            ("<kiwix:titleid></kiwix:titleid>", nil)
+        ] as [(String, String?)]
+    )
+    @ParserActor func parseTitleID(element: String, expected: String?) async throws {
+        let content = """
+        <feed xmlns="http://www.w3.org/2005/Atom"
+              xmlns:dc="http://purl.org/dc/terms/"
+              xmlns:kiwix="https://kiwix.org/namespace/opds"
+              xmlns:opds="http://opds-spec.org/2010/catalog">
+          <entry>
+            <id>urn:uuid:1ec90eab-5724-492b-9529-893959520de4</id>
+            <title>Best of Wikipedia</title>
+            <updated>2023-01-07T00:00:00Z</updated>
+            <summary>A selection of the best 50,000 Wikipedia articles</summary>
+            <language>eng</language>
+            <name>wikipedia_en_top</name>
+            <flavour>maxi</flavour>
+            \(element)
+            <category>wikipedia</category>
+            <tags>wikipedia;_category:wikipedia;_pictures:yes;_videos:no;_details:yes;_ftindex:yes</tags>
+            <articleCount>50001</articleCount>
+            <mediaCount>566835</mediaCount>
+            <author><name>Wikipedia</name></author>
+            <publisher><name>Kiwix</name></publisher>
+            <dc:issued>2023-01-07T00:00:00Z</dc:issued>
+            <link rel="http://opds-spec.org/acquisition/open-access" type="application/x-zim"
+              href="https://download.kiwix.org/zim/wikipedia/wikipedia_en_top_maxi_2023-01.zim.meta4"
+              length="6515656704"/>
+          </entry>
+        </feed>
+        """
+
+        let parser = OPDSParser()
+        try await parser.parse(data: content.data(using: .utf8)!, urlHost: "https://resp-test.org/")
+
+        let zimFileID = UUID(uuidString: "1ec90eab-5724-492b-9529-893959520de4")!
+        let metadata = try #require(parser.getMetaData(id: zimFileID, fetchFavicon: false))
+        #expect(metadata.titleID == expected)
+        // the title ID is flavourless: the flavour is still read on its own
+        #expect(metadata.flavor == "maxi")
+    }
+
     @Test("OPDSParser should not crash on non UTF-8 ids")
     @ParserActor func parseAndExtractNonUTF8() async throws {
         let content = """
