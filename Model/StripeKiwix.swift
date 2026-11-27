@@ -116,7 +116,7 @@ private struct ClientSecretKey: Decodable {
     let secret: String
 }
 
-private struct SelectedPaymentAmount: Encodable {
+struct SelectedPaymentAmount: Encodable, Sendable {
     let amount: Int
     let currency: String
     let email: String
@@ -128,10 +128,19 @@ private struct SelectedPaymentAmount: Encodable {
         // A positive integer representing how much to charge in the smallest currency unit
         // (e.g., 100 cents to charge $1.00 or 100 to charge ¥100, a zero-decimal currency).
         // The minimum amount is $0.50 US or equivalent in charge currency.
-        amount = Int(selectedAmount.value * 100.0)
+        amount = Self.amountInCents(from: selectedAmount.value)
         currency = selectedAmount.currency.rawValue
         origin = deviceName
         email = emailAddress
+    }
+
+    static func amountInCents(from value: Double) -> Int {
+        guard value.isFinite else { return 0 }
+        let scaled = (value * 100.0).rounded()
+        guard scaled >= Double(Int.min), scaled < Double(Int.max) else {
+            return scaled >= 0 ? Int.max : Int.min
+        }
+        return Int(scaled)
     }
 }
 private struct SessionParams: Encodable {
