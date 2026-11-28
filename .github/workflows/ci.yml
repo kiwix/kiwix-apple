@@ -119,7 +119,12 @@ jobs:
           DEVICE_ID: ${{ env.IPAD_DEVICE_ID }}
         run: |
             xcrun simctl boot ${{ env.DEVICE_ID }}
+            xcrun simctl bootstatus ${{ env.DEVICE_ID }} -b
+            echo "Waiting for Simulator services..."
+            sleep 30
             xcrun simctl uninstall ${{ env.DEVICE_ID }} self.Kiwix
+            echo "Waiting for Simulator services..."
+            sleep 30
             xcodebuild test -scheme UITests_iPad -destination "platform=iOS Simulator,id=${{ env.DEVICE_ID }}" -resultBundlePath Kiwix-UITests-IPad.xcresult -retry-tests-on-failure
 
       - name: Upload UI Tests xcresult file
