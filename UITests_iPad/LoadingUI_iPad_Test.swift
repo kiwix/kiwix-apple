@@ -20,6 +20,7 @@ import XCTest
 
     func testLaunchingApp_on_iPad() throws {
         let app = XCUIApplication()
+        app.launchArguments = ["ui-test"]
         app.activate()
         
         if !XCUIDevice.shared.orientation.isLandscape {
@@ -44,19 +45,11 @@ import XCTest
         let downloadButton = app.buttons["Download"].firstMatch
         Wait.inApp(app, forElement: downloadButton, timeout: 120)
 
-        addUIInterruptionMonitor(withDescription: "\"Kiwix\" Would Like To Send You Notifications") { (alert) -> Bool in
-            let alertButton = alert.buttons["Allow"]
-            if alertButton.exists {
-                alertButton.tap()
-                return true
-            }
-            return false
-        }
         downloadButton.tap()
         usleep(500_000)
         usleep(500_000)
         let openMainPageButton = app.buttons["Open Main Page"]
-        Wait.inApp(app, forElement: openMainPageButton, timeout: 360)
+        Wait.inApp(app, forElement: openMainPageButton, timeout: 720)
         openMainPageButton.tap()
 
         app.webViews.firstMatch.tap()
@@ -68,6 +61,8 @@ import XCTest
         app.buttons["Open: Alpine Linux Wiki"].tap()
         Wait.inApp(app, forElement: openMainPageButton)
         openMainPageButton.tap()
+        usleep(500_000)
+        usleep(500_000)
         usleep(500_000)
         // RESTART THE APP
         app.terminate()

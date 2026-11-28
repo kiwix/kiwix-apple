@@ -215,7 +215,9 @@ final class DownloadService {
     // MARK: - Notification
     
     private func requestNotificationAuthorization() {
-        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound]) { _, _ in }
+        if !ProcessInfo.processInfo.arguments.contains("ui-test") {
+            UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound]) { _, _ in }
+        }
     }
 }
 
